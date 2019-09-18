@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widgetNotificationsRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp">
+
+            <TextView
+                android:id="@+id/widgetNotificationsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryTextLight"
+                android:textSize="11sp"
+                tools:text="Władca Androida - Nowa ocena" />
+
+            <TextView
+                android:id="@+id/widgetNotificationsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/primaryTextLight"
+                android:textSize="13sp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                tools:text="Nowa ocena (5) z przedmiotu język polski" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/widgetNotificationsDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:textColor="@color/primaryTextLight"
+            android:textSize="11sp"
+            tools:text="10:00 - 10:45" />
+
+</LinearLayout>

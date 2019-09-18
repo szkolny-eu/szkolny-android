@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="380dp"
+    android:layout_height="180dp"
+    android:theme="@style/AppTheme.Dark"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/timetableItemCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="8dp">
+
+        <LinearLayout
+            android:id="@+id/timetableItemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <me.grantland.widget.AutofitTextView
+                android:id="@+id/timetableItemTeacherName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="Jan Kowalski"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textSize="24sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:id="@+id/timetableItemSubjectName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="pracownia urządzeń techniki komputerowej"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <me.grantland.widget.AutofitTextView
+                android:id="@+id/timetableItemTeamName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="1B3T"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textSize="20sp" />
+
+            <me.grantland.widget.AutofitTextView
+                android:id="@+id/timetableItemClassroomName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="09a techniczna"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

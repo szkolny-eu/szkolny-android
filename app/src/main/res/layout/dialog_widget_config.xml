@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="profileName"
+            type="String" />
+    </data>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/NavView.TextView.Helper"
+            android:visibility="@{profileName == null ? View.GONE : View.VISIBLE}"
+            android:text="@string/dialog_widget_config_profile" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="@{profileName}"
+            android:textIsSelectable="true"
+            android:visibility="@{profileName == null ? View.GONE : View.VISIBLE}"
+            tools:text="Władca Androida" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/NavView.TextView.Helper"
+            android:text="@string/dialog_widget_timetable_config_theme" />
+
+        <RadioGroup
+            android:id="@+id/theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/themeLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="@string/theme_light" />
+
+            <RadioButton
+                android:id="@+id/themeDark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/theme_dark" />
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/bigStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/dialog_widget_timetable_config_big_style" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/NavView.TextView.Helper"
+            android:text="@string/dialog_widget_timetable_config_opacity" />
+
+        <SeekBar
+            android:id="@+id/opacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="100" />
+
+        <TextView
+            android:id="@+id/opacityText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:textIsSelectable="true"
+            android:gravity="end"
+            tools:text="100%" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/wallpaper"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="center"
+                app:layout_constraintBottom_toBottomOf="@+id/widgetPreview"
+                app:layout_constraintEnd_toEndOf="@+id/widgetPreview"
+                app:layout_constraintStart_toStartOf="@+id/widgetPreview"
+                app:layout_constraintTop_toTopOf="@+id/widgetPreview"
+                tools:srcCompat="@tools:sample/backgrounds/scenic[4]"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/widgetPreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/widget_timetable_preview" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</layout>

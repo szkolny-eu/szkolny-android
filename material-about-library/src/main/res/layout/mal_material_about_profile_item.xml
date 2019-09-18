@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/mal_baseline_half"
+    android:paddingRight="@dimen/mal_baseline_half">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="@dimen/mal_baseline"
+        android:layout_marginTop="@dimen/mal_baseline"
+        android:layout_marginRight="@dimen/mal_baseline"
+        android:layout_marginBottom="@dimen/mal_baseline"
+        android:innerRadius="0dp"
+        android:padding="0dp"
+        app:cardCornerRadius="40dp"
+        app:cardElevation="4dp">
+
+        <ImageView
+            android:id="@+id/mal_item_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:adjustViewBounds="false"
+            android:contentDescription="@null"
+            android:cropToPadding="false"
+            android:scaleType="centerCrop"
+            app:srcCompat="@android:drawable/sym_def_app_icon"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/mal_baseline"
+        android:layout_marginBottom="@dimen/mal_baseline"
+        android:layout_marginEnd="@dimen/mal_baseline"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginRight="@dimen/mal_baseline">
+
+        <TextView
+            android:id="@+id/mal_item_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="?mal_color_primary"
+            android:textSize="24sp"
+            tools:text="Władca Androida" />
+
+        <TextView
+            android:id="@+id/mal_item_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="?mal_color_secondary"
+            android:textSize="14sp"
+            tools:text="kubasz" />
+
+    </LinearLayout>
+
+</LinearLayout>

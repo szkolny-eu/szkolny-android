@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/messageProfileBackground"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:padding="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/bg_circle" />
+
+        <TextView
+            android:id="@+id/messageProfileName"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:gravity="center"
+            android:padding="12dp"
+            android:textColor="#ffffff"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="JP"
+            tools:visibility="visible" />
+
+        <!--<ImageView
+            android:id="@+id/messageProfileImage"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:padding="12dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars[13]" />-->
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/messageAttachmentImage"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:adjustViewBounds="true"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:scaleType="fitCenter"
+            app:iiv_icon="cmd-attachment"
+            app:iiv_color="?android:textColorSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/messageDate"
+            app:layout_constraintEnd_toStartOf="@+id/messageDate"
+            app:layout_constraintTop_toTopOf="@+id/messageDate"
+            tools:srcCompat="@tools:sample/avatars[4]" />
+
+        <TextView
+            android:id="@+id/messageSubject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:singleLine="true"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
+            app:layout_constraintTop_toBottomOf="@+id/messageSender"
+            tools:text="Nowe oferty w Twoich obserwowanych wyszukiwaniach" />
+
+        <TextView
+            android:id="@+id/messageSender"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/messageAttachmentImage"
+            app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Allegro" />
+
+        <TextView
+            android:id="@+id/messageBody"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="12dp"
+            android:singleLine="true"
+            android:textAppearance="@style/NavView.TextView.Helper"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
+            app:layout_constraintTop_toBottomOf="@+id/messageSubject"
+            tools:text="Znajdź produkty, których szukasz. Witaj Jan Kowalski (Client" />
+
+        <TextView
+            android:id="@+id/messageDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="02:00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

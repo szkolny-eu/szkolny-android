@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CafeBarRippleStyle">
+        <item name="colorControlHighlight">@color/cafebar_action_button_ripple</item>
+    </style>
+
+    <style name="CafeBarRippleStyleDark">
+        <item name="colorControlHighlight">@color/cafebar_action_button_ripple_dark</item>
+    </style>
+
+</resources>

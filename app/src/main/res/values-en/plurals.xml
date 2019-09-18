@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <plurals name="time_till_text"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">In</item>
+        <item quantity="other">In</item>
+    </plurals>
+    <plurals name="time_till_minutes"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="time_till_hours"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="time_till_seconds"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+    <plurals name="time_till_days"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <plurals name="time_till_months" tools:keep="@plurals/time_till_months"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d month</item>
+        <item quantity="other">%d months</item>
+    </plurals>
+    <plurals name="time_till_years" tools:keep="@plurals/time_till_years"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d year</item>
+        <item quantity="other">%d years</item>
+    </plurals>
+
+    <plurals name="time_left_text"><!-- .. zostało ... -->
+        <item quantity="one">Left: </item>
+        <item quantity="other">Left: </item>
+    </plurals>
+    <plurals name="time_left_minutes"><!-- .. zostało ... -->
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="time_left_hours"><!-- .. zostało ... -->
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="time_left_seconds"><!-- .. zostało ... -->
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+
+    <plurals name="unread_count"><!-- there are X unread(..) notifications -->
+        <item quantity="one">%d unread</item>
+        <item quantity="other">%d unread</item>
+    </plurals>
+
+    <plurals name="toolbar_subtitle_with_unread">
+        <item quantity="one">%1$s - %2$d unread</item>
+        <item quantity="other">%1$s - %2$d unread</item>
+    </plurals>
+</resources>

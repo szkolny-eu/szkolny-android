@@ -1,0 +1,4 @@
+include ':app', ':agendacalendarview', ':MaterialDrawer', ':mhttp', ':material-about-library', ':cafebar', ':szkolny-font', ':nachos'
+/*
+include ':Navigation'
+project(':Navigation').projectDir = new File(settingsDir, '../Navigation/navlib')*/

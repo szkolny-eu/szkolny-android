@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        tools:ignore="UselessParent"
+        android:layout_alignParentLeft="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/customactivityoncrash_activity_vertical_margin"
+            android:paddingLeft="@dimen/customactivityoncrash_activity_horizontal_margin"
+            android:paddingRight="@dimen/customactivityoncrash_activity_horizontal_margin"
+            android:paddingTop="@dimen/customactivityoncrash_activity_vertical_margin">
+
+            <ImageView
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:contentDescription="@null"
+                app:srcCompat="@drawable/ic_rip" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/customactivityoncrash_activity_vertical_margin"
+                android:gravity="center"
+                android:text="@string/crash_title"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/crash_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/customactivityoncrash_activity_vertical_margin"
+                android:gravity="center"
+                android:text="@string/crash_notice"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/crash_feature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/customactivityoncrash_activity_vertical_margin"
+                android:gravity="center"
+                android:text="@string/crash_feature"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/crash_report_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crash_report"
+                android:textColor="@color/md_red_700" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/crash_advice_info"
+                android:visibility="gone" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crash_sync_button"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/crash_restart_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crash_restart" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/crash_details_btn"
+                    style="?borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/crash_details"
+                    android:textColor="@color/colorPrimary" />
+
+                <Button
+                    android:id="@+id/crash_dev_message_btn"
+                    style="?borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/crash_dev_message"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:srcCompat="@mipmap/ic_splash" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

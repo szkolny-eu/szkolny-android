@@ -1,0 +1,59 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion "28.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 6102
+        versionName "6.1.2"
+
+        resValue "string", "materialdrawer_lib_version", "6.1.2"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        debugMinify {
+            debuggable = true
+            minifyEnabled = true
+            proguardFiles 'proguard-android.txt'
+        }
+    }
+    productFlavors {
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:${androidXAppCompat}"
+    implementation "androidx.recyclerview:recyclerview:${androidXRecyclerView}"
+    implementation "androidx.annotation:annotation:1.0.2"
+    implementation "com.google.android.material:material:${googleMaterial}"
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15'
+
+    // add the constraintLayout used to create the items and headers
+    implementation "androidx.constraintlayout:constraintlayout:1.1.3"
+
+    // used to base on some backwards compatible themes
+    // contains util classes to support various android versions, and clean up code
+    // comes with the awesome "Holder"-Pattern
+    // https://github.com/mikepenz/Materialize
+    api 'com.mikepenz:materialize:1.2.0'
+
+    // used to provide out of the box icon font support. simplifies development,
+    // and provides scalable icons. the core is very very light
+    // https://github.com/mikepenz/Android-Iconics
+    api "com.mikepenz:iconics-core:${iconics}"
+
+    // used to fill the RecyclerView with the DrawerItems
+    // and provides single and multi selection, expandable items
+    // https://github.com/mikepenz/FastAdapter
+    api 'com.mikepenz:fastadapter:3.3.0'
+    api 'com.mikepenz:fastadapter-extensions-expandable:3.3.0'
+}

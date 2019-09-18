@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/widgetTimetableHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/widget_background_top"
+        android:orientation="horizontal"><!--#b52196F3-->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widgetTimetableTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingLeft="15.0dip"
+                android:paddingRight="15.0dip"
+                android:text="@string/widget_timetable_title"
+                android:textColor="@color/primaryTextDark"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/widgetTimetableSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingLeft="15.0dip"
+                android:paddingRight="15.0dip"
+                android:textColor="@color/primaryTextDark"
+                android:textSize="16sp"
+                tools:text="Test test etst tetete" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/widgetTimetableRefresh"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_gravity="end|center"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/widget_refresh" />
+
+        <ImageButton
+            android:id="@+id/widgetTimetableSync"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_gravity="end|center"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/widget_sync" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/widgetTimetableListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/secondaryTextDark"
+            android:background="@drawable/widget_background_dark_bottom"
+            android:dividerHeight="1.0dip" ><!--#b5ffffff-->
+        </ListView>
+
+        <TextView
+            android:id="@+id/widgetTimetableLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/widget_loading"
+            android:textColor="@color/primaryTextDark"
+            android:textSize="22sp"
+            android:textStyle="italic" />
+
+    </FrameLayout>
+
+</LinearLayout>

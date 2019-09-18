@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/attendanceType"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/bg_rounded_8dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="nb" />
+
+    <TextView
+        android:id="@+id/attendanceLessonTopic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="false"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textIsSelectable="true"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/attendanceDate"
+        app:layout_constraintStart_toStartOf="@+id/attendanceSubject"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Podstawy języka C."
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/attendanceSubject"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/attendanceDate"
+        app:layout_constraintStart_toEndOf="@+id/attendanceType"
+        app:layout_constraintTop_toBottomOf="@+id/attendanceLessonTopic"
+        tools:text="podstawy programowania" />
+
+    <TextView
+        android:id="@+id/attendanceTeacher"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/attendanceDate"
+        app:layout_constraintStart_toEndOf="@+id/attendanceType"
+        app:layout_constraintTop_toBottomOf="@+id/attendanceSubject"
+        tools:text="Piotr Matematyczny" />
+
+    <TextView
+        android:id="@+id/attendanceTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="0dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/attendanceLessonTopic"
+        tools:text="11:05" />
+
+    <TextView
+        android:id="@+id/attendanceDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        tools:text="19.11.2018"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/attendanceLessonTopic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/attendanceLessonTopic" />
+</androidx.constraintlayout.widget.ConstraintLayout>

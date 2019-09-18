@@ -1,0 +1,80 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/widgetNotificationsHeader"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dip"
+        android:background="@drawable/widget_background_top"
+        android:orientation="horizontal"><!--#b52196F3-->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widgetTimetableOldSubjectName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingLeft="15.0dip"
+                android:paddingRight="15.0dip"
+                android:textColor="@color/primaryTextDark"
+                android:textSize="18.0sp"
+                android:ellipsize="end"
+                android:text="@string/widget_notifications_title" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/widgetNotificationsRefresh"
+            android:layout_width="45.0dip"
+            android:layout_height="45.0dip"
+            android:layout_gravity="end|center"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/widget_refresh" />
+
+        <ImageButton
+            android:id="@+id/widgetNotificationsSync"
+            android:layout_width="45.0dip"
+            android:layout_height="45.0dip"
+            android:layout_gravity="end|center"
+            android:background="?android:selectableItemBackground"
+            android:contentDescription="@string/widget_sync" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/widgetNotificationsListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/secondaryTextLight"
+            android:background="@drawable/widget_background_bottom"
+            android:dividerHeight="1.0dip" ><!--#b5ffffff-->
+        </ListView>
+
+        <TextView
+            android:id="@+id/widgetNotificationsLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryTextLight"
+            android:layout_gravity="center"
+            android:textStyle="italic"
+            android:text="@string/widget_loading" />
+
+    </FrameLayout>
+
+</LinearLayout>

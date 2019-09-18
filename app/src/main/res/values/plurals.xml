@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <plurals name="time_till_text"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">Za</item>
+        <item quantity="few">Za</item>
+        <item quantity="other">Za</item>
+    </plurals>
+    <plurals name="time_till_minutes"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d minutę</item>
+        <item quantity="few">%d minuty</item>
+        <item quantity="other">%d minut</item>
+    </plurals>
+    <plurals name="time_till_hours"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d godzinę</item>
+        <item quantity="few">%d godziny</item>
+        <item quantity="other">%d godzin</item>
+    </plurals>
+    <plurals name="time_till_seconds"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d sekundę</item>
+        <item quantity="few">%d sekundy</item>
+        <item quantity="other">%d sekund</item>
+    </plurals>
+    <plurals name="time_till_days"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d dzień</item>
+        <item quantity="other">%d dni</item>
+    </plurals>
+    <plurals name="time_till_months" tools:keep="@plurals/time_till_months"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d miesiąc</item>
+        <item quantity="few">%d miesiące</item>
+        <item quantity="other">%d miesięcy</item>
+    </plurals>
+    <plurals name="time_till_years" tools:keep="@plurals/time_till_years"><!-- .. rozpocznie się za ... -->
+        <item quantity="one">%d rok</item>
+        <item quantity="few">%d lata</item>
+        <item quantity="other">%d lat</item>
+    </plurals>
+
+    <plurals name="time_left_text"><!-- .. zostało ... -->
+        <item quantity="one">Została</item>
+        <item quantity="few">Zostały</item>
+        <item quantity="other">Zostało</item>
+    </plurals>
+    <plurals name="time_left_minutes"><!-- .. zostało ... -->
+        <item quantity="one">%d minuta</item>
+        <item quantity="few">%d minuty</item>
+        <item quantity="other">%d minut</item>
+    </plurals>
+    <plurals name="time_left_hours"><!-- .. zostało ... -->
+        <item quantity="one">%d godzina</item>
+        <item quantity="few">%d godziny</item>
+        <item quantity="other">%d godzin</item>
+    </plurals>
+    <plurals name="time_left_seconds"><!-- .. zostało ... -->
+        <item quantity="one">%d sekunda</item>
+        <item quantity="few">%d sekundy</item>
+        <item quantity="other">%d sekund</item>
+    </plurals>
+
+    <plurals name="unread_count"><!-- jest X nieprzeczytan(..) powiadomień -->
+        <item quantity="one">%d nieprzeczytane</item>
+        <item quantity="few">%d nieprzeczytane</item>
+        <item quantity="other">%d nieprzeczytanych</item>
+    </plurals>
+
+    <plurals name="toolbar_subtitle_with_unread">
+        <item quantity="one">%1$s - %2$d nieprzeczytane</item>
+        <item quantity="few">%1$s - %2$d nieprzeczytane</item>
+        <item quantity="other">%1$s - %2$d nieprzeczytanych</item>
+    </plurals>
+</resources>

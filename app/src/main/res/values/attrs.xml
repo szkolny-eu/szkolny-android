@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorSection" format="color" />
+    <attr name="cardBackgroundDimmed" format="color" />
+    <attr name="cardBackgroundHighlight" format="color" />
+</resources>

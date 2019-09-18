@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@+id/homeFragment">
+
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.LoadingFragment"
+        android:label="LoadingFragment"
+        tools:layout="@layout/fragment_loading">
+        <action
+            android:id="@+id/action_loadingFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_timetableFragment"
+            app:destination="@id/timetableFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_gradesFragment"
+            app:destination="@id/gradesFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_messagesFragment"
+            app:destination="@id/messagesFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_agendaFragment"
+            app:destination="@id/agendaFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_noticesFragment"
+            app:destination="@id/noticesFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_announcementsFragment"
+            app:destination="@id/announcementsFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_attendancesFragment"
+            app:destination="@id/attendancesFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_homeworkFragment"
+            app:destination="@id/homeworkFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_notificationsFragment"
+            app:destination="@id/notificationsFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:popUpTo="@+id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileManagerFragment"
+            app:destination="@id/profileManagerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_helpFragment"
+            app:destination="@id/helpFragment"
+            app:popUpTo="@+id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gradesFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.RegisterGradesFragment"
+        android:label="fragment_register_grades"
+        tools:layout="@layout/fragment_register_grades">
+        <action
+            android:id="@+id/action_gradesFragment_to_gradesEditorFragment"
+            app:destination="@id/gradesEditorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gradesEditorFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.GradesEditorFragment"
+        android:label="fragment_grades_editor"
+        tools:layout="@layout/fragment_grades_editor" />
+    <fragment
+        android:id="@+id/timetableFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.RegisterTimetableFragment"
+        android:label="fragment_register_timetable"
+        tools:layout="@layout/fragment_register_timetable" />
+    <fragment
+        android:id="@+id/messagesFragment"
+        android:name="pl.szczodrzynski.edziennik.messages.MessagesListFragment"
+        android:label="messages_list"
+        tools:layout="@layout/messages_list">
+        <action
+            android:id="@+id/action_messagesFragment_to_messagesDetailsFragment"
+            app:destination="@id/messagesDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/messagesDetailsFragment"
+        android:name="pl.szczodrzynski.edziennik.messages.MessagesDetailsFragment"
+        android:label="messages_details"
+        tools:layout="@layout/messages_details" />
+    <fragment
+        android:id="@+id/agendaFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.RegisterAgendaDefaultFragment"
+        android:label="fragment_register_agenda_default"
+        tools:layout="@layout/fragment_register_agenda_default" />
+    <fragment
+        android:id="@+id/homeworkFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.RegisterHomeworksFragment"
+        android:label="fragment_register_homeworks"
+        tools:layout="@layout/fragment_register_homeworks" />
+    <fragment
+        android:id="@+id/noticesFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.RegisterNoticesFragment"
+        android:label="fragment_register_notices"
+        tools:layout="@layout/fragment_register_notices" />
+    <fragment
+        android:id="@+id/attendancesFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.RegisterAttendancesFragment"
+        android:label="fragment_register_attendances"
+        tools:layout="@layout/fragment_register_attendances" />
+    <fragment
+        android:id="@+id/announcementsFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.RegisterAnnouncementsFragment"
+        android:label="fragment_register_school_notices"
+        tools:layout="@layout/fragment_register_school_notices" />
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.RegisterNotificationsFragment"
+        android:label="fragment_register_notifications"
+        tools:layout="@layout/fragment_register_notifications" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.SettingsNewFragment"
+        android:label="fragment_register_settings" />
+    <fragment
+        android:id="@+id/profileManagerFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.ProfileManagerFragment"
+        android:label="fragment_profile_manager"
+        tools:layout="@layout/fragment_profile_manager" />
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="pl.szczodrzynski.edziennik.fragments.HelpFragment"
+        android:label="fragment_help"
+        tools:layout="@layout/fragment_help" />
+
+</navigation>

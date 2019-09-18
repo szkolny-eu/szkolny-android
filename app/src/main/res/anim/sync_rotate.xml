@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:interpolator="@android:anim/linear_interpolator" android:duration="1000" android:fromDegrees="0" android:toDegrees="360" android:pivotX="50%" android:pivotY="50%"
+    tools:keep="@anim/sync_rotate" />

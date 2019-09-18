@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorPrimaryLight">#6EC6FF</color>
+    <color name="colorAccent">#4caf50</color>
+    <color name="colorSection">#4CAF50</color>
+
+    <color name="primaryTextLight">#ff101010</color>
+    <color name="primaryTextDark">#fff3f3f3</color>
+    <color name="secondaryTextLight">#ffaaaaaa</color>
+    <color name="secondaryTextDark">#ffb2b2b2</color>
+
+    <color name="dividerColor">#3e7f7f7f</color>
+
+
+    <!-- LIGHT THEME -->
+    <color name="windowBackgroundLight">#ffffffff</color>
+    <color name="colorSurfaceLight">#ffffffff</color>
+    <!-- DARK THEME -->
+    <color name="windowBackgroundDark">#ff242424</color>
+    <color name="colorSurfaceDark">#ff333333</color>
+    <!-- BLACK THEME -->
+    <color name="windowBackgroundBlack">#ff000000</color>
+    <color name="colorSurfaceBlack">#ff121212</color>
+    <!-- CHOCOLATE THEME -->
+    <color name="windowBackgroundChocolate">#ff3e2723</color>
+    <color name="colorSurfaceChocolate">#ff4b3632</color>
+    <!-- INDIGO THEME -->
+    <color name="windowBackgroundIndigo">#ff1a237e</color>
+    <color name="colorSurfaceIndigo">#ff2a3287</color>
+    <!-- LIGHT YELLOW THEME -->
+    <color name="windowBackgroundLightYellow">#ffffffc9</color>
+    <color name="colorSurfaceLightYellow">#ffffffd9</color>
+    <!-- DARK BLUE THEME -->
+    <color name="windowBackgroundDarkBlue">#ff0f2833</color>
+    <color name="colorSurfaceDarkBlue">#ff1f3741</color>
+    <!-- BLUE THEME -->
+    <color name="windowBackgroundBlue">#ff0d47a1</color>
+    <color name="colorSurfaceBlue">#ff1e53a7</color>
+    <!-- LIGHT BLUE THEME -->
+    <color name="windowBackgroundLightBlue">#ffc9ecfc</color>
+    <color name="colorSurfaceLightBlue">#ffd9f1fc</color>
+    <!-- DARK PURPLE THEME -->
+    <color name="windowBackgroundDarkPurple">#ff2f0f34</color>
+    <color name="colorSurfaceDarkPurple">#ff3d1f42</color>
+    <!-- PURPLE THEME -->
+    <color name="windowBackgroundPurple">#ff7b1fa2</color>
+    <color name="colorSurfacePurple">#ff842ea8</color>
+    <!-- LIGHT PURPLE THEME -->
+    <color name="windowBackgroundLightPurple">#fff6c9fd</color>
+    <color name="colorSurfaceLightPurple">#fff8d9fd</color>
+    <!-- DARK RED THEME -->
+    <color name="windowBackgroundDarkRed">#ff350f0f</color>
+    <color name="colorSurfaceDarkRed">#ff431f1f</color>
+    <!-- RED THEME -->
+    <color name="windowBackgroundRed">#ffff5252</color>
+    <color name="colorSurfaceRed">#ffff5e5e</color>
+    <!-- LIGHT RED THEME -->
+    <color name="windowBackgroundLightRed">#fff6c9c9</color>
+    <color name="colorSurfaceLightRed">#fff8d9d9</color>
+    <!-- DARK GREEN THEME -->
+    <color name="windowBackgroundDarkGreen">#ff0f2d1b</color>
+    <color name="colorSurfaceDarkGreen">#ff1f3b2b</color>
+    <!-- AMBER THEME -->
+    <color name="windowBackgroundAmber">#ffffd54f</color>
+    <color name="colorSurfaceAmber">#ffffd75b</color>
+    <!-- LIGHT GREEN THEME -->
+    <color name="windowBackgroundLightGreen">#ffedfac9</color>
+    <color name="colorSurfaceLightGreen">#fff2fbd9</color>
+
+    <color name="black">#000000</color>
+</resources>

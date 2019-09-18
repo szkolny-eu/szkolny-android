@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="cafebar_root" type="id"/>
+
+    <item name="cafebar_content_base" type="id"/>
+    <item name="cafebar_content" type="id"/>
+
+    <item name="cafebar_button_base" type="id"/>
+    <item name="cafebar_button_positive" type="id"/>
+    <item name="cafebar_button_negative" type="id"/>
+    <item name="cafebar_button_neutral" type="id"/>
+
+</resources>

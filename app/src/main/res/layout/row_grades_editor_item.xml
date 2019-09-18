@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.daimajia.swipe.SwipeLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/swipeLayout">
+        <!-- Surface View Start -->
+        <LinearLayout
+            android:id="@+id/bottom_wrapper"
+            android:layout_width="120dp"
+            android:weightSum="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/buttonRemove"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/md_red_500"
+                android:padding="20dp"
+                app:iiv_color="@color/md_white_1000"
+                app:iiv_icon="cmd-delete"
+                tools:srcCompat="@tools:sample/avatars" />
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/buttonEdit"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/md_green_500"
+                android:padding="20dp"
+                app:iiv_color="@color/md_white_1000"
+                app:iiv_icon="cmd-pencil"
+                tools:srcCompat="@tools:sample/avatars" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/gradesListRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:windowBackground"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/gradesListName"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/bg_rounded_8dp"
+                android:gravity="center"
+                android:textSize="24sp"
+                app:autoSizeMaxTextSize="24sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1" />
+
+            <TextView
+                android:id="@+id/gradesListCategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:ellipsize="marquee"
+                android:focusableInTouchMode="false"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/gradesListName"
+                app:layout_constraintTop_toTopOf="@+id/gradesListName"
+                tools:text="kraje hehe no jak zwykle jedynka z geografii. to jest baaardzo długi tekst ale szkoda że się nie scrolluje." />
+
+            <TextView
+                android:id="@+id/gradesListWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="0dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/gradesListName"
+                app:layout_constraintTop_toBottomOf="@+id/gradesListCategory"
+                tools:text="waga 30" />
+
+            <TextView
+                android:id="@+id/gradesListValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintStart_toEndOf="@+id/gradesListWeight"
+                app:layout_constraintTop_toBottomOf="@+id/gradesListCategory"
+                tools:text="wartość: 4.75" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.daimajia.swipe.SwipeLayout>
+</layout>

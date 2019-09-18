@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Calendar styles -->
+    <style name="CalendarCellText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/calendar_text_default</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/text_day_size</item>
+    </style>
+
+    <!-- Agenda styles -->
+
+    <!-- FAB -->
+    <style name="fab">
+        <item name="android:src">@drawable/fab_arrow</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">bottom|start</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="elevation">8dp</item>
+        <item name="fabSize">normal</item>
+        <item name="pressedTranslationZ">6dp</item>
+    </style>
+</resources>

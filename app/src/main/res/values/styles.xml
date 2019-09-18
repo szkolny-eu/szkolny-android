@@ -1,0 +1,207 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <style name="DeadTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/dead_background</item>
+    </style>
+
+    <style name="AppTheme.NoDisplay" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSection">@color/colorSection</item>
+
+        <item name="android:textColor">@color/primaryTextLight</item>
+        <item name="android:textColorPrimary">@color/primaryTextLight</item>
+        <item name="material_drawer_primary_text">@color/primaryTextLight</item>
+        <item name="android:textColorSecondary">@color/secondaryTextLight</item>
+        <item name="material_drawer_secondary_text">@color/secondaryTextLight</item>
+        <item name="android:textColorTertiary">@color/secondaryTextLight</item>
+
+        <item name="md_dark_theme">false</item>
+        <item name="md_title_color">?android:textColorPrimary</item>
+        <item name="md_content_color">?android:textColorPrimary</item>
+        <item name="md_link_color">?colorAccent</item>
+        <item name="md_item_color">?android:textColorPrimary</item>
+
+        <item name="android:popupBackground">@color/windowBackgroundLight</item>
+
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="AppThemeDark.NoDisplay" parent="Theme.MaterialComponents.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSection">@color/colorSection</item>
+
+
+        <item name="android:textColor">@color/primaryTextDark</item>
+        <item name="android:textColorPrimary">@color/primaryTextDark</item>
+        <item name="material_drawer_primary_text">@color/primaryTextDark</item>
+        <item name="android:textColorSecondary">@color/secondaryTextDark</item>
+        <item name="material_drawer_secondary_text">@color/secondaryTextDark</item>
+        <item name="android:textColorTertiary">@color/secondaryTextDark</item>
+
+        <item name="md_dark_theme">true</item>
+        <item name="md_title_color">?android:textColorPrimary</item>
+        <item name="md_content_color">?android:textColorPrimary</item>
+        <item name="md_link_color">?colorAccent</item>
+        <item name="md_item_color">?android:textColorPrimary</item>
+
+        <item name="android:popupBackground">@color/windowBackgroundDark</item>
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme" parent="NavView" />
+
+    <!-- Base application theme. -->
+    <style name="AppTheme.Light" parent="NavView.Light">
+        <item name="colorPrimary">#2196f3</item>
+        <item name="colorPrimaryDark">#1976d2</item>
+        <item name="colorPrimaryVariant">#2196f3</item>
+        <item name="colorAccent">#2962ff</item>
+        <item name="colorSection">@color/colorSection</item>
+
+        <item name="colorFab">#4CAF50</item>
+        <item name="colorFabIcon">#c8e6c9</item>
+        <item name="colorOnFab">#ffffff</item>
+
+        <item name="md_dark_theme">false</item>
+        <item name="md_title_color">?android:textColorPrimary</item>
+        <item name="md_content_color">?android:textColorPrimary</item>
+        <item name="md_link_color">?colorAccent</item>
+        <item name="md_item_color">?android:textColorPrimary</item>
+
+        <item name="mal_toolbarTheme">@style/Theme.Mal.Toolbar.Dark</item>
+        <item name="mal_toolbarPopupTheme">@style/Theme.Mal.Toolbar.Light</item>
+        <item name="mal_color_primary">?android:textColorPrimary</item>
+        <item name="mal_color_secondary">?android:textColorSecondary</item>
+        <item name="mal_card_background">?colorSurface</item>
+        <item name="mal_divider_color">@color/dividerColor</item>
+    </style>
+    <style name="AppTheme.Dark" parent="NavView.Dark">
+        <item name="colorPrimary">#64b5f6</item>
+        <item name="colorPrimaryDark">#1976d2</item>
+        <item name="colorPrimaryVariant">#2196f3</item>
+        <item name="colorAccent">#2962ff</item>
+        <item name="colorSection">@color/colorSection</item>
+
+        <item name="colorFab">#4CAF50</item>
+        <item name="colorFabIcon">#c8e6c9</item>
+        <item name="colorOnFab">#ffffff</item>
+
+        <item name="md_dark_theme">true</item>
+        <item name="md_title_color">?android:textColorPrimary</item>
+        <item name="md_content_color">?android:textColorPrimary</item>
+        <item name="md_link_color">?colorAccent</item>
+        <item name="md_item_color">?android:textColorPrimary</item>
+
+        <item name="mal_toolbarTheme">@style/Theme.Mal.Toolbar.Dark</item>
+        <item name="mal_toolbarPopupTheme">@style/Theme.Mal.Toolbar.Dark</item>
+        <item name="mal_color_primary">@color/primaryTextDark</item>
+        <item name="mal_color_secondary">@color/secondaryTextDark</item>
+        <item name="mal_card_background">?colorSurface</item>
+        <item name="mal_divider_color">@color/dividerColor</item>
+    </style>
+
+
+    <!-- DESCENDANT THEMES -->
+    <!-- BLACK THEME -->
+    <style name="AppTheme.Black" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundBlack</item>
+        <item name="colorSurface">@color/colorSurfaceBlack</item>
+    </style>
+    <!-- CHOCOLATE THEME -->
+    <style name="AppTheme.Chocolate" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundChocolate</item>
+        <item name="colorSurface">@color/colorSurfaceChocolate</item>
+    </style>
+    <!-- INDIGO THEME -->
+    <style name="AppTheme.Indigo" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundIndigo</item>
+        <item name="colorSurface">@color/colorSurfaceIndigo</item>
+    </style>
+    <!-- LIGHT YELLOW THEME -->
+    <style name="AppTheme.LightYellow" parent="AppTheme.Light">
+        <item name="android:colorBackground">@color/windowBackgroundLightYellow</item>
+        <item name="colorSurface">@color/colorSurfaceLightYellow</item>
+    </style>
+    <!-- DARK BLUE THEME -->
+    <style name="AppTheme.DarkBlue" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundDarkBlue</item>
+        <item name="colorSurface">@color/colorSurfaceDarkBlue</item>
+    </style>
+    <!-- BLUE THEME -->
+    <style name="AppTheme.Blue" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundBlue</item>
+        <item name="colorSurface">@color/colorSurfaceBlue</item>
+    </style>
+    <!-- LIGHT BLUE THEME -->
+    <style name="AppTheme.LightBlue" parent="AppTheme.Light">
+        <item name="android:colorBackground">@color/windowBackgroundLightBlue</item>
+        <item name="colorSurface">@color/colorSurfaceLightBlue</item>
+    </style>
+    <!-- DARK PURPLE THEME -->
+    <style name="AppTheme.DarkPurple" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundDarkPurple</item>
+        <item name="colorSurface">@color/colorSurfaceDarkPurple</item>
+    </style>
+    <!-- PURPLE THEME -->
+    <style name="AppTheme.Purple" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundPurple</item>
+        <item name="colorSurface">@color/colorSurfacePurple</item>
+    </style>
+    <!-- LIGHT PURPLE THEME -->
+    <style name="AppTheme.LightPurple" parent="AppTheme.Light">
+        <item name="android:colorBackground">@color/windowBackgroundLightPurple</item>
+        <item name="colorSurface">@color/colorSurfaceLightPurple</item>
+    </style>
+    <!-- DARK RED THEME -->
+    <style name="AppTheme.DarkRed" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundDarkRed</item>
+        <item name="colorSurface">@color/colorSurfaceDarkRed</item>
+    </style>
+    <!-- RED THEME -->
+    <style name="AppTheme.Red" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundRed</item>
+        <item name="colorSurface">@color/colorSurfaceRed</item>
+    </style>
+    <!-- LIGHT RED THEME -->
+    <style name="AppTheme.LightRed" parent="AppTheme.Light">
+        <item name="android:colorBackground">@color/windowBackgroundLightRed</item>
+        <item name="colorSurface">@color/colorSurfaceLightRed</item>
+    </style>
+    <!-- DARK GREEN THEME -->
+    <style name="AppTheme.DarkGreen" parent="AppTheme.Dark">
+        <item name="android:colorBackground">@color/windowBackgroundDarkGreen</item>
+        <item name="colorSurface">@color/colorSurfaceDarkGreen</item>
+    </style>
+    <!-- AMBER THEME -->
+    <style name="AppTheme.Amber" parent="AppTheme.Light">
+        <item name="android:colorBackground">@color/windowBackgroundAmber</item>
+        <item name="colorSurface">@color/colorSurfaceAmber</item>
+    </style>
+    <!-- LIGHT GREEN THEME -->
+    <style name="AppTheme.LightGreen" parent="AppTheme.Light">
+        <item name="android:colorBackground">@color/windowBackgroundLightGreen</item>
+        <item name="colorSurface">@color/colorSurfaceLightGreen</item>
+    </style>
+
+</resources>

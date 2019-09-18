@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="cafebar_button_margin_start">48dp</dimen>
+
+    <!-- Floating Size -->
+    <dimen name="cafebar_floating_min_width">188dp</dimen>
+    <dimen name="cafebar_floating_max_width">568dp</dimen>
+    <dimen name="cafebar_floating_padding">24dp</dimen>
+
+</resources>

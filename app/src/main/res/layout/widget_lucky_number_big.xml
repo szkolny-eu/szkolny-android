@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widgetLuckyNumberRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/widgetLuckyNumberIcon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            tools:srcCompat="@android:drawable/btn_star_big_on" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widgetLuckyNumberProfileRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingLeft="12dp"
+                android:paddingEnd="12dp"
+                android:paddingRight="12dp"
+                android:textColor="@color/primaryTextLight"
+                android:textSize="14sp"
+                tools:text="Władca Androida"
+                tools:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/widgetLuckyNumberTextRightLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/widgetLuckyNumberTextRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:paddingLeft="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingRight="12dp"
+                    android:textColor="@color/primaryTextLight"
+                    android:textSize="24sp"
+                    tools:text="24" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/widgetLuckyNumberProfileBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/primaryTextLight"
+        android:textSize="14sp"
+        tools:text="Władca Androida" />
+
+    <FrameLayout
+        android:id="@+id/widgetLuckyNumberTextBottomLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/widgetLuckyNumberTextBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/primaryTextLight"
+            android:textSize="24sp"
+            tools:text="24"
+            tools:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>

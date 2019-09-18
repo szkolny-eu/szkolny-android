@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/gradesListName"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/bg_rounded_8dp"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:textSize="24sp"
+        app:autoSizeMaxTextSize="24sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="#4caf50"
+        tools:text="5+" />
+
+    <TextView
+        android:id="@+id/gradesListCategoryColumn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="false"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        tools:text="kraje hehe no jak zwykle jedynka z geografii. to jest baaardzo długi tekst ale szkoda że się nie scrolluje."
+        app:layout_constraintBottom_toTopOf="@+id/gradesListCategoryDescription"
+        app:layout_constraintEnd_toStartOf="@+id/gradesListAddedDate"
+        app:layout_constraintStart_toEndOf="@+id/gradesListName"
+        app:layout_constraintTop_toTopOf="@+id/gradesListName"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/gradesListCategoryDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="Kartkówki - K1"
+        app:layout_constraintBottom_toBottomOf="@+id/gradesListName"
+        app:layout_constraintEnd_toStartOf="@+id/gradesListTeacher"
+        app:layout_constraintStart_toEndOf="@+id/gradesListWeight" />
+
+    <TextView
+        android:id="@+id/gradesListWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/gradesListCategoryDescription"
+        app:layout_constraintStart_toEndOf="@+id/gradesListName"
+        app:layout_constraintTop_toTopOf="@+id/gradesListCategoryDescription"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="waga 30"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/gradesListTeacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textAppearance="@style/NavView.TextView.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/gradesListCategoryDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gradesListCategoryDescription"
+        tools:text="Anna Jakaśtam-Cośtam" />
+
+    <TextView
+        android:id="@+id/gradesListAddedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        tools:text="14.10.2015"
+        android:textAppearance="@style/NavView.TextView.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/gradesListCategoryColumn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gradesListCategoryColumn" />
+</androidx.constraintlayout.widget.ConstraintLayout>

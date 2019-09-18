@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:transitionName="@string/transition_name">
+
+        <LinearLayout
+            android:id="@+id/messageToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:orientation="horizontal"
+            android:background="@color/colorSurface_6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/messageClose"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="2dp"
+                android:background="?android:attr/actionBarItemBackground"
+                app:srcCompat="@android:drawable/ic_delete" />
+
+            <TextView
+                android:id="@+id/messageSubject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:animateLayoutChanges="true"
+                android:background="?selectableItemBackground"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:padding="16dp"
+                android:textAppearance="@style/NavView.TextView.Title"
+                tools:ignore="HardcodedText"
+                tools:text="mobiDziennik - raport dzienny." />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/shadow_top"
+            app:layout_constraintTop_toBottomOf="@+id/messageToolbar"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ScrollView
+            android:id="@+id/messageContent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/messageProfileBackground"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:padding="12dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/bg_circle" />
+
+                    <TextView
+                        android:id="@+id/messageProfileName"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:textColor="#ffffff"
+                        android:textSize="20sp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="JP"
+                        tools:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/messageProfileImage"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:padding="12dp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:srcCompat="@tools:sample/avatars[0]" />
+
+                    <TextView
+                        android:id="@+id/messageSender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="8dp"
+                        android:textAppearance="@style/NavView.TextView.Subtitle"
+                        app:layout_constraintEnd_toStartOf="@+id/messageDate"
+                        app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Allegro - wysyłamy duużo wiadomości!!! Masz nowe oferty! Możesz kupić nowego laptopa! Ale super! Ehh, to jest nadawca a nie temat więc nwm czemu to tutaj wpisałem" />
+
+                    <TextView
+                        android:id="@+id/messageDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:textAppearance="@style/NavView.TextView.Small"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="14:26" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/messageBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:autoLink="all"
+                    android:minHeight="250dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textIsSelectable="true"
+                    tools:text="To jest treść wiadomości.\n\nZazwyczaj ma wiele linijek.\n\nTak" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="?colorControlHighlight" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Odbiorcy wiadomości:"
+                    android:textAppearance="@style/NavView.TextView.Subtitle" />
+
+                <TextView
+                    android:id="@+id/messageRecipients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    tools:text=" - Jan Kowalski, przeczytano: nie\n - Adam Dodatkowy, przeczytano: 20 marca, 17:35" />
+
+                <TextView
+                    android:id="@+id/messageAttachmentsTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Załączniki:"
+                    android:textAppearance="@style/NavView.TextView.Subtitle" />
+
+                <LinearLayout
+                    android:id="@+id/messageAttachments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="8dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="middle"
+                            android:text="Testowy plik.pdf"
+                            android:visibility="visible"
+                            app:chipBackgroundColor="@color/mtrl_chip_background_color"
+                            app:chipIcon="@drawable/googleg_standard_color_18"
+                            app:chipMinHeight="36dp"
+                            app:chipSurfaceColor="@color/mtrl_chip_surface_color"
+                            app:closeIcon="@drawable/ic_error_outline"
+                            app:closeIconVisible="true" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar2"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="middle"
+                            android:text="Wyniki sprawdzianu z matematyki.pdf"
+                            android:visibility="visible"
+                            app:chipIcon="@drawable/googleg_standard_color_18"
+                            app:chipMinHeight="36dp" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar3"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/messageReplyButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_ripple"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Odpowiedz"
+                            android:textAppearance="@style/NavView.TextView.Small" />
+
+                        <com.mikepenz.iconics.view.IconicsImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:padding="4dp"
+                            app:iiv_color="?android:textColorSecondary"
+                            app:iiv_icon="cmd-reply"
+                            tools:srcCompat="@android:drawable/ic_menu_revert" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/messageForwardButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_ripple"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Przekaż dalej"
+                            android:textAllCaps="false"
+                            android:textAppearance="@style/NavView.TextView.Small" />
+
+                        <com.mikepenz.iconics.view.IconicsImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:padding="4dp"
+                            app:iiv_color="?android:textColorSecondary"
+                            app:iiv_icon="cmd-share"
+                            tools:srcCompat="@android:drawable/ic_media_ff" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/messageRemoveButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_ripple"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Usuń"
+                            android:textAppearance="@style/NavView.TextView.Small" />
+
+                        <com.mikepenz.iconics.view.IconicsImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:padding="4dp"
+                            app:iiv_color="?android:textColorSecondary"
+                            app:iiv_icon="cmd-delete"
+                            tools:srcCompat="@android:drawable/ic_menu_delete" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

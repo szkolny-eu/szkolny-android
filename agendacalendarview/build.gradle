@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debugMinify {
+            debuggable = true
+            minifyEnabled = true
+            proguardFiles 'proguard-android.txt'
+        }
+    }
+    sourceSets {
+        main {
+            assets.srcDirs = ['assets']
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+//apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // Google libraries
+    implementation "androidx.appcompat:appcompat:${androidXAppCompat}"
+    implementation "androidx.recyclerview:recyclerview:${androidXRecyclerView}"
+    implementation "com.google.android.material:material:${googleMaterial}"
+
+    // other libraries
+    //implementation 'se.emilsjolander:stickylistheaders:2.7.0'
+    implementation 'com.github.edisonw:StickyListHeaders:master-SNAPSHOT'
+    implementation 'io.reactivex:rxjava:1.1.1'
+}

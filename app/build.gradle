@@ -1,0 +1,158 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
+
+android {
+    signingConfigs {
+    }
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId 'pl.szczodrzynski.edziennik'
+        minSdkVersion setup.minSdk
+        targetSdkVersion setup.targetSdk
+        versionCode release.versionCode
+        versionName release.versionName
+        multiDexEnabled true
+    }
+    buildTypes {
+        applicationVariants.all { variant ->
+            variant.outputs.all {
+                if (variant.buildType.name == "release") {
+                    outputFileName = "Edziennik_" + defaultConfig.versionName + ".apk"
+                } else if (variant.buildType.name == "debugMinify") {
+                    outputFileName = "Edziennik_" + defaultConfig.versionName + "_debugMinify.apk"
+                } else {
+                    outputFileName = "Edziennik_" + defaultConfig.versionName + "_debug.apk"
+                }
+            }
+        }
+        debug {
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            proguardFiles fileTree('proguard').asList().toArray()
+        }
+    }
+    dependencies {
+        implementation "com.google.firebase:firebase-core:${versions.firebase}"
+    }
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
+    lintOptions {
+        checkReleaseBuilds false
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility '1.8'
+        targetCompatibility '1.8'
+    }
+    productFlavors {
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    packagingOptions {
+        exclude 'META-INF/library-core_release.kotlin_module'
+    }
+}
+
+/*task finalizeBundleDebug(type: Copy) {
+    from("debug/debug")
+    include "app.aab"
+    destinationDir file("debug/debug")
+    rename "app.aab", "Edziennik_debug.aab"
+}
+
+// it finalizes :bundleRelease
+task finalizeBundleRelease(type: Copy) {
+    from("release/release")
+    include "app.aab"
+    destinationDir file("release/release")
+    rename "app.aab", "Edziennik_${android.defaultConfig.versionCode}.aab"
+}*/
+/*
+// this adds the above two tasks
+tasks.whenTaskAdded { task ->
+    if (task.name == "bundleDebug") {
+        task.finalizedBy finalizeBundleDebug
+    } else if (task.name == "bundleRelease") {
+        task.finalizedBy finalizeBundleRelease
+    }
+}*/
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    annotationProcessor "androidx.room:room-compiler:${versions.room}"
+    debugImplementation "com.amitshekhar.android:debug-db:1.0.5"
+
+    implementation "android.arch.navigation:navigation-fragment-ktx:${versions.navigationFragment}"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.cardview:cardview:${versions.cardView}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+    implementation "androidx.core:core-ktx:${versions.ktx}"
+    implementation "androidx.gridlayout:gridlayout:${versions.gridLayout}"
+    implementation "androidx.legacy:legacy-support-v4:${versions.legacy}"
+    implementation "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}"
+    implementation "androidx.recyclerview:recyclerview:${versions.recyclerView}"
+    implementation "androidx.room:room-runtime:${versions.room}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
+    implementation "com.google.android.gms:play-services-wearable:${versions.play_services}"
+    implementation "com.google.android.material:material:${versions.material}"
+    implementation "com.google.firebase:firebase-messaging:${versions.firebasemessaging}"
+
+    //implementation "com.github.kuba2k2.MaterialDrawer:library:e603091449"
+    implementation "com.mikepenz:crossfader:1.6.0" // do not update
+    implementation "com.mikepenz:iconics-core:${versions.iconics}"
+    implementation "com.mikepenz:iconics-views:${versions.iconics}"
+    implementation "com.mikepenz:community-material-typeface:${versions.font_cmd}@aar"
+
+    implementation "com.github.kuba2k2:NavLib:${versions.navlib}"
+
+    implementation "com.afollestad.material-dialogs:commons:${versions.materialdialogs}"
+    implementation "com.afollestad.material-dialogs:core:${versions.materialdialogs}"
+
+    implementation "cat.ereza:customactivityoncrash:2.2.0"
+    implementation "com.applandeo:material-calendar-view:1.5.0"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.10.1"
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+    implementation "com.evernote:android-job:1.2.6"
+    implementation "com.github.antonKozyriatskyi:CircularProgressIndicator:1.2.2"
+    implementation "com.github.bassaer:chatmessageview:2.0.1"
+    implementation("com.github.ozodrukh:CircularReveal:2.0.1@aar") {transitive = true}
+    implementation "com.heinrichreimersoftware:material-intro:1.5.8" // do not update
+    implementation "com.jaredrummler:colorpicker:1.0.2"
+    implementation "com.squareup.okhttp3:okhttp:3.12.0"
+    implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0" // do not update
+    implementation "com.wdullaer:materialdatetimepicker:4.1.2"
+    implementation "com.yuyh.json:jsonviewer:1.0.6"
+    implementation "me.dm7.barcodescanner:zxing:1.9.8"
+    implementation "me.grantland:autofittextview:0.2.1"
+    implementation "me.leolin:ShortcutBadger:1.1.22@aar"
+    implementation "org.greenrobot:eventbus:3.1.1"
+    implementation "org.jsoup:jsoup:1.10.1"
+    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.15"
+    //implementation "se.emilsjolander:stickylistheaders:2.7.0"
+    implementation 'com.github.edisonw:StickyListHeaders:master-SNAPSHOT'
+    implementation "uk.co.samuelwall:material-tap-target-prompt:2.14.0"
+
+    implementation project(":agendacalendarview")
+    implementation project(":cafebar")
+    implementation project(":material-about-library")
+    implementation project(":mhttp")
+    implementation project(":nachos")
+    //implementation project(":Navigation")
+    implementation project(":szkolny-font")
+}
+repositories {
+    mavenCentral()
+}

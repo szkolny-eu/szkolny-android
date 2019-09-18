@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/loginChooserFragment">
+
+    <fragment
+        android:id="@+id/loginChooserFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginChooserFragment"
+        android:label="fragment_login_type"
+        tools:layout="@layout/fragment_login_chooser" >
+        <action
+            android:id="@+id/action_loginTypeFragment_to_loginMobidziennikFragment"
+            app:destination="@id/loginMobidziennikFragment" />
+        <action
+            android:id="@+id/action_loginTypeFragment_to_loginLibrusFragment"
+            app:destination="@id/loginLibrusFragment" />
+        <action
+            android:id="@+id/action_loginTypeFragment_to_loginVulcanFragment"
+            app:destination="@id/loginVulcanFragment" />
+        <action
+            android:id="@+id/action_loginTypeFragment_to_loginIuczniowieFragment"
+            app:destination="@id/loginIuczniowieFragment" />
+        <action
+            android:id="@+id/action_loginTypeFragment_to_loginMigrationFragment"
+            app:destination="@id/loginMigrationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginMobidziennikFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginMobidziennikFragment"
+        android:label="fragment_login_mobidziennik"
+        tools:layout="@layout/fragment_login_mobidziennik" >
+        <action
+            android:id="@+id/action_loginMobidziennikFragment_to_loginMobidziennikHelpFragment"
+            app:destination="@id/loginMobidziennikHelpFragment" />
+        <action
+            android:id="@+id/action_loginMobidziennikFragment_to_loginProgressFragment"
+            app:destination="@id/loginProgressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginLibrusFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginLibrusFragment"
+        android:label="fragment_login_librus"
+        tools:layout="@layout/fragment_login_librus" >
+        <action
+            android:id="@+id/action_loginLibrusFragment_to_loginLibrusHelpFragment"
+            app:destination="@id/loginLibrusHelpFragment" />
+        <action
+            android:id="@+id/action_loginLibrusFragment_to_loginProgressFragment"
+            app:destination="@id/loginProgressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginProgressFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginProgressFragment"
+        android:label="fragment_login_progress"
+        tools:layout="@layout/fragment_login_progress" >
+        <action
+            android:id="@+id/action_loginProgressFragment_to_loginSummaryFragment"
+            app:destination="@id/loginSummaryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginMobidziennikHelpFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginMobidziennikHelpFragment"
+        android:label="fragment_login_mobidziennik_help"
+        tools:layout="@layout/fragment_login_mobidziennik_help" />
+    <fragment
+        android:id="@+id/loginLibrusHelpFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginLibrusHelpFragment"
+        android:label="fragment_login_librus_help"
+        tools:layout="@layout/fragment_login_librus_help" />
+    <fragment
+        android:id="@+id/loginSummaryFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginSummaryFragment"
+        android:label="fragment_login_summary"
+        tools:layout="@layout/fragment_login_summary" >
+        <action
+            android:id="@+id/action_loginSummaryFragment_to_loginTypeFragment"
+            app:destination="@id/loginChooserFragment" />
+        <action
+            android:id="@+id/action_loginSummaryFragment_to_loginSyncFragment"
+            app:destination="@id/loginSyncFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginSyncFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginSyncFragment"
+        android:label="fragment_login_sync"
+        tools:layout="@layout/fragment_login_sync" >
+        <action
+            android:id="@+id/action_loginSyncFragment_to_loginFinishFragment"
+            app:destination="@id/loginFinishFragment" />
+        <action
+            android:id="@+id/action_loginSyncFragment_to_loginSyncErrorFragment"
+            app:destination="@id/loginSyncErrorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginIuczniowieFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginIuczniowieFragment"
+        android:label="fragment_login_iuczniowie"
+        tools:layout="@layout/fragment_login_iuczniowie" >
+        <action
+            android:id="@+id/action_loginIuczniowieFragment_to_loginIuczniowieHelpFragment"
+            app:destination="@id/loginIuczniowieHelpFragment" />
+        <action
+            android:id="@+id/action_loginIuczniowieFragment_to_loginProgressFragment"
+            app:destination="@id/loginProgressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginVulcanFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginVulcanFragment"
+        android:label="fragment_login_vulcan"
+        tools:layout="@layout/fragment_login_vulcan" >
+        <action
+            android:id="@+id/action_loginVulcanFragment_to_loginVulcanHelpFragment"
+            app:destination="@id/loginVulcanHelpFragment" />
+        <action
+            android:id="@+id/action_loginVulcanFragment_to_loginProgressFragment"
+            app:destination="@id/loginProgressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginVulcanHelpFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginVulcanHelpFragment"
+        android:label="fragment_login_vulcan_help"
+        tools:layout="@layout/fragment_login_vulcan_help" />
+    <fragment
+        android:id="@+id/loginIuczniowieHelpFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginIuczniowieHelpFragment"
+        android:label="fragment_login_iuczniowie_help"
+        tools:layout="@layout/fragment_login_iuczniowie_help" />
+    <fragment
+        android:id="@+id/loginFinishFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginFinishFragment"
+        android:label="fragment_login_finish"
+        tools:layout="@layout/fragment_login_finish" />
+    <fragment
+        android:id="@+id/loginMigrationFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginMigrationFragment"
+        android:label="fragment_login_migration"
+        tools:layout="@layout/fragment_login_migration" >
+        <action
+            android:id="@+id/action_loginMigrationFragment_to_loginMigrationSyncFragment"
+            app:destination="@id/loginMigrationSyncFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginMigrationSyncFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginMigrationSyncFragment"
+        android:label="fragment_login_migration_sync"
+        tools:layout="@layout/fragment_login_migration_sync" />
+    <fragment
+        android:id="@+id/loginSyncErrorFragment"
+        android:name="pl.szczodrzynski.edziennik.login.LoginSyncErrorFragment"
+        android:label="fragment_login_sync_error"
+        tools:layout="@layout/fragment_login_sync_error" >
+        <action
+            android:id="@+id/action_loginSyncErrorFragment_to_loginFinishFragment"
+            app:destination="@id/loginFinishFragment" />
+    </fragment>
+</navigation>

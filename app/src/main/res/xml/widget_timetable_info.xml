@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:initialKeyguardLayout="@layout/widget_timetable"
+    android:initialLayout="@layout/widget_timetable"
+    android:minWidth="250dp"
+    android:minHeight="180dp"
+    android:minResizeWidth="110dp"
+    android:minResizeHeight="110dp"
+    android:previewImage="@drawable/widget_timetable_preview"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen"
+    android:configure="pl.szczodrzynski.edziennik.widgets.WidgetConfigActivity"
+    tools:ignore="UnusedAttribute" />

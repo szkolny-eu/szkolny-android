@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <View
+        android:id="@+id/view_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/shadow"
+        android:visibility="visible"/>
+
+    <com.github.tibolte.agendacalendarview.agenda.AgendaListView
+        android:id="@+id/agenda_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animationCache="false"
+        android:divider="@color/agenda_list_header_divider"
+        android:dividerHeight="1dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:scrollingCache="false" />
+
+</merge>
