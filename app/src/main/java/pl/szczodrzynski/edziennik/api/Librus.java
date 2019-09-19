@@ -1600,6 +1600,10 @@ public class Librus implements EdziennikInterface {
                 r("finish", "Classrooms");
                 return;
             }
+            if (data.get("Classrooms") == null) {
+                r("finish", "Classrooms");
+                return;
+            }
             JsonArray jClassrooms = data.get("Classrooms").getAsJsonArray();
             //d("Got Classrooms: "+jClassrooms.toString());
             classrooms.clear();
