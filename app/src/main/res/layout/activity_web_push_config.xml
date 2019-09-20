@@ -17,147 +17,154 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <LinearLayout
-            android:id="@+id/webPushConfig"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Przekazywanie powiadomień pozwala przesyłać wszystkie powiadomienia z tego urządzenia na wszystkie sparowane komputery, widoczne poniżej.\n\nPowiadomienia będą się wyświetlać w przeglądarce, w okienku pop-up, w prawym dolnym rogu ekranu.\n\nLista komputerów docelowych jest niezależna od wybranego profilu ucznia." />
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/webPushConfig"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="@dimen/section_margin_top"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/web_push_configured_browsers"
-                    android:textAllCaps="true"
-                    android:textColor="?attr/colorSection"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/section_underline_height"
-                    android:layout_marginTop="2dp"
-                    android:background="?attr/colorSection" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TableLayout
-                    android:id="@+id/browserList"
+                    android:id="@+id/textView8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:shrinkColumns="0"
-                    android:stretchColumns="0">
+                    android:text="Przekazywanie powiadomień pozwala przesyłać wszystkie powiadomienia z tego urządzenia na wszystkie sparowane komputery, widoczne poniżej.\n\nPowiadomienia będą się wyświetlać w przeglądarce, w okienku pop-up, w prawym dolnym rogu ekranu.\n\nLista komputerów docelowych jest niezależna od wybranego profilu ucznia." />
 
-                    <!--<TableRow
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="@dimen/section_margin_top"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="end">
+                        android:layout_height="wrap_content"
+                        android:text="@string/web_push_configured_browsers"
+                        android:textAllCaps="true"
+                        android:textColor="?attr/colorSection"
+                        android:textStyle="bold" />
 
-                        <TextView
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/section_underline_height"
+                        android:layout_marginTop="2dp"
+                        android:background="?attr/colorSection" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TableLayout
+                        android:id="@+id/browserList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:shrinkColumns="0"
+                        android:stretchColumns="0">
+
+                        <!--<TableRow
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginRight="8dp"
-                            android:gravity="center_vertical"
-                            android:text="Chrome 70.0.3538.102 @ Windows 7 64-bit" />
+                            android:gravity="end">
 
-                        <Button
-                            android:id="@+id/button6"
-                            style="@style/Widget.AppCompat.Button.Small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minHeight="0dp"
-                            android:minWidth="0dp"
-                            android:text="Usuń" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center_vertical"
+                                android:text="Chrome 70.0.3538.102 @ Windows 7 64-bit" />
 
-                    </TableRow>-->
+                            <Button
+                                android:id="@+id/button6"
+                                style="@style/Widget.AppCompat.Button.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minHeight="0dp"
+                                android:minWidth="0dp"
+                                android:text="Usuń" />
 
-                </TableLayout>
+                        </TableRow>-->
 
-                <ProgressBar
-                    android:id="@+id/browserListProgressBar"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="invisible" />
+                    </TableLayout>
 
-                <TextView
-                    android:id="@+id/browserListErrorText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="18sp"
-                    android:textStyle="italic"
-                    android:visibility="visible"
-                    android:text="@string/web_push_no_browsers" />
+                    <ProgressBar
+                        android:id="@+id/browserListProgressBar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="invisible" />
 
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/browserListErrorText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textStyle="italic"
+                        android:visibility="visible"
+                        android:text="@string/web_push_no_browsers" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="@dimen/section_margin_top"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:orientation="vertical">
+                </FrameLayout>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/web_push_pair_browser"
-                    android:textAllCaps="true"
-                    android:textColor="?attr/colorSection"
-                    android:textStyle="bold" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="@dimen/section_margin_top"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:orientation="vertical">
 
-                <View
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/web_push_pair_browser"
+                        android:textAllCaps="true"
+                        android:textColor="?attr/colorSection"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/section_underline_height"
+                        android:layout_marginTop="2dp"
+                        android:background="?attr/colorSection" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/section_underline_height"
-                    android:layout_marginTop="2dp"
-                    android:background="?attr/colorSection" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="W przeglądarce na komputerze wejdź na stronę\n\nhttp://edziennik.szczodrzynski.pl/wp\n\nUdziel zgody na wysyłanie powiadomień, następnie zeskanuj wygenerowany kod QR.\n\nPod tym samym adresem możesz zarządzać listą sparowanych z przeglądarką urządzeń.\n\nJeśli sparujesz kilka urządzeń z tą samą przeglądarką, możesz otrzymywać te same powiadomienia kilkukrotnie." />
-
-                <Button
-                    android:id="@+id/webPushScanNewButton"
-                    style="@style/Widget.AppCompat.Button.Small"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Skanuj..." />
-            </LinearLayout>
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+
+                        android:text="W przeglądarce na komputerze wejdź na stronę\n\nhttp://edziennik.szczodrzynski.pl/wp\n\nUdziel zgody na wysyłanie powiadomień, następnie zeskanuj wygenerowany kod QR.\n\nPod tym samym adresem możesz zarządzać listą sparowanych z przeglądarką urządzeń.\n\nJeśli sparujesz kilka urządzeń z tą samą przeglądarką, możesz otrzymywać te same powiadomienia kilkukrotnie." />
+
+                    <Button
+                        android:id="@+id/webPushScanNewButton"
+                        style="@style/Widget.AppCompat.Button.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="Skanuj..." />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
 
         <me.dm7.barcodescanner.zxing.ZXingScannerView
             android:id="@+id/qrCodeScanner"

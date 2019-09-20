@@ -880,11 +880,17 @@ public class Iuczniowie implements EdziennikInterface {
                     boolean countToTheAverage = jGrade.get("DoSredniej").getAsBoolean();
                     float value = jGrade.get("WartoscDoSred").getAsFloat();
 
+                    String gradeColor = jGrade.get("Kolor").getAsString();
+                    int colorInt = 0xff2196f3;
+                    if (!gradeColor.isEmpty()) {
+                        colorInt = Color.parseColor("#"+gradeColor);
+                    }
+
                     Grade gradeObject = new Grade(
                             profileId,
                             jGrade.get("idK").getAsLong(),
                             jGrade.get("Kategoria").getAsString(),
-                            Color.parseColor("#"+jGrade.get("Kolor").getAsString()),
+                            colorInt,
                             "",
                             jGrade.get("Ocena").getAsString(),
                             value,
