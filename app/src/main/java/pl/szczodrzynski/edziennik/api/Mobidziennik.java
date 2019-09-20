@@ -794,7 +794,7 @@ public class Mobidziennik implements EdziennikInterface {
                                 switch (e.tagName()) {
                                     case "div": {
                                         //d(TAG, "Outer HTML "+e.outerHtml());
-                                        Matcher matcher = Pattern.compile("<div.*?>\\n*\\s*(.+?)\\n*(?:<.*?)??</div>", Pattern.DOTALL).matcher(e.outerHtml());
+                                        Matcher matcher = Pattern.compile("<div.*?>\\n*\\s*(.+?)\\s*\\n*(?:<.*?)??</div>", Pattern.DOTALL).matcher(e.outerHtml());
                                         if (matcher.find()) {
                                             subjectName = matcher.group(1);
                                         }
@@ -1456,8 +1456,8 @@ public class Mobidziennik implements EdziennikInterface {
             }
             String[] user = userStr.split("\\|", Integer.MAX_VALUE);
 
-            teachersMap.put(strToInt(user[0]), user[5]+" "+user[4]);
-            teacherList.add(new Teacher(profileId, strToInt(user[0]), user[4], user[5]));
+            teachersMap.put(strToInt(user[0]), user[5].trim()+" "+user[4].trim());
+            teacherList.add(new Teacher(profileId, strToInt(user[0]), user[4].trim(), user[5].trim()));
         }
     }
 
@@ -1958,7 +1958,7 @@ public class Mobidziennik implements EdziennikInterface {
                     for(int i = 0; i < teachersMap.size(); i++) {
                         int key = teachersMap.keyAt(i);
                         String str = teachersMap.valueAt(i);
-                        if ((lesson[7] + " " + lesson[6]).equalsIgnoreCase(str)) {
+                        if ((lesson[7].trim() + " " + lesson[6].trim()).equalsIgnoreCase(str)) {
                             lessonObject.teacherId = key;
                         }
                     }
@@ -2001,7 +2001,7 @@ public class Mobidziennik implements EdziennikInterface {
                     for(int i = 0; i < teachersMap.size(); i++) {
                         int key = teachersMap.keyAt(i);
                         String str = teachersMap.valueAt(i);
-                        if ((lesson[7] + " " + lesson[6]).equalsIgnoreCase(str)) {
+                        if ((lesson[7].trim() + " " + lesson[6].trim()).equalsIgnoreCase(str)) {
                             lessonChange.teacherId = key;
                         }
                     }

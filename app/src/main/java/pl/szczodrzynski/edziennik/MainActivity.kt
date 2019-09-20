@@ -229,8 +229,8 @@ class MainActivity : AppCompatActivity() {
             drawer.init(this@MainActivity)
 
             SystemBarsUtil(this@MainActivity).run {
-                paddingByKeyboard = b.navView
-                appFullscreen = true
+                //paddingByKeyboard = b.navView
+                appFullscreen = false
                 statusBarColor = getColorFromAttr(context, android.R.attr.colorBackground)
                 statusBarDarker = false
                 statusBarFallbackLight = COLOR_HALF_TRANSPARENT
@@ -238,6 +238,8 @@ class MainActivity : AppCompatActivity() {
                 navigationBarTransparent = false
 
                 b.navView.configSystemBarsUtil(this)
+
+                // TODO fix navlib navbar detection, orientation change issues, status bar color setting if not fullscreen
 
                 commit()
             }
