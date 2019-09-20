@@ -7,6 +7,9 @@ import pl.szczodrzynski.edziennik.datamodels.*
 import pl.szczodrzynski.edziennik.models.Date
 
 data class DataStore(private val appDb: AppDb, val profileId: Int) {
+
+    val loginMethods = mutableListOf<Int>()
+
     val teacherList: LongSparseArray<Teacher> = LongSparseArray()
     val subjectList: LongSparseArray<Subject> = LongSparseArray()
     val teamList = mutableListOf<Team>()
@@ -43,6 +46,8 @@ data class DataStore(private val appDb: AppDb, val profileId: Int) {
     }
 
     fun clear() {
+        loginMethods.clear()
+
         teacherList.clear()
         subjectList.clear()
         teamList.clear()

@@ -99,7 +99,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore) : 
          | |__| |____) |  | |
           \____/|_____/   |*/
     private fun loginJst() {
-        LoginJst(app, loginStore, syncCallback) {
+        LoginJst(app, null, loginStore, syncCallback) {
             if (profile == null) {
                 firstLoginSynergia()
                 return@LoginJst

@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.api.v2
+package pl.szczodrzynski.edziennik.api.v2.models
 
 import pl.szczodrzynski.edziennik.api.AppError
 import pl.szczodrzynski.edziennik.datamodels.LoginStore
