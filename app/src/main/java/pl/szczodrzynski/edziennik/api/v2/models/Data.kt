@@ -3,15 +3,21 @@ package pl.szczodrzynski.edziennik.api.v2.models
 import android.util.LongSparseArray
 import androidx.core.util.forEach
 import androidx.core.util.isNotEmpty
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.api.interfaces.ProgressCallback
 import pl.szczodrzynski.edziennik.datamodels.*
 import pl.szczodrzynski.edziennik.models.Date
 
-data class DataStore(private val appDb: AppDb, val profileId: Int) {
+open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
+
+    var fakeLogin = false
+
+    lateinit var callback: ProgressCallback
 
     val loginMethods = mutableListOf<Int>()
 
-    val teacherList: LongSparseArray<Teacher> = LongSparseArray()
-    val subjectList: LongSparseArray<Subject> = LongSparseArray()
+    val teacherList = LongSparseArray<Teacher>()
+    val subjectList = LongSparseArray<Subject>()
     val teamList = mutableListOf<Team>()
     val lessonList = mutableListOf<Lesson>()
     val lessonChangeList = mutableListOf<LessonChange>()
@@ -28,15 +34,19 @@ data class DataStore(private val appDb: AppDb, val profileId: Int) {
     val metadataList = mutableListOf<Metadata>()
     val messageMetadataList = mutableListOf<Metadata>()
 
+    private val db by lazy { app.db }
+
     init {
 
         clear()
-        
-        appDb.teacherDao().getAllNow(profileId).forEach { teacher ->
-            teacherList.put(teacher.id, teacher)
-        }
-        appDb.subjectDao().getAllNow(profileId).forEach { subject ->
-            subjectList.put(subject.id, subject)
+
+        if (profile != null) {
+            db.teacherDao().getAllNow(profile.id).forEach { teacher ->
+                teacherList.put(teacher.id, teacher)
+            }
+            db.subjectDao().getAllNow(profile.id).forEach { subject ->
+                subjectList.put(subject.id, subject)
+            }
         }
 
         /*val teacher = teachers.byNameFirstLast("Jan Kowalski") ?: Teacher(1, 1, "", "").let {
@@ -67,57 +77,60 @@ data class DataStore(private val appDb: AppDb, val profileId: Int) {
     }
 
     fun saveData() {
+        if (profile == null)
+            return
+
         if (teacherList.isNotEmpty()) {
             val tempList: ArrayList<Teacher> = ArrayList()
             teacherList.forEach { _, teacher ->
                 tempList.add(teacher)
             }
-            appDb.teacherDao().addAll(tempList)
+            db.teacherDao().addAll(tempList)
         }
         if (subjectList.isNotEmpty()) {
             val tempList: ArrayList<Subject> = ArrayList()
             subjectList.forEach { _, subject ->
                 tempList.add(subject)
             }
-            appDb.subjectDao().addAll(tempList)
+            db.subjectDao().addAll(tempList)
         }
         if (teamList.isNotEmpty())
-            appDb.teamDao().addAll(teamList)
+            db.teamDao().addAll(teamList)
         if (lessonList.isNotEmpty()) {
-            appDb.lessonDao().clear(profileId)
-            appDb.lessonDao().addAll(lessonList)
+            db.lessonDao().clear(profile.id)
+            db.lessonDao().addAll(lessonList)
         }
         if (lessonChangeList.isNotEmpty())
-            appDb.lessonChangeDao().addAll(lessonChangeList)
+            db.lessonChangeDao().addAll(lessonChangeList)
         if (gradeCategoryList.isNotEmpty())
-            appDb.gradeCategoryDao().addAll(gradeCategoryList)
+            db.gradeCategoryDao().addAll(gradeCategoryList)
         if (gradeList.isNotEmpty()) {
-            appDb.gradeDao().clear(profileId)
-            appDb.gradeDao().addAll(gradeList)
+            db.gradeDao().clear(profile.id)
+            db.gradeDao().addAll(gradeList)
         }
         if (eventList.isNotEmpty()) {
-            appDb.eventDao().removeFuture(profileId, Date.getToday())
-            appDb.eventDao().addAll(eventList)
+            db.eventDao().removeFuture(profile.id, Date.getToday())
+            db.eventDao().addAll(eventList)
         }
         if (eventTypeList.isNotEmpty())
-            appDb.eventTypeDao().addAll(eventTypeList)
+            db.eventTypeDao().addAll(eventTypeList)
         if (noticeList.isNotEmpty()) {
-            appDb.noticeDao().clear(profileId)
-            appDb.noticeDao().addAll(noticeList)
+            db.noticeDao().clear(profile.id)
+            db.noticeDao().addAll(noticeList)
         }
         if (attendanceList.isNotEmpty())
-            appDb.attendanceDao().addAll(attendanceList)
+            db.attendanceDao().addAll(attendanceList)
         if (announcementList.isNotEmpty())
-            appDb.announcementDao().addAll(announcementList)
+            db.announcementDao().addAll(announcementList)
         if (messageList.isNotEmpty())
-            appDb.messageDao().addAllIgnore(messageList)
+            db.messageDao().addAllIgnore(messageList)
         if (messageRecipientList.isNotEmpty())
-            appDb.messageRecipientDao().addAll(messageRecipientList)
+            db.messageRecipientDao().addAll(messageRecipientList)
         if (messageRecipientIgnoreList.isNotEmpty())
-            appDb.messageRecipientDao().addAllIgnore(messageRecipientIgnoreList)
+            db.messageRecipientDao().addAllIgnore(messageRecipientIgnoreList)
         if (metadataList.isNotEmpty())
-            appDb.metadataDao().addAllIgnore(metadataList)
+            db.metadataDao().addAllIgnore(metadataList)
         if (messageMetadataList.isNotEmpty())
-            appDb.metadataDao().setSeen(messageMetadataList)
+            db.metadataDao().setSeen(messageMetadataList)
     }
 }

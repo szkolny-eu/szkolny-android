@@ -47,11 +47,10 @@ public class AppError {
     public static final int CODE_LIBRUS_DISCONNECTED = 31;
     public static final int CODE_PROFILE_ARCHIVED = 30;
 
+
     public static final int CODE_INTERNAL_MISSING_DATA = 100;
     // internal errors - not for user's information.
     // these error codes are processed in API main classes
-    public static final int CODE_INTERNAL_LIBRUS_ACCOUNT_410 = 120;
-    public static final int CODE_INTERNAL_LIBRUS_ACCOUNT_410_ = 120;
 
     public String TAG;
     public int line;

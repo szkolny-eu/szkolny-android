@@ -17,13 +17,14 @@ import pl.szczodrzynski.edziennik.datamodels.Profile
  * @param loginType type of the e-register this login method handles
  * @param loginMethodId a unique ID of this login method
  * @param featureIds a [List] of [Feature]s (their IDs) this login method can provide access to
+ *   May be null if no strict feature set is associated with this method.
  * @param loginMethodClass a [Class] which constructor will be invoked when a log in is needed
  * @param requiredLoginMethod a lambda returning a required login method (which will be called before this). May differ depending on the [Profile] and/or [LoginStore].
  */
 class LoginMethod(
         val loginType: Int,
         val loginMethodId: Int,
-        val featureIds: List<Int>,
+        val featureIds: List<Int>?,
         val loginMethodClass: Class<*>,
         val requiredLoginMethod: (profile: Profile?, loginStore: LoginStore) -> Int
 )

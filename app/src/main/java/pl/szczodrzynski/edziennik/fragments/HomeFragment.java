@@ -44,7 +44,8 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.api.AppError;
 import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback;
-import pl.szczodrzynski.edziennik.api.v2.librus.Librus;
+import pl.szczodrzynski.edziennik.api.v2.librus.LibrusOld;
+import pl.szczodrzynski.edziennik.api.v2.librus.LibrusTest;
 import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
 import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding;
@@ -115,43 +116,16 @@ public class HomeFragment extends Fragment {
             return true;
         });*/
 
-        b.testButton.setOnClickListener((v -> {
-            LoginStore loginStore = new LoginStore(1, LOGIN_TYPE_LIBRUS, new JsonObject());
-            loginStore.putLoginData("email", "example@example.com");
-            loginStore.putLoginData("password", "zaq1@WSX");
-            Profile profile = new Profile(1, "test", "testsubname", 1);
-            profile.putStudentData("accountLogin", "1234567");
-            new Librus(app, profile, loginStore).login(new SyncCallback() {
-                @Override
-                public void onLoginFirst(List<Profile> profileList, LoginStore loginStore) {
-
-                }
-
-                @Override
-                public void onSuccess(Context activityContext, ProfileFull profileFull) {
-
-                }
-
-                @Override
-                public void onProgress(int progressStep) {
-
-                }
-
-                @Override
-                public void onActionStarted(int stringResId) {
-
-                }
-
-                @Override
-                public void onError(Context activityContext, @NonNull AppError error) {
-
-                }
-            });
-        }));
-
         b.composeButton.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.composeButton.setOnClickListener((v -> {
             startActivity(new Intent(activity, MessagesComposeActivity.class));
+        }));
+
+        LibrusTest test = new LibrusTest(app);
+
+        b.testButton.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
+        b.testButton.setOnClickListener((v -> {
+            test.go();
         }));
 
         //((TextView)v.findViewById(R.id.nextSync)).setText(getString(R.string.next_sync_format,Time.fromMillis(app.appJobs.syncJobTime).getStringHMS()));

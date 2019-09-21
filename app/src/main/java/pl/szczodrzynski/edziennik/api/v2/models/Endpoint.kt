@@ -14,13 +14,14 @@ import pl.szczodrzynski.edziennik.datamodels.Profile
  * @param loginType type of the e-register this endpoint handles
  * @param endpointId a unique ID of this endpoint
  * @param featureIds a [List] of [Feature]s (their IDs) this endpoint can download
+ *   May be null if no strict feature set is associated with this method.
  * @param endpointClass a [Class] which constructor will be invoked when a data download is needed
  * @param requiredLoginMethod a lambda returning a required login method (which will be called before this). May differ depending on the [Profile] and/or [LoginStore].
  */
 class Endpoint(
         val loginType: Int,
         val endpointId: Int,
-        val featureIds: List<Int>,
+        val featureIds: List<Int>?,
         val endpointClass: Class<*>,
         val requiredLoginMethod: (profile: Profile?, loginStore: LoginStore) -> Int
 )

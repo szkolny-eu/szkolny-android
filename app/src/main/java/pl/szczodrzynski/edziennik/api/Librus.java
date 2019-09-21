@@ -51,7 +51,6 @@ import pl.szczodrzynski.edziennik.api.interfaces.LoginCallback;
 import pl.szczodrzynski.edziennik.api.interfaces.MessageGetCallback;
 import pl.szczodrzynski.edziennik.api.interfaces.RecipientListGetCallback;
 import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback;
-import pl.szczodrzynski.edziennik.api.v2.models.DataStore;
 import pl.szczodrzynski.edziennik.datamodels.Announcement;
 import pl.szczodrzynski.edziennik.datamodels.Attendance;
 import pl.szczodrzynski.edziennik.datamodels.Event;
@@ -212,8 +211,6 @@ public class Librus implements EdziennikInterface {
         this.loginStore = loginStore;
         this.fullSync = profile == null || profile.getEmpty() || profile.shouldFullSync(activityContext);
         this.today = Date.getToday();
-
-        DataStore ds = new DataStore(app.db, profileId);
 
         this.librusEmail = loginStore.getLoginData("email", "");
         this.librusPassword = loginStore.getLoginData("password", "");
