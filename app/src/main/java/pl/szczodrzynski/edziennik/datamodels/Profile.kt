@@ -47,10 +47,25 @@ open class Profile : IDrawerProfile {
     var empty = true
     var archived = false
 
+    /**
+     * The name of the student.
+     * This doesn't change, no matter if it's a parent or student account.
+     */
     var studentNameLong: String? = null
     var studentNameShort: String? = null
+    /**
+     * The student's number in the class register.
+     */
     var studentNumber = -1
     var studentData: JsonObject? = null
+
+    /**
+     * A full name of the account owner.
+     * If null, then it's a student account.
+     * If not null, then it's a parent account with this name.
+     */
+    @Ignore
+    var accountNameLong: String? = null
 
     var registration = REGISTRATION_UNSPECIFIED
 
@@ -61,7 +76,7 @@ open class Profile : IDrawerProfile {
 
     var currentSemester = 1
 
-    var attendancePercentage: Float = 0.toFloat()
+    var attendancePercentage: Float = 0.0f
 
     var dateSemester1Start: Date? = null
     var dateSemester2Start: Date? = null
@@ -192,6 +207,12 @@ open class Profile : IDrawerProfile {
         getImageHolder(imageView.context).applyTo(imageView)
     }
 
+    fun hasStudentData(key: String): Boolean {
+        if (studentData == null)
+            return false
+        return studentData?.has(key) ?: false
+    }
+
     fun getStudentData(key: String, defaultValue: String?): String? {
         if (studentData == null)
             return defaultValue
@@ -229,7 +250,7 @@ open class Profile : IDrawerProfile {
         return element?.asBoolean ?: defaultValue
     }
 
-    fun putStudentData(key: String, value: String) {
+    fun putStudentData(key: String, value: String?) {
         if (studentData == null)
             studentData = JsonObject()
         studentData!!.addProperty(key, value)
