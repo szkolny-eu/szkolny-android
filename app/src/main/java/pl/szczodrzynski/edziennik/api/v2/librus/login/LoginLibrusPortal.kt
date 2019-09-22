@@ -24,11 +24,11 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     init { run {
         if (data.loginStore.mode != LOGIN_MODE_LIBRUS_EMAIL) {
-            data.callback.onError(null, AppError(TAG, 27, CODE_INVALID_LOGIN_MODE))
+            data.error(TAG, ERROR_INVALID_LOGIN_MODE)
             return@run
         }
         if (data.portalEmail == null || data.portalPassword == null) {
-            data.callback.onError(null, AppError(TAG, 31, CODE_INVALID_LOGIN))
+            data.error(TAG, ERROR_LOGIN_DATA_MISSING)
             return@run
         }
 
@@ -67,13 +67,13 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                             if (csrfMatcher.find()) {
                                 login(csrfMatcher.group(1))
                             } else {
-                                data.callback.onError(null, AppError(TAG, 463, CODE_OTHER, "CSRF token not found.", response, json))
+                                data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_CSRF_MISSING, response, json)
                             }
                         }
                     }
 
                     override fun onFailure(response: Response, throwable: Throwable) {
-                        data.callback.onError(null, AppError(TAG, 207, CODE_OTHER, response, throwable))
+                        data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
                     }
                 })
                 .build()
@@ -94,14 +94,14 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                     override fun onSuccess(json: JsonObject?, response: Response) {
                         if (json == null) {
                             if (response.parserErrorBody?.contains("wciąż nieaktywne") == true) {
-                                data.callback.onError(null, AppError(TAG, 487, CODE_LIBRUS_NOT_ACTIVATED, response))
+                                data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED, response)
                                 return
                             }
-                            data.callback.onError(null, AppError(TAG, 489, CODE_MAINTENANCE, response))
+                            data.error(TAG, ERROR_RESPONSE_EMPTY, response)
                             return
                         }
                         if (json.get("errors") != null) {
-                            data.callback.onError(null, AppError(TAG, 490, CODE_OTHER, json.getJsonArray("errors")?.get(0)?.asString, response, json))
+                            data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR, response, apiResponse = json)
                             return
                         }
                         authorize(json.getString("redirect", LIBRUS_AUTHORIZE_URL))
@@ -109,10 +109,10 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
 
                     override fun onFailure(response: Response, throwable: Throwable) {
                         if (response.code() == 403 || response.code() == 401) {
-                            data.callback.onError(null, AppError(TAG, 248, CODE_INVALID_LOGIN, response, throwable))
+                            data.error(TAG, ERROR_LOGIN_DATA_INVALID, response, throwable)
                             return
                         }
-                        data.callback.onError(null, AppError(TAG, 251, CODE_OTHER, response, throwable))
+                        data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
                     }
                 })
                 .build()
@@ -141,20 +141,19 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                 .callback(object : JsonCallbackHandler() {
                     override fun onSuccess(json: JsonObject?, response: Response) {
                         if (json == null) {
-                            data.callback.onError(null, AppError(TAG, 539, CODE_MAINTENANCE, response))
+                            data.error(TAG, ERROR_RESPONSE_EMPTY, response)
                             return
                         }
                         json.getString("error")?.let { error ->
                             val hint = json.getString("hint", "")
-                            val message = json.getString("message", "")
+                            //val message = json.getString("message", "")
                             if (!refreshTokenFailed && refreshToken != null && (hint == "Token has been revoked" || hint == "Token has expired")) {
                                 c(TAG, "refreshing the token failed. Trying to log in again.")
                                 refreshTokenFailed = true
                                 authorize(LIBRUS_AUTHORIZE_URL)
                                 return
                             }
-                            val errorText = "$error $message $hint"
-                            data.callback.onError(null, AppError(TAG, 552, CODE_OTHER, errorText, response, json))
+                            data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_TOKEN_ERROR, response, apiResponse = json)
                             return
                         }
 
@@ -164,13 +163,13 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                             data.portalTokenExpiryTime = currentTimeUnix() + json.getInt("expires_in", 86400)
                             onSuccess()
                         } catch (e: NullPointerException) {
-                            data.callback.onError(null, AppError(TAG, 311, CODE_OTHER, response, e, json))
+                            data.error(TAG, EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN, response, e, json)
                         }
 
                     }
 
                     override fun onFailure(response: Response, throwable: Throwable) {
-                        data.callback.onError(null, AppError(TAG, 317, CODE_OTHER, response, throwable))
+                        data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
                     }
                 })
                 .build()

@@ -3,7 +3,10 @@ package pl.szczodrzynski.edziennik.api.v2.models
 import android.util.LongSparseArray
 import androidx.core.util.forEach
 import androidx.core.util.isNotEmpty
+import com.google.gson.JsonObject
+import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.api.AppError
 import pl.szczodrzynski.edziennik.api.interfaces.ProgressCallback
 import pl.szczodrzynski.edziennik.datamodels.*
 import pl.szczodrzynski.edziennik.models.Date
@@ -14,6 +17,12 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
     lateinit var callback: ProgressCallback
 
+    /**
+     * A list of [LoginMethod]s *already fulfilled* during this sync.
+     *
+     * A [LoginMethod] may add elements to this list only after a successful login
+     * with that method.
+     */
     val loginMethods = mutableListOf<Int>()
 
     val teacherList = LongSparseArray<Teacher>()
@@ -132,5 +141,12 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.metadataDao().addAllIgnore(metadataList)
         if (messageMetadataList.isNotEmpty())
             db.metadataDao().setSeen(messageMetadataList)
+    }
+
+    fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {
+        callback.onError(null, AppError(tag, 999, errorCode, response, throwable, apiResponse))
+    }
+    fun error(tag: String, errorCode: Int, response: Response? = null, apiResponse: String? = null) {
+        callback.onError(null, AppError(tag, 999, errorCode, response, null, apiResponse))
     }
 }

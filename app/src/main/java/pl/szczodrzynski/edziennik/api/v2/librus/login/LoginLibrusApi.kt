@@ -17,7 +17,6 @@ import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.getInt
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
-import java.net.HttpURLConnection
 import java.net.HttpURLConnection.*
 
 class LoginLibrusApi {
@@ -28,12 +27,13 @@ class LoginLibrusApi {
     private lateinit var data: DataLibrus
     private lateinit var onSuccess: () -> Unit
 
+    /* do NOT move this to primary constructor */
     constructor(data: DataLibrus, onSuccess: () -> Unit) {
         this.data = data
         this.onSuccess = onSuccess
 
         if (data.profile == null) {
-            data.callback.onError(null, AppError(TAG, 19, CODE_LIBRUS_PROFILE_NULL))
+            data.error(TAG, ERROR_PROFILE_MISSING)
             return
         }
 
@@ -46,7 +46,7 @@ class LoginLibrusApi {
                 LOGIN_MODE_LIBRUS_SYNERGIA -> loginWithSynergia()
                 LOGIN_MODE_LIBRUS_JST -> loginWithJst()
                 else -> {
-                    data.callback.onError(null, AppError(TAG, 25, CODE_INVALID_LOGIN_MODE))
+                    data.error(TAG, ERROR_INVALID_LOGIN_MODE)
                 }
             }
         }
@@ -54,7 +54,7 @@ class LoginLibrusApi {
 
     private fun loginWithPortal() {
         if (!data.loginMethods.contains(LOGIN_METHOD_LIBRUS_PORTAL)) {
-            data.callback.onError(null, AppError(TAG, 26, CODE_LOGIN_METHOD_NOT_SATISFIED))
+            data.error(TAG, ERROR_LOGIN_METHOD_NOT_SATISFIED)
             return
         }
         SynergiaTokenExtractor(data) {
@@ -94,7 +94,7 @@ class LoginLibrusApi {
         }
         else {
             // cannot log in: token expired, no login data present
-            data.callback.onError(null, AppError(TAG, 91, CODE_INVALID_LOGIN))
+            data.error(TAG, ERROR_LOGIN_DATA_MISSING)
         }
     }
 
@@ -111,44 +111,30 @@ class LoginLibrusApi {
         }
         else {
             // cannot log in: token expired, no login data present
-            data.callback.onError(null, AppError(TAG, 110, CODE_INVALID_LOGIN))
+            data.error(TAG, ERROR_LOGIN_DATA_MISSING)
         }
     }
 
     private val tokenCallback = object : JsonCallbackHandler() {
         override fun onSuccess(json: JsonObject?, response: Response?) {
             if (json == null) {
-                data.callback.onError(null, AppError(TAG, 117, CODE_MAINTENANCE, response))
+                data.error(TAG, ERROR_RESPONSE_EMPTY, response)
                 return
             }
             json.getString("error")?.let { error ->
                 when (error) {
-                    "librus_captcha_needed" -> {
-
-                    }
-                    "connection_problems" -> {
-
-                    }
-                    "invalid_client" -> {
-
-                    }
-                    "librus_reg_accept_needed" -> {
-
-                    }
-                    "librus_change_password_error" -> {
-
-                    }
-                    "librus_password_change_required" -> {
-
-                    }
-                    "invalid_grant" -> {
-
-                    }
-                    else -> {
-
-                    }
+                    "librus_captcha_needed" -> ERROR_LOGIN_LIBRUS_API_CAPTCHA_NEEDED
+                    "connection_problems" -> ERROR_LOGIN_LIBRUS_API_CONNECTION_PROBLEMS
+                    "invalid_client" -> ERROR_LOGIN_LIBRUS_API_INVALID_CLIENT
+                    "librus_reg_accept_needed" -> ERROR_LOGIN_LIBRUS_API_REG_ACCEPT_NEEDED
+                    "librus_change_password_error" -> ERROR_LOGIN_LIBRUS_API_CHANGE_PASSWORD_ERROR
+                    "librus_password_change_required" -> ERROR_LOGIN_LIBRUS_API_PASSWORD_CHANGE_REQUIRED
+                    "invalid_grant" -> ERROR_LOGIN_LIBRUS_API_INVALID_GRANT
+                    else -> ERROR_LOGIN_LIBRUS_API_OTHER
+                }.let { errorCode ->
+                    data.error(TAG, errorCode, apiResponse = json, response = response)
+                    return
                 }
-                return
             }
 
             try {
@@ -157,12 +143,12 @@ class LoginLibrusApi {
                 data.apiTokenExpiryTime = currentTimeUnix() + json.getInt("expires_in", 86400)
                 onSuccess()
             } catch (e: NullPointerException) {
-                data.callback.onError(null, AppError(TAG, 154, EXCEPTION_LOGIN_LIBRUS_API_TOKEN, response, e, json))
+                data.error(TAG, EXCEPTION_LOGIN_LIBRUS_API_TOKEN, response, e, json)
             }
         }
 
         override fun onFailure(response: Response?, throwable: Throwable?) {
-            data.callback.onError(null, AppError(TAG, 159, CODE_OTHER, response, throwable))
+            data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
         }
     }
 
@@ -179,7 +165,6 @@ class LoginLibrusApi {
                 .contentType(MediaTypeUtils.APPLICATION_FORM)
                 .post()
                 .allowErrorCode(HTTP_BAD_REQUEST)
-                .allowErrorCode(HTTP_FORBIDDEN)
                 .allowErrorCode(HTTP_UNAUTHORIZED)
                 .callback(tokenCallback)
                 .build()
@@ -197,7 +182,6 @@ class LoginLibrusApi {
                 .contentType(MediaTypeUtils.APPLICATION_FORM)
                 .post()
                 .allowErrorCode(HTTP_BAD_REQUEST)
-                .allowErrorCode(HTTP_FORBIDDEN)
                 .allowErrorCode(HTTP_UNAUTHORIZED)
                 .callback(tokenCallback)
                 .build()
@@ -218,7 +202,6 @@ class LoginLibrusApi {
                 .contentType(MediaTypeUtils.APPLICATION_FORM)
                 .post()
                 .allowErrorCode(HTTP_BAD_REQUEST)
-                .allowErrorCode(HTTP_FORBIDDEN)
                 .allowErrorCode(HTTP_UNAUTHORIZED)
                 .callback(tokenCallback)
                 .build()
@@ -237,7 +220,6 @@ class LoginLibrusApi {
                 .contentType(MediaTypeUtils.APPLICATION_FORM)
                 .post()
                 .allowErrorCode(HTTP_BAD_REQUEST)
-                .allowErrorCode(HTTP_FORBIDDEN)
                 .allowErrorCode(HTTP_UNAUTHORIZED)
                 .callback(tokenCallback)
                 .build()

@@ -85,10 +85,10 @@ public class AppError {
         this(TAG, line, errorCode, null, null, null, throwable, apiResponse);
     }
     public AppError(String TAG, int line, int errorCode, Throwable throwable, JsonObject apiResponse) {
-        this(TAG, line, errorCode, null, null, null, throwable, apiResponse.toString());
+        this(TAG, line, errorCode, null, null, null, throwable, apiResponse == null ? null : apiResponse.toString());
     }
     public AppError(String TAG, int line, int errorCode, String errorText, Response response, JsonObject apiResponse) {
-        this(TAG, line, errorCode, errorText, response, response == null ? null : response.request(), null, apiResponse.toString());
+        this(TAG, line, errorCode, errorText, response, response == null ? null : response.request(), null, apiResponse == null ? null : apiResponse.toString());
     }
     public AppError(String TAG, int line, int errorCode, String errorText, Response response, String apiResponse) {
         this(TAG, line, errorCode, errorText, response, response == null ? null : response.request(), null, apiResponse);
@@ -97,7 +97,7 @@ public class AppError {
         this(TAG, line, errorCode, errorText, null, null, null, apiResponse);
     }
     public AppError(String TAG, int line, int errorCode, String errorText, JsonObject apiResponse) {
-        this(TAG, line, errorCode, errorText, null, null, null, apiResponse.toString());
+        this(TAG, line, errorCode, errorText, null, null, null, apiResponse == null ? null : apiResponse.toString());
     }
     public AppError(String TAG, int line, int errorCode, String errorText) {
         this(TAG, line, errorCode, errorText, null, null, null, null);
@@ -106,7 +106,7 @@ public class AppError {
         this(TAG, line, errorCode, null, null, null, null, apiResponse.toString());
     }
     public AppError(String TAG, int line, int errorCode, Response response, Throwable throwable, JsonObject apiResponse) {
-        this(TAG, line, errorCode, null, response, response == null ? null : response.request(), throwable, apiResponse.toString());
+        this(TAG, line, errorCode, null, response, response == null ? null : response.request(), throwable, apiResponse == null ? null : apiResponse.toString());
     }
     public AppError(String TAG, int line, int errorCode, Response response, Throwable throwable, String apiResponse) {
         this(TAG, line, errorCode, null, response, response == null ? null : response.request(), throwable, apiResponse);
@@ -115,7 +115,7 @@ public class AppError {
         this(TAG, line, errorCode, null, response, response == null ? null : response.request(), null, apiResponse);
     }
     public AppError(String TAG, int line, int errorCode, Response response, JsonObject apiResponse) {
-        this(TAG, line, errorCode, null, response, response == null ? null : response.request(), null, apiResponse.toString());
+        this(TAG, line, errorCode, null, response, response == null ? null : response.request(), null, apiResponse == null ? null : apiResponse.toString());
     }
 
     public String getDetails(Context context) {

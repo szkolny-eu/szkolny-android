@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import com.google.gson.JsonArray
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.datamodels.Profile
 import pl.szczodrzynski.edziennik.datamodels.Teacher
@@ -21,19 +22,21 @@ fun List<Teacher>.byNameLastFirst(nameLastFirst: String) = firstOrNull { it.surn
 fun List<Teacher>.byNameFDotLast(nameFDotLast: String) = firstOrNull { it.name + "." + it.surname == nameFDotLast }
 fun List<Teacher>.byNameFDotSpaceLast(nameFDotSpaceLast: String) = firstOrNull { it.name + ". " + it.surname == nameFDotSpaceLast }
 
-fun JsonObject.getBoolean(key: String): Boolean? = get(key)?.let { if (it.isJsonNull) null else it.asBoolean }
-fun JsonObject.getString(key: String): String? = get(key)?.let { if (it.isJsonNull) null else it.asString }
-fun JsonObject.getInt(key: String): Int? = get(key)?.let { if (it.isJsonNull) null else it.asInt }
-fun JsonObject.getLong(key: String): Long? = get(key)?.let { if (it.isJsonNull) null else it.asLong }
-fun JsonObject.getJsonObject(key: String): JsonObject? = get(key)?.let { if (it.isJsonNull) null else it.asJsonObject }
-fun JsonObject.getJsonArray(key: String): JsonArray? = get(key)?.let { if (it.isJsonNull) null else it.asJsonArray }
+fun JsonObject?.get(key: String): JsonElement? = this?.get(key)
 
-fun JsonObject.getBoolean(key: String, defaultValue: Boolean): Boolean = get(key)?.let { if (it.isJsonNull) defaultValue else it.asBoolean } ?: defaultValue
-fun JsonObject.getString(key: String, defaultValue: String): String = get(key)?.let { if (it.isJsonNull) defaultValue else it.asString } ?: defaultValue
-fun JsonObject.getInt(key: String, defaultValue: Int): Int = get(key)?.let { if (it.isJsonNull) defaultValue else it.asInt } ?: defaultValue
-fun JsonObject.getLong(key: String, defaultValue: Long): Long = get(key)?.let { if (it.isJsonNull) defaultValue else it.asLong } ?: defaultValue
-fun JsonObject.getJsonObject(key: String, defaultValue: JsonObject): JsonObject = get(key)?.let { if (it.isJsonNull) defaultValue else it.asJsonObject } ?: defaultValue
-fun JsonObject.getJsonArray(key: String, defaultValue: JsonArray): JsonArray = get(key)?.let { if (it.isJsonNull) defaultValue else it.asJsonArray } ?: defaultValue
+fun JsonObject?.getBoolean(key: String): Boolean? = get(key)?.let { if (it.isJsonNull) null else it.asBoolean }
+fun JsonObject?.getString(key: String): String? = get(key)?.let { if (it.isJsonNull) null else it.asString }
+fun JsonObject?.getInt(key: String): Int? = get(key)?.let { if (it.isJsonNull) null else it.asInt }
+fun JsonObject?.getLong(key: String): Long? = get(key)?.let { if (it.isJsonNull) null else it.asLong }
+fun JsonObject?.getJsonObject(key: String): JsonObject? = get(key)?.let { if (it.isJsonNull) null else it.asJsonObject }
+fun JsonObject?.getJsonArray(key: String): JsonArray? = get(key)?.let { if (it.isJsonNull) null else it.asJsonArray }
+
+fun JsonObject?.getBoolean(key: String, defaultValue: Boolean): Boolean = get(key)?.let { if (it.isJsonNull) defaultValue else it.asBoolean } ?: defaultValue
+fun JsonObject?.getString(key: String, defaultValue: String): String = get(key)?.let { if (it.isJsonNull) defaultValue else it.asString } ?: defaultValue
+fun JsonObject?.getInt(key: String, defaultValue: Int): Int = get(key)?.let { if (it.isJsonNull) defaultValue else it.asInt } ?: defaultValue
+fun JsonObject?.getLong(key: String, defaultValue: Long): Long = get(key)?.let { if (it.isJsonNull) defaultValue else it.asLong } ?: defaultValue
+fun JsonObject?.getJsonObject(key: String, defaultValue: JsonObject): JsonObject = get(key)?.let { if (it.isJsonNull) defaultValue else it.asJsonObject } ?: defaultValue
+fun JsonObject?.getJsonArray(key: String, defaultValue: JsonArray): JsonArray = get(key)?.let { if (it.isJsonNull) defaultValue else it.asJsonArray } ?: defaultValue
 
 fun CharSequence?.isNotNullNorEmpty(): Boolean {
     return this != null && this.isNotEmpty()

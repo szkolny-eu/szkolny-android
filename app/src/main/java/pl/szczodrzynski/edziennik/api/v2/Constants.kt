@@ -27,8 +27,11 @@ const val LIBRUS_TOKEN_URL = "https://portal.librus.pl/oauth2/access_token"
 const val LIBRUS_ACCOUNT_URL = "https://portal.librus.pl/api/v2/SynergiaAccounts/fresh/" // + login
 const val LIBRUS_ACCOUNTS_URL = "https://portal.librus.pl/api/v2/SynergiaAccounts"
 
-const val LIBRUS_API_URL = "https://api.librus.pl/2.0/"
+/** https://api.librus.pl/2.0 */
+const val LIBRUS_API_URL = "https://api.librus.pl/2.0"
+/** https://api.librus.pl/OAuth/Token */
 const val LIBRUS_API_TOKEN_URL = "https://api.librus.pl/OAuth/Token"
+/** https://api.librus.pl/OAuth/TokenJST */
 const val LIBRUS_API_TOKEN_JST_URL = "https://api.librus.pl/OAuth/TokenJST"
 const val LIBRUS_API_AUTHORIZATION = "Mjg6ODRmZGQzYTg3YjAzZDNlYTZmZmU3NzdiNThiMzMyYjE="
 const val LIBRUS_API_SECRET_JST = "18b7c1ee08216f636a1b1a2440e68398"
@@ -38,7 +41,8 @@ const val LIBRUS_API_CLIENT_ID_JST = "49"
 const val LIBRUS_JST_DEMO_CODE = "68656A21"
 const val LIBRUS_JST_DEMO_PIN = "1290"
 
-const val LIBRUS_SYNERGIA_TOKEN_LOGIN_URL = "https://synergia.librus.pl/loguj/token/\$token/przenies/"
+/** https://synergia.librus.pl/loguj/token/TOKEN/przenies */
+const val LIBRUS_SYNERGIA_TOKEN_LOGIN_URL = "https://synergia.librus.pl/loguj/token/TOKEN/przenies/"
 
 const val LIBRUS_MESSAGES_URL = "https://wiadomosci.librus.pl/module/"
 const val LIBRUS_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action="

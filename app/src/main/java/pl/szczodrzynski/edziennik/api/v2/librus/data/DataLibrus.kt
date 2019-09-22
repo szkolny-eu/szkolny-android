@@ -49,6 +49,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     /**
      * A Synergia login, like 1234567u.
      * Used: for login (API Login Method) in Synergia mode.
+     * Used: for login (Synergia Login Method) in Synergia mode.
      * And also in various places in [pl.szczodrzynski.edziennik.api.v2.models.Endpoint]s
      */
     private var mApiLogin: String? = null
@@ -58,6 +59,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     /**
      * A Synergia password.
      * Used: for login (API Login Method) in Synergia mode.
+     * Used: for login (Synergia Login Method) in Synergia mode.
      */
     private var mApiPassword: String? = null
     var apiPassword: String?
@@ -108,6 +110,32 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     var apiTokenExpiryTime: Long
         get() { mApiTokenExpiryTime = mApiTokenExpiryTime ?: profile?.getStudentData("accountTokenTime", 0L); return mApiTokenExpiryTime ?: 0L }
         set(value) { profile?.putStudentData("accountTokenTime", value) ?: return; mApiTokenExpiryTime = value }
+
+    /*     _____                            _
+          / ____|                          (_)
+         | (___  _   _ _ __   ___ _ __ __ _ _  __ _
+          \___ \| | | | '_ \ / _ \ '__/ _` | |/ _` |
+          ____) | |_| | | | |  __/ | | (_| | | (_| |
+         |_____/ \__, |_| |_|\___|_|  \__, |_|\__,_|
+                  __/ |                __/ |
+                 |___/                |__*/
+    /**
+     * A Synergia web Session ID (DZIENNIKSID).
+     * Used in endpoints with Synergia login method.
+     */
+    private var mSynergiaSessionId: String? = null
+    var synergiaSessionId: String?
+        get() { mSynergiaSessionId = mSynergiaSessionId ?: profile?.getStudentData("accountSID", null); return mSynergiaSessionId }
+        set(value) { profile?.putStudentData("accountSID", value) ?: return; mSynergiaSessionId = value }
+    /**
+     * The expiry time for [synergiaSessionId], as a UNIX timestamp.
+     * Used in endpoints with Synergia login method.
+     * TODO verify how long is the session ID valid.
+     */
+    private var mSynergiaSessionIdExpiryTime: Long? = null
+    var synergiaSessionIdExpiryTime: Long
+        get() { mSynergiaSessionIdExpiryTime = mSynergiaSessionIdExpiryTime ?: profile?.getStudentData("accountSIDTime", 0L); return mSynergiaSessionIdExpiryTime ?: 0L }
+        set(value) { profile?.putStudentData("accountSIDTime", value) ?: return; mSynergiaSessionIdExpiryTime = value }
 
     /*     ____  _   _
           / __ \| | | |

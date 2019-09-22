@@ -24,9 +24,9 @@ open class LibrusApi(override val data: DataLibrus) : Api(data) {
         const val TAG = "LibrusApi"
     }
     fun apiRequest(endpoint: String, callback: (json: JsonObject?) -> Unit) {
-        d(TAG, "Requesting $LIBRUS_API_URL$endpoint")
+        d(TAG, "Requesting $LIBRUS_API_URL/$endpoint")
         Request.builder()
-                .url(if (data.fakeLogin) "http://szkolny.eu/librus/api/$endpoint" else LIBRUS_API_URL + endpoint)
+                .url(if (data.fakeLogin) "http://szkolny.eu/librus/api/$endpoint" else "$LIBRUS_API_URL/$endpoint")
                 .userAgent(LIBRUS_USER_AGENT)
                 .addHeader("Authorization", "Bearer ${data.apiAccessToken}")
                 .get()

@@ -63,7 +63,7 @@ class LoginLibrus(val data: DataLibrus, vararg loginMethodIds: Int, val onSucces
                 }
             }
             LOGIN_METHOD_LIBRUS_SYNERGIA -> {
-                LoginLibrusApi(data) {
+                LoginLibrusSynergia(data) {
                     data.loginMethods.add(loginMethodId)
                     onSuccess()
                 }
