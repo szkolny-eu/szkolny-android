@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.api.v2.librus.login
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
-import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.HttpUrl
@@ -34,11 +33,14 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
             onSuccess()
         }
         else {
-            when (data.loginStore.mode) {
-                LOGIN_MODE_LIBRUS_SYNERGIA -> loginWithSynergia()
-                else -> {
-                    loginWithApi()
-                }
+            if (data.loginMethods.contains(LOGIN_METHOD_LIBRUS_API)) {
+                loginWithApi()
+            }
+            else if (data.apiLogin != null && data.apiPassword != null) {
+                loginWithCredentials()
+            }
+            else {
+                data.error(TAG, ERROR_LOGIN_DATA_MISSING)
             }
         }
     }}
@@ -46,11 +48,7 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
     /**
      * HTML form-based login method. Uses a Synergia login and password.
      */
-    private fun loginWithSynergia() {
-        if (data.apiLogin == null || data.apiPassword == null) {
-            data.error(TAG, ERROR_LOGIN_DATA_MISSING)
-            return
-        }
+    private fun loginWithCredentials() {
 
     }
 
@@ -58,11 +56,6 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
      * A login method using the Synergia API (AutoLoginToken endpoint).
      */
     private fun loginWithApi() {
-        if (!data.loginMethods.contains(LOGIN_METHOD_LIBRUS_API)) {
-            data.error(TAG, ERROR_LOGIN_METHOD_NOT_SATISFIED)
-            return
-        }
-
         val onSuccess = { json: JsonObject ->
             loginWithToken(json.getString("Token"))
         }

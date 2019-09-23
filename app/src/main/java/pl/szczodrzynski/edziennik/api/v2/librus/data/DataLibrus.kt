@@ -137,6 +137,25 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mSynergiaSessionIdExpiryTime = mSynergiaSessionIdExpiryTime ?: profile?.getStudentData("accountSIDTime", 0L); return mSynergiaSessionIdExpiryTime ?: 0L }
         set(value) { profile?.putStudentData("accountSIDTime", value) ?: return; mSynergiaSessionIdExpiryTime = value }
 
+
+    /**
+     * A Messages web Session ID (DZIENNIKSID).
+     * Used in endpoints with Messages login method.
+     */
+    private var mMessagesSessionId: String? = null
+    var messagesSessionId: String?
+        get() { mMessagesSessionId = mMessagesSessionId ?: profile?.getStudentData("messagesSID", null); return mMessagesSessionId }
+        set(value) { profile?.putStudentData("messagesSID", value) ?: return; mMessagesSessionId = value }
+    /**
+     * The expiry time for [messagesSessionId], as a UNIX timestamp.
+     * Used in endpoints with Messages login method.
+     * TODO verify how long is the session ID valid.
+     */
+    private var mMessagesSessionIdExpiryTime: Long? = null
+    var messagesSessionIdExpiryTime: Long
+        get() { mMessagesSessionIdExpiryTime = mMessagesSessionIdExpiryTime ?: profile?.getStudentData("messagesSIDTime", 0L); return mMessagesSessionIdExpiryTime ?: 0L }
+        set(value) { profile?.putStudentData("messagesSIDTime", value) ?: return; mMessagesSessionIdExpiryTime = value }
+
     /*     ____  _   _
           / __ \| | | |
          | |  | | |_| |__   ___ _ __
