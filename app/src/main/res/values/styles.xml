@@ -95,8 +95,6 @@
         <item name="mal_color_secondary">?android:textColorSecondary</item>
         <item name="mal_card_background">?colorSurface</item>
         <item name="mal_divider_color">@color/dividerColor</item>
-
-        <item name="android:statusBarColor" tools:targetApi="lollipop">?android:windowBackground</item>
     </style>
     <style name="AppTheme.Dark" parent="NavView.Dark">
         <item name="colorPrimary">#64b5f6</item>
@@ -121,8 +119,6 @@
         <item name="mal_color_secondary">@color/secondaryTextDark</item>
         <item name="mal_card_background">?colorSurface</item>
         <item name="mal_divider_color">@color/dividerColor</item>
-
-        <item name="android:statusBarColor" tools:targetApi="lollipop">?android:windowBackground</item>
     </style>
 
 

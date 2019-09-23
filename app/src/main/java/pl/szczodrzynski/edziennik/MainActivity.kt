@@ -30,6 +30,7 @@ import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
 import pl.szczodrzynski.navlib.drawer.items.withAppTitle
 import pl.szczodrzynski.navlib.getColorFromAttr
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.graphics.ColorUtils
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
 import com.mikepenz.iconics.IconicsColor
@@ -238,6 +239,14 @@ class MainActivity : AppCompatActivity() {
                 navigationBarTransparent = false
 
                 b.navView.configSystemBarsUtil(this)
+
+                // fix for setting status bar color to window color, outside of navlib
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    window.statusBarColor = statusBarColor
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ColorUtils.calculateLuminance(statusBarColor) > 0.6) {
+                    window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
 
                 // TODO fix navlib navbar detection, orientation change issues, status bar color setting if not fullscreen
 
