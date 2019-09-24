@@ -199,6 +199,7 @@ public class Librus implements EdziennikInterface {
     private boolean enableDescriptiveGrades = false;
     private boolean enableTextGrades = false;
     private boolean enableBehaviourGrades = true;
+    private long unitId = -1;
     private int startPointsSemester1 = 0;
     private int startPointsSemester2 = 0;
 
@@ -346,6 +347,7 @@ public class Librus implements EdziennikInterface {
                         targetEndpoints.add("Events");
                         targetEndpoints.add("CustomTypes");
                         targetEndpoints.add("PtMeetings");
+                        targetEndpoints.add("SchoolFreeDays");
                         break;
                     case FEATURE_GRADES:
                         targetEndpoints.add("SavedGradeCategories");
@@ -533,6 +535,9 @@ public class Librus implements EdziennikInterface {
                 break;
             case "TeacherFreeDays":
                 getTeacherFreeDays();
+                break;
+            case "SchoolFreeDays":
+                getSchoolFreeDays();
                 break;
             case "MessagesLogin":
                 getMessagesLogin();
@@ -1403,7 +1408,8 @@ public class Librus implements EdziennikInterface {
                 }
                 JsonElement unit = myClass.get("Unit");
                 if (unit != null && !(unit instanceof JsonNull)) {
-                    profile.putStudentData("unitId", unit.getAsJsonObject().get("Id").getAsLong());
+                    unitId = unit.getAsJsonObject().get("Id").getAsLong();
+                    profile.putStudentData("unitId", unitId);
                 }
                 r("finish", "Classes");
             }
@@ -3066,6 +3072,26 @@ public class Librus implements EdziennikInterface {
                 r("finish", "TeacherFreeDays");
             }
             catch (Exception e) {
+                finishWithError(new AppError(TAG, 3069, CODE_OTHER, e, data));
+            }
+        });
+    }
+
+    private void getSchoolFreeDays() {
+        callback.onActionStarted(R.string.sync_action_syncing_school_free_days);
+        apiRequest("SchoolFreeDays" + (unitId != -1 ? "?unit=" + unitId : ""), data -> {
+            if (data == null) {
+                r("finish", "SchoolFreeDays");
+                return;
+            }
+            try {
+                JsonArray jFreeDays = data.get("SchoolFreeDays").getAsJsonArray();
+
+                for (JsonElement freeDayEl: jFreeDays) {
+                    continue;
+                }
+                r("finish", "SchoolFreeDays");
+            } catch (Exception e) {
                 finishWithError(new AppError(TAG, 3069, CODE_OTHER, e, data));
             }
         });

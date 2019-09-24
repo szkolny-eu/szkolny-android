@@ -908,4 +908,5 @@
     <string name="settings_about_discord_text">Serwer Discord</string>
     <string name="settings_about_discord_subtext">Dołącz do naszego serwera Discord!</string>
     <string name="menu_debug">Debugowanie</string>
+    <string name="sync_action_syncing_school_free_days">Pobieranie dni wolnych szkoły</string>
 </resources>
