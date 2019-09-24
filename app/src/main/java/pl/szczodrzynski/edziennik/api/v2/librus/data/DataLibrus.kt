@@ -5,12 +5,33 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.api.interfaces.ProgressCallback
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_API
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_MESSAGES
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_PORTAL
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_SYNERGIA
 import pl.szczodrzynski.edziennik.api.v2.models.Data
+import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.datamodels.LoginStore
 import pl.szczodrzynski.edziennik.datamodels.Profile
+import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 
 class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
+
+    fun isPortalLoginValid() = portalTokenExpiryTime-30 > currentTimeUnix() && portalRefreshToken.isNotNullNorEmpty() && portalAccessToken.isNotNullNorEmpty()
+    fun isApiLoginValid() = apiTokenExpiryTime-30 > currentTimeUnix() && apiAccessToken.isNotNullNorEmpty()
+    fun isSynergiaLoginValid() = synergiaSessionIdExpiryTime-30 > currentTimeUnix() && synergiaSessionId.isNotNullNorEmpty()
+    fun isMessagesLoginValid() = messagesSessionIdExpiryTime-30 > currentTimeUnix() && messagesSessionId.isNotNullNorEmpty()
+
+    override fun satisfyLoginMethods() {
+        if (isPortalLoginValid())
+            loginMethods += LOGIN_METHOD_LIBRUS_PORTAL
+        if (isApiLoginValid())
+            loginMethods += LOGIN_METHOD_LIBRUS_API
+        if (isSynergiaLoginValid())
+            loginMethods += LOGIN_METHOD_LIBRUS_SYNERGIA
+        if (isMessagesLoginValid())
+            loginMethods += LOGIN_METHOD_LIBRUS_MESSAGES
+    }
 
     /*    _____           _        _
          |  __ \         | |      | |

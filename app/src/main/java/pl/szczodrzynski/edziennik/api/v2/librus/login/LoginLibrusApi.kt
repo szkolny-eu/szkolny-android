@@ -37,7 +37,7 @@ class LoginLibrusApi {
             return
         }
 
-        if (data.apiTokenExpiryTime-30 > currentTimeUnix() && data.apiAccessToken.isNotNullNorEmpty()) {
+        if (data.isApiLoginValid()) {
             onSuccess()
         }
         else {

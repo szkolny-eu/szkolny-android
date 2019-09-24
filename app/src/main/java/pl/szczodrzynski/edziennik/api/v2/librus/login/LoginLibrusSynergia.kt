@@ -29,7 +29,7 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
             return@run
         }
 
-        if (data.synergiaSessionIdExpiryTime-30 > currentTimeUnix() && data.synergiaSessionId.isNotNullNorEmpty()) {
+        if (data.isSynergiaLoginValid()) {
             onSuccess()
         }
         else {
@@ -48,6 +48,7 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
     /**
      * HTML form-based login method. Uses a Synergia login and password.
      */
+    // TODO if loginWithCredentials fails and it is possible to use API, use it
     private fun loginWithCredentials() {
 
     }

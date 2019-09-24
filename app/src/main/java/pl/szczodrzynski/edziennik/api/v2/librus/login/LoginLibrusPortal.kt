@@ -33,7 +33,7 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
 
         // succeed having a non-expired access token and a refresh token
-        if (data.portalTokenExpiryTime-30 > currentTimeUnix() && data.portalRefreshToken.isNotNullNorEmpty() && data.portalAccessToken.isNotNullNorEmpty()) {
+        if (data.isPortalLoginValid()) {
             onSuccess()
         }
         else if (data.portalRefreshToken != null) {

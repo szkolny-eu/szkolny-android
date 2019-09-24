@@ -25,6 +25,14 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
      */
     val loginMethods = mutableListOf<Int>()
 
+    /**
+     * A method which may be overridden in child Data* classes.
+     *
+     * Calling it should populate [loginMethods] with all
+     * already available login methods (e.g. non-expired OAuth token).
+     */
+    open fun satisfyLoginMethods() {}
+
     val teacherList = LongSparseArray<Teacher>()
     val subjectList = LongSparseArray<Subject>()
     val teamList = mutableListOf<Team>()
