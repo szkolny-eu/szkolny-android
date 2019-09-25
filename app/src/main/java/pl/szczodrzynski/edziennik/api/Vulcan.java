@@ -1459,7 +1459,7 @@ public class Vulcan implements EdziennikInterface {
     private void getAttendances() {
         callback.onActionStarted(R.string.sync_action_syncing_attendances);
         JsonObject json = new JsonObject();
-        json.addProperty("DataPoczatkowa", profile.getEmpty() ? getCurrentSemesterStartDate().getStringY_m_d() : oneMonthBack.getStringY_m_d());
+        json.addProperty("DataPoczatkowa", true ? getCurrentSemesterStartDate().getStringY_m_d() : oneMonthBack.getStringY_m_d());
         json.addProperty("DataKoncowa", getCurrentSemesterEndDate().getStringY_m_d());
         json.addProperty("IdOddzial", studentClassId);
         json.addProperty("IdUczen", studentId);
