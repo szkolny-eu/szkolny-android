@@ -1671,11 +1671,32 @@ public class Librus implements EdziennikInterface {
                                 continue;
                             }
 
+                            Time startTime = null;
+                            Time endTime = null;
+                            try {
+                                startTime = Time.fromH_m(lesson.get(substitution && !cancelled ? "OrgHourFrom" : "HourFrom").getAsString());
+                                endTime = Time.fromH_m(lesson.get(substitution && !cancelled ? "OrgHourTo" : "HourTo").getAsString());
+                            }
+                            catch (Exception ignore) {
+                                try {
+                                    JsonElement lessonNo;
+                                    if (!((lessonNo = lesson.get("LessonNo")) instanceof JsonNull)) {
+                                        Pair<Time, Time> timePair = lessonRanges.get(strToInt(lessonNo.getAsString()));
+                                        if (timePair != null) {
+                                            startTime = timePair.first;
+                                            endTime = timePair.second;
+                                        }
+                                    }
+                                }
+                                catch (Exception ignore2) { }
+                            }
+
+
                             Lesson lessonObject = new Lesson(
                                     profileId,
                                     lesson.get("DayNo").getAsInt() - 1,
-                                    Time.fromH_m(lesson.get(substitution && !cancelled ? "OrgHourFrom" : "HourFrom").getAsString()),
-                                    Time.fromH_m(lesson.get(substitution && !cancelled ? "OrgHourTo" : "HourTo").getAsString())
+                                    startTime,
+                                    endTime
                             );
 
                             JsonElement subject;
@@ -1720,7 +1741,7 @@ public class Librus implements EdziennikInterface {
                 r("finish", "Substitutions");
                 return;
             }
-            
+
             JsonArray substitutions = data.get("Substitutions").getAsJsonArray();
             try {
                 List<Long> ignoreList = new ArrayList<>();
