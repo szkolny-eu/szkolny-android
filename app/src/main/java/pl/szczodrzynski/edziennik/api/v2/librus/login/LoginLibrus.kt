@@ -30,6 +30,7 @@ class LoginLibrus(val data: DataLibrus, vararg loginMethodIds: Int, val onSucces
         loginMethodList = loginMethodList.toHashSet().toMutableList()
         loginMethodList.sort()
 
+        data.satisfyLoginMethods()
         nextLoginMethod()
     }
 
@@ -69,7 +70,7 @@ class LoginLibrus(val data: DataLibrus, vararg loginMethodIds: Int, val onSucces
                 }
             }
             LOGIN_METHOD_LIBRUS_MESSAGES -> {
-                LoginLibrusApi(data) {
+                LoginLibrusMessages(data) {
                     data.loginMethods.add(loginMethodId)
                     onSuccess()
                 }

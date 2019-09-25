@@ -4,6 +4,8 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data
 
+import okhttp3.Cookie
+import okhttp3.HttpUrl
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_API
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_MESSAGES
@@ -27,10 +29,26 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
             loginMethods += LOGIN_METHOD_LIBRUS_PORTAL
         if (isApiLoginValid())
             loginMethods += LOGIN_METHOD_LIBRUS_API
-        if (isSynergiaLoginValid())
+        if (isSynergiaLoginValid()) {
             loginMethods += LOGIN_METHOD_LIBRUS_SYNERGIA
-        if (isMessagesLoginValid())
+            app.cookieJar.saveFromResponse(null, listOf(
+                    Cookie.Builder()
+                            .name("DZIENNIKSID")
+                            .value(synergiaSessionId!!)
+                            .domain("synergia.librus.pl")
+                            .secure().httpOnly().build()
+            ))
+        }
+        if (isMessagesLoginValid()) {
             loginMethods += LOGIN_METHOD_LIBRUS_MESSAGES
+            app.cookieJar.saveFromResponse(null, listOf(
+                    Cookie.Builder()
+                            .name("DZIENNIKSID")
+                            .value(messagesSessionId!!)
+                            .domain("wiadomosci.librus.pl")
+                            .secure().httpOnly().build()
+            ))
+        }
     }
 
     /*    _____           _        _

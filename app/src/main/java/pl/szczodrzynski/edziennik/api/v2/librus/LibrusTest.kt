@@ -23,15 +23,23 @@ class LibrusTest(val app: App) {
     }
 
     val profile = Profile(1, "Profil", "xd", 1).apply {
-        putStudentData("accountLogin", "1234567")
-        //putStudentData("accountPassword", "zaq1@WSX")
+        //putStudentData("accountLogin", "1234567")
 
         //putStudentData("accountCode", LIBRUS_JST_DEMO_CODE)
         //putStudentData("accountPin", LIBRUS_JST_DEMO_PIN)
+
+        putStudentData("accountLogin", "1234567")
+
+        putStudentData("accountToken", "token")
+        putStudentData("accountTokenTime", 1569523077)
     }
     val loginStore = LoginStore(1, LOGIN_TYPE_LIBRUS, JsonObject().apply {
         addProperty("email", "test@example.com")
         addProperty("password", "zaq1@WSX")
+
+        addProperty("accessToken", "token")
+        addProperty("refreshToken", "refresh")
+        addProperty("tokenExpiryTime", 1569523077)
     }).also {
         it.mode = LOGIN_MODE_LIBRUS_EMAIL
     }
@@ -54,7 +62,7 @@ class LibrusTest(val app: App) {
             }
         }
 
-        LoginLibrus(data, LOGIN_METHOD_LIBRUS_SYNERGIA) {
+        LoginLibrus(data, LOGIN_METHOD_LIBRUS_MESSAGES) {
             d(TAG, "Login succeeded.")
             d(TAG, "Profile data: ${data.profile?.studentData?.toString()}")
             d(TAG, "LoginStore data: ${data.loginStore.data}")

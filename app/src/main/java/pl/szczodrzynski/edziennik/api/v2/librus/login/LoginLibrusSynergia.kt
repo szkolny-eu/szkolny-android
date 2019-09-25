@@ -9,6 +9,7 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
+import okhttp3.Cookie
 import okhttp3.HttpUrl
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
@@ -30,13 +31,21 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
 
         if (data.isSynergiaLoginValid()) {
+            data.app.cookieJar.saveFromResponse(null, listOf(
+                    Cookie.Builder()
+                            .name("DZIENNIKSID")
+                            .value(data.synergiaSessionId!!)
+                            .domain("synergia.librus.pl")
+                            .secure().httpOnly().build()
+            ))
             onSuccess()
         }
         else {
+            data.app.cookieJar.clearForDomain("synergia.librus.pl")
             if (data.loginMethods.contains(LOGIN_METHOD_LIBRUS_API)) {
                 loginWithApi()
             }
-            else if (data.apiLogin != null && data.apiPassword != null) {
+            else if (data.apiLogin != null && data.apiPassword != null && false) {
                 loginWithCredentials()
             }
             else {
@@ -48,7 +57,6 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
     /**
      * HTML form-based login method. Uses a Synergia login and password.
      */
-    // TODO if loginWithCredentials fails and it is possible to use API, use it
     private fun loginWithCredentials() {
 
     }
@@ -131,13 +139,7 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
             override fun onSuccess(json: String?, response: Response?) {
                 val location = response?.headers()?.get("Location")
                 if (location?.endsWith("centrum_powiadomien") == true) {
-                    val cookieList = data.app.cookieJar.loadForRequest(HttpUrl.get("https://synergia.librus.pl"))
-                    var sessionId: String? = null
-                    for (cookie in cookieList) {
-                        if (cookie.name().equals("DZIENNIKSID", ignoreCase = true)) {
-                            sessionId = cookie.value()
-                        }
-                    }
+                    val sessionId = data.app.cookieJar.getCookie("synergia.librus.pl", "DZIENNIKSID")
                     if (sessionId == null) {
                         data.error(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_NO_SESSION_ID, response, json)
                         return

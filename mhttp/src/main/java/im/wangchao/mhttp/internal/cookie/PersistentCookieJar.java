@@ -18,6 +18,7 @@ package im.wangchao.mhttp.internal.cookie;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,21 +43,13 @@ public class PersistentCookieJar implements ClearableCookieJar {
     }
 
     @Override
-    synchronized public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-        //Log.d("PersistentCookieJar", "FINISHING "+url.toString());
+    synchronized public void saveFromResponse(@Nullable HttpUrl url, List<Cookie> cookies) {
         // cookies need to be reversed, in order to replace old cookies with these coming later
         // (if there are duplicate cookies in the same response)
         List<Cookie> reverseCookies = new ArrayList<>(cookies);
         Collections.reverse(reverseCookies);
-        /*for (Cookie cookie: reverseCookies) {
-            Log.d("PersistentCookieJar", "Saving cookie "+cookie.toString()+" from URL "+url.toString());
-        }*/
         cache.addAll(reverseCookies);
         persistor.saveAll(reverseCookies);
-        /*Log.d("PersistentCookieJar", "Cookies saved: ");
-        for (Cookie cookie : cache) {
-            Log.d("PersistentCookieJar", "Saving cookie " + cookie.toString() + " from URL " + url.toString());
-        }*/
     }
 
     @NonNull
@@ -65,28 +58,42 @@ public class PersistentCookieJar implements ClearableCookieJar {
         List<Cookie> removedCookies = new ArrayList<>();
         List<Cookie> validCookies = new ArrayList<>();
 
-        //Log.d("PersistentCookieJar", "REQUESTING "+url.toString());
-
         for (Iterator<Cookie> it = cache.iterator(); it.hasNext(); ) {
             Cookie currentCookie = it.next();
-            //Log.d("PersistentCookieJar", "Loading "+currentCookie.toString()+" to URL "+url.toString());
             if (isCookieExpired(currentCookie)) {
-                //Log.d("PersistentCookieJar", "Cookie expired at "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(new Date(currentCookie.expiresAt())));
                 removedCookies.add(currentCookie);
                 it.remove();
 
             } else if (currentCookie.matches(url)) {
-                //Log.d("PersistentCookieJar", "Cookie is still valid until "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(new Date(currentCookie.expiresAt())));
                 validCookies.add(currentCookie);
             }
-            /*else {
-                Log.d("PersistentCookieJar", "URL doesn't match");
-            }*/
         }
 
         persistor.removeAll(removedCookies);
 
         return validCookies;
+    }
+
+    @Nullable
+    synchronized public String getCookie(String domain, String name) {
+        String cookieValue = null;
+        List<Cookie> removedCookies = new ArrayList<>();
+
+        for (Iterator<Cookie> it = cache.iterator(); it.hasNext(); ) {
+            Cookie currentCookie = it.next();
+            if (isCookieExpired(currentCookie)) {
+                removedCookies.add(currentCookie);
+                it.remove();
+
+            } else if (domain.equals(currentCookie.domain()) && name.equals(currentCookie.name())) {
+                cookieValue = currentCookie.value();
+                break;
+            }
+        }
+
+        persistor.removeAll(removedCookies);
+
+        return cookieValue;
     }
 
     private static boolean isCookieExpired(Cookie cookie) {
