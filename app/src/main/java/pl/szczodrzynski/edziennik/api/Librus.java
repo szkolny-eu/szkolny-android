@@ -288,6 +288,7 @@ public class Librus implements EdziennikInterface {
             targetEndpoints.add("Grades");
             targetEndpoints.add("PointGrades");
             targetEndpoints.add("DescriptiveGrades");
+            targetEndpoints.add("TextGrades");
             targetEndpoints.add("BehaviourGrades");
 
             targetEndpoints.add("Events");
@@ -359,6 +360,7 @@ public class Librus implements EdziennikInterface {
                         targetEndpoints.add("Grades");
                         targetEndpoints.add("PointGrades");
                         targetEndpoints.add("DescriptiveGrades");
+                        targetEndpoints.add("TextGrades");
                         targetEndpoints.add("BehaviourGrades");
                         break;
                     case FEATURE_HOMEWORKS:
@@ -497,6 +499,9 @@ public class Librus implements EdziennikInterface {
                 break;
             case "DescriptiveGrades":
                 getDescriptiveGrades();
+                break;
+            case "TextGrades":
+                getTextGrades();
                 break;
             case "BehaviourGrades":
                 getBehaviourGrades();
@@ -644,7 +649,7 @@ public class Librus implements EdziennikInterface {
         };
 
         librusLoginCallback = redirectUrl -> {
-            fakeAuthorize = "authorize2";
+            fakeAuthorize = "authorize";
             authorize(AUTHORIZE_URL, authorizeCallback);
         };
 
@@ -2386,6 +2391,62 @@ public class Librus implements EdziennikInterface {
             profile.putStudentData("enableDescriptiveGrades", enableDescriptiveGrades);
             profile.putStudentData("enableTextGrades", enableTextGrades);
             r("finish", "DescriptiveGrades");
+        });
+    }
+
+    private void getTextGrades() {
+        callback.onActionStarted(R.string.sync_action_syncing_descriptive_grades);
+        apiRequest("DescriptiveGrades", data -> {
+            if (data == null) {
+                r("finish", "TextGrades");
+                return;
+            }
+            JsonArray grades = data.get("Grades").getAsJsonArray();
+            //d("Got Grades: "+grades.toString());
+            for (JsonElement gradeEl : grades) {
+                JsonObject grade = gradeEl.getAsJsonObject();
+                long id = grade.get("Id").getAsLong();
+                long teacherId = grade.get("AddedBy").getAsJsonObject().get("Id").getAsLong();
+                int semester = grade.get("Semester").getAsInt();
+                long subjectId = grade.get("Subject").getAsJsonObject().get("Id").getAsLong();
+                String description = grade.get("Map").getAsString();
+
+                long categoryId = -1;
+                JsonElement skillEl = grade.get("Skill");
+                if (skillEl != null) {
+                    categoryId = skillEl.getAsJsonObject().get("Id").getAsLong();
+                }
+
+                String str_date = grade.get("AddDate").getAsString();
+                long addedDate = Date.fromIso(str_date);
+
+                String category = "";
+                int color = -1;
+                GradeCategory gradeCategory = GradeCategory.search(gradeCategoryList, categoryId);
+                if (gradeCategory != null) {
+                    category = gradeCategory.text;
+                    color = gradeCategory.color;
+                }
+
+                Grade gradeObject = new Grade(
+                        profileId,
+                        id,
+                        category,
+                        color,
+                        "",
+                        description,
+                        0.0f,
+                        0,
+                        semester,
+                        teacherId,
+                        subjectId
+                );
+                gradeObject.type = Grade.TYPE_DESCRIPTIVE;
+
+                gradeList.add(gradeObject);
+                metadataList.add(new Metadata(profileId, Metadata.TYPE_GRADE, gradeObject.id, profile.getEmpty(), profile.getEmpty(), addedDate));
+            }
+            r("finish", "TextGrades");
         });
     }
 
