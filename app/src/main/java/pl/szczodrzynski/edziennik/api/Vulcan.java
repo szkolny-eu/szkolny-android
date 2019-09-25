@@ -1632,6 +1632,15 @@ public class Vulcan implements EdziennikInterface {
                     recipient.fullName = profile.getStudentNameLong();
             }
             if (!message.seen) {
+                studentId = profile.getStudentData("studentId", -1);
+                studentLoginId = profile.getStudentData("studentLoginId", -1);
+                JsonObject json = new JsonObject();
+                json.addProperty("WiadomoscId", message.id);
+                json.addProperty("FolderWiadomosci", "Odebrane");
+                json.addProperty("Status", "Widoczna");
+                json.addProperty("LoginId", studentLoginId);
+                json.addProperty("IdUczen", studentId);
+                apiRequest(schoolSymbol+"/ZmienStatusWiadomosci", json, result -> { });
                 app.db.metadataDao().setSeen(profile.getId(), message, true);
                 if (message.type != TYPE_SENT) {
                     app.db.messageRecipientDao().add(new MessageRecipient(profile.getId(), -1, -1, System.currentTimeMillis(), message.id));
