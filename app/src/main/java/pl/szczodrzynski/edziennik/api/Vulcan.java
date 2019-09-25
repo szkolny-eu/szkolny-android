@@ -1240,9 +1240,9 @@ public class Vulcan implements EdziennikInterface {
                 Grade gradeObject = new Grade(
                         profileId,
                         id,
-                        finalDescription,
-                        color,
                         category,
+                        color,
+                        finalDescription,
                         finalName,
                         finalValue,
                         weight,
