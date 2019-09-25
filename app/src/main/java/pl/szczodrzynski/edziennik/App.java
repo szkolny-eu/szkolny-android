@@ -514,7 +514,7 @@ public class App extends androidx.multidex.MultiDexApplication {
             }
         }
 
-        if (appConfig.lastAppVersion > BuildConfig.VERSION_CODE) {
+        /*if (appConfig.lastAppVersion > BuildConfig.VERSION_CODE) {
             BootReceiver br = new BootReceiver();
             Intent i = new Intent();
             //i.putExtra("UserChecked", true);
@@ -522,7 +522,7 @@ public class App extends androidx.multidex.MultiDexApplication {
             Toast.makeText(mContext, R.string.warning_older_version_running, Toast.LENGTH_LONG).show();
             //Toast.makeText(mContext, "Zaktualizuj aplikację.", Toast.LENGTH_LONG).show();
             //System.exit(0);
-        }
+        }*/
 
         if (appConfig == null) {
             appConfig = new AppConfig(this);
