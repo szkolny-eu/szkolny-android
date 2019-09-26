@@ -435,6 +435,10 @@ public class Librus implements EdziennikInterface {
             callback.onProgress(PROGRESS_STEP);
             index++;
         }
+        if (index > targetEndpoints.size()) {
+            finish();
+            return;
+        }
         d(TAG, "Called r("+type+", "+endpoint+"). Getting "+targetEndpoints.get(index));
         switch (targetEndpoints.get(index)) {
             case "Me":
@@ -1667,11 +1671,32 @@ public class Librus implements EdziennikInterface {
                                 continue;
                             }
 
+                            Time startTime = null;
+                            Time endTime = null;
+                            try {
+                                startTime = Time.fromH_m(lesson.get(substitution && !cancelled ? "OrgHourFrom" : "HourFrom").getAsString());
+                                endTime = Time.fromH_m(lesson.get(substitution && !cancelled ? "OrgHourTo" : "HourTo").getAsString());
+                            }
+                            catch (Exception ignore) {
+                                try {
+                                    JsonElement lessonNo;
+                                    if (!((lessonNo = lesson.get("LessonNo")) instanceof JsonNull)) {
+                                        Pair<Time, Time> timePair = lessonRanges.get(strToInt(lessonNo.getAsString()));
+                                        if (timePair != null) {
+                                            startTime = timePair.first;
+                                            endTime = timePair.second;
+                                        }
+                                    }
+                                }
+                                catch (Exception ignore2) { }
+                            }
+
+
                             Lesson lessonObject = new Lesson(
                                     profileId,
                                     lesson.get("DayNo").getAsInt() - 1,
-                                    Time.fromH_m(lesson.get(substitution && !cancelled ? "OrgHourFrom" : "HourFrom").getAsString()),
-                                    Time.fromH_m(lesson.get(substitution && !cancelled ? "OrgHourTo" : "HourTo").getAsString())
+                                    startTime,
+                                    endTime
                             );
 
                             JsonElement subject;
@@ -1716,7 +1741,7 @@ public class Librus implements EdziennikInterface {
                 r("finish", "Substitutions");
                 return;
             }
-            
+
             JsonArray substitutions = data.get("Substitutions").getAsJsonArray();
             try {
                 List<Long> ignoreList = new ArrayList<>();
@@ -2409,7 +2434,15 @@ public class Librus implements EdziennikInterface {
                 long teacherId = grade.get("AddedBy").getAsJsonObject().get("Id").getAsLong();
                 int semester = grade.get("Semester").getAsInt();
                 long subjectId = grade.get("Subject").getAsJsonObject().get("Id").getAsLong();
-                String description = grade.get("Map").getAsString();
+                JsonElement map = grade.get("Map");
+                JsonElement realGrade = grade.get("RealGradeValue");
+                String description = "";
+                if (map != null) {
+                    description = map.getAsString();
+                }
+                else if (realGrade != null) {
+                    description = realGrade.getAsString();
+                }
 
                 long categoryId = -1;
                 JsonElement skillEl = grade.get("Skill");
