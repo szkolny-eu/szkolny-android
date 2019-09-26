@@ -745,7 +745,7 @@ public class Vulcan implements EdziennikInterface {
         studentLoginId = account.get("UzytkownikLoginId").getAsInt();
         studentClassId = account.get("IdOddzial").getAsInt();
         studentSemesterId = account.get("IdOkresKlasyfikacyjny").getAsInt();
-        String studentClassName = account.get("OddzialKod").getAsString();
+        String studentClassName = account.get("OkresPoziom").getAsInt()+account.get("OddzialSymbol").getAsString();
         targetProfile.putStudentData("userName", account.get("UzytkownikNazwa").getAsString());
         targetProfile.putStudentData("schoolName", schoolName);
         targetProfile.putStudentData("schoolSymbol", schoolSymbol);
