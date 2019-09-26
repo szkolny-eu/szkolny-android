@@ -113,6 +113,7 @@ public class Vulcan implements EdziennikInterface {
     private static final String ENDPOINT_ATTENDANCES = "mobile-api/Uczen.v3.Uczen/Frekwencje";
     private static final String ENDPOINT_MESSAGES_RECEIVED = "mobile-api/Uczen.v3.Uczen/WiadomosciOdebrane";
     private static final String ENDPOINT_MESSAGES_SENT = "mobile-api/Uczen.v3.Uczen/WiadomosciWyslane";
+    private static final String ENDPOINT_MESSAGES_CHANGE_STATUS = "mobile-api/Uczen.v3.Uczen/ZmienStatusWiadomosci";
     private static final String ENDPOINT_PUSH = "mobile-api/Uczen.v3.Uczen/UstawPushToken";
     private static final String userAgent = "MobileUserAgent";
 
@@ -427,8 +428,10 @@ public class Vulcan implements EdziennikInterface {
             app.db.noticeDao().clearForSemester(profileId, studentSemesterNumber);
             app.db.noticeDao().addAll(noticeList);
         }
-        if (attendanceList.size() > 0)
+        if (attendanceList.size() > 0) {
+            app.db.attendanceDao().clearAfterDate(profileId, getCurrentSemesterStartDate());
             app.db.attendanceDao().addAll(attendanceList);
+        }
         if (messageList.size() > 0)
             app.db.messageDao().addAllIgnore(messageList);
         if (messageRecipientList.size() > 0)
@@ -1506,8 +1509,8 @@ public class Vulcan implements EdziennikInterface {
     private void getMessagesInbox() {
         callback.onActionStarted(R.string.sync_action_syncing_messages_inbox);
         JsonObject json = new JsonObject();
-        json.addProperty("DataPoczatkowa", profile.getEmpty() ? getCurrentSemesterStartDate().getInUnix() : oneMonthBack.getInUnix());
-        json.addProperty("DataKoncowa", Date.getToday().getInUnix());
+        json.addProperty("DataPoczatkowa", true ? getCurrentSemesterStartDate().getInUnix() : oneMonthBack.getInUnix());
+        json.addProperty("DataKoncowa", getCurrentSemesterEndDate().getInUnix());
         json.addProperty("LoginId", studentLoginId);
         json.addProperty("IdUczen", studentId);
         apiRequest(schoolSymbol+"/"+ENDPOINT_MESSAGES_RECEIVED, json, result -> {
@@ -1557,8 +1560,8 @@ public class Vulcan implements EdziennikInterface {
         }
         callback.onActionStarted(R.string.sync_action_syncing_messages_outbox);
         JsonObject json = new JsonObject();
-        json.addProperty("DataPoczatkowa", profile.getEmpty() ? getCurrentSemesterStartDate().getInUnix() : oneMonthBack.getInUnix());
-        json.addProperty("DataKoncowa", Date.getToday().getInUnix());
+        json.addProperty("DataPoczatkowa", true ? getCurrentSemesterStartDate().getInUnix() : oneMonthBack.getInUnix());
+        json.addProperty("DataKoncowa", getCurrentSemesterEndDate().getInUnix());
         json.addProperty("LoginId", studentLoginId);
         json.addProperty("IdUczen", studentId);
         apiRequest(schoolSymbol+"/"+ENDPOINT_MESSAGES_SENT, json, result -> {
@@ -1640,7 +1643,7 @@ public class Vulcan implements EdziennikInterface {
                 json.addProperty("Status", "Widoczna");
                 json.addProperty("LoginId", studentLoginId);
                 json.addProperty("IdUczen", studentId);
-                apiRequest(schoolSymbol+"/ZmienStatusWiadomosci", json, result -> { });
+                apiRequest(schoolSymbol+"/"+ENDPOINT_MESSAGES_CHANGE_STATUS, json, result -> { });
                 app.db.metadataDao().setSeen(profile.getId(), message, true);
                 if (message.type != TYPE_SENT) {
                     app.db.messageRecipientDao().add(new MessageRecipient(profile.getId(), -1, -1, System.currentTimeMillis(), message.id));
