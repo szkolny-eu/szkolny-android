@@ -350,7 +350,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         buttonIds.add(MainActivity.DRAWER_ITEM_AGENDA);
                         buttonIds.add(MainActivity.DRAWER_ITEM_GRADES);
                         buttonIds.add(MainActivity.DRAWER_ITEM_MESSAGES);
-                        buttonIds.add(MainActivity.DRAWER_ITEM_HOMEWORKS);
+                        buttonIds.add(MainActivity.DRAWER_ITEM_HOMEWORK);
                         buttonIds.add(MainActivity.DRAWER_ITEM_NOTICES);
                         buttonIds.add(MainActivity.DRAWER_ITEM_ATTENDANCES);
                         buttonIds.add(MainActivity.DRAWER_ITEM_ANNOUNCEMENTS);
@@ -1091,8 +1091,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             case "Events":
                 stringRes = R.string.settings_sync_customize_endpoint_events;
                 break;
-            case "Homeworks":
-                stringRes = R.string.settings_sync_customize_endpoint_homeworks;
+            case "Homework":
+                stringRes = R.string.settings_sync_customize_endpoint_homework;
                 break;
             case "LuckyNumber":
             case "LuckyNumbers":

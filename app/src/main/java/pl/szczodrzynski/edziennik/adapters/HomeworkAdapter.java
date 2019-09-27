@@ -24,12 +24,12 @@ import pl.szczodrzynski.edziennik.models.Date;
 
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 
-public class HomeworksAdapter extends RecyclerView.Adapter<HomeworksAdapter.ViewHolder> {
+public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHolder> {
     private Context context;
     private List<EventFull> homeworkList;
 
     //getting the context and product list with constructor
-    public HomeworksAdapter(Context mCtx, List<EventFull> homeworkList) {
+    public HomeworkAdapter(Context mCtx, List<EventFull> homeworkList) {
         this.context = mCtx;
         this.homeworkList = homeworkList;
     }
@@ -39,7 +39,7 @@ public class HomeworksAdapter extends RecyclerView.Adapter<HomeworksAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row_homeworks_item, parent, false);
+        View view = inflater.inflate(R.layout.row_homework_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -73,33 +73,33 @@ public class HomeworksAdapter extends RecyclerView.Adapter<HomeworksAdapter.View
 
         int diffDays = Date.diffDays(homework.eventDate, Date.getToday());
 
-        holder.homeworksItemHomeworkDate.setText(app.getString(R.string.date_relative_format, homework.eventDate.getFormattedString(), dayDiffString(context, diffDays)));
-        holder.homeworksItemTopic.setText(homework.topic);
-        holder.homeworksItemSubjectTeacher.setText(context.getString(R.string.homeworks_subject_teacher_format, bs(homework.subjectLongName), bs(homework.teacherFullName)));
-        holder.homeworksItemTeamDate.setText(context.getString(R.string.homeworks_team_date_format, bs(homework.teamName), Date.fromMillis(homework.addedDate).getFormattedStringShort()));
+        holder.homeworkItemHomeworkDate.setText(app.getString(R.string.date_relative_format, homework.eventDate.getFormattedString(), dayDiffString(context, diffDays)));
+        holder.homeworkItemTopic.setText(homework.topic);
+        holder.homeworkItemSubjectTeacher.setText(context.getString(R.string.homework_subject_teacher_format, bs(homework.subjectLongName), bs(homework.teacherFullName)));
+        holder.homeworkItemTeamDate.setText(context.getString(R.string.homework_team_date_format, bs(homework.teamName), Date.fromMillis(homework.addedDate).getFormattedStringShort()));
 
         if (!homework.seen) {
-            holder.homeworksItemTopic.setBackground(context.getResources().getDrawable(R.drawable.bg_rounded_8dp));
-            holder.homeworksItemTopic.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));
+            holder.homeworkItemTopic.setBackground(context.getResources().getDrawable(R.drawable.bg_rounded_8dp));
+            holder.homeworkItemTopic.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));
             homework.seen = true;
             AsyncTask.execute(() -> {
                 app.db.metadataDao().setSeen(App.profileId, homework, true);
             });
         }
         else {
-            holder.homeworksItemTopic.setBackground(null);
+            holder.homeworkItemTopic.setBackground(null);
         }
 
-        holder.homeworksItemEdit.setVisibility((homework.addedManually ? View.VISIBLE : View.GONE));
-        holder.homeworksItemEdit.setOnClickListener(v -> {
+        holder.homeworkItemEdit.setVisibility((homework.addedManually ? View.VISIBLE : View.GONE));
+        holder.homeworkItemEdit.setOnClickListener(v -> {
             new EventManualDialog(context).show(app, homework, null, null, EventManualDialog.DIALOG_HOMEWORK);
         });
 
         if (homework.sharedBy == null) {
-            holder.homeworksItemSharedBy.setVisibility(View.GONE);
+            holder.homeworkItemSharedBy.setVisibility(View.GONE);
         }
         else if (homework.sharedByName != null) {
-            holder.homeworksItemSharedBy.setText(app.getString(R.string.event_shared_by_format, (homework.sharedBy.equals("self") ? app.getString(R.string.event_shared_by_self) : homework.sharedByName)));
+            holder.homeworkItemSharedBy.setText(app.getString(R.string.event_shared_by_format, (homework.sharedBy.equals("self") ? app.getString(R.string.event_shared_by_self) : homework.sharedByName)));
         }
     }
 
@@ -110,23 +110,23 @@ public class HomeworksAdapter extends RecyclerView.Adapter<HomeworksAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        CardView homeworksItemCard;
-        TextView homeworksItemTopic;
-        TextView homeworksItemHomeworkDate;
-        TextView homeworksItemSharedBy;
-        TextView homeworksItemSubjectTeacher;
-        TextView homeworksItemTeamDate;
-        Button homeworksItemEdit;
+        CardView homeworkItemCard;
+        TextView homeworkItemTopic;
+        TextView homeworkItemHomeworkDate;
+        TextView homeworkItemSharedBy;
+        TextView homeworkItemSubjectTeacher;
+        TextView homeworkItemTeamDate;
+        Button homeworkItemEdit;
 
         ViewHolder(View itemView) {
             super(itemView);
-            homeworksItemCard = itemView.findViewById(R.id.homeworksItemCard);
-            homeworksItemTopic = itemView.findViewById(R.id.homeworksItemTopic);
-            homeworksItemHomeworkDate = itemView.findViewById(R.id.homeworksItemHomeworkDate);
-            homeworksItemSharedBy = itemView.findViewById(R.id.homeworksItemSharedBy);
-            homeworksItemSubjectTeacher = itemView.findViewById(R.id.homeworksItemSubjectTeacher);
-            homeworksItemTeamDate = itemView.findViewById(R.id.homeworksItemTeamDate);
-            homeworksItemEdit = itemView.findViewById(R.id.homeworksItemEdit);
+            homeworkItemCard = itemView.findViewById(R.id.homeworkItemCard);
+            homeworkItemTopic = itemView.findViewById(R.id.homeworkItemTopic);
+            homeworkItemHomeworkDate = itemView.findViewById(R.id.homeworkItemHomeworkDate);
+            homeworkItemSharedBy = itemView.findViewById(R.id.homeworkItemSharedBy);
+            homeworkItemSubjectTeacher = itemView.findViewById(R.id.homeworkItemSubjectTeacher);
+            homeworkItemTeamDate = itemView.findViewById(R.id.homeworkItemTeamDate);
+            homeworkItemEdit = itemView.findViewById(R.id.homeworkItemEdit);
         }
     }
 }

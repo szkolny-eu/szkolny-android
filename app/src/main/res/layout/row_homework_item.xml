@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/homeworksItemCard"
+        android:id="@+id/homeworkItemCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -31,7 +31,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/homeworksItemHomeworkDate"
+                    android:id="@+id/homeworkItemHomeworkDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
@@ -41,7 +41,7 @@
                     android:layout_marginEnd="16dp" />
 
                 <com.mikepenz.iconics.view.IconicsTextView
-                    android:id="@+id/homeworksItemSharedBy"
+                    android:id="@+id/homeworkItemSharedBy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -61,7 +61,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/homeworksItemTopic"
+                    android:id="@+id/homeworkItemTopic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -72,7 +72,7 @@
                     tools:text="topic???" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/homeworksItemEdit"
+                    android:id="@+id/homeworkItemEdit"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/homeworksItemSubjectTeacher"
+                    android:id="@+id/homeworkItemSubjectTeacher"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
@@ -100,7 +100,7 @@
                     tools:text="subjectName, teacherName" />
 
                 <TextView
-                    android:id="@+id/homeworksItemTeamDate"
+                    android:id="@+id/homeworkItemTeamDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"

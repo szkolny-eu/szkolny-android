@@ -50,6 +50,7 @@ import pl.szczodrzynski.edziennik.datamodels.Profile
 import pl.szczodrzynski.edziennik.datamodels.ProfileFull
 import pl.szczodrzynski.edziennik.dialogs.ChangelogDialog
 import pl.szczodrzynski.edziennik.fragments.*
+import pl.szczodrzynski.edziennik.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.login.LoginActivity
 import pl.szczodrzynski.edziennik.messages.MessagesDetailsFragment
 import pl.szczodrzynski.edziennik.messages.MessagesFragment
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         const val DRAWER_ITEM_AGENDA = 12
         const val DRAWER_ITEM_GRADES = 13
         const val DRAWER_ITEM_MESSAGES = 17
-        const val DRAWER_ITEM_HOMEWORKS = 14
+        const val DRAWER_ITEM_HOMEWORK = 14
         const val DRAWER_ITEM_NOTICES = 15
         const val DRAWER_ITEM_ATTENDANCES = 16
         const val DRAWER_ITEM_ANNOUNCEMENTS = 18
@@ -129,7 +130,7 @@ class MainActivity : AppCompatActivity() {
                     .withBadgeTypeId(TYPE_MESSAGE)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_HOMEWORKS, R.string.menu_homework, RegisterHomeworksFragment::class)
+            list += NavTarget(DRAWER_ITEM_HOMEWORK, R.string.menu_homework, HomeworkFragment::class)
                     .withIcon(SzkolnyFont.Icon.szf_file_document_edit)
                     .withBadgeTypeId(TYPE_HOMEWORK)
                     .isInDrawer(true)
@@ -522,7 +523,7 @@ class MainActivity : AppCompatActivity() {
             DRAWER_ITEM_TIMETABLE -> FEATURE_TIMETABLE
             DRAWER_ITEM_AGENDA -> FEATURE_AGENDA
             DRAWER_ITEM_GRADES -> FEATURE_GRADES
-            DRAWER_ITEM_HOMEWORKS -> FEATURE_HOMEWORKS
+            DRAWER_ITEM_HOMEWORK -> FEATURE_HOMEWORK
             DRAWER_ITEM_NOTICES -> FEATURE_NOTICES
             DRAWER_ITEM_ATTENDANCES -> FEATURE_ATTENDANCES
             DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
@@ -538,7 +539,7 @@ class MainActivity : AppCompatActivity() {
             DRAWER_ITEM_TIMETABLE -> R.string.sync_feature_timetable
             DRAWER_ITEM_AGENDA -> R.string.sync_feature_agenda
             DRAWER_ITEM_GRADES -> R.string.sync_feature_grades
-            DRAWER_ITEM_HOMEWORKS -> R.string.sync_feature_homeworks
+            DRAWER_ITEM_HOMEWORK -> R.string.sync_feature_homework
             DRAWER_ITEM_NOTICES -> R.string.sync_feature_notices
             DRAWER_ITEM_ATTENDANCES -> R.string.sync_feature_attendances
             DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
@@ -740,6 +741,9 @@ class MainActivity : AppCompatActivity() {
         drawer.close()
         drawer.setSelection(target.id, fireOnClick = false)
         navView.toolbar.setTitle(target.title ?: target.name)
+        navView.bottomBar.fabEnable = false
+        navView.bottomBar.fabExtended = true
+        navView.bottomBar.setFabOnClickListener(null)
 
         Log.d("NavDebug", "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
 
@@ -848,7 +852,13 @@ class MainActivity : AppCompatActivity() {
     fun gainAttention() {
         b.navView.postDelayed({
             navView.gainAttentionOnBottomBar()
-        }, 1000)
+        }, 2000)
+    }
+
+    fun collapseFab() {
+        b.navView.postDelayed({
+            navView.bottomBar.fabExtended = false
+        }, 2000)
     }
 
     /*    _____                                _ _

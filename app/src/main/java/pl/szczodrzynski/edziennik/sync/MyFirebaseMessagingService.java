@@ -280,7 +280,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                         app.notifier.add(new Notification(app.getContext(), app.getString((oldEvent == null ? R.string.notification_shared_event_format : R.string.notification_shared_event_modified_format), event.sharedByName, eventType == null ? "wydarzenie" : eventType.name, event.eventDate.getFormattedString(), event.topic))
                                                 .withProfileData(profile.getId(), profile.getName())
                                                 .withType(event.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_SHARED_HOMEWORK : Notification.TYPE_NEW_SHARED_EVENT)
-                                                .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORKS : MainActivity.DRAWER_ITEM_AGENDA)
+                                                .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                                 .withLongExtra("eventDate", event.eventDate.getValue())
                                         );
                                         d(TAG, "Finishing adding event " + event);
@@ -299,7 +299,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                         app.notifier.add(new Notification(app.getContext(), app.getString(R.string.notification_shared_event_removed_format, oldEvent.sharedByName, oldEvent.typeName, oldEvent.eventDate.getFormattedString(), oldEvent.topic))
                                                 .withProfileData(profile.getId(), profile.getName())
                                                 .withType(oldEvent.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_SHARED_HOMEWORK : Notification.TYPE_NEW_SHARED_EVENT)
-                                                .withFragmentRedirect(oldEvent.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORKS : MainActivity.DRAWER_ITEM_AGENDA)
+                                                .withFragmentRedirect(oldEvent.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                                 .withLongExtra("eventDate", oldEvent.eventDate.getValue())
                                         );
                                         app.db.eventDao().remove(oldEvent);

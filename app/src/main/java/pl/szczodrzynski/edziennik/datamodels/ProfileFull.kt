@@ -7,7 +7,7 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ANNOUNCEMENTS
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORKS
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_NOTICES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
@@ -50,7 +50,7 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_AGENDA)
                     fragmentIds.add(DRAWER_ITEM_GRADES)
                     fragmentIds.add(DRAWER_ITEM_MESSAGES)
-                    fragmentIds.add(DRAWER_ITEM_HOMEWORKS)
+                    fragmentIds.add(DRAWER_ITEM_HOMEWORK)
                     fragmentIds.add(DRAWER_ITEM_NOTICES)
                     fragmentIds.add(DRAWER_ITEM_ATTENDANCES)
                     return fragmentIds
@@ -61,7 +61,7 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_AGENDA)
                     fragmentIds.add(DRAWER_ITEM_GRADES)
                     fragmentIds.add(DRAWER_ITEM_MESSAGES)
-                    fragmentIds.add(DRAWER_ITEM_HOMEWORKS)
+                    fragmentIds.add(DRAWER_ITEM_HOMEWORK)
                     fragmentIds.add(DRAWER_ITEM_NOTICES)
                     fragmentIds.add(DRAWER_ITEM_ATTENDANCES)
                     fragmentIds.add(DRAWER_ITEM_ANNOUNCEMENTS)

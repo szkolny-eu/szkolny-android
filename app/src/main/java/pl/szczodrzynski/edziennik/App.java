@@ -19,7 +19,6 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
-import android.widget.Toast;
 
 import com.evernote.android.job.JobManager;
 import com.google.android.gms.security.ProviderInstaller;
@@ -78,7 +77,6 @@ import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
 import pl.szczodrzynski.edziennik.models.AppConfig;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.TLSSocketFactory;
-import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.receivers.JobsCreator;
 import pl.szczodrzynski.edziennik.sync.SyncJob;
 import pl.szczodrzynski.edziennik.utils.PermissionChecker;
@@ -344,7 +342,7 @@ public class App extends androidx.multidex.MultiDexApplication {
                         .setIcon(Icon.createWithResource(this, R.mipmap.ic_shortcut_homework))
                         //.setIcon(getDesktopIconFromIconics(SzkolnyFont.Icon.szf_file_document_edit))
                         .setIntent(new Intent(Intent.ACTION_MAIN, null, this, MainActivity.class)
-                                .putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOMEWORKS))
+                                .putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOMEWORK))
                         .build();
 
                 ShortcutInfo shortcutMessages = new ShortcutInfo.Builder(mContext, "item_messages")

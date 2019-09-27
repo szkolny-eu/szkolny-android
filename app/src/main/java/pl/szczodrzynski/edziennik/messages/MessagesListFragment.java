@@ -76,7 +76,6 @@ public class MessagesListFragment extends Fragment {
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.messages_list, container, false);
-        b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
         return b.getRoot();
     }
 

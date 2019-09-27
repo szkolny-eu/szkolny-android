@@ -38,7 +38,7 @@ public class AppConfig {
         miniDrawerButtonIds.add(MainActivity.DRAWER_ITEM_AGENDA);
         miniDrawerButtonIds.add(MainActivity.DRAWER_ITEM_GRADES);
         miniDrawerButtonIds.add(MainActivity.DRAWER_ITEM_MESSAGES);
-        miniDrawerButtonIds.add(MainActivity.DRAWER_ITEM_HOMEWORKS);
+        miniDrawerButtonIds.add(MainActivity.DRAWER_ITEM_HOMEWORK);
         miniDrawerButtonIds.add(MainActivity.DRAWER_ITEM_SETTINGS);
         fcmToken = "";
         fcmTokens = new TreeMap<>();

@@ -235,8 +235,8 @@ public class Iuczniowie implements EdziennikInterface {
                         targetEndpoints.add("Grades");
                         targetEndpoints.add("PropositionGrades");
                         break;
-                    case FEATURE_HOMEWORKS:
-                        targetEndpoints.add("Homeworks");
+                    case FEATURE_HOMEWORK:
+                        targetEndpoints.add("Homework");
                         break;
                     case FEATURE_NOTICES:
                         targetEndpoints.add("Notices");

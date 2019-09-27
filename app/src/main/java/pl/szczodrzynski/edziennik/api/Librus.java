@@ -294,7 +294,7 @@ public class Librus implements EdziennikInterface {
 
             targetEndpoints.add("Events");
             targetEndpoints.add("CustomTypes");
-            targetEndpoints.add("Homeworks");
+            targetEndpoints.add("Homework");
             targetEndpoints.add("LuckyNumbers");
             targetEndpoints.add("Notices");
             targetEndpoints.add("AttendancesTypes");
@@ -365,8 +365,8 @@ public class Librus implements EdziennikInterface {
                         targetEndpoints.add("TextGrades");
                         targetEndpoints.add("BehaviourGrades");
                         break;
-                    case FEATURE_HOMEWORKS:
-                        targetEndpoints.add("Homeworks");
+                    case FEATURE_HOMEWORK:
+                        targetEndpoints.add("Homework");
                         break;
                     case FEATURE_NOTICES:
                         targetEndpoints.add("Notices");
@@ -518,8 +518,8 @@ public class Librus implements EdziennikInterface {
             case "CustomTypes":
                 getCustomTypes();
                 break;
-            case "Homeworks":
-                getHomeworks();
+            case "Homework":
+                getHomework();
                 break;
             case "LuckyNumbers":
                 getLuckyNumbers();
@@ -2722,21 +2722,21 @@ public class Librus implements EdziennikInterface {
         });
     }
 
-    private void getHomeworks() {
+    private void getHomework() {
         if (!premium) {
-            r("finish", "Homeworks");
+            r("finish", "Homework");
             return;
         }
         callback.onActionStarted(R.string.sync_action_syncing_homework);
         apiRequest("HomeWorkAssignments", data -> {
             if (data == null) {
-                r("finish", "Homeworks");
+                r("finish", "Homework");
                 return;
             }
-            JsonArray homeworks = data.get("HomeWorkAssignments").getAsJsonArray();
+            JsonArray homeworkList = data.get("HomeWorkAssignments").getAsJsonArray();
             //d("Got Grades: "+events.toString());
             try {
-                for (JsonElement homeworkEl : homeworks) {
+                for (JsonElement homeworkEl : homeworkList) {
                     JsonObject homework = homeworkEl.getAsJsonObject();
 
                     JsonElement el;
@@ -2787,7 +2787,7 @@ public class Librus implements EdziennikInterface {
                     eventList.add(eventObject);
                     metadataList.add(new Metadata(profileId, Metadata.TYPE_EVENT, eventObject.id, profile.getEmpty(), profile.getEmpty(), addedDate.getInMillis()));
                 }
-                r("finish", "Homeworks");
+                r("finish", "Homework");
             }
             catch (Exception e) {
                 finishWithError(new AppError(TAG, 2648, CODE_OTHER, e, data));
@@ -3377,7 +3377,7 @@ public class Librus implements EdziennikInterface {
         configurableEndpoints.put("Grades", new Endpoint("Grades",true, false, profile.getChangedEndpoints()));
         configurableEndpoints.put("PointGrades", new Endpoint("PointGrades",true, false, profile.getChangedEndpoints()));
         configurableEndpoints.put("Events", new Endpoint("Events",true, false, profile.getChangedEndpoints()));
-        configurableEndpoints.put("Homeworks", new Endpoint("Homeworks",true, false, profile.getChangedEndpoints()));
+        configurableEndpoints.put("Homework", new Endpoint("Homework",true, false, profile.getChangedEndpoints()));
         configurableEndpoints.put("LuckyNumbers", new Endpoint("LuckyNumbers",true, false, profile.getChangedEndpoints()));
         configurableEndpoints.put("Notices", new Endpoint("Notices",true, false, profile.getChangedEndpoints()));
         configurableEndpoints.put("Attendances", new Endpoint("Attendances",true, false, profile.getChangedEndpoints()));

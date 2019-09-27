@@ -609,7 +609,7 @@ public class Mobidziennik implements EdziennikInterface {
                     processEvents(table);
                 }
                 if (i == 23) {
-                    processHomeworks(table);
+                    processHomework(table);
                 }
                 if (i == 24) {
                     processTimetable(table);
@@ -1891,11 +1891,11 @@ public class Mobidziennik implements EdziennikInterface {
         }
     }
 
-    private void processHomeworks(String table)
+    private void processHomework(String table)
     {
-        String[] homeworks = table.split("\n");
+        String[] homeworkList = table.split("\n");
         Date today = Date.getToday();
-        for (String homeworkStr: homeworks)
+        for (String homeworkStr: homeworkList)
         {
             if (homeworkStr.isEmpty()) {
                 continue;

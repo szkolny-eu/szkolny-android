@@ -108,7 +108,7 @@ public class Vulcan implements EdziennikInterface {
     private static final String ENDPOINT_GRADES = "mobile-api/Uczen.v3.Uczen/Oceny";
     private static final String ENDPOINT_GRADES_PROPOSITIONS = "mobile-api/Uczen.v3.Uczen/OcenyPodsumowanie";
     private static final String ENDPOINT_EVENTS = "mobile-api/Uczen.v3.Uczen/Sprawdziany";
-    private static final String ENDPOINT_HOMEWORKS = "mobile-api/Uczen.v3.Uczen/ZadaniaDomowe";
+    private static final String ENDPOINT_HOMEWORK = "mobile-api/Uczen.v3.Uczen/ZadaniaDomowe";
     private static final String ENDPOINT_NOTICES = "mobile-api/Uczen.v3.Uczen/UwagiUcznia";
     private static final String ENDPOINT_ATTENDANCES = "mobile-api/Uczen.v3.Uczen/Frekwencje";
     private static final String ENDPOINT_MESSAGES_RECEIVED = "mobile-api/Uczen.v3.Uczen/WiadomosciOdebrane";
@@ -259,7 +259,7 @@ public class Vulcan implements EdziennikInterface {
             targetEndpoints.add("Grades");
             targetEndpoints.add("ProposedGrades");
             targetEndpoints.add("Events");
-            targetEndpoints.add("Homeworks");
+            targetEndpoints.add("Homework");
             targetEndpoints.add("Notices");
             targetEndpoints.add("Attendances");
             targetEndpoints.add("MessagesInbox");
@@ -297,8 +297,8 @@ public class Vulcan implements EdziennikInterface {
                         targetEndpoints.add("Grades");
                         targetEndpoints.add("ProposedGrades");
                         break;
-                    case FEATURE_HOMEWORKS:
-                        targetEndpoints.add("Homeworks");
+                    case FEATURE_HOMEWORK:
+                        targetEndpoints.add("Homework");
                         break;
                     case FEATURE_NOTICES:
                         targetEndpoints.add("Notices");
@@ -380,8 +380,8 @@ public class Vulcan implements EdziennikInterface {
             case "Events":
                 getEvents();
                 break;
-            case "Homeworks":
-                getHomeworks();
+            case "Homework":
+                getHomework();
                 break;
             case "Notices":
                 getNotices();
@@ -1374,7 +1374,7 @@ public class Vulcan implements EdziennikInterface {
         });
     }
 
-    private void getHomeworks() {
+    private void getHomework() {
         callback.onActionStarted(R.string.sync_action_syncing_homework);
         JsonObject json = new JsonObject();
         json.addProperty("DataPoczatkowa", profile.getEmpty() ? getCurrentSemesterStartDate().getStringY_m_d() : oneMonthBack.getStringY_m_d());
@@ -1382,10 +1382,10 @@ public class Vulcan implements EdziennikInterface {
         json.addProperty("IdOddzial", studentClassId);
         json.addProperty("IdUczen", studentId);
         json.addProperty("IdOkresKlasyfikacyjny", studentSemesterId);
-        apiRequest(schoolSymbol+"/"+ENDPOINT_HOMEWORKS, json, result -> {
-            JsonArray homeworks = result.getAsJsonArray("Data");
+        apiRequest(schoolSymbol+"/"+ ENDPOINT_HOMEWORK, json, result -> {
+            JsonArray homeworkList = result.getAsJsonArray("Data");
 
-            for (JsonElement homeworkEl: homeworks) {
+            for (JsonElement homeworkEl: homeworkList) {
                 JsonObject homework = homeworkEl.getAsJsonObject();
 
                 int id = homework.get("Id").getAsInt();
@@ -1419,7 +1419,7 @@ public class Vulcan implements EdziennikInterface {
                 eventList.add(eventObject);
                 metadataList.add(new Metadata(profileId, Metadata.TYPE_HOMEWORK, eventObject.id, profile.getEmpty(), profile.getEmpty(), System.currentTimeMillis()));
             }
-            r("finish", "Homeworks");
+            r("finish", "Homework");
         });
     }
 

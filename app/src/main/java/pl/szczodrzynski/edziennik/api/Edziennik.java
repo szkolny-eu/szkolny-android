@@ -86,7 +86,7 @@ import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATU
 import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_ANNOUNCEMENTS;
 import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_ATTENDANCES;
 import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_GRADES;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_HOMEWORKS;
+import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_MESSAGES_INBOX;
 import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_MESSAGES_OUTBOX;
 import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_NOTICES;
@@ -306,7 +306,7 @@ public class Edziennik {
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
                                 .withType(event.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_HOMEWORK : Notification.TYPE_NEW_EVENT)
-                                .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORKS : MainActivity.DRAWER_ITEM_AGENDA)
+                                .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                 .withLongExtra("eventId", event.id)
                                 .withLongExtra("eventDate", event.eventDate.getValue())
                                 .withAddedDate(event.addedDate)
@@ -521,7 +521,7 @@ public class Edziennik {
                                     app.notifier.add(new Notification(app.getContext(), app.getString(R.string.notification_shared_event_format, event.sharedByName, type != null ? type.name : "wydarzenie", event.eventDate == null ? "nieznana data" : event.eventDate.getFormattedString(), event.topic))
                                             .withProfileData(profile.getId(), profile.getName())
                                             .withType(event.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_SHARED_HOMEWORK : Notification.TYPE_NEW_SHARED_EVENT)
-                                            .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORKS : MainActivity.DRAWER_ITEM_AGENDA)
+                                            .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                             .withLongExtra("eventDate", event.eventDate.getValue())
                                     );
                                 }
@@ -858,7 +858,7 @@ public class Edziennik {
                 FEATURE_TIMETABLE,
                 FEATURE_AGENDA,
                 FEATURE_GRADES,
-                FEATURE_HOMEWORKS,
+                FEATURE_HOMEWORK,
                 FEATURE_NOTICES,
                 FEATURE_ATTENDANCES,
                 FEATURE_MESSAGES_INBOX,

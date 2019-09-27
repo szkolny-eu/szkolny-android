@@ -313,8 +313,8 @@
     <string name="homework_edit">Edytuj</string>
     <string name="homework_past_no_data">Brak poprzednich zadań domowych.</string>
     <string name="homework_past_title">Poprzednie zadania</string>
-    <string name="homeworks_subject_teacher_format" translatable="false">%s, %s</string>
-    <string name="homeworks_team_date_format" translatable="false">%s %s</string>
+    <string name="homework_subject_teacher_format" translatable="false">%s, %s</string>
+    <string name="homework_team_date_format" translatable="false">%s %s</string>
     <string name="i_agree">Zgadzam się</string>
     <string name="i_disagree">Nie zgadzam się</string>
     <string name="incorrect_format">Nieprawidłowy format</string>
@@ -652,7 +652,7 @@
     <string name="settings_sync_customize_endpoint_classrooms">Sale lekcyjne</string>
     <string name="settings_sync_customize_endpoint_events">Wydarzenia/terminarz</string>
     <string name="settings_sync_customize_endpoint_grades">Oceny</string>
-    <string name="settings_sync_customize_endpoint_homeworks">Zadania domowe</string>
+    <string name="settings_sync_customize_endpoint_homework">Zadania domowe</string>
     <string name="settings_sync_customize_endpoint_lucky_numbers">Szczęśliwy numerek</string>
     <string name="settings_sync_customize_endpoint_messages_inbox">Wiadomości odebrane</string>
     <string name="settings_sync_customize_endpoint_messages_outbox">Wiadomości wysłane</string>
@@ -800,7 +800,7 @@
     <string name="sync_feature_announcements">Pobieram tablicę ogłoszeń…</string>
     <string name="sync_feature_attendances">Pobieram obecności…</string>
     <string name="sync_feature_grades">Pobieram oceny…</string>
-    <string name="sync_feature_homeworks">Pobieram zadania domowe…</string>
+    <string name="sync_feature_homework">Pobieram zadania domowe…</string>
     <string name="sync_feature_messages_inbox">Pobieram wiadomości odebrane…</string>
     <string name="sync_feature_messages_outbox">Pobieram wiadomości wysłane…</string>
     <string name="sync_feature_notices">Pobieram uwagi…</string>
@@ -909,4 +909,7 @@
     <string name="settings_about_discord_subtext">Dołącz do naszego serwera Discord!</string>
     <string name="menu_debug">Debugowanie</string>
     <string name="sync_action_syncing_school_free_days">Pobieranie dni wolnych szkoły</string>
+    <string name="homework_tab_current">Aktualne</string>
+    <string name="homework_tab_past">Minione</string>
+    <string name="homework_no_data">Brak zadań domowych.</string>
 </resources>

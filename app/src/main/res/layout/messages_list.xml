@@ -5,20 +5,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
-            android:id="@+id/refreshLayout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/emailList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/emailList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:transitionGroup="false"
-                tools:listitem="@layout/messages_item"
-                tools:targetApi="lollipop" />
-        </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator>
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:transitionGroup="false"
+            tools:listitem="@layout/messages_item"
+            tools:targetApi="lollipop" />
 
         <ProgressBar
             android:id="@+id/progressBar"
