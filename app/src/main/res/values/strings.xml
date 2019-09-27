@@ -308,11 +308,7 @@
     <string name="help">Pomoc</string>
     <string name="help_notification_web_push">Przekazywanie powiadomień umożliwia sparowanie z przeglądarką internetową w celu wysyłania wszystkich powiadomień z aplikacji na komputer. Można do nich zaliczyć np. nowe oceny, wydarzenia, zadania domowe itp.\n\nKliknij \"Przekazywanie powiadomień\", aby rozpocząć.</string>
     <string name="help_register_agreement">Rejestracja odbędzie się automatycznie przy pierwszym logowaniu do e-dziennika.\n\nDo poprawnego działania funkcji zostaną przesłane:\n- Twój identyfikator szkoły i klasy\n- Twoja nazwa użytkownika do e-dziennika\n- Twoje imię i nazwisko\n\nJedyne dane widoczne dla innych osób z twojej klasy to Imię i Nazwisko podczas udostępniania wydarzeń. Nie zostaną wysłane żadne prywatne dane, takie jak hasła, oceny itp. Dowiedz się więcej w Polityce Prywatności.</string>
-    <string name="homework_current_no_data">Brak aktualnych zadań domowych.</string>
-    <string name="homework_current_title">Aktualne zadania</string>
     <string name="homework_edit">Edytuj</string>
-    <string name="homework_past_no_data">Brak poprzednich zadań domowych.</string>
-    <string name="homework_past_title">Poprzednie zadania</string>
     <string name="homework_subject_teacher_format" translatable="false">%s, %s</string>
     <string name="homework_team_date_format" translatable="false">%s %s</string>
     <string name="i_agree">Zgadzam się</string>

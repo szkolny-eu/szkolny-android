@@ -2,7 +2,7 @@ package pl.szczodrzynski.edziennik.homework
 
 class HomeworkDate {
     companion object {
-        val CURRENT = 0
-        val PAST = 1
+        const val CURRENT = 0
+        const val PAST = 1
     }
 }

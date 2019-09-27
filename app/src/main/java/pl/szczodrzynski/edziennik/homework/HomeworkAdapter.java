@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.adapters;
+package pl.szczodrzynski.edziennik.homework;
 
 import android.content.Context;
 import android.graphics.PorterDuff;

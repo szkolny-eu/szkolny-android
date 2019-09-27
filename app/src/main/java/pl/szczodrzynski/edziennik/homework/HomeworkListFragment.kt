@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_szkolny.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.adapters.HomeworkAdapter
 import pl.szczodrzynski.edziennik.databinding.HomeworkListBinding
 import pl.szczodrzynski.edziennik.datamodels.Event
 import pl.szczodrzynski.edziennik.getInt

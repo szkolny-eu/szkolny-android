@@ -95,7 +95,7 @@ class HomeworkFragment : Fragment() {
         b.tabLayout.setupWithViewPager(b.viewPager)
 
         activity.navView.bottomBar.fabEnable = true
-        activity.navView.bottomBar.fabExtendedText = "Dodaj nowe"
+        activity.navView.bottomBar.fabExtendedText = getString(R.string.add)
         activity.navView.bottomBar.fabIcon = CommunityMaterial.Icon2.cmd_plus
         activity.navView.setFabOnClickListener(View.OnClickListener {
             EventManualDialog(activity).show(app, null, null, null, EventManualDialog.DIALOG_HOMEWORK)
