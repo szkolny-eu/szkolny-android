@@ -1916,7 +1916,7 @@ public class Librus implements EdziennikInterface {
     }
 
     private void getGradesCategories() {
-        if (!fullSync) {
+        if (!fullSync && false) {
             // cancel every not-full sync; no need to download categories again
             // every full sync it'll be enabled to make sure there are no grades - by getUnits
             r("finish", "GradesCategories");
