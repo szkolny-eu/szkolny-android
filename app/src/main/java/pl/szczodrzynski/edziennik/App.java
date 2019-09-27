@@ -21,6 +21,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
+import com.chuckerteam.chucker.api.ChuckerCollector;
+import com.chuckerteam.chucker.api.ChuckerInterceptor;
+import com.chuckerteam.chucker.api.RetentionManager;
 import com.evernote.android.job.JobManager;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.FirebaseApp;
@@ -209,6 +212,33 @@ public class App extends androidx.multidex.MultiDexApplication {
 
         cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
 
+        appSharedPrefs = getSharedPreferences(getString(R.string.preference_file_global), Context.MODE_PRIVATE);
+
+        loadConfig();
+
+        Themes.INSTANCE.setThemeInt(appConfig.appTheme);
+
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature: packageInfo.signatures) {
+                byte[] signatureBytes = signature.toByteArray();
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signatureBytes);
+                this.signature = Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                //Log.d(TAG, "Signature is "+this.signature);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if ("f054761fbdb6a238".equals(deviceId)) {
+            devMode = true;
+        }
+        else if (appConfig.devModePassword != null) {
+            checkDevModePassword();
+        }
+
         OkHttpClient.Builder httpBuilder = new OkHttpClient.Builder()
                 .cache(null)
                 .followRedirects(true)
@@ -256,6 +286,12 @@ public class App extends androidx.multidex.MultiDexApplication {
             }
         }
 
+        if (App.devMode || BuildConfig.DEBUG) {
+            ChuckerCollector chuckerCollector = new ChuckerCollector(this, true, RetentionManager.Period.ONE_HOUR);
+            ChuckerInterceptor chuckerInterceptor = new ChuckerInterceptor(this, chuckerCollector);
+            httpBuilder.addInterceptor(chuckerInterceptor);
+        }
+
         http = httpBuilder.build();
         httpLazy = http.newBuilder().followRedirects(false).followSslRedirects(false).build();
 
@@ -264,34 +300,7 @@ public class App extends androidx.multidex.MultiDexApplication {
 
         //register = new Register(mContext);
 
-        appSharedPrefs = getSharedPreferences(getString(R.string.preference_file_global), Context.MODE_PRIVATE);
-
-        loadConfig();
-
-        Themes.INSTANCE.setThemeInt(appConfig.appTheme);
-
         //profileLoadById(appSharedPrefs.getInt("current_profile_id", 1));
-
-        try {
-            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature: packageInfo.signatures) {
-                byte[] signatureBytes = signature.toByteArray();
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signatureBytes);
-                this.signature = Base64.encodeToString(md.digest(), Base64.DEFAULT);
-                //Log.d(TAG, "Signature is "+this.signature);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if ("f054761fbdb6a238".equals(deviceId)) {
-            devMode = true;
-        }
-        else if (appConfig.devModePassword != null) {
-            checkDevModePassword();
-        }
 
         JobManager.create(this).addJobCreator(new JobsCreator());
         if (appConfig.registerSyncEnabled) {
