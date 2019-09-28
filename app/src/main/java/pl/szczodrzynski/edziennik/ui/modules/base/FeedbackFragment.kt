@@ -25,7 +25,7 @@ import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.databinding.FragmentFeedbackBinding
-import pl.szczodrzynski.edziennik.datamodels.FeedbackMessage
+import pl.szczodrzynski.edziennik.data.db.modules.feedback.FeedbackMessage
 import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.Themes

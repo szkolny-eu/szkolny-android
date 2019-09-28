@@ -38,8 +38,8 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.databinding.FragmentRegisterAgendaCalendarBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentRegisterAgendaDefaultBinding;
-import pl.szczodrzynski.edziennik.datamodels.EventFull;
-import pl.szczodrzynski.edziennik.datamodels.LessonFull;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
@@ -52,9 +52,9 @@ import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
-import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_EVENT;
-import static pl.szczodrzynski.edziennik.datamodels.Profile.AGENDA_CALENDAR;
-import static pl.szczodrzynski.edziennik.datamodels.Profile.AGENDA_DEFAULT;
+import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.AGENDA_CALENDAR;
+import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.AGENDA_DEFAULT;
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 import static pl.szczodrzynski.edziennik.utils.Utils.intToStr;
 

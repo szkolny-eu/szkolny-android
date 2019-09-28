@@ -29,20 +29,20 @@ import java.util.List;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.api.AppError;
-import pl.szczodrzynski.edziennik.api.Edziennik;
-import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback;
+import pl.szczodrzynski.edziennik.data.api.AppError;
+import pl.szczodrzynski.edziennik.data.api.Edziennik;
+import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback;
 import pl.szczodrzynski.edziennik.databinding.MessagesListBinding;
-import pl.szczodrzynski.edziennik.datamodels.LoginStore;
-import pl.szczodrzynski.edziennik.datamodels.Message;
-import pl.szczodrzynski.edziennik.datamodels.MessageFull;
-import pl.szczodrzynski.edziennik.datamodels.MessageRecipientFull;
-import pl.szczodrzynski.edziennik.datamodels.Profile;
-import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message;
+import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull;
+import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipientFull;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.utils.Themes;
 
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_LIBRUS;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 
 public class MessagesListFragment extends Fragment {

@@ -8,15 +8,15 @@ import android.graphics.RectF;
 import androidx.core.graphics.ColorUtils;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.datamodels.MessageFull;
-import pl.szczodrzynski.edziennik.datamodels.MessageRecipientFull;
+import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull;
+import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipientFull;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
-import static pl.szczodrzynski.edziennik.datamodels.Message.TYPE_DELETED;
-import static pl.szczodrzynski.edziennik.datamodels.Message.TYPE_DRAFT;
-import static pl.szczodrzynski.edziennik.datamodels.Message.TYPE_RECEIVED;
-import static pl.szczodrzynski.edziennik.datamodels.Message.TYPE_SENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_DELETED;
+import static pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_DRAFT;
+import static pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED;
+import static pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT;
 
 public class MessagesUtils {
     public static class MessageInfo {

@@ -35,14 +35,14 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.Edziennik;
-import pl.szczodrzynski.edziennik.api.AppError;
-import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback;
+import pl.szczodrzynski.edziennik.data.api.Edziennik;
+import pl.szczodrzynski.edziennik.data.api.AppError;
+import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback;
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeActivityBinding;
-import pl.szczodrzynski.edziennik.datamodels.LoginStore;
-import pl.szczodrzynski.edziennik.datamodels.Profile;
-import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
-import pl.szczodrzynski.edziennik.datamodels.Teacher;
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Themes;
 

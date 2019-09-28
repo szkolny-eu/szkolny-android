@@ -24,14 +24,14 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.databinding.CardTimetableBinding;
-import pl.szczodrzynski.edziennik.datamodels.EventFull;
-import pl.szczodrzynski.edziennik.datamodels.LessonFull;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.models.Week;
 
-import static pl.szczodrzynski.edziennik.datamodels.LessonChange.TYPE_CANCELLED;
-import static pl.szczodrzynski.edziennik.datamodels.LessonChange.TYPE_CHANGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange.TYPE_CANCELLED;
+import static pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange.TYPE_CHANGE;
 import static pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment.updateInterval;
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 

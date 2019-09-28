@@ -12,10 +12,10 @@ import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.widgets.WidgetConfig;
 
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_IUCZNIOWIE;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_LIBRUS;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_VULCAN;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_IUCZNIOWIE;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
 
 public class AppConfig {
     private static final String TAG = "AppConfig";

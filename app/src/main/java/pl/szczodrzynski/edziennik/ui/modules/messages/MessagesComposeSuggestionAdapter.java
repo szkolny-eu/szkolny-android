@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.datamodels.Teacher;
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
 
 public class MessagesComposeSuggestionAdapter extends ArrayAdapter<Teacher> {
 

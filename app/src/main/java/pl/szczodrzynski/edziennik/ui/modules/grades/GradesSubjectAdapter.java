@@ -30,10 +30,9 @@ import java.util.List;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.datamodels.AppDb;
-import pl.szczodrzynski.edziennik.datamodels.GradeFull;
-import pl.szczodrzynski.edziennik.datamodels.Subject;
-import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListAdapter;
+import pl.szczodrzynski.edziennik.data.db.AppDb;
+import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
+import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
 import pl.szczodrzynski.edziennik.utils.Anim;
 import pl.szczodrzynski.edziennik.utils.Colors;
@@ -42,10 +41,10 @@ import pl.szczodrzynski.edziennik.utils.Utils;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static pl.szczodrzynski.edziennik.MainActivity.TARGET_GRADES_EDITOR;
-import static pl.szczodrzynski.edziennik.datamodels.Profile.COLOR_MODE_DEFAULT;
-import static pl.szczodrzynski.edziennik.datamodels.Profile.YEAR_1_AVG_2_SEM;
-import static pl.szczodrzynski.edziennik.datamodels.Profile.YEAR_1_SEM_2_AVG;
-import static pl.szczodrzynski.edziennik.datamodels.Profile.YEAR_1_SEM_2_SEM;
+import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.COLOR_MODE_DEFAULT;
+import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_AVG_2_SEM;
+import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_SEM_2_AVG;
+import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_SEM_2_SEM;
 
 public class GradesSubjectAdapter extends ArrayAdapter<ItemGradesSubjectModel> implements View.OnClickListener {
     private static final String TAG = "GradesSubjectAdapter";

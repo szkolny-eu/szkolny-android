@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import pl.szczodrzynski.edziennik.datamodels.LoginStore;
-import pl.szczodrzynski.edziennik.datamodels.Profile;
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 
 public class LoginProfileObject {
     LoginStore loginStore = null;

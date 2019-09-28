@@ -37,15 +37,15 @@ import javax.crypto.ShortBufferException;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.ui.modules.webpush.QrScannerActivity;
-import pl.szczodrzynski.edziennik.api.AppError;
+import pl.szczodrzynski.edziennik.data.api.AppError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginVulcanBinding;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
-import static pl.szczodrzynski.edziennik.api.AppError.CODE_EXPIRED_TOKEN;
-import static pl.szczodrzynski.edziennik.api.AppError.CODE_INVALID_PIN;
-import static pl.szczodrzynski.edziennik.api.AppError.CODE_INVALID_SYMBOL;
-import static pl.szczodrzynski.edziennik.api.AppError.CODE_INVALID_TOKEN;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_VULCAN;
+import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_EXPIRED_TOKEN;
+import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_PIN;
+import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_SYMBOL;
+import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_TOKEN;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
 
 public class LoginVulcanFragment extends Fragment {
 

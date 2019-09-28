@@ -44,10 +44,10 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
 import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding;
-import pl.szczodrzynski.edziennik.datamodels.GradeFull;
-import pl.szczodrzynski.edziennik.datamodels.LessonFull;
-import pl.szczodrzynski.edziennik.datamodels.Profile;
-import pl.szczodrzynski.edziennik.datamodels.Subject;
+import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeActivity;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
@@ -60,13 +60,13 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
 import static pl.szczodrzynski.edziennik.App.UPDATES_ON_PLAY_STORE;
-import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_SEMESTER1_FINAL;
-import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_SEMESTER1_PROPOSED;
-import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_SEMESTER2_FINAL;
-import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_SEMESTER2_PROPOSED;
-import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_YEAR_FINAL;
-import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_YEAR_PROPOSED;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_FINAL;
+import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_PROPOSED;
+import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER2_FINAL;
+import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER2_PROPOSED;
+import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_YEAR_FINAL;
+import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_YEAR_PROPOSED;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";

@@ -15,7 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.RowAnnouncementsItemBinding;
-import pl.szczodrzynski.edziennik.datamodels.AnnouncementFull;
+import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull;
 
 public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdapter.ViewHolder> {
 

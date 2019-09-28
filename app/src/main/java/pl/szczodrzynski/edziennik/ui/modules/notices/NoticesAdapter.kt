@@ -18,11 +18,11 @@ import com.mikepenz.iconics.utils.colorRes
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.datamodels.Notice
-import pl.szczodrzynski.edziennik.datamodels.NoticeFull
+import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice
+import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeFull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-import pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_MOBIDZIENNIK
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.utils.Utils.bs
 
 class NoticesAdapter//getting the context and product list with constructor

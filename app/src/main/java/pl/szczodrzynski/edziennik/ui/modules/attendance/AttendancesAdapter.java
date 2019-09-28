@@ -15,14 +15,14 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.datamodels.AttendanceFull;
+import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceFull;
 
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_ABSENT;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_ABSENT_EXCUSED;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_BELATED;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_BELATED_EXCUSED;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_PRESENT;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_RELEASED;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_PRESENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_RELEASED;
 
 public class AttendancesAdapter extends RecyclerView.Adapter<AttendancesAdapter.ViewHolder> {
     private Context context;

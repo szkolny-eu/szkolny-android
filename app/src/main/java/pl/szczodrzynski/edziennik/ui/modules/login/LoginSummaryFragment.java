@@ -26,7 +26,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginSummaryBinding;
 import pl.szczodrzynski.edziennik.databinding.RowLoginProfileListItemBinding;
-import pl.szczodrzynski.edziennik.datamodels.Profile;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 
 public class LoginSummaryFragment extends Fragment {
 

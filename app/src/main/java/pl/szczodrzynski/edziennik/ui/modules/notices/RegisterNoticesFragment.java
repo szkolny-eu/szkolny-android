@@ -26,12 +26,12 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.databinding.FragmentRegisterNoticesBinding;
-import pl.szczodrzynski.edziennik.datamodels.Notice;
-import pl.szczodrzynski.edziennik.datamodels.NoticeFull;
+import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
+import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeFull;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
-import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_NOTICE;
+import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_NOTICE;
 
 public class RegisterNoticesFragment extends Fragment {
 

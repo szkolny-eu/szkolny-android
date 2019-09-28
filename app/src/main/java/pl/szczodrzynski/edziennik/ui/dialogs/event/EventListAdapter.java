@@ -18,12 +18,12 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.datamodels.Event;
-import pl.szczodrzynski.edziennik.datamodels.EventFull;
+import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
-import static pl.szczodrzynski.edziennik.datamodels.Event.TYPE_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 

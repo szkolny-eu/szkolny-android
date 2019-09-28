@@ -14,7 +14,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.AppError;
+import pl.szczodrzynski.edziennik.data.api.AppError;
 import pl.szczodrzynski.edziennik.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {

@@ -16,10 +16,10 @@ import im.wangchao.mhttp.ThreadMode;
 import im.wangchao.mhttp.callback.JsonCallbackHandler;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
-import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
-import static pl.szczodrzynski.edziennik.datamodels.Profile.REGISTRATION_ENABLED;
+import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_ENABLED;
 
 public class ServerRequest {
     private App app;

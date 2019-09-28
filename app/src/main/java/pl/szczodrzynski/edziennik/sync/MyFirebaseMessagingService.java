@@ -17,19 +17,19 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.datamodels.Event;
-import pl.szczodrzynski.edziennik.datamodels.EventFull;
-import pl.szczodrzynski.edziennik.datamodels.EventType;
-import pl.szczodrzynski.edziennik.datamodels.FeedbackMessage;
-import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
-import pl.szczodrzynski.edziennik.datamodels.Team;
+import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventType;
+import pl.szczodrzynski.edziennik.data.db.modules.feedback.FeedbackMessage;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
+import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment;
 import pl.szczodrzynski.edziennik.utils.models.Notification;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
 
 import static pl.szczodrzynski.edziennik.App.APP_URL;
-import static pl.szczodrzynski.edziennik.datamodels.Event.TYPE_HOMEWORK;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.strToInt;
 

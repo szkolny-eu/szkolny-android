@@ -18,12 +18,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.AppError;
+import pl.szczodrzynski.edziennik.data.api.AppError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginIuczniowieBinding;
 
-import static pl.szczodrzynski.edziennik.api.AppError.CODE_INVALID_LOGIN;
-import static pl.szczodrzynski.edziennik.api.AppError.CODE_INVALID_SCHOOL_NAME;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_IUCZNIOWIE;
+import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_LOGIN;
+import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_SCHOOL_NAME;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_IUCZNIOWIE;
 
 public class LoginIuczniowieFragment extends Fragment {
 

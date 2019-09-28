@@ -50,7 +50,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.databinding.FragmentRegisterTimetableBinding;
-import pl.szczodrzynski.edziennik.datamodels.LessonFull;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
 import pl.szczodrzynski.edziennik.utils.models.Date;
@@ -62,9 +62,9 @@ import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
-import static pl.szczodrzynski.edziennik.datamodels.LessonChange.TYPE_CANCELLED;
-import static pl.szczodrzynski.edziennik.datamodels.LessonChange.TYPE_CHANGE;
-import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_LESSON_CHANGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange.TYPE_CANCELLED;
+import static pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange.TYPE_CHANGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_LESSON_CHANGE;
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 

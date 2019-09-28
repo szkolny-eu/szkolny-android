@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.MessagesItemBinding;
-import pl.szczodrzynski.edziennik.datamodels.MessageFull;
+import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
-import static pl.szczodrzynski.edziennik.datamodels.Message.TYPE_DRAFT;
-import static pl.szczodrzynski.edziennik.datamodels.Message.TYPE_SENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_DRAFT;
+import static pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
     private App app;

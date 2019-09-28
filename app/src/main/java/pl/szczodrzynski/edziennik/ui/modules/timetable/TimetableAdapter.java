@@ -24,16 +24,16 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.datamodels.EventFull;
-import pl.szczodrzynski.edziennik.datamodels.LessonChange;
-import pl.szczodrzynski.edziennik.datamodels.LessonFull;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.SpannableHtmlTagHandler;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
-import static pl.szczodrzynski.edziennik.datamodels.Event.TYPE_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
 
 public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.ViewHolder> {
     private static final String TAG = "TimetableAdapter";

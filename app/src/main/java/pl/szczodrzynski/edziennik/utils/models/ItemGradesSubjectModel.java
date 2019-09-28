@@ -2,9 +2,9 @@ package pl.szczodrzynski.edziennik.utils.models;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.datamodels.GradeFull;
-import pl.szczodrzynski.edziennik.datamodels.Profile;
-import pl.szczodrzynski.edziennik.datamodels.Subject;
+import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 
 public class ItemGradesSubjectModel {
     public Profile profile;

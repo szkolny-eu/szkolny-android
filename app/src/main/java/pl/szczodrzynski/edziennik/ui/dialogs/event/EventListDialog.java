@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.datamodels.LessonChange;
-import pl.szczodrzynski.edziennik.datamodels.LessonFull;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;

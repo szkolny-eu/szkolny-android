@@ -22,7 +22,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.WidgetTimetable;
 import pl.szczodrzynski.edziennik.databinding.DialogWidgetConfigBinding;
-import pl.szczodrzynski.edziennik.datamodels.Profile;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.widgets.luckynumber.WidgetLuckyNumber;
 import pl.szczodrzynski.edziennik.widgets.notifications.WidgetNotifications;
 

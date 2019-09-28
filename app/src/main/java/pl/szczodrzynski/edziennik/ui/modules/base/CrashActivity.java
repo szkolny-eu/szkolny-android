@@ -41,7 +41,7 @@ import pl.szczodrzynski.edziennik.network.ServerRequest;
 import pl.szczodrzynski.edziennik.utils.Themes;
 
 import static pl.szczodrzynski.edziennik.App.APP_URL;
-import static pl.szczodrzynski.edziennik.datamodels.Profile.REGISTRATION_ENABLED;
+import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_ENABLED;
 
 public final class CrashActivity extends AppCompatActivity {
 

@@ -15,8 +15,7 @@ import java.util.TimerTask;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.ActivityCounterBinding;
-import pl.szczodrzynski.edziennik.datamodels.LessonFull;
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 

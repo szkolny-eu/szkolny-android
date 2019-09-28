@@ -40,22 +40,22 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.databinding.FragmentRegisterAttendancesBinding;
-import pl.szczodrzynski.edziennik.datamodels.AttendanceFull;
-import pl.szczodrzynski.edziennik.datamodels.Subject;
+import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceFull;
+import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Week;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_ABSENT;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_ABSENT_EXCUSED;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_BELATED;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_BELATED_EXCUSED;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_PRESENT;
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_RELEASED;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_VULCAN;
-import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_ATTENDANCE;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_PRESENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_RELEASED;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
+import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ATTENDANCE;
 
 public class RegisterAttendancesFragment extends Fragment {
 

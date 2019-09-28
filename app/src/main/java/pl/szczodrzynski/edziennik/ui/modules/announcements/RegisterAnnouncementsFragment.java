@@ -24,7 +24,7 @@ import pl.szczodrzynski.edziennik.databinding.FragmentRegisterSchoolNoticesBindi
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
-import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_ANNOUNCEMENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ANNOUNCEMENT;
 
 public class RegisterAnnouncementsFragment extends Fragment {
 
