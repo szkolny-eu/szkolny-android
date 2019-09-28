@@ -4,7 +4,7 @@ import android.util.LongSparseArray
 import androidx.core.util.forEach
 import androidx.core.util.isNotEmpty
 import pl.szczodrzynski.edziennik.datamodels.*
-import pl.szczodrzynski.edziennik.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Date
 
 data class DataStore(private val appDb: AppDb, val profileId: Int) {
     val teacherList: LongSparseArray<Teacher> = LongSparseArray()

@@ -2,7 +2,7 @@ package pl.szczodrzynski.edziennik.datamodels;
 
 import androidx.room.TypeConverter;
 
-import pl.szczodrzynski.edziennik.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 
 public class ConverterTime {
 

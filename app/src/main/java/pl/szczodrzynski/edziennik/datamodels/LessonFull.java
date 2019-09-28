@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 
 import static pl.szczodrzynski.edziennik.datamodels.LessonChange.TYPE_ADDED;
 import static pl.szczodrzynski.edziennik.datamodels.LessonChange.TYPE_CANCELLED;

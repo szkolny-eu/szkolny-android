@@ -8,8 +8,8 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.annotation.NonNull;
 
-import pl.szczodrzynski.edziennik.models.Time;
-import pl.szczodrzynski.edziennik.models.Week;
+import pl.szczodrzynski.edziennik.utils.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Week;
 
 @Entity(tableName = "lessons",
         primaryKeys = {"profileId", "lessonWeekDay", "lessonStartTime", "lessonEndTime"},

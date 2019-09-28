@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.annotation.NonNull;
 
-import pl.szczodrzynski.edziennik.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 
 @Entity(tableName = "luckyNumbers",
         primaryKeys = {"profileId", "luckyNumberDate"})

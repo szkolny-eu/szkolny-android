@@ -8,11 +8,10 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
-import pl.szczodrzynski.edziennik.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 
 import java.util.List;
 
-import static pl.szczodrzynski.edziennik.datamodels.Attendance.TYPE_PRESENT;
 import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_ATTENDANCE;
 
 @Dao

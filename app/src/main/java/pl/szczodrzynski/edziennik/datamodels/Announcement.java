@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
-import pl.szczodrzynski.edziennik.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 
 @Entity(tableName = "announcements",
         primaryKeys = {"profileId", "announcementId"},

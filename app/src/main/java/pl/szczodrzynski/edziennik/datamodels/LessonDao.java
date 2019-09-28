@@ -9,12 +9,11 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.annotation.NonNull;
-import android.util.Log;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 
 @Dao
 public abstract class LessonDao {

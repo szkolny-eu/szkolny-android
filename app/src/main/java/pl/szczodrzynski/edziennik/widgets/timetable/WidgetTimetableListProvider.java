@@ -28,9 +28,9 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.WidgetTimetable;
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.ItemWidgetTimetableModel;
-import pl.szczodrzynski.edziennik.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 
 public class WidgetTimetableListProvider implements RemoteViewsService.RemoteViewsFactory {
 

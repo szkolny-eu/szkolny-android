@@ -23,8 +23,8 @@ import pl.szczodrzynski.edziennik.datamodels.EventType;
 import pl.szczodrzynski.edziennik.datamodels.FeedbackMessage;
 import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
 import pl.szczodrzynski.edziennik.datamodels.Team;
-import pl.szczodrzynski.edziennik.fragments.DebugFragment;
-import pl.szczodrzynski.edziennik.models.Notification;
+import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment;
+import pl.szczodrzynski.edziennik.utils.models.Notification;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
 
 import static pl.szczodrzynski.edziennik.App.APP_URL;
@@ -195,7 +195,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 app.checkDevModePassword();
                                 feedbackMessage.text = "devmode "+(App.devMode ? "allowed" : "disallowed");
                             }
-                            Intent intent = new Intent("pl.szczodrzynski.edziennik.activities.FeedbackActivity");
+                            Intent intent = new Intent("pl.szczodrzynski.edziennik.ui.modules.base.FeedbackActivity");
                             intent.putExtra("type", "user_chat");
                             intent.putExtra("message", app.gson.toJson(feedbackMessage));
                             app.sendBroadcast(intent);
@@ -217,7 +217,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         feedbackMessage.fromUser = remoteMessage.getData().get("from_user");
                         feedbackMessage.fromUserName = remoteMessage.getData().get("from_user_name");
                         feedbackMessage.sentTime = Long.parseLong(remoteMessage.getData().get("sent_time"));
-                        Intent intent = new Intent("pl.szczodrzynski.edziennik.activities.FeedbackActivity");
+                        Intent intent = new Intent("pl.szczodrzynski.edziennik.ui.modules.base.FeedbackActivity");
                         intent.putExtra("type", "user_chat");
                         intent.putExtra("message", app.gson.toJson(feedbackMessage));
                         app.sendBroadcast(intent);

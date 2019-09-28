@@ -6,7 +6,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
-import pl.szczodrzynski.edziennik.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 
 import android.content.Context;
 

@@ -5,8 +5,8 @@
     <data>
         <import type="android.view.View"/>
         <import type="pl.szczodrzynski.edziennik.utils.Utils"/>
-        <import type="pl.szczodrzynski.edziennik.models.Date"/>
-        <import type="pl.szczodrzynski.edziennik.models.Time"/>
+        <import type="pl.szczodrzynski.edziennik.utils.models.Date"/>
+        <import type="pl.szczodrzynski.edziennik.utils.models.Time"/>
         <variable
             name="grade"
             type="pl.szczodrzynski.edziennik.datamodels.GradeFull" />

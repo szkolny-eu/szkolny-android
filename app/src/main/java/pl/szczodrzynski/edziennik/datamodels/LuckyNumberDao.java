@@ -8,7 +8,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 
 @Dao
 public interface LuckyNumberDao {

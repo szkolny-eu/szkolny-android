@@ -6,8 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
 
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 
 @Entity(tableName = "attendances",
         primaryKeys = {"profileId", "attendanceId", "attendanceLessonDate", "attendanceStartTime"},

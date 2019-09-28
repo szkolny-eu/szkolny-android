@@ -14,8 +14,8 @@ import android.util.Log;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 
 import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_EVENT;
 import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_HOMEWORK;

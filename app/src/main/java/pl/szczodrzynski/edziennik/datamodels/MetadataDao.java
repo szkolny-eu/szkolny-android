@@ -9,7 +9,7 @@ import androidx.room.Transaction;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.models.db.UnreadCounter;
+import pl.szczodrzynski.edziennik.utils.models.db.UnreadCounter;
 
 import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_ANNOUNCEMENT;
 import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_ATTENDANCE;

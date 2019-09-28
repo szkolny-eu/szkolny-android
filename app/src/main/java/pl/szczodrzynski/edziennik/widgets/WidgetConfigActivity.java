@@ -3,21 +3,14 @@ package pl.szczodrzynski.edziennik.widgets;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
-import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.SeekBar;
-
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
@@ -34,7 +27,6 @@ import pl.szczodrzynski.edziennik.widgets.luckynumber.WidgetLuckyNumber;
 import pl.szczodrzynski.edziennik.widgets.notifications.WidgetNotifications;
 
 import static pl.szczodrzynski.edziennik.ExtensionsKt.filterOutArchived;
-import static pl.szczodrzynski.edziennik.utils.Utils.d;
 
 public class WidgetConfigActivity extends Activity {
 

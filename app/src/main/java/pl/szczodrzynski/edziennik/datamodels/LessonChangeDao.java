@@ -11,8 +11,8 @@ import androidx.room.RawQuery;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.db.LessonChangeCounter;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.db.LessonChangeCounter;
 
 import static pl.szczodrzynski.edziennik.datamodels.Metadata.TYPE_LESSON_CHANGE;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;

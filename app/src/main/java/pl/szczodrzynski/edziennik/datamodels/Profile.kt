@@ -3,25 +3,20 @@ package pl.szczodrzynski.edziennik.datamodels
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
-import android.media.ThumbnailUtils
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.widget.ImageView
-import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 
 import androidx.room.Ignore
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.colorFromName
 
-import pl.szczodrzynski.edziennik.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.ImageHolder
 import pl.szczodrzynski.navlib.R
 import pl.szczodrzynski.navlib.drawer.IDrawerProfile

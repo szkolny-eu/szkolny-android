@@ -73,11 +73,11 @@ import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
 import pl.szczodrzynski.edziennik.datamodels.Subject;
 import pl.szczodrzynski.edziennik.datamodels.Teacher;
 import pl.szczodrzynski.edziennik.datamodels.Team;
-import pl.szczodrzynski.edziennik.messages.MessagesComposeInfo;
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.Endpoint;
-import pl.szczodrzynski.edziennik.models.Time;
-import pl.szczodrzynski.edziennik.models.Week;
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeInfo;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Endpoint;
+import pl.szczodrzynski.edziennik.utils.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Week;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;

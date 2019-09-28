@@ -19,8 +19,8 @@ import pl.szczodrzynski.edziennik.datamodels.LoginStore
 import pl.szczodrzynski.edziennik.datamodels.MessageFull
 import pl.szczodrzynski.edziennik.datamodels.Profile
 import pl.szczodrzynski.edziennik.datamodels.ProfileFull
-import pl.szczodrzynski.edziennik.messages.MessagesComposeInfo
-import pl.szczodrzynski.edziennik.models.Endpoint
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeInfo
+import pl.szczodrzynski.edziennik.utils.models.Endpoint
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.lang.Exception
 

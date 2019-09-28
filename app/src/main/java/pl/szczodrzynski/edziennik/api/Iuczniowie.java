@@ -59,11 +59,11 @@ import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
 import pl.szczodrzynski.edziennik.datamodels.Subject;
 import pl.szczodrzynski.edziennik.datamodels.Teacher;
 import pl.szczodrzynski.edziennik.datamodels.Team;
-import pl.szczodrzynski.edziennik.messages.MessagesComposeInfo;
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.Endpoint;
-import pl.szczodrzynski.edziennik.models.Time;
-import pl.szczodrzynski.edziennik.models.Week;
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeInfo;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Endpoint;
+import pl.szczodrzynski.edziennik.utils.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Week;
 
 import static pl.szczodrzynski.edziennik.api.AppError.CODE_INVALID_LOGIN;
 import static pl.szczodrzynski.edziennik.api.AppError.CODE_INVALID_SCHOOL_NAME;

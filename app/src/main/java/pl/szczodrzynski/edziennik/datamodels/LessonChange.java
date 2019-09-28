@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 
 @Entity(tableName = "lessonChanges",
         primaryKeys = {"profileId", "lessonChangeDate", "lessonChangeStartTime", "lessonChangeEndTime"},
