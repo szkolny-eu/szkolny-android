@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/lesson_change_container"
-            layout="@layout/row_dialog_lesson_change_item"
+            layout="@layout/row_lesson_change_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"

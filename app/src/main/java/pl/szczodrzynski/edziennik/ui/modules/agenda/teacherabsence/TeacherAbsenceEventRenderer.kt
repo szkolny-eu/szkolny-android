@@ -8,9 +8,9 @@ import pl.szczodrzynski.edziennik.R
 
 class TeacherAbsenceEventRenderer : EventRenderer<TeacherAbsenceEvent>() {
     override fun render(view: View?, event: TeacherAbsenceEvent) {
-        val card = view?.findViewById<CardView>(R.id.teacher_absence_card)
-        val changeText = view?.findViewById<TextView>(R.id.teacher_absence_text)
-        val changeCount = view?.findViewById<TextView>(R.id.teacher_absence_count)
+        val card = view?.findViewById<CardView>(R.id.teacherAbsenceCard)
+        val changeText = view?.findViewById<TextView>(R.id.teacherAbsenceText)
+        val changeCount = view?.findViewById<TextView>(R.id.teacherAbsenceCount)
         card?.setCardBackgroundColor(event.color)
         changeText?.setTextColor(event.textColor)
         changeCount?.setTextColor(event.textColor)

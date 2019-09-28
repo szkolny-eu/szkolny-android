@@ -44,6 +44,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeCounter;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeEvent;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeEventRenderer;
@@ -322,6 +323,8 @@ public class AgendaFragment extends Fragment {
                         } else if (calendarEvent instanceof LessonChangeEvent) {
                             new LessonChangeDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
                             //Toast.makeText(app, "Clicked "+((LessonChangeEvent) calendarEvent).getLessonChangeDate().getFormattedString(), Toast.LENGTH_SHORT).show();
+                        } else if (calendarEvent instanceof TeacherAbsenceEvent) {
+                            new TeacherAbsenceDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
                         }
                     }
                 }, new LessonChangeEventRenderer(), new TeacherAbsenceEventRenderer());
