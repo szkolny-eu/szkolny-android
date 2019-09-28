@@ -36,6 +36,7 @@ import java.util.Locale;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
@@ -43,6 +44,12 @@ import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
+import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeCounter;
+import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeEvent;
+import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeEventRenderer;
+import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceCounter;
+import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEvent;
+import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEventRenderer;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.Colors;
@@ -56,7 +63,7 @@ import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.AGENDA
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.AGENDA_DEFAULT;
 import static pl.szczodrzynski.edziennik.utils.Utils.intToStr;
 
-public class AgendaDefaultFragment extends Fragment {
+public class AgendaFragment extends Fragment {
 
     private App app = null;
     private MainActivity activity = null;
@@ -174,6 +181,45 @@ public class AgendaDefaultFragment extends Fragment {
             }
 
 
+            List<TeacherAbsenceFull> teacherAbsenceList = app.db.teacherAbsenceDao().getAllFull(App.profileId);
+            List<TeacherAbsenceCounter> teacherAbsenceCounters = new ArrayList<>();
+
+            for (TeacherAbsenceFull absence : teacherAbsenceList) {
+                for (Date date = absence.getDateFrom().clone(); date.compareTo(absence.getDateTo()) < 1; date.stepForward(0, 0, 1)) {
+                    boolean counterFound = false;
+                    for (TeacherAbsenceCounter counter : teacherAbsenceCounters) {
+                        if (counter.getTeacherAbsenceDate().compareTo(date) == 0) {
+                            counter.setTeacherAbsenceCount(counter.getTeacherAbsenceCount() + 1);
+                            counterFound = true;
+                            break;
+                        }
+                    }
+
+                    if (!counterFound) {
+                        teacherAbsenceCounters.add(new TeacherAbsenceCounter(date.clone(), 1));
+                    }
+                }
+            }
+
+            for (TeacherAbsenceCounter counter : teacherAbsenceCounters) {
+                Calendar startTime = Calendar.getInstance();
+                Calendar endTime = Calendar.getInstance();
+                Date date = counter.getTeacherAbsenceDate();
+                startTime.set(date.year, date.month - 1, date.day, 10, 0, 0);
+                endTime.setTimeInMillis(startTime.getTimeInMillis() + (1000 * 60 * 45));
+                eventList.add(new TeacherAbsenceEvent(
+                        date.getInMillis(),
+                        0xff8f0119,
+                        Colors.legibleTextColor(0xff8f0119),
+                        startTime,
+                        endTime,
+                        App.profileId,
+                        date,
+                        counter.getTeacherAbsenceCount()
+                ));
+            }
+
+
             List<EventFull> events = app.db.eventDao().getAllNow(App.profileId);
             for (EventFull event : events) {
                 Calendar startTime = Calendar.getInstance();
@@ -278,7 +324,7 @@ public class AgendaDefaultFragment extends Fragment {
                             //Toast.makeText(app, "Clicked "+((LessonChangeEvent) calendarEvent).getLessonChangeDate().getFormattedString(), Toast.LENGTH_SHORT).show();
                         }
                     }
-                }, new LessonChangeEventRenderer());
+                }, new LessonChangeEventRenderer(), new TeacherAbsenceEventRenderer());
                 b_default.progressBar.setVisibility(View.GONE);
             });
         }), 500);

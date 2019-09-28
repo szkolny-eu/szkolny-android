@@ -851,4 +851,5 @@
     <string name="messages_compose_menu_discard">Abort message</string>
     <string name="messages_compose_menu_save_draft">Save draft</string>
     <string name="messages_compose_menu_send">Send</string>
+    <string name="agenda_teacher_absence">Teachers absence</string>
 </resources>

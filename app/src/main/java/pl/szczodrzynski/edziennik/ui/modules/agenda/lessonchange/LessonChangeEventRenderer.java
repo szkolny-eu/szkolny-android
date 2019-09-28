@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.modules.agenda;
+package pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange;
 
 import android.view.View;
 import android.widget.TextView;

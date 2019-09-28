@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.modules.agenda;
+package pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange;
 
 import com.github.tibolte.agendacalendarview.models.CalendarEvent;
 import com.github.tibolte.agendacalendarview.models.IDayItem;

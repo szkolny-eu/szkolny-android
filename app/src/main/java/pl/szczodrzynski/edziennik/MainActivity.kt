@@ -56,7 +56,7 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.sync.SyncJob
-import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaDefaultFragment
+import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
 import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
                     .withBadgeTypeId(TYPE_LESSON_CHANGE)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_AGENDA, R.string.menu_agenda, AgendaDefaultFragment::class)
+            list += NavTarget(DRAWER_ITEM_AGENDA, R.string.menu_agenda, AgendaFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_calendar)
                     .withBadgeTypeId(TYPE_EVENT)
                     .isInDrawer(true)

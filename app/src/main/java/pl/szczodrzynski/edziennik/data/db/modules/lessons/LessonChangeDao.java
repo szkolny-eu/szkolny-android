@@ -12,7 +12,7 @@ import androidx.room.RawQuery;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.ui.modules.agenda.LessonChangeCounter;
+import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeCounter;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_LESSON_CHANGE;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
