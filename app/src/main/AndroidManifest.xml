@@ -29,22 +29,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".messages.MessagesComposeActivity"
+            android:name="pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/messages_compose_title"
             android:theme="@style/AppTheme.Black" />
         <activity
-            android:name=".activities.FeedbackActivity"
+            android:name=".ui.modules.base.FeedbackActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".login.LoginActivity"
+            android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.Light" />
         <activity
-            android:name=".intro.ChangelogIntroActivity"
+            android:name=".ui.modules.intro.ChangelogIntroActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:theme="@style/Theme.Intro" />
@@ -57,7 +57,7 @@
              |_|    |_|_|  \___|_.__/ \__,_|___/\___/
         -->
         <activity
-            android:name=".activities.CrashActivity"
+            android:name=".ui.modules.base.CrashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:process=":error_activity"
             android:theme="@style/DeadTheme" />
@@ -72,7 +72,7 @@
                                                                         |___/
         -->
         <activity
-            android:name=".activities.CrashGtfoActivity"
+            android:name=".ui.modules.base.CrashGtfoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/DeadTheme" />
         <activity
@@ -103,7 +103,7 @@
             android:theme="@style/AppTheme.NoDisplay" />
 
         <activity
-            android:name=".activities.SettingsLicenseActivity"
+            android:name=".ui.modules.settings.SettingsLicenseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme" />
 
@@ -113,14 +113,14 @@
             android:theme="@style/Base.Theme.AppCompat" />
 
         <activity
-            android:name=".activities.WebPushConfigActivity"
+            android:name=".ui.modules.webpush.WebPushConfigActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.Dark" />
 
         <activity
-            android:name=".activities.CounterActivity"
+            android:name=".ui.modules.home.CounterActivity"
             android:theme="@style/AppTheme.Black" />
-        <activity android:name=".activities.QrScannerActivity" />
+        <activity android:name=".ui.modules.webpush.QrScannerActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

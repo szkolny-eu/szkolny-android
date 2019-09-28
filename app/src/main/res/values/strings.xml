@@ -76,8 +76,8 @@
     <string name="attendances_releases">Zwolnienia:</string>
     <string name="attendances_summary_subject_loading_format">Wszystkie przedmioty</string>
     <string name="attendances_summary_title_loading_format">Podsumowanie - ładowanie…</string>
-    <string name="attendances_summary_title_semester_format">Podsumowanie - semestr %d&#160;</string>
-    <string name="attendances_summary_title_year">Podsumowanie - cały rok&#160;</string>
+    <string name="attendance_summary_title_semester_format">Podsumowanie - semestr %d&#160;</string>
+    <string name="attendance_summary_title_year">Podsumowanie - cały rok&#160;</string>
     <string name="back">Wróć</string>
     <string name="bell_sync_adjust_content">Dostosuj wartość przesunięcia dzwonka. Format: ±H:MM:SS</string>
     <string name="bell_sync_adjust_error">Nieprawidłowy format</string>
@@ -425,7 +425,7 @@
     <string name="menu_add_new_profile">Dodaj nowego ucznia</string>
     <string name="menu_agenda">Terminarz</string>
     <string name="menu_announcements">Tablica ogłoszeń</string>
-    <string name="menu_attendances">Frekwencja</string>
+    <string name="menu_attendance">Frekwencja</string>
     <string name="menu_generate_block_timetable">Zapisz plan lekcji jako obraz</string>
     <string name="menu_generate_block_timetable_desc">Generuje plan lekcji na cały tydzień</string>
     <string name="menu_grades">Oceny</string>
@@ -643,7 +643,7 @@
     <string name="settings_register_shared_events_subtext">Udostępniaj sprawdziany w swojej klasie</string>
     <string name="settings_register_shared_events_text">Włącz Udostępnianie wydarzeń</string>
     <string name="settings_sync_customize_endpoint_announcements">Tablica ogłoszeń</string>
-    <string name="settings_sync_customize_endpoint_attendances">Obecności/nieobecności</string>
+    <string name="settings_sync_customize_endpoint_attendance">Obecności/nieobecności</string>
     <string name="settings_sync_customize_endpoint_class_free_days">Dni wolne klasy</string>
     <string name="settings_sync_customize_endpoint_classrooms">Sale lekcyjne</string>
     <string name="settings_sync_customize_endpoint_events">Wydarzenia/terminarz</string>
@@ -726,7 +726,7 @@
     <string name="sync_action_syncing_account_info">Pobieranie informacji o koncie</string>
     <string name="sync_action_syncing_announcements">Pobieranie ogłoszeń szkolnych</string>
     <string name="sync_action_syncing_attendance_types">Pobieranie kategorii obecności</string>
-    <string name="sync_action_syncing_attendances">Pobieranie obecności</string>
+    <string name="sync_action_syncing_attendance">Pobieranie obecności</string>
     <string name="sync_action_syncing_behaviour_grade_categories">Pobieranie kategorii ocen z zachowania</string>
     <string name="sync_action_syncing_behaviour_grades">Pobieranie ocen z zachowania</string>
     <string name="sync_action_syncing_calendar">Pobieranie kalendarza</string>
@@ -794,7 +794,7 @@
     <string name="sync_feature_agenda">Pobieram terminarz…</string>
     <string name="sync_feature_all">Wszystkie</string>
     <string name="sync_feature_announcements">Pobieram tablicę ogłoszeń…</string>
-    <string name="sync_feature_attendances">Pobieram obecności…</string>
+    <string name="sync_feature_attendance">Pobieram obecności…</string>
     <string name="sync_feature_grades">Pobieram oceny…</string>
     <string name="sync_feature_homework">Pobieram zadania domowe…</string>
     <string name="sync_feature_messages_inbox">Pobieram wiadomości odebrane…</string>

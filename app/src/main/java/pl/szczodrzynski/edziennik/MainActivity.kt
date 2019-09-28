@@ -19,7 +19,7 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
-import pl.szczodrzynski.edziennik.datamodels.Metadata.*
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.navlib.NavView
 import pl.szczodrzynski.navlib.SystemBarsUtil
@@ -41,22 +41,35 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
-import pl.szczodrzynski.edziennik.api.AppError
-import pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.*
-import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback
+import pl.szczodrzynski.edziennik.data.api.AppError
+import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.*
+import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
-import pl.szczodrzynski.edziennik.datamodels.LoginStore
-import pl.szczodrzynski.edziennik.datamodels.Profile
-import pl.szczodrzynski.edziennik.datamodels.ProfileFull
-import pl.szczodrzynski.edziennik.dialogs.ChangelogDialog
-import pl.szczodrzynski.edziennik.fragments.*
-import pl.szczodrzynski.edziennik.homework.HomeworkFragment
-import pl.szczodrzynski.edziennik.login.LoginActivity
-import pl.szczodrzynski.edziennik.messages.MessagesDetailsFragment
-import pl.szczodrzynski.edziennik.messages.MessagesFragment
-import pl.szczodrzynski.edziennik.models.NavTarget
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
+import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
+import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
+import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesDetailsFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
+import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.sync.SyncJob
+import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaDefaultFragment
+import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
+import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
+import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment
+import pl.szczodrzynski.edziennik.ui.modules.base.FeedbackFragment
+import pl.szczodrzynski.edziennik.ui.modules.base.HelpFragment
+import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
+import pl.szczodrzynski.edziennik.ui.modules.grades.GradesFragment
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
+import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
+import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsFragment
+import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
+import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
+import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -85,8 +98,8 @@ class MainActivity : AppCompatActivity() {
         const val DRAWER_ITEM_GRADES = 13
         const val DRAWER_ITEM_MESSAGES = 17
         const val DRAWER_ITEM_HOMEWORK = 14
-        const val DRAWER_ITEM_NOTICES = 15
-        const val DRAWER_ITEM_ATTENDANCES = 16
+        const val DRAWER_ITEM_BEHAVIOUR = 15
+        const val DRAWER_ITEM_ATTENDANCE = 16
         const val DRAWER_ITEM_ANNOUNCEMENTS = 18
         const val DRAWER_ITEM_NOTIFICATIONS = 20
         const val DRAWER_ITEM_SETTINGS = 101
@@ -110,17 +123,17 @@ class MainActivity : AppCompatActivity() {
                     .isStatic(true)
                     .withPopToHome(false)
 
-            list += NavTarget(DRAWER_ITEM_TIMETABLE, R.string.menu_timetable, RegisterTimetableFragment::class)
+            list += NavTarget(DRAWER_ITEM_TIMETABLE, R.string.menu_timetable, TimetableFragment::class)
                     .withIcon(CommunityMaterial.Icon2.cmd_timetable)
                     .withBadgeTypeId(TYPE_LESSON_CHANGE)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_AGENDA, R.string.menu_agenda, RegisterAgendaDefaultFragment::class)
+            list += NavTarget(DRAWER_ITEM_AGENDA, R.string.menu_agenda, AgendaDefaultFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_calendar)
                     .withBadgeTypeId(TYPE_EVENT)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, RegisterGradesFragment::class)
+            list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesFragment::class)
                     .withIcon(CommunityMaterial.Icon2.cmd_numeric_5_box)
                     .withBadgeTypeId(TYPE_GRADE)
                     .isInDrawer(true)
@@ -135,24 +148,24 @@ class MainActivity : AppCompatActivity() {
                     .withBadgeTypeId(TYPE_HOMEWORK)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_NOTICES, R.string.menu_notices, RegisterNoticesFragment::class)
+            list += NavTarget(DRAWER_ITEM_BEHAVIOUR, R.string.menu_notices, BehaviourFragment::class)
                     .withIcon(CommunityMaterial.Icon2.cmd_message_alert)
                     .withBadgeTypeId(TYPE_NOTICE)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_ATTENDANCES, R.string.menu_attendances, RegisterAttendancesFragment::class)
+            list += NavTarget(DRAWER_ITEM_ATTENDANCE, R.string.menu_attendance, AttendanceFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_calendar_remove)
                     .withBadgeTypeId(TYPE_ATTENDANCE)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS, R.string.menu_announcements, RegisterAnnouncementsFragment::class)
+            list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS, R.string.menu_announcements, AnnouncementsFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_bulletin_board)
                     .withBadgeTypeId(TYPE_ANNOUNCEMENT)
                     .isInDrawer(true)
 
 
             // static drawer items
-            list += NavTarget(DRAWER_ITEM_NOTIFICATIONS, R.string.menu_notifications, RegisterNotificationsFragment::class)
+            list += NavTarget(DRAWER_ITEM_NOTIFICATIONS, R.string.menu_notifications, NotificationsFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_bell_ring)
                     .isInDrawer(true)
                     .isStatic(true)
@@ -524,8 +537,8 @@ class MainActivity : AppCompatActivity() {
             DRAWER_ITEM_AGENDA -> FEATURE_AGENDA
             DRAWER_ITEM_GRADES -> FEATURE_GRADES
             DRAWER_ITEM_HOMEWORK -> FEATURE_HOMEWORK
-            DRAWER_ITEM_NOTICES -> FEATURE_NOTICES
-            DRAWER_ITEM_ATTENDANCES -> FEATURE_ATTENDANCES
+            DRAWER_ITEM_BEHAVIOUR -> FEATURE_NOTICES
+            DRAWER_ITEM_ATTENDANCE -> FEATURE_ATTENDANCE
             DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
                 1 -> FEATURE_MESSAGES_OUTBOX
                 else -> FEATURE_MESSAGES_INBOX
@@ -540,8 +553,8 @@ class MainActivity : AppCompatActivity() {
             DRAWER_ITEM_AGENDA -> R.string.sync_feature_agenda
             DRAWER_ITEM_GRADES -> R.string.sync_feature_grades
             DRAWER_ITEM_HOMEWORK -> R.string.sync_feature_homework
-            DRAWER_ITEM_NOTICES -> R.string.sync_feature_notices
-            DRAWER_ITEM_ATTENDANCES -> R.string.sync_feature_attendances
+            DRAWER_ITEM_BEHAVIOUR -> R.string.sync_feature_notices
+            DRAWER_ITEM_ATTENDANCE -> R.string.sync_feature_attendance
             DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
                 1 -> R.string.sync_feature_messages_outbox
                 else -> R.string.sync_feature_messages_inbox
