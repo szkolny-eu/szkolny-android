@@ -5,11 +5,11 @@ import androidx.room.ColumnInfo
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ANNOUNCEMENTS
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCES
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCE
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_NOTICES
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_BEHAVIOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.*
@@ -52,8 +52,8 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_GRADES)
                     fragmentIds.add(DRAWER_ITEM_MESSAGES)
                     fragmentIds.add(DRAWER_ITEM_HOMEWORK)
-                    fragmentIds.add(DRAWER_ITEM_NOTICES)
-                    fragmentIds.add(DRAWER_ITEM_ATTENDANCES)
+                    fragmentIds.add(DRAWER_ITEM_BEHAVIOUR)
+                    fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
                     return fragmentIds
                 }
                 LOGIN_TYPE_LIBRUS -> {
@@ -63,8 +63,8 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_GRADES)
                     fragmentIds.add(DRAWER_ITEM_MESSAGES)
                     fragmentIds.add(DRAWER_ITEM_HOMEWORK)
-                    fragmentIds.add(DRAWER_ITEM_NOTICES)
-                    fragmentIds.add(DRAWER_ITEM_ATTENDANCES)
+                    fragmentIds.add(DRAWER_ITEM_BEHAVIOUR)
+                    fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
                     fragmentIds.add(DRAWER_ITEM_ANNOUNCEMENTS)
                     return fragmentIds
                 }
@@ -74,8 +74,8 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_AGENDA)
                     fragmentIds.add(DRAWER_ITEM_GRADES)
                     fragmentIds.add(DRAWER_ITEM_MESSAGES)
-                    fragmentIds.add(DRAWER_ITEM_NOTICES)
-                    fragmentIds.add(DRAWER_ITEM_ATTENDANCES)
+                    fragmentIds.add(DRAWER_ITEM_BEHAVIOUR)
+                    fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
                     fragmentIds.add(DRAWER_ITEM_ANNOUNCEMENTS)
                     return fragmentIds
                 }

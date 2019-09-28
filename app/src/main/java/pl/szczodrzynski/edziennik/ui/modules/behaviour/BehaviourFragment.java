@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.modules.notices;
+package pl.szczodrzynski.edziennik.ui.modules.behaviour;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
@@ -22,22 +18,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterNoticesBinding;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
 import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeFull;
+import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_NOTICE;
 
-public class RegisterNoticesFragment extends Fragment {
+public class BehaviourFragment extends Fragment {
 
     private App app = null;
     private MainActivity activity = null;
-    private FragmentRegisterNoticesBinding b = null;
+    private FragmentBehaviourBinding b = null;
 
     private int displayMode = MODE_YEAR;
     private static final int MODE_YEAR = 0;
@@ -56,7 +56,7 @@ public class RegisterNoticesFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_register_notices, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_behaviour, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
         return b.getRoot();
     }
@@ -78,7 +78,7 @@ public class RegisterNoticesFragment extends Fragment {
         );
 
         /*b.refreshLayout.setOnRefreshListener(() -> {
-            activity.syncCurrentFeature(MainActivity.DRAWER_ITEM_NOTICES, b.refreshLayout);
+            activity.syncCurrentFeature(MainActivity.DRAWER_ITEM_BEHAVIOUR, b.refreshLayout);
         });*/
 
         b.noticesSummaryTitle.setOnClickListener((v -> {

@@ -7,30 +7,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
+
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.DialogAnnouncementBinding;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterSchoolNoticesBinding;
+import pl.szczodrzynski.edziennik.databinding.FragmentAnnouncementsBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ANNOUNCEMENT;
 
-public class RegisterAnnouncementsFragment extends Fragment {
+public class AnnouncementsFragment extends Fragment {
 
     private App app = null;
     private MainActivity activity = null;
-    private FragmentRegisterSchoolNoticesBinding b = null;
+    private FragmentAnnouncementsBinding b = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class RegisterAnnouncementsFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_register_school_notices, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_announcements, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
         return b.getRoot();
     }

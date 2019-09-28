@@ -24,12 +24,12 @@ import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.T
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_PRESENT;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_RELEASED;
 
-public class AttendancesAdapter extends RecyclerView.Adapter<AttendancesAdapter.ViewHolder> {
+public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
     private Context context;
     public List<AttendanceFull> attendanceList;
 
     //getting the context and product list with constructor
-    public AttendancesAdapter(Context mCtx, List<AttendanceFull> noticeList) {
+    public AttendanceAdapter(Context mCtx, List<AttendanceFull> noticeList) {
         this.context = mCtx;
         this.attendanceList = noticeList;
     }

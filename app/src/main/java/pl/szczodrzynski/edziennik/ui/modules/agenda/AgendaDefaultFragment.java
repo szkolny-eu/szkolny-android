@@ -36,8 +36,8 @@ import java.util.Locale;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterAgendaCalendarBinding;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterAgendaDefaultBinding;
+import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding;
+import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
@@ -55,15 +55,14 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_EVENT;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.AGENDA_CALENDAR;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.AGENDA_DEFAULT;
-import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 import static pl.szczodrzynski.edziennik.utils.Utils.intToStr;
 
-public class RegisterAgendaDefaultFragment extends Fragment {
+public class AgendaDefaultFragment extends Fragment {
 
     private App app = null;
     private MainActivity activity = null;
-    private FragmentRegisterAgendaDefaultBinding b_default = null;
-    private FragmentRegisterAgendaCalendarBinding b_calendar = null;
+    private FragmentAgendaDefaultBinding b_default = null;
+    private FragmentAgendaCalendarBinding b_calendar = null;
     private int viewType = AGENDA_DEFAULT;
 
     @Override
@@ -78,11 +77,11 @@ public class RegisterAgendaDefaultFragment extends Fragment {
         // activity, context and profile is valid
         viewType = app.profile.getAgendaViewType();
         if (viewType == AGENDA_DEFAULT) {
-            b_default = DataBindingUtil.inflate(inflater, R.layout.fragment_register_agenda_default, container, false);
+            b_default = DataBindingUtil.inflate(inflater, R.layout.fragment_agenda_default, container, false);
             return b_default.getRoot();
         }
         else {
-            b_calendar = DataBindingUtil.inflate(inflater, R.layout.fragment_register_agenda_calendar, container, false);
+            b_calendar = DataBindingUtil.inflate(inflater, R.layout.fragment_agenda_calendar, container, false);
             return b_calendar.getRoot();
         }
     }

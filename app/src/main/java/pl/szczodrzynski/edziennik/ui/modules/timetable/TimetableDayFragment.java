@@ -1,6 +1,10 @@
 package pl.szczodrzynski.edziennik.ui.modules.timetable;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -8,25 +12,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import java.util.ArrayList;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterTimetableDayBinding;
+import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.databinding.FragmentTimetableDayBinding;
+import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
-import pl.szczodrzynski.edziennik.utils.Themes;
 
-public class RegisterTimetableDayFragment extends Fragment {
+public class TimetableDayFragment extends Fragment {
 
     private App app = null;
     private MainActivity activity = null;
-    private FragmentRegisterTimetableDayBinding b = null;
+    private FragmentTimetableDayBinding b = null;
 
     private RecyclerView recyclerView;
 
@@ -40,7 +40,7 @@ public class RegisterTimetableDayFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_register_timetable_day, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_timetable_day, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
         return b.getRoot();
     }

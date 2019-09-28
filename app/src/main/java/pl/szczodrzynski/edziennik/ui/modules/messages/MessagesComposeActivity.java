@@ -35,14 +35,14 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.api.Edziennik;
 import pl.szczodrzynski.edziennik.data.api.AppError;
+import pl.szczodrzynski.edziennik.data.api.Edziennik;
 import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback;
-import pl.szczodrzynski.edziennik.databinding.MessagesComposeActivityBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
+import pl.szczodrzynski.edziennik.databinding.ActivityComposeMessageBinding;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Themes;
 
@@ -50,7 +50,7 @@ public class MessagesComposeActivity extends AppCompatActivity {
 
     private static final String TAG = "MessageCompose";
     private App app;
-    private MessagesComposeActivityBinding b;
+    private ActivityComposeMessageBinding b;
     private List<Teacher> teachers = new ArrayList<>();
     private ActionBar actionBar;
     private MessagesComposeInfo composeInfo;
@@ -60,7 +60,7 @@ public class MessagesComposeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         app = (App)getApplication();
         setTheme(Themes.INSTANCE.getAppTheme());
-        b = DataBindingUtil.inflate(getLayoutInflater(), R.layout.messages_compose_activity, null, false);
+        b = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_compose_message, null, false);
         setContentView(b.getRoot());
 
         composeInfo = Edziennik.getApi(app, app.profile.getLoginStoreType()).getComposeInfo(app.profile);

@@ -351,8 +351,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         buttonIds.add(MainActivity.DRAWER_ITEM_GRADES);
                         buttonIds.add(MainActivity.DRAWER_ITEM_MESSAGES);
                         buttonIds.add(MainActivity.DRAWER_ITEM_HOMEWORK);
-                        buttonIds.add(MainActivity.DRAWER_ITEM_NOTICES);
-                        buttonIds.add(MainActivity.DRAWER_ITEM_ATTENDANCES);
+                        buttonIds.add(MainActivity.DRAWER_ITEM_BEHAVIOUR);
+                        buttonIds.add(MainActivity.DRAWER_ITEM_ATTENDANCE);
                         buttonIds.add(MainActivity.DRAWER_ITEM_ANNOUNCEMENTS);
                         buttonIds.add(MainActivity.DRAWER_ITEM_NOTIFICATIONS);
                         buttonIds.add(MainActivity.DRAWER_ITEM_SETTINGS);
@@ -365,7 +365,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         buttonCaptions.add(getString(R.string.menu_messages));
                         buttonCaptions.add(getString(R.string.menu_homework));
                         buttonCaptions.add(getString(R.string.menu_notices));
-                        buttonCaptions.add(getString(R.string.menu_attendances));
+                        buttonCaptions.add(getString(R.string.menu_attendance));
                         buttonCaptions.add(getString(R.string.menu_announcements));
                         buttonCaptions.add(getString(R.string.menu_notifications));
                         buttonCaptions.add(getString(R.string.menu_settings));
@@ -1101,8 +1101,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             case "Notices":
                 stringRes = R.string.settings_sync_customize_endpoint_notices;
                 break;
-            case "Attendances":
-                stringRes = R.string.settings_sync_customize_endpoint_attendances;
+            case "Attendance":
+                stringRes = R.string.settings_sync_customize_endpoint_attendance;
                 break;
             case "Announcements":
                 stringRes = R.string.settings_sync_customize_endpoint_announcements;

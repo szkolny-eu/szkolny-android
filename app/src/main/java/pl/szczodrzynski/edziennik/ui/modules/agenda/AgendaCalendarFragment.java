@@ -27,7 +27,7 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterAgendaCalendarBinding;
+import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
@@ -36,11 +36,11 @@ import pl.szczodrzynski.edziennik.utils.Themes;
 
 import static pl.szczodrzynski.edziennik.utils.Utils.intToStr;
 
-public class RegisterAgendaCalendarFragment extends Fragment {
+public class AgendaCalendarFragment extends Fragment {
 
     private App app = null;
     private Activity activity = null;
-    private FragmentRegisterAgendaCalendarBinding b = null;
+    private FragmentAgendaCalendarBinding b = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class RegisterAgendaCalendarFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_register_agenda_calendar, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_agenda_calendar, container, false);
         return b.getRoot();
     }
 

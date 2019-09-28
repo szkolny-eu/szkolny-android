@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.modules.notices
+package pl.szczodrzynski.edziennik.ui.modules.behaviour
 
 import android.content.Context
 import android.graphics.PorterDuff

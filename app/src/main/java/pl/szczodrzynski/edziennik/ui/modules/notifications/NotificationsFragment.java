@@ -2,26 +2,27 @@ package pl.szczodrzynski.edziennik.ui.modules.notifications;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterNotificationsBinding;
+import pl.szczodrzynski.edziennik.databinding.FragmentNotificationsBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 
-public class RegisterNotificationsFragment extends Fragment {
+public class NotificationsFragment extends Fragment {
 
     private App app = null;
     private Activity activity = null;
-    private FragmentRegisterNotificationsBinding b = null;
+    private FragmentNotificationsBinding b = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class RegisterNotificationsFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_register_notifications, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_notifications, container, false);
         return b.getRoot();
     }
 

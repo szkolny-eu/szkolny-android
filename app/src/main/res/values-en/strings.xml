@@ -69,8 +69,8 @@
     <string name="attendances_releases">Releases:</string>
     <string name="attendances_summary_subject_loading_format">All subjects</string>
     <string name="attendances_summary_title_loading_format">Summary - loading…</string>
-    <string name="attendances_summary_title_semester_format">Summary - semester %d&#160;</string>
-    <string name="attendances_summary_title_year">Summary - all year&#160;</string>
+    <string name="attendance_summary_title_semester_format">Summary - semester %d&#160;</string>
+    <string name="attendance_summary_title_year">Summary - all year&#160;</string>
     <string name="back">Back</string>
     <string name="bell_sync_adjust_content">Adjust the bell sync time. Format: ±H:MM:SS</string>
     <string name="bell_sync_adjust_error">Incorrect format</string>
@@ -401,7 +401,7 @@
     <string name="menu_add_new_profile">Add a new student</string>
     <string name="menu_agenda">Agenda</string>
     <string name="menu_announcements">Notice board</string>
-    <string name="menu_attendances">Attendance</string>
+    <string name="menu_attendance">Attendance</string>
     <string name="menu_grades">Grades</string>
     <string name="menu_grades_editor">Grade editing simulator</string>
     <string name="menu_help">Help</string>
@@ -598,7 +598,7 @@
     <string name="settings_register_shared_events_subtext">Share exams in your class</string>
     <string name="settings_register_shared_events_text">Enable Event sharing</string>
     <string name="settings_sync_customize_endpoint_announcements">Notice board</string>
-    <string name="settings_sync_customize_endpoint_attendances">Attendances</string>
+    <string name="settings_sync_customize_endpoint_attendance">Attendances</string>
     <string name="settings_sync_customize_endpoint_class_free_days">Class free days</string>
     <string name="settings_sync_customize_endpoint_classrooms">Classrooms</string>
     <string name="settings_sync_customize_endpoint_events">Events/agenda</string>
@@ -680,7 +680,7 @@
     <string name="sync_action_syncing_account_info">Getting account info</string>
     <string name="sync_action_syncing_announcements">Getting notice board</string>
     <string name="sync_action_syncing_attendance_types">Getting attendance types</string>
-    <string name="sync_action_syncing_attendances">Getting attendance</string>
+    <string name="sync_action_syncing_attendance">Getting attendance</string>
     <string name="sync_action_syncing_behaviour_grade_categories">Getting behaviour grades categories</string>
     <string name="sync_action_syncing_behaviour_grades">Getting behaviour grades</string>
     <string name="sync_action_syncing_calendar">Getting agenda</string>
@@ -747,7 +747,7 @@
     <string name="sync_feature_agenda">Syncing agenda…</string>
     <string name="sync_feature_all">All</string>
     <string name="sync_feature_announcements">Syncing announcements…</string>
-    <string name="sync_feature_attendances">Syncing attendances…</string>
+    <string name="sync_feature_attendance">Syncing attendance…</string>
     <string name="sync_feature_grades">Syncing grades…</string>
     <string name="sync_feature_homework">Syncing homework…</string>
     <string name="sync_feature_messages_inbox">Syncing received messages…</string>

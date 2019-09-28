@@ -110,7 +110,7 @@ public class Vulcan implements EdziennikInterface {
     private static final String ENDPOINT_EVENTS = "mobile-api/Uczen.v3.Uczen/Sprawdziany";
     private static final String ENDPOINT_HOMEWORK = "mobile-api/Uczen.v3.Uczen/ZadaniaDomowe";
     private static final String ENDPOINT_NOTICES = "mobile-api/Uczen.v3.Uczen/UwagiUcznia";
-    private static final String ENDPOINT_ATTENDANCES = "mobile-api/Uczen.v3.Uczen/Frekwencje";
+    private static final String ENDPOINT_ATTENDANCE = "mobile-api/Uczen.v3.Uczen/Frekwencje";
     private static final String ENDPOINT_MESSAGES_RECEIVED = "mobile-api/Uczen.v3.Uczen/WiadomosciOdebrane";
     private static final String ENDPOINT_MESSAGES_SENT = "mobile-api/Uczen.v3.Uczen/WiadomosciWyslane";
     private static final String ENDPOINT_MESSAGES_CHANGE_STATUS = "mobile-api/Uczen.v3.Uczen/ZmienStatusWiadomosci";
@@ -261,7 +261,7 @@ public class Vulcan implements EdziennikInterface {
             targetEndpoints.add("Events");
             targetEndpoints.add("Homework");
             targetEndpoints.add("Notices");
-            targetEndpoints.add("Attendances");
+            targetEndpoints.add("Attendance");
             targetEndpoints.add("MessagesInbox");
             targetEndpoints.add("MessagesOutbox");
             targetEndpoints.add("Finish");
@@ -303,8 +303,8 @@ public class Vulcan implements EdziennikInterface {
                     case FEATURE_NOTICES:
                         targetEndpoints.add("Notices");
                         break;
-                    case FEATURE_ATTENDANCES:
-                        targetEndpoints.add("Attendances");
+                    case FEATURE_ATTENDANCE:
+                        targetEndpoints.add("Attendance");
                         break;
                     case FEATURE_MESSAGES_INBOX:
                         targetEndpoints.add("MessagesInbox");
@@ -386,8 +386,8 @@ public class Vulcan implements EdziennikInterface {
             case "Notices":
                 getNotices();
                 break;
-            case "Attendances":
-                getAttendances();
+            case "Attendance":
+                getAttendance();
                 break;
             case "MessagesInbox":
                 getMessagesInbox();
@@ -1459,18 +1459,18 @@ public class Vulcan implements EdziennikInterface {
         });
     }
 
-    private void getAttendances() {
-        callback.onActionStarted(R.string.sync_action_syncing_attendances);
+    private void getAttendance() {
+        callback.onActionStarted(R.string.sync_action_syncing_attendance);
         JsonObject json = new JsonObject();
         json.addProperty("DataPoczatkowa", true ? getCurrentSemesterStartDate().getStringY_m_d() : oneMonthBack.getStringY_m_d());
         json.addProperty("DataKoncowa", getCurrentSemesterEndDate().getStringY_m_d());
         json.addProperty("IdOddzial", studentClassId);
         json.addProperty("IdUczen", studentId);
         json.addProperty("IdOkresKlasyfikacyjny", studentSemesterId);
-        apiRequest(schoolSymbol+"/"+ENDPOINT_ATTENDANCES, json, result -> {
-            JsonArray attendances = result.getAsJsonObject("Data").getAsJsonArray("Frekwencje");
+        apiRequest(schoolSymbol+"/"+ ENDPOINT_ATTENDANCE, json, result -> {
+            JsonArray attendanceList = result.getAsJsonObject("Data").getAsJsonArray("Frekwencje");
 
-            for (JsonElement attendanceEl: attendances) {
+            for (JsonElement attendanceEl: attendanceList) {
                 JsonObject attendance = attendanceEl.getAsJsonObject();
 
                 Pair<Integer, String> attendanceCategory = attendanceCategories.get(attendance.get("IdKategoria").getAsInt());
@@ -1497,12 +1497,12 @@ public class Vulcan implements EdziennikInterface {
                         lessonRanges.get(attendance.get("IdPoraLekcji").getAsInt()).first,
                         type);
 
-                attendanceList.add(attendanceObject);
+                this.attendanceList.add(attendanceObject);
                 if (attendanceObject.type != TYPE_PRESENT) {
                     metadataList.add(new Metadata(profileId, Metadata.TYPE_ATTENDANCE, attendanceObject.id, profile.getEmpty(), profile.getEmpty(), attendanceObject.lessonDate.combineWith(attendanceObject.startTime)));
                 }
             }
-            r("finish", "Attendances");
+            r("finish", "Attendance");
         });
     }
 

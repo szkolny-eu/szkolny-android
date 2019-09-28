@@ -14,18 +14,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.cardview.widget.CardView;
-
 import android.os.Environment;
 import android.text.Html;
 import android.util.Log;
@@ -36,7 +24,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.tabs.TabLayout;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
 import java.io.File;
@@ -47,18 +46,18 @@ import java.util.List;
 import java.util.TreeMap;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterTimetableBinding;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
+import pl.szczodrzynski.edziennik.databinding.FragmentTimetableBinding;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
-import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Time;
-import pl.szczodrzynski.edziennik.utils.models.Week;
 import pl.szczodrzynski.edziennik.utils.SpannableHtmlTagHandler;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Week;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
@@ -68,12 +67,12 @@ import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 
-public class RegisterTimetableFragment extends Fragment {
+public class TimetableFragment extends Fragment {
     private static final String TAG = "RegisterTimetable";
 
     private App app = null;
     private MainActivity activity = null;
-    private FragmentRegisterTimetableBinding b = null;
+    private FragmentTimetableBinding b = null;
 
     private ViewPager viewPager;
     private static int pageSelection = -1;
@@ -89,7 +88,7 @@ public class RegisterTimetableFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_register_timetable, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_timetable, container, false);
         return b.getRoot();
     }
 
@@ -154,13 +153,13 @@ public class RegisterTimetableFragment extends Fragment {
         for (int i = 0; i < app.appConfig.timetableDisplayDaysForward + app.appConfig.timetableDisplayDaysBackward + 1; i++) {
             Bundle args = new Bundle();
             args.putLong("date", date.getValue());
-            RegisterTimetableDayFragment registerTimetableDayFragment = new RegisterTimetableDayFragment();
-            registerTimetableDayFragment.setArguments(args);
+            TimetableDayFragment timetableDayFragment = new TimetableDayFragment();
+            timetableDayFragment.setArguments(args);
             StringBuilder pageTitle = new StringBuilder(Week.getFullDayName(date.getWeekDay()));
             if (i > weekEnd || i < weekBeginning) {
                 pageTitle.append(", ").append(date.getStringDm());
             }
-            adapter.addFragment(registerTimetableDayFragment, pageTitle.toString());
+            adapter.addFragment(timetableDayFragment, pageTitle.toString());
             date.stepForward(0, 0, 1);
         }
         viewPager.setAdapter(adapter);

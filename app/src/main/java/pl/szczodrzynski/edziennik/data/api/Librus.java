@@ -297,8 +297,8 @@ public class Librus implements EdziennikInterface {
             targetEndpoints.add("Homework");
             targetEndpoints.add("LuckyNumbers");
             targetEndpoints.add("Notices");
-            targetEndpoints.add("AttendancesTypes");
-            targetEndpoints.add("Attendances");
+            targetEndpoints.add("AttendanceTypes");
+            targetEndpoints.add("Attendance");
             targetEndpoints.add("Announcements");
             targetEndpoints.add("PtMeetings");
 
@@ -371,9 +371,9 @@ public class Librus implements EdziennikInterface {
                     case FEATURE_NOTICES:
                         targetEndpoints.add("Notices");
                         break;
-                    case FEATURE_ATTENDANCES:
-                        targetEndpoints.add("AttendancesTypes");
-                        targetEndpoints.add("Attendances");
+                    case FEATURE_ATTENDANCE:
+                        targetEndpoints.add("AttendanceTypes");
+                        targetEndpoints.add("Attendance");
                         break;
                     case FEATURE_MESSAGES_INBOX:
                         if (!hasMessagesLogin) {
@@ -527,11 +527,11 @@ public class Librus implements EdziennikInterface {
             case "Notices":
                 getNotices();
                 break;
-            case "AttendancesTypes":
-                getAttendancesTypes();
+            case "AttendanceTypes":
+                getAttendanceTypes();
                 break;
-            case "Attendances":
-                getAttendances();
+            case "Attendance":
+                getAttendance();
                 break;
             case "Announcements":
                 getAnnouncements();
@@ -2888,11 +2888,11 @@ public class Librus implements EdziennikInterface {
     }
 
     private SparseArray<Pair<Integer, String>> attendanceTypes = new SparseArray<>();
-    private void getAttendancesTypes() {
+    private void getAttendanceTypes() {
         callback.onActionStarted(R.string.sync_action_syncing_attendance_types);
         apiRequest("Attendances/Types", data -> {
             if (data == null) {
-                r("finish", "AttendancesTypes");
+                r("finish", "AttendanceTypes");
                 return;
             }
             try {
@@ -2907,7 +2907,7 @@ public class Librus implements EdziennikInterface {
                             )
                     );
                 }
-                r("finish", "AttendancesTypes");
+                r("finish", "AttendanceTypes");
             }
             catch (Exception e) {
                 finishWithError(new AppError(TAG, 2782, CODE_OTHER, e, data));
@@ -2915,18 +2915,18 @@ public class Librus implements EdziennikInterface {
         });
     }
 
-    private void getAttendances() {
-        callback.onActionStarted(R.string.sync_action_syncing_attendances);
+    private void getAttendance() {
+        callback.onActionStarted(R.string.sync_action_syncing_attendance);
         apiRequest("Attendances"+(fullSync ? "" : "?dateFrom="+ Date.getToday().stepForward(0, -1, 0).getStringY_m_d()), data -> {
             if (data == null) {
-                r("finish", "Attendances");
+                r("finish", "Attendance");
                 return;
             }
 
             try {
-                JsonArray jAttendances = data.get("Attendances").getAsJsonArray();
+                JsonArray jAttendance = data.get("Attendances").getAsJsonArray();
 
-                for (JsonElement attendanceEl : jAttendances) {
+                for (JsonElement attendanceEl : jAttendance) {
                     JsonObject attendance = attendanceEl.getAsJsonObject();
 
                     int type = attendance.getAsJsonObject("Type").get("Id").getAsInt();
@@ -2992,7 +2992,7 @@ public class Librus implements EdziennikInterface {
                         metadataList.add(new Metadata(profileId, Metadata.TYPE_ATTENDANCE, attendanceObject.id, profile.getEmpty(), profile.getEmpty(), addedDate));
                     }
                 }
-                r("finish", "Attendances");
+                r("finish", "Attendance");
             }
             catch (Exception e) {
                 finishWithError(new AppError(TAG, 2872, CODE_OTHER, e, data));
@@ -3380,7 +3380,7 @@ public class Librus implements EdziennikInterface {
         configurableEndpoints.put("Homework", new Endpoint("Homework",true, false, profile.getChangedEndpoints()));
         configurableEndpoints.put("LuckyNumbers", new Endpoint("LuckyNumbers",true, false, profile.getChangedEndpoints()));
         configurableEndpoints.put("Notices", new Endpoint("Notices",true, false, profile.getChangedEndpoints()));
-        configurableEndpoints.put("Attendances", new Endpoint("Attendances",true, false, profile.getChangedEndpoints()));
+        configurableEndpoints.put("Attendance", new Endpoint("Attendance",true, false, profile.getChangedEndpoints()));
         configurableEndpoints.put("Announcements", new Endpoint("Announcements",true, true, profile.getChangedEndpoints()));
         configurableEndpoints.put("PtMeetings", new Endpoint("PtMeetings",true, true, profile.getChangedEndpoints()));
         configurableEndpoints.put("TeacherFreeDays", new Endpoint("TeacherFreeDays",false, false, profile.getChangedEndpoints()));

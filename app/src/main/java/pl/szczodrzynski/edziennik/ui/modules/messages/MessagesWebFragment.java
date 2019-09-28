@@ -17,12 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +33,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.StackingBehavior;
 
@@ -51,7 +52,7 @@ import java.util.Date;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterMessagesWebBinding;
+import pl.szczodrzynski.edziennik.databinding.FragmentMessagesWebBinding;
 import pl.szczodrzynski.edziennik.utils.Anim;
 import pl.szczodrzynski.edziennik.utils.Themes;
 
@@ -59,12 +60,12 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.DOWNLOAD_SERVICE;
 import static pl.szczodrzynski.edziennik.utils.Utils.readableFileSize;
 
-public class RegisterMessagesWebFragment extends Fragment {
+public class MessagesWebFragment extends Fragment {
 
     private static final String TAG = "RegisterMessagesWeb";
     private App app = null;
     private Activity activity = null;
-    private FragmentRegisterMessagesWebBinding b = null;
+    private FragmentMessagesWebBinding b = null;
 
     private WebView webView;
     private ProgressBar progressBar;
@@ -80,7 +81,7 @@ public class RegisterMessagesWebFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_register_messages_web, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_messages_web, container, false);
         return b.getRoot();
     }
 
@@ -350,7 +351,7 @@ public class RegisterMessagesWebFragment extends Fragment {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
                     super.onPageStarted(view, url, favicon);
-                    RegisterMessagesWebFragment.this.error.setVisibility(View.GONE);
+                    MessagesWebFragment.this.error.setVisibility(View.GONE);
                     loadingFinished = false;
                     //SHOW LOADING IF IT ISNT ALREADY VISIBLE
                     if (progressBar.getVisibility() != View.VISIBLE)
@@ -385,8 +386,8 @@ public class RegisterMessagesWebFragment extends Fragment {
                     if (app == null || app.profile == null || activity == null || b == null || !isAdded())
                         return;
 
-                    RegisterMessagesWebFragment.this.error.setVisibility(View.VISIBLE);
-                    RegisterMessagesWebFragment.this.error.setText(getString(R.string.error_occured_format, error.toString()));
+                    MessagesWebFragment.this.error.setVisibility(View.VISIBLE);
+                    MessagesWebFragment.this.error.setText(getString(R.string.error_occured_format, error.toString()));
                     super.onReceivedError(view, request, error);
                 }
             });

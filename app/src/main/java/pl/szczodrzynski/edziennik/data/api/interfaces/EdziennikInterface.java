@@ -36,7 +36,7 @@ public interface EdziennikInterface {
     int FEATURE_GRADES = 3;
     int FEATURE_HOMEWORK = 4;
     int FEATURE_NOTICES = 5;
-    int FEATURE_ATTENDANCES = 6;
+    int FEATURE_ATTENDANCE = 6;
     int FEATURE_MESSAGES_INBOX = 7;
     int FEATURE_MESSAGES_OUTBOX = 8;
     int FEATURE_ANNOUNCEMENTS = 9;

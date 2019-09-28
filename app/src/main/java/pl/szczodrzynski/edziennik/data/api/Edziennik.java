@@ -84,7 +84,7 @@ import static pl.szczodrzynski.edziennik.data.api.AppError.stringErrorType;
 import static pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.FEATURE_AGENDA;
 import static pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.FEATURE_ALL;
 import static pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.FEATURE_ANNOUNCEMENTS;
-import static pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.FEATURE_ATTENDANCES;
+import static pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.FEATURE_ATTENDANCE;
 import static pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.FEATURE_GRADES;
 import static pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.FEATURE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.FEATURE_MESSAGES_INBOX;
@@ -354,7 +354,7 @@ public class Edziennik {
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
                                 .withType(Notification.TYPE_NEW_NOTICE)
-                                .withFragmentRedirect(MainActivity.DRAWER_ITEM_NOTICES)
+                                .withFragmentRedirect(MainActivity.DRAWER_ITEM_BEHAVIOUR)
                                 .withLongExtra("noticeId", notice.id)
                                 .withAddedDate(notice.addedDate)
                         );
@@ -382,7 +382,7 @@ public class Edziennik {
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
                                 .withType(Notification.TYPE_NEW_ATTENDANCE)
-                                .withFragmentRedirect(MainActivity.DRAWER_ITEM_ATTENDANCES)
+                                .withFragmentRedirect(MainActivity.DRAWER_ITEM_ATTENDANCE)
                                 .withLongExtra("attendanceId", attendance.id)
                                 .withAddedDate(attendance.addedDate)
                         );
@@ -849,7 +849,7 @@ public class Edziennik {
                 app.getString(R.string.menu_grades),
                 app.getString(R.string.menu_homework),
                 app.getString(R.string.menu_notices),
-                app.getString(R.string.menu_attendances),
+                app.getString(R.string.menu_attendance),
                 app.getString(R.string.title_messages_inbox_single),
                 app.getString(R.string.title_messages_sent_single),
                 app.getString(R.string.menu_announcements)
@@ -860,7 +860,7 @@ public class Edziennik {
                 FEATURE_GRADES,
                 FEATURE_HOMEWORK,
                 FEATURE_NOTICES,
-                FEATURE_ATTENDANCES,
+                FEATURE_ATTENDANCE,
                 FEATURE_MESSAGES_INBOX,
                 FEATURE_MESSAGES_OUTBOX,
                 FEATURE_ANNOUNCEMENTS

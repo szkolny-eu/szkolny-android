@@ -204,7 +204,7 @@ public abstract class MetadataDao {
     public abstract void deleteUnusedNotices(int profileId);
 
     @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = "+TYPE_ATTENDANCE+" AND thingId NOT IN (SELECT attendanceId FROM attendances WHERE profileId = :profileId);")
-    public abstract void deleteUnusedAttendances(int profileId);
+    public abstract void deleteUnusedAttendance(int profileId);
 
     @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = "+TYPE_EVENT+" AND thingId NOT IN (SELECT eventId FROM events WHERE profileId = :profileId AND eventType != -1);")
     public abstract void deleteUnusedEvents(int profileId);
@@ -225,7 +225,7 @@ public abstract class MetadataDao {
     public void deleteUnused(int profileId) {
         deleteUnusedGrades(profileId);
         deleteUnusedNotices(profileId);
-        deleteUnusedAttendances(profileId);
+        deleteUnusedAttendance(profileId);
         deleteUnusedEvents(profileId);
         deleteUnusedHomework(profileId);
         deleteUnusedLessonChanges(profileId);

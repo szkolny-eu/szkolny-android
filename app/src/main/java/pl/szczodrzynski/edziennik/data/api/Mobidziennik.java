@@ -150,7 +150,7 @@ public class Mobidziennik implements EdziennikInterface {
     private String loginPassword = null;
     private int studentId = -1;
 
-    private long attendancesLastSync = 0;
+    private long attendanceLastSync = 0;
 
     private boolean prepare(@NonNull Context activityContext, @NonNull SyncCallback callback, int profileId, @Nullable Profile profile, @NonNull LoginStore loginStore) {
         this.activityContext = activityContext;
@@ -171,7 +171,7 @@ public class Mobidziennik implements EdziennikInterface {
             return false;
         }
         this.studentId = profile == null ? -1 : profile.getStudentData("studentId", -1);
-        this.attendancesLastSync = profile == null ? 0 : profile.getStudentData("attendancesLastSync", (long)0);
+        this.attendanceLastSync = profile == null ? 0 : profile.getStudentData("attendanceLastSync", (long)0);
         fakeLogin = BuildConfig.DEBUG && loginUsername.toLowerCase().startsWith("fake");
 
         teamList = profileId == -1 ? new ArrayList<>() : app.db.teamDao().getAllNow(profileId);
@@ -204,7 +204,7 @@ public class Mobidziennik implements EdziennikInterface {
             targetEndpoints = new ArrayList<>();
             targetEndpoints.add("GetData");
             targetEndpoints.add("ProcessData");
-            targetEndpoints.add("Attendances");
+            targetEndpoints.add("Attendance");
             targetEndpoints.add("ClassCalendar");
             targetEndpoints.add("GradeDetails");
             targetEndpoints.add("NoticeDetails");
@@ -256,8 +256,8 @@ public class Mobidziennik implements EdziennikInterface {
                         case FEATURE_NOTICES:
                             targetEndpoints.add("NoticeDetails");
                             break;
-                        case FEATURE_ATTENDANCES:
-                            targetEndpoints.add("Attendances");
+                        case FEATURE_ATTENDANCE:
+                            targetEndpoints.add("Attendance");
                             break;
                         case FEATURE_MESSAGES_INBOX:
                             targetEndpoints.add("MessagesInbox");
@@ -314,8 +314,8 @@ public class Mobidziennik implements EdziennikInterface {
             case "NoticeDetails":
                 getNoticeDetails();
                 break;
-            case "Attendances":
-                getAttendances();
+            case "Attendance":
+                getAttendance();
                 break;
             case "Messages":
                 getAllMessages();
@@ -597,7 +597,7 @@ public class Mobidziennik implements EdziennikInterface {
                     processLessons(table);
                 }
                 if (i == 16) {
-                    processAttendances(table);
+                    processAttendance(table);
                 }
                 if (i == 17) {
                     processNotices(table);
@@ -1051,20 +1051,20 @@ public class Mobidziennik implements EdziennikInterface {
             this.lessonId = lessonId;
         }
     }
-    private Date attendancesCheckDate = Week.getWeekStart();
-    private void getAttendances() {
-        r("finish", "Attendances");
-        // TODO: 2019-09-10 please download attendances from /dziennik/frekwencja. /mobile does not work above v13.0
+    private Date attendanceCheckDate = Week.getWeekStart();
+    private void getAttendance() {
+        r("finish", "Attendance");
+        // TODO: 2019-09-10 please download attendance from /dziennik/frekwencja. /mobile does not work above v13.0
         if (true) {
             return;
         }
-        callback.onActionStarted(R.string.sync_action_syncing_attendances);
-        d(TAG, "Get attendances for week "+attendancesCheckDate.getStringY_m_d());
+        callback.onActionStarted(R.string.sync_action_syncing_attendance);
+        d(TAG, "Get attendance for week "+ attendanceCheckDate.getStringY_m_d());
         Request.builder()
                 .url(fakeLogin ? "https://szkolny.eu/mobimobi/mobi_mod_frekwencja.php" : "https://" + loginServerName + ".mobidziennik.pl/mobile/frekwencja")
                 .userAgent(System.getProperty("http.agent"))
                 .addParameter("uczen", studentId)
-                .addParameter("data_poniedzialek", attendancesCheckDate.getStringY_m_d())
+                .addParameter("data_poniedzialek", attendanceCheckDate.getStringY_m_d())
                 .post()
                 .callback(new TextCallbackHandler() {
                     @Override
@@ -1076,11 +1076,11 @@ public class Mobidziennik implements EdziennikInterface {
                     public void onSuccess(String data, Response response) {
                         // just skip any failures here
                         if (data == null || data.equals("")) {
-                            r("finish", "Attendances");
+                            r("finish", "Attendance");
                             return;
                         }
                         if (data.contains("nie-pamietam-hasla")) {
-                            r("finish", "Attendances");
+                            r("finish", "Attendance");
                             return;
                         }
 
@@ -1135,7 +1135,7 @@ public class Mobidziennik implements EdziennikInterface {
                                     continue;
                                 AttendanceLessonRange range = ranges.get(currentIndex);
 
-                                Date date = attendancesCheckDate.clone().stepForward(0, 0, range.weekDay);
+                                Date date = attendanceCheckDate.clone().stepForward(0, 0, range.weekDay);
                                 long addedDate = date.combineWith(range.startTime);
 
                                 int markerIndex = 0;
@@ -1201,7 +1201,7 @@ public class Mobidziennik implements EdziennikInterface {
                                     markerIndex++;
                                     attendanceList.add(attendanceObject);
                                     if (attendanceObject.type != TYPE_PRESENT) {
-                                        boolean markAsRead = onlyFeature == FEATURE_ATTENDANCES && attendancesLastSync == 0;
+                                        boolean markAsRead = onlyFeature == FEATURE_ATTENDANCE && attendanceLastSync == 0;
                                         metadataList.add(new Metadata(profileId, Metadata.TYPE_ATTENDANCE, attendanceObject.id, profile.getEmpty() || markAsRead, profile.getEmpty() || markAsRead, addedDate));
                                     }
                                 }
@@ -1209,40 +1209,40 @@ public class Mobidziennik implements EdziennikInterface {
                         } catch (Exception e) {
                             Crashlytics.logException(e);
                             e.printStackTrace();
-                            if (onlyFeature == FEATURE_ATTENDANCES)
+                            if (onlyFeature == FEATURE_ATTENDANCE)
                                 finishWithError(new AppError(TAG, 955, CODE_OTHER, response, e, data));
                             else
-                                r("finish", "Attendances");
+                                r("finish", "Attendance");
                             return;
                         }
 
-                        if (onlyFeature == FEATURE_ATTENDANCES) {
-                            // syncing attendances exclusively
-                            if (attendancesLastSync == 0) {
-                                // first sync - get attendances until it's start of the school year
-                                attendancesLastSync = profile.getSemesterStart(1).getInMillis();
+                        if (onlyFeature == FEATURE_ATTENDANCE) {
+                            // syncing attendance exclusively
+                            if (attendanceLastSync == 0) {
+                                // first sync - get attendance until it's start of the school year
+                                attendanceLastSync = profile.getSemesterStart(1).getInMillis();
                             }
-                            Date lastSyncDate = Date.fromMillis(attendancesLastSync);
+                            Date lastSyncDate = Date.fromMillis(attendanceLastSync);
                             lastSyncDate.stepForward(0, 0, -7);
-                            if (lastSyncDate.getValue() < attendancesCheckDate.getValue()) {
-                                attendancesCheckDate.stepForward(0, 0, -7);
-                                r("get", "Attendances");
+                            if (lastSyncDate.getValue() < attendanceCheckDate.getValue()) {
+                                attendanceCheckDate.stepForward(0, 0, -7);
+                                r("get", "Attendance");
                             }
                             else {
-                                profile.putStudentData("attendancesLastSync", System.currentTimeMillis());
-                                r("finish", "Attendances");
+                                profile.putStudentData("attendanceLastSync", System.currentTimeMillis());
+                                r("finish", "Attendance");
                             }
                         }
                         else {
-                            if (attendancesLastSync != 0) {
+                            if (attendanceLastSync != 0) {
                                 // not a first sync
-                                Date lastSyncDate = Date.fromMillis(attendancesLastSync);
+                                Date lastSyncDate = Date.fromMillis(attendanceLastSync);
                                 lastSyncDate.stepForward(0, 0, 2);
-                                if (lastSyncDate.getValue() >= attendancesCheckDate.getValue()) {
-                                    profile.putStudentData("attendancesLastSync", System.currentTimeMillis());
+                                if (lastSyncDate.getValue() >= attendanceCheckDate.getValue()) {
+                                    profile.putStudentData("attendanceLastSync", System.currentTimeMillis());
                                 }
                             }
-                            r("finish", "Attendances");
+                            r("finish", "Attendance");
                         }
                     }
                 })
@@ -1675,12 +1675,12 @@ public class Mobidziennik implements EdziennikInterface {
         }
     }
 
-    private void processAttendances(String table)
+    private void processAttendance(String table)
     {
         if (true)
             return;
-        String[] attendances = table.split("\n");
-        for (String attendanceStr: attendances)
+        String[] attendanceList = table.split("\n");
+        for (String attendanceStr: attendanceList)
         {
             if (attendanceStr.isEmpty()) {
                 continue;
@@ -1718,7 +1718,7 @@ public class Mobidziennik implements EdziennikInterface {
                         mobiLesson.date,
                         mobiLesson.startTime,
                         type);
-                attendanceList.add(attendanceObject);
+                this.attendanceList.add(attendanceObject);
                 metadataList.add(new Metadata(profileId, Metadata.TYPE_ATTENDANCE, attendanceObject.id, profile.getEmpty(), profile.getEmpty(), System.currentTimeMillis()));
             }
         }

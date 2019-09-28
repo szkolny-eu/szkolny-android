@@ -21,14 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterGradesBinding;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
-import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
+import pl.szczodrzynski.edziennik.databinding.FragmentGradesBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
+import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
@@ -42,11 +42,11 @@ import static pl.szczodrzynski.edziennik.utils.models.AppConfig.ORDER_BY_DATE_AS
 import static pl.szczodrzynski.edziennik.utils.models.AppConfig.ORDER_BY_DATE_DESC;
 import static pl.szczodrzynski.edziennik.utils.models.AppConfig.ORDER_BY_SUBJECT_ASC;
 
-public class RegisterGradesFragment extends Fragment {
+public class GradesFragment extends Fragment {
 
     private App app = null;
     private MainActivity activity = null;
-    private FragmentRegisterGradesBinding b = null;
+    private FragmentGradesBinding b = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class RegisterGradesFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_register_grades, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_grades, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
         b.refreshLayout.setNestedScrollingEnabled(true);
         return b.getRoot();

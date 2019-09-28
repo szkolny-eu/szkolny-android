@@ -27,7 +27,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/attendancesSummaryTitle"
+                    android:id="@+id/attendanceSummaryTitle"
                     style="@style/Widget.AppCompat.Spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/attendancesSummarySubject"
+                    android:id="@+id/attendanceSummarySubject"
                     style="@style/Widget.AppCompat.Spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/attendancesView"
+                android:id="@+id/attendance_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
@@ -177,7 +177,7 @@
             </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
-                android:id="@+id/attendancesNoData"
+                android:id="@+id/attendance_no_data"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"

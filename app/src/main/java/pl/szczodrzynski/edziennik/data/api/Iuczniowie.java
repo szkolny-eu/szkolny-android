@@ -200,7 +200,7 @@ public class Iuczniowie implements EdziennikInterface {
             targetEndpoints.add("Exams");
             targetEndpoints.add("Notices");
             targetEndpoints.add("Announcements");
-            targetEndpoints.add("Attendances");
+            targetEndpoints.add("Attendance");
             targetEndpoints.add("MessagesInbox");
             targetEndpoints.add("MessagesOutbox");
             targetEndpoints.add("Finish");
@@ -241,8 +241,8 @@ public class Iuczniowie implements EdziennikInterface {
                     case FEATURE_NOTICES:
                         targetEndpoints.add("Notices");
                         break;
-                    case FEATURE_ATTENDANCES:
-                        targetEndpoints.add("Attendances");
+                    case FEATURE_ATTENDANCE:
+                        targetEndpoints.add("Attendance");
                         break;
                     case FEATURE_MESSAGES_INBOX:
                         targetEndpoints.add("MessagesInbox");
@@ -300,9 +300,9 @@ public class Iuczniowie implements EdziennikInterface {
             }
         }
 
-        this.attendancesMonth = today.month;
-        this.attendancesYear = today.year;
-        this.attendancesPrevMonthChecked = false;
+        this.attendanceMonth = today.month;
+        this.attendanceYear = today.year;
+        this.attendancePrevMonthChecked = false;
         this.examsMonth = today.month;
         this.examsYear = today.year;
         this.examsMonthsChecked = 0;
@@ -352,8 +352,8 @@ public class Iuczniowie implements EdziennikInterface {
             case "Announcements":
                 getAnnouncements();
                 break;
-            case "Attendances":
-                getAttendances();
+            case "Attendance":
+                getAttendance();
                 break;
             case "MessagesInbox":
                 getMessagesInbox();
@@ -1196,17 +1196,17 @@ public class Iuczniowie implements EdziennikInterface {
         });
     }
 
-    private int attendancesYear;
-    private int attendancesMonth;
-    private boolean attendancesPrevMonthChecked = false;
-    private void getAttendances() {
-        callback.onActionStarted(R.string.sync_action_syncing_attendances);
+    private int attendanceYear;
+    private int attendanceMonth;
+    private boolean attendancePrevMonthChecked = false;
+    private void getAttendance() {
+        callback.onActionStarted(R.string.sync_action_syncing_attendance);
         apiRequest(Request.builder()
                 .url(IDZIENNIK_URL +"/mod_panelRodzica/obecnosci/WS_obecnosciUcznia.asmx/pobierzObecnosciUcznia")
                 .userAgent(userAgent)
                 .addParameter("idPozDziennika", loginRegisterId)
-                .addParameter("mc", attendancesMonth)
-                .addParameter("rok", attendancesYear)
+                .addParameter("mc", attendanceMonth)
+                .addParameter("rok", attendanceYear)
                 .addParameter("dataTygodnia", "")
                 .postJson(), (result, response) -> {
             JsonObject data = result.getAsJsonObject("d");
@@ -1281,25 +1281,25 @@ public class Iuczniowie implements EdziennikInterface {
                 }
             }
 
-            int attendancesDateValue = attendancesYear*10000 + attendancesMonth*100;
-            if (profile.getEmpty() && attendancesDateValue > profile.getSemesterStart(1).getValue()) {
-                attendancesPrevMonthChecked = true; // do not need to check prev month later
-                attendancesMonth--;
-                if (attendancesMonth < 1) {
-                    attendancesMonth = 12;
-                    attendancesYear--;
+            int attendanceDateValue = attendanceYear *10000 + attendanceMonth *100;
+            if (profile.getEmpty() && attendanceDateValue > profile.getSemesterStart(1).getValue()) {
+                attendancePrevMonthChecked = true; // do not need to check prev month later
+                attendanceMonth--;
+                if (attendanceMonth < 1) {
+                    attendanceMonth = 12;
+                    attendanceYear--;
                 }
-                r("get", "Attendances");
-            } else if (!attendancesPrevMonthChecked /* get also the previous month */) {
-                attendancesMonth--;
-                if (attendancesMonth < 1) {
-                    attendancesMonth = 12;
-                    attendancesYear--;
+                r("get", "Attendance");
+            } else if (!attendancePrevMonthChecked /* get also the previous month */) {
+                attendanceMonth--;
+                if (attendanceMonth < 1) {
+                    attendanceMonth = 12;
+                    attendanceYear--;
                 }
-                attendancesPrevMonthChecked = true;
-                r("get", "Attendances");
+                attendancePrevMonthChecked = true;
+                r("get", "Attendance");
             } else {
-                r("finish", "Attendances");
+                r("finish", "Attendance");
             }
         });
     }

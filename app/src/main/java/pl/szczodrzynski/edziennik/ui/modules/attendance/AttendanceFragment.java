@@ -1,18 +1,8 @@
 package pl.szczodrzynski.edziennik.ui.modules.attendance;
 
-import androidx.appcompat.widget.PopupMenu;
-import androidx.databinding.DataBindingUtil;
-
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.core.graphics.ColorUtils;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.os.Handler;
 import android.util.LongSparseArray;
 import android.view.Gravity;
@@ -23,6 +13,14 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.graphics.ColorUtils;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.danimahardhika.cafebar.CafeBar;
 import com.mikepenz.iconics.IconicsColor;
@@ -37,14 +35,14 @@ import java.util.Locale;
 
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.databinding.FragmentRegisterAttendancesBinding;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceFull;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
+import pl.szczodrzynski.edziennik.databinding.FragmentAttendanceBinding;
+import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Week;
-import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT;
@@ -57,11 +55,11 @@ import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ATTENDANCE;
 
-public class RegisterAttendancesFragment extends Fragment {
+public class AttendanceFragment extends Fragment {
 
     private App app = null;
     private MainActivity activity = null;
-    private FragmentRegisterAttendancesBinding b = null;
+    private FragmentAttendanceBinding b = null;
 
     private int displayMode = MODE_YEAR;
     private static final int MODE_YEAR = 0;
@@ -84,7 +82,7 @@ public class RegisterAttendancesFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_register_attendances, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_attendance, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
         return b.getRoot();
     }
@@ -106,14 +104,14 @@ public class RegisterAttendancesFragment extends Fragment {
         );
 
         /*b.refreshLayout.setOnRefreshListener(() -> {
-            activity.syncCurrentFeature(MainActivity.DRAWER_ITEM_ATTENDANCES, b.refreshLayout);
+            activity.syncCurrentFeature(MainActivity.DRAWER_ITEM_ATTENDANCE, b.refreshLayout);
         });*/
 
         b.attendancePercentage.setProgressTextAdapter(PERCENTAGE_ADAPTER);
         b.attendancePercentage.setMaxProgress(100.0f);
 
-        b.attendancesSummaryTitle.setOnClickListener((v -> {
-            PopupMenu popupMenu = new PopupMenu(activity, b.attendancesSummaryTitle, Gravity.END);
+        b.attendanceSummaryTitle.setOnClickListener((v -> {
+            PopupMenu popupMenu = new PopupMenu(activity, b.attendanceSummaryTitle, Gravity.END);
             popupMenu.getMenu().add(0, 0, 0, R.string.summary_mode_year);
             popupMenu.getMenu().add(0, 1, 1, R.string.summary_mode_semester_1);
             popupMenu.getMenu().add(0, 2, 2, R.string.summary_mode_semester_2);
@@ -126,11 +124,11 @@ public class RegisterAttendancesFragment extends Fragment {
         }));
 
         if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK) {
-            long attendancesLastSync = app.profile.getStudentData("attendancesLastSync", (long)0);
-            if (attendancesLastSync == 0) {
-                attendancesLastSync = app.profile.getSemesterStart(1).getInMillis();
+            long attendanceLastSync = app.profile.getStudentData("attendanceLastSync", (long)0);
+            if (attendanceLastSync == 0) {
+                attendanceLastSync = app.profile.getSemesterStart(1).getInMillis();
             }
-            Date lastSyncDate = Date.fromMillis(attendancesLastSync);
+            Date lastSyncDate = Date.fromMillis(attendanceLastSync);
             if (lastSyncDate.getValue() < Week.getWeekStart().getValue()) {
                 CafeBar.builder(activity)
                         .to(activity.getNavView().getCoordinator())
@@ -158,13 +156,13 @@ public class RegisterAttendancesFragment extends Fragment {
         }
 
         if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK && false) {
-            b.attendancesSummarySubject.setVisibility(View.GONE);
+            b.attendanceSummarySubject.setVisibility(View.GONE);
         }
         else {
-            b.attendancesSummarySubject.setOnClickListener((v -> {
+            b.attendanceSummarySubject.setOnClickListener((v -> {
                 AsyncTask.execute(() -> {
                     List<Subject> subjectList = app.db.subjectDao().getAllNow(App.profileId);
-                    PopupMenu popupMenu = new PopupMenu(activity, b.attendancesSummarySubject, Gravity.END);
+                    PopupMenu popupMenu = new PopupMenu(activity, b.attendanceSummarySubject, Gravity.END);
                     popupMenu.getMenu().add(0, -1, 0, R.string.subject_filter_disabled);
                     int index = 0;
                     DecimalFormat format = new DecimalFormat("0.00");
@@ -180,7 +178,7 @@ public class RegisterAttendancesFragment extends Fragment {
                     }
                     popupMenu.setOnMenuItemClickListener((item -> {
                         subjectIdFilter = item.getItemId();
-                        b.attendancesSummarySubject.setText(item.getTitle().toString().replaceAll("\\s-\\s[0-9]{1,2}\\.[0-9]{1,2}%", ""));
+                        b.attendanceSummarySubject.setText(item.getTitle().toString().replaceAll("\\s-\\s[0-9]{1,2}\\.[0-9]{1,2}%", ""));
                         updateList();
                         return true;
                     }));
@@ -192,20 +190,20 @@ public class RegisterAttendancesFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
-        b.attendancesView.setHasFixedSize(true);
-        b.attendancesView.setLayoutManager(linearLayoutManager);
+        b.attendanceView.setHasFixedSize(true);
+        b.attendanceView.setLayoutManager(linearLayoutManager);
 
-        app.db.attendanceDao().getAll(App.profileId).observe(this, attendances -> {
+        app.db.attendanceDao().getAll(App.profileId).observe(this, attendance -> {
             if (app == null || app.profile == null || activity == null || b == null || !isAdded())
                 return;
 
-            if (attendances == null) {
-                b.attendancesView.setVisibility(View.GONE);
-                b.attendancesNoData.setVisibility(View.VISIBLE);
+            if (attendance == null) {
+                b.attendanceView.setVisibility(View.GONE);
+                b.attendanceNoData.setVisibility(View.VISIBLE);
                 return;
             }
 
-            attendanceList = attendances;
+            attendanceList = attendance;
 
             countSubjectStats();
 
@@ -274,29 +272,29 @@ public class RegisterAttendancesFragment extends Fragment {
             }
         }
         if (filteredList.size() > 0) {
-            AttendancesAdapter adapter;
-            b.attendancesView.setVisibility(View.VISIBLE);
-            b.attendancesNoData.setVisibility(View.GONE);
-            if ((adapter = (AttendancesAdapter) b.attendancesView.getAdapter()) != null) {
+            AttendanceAdapter adapter;
+            b.attendanceView.setVisibility(View.VISIBLE);
+            b.attendanceNoData.setVisibility(View.GONE);
+            if ((adapter = (AttendanceAdapter) b.attendanceView.getAdapter()) != null) {
                 adapter.attendanceList = filteredList;
                 adapter.notifyDataSetChanged();
             }
             else {
-                adapter = new AttendancesAdapter(getContext(), filteredList);
-                b.attendancesView.setAdapter(adapter);
+                adapter = new AttendanceAdapter(getContext(), filteredList);
+                b.attendanceView.setAdapter(adapter);
             }
         }
         else {
-            b.attendancesView.setVisibility(View.GONE);
-            b.attendancesNoData.setVisibility(View.VISIBLE);
+            b.attendanceView.setVisibility(View.GONE);
+            b.attendanceNoData.setVisibility(View.VISIBLE);
         }
 
         // SUMMARY
         if (displayMode == MODE_YEAR) {
-            b.attendancesSummaryTitle.setText(getString(R.string.attendances_summary_title_year));
+            b.attendanceSummaryTitle.setText(getString(R.string.attendance_summary_title_year));
         }
         else {
-            b.attendancesSummaryTitle.setText(getString(R.string.attendances_summary_title_semester_format, displayMode));
+            b.attendanceSummaryTitle.setText(getString(R.string.attendance_summary_title_semester_format, displayMode));
         }
         b.presentCountContainer.setVisibility(presentCount == 0 ? View.GONE : View.VISIBLE);
         b.presentCount.setText(String.format(Locale.getDefault(), "%d", presentCount));
