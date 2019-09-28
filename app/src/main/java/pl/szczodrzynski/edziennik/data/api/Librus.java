@@ -72,6 +72,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeInfo;
 import pl.szczodrzynski.edziennik.utils.models.Date;
@@ -170,6 +171,7 @@ public class Librus implements EdziennikInterface {
 
     private List<Team> teamList;
     private List<Teacher> teacherList;
+    private List<TeacherAbsence> teacherAbsenceList;
     private List<Subject> subjectList;
     private List<Lesson> lessonList;
     private List<LessonChange> lessonChangeList;
@@ -240,6 +242,7 @@ public class Librus implements EdziennikInterface {
 
         teamList = profileId == -1 ? new ArrayList<>() : app.db.teamDao().getAllNow(profileId);
         teacherList = profileId == -1 ? new ArrayList<>() : app.db.teacherDao().getAllNow(profileId);
+        teacherAbsenceList = new ArrayList<>();
         subjectList = new ArrayList<>();
         lessonList = new ArrayList<>();
         lessonChangeList = new ArrayList<>();
@@ -293,6 +296,7 @@ public class Librus implements EdziennikInterface {
             targetEndpoints.add("BehaviourGrades");
 
             targetEndpoints.add("Events");
+            targetEndpoints.add("TeacherFreeDays");
             targetEndpoints.add("CustomTypes");
             targetEndpoints.add("Homework");
             targetEndpoints.add("LuckyNumbers");
@@ -349,6 +353,7 @@ public class Librus implements EdziennikInterface {
                         targetEndpoints.add("CustomTypes");
                         targetEndpoints.add("PtMeetings");
                         targetEndpoints.add("SchoolFreeDays");
+                        targetEndpoints.add("TeacherFreeDays");
                         break;
                     case FEATURE_GRADES:
                         targetEndpoints.add("SavedGradeCategories");
@@ -589,6 +594,8 @@ public class Librus implements EdziennikInterface {
         }
         if (eventTypeList.size() > 0)
             app.db.eventTypeDao().addAll(eventTypeList);
+        if (teacherAbsenceList.size() > 0)
+            app.db.teacherAbsenceDao().addAll(teacherAbsenceList);
         if (noticeList.size() > 0) {
             app.db.noticeDao().clear(profileId);
             app.db.noticeDao().addAll(noticeList);
@@ -3107,6 +3114,10 @@ public class Librus implements EdziennikInterface {
 
     private SparseArray<String> teacherFreeDaysTypes = new SparseArray<>();
     private void getTeacherFreeDaysTypes() {
+        if (!fullSync) {
+            r("finish", "TeacherFreeDaysTypes");
+            return;
+        }
         callback.onActionStarted(R.string.sync_action_syncing_teacher_free_days_types);
         apiRequest("TeacherFreeDays/Types", data -> {
             if (data == null) {
@@ -3141,27 +3152,35 @@ public class Librus implements EdziennikInterface {
                     JsonObject freeDay = freeDayEl.getAsJsonObject();
 
                     long id = freeDay.get("Id").getAsLong();
+                    long teacherId = freeDay.getAsJsonObject("Teacher").get("Id").getAsLong();
 
                     Date dateFrom = Date.fromY_m_d(freeDay.get("DateFrom").getAsString());
                     Date dateTo = Date.fromY_m_d(freeDay.get("DateTo").getAsString());
 
-                    int type = freeDay.getAsJsonObject("Type").get("Id").getAsInt();
-                    String topic = teacherFreeDaysTypes.get(type)+"\n"+(dateFrom.getValue() != dateTo.getValue() ? dateFrom.getFormattedString()+" - "+dateTo.getFormattedString() : "");
-                    Event eventObject = new Event(
+                    long type = freeDay.getAsJsonObject("Type").get("Id").getAsLong();
+
+                    //String topic = teacherFreeDaysTypes.get(type)+"\n"+(dateFrom.getValue() != dateTo.getValue() ? dateFrom.getFormattedString()+" - "+dateTo.getFormattedString() : "");
+
+                    TeacherAbsence teacherAbsence = new TeacherAbsence(
                             profileId,
                             id,
+                            teacherId,
+                            type,
                             dateFrom,
-                            null,
-                            topic,
-                            -1,
-                            TYPE_TEACHER_ABSENCE,
-                            false,
-                            freeDay.getAsJsonObject("Teacher").get("Id").getAsLong(),
-                            -1,
-                            -1
+                            dateTo
                     );
-                    eventList.add(eventObject);
-                    metadataList.add(new Metadata(profileId, Metadata.TYPE_EVENT, eventObject.id, profile.getEmpty(), profile.getEmpty(), System.currentTimeMillis()));
+
+                    teacherAbsenceList.add(teacherAbsence);
+                    metadataList.add(
+                        new Metadata(
+                            profileId,
+                            Metadata.TYPE_TEACHER_ABSENCE,
+                                teacherAbsence.getId(),
+                                true,
+                                true,
+                                System.currentTimeMillis())
+                    );
+
                 }
                 r("finish", "TeacherFreeDays");
             }

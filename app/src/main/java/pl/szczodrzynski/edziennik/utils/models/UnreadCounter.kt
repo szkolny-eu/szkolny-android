@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.utils.models.db
+package pl.szczodrzynski.edziennik.utils.models
 
 import pl.szczodrzynski.navlib.drawer.IUnreadCounter
 

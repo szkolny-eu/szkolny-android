@@ -17,7 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message;
-import pl.szczodrzynski.edziennik.utils.models.db.UnreadCounter;
+import pl.szczodrzynski.edziennik.utils.models.UnreadCounter;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ANNOUNCEMENT;
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ATTENDANCE;

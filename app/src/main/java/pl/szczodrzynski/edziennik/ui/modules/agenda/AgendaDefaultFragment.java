@@ -45,7 +45,6 @@ import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
-import pl.szczodrzynski.edziennik.utils.models.db.LessonChangeCounter;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
@@ -136,68 +135,76 @@ public class AgendaDefaultFragment extends Fragment {
         activity.gainAttention();
 
         if (viewType == AGENDA_DEFAULT) {
-            List<Integer> unreadEventDates = new ArrayList<>();
+            createDefaultAgendaView();
+        }
+        else {
+            createCalendarAgendaView();
+        }
+    }
 
-            final Handler handler = new Handler();
-            handler.postDelayed(() -> AsyncTask.execute(() -> {
-                if (app == null || app.profile == null || activity == null || b_default == null || !isAdded())
-                    return;
+    private void createDefaultAgendaView() {
+        List<Integer> unreadEventDates = new ArrayList<>();
 
-                List<CalendarEvent> eventList = new ArrayList<>();
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> AsyncTask.execute(() -> {
+            if (app == null || app.profile == null || activity == null || b_default == null || !isAdded())
+                return;
 
-                List<LessonChangeCounter> lessonChangeCounters = app.db.lessonChangeDao().getLessonChangeCountersNow(App.profileId);
-                for (LessonChangeCounter counter : lessonChangeCounters) {
-                    Calendar startTime = Calendar.getInstance();
-                    Calendar endTime = Calendar.getInstance();
-                    if (counter.lessonChangeDate == null) {
-                        continue;
-                    }
-                    startTime.set(counter.lessonChangeDate.year, counter.lessonChangeDate.month - 1, counter.lessonChangeDate.day, 10, 0, 0);
-                    endTime.setTimeInMillis(startTime.getTimeInMillis() + (1000 * 60 * 45));
-                    eventList.add(new LessonChangeEvent(
-                            counter.lessonChangeDate.getInMillis(),
-                            0xff78909c,
-                            Colors.legibleTextColor(0xff78909c),
-                            startTime,
-                            endTime,
-                            counter.profileId,
-                            counter.lessonChangeDate,
-                            counter.lessonChangeCount
-                    ));
+            List<CalendarEvent> eventList = new ArrayList<>();
+
+            List<LessonChangeCounter> lessonChangeCounters = app.db.lessonChangeDao().getLessonChangeCountersNow(App.profileId);
+            for (LessonChangeCounter counter : lessonChangeCounters) {
+                Calendar startTime = Calendar.getInstance();
+                Calendar endTime = Calendar.getInstance();
+                if (counter.lessonChangeDate == null) {
+                    continue;
                 }
+                startTime.set(counter.lessonChangeDate.year, counter.lessonChangeDate.month - 1, counter.lessonChangeDate.day, 10, 0, 0);
+                endTime.setTimeInMillis(startTime.getTimeInMillis() + (1000 * 60 * 45));
+                eventList.add(new LessonChangeEvent(
+                        counter.lessonChangeDate.getInMillis(),
+                        0xff78909c,
+                        Colors.legibleTextColor(0xff78909c),
+                        startTime,
+                        endTime,
+                        counter.profileId,
+                        counter.lessonChangeDate,
+                        counter.lessonChangeCount
+                ));
+            }
 
 
-                List<EventFull> events = app.db.eventDao().getAllNow(App.profileId);
-                for (EventFull event : events) {
-                    Calendar startTime = Calendar.getInstance();
-                    Calendar endTime = Calendar.getInstance();
-                    if (event.eventDate == null)
-                        continue;
-                    startTime.set(
-                            event.eventDate.year,
-                            event.eventDate.month - 1,
-                            event.eventDate.day,
-                            event.startTime == null ? 0 : event.startTime.hour,
-                            event.startTime == null ? 0 : event.startTime.minute,
-                            event.startTime == null ? 0 : event.startTime.second
-                    );
-                    endTime.setTimeInMillis(startTime.getTimeInMillis() + (1000 * 60 * 45));
-                    eventList.add(new BaseCalendarEvent(event.typeName + " - " + event.topic,
-                            "",
-                            (event.startTime == null ? getString(R.string.agenda_event_all_day) : event.startTime.getStringHM()) +
-                                    Utils.bs(", ", event.subjectLongName) +
-                                    Utils.bs(", ", event.teacherFullName) +
-                                    Utils.bs(", ", event.teamName),
-                            event.getColor(),
-                            Colors.legibleTextColor(event.getColor()),
-                            startTime,
-                            endTime,
-                            event.startTime == null,
-                            event.id, !event.seen));
-                    if (!event.seen) {
-                        unreadEventDates.add(event.eventDate.getValue());
-                    }
+            List<EventFull> events = app.db.eventDao().getAllNow(App.profileId);
+            for (EventFull event : events) {
+                Calendar startTime = Calendar.getInstance();
+                Calendar endTime = Calendar.getInstance();
+                if (event.eventDate == null)
+                    continue;
+                startTime.set(
+                        event.eventDate.year,
+                        event.eventDate.month - 1,
+                        event.eventDate.day,
+                        event.startTime == null ? 0 : event.startTime.hour,
+                        event.startTime == null ? 0 : event.startTime.minute,
+                        event.startTime == null ? 0 : event.startTime.second
+                );
+                endTime.setTimeInMillis(startTime.getTimeInMillis() + (1000 * 60 * 45));
+                eventList.add(new BaseCalendarEvent(event.typeName + " - " + event.topic,
+                        "",
+                        (event.startTime == null ? getString(R.string.agenda_event_all_day) : event.startTime.getStringHM()) +
+                                Utils.bs(", ", event.subjectLongName) +
+                                Utils.bs(", ", event.teacherFullName) +
+                                Utils.bs(", ", event.teamName),
+                        event.getColor(),
+                        Colors.legibleTextColor(event.getColor()),
+                        startTime,
+                        endTime,
+                        event.startTime == null,
+                        event.id, !event.seen));
+                if (!event.seen) {
+                    unreadEventDates.add(event.eventDate.getValue());
                 }
+            }
 
             /*List<LessonFull> lessonChanges = app.db.lessonChangeDao().getAllChangesWithLessonsNow(App.profileId);
             for (LessonFull lesson: lessonChanges) {
@@ -232,126 +239,126 @@ public class AgendaDefaultFragment extends Fragment {
                         (int)lesson.changeId, false));
             }*/
 
-                activity.runOnUiThread(() -> {
-                    AgendaCalendarView mAgendaCalendarView = b_default.agendaDefaultView;
-                    // minimum and maximum date of our calendar
-                    // 2 month behind, one year ahead, example: March 2015 <-> May 2015 <-> May 2016
-                    Calendar minDate = Calendar.getInstance();
-                    Calendar maxDate = Calendar.getInstance();
+            activity.runOnUiThread(() -> {
+                AgendaCalendarView mAgendaCalendarView = b_default.agendaDefaultView;
+                // minimum and maximum date of our calendar
+                // 2 month behind, one year ahead, example: March 2015 <-> May 2015 <-> May 2016
+                Calendar minDate = Calendar.getInstance();
+                Calendar maxDate = Calendar.getInstance();
 
-                    minDate.add(Calendar.MONTH, -2);
-                    minDate.set(Calendar.DAY_OF_MONTH, 1);
-                    maxDate.add(Calendar.MONTH, 2);
+                minDate.add(Calendar.MONTH, -2);
+                minDate.set(Calendar.DAY_OF_MONTH, 1);
+                maxDate.add(Calendar.MONTH, 2);
 
 
-                    mAgendaCalendarView.init(eventList, minDate, maxDate, Locale.getDefault(), new CalendarPickerController() {
-                        @Override
-                        public void onDaySelected(IDayItem dayItem) {
-                        }
-
-                        @Override
-                        public void onScrollToDate(Calendar calendar) {
-                            int scrolledDate = Date.fromCalendar(calendar).getValue();
-                            if (unreadEventDates.contains(scrolledDate)) {
-                                AsyncTask.execute(() -> app.db.eventDao().setSeenByDate(App.profileId, Date.fromYmd(intToStr(scrolledDate)), true));
-                                unreadEventDates.remove(unreadEventDates.indexOf(scrolledDate));
-                            }
-                        }
-
-                        @Override
-                        public void onEventSelected(CalendarEvent calendarEvent) {
-                            if (calendarEvent instanceof BaseCalendarEvent) {
-                                if (!calendarEvent.isPlaceholder() && !calendarEvent.isAllDay()) {
-                                    new EventListDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()), Time.fromMillis(calendarEvent.getStartTime().getTimeInMillis()), true);
-                                } else {
-                                    new EventListDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
-                                }
-                            } else if (calendarEvent instanceof LessonChangeEvent) {
-                                new LessonChangeDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
-                                //Toast.makeText(app, "Clicked "+((LessonChangeEvent) calendarEvent).getLessonChangeDate().getFormattedString(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }, new LessonChangeEventRenderer());
-                    b_default.progressBar.setVisibility(View.GONE);
-                });
-            }), 500);
-        }
-        else {
-            List<Integer> unreadEventDates = new ArrayList<>();
-
-            final Handler handler = new Handler();
-            handler.postDelayed(() -> AsyncTask.execute(() -> {
-                if (app == null || app.profile == null || activity == null || b_calendar == null || !isAdded())
-                    return;
-                Context c = getContext();
-                Activity a = getActivity();
-                assert c != null;
-                assert a != null;
-                if (!isAdded()) {
-                    return;
-                }
-
-                List<EventDay> eventList = new ArrayList<>();
-
-                List<EventFull> events = app.db.eventDao().getAllNow(App.profileId);
-                for (EventFull event : events) {
-                    if (event.eventDate == null)
-                        continue;
-                    Calendar startTime = Calendar.getInstance();
-                    startTime.set(
-                            event.eventDate.year,
-                            event.eventDate.month - 1,
-                            event.eventDate.day,
-                            event.startTime == null ? 0 : event.startTime.hour,
-                            event.startTime == null ? 0 : event.startTime.minute,
-                            event.startTime == null ? 0 : event.startTime.second
-                    );
-                    Drawable eventIcon = new IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle).size(IconicsSize.dp(10)).color(IconicsColor.colorInt(event.getColor()));
-                    eventList.add(new EventDay(startTime, eventIcon));
-                    if (!event.seen) {
-                        unreadEventDates.add(event.eventDate.getValue());
+                mAgendaCalendarView.init(eventList, minDate, maxDate, Locale.getDefault(), new CalendarPickerController() {
+                    @Override
+                    public void onDaySelected(IDayItem dayItem) {
                     }
-                }
 
-                List<LessonFull> lessonChanges = app.db.lessonChangeDao().getAllChangesWithLessonsNow(App.profileId);
-
-                for (LessonFull lesson: lessonChanges) {
-                    Calendar startTime = Calendar.getInstance();
-                    if (lesson.lessonDate == null) {
-                        continue;
-                    }
-                    startTime.set(
-                            lesson.lessonDate.year,
-                            lesson.lessonDate.month - 1,
-                            lesson.lessonDate.day,
-                            lesson.startTime.hour,
-                            lesson.startTime.minute,
-                            lesson.startTime.second);
-                    Drawable eventIcon = new IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle).size(IconicsSize.dp(10)).color(IconicsColor.colorInt(0xff78909c));
-                    eventList.add(new EventDay(startTime, eventIcon));
-                }
-
-                getActivity().runOnUiThread(() -> {
-                    //List<EventDay> eventList = new ArrayList<>();
-
-                    //Collections.sort(eventList, new EventListComparator());
-
-                    CalendarView calendarView = b_calendar.agendaCalendarView;
-                    calendarView.setEvents(eventList);
-                    calendarView.setOnDayClickListener(eventDay -> {
-                        Date dayDate = Date.fromCalendar(eventDay.getCalendar());
-                        int scrolledDate = dayDate.getValue();
+                    @Override
+                    public void onScrollToDate(Calendar calendar) {
+                        int scrolledDate = Date.fromCalendar(calendar).getValue();
                         if (unreadEventDates.contains(scrolledDate)) {
                             AsyncTask.execute(() -> app.db.eventDao().setSeenByDate(App.profileId, Date.fromYmd(intToStr(scrolledDate)), true));
                             unreadEventDates.remove(unreadEventDates.indexOf(scrolledDate));
                         }
+                    }
 
-                        new EventListDialog(getContext()).show(app, dayDate);
-                    });
-                    b_calendar.progressBar.setVisibility(View.GONE);
+                    @Override
+                    public void onEventSelected(CalendarEvent calendarEvent) {
+                        if (calendarEvent instanceof BaseCalendarEvent) {
+                            if (!calendarEvent.isPlaceholder() && !calendarEvent.isAllDay()) {
+                                new EventListDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()), Time.fromMillis(calendarEvent.getStartTime().getTimeInMillis()), true);
+                            } else {
+                                new EventListDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
+                            }
+                        } else if (calendarEvent instanceof LessonChangeEvent) {
+                            new LessonChangeDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
+                            //Toast.makeText(app, "Clicked "+((LessonChangeEvent) calendarEvent).getLessonChangeDate().getFormattedString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new LessonChangeEventRenderer());
+                b_default.progressBar.setVisibility(View.GONE);
+            });
+        }), 500);
+    }
+
+    private void createCalendarAgendaView() {
+        List<Integer> unreadEventDates = new ArrayList<>();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> AsyncTask.execute(() -> {
+            if (app == null || app.profile == null || activity == null || b_calendar == null || !isAdded())
+                return;
+            Context c = getContext();
+            Activity a = getActivity();
+            assert c != null;
+            assert a != null;
+            if (!isAdded()) {
+                return;
+            }
+
+            List<EventDay> eventList = new ArrayList<>();
+
+            List<EventFull> events = app.db.eventDao().getAllNow(App.profileId);
+            for (EventFull event : events) {
+                if (event.eventDate == null)
+                    continue;
+                Calendar startTime = Calendar.getInstance();
+                startTime.set(
+                        event.eventDate.year,
+                        event.eventDate.month - 1,
+                        event.eventDate.day,
+                        event.startTime == null ? 0 : event.startTime.hour,
+                        event.startTime == null ? 0 : event.startTime.minute,
+                        event.startTime == null ? 0 : event.startTime.second
+                );
+                Drawable eventIcon = new IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle).size(IconicsSize.dp(10)).color(IconicsColor.colorInt(event.getColor()));
+                eventList.add(new EventDay(startTime, eventIcon));
+                if (!event.seen) {
+                    unreadEventDates.add(event.eventDate.getValue());
+                }
+            }
+
+            List<LessonFull> lessonChanges = app.db.lessonChangeDao().getAllChangesWithLessonsNow(App.profileId);
+
+            for (LessonFull lesson: lessonChanges) {
+                Calendar startTime = Calendar.getInstance();
+                if (lesson.lessonDate == null) {
+                    continue;
+                }
+                startTime.set(
+                        lesson.lessonDate.year,
+                        lesson.lessonDate.month - 1,
+                        lesson.lessonDate.day,
+                        lesson.startTime.hour,
+                        lesson.startTime.minute,
+                        lesson.startTime.second);
+                Drawable eventIcon = new IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle).size(IconicsSize.dp(10)).color(IconicsColor.colorInt(0xff78909c));
+                eventList.add(new EventDay(startTime, eventIcon));
+            }
+
+            getActivity().runOnUiThread(() -> {
+                //List<EventDay> eventList = new ArrayList<>();
+
+                //Collections.sort(eventList, new EventListComparator());
+
+                CalendarView calendarView = b_calendar.agendaCalendarView;
+                calendarView.setEvents(eventList);
+                calendarView.setOnDayClickListener(eventDay -> {
+                    Date dayDate = Date.fromCalendar(eventDay.getCalendar());
+                    int scrolledDate = dayDate.getValue();
+                    if (unreadEventDates.contains(scrolledDate)) {
+                        AsyncTask.execute(() -> app.db.eventDao().setSeenByDate(App.profileId, Date.fromYmd(intToStr(scrolledDate)), true));
+                        unreadEventDates.remove(unreadEventDates.indexOf(scrolledDate));
+                    }
+
+                    new EventListDialog(getContext()).show(app, dayDate);
                 });
-            }), 300);
-        }
+                b_calendar.progressBar.setVisibility(View.GONE);
+            });
+        }), 300);
     }
 
     public static class EventListComparator implements java.util.Comparator<CalendarEvent> {

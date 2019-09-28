@@ -1,5 +1,6 @@
 package pl.szczodrzynski.edziennik.data.db;
 
+import androidx.annotation.NonNull;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -49,6 +50,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileDao;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.SubjectDao;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence;
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceDao;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherDao;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.TeamDao;
@@ -60,6 +63,7 @@ import android.content.Context;
         Grade.class,
         //GradeCategory.class,
         Teacher.class,
+        TeacherAbsence.class,
         Subject.class,
         Notice.class,
         Lesson.class,
@@ -77,7 +81,7 @@ import android.content.Context;
         Message.class,
         MessageRecipient.class,
         DebugLog.class,
-        Metadata.class}, version = 52)
+        Metadata.class}, version = 53)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -89,6 +93,7 @@ public abstract class AppDb extends RoomDatabase {
     public abstract GradeDao gradeDao();
     //public abstract GradeCategoryDao gradeCategoryDao();
     public abstract TeacherDao teacherDao();
+    public abstract TeacherAbsenceDao teacherAbsenceDao();
     public abstract SubjectDao subjectDao();
     public abstract NoticeDao noticeDao();
     public abstract LessonDao lessonDao();
@@ -532,6 +537,20 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("ALTER TABLE teachers ADD teacherTypeDescription TEXT DEFAULT NULL");
         }
     };
+    private static final Migration MIGRATION_52_53 = new Migration(52, 53) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS teacherAbsence (" +
+                    "profileId INTEGER NOT NULL," +
+                    "teacherAbsenceId INTEGER NOT NULL," +
+                    "teacherId INTEGER NOT NULL," +
+                    "teacherAbsenceType INTEGER NOT NULL," +
+                    "teacherAbsenceDateFrom TEXT NOT NULL," +
+                    "teacherAbsenceDateTo TEXT NOT NULL," +
+                    "PRIMARY KEY(profileId, teacherAbsenceId)" +
+                    ")");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -581,7 +600,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_48_49,
                                     MIGRATION_49_50,
                                     MIGRATION_50_51,
-                                    MIGRATION_51_52)
+                                    MIGRATION_51_52,
+                                    MIGRATION_52_53)
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()
                             .build();

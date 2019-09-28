@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.utils.models.db;
+package pl.szczodrzynski.edziennik.ui.modules.agenda;
 
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
