@@ -291,6 +291,7 @@ public class Librus implements EdziennikInterface {
             targetEndpoints.add("DescriptiveGrades");
             targetEndpoints.add("TextGrades");
             targetEndpoints.add("BehaviourGrades");
+            targetEndpoints.add("GradesComments");
 
             targetEndpoints.add("Events");
             targetEndpoints.add("CustomTypes");
@@ -364,6 +365,8 @@ public class Librus implements EdziennikInterface {
                         targetEndpoints.add("DescriptiveGrades");
                         targetEndpoints.add("TextGrades");
                         targetEndpoints.add("BehaviourGrades");
+
+                        targetEndpoints.add("GradesComments");
                         break;
                     case FEATURE_HOMEWORK:
                         targetEndpoints.add("Homework");
@@ -508,6 +511,9 @@ public class Librus implements EdziennikInterface {
                 break;
             case "TextGrades":
                 getTextGrades();
+                break;
+            case "GradesComments":
+                getGradesComments();
                 break;
             case "BehaviourGrades":
                 getBehaviourGrades();
@@ -1967,6 +1973,32 @@ public class Librus implements EdziennikInterface {
             catch (Exception e) {
                 finishWithError(new AppError(TAG, 1954, CODE_OTHER, e, data));
             }
+        });
+    }
+
+    private void getGradesComments() {
+        callback.onActionStarted(R.string.sync_action_syncing_grade_comments);
+        apiRequest("Grades/Comments", data -> {
+            if (data == null) {
+                r("finish", "GradesComments");
+                return;
+            }
+
+            JsonArray comments = data.get("Comments").getAsJsonArray();
+            for (JsonElement commentEl : comments) {
+                JsonObject comment = commentEl.getAsJsonObject();
+                long gradeId = comment.get("Grade").getAsJsonObject().get("Id").getAsLong();
+                String text = comment.get("Text").getAsString();
+
+                for (Grade grade : gradeList) {
+                    if (grade.id == gradeId) {
+                        grade.description = text;
+                        break;
+                    }
+                }
+            }
+
+            r("finish", "GradesComments");
         });
     }
 
