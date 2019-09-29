@@ -20,7 +20,7 @@ class TeacherAbsenceDialog(val context: Context) {
     fun show(app: App, date: Date) {
         val dialog = MaterialDialog.Builder(context)
                 .title(date.formattedString)
-                .customView(R.layout.dialog_teacher_absence_list, true)
+                .customView(R.layout.dialog_teacher_absence_list, false)
                 .positiveText(R.string.close)
                 .autoDismiss(false)
                 .onPositive { dialog, _ -> dialog.dismiss()}
@@ -29,8 +29,7 @@ class TeacherAbsenceDialog(val context: Context) {
         val customView: View = dialog.customView ?: return
         b = DataBindingUtil.bind(customView) ?: return
 
-        b.teacherAbsenceView.setHasFixedSize(false)
-        b.teacherAbsenceView.isNestedScrollingEnabled = false
+        b.teacherAbsenceView.setHasFixedSize(true)
         b.teacherAbsenceView.layoutManager = LinearLayoutManager(context)
 
         app.db.teacherAbsenceDao().getAllByDateFull(profileId, date).observe(context as LifecycleOwner, Observer { absenceList ->
