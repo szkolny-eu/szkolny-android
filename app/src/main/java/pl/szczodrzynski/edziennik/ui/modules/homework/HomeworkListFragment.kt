@@ -47,8 +47,8 @@ class HomeworkListFragment : Fragment() {
         }
 
         val layoutManager = LinearLayoutManager(context)
-        layoutManager.reverseLayout = false
-        layoutManager.stackFromEnd = false
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
 
         b.homeworkView.setHasFixedSize(true)
         b.homeworkView.layoutManager = layoutManager
@@ -64,7 +64,7 @@ class HomeworkListFragment : Fragment() {
                     if (app.profile == null || !isAdded) return@Observer
 
                     if (homeworkList != null && homeworkList.size > 0) {
-                        val adapter = HomeworkAdapter(context, homeworkList.reversed())
+                        val adapter = HomeworkAdapter(context, homeworkList)
                         b.homeworkView.adapter = adapter
                         b.homeworkView.visibility = View.VISIBLE
                         b.homeworkNoData.visibility = View.GONE
