@@ -1152,7 +1152,7 @@ public class Vulcan implements EdziennikInterface {
                 int subjectId = grade.get("IdPrzedmiot").getAsInt();
                 int teacherId = grade.get("IdPracownikD").getAsInt();
                 int categoryId = grade.get("IdKategoria").getAsInt();
-                long addedDate = Date.fromY_m_d(grade.get("DataModyfikacjiTekst").getAsString()).getInMillis();
+                long addedDate = grade.get("DataModyfikacji").getAsLong() * 1000;
 
                 float finalValue = 0.0f;
                 String finalName;
