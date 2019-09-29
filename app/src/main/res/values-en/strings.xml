@@ -851,7 +851,7 @@
     <string name="messages_compose_menu_discard">Abort message</string>
     <string name="messages_compose_menu_save_draft">Save draft</string>
     <string name="messages_compose_menu_send">Send</string>
-    <string name="agenda_teacher_absence">Teachers absence</string>
+    <string name="agenda_teacher_absence">Absent teachers</string>
     <string name="sync_action_syncing_grade_comments">Getting grade comments</string>
     <string name="sync_action_syncing_school_free_days">Getting school free days</string>
 </resources>

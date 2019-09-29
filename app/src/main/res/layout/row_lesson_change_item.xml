@@ -23,7 +23,7 @@
             android:text="@string/agenda_lesson_changes" />
 
         <TextView
-            android:id="@+id/lesson_change_count"
+            android:id="@+id/lessonChangeCount"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"

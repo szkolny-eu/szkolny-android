@@ -20,7 +20,9 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
@@ -171,7 +173,8 @@ public class EventListDialog {
         examsView.setNestedScrollingEnabled(false);
         examsView.setLayoutManager(new LinearLayoutManager(context));
 
-        CardView lessonChangeContainer = dialogView.findViewById(R.id.lesson_change_container);
+        CardView lessonChangeContainer = dialogView.findViewById(R.id.lessonChangeContainer);
+        CardView teacherAbsenceContainer = dialogView.findViewById(R.id.teacherAbsenceContainer);
         //lessonChangeContainer.setVisibility(View.GONE);
         if (time == null) {
             app.db.lessonChangeDao().getLessonChangeCounterByDate(App.profileId, date).observe((LifecycleOwner) context, counter -> {
@@ -179,11 +182,35 @@ public class EventListDialog {
                     return;
                 if (counter.lessonChangeCount > 0) {
                     lessonChangeContainer.setVisibility(View.VISIBLE);
-                    TextView lessonChangeCount = dialogView.findViewById(R.id.lesson_change_count);
-                    lessonChangeCount.setText(Integer.toString(counter.lessonChangeCount));
+                    TextView lessonChangeCount = dialogView.findViewById(R.id.lessonChangeCount);
+                    lessonChangeCount.setText(String.valueOf(counter.lessonChangeCount));
                     lessonChangeContainer.setCardBackgroundColor(0xff78909c);
                     lessonChangeContainer.setOnClickListener((v -> {
                         new LessonChangeDialog(context).show(app, date);
+                    }));
+                }
+            });
+
+            app.db.teacherAbsenceDao().getAllByDateFull(App.profileId, date).observe((LifecycleOwner) context, teacherAbsenceList -> {
+                if (teacherAbsenceList == null)
+                    return;
+                if (teacherAbsenceList.size() > 0) {
+                    int count = 0;
+                    for (TeacherAbsenceFull teacherAbsence : teacherAbsenceList) {
+                        Date dateFrom = teacherAbsence.getDateFrom();
+                        Date dateTo = teacherAbsence.getDateTo();
+
+                        if (date.compareTo(dateFrom) >= 0 && date.compareTo(dateTo) <= 0) {
+                            count++;
+                        }
+                    }
+
+                    teacherAbsenceContainer.setVisibility(View.VISIBLE);
+                    TextView teacherAbsenceCount = dialogView.findViewById(R.id.teacherAbsenceCount);
+                    teacherAbsenceCount.setText(String.valueOf(count));
+                    teacherAbsenceContainer.setCardBackgroundColor(0xffff1744);
+                    teacherAbsenceContainer.setOnClickListener(( v -> {
+                        new TeacherAbsenceDialog(context).show(app, date);
                     }));
                 }
             });

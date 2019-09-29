@@ -210,8 +210,8 @@ public class AgendaFragment extends Fragment {
                 endTime.setTimeInMillis(startTime.getTimeInMillis() + (1000 * 60 * 45));
                 eventList.add(new TeacherAbsenceEvent(
                         date.getInMillis(),
-                        0xff8f0119,
-                        Colors.legibleTextColor(0xff8f0119),
+                        0xffff1744,
+                        Colors.legibleTextColor(0xffff1744),
                         startTime,
                         endTime,
                         App.profileId,

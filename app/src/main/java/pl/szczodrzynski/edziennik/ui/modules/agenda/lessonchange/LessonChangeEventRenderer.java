@@ -14,7 +14,7 @@ public class LessonChangeEventRenderer extends EventRenderer<LessonChangeEvent> 
     public void render(View view, LessonChangeEvent event) {
         CardView card = view.findViewById(R.id.lesson_change_card);
         TextView changeText = view.findViewById(R.id.lesson_change_text);
-        TextView changeCount = view.findViewById(R.id.lesson_change_count);
+        TextView changeCount = view.findViewById(R.id.lessonChangeCount);
         card.setCardBackgroundColor(event.getColor());
         changeText.setTextColor(event.getTextColor());
         changeCount.setTextColor(event.getTextColor());
