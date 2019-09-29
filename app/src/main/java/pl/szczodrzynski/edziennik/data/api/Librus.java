@@ -3189,6 +3189,14 @@ public class Librus implements EdziennikInterface {
                     Date dateFrom = Date.fromY_m_d(freeDay.get("DateFrom").getAsString());
                     Date dateTo = Date.fromY_m_d(freeDay.get("DateTo").getAsString());
 
+                    Time timeFrom = null;
+                    Time timeTo = null;
+
+                    if (freeDay.get("TimeFrom") != null && freeDay.get("TimeTo") != null) {
+                        timeFrom = Time.fromH_m_s(freeDay.get("TimeFrom").getAsString());
+                        timeTo = Time.fromH_m_s(freeDay.get("TimeTo").getAsString());
+                    }
+
                     long type = freeDay.getAsJsonObject("Type").get("Id").getAsLong();
 
                     //String topic = teacherFreeDaysTypes.get(type)+"\n"+(dateFrom.getValue() != dateTo.getValue() ? dateFrom.getFormattedString()+" - "+dateTo.getFormattedString() : "");
@@ -3199,7 +3207,9 @@ public class Librus implements EdziennikInterface {
                             teacherId,
                             type,
                             dateFrom,
-                            dateTo
+                            dateTo,
+                            timeFrom,
+                            timeTo
                     );
 
                     teacherAbsenceList.add(teacherAbsence);

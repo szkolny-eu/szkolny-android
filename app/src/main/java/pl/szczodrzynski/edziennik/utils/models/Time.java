@@ -56,6 +56,9 @@ public class Time {
         return this;
     }
 
+    /**
+     * HHMMSS
+     */
     public static Time fromHms(String time)
     {
         try {
@@ -67,6 +70,9 @@ public class Time {
         }
     }
 
+    /**
+     * HH:MM
+     */
     public static Time fromH_m(String time)
     {
         try {
@@ -78,6 +84,9 @@ public class Time {
         }
     }
 
+    /**
+     * HH:MM:SS
+     */
     public static Time fromH_m_s(String time)
     {
         try {

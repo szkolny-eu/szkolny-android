@@ -31,9 +31,19 @@ class TeacherAbsenceAdapter(
 
         holder.teacherAbsenceTeacher.text = teacherAbsence.teacherFullName
 
-        val time = when(teacherAbsence.dateFrom.compareTo(teacherAbsence.dateTo)) {
-            0 -> teacherAbsence.dateFrom.formattedStringShort
-            else -> teacherAbsence.dateFrom.formattedStringShort + " - " + teacherAbsence.dateTo.formattedStringShort
+        val time = when (teacherAbsence.timeFrom != null && teacherAbsence.timeTo != null) {
+            true -> when (teacherAbsence.dateFrom.compareTo(teacherAbsence.dateTo)) {
+                0 -> teacherAbsence.dateFrom.formattedStringShort + " " +
+                        teacherAbsence.timeFrom.stringHM + " - " + teacherAbsence.timeTo.stringHM
+
+                else -> teacherAbsence.dateFrom.formattedStringShort + " " + teacherAbsence.timeTo.stringHM +
+                        " - " + teacherAbsence.dateTo.formattedStringShort + " " + teacherAbsence.timeTo.stringHM
+            }
+
+            false -> when (teacherAbsence.dateFrom.compareTo(teacherAbsence.dateTo)) {
+                0 -> teacherAbsence.dateFrom.formattedStringShort
+                else -> teacherAbsence.dateFrom.formattedStringShort + " - " + teacherAbsence.dateTo.formattedStringShort
+            }
         }
 
         holder.teacherAbsenceTime.text = time

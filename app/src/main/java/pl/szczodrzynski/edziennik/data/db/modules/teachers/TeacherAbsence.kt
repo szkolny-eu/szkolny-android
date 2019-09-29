@@ -3,6 +3,7 @@ package pl.szczodrzynski.edziennik.data.db.modules.teachers
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Time
 
 @Entity(tableName = "teacherAbsence",
         primaryKeys = ["profileId", "teacherAbsenceId"])
@@ -22,6 +23,12 @@ open class TeacherAbsence (
     val dateFrom: Date,
 
     @ColumnInfo(name = "teacherAbsenceDateTo")
-    val dateTo: Date
+    val dateTo: Date,
+
+    @ColumnInfo(name = "teacherAbsenceTimeFrom")
+    val timeFrom: Time?,
+
+    @ColumnInfo(name = "teacherAbsenceTimeTo")
+    val timeTo: Time?
 
 )
