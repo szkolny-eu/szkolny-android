@@ -755,7 +755,7 @@ class MainActivity : AppCompatActivity() {
         drawer.setSelection(target.id, fireOnClick = false)
         navView.toolbar.setTitle(target.title ?: target.name)
         navView.bottomBar.fabEnable = false
-        navView.bottomBar.fabExtended = true
+        navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
 
         Log.d("NavDebug", "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
@@ -868,10 +868,16 @@ class MainActivity : AppCompatActivity() {
         }, 2000)
     }
 
-    fun collapseFab() {
+    fun gainAttentionFAB() {
+        navView.bottomBar.fabExtended = false
+
+        b.navView.postDelayed({
+            navView.bottomBar.fabExtended = true
+        }, 1000)
+
         b.navView.postDelayed({
             navView.bottomBar.fabExtended = false
-        }, 2000)
+        }, 3000)
     }
 
     /*    _____                                _ _
