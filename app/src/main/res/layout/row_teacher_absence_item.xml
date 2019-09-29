@@ -1,4 +1,4 @@
-<androidx.cardview.widget.CardView android:id="@+id/lesson_change_card"
+<androidx.cardview.widget.CardView android:id="@+id/teacherAbsenceCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:cardBackgroundColor="@color/blue_selected"
@@ -14,16 +14,16 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/lesson_change_text"
+            android:id="@+id/teacherAbsenceText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:textAppearance="@style/NavView.TextView.Medium"
-            android:text="@string/agenda_lesson_changes" />
+            android:text="@string/agenda_teacher_absence" />
 
         <TextView
-            android:id="@+id/lesson_change_count"
+            android:id="@+id/teacherAbsenceCount"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"

@@ -908,5 +908,6 @@
     <string name="homework_tab_current">Aktualne</string>
     <string name="homework_tab_past">Minione</string>
     <string name="homework_no_data">Brak zadań domowych.</string>
+    <string name="agenda_teacher_absence">Nieobecni nauczyciele</string>
     <string name="sync_action_syncing_grade_comments">Pobieranie komentarzy ocen</string>
 </resources>

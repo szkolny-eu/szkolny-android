@@ -18,6 +18,7 @@ public class Metadata {
     public static final int TYPE_LESSON_CHANGE = 6;
     public static final int TYPE_ANNOUNCEMENT = 7;
     public static final int TYPE_MESSAGE = 8;
+    public static final int TYPE_TEACHER_ABSENCE = 9;
 
     public int profileId;
 

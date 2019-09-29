@@ -15,8 +15,17 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <include
-            android:id="@+id/lesson_change_container"
-            layout="@layout/row_dialog_lesson_change_item"
+            android:id="@+id/lessonChangeContainer"
+            layout="@layout/row_lesson_change_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/teacherAbsenceContainer"
+            layout="@layout/row_teacher_absence_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
