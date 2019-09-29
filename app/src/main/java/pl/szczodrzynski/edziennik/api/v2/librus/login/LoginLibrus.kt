@@ -19,10 +19,11 @@ class LoginLibrus(val data: DataLibrus, vararg loginMethodIds: Int, val onSucces
 
     init {
         for (loginMethodId in loginMethodIds) {
-            var requiredLoginMethod = loginMethodId
+            var requiredLoginMethod: Int? = loginMethodId
             while (requiredLoginMethod != LOGIN_METHOD_NOT_NEEDED) {
                 librusLoginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let { loginMethod ->
-                    loginMethodList.add(requiredLoginMethod)
+                    if (requiredLoginMethod != null)
+                        loginMethodList.add(requiredLoginMethod!!)
                     requiredLoginMethod = loginMethod.requiredLoginMethod(data.profile, data.loginStore)
                 }
             }

@@ -46,7 +46,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.interfaces.AttachmentGetCallback;
-import pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface;
+import pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface;
 import pl.szczodrzynski.edziennik.api.interfaces.LoginCallback;
 import pl.szczodrzynski.edziennik.api.interfaces.MessageGetCallback;
 import pl.szczodrzynski.edziennik.api.interfaces.RecipientListGetCallback;
@@ -131,7 +131,7 @@ import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.getGradeValue;
 import static pl.szczodrzynski.edziennik.utils.Utils.strToInt;
 
-public class Librus implements EdziennikInterface {
+public class Librus implements OldEdziennikInterface {
     public Librus(App app) {
         this.app = app;
     }
@@ -2537,7 +2537,7 @@ public class Librus implements EdziennikInterface {
                             && (el = obj.get("Id")) != null) {
                         type = el.getAsInt();
                     }
-                    /*EventType typeObject = app.db.eventTypeDao().getByIdNow(profileId, type);
+                    /*EventType typeObject = app.db.eventTypeDao().getFullByIdNow(profileId, type);
                     if (typeObject == null) {
                         getCustomTypes = true;
                     }*/

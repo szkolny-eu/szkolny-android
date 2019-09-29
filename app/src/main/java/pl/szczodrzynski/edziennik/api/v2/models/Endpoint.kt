@@ -7,21 +7,18 @@ import pl.szczodrzynski.edziennik.datamodels.Profile
  * A Endpoint descriptor class.
  *
  * The API runs appropriate endpoints in order to fulfill its
- * [Feature] list.
+ * feature list.
  * An endpoint may have its [LoginMethod] dependencies which will be
  * satisfied by the API before the [endpointClass]'s constructor is invoked.
  *
  * @param loginType type of the e-register this endpoint handles
- * @param endpointId a unique ID of this endpoint
- * @param featureIds a [List] of [Feature]s (their IDs) this endpoint can download
- *   May be null if no strict feature set is associated with this method.
- * @param endpointClass a [Class] which constructor will be invoked when a data download is needed
- * @param requiredLoginMethod a lambda returning a required login method (which will be called before this). May differ depending on the [Profile] and/or [LoginStore].
+ * @param featureId a feature ID
+ * @param endpointIds a [List] of [Endpoint]s that satisfy this feature ID
+ * @param requiredLoginMethod a required login method, which will have to be executed before this endpoint.
  */
 class Endpoint(
         val loginType: Int,
-        val endpointId: Int,
-        val featureIds: List<Int>?,
-        val endpointClass: Class<*>,
-        val requiredLoginMethod: (profile: Profile?, loginStore: LoginStore) -> Int
+        val featureId: Int,
+        val endpointIds: List<Int>,
+        val requiredLoginMethod: Int
 )

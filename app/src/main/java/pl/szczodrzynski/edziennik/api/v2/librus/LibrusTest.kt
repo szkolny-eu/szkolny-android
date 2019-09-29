@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.api.v2.librus
 
 import android.content.Context
+import android.content.Intent
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.AppError
@@ -30,21 +31,24 @@ class LibrusTest(val app: App) {
 
         putStudentData("accountLogin", "1234567")
 
-        putStudentData("accountToken", "token")
-        putStudentData("accountTokenTime", 1569523077)
+        //putStudentData("accountToken", "token")
+        //putStudentData("accountTokenTime", 1569458277)
     }
     val loginStore = LoginStore(1, LOGIN_TYPE_LIBRUS, JsonObject().apply {
         addProperty("email", "test@example.com")
         addProperty("password", "zaq1@WSX")
 
-        addProperty("accessToken", "token")
-        addProperty("refreshToken", "refresh")
-        addProperty("tokenExpiryTime", 1569523077)
+        //addProperty("accessToken", "token")
+        //addProperty("refreshToken", "refresh")
+        //addProperty("tokenExpiryTime", 1569523077)
     }).also {
         it.mode = LOGIN_MODE_LIBRUS_EMAIL
     }
 
     fun go() {
+
+        app.startService(Intent(app, ApiService::class.java))
+
         val data = DataLibrus(app, profile, loginStore).apply {
             callback = object : ProgressCallback {
                 override fun onProgress(progressStep: Int) {

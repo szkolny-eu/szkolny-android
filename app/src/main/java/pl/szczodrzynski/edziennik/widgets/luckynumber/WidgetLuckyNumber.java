@@ -159,7 +159,7 @@ public class WidgetLuckyNumber extends AppWidgetProvider {
                 }
             }
 
-            Profile profile = app.db.profileDao().getByIdNow(widgetConfig.profileId);
+            Profile profile = app.db.profileDao().getFullByIdNow(widgetConfig.profileId);
             IIcon icon = CommunityMaterial.Icon.cmd_emoticon_dead_outline;
             boolean noNumberText = false;
             if (profile == null) {

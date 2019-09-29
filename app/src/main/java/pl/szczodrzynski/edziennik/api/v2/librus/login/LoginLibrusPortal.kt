@@ -121,7 +121,52 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     private var refreshTokenFailed = false
     private fun accessToken(code: String?, refreshToken: String?) {
-        data.callback.onActionStarted(R.string.sync_action_getting_token)
+        val onSuccess = { json: JsonObject, response: Response? ->
+            data.portalAccessToken = json.getString("access_token")
+            data.portalRefreshToken = json.getString("refresh_token")
+            data.portalTokenExpiryTime = response.getUnixDate() + json.getInt("expires_in", 86400)
+            onSuccess()
+        }
+
+        val callback = object : JsonCallbackHandler() {
+            override fun onSuccess(json: JsonObject?, response: Response?) {
+                if (json == null) {
+                    data.error(TAG, ERROR_RESPONSE_EMPTY, response)
+                    return
+                }
+                val error = if (response?.code() == 200) null else
+                    json.getString("hint")
+                error?.let { code ->
+                    when (code) {
+                        "Authorization code has expired" -> ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED
+                        "Authorization code has been revoked" -> ERROR_LOGIN_LIBRUS_PORTAL_CODE_REVOKED
+                        "Check the `client_id` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_CLIENT_ID
+                        "Check the `code` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_CODE
+                        "Check the `refresh_token` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_REFRESH
+                        "Check the `redirect_uri` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_REDIRECT
+                        else -> when (json.getString("error")) {
+                            "unsupported_grant_type" -> ERROR_LOGIN_LIBRUS_PORTAL_UNSUPPORTED_GRANT
+                            "invalid_client" -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_CLIENT_ID
+                            else -> ERROR_LOGIN_LIBRUS_PORTAL_OTHER
+                        }
+                    }.let { errorCode ->
+                        data.error(TAG, errorCode, apiResponse = json, response = response)
+                        return
+                    }
+                }
+
+                try {
+                    onSuccess(json, response)
+                } catch (e: NullPointerException) {
+                    data.error(TAG, EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN, response, e, json)
+                }
+            }
+
+            override fun onFailure(response: Response?, throwable: Throwable?) {
+                data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+            }
+        }
+
         val params = ArrayList<Pair<String, Any>>()
         params.add(Pair("client_id", LIBRUS_CLIENT_ID))
         if (code != null) {
@@ -132,46 +177,14 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
             params.add(Pair("grant_type", "refresh_token"))
             params.add(Pair("refresh_token", refreshToken))
         }
+
         Request.builder()
                 .url(LIBRUS_TOKEN_URL)
                 .userAgent(LIBRUS_USER_AGENT)
                 .addParams(params)
-                .allowErrorCode(HTTP_UNAUTHORIZED)
                 .post()
-                .callback(object : JsonCallbackHandler() {
-                    override fun onSuccess(json: JsonObject?, response: Response) {
-                        if (json == null) {
-                            data.error(TAG, ERROR_RESPONSE_EMPTY, response)
-                            return
-                        }
-                        json.getString("error")?.let { error ->
-                            val hint = json.getString("hint", "")
-                            //val message = json.getString("message", "")
-                            if (!refreshTokenFailed && refreshToken != null && (hint == "Token has been revoked" || hint == "Token has expired")) {
-                                c(TAG, "refreshing the token failed. Trying to log in again.")
-                                refreshTokenFailed = true
-                                authorize(LIBRUS_AUTHORIZE_URL)
-                                return
-                            }
-                            data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_TOKEN_ERROR, response, apiResponse = json)
-                            return
-                        }
-
-                        try {
-                            data.portalAccessToken = json.getString("access_token")
-                            data.portalRefreshToken = json.getString("refresh_token")
-                            data.portalTokenExpiryTime = currentTimeUnix() + json.getInt("expires_in", 86400)
-                            onSuccess()
-                        } catch (e: NullPointerException) {
-                            data.error(TAG, EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN, response, e, json)
-                        }
-
-                    }
-
-                    override fun onFailure(response: Response, throwable: Throwable) {
-                        data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
-                    }
-                })
+                .allowErrorCode(HTTP_UNAUTHORIZED)
+                .callback(callback)
                 .build()
                 .enqueue()
     }

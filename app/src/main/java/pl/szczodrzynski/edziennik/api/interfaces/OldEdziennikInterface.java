@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
 import pl.szczodrzynski.edziennik.messages.MessagesComposeInfo;
 import pl.szczodrzynski.edziennik.models.Endpoint;
 
-public interface EdziennikInterface {
+public interface OldEdziennikInterface {
 
     /**
      * Sync all Edziennik data.

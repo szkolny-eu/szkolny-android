@@ -7,7 +7,6 @@ import pl.szczodrzynski.edziennik.api.interfaces.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.firstlogin.FirstLoginLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.firstlogin.FirstLoginSynergia
-import pl.szczodrzynski.edziennik.api.v2.librus.login.SynergiaTokenExtractor
 import pl.szczodrzynski.edziennik.api.v2.models.Data
 import pl.szczodrzynski.edziennik.datamodels.LoginStore
 import pl.szczodrzynski.edziennik.datamodels.MessageFull
@@ -15,10 +14,9 @@ import pl.szczodrzynski.edziennik.datamodels.Profile
 import pl.szczodrzynski.edziennik.datamodels.ProfileFull
 import pl.szczodrzynski.edziennik.messages.MessagesComposeInfo
 import pl.szczodrzynski.edziennik.models.Endpoint
-import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.lang.Exception
 
-class LibrusOld(val app: App, val profile: Profile?, val loginStore: LoginStore) : EdziennikInterface {
+class LibrusOld(val app: App, val profile: Profile?, val loginStore: LoginStore) : OldEdziennikInterface {
     private val TAG = "librus.Librus"
 
     lateinit var syncCallback: SyncCallback

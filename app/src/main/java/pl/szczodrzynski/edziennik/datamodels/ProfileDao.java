@@ -25,7 +25,10 @@ public interface ProfileDao {
     LiveData<ProfileFull> getById(int profileId);
 
     @Query("SELECT profiles.*, loginStores.loginStoreType, loginStores.loginStoreData FROM profiles LEFT JOIN loginStores ON profiles.loginStoreId = loginStores.loginStoreId WHERE profileId = :profileId")
-    ProfileFull getByIdNow(int profileId);
+    ProfileFull getFullByIdNow(int profileId);
+
+    @Query("SELECT*  FROM profiles WHERE profileId = :profileId")
+    Profile getByIdNow(int profileId);
 
     @Query("SELECT * FROM profiles WHERE profileId >= 0 ORDER BY profileId")
     LiveData<List<Profile>> getAll();
@@ -44,6 +47,9 @@ public interface ProfileDao {
 
     @Query("SELECT * FROM profiles WHERE syncEnabled = 1 AND archived = 0 AND profileId >= 0 ORDER BY profileId")
     List<Profile> getProfilesForSyncNow();
+
+    @Query("SELECT profileId FROM profiles WHERE syncEnabled = 1 AND archived = 0 AND profileId >= 0 ORDER BY profileId")
+    List<Integer> getIdsForSyncNow();
 
     @Query("SELECT profileId FROM profiles WHERE profileId >= 0 ORDER BY profileId")
     List<Integer> getIdsNow();

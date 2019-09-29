@@ -244,7 +244,7 @@ public class WidgetTimetable extends AppWidgetProvider {
                 filterOutArchived(profileList);
             }
             else {
-                Profile profile = app.db.profileDao().getByIdNow(widgetConfig.profileId);
+                Profile profile = app.db.profileDao().getFullByIdNow(widgetConfig.profileId);
                 if (profile != null) {
                     profileList.add(profile);
                 }

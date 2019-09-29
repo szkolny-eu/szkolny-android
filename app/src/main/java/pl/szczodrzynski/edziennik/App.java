@@ -19,7 +19,6 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
-import android.widget.Toast;
 
 import com.chuckerteam.chucker.api.ChuckerCollector;
 import com.chuckerteam.chucker.api.ChuckerInterceptor;
@@ -81,7 +80,6 @@ import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
 import pl.szczodrzynski.edziennik.models.AppConfig;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.TLSSocketFactory;
-import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.receivers.JobsCreator;
 import pl.szczodrzynski.edziennik.sync.SyncJob;
 import pl.szczodrzynski.edziennik.utils.PermissionChecker;
@@ -617,7 +615,7 @@ public class App extends androidx.multidex.MultiDexApplication {
     }
 
     public ProfileFull profileGetOrNull(int id) {
-        return db.profileDao().getByIdNow(id);
+        return db.profileDao().getFullByIdNow(id);
     }
 
     public void profileLoadById(int id) {
@@ -632,7 +630,7 @@ public class App extends androidx.multidex.MultiDexApplication {
             return;
         }*/
         if (profile == null || profile.getId() != id) {
-            profile = db.profileDao().getByIdNow(id);
+            profile = db.profileDao().getFullByIdNow(id);
             /*if (profile == null) {
                 profileLoadById(id);
                 return;
@@ -659,7 +657,7 @@ public class App extends androidx.multidex.MultiDexApplication {
 
     /*public void profileRemove(int id)
     {
-        Profile profile = db.profileDao().getByIdNow(id);
+        Profile profile = db.profileDao().getFullByIdNow(id);
 
         if (profile.id == profile.loginStoreId) {
             // this profile is the owner of the login store

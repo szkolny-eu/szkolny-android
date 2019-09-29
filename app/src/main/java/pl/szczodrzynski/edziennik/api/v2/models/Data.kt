@@ -7,15 +7,24 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.AppError
+import pl.szczodrzynski.edziennik.api.AppError.*
 import pl.szczodrzynski.edziennik.api.interfaces.ProgressCallback
+import pl.szczodrzynski.edziennik.api.v2.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.datamodels.*
 import pl.szczodrzynski.edziennik.models.Date
+import java.io.InterruptedIOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import javax.net.ssl.SSLException
 
 open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
 
     var fakeLogin = false
 
-    lateinit var callback: ProgressCallback
+    /**
+     * A callback passed to all [Endpoint]s and [LoginMethod]s
+     */
+    lateinit var callback: EndpointCallback
 
     /**
      * A list of [LoginMethod]s *already fulfilled* during this sync.
@@ -152,9 +161,25 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     }
 
     fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {
-        callback.onError(null, AppError(tag, 999, errorCode, response, throwable, apiResponse))
+        var code = when (throwable) {
+            is UnknownHostException, is SSLException, is InterruptedIOException -> CODE_NO_INTERNET
+            is SocketTimeoutException -> CODE_TIMEOUT
+            else -> when (response?.code()) {
+                400, 401, 424, 500, 503, 404 -> CODE_MAINTENANCE
+                else -> errorCode
+            }
+        }
+        callback.onError(ApiError(profile?.id ?: -1, tag, code).withResponse(response).withThrowable(throwable).withApiResponse(apiResponse))
     }
     fun error(tag: String, errorCode: Int, response: Response? = null, apiResponse: String? = null) {
-        callback.onError(null, AppError(tag, 999, errorCode, response, null, apiResponse))
+        var code = when (null) {
+            is UnknownHostException, is SSLException, is InterruptedIOException -> CODE_NO_INTERNET
+            is SocketTimeoutException -> CODE_TIMEOUT
+            else -> when (response?.code()) {
+                400, 401, 424, 500, 503, 404 -> CODE_MAINTENANCE
+                else -> errorCode
+            }
+        }
+        callback.onError(ApiError(profile?.id ?: -1, tag, code).withResponse(response).withApiResponse(apiResponse))
     }
 }

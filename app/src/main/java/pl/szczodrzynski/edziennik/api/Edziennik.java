@@ -43,7 +43,7 @@ import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.WidgetTimetable;
-import pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface;
+import pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface;
 import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback;
 import pl.szczodrzynski.edziennik.datamodels.AnnouncementFull;
 import pl.szczodrzynski.edziennik.datamodels.Attendance;
@@ -81,16 +81,16 @@ import static pl.szczodrzynski.edziennik.api.AppError.CODE_PROFILE_ARCHIVED;
 import static pl.szczodrzynski.edziennik.api.AppError.CODE_PROFILE_NOT_FOUND;
 import static pl.szczodrzynski.edziennik.api.AppError.stringErrorCode;
 import static pl.szczodrzynski.edziennik.api.AppError.stringErrorType;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_AGENDA;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_ALL;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_ANNOUNCEMENTS;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_ATTENDANCES;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_GRADES;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_HOMEWORKS;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_MESSAGES_INBOX;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_MESSAGES_OUTBOX;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_NOTICES;
-import static pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.FEATURE_TIMETABLE;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_AGENDA;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_ALL;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_ANNOUNCEMENTS;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_ATTENDANCES;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_GRADES;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_HOMEWORKS;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_MESSAGES_INBOX;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_MESSAGES_OUTBOX;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_NOTICES;
+import static pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.FEATURE_TIMETABLE;
 import static pl.szczodrzynski.edziennik.datamodels.Event.TYPE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_SEMESTER1_FINAL;
 import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_SEMESTER1_PROPOSED;
@@ -115,7 +115,7 @@ public class Edziennik {
     private static boolean registerEmpty;
     public static int oldLuckyNumber;
 
-    public static EdziennikInterface getApi(App app, int loginType) {
+    public static OldEdziennikInterface getApi(App app, int loginType) {
         switch (loginType) {
             default:
             case LOGIN_TYPE_MOBIDZIENNIK:
@@ -625,7 +625,7 @@ public class Edziennik {
      * Used in services, login form and {@code guiSync}
      * <p>
      * May be ran on worker thread.
-     * {@link EdziennikInterface}.sync is ran always on worker thread.
+     * {@link OldEdziennikInterface}.sync is ran always on worker thread.
      * Every callback is ran on the UI thread.
      *
      * @param app
@@ -676,7 +676,7 @@ public class Edziennik {
             }
         };
         AsyncTask.execute(() -> {
-            ProfileFull profile = app.db.profileDao().getByIdNow(profileId);
+            ProfileFull profile = app.db.profileDao().getFullByIdNow(profileId);
             if (profile != null) {
 
                 if (profile.getArchived()) {
@@ -1130,7 +1130,7 @@ public class Edziennik {
                 .show();
     }
     public void removeProfile(int profileId) {
-        Profile profileObject = app.db.profileDao().getByIdNow(profileId);
+        Profile profileObject = app.db.profileDao().getFullByIdNow(profileId);
         if (profileObject == null)
             return;
         app.db.announcementDao().clear(profileId);

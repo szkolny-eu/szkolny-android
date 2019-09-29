@@ -10,6 +10,8 @@ import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusMessages
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusSynergia
 import pl.szczodrzynski.edziennik.api.v2.models.LoginMethod
 
+val SYNERGIA_API_ENABLED = "true".toBoolean()
+
 const val LOGIN_TYPE_MOBIDZIENNIK = 1
 const val LOGIN_TYPE_LIBRUS = 2
 const val LOGIN_TYPE_IUCZNIOWIE = 3
@@ -37,14 +39,29 @@ const val LOGIN_METHOD_VULCAN_WEB = 100
 const val LOGIN_METHOD_VULCAN_API = 200
 
 val librusLoginMethods = listOf(
-        LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_PORTAL, null, LoginLibrusPortal::class.java) { _, _ -> LOGIN_METHOD_NOT_NEEDED },
-        LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_API, null, LoginLibrusApi::class.java) { _, loginStore ->
-            if (loginStore.mode == LOGIN_MODE_LIBRUS_EMAIL) LOGIN_METHOD_LIBRUS_PORTAL else LOGIN_METHOD_NOT_NEEDED
-        },
-        LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_SYNERGIA, listOf(FEATURE_GRADES, FEATURE_HOMEWORKS, FEATURE_MESSAGES_INBOX, FEATURE_MESSAGES_OUTBOX), LoginLibrusSynergia::class.java) { profile, _ ->
-            if (profile?.hasStudentData("accountPassword") == false) LOGIN_METHOD_LIBRUS_API else LOGIN_METHOD_NOT_NEEDED
-        },
-        LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_MESSAGES, listOf(FEATURE_MESSAGES_INBOX, FEATURE_MESSAGES_OUTBOX), LoginLibrusMessages::class.java) { profile, _ ->
-            if (profile?.hasStudentData("accountPassword") == false) LOGIN_METHOD_LIBRUS_SYNERGIA else LOGIN_METHOD_NOT_NEEDED
-        }
+        LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_PORTAL, LoginLibrusPortal::class.java)
+                .withIsPossible { _, loginStore ->
+                    loginStore.mode == LOGIN_MODE_LIBRUS_EMAIL
+                }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED },
+
+        LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_API, LoginLibrusApi::class.java)
+                .withIsPossible { _, loginStore ->
+                    loginStore.mode != LOGIN_MODE_LIBRUS_SYNERGIA || SYNERGIA_API_ENABLED
+                }
+                .withRequiredLoginMethod { _, loginStore ->
+                    if (loginStore.mode == LOGIN_MODE_LIBRUS_EMAIL) LOGIN_METHOD_LIBRUS_PORTAL else LOGIN_METHOD_NOT_NEEDED
+                },
+
+        LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_SYNERGIA, LoginLibrusSynergia::class.java)
+                .withIsPossible { _, _ -> true }
+                .withRequiredLoginMethod { profile, _ ->
+                    if (profile?.hasStudentData("accountPassword") == false) LOGIN_METHOD_LIBRUS_API else LOGIN_METHOD_NOT_NEEDED
+                },
+
+        LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_MESSAGES, LoginLibrusMessages::class.java)
+                .withIsPossible { _, _ -> true }
+                .withRequiredLoginMethod { profile, _ ->
+                    if (profile?.hasStudentData("accountPassword") == false) LOGIN_METHOD_LIBRUS_SYNERGIA else LOGIN_METHOD_NOT_NEEDED
+                }
 )

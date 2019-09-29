@@ -41,7 +41,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.api.AppError
-import pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface.*
+import pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface.*
 import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.datamodels.LoginStore

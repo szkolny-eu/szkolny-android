@@ -9,22 +9,30 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.AppError
 import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback
 import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
+import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
+import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
-import pl.szczodrzynski.edziennik.api.v2.models.Data
 import pl.szczodrzynski.edziennik.datamodels.LoginStore
 import pl.szczodrzynski.edziennik.datamodels.Profile
 import pl.szczodrzynski.edziennik.datamodels.ProfileFull
 
-class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: SyncCallback) {
+class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
 
     val internalErrorList = mutableListOf<Int>()
-    lateinit var data: DataLibrus
+    val data: DataLibrus
 
     init {
         data = DataLibrus(app, profile, loginStore).apply {
             callback = wrapCallback(this@Librus.callback)
         }
+        data.satisfyLoginMethods()
+    }
 
+    override fun sync(featureIds: List<Int>) {
+
+    }
+
+    override fun getMessage(messageId: Int) {
 
     }
 

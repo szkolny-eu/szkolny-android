@@ -9,14 +9,9 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
-import pl.szczodrzynski.edziennik.api.AppError
-import pl.szczodrzynski.edziennik.api.AppError.*
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
-import pl.szczodrzynski.edziennik.currentTimeUnix
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.getString
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import java.net.HttpURLConnection.*
 
 class LoginLibrusApi {
@@ -121,7 +116,7 @@ class LoginLibrusApi {
                 data.error(TAG, ERROR_RESPONSE_EMPTY, response)
                 return
             }
-            json.getString("error")?.let { error ->
+            if (response?.code() != 200) json.getString("error")?.let { error ->
                 when (error) {
                     "librus_captcha_needed" -> ERROR_LOGIN_LIBRUS_API_CAPTCHA_NEEDED
                     "connection_problems" -> ERROR_LOGIN_LIBRUS_API_CONNECTION_PROBLEMS
@@ -140,7 +135,7 @@ class LoginLibrusApi {
             try {
                 data.apiAccessToken = json.getString("access_token")
                 data.apiRefreshToken = json.getString("refresh_token")
-                data.apiTokenExpiryTime = currentTimeUnix() + json.getInt("expires_in", 86400)
+                data.apiTokenExpiryTime = response.getUnixDate() + json.getInt("expires_in", 86400)
                 onSuccess()
             } catch (e: NullPointerException) {
                 data.error(TAG, EXCEPTION_LOGIN_LIBRUS_API_TOKEN, response, e, json)

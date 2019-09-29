@@ -218,6 +218,8 @@
             android:name=".sync.SyncService"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/sync_service" />
+
+        <service android:name=".api.v2.ApiService" />
     </application>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

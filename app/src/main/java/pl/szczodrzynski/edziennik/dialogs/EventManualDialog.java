@@ -425,7 +425,7 @@ public class EventManualDialog {
             return;
         this.app = _app;
         AsyncTask.execute(() -> {
-            this.profile = app.db.profileDao().getByIdNow(profileId);
+            this.profile = app.db.profileDao().getFullByIdNow(profileId);
             if (profile != null) {
                 ((Activity) context).runOnUiThread(() -> {
                     actualShow(editingEvent, defaultDate, defaultTime, dialogType);

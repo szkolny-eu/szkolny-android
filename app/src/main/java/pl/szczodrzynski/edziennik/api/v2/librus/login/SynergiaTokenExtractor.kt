@@ -33,16 +33,80 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
         else {
             if (!synergiaAccount()) {
-
+                data.error(TAG, ERROR_LOGIN_DATA_MISSING)
             }
         }
     }}
 
+    /**
+     * Get an Api token from the Portal account, using Portal API.
+     * If necessary, refreshes the token.
+     */
     private fun synergiaAccount(): Boolean {
         val accountLogin = data.apiLogin ?: return false
         val accessToken = data.portalAccessToken ?: return false
-        data.callback.onActionStarted(R.string.sync_action_getting_account)
-        d(TAG, "Requesting " + (LIBRUS_ACCOUNT_URL + accountLogin))
+
+        val onSuccess = { json: JsonObject, response: Response? ->
+            // synergiaAccount is executed when a synergia token needs a refresh
+            val accountId = json.getInt("id")
+            val accountToken = json.getString("accessToken")
+            if (accountId == null || accountToken == null) {
+                data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_SYNERGIA_TOKEN_MISSING, response, apiResponse = json)
+            }
+            else {
+                data.apiAccessToken = accountToken
+                data.apiTokenExpiryTime = response.getUnixDate() + 6 * 60 * 60
+
+                // TODO remove this
+                data.profile?.studentNameLong = json.getString("studentName")
+                val nameParts = json.getString("studentName")?.split(" ")?.toTypedArray()
+                data.profile?.studentNameShort = nameParts?.get(0) + " " + nameParts?.get(1)?.get(0)
+
+                onSuccess()
+            }
+        }
+
+        val callback = object : JsonCallbackHandler() {
+            override fun onSuccess(json: JsonObject?, response: Response?) {
+                if (json == null) {
+                    data.error(TAG, ERROR_RESPONSE_EMPTY, response)
+                    return
+                }
+                val error = if (response?.code() == 200) null else
+                    json.getString("reason") ?:
+                    json.getString("message") ?:
+                    json.getString("hint") ?:
+                    json.getString("Code")
+                error?.let { code ->
+                    when (code) {
+                        "requires_an_action" -> ERROR_LIBRUS_PORTAL_SYNERGIA_DISCONNECTED
+                        "Access token is invalid" -> ERROR_LIBRUS_PORTAL_TOKEN_EXPIRED
+                        "ApiDisabled" -> ERROR_LIBRUS_PORTAL_API_DISABLED
+                        "Account not found" -> ERROR_LIBRUS_PORTAL_SYNERGIA_NOT_FOUND
+                        else -> ERROR_LIBRUS_PORTAL_OTHER
+                    }.let { errorCode ->
+                        data.error(TAG, errorCode, apiResponse = json, response = response)
+                        return
+                    }
+                }
+                if (response?.code() == HTTP_OK) {
+                    try {
+                        onSuccess(json, response)
+                    } catch (e: NullPointerException) {
+                        e.printStackTrace()
+                        data.error(TAG, EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN, response, e, json)
+                    }
+
+                } else {
+                    data.error(TAG, ERROR_REQUEST_FAILURE, response, apiResponse = json)
+                }
+            }
+
+            override fun onFailure(response: Response?, throwable: Throwable?) {
+                data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+            }
+        }
+
         Request.builder()
                 .url(LIBRUS_ACCOUNT_URL + accountLogin)
                 .userAgent(LIBRUS_USER_AGENT)
@@ -53,59 +117,7 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
                 .allowErrorCode(HTTP_UNAUTHORIZED)
                 .allowErrorCode(HTTP_BAD_REQUEST)
                 .allowErrorCode(HTTP_GONE)
-                .callback(object : JsonCallbackHandler() {
-                    override fun onSuccess(json: JsonObject?, response: Response) {
-                        if (json == null) {
-                            data.error(TAG, ERROR_RESPONSE_EMPTY, response)
-                            return
-                        }
-                        if (response.code() == 410) {
-                            val reason = json.get("reason")
-                            if (reason != null && reason !is JsonNull && reason.asString == "requires_an_action") {
-                                data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_SYNERGIA_DISCONNECTED, response, apiResponse = json)
-                                return
-                            }
-                            data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_SYNERGIA_410, response, apiResponse = json)
-                            return
-                        }
-                        if (json.get("message") != null) {
-                            val message = json.get("message").asString
-                            if (message == "Account not found") {
-                                data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_SYNERGIA_NOT_FOUND, response, apiResponse = json)
-                                return
-                            }
-                            data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_SYNERGIA_OTHER, response, apiResponse = json)
-                            return
-                        }
-                        if (response.code() == HTTP_OK) {
-                            try {
-                                // synergiaAccount is executed when a synergia token needs a refresh
-                                val accountId = json.getInt("id")
-                                val accountToken = json.getString("accessToken")
-                                if (accountId == null || accountToken == null) {
-                                    data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_SYNERGIA_TOKEN_MISSING, response, apiResponse = json)
-                                    return
-                                }
-                                data.apiAccessToken = accountToken
-                                data.apiTokenExpiryTime = currentTimeUnix() + 6*60*60
-                                data.profile?.studentNameLong = json.getString("studentName")
-                                val nameParts = json.getString("studentName")?.split(" ")?.toTypedArray()
-                                data.profile?.studentNameShort = nameParts?.get(0) + " " + nameParts?.get(1)?.get(0)
-                                onSuccess()
-                            } catch (e: NullPointerException) {
-                                e.printStackTrace()
-                                data.error(TAG, EXCEPTION_LOGIN_LIBRUS_PORTAL_SYNERGIA_TOKEN, response, e, json)
-                            }
-
-                        } else {
-                            data.error(TAG, ERROR_REQUEST_FAILURE, response, apiResponse = json)
-                        }
-                    }
-
-                    override fun onFailure(response: Response, throwable: Throwable) {
-                        data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
-                    }
-                })
+                .callback(callback)
                 .build()
                 .enqueue()
         return true

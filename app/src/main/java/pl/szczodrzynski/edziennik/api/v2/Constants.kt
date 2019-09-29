@@ -4,18 +4,6 @@
 
 package pl.szczodrzynski.edziennik.api.v2
 
-internal const val FEATURE_ANY = -1
-const val FEATURE_ALL = 0
-const val FEATURE_TIMETABLE = 1
-const val FEATURE_AGENDA = 2
-const val FEATURE_GRADES = 3
-const val FEATURE_HOMEWORKS = 4
-const val FEATURE_NOTICES = 5
-const val FEATURE_ATTENDANCES = 6
-const val FEATURE_MESSAGES_INBOX = 7
-const val FEATURE_MESSAGES_OUTBOX = 8
-const val FEATURE_ANNOUNCEMENTS = 9
-
 const val LIBRUS_USER_AGENT = "Dalvik/2.1.0 Android LibrusMobileApp"
 const val SYNERGIA_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0"
 const val LIBRUS_CLIENT_ID = "wmSyUMo8llDAs4y9tJVYY92oyZ6h4lAt7KCuy0Gv"
@@ -42,7 +30,7 @@ const val LIBRUS_JST_DEMO_CODE = "68656A21"
 const val LIBRUS_JST_DEMO_PIN = "1290"
 
 /** https://synergia.librus.pl/loguj/token/TOKEN/przenies */
-const val LIBRUS_SYNERGIA_TOKEN_LOGIN_URL = "https://synergia.librus.pl/loguj/token/TOKEN/przenies/"
+const val LIBRUS_SYNERGIA_TOKEN_LOGIN_URL = "https://synergia.librus.pl/loguj/token/TOKEN/przenies"
 
 const val LIBRUS_MESSAGES_URL = "https://wiadomosci.librus.pl/module/"
 const val LIBRUS_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action="

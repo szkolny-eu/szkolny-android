@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.models
 
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
 import pl.szczodrzynski.edziennik.datamodels.LoginStore
 import pl.szczodrzynski.edziennik.datamodels.Profile
 
@@ -16,15 +17,30 @@ import pl.szczodrzynski.edziennik.datamodels.Profile
  *
  * @param loginType type of the e-register this login method handles
  * @param loginMethodId a unique ID of this login method
- * @param featureIds a [List] of [Feature]s (their IDs) this login method can provide access to
- *   May be null if no strict feature set is associated with this method.
  * @param loginMethodClass a [Class] which constructor will be invoked when a log in is needed
- * @param requiredLoginMethod a lambda returning a required login method (which will be called before this). May differ depending on the [Profile] and/or [LoginStore].
+ * @param requiredLoginMethod a required login method (which will be called before this). May differ depending on the [Profile] and/or [LoginStore].
  */
 class LoginMethod(
         val loginType: Int,
         val loginMethodId: Int,
-        val featureIds: List<Int>?,
         val loginMethodClass: Class<*>,
-        val requiredLoginMethod: (profile: Profile?, loginStore: LoginStore) -> Int
-)
+        private var mIsPossible: ((profile: Profile?, loginStore: LoginStore) -> Boolean)? = null,
+        private var mRequiredLoginMethod: ((profile: Profile?, loginStore: LoginStore) -> Int)? = null
+) {
+
+    fun withIsPossible(isPossible: (profile: Profile?, loginStore: LoginStore) -> Boolean): LoginMethod {
+        this.mIsPossible = isPossible
+        return this
+    }
+    fun withRequiredLoginMethod(requiredLoginMethod: (profile: Profile?, loginStore: LoginStore) -> Int): LoginMethod {
+        this.mRequiredLoginMethod = requiredLoginMethod
+        return this
+    }
+
+    fun isPossible(profile: Profile?, loginStore: LoginStore): Boolean {
+        return mIsPossible?.invoke(profile, loginStore) ?: false
+    }
+    fun requiredLoginMethod(profile: Profile?, loginStore: LoginStore): Int {
+        return mRequiredLoginMethod?.invoke(profile, loginStore) ?: LOGIN_METHOD_NOT_NEEDED
+    }
+}

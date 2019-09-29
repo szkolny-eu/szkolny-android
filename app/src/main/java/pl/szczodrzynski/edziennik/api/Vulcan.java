@@ -36,7 +36,7 @@ import okio.Buffer;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.interfaces.AttachmentGetCallback;
-import pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface;
+import pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface;
 import pl.szczodrzynski.edziennik.api.interfaces.LoginCallback;
 import pl.szczodrzynski.edziennik.api.interfaces.MessageGetCallback;
 import pl.szczodrzynski.edziennik.api.interfaces.RecipientListGetCallback;
@@ -93,7 +93,7 @@ import static pl.szczodrzynski.edziennik.utils.Utils.getGradeValue;
 import static pl.szczodrzynski.edziennik.utils.Utils.getVulcanGradeColor;
 import static pl.szczodrzynski.edziennik.utils.Utils.intToStr;
 
-public class Vulcan implements EdziennikInterface {
+public class Vulcan implements OldEdziennikInterface {
     public Vulcan(App app) {
         this.app = app;
     }

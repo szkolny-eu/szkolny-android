@@ -13,6 +13,7 @@ import okhttp3.internal.http.HttpDate
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.currentTimeUnix
+import pl.szczodrzynski.edziennik.getUnixDate
 
 class LoginLibrusMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
     companion object {
@@ -73,7 +74,7 @@ class LoginLibrusMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
                             return
                         }
                         data.messagesSessionId = sessionId
-                        data.messagesSessionIdExpiryTime = currentTimeUnix() + 3600 /* 1h */
+                        data.messagesSessionIdExpiryTime = response.getUnixDate() + 45 * 60 /* 45min */
                         onSuccess()
                     }
 

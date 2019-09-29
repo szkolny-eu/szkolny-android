@@ -10,10 +10,13 @@ import androidx.core.app.ActivityCompat
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.datamodels.Profile
 import pl.szczodrzynski.edziennik.datamodels.Teacher
 import pl.szczodrzynski.navlib.crc16
 import pl.szczodrzynski.navlib.getColorFromRes
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 fun List<Teacher>.byId(id: Long) = firstOrNull { it.id == id }
@@ -117,4 +120,11 @@ fun Activity.isStoragePermissionGranted(): Boolean {
     } else {
         true
     }
+}
+
+fun Response?.getUnixDate(): Long {
+    val rfcDate = this?.headers()?.get("date") ?: return currentTimeUnix()
+    val pattern = "EEE, dd MMM yyyy HH:mm:ss Z"
+    val format = SimpleDateFormat(pattern, Locale.ENGLISH)
+    return format.parse(rfcDate).time / 1000
 }

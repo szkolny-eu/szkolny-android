@@ -41,7 +41,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.interfaces.AttachmentGetCallback;
-import pl.szczodrzynski.edziennik.api.interfaces.EdziennikInterface;
+import pl.szczodrzynski.edziennik.api.interfaces.OldEdziennikInterface;
 import pl.szczodrzynski.edziennik.api.interfaces.LoginCallback;
 import pl.szczodrzynski.edziennik.api.interfaces.MessageGetCallback;
 import pl.szczodrzynski.edziennik.api.interfaces.RecipientListGetCallback;
@@ -99,7 +99,7 @@ import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.monthFromName;
 import static pl.szczodrzynski.edziennik.utils.Utils.strToInt;
 
-public class Mobidziennik implements EdziennikInterface {
+public class Mobidziennik implements OldEdziennikInterface {
     public Mobidziennik(App app) {
         this.app = app;
     }

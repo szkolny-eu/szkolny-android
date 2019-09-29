@@ -4,20 +4,130 @@
 
 package pl.szczodrzynski.edziennik.api.v2
 
-import android.util.Log
-import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApiGrades
-import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApiMe
-import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusSynergiaGrades
 import pl.szczodrzynski.edziennik.api.v2.models.Endpoint
 
-const val ENDPOINT_LIBRUS_API_ME = 0
-const val ENDPOINT_LIBRUS_API_GRADES = 0
-const val ENDPOINT_LIBRUS_SYNERGIA_GRADES = 0
+const val ENDPOINT_LIBRUS_API_ME                        = 101
+const val ENDPOINT_LIBRUS_API_SCHOOLS                   = 102
+const val ENDPOINT_LIBRUS_API_CLASSES                   = 103
+const val ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES           = 104
+const val ENDPOINT_LIBRUS_API_UNITS                     = 105
+const val ENDPOINT_LIBRUS_API_USERS                     = 106
+const val ENDPOINT_LIBRUS_API_SUBJECTS                  = 107
+const val ENDPOINT_LIBRUS_API_CLASSROOMS                = 108
+const val ENDPOINT_LIBRUS_API_TIMETABLES                = 109
+const val ENDPOINT_LIBRUS_API_SUBSTITUTIONS             = 110
+const val ENDPOINT_LIBRUS_API_NORMAL_GC                 = 111
+const val ENDPOINT_LIBRUS_API_POINT_GC                  = 112
+const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_GC            = 113
+const val ENDPOINT_LIBRUS_API_TEXT_GC                   = 114
+const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GC       = 115
+const val ENDPOINT_LIBRUS_API_BEHAVIOUR_GC              = 116
+const val ENDPOINT_LIBRUS_API_NORMAL_GRADES             = 117
+const val ENDPOINT_LIBRUS_API_POINT_GRADES              = 118
+const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES        = 119
+const val ENDPOINT_LIBRUS_API_TEXT_GRADES               = 120
+const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GRADES   = 121
+const val ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES          = 122
+const val ENDPOINT_LIBRUS_API_EVENTS                    = 123
+const val ENDPOINT_LIBRUS_API_EVENT_TYPES               = 124
+const val ENDPOINT_LIBRUS_API_HOMEWORK                  = 125
+const val ENDPOINT_LIBRUS_API_LUCKY_NUMBER              = 126
+const val ENDPOINT_LIBRUS_API_NOTICES                   = 127
+const val ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES          = 128
+const val ENDPOINT_LIBRUS_API_ATTENDANCE                = 129
+const val ENDPOINT_LIBRUS_API_ANNOUNCEMENTS             = 130
+const val ENDPOINT_LIBRUS_API_PT_MEETINGS               = 131
+const val ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS         = 132
+const val ENDPOINT_LIBRUS_API_SCHOOL_FREE_DAYS          = 133
+const val ENDPOINT_LIBRUS_API_CLASS_FREE_DAYS           = 134
+const val ENDPOINT_LIBRUS_SYNERGIA_INFO                 = 201
+const val ENDPOINT_LIBRUS_SYNERGIA_GRADES               = 202
+const val ENDPOINT_LIBRUS_MESSAGES_RECEIVED             = 301
+const val ENDPOINT_LIBRUS_MESSAGES_SENT                 = 302
+const val ENDPOINT_LIBRUS_MESSAGES_TRASH                = 303
+const val ENDPOINT_LIBRUS_MESSAGES_RECEIVERS            = 304
+const val ENDPOINT_LIBRUS_MESSAGES_GET                  = 304
 
 val endpoints = listOf(
-        Endpoint(LOGIN_TYPE_LIBRUS, ENDPOINT_LIBRUS_API_ME, null, LibrusApiMe::class.java) { _, _ -> LOGIN_METHOD_LIBRUS_API},
-        Endpoint(LOGIN_TYPE_LIBRUS, 1, listOf(), LibrusSynergiaGrades::class.java) { _, _ -> LOGIN_METHOD_LIBRUS_SYNERGIA },
-        Endpoint(LOGIN_TYPE_LIBRUS, 1, listOf(), LibrusApiGrades::class.java) { _, _ -> LOGIN_METHOD_LIBRUS_API }
+
+        // LIBRUS: API
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_TIMETABLE, listOf(
+                ENDPOINT_LIBRUS_API_TIMETABLES,
+                ENDPOINT_LIBRUS_API_SUBSTITUTIONS
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_AGENDA, listOf(
+                ENDPOINT_LIBRUS_API_EVENTS,
+                ENDPOINT_LIBRUS_API_EVENT_TYPES,
+                ENDPOINT_LIBRUS_API_PT_MEETINGS,
+                ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS,
+                ENDPOINT_LIBRUS_API_SCHOOL_FREE_DAYS,
+                ENDPOINT_LIBRUS_API_CLASS_FREE_DAYS
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_GRADES, listOf(
+                ENDPOINT_LIBRUS_API_NORMAL_GC,
+                ENDPOINT_LIBRUS_API_POINT_GC,
+                ENDPOINT_LIBRUS_API_DESCRIPTIVE_GC,
+                ENDPOINT_LIBRUS_API_TEXT_GC,
+                ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GC,
+                ENDPOINT_LIBRUS_API_BEHAVIOUR_GC,
+                ENDPOINT_LIBRUS_API_NORMAL_GRADES,
+                ENDPOINT_LIBRUS_API_POINT_GRADES,
+                ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES,
+                ENDPOINT_LIBRUS_API_TEXT_GRADES,
+                ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GRADES,
+                ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_HOMEWORK, listOf(
+                ENDPOINT_LIBRUS_API_HOMEWORK
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_NOTICES, listOf(
+                ENDPOINT_LIBRUS_API_NOTICES
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_ATTENDANCES, listOf(
+                ENDPOINT_LIBRUS_API_ATTENDANCE,
+                ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_ANNOUNCEMENTS, listOf(
+                ENDPOINT_LIBRUS_API_ANNOUNCEMENTS
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_STUDENT_INFO, listOf(
+                ENDPOINT_LIBRUS_API_ME
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_SCHOOL_INFO, listOf(
+                ENDPOINT_LIBRUS_API_SCHOOLS,
+                ENDPOINT_LIBRUS_API_UNITS
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_CLASS_INFO, listOf(
+                ENDPOINT_LIBRUS_API_CLASSES
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_TEAM_INFO, listOf(
+                ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_LUCKY_NUMBER, listOf(
+                ENDPOINT_LIBRUS_API_LUCKY_NUMBER
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_TEACHERS, listOf(
+                ENDPOINT_LIBRUS_API_USERS
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_SUBJECTS, listOf(
+                ENDPOINT_LIBRUS_API_SUBJECTS
+        ), LOGIN_METHOD_LIBRUS_API),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_CLASSROOMS, listOf(
+                ENDPOINT_LIBRUS_API_CLASSROOMS
+        ), LOGIN_METHOD_LIBRUS_API),
+
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_STUDENT_INFO, listOf(
+                ENDPOINT_LIBRUS_SYNERGIA_INFO
+        ), LOGIN_METHOD_LIBRUS_SYNERGIA),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_STUDENT_NUMBER, listOf(
+                ENDPOINT_LIBRUS_SYNERGIA_INFO
+        ), LOGIN_METHOD_LIBRUS_SYNERGIA),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_GRADES, listOf(
+                ENDPOINT_LIBRUS_SYNERGIA_GRADES
+        ), LOGIN_METHOD_LIBRUS_SYNERGIA),
+
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_MESSAGES_INBOX, listOf(ENDPOINT_LIBRUS_MESSAGES_RECEIVED), LOGIN_METHOD_LIBRUS_MESSAGES),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_MESSAGES_OUTBOX, listOf(ENDPOINT_LIBRUS_MESSAGES_SENT), LOGIN_METHOD_LIBRUS_MESSAGES)
 )
 
 /*

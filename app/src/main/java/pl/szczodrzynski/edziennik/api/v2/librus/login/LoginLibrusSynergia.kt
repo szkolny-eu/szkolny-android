@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import java.lang.Exception
 import java.net.HttpURLConnection
@@ -75,7 +76,10 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
                     data.error(TAG, ERROR_RESPONSE_EMPTY, response)
                     return
                 }
-                val error = json.getString("Code") ?: json.getString("Message") ?: response?.parserErrorBody
+                val error = if (response?.code() == 200) null else
+                    json.getString("Code") ?:
+                    json.getString("Message") ?:
+                    response?.parserErrorBody
                 error?.let { code ->
                     when (code) {
                         "TokenIsExpired" -> ERROR_LIBRUS_API_TOKEN_EXPIRED
@@ -145,7 +149,7 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
                         return
                     }
                     data.synergiaSessionId = sessionId
-                    data.synergiaSessionIdExpiryTime = currentTimeUnix() + 3600 /* 1h */
+                    data.synergiaSessionIdExpiryTime = response.getUnixDate() + 45 * 60 /* 45min */
                     onSuccess()
                 }
                 else {
