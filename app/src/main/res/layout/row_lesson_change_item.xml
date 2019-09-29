@@ -1,7 +1,7 @@
 <androidx.cardview.widget.CardView android:id="@+id/lesson_change_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:cardBackgroundColor="@color/blue_selected"
+    tools:cardBackgroundColor="#78909c"
     app:cardCornerRadius="5dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"

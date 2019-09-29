@@ -86,7 +86,7 @@ public class EventListDialog {
     private void actualShow(Date date, Time time, boolean noDefaultTimeWhenAdding) {
         dialog = new MaterialDialog.Builder(context)
                 .title((time == null ? date.getFormattedString() : (lesson != null ? lesson.getSubjectLongName() : date.getFormattedString())+", "+time.getStringHM()))
-                .customView(R.layout.dialog_event_list, true)
+                .customView(R.layout.dialog_event_list, false)
                 .neutralText(R.string.add)
                 .positiveText(R.string.close)
                 .autoDismiss(false)
@@ -170,7 +170,7 @@ public class EventListDialog {
 
         examsView = dialogView.findViewById(R.id.eventListView);
         examsView.setHasFixedSize(false);
-        examsView.setNestedScrollingEnabled(false);
+        examsView.setNestedScrollingEnabled(true);
         examsView.setLayoutManager(new LinearLayoutManager(context));
 
         CardView lessonChangeContainer = dialogView.findViewById(R.id.lessonChangeContainer);
