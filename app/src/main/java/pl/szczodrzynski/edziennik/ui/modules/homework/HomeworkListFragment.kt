@@ -64,7 +64,7 @@ class HomeworkListFragment : Fragment() {
                     if (app.profile == null || !isAdded) return@Observer
 
                     if (homeworkList != null && homeworkList.size > 0) {
-                        val adapter = HomeworkAdapter(context, homeworkList)
+                        val adapter = HomeworkAdapter(context, homeworkList.reversed())
                         b.homeworkView.adapter = adapter
                         b.homeworkView.visibility = View.VISIBLE
                         b.homeworkNoData.visibility = View.GONE
