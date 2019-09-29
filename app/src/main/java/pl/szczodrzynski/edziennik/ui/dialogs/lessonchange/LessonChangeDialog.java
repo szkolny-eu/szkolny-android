@@ -42,7 +42,7 @@ public class LessonChangeDialog {
         this.app = _app;
         dialog = new MaterialDialog.Builder(context)
                 .title(date.getFormattedString())
-                .customView(R.layout.dialog_lesson_change_list, true)
+                .customView(R.layout.dialog_lesson_change_list, false)
                 .positiveText(R.string.close)
                 .autoDismiss(false)
                 .onPositive((dialog, which) -> dialog.dismiss())
@@ -53,8 +53,7 @@ public class LessonChangeDialog {
         if (b == null)
             return;
 
-        b.lessonChangeView.setHasFixedSize(false);
-        b.lessonChangeView.setNestedScrollingEnabled(false);
+        b.lessonChangeView.setHasFixedSize(true);
         b.lessonChangeView.setLayoutManager(new LinearLayoutManager(context));
 
         app.db.lessonDao().getAllByDate(profileId, date, Time.getNow()).observe((LifecycleOwner) context, lessons -> {
