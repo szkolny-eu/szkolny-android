@@ -30,9 +30,17 @@ class TeacherAbsenceAdapter(
         val teacherAbsence: TeacherAbsenceFull = teacherAbsenceList[position]
 
         holder.teacherAbsenceTeacher.text = teacherAbsence.teacherFullName
+
+        val time = when(teacherAbsence.dateFrom.compareTo(teacherAbsence.dateTo)) {
+            0 -> teacherAbsence.dateFrom.formattedStringShort
+            else -> teacherAbsence.dateFrom.formattedStringShort + " - " + teacherAbsence.dateTo.formattedStringShort
+        }
+
+        holder.teacherAbsenceTime.text = time
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var teacherAbsenceTeacher: TextView = itemView.findViewById(R.id.teacherAbsenceTeacher)
+        var teacherAbsenceTime: TextView = itemView.findViewById(R.id.teacherAbsenceTime)
     }
 }
