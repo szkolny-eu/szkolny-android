@@ -47,8 +47,8 @@ class HomeworkListFragment : Fragment() {
         }
 
         val layoutManager = LinearLayoutManager(context)
-        layoutManager.reverseLayout = false
-        layoutManager.stackFromEnd = false
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
 
         b.homeworkView.setHasFixedSize(true)
         b.homeworkView.layoutManager = layoutManager

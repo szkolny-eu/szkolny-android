@@ -101,6 +101,6 @@ class HomeworkFragment : Fragment() {
         })
 
         activity.gainAttention()
-        activity.collapseFab()
+        activity.gainAttentionFAB()
     }
 }
