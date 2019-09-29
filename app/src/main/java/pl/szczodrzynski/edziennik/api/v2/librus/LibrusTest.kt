@@ -49,7 +49,7 @@ class LibrusTest(val app: App) {
 
         app.startService(Intent(app, ApiService::class.java))
 
-        val data = DataLibrus(app, profile, loginStore).apply {
+        /*val data = DataLibrus(app, profile, loginStore).apply {
             callback = object : ProgressCallback {
                 override fun onProgress(progressStep: Int) {
 
@@ -64,12 +64,12 @@ class LibrusTest(val app: App) {
                     d(TAG, "Error "+error.getDetails(app))
                 }
             }
-        }
+        }*/
 
-        LoginLibrus(data, LOGIN_METHOD_LIBRUS_MESSAGES) {
+        /*LoginLibrus(data, LOGIN_METHOD_LIBRUS_MESSAGES) {
             d(TAG, "Login succeeded.")
             d(TAG, "Profile data: ${data.profile?.studentData?.toString()}")
             d(TAG, "LoginStore data: ${data.loginStore.data}")
-        }
+        }*/
     }
 }
