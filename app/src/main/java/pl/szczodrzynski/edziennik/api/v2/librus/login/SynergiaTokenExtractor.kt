@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.api.AppError
 import pl.szczodrzynski.edziennik.api.AppError.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.*
 
@@ -20,11 +21,11 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     init { run {
         if (data.loginStore.mode != LOGIN_MODE_LIBRUS_EMAIL) {
-            data.error(TAG, ERROR_INVALID_LOGIN_MODE)
+            data.error(ApiError(TAG, ERROR_INVALID_LOGIN_MODE))
             return@run
         }
         if (data.profile == null) {
-            data.error(TAG, ERROR_PROFILE_MISSING)
+            data.error(ApiError(TAG, ERROR_PROFILE_MISSING))
             return@run
         }
 
@@ -33,7 +34,7 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
         else {
             if (!synergiaAccount()) {
-                data.error(TAG, ERROR_LOGIN_DATA_MISSING)
+                data.error(ApiError(TAG, ERROR_LOGIN_DATA_MISSING))
             }
         }
     }}
@@ -51,7 +52,9 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
             val accountId = json.getInt("id")
             val accountToken = json.getString("accessToken")
             if (accountId == null || accountToken == null) {
-                data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_SYNERGIA_TOKEN_MISSING, response, apiResponse = json)
+                data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_SYNERGIA_TOKEN_MISSING)
+                        .withResponse(response)
+                        .withApiResponse(json))
             }
             else {
                 data.apiAccessToken = accountToken
@@ -69,7 +72,8 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
                 if (json == null) {
-                    data.error(TAG, ERROR_RESPONSE_EMPTY, response)
+                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
+                            .withResponse(response))
                     return
                 }
                 val error = if (response?.code() == 200) null else
@@ -85,7 +89,9 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
                         "Account not found" -> ERROR_LIBRUS_PORTAL_SYNERGIA_NOT_FOUND
                         else -> ERROR_LIBRUS_PORTAL_OTHER
                     }.let { errorCode ->
-                        data.error(TAG, errorCode, apiResponse = json, response = response)
+                        data.error(ApiError(TAG, errorCode)
+                                .withApiResponse(json)
+                                .withResponse(response))
                         return
                     }
                 }
@@ -94,16 +100,23 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
                         onSuccess(json, response)
                     } catch (e: NullPointerException) {
                         e.printStackTrace()
-                        data.error(TAG, EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN, response, e, json)
+                        data.error(ApiError(TAG, EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN)
+                                .withResponse(response)
+                                .withThrowable(e)
+                                .withApiResponse(json))
                     }
 
                 } else {
-                    data.error(TAG, ERROR_REQUEST_FAILURE, response, apiResponse = json)
+                    data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                            .withResponse(response)
+                            .withApiResponse(json))
                 }
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
-                data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                        .withResponse(response)
+                        .withThrowable(throwable))
             }
         }
 

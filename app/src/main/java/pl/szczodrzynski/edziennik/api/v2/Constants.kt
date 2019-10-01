@@ -4,6 +4,9 @@
 
 package pl.szczodrzynski.edziennik.api.v2
 
+const val GET = 0
+const val POST = 1
+
 const val LIBRUS_USER_AGENT = "Dalvik/2.1.0 Android LibrusMobileApp"
 const val SYNERGIA_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0"
 const val LIBRUS_CLIENT_ID = "wmSyUMo8llDAs4y9tJVYY92oyZ6h4lAt7KCuy0Gv"

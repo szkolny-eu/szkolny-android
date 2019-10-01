@@ -908,4 +908,8 @@
     <string name="settings_about_discord_text">Serwer Discord</string>
     <string name="settings_about_discord_subtext">Dołącz do naszego serwera Discord!</string>
     <string name="menu_debug">Debugowanie</string>
+    <string name="edziennik_progress_login_librus_portal">Logowanie do Portalu Librus</string>
+    <string name="edziennik_progress_login_librus_api">Logowanie do API</string>
+    <string name="edziennik_progress_login_librus_synergia">Logowanie do Librus Synergia</string>
+    <string name="edziennik_progress_login_librus_messages">Logowanie do wiadomości Librus</string>
 </resources>

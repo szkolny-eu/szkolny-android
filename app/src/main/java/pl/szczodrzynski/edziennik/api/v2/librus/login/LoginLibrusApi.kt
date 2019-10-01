@@ -12,6 +12,7 @@ import im.wangchao.mhttp.callback.JsonCallbackHandler
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import java.net.HttpURLConnection.*
 
 class LoginLibrusApi {
@@ -28,7 +29,7 @@ class LoginLibrusApi {
         this.onSuccess = onSuccess
 
         if (data.profile == null) {
-            data.error(TAG, ERROR_PROFILE_MISSING)
+            data.error(ApiError(TAG, ERROR_PROFILE_MISSING))
             return
         }
 
@@ -41,7 +42,7 @@ class LoginLibrusApi {
                 LOGIN_MODE_LIBRUS_SYNERGIA -> loginWithSynergia()
                 LOGIN_MODE_LIBRUS_JST -> loginWithJst()
                 else -> {
-                    data.error(TAG, ERROR_INVALID_LOGIN_MODE)
+                    data.error(ApiError(TAG, ERROR_INVALID_LOGIN_MODE))
                 }
             }
         }
@@ -49,7 +50,7 @@ class LoginLibrusApi {
 
     private fun loginWithPortal() {
         if (!data.loginMethods.contains(LOGIN_METHOD_LIBRUS_PORTAL)) {
-            data.error(TAG, ERROR_LOGIN_METHOD_NOT_SATISFIED)
+            data.error(ApiError(TAG, ERROR_LOGIN_METHOD_NOT_SATISFIED))
             return
         }
         SynergiaTokenExtractor(data) {
@@ -89,7 +90,7 @@ class LoginLibrusApi {
         }
         else {
             // cannot log in: token expired, no login data present
-            data.error(TAG, ERROR_LOGIN_DATA_MISSING)
+            data.error(ApiError(TAG, ERROR_LOGIN_DATA_MISSING))
         }
     }
 
@@ -106,14 +107,15 @@ class LoginLibrusApi {
         }
         else {
             // cannot log in: token expired, no login data present
-            data.error(TAG, ERROR_LOGIN_DATA_MISSING)
+            data.error(ApiError(TAG, ERROR_LOGIN_DATA_MISSING))
         }
     }
 
     private val tokenCallback = object : JsonCallbackHandler() {
         override fun onSuccess(json: JsonObject?, response: Response?) {
             if (json == null) {
-                data.error(TAG, ERROR_RESPONSE_EMPTY, response)
+                data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
+                        .withResponse(response))
                 return
             }
             if (response?.code() != 200) json.getString("error")?.let { error ->
@@ -127,7 +129,9 @@ class LoginLibrusApi {
                     "invalid_grant" -> ERROR_LOGIN_LIBRUS_API_INVALID_GRANT
                     else -> ERROR_LOGIN_LIBRUS_API_OTHER
                 }.let { errorCode ->
-                    data.error(TAG, errorCode, apiResponse = json, response = response)
+                    data.error(ApiError(TAG, errorCode)
+                            .withApiResponse(json)
+                            .withResponse(response))
                     return
                 }
             }
@@ -138,12 +142,17 @@ class LoginLibrusApi {
                 data.apiTokenExpiryTime = response.getUnixDate() + json.getInt("expires_in", 86400)
                 onSuccess()
             } catch (e: NullPointerException) {
-                data.error(TAG, EXCEPTION_LOGIN_LIBRUS_API_TOKEN, response, e, json)
+                data.error(ApiError(TAG, EXCEPTION_LOGIN_LIBRUS_API_TOKEN)
+                        .withResponse(response)
+                        .withThrowable(e)
+                        .withApiResponse(json))
             }
         }
 
         override fun onFailure(response: Response?, throwable: Throwable?) {
-            data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+            data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                    .withResponse(response)
+                    .withThrowable(throwable))
         }
     }
 

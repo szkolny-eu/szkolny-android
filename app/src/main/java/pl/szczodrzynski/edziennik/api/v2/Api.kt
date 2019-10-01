@@ -16,6 +16,5 @@ open class Api(open val data: Data) {
             Crashlytics.logException(e)
         }
 
-        data.callback.onError(null, error)
     }
 }

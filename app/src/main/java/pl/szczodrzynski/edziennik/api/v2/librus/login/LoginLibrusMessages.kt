@@ -12,6 +12,7 @@ import okhttp3.HttpUrl
 import okhttp3.internal.http.HttpDate
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.getUnixDate
 
@@ -22,7 +23,7 @@ class LoginLibrusMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     init { run {
         if (data.profile == null) {
-            data.error(TAG, ERROR_PROFILE_MISSING)
+            data.error(ApiError(TAG, ERROR_PROFILE_MISSING))
             return@run
         }
 
@@ -45,7 +46,7 @@ class LoginLibrusMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
                 loginWithCredentials()
             }
             else {
-                data.error(TAG, ERROR_LOGIN_DATA_MISSING)
+                data.error(ApiError(TAG, ERROR_LOGIN_DATA_MISSING))
             }
         }
     }}
@@ -70,7 +71,9 @@ class LoginLibrusMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
                         var sessionId = data.app.cookieJar.getCookie("wiadomosci.librus.pl", "DZIENNIKSID")
                         sessionId = sessionId?.replace("-MAINT", "")
                         if (sessionId == null) {
-                            data.error(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_NO_SESSION_ID, response, text)
+                            data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_NO_SESSION_ID)
+                                    .withResponse(response)
+                                    .withApiResponse(text))
                             return
                         }
                         data.messagesSessionId = sessionId
@@ -84,7 +87,9 @@ class LoginLibrusMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
-                data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                        .withResponse(response)
+                        .withThrowable(throwable))
             }
         }
 

@@ -16,9 +16,12 @@ import pl.szczodrzynski.edziennik.datamodels.Profile
  * @param endpointIds a [List] of [Endpoint]s that satisfy this feature ID
  * @param requiredLoginMethod a required login method, which will have to be executed before this endpoint.
  */
-class Endpoint(
+data class Endpoint(
         val loginType: Int,
         val featureId: Int,
         val endpointIds: List<Int>,
-        val requiredLoginMethod: Int
-)
+        val requiredLoginMethods: List<Int>
+) {
+    val priority
+        get() = endpointIds.size
+}

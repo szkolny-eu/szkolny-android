@@ -8,7 +8,8 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 
-class ApiError(val profileId: Int, val tag: String, val errorCode: Int) {
+class ApiError(val tag: String, val errorCode: Int) {
+    var profileId: Int? = null
     private var throwable: Throwable? = null
     private var apiResponse: String? = null
     private var request: Request? = null

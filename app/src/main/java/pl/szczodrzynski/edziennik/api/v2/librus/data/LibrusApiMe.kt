@@ -12,8 +12,12 @@ import pl.szczodrzynski.edziennik.datamodels.Profile
 
 class LibrusApiMe(override val data: DataLibrus,
                   val onSuccess: () -> Unit) : LibrusApi(data) {
+    companion object {
+        const val TAG = "LibrusApiMe"
+    }
+
     init {
-        apiRequest("Me") { json ->
+        apiGet(TAG, "Me") { json ->
             val me = json?.getJsonObject("Me")
             val account = me?.getJsonObject("Account")
             val user = me?.getJsonObject("User")

@@ -11,9 +11,11 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.AppError
 import pl.szczodrzynski.edziennik.api.interfaces.ProgressCallback
 import pl.szczodrzynski.edziennik.api.v2.*
+import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusPortal
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.datamodels.LoginStore
 import pl.szczodrzynski.edziennik.datamodels.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -47,7 +49,14 @@ class LibrusTest(val app: App) {
 
     fun go() {
 
-        app.startService(Intent(app, ApiService::class.java))
+        Librus(app, profile, loginStore, object : EdziennikCallback {
+            override fun onCompleted() {}
+            override fun onError(apiError: ApiError) {}
+            override fun onProgress(step: Int) {}
+            override fun onStartProgress(stringRes: Int) {}
+        }).sync(listOf(FEATURE_GRADES, FEATURE_STUDENT_INFO, FEATURE_STUDENT_NUMBER))
+
+        //app.startService(Intent(app, ApiService::class.java))
 
         /*val data = DataLibrus(app, profile, loginStore).apply {
             callback = object : ProgressCallback {

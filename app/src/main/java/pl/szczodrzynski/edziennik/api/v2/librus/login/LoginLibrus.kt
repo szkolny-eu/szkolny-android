@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.login
 
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.LoginMethod
@@ -31,7 +32,7 @@ class LoginLibrus(val data: DataLibrus, vararg loginMethodIds: Int, val onSucces
         loginMethodList = loginMethodList.toHashSet().toMutableList()
         loginMethodList.sort()
 
-        data.satisfyLoginMethods()
+        //data.satisfyLoginMethods()
         nextLoginMethod()
     }
 
@@ -53,24 +54,28 @@ class LoginLibrus(val data: DataLibrus, vararg loginMethodIds: Int, val onSucces
         d(TAG, "Using login method $loginMethodId")
         when (loginMethodId) {
             LOGIN_METHOD_LIBRUS_PORTAL -> {
+                data.startProgress(R.string.edziennik_progress_login_librus_portal)
                 LoginLibrusPortal(data) {
                     data.loginMethods.add(loginMethodId)
                     onSuccess()
                 }
             }
             LOGIN_METHOD_LIBRUS_API -> {
+                data.startProgress(R.string.edziennik_progress_login_librus_api)
                 LoginLibrusApi(data) {
                     data.loginMethods.add(loginMethodId)
                     onSuccess()
                 }
             }
             LOGIN_METHOD_LIBRUS_SYNERGIA -> {
+                data.startProgress(R.string.edziennik_progress_login_librus_synergia)
                 LoginLibrusSynergia(data) {
                     data.loginMethods.add(loginMethodId)
                     onSuccess()
                 }
             }
             LOGIN_METHOD_LIBRUS_MESSAGES -> {
+                data.startProgress(R.string.edziennik_progress_login_librus_messages)
                 LoginLibrusMessages(data) {
                     data.loginMethods.add(loginMethodId)
                     onSuccess()

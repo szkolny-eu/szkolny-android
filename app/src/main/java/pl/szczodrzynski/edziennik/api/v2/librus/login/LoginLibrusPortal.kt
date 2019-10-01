@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.api.AppError
 import pl.szczodrzynski.edziennik.api.AppError.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.c
 import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 import java.util.ArrayList
@@ -24,11 +25,11 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     init { run {
         if (data.loginStore.mode != LOGIN_MODE_LIBRUS_EMAIL) {
-            data.error(TAG, ERROR_INVALID_LOGIN_MODE)
+            data.error(ApiError(TAG, ERROR_INVALID_LOGIN_MODE))
             return@run
         }
         if (data.portalEmail == null || data.portalPassword == null) {
-            data.error(TAG, ERROR_LOGIN_DATA_MISSING)
+            data.error(ApiError(TAG, ERROR_LOGIN_DATA_MISSING))
             return@run
         }
 
@@ -47,7 +48,6 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     }}
 
     private fun authorize(url: String?) {
-        data.callback.onActionStarted(R.string.sync_action_authorizing)
         Request.builder()
                 .url(url)
                 .userAgent(LIBRUS_USER_AGENT)
@@ -67,13 +67,17 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                             if (csrfMatcher.find()) {
                                 login(csrfMatcher.group(1))
                             } else {
-                                data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_CSRF_MISSING, response, json)
+                                data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_CSRF_MISSING)
+                                        .withResponse(response)
+                                        .withApiResponse(json))
                             }
                         }
                     }
 
                     override fun onFailure(response: Response, throwable: Throwable) {
-                        data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+                        data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                                .withResponse(response)
+                                .withThrowable(throwable))
                     }
                 })
                 .build()
@@ -81,7 +85,6 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     }
 
     private fun login(csrfToken: String) {
-        data.callback.onActionStarted(R.string.sync_action_logging_in)
         Request.builder()
                 .url(LIBRUS_LOGIN_URL)
                 .userAgent(LIBRUS_USER_AGENT)
@@ -94,14 +97,18 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                     override fun onSuccess(json: JsonObject?, response: Response) {
                         if (json == null) {
                             if (response.parserErrorBody?.contains("wciąż nieaktywne") == true) {
-                                data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED, response)
+                                data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED)
+                                        .withResponse(response))
                                 return
                             }
-                            data.error(TAG, ERROR_RESPONSE_EMPTY, response)
+                            data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
+                                    .withResponse(response))
                             return
                         }
                         if (json.get("errors") != null) {
-                            data.error(TAG, ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR, response, apiResponse = json)
+                            data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR)
+                                    .withResponse(response)
+                                    .withApiResponse(json))
                             return
                         }
                         authorize(json.getString("redirect", LIBRUS_AUTHORIZE_URL))
@@ -109,10 +116,14 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
 
                     override fun onFailure(response: Response, throwable: Throwable) {
                         if (response.code() == 403 || response.code() == 401) {
-                            data.error(TAG, ERROR_LOGIN_DATA_INVALID, response, throwable)
+                            data.error(ApiError(TAG, ERROR_LOGIN_DATA_INVALID)
+                                    .withResponse(response)
+                                    .withThrowable(throwable))
                             return
                         }
-                        data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+                        data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                                .withResponse(response)
+                                .withThrowable(throwable))
                     }
                 })
                 .build()
@@ -150,7 +161,9 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                             else -> ERROR_LOGIN_LIBRUS_PORTAL_OTHER
                         }
                     }.let { errorCode ->
-                        data.error(TAG, errorCode, apiResponse = json, response = response)
+                        data.error(ApiError(TAG, errorCode)
+                                .withApiResponse(json)
+                                .withResponse(response))
                         return
                     }
                 }
@@ -158,12 +171,17 @@ class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                 try {
                     onSuccess(json, response)
                 } catch (e: NullPointerException) {
-                    data.error(TAG, EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN, response, e, json)
+                    data.error(ApiError(TAG, EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN)
+                            .withResponse(response)
+                            .withThrowable(e)
+                            .withApiResponse(json))
                 }
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
-                data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                        .withResponse(response)
+                        .withThrowable(throwable))
             }
         }
 

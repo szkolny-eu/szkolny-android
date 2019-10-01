@@ -169,7 +169,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
                 else -> errorCode
             }
         }
-        callback.onError(ApiError(profile?.id ?: -1, tag, code).withResponse(response).withThrowable(throwable).withApiResponse(apiResponse))
+        callback.onError(ApiError(tag, code).apply { profileId = profile?.id ?: -1 }.withResponse(response).withThrowable(throwable).withApiResponse(apiResponse))
     }
     fun error(tag: String, errorCode: Int, response: Response? = null, apiResponse: String? = null) {
         var code = when (null) {
@@ -180,6 +180,15 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
                 else -> errorCode
             }
         }
-        callback.onError(ApiError(profile?.id ?: -1, tag, code).withResponse(response).withApiResponse(apiResponse))
+        callback.onError(ApiError(tag, code).apply { profileId = profile?.id ?: -1 }.withResponse(response).withApiResponse(apiResponse))
+    }
+    fun error(apiError: ApiError) {
+        callback.onError(apiError)
+    }
+    fun progress(step: Int) {
+        callback.onProgress(step)
+    }
+    fun startProgress(stringRes: Int) {
+        callback.onStartProgress(stringRes)
     }
 }

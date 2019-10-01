@@ -13,6 +13,7 @@ import okhttp3.Cookie
 import okhttp3.HttpUrl
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.getUnixDate
@@ -27,7 +28,7 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     init { run {
         if (data.profile == null) {
-            data.error(TAG, ERROR_PROFILE_MISSING)
+            data.error(ApiError(TAG, ERROR_PROFILE_MISSING))
             return@run
         }
 
@@ -50,7 +51,7 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
                 loginWithCredentials()
             }
             else {
-                data.error(TAG, ERROR_LOGIN_DATA_MISSING)
+                data.error(ApiError(TAG, ERROR_LOGIN_DATA_MISSING))
             }
         }
     }}
@@ -73,7 +74,8 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
                 if (json == null && response?.parserErrorBody == null) {
-                    data.error(TAG, ERROR_RESPONSE_EMPTY, response)
+                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
+                            .withResponse(response))
                     return
                 }
                 val error = if (response?.code() == 200) null else
@@ -97,26 +99,34 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
                         "Nieprawidłowy węzeł." -> ERROR_LIBRUS_API_INCORRECT_ENDPOINT
                         else -> ERROR_LIBRUS_API_OTHER
                     }.let { errorCode ->
-                        data.error(TAG, errorCode, apiResponse = json, response = response)
+                        data.error(ApiError(TAG, errorCode)
+                                .withApiResponse(json)
+                                .withResponse(response))
                         return
                     }
                 }
 
                 if (json == null) {
-                    data.error(TAG, ERROR_RESPONSE_EMPTY, response)
+                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
+                            .withResponse(response))
                     return
                 }
 
                 try {
                     onSuccess(json)
                 } catch (e: Exception) {
-                    data.error(TAG, EXCEPTION_LIBRUS_API_REQUEST, response, e, json)
+                    data.error(ApiError(TAG, EXCEPTION_LIBRUS_API_REQUEST)
+                            .withResponse(response)
+                            .withThrowable(e)
+                            .withApiResponse(json))
                 }
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
                 // TODO add hotfix for Classrooms 500
-                data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                        .withResponse(response)
+                        .withThrowable(throwable))
             }
         }
 
@@ -135,7 +145,7 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     private fun loginWithToken(token: String?) {
         if (token == null) {
-            data.error(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_NO_TOKEN)
+            data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_NO_TOKEN))
             return
         }
 
@@ -145,7 +155,9 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
                 if (location?.endsWith("centrum_powiadomien") == true) {
                     val sessionId = data.app.cookieJar.getCookie("synergia.librus.pl", "DZIENNIKSID")
                     if (sessionId == null) {
-                        data.error(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_NO_SESSION_ID, response, json)
+                        data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_NO_SESSION_ID)
+                                .withResponse(response)
+                                .withApiResponse(json))
                         return
                     }
                     data.synergiaSessionId = sessionId
@@ -153,12 +165,16 @@ class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
                     onSuccess()
                 }
                 else {
-                    data.error(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_TOKEN_INVALID, response, json)
+                    data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_TOKEN_INVALID)
+                            .withResponse(response)
+                            .withApiResponse(json))
                 }
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
-                data.error(TAG, ERROR_REQUEST_FAILURE, response, throwable)
+                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                        .withResponse(response)
+                        .withThrowable(throwable))
             }
         }
 
