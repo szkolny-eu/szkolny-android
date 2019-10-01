@@ -218,6 +218,13 @@
             android:name=".sync.SyncService"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/sync_service" />
+        <receiver
+            android:name=".receivers.SzkolnyReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="pl.szczodrzynski.edziennik.SZKOLNY_MAIN" />
+            </intent-filter>
+        </receiver>
 
         <service android:name=".api.v2.ApiService" />
     </application>

@@ -4,4 +4,4 @@
 
 package pl.szczodrzynski.edziennik.api.v2.events.requests
 
-class SyncRequest()
+class SyncRequest

@@ -38,9 +38,25 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
      * A method which may be overridden in child Data* classes.
      *
      * Calling it should populate [loginMethods] with all
-     * already available login methods (e.g. non-expired OAuth token).
+     * already available login methods (e.g. a non-expired OAuth token).
      */
     open fun satisfyLoginMethods() {}
+
+    /**
+     * A list of Login method IDs that are still pending
+     * to run.
+     */
+    var targetLoginMethodIds = mutableListOf<Int>()
+    /**
+     * A list of endpoint IDs that are still pending
+     * to run.
+     */
+    var targetEndpointIds = mutableListOf<Int>()
+
+    /**
+     * A map of endpoint IDs to JSON objects, specifying their arguments bundle.
+     */
+    var endpointArgs = mutableMapOf<Int, JsonObject>()
 
     val teacherList = LongSparseArray<Teacher>()
     val subjectList = LongSparseArray<Subject>()
@@ -105,6 +121,9 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     fun saveData() {
         if (profile == null)
             return
+
+        db.profileDao().add(profile)
+        db.loginStoreDao().add(loginStore)
 
         if (teacherList.isNotEmpty()) {
             val tempList: ArrayList<Teacher> = ArrayList()

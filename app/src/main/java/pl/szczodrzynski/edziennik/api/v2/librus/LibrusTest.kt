@@ -49,14 +49,18 @@ class LibrusTest(val app: App) {
 
     fun go() {
 
-        Librus(app, profile, loginStore, object : EdziennikCallback {
+        /*Librus(app, profile, loginStore, object : EdziennikCallback {
             override fun onCompleted() {}
             override fun onError(apiError: ApiError) {}
             override fun onProgress(step: Int) {}
             override fun onStartProgress(stringRes: Int) {}
-        }).sync(listOf(FEATURE_GRADES, FEATURE_STUDENT_INFO, FEATURE_STUDENT_NUMBER))
+        }).sync(listOf(FEATURE_GRADES, FEATURE_STUDENT_INFO, FEATURE_STUDENT_NUMBER))*/
 
-        //app.startService(Intent(app, ApiService::class.java))
+        app.startService(Intent(app, ApiService::class.java))
+
+        if (false) {
+
+        }
 
         /*val data = DataLibrus(app, profile, loginStore).apply {
             callback = object : ProgressCallback {

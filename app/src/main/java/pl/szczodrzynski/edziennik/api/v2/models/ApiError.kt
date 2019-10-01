@@ -14,6 +14,7 @@ class ApiError(val tag: String, val errorCode: Int) {
     private var apiResponse: String? = null
     private var request: Request? = null
     private var response: Response? = null
+    var isCritical = true
 
     fun withThrowable(throwable: Throwable?): ApiError {
         this.throwable = throwable
@@ -34,6 +35,11 @@ class ApiError(val tag: String, val errorCode: Int) {
     fun withResponse(response: Response?): ApiError {
         this.response = response
         this.request = response?.request()
+        return this
+    }
+
+    fun setCritical(isCritical: Boolean): ApiError {
+        this.isCritical = isCritical
         return this
     }
 }

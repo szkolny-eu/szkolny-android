@@ -71,7 +71,7 @@ public class Notifier {
         notificationColor = ContextCompat.getColor(app.getContext(), R.color.colorPrimary);
         notificationManager = (NotificationManager) app.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channelGetData = new NotificationChannel(GROUP_KEY_GET_DATA, CHANNEL_GET_DATA_NAME, NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel channelGetData = new NotificationChannel(GROUP_KEY_GET_DATA, CHANNEL_GET_DATA_NAME, NotificationManager.IMPORTANCE_MIN);
             channelGetData.setDescription(CHANNEL_GET_DATA_DESC);
             notificationManager.createNotificationChannel(channelGetData);
 

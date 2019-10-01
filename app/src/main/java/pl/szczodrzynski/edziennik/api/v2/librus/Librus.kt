@@ -6,25 +6,26 @@ package pl.szczodrzynski.edziennik.api.v2.librus
 
 import android.util.Log
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
-import pl.szczodrzynski.edziennik.api.v2.endpoints
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
-import pl.szczodrzynski.edziennik.api.v2.librusLoginMethods
+import pl.szczodrzynski.edziennik.api.v2.librus.login.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Endpoint
 import pl.szczodrzynski.edziennik.datamodels.LoginStore
 import pl.szczodrzynski.edziennik.datamodels.Profile
+import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
-        const val TAG = "Librus"
+        private const val TAG = "Librus"
     }
 
     val internalErrorList = mutableListOf<Int>()
     val data: DataLibrus
+    private var cancelled = false
 
     init {
         data = DataLibrus(app, profile, loginStore).apply {
@@ -33,6 +34,19 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         data.satisfyLoginMethods()
     }
 
+    private fun completed() {
+        data.saveData()
+        callback.onCompleted()
+    }
+
+    /*    _______ _                     _                  _ _   _
+         |__   __| |              /\   | |                (_) | | |
+            | |  | |__   ___     /  \  | | __ _  ___  _ __ _| |_| |__  _ __ ___
+            | |  | '_ \ / _ \   / /\ \ | |/ _` |/ _ \| '__| | __| '_ \| '_ ` _ \
+            | |  | | | |  __/  / ____ \| | (_| | (_) | |  | | |_| | | | | | | | |
+            |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
+                                           __/ |
+                                          |__*/
     override fun sync(featureIds: List<Int>) {
         val possibleLoginMethods = data.loginMethods.toMutableList()
 
@@ -45,8 +59,8 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         var endpointList = mutableListOf<Endpoint>()
         val requiredLoginMethods = mutableListOf<Int>()
 
-        var targetEndpointIds = mutableListOf<Int>()
-        var targetLoginMethodIds = mutableListOf<Int>()
+        data.targetEndpointIds.clear()
+        data.targetLoginMethodIds.clear()
 
         // get all endpoints for every feature, only if possible to login
         for (featureId in featureIds) {
@@ -72,7 +86,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                 .toMutableList()
                 // add all endpoint IDs and required login methods
                 .onEach { endpoint ->
-                    targetEndpointIds.addAll(endpoint.endpointIds)
+                    data.targetEndpointIds.addAll(endpoint.endpointIds)
                     requiredLoginMethods.addAll(endpoint.requiredLoginMethods)
                 }
 
@@ -82,62 +96,36 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             while (requiredLoginMethod != LOGIN_METHOD_NOT_NEEDED) {
                 librusLoginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let { loginMethod ->
                     if (requiredLoginMethod != null)
-                        targetLoginMethodIds.add(requiredLoginMethod!!)
+                        data.targetLoginMethodIds.add(requiredLoginMethod!!)
                     requiredLoginMethod = loginMethod.requiredLoginMethod(data.profile, data.loginStore)
                 }
             }
         }
 
         // sort and distinct every login method and endpoint
-        targetLoginMethodIds = targetLoginMethodIds.toHashSet().toMutableList()
-        targetLoginMethodIds.sort()
+        data.targetLoginMethodIds = data.targetLoginMethodIds.toHashSet().toMutableList()
+        data.targetLoginMethodIds.sort()
 
-        targetEndpointIds = targetEndpointIds.toHashSet().toMutableList()
-        targetLoginMethodIds.sort()
+        data.targetEndpointIds = data.targetEndpointIds.toHashSet().toMutableList()
+        data.targetEndpointIds.sort()
 
+        Log.d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
+        Log.d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
 
-
-        //Log.d(TAG, endpointList.toString())
-        Log.d(TAG, "LoginMethod IDs: $targetLoginMethodIds")
-        Log.d(TAG, "Endpoint IDs: $targetEndpointIds")
-
-        /*
-
-        INPUT: [
-            FEATURE_GRADES,
-            FEATURE_STUDENT_INFO,
-            FEATURE_STUDENT_NUMBER
-        ]
-
-        OUTPUT: [
-            Endpoint(loginType=2,
-                featureId=FEATURE_GRADES, endpointIds=[
-                    ENDPOINT_LIBRUS_API_NORMAL_GC,
-                    ENDPOINT_LIBRUS_API_NORMAL_GRADES,
-                    ENDPOINT_LIBRUS_SYNERGIA_GRADES
-                ], requiredLoginMethods=[
-                    LOGIN_METHOD_LIBRUS_API,
-                    LOGIN_METHOD_LIBRUS_SYNERGIA
-            ]),
-            Endpoint(loginType=2,
-                featureId=FEATURE_STUDENT_INFO, endpointIds=[
-                    ENDPOINT_LIBRUS_API_ME
-                ], requiredLoginMethods=[
-                    LOGIN_METHOD_LIBRUS_API
-            ]),
-            Endpoint(loginType=2,
-                featureId=FEATURE_STUDENT_NUMBER, endpointIds=[
-                    ENDPOINT_LIBRUS_SYNERGIA_INFO
-                ], requiredLoginMethods=[
-                    LOGIN_METHOD_LIBRUS_SYNERGIA
-            ])
-        ]
-
-         */
+        LibrusLogin(data) {
+            LibrusEndpoints(data) {
+                completed()
+            }
+        }
     }
 
     override fun getMessage(messageId: Int) {
 
+    }
+
+    override fun cancel() {
+        d(TAG, "Cancelled")
+        cancelled = true
     }
 
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {

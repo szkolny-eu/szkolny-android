@@ -35,6 +35,8 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,8 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.api.AppError;
 import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback;
+import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest;
+import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncViewRequest;
 import pl.szczodrzynski.edziennik.api.v2.librus.LibrusOld;
 import pl.szczodrzynski.edziennik.api.v2.librus.LibrusTest;
 import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
@@ -67,6 +71,8 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
 import static pl.szczodrzynski.edziennik.App.UPDATES_ON_PLAY_STORE;
+import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_GRADES;
+import static pl.szczodrzynski.edziennik.api.v2.FeaturesKt.FEATURE_STUDENT_INFO;
 import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_SEMESTER1_FINAL;
 import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_SEMESTER1_PROPOSED;
 import static pl.szczodrzynski.edziennik.datamodels.Grade.TYPE_SEMESTER2_FINAL;
@@ -126,6 +132,23 @@ public class HomeFragment extends Fragment {
         b.testButton.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.testButton.setOnClickListener((v -> {
             test.go();
+        }));
+
+        b.test2.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
+        b.test2.setOnClickListener((v -> {
+            List<Integer> list = new ArrayList<>();
+            list.add(FEATURE_STUDENT_INFO);
+            EventBus.getDefault().post(new SyncProfileRequest(16, list));
+        }));
+
+        b.test3.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
+        b.test3.setOnClickListener((v -> {
+            EventBus.getDefault().post(new SyncProfileRequest(16, null));
+        }));
+
+        b.test4.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
+        b.test4.setOnClickListener((v -> {
+            EventBus.getDefault().post(new SyncViewRequest(16, DRAWER_ITEM_GRADES));
         }));
 
         //((TextView)v.findViewById(R.id.nextSync)).setText(getString(R.string.next_sync_format,Time.fromMillis(app.appJobs.syncJobTime).getStringHMS()));
@@ -559,7 +582,7 @@ public class HomeFragment extends Fragment {
         Button cardGradesButton = root.findViewById(R.id.cardGradesButton);
         buttonAddDrawable(c, cardGradesButton, CommunityMaterial.Icon.cmd_arrow_right);
         cardGradesButton.setOnClickListener((v1 -> new Handler().postDelayed(() -> a.runOnUiThread(() -> {
-            activity.loadTarget(MainActivity.DRAWER_ITEM_GRADES, null);
+            activity.loadTarget(DRAWER_ITEM_GRADES, null);
         }), 100)));
 
         //new Handler().postDelayed(() -> a.runOnUiThread(() -> updateCardGrades(c, a, root)), newRefreshInterval);

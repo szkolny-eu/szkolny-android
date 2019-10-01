@@ -67,4 +67,18 @@
         <item quantity="few">%1$s - %2$d nieprzeczytane</item>
         <item quantity="other">%1$s - %2$d nieprzeczytanych</item>
     </plurals>
+
+    <plurals name="critical_errors_format">
+        <item quantity="one">%d błąd krytyczny</item>
+        <item quantity="few">%d błędy krytyczne</item>
+        <item quantity="many">%d błędów krytycznych</item>
+        <item quantity="other">%d błędów krytycznych</item>
+    </plurals>
+
+    <plurals name="normal_errors_format">
+        <item quantity="one">%d błąd</item>
+        <item quantity="few">%d błędy</item>
+        <item quantity="many">%d błędów</item>
+        <item quantity="other">%d błędów</item>
+    </plurals>
 </resources>

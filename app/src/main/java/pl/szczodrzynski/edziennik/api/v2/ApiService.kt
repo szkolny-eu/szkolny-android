@@ -14,12 +14,10 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.events.requests.MessageGetRequest
-import pl.szczodrzynski.edziennik.api.v2.events.SyncProgressEvent
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncViewRequest
+import pl.szczodrzynski.edziennik.api.v2.events.*
+import pl.szczodrzynski.edziennik.api.v2.events.requests.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
+import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.Librus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.ApiTask
@@ -37,45 +35,98 @@ class ApiService : Service() {
 
     private val taskQueue = mutableListOf<ApiTask>()
     private val errorList = mutableListOf<ApiError>()
+    private var queueHasErrorReportTask = false
 
+    private var taskCancelled = false
     private var taskRunning = false
     private var taskRunningId = -1
     private var taskMaximumId = 0
+    private var edziennikInterface: EdziennikInterface? = null
 
     private var taskProfileId = -1
     private var taskProfileName: String? = null
     private var taskProgress = 0
     private var taskProgressRes: Int? = null
 
+    private val notification by lazy { EdziennikNotification(this) }
+
+    /*    ______    _     _                  _ _       _____      _ _ _                _
+         |  ____|  | |   (_)                (_) |     / ____|    | | | |              | |
+         | |__   __| |_____  ___ _ __  _ __  _| | __ | |     __ _| | | |__   __ _  ___| | __
+         |  __| / _` |_  / |/ _ \ '_ \| '_ \| | |/ / | |    / _` | | | '_ \ / _` |/ __| |/ /
+         | |___| (_| |/ /| |  __/ | | | | | | |   <  | |___| (_| | | | |_) | (_| | (__|   <
+         |______\__,_/___|_|\___|_| |_|_| |_|_|_|\_\  \_____\__,_|_|_|_.__/ \__,_|\___|_|\*/
     private val taskCallback = object : EdziennikCallback {
         override fun onCompleted() {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            edziennikInterface = null
+            if (!taskCancelled) {
+                EventBus.getDefault().post(SyncProfileFinishedEvent(taskProfileId))
+            }
+            notification.setIdle().post()
+            taskRunning = false
+            taskRunningId = -1
+            sync()
         }
 
         override fun onError(apiError: ApiError) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            if (!queueHasErrorReportTask) {
+                queueHasErrorReportTask = true
+                taskQueue += ErrorReportTask().apply {
+                    taskId = ++taskMaximumId
+                }
+            }
+            EventBus.getDefault().post(SyncErrorEvent(apiError))
+            errorList.add(apiError)
+            if (apiError.isCritical) {
+                notification.setCriticalError().post()
+                taskRunning = false
+                taskRunningId = -1
+                sync()
+            }
+            else {
+                notification.addError().post()
+            }
         }
 
         override fun onProgress(step: Int) {
             taskProgress += step
             taskProgress = min(100, taskProgress)
             EventBus.getDefault().post(SyncProgressEvent(taskProfileId, taskProfileName, taskProgress, taskProgressRes))
+            notification.setProgress(taskProgress).post()
         }
 
         override fun onStartProgress(stringRes: Int) {
-
+            taskProgressRes = stringRes
+            EventBus.getDefault().post(SyncProgressEvent(taskProfileId, taskProfileName, taskProgress, taskProgressRes))
+            notification.setProgressRes(taskProgressRes!!).post()
         }
     }
 
+    /*    _______        _                               _   _
+         |__   __|      | |                             | | (_)
+            | | __ _ ___| | __   _____  _____  ___ _   _| |_ _  ___  _ __
+            | |/ _` / __| |/ /  / _ \ \/ / _ \/ __| | | | __| |/ _ \| '_ \
+            | | (_| \__ \   <  |  __/>  <  __/ (__| |_| | |_| | (_) | | | |
+            |_|\__,_|___/_|\_\  \___/_/\_\___|\___|\__,_|\__|_|\___/|_| |*/
     private fun sync() {
         if (taskRunning)
             return
-        if (taskQueue.size <= 0)
-            return // TODO stopSelf() or sth
+        if (taskQueue.size <= 0) {
+            allCompleted()
+            return
+        }
 
         val task = taskQueue.removeAt(0)
+        taskCancelled = false
         taskRunning = true
         taskRunningId = task.taskId
+
+        if (task is ErrorReportTask) {
+            notification
+                    .setCurrentTask(taskRunningId, null)
+                    .setProgressRes(R.string.edziennik_notification_api_error_report_title)
+            return
+        }
 
         // get the requested profile and login store
         val profile: Profile? = app.db.profileDao().getByIdNow(task.profileId)
@@ -92,8 +143,10 @@ class ApiService : Service() {
         taskProgress = 0
         taskProgressRes = null
 
+        // update the notification
+        notification.setCurrentTask(taskRunningId, taskProfileName).post()
 
-        val edziennikInterface = when (loginStore.type) {
+        edziennikInterface = when (loginStore.type) {
             LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
             else -> null
         }
@@ -102,17 +155,29 @@ class ApiService : Service() {
         }
 
         when (task) {
-            is SyncProfileRequest -> edziennikInterface.sync(task.featureIds ?: Features.getAllIds())
-            is SyncViewRequest -> edziennikInterface.sync(Features.getIdsByView(task.targetId))
-            is MessageGetRequest -> edziennikInterface.getMessage(task.messageId)
+            is SyncProfileRequest -> edziennikInterface?.sync(task.featureIds ?: Features.getAllIds())
+            is SyncViewRequest -> edziennikInterface?.sync(Features.getIdsByView(task.targetId))
+            is MessageGetRequest -> edziennikInterface?.getMessage(task.messageId)
         }
     }
 
+    private fun allCompleted() {
+        EventBus.getDefault().post(SyncFinishedEvent())
+        stopSelf()
+    }
 
+    /*    ______               _   ____
+         |  ____|             | | |  _ \
+         | |____   _____ _ __ | |_| |_) |_   _ ___
+         |  __\ \ / / _ \ '_ \| __|  _ <| | | / __|
+         | |___\ V /  __/ | | | |_| |_) | |_| \__ \
+         |______\_/ \___|_| |_|\__|____/ \__,_|__*/
     @Subscribe(threadMode = ThreadMode.ASYNC)
     fun onSyncRequest(syncRequest: SyncRequest) {
         app.db.profileDao().idsForSyncNow.forEach { id ->
-            taskQueue += SyncProfileRequest(id, null)
+            taskQueue += SyncProfileRequest(id, null).apply {
+                taskId = ++taskMaximumId
+            }
         }
         sync()
     }
@@ -120,31 +185,49 @@ class ApiService : Service() {
     @Subscribe(threadMode = ThreadMode.ASYNC)
     fun onSyncProfileRequest(syncProfileRequest: SyncProfileRequest) {
         Log.d(TAG, syncProfileRequest.toString())
-        taskQueue += syncProfileRequest
+        taskQueue += syncProfileRequest.apply {
+            taskId = ++taskMaximumId
+        }
+        sync()
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    fun onSyncViewRequest(syncViewRequest: SyncViewRequest) {
+        Log.d(TAG, syncViewRequest.toString())
+        taskQueue += syncViewRequest.apply {
+            taskId = ++taskMaximumId
+        }
         sync()
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     fun onMessageGetRequest(messageGetRequest: MessageGetRequest) {
         Log.d(TAG, messageGetRequest.toString())
-        taskQueue += messageGetRequest
+        taskQueue += messageGetRequest.apply {
+            taskId = ++taskMaximumId
+        }
         sync()
     }
 
-    private val notification by lazy {
-        NotificationCompat.Builder(this, NOTIFICATION_API_CHANNEL_ID)
-                .setContentTitle("API")
-                .setContentText("API is running")
-                .setSmallIcon(R.drawable.ic_notification)
-                .build()
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    fun onTaskCancelRequest(taskCancelRequest: TaskCancelRequest) {
+        taskCancelled = true
+        edziennikInterface?.cancel()
     }
 
+    /*     _____                 _                                     _     _
+          / ____|               (_)                                   (_)   | |
+         | (___   ___ _ ____   ___  ___ ___    _____   _____ _ __ _ __ _  __| | ___  ___
+          \___ \ / _ \ '__\ \ / / |/ __/ _ \  / _ \ \ / / _ \ '__| '__| |/ _` |/ _ \/ __|
+          ____) |  __/ |   \ V /| | (_|  __/ | (_) \ V /  __/ |  | |  | | (_| |  __/\__ \
+         |_____/ \___|_|    \_/ |_|\___\___|  \___/ \_/ \___|_|  |_|  |_|\__,_|\___||__*/
     override fun onCreate() {
         EventBus.getDefault().register(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startForeground(1, notification)
+        startForeground(EdziennikNotification.NOTIFICATION_ID, notification.notification)
+        notification.setIdle().setCloseAction().post()
         return START_NOT_STICKY
     }
 
