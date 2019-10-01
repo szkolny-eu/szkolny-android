@@ -4,13 +4,10 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus
 
-import android.content.Context
 import android.util.Log
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.api.AppError
-import pl.szczodrzynski.edziennik.api.Edziennik
-import pl.szczodrzynski.edziennik.api.interfaces.SyncCallback
 import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
 import pl.szczodrzynski.edziennik.api.v2.endpoints
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
@@ -20,8 +17,6 @@ import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Endpoint
 import pl.szczodrzynski.edziennik.datamodels.LoginStore
 import pl.szczodrzynski.edziennik.datamodels.Profile
-import pl.szczodrzynski.edziennik.datamodels.ProfileFull
-import kotlin.math.max
 
 class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
@@ -46,24 +41,65 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                 possibleLoginMethods += loginMethod.loginMethodId
         }
 
-        var highestLoginMethod = 0
-        var targetEndpointList = mutableListOf<Endpoint>()
+        //var highestLoginMethod = 0
+        var endpointList = mutableListOf<Endpoint>()
+        val requiredLoginMethods = mutableListOf<Int>()
 
+        var targetEndpointIds = mutableListOf<Int>()
+        var targetLoginMethodIds = mutableListOf<Int>()
+
+        // get all endpoints for every feature, only if possible to login
         for (featureId in featureIds) {
-            endpoints.filter { it.featureId == featureId }.forEach { endpoint ->
+            /*endpoints.filter { it.featureId == featureId }.forEach { endpoint ->
                 if (possibleLoginMethods.containsAll(endpoint.requiredLoginMethods)) {
-                    targetEndpointList.add(endpoint)
-                    highestLoginMethod = max(highestLoginMethod, endpoint.requiredLoginMethods.max() ?: 0)
+                    endpointList.add(endpoint)
+                    //highestLoginMethod = max(highestLoginMethod, endpoint.requiredLoginMethods.max() ?: 0)
+                }
+            }*/
+            endpoints.filter {
+                        it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
+                    }
+                    .let {
+                        endpointList.addAll(it)
+                    }
+        }
+
+        endpointList = endpointList
+                // sort the endpoint list by feature ID and priority
+                .sortedWith(compareBy(Endpoint::featureId, Endpoint::priority))
+                // select only the most important endpoint for each feature
+                .distinctBy { it.featureId }
+                .toMutableList()
+                // add all endpoint IDs and required login methods
+                .onEach { endpoint ->
+                    targetEndpointIds.addAll(endpoint.endpointIds)
+                    requiredLoginMethods.addAll(endpoint.requiredLoginMethods)
+                }
+
+        // check every login method for any dependencies
+        for (loginMethodId in requiredLoginMethods) {
+            var requiredLoginMethod: Int? = loginMethodId
+            while (requiredLoginMethod != LOGIN_METHOD_NOT_NEEDED) {
+                librusLoginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let { loginMethod ->
+                    if (requiredLoginMethod != null)
+                        targetLoginMethodIds.add(requiredLoginMethod!!)
+                    requiredLoginMethod = loginMethod.requiredLoginMethod(data.profile, data.loginStore)
                 }
             }
         }
 
-        targetEndpointList = targetEndpointList
-                .sortedWith(compareBy(Endpoint::featureId, Endpoint::priority))
-                .distinctBy { it.featureId }
-                .toMutableList()
+        // sort and distinct every login method and endpoint
+        targetLoginMethodIds = targetLoginMethodIds.toHashSet().toMutableList()
+        targetLoginMethodIds.sort()
 
-        Log.d(TAG, targetEndpointList.toString())
+        targetEndpointIds = targetEndpointIds.toHashSet().toMutableList()
+        targetLoginMethodIds.sort()
+
+
+
+        //Log.d(TAG, endpointList.toString())
+        Log.d(TAG, "LoginMethod IDs: $targetLoginMethodIds")
+        Log.d(TAG, "Endpoint IDs: $targetEndpointIds")
 
         /*
 
