@@ -67,7 +67,7 @@ public class ServerRequest {
     }
 
     private String sign(String signature, long timestamp) {
-        String password = "bmllX21hX3Rha19sYXR3bw=="+ BuildConfig.VERSION_CODE + timestamp;
+        String password = "Y3plZ29fdHVfc3p1a2Fzeg=="+ BuildConfig.VERSION_CODE + timestamp;
         return Utils.HmacMD5(password, signature);
     }
 
