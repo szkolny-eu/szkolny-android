@@ -45,6 +45,7 @@ import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.Notifier;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushConfigActivity;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
 import pl.szczodrzynski.edziennik.utils.models.Endpoint;
@@ -1056,6 +1057,24 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         return true;
                     })
             );
+
+            if (app.profile.getLoginStoreType() == LoginStore.LOGIN_TYPE_LIBRUS) {
+                items.add(
+                        new MaterialAboutSwitchItem(
+                                getString(R.string.settings_register_show_teacher_absences_text),
+                                null,
+                                new IconicsDrawable(activity)
+                                        .icon(CommunityMaterial.Icon.cmd_account_arrow_right)
+                                        .size(IconicsSize.dp(iconSizeDp))
+                                        .color(IconicsColor.colorInt(iconColor))
+                        )
+                        .setChecked(app.profile.getStudentData("showTeacherAbsences", true))
+                        .setOnChangeAction((isChecked, tag) -> {
+                            app.profile.putStudentData("showTeacherAbsences", isChecked);
+                            return true;
+                        })
+                );
+            }
 
         }
         return items;

@@ -181,43 +181,44 @@ public class AgendaFragment extends Fragment {
                 ));
             }
 
+            if (app.profile.getStudentData("showTeacherAbsences", true)) {
+                List<TeacherAbsenceFull> teacherAbsenceList = app.db.teacherAbsenceDao().getAllFull(App.profileId);
+                List<TeacherAbsenceCounter> teacherAbsenceCounters = new ArrayList<>();
 
-            List<TeacherAbsenceFull> teacherAbsenceList = app.db.teacherAbsenceDao().getAllFull(App.profileId);
-            List<TeacherAbsenceCounter> teacherAbsenceCounters = new ArrayList<>();
+                for (TeacherAbsenceFull absence : teacherAbsenceList) {
+                    for (Date date = absence.getDateFrom().clone(); date.compareTo(absence.getDateTo()) < 1; date.stepForward(0, 0, 1)) {
+                        boolean counterFound = false;
+                        for (TeacherAbsenceCounter counter : teacherAbsenceCounters) {
+                            if (counter.getTeacherAbsenceDate().compareTo(date) == 0) {
+                                counter.setTeacherAbsenceCount(counter.getTeacherAbsenceCount() + 1);
+                                counterFound = true;
+                                break;
+                            }
+                        }
 
-            for (TeacherAbsenceFull absence : teacherAbsenceList) {
-                for (Date date = absence.getDateFrom().clone(); date.compareTo(absence.getDateTo()) < 1; date.stepForward(0, 0, 1)) {
-                    boolean counterFound = false;
-                    for (TeacherAbsenceCounter counter : teacherAbsenceCounters) {
-                        if (counter.getTeacherAbsenceDate().compareTo(date) == 0) {
-                            counter.setTeacherAbsenceCount(counter.getTeacherAbsenceCount() + 1);
-                            counterFound = true;
-                            break;
+                        if (!counterFound) {
+                            teacherAbsenceCounters.add(new TeacherAbsenceCounter(date.clone(), 1));
                         }
                     }
-
-                    if (!counterFound) {
-                        teacherAbsenceCounters.add(new TeacherAbsenceCounter(date.clone(), 1));
-                    }
                 }
-            }
 
-            for (TeacherAbsenceCounter counter : teacherAbsenceCounters) {
-                Calendar startTime = Calendar.getInstance();
-                Calendar endTime = Calendar.getInstance();
-                Date date = counter.getTeacherAbsenceDate();
-                startTime.set(date.year, date.month - 1, date.day, 10, 0, 0);
-                endTime.setTimeInMillis(startTime.getTimeInMillis() + (1000 * 60 * 45));
-                eventList.add(new TeacherAbsenceEvent(
-                        date.getInMillis(),
-                        0xffff1744,
-                        Colors.legibleTextColor(0xffff1744),
-                        startTime,
-                        endTime,
-                        App.profileId,
-                        date,
-                        counter.getTeacherAbsenceCount()
-                ));
+                for (TeacherAbsenceCounter counter : teacherAbsenceCounters) {
+                    Calendar startTime = Calendar.getInstance();
+                    Calendar endTime = Calendar.getInstance();
+                    Date date = counter.getTeacherAbsenceDate();
+                    startTime.set(date.year, date.month - 1, date.day, 10, 0, 0);
+                    endTime.setTimeInMillis(startTime.getTimeInMillis() + (1000 * 60 * 45));
+                    eventList.add(new TeacherAbsenceEvent(
+                            date.getInMillis(),
+                            0xffff1744,
+                            Colors.legibleTextColor(0xffff1744),
+                            startTime,
+                            endTime,
+                            App.profileId,
+                            date,
+                            counter.getTeacherAbsenceCount()
+                    ));
+                }
             }
 
 
