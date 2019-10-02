@@ -1071,6 +1071,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .setChecked(app.profile.getStudentData("showTeacherAbsences", true))
                         .setOnChangeAction((isChecked, tag) -> {
                             app.profile.putStudentData("showTeacherAbsences", isChecked);
+                            app.profileSaveAsync();
                             return true;
                         })
                 );
