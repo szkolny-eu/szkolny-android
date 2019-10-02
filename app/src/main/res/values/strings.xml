@@ -589,7 +589,7 @@
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
     <string name="settings_about_register_title_text">E-dziennik</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński wrzesień 2019</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński wrzesień 2018 - październik 2019</string>
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
     <string name="settings_about_version_text">Wersja</string>
