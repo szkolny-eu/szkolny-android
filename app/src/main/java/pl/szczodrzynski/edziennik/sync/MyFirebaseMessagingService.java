@@ -17,19 +17,19 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.datamodels.Event;
-import pl.szczodrzynski.edziennik.datamodels.EventFull;
-import pl.szczodrzynski.edziennik.datamodels.EventType;
-import pl.szczodrzynski.edziennik.datamodels.FeedbackMessage;
-import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
-import pl.szczodrzynski.edziennik.datamodels.Team;
-import pl.szczodrzynski.edziennik.fragments.DebugFragment;
-import pl.szczodrzynski.edziennik.models.Notification;
+import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventType;
+import pl.szczodrzynski.edziennik.data.db.modules.feedback.FeedbackMessage;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
+import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
+import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment;
+import pl.szczodrzynski.edziennik.utils.models.Notification;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
 
 import static pl.szczodrzynski.edziennik.App.APP_URL;
-import static pl.szczodrzynski.edziennik.datamodels.Event.TYPE_HOMEWORK;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.strToInt;
 
@@ -195,7 +195,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 app.checkDevModePassword();
                                 feedbackMessage.text = "devmode "+(App.devMode ? "allowed" : "disallowed");
                             }
-                            Intent intent = new Intent("pl.szczodrzynski.edziennik.activities.FeedbackActivity");
+                            Intent intent = new Intent("pl.szczodrzynski.edziennik.ui.modules.base.FeedbackActivity");
                             intent.putExtra("type", "user_chat");
                             intent.putExtra("message", app.gson.toJson(feedbackMessage));
                             app.sendBroadcast(intent);
@@ -217,7 +217,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         feedbackMessage.fromUser = remoteMessage.getData().get("from_user");
                         feedbackMessage.fromUserName = remoteMessage.getData().get("from_user_name");
                         feedbackMessage.sentTime = Long.parseLong(remoteMessage.getData().get("sent_time"));
-                        Intent intent = new Intent("pl.szczodrzynski.edziennik.activities.FeedbackActivity");
+                        Intent intent = new Intent("pl.szczodrzynski.edziennik.ui.modules.base.FeedbackActivity");
                         intent.putExtra("type", "user_chat");
                         intent.putExtra("message", app.gson.toJson(feedbackMessage));
                         app.sendBroadcast(intent);
@@ -280,7 +280,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                         app.notifier.add(new Notification(app.getContext(), app.getString((oldEvent == null ? R.string.notification_shared_event_format : R.string.notification_shared_event_modified_format), event.sharedByName, eventType == null ? "wydarzenie" : eventType.name, event.eventDate.getFormattedString(), event.topic))
                                                 .withProfileData(profile.getId(), profile.getName())
                                                 .withType(event.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_SHARED_HOMEWORK : Notification.TYPE_NEW_SHARED_EVENT)
-                                                .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORKS : MainActivity.DRAWER_ITEM_AGENDA)
+                                                .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                                 .withLongExtra("eventDate", event.eventDate.getValue())
                                         );
                                         d(TAG, "Finishing adding event " + event);
@@ -299,7 +299,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                         app.notifier.add(new Notification(app.getContext(), app.getString(R.string.notification_shared_event_removed_format, oldEvent.sharedByName, oldEvent.typeName, oldEvent.eventDate.getFormattedString(), oldEvent.topic))
                                                 .withProfileData(profile.getId(), profile.getName())
                                                 .withType(oldEvent.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_SHARED_HOMEWORK : Notification.TYPE_NEW_SHARED_EVENT)
-                                                .withFragmentRedirect(oldEvent.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORKS : MainActivity.DRAWER_ITEM_AGENDA)
+                                                .withFragmentRedirect(oldEvent.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                                 .withLongExtra("eventDate", oldEvent.eventDate.getValue())
                                         );
                                         app.db.eventDao().remove(oldEvent);

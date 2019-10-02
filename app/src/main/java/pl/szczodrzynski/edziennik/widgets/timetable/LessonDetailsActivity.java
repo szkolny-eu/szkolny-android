@@ -14,9 +14,9 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.WidgetTimetable;
-import pl.szczodrzynski.edziennik.dialogs.EventListDialog;
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.Time;
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.Themes;
 
 import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;

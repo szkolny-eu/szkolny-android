@@ -6,21 +6,14 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.google.gson.JsonArray
-import com.google.gson.JsonNull
 import com.google.gson.JsonObject
-import im.wangchao.mhttp.Response
-import im.wangchao.mhttp.callback.JsonCallbackHandler
-import im.wangchao.mhttp.callback.TextCallbackHandler
-import im.wangchao.mhttp.internal.exception.ResponseFailException
-import pl.szczodrzynski.edziennik.datamodels.Profile
-import pl.szczodrzynski.edziennik.datamodels.Teacher
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.navlib.R
 import pl.szczodrzynski.navlib.crc16
 import pl.szczodrzynski.navlib.getColorFromRes
-import kotlin.contracts.contract
 
 fun List<Teacher>.byId(id: Long) = firstOrNull { it.id == id }
 fun List<Teacher>.byNameFirstLast(nameFirstLast: String) = firstOrNull { it.name + " " + it.surname == nameFirstLast }

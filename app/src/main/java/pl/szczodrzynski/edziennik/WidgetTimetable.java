@@ -28,22 +28,22 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.datamodels.EventFull;
-import pl.szczodrzynski.edziennik.datamodels.LessonChange;
-import pl.szczodrzynski.edziennik.datamodels.LessonFull;
-import pl.szczodrzynski.edziennik.datamodels.Profile;
-import pl.szczodrzynski.edziennik.fragments.HomeFragment;
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.ItemWidgetTimetableModel;
-import pl.szczodrzynski.edziennik.models.Time;
-import pl.szczodrzynski.edziennik.models.Week;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel;
+import pl.szczodrzynski.edziennik.utils.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Week;
 import pl.szczodrzynski.edziennik.widgets.WidgetConfig;
 import pl.szczodrzynski.edziennik.sync.SyncJob;
 import pl.szczodrzynski.edziennik.widgets.timetable.LessonDetailsActivity;
 import pl.szczodrzynski.edziennik.widgets.timetable.WidgetTimetableService;
 
 import static pl.szczodrzynski.edziennik.ExtensionsKt.filterOutArchived;
-import static pl.szczodrzynski.edziennik.datamodels.Event.TYPE_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 
 

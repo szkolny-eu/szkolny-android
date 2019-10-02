@@ -7,13 +7,10 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import java.util.List;
-
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.ItemWidgetTimetableModel;
-import pl.szczodrzynski.edziennik.models.Notification;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Notification;
 
 public class WidgetNotificationsListProvider implements RemoteViewsService.RemoteViewsFactory {
 

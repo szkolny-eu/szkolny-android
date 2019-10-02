@@ -76,8 +76,8 @@
     <string name="attendances_releases">Zwolnienia:</string>
     <string name="attendances_summary_subject_loading_format">Wszystkie przedmioty</string>
     <string name="attendances_summary_title_loading_format">Podsumowanie - ładowanie…</string>
-    <string name="attendances_summary_title_semester_format">Podsumowanie - semestr %d&#160;</string>
-    <string name="attendances_summary_title_year">Podsumowanie - cały rok&#160;</string>
+    <string name="attendance_summary_title_semester_format">Podsumowanie - semestr %d&#160;</string>
+    <string name="attendance_summary_title_year">Podsumowanie - cały rok&#160;</string>
     <string name="back">Wróć</string>
     <string name="bell_sync_adjust_content">Dostosuj wartość przesunięcia dzwonka. Format: ±H:MM:SS</string>
     <string name="bell_sync_adjust_error">Nieprawidłowy format</string>
@@ -308,13 +308,9 @@
     <string name="help">Pomoc</string>
     <string name="help_notification_web_push">Przekazywanie powiadomień umożliwia sparowanie z przeglądarką internetową w celu wysyłania wszystkich powiadomień z aplikacji na komputer. Można do nich zaliczyć np. nowe oceny, wydarzenia, zadania domowe itp.\n\nKliknij \"Przekazywanie powiadomień\", aby rozpocząć.</string>
     <string name="help_register_agreement">Rejestracja odbędzie się automatycznie przy pierwszym logowaniu do e-dziennika.\n\nDo poprawnego działania funkcji zostaną przesłane:\n- Twój identyfikator szkoły i klasy\n- Twoja nazwa użytkownika do e-dziennika\n- Twoje imię i nazwisko\n\nJedyne dane widoczne dla innych osób z twojej klasy to Imię i Nazwisko podczas udostępniania wydarzeń. Nie zostaną wysłane żadne prywatne dane, takie jak hasła, oceny itp. Dowiedz się więcej w Polityce Prywatności.</string>
-    <string name="homework_current_no_data">Brak aktualnych zadań domowych.</string>
-    <string name="homework_current_title">Aktualne zadania</string>
     <string name="homework_edit">Edytuj</string>
-    <string name="homework_past_no_data">Brak poprzednich zadań domowych.</string>
-    <string name="homework_past_title">Poprzednie zadania</string>
-    <string name="homeworks_subject_teacher_format" translatable="false">%s, %s</string>
-    <string name="homeworks_team_date_format" translatable="false">%s %s</string>
+    <string name="homework_subject_teacher_format" translatable="false">%s, %s</string>
+    <string name="homework_team_date_format" translatable="false">%s %s</string>
     <string name="i_agree">Zgadzam się</string>
     <string name="i_disagree">Nie zgadzam się</string>
     <string name="incorrect_format">Nieprawidłowy format</string>
@@ -429,7 +425,7 @@
     <string name="menu_add_new_profile">Dodaj nowego ucznia</string>
     <string name="menu_agenda">Terminarz</string>
     <string name="menu_announcements">Tablica ogłoszeń</string>
-    <string name="menu_attendances">Frekwencja</string>
+    <string name="menu_attendance">Frekwencja</string>
     <string name="menu_generate_block_timetable">Zapisz plan lekcji jako obraz</string>
     <string name="menu_generate_block_timetable_desc">Generuje plan lekcji na cały tydzień</string>
     <string name="menu_grades">Oceny</string>
@@ -593,7 +589,7 @@
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
     <string name="settings_about_register_title_text">E-dziennik</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński wrzesień 2019</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński wrzesień 2018 - październik 2019</string>
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
     <string name="settings_about_version_text">Wersja</string>
@@ -647,12 +643,12 @@
     <string name="settings_register_shared_events_subtext">Udostępniaj sprawdziany w swojej klasie</string>
     <string name="settings_register_shared_events_text">Włącz Udostępnianie wydarzeń</string>
     <string name="settings_sync_customize_endpoint_announcements">Tablica ogłoszeń</string>
-    <string name="settings_sync_customize_endpoint_attendances">Obecności/nieobecności</string>
+    <string name="settings_sync_customize_endpoint_attendance">Obecności/nieobecności</string>
     <string name="settings_sync_customize_endpoint_class_free_days">Dni wolne klasy</string>
     <string name="settings_sync_customize_endpoint_classrooms">Sale lekcyjne</string>
     <string name="settings_sync_customize_endpoint_events">Wydarzenia/terminarz</string>
     <string name="settings_sync_customize_endpoint_grades">Oceny</string>
-    <string name="settings_sync_customize_endpoint_homeworks">Zadania domowe</string>
+    <string name="settings_sync_customize_endpoint_homework">Zadania domowe</string>
     <string name="settings_sync_customize_endpoint_lucky_numbers">Szczęśliwy numerek</string>
     <string name="settings_sync_customize_endpoint_messages_inbox">Wiadomości odebrane</string>
     <string name="settings_sync_customize_endpoint_messages_outbox">Wiadomości wysłane</string>
@@ -730,7 +726,7 @@
     <string name="sync_action_syncing_account_info">Pobieranie informacji o koncie</string>
     <string name="sync_action_syncing_announcements">Pobieranie ogłoszeń szkolnych</string>
     <string name="sync_action_syncing_attendance_types">Pobieranie kategorii obecności</string>
-    <string name="sync_action_syncing_attendances">Pobieranie obecności</string>
+    <string name="sync_action_syncing_attendance">Pobieranie obecności</string>
     <string name="sync_action_syncing_behaviour_grade_categories">Pobieranie kategorii ocen z zachowania</string>
     <string name="sync_action_syncing_behaviour_grades">Pobieranie ocen z zachowania</string>
     <string name="sync_action_syncing_calendar">Pobieranie kalendarza</string>
@@ -798,9 +794,9 @@
     <string name="sync_feature_agenda">Pobieram terminarz…</string>
     <string name="sync_feature_all">Wszystkie</string>
     <string name="sync_feature_announcements">Pobieram tablicę ogłoszeń…</string>
-    <string name="sync_feature_attendances">Pobieram obecności…</string>
+    <string name="sync_feature_attendance">Pobieram obecności…</string>
     <string name="sync_feature_grades">Pobieram oceny…</string>
-    <string name="sync_feature_homeworks">Pobieram zadania domowe…</string>
+    <string name="sync_feature_homework">Pobieram zadania domowe…</string>
     <string name="sync_feature_messages_inbox">Pobieram wiadomości odebrane…</string>
     <string name="sync_feature_messages_outbox">Pobieram wiadomości wysłane…</string>
     <string name="sync_feature_notices">Pobieram uwagi…</string>
@@ -908,4 +904,11 @@
     <string name="settings_about_discord_text">Serwer Discord</string>
     <string name="settings_about_discord_subtext">Dołącz do naszego serwera Discord!</string>
     <string name="menu_debug">Debugowanie</string>
+    <string name="sync_action_syncing_school_free_days">Pobieranie dni wolnych szkoły</string>
+    <string name="homework_tab_current">Aktualne</string>
+    <string name="homework_tab_past">Minione</string>
+    <string name="homework_no_data">Brak zadań domowych.</string>
+    <string name="agenda_teacher_absence">Nieobecni nauczyciele</string>
+    <string name="sync_action_syncing_grade_comments">Pobieranie komentarzy ocen</string>
+    <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
 </resources>

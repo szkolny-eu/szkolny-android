@@ -19,7 +19,6 @@ import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
-import android.widget.Toast;
 
 import com.evernote.android.job.JobManager;
 import com.google.android.gms.security.ProviderInstaller;
@@ -64,29 +63,28 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
-import pl.szczodrzynski.edziennik.activities.CrashActivity;
-import pl.szczodrzynski.edziennik.api.Edziennik;
-import pl.szczodrzynski.edziennik.api.Iuczniowie;
-import pl.szczodrzynski.edziennik.api.Librus;
-import pl.szczodrzynski.edziennik.api.Mobidziennik;
-import pl.szczodrzynski.edziennik.api.Vulcan;
-import pl.szczodrzynski.edziennik.datamodels.AppDb;
-import pl.szczodrzynski.edziennik.datamodels.DebugLog;
-import pl.szczodrzynski.edziennik.datamodels.LoginStore;
-import pl.szczodrzynski.edziennik.datamodels.Profile;
-import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
-import pl.szczodrzynski.edziennik.models.AppConfig;
+import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity;
+import pl.szczodrzynski.edziennik.data.api.Edziennik;
+import pl.szczodrzynski.edziennik.data.api.Iuczniowie;
+import pl.szczodrzynski.edziennik.data.api.Librus;
+import pl.szczodrzynski.edziennik.data.api.Mobidziennik;
+import pl.szczodrzynski.edziennik.data.api.Vulcan;
+import pl.szczodrzynski.edziennik.data.db.AppDb;
+import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
+import pl.szczodrzynski.edziennik.utils.models.AppConfig;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.TLSSocketFactory;
-import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.receivers.JobsCreator;
 import pl.szczodrzynski.edziennik.sync.SyncJob;
 import pl.szczodrzynski.edziennik.utils.PermissionChecker;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
-import static pl.szczodrzynski.edziennik.datamodels.LoginStore.LOGIN_TYPE_VULCAN;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
 
 public class App extends androidx.multidex.MultiDexApplication {
     private static final String TAG = "App";
@@ -344,7 +342,7 @@ public class App extends androidx.multidex.MultiDexApplication {
                         .setIcon(Icon.createWithResource(this, R.mipmap.ic_shortcut_homework))
                         //.setIcon(getDesktopIconFromIconics(SzkolnyFont.Icon.szf_file_document_edit))
                         .setIntent(new Intent(Intent.ACTION_MAIN, null, this, MainActivity.class)
-                                .putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOMEWORKS))
+                                .putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOMEWORK))
                         .build();
 
                 ShortcutInfo shortcutMessages = new ShortcutInfo.Builder(mContext, "item_messages")
