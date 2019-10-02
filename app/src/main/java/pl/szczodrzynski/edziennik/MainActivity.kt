@@ -60,8 +60,8 @@ import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
 import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment
-import pl.szczodrzynski.edziennik.ui.modules.base.FeedbackFragment
-import pl.szczodrzynski.edziennik.ui.modules.base.HelpFragment
+import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
+import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesFragment
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment

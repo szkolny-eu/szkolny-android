@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.modules.base
+package pl.szczodrzynski.edziennik.ui.modules.feedback
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

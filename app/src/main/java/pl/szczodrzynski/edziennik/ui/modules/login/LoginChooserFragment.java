@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.ui.modules.base.FeedbackActivity;
+import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginChooserBinding;
 
