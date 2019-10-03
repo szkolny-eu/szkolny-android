@@ -676,7 +676,7 @@ public class Edziennik {
             }
         };
         AsyncTask.execute(() -> {
-            ProfileFull profile = app.db.profileDao().getByIdNow(profileId);
+            ProfileFull profile = app.db.profileDao().getFullByIdNow(profileId);
             if (profile != null) {
 
                 if (profile.getArchived()) {
