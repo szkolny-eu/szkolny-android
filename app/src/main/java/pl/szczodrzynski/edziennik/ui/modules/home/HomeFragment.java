@@ -45,6 +45,7 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest;
 import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncViewRequest;
+import pl.szczodrzynski.edziennik.api.v2.librus.LibrusTest;
 import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
 import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding;
@@ -117,6 +118,13 @@ public class HomeFragment extends Fragment {
         b.composeButton.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.composeButton.setOnClickListener((v -> {
             startActivity(new Intent(activity, MessagesComposeActivity.class));
+        }));
+
+        LibrusTest librusTest = new LibrusTest(app);
+
+        b.testButton.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
+        b.testButton.setOnClickListener((v -> {
+            librusTest.go();
         }));
 
         b.test2.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
