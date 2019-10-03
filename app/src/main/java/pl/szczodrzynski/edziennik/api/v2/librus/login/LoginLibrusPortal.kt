@@ -8,12 +8,9 @@ import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.api.AppError
-import pl.szczodrzynski.edziennik.api.AppError.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.utils.Utils.c
 import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 import java.util.ArrayList
 import java.util.regex.Pattern

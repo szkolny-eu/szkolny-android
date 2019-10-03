@@ -5,13 +5,9 @@
 package pl.szczodrzynski.edziennik.api.v2.librus
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.*
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApiMe
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusApi
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusMessages
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusPortal
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusSynergia
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusEndpoints(val data: DataLibrus, val onSuccess: () -> Unit) {

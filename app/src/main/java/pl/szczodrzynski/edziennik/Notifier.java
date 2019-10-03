@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.datamodels.ProfileFull;
-import pl.szczodrzynski.edziennik.models.Date;
-import pl.szczodrzynski.edziennik.models.Time;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.sync.SyncJob;
 import pl.szczodrzynski.edziennik.sync.SyncService;
@@ -221,7 +221,7 @@ public class Notifier {
          | . ` |/ _ \| __| |  _| |/ __/ _` | __| |/ _ \| '_ \
          | |\  | (_) | |_| | | | | (_| (_| | |_| | (_) | | | |
          |_| \_|\___/ \__|_|_| |_|\___\__,_|\__|_|\___/|_| |*/
-    public void add(pl.szczodrzynski.edziennik.models.Notification notification) {
+    public void add(pl.szczodrzynski.edziennik.utils.models.Notification notification) {
         app.appConfig.notifications.add(notification);
     }
 
@@ -235,8 +235,8 @@ public class Notifier {
         }
 
         int unreadCount = 0;
-        List<pl.szczodrzynski.edziennik.models.Notification> notificationList = new ArrayList<>();
-        for (pl.szczodrzynski.edziennik.models.Notification notification: app.appConfig.notifications) {
+        List<pl.szczodrzynski.edziennik.utils.models.Notification> notificationList = new ArrayList<>();
+        for (pl.szczodrzynski.edziennik.utils.models.Notification notification: app.appConfig.notifications) {
             if (!notification.notified) {
                 notification.seen = false;
                 notification.notified = true;
@@ -250,7 +250,7 @@ public class Notifier {
             }
         }
 
-        for (pl.szczodrzynski.edziennik.models.Notification notification: notificationList) {
+        for (pl.szczodrzynski.edziennik.utils.models.Notification notification: notificationList) {
             Intent intent = new Intent(app, MainActivity.class);
             notification.fillIntent(intent);
             PendingIntent pendingIntent = PendingIntent.getActivity(app, notification.id, intent, 0);
@@ -258,9 +258,9 @@ public class Notifier {
                     // title, text, type, date
                     .setContentTitle(notification.title)
                     .setContentText(notification.text)
-                    .setSubText(pl.szczodrzynski.edziennik.models.Notification.stringType(app, notification.type))
+                    .setSubText(pl.szczodrzynski.edziennik.utils.models.Notification.stringType(app, notification.type))
                     .setWhen(notification.addedDate)
-                    .setTicker(app.getString(R.string.notification_ticker_format, pl.szczodrzynski.edziennik.models.Notification.stringType(app, notification.type)))
+                    .setTicker(app.getString(R.string.notification_ticker_format, pl.szczodrzynski.edziennik.utils.models.Notification.stringType(app, notification.type)))
                     // icon, color, lights, priority
                     .setSmallIcon(R.drawable.ic_notification)
                     .setColor(notificationColor)
@@ -349,7 +349,7 @@ public class Notifier {
     }
 
     public void dump() {
-        for (pl.szczodrzynski.edziennik.models.Notification notification: app.appConfig.notifications) {
+        for (pl.szczodrzynski.edziennik.utils.models.Notification notification: app.appConfig.notifications) {
             Log.d(TAG, "Profile"+notification.profileId+" Notification from "+ Date.fromMillis(notification.addedDate).getFormattedString()+" "+ Time.fromMillis(notification.addedDate).getStringHMS()+" - "+notification.text);
         }
     }

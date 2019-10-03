@@ -8,7 +8,6 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -21,8 +20,8 @@ import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.Librus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.ApiTask
-import pl.szczodrzynski.edziennik.datamodels.LoginStore
-import pl.szczodrzynski.edziennik.datamodels.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import kotlin.math.min
 
 class ApiService : Service() {

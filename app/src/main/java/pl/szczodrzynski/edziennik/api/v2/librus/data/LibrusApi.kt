@@ -4,22 +4,13 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data
 
-import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
-import io.fabric.sdk.android.services.network.HttpRequest.post
-import pl.szczodrzynski.edziennik.api.AppError
-import pl.szczodrzynski.edziennik.api.AppError.CODE_MAINTENANCE
-import pl.szczodrzynski.edziennik.api.AppError.CODE_OTHER
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusSynergia
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.getString
-import pl.szczodrzynski.edziennik.utils.Utils.d
-import java.lang.Exception
-import java.net.HttpURLConnection
 import java.net.HttpURLConnection.*
 
 open class LibrusApi(open val data: DataLibrus) {

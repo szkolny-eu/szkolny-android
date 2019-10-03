@@ -6,17 +6,16 @@ package pl.szczodrzynski.edziennik.api.v2
 
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ANNOUNCEMENTS
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCES
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCE
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOME
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORKS
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_NOTICES
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_BEHAVIOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
-import pl.szczodrzynski.edziennik.datamodels.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.datamodels.Message.TYPE_SENT
-import pl.szczodrzynski.edziennik.messages.MessagesFragment
-import pl.szczodrzynski.edziennik.messages.MessagesListFragment
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 
 const val FEATURE_ALL = 0
 const val FEATURE_TIMETABLE = 1
@@ -77,9 +76,9 @@ object Features {
                 TYPE_SENT -> listOf(FEATURE_MESSAGES_OUTBOX)
                 else -> listOf(FEATURE_MESSAGES_INBOX, FEATURE_MESSAGES_OUTBOX)
             }
-            DRAWER_ITEM_HOMEWORKS -> listOf(FEATURE_HOMEWORK)
-            DRAWER_ITEM_NOTICES -> listOf(FEATURE_NOTICES)
-            DRAWER_ITEM_ATTENDANCES -> listOf(FEATURE_ATTENDANCES)
+            DRAWER_ITEM_HOMEWORK -> listOf(FEATURE_HOMEWORK)
+            DRAWER_ITEM_BEHAVIOUR -> listOf(FEATURE_NOTICES)
+            DRAWER_ITEM_ATTENDANCE -> listOf(FEATURE_ATTENDANCES)
             DRAWER_ITEM_ANNOUNCEMENTS -> listOf(FEATURE_ANNOUNCEMENTS)
             else -> getAllFeatures()
         } + getAllNecessary()

@@ -10,15 +10,11 @@ import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
-import okhttp3.HttpUrl
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.getUnixDate
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
-import java.lang.Exception
 import java.net.HttpURLConnection
 
 class LoginLibrusSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {

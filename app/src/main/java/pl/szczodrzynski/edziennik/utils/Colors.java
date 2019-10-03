@@ -10,7 +10,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
 import androidx.core.graphics.ColorUtils;
-import pl.szczodrzynski.edziennik.datamodels.Grade;
+import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 
 import java.security.MessageDigest;
 import java.util.Arrays;

@@ -13,8 +13,8 @@ import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_PORTAL
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_SYNERGIA
 import pl.szczodrzynski.edziennik.api.v2.models.Data
 import pl.szczodrzynski.edziennik.currentTimeUnix
-import pl.szczodrzynski.edziennik.datamodels.LoginStore
-import pl.szczodrzynski.edziennik.datamodels.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 
 class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {

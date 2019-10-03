@@ -5,10 +5,6 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data
 
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.api.interfaces.ProgressCallback
-import pl.szczodrzynski.edziennik.api.v2.models.Data
-import pl.szczodrzynski.edziennik.datamodels.LoginStore
-import pl.szczodrzynski.edziennik.datamodels.Profile
 
 class LibrusApiMe(override val data: DataLibrus,
                   val onSuccess: () -> Unit) : LibrusApi(data) {

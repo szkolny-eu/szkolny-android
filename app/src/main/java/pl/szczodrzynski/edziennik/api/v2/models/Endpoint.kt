@@ -1,8 +1,5 @@
 package pl.szczodrzynski.edziennik.api.v2.models
 
-import pl.szczodrzynski.edziennik.datamodels.LoginStore
-import pl.szczodrzynski.edziennik.datamodels.Profile
-
 /**
  * A Endpoint descriptor class.
  *

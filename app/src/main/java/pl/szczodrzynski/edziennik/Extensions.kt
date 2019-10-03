@@ -11,8 +11,9 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
-import pl.szczodrzynski.edziennik.datamodels.Profile
-import pl.szczodrzynski.edziennik.datamodels.Teacher
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.navlib.R
 import pl.szczodrzynski.navlib.crc16
 import pl.szczodrzynski.navlib.getColorFromRes
 import java.text.SimpleDateFormat

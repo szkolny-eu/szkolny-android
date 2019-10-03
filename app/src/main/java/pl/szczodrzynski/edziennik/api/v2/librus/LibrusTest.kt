@@ -4,21 +4,14 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus
 
-import android.content.Context
 import android.content.Intent
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.api.AppError
-import pl.szczodrzynski.edziennik.api.interfaces.ProgressCallback
-import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrus
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusPortal
-import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.datamodels.LoginStore
-import pl.szczodrzynski.edziennik.datamodels.Profile
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.api.v2.ApiService
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_MODE_LIBRUS_EMAIL
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 
 class LibrusTest(val app: App) {
     companion object {

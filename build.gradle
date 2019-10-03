@@ -5,8 +5,8 @@ buildscript {
         kotlin_version = '1.3.50'
 
         release = [
-                versionName: "3.0",
-                versionCode: 3000099
+                versionName: "3.1",
+                versionCode: 3010099
         ]
 
         setup = [
@@ -44,7 +44,7 @@ buildscript {
                 iconics          : "4.0.1-b02",
                 font_cmd         : "3.5.95.1-kotlin",
 
-                navlib           : "84d6447887",
+                navlib           : "e4ad01dc87",
 
                 gifdrawable      : "1.2.15"
         ]
