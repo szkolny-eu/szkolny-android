@@ -36,6 +36,7 @@ class ApiService : Service() {
     private val errorList = mutableListOf<ApiError>()
     private var queueHasErrorReportTask = false
 
+    private var serviceClosed = false
     private var taskCancelled = false
     private var taskRunning = false
     private var taskRunningId = -1
@@ -110,7 +111,8 @@ class ApiService : Service() {
     private fun sync() {
         if (taskRunning)
             return
-        if (taskQueue.size <= 0) {
+        if (taskQueue.size <= 0 || serviceClosed) {
+            serviceClosed = false
             allCompleted()
             return
         }
@@ -124,6 +126,7 @@ class ApiService : Service() {
             notification
                     .setCurrentTask(taskRunningId, null)
                     .setProgressRes(R.string.edziennik_notification_api_error_report_title)
+                    .post()
             return
         }
 
@@ -155,7 +158,7 @@ class ApiService : Service() {
 
         when (task) {
             is SyncProfileRequest -> edziennikInterface?.sync(task.featureIds ?: Features.getAllIds())
-            is SyncViewRequest -> edziennikInterface?.sync(Features.getIdsByView(task.targetId))
+            is SyncViewRequest -> edziennikInterface?.sync(Features.getIdsByView(task.targetId), task.targetId)
             is MessageGetRequest -> edziennikInterface?.getMessage(task.messageId)
         }
     }
@@ -212,6 +215,13 @@ class ApiService : Service() {
     fun onTaskCancelRequest(taskCancelRequest: TaskCancelRequest) {
         taskCancelled = true
         edziennikInterface?.cancel()
+    }
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    fun onServiceCloseRequest(serviceCloseRequest: ServiceCloseRequest) {
+        serviceClosed = true
+        taskCancelled = true
+        edziennikInterface?.cancel()
+        stopSelf()
     }
 
     /*     _____                 _                                     _     _

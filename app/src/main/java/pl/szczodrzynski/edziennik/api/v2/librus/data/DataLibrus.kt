@@ -206,4 +206,9 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() = profile?.getStudentData("isPremium", false) ?: false
         set(value) { profile?.putStudentData("isPremium", value) }
 
+    private var mSchoolName: String? = null
+    var schoolName: String?
+        get() { mSchoolName = mSchoolName ?: profile?.getStudentData("schoolName", null); return mSchoolName }
+        set(value) { profile?.putStudentData("schoolName", value) ?: return; mSchoolName = value }
+
 }

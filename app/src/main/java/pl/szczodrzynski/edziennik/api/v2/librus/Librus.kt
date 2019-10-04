@@ -49,7 +49,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureIds: List<Int>) {
+    override fun sync(featureIds: List<Int>, viewId: Int?) {
         val possibleLoginMethods = data.loginMethods.toMutableList()
 
         for (loginMethod in librusLoginMethods) {
@@ -75,7 +75,6 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
 
         val timestamp = System.currentTimeMillis()
-        val viewId = 0
 
         endpointList = endpointList
                 // sort the endpoint list by feature ID and priority
