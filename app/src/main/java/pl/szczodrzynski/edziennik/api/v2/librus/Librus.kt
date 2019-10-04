@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librusLoginMethods
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Endpoint
+import pl.szczodrzynski.edziennik.data.db.modules.api.*
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -65,12 +66,6 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
         // get all endpoints for every feature, only if possible to login
         for (featureId in featureIds) {
-            /*endpoints.filter { it.featureId == featureId }.forEach { endpoint ->
-                if (possibleLoginMethods.containsAll(endpoint.requiredLoginMethods)) {
-                    endpointList.add(endpoint)
-                    //highestLoginMethod = max(highestLoginMethod, endpoint.requiredLoginMethods.max() ?: 0)
-                }
-            }*/
             endpoints.filter {
                         it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
                     }
@@ -79,16 +74,30 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                     }
         }
 
+        val timestamp = System.currentTimeMillis()
+        val viewId = 0
+
         endpointList = endpointList
                 // sort the endpoint list by feature ID and priority
                 .sortedWith(compareBy(Endpoint::featureId, Endpoint::priority))
                 // select only the most important endpoint for each feature
                 .distinctBy { it.featureId }
                 .toMutableList()
-                // add all endpoint IDs and required login methods
-                .onEach { endpoint ->
-                    data.targetEndpointIds.addAll(endpoint.endpointIds)
-                    requiredLoginMethods.addAll(endpoint.requiredLoginMethods)
+                // add all endpoint IDs and required login methods, filtering using timers
+                .onEach { feature ->
+                    feature.endpointIds.forEach { endpoint ->
+                        (data.endpointTimers
+                                .singleOrNull { it.endpointId == endpoint.first } ?: EndpointTimer(data.profile?.id ?: -1, endpoint.first))
+                                .let { timer ->
+                                    if (timer.nextSync == SYNC_ALWAYS ||
+                                            (timer.nextSync == SYNC_IF_EXPLICIT && timer.viewId == viewId) ||
+                                            (timer.nextSync == SYNC_IF_EXPLICIT_OR_ALL && viewId == null) ||
+                                            (timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp)) {
+                                        data.targetEndpointIds.add(endpoint.first)
+                                        requiredLoginMethods.add(endpoint.second)
+                                    }
+                                }
+                    }
                 }
 
         // check every login method for any dependencies

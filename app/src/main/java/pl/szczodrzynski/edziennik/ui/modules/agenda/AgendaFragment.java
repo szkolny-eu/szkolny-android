@@ -182,7 +182,7 @@ public class AgendaFragment extends Fragment {
             }
 
             if (app.profile.getStudentData("showTeacherAbsences", true)) {
-                List<TeacherAbsenceFull> teacherAbsenceList = app.db.teacherAbsenceDao().getAllFull(App.profileId);
+                List<TeacherAbsenceFull> teacherAbsenceList = app.db.teacherAbsenceDao().getAllFullNow(App.profileId);
                 List<TeacherAbsenceCounter> teacherAbsenceCounters = new ArrayList<>();
 
                 for (TeacherAbsenceFull absence : teacherAbsenceList) {

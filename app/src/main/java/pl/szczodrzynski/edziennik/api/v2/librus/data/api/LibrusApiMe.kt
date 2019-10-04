@@ -1,10 +1,13 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-9-21.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-3.
  */
 
-package pl.szczodrzynski.edziennik.api.v2.librus.data
+package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
+import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 
 class LibrusApiMe(override val data: DataLibrus,
                   val onSuccess: () -> Unit) : LibrusApi(data) {
@@ -29,6 +32,7 @@ class LibrusApiMe(override val data: DataLibrus,
             data.profile?.studentNameLong =
                     buildFullName(user?.getString("FirstName"), user?.getString("LastName"))
 
+            data.setSyncNext(ENDPOINT_LIBRUS_API_ME, 2*DAY)
             onSuccess()
         }
     }

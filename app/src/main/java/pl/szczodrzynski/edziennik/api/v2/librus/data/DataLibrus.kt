@@ -25,6 +25,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     fun isMessagesLoginValid() = messagesSessionIdExpiryTime-30 > currentTimeUnix() && messagesSessionId.isNotNullNorEmpty()
 
     override fun satisfyLoginMethods() {
+        loginMethods.clear()
         if (isPortalLoginValid())
             loginMethods += LOGIN_METHOD_LIBRUS_PORTAL
         if (isApiLoginValid())

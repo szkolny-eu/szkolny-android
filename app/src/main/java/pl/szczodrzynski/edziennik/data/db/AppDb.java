@@ -10,6 +10,8 @@ import androidx.room.migration.Migration;
 
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement;
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementDao;
+import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer;
+import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimerDao;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceDao;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterDate;
@@ -81,7 +83,8 @@ import android.content.Context;
         Message.class,
         MessageRecipient.class,
         DebugLog.class,
-        Metadata.class}, version = 54)
+        EndpointTimer.class,
+        Metadata.class}, version = 55)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -111,6 +114,7 @@ public abstract class AppDb extends RoomDatabase {
     public abstract MessageDao messageDao();
     public abstract MessageRecipientDao messageRecipientDao();
     public abstract DebugLogDao debugLogDao();
+    public abstract EndpointTimerDao endpointTimerDao();
     public abstract MetadataDao metadataDao();
 
     private static volatile AppDb INSTANCE;
@@ -558,6 +562,19 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("ALTER TABLE teacherAbsence ADD teacherAbsenceTimeTo TEXT DEFAULT NULL");
         }
     };
+    private static final Migration MIGRATION_54_55 = new Migration(54, 55) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS endpointTimers (" +
+                    "profileId INTEGER NOT NULL," +
+                    "endpointId INTEGER NOT NULL," +
+                    "endpointLastSync INTEGER DEFAULT NULL," +
+                    "endpointNextSync INTEGER NOT NULL DEFAULT 1," +
+                    "endpointViewId INTEGER DEFAULT NULL," +
+                    "PRIMARY KEY(profileId, endpointId)" +
+                    ")");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -609,7 +626,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_50_51,
                                     MIGRATION_51_52,
                                     MIGRATION_52_53,
-                                    MIGRATION_53_54
+                                    MIGRATION_53_54,
+                                    MIGRATION_54_55
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

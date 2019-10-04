@@ -129,3 +129,10 @@ fun Response?.getUnixDate(): Long {
     val format = SimpleDateFormat(pattern, Locale.ENGLISH)
     return format.parse(rfcDate).time / 1000
 }
+
+const val MINUTE = 60L
+const val HOUR = 60L*MINUTE
+const val DAY = 24L*HOUR
+const val WEEK = 7L*DAY
+const val MONTH = 30L*DAY
+const val YEAR = 365L*DAY

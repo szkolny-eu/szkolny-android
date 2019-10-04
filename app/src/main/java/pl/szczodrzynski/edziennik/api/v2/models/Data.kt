@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.data.api.AppError.*
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
+import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
@@ -72,21 +73,49 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
      */
     var endpointArgs = mutableMapOf<Int, JsonObject>()
 
+    /**
+     * A list of per-endpoint next sync time descriptors.
+     *
+     * [EndpointTimer.nextSync] may be:
+     * - [pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_NEVER] to never sync the endpoint (pretty useless)
+     * - [pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS] to sync the endpoint during every sync
+     * - [pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_IF_EXPLICIT] to sync the endpoint only if the matching
+     *      feature ID is in the input set
+     * - [pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_IF_EXPLICIT_OR_ALL] to sync if the matching feature ID
+     *      is in the input set OR the sync covers all feature IDs
+     * - a Unix-epoch timestamp (in millis) to sync the endpoint if [System.currentTimeMillis] is greater or equal to this value
+     */
+    var endpointTimers = mutableListOf<EndpointTimer>()
+
     val teacherList = LongSparseArray<Teacher>()
     val subjectList = LongSparseArray<Subject>()
     val teamList = mutableListOf<Team>()
+
+    var lessonsToRemove: DataRemoveModel? = null
     val lessonList = mutableListOf<Lesson>()
     val lessonChangeList = mutableListOf<LessonChange>()
+
+    var gradesToRemove: DataRemoveModel? = null
     val gradeCategoryList = mutableListOf<GradeCategory>()
     val gradeList = mutableListOf<Grade>()
+
+    var eventsToRemove: DataRemoveModel? = null
     val eventList = mutableListOf<Event>()
     val eventTypeList = mutableListOf<EventType>()
+
+    var noticesToRemove: DataRemoveModel? = null
     val noticeList = mutableListOf<Notice>()
+
+    var attendanceToRemove: DataRemoveModel? = null
     val attendanceList = mutableListOf<Attendance>()
+
+    var announcementsToRemove: DataRemoveModel? = null
     val announcementList = mutableListOf<Announcement>()
+
     val messageList = mutableListOf<Message>()
     val messageRecipientList = mutableListOf<MessageRecipient>()
     val messageRecipientIgnoreList = mutableListOf<MessageRecipient>()
+
     val metadataList = mutableListOf<Metadata>()
     val messageMetadataList = mutableListOf<Metadata>()
 
@@ -97,6 +126,9 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         clear()
 
         if (profile != null) {
+            db.endpointTimerDao().getAllNow(profile.id).forEach { endpointTimer ->
+                endpointTimers.add(endpointTimer)
+            }
             db.teacherDao().getAllNow(profile.id).forEach { teacher ->
                 teacherList.put(teacher.id, teacher)
             }
@@ -113,6 +145,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
     fun clear() {
         loginMethods.clear()
+
+        endpointTimers.clear()
 
         teacherList.clear()
         subjectList.clear()
@@ -138,6 +172,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
         db.profileDao().add(profile)
         db.loginStoreDao().add(loginStore)
+
+        db.endpointTimerDao().addAll(endpointTimers)
 
         if (teacherList.isNotEmpty()) {
             val tempList: ArrayList<Teacher> = ArrayList()
@@ -191,6 +227,21 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.metadataDao().addAllIgnore(metadataList)
         if (messageMetadataList.isNotEmpty())
             db.metadataDao().setSeen(messageMetadataList)
+    }
+
+    fun setSyncNext(endpointId: Int, syncIn: Long, viewId: Int? = null, syncIfAll: Boolean = false) {
+        EndpointTimer(profile?.id ?: -1, endpointId).apply {
+            syncedNow()
+            if (syncIn < 10) {
+                nextSync = syncIn
+            }
+            else {
+                syncIn(syncIn)
+                if (viewId != null)
+                    syncWhenView(viewId, syncIfAll)
+            }
+            endpointTimers.add(this)
+        }
     }
 
     fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {

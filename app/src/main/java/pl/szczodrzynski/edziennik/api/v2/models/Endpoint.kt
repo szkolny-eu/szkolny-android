@@ -16,7 +16,7 @@ package pl.szczodrzynski.edziennik.api.v2.models
 data class Endpoint(
         val loginType: Int,
         val featureId: Int,
-        val endpointIds: List<Int>,
+        val endpointIds: List<Pair<Int, Int>>,
         val requiredLoginMethods: List<Int>
 ) {
     val priority

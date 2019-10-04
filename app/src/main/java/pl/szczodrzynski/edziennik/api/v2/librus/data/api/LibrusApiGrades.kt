@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.api.v2.librus.data
+package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.models.Data
