@@ -12,6 +12,8 @@ import pl.szczodrzynski.edziennik.api.v2.endpoints
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
+import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLogin
 import pl.szczodrzynski.edziennik.api.v2.librusLoginMethods
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Endpoint
@@ -122,7 +124,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         Log.d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
 
         LibrusLogin(data) {
-            LibrusEndpoints(data) {
+            LibrusData(data) {
                 completed()
             }
         }

@@ -16,7 +16,7 @@ import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.getUnixDate
 
-class LoginLibrusMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
+class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
     companion object {
         private const val TAG = "LoginLibrusMessages"
     }

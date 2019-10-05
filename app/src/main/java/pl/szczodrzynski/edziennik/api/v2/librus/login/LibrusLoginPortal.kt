@@ -15,7 +15,7 @@ import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 import java.util.ArrayList
 import java.util.regex.Pattern
 
-class LoginLibrusPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
+class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     companion object {
         private const val TAG = "LoginLibrusPortal"
     }

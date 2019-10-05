@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import java.net.HttpURLConnection.*
 
-class LoginLibrusApi {
+class LibrusLoginApi {
     companion object {
         private const val TAG = "LoginLibrusApi"
     }

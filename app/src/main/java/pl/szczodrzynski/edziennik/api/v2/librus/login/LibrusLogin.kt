@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-10-1.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-5.
  */
 
-package pl.szczodrzynski.edziennik.api.v2.librus
+package pl.szczodrzynski.edziennik.api.v2.librus.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_API
@@ -10,10 +10,6 @@ import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_MESSAGES
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_PORTAL
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_SYNERGIA
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusApi
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusMessages
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusPortal
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LoginLibrusSynergia
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
@@ -53,19 +49,19 @@ class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
         when (loginMethodId) {
             LOGIN_METHOD_LIBRUS_PORTAL -> {
                 data.startProgress(R.string.edziennik_progress_login_librus_portal)
-                LoginLibrusPortal(data) { onSuccess(loginMethodId) }
+                LibrusLoginPortal(data) { onSuccess(loginMethodId) }
             }
             LOGIN_METHOD_LIBRUS_API -> {
                 data.startProgress(R.string.edziennik_progress_login_librus_api)
-                LoginLibrusApi(data) { onSuccess(loginMethodId) }
+                LibrusLoginApi(data) { onSuccess(loginMethodId) }
             }
             LOGIN_METHOD_LIBRUS_SYNERGIA -> {
                 data.startProgress(R.string.edziennik_progress_login_librus_synergia)
-                LoginLibrusSynergia(data) { onSuccess(loginMethodId) }
+                LibrusLoginSynergia(data) { onSuccess(loginMethodId) }
             }
             LOGIN_METHOD_LIBRUS_MESSAGES -> {
                 data.startProgress(R.string.edziennik_progress_login_librus_messages)
-                LoginLibrusMessages(data) { onSuccess(loginMethodId) }
+                LibrusLoginMessages(data) { onSuccess(loginMethodId) }
             }
         }
     }

@@ -1,16 +1,17 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-10-1.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-5.
  */
 
-package pl.szczodrzynski.edziennik.api.v2.librus
+package pl.szczodrzynski.edziennik.api.v2.librus.data
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_SCHOOLS
 import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiMe
+import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiSchools
 import pl.szczodrzynski.edziennik.utils.Utils
 
-class LibrusEndpoints(val data: DataLibrus, val onSuccess: () -> Unit) {
+class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
     companion object {
         private const val TAG = "LibrusEndpoints"
     }
@@ -41,6 +42,10 @@ class LibrusEndpoints(val data: DataLibrus, val onSuccess: () -> Unit) {
             ENDPOINT_LIBRUS_API_ME -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
                 LibrusApiMe(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_SCHOOLS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_school_info)
+                LibrusApiSchools(data) { onSuccess() }
             }
             else -> onSuccess()
         }
