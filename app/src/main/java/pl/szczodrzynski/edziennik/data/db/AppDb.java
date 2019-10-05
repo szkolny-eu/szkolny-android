@@ -35,6 +35,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChangeDao;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonDao;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRangeDao;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStoreDao;
 import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber;
@@ -84,7 +85,7 @@ import android.content.Context;
         MessageRecipient.class,
         DebugLog.class,
         EndpointTimer.class,
-        Metadata.class}, version = 55)
+        Metadata.class}, version = 56)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -115,6 +116,7 @@ public abstract class AppDb extends RoomDatabase {
     public abstract MessageRecipientDao messageRecipientDao();
     public abstract DebugLogDao debugLogDao();
     public abstract EndpointTimerDao endpointTimerDao();
+    public abstract LessonRangeDao lessonRangeDao();
     public abstract MetadataDao metadataDao();
 
     private static volatile AppDb INSTANCE;
@@ -575,6 +577,18 @@ public abstract class AppDb extends RoomDatabase {
                     ")");
         }
     };
+    private static final Migration MIGRATION_55_56 = new Migration(55, 56) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS lessonRanges (" +
+                    "profileId INTEGER NOT NULL," +
+                    "lessonRangeNumber INTEGER NOT NULL," +
+                    "lessonRangeStart TEXT NOT NULL," +
+                    "lessonRangeEnd TEXT NOT NULL," +
+                    "PRIMARY KEY(profileId, lessonRangeNumber)" +
+                    ")");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -627,7 +641,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_51_52,
                                     MIGRATION_52_53,
                                     MIGRATION_53_54,
-                                    MIGRATION_54_55
+                                    MIGRATION_54_55,
+                                    MIGRATION_55_56
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

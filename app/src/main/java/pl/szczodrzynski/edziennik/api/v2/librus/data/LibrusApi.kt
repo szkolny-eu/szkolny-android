@@ -18,6 +18,12 @@ open class LibrusApi(open val data: DataLibrus) {
         const val TAG = "LibrusApi"
     }
 
+    val profileId
+        get() = data.profile?.id ?: -1
+
+    val profile
+        get() = data.profile
+
     fun apiGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, onSuccess: (json: JsonObject?) -> Unit) {
 
         val callback = object : JsonCallbackHandler() {

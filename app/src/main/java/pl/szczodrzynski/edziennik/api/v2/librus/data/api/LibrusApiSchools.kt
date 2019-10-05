@@ -6,11 +6,11 @@ package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
 import android.util.Pair
 import com.google.gson.JsonNull
+import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_SCHOOLS
 import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.getJsonObject
-import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
 
@@ -26,6 +26,8 @@ class LibrusApiSchools(override val data: DataLibrus,
             val schoolId = school?.getInt("Id")
             val schoolNameLong = school?.getString("Name")
 
+            // create the school's short name using first letters of each long name's word
+            // append the town name and save to student data
             var schoolNameShort = ""
             schoolNameLong?.split(" ")?.forEach {
                 if (it.isBlank())
@@ -35,21 +37,24 @@ class LibrusApiSchools(override val data: DataLibrus,
             val schoolTown = school?.getString("Town")?.toLowerCase(Locale.getDefault())
             data.schoolName = schoolId.toString() + schoolNameShort + "_" + schoolTown
 
-            /*lessonRanges.clear()
-            for ((index, lessonRangeEl) in school.get("LessonsRange").getAsJsonArray().withIndex()) {
-                val lr = lessonRangeEl.getAsJsonObject()
-                val from = lr.get("From")
-                val to = lr.get("To")
-                if (from != null && to != null && from !is JsonNull && to !is JsonNull) {
-                    lessonRanges.put(index, Pair<Time, Time>(Time.fromH_m(from!!.getAsString()), Time.fromH_m(to!!.getAsString())))
+            school?.getJsonArray("LessonsRange")?.let { ranges ->
+                data.lessonRanges.clear()
+                ranges.forEachIndexed { index, rangeEl ->
+                    val range = rangeEl.asJsonObject
+                    val from = range.getString("From") ?: return@forEachIndexed
+                    val to = range.getString("To") ?: return@forEachIndexed
+                    data.lessonRanges.add(
+                            LessonRange(
+                                    profileId,
+                                    index,
+                                    Time.fromH_m(from),
+                                    Time.fromH_m(to)
+                            ))
                 }
             }
-            profile.putStudentData("lessonRanges", app.gson.toJson(lessonRanges))
-            // on error
-            data.error(TAG, ERROR_LIBRUS_API_, response, json)
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_, 2 * DAY)
-            onSuccess()*/
+            data.setSyncNext(ENDPOINT_LIBRUS_API_SCHOOLS, 4 * DAY)
+            onSuccess()
         }
     }
 }

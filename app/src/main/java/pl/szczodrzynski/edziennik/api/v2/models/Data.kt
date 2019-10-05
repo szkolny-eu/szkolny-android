@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
@@ -90,6 +91,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val teacherList = LongSparseArray<Teacher>()
     val subjectList = LongSparseArray<Subject>()
     val teamList = mutableListOf<Team>()
+    var lessonRanges = mutableListOf<LessonRange>()
 
     var lessonsToRemove: DataRemoveModel? = null
     val lessonList = mutableListOf<Lesson>()
@@ -129,6 +131,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.endpointTimerDao().getAllNow(profile.id).forEach { endpointTimer ->
                 endpointTimers.add(endpointTimer)
             }
+
+            lessonRanges = db.lessonRangeDao().getAllNow(profile.id).toMutableList()
             db.teacherDao().getAllNow(profile.id).forEach { teacher ->
                 teacherList.put(teacher.id, teacher)
             }
@@ -151,6 +155,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         teacherList.clear()
         subjectList.clear()
         teamList.clear()
+        lessonRanges.clear()
         lessonList.clear()
         lessonChangeList.clear()
         gradeCategoryList.clear()

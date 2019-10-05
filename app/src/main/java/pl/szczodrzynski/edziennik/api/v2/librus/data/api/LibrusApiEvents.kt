@@ -14,13 +14,13 @@ class LibrusApiEvents(override val data: DataLibrus,
     }
 
     init {
-        apiGet(LibrusApiMe.TAG, "") { json ->
+        /*apiGet(LibrusApiMe.TAG, "") { json ->
 
             // on error
             data.error(TAG, ERROR_LIBRUS_API_, response, json)
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_, 2 * DAY)
             onSuccess()
-        }
+        }*/
     }
 }

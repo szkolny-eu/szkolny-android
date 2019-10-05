@@ -924,4 +924,5 @@
     <string name="agenda_teacher_absence">Nieobecni nauczyciele</string>
     <string name="sync_action_syncing_grade_comments">Pobieranie komentarzy ocen</string>
     <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
+    <string name="edziennik_progress_endpoint_school_info">Pobieram informacje o szkole...</string>
 </resources>
