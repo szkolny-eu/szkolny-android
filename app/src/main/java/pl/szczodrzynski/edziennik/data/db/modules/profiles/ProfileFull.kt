@@ -223,7 +223,7 @@ class ProfileFull : Profile {
         when (loginStoreType) {
             LOGIN_TYPE_MOBIDZIENNIK -> return "LOGIN_TYPE_MOBIDZIENNIK"
             LOGIN_TYPE_LIBRUS -> return "LOGIN_TYPE_LIBRUS"
-            LOGIN_TYPE_IUCZNIOWIE -> return "LOGIN_TYPE_IUCZNIOWIE"
+            LOGIN_TYPE_IUCZNIOWIE -> return "LOGIN_TYPE_IDZIENNIK"
             LOGIN_TYPE_VULCAN -> return "LOGIN_TYPE_VULCAN"
             LOGIN_TYPE_DEMO -> return "LOGIN_TYPE_DEMO"
             else -> return "LOGIN_TYPE_UNKNOWN"

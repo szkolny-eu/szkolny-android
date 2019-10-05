@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.api.v2.models.Endpoint
+import pl.szczodrzynski.edziennik.api.v2.models.Feature
 import pl.szczodrzynski.edziennik.api.v2.template.data.DataTemplate
 import pl.szczodrzynski.edziennik.api.v2.template.data.TemplateData
 import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLogin
@@ -62,7 +62,7 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
         }
 
         //var highestLoginMethod = 0
-        var endpointList = mutableListOf<Endpoint>()
+        var endpointList = mutableListOf<Feature>()
         val requiredLoginMethods = mutableListOf<Int>()
 
         data.targetEndpointIds.clear()
@@ -82,7 +82,7 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
 
         endpointList = endpointList
                 // sort the endpoint list by feature ID and priority
-                .sortedWith(compareBy(Endpoint::featureId, Endpoint::priority))
+                .sortedWith(compareBy(Feature::featureId, Feature::priority))
                 // select only the most important endpoint for each feature
                 .distinctBy { it.featureId }
                 .toMutableList()

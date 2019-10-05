@@ -10,15 +10,14 @@ package pl.szczodrzynski.edziennik.api.v2.models
  *
  * @param loginType type of the e-register this endpoint handles
  * @param featureId a feature ID
- * @param endpointIds a [List] of [Endpoint]s that satisfy this feature ID
+ * @param endpointIds a [List] of [Feature]s that satisfy this feature ID
  * @param requiredLoginMethod a required login method, which will have to be executed before this endpoint.
  */
-data class Endpoint(
+data class Feature(
         val loginType: Int,
         val featureId: Int,
         val endpointIds: List<Pair<Int, Int>>,
         val requiredLoginMethods: List<Int>
 ) {
-    val priority
-        get() = endpointIds.size
+    var priority = endpointIds.size
 }

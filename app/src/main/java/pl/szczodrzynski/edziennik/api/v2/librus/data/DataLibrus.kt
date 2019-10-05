@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data
 
 import okhttp3.Cookie
-import okhttp3.HttpUrl
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_API
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_MESSAGES
@@ -90,7 +89,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
      * A Synergia login, like 1234567u.
      * Used: for login (API Login Method) in Synergia mode.
      * Used: for login (Synergia Login Method) in Synergia mode.
-     * And also in various places in [pl.szczodrzynski.edziennik.api.v2.models.Endpoint]s
+     * And also in various places in [pl.szczodrzynski.edziennik.api.v2.models.Feature]s
      */
     private var mApiLogin: String? = null
     var apiLogin: String?

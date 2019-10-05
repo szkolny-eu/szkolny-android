@@ -157,7 +157,7 @@ public class LoginStore {
             case LOGIN_TYPE_LIBRUS:
                 return "LOGIN_TYPE_LIBRUS";
             case LOGIN_TYPE_IUCZNIOWIE:
-                return "LOGIN_TYPE_IUCZNIOWIE";
+                return "LOGIN_TYPE_IDZIENNIK";
             case LOGIN_TYPE_VULCAN:
                 return "LOGIN_TYPE_VULCAN";
             case LOGIN_TYPE_DEMO:

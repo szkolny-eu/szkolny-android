@@ -1,39 +1,41 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-9-21.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-5.
  */
 
-package pl.szczodrzynski.edziennik.api.v2.librus
+package pl.szczodrzynski.edziennik.api.v2.mobidziennik
 
 import android.util.Log
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
-import pl.szczodrzynski.edziennik.api.v2.endpoints
+import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
-import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLogin
-import pl.szczodrzynski.edziennik.api.v2.librusLoginMethods
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.DataMobidziennik
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikData
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLogin
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
-import pl.szczodrzynski.edziennik.data.db.modules.api.*
+import pl.szczodrzynski.edziennik.api.v2.template.data.DataTemplate
+import pl.szczodrzynski.edziennik.api.v2.template.data.TemplateData
+import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLogin
+import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
+import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_NEVER
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.utils.Utils
 
-class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
+class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
-        private const val TAG = "Librus"
+        private const val TAG = "Mobidziennik"
     }
 
     val internalErrorList = mutableListOf<Int>()
-    val data: DataLibrus
+    val data: DataMobidziennik
     private var cancelled = false
 
     init {
-        data = DataLibrus(app, profile, loginStore).apply {
-            callback = wrapCallback(this@Librus.callback)
+        data = DataMobidziennik(app, profile, loginStore).apply {
+            callback = wrapCallback(this@Mobidziennik.callback)
         }
         data.satisfyLoginMethods()
     }
@@ -54,7 +56,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     override fun sync(featureIds: List<Int>, viewId: Int?) {
         val possibleLoginMethods = data.loginMethods.toMutableList()
 
-        for (loginMethod in librusLoginMethods) {
+        for (loginMethod in mobidziennikLoginMethods) {
             if (loginMethod.isPossible(profile, loginStore))
                 possibleLoginMethods += loginMethod.loginMethodId
         }
@@ -68,9 +70,9 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
         // get all endpoints for every feature, only if possible to login
         for (featureId in featureIds) {
-            endpoints.filter {
-                        it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
-                    }
+            MobidziennikFeatures.filter {
+                it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
+            }
                     .let {
                         endpointList.addAll(it)
                     }
@@ -104,7 +106,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         for (loginMethodId in requiredLoginMethods) {
             var requiredLoginMethod: Int? = loginMethodId
             while (requiredLoginMethod != LOGIN_METHOD_NOT_NEEDED) {
-                librusLoginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let { loginMethod ->
+                mobidziennikLoginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let { loginMethod ->
                     if (requiredLoginMethod != null)
                         data.targetLoginMethodIds.add(requiredLoginMethod!!)
                     requiredLoginMethod = loginMethod.requiredLoginMethod(data.profile, data.loginStore)
@@ -122,8 +124,8 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         Log.d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
         Log.d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
 
-        LibrusLogin(data) {
-            LibrusData(data) {
+        MobidziennikLogin(data) {
+            MobidziennikData(data) {
                 completed()
             }
         }
@@ -134,7 +136,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun cancel() {
-        d(TAG, "Cancelled")
+        Utils.d(TAG, "Cancelled")
         cancelled = true
     }
 

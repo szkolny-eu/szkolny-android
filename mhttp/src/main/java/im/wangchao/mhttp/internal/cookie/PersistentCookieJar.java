@@ -74,6 +74,27 @@ public class PersistentCookieJar implements ClearableCookieJar {
         return validCookies;
     }
 
+    @NonNull
+    synchronized public List<Cookie> getForDomain(String domain) {
+        List<Cookie> removedCookies = new ArrayList<>();
+        List<Cookie> validCookies = new ArrayList<>();
+
+        for (Iterator<Cookie> it = cache.iterator(); it.hasNext(); ) {
+            Cookie currentCookie = it.next();
+            if (isCookieExpired(currentCookie)) {
+                removedCookies.add(currentCookie);
+                it.remove();
+
+            } else if (domain.equals(currentCookie.domain())) {
+                validCookies.add(currentCookie);
+            }
+        }
+
+        persistor.removeAll(removedCookies);
+
+        return validCookies;
+    }
+
     @Nullable
     synchronized public String getCookie(String domain, String name) {
         String cookieValue = null;

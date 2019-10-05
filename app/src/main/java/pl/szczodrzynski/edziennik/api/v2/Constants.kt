@@ -7,7 +7,9 @@ package pl.szczodrzynski.edziennik.api.v2
 const val GET = 0
 const val POST = 1
 
-const val LIBRUS_USER_AGENT = "Dalvik/2.1.0 Android LibrusMobileApp"
+val SYSTEM_USER_AGENT = System.getProperty("http.agent") ?: "Dalvik/2.1.0 Android"
+
+val LIBRUS_USER_AGENT = "$SYSTEM_USER_AGENT LibrusMobileApp"
 const val SYNERGIA_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0"
 const val LIBRUS_CLIENT_ID = "wmSyUMo8llDAs4y9tJVYY92oyZ6h4lAt7KCuy0Gv"
 const val LIBRUS_REDIRECT_URL = "http://localhost/bar"
@@ -37,3 +39,7 @@ const val LIBRUS_SYNERGIA_TOKEN_LOGIN_URL = "https://synergia.librus.pl/loguj/to
 
 const val LIBRUS_MESSAGES_URL = "https://wiadomosci.librus.pl/module/"
 const val LIBRUS_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action="
+
+
+
+val MOBIDZIENNIK_USER_AGENT = SYSTEM_USER_AGENT

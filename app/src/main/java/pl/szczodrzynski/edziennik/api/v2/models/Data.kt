@@ -38,7 +38,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     var fakeLogin = false
 
     /**
-     * A callback passed to all [Endpoint]s and [LoginMethod]s
+     * A callback passed to all [Feature]s and [LoginMethod]s
      */
     lateinit var callback: EndpointCallback
 

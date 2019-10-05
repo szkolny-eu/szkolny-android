@@ -18,6 +18,7 @@ import pl.szczodrzynski.edziennik.api.v2.events.requests.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.Librus
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.Mobidziennik
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.ApiTask
 import pl.szczodrzynski.edziennik.api.v2.template.Template
@@ -151,6 +152,7 @@ class ApiService : Service() {
 
         edziennikInterface = when (loginStore.type) {
             LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
+            LOGIN_TYPE_MOBIDZIENNIK -> Mobidziennik(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_TEMPLATE -> Template(app, profile, loginStore, taskCallback)
             else -> null
         }
@@ -159,8 +161,7 @@ class ApiService : Service() {
         }
 
         when (task) {
-            is SyncProfileRequest -> edziennikInterface?.sync(task.featureIds ?: Features.getAllIds())
-            is SyncViewRequest -> edziennikInterface?.sync(Features.getIdsByView(task.targetId), task.targetId)
+            is SyncProfileRequest -> edziennikInterface?.sync(task.viewIds?.flatMap { Features.getIdsByView(it.first, it.second) } ?: Features.getAllIds())
             is MessageGetRequest -> edziennikInterface?.getMessage(task.messageId)
         }
     }

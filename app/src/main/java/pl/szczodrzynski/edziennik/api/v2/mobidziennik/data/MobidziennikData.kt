@@ -1,0 +1,81 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2019-10-5.
+ */
+
+package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data
+
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_API_SAMPLE
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_WEB_SAMPLE
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_WEB_SAMPLE_2
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.*
+import pl.szczodrzynski.edziennik.api.v2.template.data.DataTemplate
+import pl.szczodrzynski.edziennik.api.v2.template.data.api.TemplateApiSample
+import pl.szczodrzynski.edziennik.api.v2.template.data.web.TemplateWebSample
+import pl.szczodrzynski.edziennik.api.v2.template.data.web.TemplateWebSample2
+import pl.szczodrzynski.edziennik.utils.Utils
+
+class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
+    companion object {
+        private const val TAG = "MobidziennikData"
+    }
+
+    private var cancelled = false
+
+    init {
+        nextEndpoint(onSuccess)
+    }
+
+    private fun nextEndpoint(onSuccess: () -> Unit) {
+        if (data.targetEndpointIds.isEmpty()) {
+            onSuccess()
+            return
+        }
+        useEndpoint(data.targetEndpointIds.removeAt(0)) {
+            if (cancelled) {
+                onSuccess()
+                return@useEndpoint
+            }
+            nextEndpoint(onSuccess)
+        }
+    }
+
+    private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
+        Utils.d(TAG, "Using endpoint $endpointId")
+        when (endpointId) {
+            /*ENDPOINT_MOBIDZIENNIK_API -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_data)
+                MobidziennikApi(data) { onSuccess() }
+            }
+            ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
+                MobidziennikWebMessagesInbox(data) { onSuccess() }
+            }
+            ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages)
+                MobidziennikWebMessagesAll(data) { onSuccess() }
+            }
+            ENDPOINT_MOBIDZIENNIK_WEB_CALENDAR -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_calendar)
+                MobidziennikWebCalendar(data) { onSuccess() }
+            }
+            ENDPOINT_MOBIDZIENNIK_WEB_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grades)
+                MobidziennikWebGrades(data) { onSuccess() }
+            }
+            ENDPOINT_MOBIDZIENNIK_WEB_NOTICES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_behaviour)
+                MobidziennikWebNotices(data) { onSuccess() }
+            }
+            ENDPOINT_MOBIDZIENNIK_WEB_ATTENDANCE -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_attendance)
+                MobidziennikWebAttendance(data) { onSuccess() }
+            }
+            ENDPOINT_MOBIDZIENNIK_WEB_MANUALS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
+                MobidziennikWebManuals(data) { onSuccess() }
+            }*/
+            else -> onSuccess()
+        }
+    }
+}

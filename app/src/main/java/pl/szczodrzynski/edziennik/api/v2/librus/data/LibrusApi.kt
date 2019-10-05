@@ -41,7 +41,7 @@ open class LibrusApi(open val data: DataLibrus) {
                     when (code) {
                         "TokenIsExpired" -> ERROR_LIBRUS_API_TOKEN_EXPIRED
                         "Insufficient scopes" -> ERROR_LIBRUS_API_INSUFFICIENT_SCOPES
-                        "Request is denied" -> ERROR_LIBRUS_API_REQUEST_DENIED
+                        "Request is denied" -> ERROR_LIBRUS_API_ACCESS_DENIED
                         "Resource not found" -> ERROR_LIBRUS_API_RESOURCE_NOT_FOUND
                         "NotFound" -> ERROR_LIBRUS_API_DATA_NOT_FOUND
                         "AccessDeny" -> when (json.getString("Message")) {

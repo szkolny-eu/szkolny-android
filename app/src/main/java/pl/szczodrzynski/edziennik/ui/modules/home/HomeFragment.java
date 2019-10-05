@@ -39,6 +39,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Pair;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
@@ -66,6 +67,8 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
 import static pl.szczodrzynski.edziennik.App.UPDATES_ON_PLAY_STORE;
 import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_GRADES;
+import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_HOME;
+import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_MESSAGES;
 import static pl.szczodrzynski.edziennik.api.v2.FeaturesKt.FEATURE_STUDENT_INFO;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_FINAL;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_PROPOSED;
@@ -74,6 +77,7 @@ import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMES
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_YEAR_FINAL;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_YEAR_PROPOSED;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
@@ -129,19 +133,23 @@ public class HomeFragment extends Fragment {
 
         b.test2.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.test2.setOnClickListener((v -> {
-            List<Integer> list = new ArrayList<>();
-            list.add(FEATURE_STUDENT_INFO);
-            EventBus.getDefault().post(new SyncProfileRequest(16, list));
+            List<Pair<Integer, Integer>> list = new ArrayList<>();
+            list.add(new Pair<>(DRAWER_ITEM_HOME, 0));
+            EventBus.getDefault().post(new SyncProfileRequest(10, list));
         }));
 
         b.test3.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.test3.setOnClickListener((v -> {
-            EventBus.getDefault().post(new SyncProfileRequest(16, null));
+            List<Pair<Integer, Integer>> list = new ArrayList<>();
+            list.add(new Pair<>(DRAWER_ITEM_MESSAGES, TYPE_SENT));
+            EventBus.getDefault().post(new SyncProfileRequest(10, list));
         }));
 
         b.test4.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.test4.setOnClickListener((v -> {
-            EventBus.getDefault().post(new SyncViewRequest(16, DRAWER_ITEM_GRADES));
+            List<Pair<Integer, Integer>> list = new ArrayList<>();
+            list.add(new Pair<>(DRAWER_ITEM_GRADES, 0));
+            EventBus.getDefault().post(new SyncProfileRequest(10, list));
         }));
 
         //((TextView)v.findViewById(R.id.nextSync)).setText(getString(R.string.next_sync_format,Time.fromMillis(app.appJobs.syncJobTime).getStringHMS()));

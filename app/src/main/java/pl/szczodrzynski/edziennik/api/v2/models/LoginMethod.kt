@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 /**
  * A Login Method descriptor class.
  *
- * This is used by the API to satisfy all [Endpoint]s' dependencies.
+ * This is used by the API to satisfy all [Feature]s' dependencies.
  * A login method may have its own dependencies which need to be
  * satisfied before the [loginMethodClass]'s constructor is invoked.
  *

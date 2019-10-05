@@ -8,17 +8,23 @@ import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginPortal
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginApi
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginMessages
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginSynergia
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLoginWeb
 import pl.szczodrzynski.edziennik.api.v2.models.LoginMethod
 import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLoginApi
 import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLoginWeb
 
+// librus
+// mobidziennik
+// idziennik
+// vulcan
+// mobireg
+
 const val SYNERGIA_API_ENABLED = true
 
-const val LOGIN_TYPE_MOBIDZIENNIK = 1
 const val LOGIN_TYPE_LIBRUS = 2
-const val LOGIN_TYPE_IUCZNIOWIE = 3
+const val LOGIN_TYPE_MOBIDZIENNIK = 1
+const val LOGIN_TYPE_IDZIENNIK = 3
 const val LOGIN_TYPE_VULCAN = 4
-const val LOGIN_TYPE_DEMO = 20
 const val LOGIN_TYPE_TEMPLATE = 21
 
 // LOGIN MODES
@@ -36,7 +42,8 @@ const val LOGIN_METHOD_LIBRUS_PORTAL = 100
 const val LOGIN_METHOD_LIBRUS_API = 200
 const val LOGIN_METHOD_LIBRUS_SYNERGIA = 300
 const val LOGIN_METHOD_LIBRUS_MESSAGES = 400
-const val LOGIN_METHOD_MOBIDZIENNIK_API = 100
+const val LOGIN_METHOD_MOBIDZIENNIK_WEB = 100
+const val LOGIN_METHOD_MOBIDZIENNIK_API2 = 300
 const val LOGIN_METHOD_IDZIENNIK_WEB = 100
 const val LOGIN_METHOD_IDZIENNIK_API = 200
 const val LOGIN_METHOD_VULCAN_WEB = 100
@@ -70,6 +77,12 @@ val librusLoginMethods = listOf(
                 .withRequiredLoginMethod { profile, _ ->
                     if (profile?.hasStudentData("accountPassword") == false) LOGIN_METHOD_LIBRUS_SYNERGIA else LOGIN_METHOD_NOT_NEEDED
                 }
+)
+
+val mobidziennikLoginMethods = listOf(
+        LoginMethod(LOGIN_TYPE_MOBIDZIENNIK, LOGIN_METHOD_MOBIDZIENNIK_WEB, MobidziennikLoginWeb::class.java)
+                .withIsPossible { _, _ -> true }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
 )
 
 val templateLoginMethods = listOf(
