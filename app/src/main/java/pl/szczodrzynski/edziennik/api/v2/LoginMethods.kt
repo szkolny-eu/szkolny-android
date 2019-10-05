@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginMessages
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginSynergia
 import pl.szczodrzynski.edziennik.api.v2.models.LoginMethod
 
-val SYNERGIA_API_ENABLED = "true".toBoolean()
+const val SYNERGIA_API_ENABLED = true
 
 const val LOGIN_TYPE_MOBIDZIENNIK = 1
 const val LOGIN_TYPE_LIBRUS = 2

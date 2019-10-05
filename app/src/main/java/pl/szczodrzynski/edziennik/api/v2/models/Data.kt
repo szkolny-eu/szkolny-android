@@ -234,17 +234,19 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.metadataDao().setSeen(messageMetadataList)
     }
 
-    fun setSyncNext(endpointId: Int, syncIn: Long, viewId: Int? = null, syncIfAll: Boolean = false) {
+    fun setSyncNext(endpointId: Int, syncIn: Long? = null, viewId: Int? = null) {
         EndpointTimer(profile?.id ?: -1, endpointId).apply {
             syncedNow()
-            if (syncIn < 10) {
-                nextSync = syncIn
+
+            if (syncIn != null) {
+                if (syncIn < 10)
+                    nextSync = syncIn
+                else
+                    syncIn(syncIn)
             }
-            else {
-                syncIn(syncIn)
-                if (viewId != null)
-                    syncWhenView(viewId, syncIfAll)
-            }
+            if (viewId != null)
+                syncWhenView(viewId)
+
             endpointTimers.add(this)
         }
     }

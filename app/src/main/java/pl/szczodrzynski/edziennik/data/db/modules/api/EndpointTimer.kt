@@ -9,8 +9,6 @@ import androidx.room.Entity
 
 const val SYNC_NEVER = 0L
 const val SYNC_ALWAYS = 1L
-const val SYNC_IF_EXPLICIT = 2L
-const val SYNC_IF_EXPLICIT_OR_ALL = 3L
 
 @Entity(tableName = "endpointTimers",
         primaryKeys = ["profileId", "endpointId"])
@@ -47,16 +45,20 @@ data class EndpointTimer (
      */
     fun syncIn(nextSyncIn: Long): EndpointTimer {
         nextSync = System.currentTimeMillis() + nextSyncIn*1000
-        viewId = null
         return this
     }
 
     /**
      * Set this timer to sync only if [viewId] is the only
      * selected feature during the current process.
+     *
+     * [viewId] may be [DRAWER_ITEM_HOME] to sync only if all features are selected.
      */
-    fun syncWhenView(viewId: Int, syncIfAll: Boolean = false): EndpointTimer {
-        nextSync = if (syncIfAll) SYNC_IF_EXPLICIT_OR_ALL else SYNC_IF_EXPLICIT
+    fun syncWhenView(viewId: Int): EndpointTimer {
+        // set to never sync if nextSync is not already a timestamp
+        if (nextSync < 10) {
+            this.nextSync = SYNC_NEVER
+        }
         this.viewId = viewId
         return this
     }

@@ -91,8 +91,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                                 .singleOrNull { it.endpointId == endpoint.first } ?: EndpointTimer(data.profile?.id ?: -1, endpoint.first))
                                 .let { timer ->
                                     if (timer.nextSync == SYNC_ALWAYS ||
-                                            (timer.nextSync == SYNC_IF_EXPLICIT && timer.viewId == viewId) ||
-                                            (timer.nextSync == SYNC_IF_EXPLICIT_OR_ALL && viewId == null) ||
+                                            (timer.viewId == viewId) ||
                                             (timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp)) {
                                         data.targetEndpointIds.add(endpoint.first)
                                         requiredLoginMethods.add(endpoint.second)
