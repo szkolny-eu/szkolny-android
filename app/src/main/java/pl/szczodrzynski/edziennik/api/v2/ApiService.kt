@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.Librus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.ApiTask
+import pl.szczodrzynski.edziennik.api.v2.template.Template
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import kotlin.math.min
@@ -150,6 +151,7 @@ class ApiService : Service() {
 
         edziennikInterface = when (loginStore.type) {
             LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
+            LOGIN_TYPE_TEMPLATE -> Template(app, profile, loginStore, taskCallback)
             else -> null
         }
         if (edziennikInterface == null) {

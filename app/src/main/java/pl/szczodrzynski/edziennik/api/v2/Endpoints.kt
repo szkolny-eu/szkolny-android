@@ -48,6 +48,10 @@ const val ENDPOINT_LIBRUS_MESSAGES_TRASH                = 3030
 const val ENDPOINT_LIBRUS_MESSAGES_RECEIVERS            = 3040
 const val ENDPOINT_LIBRUS_MESSAGES_GET                  = 3040
 
+const val ENDPOINT_TEMPLATE_WEB_SAMPLE                  = 9991
+const val ENDPOINT_TEMPLATE_WEB_SAMPLE_2                = 9992
+const val ENDPOINT_TEMPLATE_API_SAMPLE                  = 9993
+
 val endpoints = listOf(
 
         // LIBRUS: API
@@ -141,19 +145,14 @@ val endpoints = listOf(
         ), listOf(LOGIN_METHOD_LIBRUS_MESSAGES))
 )
 
-/*
-    SYNC:
-
-    look up all endpoints for the given API and given features
-
-    load "next sync timers" for every endpoint
-
-    exclude every endpoint which does not need to sync now
-
-    check all needed login methods
-        create a login method list, using methods' dependencies as well
-        use all login methods, saving completed logins to data store
-
-    instantiate all endpoint classes and sync them (writing to data store, returns onSuccess or error Callback)
-
- */
+val templateEndpoints = listOf(
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_STUDENT_INFO, listOf(
+                ENDPOINT_TEMPLATE_WEB_SAMPLE to LOGIN_METHOD_TEMPLATE_WEB
+        ), listOf(LOGIN_METHOD_TEMPLATE_WEB)),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_SCHOOL_INFO, listOf(
+                ENDPOINT_TEMPLATE_WEB_SAMPLE_2 to LOGIN_METHOD_TEMPLATE_WEB
+        ), listOf(LOGIN_METHOD_TEMPLATE_WEB)),
+        Endpoint(LOGIN_TYPE_LIBRUS, FEATURE_GRADES, listOf(
+                ENDPOINT_TEMPLATE_API_SAMPLE to LOGIN_METHOD_TEMPLATE_API
+        ), listOf(LOGIN_METHOD_TEMPLATE_API))
+)
