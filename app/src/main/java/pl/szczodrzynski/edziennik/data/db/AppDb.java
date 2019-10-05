@@ -35,6 +35,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChangeDao;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonDao;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRangeDao;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStoreDao;
@@ -85,6 +86,7 @@ import android.content.Context;
         MessageRecipient.class,
         DebugLog.class,
         EndpointTimer.class,
+        LessonRange.class,
         Metadata.class}, version = 56)
 @TypeConverters({
         ConverterTime.class,
