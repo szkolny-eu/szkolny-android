@@ -1,6 +1,7 @@
 package pl.szczodrzynski.edziennik.api.v2.models
 
 import android.util.LongSparseArray
+import android.util.SparseArray
 import androidx.core.util.forEach
 import androidx.core.util.isNotEmpty
 import com.google.gson.JsonObject
@@ -27,7 +28,9 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
+import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.values
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -36,6 +39,9 @@ import javax.net.ssl.SSLException
 open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
 
     var fakeLogin = false
+
+    val profileId
+        get() = profile?.id ?: -1
 
     /**
      * A callback passed to all [Feature]s and [LoginMethod]s
@@ -90,8 +96,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
     val teacherList = LongSparseArray<Teacher>()
     val subjectList = LongSparseArray<Subject>()
-    var teamList = mutableListOf<Team>()
-    var lessonRanges = mutableListOf<LessonRange>()
+    var teamList = LongSparseArray<Team>()
+    var lessonRanges = SparseArray<LessonRange>()
 
     var lessonsToRemove: DataRemoveModel? = null
     val lessonList = mutableListOf<Lesson>()
@@ -128,18 +134,11 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         clear()
 
         if (profile != null) {
-            db.endpointTimerDao().getAllNow(profile.id).forEach { endpointTimer ->
-                endpointTimers.add(endpointTimer)
-            }
-
-            lessonRanges = db.lessonRangeDao().getAllNow(profile.id).toMutableList()
-            db.teacherDao().getAllNow(profile.id).forEach { teacher ->
-                teacherList.put(teacher.id, teacher)
-            }
-            db.subjectDao().getAllNow(profile.id).forEach { subject ->
-                subjectList.put(subject.id, subject)
-            }
-            teamList = db.teamDao().getAllNow(profile.id).toMutableList()
+            endpointTimers = db.endpointTimerDao().getAllNow(profile.id).toMutableList()
+            db.teacherDao().getAllNow(profileId).toSparseArray(teacherList) { it.id }
+            db.subjectDao().getAllNow(profileId).toSparseArray(subjectList) { it.id }
+            db.teamDao().getAllNow(profileId).toSparseArray(teamList) { it.id }
+            db.lessonRangeDao().getAllNow(profileId).toSparseArray(lessonRanges) { it.lessonNumber }
         }
 
         /*val teacher = teachers.byNameFirstLast("Jan Kowalski") ?: Teacher(1, 1, "", "").let {
@@ -152,11 +151,11 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         loginMethods.clear()
 
         endpointTimers.clear()
-
         teacherList.clear()
         subjectList.clear()
         teamList.clear()
         lessonRanges.clear()
+
         lessonList.clear()
         lessonChangeList.clear()
         gradeCategoryList.clear()
@@ -180,25 +179,15 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         db.loginStoreDao().add(loginStore)
 
         db.endpointTimerDao().addAll(endpointTimers)
+        db.teacherDao().clear(profileId)
+        db.teacherDao().addAll(teacherList.values())
+        db.subjectDao().clear(profileId)
+        db.subjectDao().addAll(subjectList.values())
+        db.teamDao().clear(profileId)
+        db.teamDao().addAll(teamList.values())
+        db.lessonRangeDao().clear(profileId)
+        db.lessonRangeDao().addAll(lessonRanges.values())
 
-        db.lessonRangeDao().addAll(lessonRanges)
-
-        if (teacherList.isNotEmpty()) {
-            val tempList: ArrayList<Teacher> = ArrayList()
-            teacherList.forEach { _, teacher ->
-                tempList.add(teacher)
-            }
-            db.teacherDao().addAll(tempList)
-        }
-        if (subjectList.isNotEmpty()) {
-            val tempList: ArrayList<Subject> = ArrayList()
-            subjectList.forEach { _, subject ->
-                tempList.add(subject)
-            }
-            db.subjectDao().addAll(tempList)
-        }
-        if (teamList.isNotEmpty())
-            db.teamDao().addAll(teamList)
         if (lessonList.isNotEmpty()) {
             db.lessonDao().clear(profile.id)
             db.lessonDao().addAll(lessonList)

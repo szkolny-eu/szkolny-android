@@ -6,7 +6,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.LongSparseArray
+import android.util.SparseArray
 import androidx.core.app.ActivityCompat
+import androidx.core.util.forEach
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -136,3 +139,41 @@ const val DAY = 24L*HOUR
 const val WEEK = 7L*DAY
 const val MONTH = 30L*DAY
 const val YEAR = 365L*DAY
+
+fun <T> LongSparseArray<T>.values(): List<T> {
+    val result = mutableListOf<T>()
+    forEach { _, value ->
+        result += value
+    }
+    return result
+}
+
+fun <T> SparseArray<T>.values(): List<T> {
+    val result = mutableListOf<T>()
+    forEach { _, value ->
+        result += value
+    }
+    return result
+}
+
+fun <T> List<T>.toSparseArray(destination: SparseArray<T>, key: (T) -> Int) {
+    forEach {
+        destination.put(key(it), it)
+    }
+}
+fun <T> List<T>.toSparseArray(destination: LongSparseArray<T>, key: (T) -> Long) {
+    forEach {
+        destination.put(key(it), it)
+    }
+}
+
+fun <T> List<T>.toSparseArray(key: (T) -> Int): SparseArray<T> {
+    val result = SparseArray<T>()
+    toSparseArray(result, key)
+    return result
+}
+fun <T> List<T>.toSparseArray(key: (T) -> Long): LongSparseArray<T> {
+    val result = LongSparseArray<T>()
+    toSparseArray(result, key)
+    return result
+}

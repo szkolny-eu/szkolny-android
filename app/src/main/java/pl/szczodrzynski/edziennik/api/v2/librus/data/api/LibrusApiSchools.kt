@@ -41,7 +41,8 @@ class LibrusApiSchools(override val data: DataLibrus,
                     val range = rangeEl.asJsonObject
                     val from = range.getString("From") ?: return@forEachIndexed
                     val to = range.getString("To") ?: return@forEachIndexed
-                    data.lessonRanges.add(
+                    data.lessonRanges.put(
+                            index,
                             LessonRange(
                                     profileId,
                                     index,
