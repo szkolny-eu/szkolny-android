@@ -1,14 +1,14 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.login
 
-import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.*
 
@@ -42,8 +42,11 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
      * If necessary, refreshes the token.
      */
     private fun synergiaAccount(): Boolean {
+
         val accountLogin = data.apiLogin ?: return false
         val accessToken = data.portalAccessToken ?: return false
+
+        d(TAG, "Request: Librus/SynergiaTokenExtractor - $LIBRUS_ACCOUNT_URL$accountLogin")
 
         val onSuccess = { json: JsonObject, response: Response? ->
             // synergiaAccount is executed when a synergia token needs a refresh

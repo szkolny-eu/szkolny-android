@@ -8,10 +8,12 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.DataMobidziennik
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit) {
     companion object {
@@ -39,6 +41,8 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
     }}
 
     private fun loginWithCredentials() {
+        d(TAG, "Request: Mobidziennik/Login/Web - https://${data.loginServerName}.mobidziennik.pl/api/")
+
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
                 if (text != "ok") {

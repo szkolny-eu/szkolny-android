@@ -11,13 +11,16 @@ import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.getUnixDate
+import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection
 
-class LibrusLoginSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
+class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusApi(data) {
     companion object {
         private const val TAG = "LoginLibrusSynergia"
     }
@@ -63,80 +66,13 @@ class LibrusLoginSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
      * A login method using the Synergia API (AutoLoginToken endpoint).
      */
     private fun loginWithApi() {
+        d(TAG, "Request: Librus/Login/Synergia - $LIBRUS_API_URL/AutoLoginToken")
+
         val onSuccess = { json: JsonObject ->
             loginWithToken(json.getString("Token"))
         }
 
-        val callback = object : JsonCallbackHandler() {
-            override fun onSuccess(json: JsonObject?, response: Response?) {
-                if (json == null && response?.parserErrorBody == null) {
-                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
-                            .withResponse(response))
-                    return
-                }
-                val error = if (response?.code() == 200) null else
-                    json.getString("Code") ?:
-                    json.getString("Message") ?:
-                    response?.parserErrorBody
-                error?.let { code ->
-                    when (code) {
-                        "TokenIsExpired" -> ERROR_LIBRUS_API_TOKEN_EXPIRED
-                        "Insufficient scopes" -> ERROR_LIBRUS_API_INSUFFICIENT_SCOPES
-                        "Request is denied" -> ERROR_LIBRUS_API_ACCESS_DENIED
-                        "Resource not found" -> ERROR_LIBRUS_API_RESOURCE_NOT_FOUND
-                        "NotFound" -> ERROR_LIBRUS_API_DATA_NOT_FOUND
-                        "AccessDeny" -> when (json.getString("Message")) {
-                            "Student timetable is not public" -> ERROR_LIBRUS_API_TIMETABLE_NOT_PUBLIC
-                            else -> ERROR_LIBRUS_API_RESOURCE_ACCESS_DENIED
-                        }
-                        "LuckyNumberIsNotActive" -> ERROR_LIBRUS_API_LUCKY_NUMBER_NOT_ACTIVE
-                        "NotesIsNotActive" -> ERROR_LIBRUS_API_NOTES_NOT_ACTIVE
-                        "InvalidRequest" -> ERROR_LIBRUS_API_INVALID_REQUEST_PARAMS
-                        "Nieprawidłowy węzeł." -> ERROR_LIBRUS_API_INCORRECT_ENDPOINT
-                        else -> ERROR_LIBRUS_API_OTHER
-                    }.let { errorCode ->
-                        data.error(ApiError(TAG, errorCode)
-                                .withApiResponse(json)
-                                .withResponse(response))
-                        return
-                    }
-                }
-
-                if (json == null) {
-                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
-                            .withResponse(response))
-                    return
-                }
-
-                try {
-                    onSuccess(json)
-                } catch (e: Exception) {
-                    data.error(ApiError(TAG, EXCEPTION_LIBRUS_API_REQUEST)
-                            .withResponse(response)
-                            .withThrowable(e)
-                            .withApiResponse(json))
-                }
-            }
-
-            override fun onFailure(response: Response?, throwable: Throwable?) {
-                // TODO add hotfix for Classrooms 500
-                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
-                        .withResponse(response)
-                        .withThrowable(throwable))
-            }
-        }
-
-        Request.builder()
-                .url("$LIBRUS_API_URL/AutoLoginToken")
-                .userAgent(LIBRUS_USER_AGENT)
-                .addHeader("Authorization", "Bearer ${data.apiAccessToken}")
-                .post()
-                .allowErrorCode(HttpURLConnection.HTTP_BAD_REQUEST)
-                .allowErrorCode(HttpURLConnection.HTTP_FORBIDDEN)
-                .allowErrorCode(HttpURLConnection.HTTP_UNAUTHORIZED)
-                .callback(callback)
-                .build()
-                .enqueue()
+        apiGet(TAG, "AutoLoginToken", POST, null, onSuccess)
     }
 
     private fun loginWithToken(token: String?) {
@@ -144,6 +80,8 @@ class LibrusLoginSynergia(val data: DataLibrus, val onSuccess: () -> Unit) {
             data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_NO_TOKEN))
             return
         }
+
+        d(TAG, "Request: Librus/Login/Synergia - " + LIBRUS_SYNERGIA_TOKEN_LOGIN_URL.replace("TOKEN", token) + "/uczen/widok/centrum_powiadomien")
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(json: String?, response: Response?) {

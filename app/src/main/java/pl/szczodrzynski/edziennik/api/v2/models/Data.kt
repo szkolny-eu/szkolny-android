@@ -90,7 +90,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
     val teacherList = LongSparseArray<Teacher>()
     val subjectList = LongSparseArray<Subject>()
-    val teamList = mutableListOf<Team>()
+    var teamList = mutableListOf<Team>()
     var lessonRanges = mutableListOf<LessonRange>()
 
     var lessonsToRemove: DataRemoveModel? = null
@@ -139,6 +139,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.subjectDao().getAllNow(profile.id).forEach { subject ->
                 subjectList.put(subject.id, subject)
             }
+            teamList = db.teamDao().getAllNow(profile.id).toMutableList()
         }
 
         /*val teacher = teachers.byNameFirstLast("Jan Kowalski") ?: Teacher(1, 1, "", "").let {
@@ -179,6 +180,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         db.loginStoreDao().add(loginStore)
 
         db.endpointTimerDao().addAll(endpointTimers)
+
+        db.lessonRangeDao().addAll(lessonRanges)
 
         if (teacherList.isNotEmpty()) {
             val tempList: ArrayList<Teacher> = ArrayList()

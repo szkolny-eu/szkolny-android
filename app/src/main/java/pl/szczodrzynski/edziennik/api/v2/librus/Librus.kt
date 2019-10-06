@@ -11,7 +11,6 @@ import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
 import pl.szczodrzynski.edziennik.api.v2.endpoints
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLogin
 import pl.szczodrzynski.edziennik.api.v2.librusLoginMethods
@@ -91,7 +90,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                                 .singleOrNull { it.endpointId == endpoint.first } ?: EndpointTimer(data.profile?.id ?: -1, endpoint.first))
                                 .let { timer ->
                                     if (timer.nextSync == SYNC_ALWAYS ||
-                                            (timer.viewId == viewId) ||
+                                            (viewId != null && timer.viewId == viewId) ||
                                             (timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp)) {
                                         data.targetEndpointIds.add(endpoint.first)
                                         requiredLoginMethods.add(endpoint.second)

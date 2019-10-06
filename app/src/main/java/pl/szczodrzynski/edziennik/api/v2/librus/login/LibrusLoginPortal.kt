@@ -9,8 +9,10 @@ import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 import java.util.ArrayList
 import java.util.regex.Pattern
@@ -45,6 +47,8 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     }}
 
     private fun authorize(url: String?) {
+        d(TAG, "Request: Librus/Login/Portal - $url")
+
         Request.builder()
                 .url(url)
                 .userAgent(LIBRUS_USER_AGENT)
@@ -82,6 +86,8 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     }
 
     private fun login(csrfToken: String) {
+        d(TAG, "Request: Librus/Login/Portal - $LIBRUS_LOGIN_URL")
+
         Request.builder()
                 .url(LIBRUS_LOGIN_URL)
                 .userAgent(LIBRUS_USER_AGENT)
@@ -129,6 +135,8 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     private var refreshTokenFailed = false
     private fun accessToken(code: String?, refreshToken: String?) {
+        d(TAG, "Request: Librus/Login/Portal - $LIBRUS_TOKEN_URL")
+
         val onSuccess = { json: JsonObject, response: Response? ->
             data.portalAccessToken = json.getString("access_token")
             data.portalRefreshToken = json.getString("refresh_token")
@@ -148,6 +156,8 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                     when (code) {
                         "Authorization code has expired" -> ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED
                         "Authorization code has been revoked" -> ERROR_LOGIN_LIBRUS_PORTAL_CODE_REVOKED
+                        "Cannot decrypt the refresh token" -> ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_INVALID
+                        "Token has been revoked" -> ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_REVOKED
                         "Check the `client_id` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_CLIENT_ID
                         "Check the `code` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_CODE
                         "Check the `refresh_token` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_REFRESH

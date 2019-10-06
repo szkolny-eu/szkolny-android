@@ -4,18 +4,13 @@
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data
 
-import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginSynergia
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.api.v2.template.data.DataTemplate
-import pl.szczodrzynski.edziennik.currentTimeUnix
-import pl.szczodrzynski.edziennik.data.api.AppError
-import pl.szczodrzynski.edziennik.data.api.AppError.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 open class MobidziennikWeb(open val data: DataMobidziennik) {
@@ -32,7 +27,7 @@ open class MobidziennikWeb(open val data: DataMobidziennik) {
     fun webGet(tag: String, endpoint: String, method: Int = GET, payload: List<Pair<String, String>>? = null, onSuccess: (text: String) -> Unit) {
         val url = "https://${data.loginServerName}.mobidziennik.pl$endpoint"
 
-        d(tag, "Requesting $url")
+        d(tag, "Request: Mobidziennik/Web - $url")
 
         if (data.webSessionKey == null) {
             data.error(TAG, ERROR_MOBIDZIENNIK_WEB_NO_SESSION_KEY)

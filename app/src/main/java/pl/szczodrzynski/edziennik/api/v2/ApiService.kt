@@ -22,8 +22,10 @@ import pl.szczodrzynski.edziennik.api.v2.mobidziennik.Mobidziennik
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.ApiTask
 import pl.szczodrzynski.edziennik.api.v2.template.Template
+import pl.szczodrzynski.edziennik.api.v2.vulcan.Vulcan
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import kotlin.math.min
 
 class ApiService : Service() {
@@ -40,6 +42,7 @@ class ApiService : Service() {
 
     private var serviceClosed = false
     private var taskCancelled = false
+    private var taskRunningObject: ApiTask? = null // for debug purposes
     private var taskRunning = false
     private var taskRunningId = -1
     private var taskMaximumId = 0
@@ -65,6 +68,7 @@ class ApiService : Service() {
                 EventBus.getDefault().post(SyncProfileFinishedEvent(taskProfileId))
             }
             notification.setIdle().post()
+            taskRunningObject = null
             taskRunning = false
             taskRunningId = -1
             sync()
@@ -77,6 +81,7 @@ class ApiService : Service() {
                     taskId = ++taskMaximumId
                 }
             }
+            apiError.profileId = taskProfileId
             EventBus.getDefault().post(SyncErrorEvent(apiError))
             errorList.add(apiError)
             if (apiError.isCritical) {
@@ -123,12 +128,22 @@ class ApiService : Service() {
         taskCancelled = false
         taskRunning = true
         taskRunningId = task.taskId
+        taskRunningObject = task
 
         if (task is ErrorReportTask) {
             notification
                     .setCurrentTask(taskRunningId, null)
                     .setProgressRes(R.string.edziennik_notification_api_error_report_title)
                     .post()
+            errorList.forEach { error ->
+                d(TAG, "Error ${error.tag} profile ${error.profileId}: code ${error.errorCode}")
+            }
+            errorList.clear()
+            notification.setIdle().post()
+            taskRunningObject = null
+            taskRunning = false
+            taskRunningId = -1
+            sync()
             return
         }
 
@@ -153,6 +168,7 @@ class ApiService : Service() {
         edziennikInterface = when (loginStore.type) {
             LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_MOBIDZIENNIK -> Mobidziennik(app, profile, loginStore, taskCallback)
+            LOGIN_TYPE_VULCAN -> Vulcan(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_TEMPLATE -> Template(app, profile, loginStore, taskCallback)
             else -> null
         }
@@ -161,7 +177,9 @@ class ApiService : Service() {
         }
 
         when (task) {
-            is SyncProfileRequest -> edziennikInterface?.sync(task.viewIds?.flatMap { Features.getIdsByView(it.first, it.second) } ?: Features.getAllIds())
+            is SyncProfileRequest -> edziennikInterface?.sync(
+                    featureIds = task.viewIds?.flatMap { Features.getIdsByView(it.first, it.second) } ?: Features.getAllIds(),
+                    viewId = task.viewIds?.get(0)?.first)
             is MessageGetRequest -> edziennikInterface?.getMessage(task.messageId)
         }
     }
@@ -197,15 +215,6 @@ class ApiService : Service() {
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    fun onSyncViewRequest(syncViewRequest: SyncViewRequest) {
-        Log.d(TAG, syncViewRequest.toString())
-        taskQueue += syncViewRequest.apply {
-            taskId = ++taskMaximumId
-        }
-        sync()
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
     fun onMessageGetRequest(messageGetRequest: MessageGetRequest) {
         Log.d(TAG, messageGetRequest.toString())
         taskQueue += messageGetRequest.apply {
@@ -235,11 +244,11 @@ class ApiService : Service() {
          |_____/ \___|_|    \_/ |_|\___\___|  \___/ \_/ \___|_|  |_|  |_|\__,_|\___||__*/
     override fun onCreate() {
         EventBus.getDefault().register(this)
+        notification.setIdle().setCloseAction()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(EdziennikNotification.NOTIFICATION_ID, notification.notification)
-        notification.setIdle().setCloseAction().post()
         return START_NOT_STICKY
     }
 

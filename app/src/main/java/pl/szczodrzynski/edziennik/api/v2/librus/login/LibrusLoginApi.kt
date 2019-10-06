@@ -11,8 +11,11 @@ import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLoginWeb
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.*
 
 class LibrusLoginApi {
@@ -157,6 +160,8 @@ class LibrusLoginApi {
     }
 
     private fun synergiaGetToken() {
+        d(TAG, "Request: Librus/Login/Api - $LIBRUS_API_TOKEN_URL")
+
         Request.builder()
                 .url(LIBRUS_API_TOKEN_URL)
                 .userAgent(LIBRUS_USER_AGENT)
@@ -175,6 +180,8 @@ class LibrusLoginApi {
                 .enqueue()
     }
     private fun synergiaRefreshToken() {
+        d(TAG, "Request: Librus/Login/Api - $LIBRUS_API_TOKEN_URL")
+
         Request.builder()
                 .url(LIBRUS_API_TOKEN_URL)
                 .userAgent(LIBRUS_USER_AGENT)
@@ -192,6 +199,8 @@ class LibrusLoginApi {
                 .enqueue()
     }
     private fun jstGetToken() {
+        d(TAG, "Request: Librus/Login/Api - $LIBRUS_API_TOKEN_JST_URL")
+
         Request.builder()
                 .url(LIBRUS_API_TOKEN_JST_URL)
                 .userAgent(LIBRUS_USER_AGENT)
@@ -212,6 +221,8 @@ class LibrusLoginApi {
                 .enqueue()
     }
     private fun jstRefreshToken() {
+        d(TAG, "Request: Librus/Login/Api - $LIBRUS_API_TOKEN_JST_URL")
+
         Request.builder()
                 .url(LIBRUS_API_TOKEN_JST_URL)
                 .userAgent(LIBRUS_USER_AGENT)

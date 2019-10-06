@@ -5,12 +5,10 @@
 package pl.szczodrzynski.edziennik.api.v2.template.data
 
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.api.v2.ERROR_REQUEST_FAILURE
-import pl.szczodrzynski.edziennik.api.v2.ERROR_RESPONSE_EMPTY
 import pl.szczodrzynski.edziennik.api.v2.ERROR_TEMPLATE_WEB_OTHER
 import pl.szczodrzynski.edziennik.api.v2.GET
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.api.v2.template.DataTemplate
 import pl.szczodrzynski.edziennik.currentTimeUnix
 
 open class TemplateWeb(open val data: DataTemplate) {

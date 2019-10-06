@@ -4,24 +4,22 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
-import android.util.Pair
-import com.google.gson.JsonNull
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_SCHOOLS
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
 
 class LibrusApiSchools(override val data: DataLibrus,
-                        val onSuccess: () -> Unit) : LibrusApi(data) {
+                       val onSuccess: () -> Unit) : LibrusApi(data) {
     companion object {
         const val TAG = "LibrusApiSchools"
     }
 
     init {
-        apiGet(LibrusApiMe.TAG, "") { json ->
+        apiGet(TAG, "Schools") { json ->
             val school = json?.getJsonObject("School")
             val schoolId = school?.getInt("Id")
             val schoolNameLong = school?.getString("Name")

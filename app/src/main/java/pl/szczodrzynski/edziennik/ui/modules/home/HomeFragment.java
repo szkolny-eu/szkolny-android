@@ -45,7 +45,6 @@ import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest;
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncViewRequest;
 import pl.szczodrzynski.edziennik.api.v2.librus.LibrusTest;
 import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
 import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;

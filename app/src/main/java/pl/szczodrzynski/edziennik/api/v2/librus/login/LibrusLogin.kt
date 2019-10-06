@@ -9,7 +9,7 @@ import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_API
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_MESSAGES
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_PORTAL
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_SYNERGIA
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {

@@ -4,15 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data
 
-import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_API_SAMPLE
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_WEB_SAMPLE
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_WEB_SAMPLE_2
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.*
-import pl.szczodrzynski.edziennik.api.v2.template.data.DataTemplate
-import pl.szczodrzynski.edziennik.api.v2.template.data.api.TemplateApiSample
-import pl.szczodrzynski.edziennik.api.v2.template.data.web.TemplateWebSample
-import pl.szczodrzynski.edziennik.api.v2.template.data.web.TemplateWebSample2
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {

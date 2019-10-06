@@ -8,6 +8,7 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.api.v2.ERROR_TEMPLATE_WEB_OTHER
 import pl.szczodrzynski.edziennik.api.v2.GET
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.api.v2.template.DataTemplate
 import pl.szczodrzynski.edziennik.currentTimeUnix
 
 open class TemplateApi(open val data: DataTemplate) {

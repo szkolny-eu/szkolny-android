@@ -4,11 +4,11 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 
 class LibrusApiEvents(override val data: DataLibrus,
-                        val onSuccess: () -> Unit) : LibrusApi(data) {
+                      val onSuccess: () -> Unit) : LibrusApi(data) {
     companion object {
         const val TAG = "LibrusApiEvents"
     }

@@ -7,10 +7,8 @@ package pl.szczodrzynski.edziennik.api.v2.template.data.api
 import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_API_SAMPLE
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_WEB_SAMPLE
-import pl.szczodrzynski.edziennik.api.v2.template.data.DataTemplate
+import pl.szczodrzynski.edziennik.api.v2.template.DataTemplate
 import pl.szczodrzynski.edziennik.api.v2.template.data.TemplateApi
-import pl.szczodrzynski.edziennik.api.v2.template.data.TemplateWeb
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 
 class TemplateApiSample(override val data: DataTemplate,

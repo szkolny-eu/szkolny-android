@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.api.v2.mobidziennik.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_MOBIDZIENNIK_WEB
-import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.DataMobidziennik
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {

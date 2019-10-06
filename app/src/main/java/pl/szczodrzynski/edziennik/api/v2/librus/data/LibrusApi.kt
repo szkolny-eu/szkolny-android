@@ -9,8 +9,10 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import pl.szczodrzynski.edziennik.api.v2.*
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.*
 
 open class LibrusApi(open val data: DataLibrus) {
@@ -24,7 +26,9 @@ open class LibrusApi(open val data: DataLibrus) {
     val profile
         get() = data.profile
 
-    fun apiGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, onSuccess: (json: JsonObject?) -> Unit) {
+    fun apiGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, onSuccess: (json: JsonObject) -> Unit) {
+
+        d(tag, "Request: Librus/Api - $LIBRUS_API_URL/$endpoint")
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {

@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-10-5.
  */
 
-package pl.szczodrzynski.edziennik.api.v2.template.data
+package pl.szczodrzynski.edziennik.api.v2.template
 
 import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.App

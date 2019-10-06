@@ -7,11 +7,9 @@ package pl.szczodrzynski.edziennik.api.v2.template.login
 import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.api.v2.ERROR_LOGIN_DATA_MISSING
 import pl.szczodrzynski.edziennik.api.v2.ERROR_PROFILE_MISSING
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_LIBRUS_API
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.api.v2.template.data.DataTemplate
+import pl.szczodrzynski.edziennik.api.v2.template.DataTemplate
 import pl.szczodrzynski.edziennik.currentTimeUnix
-import pl.szczodrzynski.edziennik.getUnixDate
 
 class TemplateLoginWeb(val data: DataTemplate, val onSuccess: () -> Unit) {
     companion object {

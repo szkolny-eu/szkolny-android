@@ -4,8 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
-import pl.szczodrzynski.edziennik.DAY
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 
 class LibrusApiTemplate(override val data: DataLibrus,

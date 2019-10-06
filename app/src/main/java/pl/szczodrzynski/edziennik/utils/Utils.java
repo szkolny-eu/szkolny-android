@@ -107,13 +107,13 @@ public class Utils {
     public static void d(String TAG, String message) {
         if (App.devMode) {
             Log.d(TAG, message);
-            debugLog.add(TAG+": "+message);
+            //debugLog.add(TAG+": "+message);
         }
     }
     public static void c(String TAG, String message) {
         if (App.devMode) {
             Log.d(TAG, "// " + message);
-            debugLog.add(TAG+": // "+message);
+            ///debugLog.add(TAG+": // "+message);
         }
     }
 

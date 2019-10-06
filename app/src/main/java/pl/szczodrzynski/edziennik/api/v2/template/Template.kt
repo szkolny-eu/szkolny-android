@@ -12,7 +12,6 @@ import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
-import pl.szczodrzynski.edziennik.api.v2.template.data.DataTemplate
 import pl.szczodrzynski.edziennik.api.v2.template.data.TemplateData
 import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLogin
 import pl.szczodrzynski.edziennik.api.v2.templateEndpoints
@@ -93,7 +92,7 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
                                 .singleOrNull { it.endpointId == endpoint.first } ?: EndpointTimer(data.profile?.id ?: -1, endpoint.first))
                                 .let { timer ->
                                     if (timer.nextSync == SYNC_ALWAYS ||
-                                            (timer.viewId == viewId) ||
+                                            (viewId != null && timer.viewId == viewId) ||
                                             (timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp)) {
                                         data.targetEndpointIds.add(endpoint.first)
                                         requiredLoginMethods.add(endpoint.second)

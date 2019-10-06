@@ -1,17 +1,17 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-10-5.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-6. 
  */
 
-package pl.szczodrzynski.edziennik.api.v2.template.login
+package pl.szczodrzynski.edziennik.api.v2.vulcan.login
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.template.DataTemplate
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_VULCAN_API
+import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.utils.Utils
 
-class TemplateLogin(val data: DataTemplate, val onSuccess: () -> Unit) {
+class VulcanLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
     companion object {
-        private const val TAG = "TemplateLogin"
+        private const val TAG = "VulcanLogin"
     }
 
     private var cancelled = false
@@ -44,13 +44,9 @@ class TemplateLogin(val data: DataTemplate, val onSuccess: () -> Unit) {
         }
         Utils.d(TAG, "Using login method $loginMethodId")
         when (loginMethodId) {
-            LOGIN_METHOD_TEMPLATE_WEB -> {
-                data.startProgress(R.string.edziennik_progress_login_template_web)
-                TemplateLoginWeb(data) { onSuccess(loginMethodId) }
-            }
-            LOGIN_METHOD_TEMPLATE_API -> {
-                data.startProgress(R.string.edziennik_progress_login_template_api)
-                TemplateLoginApi(data) { onSuccess(loginMethodId) }
+            LOGIN_METHOD_VULCAN_API -> {
+                data.startProgress(R.string.edziennik_progress_login_vulcan_api)
+                VulcanLoginApi(data) { onSuccess(loginMethodId) }
             }
         }
     }

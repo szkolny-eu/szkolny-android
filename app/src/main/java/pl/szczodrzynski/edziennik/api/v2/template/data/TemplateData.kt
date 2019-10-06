@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_API_SAMPLE
 import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_WEB_SAMPLE
 import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_TEMPLATE_WEB_SAMPLE_2
+import pl.szczodrzynski.edziennik.api.v2.template.DataTemplate
 import pl.szczodrzynski.edziennik.api.v2.template.data.api.TemplateApiSample
 import pl.szczodrzynski.edziennik.api.v2.template.data.web.TemplateWebSample
 import pl.szczodrzynski.edziennik.api.v2.template.data.web.TemplateWebSample2

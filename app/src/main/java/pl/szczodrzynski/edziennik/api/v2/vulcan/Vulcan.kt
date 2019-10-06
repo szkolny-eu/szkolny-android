@@ -1,18 +1,20 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-10-5.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-6. 
  */
 
-package pl.szczodrzynski.edziennik.api.v2.mobidziennik
+package pl.szczodrzynski.edziennik.api.v2.vulcan
 
 import android.util.Log
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.api.v2.*
+import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
-import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikData
-import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLogin
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
+import pl.szczodrzynski.edziennik.api.v2.vulcan.data.VulcanData
+import pl.szczodrzynski.edziennik.api.v2.vulcan.login.VulcanLogin
+import pl.szczodrzynski.edziennik.api.v2.vulcanLoginMethods
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_NEVER
@@ -20,18 +22,18 @@ import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils
 
-class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
+class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
-        private const val TAG = "Mobidziennik"
+        private const val TAG = "Vulcan"
     }
 
     val internalErrorList = mutableListOf<Int>()
-    val data: DataMobidziennik
+    val data: DataVulcan
     private var cancelled = false
 
     init {
-        data = DataMobidziennik(app, profile, loginStore).apply {
-            callback = wrapCallback(this@Mobidziennik.callback)
+        data = DataVulcan(app, profile, loginStore).apply {
+            callback = wrapCallback(this@Vulcan.callback)
         }
         data.satisfyLoginMethods()
     }
@@ -52,7 +54,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     override fun sync(featureIds: List<Int>, viewId: Int?) {
         val possibleLoginMethods = data.loginMethods.toMutableList()
 
-        for (loginMethod in mobidziennikLoginMethods) {
+        for (loginMethod in vulcanLoginMethods) {
             if (loginMethod.isPossible(profile, loginStore))
                 possibleLoginMethods += loginMethod.loginMethodId
         }
@@ -66,7 +68,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
         // get all endpoints for every feature, only if possible to login
         for (featureId in featureIds) {
-            MobidziennikFeatures.filter {
+            VulcanFeatures.filter {
                 it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
             }
                     .let {
@@ -102,7 +104,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
         for (loginMethodId in requiredLoginMethods) {
             var requiredLoginMethod: Int? = loginMethodId
             while (requiredLoginMethod != LOGIN_METHOD_NOT_NEEDED) {
-                mobidziennikLoginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let { loginMethod ->
+                vulcanLoginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let { loginMethod ->
                     if (requiredLoginMethod != null)
                         data.targetLoginMethodIds.add(requiredLoginMethod!!)
                     requiredLoginMethod = loginMethod.requiredLoginMethod(data.profile, data.loginStore)
@@ -120,8 +122,8 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
         Log.d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
         Log.d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
 
-        MobidziennikLogin(data) {
-            MobidziennikData(data) {
+        VulcanLogin(data) {
+            VulcanData(data) {
                 completed()
             }
         }

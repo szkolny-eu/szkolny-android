@@ -8,13 +8,12 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
-import okhttp3.HttpUrl
-import okhttp3.internal.http.HttpDate
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.librus.data.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.getUnixDate
+import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
     companion object {
@@ -62,6 +61,8 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
      * A login method using the Synergia website (/wiadomosci2 Auto Login).
      */
     private fun loginWithSynergia(url: String = "https://synergia.librus.pl/wiadomosci2") {
+        d(TAG, "Request: Librus/Login/Messages - $url")
+
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
                 val location = response?.headers()?.get("Location")
