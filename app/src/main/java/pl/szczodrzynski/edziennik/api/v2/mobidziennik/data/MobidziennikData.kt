@@ -4,7 +4,9 @@
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data
 
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.*
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikApi
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
@@ -35,10 +37,10 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
     private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId")
         when (endpointId) {
-            /*ENDPOINT_MOBIDZIENNIK_API -> {
+            ENDPOINT_MOBIDZIENNIK_API_MAIN -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_data)
                 MobidziennikApi(data) { onSuccess() }
-            }
+            }/*
             ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
                 MobidziennikWebMessagesInbox(data) { onSuccess() }

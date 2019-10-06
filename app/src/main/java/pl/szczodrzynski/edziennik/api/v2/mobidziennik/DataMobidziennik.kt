@@ -1,9 +1,11 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-10-5.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-6.
  */
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik
 
+import android.util.LongSparseArray
+import android.util.SparseArray
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_MOBIDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.api.v2.models.Data
@@ -26,6 +28,9 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
         }
     }
 
+    val teachersMap = LongSparseArray<String>()
+    val subjectsMap = LongSparseArray<String>()
+
     private var mLoginServerName: String? = null
     var loginServerName: String?
         get() { mLoginServerName = mLoginServerName ?: loginStore.getLoginData("serverName", null); return mLoginServerName }
@@ -40,6 +45,11 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
     var loginPassword: String?
         get() { mLoginPassword = mLoginPassword ?: loginStore.getLoginData("password", null); return mLoginPassword }
         set(value) { loginStore.putLoginData("password", value); mLoginPassword = value }
+
+    private var mStudentId: Int? = null
+    var studentId: Int
+        get() { mStudentId = mStudentId ?: profile?.getStudentData("studentId", 0); return mStudentId ?: 0 }
+        set(value) { profile?.putStudentData("studentId", value) ?: return; mStudentId = value }
 
     /*   __          __  _
          \ \        / / | |

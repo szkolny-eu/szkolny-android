@@ -8,6 +8,9 @@ import java.util.List;
 @Entity(tableName = "teams",
         primaryKeys = {"profileId", "teamId"})
 public class Team {
+    public static final int TYPE_CLASS = 1;
+    public static final int TYPE_VIRTUAL = 2;
+
     public int profileId;
 
     @ColumnInfo(name = "teamId")

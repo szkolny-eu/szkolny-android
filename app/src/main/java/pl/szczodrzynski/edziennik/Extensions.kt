@@ -16,6 +16,7 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.navlib.R
 import pl.szczodrzynski.navlib.crc16
 import pl.szczodrzynski.navlib.getColorFromRes
@@ -176,4 +177,45 @@ fun <T> List<T>.toSparseArray(key: (T) -> Long): LongSparseArray<T> {
     val result = LongSparseArray<T>()
     toSparseArray(result, key)
     return result
+}
+
+fun <T> SparseArray<T>.singleOrNull(predicate: (T) -> Boolean): T? {
+    forEach { _, value ->
+        if (predicate(value))
+            return value
+    }
+    return null
+}
+fun <T> LongSparseArray<T>.singleOrNull(predicate: (T) -> Boolean): T? {
+    forEach { _, value ->
+        if (predicate(value))
+            return value
+    }
+    return null
+}
+
+fun String.fixWhiteSpaces() = buildString(length) {
+    var wasWhiteSpace = true
+    for (c in this@fixWhiteSpaces) {
+        if (c.isWhitespace()) {
+            if (!wasWhiteSpace) {
+                append(c)
+                wasWhiteSpace = true
+            }
+        } else {
+            append(c)
+            wasWhiteSpace = false
+        }
+    }
+}.trimEnd()
+
+fun List<Team>.getById(id: Long): Team? {
+    return singleOrNull { it.id == id }
+}
+fun LongSparseArray<Team>.getById(id: Long): Team? {
+    forEach { _, value ->
+        if (value.id == id)
+            return value
+    }
+    return null
 }

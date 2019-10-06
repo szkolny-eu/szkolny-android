@@ -28,6 +28,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
+import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.values
@@ -96,8 +97,19 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
     val teacherList = LongSparseArray<Teacher>()
     val subjectList = LongSparseArray<Subject>()
-    var teamList = LongSparseArray<Team>()
-    var lessonRanges = SparseArray<LessonRange>()
+    val teamList = LongSparseArray<Team>()
+    val lessonRanges = SparseArray<LessonRange>()
+
+    private var mTeamClass: Team? = null
+    var teamClass: Team?
+        get() {
+            if (mTeamClass == null)
+                mTeamClass = teamList.singleOrNull { it.type == Team.TYPE_CLASS }
+            return mTeamClass
+        }
+        set(value) {
+            mTeamClass = value
+        }
 
     var lessonsToRemove: DataRemoveModel? = null
     val lessonList = mutableListOf<Lesson>()
