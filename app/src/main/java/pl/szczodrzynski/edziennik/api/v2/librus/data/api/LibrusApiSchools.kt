@@ -20,7 +20,7 @@ class LibrusApiSchools(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "Schools") { json ->
-            val school = json?.getJsonObject("School")
+            val school = json.getJsonObject("School")
             val schoolId = school?.getInt("Id")
             val schoolNameLong = school?.getString("Name")
 
