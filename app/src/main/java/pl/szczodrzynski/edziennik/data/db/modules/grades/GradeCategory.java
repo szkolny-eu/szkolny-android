@@ -18,6 +18,13 @@ public class GradeCategory {
     public float valueFrom = 0;
     public float valueTo = 0;
 
+    /**
+     * A general purpose category type.
+     *
+     * The Grade category is used only in API to cache the e-register's categories.
+     */
+    public int type = 0;
+
     public GradeCategory(int profileId, long categoryId, float weight, int color, String text) {
         this.profileId = profileId;
         this.categoryId = categoryId;

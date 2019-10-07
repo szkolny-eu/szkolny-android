@@ -2,13 +2,11 @@ package pl.szczodrzynski.edziennik.api.v2.models
 
 import android.util.LongSparseArray
 import android.util.SparseArray
-import androidx.core.util.forEach
 import androidx.core.util.isNotEmpty
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EndpointCallback
-import pl.szczodrzynski.edziennik.api.v2.librus.Librus
 import pl.szczodrzynski.edziennik.data.api.AppError.*
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
@@ -31,7 +29,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.toSparseArray
-import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.values
@@ -104,6 +101,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val subjectList = LongSparseArray<Subject>()
     val teamList = LongSparseArray<Team>()
     val lessonRanges = SparseArray<LessonRange>()
+    val gradeCategories = LongSparseArray<GradeCategory>()
 
     private var mTeamClass: Team? = null
     var teamClass: Team?
@@ -121,7 +119,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val lessonChangeList = mutableListOf<LessonChange>()
 
     var gradesToRemove: DataRemoveModel? = null
-    val gradeCategoryList = mutableListOf<GradeCategory>()
     val gradeList = mutableListOf<Grade>()
 
     var eventsToRemove: DataRemoveModel? = null
@@ -156,6 +153,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.subjectDao().getAllNow(profileId).toSparseArray(subjectList) { it.id }
             db.teamDao().getAllNow(profileId).toSparseArray(teamList) { it.id }
             db.lessonRangeDao().getAllNow(profileId).toSparseArray(lessonRanges) { it.lessonNumber }
+            db.gradeCategoryDao().getAllNow(profileId).toSparseArray(gradeCategories) { it.categoryId }
         }
 
         /*val teacher = teachers.byNameFirstLast("Jan Kowalski") ?: Teacher(1, 1, "", "").let {
@@ -175,7 +173,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
         lessonList.clear()
         lessonChangeList.clear()
-        gradeCategoryList.clear()
+        gradeCategories.clear()
         gradeList.clear()
         eventTypeList.clear()
         noticeList.clear()
@@ -204,6 +202,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         db.teamDao().addAll(teamList.values())
         db.lessonRangeDao().clear(profileId)
         db.lessonRangeDao().addAll(lessonRanges.values())
+        db.gradeCategoryDao().clear(profileId)
+        db.gradeCategoryDao().addAll(gradeCategories.values())
 
         if (lessonList.isNotEmpty()) {
             db.lessonDao().clear(profile.id)
@@ -211,8 +211,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         }
         if (lessonChangeList.isNotEmpty())
             db.lessonChangeDao().addAll(lessonChangeList)
-        if (gradeCategoryList.isNotEmpty())
-            db.gradeCategoryDao().addAll(gradeCategoryList)
         if (gradeList.isNotEmpty()) {
             db.gradeDao().clear(profile.id)
             db.gradeDao().addAll(gradeList)

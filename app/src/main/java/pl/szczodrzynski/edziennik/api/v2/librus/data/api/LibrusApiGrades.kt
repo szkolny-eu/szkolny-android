@@ -32,7 +32,7 @@ class LibrusApiGrades(override val data: DataLibrus,
                 val teacherId = grade.get("AddedBy").asJsonObject.get("Id").asLong
                 val subjectId = grade.get("Subject").asJsonObject.get("Id").asLong
 
-                val category = data.gradeCategoryList.firstOrNull { it.categoryId == categoryId }
+                val category = data.gradeCategories.singleOrNull { it.categoryId == categoryId }
                 val categoryName = category?.text ?: ""
                 val color = category?.color ?: -1
                 var weight = category?.weight ?: 0f

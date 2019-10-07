@@ -87,7 +87,7 @@ import android.content.Context;
         DebugLog.class,
         EndpointTimer.class,
         LessonRange.class,
-        Metadata.class}, version = 56)
+        Metadata.class}, version = 57)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -591,6 +591,12 @@ public abstract class AppDb extends RoomDatabase {
                     ")");
         }
     };
+    private static final Migration MIGRATION_56_57 = new Migration(56, 57) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE gradeCategories ADD type INTEGER NOT NULL DEFAULT 0");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -644,7 +650,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_52_53,
                                     MIGRATION_53_54,
                                     MIGRATION_54_55,
-                                    MIGRATION_55_56
+                                    MIGRATION_55_56,
+                                    MIGRATION_56_57
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

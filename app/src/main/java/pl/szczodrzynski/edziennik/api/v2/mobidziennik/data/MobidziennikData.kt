@@ -14,8 +14,6 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
         private const val TAG = "MobidziennikData"
     }
 
-    private var cancelled = false
-
     init {
         nextEndpoint(onSuccess)
     }
@@ -26,7 +24,7 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             return
         }
         useEndpoint(data.targetEndpointIds.removeAt(0)) {
-            if (cancelled) {
+            if (data.cancelled) {
                 onSuccess()
                 return@useEndpoint
             }

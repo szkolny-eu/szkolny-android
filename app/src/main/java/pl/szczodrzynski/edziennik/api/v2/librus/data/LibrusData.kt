@@ -19,8 +19,6 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
         private const val TAG = "LibrusEndpoints"
     }
 
-    private var cancelled = false
-
     init {
         nextEndpoint(onSuccess)
     }
@@ -31,7 +29,7 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             return
         }
         useEndpoint(data.targetEndpointIds.removeAt(0)) {
-            if (cancelled) {
+            if (data.cancelled) {
                 onSuccess()
                 return@useEndpoint
             }
@@ -41,10 +39,6 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId")
-        if (data.cancelled) {
-            Utils.d(TAG, "Skip endpoint $endpointId; cancelled")
-            return
-        }
         when (endpointId) {
             ENDPOINT_LIBRUS_API_ME -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
@@ -55,7 +49,7 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 LibrusApiSchools(data) { onSuccess() }
             }
             ENDPOINT_LIBRUS_API_NORMAL_GRADES -> {
-                data.startProgress(R.string.sync_action_syncing_grades)
+                data.startProgress(R.string.edziennik_progress_endpoint_grades)
                 LibrusApiGrades(data) { onSuccess() }
             }
             else -> onSuccess()

@@ -13,6 +13,8 @@ import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Time
 
 class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
@@ -76,4 +78,22 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
     var webSessionIdExpiryTime: Long
         get() { mWebSessionIdExpiryTime = mWebSessionIdExpiryTime ?: loginStore.getLoginData("sessionIDTime", 0L); return mWebSessionIdExpiryTime ?: 0L }
         set(value) { loginStore.putLoginData("sessionIDTime", value); mWebSessionIdExpiryTime = value }
+
+
+    val mobiLessons = mutableListOf<MobiLesson>()
+
+    data class MobiLesson(
+            var id: Long,
+            var subjectId: Long,
+            var teacherId: Long,
+            var teamId: Long,
+            var topic: String,
+            var date: Date,
+            var startTime: Time,
+            var endTime: Time,
+            var presentCount: Int,
+            var absentCount: Int,
+            var lessonNumber: Int,
+            var signed: String
+    )
 }
