@@ -8,6 +8,7 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EndpointCallback
+import pl.szczodrzynski.edziennik.api.v2.librus.Librus
 import pl.szczodrzynski.edziennik.data.api.AppError.*
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
@@ -30,6 +31,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.toSparseArray
+import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.values
 import java.io.InterruptedIOException
@@ -40,6 +43,8 @@ import javax.net.ssl.SSLException
 open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
 
     var fakeLogin = false
+
+    var cancelled = false
 
     val profileId
         get() = profile?.id ?: -1
@@ -255,6 +260,12 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         }
     }
 
+    fun cancel() {
+        d("Data", "Cancelled")
+        cancelled = true
+        saveData()
+    }
+
     fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {
         var code = when (throwable) {
             is UnknownHostException, is SSLException, is InterruptedIOException -> CODE_NO_INTERNET
@@ -264,7 +275,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
                 else -> errorCode
             }
         }
-        callback.onError(ApiError(tag, code).apply { profileId = profile?.id ?: -1 }.withResponse(response).withThrowable(throwable).withApiResponse(apiResponse))
+        error(ApiError(tag, code).apply { profileId = profile?.id ?: -1 }.withResponse(response).withThrowable(throwable).withApiResponse(apiResponse))
     }
     fun error(tag: String, errorCode: Int, response: Response? = null, apiResponse: String? = null) {
         var code = when (null) {
@@ -275,9 +286,11 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
                 else -> errorCode
             }
         }
-        callback.onError(ApiError(tag, code).apply { profileId = profile?.id ?: -1 }.withResponse(response).withApiResponse(apiResponse))
+        error(ApiError(tag, code).apply { profileId = profile?.id ?: -1 }.withResponse(response).withApiResponse(apiResponse))
     }
     fun error(apiError: ApiError) {
+        if (apiError.isCritical)
+            cancel()
         callback.onError(apiError)
     }
     fun progress(step: Int) {

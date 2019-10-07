@@ -77,7 +77,8 @@ open class LibrusApi(open val data: DataLibrus) {
                     data.error(ApiError(tag, EXCEPTION_LIBRUS_API_REQUEST)
                             .withResponse(response)
                             .withThrowable(e)
-                            .withApiResponse(json))
+                            .withApiResponse(json)
+                            .setCritical(false))
                 }
             }
 

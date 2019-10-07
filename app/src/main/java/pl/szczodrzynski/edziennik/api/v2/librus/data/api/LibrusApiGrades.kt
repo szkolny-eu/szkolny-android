@@ -25,7 +25,7 @@ class LibrusApiGrades(override val data: DataLibrus,
             grades?.forEach { gradeEl ->
                 val grade = gradeEl.asJsonObject
 
-                val id = grade.get("id").asLong
+                val id = grade.get("Id").asLong
                 val categoryId = grade.get("Category").asJsonObject.get("Id").asLong
                 val name = grade.get("Grade").asString
                 val semester = grade.get("Semester").asInt

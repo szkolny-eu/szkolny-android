@@ -10,7 +10,7 @@ import im.wangchao.mhttp.Response
 
 class ApiError(val tag: String, val errorCode: Int) {
     var profileId: Int? = null
-    private var throwable: Throwable? = null
+    var throwable: Throwable? = null
     private var apiResponse: String? = null
     private var request: Request? = null
     private var response: Response? = null

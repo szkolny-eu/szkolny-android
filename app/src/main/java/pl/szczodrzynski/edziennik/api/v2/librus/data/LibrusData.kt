@@ -41,6 +41,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId")
+        if (data.cancelled) {
+            Utils.d(TAG, "Skip endpoint $endpointId; cancelled")
+            return
+        }
         when (endpointId) {
             ENDPOINT_LIBRUS_API_ME -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)

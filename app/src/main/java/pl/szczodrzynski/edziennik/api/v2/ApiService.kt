@@ -84,6 +84,7 @@ class ApiService : Service() {
             apiError.profileId = taskProfileId
             EventBus.getDefault().post(SyncErrorEvent(apiError))
             errorList.add(apiError)
+            apiError.throwable?.printStackTrace()
             if (apiError.isCritical) {
                 notification.setCriticalError().post()
                 taskRunning = false
