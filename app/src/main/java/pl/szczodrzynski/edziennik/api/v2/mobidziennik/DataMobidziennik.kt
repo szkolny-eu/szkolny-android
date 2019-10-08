@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.api.v2.mobidziennik
 
 import android.util.LongSparseArray
 import android.util.SparseArray
+import android.util.SparseIntArray
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_MOBIDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.api.v2.models.Data
@@ -32,6 +33,10 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
 
     val teachersMap = LongSparseArray<String>()
     val subjectsMap = LongSparseArray<String>()
+
+    val gradeAddedDates = SparseArray<Long>()
+    val gradeAverages = SparseArray<Float>()
+    val gradeColors = SparseIntArray()
 
     private var mLoginServerName: String? = null
     var loginServerName: String?

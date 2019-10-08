@@ -141,7 +141,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val metadataList = mutableListOf<Metadata>()
     val messageMetadataList = mutableListOf<Metadata>()
 
-    private val db by lazy { app.db }
+    val db by lazy { app.db }
 
     init {
 

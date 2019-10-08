@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.apidata
 
 import androidx.core.util.contains
-import pl.szczodrzynski.edziennik.App.profileId
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.*
@@ -36,7 +35,7 @@ class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) 
                 val semester = data.profile?.dateToSemester(lesson.date) ?: 1
 
                 val attendanceObject = Attendance(
-                        profileId,
+                        data.profileId,
                         id,
                         lesson.teacherId,
                         lesson.subjectId,
@@ -49,7 +48,7 @@ class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) 
                 data.attendanceList.add(attendanceObject)
                 data.metadataList.add(
                         Metadata(
-                                profileId,
+                                data.profileId,
                                 Metadata.TYPE_ATTENDANCE,
                                 id,
                                 data.profile?.empty ?: false,
