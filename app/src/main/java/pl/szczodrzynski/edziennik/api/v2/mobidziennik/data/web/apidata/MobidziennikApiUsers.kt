@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.apidata
 
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.fixWhiteSpaces
 
 class MobidziennikApiUsers(val data: DataMobidziennik, rows: List<String>) {
     init {
@@ -15,8 +16,8 @@ class MobidziennikApiUsers(val data: DataMobidziennik, rows: List<String>) {
             val cols = row.split("|")
 
             val id = cols[0].toLong()
-            val name = cols[4].trim()
-            val surname = cols[5].trim()
+            val name = cols[4].fixWhiteSpaces()
+            val surname = cols[5].fixWhiteSpaces()
 
             data.teachersMap.put(id, "$surname $name")
             data.teacherList.put(id, Teacher(data.profileId, id, name, surname))

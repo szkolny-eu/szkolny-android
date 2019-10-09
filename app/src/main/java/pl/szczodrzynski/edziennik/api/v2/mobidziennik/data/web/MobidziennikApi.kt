@@ -4,9 +4,6 @@
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web
 
-import android.util.SparseArray
-import androidx.collection.SparseArrayCompat
-import androidx.core.util.forEach
 import pl.szczodrzynski.edziennik.api.v2.ERROR_MOBIDZIENNIK_WEB_INVALID_RESPONSE
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikWeb
@@ -42,9 +39,9 @@ class MobidziennikApi(override val data: DataMobidziennik,
                     16 -> MobidziennikApiAttendance(data, rows)
                     17 -> MobidziennikApiNotices(data, rows)
                     18 -> MobidziennikApiGrades(data, rows)
-                    /*21 -> MobidziennikApiEvents(data, rows)
+                    21 -> MobidziennikApiEvents(data, rows)
                     23 -> MobidziennikApiHomework(data, rows)
-                    24 -> MobidziennikApiTimetable(data, rows)*/
+                    24 -> MobidziennikApiTimetable(data, rows)
                 }
             }
 
