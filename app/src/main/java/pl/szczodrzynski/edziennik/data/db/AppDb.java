@@ -81,7 +81,7 @@ import android.content.Context;
         Message.class,
         MessageRecipient.class,
         DebugLog.class,
-        Metadata.class}, version = 54)
+        Metadata.class}, version = 55)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -558,6 +558,12 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("ALTER TABLE teacherAbsence ADD teacherAbsenceTimeTo TEXT DEFAULT NULL");
         }
     };
+    private static final Migration MIGRATION_54_55 = new Migration(54, 55) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("UPDATE profiles SET lastFullSync = 0");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -609,7 +615,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_50_51,
                                     MIGRATION_51_52,
                                     MIGRATION_52_53,
-                                    MIGRATION_53_54
+                                    MIGRATION_53_54,
+                                    MIGRATION_54_55
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()
