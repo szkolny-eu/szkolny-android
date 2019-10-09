@@ -1936,7 +1936,7 @@ public class Librus implements EdziennikInterface {
             return;
         }
         // not a full sync. Will get all grade categories. Clear the current list.
-        gradeCategoryList.clear();
+        //gradeCategoryList.clear();
 
         callback.onActionStarted(R.string.sync_action_syncing_grade_categories);
         apiRequest("Grades/Categories", data -> {
