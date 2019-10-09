@@ -286,15 +286,15 @@ public class HomeFragment extends Fragment {
         if (app.appConfig.countInSeconds) {
             return 1000-(System.currentTimeMillis() % 1000);
         }
-        if (diff.minute > 5) {
+        if (diff.minute > 10) {
             //Log.d(TAG, "60 secs");
             return 60000-(System.currentTimeMillis() % 60000);
         }
-        else if (diff.minute >= 1) {
+        else if (diff.minute >= 1 && false) {
             //Log.d(TAG, "3 secs");
             return 3000-(System.currentTimeMillis() % 3000);
         }
-        else if (diff.second >= 40) {
+        else if (diff.second >= 40 && false) {
             //Log.d(TAG, "2 secs");
             return 2000-(System.currentTimeMillis() % 2000);
         }
