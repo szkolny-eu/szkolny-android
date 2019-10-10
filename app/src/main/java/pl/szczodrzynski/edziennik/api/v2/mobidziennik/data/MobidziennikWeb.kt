@@ -49,13 +49,22 @@ open class MobidziennikWeb(open val data: DataMobidziennik) {
                             .withResponse(response))
                     return
                 }
-                if (text == "Nie jestes zalogowany") {
+                if (text == "Nie jestes zalogowany"
+                        || text.contains("przypomnij_haslo_email")) {
                     data.error(ApiError(TAG, ERROR_MOBIDZIENNIK_WEB_ACCESS_DENIED)
                             .withResponse(response))
                     return
                 }
 
-                onSuccess(text)
+                try {
+                    onSuccess(text)
+                } catch (e: Exception) {
+                    data.error(ApiError(tag, EXCEPTION_MOBIDZIENNIK_WEB_REQUEST)
+                            .withResponse(response)
+                            .withThrowable(e)
+                            .withApiResponse(text)
+                            .setCritical(false))
+                }
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {

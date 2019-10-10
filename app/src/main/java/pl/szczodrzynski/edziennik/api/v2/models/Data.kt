@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
@@ -134,6 +135,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     var announcementsToRemove: DataRemoveModel? = null
     val announcementList = mutableListOf<Announcement>()
 
+    val luckyNumberList = mutableListOf<LuckyNumber>()
+
     val messageList = mutableListOf<Message>()
     val messageRecipientList = mutableListOf<MessageRecipient>()
     val messageRecipientIgnoreList = mutableListOf<MessageRecipient>()
@@ -179,6 +182,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         noticeList.clear()
         attendanceList.clear()
         announcementList.clear()
+        luckyNumberList.clear()
         messageList.clear()
         messageRecipientList.clear()
         messageRecipientIgnoreList.clear()
@@ -229,6 +233,9 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.attendanceDao().addAll(attendanceList)
         if (announcementList.isNotEmpty())
             db.announcementDao().addAll(announcementList)
+        if (luckyNumberList.isNotEmpty())
+            db.luckyNumberDao().addAll(luckyNumberList)
+
         if (messageList.isNotEmpty())
             db.messageDao().addAllIgnore(messageList)
         if (messageRecipientList.isNotEmpty())

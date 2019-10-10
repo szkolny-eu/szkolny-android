@@ -34,7 +34,7 @@ class MobidziennikApiEvents(val data: DataMobidziennik, rows: List<String>) {
                 var type = Event.TYPE_DEFAULT
                 var topic = cols[5]
                 Regexes.MOBIDZIENNIK_EVENT_TYPE.find(topic)?.let {
-                    val typeText = it.value
+                    val typeText = it.groupValues[1]
                     when (typeText) {
                         "sprawdzian" -> type = Event.TYPE_EXAM
                         "kartkówka" -> type = Event.TYPE_SHORT_QUIZ

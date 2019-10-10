@@ -15,6 +15,9 @@ public interface LuckyNumberDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void add(LuckyNumber luckyNumber);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void addAll(List<LuckyNumber> luckyNumberList);
+
     @Query("DELETE FROM luckyNumbers WHERE profileId = :profileId")
     void clear(int profileId);
 
