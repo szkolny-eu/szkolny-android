@@ -9,6 +9,8 @@ import pl.szczodrzynski.edziennik.api.v2.mobidziennik.*
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api.MobidziennikApi
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikWebCalendar
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikWebGrades
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikWebMessagesAll
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikWebMessagesInbox
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
@@ -40,7 +42,7 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             ENDPOINT_MOBIDZIENNIK_API_MAIN -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_data)
                 MobidziennikApi(data) { onSuccess() }
-            }/*
+            }
             ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
                 MobidziennikWebMessagesInbox(data) { onSuccess() }
@@ -48,7 +50,7 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages)
                 MobidziennikWebMessagesAll(data) { onSuccess() }
-            }*/
+            }
             ENDPOINT_MOBIDZIENNIK_WEB_CALENDAR -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_calendar)
                 MobidziennikWebCalendar(data) { onSuccess() }
