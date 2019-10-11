@@ -14,7 +14,6 @@ import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
 import pl.szczodrzynski.edziennik.api.v2.template.data.TemplateData
 import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLogin
-import pl.szczodrzynski.edziennik.api.v2.templateEndpoints
 import pl.szczodrzynski.edziennik.api.v2.templateLoginMethods
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
@@ -69,7 +68,7 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
 
         // get all endpoints for every feature, only if possible to login
         for (featureId in featureIds) {
-            templateEndpoints.filter {
+            TemplateFeatures.filter {
                 it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
             }
                     .let {

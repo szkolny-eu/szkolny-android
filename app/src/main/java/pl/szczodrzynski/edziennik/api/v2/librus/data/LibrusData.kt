@@ -5,10 +5,10 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_EVENTS
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_NORMAL_GRADES
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_SCHOOLS
+import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_EVENTS
+import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_ME
+import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADES
+import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_SCHOOLS
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiEvents
 import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiGrades

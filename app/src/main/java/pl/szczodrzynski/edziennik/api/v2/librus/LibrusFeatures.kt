@@ -1,9 +1,10 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-9-20.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-11.
  */
 
-package pl.szczodrzynski.edziennik.api.v2
+package pl.szczodrzynski.edziennik.api.v2.librus
 
+import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
 
 const val ENDPOINT_LIBRUS_API_ME                        = 1001
@@ -48,11 +49,7 @@ const val ENDPOINT_LIBRUS_MESSAGES_TRASH                = 3030
 const val ENDPOINT_LIBRUS_MESSAGES_RECEIVERS            = 3040
 const val ENDPOINT_LIBRUS_MESSAGES_GET                  = 3040
 
-const val ENDPOINT_TEMPLATE_WEB_SAMPLE                  = 9991
-const val ENDPOINT_TEMPLATE_WEB_SAMPLE_2                = 9992
-const val ENDPOINT_TEMPLATE_API_SAMPLE                  = 9993
-
-val endpoints = listOf(
+val LibrusFeatures = listOf(
 
         // LIBRUS: API
         Feature(LOGIN_TYPE_LIBRUS, FEATURE_TIMETABLE, listOf(
@@ -143,16 +140,4 @@ val endpoints = listOf(
         Feature(LOGIN_TYPE_LIBRUS, FEATURE_MESSAGES_SENT, listOf(
                 ENDPOINT_LIBRUS_MESSAGES_SENT to LOGIN_METHOD_LIBRUS_MESSAGES
         ), listOf(LOGIN_METHOD_LIBRUS_MESSAGES))
-)
-
-val templateEndpoints = listOf(
-        Feature(LOGIN_TYPE_LIBRUS, FEATURE_STUDENT_INFO, listOf(
-                ENDPOINT_TEMPLATE_WEB_SAMPLE to LOGIN_METHOD_TEMPLATE_WEB
-        ), listOf(LOGIN_METHOD_TEMPLATE_WEB)),
-        Feature(LOGIN_TYPE_LIBRUS, FEATURE_SCHOOL_INFO, listOf(
-                ENDPOINT_TEMPLATE_WEB_SAMPLE_2 to LOGIN_METHOD_TEMPLATE_WEB
-        ), listOf(LOGIN_METHOD_TEMPLATE_WEB)),
-        Feature(LOGIN_TYPE_LIBRUS, FEATURE_GRADES, listOf(
-                ENDPOINT_TEMPLATE_API_SAMPLE to LOGIN_METHOD_TEMPLATE_API
-        ), listOf(LOGIN_METHOD_TEMPLATE_API))
 )

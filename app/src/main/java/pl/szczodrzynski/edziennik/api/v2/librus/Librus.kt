@@ -8,7 +8,6 @@ import android.util.Log
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
-import pl.szczodrzynski.edziennik.api.v2.endpoints
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
@@ -19,7 +18,6 @@ import pl.szczodrzynski.edziennik.api.v2.models.Feature
 import pl.szczodrzynski.edziennik.data.db.modules.api.*
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
@@ -67,7 +65,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
         // get all endpoints for every feature, only if possible to login
         for (featureId in featureIds) {
-            endpoints.filter {
+            LibrusFeatures.filter {
                         it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
                     }
                     .let {

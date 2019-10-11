@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web
 
 import com.google.gson.JsonParser
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.api.v2.Regexes
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_CALENDAR

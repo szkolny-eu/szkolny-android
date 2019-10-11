@@ -5,7 +5,7 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
+import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 

@@ -5,27 +5,19 @@
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web
 
 import android.graphics.Color
-import com.google.gson.JsonParser
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.api.v2.Regexes
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_GRADES
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.fixWhiteSpaces
 import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.singleOrNull
-import pl.szczodrzynski.edziennik.utils.Utils
-import pl.szczodrzynski.edziennik.utils.Utils.strToInt
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
-import java.util.*
-import java.util.regex.Pattern
 
 class MobidziennikWebGrades(override val data: DataMobidziennik,
                               val onSuccess: () -> Unit) : MobidziennikWeb(data)  {
