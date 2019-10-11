@@ -93,10 +93,10 @@ class LibrusApiGrades(override val data: DataLibrus,
                                 profile?.empty ?: false,
                                 addedDate
                         ))
-
-                data.setSyncNext(ENDPOINT_LIBRUS_API_NORMAL_GRADES, SYNC_ALWAYS, MainActivity.DRAWER_ITEM_GRADES)
-                onSuccess()
             }
+
+            data.setSyncNext(ENDPOINT_LIBRUS_API_NORMAL_GRADES, SYNC_ALWAYS, MainActivity.DRAWER_ITEM_GRADES)
+            onSuccess()
         }
     }
 }

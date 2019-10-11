@@ -17,7 +17,7 @@ class LibrusApiMe(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "Me") { json ->
-            val me = json?.getJsonObject("Me")
+            val me = json.getJsonObject("Me")
             val account = me?.getJsonObject("Account")
             val user = me?.getJsonObject("User")
 
