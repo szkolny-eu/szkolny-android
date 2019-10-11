@@ -219,3 +219,9 @@ fun LongSparseArray<Team>.getById(id: Long): Team? {
     }
     return null
 }
+
+operator fun MatchResult.get(group: Int): String {
+    if (group >= groupValues.size)
+        return ""
+    return groupValues[group]
+}

@@ -9,6 +9,8 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Transaction;
+
+import android.util.LongSparseArray;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
@@ -88,15 +90,15 @@ public abstract class GradeDao {
     }
 
     @Query("UPDATE grades SET gradeClassAverage = :classAverage, gradeColor = :color WHERE profileId = :profileId AND gradeId = :gradeId")
-    public abstract void updateDetailsById(int profileId, int gradeId, float classAverage, int color);
+    public abstract void updateDetailsById(int profileId, long gradeId, float classAverage, int color);
 
     @Query("UPDATE metadata SET addedDate = :addedDate WHERE profileId = :profileId AND thingType = "+TYPE_GRADE+" AND thingId = :gradeId")
-    public abstract void updateAddedDateById(int profileId, int gradeId, long addedDate);
+    public abstract void updateAddedDateById(int profileId, long gradeId, long addedDate);
 
     @Transaction
-    public void updateDetails(int profileId, SparseArray<Float> gradeAverages, SparseArray<Long> gradeAddedDates, SparseIntArray gradeColors) {
+    public void updateDetails(int profileId, LongSparseArray<Float> gradeAverages, LongSparseArray<Long> gradeAddedDates, LongSparseArray<Integer> gradeColors) {
         for (int i = 0; i < gradeAverages.size(); i++) {
-            int gradeId = gradeAverages.keyAt(i);
+            long gradeId = gradeAverages.keyAt(i);
             float classAverage = gradeAverages.valueAt(i);
             long addedDate = gradeAddedDates.valueAt(i);
             int color = gradeColors.valueAt(i);
@@ -114,7 +116,7 @@ public abstract class GradeDao {
     @Query("SELECT addedDate FROM metadata WHERE profileId = :profileId AND thingType = "+TYPE_GRADE+" ORDER BY thingId")
     public abstract List<Long> getAddedDates(int profileId);
     @Transaction
-    public void getDetails(int profileId, SparseArray<Long> gradeAddedDates, SparseArray<Float> gradeAverages, SparseIntArray gradeColors) {
+    public void getDetails(int profileId, LongSparseArray<Long> gradeAddedDates, LongSparseArray<Float> gradeAverages, LongSparseArray<Integer> gradeColors) {
         List<Integer> ids = getIds(profileId);
         List<Float> classAverages = getClassAverages(profileId);
         List<Integer> colors = getColors(profileId);

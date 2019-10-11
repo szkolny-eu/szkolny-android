@@ -190,7 +190,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         messageMetadataList.clear()
     }
 
-    fun saveData() {
+    open fun saveData() {
         if (profile == null)
             return
 

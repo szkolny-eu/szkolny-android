@@ -23,7 +23,7 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
                 continue
             val cols = row.split("|")
 
-            val studentId = cols[2].toInt()
+            val studentId = cols[1].toInt()
             if (studentId != data.studentId)
                 return@run
 
@@ -35,7 +35,7 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
             val semester = cols[5].toInt()
             val teacherId = cols[2].toLong()
             val subjectId = cols[3].toLong()
-            var type = when (cols[8]) {
+            val type = when (cols[8]) {
                 "3" -> if (semester == 1) TYPE_SEMESTER1_PROPOSED else TYPE_SEMESTER2_PROPOSED
                 "1" -> if (semester == 1) TYPE_SEMESTER1_FINAL else TYPE_SEMESTER2_FINAL
                 "4" -> TYPE_YEAR_PROPOSED
@@ -70,7 +70,7 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
                     weight,
                     semester,
                     teacherId,
-                    subjectId)
+                    subjectId);gradeObject.type = type
 
             data.gradeList.add(gradeObject)
             data.metadataList.add(

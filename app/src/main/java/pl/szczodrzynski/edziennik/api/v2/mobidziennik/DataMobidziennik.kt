@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.api.v2.mobidziennik
 import android.util.LongSparseArray
 import android.util.SparseArray
 import android.util.SparseIntArray
+import androidx.core.util.isNotEmpty
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_MOBIDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.api.v2.models.Data
@@ -34,14 +35,19 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
     val teachersMap = LongSparseArray<String>()
     val subjectsMap = LongSparseArray<String>()
 
-    val gradeAddedDates = SparseArray<Long>()
-    val gradeAverages = SparseArray<Float>()
-    val gradeColors = SparseIntArray()
+    val gradeAddedDates = LongSparseArray<Long>()
+    val gradeAverages = LongSparseArray<Float>()
+    val gradeColors = LongSparseArray<Int>()
 
     private var mLoginServerName: String? = null
     var loginServerName: String?
         get() { mLoginServerName = mLoginServerName ?: loginStore.getLoginData("serverName", null); return mLoginServerName }
         set(value) { loginStore.putLoginData("serverName", value); mLoginServerName = value }
+
+    private var mLoginEmail: String? = null
+    var loginEmail: String?
+        get() { mLoginEmail = mLoginEmail ?: loginStore.getLoginData("email", null); return mLoginEmail }
+        set(value) { loginStore.putLoginData("email", value); mLoginEmail = value }
 
     private var mLoginUsername: String? = null
     var loginUsername: String?
@@ -84,6 +90,13 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
         get() { mWebSessionIdExpiryTime = mWebSessionIdExpiryTime ?: loginStore.getLoginData("sessionIDTime", 0L); return mWebSessionIdExpiryTime ?: 0L }
         set(value) { loginStore.putLoginData("sessionIDTime", value); mWebSessionIdExpiryTime = value }
 
+
+    override fun saveData() {
+        super.saveData()
+        if (gradeAddedDates.isNotEmpty()) {
+            app.db.gradeDao().updateDetails(profileId, gradeAverages, gradeAddedDates, gradeColors)
+        }
+    }
 
     val mobiLessons = mutableListOf<MobiLesson>()
 

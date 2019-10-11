@@ -83,7 +83,11 @@ const val LOGIN_METHOD_MOBIDZIENNIK_API2 = 300
 val mobidziennikLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_MOBIDZIENNIK, LOGIN_METHOD_MOBIDZIENNIK_WEB, MobidziennikLoginWeb::class.java)
                 .withIsPossible { _, _ -> true }
-                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }/*,
+
+        LoginMethod(LOGIN_TYPE_MOBIDZIENNIK, LOGIN_METHOD_MOBIDZIENNIK_API2, MobidziennikLoginApi2::class.java)
+                .withIsPossible { _, loginStore -> loginStore.hasLoginData("email") }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }*/
 )
 
 const val LOGIN_TYPE_VULCAN = 4

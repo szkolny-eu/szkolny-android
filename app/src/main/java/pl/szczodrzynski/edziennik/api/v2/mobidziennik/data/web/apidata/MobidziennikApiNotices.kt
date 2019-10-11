@@ -29,6 +29,7 @@ class MobidziennikApiNotices(val data: DataMobidziennik, rows: List<String>) {
             val type = when (cols[3]) {
                 "0" -> Notice.TYPE_NEGATIVE
                 "1" -> Notice.TYPE_POSITIVE
+                "3" -> Notice.TYPE_NEUTRAL
                 else -> Notice.TYPE_NEUTRAL
             }
             val teacherId = cols[5].toLong()

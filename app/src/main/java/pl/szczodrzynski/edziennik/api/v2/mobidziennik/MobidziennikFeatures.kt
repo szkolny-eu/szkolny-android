@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.api.v2.mobidziennik
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
 
-const val ENDPOINT_MOBIDZIENNIK_API_MAIN                     = 1000
+const val ENDPOINT_MOBIDZIENNIK_API_MAIN                = 1000
 const val ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX      = 2011
 const val ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_SENT       = 2012
 const val ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL        = 2019
@@ -16,7 +16,8 @@ const val ENDPOINT_MOBIDZIENNIK_WEB_GRADES              = 2030
 const val ENDPOINT_MOBIDZIENNIK_WEB_NOTICES             = 2040
 const val ENDPOINT_MOBIDZIENNIK_WEB_ATTENDANCE          = 2050
 const val ENDPOINT_MOBIDZIENNIK_WEB_MANUALS             = 2100
-const val ENDPOINT_MOBIDZIENNIK_API2                    = 3000
+const val ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL       = 2200
+const val ENDPOINT_MOBIDZIENNIK_API2_MAIN               = 3000
 
 val MobidziennikFeatures = listOf(
         // timetable
@@ -55,8 +56,13 @@ val MobidziennikFeatures = listOf(
         ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB)),
 
         Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_ALWAYS_NEEDED, listOf(
-                ENDPOINT_MOBIDZIENNIK_API_MAIN to LOGIN_METHOD_MOBIDZIENNIK_WEB
+                ENDPOINT_MOBIDZIENNIK_API_MAIN to LOGIN_METHOD_MOBIDZIENNIK_WEB,
+                ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL to LOGIN_METHOD_MOBIDZIENNIK_WEB
         ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB)),
+
+        Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_PUSH_CONFIG, listOf(
+                ENDPOINT_MOBIDZIENNIK_API2_MAIN to LOGIN_METHOD_MOBIDZIENNIK_API2
+        ), listOf(LOGIN_METHOD_MOBIDZIENNIK_API2)),
         /*Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_STUDENT_INFO, listOf(
                 ENDPOINT_MOBIDZIENNIK_API_MAIN to LOGIN_METHOD_MOBIDZIENNIK_WEB
         ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB)),

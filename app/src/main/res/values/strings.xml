@@ -938,4 +938,5 @@
     <string name="edziennik_progress_endpoint_behaviour">Pobieram uwagi ucznia...</string>
     <string name="edziennik_progress_endpoint_attendance">Pobieram frekwencję ucznia...</string>
     <string name="edziennik_progress_login_vulcan_api">Logowanie do Vulcan API...</string>
+    <string name="edziennik_progress_login_mobidziennik_api2">Logowanie do API MobiDziennika...</string>
 </resources>

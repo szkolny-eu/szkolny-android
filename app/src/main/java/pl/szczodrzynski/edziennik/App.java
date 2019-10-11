@@ -86,6 +86,7 @@ import pl.szczodrzynski.edziennik.utils.PermissionChecker;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
 
@@ -409,20 +410,20 @@ public class App extends androidx.multidex.MultiDexApplication {
             FirebaseApp pushMobidziennikApp = FirebaseApp.initializeApp(
                     this,
                     new FirebaseOptions.Builder()
-                            .setApplicationId("1:1029629079999:android:58bb378dab031f42")
-                            .setGcmSenderId("1029629079999")
+                            .setApiKey("AIzaSyCi5LmsZ5BBCQnGtrdvWnp1bWLCNP8OWQE")
+                            .setApplicationId("1:747285019373:android:f6341bf7b158621d")
                             .build(),
-                    "Mobidziennik"
+                    "Mobidziennik2"
             );
 
-            /*FirebaseApp pushLibrusApp = FirebaseApp.initializeApp(
+            FirebaseApp pushLibrusApp = FirebaseApp.initializeApp(
                     this,
                     new FirebaseOptions.Builder()
                             .setApiKey("AIzaSyDfTuEoYPKdv4aceEws1CO3n0-HvTndz-o")
                             .setApplicationId("1:513056078587:android:1e29083b760af544")
                             .build(),
                     "Librus"
-            );*/
+            );
 
             FirebaseApp pushVulcanApp = FirebaseApp.initializeApp(
                     this,
@@ -443,10 +444,10 @@ public class App extends androidx.multidex.MultiDexApplication {
                     Log.d(TAG, "Token for Mobidziennik is " + instanceIdResult.getToken() + ", ID is " + instanceIdResult.getId());
                     appConfig.fcmTokens.put(LOGIN_TYPE_MOBIDZIENNIK, new Pair<>(instanceIdResult.getToken(), new ArrayList<>()));
                 });
-                /*FirebaseInstanceId.getInstance(pushLibrusApp).getInstanceId().addOnSuccessListener(instanceIdResult -> {
+                FirebaseInstanceId.getInstance(pushLibrusApp).getInstanceId().addOnSuccessListener(instanceIdResult -> {
                     Log.d(TAG, "Token for Librus is " + instanceIdResult.getToken() + ", ID is " + instanceIdResult.getId());
                     appConfig.fcmTokens.put(LOGIN_TYPE_LIBRUS, new Pair<>(instanceIdResult.getToken(), new ArrayList<>()));
-                });*/
+                });
                 FirebaseInstanceId.getInstance(pushVulcanApp).getInstanceId().addOnSuccessListener(instanceIdResult -> {
                     Log.d(TAG, "Token for Vulcan is " + instanceIdResult.getToken() + ", ID is " + instanceIdResult.getId());
                     Pair<String, List<Integer>> pair = appConfig.fcmTokens.get(LOGIN_TYPE_VULCAN);

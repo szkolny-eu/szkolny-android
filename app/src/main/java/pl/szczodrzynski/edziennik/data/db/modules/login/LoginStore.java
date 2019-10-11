@@ -63,6 +63,11 @@ public class LoginStore {
             }
         }
     }
+    public boolean hasLoginData(String key) {
+        if (data == null)
+            return false;
+        return data.has(key);
+    }
     @Nullable
     public String getLoginData(String key, @Nullable String defaultValue) {
         if (data == null)

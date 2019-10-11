@@ -5,9 +5,12 @@
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web
 
 import com.google.gson.JsonParser
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.api.v2.Regexes
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_CALENDAR
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikWeb
+import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.getString
@@ -91,6 +94,8 @@ class MobidziennikWebCalendar(override val data: DataMobidziennik,
                             ))
                 }
             }
+
+            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_CALENDAR, SYNC_ALWAYS)
             onSuccess()
         }
     }

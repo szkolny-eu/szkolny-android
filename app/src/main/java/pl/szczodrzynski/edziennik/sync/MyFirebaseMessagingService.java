@@ -61,7 +61,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     //processAppPush
                     processAppPush(app, remoteMessage);
                     break;
-                case "1029629079999":
+                case "747285019373":
                     app.debugLog("Firebase got push from Mobidziennik "+remoteMessage.getData().toString());
                     processMobidziennikPush(app, remoteMessage);
                     break;

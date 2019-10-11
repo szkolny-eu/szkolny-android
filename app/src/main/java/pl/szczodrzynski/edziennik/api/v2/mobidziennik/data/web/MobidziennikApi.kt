@@ -4,11 +4,15 @@
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web
 
+import pl.szczodrzynski.edziennik.DAY
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.api.v2.ERROR_MOBIDZIENNIK_WEB_INVALID_RESPONSE
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.ENDPOINT_MOBIDZIENNIK_API_MAIN
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.apidata.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 
 class MobidziennikApi(override val data: DataMobidziennik,
                       val onSuccess: () -> Unit) : MobidziennikWeb(data)  {
@@ -45,6 +49,7 @@ class MobidziennikApi(override val data: DataMobidziennik,
                 }
             }
 
+            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_API_MAIN, SYNC_ALWAYS)
             onSuccess()
         }
     }

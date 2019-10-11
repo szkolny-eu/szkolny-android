@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.login
 
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_MOBIDZIENNIK_API2
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_MOBIDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.utils.Utils
@@ -47,6 +48,10 @@ class MobidziennikLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             LOGIN_METHOD_MOBIDZIENNIK_WEB -> {
                 data.startProgress(R.string.edziennik_progress_login_mobidziennik_web)
                 MobidziennikLoginWeb(data) { onSuccess(loginMethodId) }
+            }
+            LOGIN_METHOD_MOBIDZIENNIK_API2 -> {
+                data.startProgress(R.string.edziennik_progress_login_mobidziennik_api2)
+                //MobidziennikLoginApi2(data) { onSuccess(loginMethodId) }
             }
         }
     }

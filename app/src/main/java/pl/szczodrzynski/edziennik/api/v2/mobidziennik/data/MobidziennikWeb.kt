@@ -62,8 +62,7 @@ open class MobidziennikWeb(open val data: DataMobidziennik) {
                     data.error(ApiError(tag, EXCEPTION_MOBIDZIENNIK_WEB_REQUEST)
                             .withResponse(response)
                             .withThrowable(e)
-                            .withApiResponse(text)
-                            .setCritical(false))
+                            .withApiResponse(text))
                 }
             }
 
