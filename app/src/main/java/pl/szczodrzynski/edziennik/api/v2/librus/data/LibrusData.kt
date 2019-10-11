@@ -5,10 +5,12 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data
 
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_EVENTS
 import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_NORMAL_GRADES
 import pl.szczodrzynski.edziennik.api.v2.ENDPOINT_LIBRUS_API_SCHOOLS
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiEvents
 import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiGrades
 import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiMe
 import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiSchools
@@ -51,6 +53,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             ENDPOINT_LIBRUS_API_NORMAL_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
                 LibrusApiGrades(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_EVENTS -> {
+                data.startProgress(R.string.sync_action_syncing_events)
+                LibrusApiEvents(data) { onSuccess() }
             }
             else -> onSuccess()
         }

@@ -21,16 +21,15 @@ class LibrusApiGrades(override val data: DataLibrus,
         apiGet(TAG, "Grades") { json ->
             val grades = json.getJsonArray("Grades")
 
-
             grades?.forEach { gradeEl ->
                 val grade = gradeEl.asJsonObject
 
-                val id = grade.get("Id").asLong
-                val categoryId = grade.get("Category").asJsonObject.get("Id").asLong
-                val name = grade.get("Grade").asString
-                val semester = grade.get("Semester").asInt
-                val teacherId = grade.get("AddedBy").asJsonObject.get("Id").asLong
-                val subjectId = grade.get("Subject").asJsonObject.get("Id").asLong
+                val id = grade.getLong("Id") ?: return@forEach
+                val categoryId = grade.getJsonObject("Category")?.getLong("Id") ?: return@forEach
+                val name = grade.getString("Grade") ?: return@forEach
+                val semester = grade.getInt("Semester") ?: return@forEach
+                val teacherId = grade.getJsonObject("AddedBy")?.getLong("Id") ?: -1
+                val subjectId = grade.getJsonObject("Subject")?.getLong("Id") ?: -1
 
                 val category = data.gradeCategories.singleOrNull { it.categoryId == categoryId }
                 val categoryName = category?.text ?: ""
@@ -60,20 +59,20 @@ class LibrusApiGrades(override val data: DataLibrus,
                 )
 
                 when {
-                    grade.get("IsConstituent").asBoolean ->
+                    grade.getBoolean("IsConstituent") ?: false ->
                         gradeObject.type = Grade.TYPE_NORMAL
-                    grade.get("IsSemester").asBoolean -> // semester final
+                    grade.getBoolean("IsSemester") ?: false -> // semester final
                         gradeObject.type = if (gradeObject.semester == 1) Grade.TYPE_SEMESTER1_FINAL else Grade.TYPE_SEMESTER2_FINAL
-                    grade.get("IsSemesterProposition").asBoolean -> // semester proposed
+                    grade.getBoolean("IsSemesterProposition") ?: false -> // semester proposed
                         gradeObject.type = if (gradeObject.semester == 1) Grade.TYPE_SEMESTER1_PROPOSED else Grade.TYPE_SEMESTER2_PROPOSED
-                    grade.get("IsFinal").asBoolean -> // year final
+                    grade.getBoolean("IsFinal") ?: false -> // year final
                         gradeObject.type = Grade.TYPE_YEAR_FINAL
-                    grade.get("IsFinalProposition").asBoolean -> // year final
+                    grade.getBoolean("IsFinalProposition") ?: false -> // year final
                         gradeObject.type = Grade.TYPE_YEAR_PROPOSED
                 }
 
                 grade.getJsonObject("Improvement")?.also {
-                    val historicalId = it.get("Id").asLong
+                    val historicalId = it.getLong("Id")
                     data.gradeList.firstOrNull { grade -> grade.id == historicalId }?.also { grade ->
                         grade.parentId = gradeObject.id
                         if (grade.name == "nb") grade.weight = 0f
@@ -95,7 +94,7 @@ class LibrusApiGrades(override val data: DataLibrus,
                         ))
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_NORMAL_GRADES, SYNC_ALWAYS, MainActivity.DRAWER_ITEM_GRADES)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_NORMAL_GRADES, SYNC_ALWAYS)
             onSuccess()
         }
     }
