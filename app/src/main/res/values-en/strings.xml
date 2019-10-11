@@ -855,4 +855,5 @@
     <string name="sync_action_syncing_grade_comments">Getting grade comments</string>
     <string name="sync_action_syncing_school_free_days">Getting school free days</string>
     <string name="settings_register_show_teacher_absences_text">Show teacher absences in Agenda</string>
+    <string name="menu_mark_everything_as_read">Mark everything as read</string>
 </resources>
