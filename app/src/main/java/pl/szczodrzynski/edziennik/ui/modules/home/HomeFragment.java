@@ -134,21 +134,21 @@ public class HomeFragment extends Fragment {
         b.test2.setOnClickListener((v -> {
             List<Pair<Integer, Integer>> list = new ArrayList<>();
             list.add(new Pair<>(DRAWER_ITEM_HOME, 0));
-            EventBus.getDefault().post(new SyncProfileRequest(10, list));
+            EventBus.getDefault().post(new SyncProfileRequest(app.profile.getId(), list));
         }));
 
         b.test3.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.test3.setOnClickListener((v -> {
             List<Pair<Integer, Integer>> list = new ArrayList<>();
             list.add(new Pair<>(DRAWER_ITEM_MESSAGES, TYPE_SENT));
-            EventBus.getDefault().post(new SyncProfileRequest(10, list));
+            EventBus.getDefault().post(new SyncProfileRequest(app.profile.getId(), list));
         }));
 
         b.test4.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.test4.setOnClickListener((v -> {
             List<Pair<Integer, Integer>> list = new ArrayList<>();
             list.add(new Pair<>(DRAWER_ITEM_GRADES, 0));
-            EventBus.getDefault().post(new SyncProfileRequest(10, list));
+            EventBus.getDefault().post(new SyncProfileRequest(app.profile.getId(), list));
         }));
 
         //((TextView)v.findViewById(R.id.nextSync)).setText(getString(R.string.next_sync_format,Time.fromMillis(app.appJobs.syncJobTime).getStringHMS()));
