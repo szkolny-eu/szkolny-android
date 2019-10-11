@@ -40,7 +40,7 @@ class NoticesAdapter//getting the context and product list with constructor
 
         val notice = noticeList[position]
 
-        if (app.profile.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK) {
+        if (app.profile.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK && false) {
             holder.noticesItemReason.text = bs(null, notice.category, "\n") + notice.text
             holder.noticesItemTeacherName.text = app.getString(R.string.notices_points_format, notice.teacherFullName, if (notice.points > 0) "+" + notice.points else notice.points)
         } else {

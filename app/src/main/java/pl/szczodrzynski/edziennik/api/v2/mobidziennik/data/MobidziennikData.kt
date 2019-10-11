@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.*
-import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikApi
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api.MobidziennikApi
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikWebCalendar
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikWebGrades
 import pl.szczodrzynski.edziennik.utils.Utils

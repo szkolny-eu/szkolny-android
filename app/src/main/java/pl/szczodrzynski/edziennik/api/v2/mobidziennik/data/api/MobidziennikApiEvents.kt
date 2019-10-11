@@ -1,17 +1,14 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-10-8.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-11.
  */
 
-package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.apidata
+package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api
 
-import android.graphics.Color
 import androidx.core.util.contains
 import pl.szczodrzynski.edziennik.api.v2.Regexes
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.text.ParseException

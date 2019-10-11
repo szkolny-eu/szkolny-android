@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-10-7.
  */
 
-package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.apidata
+package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api
 
 import android.graphics.Color
 import androidx.core.util.contains

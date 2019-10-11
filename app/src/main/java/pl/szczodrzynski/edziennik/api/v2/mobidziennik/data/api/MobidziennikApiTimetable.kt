@@ -1,19 +1,15 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-10-8.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-11.
  */
 
-package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.apidata
+package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api
 
-import android.graphics.Color
-import androidx.core.util.contains
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.fixWhiteSpaces
 import pl.szczodrzynski.edziennik.singleOrNull
-import pl.szczodrzynski.edziennik.utils.Utils.strToInt
 
 class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
     init {

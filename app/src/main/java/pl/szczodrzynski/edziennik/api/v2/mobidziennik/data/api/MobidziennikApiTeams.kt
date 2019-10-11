@@ -1,15 +1,13 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-10-6.
+ * Copyright (c) Kuba Szczodrzyński 2019-10-11.
  */
 
-package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.apidata
+package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api
 
 import pl.szczodrzynski.edziennik.App.profileId
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.getById
-import pl.szczodrzynski.edziennik.utils.Utils.strToInt
 import pl.szczodrzynski.edziennik.values
 
 class MobidziennikApiTeams(val data: DataMobidziennik, tableTeams: List<String>?, tableRelations: List<String>?) {
