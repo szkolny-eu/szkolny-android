@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLogin
 import pl.szczodrzynski.edziennik.api.v2.librusLoginMethods
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.MobidziennikFeatures
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
 import pl.szczodrzynski.edziennik.data.db.modules.api.*
@@ -63,14 +64,15 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         data.targetEndpointIds.clear()
         data.targetLoginMethodIds.clear()
 
-        // get all endpoints for every feature, only if possible to login
+        // get all endpoints for every feature, only if possible to login and possible/necessary to sync
         for (featureId in featureIds) {
             LibrusFeatures.filter {
-                        it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
-                    }
-                    .let {
-                        endpointList.addAll(it)
-                    }
+                it.featureId == featureId // feature ID matches
+                        && possibleLoginMethods.containsAll(it.requiredLoginMethods) // is possible to login
+                        && it.shouldSync?.invoke(profile, loginStore) ?: true // is necessary/possible to sync
+            }.let {
+                endpointList.addAll(it)
+            }
         }
 
         val timestamp = System.currentTimeMillis()

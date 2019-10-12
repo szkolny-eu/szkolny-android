@@ -10,11 +10,13 @@ import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
+import pl.szczodrzynski.edziennik.api.v2.librus.LibrusFeatures
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
 import pl.szczodrzynski.edziennik.api.v2.template.data.TemplateData
 import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLogin
 import pl.szczodrzynski.edziennik.api.v2.templateLoginMethods
+import pl.szczodrzynski.edziennik.api.v2.vulcan.VulcanFeatures
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_NEVER
@@ -66,14 +68,15 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
         data.targetEndpointIds.clear()
         data.targetLoginMethodIds.clear()
 
-        // get all endpoints for every feature, only if possible to login
+        // get all endpoints for every feature, only if possible to login and possible/necessary to sync
         for (featureId in featureIds) {
-            TemplateFeatures.filter {
-                it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
+            VulcanFeatures.filter {
+                it.featureId == featureId // feature ID matches
+                        && possibleLoginMethods.containsAll(it.requiredLoginMethods) // is possible to login
+                        && it.shouldSync?.invoke(profile, loginStore) ?: true // is necessary/possible to sync
+            }.let {
+                endpointList.addAll(it)
             }
-                    .let {
-                        endpointList.addAll(it)
-                    }
         }
 
         val timestamp = System.currentTimeMillis()

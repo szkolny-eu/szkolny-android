@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
+import pl.szczodrzynski.edziennik.api.v2.librus.LibrusFeatures
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikData
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLogin
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
@@ -64,14 +65,15 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
         data.targetEndpointIds.clear()
         data.targetLoginMethodIds.clear()
 
-        // get all endpoints for every feature, only if possible to login
+        // get all endpoints for every feature, only if possible to login and possible/necessary to sync
         for (featureId in featureIds) {
             MobidziennikFeatures.filter {
-                it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
+                it.featureId == featureId // feature ID matches
+                        && possibleLoginMethods.containsAll(it.requiredLoginMethods) // is possible to login
+                        && it.shouldSync?.invoke(profile, loginStore) ?: true // is necessary/possible to sync
+            }.let {
+                endpointList.addAll(it)
             }
-                    .let {
-                        endpointList.addAll(it)
-                    }
         }
 
         val timestamp = System.currentTimeMillis()

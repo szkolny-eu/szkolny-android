@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
+import pl.szczodrzynski.edziennik.api.v2.librus.LibrusFeatures
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
 import pl.szczodrzynski.edziennik.api.v2.vulcan.data.VulcanData
@@ -66,14 +67,15 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         data.targetEndpointIds.clear()
         data.targetLoginMethodIds.clear()
 
-        // get all endpoints for every feature, only if possible to login
+        // get all endpoints for every feature, only if possible to login and possible/necessary to sync
         for (featureId in featureIds) {
             VulcanFeatures.filter {
-                it.featureId == featureId && possibleLoginMethods.containsAll(it.requiredLoginMethods)
+                it.featureId == featureId // feature ID matches
+                        && possibleLoginMethods.containsAll(it.requiredLoginMethods) // is possible to login
+                        && it.shouldSync?.invoke(profile, loginStore) ?: true // is necessary/possible to sync
+            }.let {
+                endpointList.addAll(it)
             }
-                    .let {
-                        endpointList.addAll(it)
-                    }
         }
 
         val timestamp = System.currentTimeMillis()
