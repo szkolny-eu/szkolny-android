@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
+import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 
 class LibrusApiTemplate(override val data: DataLibrus,
                         val onSuccess: () -> Unit) : LibrusApi(data) {
@@ -14,12 +15,9 @@ class LibrusApiTemplate(override val data: DataLibrus,
     }
 
     init {
-        /*apiGet(LibrusApiMe.TAG, "") { json ->
+        /*apiGet(TAG, "") { json ->
 
-            // on error
-            data.error(TAG, ERROR_LIBRUS_API_, response, json)
-
-            data.setSyncNext(ENDPOINT_LIBRUS_API_, 2 * DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_, SYNC_ALWAYS)
             onSuccess()
         }*/
     }
