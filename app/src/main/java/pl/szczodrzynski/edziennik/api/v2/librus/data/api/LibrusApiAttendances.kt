@@ -66,14 +66,16 @@ class LibrusApiAttendances(override val data: DataLibrus,
                 val addedDate = Date.fromIso(attendance.getString("AddDate") ?: return@forEach)
 
                 data.attendanceList.add(attendanceObject)
-                data.metadataList.add(Metadata(
-                        profileId,
-                        Metadata.TYPE_ATTENDANCE,
-                        id,
-                        profile?.empty ?: false,
-                        profile?.empty ?: false,
-                        addedDate
-                ))
+                if(type != Attendance.TYPE_PRESENT) {
+                    data.metadataList.add(Metadata(
+                            profileId,
+                            Metadata.TYPE_ATTENDANCE,
+                            id,
+                            profile?.empty ?: false,
+                            profile?.empty ?: false,
+                            addedDate
+                    ))
+                }
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_ATTENDANCES, SYNC_ALWAYS)
