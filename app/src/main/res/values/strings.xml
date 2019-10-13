@@ -939,4 +939,8 @@
     <string name="edziennik_progress_endpoint_attendance">Pobieram frekwencję ucznia...</string>
     <string name="edziennik_progress_login_vulcan_api">Logowanie do Vulcan API...</string>
     <string name="edziennik_progress_login_mobidziennik_api2">Logowanie do API MobiDziennika...</string>
+    <string name="edziennik_progress_endpoint_events">Pobieranie wydarzeń kalendarza...</string>
+    <string name="edziennik_progress_endpoint_homework">Pobieranie zadań domowych...</string>
+    <string name="edziennik_progress_endpoint_attendance_types">Pobieranie kategorii obecności...</string>
+    <string name="edziennik_progress_endpoint_announcements">Pobieranie ogłoszeń szkolnych...</string>
 </resources>
