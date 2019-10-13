@@ -1,8 +1,5 @@
 package pl.szczodrzynski.edziennik.api.v2.models
 
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-
 /**
  * A Endpoint descriptor class.
  *
@@ -28,8 +25,8 @@ data class Feature(
         return this
     }
 
-    var shouldSync: ((Profile?, LoginStore) -> Boolean)? = null
-    fun withShouldSync(shouldSync: ((Profile?, LoginStore) -> Boolean)?): Feature {
+    var shouldSync: ((Data) -> Boolean)? = null
+    fun withShouldSync(shouldSync: ((Data) -> Boolean)?): Feature {
         this.shouldSync = shouldSync
         return this
     }

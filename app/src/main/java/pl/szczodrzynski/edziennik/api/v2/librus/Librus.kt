@@ -69,7 +69,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             LibrusFeatures.filter {
                 it.featureId == featureId // feature ID matches
                         && possibleLoginMethods.containsAll(it.requiredLoginMethods) // is possible to login
-                        && it.shouldSync?.invoke(profile, loginStore) ?: true // is necessary/possible to sync
+                        && it.shouldSync?.invoke(data) ?: true // is necessary/possible to sync
             }.let {
                 endpointList.addAll(it)
             }
