@@ -103,6 +103,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val teamList = LongSparseArray<Team>()
     val lessonRanges = SparseArray<LessonRange>()
     val gradeCategories = LongSparseArray<GradeCategory>()
+    val attendanceTypes = SparseArray<Pair<Int, String>>()
 
     private var mTeamClass: Team? = null
     var teamClass: Team?
@@ -129,7 +130,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     var noticesToRemove: DataRemoveModel? = null
     val noticeList = mutableListOf<Notice>()
 
-    var attendanceToRemove: DataRemoveModel? = null
+    var attendancesToRemove: DataRemoveModel? = null
     val attendanceList = mutableListOf<Attendance>()
 
     var announcementsToRemove: DataRemoveModel? = null
