@@ -63,6 +63,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.sync_action_syncing_attendance)
                 LibrusApiAttendances(data) { onSuccess() }
             }
+            ENDPOINT_LIBRUS_API_ANNOUNCEMENTS -> {
+                data.startProgress(R.string.sync_action_syncing_announcements)
+                LibrusApiAnnouncements(data) { onSuccess() }
+            }
             else -> onSuccess()
         }
     }
