@@ -5,15 +5,8 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_EVENTS
-import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_ME
-import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADES
-import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_SCHOOLS
-import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
-import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiEvents
-import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiGrades
-import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiMe
-import pl.szczodrzynski.edziennik.api.v2.librus.data.api.LibrusApiSchools
+import pl.szczodrzynski.edziennik.api.v2.librus.*
+import pl.szczodrzynski.edziennik.api.v2.librus.data.api.*
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
@@ -43,20 +36,36 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId")
         when (endpointId) {
             ENDPOINT_LIBRUS_API_ME -> {
-                data.startProgress(R.string.edziennik_progress_endpoint_student_info)
+                data.startProgress(R.string.sync_action_getting_account)
                 LibrusApiMe(data) { onSuccess() }
             }
             ENDPOINT_LIBRUS_API_SCHOOLS -> {
-                data.startProgress(R.string.edziennik_progress_endpoint_school_info)
+                data.startProgress(R.string.sync_action_syncing_school_info)
                 LibrusApiSchools(data) { onSuccess() }
             }
             ENDPOINT_LIBRUS_API_NORMAL_GRADES -> {
-                data.startProgress(R.string.edziennik_progress_endpoint_grades)
+                data.startProgress(R.string.sync_action_syncing_grades)
                 LibrusApiGrades(data) { onSuccess() }
             }
             ENDPOINT_LIBRUS_API_EVENTS -> {
                 data.startProgress(R.string.sync_action_syncing_events)
                 LibrusApiEvents(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_HOMEWORK -> {
+                data.startProgress(R.string.sync_action_syncing_homework)
+                LibrusApiHomework(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES -> {
+                data.startProgress(R.string.sync_action_syncing_attendance_types)
+                LibrusApiAttendanceTypes(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_ATTENDANCES -> {
+                data.startProgress(R.string.sync_action_syncing_attendance)
+                LibrusApiAttendances(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_ANNOUNCEMENTS -> {
+                data.startProgress(R.string.sync_action_syncing_announcements)
+                LibrusApiAnnouncements(data) { onSuccess() }
             }
             else -> onSuccess()
         }

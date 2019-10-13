@@ -54,7 +54,7 @@ class LibrusApiEvents(override val data: DataLibrus,
                         teamId
                 )
 
-                val addedDate = Date.fromIso(event.get("AddDate").asString)
+                val addedDate = Date.fromIso(event.getString("AddDate") ?: return@forEach)
 
                 data.eventList.add(eventObject)
                 data.metadataList.add(
