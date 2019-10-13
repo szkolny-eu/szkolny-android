@@ -2821,7 +2821,7 @@ public class Librus implements EdziennikInterface {
                     );
 
                     eventList.add(eventObject);
-                    metadataList.add(new Metadata(profileId, Metadata.TYPE_EVENT, eventObject.id, profile.getEmpty(), profile.getEmpty(), addedDate.getInMillis()));
+                    metadataList.add(new Metadata(profileId, Metadata.TYPE_HOMEWORK, eventObject.id, profile.getEmpty(), profile.getEmpty(), addedDate.getInMillis()));
                 }
                 r("finish", "Homework");
             }
