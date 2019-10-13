@@ -1,5 +1,8 @@
 package pl.szczodrzynski.edziennik.api.v2.models
 
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+
 /**
  * A Endpoint descriptor class.
  *
@@ -20,4 +23,14 @@ data class Feature(
         val requiredLoginMethods: List<Int>
 ) {
     var priority = endpointIds.size
+    fun withPriority(priority: Int): Feature {
+        this.priority = priority
+        return this
+    }
+
+    var shouldSync: ((Profile?, LoginStore) -> Boolean)? = null
+    fun withShouldSync(shouldSync: ((Profile?, LoginStore) -> Boolean)?): Feature {
+        this.shouldSync = shouldSync
+        return this
+    }
 }
