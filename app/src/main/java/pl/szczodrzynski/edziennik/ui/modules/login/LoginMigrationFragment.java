@@ -6,6 +6,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.LongSparseArray;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,10 +19,21 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.databinding.FragmentLoginMigrationBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType;
@@ -32,25 +48,9 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
+import pl.szczodrzynski.edziennik.databinding.FragmentLoginMigrationBinding;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
-
-import android.util.LongSparseArray;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.COLOR_CLASS_EVENT;
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.COLOR_DEFAULT;
@@ -183,7 +183,6 @@ public class LoginMigrationFragment extends Fragment {
             profile.setSyncNotifications(Boolean.parseBoolean(p.getString("app.register.syncNotificationsEnabled", Boolean.toString(profile.getSyncNotifications()))));
             profile.setEnableSharedEvents(Boolean.parseBoolean(p.getString("app.register.eventsShared", Boolean.toString(profile.getEnableSharedEvents()))));
             app.appConfig.countInSeconds = Boolean.parseBoolean(p.getString("app.register.countInSeconds", Boolean.toString(app.appConfig.countInSeconds)));
-            profile.setLoggedIn(true);
             // so in some APIs we force a full, clean sync
             profile.setEmpty(true);//Boolean.parseBoolean(p.getString("app.register.empty", Boolean.toString(profile.empty)));
             profile.setArchived(false);

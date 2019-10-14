@@ -1,7 +1,5 @@
 package pl.szczodrzynski.edziennik.data.db.modules.profiles
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -9,13 +7,12 @@ import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.widget.ImageView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
-
-import com.google.gson.JsonObject
-
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.Ignore
+import com.google.gson.JsonObject
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.colorFromName
-
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.ImageHolder
 import pl.szczodrzynski.navlib.R
@@ -294,7 +291,6 @@ open class Profile : IDrawerProfile {
                 ", syncEnabled=" + syncEnabled +
                 ", syncNotifications=" + syncNotifications +
                 ", enableSharedEvents=" + enableSharedEvents +
-                ", loggedIn=" + loggedIn +
                 ", empty=" + empty +
                 ", studentNameLong='" + studentNameLong + '\''.toString() +
                 ", studentNameShort='" + studentNameShort + '\''.toString() +

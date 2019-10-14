@@ -611,7 +611,6 @@ public class Iuczniowie implements EdziennikInterface {
                                         newProfile.setName(newProfile.getStudentNameLong());
                                         newProfile.setSubname(loginUsername);
                                         newProfile.setEmpty(true);
-                                        newProfile.setLoggedIn(true);
                                         newProfile.putStudentData("studentId", studentIds.get(index));
                                         newProfile.putStudentData("registerId", registerIds.get(index));
                                         newProfile.putStudentData("schoolYearId", loginSchoolYearId);

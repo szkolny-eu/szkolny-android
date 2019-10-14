@@ -60,11 +60,11 @@ import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeInfo;
+import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Endpoint;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.models.Week;
-import pl.szczodrzynski.edziennik.utils.Utils;
 
 import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_OTHER;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT;
@@ -516,7 +516,6 @@ public class Vulcan implements EdziennikInterface {
 
                         Profile newProfile = new Profile();
                         newProfile.setEmpty(true);
-                        newProfile.setLoggedIn(true);
                         saveStudentData(newProfile, account);
 
                         profileList.add(newProfile);

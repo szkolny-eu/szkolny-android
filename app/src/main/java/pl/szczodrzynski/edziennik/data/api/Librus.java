@@ -74,11 +74,11 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeInfo;
+import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Endpoint;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.models.Week;
-import pl.szczodrzynski.edziennik.utils.Utils;
 
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
@@ -99,7 +99,6 @@ import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.T
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_PRESENT;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_RELEASED;
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_PT_MEETING;
-import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_TEACHER_ABSENCE;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_NORMAL;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_FINAL;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_PROPOSED;
@@ -741,7 +740,6 @@ public class Librus implements EdziennikInterface {
                 newProfile.setName(newProfile.getStudentNameLong());
                 newProfile.setSubname(librusEmail);
                 newProfile.setEmpty(true);
-                newProfile.setLoggedIn(true);
                 newProfile.putStudentData("accountId", accountIds.get(index));
                 newProfile.putStudentData("accountLogin", accountLogins.get(index));
                 newProfile.putStudentData("accountToken", accountTokens.get(index));

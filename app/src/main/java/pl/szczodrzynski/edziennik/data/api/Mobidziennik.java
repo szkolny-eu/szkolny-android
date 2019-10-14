@@ -8,7 +8,6 @@ import android.text.Html;
 import android.util.LongSparseArray;
 import android.util.Pair;
 import android.util.SparseArray;
-import android.util.SparseIntArray;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -488,7 +487,6 @@ public class Mobidziennik implements EdziennikInterface {
                                     profile.setName(profile.getStudentNameLong());
                                     profile.setSubname(loginUsername);
                                     profile.setEmpty(true);
-                                    profile.setLoggedIn(true);
                                     profile.putStudentData("studentId", studentIds.get(index));
                                     profileList.add(profile);
                                 }
