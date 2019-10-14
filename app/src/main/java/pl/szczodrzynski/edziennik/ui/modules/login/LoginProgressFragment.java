@@ -1,32 +1,33 @@
 package pl.szczodrzynski.edziennik.ui.modules.login;
 
-import androidx.databinding.DataBindingUtil;
-
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.JsonObject;
-
-import java.util.List;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.google.gson.JsonObject;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.api.Edziennik;
+import pl.szczodrzynski.edziennik.api.v2.ApiService;
+import pl.szczodrzynski.edziennik.api.v2.events.FirstLoginFinishedEvent;
+import pl.szczodrzynski.edziennik.api.v2.events.SyncErrorEvent;
+import pl.szczodrzynski.edziennik.api.v2.events.requests.FirstLoginRequest;
 import pl.szczodrzynski.edziennik.data.api.AppError;
-import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback;
-import pl.szczodrzynski.edziennik.databinding.FragmentLoginProgressBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
+import pl.szczodrzynski.edziennik.databinding.FragmentLoginProgressBinding;
 
 import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_OTHER;
 
@@ -53,6 +54,22 @@ public class LoginProgressFragment extends Fragment {
         return b.getRoot();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFirstLoginFinishedEvent(FirstLoginFinishedEvent event) {
+        LoginActivity.profileObjects.add(new LoginProfileObject(
+                event.getLoginStore(),
+                event.getProfileList()));
+        nav.navigate(R.id.loginSummaryFragment, null, LoginActivity.navOptions);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSyncErrorEvent(SyncErrorEvent event) {
+        LoginActivity.error = event.getError().toAppError();
+        if (getActivity() == null)
+            return;
+        nav.navigateUp();
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         assert getContext() != null;
@@ -72,131 +89,19 @@ public class LoginProgressFragment extends Fragment {
         LoginStore loginStore = new LoginStore(-1, loginType, new JsonObject());
         loginStore.copyFrom(args);
 
-        Edziennik.getApi(app, loginType).sync(getActivity(), new SyncCallback() {
-            @Override
-            public void onLoginFirst(List<Profile> profileList, LoginStore loginStore) {
-                // because these callbacks are always on a worker thread
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        LoginActivity.profileObjects.add(new LoginProfileObject(
-                                loginStore,
-                                profileList));
-                        nav.navigate(R.id.loginSummaryFragment, null, LoginActivity.navOptions);
-                    });
-                }
-            }
+        getContext().startService(new Intent(app, ApiService.class));
+        EventBus.getDefault().postSticky(new FirstLoginRequest(loginStore));
+    }
 
-            @Override
-            public void onSuccess(Context activityContext, ProfileFull profileFull) {
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
 
-            }
-
-            @Override
-            public void onError(Context activityContext, AppError error) {
-                LoginActivity.error = error;
-                // because these callbacks are always on a worker thread
-                if (getActivity() == null)
-                    return;
-                getActivity().runOnUiThread(() -> {
-                    nav.navigateUp();
-                });
-            }
-
-            @Override
-            public void onProgress(int progressStep) {
-
-            }
-
-            @Override
-            public void onActionStarted(int stringResId) {
-
-            }
-        }, -1, null, loginStore);
-
-        /*if (true)
-            return;
-        JsonObject loginData = new JsonObject();
-        loginData.addProperty("serverName", b.loginServerAddress.getText().toString());
-        loginData.addProperty("username", b.loginUsername.getText().toString());
-        loginData.addProperty("password", b.loginPassword.getText().toString());
-        getApi(app, LOGIN_TYPE_MOBIDZIENNIK).sync(getActivity(), new Edziennik.DataCallback() {
-            @Override
-            public void onLoginFirst(List<Profile> profileList, LoginStore loginStore) {
-                int profileId = app.profileLastId()+1;
-                if (profileList.size() == 1) {
-                    Profile profile = profileList.get(0);
-                    saveProfile(profile, loginStore, profileId, profileId);
-                    finishSaving();
-                    return;
-                }
-                List<String> profileNames = new ArrayList<>();
-                for (Profile profile: profileList) {
-                    profileNames.add(profile.name);
-                }
-                new MaterialDialog.Builder(getActivity())
-                        .title(R.string.sync_multiaccount_select_students)
-                        .items(profileNames)
-                        .positiveText(R.string.ok)
-                        .negativeText(R.string.cancel)
-                        .neutralText(R.string.help)
-                        .autoDismiss(false)
-                        .canceledOnTouchOutside(false)
-                        .onNeutral((dialog, which) ->
-                                new MaterialDialog.Builder(getActivity())
-                                        .title(R.string.help)
-                                        .content(R.string.sync_multiaccount_select_students_text)
-                                        .positiveText(R.string.ok)
-                                        .show()
-                        )
-                        .onNegative(((dialog, which) -> dialog.dismiss()))
-                        .itemsCallbackMultiChoice(null, (dialog, which, text) -> {
-                            // create new profiles, then restart the application or sth
-                            if (text.length < 1 || which.length < 1) {
-                                Toast.makeText(app, R.string.sync_multiaccount_select_students_error, Toast.LENGTH_SHORT).show();
-                                return false;
-                            }
-                            dialog.dismiss();
-                            int pos = 0;
-                            for (int index: which) {
-                                Profile profile = profileList.get(index);
-                                saveProfile(profile, loginStore, profileId+(pos++), profileId);
-                            }
-                            finishSaving();
-
-
-                            String list = "";
-                            for (ProfileFull profileFull: app.db.profileDao().getAllFullNow()) {
-                                d(TAG, profileFull.toString());
-                                list += profileFull.studentNameLong+" student ID "+profileFull.getStudentData("studentId", -1)+"\n";
-                            }
-                            d(TAG, loginStore.toString());
-                            list += loginStore.getLoginData("username", "(NO USERNAME)")+"\n";
-                            new MaterialDialog.Builder(getActivity())
-                                    .title("Znaleziono profile")
-                                    .content(list)
-                                    .positiveText("OK")
-                                    .show();
-
-
-                            return false;
-                        })
-                        .show();
-            }
-
-            @Override
-            public void onSuccess(Context activityContext, ProfileFull profile) {
-                Toast.makeText(activityContext, "Zakończono", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(Context activityContext, int errorCode, String errorText, Throwable throwable, String apiResponse) {
-
-            }
-
-            @Override
-            public void onProgress(int progressStep) {
-
-            }
-        }, -1, null, new LoginStore(-1, LOGIN_TYPE_MOBIDZIENNIK, loginData));*/
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }

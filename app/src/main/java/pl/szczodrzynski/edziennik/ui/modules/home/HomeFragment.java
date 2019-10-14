@@ -42,25 +42,25 @@ import java.util.List;
 import kotlin.Pair;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
+import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.api.v2.ApiService;
 import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest;
-import pl.szczodrzynski.edziennik.api.v2.librus.LibrusTest;
-import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
-import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
-import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeActivity;
-import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
-import pl.szczodrzynski.edziennik.utils.models.Time;
+import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
+import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
+import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeActivity;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
@@ -68,7 +68,6 @@ import static pl.szczodrzynski.edziennik.App.UPDATES_ON_PLAY_STORE;
 import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_GRADES;
 import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_HOME;
 import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_MESSAGES;
-import static pl.szczodrzynski.edziennik.api.v2.FeaturesKt.FEATURE_STUDENT_INFO;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_FINAL;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_PROPOSED;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER2_FINAL;
@@ -123,32 +122,30 @@ public class HomeFragment extends Fragment {
             startActivity(new Intent(activity, MessagesComposeActivity.class));
         }));
 
-        LibrusTest librusTest = new LibrusTest(app);
-
         b.testButton.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.testButton.setOnClickListener((v -> {
-            librusTest.go();
+            app.startService(new Intent(app, ApiService.class));
         }));
 
         b.test2.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.test2.setOnClickListener((v -> {
             List<Pair<Integer, Integer>> list = new ArrayList<>();
             list.add(new Pair<>(DRAWER_ITEM_HOME, 0));
-            EventBus.getDefault().post(new SyncProfileRequest(app.profile.getId(), list));
+            EventBus.getDefault().postSticky(new SyncProfileRequest(app.profile.getId(), list));
         }));
 
         b.test3.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.test3.setOnClickListener((v -> {
             List<Pair<Integer, Integer>> list = new ArrayList<>();
             list.add(new Pair<>(DRAWER_ITEM_MESSAGES, TYPE_SENT));
-            EventBus.getDefault().post(new SyncProfileRequest(app.profile.getId(), list));
+            EventBus.getDefault().postSticky(new SyncProfileRequest(app.profile.getId(), list));
         }));
 
         b.test4.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.test4.setOnClickListener((v -> {
             List<Pair<Integer, Integer>> list = new ArrayList<>();
             list.add(new Pair<>(DRAWER_ITEM_GRADES, 0));
-            EventBus.getDefault().post(new SyncProfileRequest(app.profile.getId(), list));
+            EventBus.getDefault().postSticky(new SyncProfileRequest(app.profile.getId(), list));
         }));
 
         //((TextView)v.findViewById(R.id.nextSync)).setText(getString(R.string.next_sync_format,Time.fromMillis(app.appJobs.syncJobTime).getStringHMS()));

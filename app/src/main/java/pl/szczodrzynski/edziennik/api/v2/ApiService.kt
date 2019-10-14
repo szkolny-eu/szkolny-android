@@ -133,6 +133,7 @@ class ApiService : Service() {
         taskRunningObject = task
 
         if (task is ErrorReportTask) {
+            queueHasErrorReportTask = false
             notification
                     .setCurrentTask(taskRunningId, null)
                     .setProgressRes(R.string.edziennik_notification_api_error_report_title)
@@ -210,8 +211,11 @@ class ApiService : Service() {
          |  __\ \ / / _ \ '_ \| __|  _ <| | | / __|
          | |___\ V /  __/ | | | |_| |_) | |_| \__ \
          |______\_/ \___|_| |_|\__|____/ \__,_|__*/
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    fun onSyncRequest(syncRequest: SyncRequest) {
+    @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
+    fun onSyncRequest(request: SyncRequest) {
+        EventBus.getDefault().removeStickyEvent(request)
+        Log.d(TAG, request.toString())
+
         app.db.profileDao().idsForSyncNow.forEach { id ->
             taskQueue += SyncProfileRequest(id, null).apply {
                 taskId = ++taskMaximumId
@@ -220,31 +224,52 @@ class ApiService : Service() {
         sync()
     }
 
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    fun onSyncProfileRequest(syncProfileRequest: SyncProfileRequest) {
-        Log.d(TAG, syncProfileRequest.toString())
-        taskQueue += syncProfileRequest.apply {
+    @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
+    fun onSyncProfileRequest(request: SyncProfileRequest) {
+        EventBus.getDefault().removeStickyEvent(request)
+        Log.d(TAG, request.toString())
+
+        taskQueue += request.apply {
             taskId = ++taskMaximumId
         }
         sync()
     }
 
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    fun onMessageGetRequest(messageGetRequest: MessageGetRequest) {
-        Log.d(TAG, messageGetRequest.toString())
-        taskQueue += messageGetRequest.apply {
+    @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
+    fun onMessageGetRequest(request: MessageGetRequest) {
+        EventBus.getDefault().removeStickyEvent(request)
+        Log.d(TAG, request.toString())
+
+        taskQueue += request.apply {
             taskId = ++taskMaximumId
         }
         sync()
     }
 
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    fun onTaskCancelRequest(taskCancelRequest: TaskCancelRequest) {
+    @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
+    fun onFirstLoginRequest(request: FirstLoginRequest) {
+        EventBus.getDefault().removeStickyEvent(request)
+        Log.d(TAG, request.toString())
+
+        taskQueue += request.apply {
+            taskId = ++taskMaximumId
+        }
+        sync()
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
+    fun onTaskCancelRequest(request: TaskCancelRequest) {
+        EventBus.getDefault().removeStickyEvent(request)
+        Log.d(TAG, request.toString())
+
         taskCancelled = true
         edziennikInterface?.cancel()
     }
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    fun onServiceCloseRequest(serviceCloseRequest: ServiceCloseRequest) {
+    @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
+    fun onServiceCloseRequest(request: ServiceCloseRequest) {
+        EventBus.getDefault().removeStickyEvent(request)
+        Log.d(TAG, request.toString())
+
         serviceClosed = true
         taskCancelled = true
         edziennikInterface?.cancel()

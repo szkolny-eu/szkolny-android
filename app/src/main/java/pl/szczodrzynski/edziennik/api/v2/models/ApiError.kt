@@ -7,13 +7,14 @@ package pl.szczodrzynski.edziennik.api.v2.models
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
+import pl.szczodrzynski.edziennik.data.api.AppError
 
 class ApiError(val tag: String, val errorCode: Int) {
     var profileId: Int? = null
     var throwable: Throwable? = null
-    private var apiResponse: String? = null
-    private var request: Request? = null
-    private var response: Response? = null
+    var apiResponse: String? = null
+    var request: Request? = null
+    var response: Response? = null
     var isCritical = true
 
     fun withThrowable(throwable: Throwable?): ApiError {
@@ -41,5 +42,13 @@ class ApiError(val tag: String, val errorCode: Int) {
     fun setCritical(isCritical: Boolean): ApiError {
         this.isCritical = isCritical
         return this
+    }
+
+    fun toAppError(): AppError {
+        return AppError(
+                tag,
+                -1,
+                errorCode, response, throwable, apiResponse
+        )
     }
 }

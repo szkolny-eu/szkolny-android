@@ -173,7 +173,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
     open fun saveData() {
         if (profile == null)
-            return
+            return // return on first login
 
         db.profileDao().add(profile)
         db.loginStoreDao().add(loginStore)
