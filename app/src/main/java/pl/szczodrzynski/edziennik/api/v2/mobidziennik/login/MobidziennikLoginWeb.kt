@@ -12,7 +12,6 @@ import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit) {
@@ -21,11 +20,6 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
     }
 
     init { run {
-        if (data.profile == null) {
-            data.error(ApiError(TAG, ERROR_PROFILE_MISSING))
-            return@run
-        }
-
         if (data.isWebLoginValid()) {
             onSuccess()
         }
