@@ -132,6 +132,10 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     }
 
+    override fun firstLogin() {
+        // TODO
+    }
+
     override fun cancel() {
         data.cancel()
     }

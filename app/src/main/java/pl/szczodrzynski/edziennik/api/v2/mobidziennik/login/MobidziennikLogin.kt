@@ -26,13 +26,13 @@ class MobidziennikLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
+        if (cancelled) {
+            onSuccess()
+            return
+        }
         useLoginMethod(data.targetLoginMethodIds.removeAt(0)) { usedMethodId ->
             if (usedMethodId != -1)
                 data.loginMethods.add(usedMethodId)
-            if (cancelled) {
-                onSuccess()
-                return@useLoginMethod
-            }
             nextLoginMethod(onSuccess)
         }
     }

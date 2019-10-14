@@ -133,6 +133,10 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     }
 
+    override fun firstLogin() {
+        // TODO
+    }
+
     override fun cancel() {
         Utils.d(TAG, "Cancelled")
         cancelled = true

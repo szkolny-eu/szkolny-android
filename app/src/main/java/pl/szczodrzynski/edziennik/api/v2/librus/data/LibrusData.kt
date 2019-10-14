@@ -23,11 +23,11 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
+        if (data.cancelled) {
+            onSuccess()
+            return
+        }
         useEndpoint(data.targetEndpointIds.removeAt(0)) {
-            if (data.cancelled) {
-                onSuccess()
-                return@useEndpoint
-            }
             nextEndpoint(onSuccess)
         }
     }

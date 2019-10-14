@@ -30,11 +30,11 @@ class TemplateData(val data: DataTemplate, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
+        if (cancelled) {
+            onSuccess()
+            return
+        }
         useEndpoint(data.targetEndpointIds.removeAt(0)) {
-            if (cancelled) {
-                onSuccess()
-                return@useEndpoint
-            }
             nextEndpoint(onSuccess)
         }
     }

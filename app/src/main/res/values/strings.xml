@@ -943,4 +943,5 @@
     <string name="edziennik_progress_endpoint_homework">Pobieranie zadań domowych...</string>
     <string name="edziennik_progress_endpoint_attendance_types">Pobieranie kategorii obecności...</string>
     <string name="edziennik_progress_endpoint_announcements">Pobieranie ogłoszeń szkolnych...</string>
+    <string name="edziennik_notification_api_first_login_title">Pierwsze logowanie</string>
 </resources>

@@ -136,6 +136,10 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
 
     }
 
+    override fun firstLogin() {
+        // TODO
+    }
+
     override fun cancel() {
         Utils.d(TAG, "Cancelled")
         cancelled = true

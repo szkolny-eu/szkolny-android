@@ -28,13 +28,13 @@ class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
+        if (cancelled) {
+            onSuccess()
+            return
+        }
         useLoginMethod(data.targetLoginMethodIds.removeAt(0)) { usedMethodId ->
             if (usedMethodId != -1)
                 data.loginMethods.add(usedMethodId)
-            if (cancelled) {
-                onSuccess()
-                return@useLoginMethod
-            }
             nextLoginMethod(onSuccess)
         }
     }

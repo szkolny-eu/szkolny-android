@@ -87,6 +87,7 @@ class ApiService : Service() {
             apiError.throwable?.printStackTrace()
             if (apiError.isCritical) {
                 notification.setCriticalError().post()
+                taskRunningObject = null
                 taskRunning = false
                 taskRunningId = -1
                 sync()
@@ -148,18 +149,30 @@ class ApiService : Service() {
             return
         }
 
-        // get the requested profile and login store
-        val profile: Profile? = app.db.profileDao().getByIdNow(task.profileId)
-        if (profile == null || !profile.syncEnabled) {
-            return
+        val profile: Profile?
+        val loginStore: LoginStore
+        if (task is FirstLoginRequest) {
+            // get the requested profile and login store
+            profile = null
+            loginStore = task.loginStore
+            // save the profile ID and name as the current task's
+            taskProfileId = -1
+            taskProfileName = getString(R.string.edziennik_notification_api_first_login_title)
         }
-        val loginStore: LoginStore? = app.db.loginStoreDao().getByIdNow(profile.loginStoreId)
-        if (loginStore == null) {
-            return
+        else {
+            // get the requested profile and login store
+            profile = app.db.profileDao().getByIdNow(task.profileId)
+            if (profile == null || !profile.syncEnabled) {
+                return
+            }
+            loginStore = app.db.loginStoreDao().getByIdNow(profile.loginStoreId)
+            if (loginStore == null) {
+                return
+            }
+            // save the profile ID and name as the current task's
+            taskProfileId = profile.id
+            taskProfileName = profile.name
         }
-        // save the profile ID and name as the current task's
-        taskProfileId = profile.id
-        taskProfileName = profile.name
         taskProgress = 0
         taskProgressRes = null
 
@@ -182,6 +195,7 @@ class ApiService : Service() {
                     featureIds = task.viewIds?.flatMap { Features.getIdsByView(it.first, it.second) } ?: Features.getAllIds(),
                     viewId = task.viewIds?.get(0)?.first)
             is MessageGetRequest -> edziennikInterface?.getMessage(task.messageId)
+            is FirstLoginRequest -> edziennikInterface?.firstLogin()
         }
     }
 
