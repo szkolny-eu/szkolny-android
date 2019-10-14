@@ -67,6 +67,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_announcements)
                 LibrusApiAnnouncements(data) { onSuccess() }
             }
+            ENDPOINT_LIBRUS_API_LUCKY_NUMBER -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
+                LibrusApiLuckyNumber(data) { onSuccess() }
+            }
             else -> onSuccess()
         }
     }
