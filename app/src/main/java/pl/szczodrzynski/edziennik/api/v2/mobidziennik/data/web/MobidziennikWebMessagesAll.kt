@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web
 
 import org.jsoup.Jsoup
+import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX
@@ -32,7 +33,7 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
 
             val listElement = doc.getElementsByClass("spis").first()
             if (listElement == null) {
-                data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, SYNC_ALWAYS)
+                data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, 7*DAY)
                 onSuccess()
                 return@webGet
             }
@@ -82,7 +83,9 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
                 data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true, addedDate))
             }
 
-            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, SYNC_ALWAYS)
+            // sync every 7 days as we probably don't except more than
+            // 30 received messages during a week, without any normal sync
+            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, 7*DAY)
             onSuccess()
         }
     }
