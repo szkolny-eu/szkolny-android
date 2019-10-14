@@ -1,24 +1,26 @@
 package pl.szczodrzynski.edziennik.data.db;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import pl.szczodrzynski.edziennik.data.db.converters.ConverterDate;
+import pl.szczodrzynski.edziennik.data.db.converters.ConverterJsonObject;
+import pl.szczodrzynski.edziennik.data.db.converters.ConverterListLong;
+import pl.szczodrzynski.edziennik.data.db.converters.ConverterListString;
+import pl.szczodrzynski.edziennik.data.db.converters.ConverterTime;
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement;
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementDao;
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer;
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimerDao;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceDao;
-import pl.szczodrzynski.edziennik.data.db.converters.ConverterDate;
-import pl.szczodrzynski.edziennik.data.db.converters.ConverterJsonObject;
-import pl.szczodrzynski.edziennik.data.db.converters.ConverterListLong;
-import pl.szczodrzynski.edziennik.data.db.converters.ConverterListString;
-import pl.szczodrzynski.edziennik.data.db.converters.ConverterTime;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLogDao;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
@@ -60,8 +62,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherDao;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.TeamDao;
 import pl.szczodrzynski.edziennik.utils.models.Date;
-
-import android.content.Context;
 
 @Database(entities = {
         Grade.class,
@@ -600,7 +600,20 @@ public abstract class AppDb extends RoomDatabase {
     private static final Migration MIGRATION_57_58 = new Migration(57, 58) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("UPDATE metadata SET thingType = 5 WHERE thingType = 4 AND thingId IN (SELECT eventId FROM events WHERE eventType = -1)");
+            database.execSQL("ALTER TABLE metadata RENAME TO _metadata_old;");
+            database.execSQL("DROP INDEX index_metadata_profileId_thingType_thingId;");
+            database.execSQL("UPDATE _metadata_old SET thingType = "+Metadata.TYPE_HOMEWORK+" WHERE thingType = "+Metadata.TYPE_EVENT+" AND thingId IN (SELECT eventId FROM events WHERE eventType = -1);");
+            database.execSQL("CREATE TABLE metadata (\n"+
+                    "profileId INTEGER NOT NULL,\n"+
+                    "metadataId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n"+
+                    "thingType INTEGER NOT NULL,\n"+
+                    "thingId INTEGER NOT NULL,\n"+
+                    "seen INTEGER NOT NULL,\n"+
+                    "notified INTEGER NOT NULL,\n"+
+                    "addedDate INTEGER NOT NULL);");
+            database.execSQL("INSERT INTO metadata SELECT * FROM (SELECT * FROM _metadata_old ORDER BY addedDate DESC) GROUP BY thingId;");
+            database.execSQL("DROP TABLE _metadata_old;");
+            database.execSQL("CREATE UNIQUE INDEX index_metadata_profileId_thingType_thingId ON metadata (profileId, thingType, thingId);");
         }
     };
 
