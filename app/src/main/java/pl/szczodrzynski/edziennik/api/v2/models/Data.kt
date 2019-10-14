@@ -2,7 +2,6 @@ package pl.szczodrzynski.edziennik.api.v2.models
 
 import android.util.LongSparseArray
 import android.util.SparseArray
-import androidx.core.util.isNotEmpty
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.App
@@ -84,18 +83,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
      */
     var endpointArgs = mutableMapOf<Int, JsonObject>()
 
-    /**
-     * A list of per-endpoint next sync time descriptors.
-     *
-     * [EndpointTimer.nextSync] may be:
-     * - [pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_NEVER] to never sync the endpoint (pretty useless)
-     * - [pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS] to sync the endpoint during every sync
-     * - [pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_IF_EXPLICIT] to sync the endpoint only if the matching
-     *      feature ID is in the input set
-     * - [pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_IF_EXPLICIT_OR_ALL] to sync if the matching feature ID
-     *      is in the input set OR the sync covers all feature IDs
-     * - a Unix-epoch timestamp (in millis) to sync the endpoint if [System.currentTimeMillis] is greater or equal to this value
-     */
     var endpointTimers = mutableListOf<EndpointTimer>()
 
     val teacherList = LongSparseArray<Teacher>()
@@ -148,9 +135,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val db by lazy { app.db }
 
     init {
-
         clear()
-
         if (profile != null) {
             endpointTimers = db.endpointTimerDao().getAllNow(profile.id).toMutableList()
             db.teacherDao().getAllNow(profileId).toSparseArray(teacherList) { it.id }
@@ -159,11 +144,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.lessonRangeDao().getAllNow(profileId).toSparseArray(lessonRanges) { it.lessonNumber }
             db.gradeCategoryDao().getAllNow(profileId).toSparseArray(gradeCategories) { it.categoryId }
         }
-
-        /*val teacher = teachers.byNameFirstLast("Jan Kowalski") ?: Teacher(1, 1, "", "").let {
-            teachers.add(it)
-        }*/
-
     }
 
     fun clear() {

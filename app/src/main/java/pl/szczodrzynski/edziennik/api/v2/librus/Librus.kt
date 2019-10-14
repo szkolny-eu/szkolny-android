@@ -7,18 +7,16 @@ package pl.szczodrzynski.edziennik.api.v2.librus
 import android.util.Log
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_NOT_NEEDED
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLogin
 import pl.szczodrzynski.edziennik.api.v2.librusLoginMethods
-import pl.szczodrzynski.edziennik.api.v2.mobidziennik.MobidziennikFeatures
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.api.v2.models.Feature
-import pl.szczodrzynski.edziennik.data.db.modules.api.*
+import pl.szczodrzynski.edziennik.api.v2.prepare
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.utils.Utils
 
 class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
@@ -27,13 +25,12 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     val internalErrorList = mutableListOf<Int>()
     val data: DataLibrus
-    private var cancelled = false
 
     init {
         data = DataLibrus(app, profile, loginStore).apply {
             callback = wrapCallback(this@Librus.callback)
+            satisfyLoginMethods()
         }
-        data.satisfyLoginMethods()
     }
 
     private fun completed() {
@@ -50,77 +47,9 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                                            __/ |
                                           |__*/
     override fun sync(featureIds: List<Int>, viewId: Int?) {
-        val possibleLoginMethods = data.loginMethods.toMutableList()
-
-        for (loginMethod in librusLoginMethods) {
-            if (loginMethod.isPossible(profile, loginStore))
-                possibleLoginMethods += loginMethod.loginMethodId
-        }
-
-        //var highestLoginMethod = 0
-        var endpointList = mutableListOf<Feature>()
-        val requiredLoginMethods = mutableListOf<Int>()
-
-        data.targetEndpointIds.clear()
-        data.targetLoginMethodIds.clear()
-
-        // get all endpoints for every feature, only if possible to login and possible/necessary to sync
-        for (featureId in featureIds) {
-            LibrusFeatures.filter {
-                it.featureId == featureId // feature ID matches
-                        && possibleLoginMethods.containsAll(it.requiredLoginMethods) // is possible to login
-                        && it.shouldSync?.invoke(data) ?: true // is necessary/possible to sync
-            }.let {
-                endpointList.addAll(it)
-            }
-        }
-
-        val timestamp = System.currentTimeMillis()
-
-        endpointList = endpointList
-                // sort the endpoint list by feature ID and priority
-                .sortedWith(compareBy(Feature::featureId, Feature::priority))
-                // select only the most important endpoint for each feature
-                .distinctBy { it.featureId }
-                .toMutableList()
-                // add all endpoint IDs and required login methods, filtering using timers
-                .onEach { feature ->
-                    feature.endpointIds.forEach { endpoint ->
-                        (data.endpointTimers
-                                .singleOrNull { it.endpointId == endpoint.first } ?: EndpointTimer(data.profile?.id ?: -1, endpoint.first))
-                                .let { timer ->
-                                    if (timer.nextSync == SYNC_ALWAYS ||
-                                            (viewId != null && timer.viewId == viewId) ||
-                                            (timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp)) {
-                                        data.targetEndpointIds.add(endpoint.first)
-                                        requiredLoginMethods.add(endpoint.second)
-                                    }
-                                }
-                    }
-                }
-
-        // check every login method for any dependencies
-        for (loginMethodId in requiredLoginMethods) {
-            var requiredLoginMethod: Int? = loginMethodId
-            while (requiredLoginMethod != LOGIN_METHOD_NOT_NEEDED) {
-                librusLoginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let { loginMethod ->
-                    if (requiredLoginMethod != null)
-                        data.targetLoginMethodIds.add(requiredLoginMethod!!)
-                    requiredLoginMethod = loginMethod.requiredLoginMethod(data.profile, data.loginStore)
-                }
-            }
-        }
-
-        // sort and distinct every login method and endpoint
-        data.targetLoginMethodIds = data.targetLoginMethodIds.toHashSet().toMutableList()
-        data.targetLoginMethodIds.sort()
-
-        data.targetEndpointIds = data.targetEndpointIds.toHashSet().toMutableList()
-        data.targetEndpointIds.sort()
-
+        data.prepare(librusLoginMethods, LibrusFeatures, featureIds, viewId)
         Log.d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
         Log.d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
-
         LibrusLogin(data) {
             LibrusData(data) {
                 completed()
@@ -137,6 +66,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun cancel() {
+        Utils.d(TAG, "Cancelled")
         data.cancel()
     }
 
