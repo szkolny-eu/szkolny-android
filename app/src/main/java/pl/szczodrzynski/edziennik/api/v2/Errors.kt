@@ -46,6 +46,8 @@ const val ERROR_PROFILE_MISSING                             = 105
 const val ERROR_INVALID_LOGIN_MODE                          = 110
 const val ERROR_LOGIN_METHOD_NOT_SATISFIED                  = 111
 
+const val ERROR_NO_STUDENTS_IN_ACCOUNT                      = 115
+
 const val CODE_INTERNAL_LIBRUS_ACCOUNT_410                  = 120
 const val CODE_INTERNAL_LIBRUS_SYNERGIA_EXPIRED             = 121
 const val ERROR_LOGIN_LIBRUS_API_CAPTCHA_NEEDED             = 124

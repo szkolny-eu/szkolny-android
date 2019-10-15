@@ -40,7 +40,7 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
                     val profile = Profile()
                     profile.studentNameLong = studentNamesLong[index]
                     profile.studentNameShort = studentNamesShort[index]
-                    profile.name = profile.studentNameLong + " (APIv2)"
+                    profile.name = profile.studentNameLong
                     profile.subname = data.loginUsername
                     profile.empty = true
                     profile.putStudentData("studentId", studentIds[index])

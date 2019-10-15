@@ -9,14 +9,15 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
-import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLoginWeb
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.getInt
+import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import java.net.HttpURLConnection.*
+import java.net.HttpURLConnection.HTTP_BAD_REQUEST
+import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 
 class LibrusLoginApi {
     companion object {
@@ -31,7 +32,7 @@ class LibrusLoginApi {
         this.data = data
         this.onSuccess = onSuccess
 
-        if (data.profile == null) {
+        if (data.loginStore.mode == LOGIN_MODE_LIBRUS_EMAIL && data.profile == null) {
             data.error(ApiError(TAG, ERROR_PROFILE_MISSING))
             return
         }

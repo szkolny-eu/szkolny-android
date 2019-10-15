@@ -7,9 +7,14 @@ package pl.szczodrzynski.edziennik.api.v2.models
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class DataRemoveModel {
+    var removeAll: Boolean? = null
     var removeSemester: Int? = null
     var removeDateFrom: Date? = null
     var removeDateTo: Date? = null
+
+    constructor() {
+        this.removeAll = true
+    }
 
     constructor(semester: Int) {
         this.removeSemester = semester

@@ -1,18 +1,15 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.login
 
 import com.google.gson.JsonObject
-import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
-import im.wangchao.mhttp.callback.JsonCallbackHandler
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusPortal
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import java.net.HttpURLConnection.*
 
-class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
+class SynergiaTokenExtractor(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusPortal(data) {
     companion object {
         private const val TAG = "SynergiaTokenExtractor"
     }
@@ -44,7 +41,7 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
     private fun synergiaAccount(): Boolean {
 
         val accountLogin = data.apiLogin ?: return false
-        val accessToken = data.portalAccessToken ?: return false
+        data.portalAccessToken ?: return false
 
         d(TAG, "Request: Librus/SynergiaTokenExtractor - $LIBRUS_ACCOUNT_URL$accountLogin")
 
@@ -63,77 +60,14 @@ class SynergiaTokenExtractor(val data: DataLibrus, val onSuccess: () -> Unit) {
 
                 // TODO remove this
                 data.profile?.studentNameLong = json.getString("studentName")
-                val nameParts = json.getString("studentName")?.split(" ")?.toTypedArray()
+                val nameParts = json.getString("studentName")?.split(" ")
                 data.profile?.studentNameShort = nameParts?.get(0) + " " + nameParts?.get(1)?.get(0)
 
                 onSuccess()
             }
         }
 
-        val callback = object : JsonCallbackHandler() {
-            override fun onSuccess(json: JsonObject?, response: Response?) {
-                if (json == null) {
-                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
-                            .withResponse(response))
-                    return
-                }
-                val error = if (response?.code() == 200) null else
-                    json.getString("reason") ?:
-                    json.getString("message") ?:
-                    json.getString("hint") ?:
-                    json.getString("Code")
-                error?.let { code ->
-                    when (code) {
-                        "requires_an_action" -> ERROR_LIBRUS_PORTAL_SYNERGIA_DISCONNECTED
-                        "Access token is invalid" -> ERROR_LIBRUS_PORTAL_TOKEN_EXPIRED
-                        "ApiDisabled" -> ERROR_LIBRUS_PORTAL_API_DISABLED
-                        "Account not found" -> ERROR_LIBRUS_PORTAL_SYNERGIA_NOT_FOUND
-                        else -> ERROR_LIBRUS_PORTAL_OTHER
-                    }.let { errorCode ->
-                        data.error(ApiError(TAG, errorCode)
-                                .withApiResponse(json)
-                                .withResponse(response))
-                        return
-                    }
-                }
-                if (response?.code() == HTTP_OK) {
-                    try {
-                        onSuccess(json, response)
-                    } catch (e: NullPointerException) {
-                        e.printStackTrace()
-                        data.error(ApiError(TAG, EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN)
-                                .withResponse(response)
-                                .withThrowable(e)
-                                .withApiResponse(json))
-                    }
-
-                } else {
-                    data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
-                            .withResponse(response)
-                            .withApiResponse(json))
-                }
-            }
-
-            override fun onFailure(response: Response?, throwable: Throwable?) {
-                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
-                        .withResponse(response)
-                        .withThrowable(throwable))
-            }
-        }
-
-        Request.builder()
-                .url(LIBRUS_ACCOUNT_URL + accountLogin)
-                .userAgent(LIBRUS_USER_AGENT)
-                .addHeader("Authorization", "Bearer $accessToken")
-                .get()
-                .allowErrorCode(HTTP_NOT_FOUND)
-                .allowErrorCode(HTTP_FORBIDDEN)
-                .allowErrorCode(HTTP_UNAUTHORIZED)
-                .allowErrorCode(HTTP_BAD_REQUEST)
-                .allowErrorCode(HTTP_GONE)
-                .callback(callback)
-                .build()
-                .enqueue()
+        portalGet(TAG, LIBRUS_ACCOUNT_URL+accountLogin, onSuccess = onSuccess)
         return true
     }
 }

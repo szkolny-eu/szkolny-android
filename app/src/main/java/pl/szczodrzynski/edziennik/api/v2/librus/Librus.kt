@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
+import pl.szczodrzynski.edziennik.api.v2.librus.firstlogin.LibrusFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLogin
 import pl.szczodrzynski.edziennik.api.v2.librusLoginMethods
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
@@ -62,7 +63,9 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun firstLogin() {
-        // TODO
+        LibrusFirstLogin(data) {
+            completed()
+        }
     }
 
     override fun cancel() {

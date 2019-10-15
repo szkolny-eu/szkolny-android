@@ -17,7 +17,7 @@ import java.net.HttpURLConnection.*
 
 open class LibrusApi(open val data: DataLibrus) {
     companion object {
-        const val TAG = "LibrusApi"
+        private const val TAG = "LibrusApi"
     }
 
     val profileId

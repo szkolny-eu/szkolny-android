@@ -19,11 +19,13 @@ const val LIBRUS_AUTHORIZE_URL = "https://portal.librus.pl/oauth2/authorize?clie
 const val LIBRUS_LOGIN_URL = "https://portal.librus.pl/rodzina/login/action"
 const val LIBRUS_TOKEN_URL = "https://portal.librus.pl/oauth2/access_token"
 
-const val LIBRUS_ACCOUNT_URL = "https://portal.librus.pl/api/v2/SynergiaAccounts/fresh/" // + login
-const val LIBRUS_ACCOUNTS_URL = "https://portal.librus.pl/api/v2/SynergiaAccounts"
+const val LIBRUS_ACCOUNT_URL = "/v2/SynergiaAccounts/fresh/" // + login
+const val LIBRUS_ACCOUNTS_URL = "/v2/SynergiaAccounts"
 
 /** https://api.librus.pl/2.0 */
 const val LIBRUS_API_URL = "https://api.librus.pl/2.0"
+/** https://portal.librus.pl/api */
+const val LIBRUS_PORTAL_URL = "https://portal.librus.pl/api"
 /** https://api.librus.pl/OAuth/Token */
 const val LIBRUS_API_TOKEN_URL = "https://api.librus.pl/OAuth/Token"
 /** https://api.librus.pl/OAuth/TokenJST */

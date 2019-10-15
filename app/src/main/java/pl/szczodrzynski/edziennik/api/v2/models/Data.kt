@@ -190,6 +190,11 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         db.gradeCategoryDao().clear(profileId)
         db.gradeCategoryDao().addAll(gradeCategories.values())
 
+        gradesToRemove?.let { it ->
+            it.removeAll?.let { _ -> db.gradeDao().clear(profileId) }
+            it.removeSemester?.let { semester -> db.gradeDao().clearForSemester(profileId, semester) }
+        }
+
         if (lessonList.isNotEmpty()) {
             db.lessonDao().clear(profile.id)
             db.lessonDao().addAll(lessonList)
@@ -197,7 +202,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         if (lessonChangeList.isNotEmpty())
             db.lessonChangeDao().addAll(lessonChangeList)
         if (gradeList.isNotEmpty()) {
-            db.gradeDao().clear(profile.id)
             db.gradeDao().addAll(gradeList)
         }
         if (eventList.isNotEmpty()) {
