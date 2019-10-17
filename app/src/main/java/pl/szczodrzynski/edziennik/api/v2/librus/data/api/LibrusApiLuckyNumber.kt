@@ -25,19 +25,19 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
             if (json.isJsonNull) {
                 profile?.luckyNumberEnabled = false
             } else {
-                profile?.also { profile ->
-                    profile.luckyNumber = -1
-                    profile.luckyNumberDate = Date.getToday()
+                profile?.apply {
+                    luckyNumber = -1
+                    luckyNumberDate = Date.getToday()
 
-                    json.getJsonObject("LuckyNumber")?.also { luckyNumber ->
-                        profile.luckyNumber = luckyNumber.getInt("LuckyNumber") ?: -1
-                        profile.luckyNumberDate = Date.fromY_m_d(luckyNumber.getString("LuckyNumberDay"))
+                    json.getJsonObject("LuckyNumber")?.also { luckyNumberEl ->
+                        luckyNumber = luckyNumberEl.getInt("LuckyNumber") ?: -1
+                        luckyNumberDate = Date.fromY_m_d(luckyNumberEl.getString("LuckyNumberDay"))
                     }
 
                     data.luckyNumberList.add(LuckyNumber(
                             profileId,
-                            profile.luckyNumberDate ?: Date.getToday(),
-                            profile.luckyNumber
+                            luckyNumberDate ?: Date.getToday(),
+                            luckyNumber
                     ))
                 }
             }
