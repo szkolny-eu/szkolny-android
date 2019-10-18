@@ -75,6 +75,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_classes)
                 LibrusApiClasses(data) { onSuccess() }
             }
+            ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_teacher_free_days)
+                LibrusApiTeacherFreeDays(data) { onSuccess() }
+            }
             else -> onSuccess()
         }
     }

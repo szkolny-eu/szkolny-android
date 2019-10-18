@@ -31,6 +31,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.notification.Notification
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.toSparseArray
@@ -135,6 +136,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
     val luckyNumberList = mutableListOf<LuckyNumber>()
 
+    val teacherAbsenceList = mutableListOf<TeacherAbsence>()
+
     val messageList = mutableListOf<Message>()
     val messageRecipientList = mutableListOf<MessageRecipient>()
     val messageRecipientIgnoreList = mutableListOf<MessageRecipient>()
@@ -174,6 +177,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         attendanceList.clear()
         announcementList.clear()
         luckyNumberList.clear()
+        teacherAbsenceList.clear()
         messageList.clear()
         messageRecipientList.clear()
         messageRecipientIgnoreList.clear()
@@ -232,6 +236,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.announcementDao().addAll(announcementList)
         if (luckyNumberList.isNotEmpty())
             db.luckyNumberDao().addAll(luckyNumberList)
+        if (teacherAbsenceList.isNotEmpty())
+            db.teacherAbsenceDao().addAll(teacherAbsenceList)
 
         if (messageList.isNotEmpty())
             db.messageDao().addAllIgnore(messageList)
