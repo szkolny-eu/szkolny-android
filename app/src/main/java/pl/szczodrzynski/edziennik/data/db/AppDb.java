@@ -11,6 +11,7 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterDate;
+import pl.szczodrzynski.edziennik.data.db.converters.ConverterDateInt;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterJsonObject;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterListLong;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterListString;
@@ -87,13 +88,14 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         DebugLog.class,
         EndpointTimer.class,
         LessonRange.class,
-        Metadata.class}, version = 58)
+        Metadata.class}, version = 59)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
         ConverterJsonObject.class,
         ConverterListLong.class,
-        ConverterListString.class})
+        ConverterListString.class,
+        ConverterDateInt.class})
 public abstract class AppDb extends RoomDatabase {
 
     public abstract GradeDao gradeDao();
@@ -616,6 +618,32 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("CREATE UNIQUE INDEX index_metadata_profileId_thingType_thingId ON metadata (profileId, thingType, thingId);");
         }
     };
+    private static final Migration MIGRATION_58_59 = new Migration(58, 59) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("UPDATE metadata SET addedDate = addedDate*1000 WHERE addedDate < 10000000000;");
+            database.execSQL("INSERT INTO metadata (profileId, thingType, thingId, seen, notified, addedDate)\n" +
+                    "SELECT profileId,\n" +
+                    "10 AS thingType,\n" +
+                    "luckyNumberDate*10000+substr(luckyNumberDate, 6)*100+substr(luckyNumberDate, 9) AS thingId,\n" +
+                    "1 AS seen,\n" +
+                    "1 AS notified,\n" +
+                    "CAST(strftime('%s', luckyNumberDate) AS INT)*1000 AS addedDate\n" +
+                    "FROM luckyNumbers;");
+            database.execSQL("ALTER TABLE luckyNumbers RENAME TO _old_luckyNumbers;");
+            database.execSQL("CREATE TABLE luckyNumbers (\n" +
+                    "profileId INTEGER NOT NULL,\n" +
+                    "luckyNumberDate INTEGER NOT NULL, \n" +
+                    "luckyNumber INTEGER NOT NULL, \n" +
+                    "PRIMARY KEY(profileId, luckyNumberDate))");
+            database.execSQL("INSERT INTO luckyNumbers (profileId, luckyNumberDate, luckyNumber)\n" +
+                    "SELECT profileId,\n" +
+                    "luckyNumberDate*10000+substr(luckyNumberDate, 6)*100+substr(luckyNumberDate, 9) AS luckyNumberDate,\n" +
+                    "luckyNumber\n" +
+                    "FROM _old_luckyNumbers;");
+            database.execSQL("DROP TABLE _old_luckyNumbers;");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -671,7 +699,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_54_55,
                                     MIGRATION_55_56,
                                     MIGRATION_56_57,
-                                    MIGRATION_57_58
+                                    MIGRATION_57_58,
+                                    MIGRATION_58_59
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

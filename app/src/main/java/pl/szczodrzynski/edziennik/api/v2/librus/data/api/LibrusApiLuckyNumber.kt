@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_LUCKY_NUMBER
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.getInt
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.getString
@@ -21,24 +22,31 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
     }
 
     init {
+        data.profile?.luckyNumber = -1
+        data.profile?.luckyNumberDate = null
+
         apiGet(TAG, "LuckyNumbers") { json ->
             if (json.isJsonNull) {
-                profile?.luckyNumberEnabled = false
+                //profile?.luckyNumberEnabled = false
             } else {
-                profile?.apply {
-                    luckyNumber = -1
-                    luckyNumberDate = Date.getToday()
+                json.getJsonObject("LuckyNumber")?.also { luckyNumberEl ->
 
-                    json.getJsonObject("LuckyNumber")?.also { luckyNumberEl ->
-                        luckyNumber = luckyNumberEl.getInt("LuckyNumber") ?: -1
-                        luckyNumberDate = Date.fromY_m_d(luckyNumberEl.getString("LuckyNumberDay"))
-                    }
-
-                    data.luckyNumberList.add(LuckyNumber(
+                    val luckyNumberObject = LuckyNumber(
                             profileId,
-                            luckyNumberDate ?: Date.getToday(),
-                            luckyNumber
-                    ))
+                            Date.fromY_m_d(luckyNumberEl.getString("LuckyNumberDay")) ?: Date.getToday(),
+                            luckyNumberEl.getInt("LuckyNumber") ?: -1
+                    )
+
+                    data.luckyNumberList.add(luckyNumberObject)
+                    data.metadataList.add(
+                            Metadata(
+                                    profileId,
+                                    Metadata.TYPE_LUCKY_NUMBER,
+                                    luckyNumberObject.date.value.toLong(),
+                                    profile?.empty ?: false,
+                                    profile?.empty ?: false,
+                                    System.currentTimeMillis()
+                            ))
                 }
             }
 

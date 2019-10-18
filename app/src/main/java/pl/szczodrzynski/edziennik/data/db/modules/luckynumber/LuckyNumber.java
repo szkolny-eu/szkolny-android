@@ -1,8 +1,9 @@
 package pl.szczodrzynski.edziennik.data.db.modules.luckynumber;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.annotation.NonNull;
+import androidx.room.Ignore;
 
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
@@ -12,7 +13,7 @@ public class LuckyNumber {
     public int profileId;
 
     @NonNull
-    @ColumnInfo(name = "luckyNumberDate")
+    @ColumnInfo(name = "luckyNumberDate", typeAffinity = 3)
     public Date date;
     @ColumnInfo(name = "luckyNumber")
     public int number;
@@ -23,4 +24,8 @@ public class LuckyNumber {
         this.number = number;
     }
 
+    @Ignore
+    public LuckyNumber() {
+        this.date = Date.getToday();
+    }
 }
