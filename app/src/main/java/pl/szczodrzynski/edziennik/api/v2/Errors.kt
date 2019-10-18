@@ -126,3 +126,4 @@ const val EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN               = 902
 const val EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN            = 903
 const val EXCEPTION_LIBRUS_API_REQUEST                      = 904
 const val EXCEPTION_MOBIDZIENNIK_WEB_REQUEST                = 905
+const val EXCEPTION_NOTIFY_AND_SYNC                         = 910

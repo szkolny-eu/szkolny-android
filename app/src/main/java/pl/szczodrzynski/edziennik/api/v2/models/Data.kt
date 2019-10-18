@@ -5,8 +5,12 @@ import android.util.SparseArray
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.api.v2.DataNotifications
+import pl.szczodrzynski.edziennik.api.v2.EXCEPTION_NOTIFY_AND_SYNC
+import pl.szczodrzynski.edziennik.api.v2.ServerSync
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.data.api.AppError.*
+import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance
@@ -23,6 +27,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice
+import pl.szczodrzynski.edziennik.data.db.modules.notification.Notification
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
@@ -38,6 +43,9 @@ import java.net.UnknownHostException
 import javax.net.ssl.SSLException
 
 open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
+    companion object {
+        private const val TAG = "Data"
+    }
 
     var fakeLogin = false
 
@@ -84,6 +92,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     var endpointArgs = mutableMapOf<Int, JsonObject>()
 
     var endpointTimers = mutableListOf<EndpointTimer>()
+
+    val notifications = mutableListOf<Notification>()
 
     val teacherList = LongSparseArray<Teacher>()
     val subjectList = LongSparseArray<Subject>()
@@ -132,7 +142,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val metadataList = mutableListOf<Metadata>()
     val messageMetadataList = mutableListOf<Metadata>()
 
-    val db by lazy { app.db }
+    val db: AppDb by lazy { app.db }
 
     init {
         clear()
@@ -174,6 +184,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     open fun saveData() {
         if (profile == null)
             return // return on first login
+
+        profile.empty = false
 
         db.profileDao().add(profile)
         db.loginStoreDao().add(loginStore)
@@ -233,6 +245,20 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.metadataDao().setSeen(messageMetadataList)
     }
 
+    fun notifyAndSyncEvents(onSuccess: () -> Unit) {
+        try {
+            DataNotifications(this)
+            ServerSync(this) {
+                db.notificationDao().addAll(notifications)
+                onSuccess()
+            }
+        }
+        catch (e: Exception) {
+            error(ApiError(TAG, EXCEPTION_NOTIFY_AND_SYNC)
+                    .withThrowable(e))
+        }
+    }
+
     fun setSyncNext(endpointId: Int, syncIn: Long? = null, viewId: Int? = null) {
         EndpointTimer(profile?.id ?: -1, endpointId).apply {
             syncedNow()
@@ -257,7 +283,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     }
 
     fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {
-        var code = when (throwable) {
+        val code = when (throwable) {
             is UnknownHostException, is SSLException, is InterruptedIOException -> CODE_NO_INTERNET
             is SocketTimeoutException -> CODE_TIMEOUT
             else -> when (response?.code()) {
@@ -268,7 +294,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         error(ApiError(tag, code).apply { profileId = profile?.id ?: -1 }.withResponse(response).withThrowable(throwable).withApiResponse(apiResponse))
     }
     fun error(tag: String, errorCode: Int, response: Response? = null, apiResponse: String? = null) {
-        var code = when (null) {
+        val code = when (null) {
             is UnknownHostException, is SSLException, is InterruptedIOException -> CODE_NO_INTERNET
             is SocketTimeoutException -> CODE_TIMEOUT
             else -> when (response?.code()) {

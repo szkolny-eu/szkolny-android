@@ -13,8 +13,13 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.events.*
+import pl.szczodrzynski.edziennik.api.v2.events.SyncErrorEvent
+import pl.szczodrzynski.edziennik.api.v2.events.SyncFinishedEvent
+import pl.szczodrzynski.edziennik.api.v2.events.SyncProfileFinishedEvent
+import pl.szczodrzynski.edziennik.api.v2.events.SyncProgressEvent
 import pl.szczodrzynski.edziennik.api.v2.events.requests.*
+import pl.szczodrzynski.edziennik.api.v2.events.task.ErrorReportTask
+import pl.szczodrzynski.edziennik.api.v2.events.task.NotifyTask
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.Librus
@@ -25,7 +30,7 @@ import pl.szczodrzynski.edziennik.api.v2.template.Template
 import pl.szczodrzynski.edziennik.api.v2.vulcan.Vulcan
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import kotlin.math.max
 import kotlin.math.min
 
 class ApiService : Service() {
@@ -39,6 +44,7 @@ class ApiService : Service() {
     private val taskQueue = mutableListOf<ApiTask>()
     private val errorList = mutableListOf<ApiError>()
     private var queueHasErrorReportTask = false
+    private var queueHasNotifyTask = false
 
     private var serviceClosed = false
     private var taskCancelled = false
@@ -64,8 +70,13 @@ class ApiService : Service() {
     private val taskCallback = object : EdziennikCallback {
         override fun onCompleted() {
             edziennikInterface = null
-            if (!taskCancelled) {
-                EventBus.getDefault().post(SyncProfileFinishedEvent(taskProfileId))
+            if (taskRunningObject is SyncProfileRequest) {
+                // post an event if this task is a sync, not e.g. first login or message getting
+                if (!taskCancelled) {
+                    EventBus.getDefault().post(SyncProfileFinishedEvent(taskProfileId))
+                }
+                // add a notifying task to create data notifications of this profile
+                addNotifyTask()
             }
             notification.setIdle().post()
             taskRunningObject = null
@@ -86,6 +97,12 @@ class ApiService : Service() {
             errorList.add(apiError)
             apiError.throwable?.printStackTrace()
             if (apiError.isCritical) {
+                // if this error ends the sync, post an error notification
+                // if this is a sync task, create a notifying task
+                if (taskRunningObject is SyncProfileRequest) {
+                    // add a notifying task to create data notifications of this profile
+                    addNotifyTask()
+                }
                 notification.setCriticalError().post()
                 taskRunningObject = null
                 taskRunning = false
@@ -108,6 +125,18 @@ class ApiService : Service() {
             taskProgressRes = stringRes
             EventBus.getDefault().post(SyncProgressEvent(taskProfileId, taskProfileName, taskProgress, taskProgressRes))
             notification.setProgressRes(taskProgressRes!!).post()
+        }
+
+        fun addNotifyTask() {
+            if (!queueHasNotifyTask) {
+                queueHasNotifyTask = true
+                taskQueue.add(
+                        if (queueHasErrorReportTask) max(taskQueue.size-1, 0) else taskQueue.size,
+                        NotifyTask().apply {
+                            taskId = ++taskMaximumId
+                        }
+                )
+            }
         }
     }
 
@@ -134,15 +163,17 @@ class ApiService : Service() {
 
         if (task is ErrorReportTask) {
             queueHasErrorReportTask = false
-            notification
-                    .setCurrentTask(taskRunningId, null)
-                    .setProgressRes(R.string.edziennik_notification_api_error_report_title)
-                    .post()
-            errorList.forEach { error ->
-                d(TAG, "Error ${error.tag} profile ${error.profileId}: code ${error.errorCode}")
-            }
-            errorList.clear()
-            notification.setIdle().post()
+            task.run(notification, errorList)
+            taskRunningObject = null
+            taskRunning = false
+            taskRunningId = -1
+            sync()
+            return
+        }
+
+        if (task is NotifyTask) {
+            queueHasNotifyTask = false
+            task.run(app)
             taskRunningObject = null
             taskRunning = false
             taskRunningId = -1

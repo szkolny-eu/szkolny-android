@@ -8,20 +8,21 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
-import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.sync.SyncJob;
 import pl.szczodrzynski.edziennik.sync.SyncService;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 
 import static androidx.core.app.NotificationCompat.PRIORITY_DEFAULT;
 import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
@@ -36,14 +37,14 @@ public class Notifier {
     private static String CHANNEL_GET_DATA_DESC;
     private static final String GROUP_KEY_GET_DATA = "pl.szczodrzynski.edziennik.GET_DATA";
 
-    private static final int ID_NOTIFICATIONS = 1337002;
-    private static String CHANNEL_NOTIFICATIONS_NAME;
-    private static String CHANNEL_NOTIFICATIONS_DESC;
+    public static final int ID_NOTIFICATIONS = 1337002;
+    public static String CHANNEL_NOTIFICATIONS_NAME;
+    public static String CHANNEL_NOTIFICATIONS_DESC;
     public static final String GROUP_KEY_NOTIFICATIONS = "pl.szczodrzynski.edziennik.NOTIFICATIONS";
 
-    private static final int ID_NOTIFICATIONS_QUIET = 1337002;
-    private static String CHANNEL_NOTIFICATIONS_QUIET_NAME;
-    private static String CHANNEL_NOTIFICATIONS_QUIET_DESC;
+    public static final int ID_NOTIFICATIONS_QUIET = 1337002;
+    public static String CHANNEL_NOTIFICATIONS_QUIET_NAME;
+    public static String CHANNEL_NOTIFICATIONS_QUIET_DESC;
     public static final String GROUP_KEY_NOTIFICATIONS_QUIET = "pl.szczodrzynski.edziennik.NOTIFICATIONS_QUIET";
 
     private static final int ID_UPDATES = 1337003;
@@ -52,9 +53,9 @@ public class Notifier {
     private static final String GROUP_KEY_UPDATES = "pl.szczodrzynski.edziennik.UPDATES";
 
     private App app;
-    private NotificationManager notificationManager;
+    public NotificationManager notificationManager;
     private NotificationCompat.Builder getDataNotificationBuilder;
-    private int notificationColor;
+    public int notificationColor;
 
     Notifier(App _app) {
         this.app = _app;
@@ -109,13 +110,13 @@ public class Notifier {
         return app.appConfig.quietHoursStart > 0 && now >= start && now <= end;
     }
 
-    private int getNotificationDefaults() {
+    public int getNotificationDefaults() {
         return (shouldBeQuiet() ? 0 : Notification.DEFAULT_ALL);
     }
-    private String getNotificationGroup() {
+    public String getNotificationGroup() {
         return shouldBeQuiet() ? GROUP_KEY_NOTIFICATIONS_QUIET : GROUP_KEY_NOTIFICATIONS;
     }
-    private int getNotificationPriority() {
+    public int getNotificationPriority() {
         return shouldBeQuiet() ? PRIORITY_DEFAULT : PRIORITY_MAX;
     }
 

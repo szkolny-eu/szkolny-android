@@ -12,6 +12,24 @@ import java.util.Random;
 
 import pl.szczodrzynski.edziennik.R;
 
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_AUTO_ARCHIVING;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_ERROR;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_FEEDBACK_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_GENERAL;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_LUCKY_NUMBER;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_ANNOUNCEMENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_ATTENDANCE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_GRADE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_NOTICE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_SHARED_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_SERVER_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_TIMETABLE_CHANGED;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_TIMETABLE_LESSON_CHANGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_UPDATE;
+
 public class Notification {
     public int profileId;
     public String title;
@@ -77,25 +95,6 @@ public class Notification {
         this.addedDate = addedDate;
         return this;
     }
-
-    public static final int TYPE_GENERAL = 0;
-    public static final int TYPE_UPDATE = 1;
-    public static final int TYPE_ERROR = 2;
-    public static final int TYPE_TIMETABLE_CHANGED = 3;
-    public static final int TYPE_TIMETABLE_LESSON_CHANGE = 4;
-    public static final int TYPE_NEW_GRADE = 5;
-    public static final int TYPE_NEW_EVENT = 6;
-    public static final int TYPE_NEW_HOMEWORK = 10;
-    public static final int TYPE_NEW_SHARED_EVENT = 7;
-    public static final int TYPE_NEW_SHARED_HOMEWORK = 12;
-    public static final int TYPE_NEW_MESSAGE = 8;
-    public static final int TYPE_NEW_NOTICE = 9;
-    public static final int TYPE_NEW_ATTENDANCE = 13;
-    public static final int TYPE_SERVER_MESSAGE = 11;
-    public static final int TYPE_LUCKY_NUMBER = 14;
-    public static final int TYPE_NEW_ANNOUNCEMENT = 15;
-    public static final int TYPE_FEEDBACK_MESSAGE = 16;
-    public static final int TYPE_AUTO_ARCHIVING = 17;
 
     public static String stringType(Context context, int errorCode)
     {

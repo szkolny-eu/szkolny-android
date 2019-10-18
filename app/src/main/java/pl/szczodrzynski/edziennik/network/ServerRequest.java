@@ -16,6 +16,7 @@ import im.wangchao.mhttp.ThreadMode;
 import im.wangchao.mhttp.callback.JsonCallbackHandler;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
@@ -33,21 +34,25 @@ public class ServerRequest {
     }
 
     public ServerRequest(App app, String url, String source, ProfileFull profileFull) {
+        this(app, url, source, profileFull, profileFull == null ? -1 : profileFull.getLoginStoreType(), profileFull == null ? "" : profileFull.getUsernameId());
+    }
+
+    public ServerRequest(App app, String url, String source, Profile profile, int loginStoreType, String usernameId) {
         this.app = app;
         this.url = url;
         this.params = new ArrayList<>();
-        this.username = (profileFull != null && profileFull.getRegistration() == REGISTRATION_ENABLED ? profileFull.getUsernameId() : app.deviceId);
+        this.username = (profile != null && profile.getRegistration() == REGISTRATION_ENABLED ? usernameId : app.deviceId);
         this.source = source;
-        if (profileFull != null && profileFull.getRegistration() == REGISTRATION_ENABLED) {
-            this.setBodyParameter("login_type", Integer.toString(profileFull.getLoginStoreType()));
-            this.setBodyParameter("name_long", profileFull.getStudentNameLong());
-            this.setBodyParameter("name_short", profileFull.getStudentNameShort());
+        if (profile != null && profile.getRegistration() == REGISTRATION_ENABLED) {
+            this.setBodyParameter("login_type", Integer.toString(loginStoreType));
+            this.setBodyParameter("name_long", profile.getStudentNameLong());
+            this.setBodyParameter("name_short", profile.getStudentNameShort());
             //if (Looper.myLooper() == Looper.getMainLooper()) {
             if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
                 this.setBodyParameter("team_ids", "UI_THREAD");
             }
             else {
-                this.setBodyParameter("team_ids", app.gson.toJson(app.db.teamDao().getAllCodesNow(profileFull.getId())));
+                this.setBodyParameter("team_ids", app.gson.toJson(app.db.teamDao().getAllCodesNow(profile.getId())));
             }
         }
     }

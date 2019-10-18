@@ -446,7 +446,8 @@
     <string name="notification_absence">Absence</string>
     <string name="notification_absence_excused">Excused absence</string>
     <string name="notification_announcement_format">School announcement: %s</string>
-    <string name="notification_attendance_format">%s on lesson %s z %s</string>
+    <string name="notification_attendance_format">%1$s on lesson %2$s on day %3$s</string>
+    <string name="notification_attendance_no_lesson_format">%1$s on day %3$s</string>
     <string name="notification_belated">Late</string>
     <string name="notification_belated_excused">Excused late</string>
     <string name="notification_channel_get_data_desc">Notification about data downloading</string>
@@ -458,7 +459,8 @@
     <string name="notification_channel_updates_desc">Notifications about new versions of the app</string>
     <string name="notification_channel_updates_name">App updates</string>
     <string name="notification_downloading_update">Downloading update…</string>
-    <string name="notification_event_format">%s %s from %s</string>
+    <string name="notification_event_format">%1$s on %2$s from %3$s</string>
+    <string name="notification_event_no_subject_format">%1$s on %2$s</string>
     <string name="notification_event_no_subject">unknown subject</string>
     <string name="notification_get_data_cancel">Cancel</string>
     <string name="notification_get_data_error_summary">Szkolny.eu: error</string>
@@ -469,6 +471,7 @@
     <string name="notification_get_data_title">Update</string>
     <string name="notification_grade_format">New grade (%s) from %s</string>
     <string name="notification_homework_format">Homework from %s for %s</string>
+    <string name="notification_homework_no_subject_format">Homework for %s</string>
     <string name="notification_lucky_number_format">Today %d is the lucky number.</string>
     <string name="notification_lucky_number_later_format">The lucky number for %s is %d.</string>
     <string name="notification_lucky_number_tomorrow_format">The lucky number for tomorrow is %d.</string>

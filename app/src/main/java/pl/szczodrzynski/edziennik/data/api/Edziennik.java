@@ -40,8 +40,8 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.WidgetTimetable;
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface;
 import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback;
@@ -62,11 +62,11 @@ import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeFull;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
-import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Notification;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
 import pl.szczodrzynski.edziennik.sync.SyncJob;
 import pl.szczodrzynski.edziennik.utils.Themes;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Notification;
 import pl.szczodrzynski.edziennik.widgets.luckynumber.WidgetLuckyNumber;
 import pl.szczodrzynski.edziennik.widgets.notifications.WidgetNotifications;
 
@@ -102,6 +102,19 @@ import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_AUTO_ARCHIVING;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_LUCKY_NUMBER;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_ANNOUNCEMENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_ATTENDANCE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_GRADE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_NOTICE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_SHARED_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_SHARED_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_SERVER_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_TIMETABLE_LESSON_CHANGE;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_ENABLED;
 import static pl.szczodrzynski.edziennik.sync.SyncService.PROFILE_MAX_PROGRESS;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
@@ -291,7 +304,7 @@ public class Edziennik {
                         String text = app.getContext().getString(R.string.notification_lesson_change_format, change.changeTypeStr(app.getContext()), change.lessonDate == null ? "" : change.lessonDate.getFormattedString(), change.subjectLongName);
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
-                                .withType(Notification.TYPE_TIMETABLE_LESSON_CHANGE)
+                                .withType(TYPE_TIMETABLE_LESSON_CHANGE)
                                 .withFragmentRedirect(MainActivity.DRAWER_ITEM_TIMETABLE)
                                 .withLongExtra("timetableDate", change.lessonDate.getValue())
                                 .withAddedDate(change.addedDate)
@@ -305,7 +318,7 @@ public class Edziennik {
                             text = app.getContext().getString(R.string.notification_event_format, event.typeName, event.eventDate.getFormattedString(), ns(app.getString(R.string.notification_event_no_subject), event.subjectLongName));
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
-                                .withType(event.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_HOMEWORK : Notification.TYPE_NEW_EVENT)
+                                .withType(event.type == TYPE_HOMEWORK ? TYPE_NEW_HOMEWORK : TYPE_NEW_EVENT)
                                 .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                 .withLongExtra("eventId", event.id)
                                 .withLongExtra("eventDate", event.eventDate.getValue())
@@ -342,7 +355,7 @@ public class Edziennik {
                         String text = app.getContext().getString(R.string.notification_grade_format, gradeName, grade.subjectLongName);
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
-                                .withType(Notification.TYPE_NEW_GRADE)
+                                .withType(TYPE_NEW_GRADE)
                                 .withFragmentRedirect(MainActivity.DRAWER_ITEM_GRADES)
                                 .withLongExtra("gradesSubjectId", grade.subjectId)
                                 .withAddedDate(grade.addedDate)
@@ -353,7 +366,7 @@ public class Edziennik {
                         String text = app.getContext().getString(R.string.notification_notice_format, noticeTypeStr, notice.teacherFullName, Date.fromMillis(notice.addedDate).getFormattedString());
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
-                                .withType(Notification.TYPE_NEW_NOTICE)
+                                .withType(TYPE_NEW_NOTICE)
                                 .withFragmentRedirect(MainActivity.DRAWER_ITEM_BEHAVIOUR)
                                 .withLongExtra("noticeId", notice.id)
                                 .withAddedDate(notice.addedDate)
@@ -381,7 +394,7 @@ public class Edziennik {
                         String text = app.getContext().getString(R.string.notification_attendance_format, attendanceTypeStr, attendance.subjectLongName, attendance.lessonDate.getFormattedString());
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
-                                .withType(Notification.TYPE_NEW_ATTENDANCE)
+                                .withType(TYPE_NEW_ATTENDANCE)
                                 .withFragmentRedirect(MainActivity.DRAWER_ITEM_ATTENDANCE)
                                 .withLongExtra("attendanceId", attendance.id)
                                 .withAddedDate(attendance.addedDate)
@@ -391,7 +404,7 @@ public class Edziennik {
                         String text = app.getContext().getString(R.string.notification_announcement_format, announcement.subject);
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
-                                .withType(Notification.TYPE_NEW_ANNOUNCEMENT)
+                                .withType(TYPE_NEW_ANNOUNCEMENT)
                                 .withFragmentRedirect(MainActivity.DRAWER_ITEM_ANNOUNCEMENTS)
                                 .withLongExtra("announcementId", announcement.id)
                                 .withAddedDate(announcement.addedDate)
@@ -401,7 +414,7 @@ public class Edziennik {
                         String text = app.getContext().getString(R.string.notification_message_format, message.senderFullName, message.subject);
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
-                                .withType(Notification.TYPE_NEW_MESSAGE)
+                                .withType(TYPE_NEW_MESSAGE)
                                 .withFragmentRedirect(MainActivity.DRAWER_ITEM_MESSAGES)
                                 .withLongExtra("messageType", Message.TYPE_RECEIVED)
                                 .withLongExtra("messageId", message.id)
@@ -423,7 +436,7 @@ public class Edziennik {
                         }
                         app.notifier.add(new Notification(app.getContext(), text)
                                 .withProfileData(profile.getId(), profile.getName())
-                                .withType(Notification.TYPE_LUCKY_NUMBER)
+                                .withType(TYPE_LUCKY_NUMBER)
                                 .withFragmentRedirect(MainActivity.DRAWER_ITEM_HOME)
                         );
                         oldLuckyNumber = profile.getLuckyNumber();
@@ -456,9 +469,9 @@ public class Edziennik {
                         for (Notification notification : app.appConfig.notifications) {
                             //Log.d(TAG, notification.text);
                             if (!notification.notified) {
-                                if (notification.type != Notification.TYPE_NEW_SHARED_EVENT
-                                        && notification.type != Notification.TYPE_SERVER_MESSAGE
-                                        && notification.type != Notification.TYPE_NEW_SHARED_HOMEWORK) // these are automatically sent to the browser by the server
+                                if (notification.type != TYPE_NEW_SHARED_EVENT
+                                        && notification.type != TYPE_SERVER_MESSAGE
+                                        && notification.type != TYPE_NEW_SHARED_HOMEWORK) // these are automatically sent to the browser by the server
                                 {
                                     //Log.d(TAG, "Adding notify[" + position + "]");
                                     syncRequest.setBodyParameter("notify[" + position + "][type]", Integer.toString(notification.type));
@@ -520,7 +533,7 @@ public class Edziennik {
                                 if (metadataId != -1 && !registerEmpty) {
                                     app.notifier.add(new Notification(app.getContext(), app.getString(R.string.notification_shared_event_format, event.sharedByName, type != null ? type.name : "wydarzenie", event.eventDate == null ? "nieznana data" : event.eventDate.getFormattedString(), event.topic))
                                             .withProfileData(profile.getId(), profile.getName())
-                                            .withType(event.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_SHARED_HOMEWORK : Notification.TYPE_NEW_SHARED_EVENT)
+                                            .withType(event.type == TYPE_HOMEWORK ? TYPE_NEW_SHARED_HOMEWORK : TYPE_NEW_SHARED_EVENT)
                                             .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                             .withLongExtra("eventDate", event.eventDate.getValue())
                                     );
@@ -687,7 +700,7 @@ public class Edziennik {
                     profile.setArchived(true);
                     app.notifier.add(new Notification(app.getContext(), app.getString(R.string.profile_auto_archiving_format, profile.getName(), profile.getDateYearEnd().getFormattedString()))
                             .withProfileData(profile.getId(), profile.getName())
-                            .withType(Notification.TYPE_AUTO_ARCHIVING)
+                            .withType(TYPE_AUTO_ARCHIVING)
                             .withFragmentRedirect(DRAWER_ITEM_HOME)
                             .withLongExtra("autoArchiving", 1L)
                     );

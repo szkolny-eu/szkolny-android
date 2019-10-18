@@ -52,6 +52,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata;
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.MetadataDao;
 import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
 import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeDao;
+import pl.szczodrzynski.edziennik.data.db.modules.notification.Notification;
+import pl.szczodrzynski.edziennik.data.db.modules.notification.NotificationDao;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileDao;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
@@ -88,7 +90,8 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         DebugLog.class,
         EndpointTimer.class,
         LessonRange.class,
-        Metadata.class}, version = 59)
+        Notification.class,
+        Metadata.class}, version = 60)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -121,6 +124,7 @@ public abstract class AppDb extends RoomDatabase {
     public abstract DebugLogDao debugLogDao();
     public abstract EndpointTimerDao endpointTimerDao();
     public abstract LessonRangeDao lessonRangeDao();
+    public abstract NotificationDao notificationDao();
     public abstract MetadataDao metadataDao();
 
     private static volatile AppDb INSTANCE;
@@ -644,6 +648,25 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("DROP TABLE _old_luckyNumbers;");
         }
     };
+    private static final Migration MIGRATION_59_60 = new Migration(59, 60) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE notifications (\n" +
+                    "    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
+                    "    title TEXT NOT NULL,\n" +
+                    "    `text` TEXT NOT NULL,\n" +
+                    "    `type` INTEGER NOT NULL,\n" +
+                    "    profileId INTEGER DEFAULT NULL,\n" +
+                    "    profileName TEXT DEFAULT NULL,\n" +
+                    "    posted INTEGER NOT NULL DEFAULT 0,\n" +
+                    "    viewId INTEGER DEFAULT NULL,\n" +
+                    "    extras TEXT DEFAULT NULL,\n" +
+                    "    addedDate INTEGER NOT NULL\n" +
+                    ");");
+
+            database.execSQL("ALTER TABLE profiles ADD COLUMN disabledNotifications TEXT DEFAULT NULL");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -700,7 +723,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_55_56,
                                     MIGRATION_56_57,
                                     MIGRATION_57_58,
-                                    MIGRATION_58_59
+                                    MIGRATION_58_59,
+                                    MIGRATION_59_60
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

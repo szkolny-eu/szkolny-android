@@ -36,7 +36,9 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     private fun completed() {
         data.saveData()
-        callback.onCompleted()
+        data.notifyAndSyncEvents {
+            callback.onCompleted()
+        }
     }
 
     /*    _______ _                     _                  _ _   _

@@ -15,21 +15,25 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType;
 import pl.szczodrzynski.edziennik.data.db.modules.feedback.FeedbackMessage;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
+import pl.szczodrzynski.edziennik.network.ServerRequest;
 import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment;
 import pl.szczodrzynski.edziennik.utils.models.Notification;
-import pl.szczodrzynski.edziennik.network.ServerRequest;
 
 import static pl.szczodrzynski.edziennik.App.APP_URL;
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_FEEDBACK_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_SHARED_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_SHARED_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_SERVER_MESSAGE;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.strToInt;
 
@@ -175,7 +179,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "message":
                     app.notifier.add(new Notification(app.getContext(), remoteMessage.getData().get("message"))
                             .withTitle(remoteMessage.getData().get("title"))
-                            .withType(Notification.TYPE_SERVER_MESSAGE)
+                            .withType(TYPE_SERVER_MESSAGE)
                             .withFragmentRedirect(MainActivity.DRAWER_ITEM_NOTIFICATIONS)
                     );
                     app.notifier.postAll(null);
@@ -203,7 +207,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                             app.notifier.add(new Notification(app.getContext(), feedbackMessage.text)
                                     .withTitle(remoteMessage.getData().get("title"))
-                                    .withType(Notification.TYPE_FEEDBACK_MESSAGE)
+                                    .withType(TYPE_FEEDBACK_MESSAGE)
                                     .withFragmentRedirect(MainActivity.TARGET_FEEDBACK)
                             );
                             app.notifier.postAll(null);
@@ -225,7 +229,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     });
                     app.notifier.add(new Notification(app.getContext(), remoteMessage.getData().get("message"))
                             .withTitle(remoteMessage.getData().get("title"))
-                            .withType(Notification.TYPE_FEEDBACK_MESSAGE)
+                            .withType(TYPE_FEEDBACK_MESSAGE)
                             .withFragmentRedirect(MainActivity.TARGET_FEEDBACK)
                     );
                     app.notifier.postAll(null);
@@ -279,7 +283,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                         EventType eventType = app.db.eventTypeDao().getByIdNow(profile.getId(), event.type);
                                         app.notifier.add(new Notification(app.getContext(), app.getString((oldEvent == null ? R.string.notification_shared_event_format : R.string.notification_shared_event_modified_format), event.sharedByName, eventType == null ? "wydarzenie" : eventType.name, event.eventDate.getFormattedString(), event.topic))
                                                 .withProfileData(profile.getId(), profile.getName())
-                                                .withType(event.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_SHARED_HOMEWORK : Notification.TYPE_NEW_SHARED_EVENT)
+                                                .withType(event.type == TYPE_HOMEWORK ? TYPE_NEW_SHARED_HOMEWORK : TYPE_NEW_SHARED_EVENT)
                                                 .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                                 .withLongExtra("eventDate", event.eventDate.getValue())
                                         );
@@ -298,7 +302,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                     if (oldEvent != null) {
                                         app.notifier.add(new Notification(app.getContext(), app.getString(R.string.notification_shared_event_removed_format, oldEvent.sharedByName, oldEvent.typeName, oldEvent.eventDate.getFormattedString(), oldEvent.topic))
                                                 .withProfileData(profile.getId(), profile.getName())
-                                                .withType(oldEvent.type == TYPE_HOMEWORK ? Notification.TYPE_NEW_SHARED_HOMEWORK : Notification.TYPE_NEW_SHARED_EVENT)
+                                                .withType(oldEvent.type == TYPE_HOMEWORK ? TYPE_NEW_SHARED_HOMEWORK : TYPE_NEW_SHARED_EVENT)
                                                 .withFragmentRedirect(oldEvent.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                                 .withLongExtra("eventDate", oldEvent.eventDate.getValue())
                                         );

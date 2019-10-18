@@ -84,6 +84,8 @@ open class Profile : IDrawerProfile {
 
     var changedEndpoints: List<String>? = null
 
+    var disabledNotifications: List<Long>? = null
+
     var lastFullSync: Long = 0
     var lastReceiversSync: Long = 0
 
