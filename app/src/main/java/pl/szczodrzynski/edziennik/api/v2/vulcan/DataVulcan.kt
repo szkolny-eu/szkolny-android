@@ -169,4 +169,9 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
                 else -> null
             }
         }
+
+    val fullApiUrl: String?
+        get() {
+            return "${apiUrl}${schoolSymbol}/"
+        }
 }

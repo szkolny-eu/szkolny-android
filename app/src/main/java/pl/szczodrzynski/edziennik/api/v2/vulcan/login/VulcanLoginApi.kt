@@ -13,7 +13,6 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
-import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.HTTP_BAD_REQUEST
 import java.util.*

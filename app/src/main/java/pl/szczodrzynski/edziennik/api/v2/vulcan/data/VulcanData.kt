@@ -4,7 +4,10 @@
 
 package pl.szczodrzynski.edziennik.api.v2.vulcan.data
 
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
+import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_GRADES
+import pl.szczodrzynski.edziennik.api.v2.vulcan.data.api.VulcanApiGrades
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
@@ -35,10 +38,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
     private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId")
         when (endpointId) {
-            /*ENDPOINT_VULCAN_API -> {
-                data.startProgress(R.string.edziennik_progress_endpoint_data)
-                VulcanApi(data) { onSuccess() }
-            }*/
+            ENDPOINT_VULCAN_API_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grades)
+                VulcanApiGrades(data) { onSuccess() }
+            }
             else -> onSuccess()
         }
     }
