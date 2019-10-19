@@ -31,10 +31,11 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
                         ?: return@forEach).toLong()
                 val subject = announcement.getString("Subject") ?: ""
                 val text = announcement.getString("Content") ?: ""
-                val startDate = Date.fromY_m_d(announcement.getString("StartDate")
-                        ?: return@forEach)
-                val endDate = Date.fromY_m_d(announcement.getString("EndDate") ?: return@forEach)
+                val startDate = Date.fromY_m_d(announcement.getString("StartDate"))
+                val endDate = Date.fromY_m_d(announcement.getString("EndDate"))
                 val teacherId = announcement.getJsonObject("AddedBy")?.getLong("Id") ?: -1
+                val addedDate = Date.fromIso(announcement.getString("CreationDate"))
+                val read = announcement.getBoolean("WasRead") ?: false
 
                 val announcementObject = Announcement(
                         profileId,
@@ -45,10 +46,6 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
                         endDate,
                         teacherId
                 )
-
-                val addedDate = Date.fromIso(announcement.getString("CreationDate")
-                        ?: return@forEach)
-                val read = announcement.getBoolean("WasRead") ?: false
 
                 data.announcementList.add(announcementObject)
                 data.metadataList.add(Metadata(

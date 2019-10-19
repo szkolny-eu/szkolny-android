@@ -27,21 +27,19 @@ class LibrusApiAttendances(override val data: DataLibrus,
             attendances?.forEach { attendanceEl ->
                 val attendance = attendanceEl.asJsonObject
 
+                val id = Utils.strToInt((attendance.getString("Id") ?: return@forEach)
+                        .replace("[^\\d.]".toRegex(), "")).toLong()
                 val teacherId = attendance.getJsonObject("AddedBy")?.getLong("Id") ?: -1
                 val lessonNo = attendance.getInt("LessonNo") ?: return@forEach
                 val startTime = data.lessonRanges.get(lessonNo).startTime
-                val lessonDate = Date.fromY_m_d(attendance.getString("Date") ?: return@forEach)
+                val lessonDate = Date.fromY_m_d(attendance.getString("Date"))
+                val subjectId = data.lessonList.singleOrNull {
+                    it.weekDay ==  lessonDate.weekDay && it.startTime.value == startTime.value
+                }?.subjectId ?: -1
                 val semester = attendance.getInt("Semester") ?: return@forEach
                 var type = attendance.getJsonObject("Type")?.getInt("Id") ?: return@forEach
                 val attendanceType = data.attendanceTypes.get(type)
                 val topic = attendanceType.second
-
-                val id = Utils.strToInt((attendance.getString("Id") ?: return@forEach)
-                        .replace("[^\\d.]".toRegex(), "")).toLong()
-
-                val subjectId = data.lessonList.singleOrNull {
-                    it.weekDay ==  lessonDate.weekDay && it.startTime.value == startTime.value
-                }?.subjectId ?: -1
 
                 type = when(type) {
                     1 -> Attendance.TYPE_ABSENT

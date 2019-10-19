@@ -46,7 +46,7 @@ class LibrusApiClasses(override val data: DataLibrus,
                             ?: return@apply)
                     dateYearEnd = Date.fromY_m_d(studentClass.getString("EndSchoolYear")
                             ?: return@apply)
-                    if (unitId != null) putStudentData("unitId", unitId)
+                    unitId?.let { putStudentData("unitId", it) }
                 }
             }
 

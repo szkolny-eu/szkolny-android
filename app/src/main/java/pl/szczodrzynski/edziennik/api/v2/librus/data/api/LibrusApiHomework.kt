@@ -30,10 +30,10 @@ class LibrusApiHomework(override val data: DataLibrus,
                 val homework = homeworkEl.asJsonObject
 
                 val id = homework.getLong("Id") ?: return@forEach
-                val eventDate = Date.fromY_m_d(homework.getString("DueDate") ?: return@forEach)
-                val topic = (homework.getString("Topic") ?: "") + "\n" +
-                        (homework.getString("Text") ?: "")
+                val eventDate = Date.fromY_m_d(homework.getString("DueDate"))
+                val topic = homework.getString("Topic") + "\n" + homework.getString("Text")
                 val teacherId = homework.getJsonObject("Teacher")?.getLong("Id") ?: -1
+                val addedDate = Date.fromY_m_d(homework.getString("Date"))
 
                 val eventObject = Event(
                         profileId,
@@ -48,8 +48,6 @@ class LibrusApiHomework(override val data: DataLibrus,
                         -1,
                         -1
                 )
-
-                val addedDate = Date.fromY_m_d(homework.getString("Date") ?: return@forEach)
 
                 data.eventList.add(eventObject)
                 data.metadataList.add(Metadata(

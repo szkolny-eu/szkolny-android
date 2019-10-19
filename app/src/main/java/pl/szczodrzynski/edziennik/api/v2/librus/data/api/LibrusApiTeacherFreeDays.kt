@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -49,6 +50,14 @@ class LibrusApiTeacherFreeDays(override val data: DataLibrus,
                 )
 
                 data.teacherAbsenceList.add(teacherAbsenceObject)
+                data.metadataList.add(Metadata(
+                        profileId,
+                        Metadata.TYPE_TEACHER_ABSENCE,
+                        id,
+                        profile?.empty ?: false,
+                        profile?.empty ?: false,
+                        System.currentTimeMillis()
+                ))
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS, SYNC_ALWAYS)

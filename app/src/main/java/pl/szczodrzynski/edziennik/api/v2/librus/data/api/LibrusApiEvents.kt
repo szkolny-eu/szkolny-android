@@ -28,8 +28,8 @@ class LibrusApiEvents(override val data: DataLibrus,
                 val event = eventEl.asJsonObject
 
                 val id = event.getLong("Id") ?: return@forEach
-                val eventDate = Date.fromY_m_d(event.getString("Date") ?: return@forEach)
-                val topic = event.getString("Content") ?: return@forEach
+                val eventDate = Date.fromY_m_d(event.getString("Date"))
+                val topic = event.getString("Content") ?: ""
                 val type = event.getJsonObject("Category")?.getInt("Id") ?: -1
                 val teacherId = event.getJsonObject("CreatedBy")?.getLong("Id") ?: -1
                 val subjectId = event.getJsonObject("Subject")?.getLong("Id") ?: -1
@@ -37,8 +37,8 @@ class LibrusApiEvents(override val data: DataLibrus,
 
                 val lessonNo = event.getInt("LessonNo")
                 val lessonRange = data.lessonRanges.singleOrNull { it.lessonNumber == lessonNo }
-                val startTime = lessonRange?.startTime
-                        ?: Time.fromH_m(event.getString("TimeFrom") ?: return@forEach)
+                val startTime = lessonRange?.startTime ?: Time.fromH_m(event.getString("TimeFrom"))
+                val addedDate = Date.fromIso(event.getString("AddDate"))
 
                 val eventObject = Event(
                         profileId,
@@ -53,8 +53,6 @@ class LibrusApiEvents(override val data: DataLibrus,
                         subjectId,
                         teamId
                 )
-
-                val addedDate = Date.fromIso(event.getString("AddDate") ?: return@forEach)
 
                 data.eventList.add(eventObject)
                 data.metadataList.add(

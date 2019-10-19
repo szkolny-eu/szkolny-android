@@ -25,11 +25,12 @@ class LibrusApiGrades(override val data: DataLibrus,
                 val grade = gradeEl.asJsonObject
 
                 val id = grade.getLong("Id") ?: return@forEach
-                val categoryId = grade.getJsonObject("Category")?.getLong("Id") ?: return@forEach
-                val name = grade.getString("Grade") ?: return@forEach
+                val categoryId = grade.getJsonObject("Category")?.getLong("Id") ?: -1
+                val name = grade.getString("Grade") ?: ""
                 val semester = grade.getInt("Semester") ?: return@forEach
                 val teacherId = grade.getJsonObject("AddedBy")?.getLong("Id") ?: -1
                 val subjectId = grade.getJsonObject("Subject")?.getLong("Id") ?: -1
+                val addedDate = Date.fromIso(grade.getString("AddDate"))
 
                 val category = data.gradeCategories.singleOrNull { it.categoryId == categoryId }
                 val categoryName = category?.text ?: ""
@@ -79,8 +80,6 @@ class LibrusApiGrades(override val data: DataLibrus,
                     }
                     gradeObject.isImprovement = true
                 }
-
-                val addedDate = Date.fromIso(grade.get("AddDate").asString)
 
                 data.gradeList.add(gradeObject)
                 data.metadataList.add(
