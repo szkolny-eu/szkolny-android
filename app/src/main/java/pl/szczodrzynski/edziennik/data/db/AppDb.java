@@ -61,6 +61,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.subjects.SubjectDao;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceDao;
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceType;
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceTypeDao;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherDao;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.TeamDao;
@@ -71,6 +73,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         //GradeCategory.class,
         Teacher.class,
         TeacherAbsence.class,
+        TeacherAbsenceType.class,
         Subject.class,
         Notice.class,
         Lesson.class,
@@ -91,7 +94,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         EndpointTimer.class,
         LessonRange.class,
         Notification.class,
-        Metadata.class}, version = 60)
+        Metadata.class}, version = 61)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -105,6 +108,7 @@ public abstract class AppDb extends RoomDatabase {
     //public abstract GradeCategoryDao gradeCategoryDao();
     public abstract TeacherDao teacherDao();
     public abstract TeacherAbsenceDao teacherAbsenceDao();
+    public abstract TeacherAbsenceTypeDao teacherAbsenceTypeDao();
     public abstract SubjectDao subjectDao();
     public abstract NoticeDao noticeDao();
     public abstract LessonDao lessonDao();
@@ -667,6 +671,17 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("ALTER TABLE profiles ADD COLUMN disabledNotifications TEXT DEFAULT NULL");
         }
     };
+    private static final Migration MIGRATION_60_61 = new Migration(60, 61) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS teacherAbsenceTypes (" +
+                    "profileId INTEGER NOT NULL," +
+                    "teacherAbsenceTypeId INTEGER NOT NULL," +
+                    "teacherAbsenceTypeName TEXT NOT NULL," +
+                    "PRIMARY KEY(profileId, teacherAbsenceTypeId))");
+            database.execSQL("ALTER TABLE teacherAbsence ADD COLUMN teacherAbsenceName TEXT DEFAULT NULL");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -724,7 +739,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_56_57,
                                     MIGRATION_57_58,
                                     MIGRATION_58_59,
-                                    MIGRATION_59_60
+                                    MIGRATION_59_60,
+                                    MIGRATION_60_61
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

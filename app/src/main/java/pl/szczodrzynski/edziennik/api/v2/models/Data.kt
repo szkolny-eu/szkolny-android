@@ -32,6 +32,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceType
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.toSparseArray
@@ -102,6 +103,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val lessonRanges = SparseArray<LessonRange>()
     val gradeCategories = LongSparseArray<GradeCategory>()
     val attendanceTypes = SparseArray<Pair<Int, String>>()
+    val teacherAbsenceTypes = LongSparseArray<TeacherAbsenceType>()
 
     private var mTeamClass: Team? = null
     var teamClass: Team?
@@ -156,6 +158,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.teamDao().getAllNow(profileId).toSparseArray(teamList) { it.id }
             db.lessonRangeDao().getAllNow(profileId).toSparseArray(lessonRanges) { it.lessonNumber }
             db.gradeCategoryDao().getAllNow(profileId).toSparseArray(gradeCategories) { it.categoryId }
+            db.teacherAbsenceTypeDao().getAllNow(profileId).toSparseArray(teacherAbsenceTypes) { it.id }
         }
     }
 
@@ -205,6 +208,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         db.lessonRangeDao().addAll(lessonRanges.values())
         db.gradeCategoryDao().clear(profileId)
         db.gradeCategoryDao().addAll(gradeCategories.values())
+        db.teacherAbsenceTypeDao().clear(profileId)
+        db.teacherAbsenceTypeDao().addAll(teacherAbsenceTypes.values())
 
         gradesToRemove?.let { it ->
             it.removeAll?.let { _ -> db.gradeDao().clear(profileId) }
@@ -297,8 +302,11 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
                 else -> errorCode
             }
         }
-        error(ApiError(tag, code).apply { profileId = profile?.id ?: -1 }.withResponse(response).withThrowable(throwable).withApiResponse(apiResponse))
+        error(ApiError(tag, code).apply {
+            profileId = profile?.id ?: -1
+        }.withResponse(response).withThrowable(throwable).withApiResponse(apiResponse))
     }
+
     fun error(tag: String, errorCode: Int, response: Response? = null, apiResponse: String? = null) {
         val code = when (null) {
             is UnknownHostException, is SSLException, is InterruptedIOException -> CODE_NO_INTERNET
@@ -308,16 +316,21 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
                 else -> errorCode
             }
         }
-        error(ApiError(tag, code).apply { profileId = profile?.id ?: -1 }.withResponse(response).withApiResponse(apiResponse))
+        error(ApiError(tag, code).apply {
+            profileId = profile?.id ?: -1
+        }.withResponse(response).withApiResponse(apiResponse))
     }
+
     fun error(apiError: ApiError) {
         if (apiError.isCritical)
             cancel()
         callback.onError(apiError)
     }
+
     fun progress(step: Int) {
         callback.onProgress(step)
     }
+
     fun startProgress(stringRes: Int) {
         callback.onStartProgress(stringRes)
     }

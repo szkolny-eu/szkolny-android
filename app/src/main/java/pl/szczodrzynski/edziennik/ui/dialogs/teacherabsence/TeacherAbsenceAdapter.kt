@@ -1,6 +1,7 @@
 package pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence
 
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,10 +48,19 @@ class TeacherAbsenceAdapter(
         }
 
         holder.teacherAbsenceTime.text = time
+
+        if (teacherAbsence.name != null) {
+            holder.teacherAbsenceName.visibility = View.VISIBLE
+            holder.teacherAbsenceName.text = teacherAbsence.name
+        } else {
+            holder.teacherAbsenceName.visibility = View.GONE
+        }
+
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var teacherAbsenceTeacher: TextView = itemView.findViewById(R.id.teacherAbsenceTeacher)
         var teacherAbsenceTime: TextView = itemView.findViewById(R.id.teacherAbsenceTime)
+        var teacherAbsenceName: TextView = itemView.findViewById(R.id.teacherAbsenceName)
     }
 }

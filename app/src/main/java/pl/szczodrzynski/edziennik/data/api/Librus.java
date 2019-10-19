@@ -3201,6 +3201,7 @@ public class Librus implements EdziennikInterface {
                             id,
                             teacherId,
                             type,
+                            null,
                             dateFrom,
                             dateTo,
                             timeFrom,

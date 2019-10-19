@@ -19,6 +19,9 @@ open class TeacherAbsence (
     @ColumnInfo(name = "teacherAbsenceType")
     val type: Long,
 
+    @ColumnInfo(name = "teacherAbsenceName")
+    val name: String?,
+
     @ColumnInfo(name = "teacherAbsenceDateFrom")
     val dateFrom: Date,
 
