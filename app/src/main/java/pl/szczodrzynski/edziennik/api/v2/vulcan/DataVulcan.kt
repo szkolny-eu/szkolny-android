@@ -152,22 +152,23 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
 
     val apiUrl: String?
         get() {
-            return when (apiToken?.substring(0, 3)) {
-                "3S1" -> "https://lekcjaplus.vulcan.net.pl/$symbol/"
-                "TA1" -> "https://uonetplus-komunikacja.umt.tarnow.pl/$symbol/"
-                "OP1" -> "https://uonetplus-komunikacja.eszkola.opolskie.pl/$symbol/"
-                "RZ1" -> "https://uonetplus-komunikacja.resman.pl/$symbol/"
-                "GD1" -> "https://uonetplus-komunikacja.edu.gdansk.pl/$symbol/"
-                "KA1" -> "https://uonetplus-komunikacja.mcuw.katowice.eu/$symbol/"
-                "KA2" -> "https://uonetplus-komunikacja-test.mcuw.katowice.eu/$symbol/"
-                "P03" -> "https://efeb-komunikacja-pro-efebmobile.pro.vulcan.pl/$symbol/"
-                "P01" -> "http://efeb-komunikacja.pro-hudson.win.vulcan.pl/$symbol/"
-                "P02" -> "http://efeb-komunikacja.pro-hudsonrc.win.vulcan.pl/$symbol/"
-                "P90" -> "http://efeb-komunikacja-pro-mwujakowska.neo.win.vulcan.pl/$symbol/"
-                "FK1", "FS1" -> "http://api.fakelog.cf/$symbol/"
-                "SZ9" -> "http://vulcan.szkolny.eu/$symbol/"
+            val url = when (apiToken?.substring(0, 3)) {
+                "3S1" -> "https://lekcjaplus.vulcan.net.pl/"
+                "TA1" -> "https://uonetplus-komunikacja.umt.tarnow.pl/"
+                "OP1" -> "https://uonetplus-komunikacja.eszkola.opolskie.pl/"
+                "RZ1" -> "https://uonetplus-komunikacja.resman.pl/"
+                "GD1" -> "https://uonetplus-komunikacja.edu.gdansk.pl/"
+                "KA1" -> "https://uonetplus-komunikacja.mcuw.katowice.eu/"
+                "KA2" -> "https://uonetplus-komunikacja-test.mcuw.katowice.eu/"
+                "P03" -> "https://efeb-komunikacja-pro-efebmobile.pro.vulcan.pl/"
+                "P01" -> "http://efeb-komunikacja.pro-hudson.win.vulcan.pl/"
+                "P02" -> "http://efeb-komunikacja.pro-hudsonrc.win.vulcan.pl/"
+                "P90" -> "http://efeb-komunikacja-pro-mwujakowska.neo.win.vulcan.pl/"
+                "FK1", "FS1" -> "http://api.fakelog.cf/"
+                "SZ9" -> "http://vulcan.szkolny.eu/"
                 else -> null
             }
+            return if (url != null) "$url$symbol/" else null
         }
 
     val fullApiUrl: String?

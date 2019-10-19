@@ -17,7 +17,7 @@ class VulcanApiGrades(override val data: DataVulcan, val onSuccess: () -> Unit) 
     }
 
     init {
-        apiGet(TAG, VULCAN_API_ENDPOINT_GRADES) { json ->
+        apiGet(TAG, VULCAN_API_ENDPOINT_GRADES) { json, _ ->
             val grades = json.getJsonArray("Data")
 
             data.setSyncNext(ENDPOINT_VULCAN_API_GRADES, SYNC_ALWAYS)

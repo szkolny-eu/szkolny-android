@@ -27,8 +27,11 @@ open class VulcanApi(open val data: DataVulcan) {
     val profile
         get() = data.profile
 
-    fun apiGet(tag: String, endpoint: String, method: Int = POST, payload: JsonObject? = null, onSuccess: (json: JsonObject) -> Unit) {
-        d(tag, "Request: Librus/Api - ${data.fullApiUrl}/$endpoint")
+    fun apiGet(tag: String, endpoint: String, method: Int = POST, payload: JsonObject? = null,
+               baseUrl: Boolean = false, onSuccess: (json: JsonObject, response: Response?) -> Unit) {
+        val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
+
+        d(tag, "Request: Librus/Api - $url")
 
         val finalPayload = JsonObject()
         finalPayload.addProperty("IdUczen", data.studentId)
@@ -57,7 +60,7 @@ open class VulcanApi(open val data: DataVulcan) {
                 }
 
                 try {
-                    onSuccess(json)
+                    onSuccess(json, response)
                 } catch (e: Exception) {
                     data.error(ApiError(tag, EXCEPTION_VULCAN_API_REQUEST)
                             .withResponse(response)
@@ -74,7 +77,7 @@ open class VulcanApi(open val data: DataVulcan) {
         }
 
         Request.builder()
-                .url("${data.fullApiUrl}$endpoint")
+                .url(url)
                 .userAgent(VULCAN_API_USER_AGENT)
                 .addHeader("RequestCertificateKey", data.apiCertificateKey)
                 .addHeader("RequestSignatureValue",

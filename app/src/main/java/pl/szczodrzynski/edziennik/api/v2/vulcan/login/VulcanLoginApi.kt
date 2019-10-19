@@ -24,12 +24,7 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
     }
 
     init { run {
-        if (data.profile == null) {
-            data.error(ApiError(TAG, ERROR_PROFILE_MISSING))
-            return@run
-        }
-
-        if (data.isApiLoginValid()) {
+        if (data.profile != null && data.isApiLoginValid()) {
             onSuccess()
         }
         else {
