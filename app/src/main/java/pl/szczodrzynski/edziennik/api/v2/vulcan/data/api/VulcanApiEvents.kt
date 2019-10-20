@@ -5,8 +5,10 @@
 package pl.szczodrzynski.edziennik.api.v2.vulcan.data.api
 
 import pl.szczodrzynski.edziennik.api.v2.VULCAN_API_ENDPOINT_EVENTS
+import pl.szczodrzynski.edziennik.api.v2.VULCAN_API_ENDPOINT_HOMEWORK
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_EVENTS
+import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_HOMEWORK
 import pl.szczodrzynski.edziennik.api.v2.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
@@ -17,13 +19,17 @@ import pl.szczodrzynski.edziennik.getLong
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class VulcanApiEvents(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boolean, val onSuccess: () -> Unit) : VulcanApi(data) {
     companion object {
-        const val TAG = "VulcanApi"
+        const val TAG = "VulcanApiEvents"
     }
 
     init {
-        apiGet(TAG, VULCAN_API_ENDPOINT_EVENTS) { json, _ ->
+        val endpoint = when (isHomework) {
+            true -> VULCAN_API_ENDPOINT_HOMEWORK
+            else -> VULCAN_API_ENDPOINT_EVENTS
+        }
+        apiGet(TAG, endpoint) { json, _ ->
             val events = json.getJsonArray("Data")
 
             events?.forEach { eventEl ->
@@ -37,9 +43,12 @@ class VulcanApiEvents(override val data: DataVulcan, val onSuccess: () -> Unit) 
                     it.weekDay == eventDate.weekDay && it.subjectId == subjectId
                 }?.startTime
                 val topic = event.getString("Opis") ?: ""
-                val type = when (event.getBoolean("Rodzaj")) {
-                    true -> Event.TYPE_EXAM
-                    else -> Event.TYPE_SHORT_QUIZ
+                val type = when (isHomework) {
+                    true -> Event.TYPE_HOMEWORK
+                    else -> when (event.getBoolean("Rodzaj")) {
+                        false -> Event.TYPE_SHORT_QUIZ
+                        else -> Event.TYPE_EXAM
+                    }
                 }
                 val teamId = event.getLong("IdOddzial") ?: data.teamClass?.id ?: return@forEach
 
@@ -60,7 +69,7 @@ class VulcanApiEvents(override val data: DataVulcan, val onSuccess: () -> Unit) 
                 data.eventList.add(eventObject)
                 data.metadataList.add(Metadata(
                         profileId,
-                        Metadata.TYPE_EVENT,
+                        if (isHomework) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT,
                         id,
                         profile?.empty ?: false,
                         profile?.empty ?: false,
@@ -68,7 +77,10 @@ class VulcanApiEvents(override val data: DataVulcan, val onSuccess: () -> Unit) 
                 ))
             }
 
-            data.setSyncNext(ENDPOINT_VULCAN_API_EVENTS, SYNC_ALWAYS)
+            when (isHomework) {
+                true -> data.setSyncNext(ENDPOINT_VULCAN_API_HOMEWORK, SYNC_ALWAYS)
+                false -> data.setSyncNext(ENDPOINT_VULCAN_API_EVENTS, SYNC_ALWAYS)
+            }
             onSuccess()
         }
     }

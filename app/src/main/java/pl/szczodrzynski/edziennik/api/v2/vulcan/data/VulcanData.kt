@@ -5,10 +5,7 @@
 package pl.szczodrzynski.edziennik.api.v2.vulcan.data
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
-import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_DICTIONARIES
-import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_EVENTS
-import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_GRADES
+import pl.szczodrzynski.edziennik.api.v2.vulcan.*
 import pl.szczodrzynski.edziennik.api.v2.vulcan.data.api.VulcanApiDictionaries
 import pl.szczodrzynski.edziennik.api.v2.vulcan.data.api.VulcanApiEvents
 import pl.szczodrzynski.edziennik.api.v2.vulcan.data.api.VulcanApiGrades
@@ -52,7 +49,11 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
             }
             ENDPOINT_VULCAN_API_EVENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_events)
-                VulcanApiEvents(data) { onSuccess() }
+                VulcanApiEvents(data, isHomework = false) { onSuccess() }
+            }
+            ENDPOINT_VULCAN_API_HOMEWORK -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_homework)
+                VulcanApiEvents(data, isHomework = true) { onSuccess() }
             }
             else -> onSuccess()
         }
