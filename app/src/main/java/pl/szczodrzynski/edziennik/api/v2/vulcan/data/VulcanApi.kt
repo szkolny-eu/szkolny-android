@@ -12,6 +12,8 @@ import io.github.wulkanowy.signer.signContent
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
+import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.net.HttpURLConnection
@@ -33,6 +35,22 @@ open class VulcanApi(open val data: DataVulcan) {
         val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
 
         d(tag, "Request: Vulcan/Api - $url")
+
+        if (data.teamList.size() == 0) {
+            profile?.getStudentData("studentClassName", null)?.also { name ->
+                val id = Utils.crc16(name.toByteArray()).toLong()
+
+                val teamObject = Team(
+                        profileId,
+                        id,
+                        name,
+                        Team.TYPE_CLASS,
+                        "${data.schoolName}:$name",
+                        -1
+                )
+                data.teamList.put(id, teamObject)
+            }
+        }
 
         val startDate = when(profile?.empty) {
             true -> profile?.getSemesterStart(profile?.currentSemester ?: 1)?.stringY_m_d
