@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.api.v2.vulcan.login.VulcanLoginApi
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.getInt
 import pl.szczodrzynski.edziennik.getJsonArray
+import pl.szczodrzynski.edziennik.getLong
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -58,8 +59,8 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                     val schoolSymbol = student.getString("JednostkaSprawozdawczaSymbol")
                             ?: return@forEach
                     val schoolName = "${data.symbol}_$schoolSymbol"
-                    val currentSemesterStartDate = student.getInt("OkresDataOd") ?: return@forEach
-                    val currentSemesterEndDate = (student.getInt("OkresDataDo")
+                    val currentSemesterStartDate = student.getLong("OkresDataOd") ?: return@forEach
+                    val currentSemesterEndDate = (student.getLong("OkresDataDo")
                             ?: return@forEach) + 86400
                     val studentSemesterNumber = student.getInt("OkresNumer") ?: return@forEach
 
@@ -79,12 +80,12 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
 
                     when (studentSemesterNumber) {
                         1 -> {
-                            newProfile.dateSemester1Start = Date.fromMillis((currentSemesterStartDate * 1000).toLong())
-                            newProfile.dateSemester2Start = Date.fromMillis((currentSemesterEndDate * 1000).toLong())
+                            newProfile.dateSemester1Start = Date.fromMillis(currentSemesterStartDate * 1000)
+                            newProfile.dateSemester2Start = Date.fromMillis(currentSemesterEndDate * 1000)
                         }
                         2 -> {
-                            newProfile.dateSemester2Start = Date.fromMillis((currentSemesterStartDate * 1000).toLong())
-                            newProfile.dateYearEnd = Date.fromMillis((currentSemesterEndDate * 1000).toLong())
+                            newProfile.dateSemester2Start = Date.fromMillis(currentSemesterStartDate * 1000)
+                            newProfile.dateYearEnd = Date.fromMillis(currentSemesterEndDate * 1000)
                         }
                     }
 
