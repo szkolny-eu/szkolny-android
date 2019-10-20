@@ -1,5 +1,6 @@
 package pl.szczodrzynski.edziennik.data.db.modules.events;
 
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -19,6 +20,7 @@ public class Event {
     @ColumnInfo(name = "eventDate")
     public Date eventDate;
     @ColumnInfo(name = "eventStartTime")
+    @Nullable
     public Time startTime; // null for allDay
     @ColumnInfo(name = "eventTopic")
     public String topic;
@@ -68,7 +70,7 @@ public class Event {
     @Ignore
     public Event() {}
 
-    public Event(int profileId, long id, Date eventDate, Time startTime, String topic, int color, int type, boolean addedManually, long teacherId, long subjectId, long teamId)
+    public Event(int profileId, long id, Date eventDate, @Nullable Time startTime, String topic, int color, int type, boolean addedManually, long teacherId, long subjectId, long teamId)
     {
         this.profileId = profileId;
         this.id = id;

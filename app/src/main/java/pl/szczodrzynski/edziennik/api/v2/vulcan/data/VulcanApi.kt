@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.utils.models.Date
 import java.net.HttpURLConnection
 import java.util.*
 
@@ -31,17 +32,29 @@ open class VulcanApi(open val data: DataVulcan) {
                baseUrl: Boolean = false, onSuccess: (json: JsonObject, response: Response?) -> Unit) {
         val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
 
-        d(tag, "Request: Librus/Api - $url")
+        d(tag, "Request: Vulcan/Api - $url")
+
+        val startDate = when(profile?.empty) {
+            true -> profile?.getSemesterStart(profile?.currentSemester ?: 1)?.stringY_m_d
+            else -> Date.getToday().stepForward(0, -1, 0).stringY_m_d
+        }
+        val endDate = profile?.getSemesterEnd(profile?.currentSemester ?: 1)?.stringY_m_d
 
         val finalPayload = JsonObject()
         finalPayload.addProperty("IdUczen", data.studentId)
         finalPayload.addProperty("IdOkresKlasyfikacyjny", data.studentSemesterId)
         finalPayload.addProperty("IdOddzial", data.studentClassId)
+        finalPayload.addProperty("DataPoczatkowa", startDate)
+        finalPayload.addProperty("DataKoncowa", endDate)
         finalPayload.addProperty("RemoteMobileTimeKey", System.currentTimeMillis() / 1000)
         finalPayload.addProperty("TimeKey", System.currentTimeMillis() / 1000 - 1)
         finalPayload.addProperty("RequestId", UUID.randomUUID().toString())
         finalPayload.addProperty("RemoteMobileAppVersion", VULCAN_API_APP_VERSION)
         finalPayload.addProperty("RemoteMobileAppName", VULCAN_API_APP_NAME)
+
+        payload?.keySet()?.forEach {
+            finalPayload.add(it, payload.get(it))
+        }
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {

@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.api.v2.models.Feature
 const val ENDPOINT_VULCAN_API_STUDENT_LIST        = 1000
 const val ENDPOINT_VULCAN_API_DICTIONARIES        = 1010
 const val ENDPOINT_VULCAN_API_TIMETABLE           = 1020
-const val ENDPOINT_VULCAN_API_EXAMS               = 1030
+const val ENDPOINT_VULCAN_API_EVENTS = 1030
 const val ENDPOINT_VULCAN_API_GRADES              = 1040
 const val ENDPOINT_VULCAN_API_GRADES_SUMMARY      = 1050
 const val ENDPOINT_VULCAN_API_HOMEWORK            = 1060
@@ -26,7 +26,7 @@ val VulcanFeatures = listOf(
         ), listOf(LOGIN_METHOD_VULCAN_API)),
         // agenda
         Feature(LOGIN_TYPE_VULCAN, FEATURE_AGENDA, listOf(
-                ENDPOINT_VULCAN_API_EXAMS to LOGIN_METHOD_VULCAN_API
+                ENDPOINT_VULCAN_API_EVENTS to LOGIN_METHOD_VULCAN_API
         ), listOf(LOGIN_METHOD_VULCAN_API)),
         // grades
         Feature(LOGIN_TYPE_VULCAN, FEATURE_GRADES, listOf(
