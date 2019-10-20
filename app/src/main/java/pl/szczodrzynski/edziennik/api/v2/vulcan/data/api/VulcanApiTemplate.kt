@@ -4,9 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.vulcan.data.api
 
-import pl.szczodrzynski.edziennik.api.v2.VULCAN_API_ENDPOINT_GRADES
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
-import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_GRADES
 import pl.szczodrzynski.edziennik.api.v2.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonArray

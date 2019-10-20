@@ -950,4 +950,5 @@
     <string name="edziennik_progress_endpoint_classes">Pobieranie informacji o klasie...</string>
     <string name="edziennik_progress_endpoint_teacher_free_days">Pobieranie nieobecności nauczycieli...</string>
     <string name="edziennik_progress_endpoint_teacher_free_day_types">Pobieranie rodzajów nieobecności nauczycieli...</string>
+    <string name="edziennik_progress_endpoint_dictionaries">Pobieranie słowników...</string>
 </resources>
