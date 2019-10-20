@@ -291,7 +291,15 @@ public class HomeFragment extends Fragment {
                             activity.getBottomSheet().close();
                             setNumberDialog();
                         }),
-                new BottomSheetSeparatorItem(true)
+                new BottomSheetSeparatorItem(true),
+                new BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_mark_everything_as_read)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withOnClickListener(v3 -> {
+                            activity.getBottomSheet().close();
+                            AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, true));
+                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
+                        })
         );
         activity.gainAttention();
     }
@@ -322,15 +330,15 @@ public class HomeFragment extends Fragment {
         if (app.appConfig.countInSeconds) {
             return 1000-(System.currentTimeMillis() % 1000);
         }
-        if (diff.minute > 5) {
+        if (diff.minute > 10) {
             //Log.d(TAG, "60 secs");
             return 60000-(System.currentTimeMillis() % 60000);
         }
-        else if (diff.minute >= 1) {
+        else if (diff.minute >= 1 && false) {
             //Log.d(TAG, "3 secs");
             return 3000-(System.currentTimeMillis() % 3000);
         }
-        else if (diff.second >= 40) {
+        else if (diff.second >= 40 && false) {
             //Log.d(TAG, "2 secs");
             return 2000-(System.currentTimeMillis() % 2000);
         }

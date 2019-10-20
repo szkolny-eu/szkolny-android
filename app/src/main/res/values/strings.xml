@@ -435,6 +435,7 @@
     <string name="menu_homework">Zadania domowe</string>
     <string name="menu_manage_profiles">Zarządzaj profilami</string>
     <string name="menu_mark_as_read">Oznacz jako przeczytane</string>
+    <string name="menu_mark_everything_as_read">Oznacz wszystko jako przeczytane</string>
     <string name="menu_messages">Wiadomości</string>
     <string name="menu_messages_inbox">Odebrane</string>
     <string name="menu_messages_sent">Wysłane</string>

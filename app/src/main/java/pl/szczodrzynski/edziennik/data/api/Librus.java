@@ -273,8 +273,8 @@ public class Librus implements EdziennikInterface {
             targetEndpoints.add("Users");
             targetEndpoints.add("Subjects");
             targetEndpoints.add("Classrooms");
-            targetEndpoints.add("Timetables");
             targetEndpoints.add("Substitutions");
+            targetEndpoints.add("Timetables");
             targetEndpoints.add("Colors");
 
             targetEndpoints.add("SavedGradeCategories");
@@ -342,8 +342,8 @@ public class Librus implements EdziennikInterface {
                 switch (feature) {
                     case FEATURE_TIMETABLE:
                         targetEndpoints.add("Classrooms");
-                        targetEndpoints.add("Timetables");
                         targetEndpoints.add("Substitutions");
+                        targetEndpoints.add("Timetables");
                         break;
                     case FEATURE_AGENDA:
                         targetEndpoints.add("Events");
@@ -1658,6 +1658,7 @@ public class Librus implements EdziennikInterface {
             try {
                 for (Map.Entry<String, JsonElement> dayEl: timetables.entrySet()) {
                     JsonArray day = dayEl.getValue().getAsJsonArray();
+                    Date lessonDate = Date.fromY_m_d(dayEl.getKey());
                     for (JsonElement lessonGroupEl: day) {
                         if ((lessonGroupEl instanceof JsonArray && ((JsonArray) lessonGroupEl).size() == 0) || lessonGroupEl instanceof JsonNull || lessonGroupEl == null) {
                             continue;
@@ -1732,8 +1733,27 @@ public class Librus implements EdziennikInterface {
                             }
 
                             JsonElement classroom;
-                            if ((classroom = lesson.get(substitution && !cancelled ? "OrgClassroom" : "Classroom")) != null) {
-                                lessonObject.classroomName = classrooms.get(classroom.getAsJsonObject().get("Id").getAsInt());
+                            JsonElement substitutionClassroom;
+                            if (substitution && !cancelled) {
+                                classroom = lesson.get("OrgClassroom");
+                                substitutionClassroom = lesson.get("Classroom");
+
+                                if (classroom != null)
+                                    lessonObject.classroomName = classrooms.get(classroom.getAsJsonObject().get("Id").getAsInt());
+
+                                if (substitutionClassroom != null) {
+                                    for (LessonChange lessonChange : lessonChangeList) {
+                                        if(lessonChange.lessonDate.compareTo(lessonDate) == 0) {
+                                            lessonChange.classroomName
+                                                    = classrooms.get(substitutionClassroom.getAsJsonObject().get("Id").getAsInt());
+                                            break;
+                                        }
+                                    }
+                                }
+                            } else {
+                                classroom = lesson.get("Classroom");
+                                if (classroom != null)
+                                    lessonObject.classroomName = classrooms.get(classroom.getAsJsonObject().get("Id").getAsInt());
                             }
 
                             lessonList.add(lessonObject);
@@ -1931,7 +1951,7 @@ public class Librus implements EdziennikInterface {
             return;
         }
         // not a full sync. Will get all grade categories. Clear the current list.
-        gradeCategoryList.clear();
+        //gradeCategoryList.clear();
 
         callback.onActionStarted(R.string.sync_action_syncing_grade_categories);
         apiRequest("Grades/Categories", data -> {

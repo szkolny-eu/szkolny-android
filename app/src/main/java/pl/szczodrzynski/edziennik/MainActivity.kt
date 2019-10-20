@@ -21,14 +21,11 @@ import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.navlib.NavView
-import pl.szczodrzynski.navlib.SystemBarsUtil
 import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
 import pl.szczodrzynski.navlib.drawer.items.withAppTitle
-import pl.szczodrzynski.navlib.getColorFromAttr
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.graphics.ColorUtils
 import androidx.navigation.NavOptions
@@ -39,6 +36,7 @@ import com.mikepenz.iconics.IconicsSize
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
+import me.zhanghai.android.materialprogressbar.internal.ThemeUtils
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.data.api.AppError
@@ -72,6 +70,8 @@ import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
+import pl.szczodrzynski.navlib.*
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import java.io.File
@@ -277,6 +277,13 @@ class MainActivity : AppCompatActivity() {
                 fabExtendable = true
                 fabExtended = false
                 fabGravity = Gravity.CENTER
+                if (Themes.isDark) {
+                    setBackgroundColor(blendColors(
+                            getColorFromAttr(context, R.attr.colorSurface),
+                            getColorFromRes(R.color.colorSurface_4dp)
+                    ))
+                    elevation = dpToPx(4).toFloat()
+                }
             }
 
             bottomSheet.apply {
