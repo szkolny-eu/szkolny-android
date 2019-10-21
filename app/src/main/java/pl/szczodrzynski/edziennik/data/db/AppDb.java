@@ -579,6 +579,13 @@ public abstract class AppDb extends RoomDatabase {
     private static final Migration MIGRATION_54_55 = new Migration(54, 55) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // 2019-10-21 for merge compatibility between 3.1.1 and api-v2
+            // moved to Migration 55->56
+        }
+    };
+    private static final Migration MIGRATION_55_56 = new Migration(55, 56) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE IF NOT EXISTS endpointTimers (" +
                     "profileId INTEGER NOT NULL," +
                     "endpointId INTEGER NOT NULL," +
@@ -587,11 +594,6 @@ public abstract class AppDb extends RoomDatabase {
                     "endpointViewId INTEGER DEFAULT NULL," +
                     "PRIMARY KEY(profileId, endpointId)" +
                     ")");
-        }
-    };
-    private static final Migration MIGRATION_55_56 = new Migration(55, 56) {
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE IF NOT EXISTS lessonRanges (" +
                     "profileId INTEGER NOT NULL," +
                     "lessonRangeNumber INTEGER NOT NULL," +
