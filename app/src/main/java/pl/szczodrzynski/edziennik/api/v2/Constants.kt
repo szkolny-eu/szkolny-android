@@ -38,6 +38,7 @@ const val LIBRUS_API_CLIENT_ID_JST = "49"
 const val LIBRUS_JST_DEMO_CODE = "68656A21"
 const val LIBRUS_JST_DEMO_PIN = "1290"
 
+const val LIBRUS_SYNERGIA_URL = "https://synergia.librus.pl/"
 /** https://synergia.librus.pl/loguj/token/TOKEN/przenies */
 const val LIBRUS_SYNERGIA_TOKEN_LOGIN_URL = "https://synergia.librus.pl/loguj/token/TOKEN/przenies"
 
