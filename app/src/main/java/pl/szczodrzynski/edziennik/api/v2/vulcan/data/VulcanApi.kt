@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.vulcan.data
 
+import android.util.Base64
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
@@ -16,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
+import java.io.ByteArrayInputStream
 import java.net.HttpURLConnection
 import java.util.*
 
@@ -52,7 +54,7 @@ open class VulcanApi(open val data: DataVulcan) {
             }
         }
 
-        val startDate = when(profile?.empty) {
+        val startDate = when (profile?.empty) {
             true -> profile?.getSemesterStart(profile?.currentSemester ?: 1)?.stringY_m_d
             else -> Date.getToday().stepForward(0, -1, 0).stringY_m_d
         }
@@ -112,7 +114,9 @@ open class VulcanApi(open val data: DataVulcan) {
                 .userAgent(VULCAN_API_USER_AGENT)
                 .addHeader("RequestCertificateKey", data.apiCertificateKey)
                 .addHeader("RequestSignatureValue",
-                        signContent(VULCAN_API_PASSWORD, data.apiCertificatePfx, finalPayload.toString()))
+                        Utils.VulcanRequestEncryptionUtils.signContent(
+                                finalPayload.toString().toByteArray(),
+                                ByteArrayInputStream(Base64.decode(data.apiCertificatePfx, Base64.DEFAULT))))
                 .apply {
                     when (method) {
                         GET -> get()
