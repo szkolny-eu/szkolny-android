@@ -16,7 +16,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
 
     fun isApiLoginValid() = apiCertificateExpiryTime-30 > currentTimeUnix()
             && apiCertificateKey.isNotNullNorEmpty()
-            && apiCertificatePfx.isNotNullNorEmpty()
+            && apiCertificatePrivate.isNotNullNorEmpty()
             && symbol.isNotNullNorEmpty()
 
     override fun satisfyLoginMethods() {
@@ -144,6 +144,11 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     var apiCertificatePfx: String?
         get() { mApiCertificatePfx = mApiCertificatePfx ?: loginStore.getLoginData("certificatePfx", null); return mApiCertificatePfx }
         set(value) { loginStore.putLoginData("certificatePfx", value); mApiCertificatePfx = value }
+
+    private var mApiCertificatePrivate: String? = null
+    var apiCertificatePrivate: String?
+        get() { mApiCertificatePrivate = mApiCertificatePrivate ?: loginStore.getLoginData("certificatePrivate", null); return mApiCertificatePrivate }
+        set(value) { loginStore.putLoginData("certificatePrivate", value); mApiCertificatePrivate = value }
 
     private var mApiCertificateExpiryTime: Int? = null
     var apiCertificateExpiryTime: Int

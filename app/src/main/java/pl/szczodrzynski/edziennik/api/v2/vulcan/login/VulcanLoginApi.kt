@@ -9,10 +9,14 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
+import pl.szczodrzynski.edziennik.api.v2.vulcan.data.getPrivateKeyFromCert
+import pl.szczodrzynski.edziennik.currentTimeUnix
+import pl.szczodrzynski.edziennik.getJsonObject
+import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.HTTP_BAD_REQUEST
 import java.util.*
@@ -28,6 +32,18 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
             onSuccess()
         }
         else {
+            if (data.apiCertificatePfx.isNotNullNorEmpty()) {
+                try {
+                    data.apiCertificatePrivate = getPrivateKeyFromCert(
+                            if (data.apiToken?.get(0) == 'F') VULCAN_API_PASSWORD_FAKELOG else VULCAN_API_PASSWORD,
+                            data.apiCertificatePfx ?: ""
+                    )
+                    onSuccess()
+                    return@run
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                }
+            }
             if (data.symbol.isNotNullNorEmpty() && data.apiToken.isNotNullNorEmpty() && data.apiPin.isNotNullNorEmpty()) {
                 loginWithToken()
             }

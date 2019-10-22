@@ -4,12 +4,10 @@
 
 package pl.szczodrzynski.edziennik.api.v2.vulcan.data
 
-import android.util.Base64
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
-import io.github.wulkanowy.signer.signContent
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
@@ -17,7 +15,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
-import java.io.ByteArrayInputStream
 import java.net.HttpURLConnection
 import java.util.*
 
@@ -114,9 +111,12 @@ open class VulcanApi(open val data: DataVulcan) {
                 .userAgent(VULCAN_API_USER_AGENT)
                 .addHeader("RequestCertificateKey", data.apiCertificateKey)
                 .addHeader("RequestSignatureValue",
-                        Utils.VulcanRequestEncryptionUtils.signContent(
-                                finalPayload.toString().toByteArray(),
-                                ByteArrayInputStream(Base64.decode(data.apiCertificatePfx, Base64.DEFAULT))))
+                        try {
+                            signContent(
+                                    data.apiCertificatePrivate ?: "",
+                                    finalPayload.toString()
+                            )
+                        } catch (e: Exception) {e.printStackTrace();""})
                 .apply {
                     when (method) {
                         GET -> get()

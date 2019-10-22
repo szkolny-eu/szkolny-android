@@ -156,7 +156,8 @@ dependencies {
     debugImplementation "com.github.ChuckerTeam.Chucker:library:3.0.1"
     releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.0.1"
 
-    implementation 'com.github.wulkanowy:uonet-request-signer:master-SNAPSHOT'
+    //implementation 'com.github.wulkanowy:uonet-request-signer:master-SNAPSHOT'
+    //implementation 'com.github.kuba2k2.uonet-request-signer:android:master-63f094b14a-1'
 }
 repositories {
     mavenCentral()
