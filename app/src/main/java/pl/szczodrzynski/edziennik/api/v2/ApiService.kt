@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.api.v2
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
@@ -13,10 +14,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.events.SyncErrorEvent
-import pl.szczodrzynski.edziennik.api.v2.events.SyncFinishedEvent
-import pl.szczodrzynski.edziennik.api.v2.events.SyncProfileFinishedEvent
-import pl.szczodrzynski.edziennik.api.v2.events.SyncProgressEvent
+import pl.szczodrzynski.edziennik.api.v2.events.*
 import pl.szczodrzynski.edziennik.api.v2.events.requests.*
 import pl.szczodrzynski.edziennik.api.v2.events.task.ErrorReportTask
 import pl.szczodrzynski.edziennik.api.v2.events.task.NotifyTask
@@ -37,6 +35,9 @@ class ApiService : Service() {
     companion object {
         const val TAG = "ApiService"
         const val NOTIFICATION_API_CHANNEL_ID = "pl.szczodrzynski.edziennik.GET_DATA"
+        fun start(context: Context) {
+            context.startService(Intent(context, ApiService::class.java))
+        }
     }
 
     private val app by lazy { applicationContext as App }
@@ -210,6 +211,9 @@ class ApiService : Service() {
 
         // update the notification
         notification.setCurrentTask(taskRunningId, taskProfileName).post()
+
+        // post an event
+        EventBus.getDefault().post(SyncStartedEvent(taskProfileId))
 
         edziennikInterface = when (loginStore.type) {
             LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
