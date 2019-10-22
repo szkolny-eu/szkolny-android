@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.api.v2.librus.data
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.librus.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.api.*
+import pl.szczodrzynski.edziennik.api.v2.librus.data.synergia.LibrusSynergiaHomework
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
@@ -82,6 +83,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_teacher_free_days)
                 LibrusApiTeacherFreeDays(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_homework)
+                LibrusSynergiaHomework(data) { onSuccess() }
             }
             else -> onSuccess()
         }

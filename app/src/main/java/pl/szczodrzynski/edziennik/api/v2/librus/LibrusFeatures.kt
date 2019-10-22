@@ -46,6 +46,7 @@ const val ENDPOINT_LIBRUS_API_SCHOOL_FREE_DAYS          = 1120
 const val ENDPOINT_LIBRUS_API_CLASS_FREE_DAYS           = 1130
 const val ENDPOINT_LIBRUS_SYNERGIA_INFO                 = 2010
 const val ENDPOINT_LIBRUS_SYNERGIA_GRADES               = 2020
+const val ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK             = 2030
 const val ENDPOINT_LIBRUS_MESSAGES_RECEIVED             = 3010
 const val ENDPOINT_LIBRUS_MESSAGES_SENT                 = 3020
 const val ENDPOINT_LIBRUS_MESSAGES_TRASH                = 3030
@@ -212,8 +213,15 @@ val LibrusFeatures = listOf(
                 ENDPOINT_LIBRUS_SYNERGIA_GRADES to LOGIN_METHOD_LIBRUS_SYNERGIA
         ), listOf(LOGIN_METHOD_LIBRUS_SYNERGIA)),*/
 
-
-
+        /**
+         * Homework - using scrapper.
+         * Sync only if account has not premium access.
+         */
+        Feature(LOGIN_TYPE_LIBRUS, FEATURE_HOMEWORK, listOf(
+                ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK to LOGIN_METHOD_LIBRUS_SYNERGIA
+        ), listOf(LOGIN_METHOD_LIBRUS_SYNERGIA)).withShouldSync { data ->
+                !(data as DataLibrus).isPremium
+        },
 
         /**
          * Messages inbox - using messages website.
