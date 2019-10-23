@@ -210,4 +210,9 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mSchoolName = mSchoolName ?: profile?.getStudentData("schoolName", null); return mSchoolName }
         set(value) { profile?.putStudentData("schoolName", value) ?: return; mSchoolName = value }
 
+    private var mUnitId: Long? = null
+    var unitId: Long
+        get() { mUnitId = mUnitId ?: profile?.getStudentData("unitId", 0L); return mUnitId ?: 0L }
+        set(value) { profile?.putStudentData("unitId", value) ?: return; mUnitId = value }
+
 }

@@ -4,11 +4,14 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_CLASSES
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
+import pl.szczodrzynski.edziennik.getJsonObject
+import pl.szczodrzynski.edziennik.getLong
+import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusApiClasses(override val data: DataLibrus,
@@ -37,7 +40,7 @@ class LibrusApiClasses(override val data: DataLibrus,
 
                 data.teamList.put(id, teamObject)
 
-                val unitId = studentClass.getJsonObject("Unit").getLong("Id")
+                data.unitId = studentClass.getJsonObject("Unit").getLong("Id") ?: 0L
 
                 profile?.apply {
                     dateSemester1Start = Date.fromY_m_d(studentClass.getString("BeginSchoolYear")
@@ -46,7 +49,6 @@ class LibrusApiClasses(override val data: DataLibrus,
                             ?: return@apply)
                     dateYearEnd = Date.fromY_m_d(studentClass.getString("EndSchoolYear")
                             ?: return@apply)
-                    unitId?.let { putStudentData("unitId", it) }
                 }
             }
 
