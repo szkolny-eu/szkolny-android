@@ -954,4 +954,5 @@
     <string name="edziennik_progress_endpoint_dictionaries">Pobieranie słowników...</string>
     <string name="toolbar_subtitle_syncing">Synchronizuję...</string>
     <string name="toolbar_subtitle_syncing_format">[%d%%] %s</string>
+    <string name="edziennik_progress_endpoint_notices">Pobieranie uwag...</string>
 </resources>
