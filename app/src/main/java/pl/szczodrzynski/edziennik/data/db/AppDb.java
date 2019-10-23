@@ -22,6 +22,10 @@ import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer;
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimerDao;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceDao;
+import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceType;
+import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceTypeDao;
+import pl.szczodrzynski.edziennik.data.db.modules.classrooms.Classroom;
+import pl.szczodrzynski.edziennik.data.db.modules.classrooms.ClassroomDao;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLogDao;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
@@ -52,6 +56,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata;
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.MetadataDao;
 import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
 import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeDao;
+import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeType;
+import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeTypeDao;
 import pl.szczodrzynski.edziennik.data.db.modules.notification.Notification;
 import pl.szczodrzynski.edziennik.data.db.modules.notification.NotificationDao;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
@@ -94,7 +100,10 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         EndpointTimer.class,
         LessonRange.class,
         Notification.class,
-        Metadata.class}, version = 61)
+        Classroom.class,
+        NoticeType.class,
+        AttendanceType.class,
+        Metadata.class}, version = 62)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -129,6 +138,9 @@ public abstract class AppDb extends RoomDatabase {
     public abstract EndpointTimerDao endpointTimerDao();
     public abstract LessonRangeDao lessonRangeDao();
     public abstract NotificationDao notificationDao();
+    public abstract ClassroomDao classroomDao();
+    public abstract NoticeTypeDao noticeTypeDao();
+    public abstract AttendanceTypeDao attendanceTypeDao();
     public abstract MetadataDao metadataDao();
 
     private static volatile AppDb INSTANCE;
@@ -684,6 +696,31 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("ALTER TABLE teacherAbsence ADD COLUMN teacherAbsenceName TEXT DEFAULT NULL");
         }
     };
+    private static final Migration MIGRATION_61_62 = new Migration(61, 62) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS classrooms (\n" +
+                    "    profileId INTEGER NOT NULL,\n" +
+                    "    id INTEGER NOT NULL,\n" +
+                    "    name TEXT NOT NULL,\n" +
+                    "    PRIMARY KEY(profileId, id)\n" +
+                    ")");
+            database.execSQL("CREATE TABLE IF NOT EXISTS noticeTypes (\n" +
+                    "    profileId INTEGER NOT NULL,\n" +
+                    "    id INTEGER NOT NULL,\n" +
+                    "    name TEXT NOT NULL,\n" +
+                    "    PRIMARY KEY(profileId, id)\n" +
+                    ")");
+            database.execSQL("CREATE TABLE IF NOT EXISTS attendanceTypes (\n" +
+                    "    profileId INTEGER NOT NULL,\n" +
+                    "    id INTEGER NOT NULL,\n" +
+                    "    name TEXT NOT NULL,\n" +
+                    "    type INTEGER NOT NULL,\n" +
+                    "    color INTEGER NOT NULL,\n" +
+                    "    PRIMARY KEY(profileId, id)\n" +
+                    ")");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -742,7 +779,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_57_58,
                                     MIGRATION_58_59,
                                     MIGRATION_59_60,
-                                    MIGRATION_60_61
+                                    MIGRATION_60_61,
+                                    MIGRATION_61_62
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

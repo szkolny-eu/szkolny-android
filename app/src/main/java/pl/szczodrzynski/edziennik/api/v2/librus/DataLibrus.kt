@@ -215,4 +215,21 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mUnitId = mUnitId ?: profile?.getStudentData("unitId", 0L); return mUnitId ?: 0L }
         set(value) { profile?.putStudentData("unitId", value) ?: return; mUnitId = value }
 
+    private var mStartPointsSemester1: Int? = null
+    var startPointsSemester1: Int
+        get() { mStartPointsSemester1 = mStartPointsSemester1 ?: profile?.getStudentData("startPointsSemester1", 0); return mStartPointsSemester1 ?: 0 }
+        set(value) { profile?.putStudentData("startPointsSemester1", value) ?: return; mStartPointsSemester1 = value }
+    private var mStartPointsSemester2: Int? = null
+    var startPointsSemester2: Int
+        get() { mStartPointsSemester2 = mStartPointsSemester2 ?: profile?.getStudentData("startPointsSemester2", 0); return mStartPointsSemester2 ?: 0 }
+        set(value) { profile?.putStudentData("startPointsSemester2", value) ?: return; mStartPointsSemester2 = value }
+
+    private var mEnablePointGrades: Boolean? = null
+    var enablePointGrades: Boolean
+        get() { mEnablePointGrades = mEnablePointGrades ?: profile?.getStudentData("enablePointGrades", true); return mEnablePointGrades ?: true }
+        set(value) { profile?.putStudentData("enablePointGrades", value) ?: return; mEnablePointGrades = value }
+    private var mEnableDescriptiveGrades: Boolean? = null
+    var enableDescriptiveGrades: Boolean
+        get() { mEnableDescriptiveGrades = mEnableDescriptiveGrades ?: profile?.getStudentData("enableDescriptiveGrades", true); return mEnableDescriptiveGrades ?: true }
+        set(value) { profile?.putStudentData("enableDescriptiveGrades", value) ?: return; mEnableDescriptiveGrades = value }
 }
