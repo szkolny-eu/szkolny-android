@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.librus.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.api.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.synergia.LibrusSynergiaHomework
+import pl.szczodrzynski.edziennik.api.v2.librus.data.synergia.LibrusSynergiaInfo
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
@@ -87,6 +88,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
                 LibrusSynergiaHomework(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_SYNERGIA_INFO -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_student_info)
+                LibrusSynergiaInfo(data) { onSuccess() }
             }
             else -> onSuccess()
         }
