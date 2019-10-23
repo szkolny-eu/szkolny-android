@@ -213,7 +213,7 @@ class ApiService : Service() {
         notification.setCurrentTask(taskRunningId, taskProfileName).post()
 
         // post an event
-        EventBus.getDefault().post(SyncStartedEvent(taskProfileId))
+        EventBus.getDefault().post(SyncStartedEvent(taskProfileId, profile))
 
         edziennikInterface = when (loginStore.type) {
             LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
@@ -252,6 +252,19 @@ class ApiService : Service() {
         Log.d(TAG, request.toString())
 
         app.db.profileDao().idsForSyncNow.forEach { id ->
+            taskQueue += SyncProfileRequest(id, null).apply {
+                taskId = ++taskMaximumId
+            }
+        }
+        sync()
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
+    fun onSyncProfileListRequest(request: SyncProfileListRequest) {
+        EventBus.getDefault().removeStickyEvent(request)
+        Log.d(TAG, request.toString())
+
+        request.profileList.forEach { id ->
             taskQueue += SyncProfileRequest(id, null).apply {
                 taskId = ++taskMaximumId
             }
