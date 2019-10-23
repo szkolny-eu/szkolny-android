@@ -36,7 +36,7 @@ public abstract class LuckyNumberDao {
     public abstract LuckyNumber getByDateNow(int profileId, Date date);
 
     @Nullable
-    @Query("SELECT * FROM luckyNumbers WHERE profileId = :profileId AND luckyNumberDate > :date ORDER BY luckyNumberDate ASC LIMIT 1")
+    @Query("SELECT * FROM luckyNumbers WHERE profileId = :profileId AND luckyNumberDate >= :date ORDER BY luckyNumberDate DESC LIMIT 1")
     public abstract LuckyNumber getNearestFutureNow(int profileId, Date date);
 
     @RawQuery(observedEntities = {LuckyNumber.class})

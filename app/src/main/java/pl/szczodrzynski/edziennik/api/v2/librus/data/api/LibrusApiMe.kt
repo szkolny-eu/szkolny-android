@@ -5,8 +5,8 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 
 class LibrusApiMe(override val data: DataLibrus,
@@ -21,7 +21,7 @@ class LibrusApiMe(override val data: DataLibrus,
             val account = me?.getJsonObject("Account")
             val user = me?.getJsonObject("User")
 
-            data.isPremium = account?.getBoolean("isPremium") == true || account?.getBoolean("isPremiumDemo") == true
+            data.isPremium = account?.getBoolean("IsPremium") == true || account?.getBoolean("IsPremiumDemo") == true
 
             val isParent = account?.getInt("GroupId") == 5
             data.profile?.accountNameLong =

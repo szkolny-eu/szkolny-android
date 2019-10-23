@@ -5,11 +5,12 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data.synergia
 
 import org.jsoup.Jsoup
+import pl.szczodrzynski.edziennik.HOUR
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.api.v2.POST
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusSynergia
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.get
@@ -22,8 +23,12 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
     }
 
     init {
-        apiGet(TAG, "moje_zadania", method = POST, parameters = mapOf(
-                "dataOd" to Date.getToday().stringY_m_d,
+        synergiaGet(TAG, "moje_zadania", method = POST, parameters = mapOf(
+                "dataOd" to
+                        if (data.profile?.empty != false)
+                            profile!!.getSemesterStart(1).stringY_m_d
+                        else
+                            Date.getToday().stringY_m_d,
                 "dataDo" to profile!!.getSemesterEnd(profile?.currentSemester ?: 2).stringY_m_d,
                 "przedmiot" to -1
 
@@ -87,7 +92,8 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
                 }
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, SYNC_ALWAYS)
+            // because this requires a synergia login (2 more requests) sync this every two hours or if explicit :D
+            data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, 2*HOUR, DRAWER_ITEM_HOMEWORK)
             onSuccess()
         }
     }

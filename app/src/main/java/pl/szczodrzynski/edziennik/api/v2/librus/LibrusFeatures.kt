@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.api.v2.librus
 
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
 
 const val ENDPOINT_LIBRUS_API_ME                        = 1001
@@ -167,7 +166,7 @@ val LibrusFeatures = listOf(
          */
         Feature(LOGIN_TYPE_LIBRUS, FEATURE_LUCKY_NUMBER, listOf(
                 ENDPOINT_LIBRUS_API_LUCKY_NUMBER to LOGIN_METHOD_LIBRUS_API
-        ), listOf(LOGIN_METHOD_LIBRUS_API)),
+        ), listOf(LOGIN_METHOD_LIBRUS_API)).withShouldSync { data -> data.shouldSyncLuckyNumber() },
         /**
          * Teacher list - using API.
          */

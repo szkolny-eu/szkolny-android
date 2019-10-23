@@ -12,7 +12,6 @@ import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import java.lang.Exception
 
 open class LibrusSynergia(open val data: DataLibrus) {
     companion object {
@@ -25,8 +24,8 @@ open class LibrusSynergia(open val data: DataLibrus) {
     val profile
         get() = data.profile
 
-    fun apiGet(tag: String, endpoint: String, method: Int = GET,
-               parameters: Map<String, Any> = emptyMap(), onSuccess: (text: String) -> Unit) {
+    fun synergiaGet(tag: String, endpoint: String, method: Int = GET,
+                    parameters: Map<String, Any> = emptyMap(), onSuccess: (text: String) -> Unit) {
         d(tag, "Request: Librus/Synergia - $LIBRUS_SYNERGIA_URL$endpoint")
 
         val callback = object : TextCallbackHandler() {

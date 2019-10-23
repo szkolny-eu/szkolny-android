@@ -5,10 +5,10 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -60,7 +60,7 @@ class LibrusApiTeacherFreeDays(override val data: DataLibrus,
                 ))
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS, SYNC_ALWAYS)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS, 6*HOUR, DRAWER_ITEM_AGENDA)
             onSuccess()
         }
     }

@@ -197,6 +197,37 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         db.profileDao().add(profile)
         db.loginStoreDao().add(loginStore)
 
+        if (profile.id == app.profile?.id) {
+            app.profile.apply {
+                name = profile.name
+                subname = profile.subname
+                syncEnabled = profile.syncEnabled
+                loggedIn = profile.loggedIn
+                empty = profile.empty
+                archived = profile.archived
+                studentNameLong = profile.studentNameLong
+                studentNameShort = profile.studentNameShort
+                studentNumber = profile.studentNumber
+                studentData = profile.studentData
+                accountNameLong = profile.accountNameLong
+                yearAverageMode = profile.yearAverageMode
+                currentSemester = profile.currentSemester
+                attendancePercentage = profile.attendancePercentage
+                dateSemester1Start = profile.dateSemester1Start
+                dateSemester2Start = profile.dateSemester2Start
+                dateYearEnd = profile.dateYearEnd
+                luckyNumberEnabled = profile.luckyNumberEnabled
+                luckyNumber = profile.luckyNumber
+                luckyNumberDate = profile.luckyNumberDate
+                lastFullSync = profile.lastFullSync
+                lastReceiversSync = profile.lastReceiversSync
+            }
+        }
+        if (loginStore.id == app.profile?.loginStoreId) {
+            app.loginStore = loginStore.data
+            app.profile.loginStoreData = loginStore.data
+        }
+
         db.endpointTimerDao().addAll(endpointTimers)
         db.teacherDao().clear(profileId)
         db.teacherDao().addAll(teacherList.values())
@@ -291,6 +322,10 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         d("Data", "Cancelled")
         cancelled = true
         saveData()
+    }
+
+    fun shouldSyncLuckyNumber(): Boolean {
+        return (db.luckyNumberDao().getNearestFutureNow(profileId, Date.getToday()) ?: -1) == -1
     }
 
     fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {

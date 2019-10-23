@@ -1,6 +1,7 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.firstlogin
 
 import org.greenrobot.eventbus.EventBus
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.ERROR_NO_STUDENTS_IN_ACCOUNT
 import pl.szczodrzynski.edziennik.api.v2.LIBRUS_ACCOUNTS_URL
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_MODE_LIBRUS_EMAIL
@@ -14,10 +15,6 @@ import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.AppError.CODE_LIBRUS_DISCONNECTED
 import pl.szczodrzynski.edziennik.data.api.AppError.CODE_SYNERGIA_NOT_ACTIVATED
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.getJsonArray
-import pl.szczodrzynski.edziennik.getLong
-import pl.szczodrzynski.edziennik.getString
 
 class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
     companion object {
@@ -81,7 +78,7 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                         newProfile.putStudentData("accountId", accountIds[index])
                         newProfile.putStudentData("accountLogin", accountLogins[index])
                         newProfile.putStudentData("accountToken", accountTokens[index])
-                        newProfile.putStudentData("accountTokenTime", accountDataTime ?: 0)
+                        newProfile.putStudentData("accountTokenTime", (accountDataTime ?: 0) + DAY)
                         profileList.add(newProfile)
                     }
 
