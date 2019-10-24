@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.synergia
 
-import org.jsoup.Jsoup
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusSynergia
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
@@ -15,8 +14,7 @@ class LibrusSynergiaTemplate(override val data: DataLibrus, val onSuccess: () ->
     }
 
     init {
-        /* synergiaGet(TAG, "") { text ->
-            val doc = Jsoup.parse(text)
+        /* synergiaGet(TAG, "") { doc ->
 
             data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_, SYNC_ALWAYS)
             onSuccess()

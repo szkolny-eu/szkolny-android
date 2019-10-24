@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.synergia
 
-import org.jsoup.Jsoup
 import pl.szczodrzynski.edziennik.MONTH
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_SYNERGIA_INFO
@@ -16,8 +15,7 @@ class LibrusSynergiaInfo(override val data: DataLibrus, val onSuccess: () -> Uni
     }
 
     init {
-        synergiaGet(TAG, "informacja") { text ->
-            val doc = Jsoup.parse(text)
+        synergiaGet(TAG, "informacja") { doc ->
 
             doc.select("table.form tbody").firstOrNull()?.children()?.also { info ->
                 val studentNumber = info[2].select("td").text().trim().toIntOrNull()

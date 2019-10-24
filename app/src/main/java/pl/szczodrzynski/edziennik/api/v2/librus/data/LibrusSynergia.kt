@@ -8,6 +8,8 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
@@ -25,8 +27,8 @@ open class LibrusSynergia(open val data: DataLibrus) {
         get() = data.profile
 
     fun synergiaGet(tag: String, endpoint: String, method: Int = GET,
-                    parameters: Map<String, Any> = emptyMap(), onSuccess: (text: String) -> Unit) {
-        d(tag, "Request: Librus/Synergia - $LIBRUS_SYNERGIA_URL$endpoint")
+                    parameters: Map<String, Any> = emptyMap(), onSuccess: (doc: Document) -> Unit) {
+        d(tag, "Request: Librus/Synergia - $LIBRUS_SYNERGIA_URL/$endpoint")
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
@@ -39,13 +41,20 @@ open class LibrusSynergia(open val data: DataLibrus) {
                 // TODO: Error handling
 
                 try {
-                    onSuccess(text)
+                    val doc = Jsoup.parse(text)
+                    onSuccess(doc)
                 } catch (e: Exception) {
                     data.error(ApiError(tag, EXCEPTION_LIBRUS_SYNERGIA_REQUEST)
                             .withResponse(response)
                             .withThrowable(e)
                             .withApiResponse(text))
                 }
+            }
+
+            override fun onFailure(response: Response?, throwable: Throwable?) {
+                data.error(ApiError(tag, ERROR_REQUEST_FAILURE)
+                        .withResponse(response)
+                        .withThrowable(throwable))
             }
         }
 
@@ -58,7 +67,7 @@ open class LibrusSynergia(open val data: DataLibrus) {
         ))
 
         Request.builder()
-                .url("$LIBRUS_SYNERGIA_URL$endpoint")
+                .url("$LIBRUS_SYNERGIA_URL/$endpoint")
                 .userAgent(LIBRUS_USER_AGENT)
                 .apply {
                     when (method) {

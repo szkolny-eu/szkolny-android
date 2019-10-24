@@ -158,26 +158,26 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     val apiUrl: String?
         get() {
             val url = when (apiToken?.substring(0, 3)) {
-                "3S1" -> "https://lekcjaplus.vulcan.net.pl/"
-                "TA1" -> "https://uonetplus-komunikacja.umt.tarnow.pl/"
-                "OP1" -> "https://uonetplus-komunikacja.eszkola.opolskie.pl/"
-                "RZ1" -> "https://uonetplus-komunikacja.resman.pl/"
-                "GD1" -> "https://uonetplus-komunikacja.edu.gdansk.pl/"
-                "KA1" -> "https://uonetplus-komunikacja.mcuw.katowice.eu/"
-                "KA2" -> "https://uonetplus-komunikacja-test.mcuw.katowice.eu/"
-                "P03" -> "https://efeb-komunikacja-pro-efebmobile.pro.vulcan.pl/"
-                "P01" -> "http://efeb-komunikacja.pro-hudson.win.vulcan.pl/"
-                "P02" -> "http://efeb-komunikacja.pro-hudsonrc.win.vulcan.pl/"
-                "P90" -> "http://efeb-komunikacja-pro-mwujakowska.neo.win.vulcan.pl/"
-                "FK1", "FS1" -> "http://api.fakelog.cf/"
-                "SZ9" -> "http://vulcan.szkolny.eu/"
+                "3S1" -> "https://lekcjaplus.vulcan.net.pl"
+                "TA1" -> "https://uonetplus-komunikacja.umt.tarnow.pl"
+                "OP1" -> "https://uonetplus-komunikacja.eszkola.opolskie.pl"
+                "RZ1" -> "https://uonetplus-komunikacja.resman.pl"
+                "GD1" -> "https://uonetplus-komunikacja.edu.gdansk.pl"
+                "KA1" -> "https://uonetplus-komunikacja.mcuw.katowice.eu"
+                "KA2" -> "https://uonetplus-komunikacja-test.mcuw.katowice.eu"
+                "P03" -> "https://efeb-komunikacja-pro-efebmobile.pro.vulcan.pl"
+                "P01" -> "http://efeb-komunikacja.pro-hudson.win.vulcan.pl"
+                "P02" -> "http://efeb-komunikacja.pro-hudsonrc.win.vulcan.pl"
+                "P90" -> "http://efeb-komunikacja-pro-mwujakowska.neo.win.vulcan.pl"
+                "FK1", "FS1" -> "http://api.fakelog.cf"
+                "SZ9" -> "http://vulcan.szkolny.eu"
                 else -> null
             }
-            return if (url != null) "$url$symbol/" else null
+            return if (url != null) "$url/$symbol" else null
         }
 
     val fullApiUrl: String?
         get() {
-            return "${apiUrl}${schoolSymbol}/"
+            return "${apiUrl}/${schoolSymbol}/"
         }
 }
