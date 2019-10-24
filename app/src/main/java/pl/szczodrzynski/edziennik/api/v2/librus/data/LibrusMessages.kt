@@ -15,6 +15,7 @@ import org.redundent.kotlin.xml.xml
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 open class LibrusMessages(open val data: DataLibrus) {
@@ -41,7 +42,15 @@ open class LibrusMessages(open val data: DataLibrus) {
                     return
                 }
 
-                // TODO: Error handling
+                // TODO: Finish error handling
+
+                if ("error" in text) {
+                    when ("<type>(.*)</type>".toRegex().find(text)?.get(1)) {
+                        "eAccessDeny" -> data.error(ApiError(tag, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED)
+                                .withResponse(response)
+                                .withApiResponse(text))
+                    }
+                }
 
                 try {
                     val doc = Jsoup.parse(text, "", Parser.xmlParser())
