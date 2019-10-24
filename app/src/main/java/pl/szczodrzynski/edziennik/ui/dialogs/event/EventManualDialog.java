@@ -34,8 +34,8 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.api.AppError;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
@@ -46,12 +46,12 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
-import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Time;
-import pl.szczodrzynski.edziennik.utils.models.Week;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown;
 import pl.szczodrzynski.edziennik.utils.Themes;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Week;
 
 import static pl.szczodrzynski.edziennik.App.APP_URL;
 import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_OTHER;
@@ -727,7 +727,7 @@ public class EventManualDialog {
                     popup.setOnMenuItemClickListener(item -> {
                         if (item.getGroupId() == 0 && eventTypes != null) {
                             EventType typeObj = eventTypes.get(item.getItemId());
-                            eventType = typeObj.id;
+                            eventType = (int)typeObj.id;
                             eventColor = -1; // set -1 as it's the event type's default color
                             registerEventManualColorPreview.setBackgroundColor(typeObj.color); // set event type's color here to show how will it look
                         }

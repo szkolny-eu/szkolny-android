@@ -2,6 +2,7 @@ package pl.szczodrzynski.edziennik.api.v2.models
 
 import android.util.LongSparseArray
 import android.util.SparseArray
+import androidx.core.util.size
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.App
@@ -14,6 +15,8 @@ import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance
+import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceType
+import pl.szczodrzynski.edziennik.data.db.modules.classrooms.Classroom
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
@@ -27,6 +30,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice
+import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeType
 import pl.szczodrzynski.edziennik.data.db.modules.notification.Notification
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
@@ -102,7 +106,11 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val teamList = LongSparseArray<Team>()
     val lessonRanges = SparseArray<LessonRange>()
     val gradeCategories = LongSparseArray<GradeCategory>()
-    val attendanceTypes = SparseArray<Pair<Int, String>>()
+
+    val classrooms = LongSparseArray<Classroom>()
+    val attendanceTypes = LongSparseArray<AttendanceType>()
+    val noticeTypes = LongSparseArray<NoticeType>()
+    val eventTypes = LongSparseArray<EventType>()
     val teacherAbsenceTypes = LongSparseArray<TeacherAbsenceType>()
 
     private var mTeamClass: Team? = null
@@ -125,7 +133,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
     var eventsToRemove: DataRemoveModel? = null
     val eventList = mutableListOf<Event>()
-    val eventTypeList = mutableListOf<EventType>()
 
     var noticesToRemove: DataRemoveModel? = null
     val noticeList = mutableListOf<Notice>()
@@ -158,7 +165,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.teamDao().getAllNow(profileId).toSparseArray(teamList) { it.id }
             db.lessonRangeDao().getAllNow(profileId).toSparseArray(lessonRanges) { it.lessonNumber }
             db.gradeCategoryDao().getAllNow(profileId).toSparseArray(gradeCategories) { it.categoryId }
-            db.teacherAbsenceTypeDao().getAllNow(profileId).toSparseArray(teacherAbsenceTypes) { it.id }
         }
     }
 
@@ -170,12 +176,18 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         subjectList.clear()
         teamList.clear()
         lessonRanges.clear()
+        gradeCategories.clear()
+
+        classrooms.clear()
+        attendanceTypes.clear()
+        noticeTypes.clear()
+        eventTypes.clear()
+        teacherAbsenceTypes.clear()
 
         lessonList.clear()
         lessonChangeList.clear()
         gradeCategories.clear()
         gradeList.clear()
-        eventTypeList.clear()
         noticeList.clear()
         attendanceList.clear()
         announcementList.clear()
@@ -239,8 +251,17 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         db.lessonRangeDao().addAll(lessonRanges.values())
         db.gradeCategoryDao().clear(profileId)
         db.gradeCategoryDao().addAll(gradeCategories.values())
-        db.teacherAbsenceTypeDao().clear(profileId)
-        db.teacherAbsenceTypeDao().addAll(teacherAbsenceTypes.values())
+
+        if (classrooms.size > 0)
+            db.classroomDao().addAll(classrooms.values())
+        if (attendanceTypes.size > 0)
+            db.attendanceTypeDao().addAll(attendanceTypes.values())
+        if (noticeTypes.size > 0)
+            db.noticeTypeDao().addAll(noticeTypes.values())
+        if (eventTypes.size > 0)
+            db.eventTypeDao().addAll(eventTypes.values())
+        if (teacherAbsenceTypes.size > 0)
+            db.teacherAbsenceTypeDao().addAll(teacherAbsenceTypes.values())
 
         gradesToRemove?.let { it ->
             it.removeAll?.let { _ -> db.gradeDao().clear(profileId) }
@@ -260,8 +281,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.eventDao().removeFuture(profile.id, Date.getToday())
             db.eventDao().addAll(eventList)
         }
-        if (eventTypeList.isNotEmpty())
-            db.eventTypeDao().addAll(eventTypeList)
         if (noticeList.isNotEmpty()) {
             db.noticeDao().clear(profile.id)
             db.noticeDao().addAll(noticeList)

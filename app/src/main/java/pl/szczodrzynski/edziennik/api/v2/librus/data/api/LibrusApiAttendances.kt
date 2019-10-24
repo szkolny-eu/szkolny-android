@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
+import androidx.core.util.isEmpty
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_ATTENDANCES
@@ -21,12 +22,14 @@ class LibrusApiAttendances(override val data: DataLibrus,
     }
 
     init {
+        if (data.attendanceTypes.isEmpty()) {
+            data.db.attendanceTypeDao().getAllNow(profileId).toSparseArray(data.attendanceTypes) { it.id }
+        }
+
         apiGet(TAG, "Attendances") { json ->
-            val attendances = json.getJsonArray("Attendances")
+            val attendances = json.getJsonArray("Attendances").asJsonObjectList()
 
-            attendances?.forEach { attendanceEl ->
-                val attendance = attendanceEl.asJsonObject
-
+            attendances?.forEach { attendance ->
                 val id = Utils.strToInt((attendance.getString("Id") ?: return@forEach)
                         .replace("[^\\d.]".toRegex(), "")).toLong()
                 val teacherId = attendance.getJsonObject("AddedBy")?.getLong("Id") ?: -1
@@ -37,17 +40,9 @@ class LibrusApiAttendances(override val data: DataLibrus,
                     it.weekDay ==  lessonDate.weekDay && it.startTime.value == startTime.value
                 }?.subjectId ?: -1
                 val semester = attendance.getInt("Semester") ?: return@forEach
-                var type = attendance.getJsonObject("Type")?.getInt("Id") ?: return@forEach
-                val attendanceType = data.attendanceTypes.get(type)
-                val topic = attendanceType.second
-
-                type = when(type) {
-                    1 -> Attendance.TYPE_ABSENT
-                    2 -> Attendance.TYPE_BELATED
-                    3 -> Attendance.TYPE_ABSENT_EXCUSED
-                    4 -> Attendance.TYPE_RELEASED
-                    else -> Attendance.TYPE_PRESENT
-                }
+                val type = attendance.getJsonObject("Type")?.getLong("Id") ?: return@forEach
+                val typeObject = data.attendanceTypes.get(type)
+                val topic = typeObject?.name ?: ""
 
                 val attendanceObject = Attendance(
                         profileId,
@@ -58,13 +53,13 @@ class LibrusApiAttendances(override val data: DataLibrus,
                         topic,
                         lessonDate,
                         startTime,
-                        type
+                        typeObject.type
                 )
 
                 val addedDate = Date.fromIso(attendance.getString("AddDate") ?: return@forEach)
 
                 data.attendanceList.add(attendanceObject)
-                if(type != Attendance.TYPE_PRESENT) {
+                if(typeObject.type != Attendance.TYPE_PRESENT) {
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_ATTENDANCE,

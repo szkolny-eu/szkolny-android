@@ -955,4 +955,12 @@
     <string name="toolbar_subtitle_syncing">Synchronizuję...</string>
     <string name="toolbar_subtitle_syncing_format">[%d%%] %s</string>
     <string name="edziennik_progress_endpoint_notices">Pobieranie uwag...</string>
+    <string name="edziennik_progress_endpoint_teams">Pobieranie grup klasowych...</string>
+    <string name="edziennik_progress_endpoint_units">Pobieranie informacji o jednostce...</string>
+    <string name="edziennik_progress_endpoint_teachers">Pobieranie listy nauczycieli...</string>
+    <string name="edziennik_progress_endpoint_subjects">Pobieranie listy przedmiotów...</string>
+    <string name="edziennik_progress_endpoint_classrooms">Pobieranie listy sal lekcyjnych...</string>
+    <string name="edziennik_progress_endpoint_event_types">Pobieranie kategorii wydarzeń...</string>
+    <string name="edziennik_progress_endpoint_notice_types">Pobieranie kategorii uwag...</string>
+    <string name="edziennik_progress_endpoint_pt_meetings">Pobieranie zebrań z rodzicami...</string>
 </resources>

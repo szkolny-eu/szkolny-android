@@ -45,9 +45,42 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_school_info)
                 LibrusApiSchools(data) { onSuccess() }
             }
+            ENDPOINT_LIBRUS_API_CLASSES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_classes)
+                LibrusApiClasses(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_teams)
+                LibrusApiVirtualClasses(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_UNITS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_units)
+                LibrusApiUnits(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_USERS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_teachers)
+                LibrusApiUsers(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_SUBJECTS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_subjects)
+                LibrusApiSubjects(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_CLASSROOMS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_classrooms)
+                LibrusApiClassrooms(data) { onSuccess() }
+            }
+            // TODO push config
+            // TODO timetable
+
             ENDPOINT_LIBRUS_API_NORMAL_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
                 LibrusApiGrades(data) { onSuccess() }
+            }
+            // TODO grades
+
+            ENDPOINT_LIBRUS_API_EVENT_TYPES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_event_types)
+                LibrusApiEventTypes(data) { onSuccess() }
             }
             ENDPOINT_LIBRUS_API_EVENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_events)
@@ -56,6 +89,18 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             ENDPOINT_LIBRUS_API_HOMEWORK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
                 LibrusApiHomework(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_LUCKY_NUMBER -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
+                LibrusApiLuckyNumber(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_NOTICE_TYPES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_notice_types)
+                LibrusApiNoticeTypes(data) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_API_NOTICES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_notices)
+                LibrusApiNotices(data) { onSuccess() }
             }
             ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance_types)
@@ -69,13 +114,9 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_announcements)
                 LibrusApiAnnouncements(data) { onSuccess() }
             }
-            ENDPOINT_LIBRUS_API_LUCKY_NUMBER -> {
-                data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
-                LibrusApiLuckyNumber(data) { onSuccess() }
-            }
-            ENDPOINT_LIBRUS_API_CLASSES -> {
-                data.startProgress(R.string.edziennik_progress_endpoint_classes)
-                LibrusApiClasses(data) { onSuccess() }
+            ENDPOINT_LIBRUS_API_PT_MEETINGS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_pt_meetings)
+                LibrusApiPtMeetings(data) { onSuccess() }
             }
             ENDPOINT_LIBRUS_API_TEACHER_FREE_DAY_TYPES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_teacher_free_day_types)
@@ -85,6 +126,7 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_teacher_free_days)
                 LibrusApiTeacherFreeDays(data) { onSuccess() }
             }
+
             ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
                 LibrusSynergiaHomework(data) { onSuccess() }

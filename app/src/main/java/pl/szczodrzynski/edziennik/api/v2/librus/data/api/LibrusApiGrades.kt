@@ -1,15 +1,14 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADES
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADES
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
-
 
 class LibrusApiGrades(override val data: DataLibrus,
                       val onSuccess: () -> Unit) : LibrusApi(data) {
@@ -19,11 +18,9 @@ class LibrusApiGrades(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "Grades") { json ->
-            val grades = json.getJsonArray("Grades")
+            val grades = json.getJsonArray("Grades").asJsonObjectList()
 
-            grades?.forEach { gradeEl ->
-                val grade = gradeEl.asJsonObject
-
+            grades?.forEach { grade ->
                 val id = grade.getLong("Id") ?: return@forEach
                 val categoryId = grade.getJsonObject("Category")?.getLong("Id") ?: -1
                 val name = grade.getString("Grade") ?: ""

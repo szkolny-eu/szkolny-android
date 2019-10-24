@@ -51,6 +51,43 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         }
     }
 
+    fun getColor(id: Int?): Int {
+        return when (id) {
+             1 -> 0xFFF0E68C
+             2 -> 0xFF87CEFA
+             3 -> 0xFFB0C4DE
+             4 -> 0xFFF0F8FF
+             5 -> 0xFFF0FFFF
+             6 -> 0xFFF5F5DC
+             7 -> 0xFFFFEBCD
+             8 -> 0xFFFFF8DC
+             9 -> 0xFFA9A9A9
+            10 -> 0xFFBDB76B
+            11 -> 0xFF8FBC8F
+            12 -> 0xFFDCDCDC
+            13 -> 0xFFDAA520
+            14 -> 0xFFE6E6FA
+            15 -> 0xFFFFA07A
+            16 -> 0xFF32CD32
+            17 -> 0xFF66CDAA
+            18 -> 0xFF66CDAA
+            19 -> 0xFFC0C0C0
+            20 -> 0xFFD2B48C
+            21 -> 0xFF3333FF
+            22 -> 0xFF7B68EE
+            23 -> 0xFFBA55D3
+            24 -> 0xFFFFB6C1
+            25 -> 0xFFFF1493
+            26 -> 0xFFDC143C
+            27 -> 0xFFFF0000
+            28 -> 0xFFFF8C00
+            29 -> 0xFFFFD700
+            30 -> 0xFFADFF2F
+            31 -> 0xFF7CFC00
+            else -> 0xff2196f3
+        }.toInt()
+    }
+
     /*    _____           _        _
          |  __ \         | |      | |
          | |__) |__  _ __| |_ __ _| |

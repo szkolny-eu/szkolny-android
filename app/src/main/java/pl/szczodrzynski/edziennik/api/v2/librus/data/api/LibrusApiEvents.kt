@@ -4,9 +4,10 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
+import androidx.core.util.isEmpty
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_EVENTS
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
+import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_EVENTS
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
@@ -21,12 +22,14 @@ class LibrusApiEvents(override val data: DataLibrus,
     }
 
     init {
+        if (data.eventTypes.isEmpty()) {
+            data.db.eventTypeDao().getAllNow(profileId).toSparseArray(data.eventTypes) { it.id }
+        }
+
         apiGet(TAG, "HomeWorks") { json ->
-            val events = json.getJsonArray("HomeWorks")
+            val events = json.getJsonArray("HomeWorks").asJsonObjectList()
 
-            events?.forEach { eventEl ->
-                val event = eventEl.asJsonObject
-
+            events?.forEach { event ->
                 val id = event.getLong("Id") ?: return@forEach
                 val eventDate = Date.fromY_m_d(event.getString("Date"))
                 val topic = event.getString("Content") ?: ""

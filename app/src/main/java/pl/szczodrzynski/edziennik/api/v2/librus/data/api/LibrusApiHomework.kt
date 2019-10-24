@@ -4,16 +4,13 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_HOMEWORK
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.getJsonArray
-import pl.szczodrzynski.edziennik.getJsonObject
-import pl.szczodrzynski.edziennik.getLong
-import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusApiHomework(override val data: DataLibrus,
@@ -24,11 +21,9 @@ class LibrusApiHomework(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "HomeWorkAssignments") { json ->
-            val homeworkList = json.getJsonArray("HomeWorkAssignments")
+            val homeworkList = json.getJsonArray("HomeWorkAssignments").asJsonObjectList()
 
-            homeworkList?.forEach { homeworkEl ->
-                val homework = homeworkEl.asJsonObject
-
+            homeworkList?.forEach { homework ->
                 val id = homework.getLong("Id") ?: return@forEach
                 val eventDate = Date.fromY_m_d(homework.getString("DueDate"))
                 val topic = homework.getString("Topic") + "\n" + homework.getString("Text")

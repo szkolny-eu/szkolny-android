@@ -22,11 +22,9 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "SchoolNotices") { json ->
-            val announcements = json.getJsonArray("SchoolNotices")
+            val announcements = json.getJsonArray("SchoolNotices").asJsonObjectList()
 
-            announcements?.forEach { announcementEl ->
-                val announcement = announcementEl.asJsonObject
-
+            announcements?.forEach { announcement ->
                 val id = Utils.crc16(announcement.getString("Id")?.toByteArray()
                         ?: return@forEach).toLong()
                 val subject = announcement.getString("Subject") ?: ""

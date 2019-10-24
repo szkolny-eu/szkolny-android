@@ -18,9 +18,9 @@ class LibrusApiUsers(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "Users") { json ->
-            json.getJsonArray("Users")?.forEach { userEl ->
-                val user = userEl.asJsonObject
+            val users = json.getJsonArray("Users").asJsonObjectList()
 
+            users?.forEach { user ->
                 val id = user.getLong("Id") ?: return@forEach
                 val firstName = user.getString("FirstName")?.fixWhiteSpaces() ?: ""
                 val lastName = user.getString("LastName")?.fixWhiteSpaces() ?: ""

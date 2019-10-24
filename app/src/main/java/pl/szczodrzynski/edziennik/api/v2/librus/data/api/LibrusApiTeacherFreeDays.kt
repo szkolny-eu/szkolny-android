@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
+import androidx.core.util.isEmpty
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
@@ -21,12 +22,14 @@ class LibrusApiTeacherFreeDays(override val data: DataLibrus,
     }
 
     init {
+        if (data.teacherAbsenceTypes.isEmpty()) {
+            data.db.teacherAbsenceTypeDao().getAllNow(profileId).toSparseArray(data.teacherAbsenceTypes) { it.id }
+        }
+
         apiGet(TAG, "TeacherFreeDays") { json ->
-            val teacherAbsences = json.getJsonArray("TeacherFreeDays")
+            val teacherAbsences = json.getJsonArray("TeacherFreeDays").asJsonObjectList()
 
-            teacherAbsences?.forEach { teacherAbsenceEl ->
-                val teacherAbsence = teacherAbsenceEl.asJsonObject
-
+            teacherAbsences?.forEach { teacherAbsence ->
                 val id = teacherAbsence.getLong("Id") ?: return@forEach
                 val teacherId = teacherAbsence.getJsonObject("Teacher")?.getLong("Id")
                         ?: return@forEach

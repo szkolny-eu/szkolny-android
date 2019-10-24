@@ -127,17 +127,17 @@ class LoginSyncFragment : Fragment() {
         profile.loginStoreId = loginStoreId
         loginStore.id = loginStoreId
         val typeList = listOf(
-                EventType(profileId, TYPE_HOMEWORK, getString(R.string.event_type_homework), COLOR_HOMEWORK),
-                EventType(profileId, TYPE_DEFAULT, getString(R.string.event_other), COLOR_DEFAULT),
-                EventType(profileId, TYPE_EXAM, getString(R.string.event_exam), COLOR_EXAM),
-                EventType(profileId, TYPE_SHORT_QUIZ, getString(R.string.event_short_quiz), COLOR_SHORT_QUIZ),
-                EventType(profileId, TYPE_ESSAY, getString(R.string.event_essay), COLOR_SHORT_QUIZ),
-                EventType(profileId, TYPE_PROJECT, getString(R.string.event_project), COLOR_PROJECT),
-                EventType(profileId, TYPE_PT_MEETING, getString(R.string.event_pt_meeting), COLOR_PT_MEETING),
-                EventType(profileId, TYPE_EXCURSION, getString(R.string.event_excursion), COLOR_EXCURSION),
-                EventType(profileId, TYPE_READING, getString(R.string.event_reading), COLOR_READING),
-                EventType(profileId, TYPE_CLASS_EVENT, getString(R.string.event_class_event), COLOR_CLASS_EVENT),
-                EventType(profileId, TYPE_INFORMATION, getString(R.string.event_information), COLOR_INFORMATION)
+                EventType(profileId, TYPE_HOMEWORK.toLong(), getString(R.string.event_type_homework), COLOR_HOMEWORK),
+                EventType(profileId, TYPE_DEFAULT.toLong(), getString(R.string.event_other), COLOR_DEFAULT),
+                EventType(profileId, TYPE_EXAM.toLong(), getString(R.string.event_exam), COLOR_EXAM),
+                EventType(profileId, TYPE_SHORT_QUIZ.toLong(), getString(R.string.event_short_quiz), COLOR_SHORT_QUIZ),
+                EventType(profileId, TYPE_ESSAY.toLong(), getString(R.string.event_essay), COLOR_SHORT_QUIZ),
+                EventType(profileId, TYPE_PROJECT.toLong(), getString(R.string.event_project), COLOR_PROJECT),
+                EventType(profileId, TYPE_PT_MEETING.toLong(), getString(R.string.event_pt_meeting), COLOR_PT_MEETING),
+                EventType(profileId, TYPE_EXCURSION.toLong(), getString(R.string.event_excursion), COLOR_EXCURSION),
+                EventType(profileId, TYPE_READING.toLong(), getString(R.string.event_reading), COLOR_READING),
+                EventType(profileId, TYPE_CLASS_EVENT.toLong(), getString(R.string.event_class_event), COLOR_CLASS_EVENT),
+                EventType(profileId, TYPE_INFORMATION.toLong(), getString(R.string.event_information), COLOR_INFORMATION)
         )
         app.db.eventTypeDao().addAll(typeList)
         app.profileSaveFull(profile, loginStore)

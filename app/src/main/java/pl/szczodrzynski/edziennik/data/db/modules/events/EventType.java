@@ -11,14 +11,14 @@ public class EventType {
     public int profileId;
 
     @ColumnInfo(name = "eventType")
-    public int id;
+    public long id;
 
     @ColumnInfo(name = "eventTypeName")
     public String name;
     @ColumnInfo(name = "eventTypeColor")
     public int color;
 
-    public EventType(int profileId, int id, String name, int color) {
+    public EventType(int profileId, long id, String name, int color) {
         this.profileId = profileId;
         this.id = id;
         this.name = name;
