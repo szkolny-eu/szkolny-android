@@ -129,3 +129,4 @@ const val EXCEPTION_LIBRUS_SYNERGIA_REQUEST                 = 905
 const val EXCEPTION_MOBIDZIENNIK_WEB_REQUEST                = 906
 const val EXCEPTION_VULCAN_API_REQUEST                      = 907
 const val EXCEPTION_NOTIFY_AND_SYNC                         = 910
+const val EXCEPTION_LIBRUS_MESSAGES_REQUEST                 = 911
