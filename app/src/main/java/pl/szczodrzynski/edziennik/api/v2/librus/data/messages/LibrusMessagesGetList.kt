@@ -5,13 +5,13 @@
 package pl.szczodrzynski.edziennik.api.v2.librus.data.messages
 
 import pl.szczodrzynski.edziennik.DAY
-import pl.szczodrzynski.edziennik.HOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.api.v2.ERROR_NOT_IMPLEMENTED
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_MESSAGES_RECEIVED
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusMessages
+import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
@@ -112,7 +112,7 @@ class LibrusMessagesGetList(override val data: DataLibrus, private val type: Int
                 }
 
                 when (type) {
-                    Message.TYPE_RECEIVED -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_RECEIVED, 2 * HOUR, DRAWER_ITEM_MESSAGES)
+                    Message.TYPE_RECEIVED -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_RECEIVED, SYNC_ALWAYS)
                     Message.TYPE_SENT -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_SENT, DAY, DRAWER_ITEM_MESSAGES)
                 }
                 onSuccess()
