@@ -6,11 +6,13 @@ package pl.szczodrzynski.edziennik.api.v2.librus.data
 
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
+import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.parser.Parser
+import org.redundent.kotlin.xml.PrintOptions
 import org.redundent.kotlin.xml.xml
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
@@ -79,6 +81,7 @@ open class LibrusMessages(open val data: DataLibrus) {
         ))
 
         val requestXml = xml("service") {
+            "header" { }
             "data" {
                 for ((key, value) in parameters.orEmpty()) {
                     key {
@@ -86,12 +89,15 @@ open class LibrusMessages(open val data: DataLibrus) {
                     }
                 }
             }
-        }
+        }.toString(PrintOptions(
+                singleLineTextElements = true,
+                useSelfClosingTags = true
+        ))
 
         Request.builder()
                 .url("$LIBRUS_MESSAGES_URL/$endpoint")
                 .userAgent(SYNERGIA_USER_AGENT)
-                .setTextBody(requestXml.toString(), "application/xml")
+                .setTextBody(requestXml, MediaTypeUtils.APPLICATION_XML)
                 .apply {
                     when (method) {
                         GET -> get()
