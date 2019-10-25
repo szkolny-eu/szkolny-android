@@ -45,7 +45,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
                     val subjectId = data.subjectList.singleOrNull { it.longName == subjectName }?.id
                             ?: -1
                     val teacherName = elements[1].text().trim()
-                    val teacherId = data.teacherList.singleOrNull { teacherName == "${it.name} ${it.surname}" }?.id
+                    val teacherId = data.teacherList.singleOrNull { teacherName == it.fullName }?.id
                             ?: -1
                     val topic = elements[2].text().trim()
                     val addedDate = Date.fromY_m_d(elements[4].text().trim()).inMillis
@@ -62,7 +62,11 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
                     val description = "Treść: (.*)".toRegex(RegexOption.DOT_MATCHES_ALL).find(moreInfo)
                             ?.get(1)?.replace("<br.*/>".toRegex(), "\n")?.trim()
 
-                    val notify = (profile?.empty ?: false) && Date.getToday() < eventDate
+                    val notified = when (profile?.empty) {
+                        true -> true
+                        false -> Date.getToday() < eventDate
+                        else -> false
+                    }
 
                     val eventObject = Event(
                             profileId,
@@ -83,8 +87,8 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
                             profileId,
                             Metadata.TYPE_HOMEWORK,
                             id,
-                            notify,
-                            notify,
+                            notified,
+                            notified,
                             addedDate
                     ))
                 }
