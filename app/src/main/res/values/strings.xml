@@ -963,4 +963,5 @@
     <string name="edziennik_progress_endpoint_event_types">Pobieranie kategorii wydarzeń...</string>
     <string name="edziennik_progress_endpoint_notice_types">Pobieranie kategorii uwag...</string>
     <string name="edziennik_progress_endpoint_pt_meetings">Pobieranie zebrań z rodzicami...</string>
+    <string name="edziennik_progress_endpoint_messages_outbox">Pobieranie wiadomości wysłanych...</string>
 </resources>

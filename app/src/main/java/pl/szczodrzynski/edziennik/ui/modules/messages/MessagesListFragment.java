@@ -96,7 +96,7 @@ public class MessagesListFragment extends Fragment {
             return;
         }
 
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_LIBRUS && app.profile.getStudentData("accountPassword", null) == null) {
+        if (app.profile.getLoginStoreType() == LOGIN_TYPE_LIBRUS && app.profile.getStudentData("accountPassword", null) == null && false) {
             new MaterialDialog.Builder(activity)
                     .title("Wiadomości w systemie Synergia")
                     .content("Moduł Wiadomości w aplikacji Szkolny.eu jest przeglądarką zasobów szkolnego konta Synergia. Z tego powodu, musisz wpisać swoje hasło do tego konta, aby móc korzystać z tej funkcji.")

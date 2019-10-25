@@ -7,8 +7,10 @@ package pl.szczodrzynski.edziennik.api.v2.librus.data
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.librus.*
 import pl.szczodrzynski.edziennik.api.v2.librus.data.api.*
+import pl.szczodrzynski.edziennik.api.v2.librus.data.messages.LibrusMessagesGetList
 import pl.szczodrzynski.edziennik.api.v2.librus.data.synergia.LibrusSynergiaHomework
 import pl.szczodrzynski.edziennik.api.v2.librus.data.synergia.LibrusSynergiaInfo
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
@@ -37,6 +39,9 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
     private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId")
         when (endpointId) {
+            /**
+             * API
+             */
             ENDPOINT_LIBRUS_API_ME -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
                 LibrusApiMe(data) { onSuccess() }
@@ -127,6 +132,9 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 LibrusApiTeacherFreeDays(data) { onSuccess() }
             }
 
+            /**
+             * SYNERGIA
+             */
             ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
                 LibrusSynergiaHomework(data) { onSuccess() }
@@ -135,6 +143,19 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
                 LibrusSynergiaInfo(data) { onSuccess() }
             }
+
+            /**
+             * MESSAGES
+             */
+            ENDPOINT_LIBRUS_MESSAGES_RECEIVED -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
+                LibrusMessagesGetList(data, type = Message.TYPE_RECEIVED) { onSuccess() }
+            }
+            ENDPOINT_LIBRUS_MESSAGES_SENT -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
+                LibrusMessagesGetList(data, type = Message.TYPE_SENT) { onSuccess() }
+            }
+
             else -> onSuccess()
         }
     }
