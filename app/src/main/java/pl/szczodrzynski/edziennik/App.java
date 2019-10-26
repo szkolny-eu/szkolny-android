@@ -231,7 +231,7 @@ public class App extends androidx.multidex.MultiDexApplication {
             e.printStackTrace();
         }
 
-        if ("f054761fbdb6a238".equals(deviceId)) {
+        if ("f054761fbdb6a238".equals(deviceId) || BuildConfig.DEBUG) {
             devMode = true;
         }
         else if (appConfig.devModePassword != null) {
@@ -710,12 +710,8 @@ public class App extends androidx.multidex.MultiDexApplication {
 
     public void checkDevModePassword() {
         try {
-            if (Utils.AESCrypt.decrypt("nWFVxY65Pa8/aRrT7EylNAencmOD+IxUY2Gg/beiIWY=", appConfig.devModePassword).equals("ok here you go it's enabled now")) {
-                devMode = true;
-            }
-            else {
-                devMode = false;
-            }
+            devMode = Utils.AESCrypt.decrypt("nWFVxY65Pa8/aRrT7EylNAencmOD+IxUY2Gg/beiIWY=", appConfig.devModePassword).equals("ok here you go it's enabled now")
+                    || BuildConfig.DEBUG;
         } catch (Exception e) {
             e.printStackTrace();
             devMode = false;
