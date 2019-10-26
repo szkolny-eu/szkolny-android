@@ -232,6 +232,7 @@ class ApiService : Service() {
                     viewId = task.viewIds?.get(0)?.first)
             is MessageGetRequest -> edziennikInterface?.getMessage(task.messageId)
             is FirstLoginRequest -> edziennikInterface?.firstLogin()
+            is AnnouncementsReadRequest -> edziennikInterface?.markAllAnnouncementsAsRead()
         }
     }
 
@@ -285,6 +286,17 @@ class ApiService : Service() {
 
     @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
     fun onMessageGetRequest(request: MessageGetRequest) {
+        EventBus.getDefault().removeStickyEvent(request)
+        Log.d(TAG, request.toString())
+
+        taskQueue += request.apply {
+            taskId = ++taskMaximumId
+        }
+        sync()
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
+    fun onAnnouncementsReadRequest(request: AnnouncementsReadRequest) {
         EventBus.getDefault().removeStickyEvent(request)
         Log.d(TAG, request.toString())
 

@@ -63,6 +63,10 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
 
     }
 
+    override fun markAllAnnouncementsAsRead() {
+
+    }
+
     override fun firstLogin() {
         // TODO
     }

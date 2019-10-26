@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.synergia
 
+import org.jsoup.Jsoup
 import pl.szczodrzynski.edziennik.HOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.api.v2.POST
@@ -31,7 +32,8 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
                 "dataDo" to profile!!.getSemesterEnd(profile?.currentSemester ?: 2).stringY_m_d,
                 "przedmiot" to -1
 
-        )) { doc ->
+        )) { text ->
+            val doc = Jsoup.parse(text)
 
             doc.select("table.myHomeworkTable > tbody").firstOrNull()?.also { homeworkTable ->
                 val homeworkElements = homeworkTable.children()

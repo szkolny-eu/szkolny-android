@@ -64,6 +64,10 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     }
 
+    override fun markAllAnnouncementsAsRead() {
+
+    }
+
     override fun firstLogin() {
         VulcanFirstLogin(data) {
             completed()

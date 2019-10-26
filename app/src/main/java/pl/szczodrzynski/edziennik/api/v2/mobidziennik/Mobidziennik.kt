@@ -64,6 +64,10 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     }
 
+    override fun markAllAnnouncementsAsRead() {
+
+    }
+
     override fun firstLogin() {
         MobidziennikFirstLogin(data) {
             completed()

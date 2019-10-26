@@ -9,10 +9,7 @@ import android.content.Context
 import android.content.Intent
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.api.v2.ApiService
-import pl.szczodrzynski.edziennik.api.v2.events.requests.ServiceCloseRequest
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest
-import pl.szczodrzynski.edziennik.api.v2.events.requests.TaskCancelRequest
+import pl.szczodrzynski.edziennik.api.v2.events.requests.*
 
 class SzkolnyReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -22,6 +19,7 @@ class SzkolnyReceiver : BroadcastReceiver() {
             "TaskCancelRequest" -> EventBus.getDefault().post(TaskCancelRequest(intent.extras?.getInt("taskId", -1) ?: return))
             "SyncRequest" -> EventBus.getDefault().post(SyncRequest())
             "SyncProfileRequest" -> EventBus.getDefault().post(SyncProfileRequest(intent.extras?.getInt("profileId", -1) ?: return))
+            "AnnouncementsReadRequest" -> EventBus.getDefault().post(AnnouncementsReadRequest(intent.extras?.getInt("profileId", -1) ?: return))
         }
     }
 }

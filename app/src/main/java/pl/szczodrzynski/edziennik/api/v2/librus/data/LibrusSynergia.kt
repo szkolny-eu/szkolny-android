@@ -27,7 +27,7 @@ open class LibrusSynergia(open val data: DataLibrus) {
         get() = data.profile
 
     fun synergiaGet(tag: String, endpoint: String, method: Int = GET,
-                    parameters: Map<String, Any> = emptyMap(), onSuccess: (doc: Document) -> Unit) {
+                    parameters: Map<String, Any> = emptyMap(), onSuccess: (text: String) -> Unit) {
         d(tag, "Request: Librus/Synergia - $LIBRUS_SYNERGIA_URL/$endpoint")
 
         val callback = object : TextCallbackHandler() {
@@ -41,8 +41,7 @@ open class LibrusSynergia(open val data: DataLibrus) {
                 // TODO: Error handling
 
                 try {
-                    val doc = Jsoup.parse(text)
-                    onSuccess(doc)
+                    onSuccess(text)
                 } catch (e: Exception) {
                     data.error(ApiError(tag, EXCEPTION_LIBRUS_SYNERGIA_REQUEST)
                             .withResponse(response)
