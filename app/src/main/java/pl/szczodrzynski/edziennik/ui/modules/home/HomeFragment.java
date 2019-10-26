@@ -45,6 +45,7 @@ import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.v2.ApiService;
+import pl.szczodrzynski.edziennik.api.v2.events.requests.AnnouncementsReadRequest;
 import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
@@ -146,6 +147,11 @@ public class HomeFragment extends Fragment {
             List<Pair<Integer, Integer>> list = new ArrayList<>();
             list.add(new Pair<>(DRAWER_ITEM_GRADES, 0));
             EventBus.getDefault().postSticky(new SyncProfileRequest(app.profile.getId(), list));
+        }));
+
+        b.test5.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
+        b.test5.setOnClickListener((v -> {
+            EventBus.getDefault().postSticky(new AnnouncementsReadRequest(app.profile.getId()));
         }));
 
         //((TextView)v.findViewById(R.id.nextSync)).setText(getString(R.string.next_sync_format,Time.fromMillis(app.appJobs.syncJobTime).getStringHMS()));

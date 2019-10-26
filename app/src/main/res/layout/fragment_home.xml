@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Sync profile 16 - view home"
+                android:text="Sync profile - view home"
                 android:visibility="gone"/>
 
             <com.google.android.material.button.MaterialButton
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Sync profile 16 - view messages sent"
+                android:text="Sync profile - view messages sent"
                 android:visibility="gone"/>
 
             <com.google.android.material.button.MaterialButton
@@ -82,7 +82,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Sync profile 16 - view grades"
+                android:text="Sync profile - view grades"
+                android:visibility="gone"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/test5"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Mark all announcements as read"
                 android:visibility="gone"/>
 
         </LinearLayout>
