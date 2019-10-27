@@ -856,4 +856,14 @@
     <string name="sync_action_syncing_school_free_days">Getting school free days</string>
     <string name="settings_register_show_teacher_absences_text">Show teacher absences in Agenda</string>
     <string name="menu_mark_everything_as_read">Mark everything as read</string>
+    <string name="settings_about_language_text">App language</string>
+    <string name="settings_about_language_subtext">"English "</string>
+    <string name="settings_about_language_dialog_title">Change app language</string>
+    <string name="settings_about_language_dialog_text">Notice. This feature may not work on some devices or in some parts of the app.</string>
+    <string name="settings_about_discord_text">Discord server</string>
+    <string name="settings_about_discord_subtext">Join our Discord community!</string>
+    <string name="language_system">Use system language</string>
+    <string name="login_summary_account_child">(child)</string>
+    <string name="login_summary_account_parent">(parent)</string>
+    <string name="toolbar_subtitle_syncing">Syncing...</string>
 </resources>
