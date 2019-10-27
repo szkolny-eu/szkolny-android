@@ -45,7 +45,18 @@ const val LIBRUS_SYNERGIA_TOKEN_LOGIN_URL = "https://synergia.librus.pl/loguj/to
 const val LIBRUS_MESSAGES_URL = "https://wiadomosci.librus.pl/module"
 const val LIBRUS_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action="
 
-
+const val IDZIENNIK_USER_AGENT = SYNERGIA_USER_AGENT
+const val IDZIENNIK_WEB_URL = "https://iuczniowie.progman.pl/idziennik"
+const val IDZIENNIK_WEB_LOGIN = "login.aspx"
+const val IDZIENNIK_WEB_SETTINGS = "mod_panelRodzica/Ustawienia.aspx"
+const val IDZIENNIK_WEB_TIMETABLE = "mod_panelRodzica/plan/WS_Plan.asmx/pobierzPlanZajec"
+const val IDZIENNIK_WEB_GRADES = "mod_panelRodzica/oceny/WS_ocenyUcznia.asmx/pobierzOcenyUcznia"
+const val IDZIENNIK_WEB_MISSING_GRADES = "mod_panelRodzica/brak_ocen/WS_BrakOcenUcznia.asmx/pobierzBrakujaceOcenyUcznia"
+const val IDZIENNIK_WEB_EXAMS = "mod_panelRodzica/sprawdziany/mod_sprawdzianyPanel.asmx/pobierzListe"
+const val IDZIENNIK_WEB_NOTICES = "mod_panelRodzica/uwagi/WS_uwagiUcznia.asmx/pobierzUwagiUcznia"
+const val IDZIENNIK_WEB_ATTENDANCE = "mod_panelRodzica/obecnosci/WS_obecnosciUcznia.asmx/pobierzObecnosciUcznia"
+const val IDZIENNIK_WEB_ANNOUNCEMENTS = "mod_panelRodzica/tabOgl/WS_tablicaOgloszen.asmx/GetOgloszenia"
+const val IDZIENNIK_WEB_MESSAGES_LIST = "mod_komunikator/WS_wiadomosci.asmx/PobierzListeWiadomosci"
 
 val MOBIDZIENNIK_USER_AGENT = SYSTEM_USER_AGENT
 

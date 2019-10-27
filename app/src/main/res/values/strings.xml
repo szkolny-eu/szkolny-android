@@ -963,6 +963,8 @@
     <string name="edziennik_progress_endpoint_event_types">Pobieranie kategorii wydarzeń...</string>
     <string name="edziennik_progress_endpoint_notice_types">Pobieranie kategorii uwag...</string>
     <string name="edziennik_progress_endpoint_pt_meetings">Pobieranie zebrań z rodzicami...</string>
+    <string name="edziennik_progress_login_idziennik_web">Logowanie do iDziennika...</string>
+    <string name="edziennik_progress_login_idziennik_api">Logowanie do iDziennika...</string>
     <string name="edziennik_progress_endpoint_messages_outbox">Pobieranie wiadomości wysłanych...</string>
     <string name="login_summary_account_parent">(rodzic)</string>
     <string name="login_summary_account_child">(uczeń)</string>

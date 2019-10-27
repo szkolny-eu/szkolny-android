@@ -4,9 +4,11 @@
 
 package pl.szczodrzynski.edziennik.api.v2
 
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginPortal
+import pl.szczodrzynski.edziennik.api.v2.idziennik.login.IdziennikLoginApi
+import pl.szczodrzynski.edziennik.api.v2.idziennik.login.IdziennikLoginWeb
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginApi
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginMessages
+import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginPortal
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginSynergia
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLoginWeb
 import pl.szczodrzynski.edziennik.api.v2.models.LoginMethod
@@ -116,6 +118,16 @@ val vulcanLoginMethods = listOf(
                 .withRequiredLoginMethod { _, loginStore ->
                     if (loginStore.mode == LOGIN_MODE_VULCAN_WEB) LOGIN_METHOD_VULCAN_WEB_NEW else LOGIN_METHOD_NOT_NEEDED
                 }
+)
+
+val idziennikLoginMethods = listOf(
+        LoginMethod(LOGIN_TYPE_IDZIENNIK, LOGIN_METHOD_IDZIENNIK_WEB, IdziennikLoginWeb::class.java)
+                .withIsPossible { _, _ -> true }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED },
+
+        LoginMethod(LOGIN_TYPE_IDZIENNIK, LOGIN_METHOD_IDZIENNIK_API, IdziennikLoginApi::class.java)
+                .withIsPossible { _, _ -> true }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_IDZIENNIK_WEB }
 )
 
 val templateLoginMethods = listOf(

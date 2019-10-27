@@ -18,6 +18,7 @@ import pl.szczodrzynski.edziennik.api.v2.events.*
 import pl.szczodrzynski.edziennik.api.v2.events.requests.*
 import pl.szczodrzynski.edziennik.api.v2.events.task.ErrorReportTask
 import pl.szczodrzynski.edziennik.api.v2.events.task.NotifyTask
+import pl.szczodrzynski.edziennik.api.v2.idziennik.Idziennik
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.Librus
@@ -219,6 +220,7 @@ class ApiService : Service() {
             LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_MOBIDZIENNIK -> Mobidziennik(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_VULCAN -> Vulcan(app, profile, loginStore, taskCallback)
+            LOGIN_TYPE_IDZIENNIK -> Idziennik(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_TEMPLATE -> Template(app, profile, loginStore, taskCallback)
             else -> null
         }
