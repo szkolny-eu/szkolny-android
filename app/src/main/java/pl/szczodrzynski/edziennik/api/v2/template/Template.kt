@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.prepare
 import pl.szczodrzynski.edziennik.api.v2.template.data.TemplateData
+import pl.szczodrzynski.edziennik.api.v2.template.firstlogin.TemplateFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLogin
 import pl.szczodrzynski.edziennik.api.v2.templateLoginMethods
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
@@ -68,7 +69,9 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
     }
 
     override fun firstLogin() {
-        // TODO
+        TemplateFirstLogin(data) {
+            completed()
+        }
     }
 
     override fun cancel() {
