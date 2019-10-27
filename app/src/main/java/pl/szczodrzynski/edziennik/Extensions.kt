@@ -69,6 +69,21 @@ fun Bundle?.getString(key: String, defaultValue: String): String {
     return this?.getString(key, defaultValue) ?: defaultValue
 }
 
+fun String.fixName(): String {
+    return this.fixWhiteSpaces().toProperCase()
+}
+
+fun String.toProperCase(): String = changeStringCase(this)
+
+fun String.swapFirstLastName(): String {
+    return this.split(" ").let {
+        if (it.size > 1)
+            it[1]+" "+it[0]
+        else
+            it[0]
+    }
+}
+
 fun changeStringCase(s: String): String {
     val delimiters = " '-/"
     val sb = StringBuilder()
@@ -86,7 +101,16 @@ fun changeStringCase(s: String): String {
 }
 
 fun buildFullName(firstName: String?, lastName: String?): String {
-    return changeStringCase("$firstName $lastName").trim()
+    return "$firstName $lastName".fixName()
+}
+
+fun String.getShortName(): String {
+    return split(" ").let {
+        if (it.size > 1)
+            "${it[0]} ${it[1][0]}."
+        else
+            it[0]
+    }
 }
 
 fun colorFromName(context: Context, name: String?): Int {

@@ -103,7 +103,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         Classroom.class,
         NoticeType.class,
         AttendanceType.class,
-        Metadata.class}, version = 62)
+        Metadata.class}, version = 63)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -721,6 +721,14 @@ public abstract class AppDb extends RoomDatabase {
                     ")");
         }
     };
+    private static final Migration MIGRATION_62_63 = new Migration(62, 63) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE profiles ADD COLUMN accountNameLong TEXT DEFAULT NULL");
+            database.execSQL("ALTER TABLE profiles ADD COLUMN studentClassName TEXT DEFAULT NULL");
+            database.execSQL("ALTER TABLE profiles ADD COLUMN studentSchoolYear TEXT DEFAULT NULL");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -780,7 +788,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_58_59,
                                     MIGRATION_59_60,
                                     MIGRATION_60_61,
-                                    MIGRATION_61_62
+                                    MIGRATION_61_62,
+                                    MIGRATION_62_63
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

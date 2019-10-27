@@ -56,8 +56,10 @@ open class Profile : IDrawerProfile {
      * If null, then it's a student account.
      * If not null, then it's a parent account with this name.
      */
-    @Ignore
     var accountNameLong: String? = null
+
+    var studentClassName: String? = null
+    var studentSchoolYear: String? = null
 
     var registration = REGISTRATION_UNSPECIFIED
 
