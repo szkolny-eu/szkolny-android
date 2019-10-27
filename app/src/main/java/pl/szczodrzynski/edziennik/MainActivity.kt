@@ -236,6 +236,10 @@ class MainActivity : AppCompatActivity() {
 
         setTheme(Themes.appTheme)
 
+        app.appConfig.language?.let {
+            setLanguage(it)
+        }
+
         setContentView(b.root)
 
         navLoading = true

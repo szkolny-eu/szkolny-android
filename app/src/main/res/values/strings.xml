@@ -953,7 +953,7 @@
     <string name="edziennik_progress_endpoint_teacher_free_day_types">Pobieranie rodzajów nieobecności nauczycieli...</string>
     <string name="edziennik_progress_endpoint_dictionaries">Pobieranie słowników...</string>
     <string name="toolbar_subtitle_syncing">Synchronizuję...</string>
-    <string name="toolbar_subtitle_syncing_format">[%d%%] %s</string>
+    <string name="toolbar_subtitle_syncing_format" translatable="false">[%d%%] %s</string>
     <string name="edziennik_progress_endpoint_notices">Pobieranie uwag...</string>
     <string name="edziennik_progress_endpoint_teams">Pobieranie grup klasowych...</string>
     <string name="edziennik_progress_endpoint_units">Pobieranie informacji o jednostce...</string>
@@ -968,4 +968,11 @@
     <string name="edziennik_progress_endpoint_messages_outbox">Pobieranie wiadomości wysłanych...</string>
     <string name="login_summary_account_parent">(rodzic)</string>
     <string name="login_summary_account_child">(uczeń)</string>
+    <string name="settings_about_language_text">Język aplikacji</string>
+    <string name="settings_about_language_subtext">Polski</string>
+    <string name="settings_about_language_dialog_title">Zmień język aplikacji</string>
+    <string name="settings_about_language_dialog_text">Uwaga. Ta opcja może nie działać na niektórych urządzeniach oraz w niektórych fragmentach aplikacji.</string>
+    <string name="language_system">Według systemu</string>
+    <string name="language_polish" translatable="false">Polski</string>
+    <string name="language_english" translatable="false">English</string>
 </resources>

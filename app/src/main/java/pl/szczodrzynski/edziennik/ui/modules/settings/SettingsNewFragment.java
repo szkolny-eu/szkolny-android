@@ -38,28 +38,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
+import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.Notifier;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
-import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushConfigActivity;
-import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
-import pl.szczodrzynski.edziennik.utils.models.Endpoint;
-import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.sync.SyncJob;
+import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
+import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushConfigActivity;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 
 import static android.app.Activity.RESULT_OK;
 import static pl.szczodrzynski.edziennik.App.APP_URL;
+import static pl.szczodrzynski.edziennik.ExtensionsKt.initDefaultLocale;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_DISABLED;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_ENABLED;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_AVG_2_AVG;
@@ -81,8 +80,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
     private static final int CARD_THEME = 1;
     private static final int CARD_SYNC = 2;
     private static final int CARD_REGISTER = 3;
-    private static final int CARD_SYNC_CUSTOMIZE = 4;
-    private static final int CARD_ABOUT = 5;
+    private static final int CARD_ABOUT = 4;
     private int iconColor = Color.WHITE;
     private int primaryTextOnPrimaryBg = -1;
     private int secondaryTextOnPrimaryBg = -1;
@@ -1081,136 +1079,6 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         return items;
     }
 
-    /*     _____                    ______           _             _       _
-          / ____|                  |  ____|         | |           (_)     | |
-         | (___  _   _ _ __   ___  | |__   _ __   __| |_ __   ___  _ _ __ | |_ ___
-          \___ \| | | | '_ \ / __| |  __| | '_ \ / _` | '_ \ / _ \| | '_ \| __/ __|
-          ____) | |_| | | | | (__  | |____| | | | (_| | |_) | (_) | | | | | |_\__ \
-         |_____/ \__, |_| |_|\___| |______|_| |_|\__,_| .__/ \___/|_|_| |_|\__|___/
-                  __/ |                               | |
-                 |___/                                |*/
-    private String getEndpointTitle(String name) {
-        int stringRes = -1;
-        switch (name) {
-            case "Classrooms":
-                stringRes = R.string.settings_sync_customize_endpoint_classrooms;
-                break;
-            case "Timetables":
-            case "Timetable":
-                stringRes = R.string.settings_sync_customize_endpoint_timetable;
-                break;
-            case "Substitutions":
-                stringRes = R.string.settings_sync_customize_endpoint_substitutions;
-                break;
-            case "Grades":
-                stringRes = R.string.settings_sync_customize_endpoint_grades;
-                break;
-            case "PointGrades":
-                stringRes = R.string.settings_sync_customize_endpoint_point_grades;
-                break;
-            case "Events":
-                stringRes = R.string.settings_sync_customize_endpoint_events;
-                break;
-            case "Homework":
-                stringRes = R.string.settings_sync_customize_endpoint_homework;
-                break;
-            case "LuckyNumber":
-            case "LuckyNumbers":
-                stringRes = R.string.settings_sync_customize_endpoint_lucky_numbers;
-                break;
-            case "Notices":
-                stringRes = R.string.settings_sync_customize_endpoint_notices;
-                break;
-            case "Attendance":
-                stringRes = R.string.settings_sync_customize_endpoint_attendance;
-                break;
-            case "Announcements":
-                stringRes = R.string.settings_sync_customize_endpoint_announcements;
-                break;
-            case "PtMeetings":
-                stringRes = R.string.settings_sync_customize_endpoint_pt_meetings;
-                break;
-            case "TeacherFreeDays":
-                stringRes = R.string.settings_sync_customize_endpoint_teacher_free_days;
-                break;
-            case "SchoolFreeDays":
-                stringRes = R.string.settings_sync_customize_endpoint_school_free_days;
-                break;
-            case "ClassFreeDays":
-                stringRes = R.string.settings_sync_customize_endpoint_class_free_days;
-                break;
-            case "MessagesInbox":
-                stringRes = R.string.settings_sync_customize_endpoint_messages_inbox;
-                break;
-            case "MessagesOutbox":
-                stringRes = R.string.settings_sync_customize_endpoint_messages_outbox;
-                break;
-        }
-        if (stringRes == -1)
-            return name;
-        else
-            return getString(stringRes);
-    }
-    private MaterialAboutSwitchItem getEndpointSwitch(String name, Endpoint endpoint) {
-        return new MaterialAboutSwitchItem(
-                getEndpointTitle(name),
-                endpoint.onlyFullSync ? getString(R.string.settings_sync_customize_full_sync_only) : null,
-                null
-        )
-        .setChecked(endpoint.enabled)
-        .setOnChangeAction((isChecked, tag) -> {
-            endpoint.enabled = isChecked;
-            boolean changed = isChecked ^ endpoint.defaultActive;
-            if (!changed) {
-                if (app.profile.getChangedEndpoints() != null) {
-                    app.profile.getChangedEndpoints().remove(name);
-                }
-            }
-            else {
-                if (app.profile.getChangedEndpoints() == null)
-                    app.profile.setChangedEndpoints(new ArrayList<>());
-                app.profile.getChangedEndpoints().add(name);
-            }
-            app.profileSaveAsync();
-            return true;
-        });
-    }
-    private Map<String, Endpoint> configurableEndpoints = null;
-    private ArrayList<MaterialAboutItem> getSyncCustomizeCard(boolean expandedOnly) {
-        ArrayList<MaterialAboutItem> items = new ArrayList<>();
-        if (!expandedOnly) {
-            items.add(
-                    new MaterialAboutActionItem(
-                            null,
-                            getString(R.string.settings_sync_customize_help_subtext),
-                            null
-                    )
-            );
-
-            if (app.profile.getChangedEndpoints() != null) {
-                for (String changedEndpoint : app.profile.getChangedEndpoints()) {
-                    Endpoint endpoint = configurableEndpoints.get(changedEndpoint);
-                    if (endpoint == null)
-                        continue;
-                    items.add(getEndpointSwitch(changedEndpoint, endpoint));
-                }
-            }
-
-            items.add(getMoreItem(() -> addCardItems(CARD_SYNC_CUSTOMIZE, getSyncCustomizeCard(true))));
-        }
-        else {
-            for (String endpointName: configurableEndpoints.keySet()) {
-                if (app.profile.getChangedEndpoints() != null && app.profile.getChangedEndpoints().contains(endpointName))
-                    continue;
-                Endpoint endpoint = configurableEndpoints.get(endpointName);
-                if (endpoint == null)
-                    continue;
-                items.add(getEndpointSwitch(endpointName, endpoint));
-            }
-        }
-        return items;
-    }
-
     /*             _                 _
              /\   | |               | |
             /  \  | |__   ___  _   _| |_
@@ -1223,117 +1091,152 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         secondaryTextOnPrimaryBg = 0xd0ffffff;//activity.getResources().getColor(R.color.secondaryTextLight);
 
         ArrayList<MaterialAboutItem> items = new ArrayList<>();
-        items.add(new MaterialAboutTitleItem.Builder()
-                .text(R.string.app_name)
-                .desc(R.string.settings_about_title_subtext)
-                .textColor(primaryTextOnPrimaryBg)
-                .descColor(secondaryTextOnPrimaryBg)
-                .icon(R.mipmap.ic_splash)
-                .build());
+        if (!expandedOnly) {
+            items.add(new MaterialAboutTitleItem.Builder()
+                    .text(R.string.app_name)
+                    .desc(R.string.settings_about_title_subtext)
+                    .textColor(primaryTextOnPrimaryBg)
+                    .descColor(secondaryTextOnPrimaryBg)
+                    .icon(R.mipmap.ic_splash)
+                    .build());
 
-        pref_about_version = new MaterialAboutActionItem.Builder()
-                .text(R.string.settings_about_version_text)
-                .textColor(primaryTextOnPrimaryBg)
-                .subTextColor(secondaryTextOnPrimaryBg)
-                .subText(BuildConfig.VERSION_NAME+", "+BuildConfig.BUILD_TYPE)
-                .icon(new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_information)
-                        .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                        .size(IconicsSize.dp(iconSizeDp)))
-                .build();
-        final int[] clickCounter = {0};
-        pref_about_version.setOnClickAction(() -> {
-            if (6 - clickCounter[0] != 0) {
-                Toast.makeText(activity, ("\ud83d\ude02"), Toast.LENGTH_SHORT).show();
-            }
-            refreshMaterialAboutList();
-            clickCounter[0] = clickCounter[0] + 1;
-            if (clickCounter[0] > 6)
-            {
-                final MediaPlayer mp = MediaPlayer.create(activity, R.raw.ogarnij_sie);
-                mp.start();
-                clickCounter[0] = 0;
-            }
-        });
-        items.add(pref_about_version);
+            pref_about_version = new MaterialAboutActionItem.Builder()
+                    .text(R.string.settings_about_version_text)
+                    .textColor(primaryTextOnPrimaryBg)
+                    .subTextColor(secondaryTextOnPrimaryBg)
+                    .subText(BuildConfig.VERSION_NAME + ", " + BuildConfig.BUILD_TYPE)
+                    .icon(new IconicsDrawable(activity)
+                            .icon(CommunityMaterial.Icon2.cmd_information)
+                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
+                            .size(IconicsSize.dp(iconSizeDp)))
+                    .build();
+            final int[] clickCounter = {0};
+            pref_about_version.setOnClickAction(() -> {
+                if (6 - clickCounter[0] != 0) {
+                    Toast.makeText(activity, ("\ud83d\ude02"), Toast.LENGTH_SHORT).show();
+                }
+                refreshMaterialAboutList();
+                clickCounter[0] = clickCounter[0] + 1;
+                if (clickCounter[0] > 6) {
+                    final MediaPlayer mp = MediaPlayer.create(activity, R.raw.ogarnij_sie);
+                    mp.start();
+                    clickCounter[0] = 0;
+                }
+            });
+            items.add(pref_about_version);
 
-        items.add(new MaterialAboutActionItem.Builder()
-                .text(R.string.settings_about_privacy_policy_text)
-                .textColor(primaryTextOnPrimaryBg)
-                .subTextColor(secondaryTextOnPrimaryBg)
-                .icon(new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_shield_half_full)
-                        .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                        .size(IconicsSize.dp(iconSizeDp)))
-                .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://szkolny.eu/privacy-policy")))
-                .build());
+            items.add(new MaterialAboutActionItem.Builder()
+                    .text(R.string.settings_about_privacy_policy_text)
+                    .textColor(primaryTextOnPrimaryBg)
+                    .subTextColor(secondaryTextOnPrimaryBg)
+                    .icon(new IconicsDrawable(activity)
+                            .icon(CommunityMaterial.Icon2.cmd_shield_half_full)
+                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
+                            .size(IconicsSize.dp(iconSizeDp)))
+                    .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://szkolny.eu/privacy-policy")))
+                    .build());
 
-        items.add(new MaterialAboutActionItem.Builder()
-                .text(R.string.settings_about_discord_text)
-                .textColor(primaryTextOnPrimaryBg)
-                .subTextColor(secondaryTextOnPrimaryBg)
-                .subText(R.string.settings_about_discord_subtext)
-                .icon(new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon.cmd_discord)
-                        .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                        .size(IconicsSize.dp(iconSizeDp)))
-                .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://discord.gg/n9e8pWr")))
-                .build());
+            items.add(new MaterialAboutActionItem.Builder()
+                    .text(R.string.settings_about_discord_text)
+                    .textColor(primaryTextOnPrimaryBg)
+                    .subTextColor(secondaryTextOnPrimaryBg)
+                    .subText(R.string.settings_about_discord_subtext)
+                    .icon(new IconicsDrawable(activity)
+                            .icon(CommunityMaterial.Icon.cmd_discord)
+                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
+                            .size(IconicsSize.dp(iconSizeDp)))
+                    .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://discord.gg/n9e8pWr")))
+                    .build());
 
-        items.add(new MaterialAboutActionItem.Builder()
-                .text(R.string.settings_about_update_text)
-                .subText(R.string.settings_about_update_subtext)
-                .textColor(primaryTextOnPrimaryBg)
-                .subTextColor(secondaryTextOnPrimaryBg)
-                .icon(new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_update)
-                        .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                        .size(IconicsSize.dp(iconSizeDp)))
-                .setOnClickAction(() -> {
-                    //open browser or intent here
-                    NetworkUtils net = new NetworkUtils(app);
-                    if (!net.isOnline())
-                    {
+            items.add(new MaterialAboutActionItem.Builder()
+                    .text(R.string.settings_about_language_text)
+                    .textColor(primaryTextOnPrimaryBg)
+                    .subTextColor(secondaryTextOnPrimaryBg)
+                    .subText(R.string.settings_about_language_subtext)
+                    .icon(new IconicsDrawable(activity)
+                            .icon(CommunityMaterial.Icon2.cmd_translate)
+                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
+                            .size(IconicsSize.dp(iconSizeDp)))
+                    .setOnClickAction(() -> {
                         new MaterialDialog.Builder(activity)
-                                .title(R.string.you_are_offline_title)
-                                .content(R.string.you_are_offline_text)
-                                .positiveText(R.string.ok)
+                                .title(getString(R.string.settings_about_language_dialog_title))
+                                .content(getString(R.string.settings_about_language_dialog_text))
+                                .items(getString(R.string.language_system), getString(R.string.language_polish), getString(R.string.language_english))
+                                .itemsCallbackSingleChoice(app.appConfig.language == null ? 0 : app.appConfig.language.equals("pl") ? 1 : 2, (dialog, itemView, which, text) -> {
+                                    switch (which) {
+                                        case 0:
+                                            app.appConfig.language = null;
+                                            initDefaultLocale();
+                                            break;
+                                        case 1:
+                                            app.appConfig.language = "pl";
+                                            break;
+                                        case 2:
+                                            app.appConfig.language = "en";
+                                            break;
+                                    }
+                                    app.saveConfig("language");
+                                    activity.recreate(MainActivity.DRAWER_ITEM_SETTINGS);
+                                    return true;
+                                })
                                 .show();
-                    }
-                    else
-                    {
-                        BootReceiver br = new BootReceiver();
-                        Intent i = new Intent();
-                        i.putExtra("UserChecked", true);
-                        br.onReceive(getContext(), i);
-                    }
-                })
-                .build());
+                    })
+                    .build());
 
-        items.add(new MaterialAboutActionItem.Builder()
-                .text(R.string.settings_about_changelog_text)
-                .textColor(primaryTextOnPrimaryBg)
-                .subTextColor(secondaryTextOnPrimaryBg)
-                .icon(new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_radar)
-                        .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                        .size(IconicsSize.dp(iconSizeDp)))
-                .setOnClickAction(() -> new ChangelogDialog().show(getActivity().getSupportFragmentManager(), "whats_new"))
-                .build());
+            items.add(getMoreItem(() -> addCardItems(CARD_ABOUT, getAboutCard(true))));
+        }
+        else {
+            items.add(new MaterialAboutActionItem.Builder()
+                    .text(R.string.settings_about_update_text)
+                    .subText(R.string.settings_about_update_subtext)
+                    .textColor(primaryTextOnPrimaryBg)
+                    .subTextColor(secondaryTextOnPrimaryBg)
+                    .icon(new IconicsDrawable(activity)
+                            .icon(CommunityMaterial.Icon2.cmd_update)
+                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
+                            .size(IconicsSize.dp(iconSizeDp)))
+                    .setOnClickAction(() -> {
+                        //open browser or intent here
+                        NetworkUtils net = new NetworkUtils(app);
+                        if (!net.isOnline()) {
+                            new MaterialDialog.Builder(activity)
+                                    .title(R.string.you_are_offline_title)
+                                    .content(R.string.you_are_offline_text)
+                                    .positiveText(R.string.ok)
+                                    .show();
+                        } else {
+                            BootReceiver br = new BootReceiver();
+                            Intent i = new Intent();
+                            i.putExtra("UserChecked", true);
+                            br.onReceive(getContext(), i);
+                        }
+                    })
+                    .build());
 
-        items.add(new MaterialAboutActionItem.Builder()
-                .text(R.string.settings_about_licenses_text)
-                .textColor(primaryTextOnPrimaryBg)
-                .subTextColor(secondaryTextOnPrimaryBg)
-                .icon(new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon.cmd_code_braces)
-                        .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                        .size(IconicsSize.dp(iconSizeDp)))
-                .setOnClickAction(() -> {
-                    Intent intent = new Intent(activity, SettingsLicenseActivity.class);
-                    startActivity(intent);
-                })
-                .build());
+            items.add(new MaterialAboutActionItem.Builder()
+                    .text(R.string.settings_about_changelog_text)
+                    .textColor(primaryTextOnPrimaryBg)
+                    .subTextColor(secondaryTextOnPrimaryBg)
+                    .icon(new IconicsDrawable(activity)
+                            .icon(CommunityMaterial.Icon2.cmd_radar)
+                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
+                            .size(IconicsSize.dp(iconSizeDp)))
+                    .setOnClickAction(() -> new ChangelogDialog().show(getActivity().getSupportFragmentManager(), "whats_new"))
+                    .build());
+
+            items.add(new MaterialAboutActionItem.Builder()
+                    .text(R.string.settings_about_licenses_text)
+                    .textColor(primaryTextOnPrimaryBg)
+                    .subTextColor(secondaryTextOnPrimaryBg)
+                    .icon(new IconicsDrawable(activity)
+                            .icon(CommunityMaterial.Icon.cmd_code_braces)
+                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
+                            .size(IconicsSize.dp(iconSizeDp)))
+                    .setOnClickAction(() -> {
+                        Intent intent = new Intent(activity, SettingsLicenseActivity.class);
+                        startActivity(intent);
+                    })
+                    .build());
 
         /*items.add(new MaterialAboutActionItem.Builder()
                 .text(R.string.settings_about_intro_text)
@@ -1357,20 +1260,21 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 })
                 .build());*/
 
-        if (App.devMode) {
-            items.add(new MaterialAboutActionItem.Builder()
-                    .text(R.string.settings_about_crash_text)
-                    .subText(R.string.settings_about_crash_subtext)
-                    .textColor(primaryTextOnPrimaryBg)
-                    .subTextColor(secondaryTextOnPrimaryBg)
-                    .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_bug)
-                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                            .size(IconicsSize.dp(iconSizeDp)))
-                    .setOnClickAction(() -> {
-                        throw new RuntimeException("MANUAL CRASH");
-                    })
-                    .build());
+            if (App.devMode) {
+                items.add(new MaterialAboutActionItem.Builder()
+                        .text(R.string.settings_about_crash_text)
+                        .subText(R.string.settings_about_crash_subtext)
+                        .textColor(primaryTextOnPrimaryBg)
+                        .subTextColor(secondaryTextOnPrimaryBg)
+                        .icon(new IconicsDrawable(activity)
+                                .icon(CommunityMaterial.Icon.cmd_bug)
+                                .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
+                                .size(IconicsSize.dp(iconSizeDp)))
+                        .setOnClickAction(() -> {
+                            throw new RuntimeException("MANUAL CRASH");
+                        })
+                        .build());
+            }
         }
         return items;
     }
