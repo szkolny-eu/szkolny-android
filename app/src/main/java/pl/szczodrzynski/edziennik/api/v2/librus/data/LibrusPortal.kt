@@ -41,7 +41,7 @@ open class LibrusPortal(open val data: DataLibrus) {
                 error?.let { code ->
                     when (code) {
                         "requires_an_action" -> ERROR_LIBRUS_PORTAL_SYNERGIA_DISCONNECTED
-                        "Access token is invalid" -> ERROR_LIBRUS_PORTAL_TOKEN_EXPIRED
+                        "Access token is invalid" -> ERROR_LIBRUS_PORTAL_ACCESS_DENIED
                         "ApiDisabled" -> ERROR_LIBRUS_PORTAL_API_DISABLED
                         "Account not found" -> ERROR_LIBRUS_PORTAL_SYNERGIA_NOT_FOUND
                         else -> ERROR_LIBRUS_PORTAL_OTHER

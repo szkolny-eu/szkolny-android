@@ -7,9 +7,6 @@ package pl.szczodrzynski.edziennik.api.v2.librus.data
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
-import okhttp3.Cookie
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
@@ -38,7 +35,19 @@ open class LibrusSynergia(open val data: DataLibrus) {
                     return
                 }
 
-                // TODO: Error handling
+                if (!text.contains("jesteś zalogowany")) {
+                    when {
+                        text.contains("stop.png") -> ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED
+                        text.contains("Przerwa techniczna") -> ERROR_LIBRUS_SYNERGIA_MAINTENANCE
+                        else -> ERROR_LIBRUS_SYNERGIA_OTHER
+                    }.let { errorCode ->
+                        data.error(ApiError(tag, errorCode)
+                                .withResponse(response)
+                                .withApiResponse(text))
+                        return
+                    }
+                }
+
 
                 try {
                     onSuccess(text)
@@ -57,13 +66,13 @@ open class LibrusSynergia(open val data: DataLibrus) {
             }
         }
 
-        data.app.cookieJar.saveFromResponse(null, listOf(
+        /*data.app.cookieJar.saveFromResponse(null, listOf(
                 Cookie.Builder()
                         .name("DZIENNIKSID")
                         .value(data.synergiaSessionId!!)
                         .domain("synergia.librus.pl")
                         .secure().httpOnly().build()
-        ))
+        ))*/
 
         Request.builder()
                 .url("$LIBRUS_SYNERGIA_URL/$endpoint")

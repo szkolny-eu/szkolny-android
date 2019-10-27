@@ -62,7 +62,7 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
                 val sessionKey = cookie?.name()
                 val sessionId = cookie?.value()
                 if (sessionId == null) {
-                    data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_NO_SESSION_ID)
+                    data.error(ApiError(TAG, ERROR_LOGIN_MOBIDZIENNIK_WEB_NO_SESSION_ID)
                             .withResponse(response)
                             .withApiResponse(text))
                     return
@@ -85,7 +85,7 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
 
         Request.builder()
                 .url("https://${data.loginServerName}.mobidziennik.pl/api/")
-                .userAgent(System.getProperty("http.agent"))
+                .userAgent(MOBIDZIENNIK_USER_AGENT)
                 .contentType("application/x-www-form-urlencoded; charset=UTF-8")
                 .addParameter("wersja", "20")
                 .addParameter("ip", data.app.deviceId)
