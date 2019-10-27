@@ -18,7 +18,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.navlib.R
-import pl.szczodrzynski.navlib.crc16
 import pl.szczodrzynski.navlib.getColorFromRes
 import java.text.SimpleDateFormat
 import java.util.*
@@ -118,7 +117,7 @@ fun List<String>.join(delimiter: String): String {
 }
 
 fun colorFromName(context: Context, name: String?): Int {
-    var crc = crc16(name ?: "")
+    var crc = (name ?: "").crc16()
     crc = (crc and 0xff) or (crc shr 8)
     crc %= 16
     val color = when (crc) {
@@ -305,4 +304,17 @@ fun initDefaultLocale() {
     }.let {
         Locale.setDefault(it)
     }
+}
+
+fun String.crc16(): Int {
+    var crc = 0xFFFF
+    for (aBuffer in this) {
+        crc = crc.ushr(8) or (crc shl 8) and 0xffff
+        crc = crc xor (aBuffer.toInt() and 0xff) // byte to int, trunc sign
+        crc = crc xor (crc and 0xff shr 4)
+        crc = crc xor (crc shl 12 and 0xffff)
+        crc = crc xor (crc and 0xFF shl 5 and 0xffff)
+    }
+    crc = crc and 0xffff
+    return crc + 32768
 }
