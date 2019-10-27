@@ -1,32 +1,40 @@
 package pl.szczodrzynski.edziennik.ui.modules.login;
 
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import pl.szczodrzynski.edziennik.App;
+import pl.szczodrzynski.edziennik.ExtensionsKt;
 import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginSummaryBinding;
 import pl.szczodrzynski.edziennik.databinding.RowLoginProfileListItemBinding;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+
+import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_MODE_LIBRUS_EMAIL;
+import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_MODE_VULCAN_API;
+import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_MODE_VULCAN_WEB;
+import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_TYPE_IDZIENNIK;
+import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_TYPE_LIBRUS;
+import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_TYPE_VULCAN;
 
 public class LoginSummaryFragment extends Fragment {
 
@@ -63,11 +71,19 @@ public class LoginSummaryFragment extends Fragment {
         for (LoginProfileObject profileObject: LoginActivity.profileObjects) {
             int subIndex = 0;
             for (Profile profile: profileObject.profileList) {
+                List<String> subnameList = new ArrayList<>();
+                if (profile.getStudentClassName() != null)
+                    subnameList.add(profile.getStudentClassName());
+                if (profile.getStudentSchoolYear() != null)
+                    subnameList.add(profile.getStudentSchoolYear());
                 ItemProfileModel profileModel = new ItemProfileModel(
                         index,
                         subIndex,
                         profile.getName(),
+                        ExtensionsKt.join(subnameList, " - "),
                         profileObject.loginStore.type,
+                        profileObject.loginStore.mode,
+                        profile.getAccountNameLong() != null,
                         profileObject.selectedList.get(subIndex)
                 );
                 profileList.add(profileModel);
@@ -133,14 +149,20 @@ public class LoginSummaryFragment extends Fragment {
         int listIndex;
         int listSubIndex;
         String name;
+        String subname;
         int loginType;
+        int loginMode;
+        boolean isParent;
         boolean selected;
 
-        public ItemProfileModel(int listIndex, int listSubIndex, String name, int loginType, boolean selected) {
+        public ItemProfileModel(int listIndex, int listSubIndex, String name, String subname, int loginType, int loginMode, boolean isParent, boolean selected) {
             this.listIndex = listIndex;
             this.listSubIndex = listSubIndex;
             this.name = name;
+            this.subname = subname;
             this.loginType = loginType;
+            this.loginMode = loginMode;
+            this.isParent = isParent;
             this.selected = selected;
         }
     }
@@ -176,9 +198,50 @@ public class LoginSummaryFragment extends Fragment {
                     b.checkBox.jumpDrawablesToCurrentState();
                 }
                 LoginActivity.profileObjects.get(m.listIndex).selectedList.set(m.listSubIndex, m.selected);
+
             };
             b.checkBox.setOnClickListener(onClickListener);
             b.getRoot().setOnClickListener(onClickListener);
+            int imageRes = 0;
+            if (m.loginType == LOGIN_TYPE_MOBIDZIENNIK) {
+                imageRes = R.drawable.logo_mobidziennik;
+            }
+            else if (m.loginType == LOGIN_TYPE_IDZIENNIK) {
+                imageRes = R.drawable.logo_idziennik;
+            }
+            else if (m.loginType == LOGIN_TYPE_LIBRUS) {
+                if (m.loginMode == LOGIN_MODE_LIBRUS_EMAIL) {
+                    imageRes = R.drawable.logo_librus;
+                }
+                else {
+                    imageRes = R.drawable.logo_synergia;
+                }
+            }
+            else if (m.loginType == LOGIN_TYPE_VULCAN) {
+                if (m.loginMode == LOGIN_MODE_VULCAN_WEB) {
+                    imageRes = R.drawable.logo_vulcan;
+                }
+                else if (m.loginMode == LOGIN_MODE_VULCAN_API) {
+                    imageRes = R.drawable.logo_dzienniczek;
+                }
+            }
+            if (imageRes != 0) {
+                b.registerIcon.setImageResource(imageRes);
+            }
+            if (m.isParent) {
+                b.accountType.setText(R.string.login_summary_account_parent);
+            }
+            else {
+                b.accountType.setText(R.string.login_summary_account_child);
+            }
+            if (m.subname.trim().isEmpty()) {
+                b.textDetails.setText(null);
+                b.textDetails.setVisibility(View.GONE);
+            }
+            else {
+                b.textDetails.setText(m.subname);
+                b.textDetails.setVisibility(View.VISIBLE);
+            }
             //b.root.setOnClickListener(onClickListener);
             //holder.bind(b.textView, onClickListener);
         }

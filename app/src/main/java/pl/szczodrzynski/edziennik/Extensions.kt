@@ -113,6 +113,10 @@ fun String.getShortName(): String {
     }
 }
 
+fun List<String>.join(delimiter: String): String {
+    return this.joinToString(delimiter)
+}
+
 fun colorFromName(context: Context, name: String?): Int {
     var crc = crc16(name ?: "")
     crc = (crc and 0xff) or (crc shr 8)
