@@ -122,6 +122,29 @@ const val ERROR_LOGIN_VULCAN_INVALID_PIN_1_REMAINING        = 311
 const val ERROR_LOGIN_VULCAN_INVALID_PIN_2_REMAINING        = 312
 const val ERROR_LOGIN_VULCAN_EXPIRED_TOKEN                  = 321
 const val ERROR_LOGIN_VULCAN_OTHER                          = 322
+const val ERROR_LOGIN_VULCAN_ONLY_KINDERGARTEN              = 330
+const val ERROR_LOGIN_VULCAN_NO_PUPILS                      = 331
+const val ERROR_VULCAN_API_MAINTENANCE                      = 340
+const val ERROR_VULCAN_API_BAD_REQUEST                      = 341
+const val ERROR_VULCAN_API_OTHER                            = 342
+
+const val ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN           = 401
+const val ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME     = 402
+const val ERROR_LOGIN_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED  = 403
+const val ERROR_LOGIN_IDZIENNIK_WEB_MAINTENANCE             = 404
+const val ERROR_LOGIN_IDZIENNIK_WEB_SERVER_ERROR            = 405
+const val ERROR_LOGIN_IDZIENNIK_WEB_API_ERROR               = 406 /* {"Message":"There was an error processing the request.","StackTrace":"","ExceptionType":""} */
+const val ERROR_LOGIN_IDZIENNIK_WEB_OTHER                   = 410
+const val ERROR_LOGIN_IDZIENNIK_WEB_API_NO_ACCESS           = 411 /* {"d":{"__type":"mds.Web.mod_komunikator.WS_mod_wiadomosci+detailWiadomosci","Wiadomosc":{"_recordId":0,"DataNadania":null,"DataOdczytania":null,"Nadawca":null,"ListaOdbiorcow":[],"Tytul":null,"Text":null,"ListaZal":[]},"Bledy":{"__type":"mds.Module.Globalne+sBledy","CzyJestBlad":true,"ListaBledow":["Nie masz dostępu do tych zasobów!"],"ListaKodowBledow":[]},"czyJestWiecej":false}} */
+const val ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION              = 420
+const val ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH                 = 421
+const val ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER               = 422
+const val ERROR_IDZIENNIK_WEB_ACCESS_DENIED                 = 430
+const val ERROR_IDZIENNIK_WEB_OTHER                         = 431
+const val ERROR_IDZIENNIK_WEB_MAINTENANCE                   = 432
+const val ERROR_IDZIENNIK_WEB_SERVER_ERROR                  = 433
+const val ERROR_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED        = 434
+const val ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR        = 440
 
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 
@@ -134,3 +157,5 @@ const val EXCEPTION_MOBIDZIENNIK_WEB_REQUEST                = 906
 const val EXCEPTION_VULCAN_API_REQUEST                      = 907
 const val EXCEPTION_NOTIFY_AND_SYNC                         = 910
 const val EXCEPTION_LIBRUS_MESSAGES_REQUEST                 = 911
+const val EXCEPTION_IDZIENNIK_WEB_REQUEST                   = 912
+const val EXCEPTION_IDZIENNIK_WEB_API_REQUEST               = 913

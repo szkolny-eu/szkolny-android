@@ -39,11 +39,6 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                         return@portalGet
                     }
                     val accountDataTime = json.getLong("lastModification")
-                    val accountIds = mutableListOf<Int>()
-                    val accountLogins = mutableListOf<String>()
-                    val accountTokens = mutableListOf<String>()
-                    val accountNamesLong = mutableListOf<String>()
-                    val accountNamesShort = mutableListOf<String>()
 
                     for (accountEl in accounts) {
                         val account = accountEl.asJsonObject
@@ -60,26 +55,23 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                             return@portalGet
                         }
 
-                        accountIds.add(account.getInt("id") ?: continue)
-                        accountLogins.add(account.getString("login") ?: continue)
-                        accountTokens.add(account.getString("accessToken") ?: continue)
-                        accountNamesLong.add(account.getString("studentName") ?: continue)
-                        val nameParts = account.getString("studentName")?.split(" ") ?: continue
-                        accountNamesShort.add(nameParts[0] + " " + nameParts[1][0] + ".")
-                    }
+                        val id = account.getInt("id") ?: continue
+                        val login = account.getString("login") ?: continue
+                        val token = account.getString("accessToken") ?: continue
+                        val tokenTime = (accountDataTime ?: 0) + DAY
+                        val name = account.getString("studentName")?.fixName() ?: ""
 
-                    for (index in accountIds.indices) {
-                        val newProfile = Profile()
-                        newProfile.studentNameLong = accountNamesLong[index]
-                        newProfile.studentNameShort = accountNamesShort[index]
-                        newProfile.name = newProfile.studentNameLong
-                        newProfile.subname = data.portalEmail
-                        newProfile.empty = true
-                        newProfile.putStudentData("accountId", accountIds[index])
-                        newProfile.putStudentData("accountLogin", accountLogins[index])
-                        newProfile.putStudentData("accountToken", accountTokens[index])
-                        newProfile.putStudentData("accountTokenTime", (accountDataTime ?: 0) + DAY)
-                        profileList.add(newProfile)
+                        val profile = Profile()
+                        profile.studentNameLong = name
+                        profile.studentNameShort = name.getShortName()
+                        profile.name = profile.studentNameLong
+                        profile.subname = data.portalEmail
+                        profile.empty = true
+                        profile.putStudentData("accountId", id)
+                        profile.putStudentData("accountLogin", login)
+                        profile.putStudentData("accountToken", token)
+                        profile.putStudentData("accountTokenTime", tokenTime)
+                        profileList.add(profile)
                     }
 
                     EventBus.getDefault().post(FirstLoginFinishedEvent(profileList, data.loginStore))

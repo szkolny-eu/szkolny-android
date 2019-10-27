@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.api.v2.vulcan.firstlogin
 
 import org.greenrobot.eventbus.EventBus
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.ERROR_NO_STUDENTS_IN_ACCOUNT
 import pl.szczodrzynski.edziennik.api.v2.VULCAN_API_ENDPOINT_STUDENT_LIST
 import pl.szczodrzynski.edziennik.api.v2.events.FirstLoginFinishedEvent
@@ -13,10 +14,6 @@ import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.api.v2.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.api.v2.vulcan.login.VulcanLoginApi
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.getJsonArray
-import pl.szczodrzynski.edziennik.getLong
-import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
@@ -42,23 +39,19 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                 students.forEach { studentEl ->
                     val student = studentEl.asJsonObject
 
+                    val schoolSymbol = student.getString("JednostkaSprawozdawczaSymbol") ?: return@forEach
+                    val schoolName = "${data.symbol}_$schoolSymbol"
                     val studentId = student.getInt("Id") ?: return@forEach
                     val studentLoginId = student.getInt("UzytkownikLoginId") ?: return@forEach
                     val studentClassId = student.getInt("IdOddzial") ?: return@forEach
-                    val studentClassNumber = student.getString("OkresPoziom")
-                    val studentClassSymbol = student.getString("OddzialSymbol")
-                    val studentClassName = "$studentClassNumber$studentClassSymbol"
-                    val studentSemesterId = student.getInt("IdOkresKlasyfikacyjny")
-                            ?: return@forEach
-                    val studentFirstName = student.getString("Imie")
-                    val studentLastName = student.getString("Nazwisko")
-                    val studentNameLong = "$studentFirstName $studentLastName"
-                    val studentNameShort = "$studentFirstName ${studentLastName?.get(0)}."
-                    val userName = student.getString("UzytkownikNazwa") ?: ""
+                    val studentClassName = student.getString("OkresPoziom").toString() + student.getString("OddzialSymbol")
+                    val studentSemesterId = student.getInt("IdOkresKlasyfikacyjny") ?: return@forEach
+                    val studentFirstName = student.getString("Imie") ?: ""
+                    val studentLastName = student.getString("Nazwisko") ?: ""
+                    val studentNameLong = "$studentFirstName $studentLastName".fixName()
+                    val studentNameShort = "$studentFirstName ${studentLastName[0]}.".fixName()
+
                     val userLogin = student.getString("UzytkownikLogin") ?: ""
-                    val schoolSymbol = student.getString("JednostkaSprawozdawczaSymbol")
-                            ?: return@forEach
-                    val schoolName = "${data.symbol}_$schoolSymbol"
                     val currentSemesterStartDate = student.getLong("OkresDataOd") ?: return@forEach
                     val currentSemesterEndDate = (student.getLong("OkresDataDo")
                             ?: return@forEach) + 86400
@@ -67,12 +60,20 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                     val newProfile = Profile()
                     newProfile.empty = true
 
+                    val isParent = student.getString("UzytkownikRola") == "opiekun"
+                    val userName = if (isParent)
+                        student.getString("UzytkownikNazwa")?.swapFirstLastName()?.fixName()
+                    else
+                        null
+                    newProfile.accountNameLong = userName
+                    newProfile.studentClassName = studentClassName
+                    val today = Date.getToday()
+                    newProfile.studentSchoolYear = "${today.year}/${today.year+1}"
+
                     newProfile.putStudentData("studentId", studentId)
                     newProfile.putStudentData("studentLoginId", studentLoginId)
                     newProfile.putStudentData("studentClassId", studentClassId)
-                    newProfile.putStudentData("studentClassName", studentClassName)
                     newProfile.putStudentData("studentSemesterId", studentSemesterId)
-                    newProfile.putStudentData("userName", userName)
                     newProfile.putStudentData("schoolSymbol", schoolSymbol)
                     newProfile.putStudentData("schoolName", schoolName)
                     newProfile.putStudentData("currentSemesterEndDate", currentSemesterEndDate)

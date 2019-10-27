@@ -307,6 +307,10 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     }
 
     fun notifyAndSyncEvents(onSuccess: () -> Unit) {
+        if (profile == null) {
+            onSuccess()
+            return
+        }
         try {
             DataNotifications(this)
             ServerSync(this) {

@@ -54,7 +54,7 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
     }}
 
     private fun loginWithToken() {
-        d(TAG, "Request: Vulcan/Login/Api - ${data.apiUrl}$VULCAN_API_ENDPOINT_CERTIFICATE")
+        d(TAG, "Request: Vulcan/Login/Api - ${data.apiUrl}/$VULCAN_API_ENDPOINT_CERTIFICATE")
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
@@ -85,6 +85,8 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                             }
                         }
                         "Broken" -> ERROR_LOGIN_VULCAN_INVALID_PIN_0_REMAINING
+                        "OnlyKindergarten" -> ERROR_LOGIN_VULCAN_ONLY_KINDERGARTEN
+                        "NoPupils" -> ERROR_LOGIN_VULCAN_NO_PUPILS
                         else -> ERROR_LOGIN_VULCAN_OTHER
                     }.let { errorCode ->
                         data.error(ApiError(TAG, errorCode)
@@ -118,7 +120,7 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
         }
 
         Request.builder()
-                .url(data.apiUrl + VULCAN_API_ENDPOINT_CERTIFICATE)
+                .url("${data.apiUrl}/$VULCAN_API_ENDPOINT_CERTIFICATE")
                 .userAgent(VULCAN_API_USER_AGENT)
                 .addHeader("RequestMobileType", "RegisterDevice")
                 .addParameter("PIN", data.apiPin)

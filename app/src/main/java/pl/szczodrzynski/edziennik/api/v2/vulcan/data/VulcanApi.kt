@@ -81,7 +81,17 @@ open class VulcanApi(open val data: DataVulcan) {
                     return
                 }
 
-                // TODO: Vulcan error handling
+                if (response?.code() ?: 200 != 200) {
+                    when (response?.code()) {
+                        503 -> ERROR_VULCAN_API_MAINTENANCE
+                        400 -> ERROR_VULCAN_API_BAD_REQUEST
+                        else -> ERROR_VULCAN_API_OTHER
+                    }.let {
+                        data.error(ApiError(tag, EXCEPTION_VULCAN_API_REQUEST)
+                                .withResponse(response)
+                                .withApiResponse(json?.toString() ?: response?.parserErrorBody))
+                    }
+                }
 
                 if (json == null) {
                     data.error(ApiError(tag, ERROR_RESPONSE_EMPTY)
@@ -127,6 +137,7 @@ open class VulcanApi(open val data: DataVulcan) {
                 .allowErrorCode(HttpURLConnection.HTTP_BAD_REQUEST)
                 .allowErrorCode(HttpURLConnection.HTTP_FORBIDDEN)
                 .allowErrorCode(HttpURLConnection.HTTP_UNAUTHORIZED)
+                .allowErrorCode(HttpURLConnection.HTTP_UNAVAILABLE)
                 .callback(callback)
                 .build()
                 .enqueue()
