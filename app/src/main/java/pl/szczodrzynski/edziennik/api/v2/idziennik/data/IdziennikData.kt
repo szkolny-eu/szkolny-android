@@ -6,7 +6,9 @@ package pl.szczodrzynski.edziennik.api.v2.idziennik.data
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.idziennik.DataIdziennik
+import pl.szczodrzynski.edziennik.api.v2.idziennik.ENDPOINT_IDZIENNIK_WEB_GRADES
 import pl.szczodrzynski.edziennik.api.v2.idziennik.ENDPOINT_IDZIENNIK_WEB_TIMETABLE
+import pl.szczodrzynski.edziennik.api.v2.idziennik.data.web.IdziennikWebGrades
 import pl.szczodrzynski.edziennik.api.v2.idziennik.data.web.IdziennikWebTimetable
 import pl.szczodrzynski.edziennik.utils.Utils
 
@@ -41,6 +43,10 @@ class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
             ENDPOINT_IDZIENNIK_WEB_TIMETABLE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_timetable)
                 IdziennikWebTimetable(data) { onSuccess() }
+            }
+            ENDPOINT_IDZIENNIK_WEB_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grades)
+                IdziennikWebGrades(data) { onSuccess() }
             }
             else -> onSuccess()
         }
