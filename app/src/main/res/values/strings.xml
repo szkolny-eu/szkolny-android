@@ -975,4 +975,5 @@
     <string name="language_system">Według systemu</string>
     <string name="language_polish" translatable="false">Polski</string>
     <string name="language_english" translatable="false">English</string>
+    <string name="edziennik_progress_endpoint_timetable">Pobieranie planu lekcji...</string>
 </resources>

@@ -4,15 +4,16 @@
 
 package pl.szczodrzynski.edziennik.api.v2.idziennik
 
+import androidx.core.util.set
 import okhttp3.Cookie
-import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_IDZIENNIK_API
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_IDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.api.v2.models.Data
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 
 class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
@@ -106,4 +107,65 @@ class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(
     var schoolYearId: Int
         get() { mSchoolYearId = mSchoolYearId ?: profile?.getStudentData("schoolYearId", 0); return mSchoolYearId ?: 0 }
         set(value) { profile?.putStudentData("schoolYearId", value) ?: return; mSchoolYearId = value }
+
+
+
+    /*    _    _ _   _ _
+         | |  | | | (_) |
+         | |  | | |_ _| |___
+         | |  | | __| | / __|
+         | |__| | |_| | \__ \
+          \____/ \__|_|_|__*/
+    fun getSubject(name: String, id: Long?, shortName: String): Subject {
+        var subject = if (id == null)
+            subjectList.singleOrNull { it.longName == name }
+        else
+            subjectList.singleOrNull { it.id == id }
+
+        if (subject == null) {
+            subject = Subject(profileId, id ?: name.crc16().toLong(), name, shortName)
+            subjectList[subject.id] = subject
+        }
+        return subject
+    }
+
+    fun getTeacher(firstName: String, lastName: String): Teacher {
+        val teacher = teacherList.singleOrNull { it.fullName == "$firstName $lastName" }
+        return validateTeacher(teacher, firstName, lastName)
+    }
+    fun getTeacher(firstNameChar: Char, lastName: String): Teacher {
+        val teacher = teacherList.singleOrNull { it.shortName == "$firstNameChar.$lastName" }
+        return validateTeacher(teacher, firstNameChar.toString(), lastName)
+    }
+    fun getTeacherByLastFirst(nameLastFirst: String): Teacher {
+        val nameParts = nameLastFirst.split(" ")
+        return if (nameParts.size == 1) getTeacher(nameParts[0], "") else getTeacher(nameParts[1], nameParts[0])
+    }
+
+    fun getTeacherByFirstLast(nameFirstLast: String): Teacher {
+        val nameParts = nameFirstLast.split(" ")
+        return if (nameParts.size == 1) getTeacher(nameParts[0], "") else getTeacher(nameParts[0], nameParts[1])
+    }
+
+    fun getTeacherByFDotLast(nameFDotLast: String): Teacher {
+        val nameParts = nameFDotLast.split(".")
+        return if (nameParts.size == 1) getTeacher(nameParts[0], "") else getTeacher(nameParts[0][0], nameParts[1])
+    }
+
+    fun getTeacherByFDotSpaceLast(nameFDotSpaceLast: String): Teacher {
+        val nameParts = nameFDotSpaceLast.split(".")
+        return if (nameParts.size == 1) getTeacher(nameParts[0], "") else getTeacher(nameParts[0][0], nameParts[1])
+    }
+
+    private fun validateTeacher(teacher: Teacher?, firstName: String, lastName: String): Teacher {
+        (teacher ?: Teacher(profileId, -1, firstName, lastName).apply {
+            id = shortName.crc16().toLong()
+            teacherList[id] = this
+        }).apply {
+            if (firstName.length > 1)
+                name = firstName
+            surname = lastName
+            return this
+        }
+    }
 }

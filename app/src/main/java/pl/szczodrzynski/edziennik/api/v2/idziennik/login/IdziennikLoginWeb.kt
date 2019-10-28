@@ -62,9 +62,9 @@ class IdziennikLoginWeb(val data: DataIdziennik, val onSuccess: () -> Unit) {
                 if (text.contains("czyWyswietlicDostepMobilny")) {
                     val cookies = data.app.cookieJar.getForDomain("iuczniowie.progman.pl")
                     run {
-                        data.webSessionId = cookies.singleOrNull { it.name() == "ASP.NET_SessionId_iDziennik" }?.name() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION
-                        data.webAuth = cookies.singleOrNull { it.name() == ".ASPXAUTH" }?.name() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH
-                        data.apiBearer = cookies.singleOrNull { it.name() == "Bearer" }?.name() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER
+                        data.webSessionId = cookies.singleOrNull { it.name() == "ASP.NET_SessionId_iDziennik" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION
+                        data.webAuth = cookies.singleOrNull { it.name() == ".ASPXAUTH" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH
+                        data.apiBearer = cookies.singleOrNull { it.name() == "Bearer" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER
                         data.loginExpiryTime = response.getUnixDate() + 45 * 60 /* 45 min */
                         return@run null
                     }?.let { errorCode ->

@@ -4,7 +4,10 @@
 
 package pl.szczodrzynski.edziennik.api.v2.idziennik.data
 
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.idziennik.DataIdziennik
+import pl.szczodrzynski.edziennik.api.v2.idziennik.ENDPOINT_IDZIENNIK_WEB_TIMETABLE
+import pl.szczodrzynski.edziennik.api.v2.idziennik.data.web.IdziennikWebTimetable
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
@@ -35,10 +38,10 @@ class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
     private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId")
         when (endpointId) {
-            /*ENDPOINT_IDZIENNIK_WEB_SAMPLE -> {
-                data.startProgress(R.string.edziennik_progress_endpoint_student_info)
-                IdziennikWebSample(data) { onSuccess() }
-            }*/
+            ENDPOINT_IDZIENNIK_WEB_TIMETABLE -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_timetable)
+                IdziennikWebTimetable(data) { onSuccess() }
+            }
             else -> onSuccess()
         }
     }

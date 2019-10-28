@@ -145,6 +145,7 @@ const val ERROR_IDZIENNIK_WEB_MAINTENANCE                   = 432
 const val ERROR_IDZIENNIK_WEB_SERVER_ERROR                  = 433
 const val ERROR_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED        = 434
 const val ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR        = 440
+const val ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA               = 441
 
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 
