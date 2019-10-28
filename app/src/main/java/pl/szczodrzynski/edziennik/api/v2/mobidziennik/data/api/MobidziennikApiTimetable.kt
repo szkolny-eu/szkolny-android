@@ -8,7 +8,7 @@ import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.fixWhiteSpaces
+import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.singleOrNull
 
 class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
@@ -26,7 +26,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                     data.subjectList.singleOrNull { it.longName == lesson[5] }?.let {
                         lessonObject.subjectId = it.id
                     }
-                    data.teacherList.singleOrNull { it.fullNameLastFirst == (lesson[7]+" "+lesson[6]).fixWhiteSpaces() }?.let {
+                    data.teacherList.singleOrNull { it.fullNameLastFirst == (lesson[7]+" "+lesson[6]).fixName() }?.let {
                         lessonObject.teacherId = it.id
                     }
                     data.teamList.singleOrNull { it.name == lesson[8]+lesson[9] }?.let {
@@ -52,7 +52,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                     data.subjectList.singleOrNull { it.longName == lesson[5] }?.let {
                         lessonChange.subjectId = it.id
                     }
-                    data.teacherList.singleOrNull { it.fullNameLastFirst == (lesson[7]+" "+lesson[6]).fixWhiteSpaces() }?.let {
+                    data.teacherList.singleOrNull { it.fullNameLastFirst == (lesson[7]+" "+lesson[6]).fixName() }?.let {
                         lessonChange.teacherId = it.id
                     }
                     data.teamList.singleOrNull { it.name == lesson[8]+lesson[9] }?.let {
