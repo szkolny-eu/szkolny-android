@@ -5,11 +5,8 @@
 package pl.szczodrzynski.edziennik.api.v2.idziennik.data
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.idziennik.DataIdziennik
-import pl.szczodrzynski.edziennik.api.v2.idziennik.ENDPOINT_IDZIENNIK_WEB_GRADES
-import pl.szczodrzynski.edziennik.api.v2.idziennik.ENDPOINT_IDZIENNIK_WEB_TIMETABLE
-import pl.szczodrzynski.edziennik.api.v2.idziennik.data.web.IdziennikWebGrades
-import pl.szczodrzynski.edziennik.api.v2.idziennik.data.web.IdziennikWebTimetable
+import pl.szczodrzynski.edziennik.api.v2.idziennik.*
+import pl.szczodrzynski.edziennik.api.v2.idziennik.data.web.*
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
@@ -47,6 +44,26 @@ class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
             ENDPOINT_IDZIENNIK_WEB_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
                 IdziennikWebGrades(data) { onSuccess() }
+            }
+            ENDPOINT_IDZIENNIK_WEB_PROPOSED_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_proposed_grades)
+                IdziennikWebProposedGrades(data) { onSuccess() }
+            }
+            ENDPOINT_IDZIENNIK_WEB_EXAMS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_exams)
+                IdziennikWebExams(data) { onSuccess() }
+            }
+            ENDPOINT_IDZIENNIK_WEB_NOTICES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_notices)
+                IdziennikWebNotices(data) { onSuccess() }
+            }
+            ENDPOINT_IDZIENNIK_WEB_ANNOUNCEMENTS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_announcements)
+                IdziennikWebAnnouncements(data) { onSuccess() }
+            }
+            ENDPOINT_IDZIENNIK_WEB_ATTENDANCE -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_attendance)
+                IdziennikWebAttendance(data) { onSuccess() }
             }
             else -> onSuccess()
         }
