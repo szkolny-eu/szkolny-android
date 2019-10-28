@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.idziennik.data
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
@@ -83,9 +84,19 @@ open class IdziennikWeb(open val data: DataIdziennik) {
                 .userAgent(IDZIENNIK_USER_AGENT)
                 .postJson()
                 .apply {
+                    val json = JsonObject()
                     parameters.map { (name, value) ->
-                        addParameter(name, value)
+                        when (value) {
+                            is JsonObject -> json.add(name, value)
+                            is JsonArray -> json.add(name, value)
+                            is String -> json.addProperty(name, value)
+                            is Int -> json.addProperty(name, value)
+                            is Long -> json.addProperty(name, value)
+                            is Float -> json.addProperty(name, value)
+                            is Char -> json.addProperty(name, value)
+                        }
                     }
+                    setJsonBody(json)
                 }
                 .allowErrorCode(HTTP_UNAUTHORIZED)
                 .allowErrorCode(HTTP_INTERNAL_ERROR)
