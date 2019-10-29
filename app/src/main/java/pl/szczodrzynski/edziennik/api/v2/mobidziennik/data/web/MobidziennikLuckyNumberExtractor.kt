@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web
 
-import pl.szczodrzynski.edziennik.App.profileId
 import pl.szczodrzynski.edziennik.api.v2.Regexes
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
@@ -29,7 +28,7 @@ class MobidziennikLuckyNumberExtractor(val data: DataMobidziennik, text: String)
                 data.luckyNumberList.add(luckyNumberObject)
                 data.metadataList.add(
                         Metadata(
-                                profileId,
+                                data.profileId,
                                 Metadata.TYPE_LUCKY_NUMBER,
                                 luckyNumberObject.date.value.toLong(),
                                 data.profile?.empty ?: false,
