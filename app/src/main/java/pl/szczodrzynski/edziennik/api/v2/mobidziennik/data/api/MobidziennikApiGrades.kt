@@ -70,7 +70,8 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
                     weight,
                     semester,
                     teacherId,
-                    subjectId);gradeObject.type = type
+                    subjectId)
+            gradeObject.type = type
 
             data.gradeList.add(gradeObject)
             data.metadataList.add(
