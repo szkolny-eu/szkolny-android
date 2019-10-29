@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
     fun isWebLoginValid() = loginExpiryTime-30 > currentTimeUnix() && webSessionId.isNotNullNorEmpty() && webAuth.isNotNullNorEmpty()
-    fun isApiLoginValid() = loginExpiryTime-30 > currentTimeUnix() && apiBearer.isNotNullNorEmpty()
+    fun isApiLoginValid() = apiExpiryTime-30 > currentTimeUnix() && apiBearer.isNotNullNorEmpty()
 
     override fun satisfyLoginMethods() {
         loginMethods.clear()
@@ -45,6 +45,11 @@ class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(
     var loginExpiryTime: Long
         get() { mLoginExpiryTime = mLoginExpiryTime ?: loginStore.getLoginData("loginExpiryTime", 0L); return mLoginExpiryTime ?: 0L }
         set(value) { loginStore.putLoginData("loginExpiryTime", value); mLoginExpiryTime = value }
+
+    private var mApiExpiryTime: Long? = null
+    var apiExpiryTime: Long
+        get() { mApiExpiryTime = mApiExpiryTime ?: loginStore.getLoginData("apiExpiryTime", 0L); return mApiExpiryTime ?: 0L }
+        set(value) { loginStore.putLoginData("apiExpiryTime", value); mApiExpiryTime = value }
 
     /*   __          __  _
          \ \        / / | |

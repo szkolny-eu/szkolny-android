@@ -24,14 +24,15 @@ class IdziennikWebExams(override val data: DataIdziennik,
         private const val TAG = "IdziennikWebExams"
     }
 
-    init {
-        getExams()
-    }
-
     private var examsYear = Date.getToday().year
     private var examsMonth = Date.getToday().month
     private var examsMonthsChecked = 0
     private var examsNextMonthChecked = false // TO DO temporary // no more // idk
+
+    init {
+        getExams()
+    }
+
     private fun getExams() {
         val param = JsonObject()
         param.addProperty("strona", 1)

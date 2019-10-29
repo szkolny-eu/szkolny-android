@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.api.v2.idziennik.data
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.idziennik.*
+import pl.szczodrzynski.edziennik.api.v2.idziennik.data.api.IdziennikApiCurrentRegister
 import pl.szczodrzynski.edziennik.api.v2.idziennik.data.web.*
 import pl.szczodrzynski.edziennik.utils.Utils
 
@@ -64,6 +65,10 @@ class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
             ENDPOINT_IDZIENNIK_WEB_ATTENDANCE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance)
                 IdziennikWebAttendance(data) { onSuccess() }
+            }
+            ENDPOINT_IDZIENNIK_API_CURRENT_REGISTER -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
+                IdziennikApiCurrentRegister(data) { onSuccess() }
             }
             else -> onSuccess()
         }

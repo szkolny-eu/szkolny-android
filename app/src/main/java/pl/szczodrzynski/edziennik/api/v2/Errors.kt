@@ -133,7 +133,6 @@ const val ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME     = 402
 const val ERROR_LOGIN_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED  = 403
 const val ERROR_LOGIN_IDZIENNIK_WEB_MAINTENANCE             = 404
 const val ERROR_LOGIN_IDZIENNIK_WEB_SERVER_ERROR            = 405
-const val ERROR_LOGIN_IDZIENNIK_WEB_API_ERROR               = 406 /* {"Message":"There was an error processing the request.","StackTrace":"","ExceptionType":""} */
 const val ERROR_LOGIN_IDZIENNIK_WEB_OTHER                   = 410
 const val ERROR_LOGIN_IDZIENNIK_WEB_API_NO_ACCESS           = 411 /* {"d":{"__type":"mds.Web.mod_komunikator.WS_mod_wiadomosci+detailWiadomosci","Wiadomosc":{"_recordId":0,"DataNadania":null,"DataOdczytania":null,"Nadawca":null,"ListaOdbiorcow":[],"Tytul":null,"Text":null,"ListaZal":[]},"Bledy":{"__type":"mds.Module.Globalne+sBledy","CzyJestBlad":true,"ListaBledow":["Nie masz dostępu do tych zasobów!"],"ListaKodowBledow":[]},"czyJestWiecej":false}} */
 const val ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION              = 420
@@ -146,6 +145,8 @@ const val ERROR_IDZIENNIK_WEB_SERVER_ERROR                  = 433
 const val ERROR_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED        = 434
 const val ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR        = 440
 const val ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA               = 441
+const val ERROR_IDZIENNIK_API_ACCESS_DENIED                 = 450
+const val ERROR_IDZIENNIK_API_OTHER                         = 451
 
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 
@@ -160,3 +161,4 @@ const val EXCEPTION_NOTIFY_AND_SYNC                         = 910
 const val EXCEPTION_LIBRUS_MESSAGES_REQUEST                 = 911
 const val EXCEPTION_IDZIENNIK_WEB_REQUEST                   = 912
 const val EXCEPTION_IDZIENNIK_WEB_API_REQUEST               = 913
+const val EXCEPTION_IDZIENNIK_API_REQUEST                   = 914

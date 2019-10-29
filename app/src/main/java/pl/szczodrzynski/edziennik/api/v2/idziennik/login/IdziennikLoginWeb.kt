@@ -8,6 +8,8 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
+import pl.szczodrzynski.edziennik.HOUR
+import pl.szczodrzynski.edziennik.MINUTE
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
@@ -65,7 +67,8 @@ class IdziennikLoginWeb(val data: DataIdziennik, val onSuccess: () -> Unit) {
                         data.webSessionId = cookies.singleOrNull { it.name() == "ASP.NET_SessionId_iDziennik" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION
                         data.webAuth = cookies.singleOrNull { it.name() == ".ASPXAUTH" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH
                         data.apiBearer = cookies.singleOrNull { it.name() == "Bearer" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER
-                        data.loginExpiryTime = response.getUnixDate() + 45 * 60 /* 45 min */
+                        data.loginExpiryTime = response.getUnixDate() + 45 * MINUTE
+                        data.apiExpiryTime = response.getUnixDate() + 12 * HOUR /* actually it expires after 24 hours but I'm not sure when does the token refresh. */
                         return@run null
                     }?.let { errorCode ->
                         data.error(ApiError(TAG, errorCode)

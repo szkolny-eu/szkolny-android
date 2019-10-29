@@ -25,13 +25,14 @@ class IdziennikWebAttendance(override val data: DataIdziennik,
         private const val TAG = "IdziennikWebAttendance"
     }
 
+    private var attendanceYear = Date.getToday().year
+    private var attendanceMonth = Date.getToday().month
+    private var attendancePrevMonthChecked = false
+
     init {
         getAttendance()
     }
 
-    private var attendanceYear: Int = Date.getToday().year
-    private var attendanceMonth: Int = Date.getToday().month
-    private var attendancePrevMonthChecked = false
     private fun getAttendance() {
         webApiGet(TAG, IDZIENNIK_WEB_ATTENDANCE, mapOf(
                 "idPozDziennika" to data.registerId,

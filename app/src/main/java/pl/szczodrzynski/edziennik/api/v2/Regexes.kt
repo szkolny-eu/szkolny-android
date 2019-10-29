@@ -40,24 +40,24 @@ object Regexes {
 
 
     val IDZIENNIK_LOGIN_HIDDEN_FIELDS by lazy {
-        "<input type=\"hidden\".+?name=\"([A-z0-9_]+)?\".+?value=\"([A-z0-9_+-/=]+)?\".+?>".toRegex(RegexOption.DOT_MATCHES_ALL)
+        """<input type="hidden".+?name="([A-z0-9_]+)?".+?value="([A-z0-9_+-/=]+)?".+?>""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
     val IDZIENNIK_LOGIN_ERROR by lazy {
-        "id=\"spanErrorMessage\">(.*?)</".toRegex(RegexOption.DOT_MATCHES_ALL)
+        """id="spanErrorMessage">(.*?)</""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
     val IDZIENNIK_LOGIN_FIRST_ACCOUNT_NAME by lazy {
-        "Imię i nazwisko:.+?\">(.+?)</div>".toRegex(RegexOption.DOT_MATCHES_ALL)
+        """Imię i nazwisko:.+?">(.+?)</div>""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
     val IDZIENNIK_LOGIN_FIRST_IS_PARENT by lazy {
-        "id=\"ctl00_CzyRodzic\" value=\"([01])\" />".toRegex()
+        """id="ctl00_CzyRodzic" value="([01])" />""".toRegex()
     }
     val IDZIENNIK_LOGIN_FIRST_SCHOOL_YEAR by lazy {
-        "name=\"ctl00\\\$dxComboRokSzkolny\".+?selected=\"selected\".*?value=\"([0-9]+)\">([0-9/]+)<".toRegex(RegexOption.DOT_MATCHES_ALL)
+        """name="ctl00\${"$"}dxComboRokSzkolny".+?selected="selected".*?value="([0-9]+)">([0-9/]+)<""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
     val IDZIENNIK_LOGIN_FIRST_STUDENT_SELECT by lazy {
-        "<select.*?name=\"ctl00\\\$dxComboUczniowie\".*?</select>".toRegex(RegexOption.DOT_MATCHES_ALL)
+        """<select.*?name="ctl00\${"$"}dxComboUczniowie".*?</select>""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
     val IDZIENNIK_LOGIN_FIRST_STUDENT by lazy {
-        "<option.*?value=\"([0-9]+)\"\\sdata-id-ucznia=\"([A-z0-9]+?)\".*?>(.+?)\\s(.+?)\\s*\\((.+?),\\s*(.+?)\\)</option>".toRegex(RegexOption.DOT_MATCHES_ALL)
+        """<option.*?value="([0-9]+)"\sdata-id-ucznia="([A-z0-9]+?)".*?>(.+?)\s(.+?)\s*\((.+?),\s*(.+?)\)</option>""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
 }

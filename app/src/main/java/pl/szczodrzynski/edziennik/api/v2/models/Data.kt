@@ -324,7 +324,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         }
     }
 
-    fun setSyncNext(endpointId: Int, syncIn: Long? = null, viewId: Int? = null) {
+    fun setSyncNext(endpointId: Int, syncIn: Long? = null, viewId: Int? = null, syncAt: Long? = null) {
         EndpointTimer(profile?.id ?: -1, endpointId).apply {
             syncedNow()
 
@@ -333,6 +333,9 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
                     nextSync = syncIn
                 else
                     syncIn(syncIn)
+            }
+            if (syncAt != null) {
+                nextSync = syncAt
             }
             if (viewId != null)
                 syncWhenView(viewId)
