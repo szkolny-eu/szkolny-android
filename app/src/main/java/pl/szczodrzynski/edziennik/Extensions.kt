@@ -21,6 +21,7 @@ import pl.szczodrzynski.navlib.R
 import pl.szczodrzynski.navlib.getColorFromRes
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.zip.CRC32
 
 
 fun List<Teacher>.byId(id: Long) = firstOrNull { it.id == id }
@@ -317,4 +318,10 @@ fun String.crc16(): Int {
     }
     crc = crc and 0xffff
     return crc + 32768
+}
+
+fun String.crc32(): Long {
+    val crc = CRC32()
+    crc.update(toByteArray())
+    return crc.value
 }

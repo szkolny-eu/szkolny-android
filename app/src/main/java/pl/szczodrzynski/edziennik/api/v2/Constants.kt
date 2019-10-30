@@ -5,11 +5,14 @@
 package pl.szczodrzynski.edziennik.api.v2
 
 import android.os.Build
+import pl.szczodrzynski.edziennik.BuildConfig
 
 const val GET = 0
 const val POST = 1
 
 val SYSTEM_USER_AGENT = System.getProperty("http.agent") ?: "Dalvik/2.1.0 Android"
+
+val SERVER_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME} $SYSTEM_USER_AGENT"
 
 val LIBRUS_USER_AGENT = "$SYSTEM_USER_AGENT LibrusMobileApp"
 const val SYNERGIA_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0"
@@ -61,6 +64,10 @@ const val IDZIENNIK_WEB_MESSAGES_LIST = "mod_komunikator/WS_wiadomosci.asmx/Pobi
 val IDZIENNIK_API_USER_AGENT = SYSTEM_USER_AGENT
 const val IDZIENNIK_API_URL = "https://iuczniowie.progman.pl/idziennik/api"
 const val IDZIENNIK_API_CURRENT_REGISTER = "Uczniowie/\$STUDENT_ID/AktualnyDziennik"
+const val IDZIENNIK_API_GRADES = "Uczniowie/\$STUDENT_ID/Oceny/" /* + semester */
+const val IDZIENNIK_API_MESSAGES_INBOX = "Wiadomosci/Odebrane"
+const val IDZIENNIK_API_MESSAGES_SENT = "Wiadomosci/Wyslane"
+
 
 val MOBIDZIENNIK_USER_AGENT = SYSTEM_USER_AGENT
 
