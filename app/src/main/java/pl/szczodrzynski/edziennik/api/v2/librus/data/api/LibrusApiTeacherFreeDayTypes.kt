@@ -33,7 +33,7 @@ class LibrusApiTeacherFreeDayTypes(override val data: DataLibrus,
                 data.teacherAbsenceTypes.put(id, teacherAbsenceTypeObject)
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAY_TYPES, 4 * DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAY_TYPES, 7 * DAY)
             onSuccess()
         }
     }
