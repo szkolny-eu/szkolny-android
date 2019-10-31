@@ -255,7 +255,15 @@ public class HomeFragment extends Fragment {
                             activity.getBottomSheet().close();
                             setNumberDialog();
                         }),
-                new BottomSheetSeparatorItem(true)
+                new BottomSheetSeparatorItem(true),
+                new BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_mark_everything_as_read)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withOnClickListener(v3 -> {
+                            activity.getBottomSheet().close();
+                            AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, true));
+                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
+                        })
         );
         activity.gainAttention();
     }

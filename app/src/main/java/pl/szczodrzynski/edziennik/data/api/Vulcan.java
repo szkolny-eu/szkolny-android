@@ -858,6 +858,12 @@ public class Vulcan implements EdziennikInterface {
             case "KA2":
                 apiUrl = "https://uonetplus-komunikacja-test.mcuw.katowice.eu/"+symbol+"/";
                 break;
+            case "LU1":
+                apiUrl = "https://uonetplus-komunikacja.edu.lublin.eu/"+symbol+"/";
+                break;
+            case "LU2":
+                apiUrl = "https://test-uonetplus-komunikacja.edu.lublin.eu/"+symbol+"/";
+                break;
             case "P03":
                 apiUrl = "https://efeb-komunikacja-pro-efebmobile.pro.vulcan.pl/"+symbol+"/";
                 break;

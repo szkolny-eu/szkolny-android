@@ -2,6 +2,8 @@ package pl.szczodrzynski.edziennik.utils.models;
 
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -110,4 +112,7 @@ public class AppConfig {
     public long appRateSnackbarTime = 0;
 
     public int mobidziennikOldMessages = -1;
+
+    @Nullable
+    public String language = null;
 }

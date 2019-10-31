@@ -435,6 +435,7 @@
     <string name="menu_homework">Zadania domowe</string>
     <string name="menu_manage_profiles">Zarządzaj profilami</string>
     <string name="menu_mark_as_read">Oznacz jako przeczytane</string>
+    <string name="menu_mark_everything_as_read">Oznacz wszystko jako przeczytane</string>
     <string name="menu_messages">Wiadomości</string>
     <string name="menu_messages_inbox">Odebrane</string>
     <string name="menu_messages_sent">Wysłane</string>
@@ -911,4 +912,11 @@
     <string name="agenda_teacher_absence">Nieobecni nauczyciele</string>
     <string name="sync_action_syncing_grade_comments">Pobieranie komentarzy ocen</string>
     <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
+    <string name="settings_about_language_text">Język aplikacji</string>
+    <string name="settings_about_language_subtext">Polski</string>
+    <string name="settings_about_language_dialog_title">Zmień język aplikacji</string>
+    <string name="settings_about_language_dialog_text">Uwaga. Ta opcja może nie działać na niektórych urządzeniach oraz w niektórych fragmentach aplikacji.</string>
+    <string name="language_system">Według systemu</string>
+    <string name="language_polish" translatable="false">Polski</string>
+    <string name="language_english" translatable="false">English</string>
 </resources>
