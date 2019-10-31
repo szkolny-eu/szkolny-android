@@ -14,66 +14,65 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
-import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
-import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
-import pl.szczodrzynski.navlib.drawer.NavDrawer
-import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
-import pl.szczodrzynski.navlib.drawer.items.withAppTitle
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.graphics.ColorUtils
+import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
 import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.IconicsSize
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
-import me.zhanghai.android.materialprogressbar.internal.ThemeUtils
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.data.api.AppError
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.*
 import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback
-import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
-import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
-import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
-import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesDetailsFragment
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
-import pl.szczodrzynski.edziennik.utils.models.NavTarget
+import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.sync.SyncJob
+import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
 import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment
+import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
 import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
-import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesFragment
+import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
-import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
+import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
+import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesDetailsFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
+import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
+import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.navlib.*
+import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
+import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
+import pl.szczodrzynski.navlib.drawer.NavDrawer
+import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
+import pl.szczodrzynski.navlib.drawer.items.withAppTitle
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -874,9 +873,9 @@ class MainActivity : AppCompatActivity() {
      * that something has changed in the bottom sheet.
      */
     fun gainAttention() {
-        b.navView.postDelayed({
+        /*b.navView.postDelayed({
             navView.gainAttentionOnBottomBar()
-        }, 2000)
+        }, 2000)*/
     }
 
     fun gainAttentionFAB() {
