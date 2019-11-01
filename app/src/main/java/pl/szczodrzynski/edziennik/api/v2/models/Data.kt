@@ -60,6 +60,16 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val profileId
         get() = profile?.id ?: -1
 
+    val syncStartDate: Date
+        get() = when (profile?.empty) {
+            true -> profile.getSemesterStart(profile.currentSemester)
+            else -> Date.getToday().stepForward(0, -1, 0)
+        }
+
+    val syncEndDate: Date
+        get() = profile?.getSemesterEnd(profile.currentSemester)
+                ?: Date.getToday().stepForward(0, 1, 0)
+
     /**
      * A callback passed to all [Feature]s and [LoginMethod]s
      */
@@ -316,8 +326,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
                 db.notificationDao().addAll(notifications)
                 onSuccess()
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             error(ApiError(TAG, EXCEPTION_NOTIFY_AND_SYNC)
                     .withThrowable(e))
         }

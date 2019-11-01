@@ -26,19 +26,13 @@ class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boo
 
     init { data.profile?.also { profile ->
 
-        val startDate: String = when (profile.empty) {
-            true -> profile.getSemesterStart(profile.currentSemester).stringY_m_d
-            else -> Date.getToday().stepForward(0, -1, 0).stringY_m_d
-        }
-        val endDate: String = profile.getSemesterEnd(profile.currentSemester).stringY_m_d
-
         val endpoint = when (isHomework) {
             true -> VULCAN_API_ENDPOINT_HOMEWORK
             else -> VULCAN_API_ENDPOINT_EVENTS
         }
         apiGet(TAG, endpoint, parameters = mapOf(
-                "DataPoczatkowa" to startDate,
-                "DataKoncowa" to endDate,
+                "DataPoczatkowa" to data.syncStartDate.stringY_m_d,
+                "DataKoncowa" to data.syncEndDate.stringY_m_d,
                 "IdOddzial" to data.studentClassId,
                 "IdUczen" to data.studentId,
                 "IdOkresKlasyfikacyjny" to data.studentSemesterId
