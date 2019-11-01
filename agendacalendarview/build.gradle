@@ -49,6 +49,6 @@ dependencies {
 
     // other libraries
     //implementation 'se.emilsjolander:stickylistheaders:2.7.0'
-    implementation 'com.github.edisonw:StickyListHeaders:master-SNAPSHOT'
+    implementation 'com.github.edisonw:StickyListHeaders:master-SNAPSHOT@aar'
     implementation 'io.reactivex:rxjava:1.1.1'
 }
