@@ -4,17 +4,18 @@
 
 package pl.szczodrzynski.edziennik.api.v2.vulcan.data
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
+import io.github.wulkanowy.signer.android.signContent
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.models.Date
 import java.net.HttpURLConnection
 import java.util.*
 
@@ -26,17 +27,20 @@ open class VulcanApi(open val data: DataVulcan) {
     val profileId
         get() = data.profile?.id ?: -1
 
-    val profile
-        get() = data.profile
-
-    fun apiGet(tag: String, endpoint: String, method: Int = POST, payload: JsonObject? = null,
-               baseUrl: Boolean = false, onSuccess: (json: JsonObject, response: Response?) -> Unit) {
-        val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
+    fun apiGet(
+            tag: String,
+            endpoint: String,
+            method: Int = POST,
+            parameters: Map<String, Any> = emptyMap(),
+            baseUrl: Boolean = false,
+            onSuccess: (json: JsonObject, response: Response?) -> Unit
+    ) {
+        val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}/$endpoint"
 
         d(tag, "Request: Vulcan/Api - $url")
 
         if (data.teamList.size() == 0) {
-            profile?.getStudentData("studentClassName", null)?.also { name ->
+            data.profile?.getStudentData("studentClassName", null)?.also { name ->
                 val id = Utils.crc16(name.toByteArray()).toLong()
 
                 val teamObject = Team(
@@ -51,27 +55,23 @@ open class VulcanApi(open val data: DataVulcan) {
             }
         }
 
-        val startDate = when (profile?.empty) {
-            true -> profile?.getSemesterStart(profile?.currentSemester ?: 1)?.stringY_m_d
-            else -> Date.getToday().stepForward(0, -1, 0).stringY_m_d
-        }
-        val endDate = profile?.getSemesterEnd(profile?.currentSemester ?: 1)?.stringY_m_d
-
         val finalPayload = JsonObject()
-        finalPayload.addProperty("IdUczen", data.studentId)
-        finalPayload.addProperty("IdOkresKlasyfikacyjny", data.studentSemesterId)
-        finalPayload.addProperty("IdOddzial", data.studentClassId)
-        finalPayload.addProperty("DataPoczatkowa", startDate)
-        finalPayload.addProperty("DataKoncowa", endDate)
+        parameters.map { (name, value) ->
+            when (value) {
+                is JsonObject -> finalPayload.add(name, value)
+                is JsonArray -> finalPayload.add(name, value)
+                is String -> finalPayload.addProperty(name, value)
+                is Int -> finalPayload.addProperty(name, value)
+                is Long -> finalPayload.addProperty(name, value)
+                is Float -> finalPayload.addProperty(name, value)
+                is Char -> finalPayload.addProperty(name, value)
+            }
+        }
         finalPayload.addProperty("RemoteMobileTimeKey", System.currentTimeMillis() / 1000)
         finalPayload.addProperty("TimeKey", System.currentTimeMillis() / 1000 - 1)
         finalPayload.addProperty("RequestId", UUID.randomUUID().toString())
         finalPayload.addProperty("RemoteMobileAppVersion", VULCAN_API_APP_VERSION)
         finalPayload.addProperty("RemoteMobileAppName", VULCAN_API_APP_NAME)
-
-        payload?.keySet()?.forEach {
-            finalPayload.add(it, payload.get(it))
-        }
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
@@ -86,10 +86,11 @@ open class VulcanApi(open val data: DataVulcan) {
                         503 -> ERROR_VULCAN_API_MAINTENANCE
                         400 -> ERROR_VULCAN_API_BAD_REQUEST
                         else -> ERROR_VULCAN_API_OTHER
-                    }.let {
-                        data.error(ApiError(tag, EXCEPTION_VULCAN_API_REQUEST)
+                    }.let { errorCode ->
+                        data.error(ApiError(tag, errorCode)
                                 .withResponse(response)
                                 .withApiResponse(json?.toString() ?: response?.parserErrorBody))
+                        return
                     }
                 }
 

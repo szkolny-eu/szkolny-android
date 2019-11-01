@@ -9,10 +9,10 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
+import io.github.wulkanowy.signer.android.getPrivateKeyFromCert
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
-import pl.szczodrzynski.edziennik.api.v2.vulcan.data.getPrivateKeyFromCert
 import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.getString

@@ -160,6 +160,8 @@ dependencies {
     //implementation 'com.github.kuba2k2.uonet-request-signer:android:master-63f094b14a-1'
 
     implementation "org.redundent:kotlin-xml-builder:1.5.3"
+
+    implementation "io.github.wulkanowy:signer-android:0.1.0"
 }
 repositories {
     mavenCentral()
