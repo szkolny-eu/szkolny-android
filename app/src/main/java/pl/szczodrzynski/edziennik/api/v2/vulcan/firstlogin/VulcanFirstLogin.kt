@@ -44,7 +44,7 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                     val studentId = student.getInt("Id") ?: return@forEach
                     val studentLoginId = student.getInt("UzytkownikLoginId") ?: return@forEach
                     val studentClassId = student.getInt("IdOddzial") ?: return@forEach
-                    val studentClassName = student.getString("OkresPoziom").toString() + student.getString("OddzialSymbol")
+                    val studentClassName = student.getString("OkresPoziom").toString() + (student.getString("OddzialSymbol") ?: return@forEach)
                     val studentSemesterId = student.getInt("IdOkresKlasyfikacyjny") ?: return@forEach
                     val studentFirstName = student.getString("Imie") ?: ""
                     val studentLastName = student.getString("Nazwisko") ?: ""

@@ -1161,6 +1161,13 @@ public class Edziennik {
         app.db.teamDao().clear(profileId);
         app.db.messageRecipientDao().clear(profileId);
         app.db.messageDao().clear(profileId);
+        app.db.endpointTimerDao().clear(profileId);
+        app.db.attendanceTypeDao().clear(profileId);
+        app.db.classroomDao().clear(profileId);
+        app.db.lessonRangeDao().clear(profileId);
+        app.db.noticeTypeDao().clear(profileId);
+        app.db.teacherAbsenceDao().clear(profileId);
+        app.db.teacherAbsenceTypeDao().clear(profileId);
 
         int loginStoreId = profileObject.getLoginStoreId();
         List<Integer> profilesUsingLoginStore = app.db.profileDao().getIdsByLoginStoreIdNow(loginStoreId);

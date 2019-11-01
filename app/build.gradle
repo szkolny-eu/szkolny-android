@@ -161,7 +161,7 @@ dependencies {
 
     implementation "org.redundent:kotlin-xml-builder:1.5.3"
 
-    implementation "io.github.wulkanowy:signer-android:0.1.0"
+    implementation "io.github.wulkanowy:signer-android:0.1.1"
 }
 repositories {
     mavenCentral()

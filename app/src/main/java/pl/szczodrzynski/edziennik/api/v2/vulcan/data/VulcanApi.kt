@@ -40,7 +40,7 @@ open class VulcanApi(open val data: DataVulcan) {
         d(tag, "Request: Vulcan/Api - $url")
 
         if (data.teamList.size() == 0) {
-            data.profile?.getStudentData("studentClassName", null)?.also { name ->
+            data.profile?.studentClassName?.also { name ->
                 val id = Utils.crc16(name.toByteArray()).toLong()
 
                 val teamObject = Team(

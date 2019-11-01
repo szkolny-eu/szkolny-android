@@ -63,7 +63,7 @@ class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boo
                         else -> Event.TYPE_EXAM
                     }
                 }
-                val teamId = event.getLong("IdOddzial") ?: data.teamClass?.id ?: return@forEach
+                val teamId = event.getLong("IdOddzial") ?: data.teamClass?.id ?: -1
 
                 val eventObject = Event(
                         profileId,
