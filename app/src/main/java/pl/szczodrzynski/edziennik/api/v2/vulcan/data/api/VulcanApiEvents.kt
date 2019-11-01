@@ -24,12 +24,25 @@ class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boo
         const val TAG = "VulcanApiEvents"
     }
 
-    init {
+    init { data.profile?.also { profile ->
+
+        val startDate: String = when (profile.empty) {
+            true -> profile.getSemesterStart(profile.currentSemester).stringY_m_d
+            else -> Date.getToday().stepForward(0, -1, 0).stringY_m_d
+        }
+        val endDate: String = profile.getSemesterEnd(profile.currentSemester).stringY_m_d
+
         val endpoint = when (isHomework) {
             true -> VULCAN_API_ENDPOINT_HOMEWORK
             else -> VULCAN_API_ENDPOINT_EVENTS
         }
-        apiGet(TAG, endpoint) { json, _ ->
+        apiGet(TAG, endpoint, parameters = mapOf(
+                "DataPoczatkowa" to startDate,
+                "DataKoncowa" to endDate,
+                "IdOddzial" to data.studentClassId,
+                "IdUczen" to data.studentId,
+                "IdOkresKlasyfikacyjny" to data.studentSemesterId
+        )) { json, _ ->
             val events = json.getJsonArray("Data")
 
             events?.forEach { eventEl ->
@@ -71,8 +84,8 @@ class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boo
                         profileId,
                         if (isHomework) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT,
                         id,
-                        profile?.empty ?: false,
-                        profile?.empty ?: false,
+                        profile.empty,
+                        profile.empty,
                         System.currentTimeMillis()
                 ))
             }
@@ -83,5 +96,5 @@ class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boo
             }
             onSuccess()
         }
-    }
+    } ?: onSuccess()}
 }

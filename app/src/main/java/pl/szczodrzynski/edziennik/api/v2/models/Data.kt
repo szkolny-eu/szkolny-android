@@ -186,7 +186,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
         lessonList.clear()
         lessonChangeList.clear()
-        gradeCategories.clear()
         gradeList.clear()
         noticeList.clear()
         attendanceList.clear()

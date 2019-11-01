@@ -178,6 +178,6 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
 
     val fullApiUrl: String?
         get() {
-            return "$apiUrl/$schoolSymbol/"
+            return "$apiUrl/$schoolSymbol"
         }
 }

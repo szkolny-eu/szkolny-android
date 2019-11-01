@@ -20,8 +20,12 @@ class VulcanApiGrades(override val data: DataVulcan, val onSuccess: () -> Unit) 
         const val TAG = "VulcanApiGrades"
     }
 
-    init {
-        apiGet(TAG, VULCAN_API_ENDPOINT_GRADES) { json, _ ->
+    init { data.profile?.also { profile ->
+
+        apiGet(TAG, VULCAN_API_ENDPOINT_GRADES, parameters = mapOf(
+                "IdUczen" to data.studentId,
+                "IdOkresKlasyfikacyjny" to data.studentSemesterId
+        )) { json, _ ->
             val grades = json.getJsonArray("Data")
 
             grades?.forEach { gradeEl ->
@@ -108,5 +112,5 @@ class VulcanApiGrades(override val data: DataVulcan, val onSuccess: () -> Unit) 
             data.setSyncNext(ENDPOINT_VULCAN_API_GRADES, SYNC_ALWAYS)
             onSuccess()
         }
-    }
+    } ?: onSuccess()}
 }

@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.vulcan.data.api
 
+import androidx.core.util.isEmpty
 import pl.szczodrzynski.edziennik.api.v2.VULCAN_API_ENDPOINT_NOTICES
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_NOTICES
@@ -14,15 +15,23 @@ import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice
 import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getLong
 import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanApiNotices(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
     companion object {
-        const val TAG = "VulcanApi"
+        const val TAG = "VulcanApiNotices"
     }
 
-    init {
-        apiGet(TAG, VULCAN_API_ENDPOINT_NOTICES) { json, _ ->
+    init { data.profile?.also { profile ->
+        if (data.noticeTypes.isEmpty()) {
+            data.db.noticeTypeDao().getAllNow(profileId).toSparseArray(data.noticeTypes) { it.id }
+        }
+
+        apiGet(TAG, VULCAN_API_ENDPOINT_NOTICES, parameters = mapOf(
+                "IdUczen" to data.studentId,
+                "IdOkresKlasyfikacyjny" to data.studentSemesterId
+        )) { json, _ ->
             json.getJsonArray("Data")?.forEach { noticeEl ->
                 val notice = noticeEl.asJsonObject
 
@@ -35,7 +44,7 @@ class VulcanApiNotices(override val data: DataVulcan, val onSuccess: () -> Unit)
                         profileId,
                         id,
                         text,
-                        profile!!.currentSemester,
+                        profile.currentSemester,
                         Notice.TYPE_NEUTRAL,
                         teacherId
                 )
@@ -45,8 +54,8 @@ class VulcanApiNotices(override val data: DataVulcan, val onSuccess: () -> Unit)
                         profileId,
                         Metadata.TYPE_NOTICE,
                         id,
-                        profile?.empty ?: false,
-                        profile?.empty ?: false,
+                        profile.empty,
+                        profile.empty,
                         addedDate
                 ))
             }
@@ -54,5 +63,5 @@ class VulcanApiNotices(override val data: DataVulcan, val onSuccess: () -> Unit)
             data.setSyncNext(ENDPOINT_VULCAN_API_NOTICES, SYNC_ALWAYS)
             onSuccess()
         }
-    }
+    } ?: onSuccess()}
 }

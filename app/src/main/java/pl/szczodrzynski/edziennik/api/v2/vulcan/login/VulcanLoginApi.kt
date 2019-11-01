@@ -108,6 +108,11 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                 data.apiCertificatePfx = cert.getString("CertyfikatPfx")
                 data.apiCertificateExpiryTime = 1598832000
                 data.apiToken = data.apiToken?.substring(0, 3)
+                data.apiCertificatePrivate = getPrivateKeyFromCert(
+                        if (data.apiToken?.get(0) == 'F') VULCAN_API_PASSWORD_FAKELOG else VULCAN_API_PASSWORD,
+                        data.apiCertificatePfx ?: ""
+                )
+                data.loginStore.removeLoginData("certificatePfx")
                 data.loginStore.removeLoginData("devicePin")
                 onSuccess()
             }

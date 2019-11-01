@@ -5,17 +5,19 @@
 package pl.szczodrzynski.edziennik.api.v2.vulcan.data.api
 
 import com.google.gson.JsonObject
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.VULCAN_API_ENDPOINT_DICTIONARIES
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_DICTIONARIES
 import pl.szczodrzynski.edziennik.api.v2.vulcan.data.VulcanApi
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance
+import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceType
+import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
+import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeType
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
-import pl.szczodrzynski.edziennik.getJsonArray
-import pl.szczodrzynski.edziennik.getJsonObject
-import pl.szczodrzynski.edziennik.getLong
-import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.utils.models.Time
 
 class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
     companion object {
@@ -28,8 +30,12 @@ class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> 
 
             elements?.getJsonArray("Pracownicy")?.forEach { saveTeacher(it.asJsonObject) }
             elements?.getJsonArray("Przedmioty")?.forEach { saveSubject(it.asJsonObject) }
+            elements?.getJsonArray("PoryLekcji")?.forEach { saveLessonRange(it.asJsonObject) }
+            elements?.getJsonArray("KategorieOcen")?.forEach { saveGradeCategory(it.asJsonObject) }
+            elements?.getJsonArray("KategorieUwag")?.forEach { saveNoticeType(it.asJsonObject) }
+            elements?.getJsonArray("KategorieFrekwencji")?.forEach { saveAttendanceType(it.asJsonObject) }
 
-            data.setSyncNext(ENDPOINT_VULCAN_API_DICTIONARIES, SYNC_ALWAYS)
+            data.setSyncNext(ENDPOINT_VULCAN_API_DICTIONARIES, 4*DAY)
             onSuccess()
         }
     }
@@ -64,5 +70,88 @@ class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> 
         )
 
         data.subjectList.put(id, subjectObject)
+    }
+
+    private fun saveLessonRange(lessonRange: JsonObject) {
+        val lessonNumber = lessonRange.getInt("Id") ?: return
+        val startTime = lessonRange.getString("PoczatekTekst")?.let { Time.fromH_m(it) } ?: return
+        val endTime = lessonRange.getString("KoniecTekst")?.let { Time.fromH_m(it) } ?: return
+
+        val lessonRangeObject = LessonRange(
+                profileId,
+                lessonNumber,
+                startTime,
+                endTime
+        )
+
+        data.lessonRanges.put(lessonNumber, lessonRangeObject)
+    }
+
+    private fun saveGradeCategory(gradeCategory: JsonObject) {
+        val id = gradeCategory.getLong("Id") ?: return
+        val name = gradeCategory.getString("Nazwa") ?: ""
+
+        val gradeCategoryObject = GradeCategory(
+                profileId,
+                id,
+                0.0f,
+                -1,
+                name
+        )
+
+        data.gradeCategories.put(id, gradeCategoryObject)
+    }
+
+    private fun saveNoticeType(noticeType: JsonObject) {
+        val id = noticeType.getLong("Id") ?: return
+        val name = noticeType.getString("Nazwa") ?: ""
+
+        val noticeTypeObject = NoticeType(
+                profileId,
+                id,
+                name
+        )
+
+        data.noticeTypes.put(id, noticeTypeObject)
+    }
+
+    private fun saveAttendanceType(attendanceType: JsonObject) {
+        val id = attendanceType.getLong("Id") ?: return
+        val name = attendanceType.getString("Nazwa") ?: ""
+
+        val absent = attendanceType.getBoolean("Nieobecnosc") ?: false
+        val excused = attendanceType.getBoolean("Usprawiedliwione") ?: false
+        val type = if (absent) {
+            if (excused)
+                Attendance.TYPE_ABSENT_EXCUSED
+            else
+                Attendance.TYPE_ABSENT
+        }
+        else {
+            val belated = attendanceType.getBoolean("Spoznienie") ?: false
+            val released = attendanceType.getBoolean("Zwolnienie") ?: false
+            val present = attendanceType.getBoolean("Obecnosc") ?: true
+            if (belated)
+                if (excused)
+                    Attendance.TYPE_ABSENT_EXCUSED
+                else
+                    Attendance.TYPE_ABSENT
+            else if (released)
+                Attendance.TYPE_RELEASED
+            else if (present)
+                Attendance.TYPE_PRESENT
+            else
+                Attendance.TYPE_CUSTOM
+        }
+
+        val attendanceTypeObject = AttendanceType(
+                profileId,
+                id,
+                name,
+                type,
+                -1
+        )
+
+        data.attendanceTypes.put(id, attendanceTypeObject)
     }
 }
