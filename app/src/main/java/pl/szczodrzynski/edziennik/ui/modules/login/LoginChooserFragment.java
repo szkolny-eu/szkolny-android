@@ -12,10 +12,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginChooserBinding;
+import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity;
 
 import static android.app.Activity.RESULT_CANCELED;
 
@@ -56,9 +57,6 @@ public class LoginChooserFragment extends Fragment {
             // we are navigated here from LoginSummary
             b.cancelButton.setVisibility(View.VISIBLE);
             b.cancelButton.setOnClickListener((v -> nav.navigateUp()));
-        }
-        else if (app.appConfig.lastAppVersion < 1991) {
-            nav.navigate(R.id.loginMigrationFragment, null, LoginActivity.navOptions);
         }
         else if (app.appConfig.loginFinished) {
             // we are navigated here from AppDrawer

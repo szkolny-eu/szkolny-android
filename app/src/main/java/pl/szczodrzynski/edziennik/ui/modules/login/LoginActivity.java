@@ -1,17 +1,18 @@
 package pl.szczodrzynski.edziennik.ui.modules.login;
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavDestination;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.navigation.NavDestination;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.api.AppError;
@@ -34,12 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         NavDestination destination = Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination();
-        if (destination != null && destination.getId() == R.id.loginMigrationFragment) {
-            return;
-        }
-        if (destination != null && destination.getId() == R.id.loginMigrationSyncFragment) {
-            return;
-        }
         if (destination != null && destination.getId() == R.id.loginSyncErrorFragment) {
             return;
         }
