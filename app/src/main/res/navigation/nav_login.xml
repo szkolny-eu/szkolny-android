@@ -21,9 +21,6 @@
         <action
             android:id="@+id/action_loginTypeFragment_to_loginIuczniowieFragment"
             app:destination="@id/loginIuczniowieFragment" />
-        <action
-            android:id="@+id/action_loginTypeFragment_to_loginMigrationFragment"
-            app:destination="@id/loginMigrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginMobidziennikFragment"
@@ -131,20 +128,6 @@
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginFinishFragment"
         android:label="fragment_login_finish"
         tools:layout="@layout/fragment_login_finish" />
-    <fragment
-        android:id="@+id/loginMigrationFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginMigrationFragment"
-        android:label="fragment_login_migration"
-        tools:layout="@layout/fragment_login_migration" >
-        <action
-            android:id="@+id/action_loginMigrationFragment_to_loginMigrationSyncFragment"
-            app:destination="@id/loginMigrationSyncFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginMigrationSyncFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginMigrationSyncFragment"
-        android:label="fragment_login_migration_sync"
-        tools:layout="@layout/fragment_login_migration_sync" />
     <fragment
         android:id="@+id/loginSyncErrorFragment"
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginSyncErrorFragment"
