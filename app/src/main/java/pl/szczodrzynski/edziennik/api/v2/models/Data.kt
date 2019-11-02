@@ -60,16 +60,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val profileId
         get() = profile?.id ?: -1
 
-    val syncStartDate: Date
-        get() = when (profile?.empty) {
-            true -> profile.getSemesterStart(profile.currentSemester)
-            else -> Date.getToday().stepForward(0, -1, 0)
-        }
-
-    val syncEndDate: Date
-        get() = profile?.getSemesterEnd(profile.currentSemester)
-                ?: Date.getToday().stepForward(0, 1, 0)
-
     /**
      * A callback passed to all [Feature]s and [LoginMethod]s
      */

@@ -22,9 +22,12 @@ class VulcanApiAttendance(override val data: DataVulcan, val onSuccess: () -> Un
             data.db.attendanceTypeDao().getAllNow(profileId).toSparseArray(data.attendanceTypes) { it.id }
         }
 
+        val startDate: String = profile.getSemesterStart(profile.currentSemester).stringY_m_d
+        val endDate: String = profile.getSemesterEnd(profile.currentSemester).stringY_m_d
+
         apiGet(TAG, VULCAN_API_ENDPOINT_ATTENDANCE, parameters = mapOf(
-                "DataPoczatkowa" to data.syncStartDate.stringY_m_d,
-                "DataKoncowa" to data.syncEndDate.stringY_m_d,
+                "DataPoczatkowa" to startDate,
+                "DataKoncowa" to endDate,
                 "IdOddzial" to data.studentClassId,
                 "IdUczen" to data.studentId,
                 "IdOkresKlasyfikacyjny" to data.studentSemesterId

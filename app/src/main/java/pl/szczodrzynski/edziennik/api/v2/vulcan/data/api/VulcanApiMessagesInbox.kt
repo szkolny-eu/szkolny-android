@@ -13,16 +13,24 @@ import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
     companion object {
         const val TAG = "VulcanApiMessagesInbox"
     }
 
-    init {
+    init { data.profile?.also { profile ->
+
+        val startDate: String = when (profile.empty) {
+            true -> profile.getSemesterStart(profile.currentSemester).stringY_m_d
+            else -> Date.getToday().stepForward(0, -1, 0).stringY_m_d
+        }
+        val endDate: String = profile.getSemesterEnd(profile.currentSemester).stringY_m_d
+
         apiGet(TAG, VULCAN_API_ENDPOINT_MESSAGES_RECEIVED, parameters = mapOf(
-                "DataPoczatkowa" to data.syncStartDate.inUnix,
-                "DataKoncowa" to data.syncEndDate.inUnix,
+                "DataPoczatkowa" to startDate,
+                "DataKoncowa" to endDate,
                 "LoginId" to data.studentLoginId,
                 "IdUczen" to data.studentId
         )) { json, _ ->
@@ -71,5 +79,5 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
             data.setSyncNext(ENDPOINT_VULCAN_API_MESSAGES_INBOX, SYNC_ALWAYS)
             onSuccess()
         }
-    }
+    } ?: onSuccess()}
 }
