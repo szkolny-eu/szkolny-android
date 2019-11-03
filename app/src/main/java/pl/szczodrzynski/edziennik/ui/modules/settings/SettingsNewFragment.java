@@ -48,7 +48,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
-import pl.szczodrzynski.edziennik.sync.SyncJob;
+import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushConfigActivity;
@@ -511,6 +511,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         .setOnChangeAction((isChecked, tag) -> {
             app.appConfig.registerSyncOnlyWifi = isChecked;
             app.saveConfig("registerSyncOnlyWifi");
+            SyncWorker.Companion.rescheduleNext(app);
             return true;
         });
     }
@@ -532,6 +533,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             syncCardIntervalItem.setChecked(app.appConfig.registerSyncEnabled);
             syncCardIntervalItem.setOnClickAction(() -> {
                 List<CharSequence> intervalNames = new ArrayList<>();
+                if (App.devMode) {
+                    intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_seconds, 30));
+                    intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 5));
+                }
                 intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 30));
                 intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 45));
                 intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 1));
@@ -540,6 +545,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 3));
                 intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 4));
                 List<Integer> intervals = new ArrayList<>();
+                if (App.devMode) {
+                    intervals.add(30);
+                    intervals.add(5 * 60);
+                }
                 intervals.add(30 * 60);
                 intervals.add(45 * 60);
                 intervals.add(60 * 60);
@@ -564,20 +573,12 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             app.appConfig.registerSyncEnabled = true;
                             // app.appConfig modifications have to surround syncCardIntervalItem and those ifs
                             app.saveConfig("registerSyncInterval", "registerSyncEnabled");
-                            SyncJob.clear();
-                            SyncJob.schedule(app);
+                            SyncWorker.Companion.rescheduleNext(app);
                             return true;
                         })
                         .show();
             });
             syncCardIntervalItem.setOnChangeAction((isChecked, tag) -> {
-                if (isChecked) {
-                    SyncJob.update(app);
-                }
-                else {
-                    SyncJob.clear();
-                }
-
                 if (isChecked && !app.appConfig.registerSyncEnabled) {
                     addCardItem(CARD_SYNC, 1, getSyncCardWifiItem());
                 }
@@ -586,6 +587,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 }
                 app.appConfig.registerSyncEnabled = isChecked;
                 app.saveConfig("registerSyncEnabled");
+                SyncWorker.Companion.rescheduleNext(app);
                 return true;
             });
             items.add(syncCardIntervalItem);

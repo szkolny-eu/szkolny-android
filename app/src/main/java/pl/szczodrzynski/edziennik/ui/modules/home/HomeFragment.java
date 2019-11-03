@@ -27,6 +27,7 @@ import androidx.annotation.PluralsRes;
 import androidx.core.graphics.ColorUtils;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.work.WorkManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.IconicsColor;
@@ -34,19 +35,13 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import kotlin.Pair;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.v2.ApiService;
-import pl.szczodrzynski.edziennik.api.v2.events.requests.AnnouncementsReadRequest;
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
@@ -67,8 +62,6 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
 import static pl.szczodrzynski.edziennik.App.UPDATES_ON_PLAY_STORE;
 import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_GRADES;
-import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_HOME;
-import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_MESSAGES;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_FINAL;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_PROPOSED;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER2_FINAL;
@@ -76,7 +69,6 @@ import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMES
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_YEAR_FINAL;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_YEAR_PROPOSED;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
-import static pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
@@ -104,55 +96,13 @@ public class HomeFragment extends Fragment {
         if (app == null || app.profile == null || activity == null || b == null || !isAdded())
             return;
 
-        /*b.refreshLayout.setOnRefreshListener(() -> {
-            activity.syncCurrentFeature(MainActivity.DRAWER_ITEM_HOME, b.refreshLayout);
-        });*/
-        /*b.refreshLayout.setOnTouchListener((v, event) -> {
-            d(TAG, "event "+event);
-            event.setSource(0x10000000); // set a unique source
-            activity.swipeRefreshLayout.onTouchEvent(event);
-            return true;
-        });*/
-        /*b.refreshLayout.setOnDragListener((v, event) -> {
-            activity.swipeRefreshLayout.onDragEvent(event);
-            return true;
-        });*/
+        b.devMode.setVisibility(App.devMode ? View.VISIBLE : View.GONE);
 
-        b.composeButton.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
         b.composeButton.setOnClickListener((v -> {
             startActivity(new Intent(activity, MessagesComposeActivity.class));
         }));
 
-        b.testButton.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
-        b.testButton.setOnClickListener((v -> {
-            app.startService(new Intent(app, ApiService.class));
-        }));
-
-        b.test2.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
-        b.test2.setOnClickListener((v -> {
-            List<Pair<Integer, Integer>> list = new ArrayList<>();
-            list.add(new Pair<>(DRAWER_ITEM_HOME, 0));
-            EventBus.getDefault().postSticky(new SyncProfileRequest(app.profile.getId(), list));
-        }));
-
-        b.test3.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
-        b.test3.setOnClickListener((v -> {
-            List<Pair<Integer, Integer>> list = new ArrayList<>();
-            list.add(new Pair<>(DRAWER_ITEM_MESSAGES, TYPE_SENT));
-            EventBus.getDefault().postSticky(new SyncProfileRequest(app.profile.getId(), list));
-        }));
-
-        b.test4.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
-        b.test4.setOnClickListener((v -> {
-            List<Pair<Integer, Integer>> list = new ArrayList<>();
-            list.add(new Pair<>(DRAWER_ITEM_GRADES, 0));
-            EventBus.getDefault().postSticky(new SyncProfileRequest(app.profile.getId(), list));
-        }));
-
-        b.test5.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
-        b.test5.setOnClickListener((v -> {
-            EventBus.getDefault().postSticky(new AnnouncementsReadRequest(app.profile.getId()));
-        }));
+        b.pruneWorkButton.setOnClickListener((v -> WorkManager.getInstance(app).pruneWork()));
 
         //((TextView)v.findViewById(R.id.nextSync)).setText(getString(R.string.next_sync_format,Time.fromMillis(app.appJobs.syncJobTime).getStringHMS()));
 

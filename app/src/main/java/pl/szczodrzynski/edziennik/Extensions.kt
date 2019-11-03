@@ -325,3 +325,5 @@ fun String.crc32(): Long {
     crc.update(toByteArray())
     return crc.value
 }
+
+fun Long.formatDate(format: String = "yyyy-MM-dd HH:mm:ss"): String = SimpleDateFormat(format).format(this)

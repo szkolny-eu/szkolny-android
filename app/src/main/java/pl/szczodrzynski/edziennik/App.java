@@ -20,10 +20,13 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.work.Configuration;
+
 import com.chuckerteam.chucker.api.ChuckerCollector;
 import com.chuckerteam.chucker.api.ChuckerInterceptor;
 import com.chuckerteam.chucker.api.RetentionManager;
-import com.evernote.android.job.JobManager;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -55,8 +58,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatDelegate;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
 import im.wangchao.mhttp.MHttp;
 import im.wangchao.mhttp.internal.cookie.PersistentCookieJar;
@@ -66,7 +67,6 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
-import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity;
 import pl.szczodrzynski.edziennik.data.api.Edziennik;
 import pl.szczodrzynski.edziennik.data.api.Iuczniowie;
 import pl.szczodrzynski.edziennik.data.api.Librus;
@@ -77,23 +77,31 @@ import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
-import pl.szczodrzynski.edziennik.utils.models.AppConfig;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.TLSSocketFactory;
-import pl.szczodrzynski.edziennik.receivers.JobsCreator;
-import pl.szczodrzynski.edziennik.sync.SyncJob;
+import pl.szczodrzynski.edziennik.sync.SyncWorker;
+import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity;
 import pl.szczodrzynski.edziennik.utils.PermissionChecker;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.AppConfig;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
 
-public class App extends androidx.multidex.MultiDexApplication {
+public class App extends androidx.multidex.MultiDexApplication implements Configuration.Provider {
     private static final String TAG = "App";
     public static int profileId = -1;
     private Context mContext;
+
+    @Override
+    public Configuration getWorkManagerConfiguration() {
+        return new Configuration.Builder()
+                .setMinimumLoggingLevel(Log.VERBOSE)
+                .build();
+    }
+
 
     public static final int REQUEST_TIMEOUT = 10 * 1000;
 
@@ -301,12 +309,11 @@ public class App extends androidx.multidex.MultiDexApplication {
 
         //profileLoadById(appSharedPrefs.getInt("current_profile_id", 1));
 
-        JobManager.create(this).addJobCreator(new JobsCreator());
         if (appConfig.registerSyncEnabled) {
-            SyncJob.schedule(this);
+            SyncWorker.Companion.scheduleNext(this);
         }
         else {
-            SyncJob.clear();
+            SyncWorker.Companion.cancelNext(this);
         }
 
         db.metadataDao().countUnseen().observeForever(count -> {

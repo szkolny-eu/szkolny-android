@@ -2,10 +2,7 @@ package pl.szczodrzynski.edziennik
 
 import android.app.Activity
 import android.app.ActivityManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.*
@@ -19,6 +16,7 @@ import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.IconicsSize
@@ -37,11 +35,12 @@ import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.api.v2.ApiService
 import pl.szczodrzynski.edziennik.api.v2.events.*
 import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest
+import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.*
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.network.ServerRequest
-import pl.szczodrzynski.edziennik.sync.SyncJob
+import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
@@ -370,7 +369,7 @@ class MainActivity : AppCompatActivity() {
 
         isStoragePermissionGranted()
 
-        SyncJob.schedule(app)
+        //SyncWorker.scheduleNext(app)
 
         // APP BACKGROUND
         if (app.appConfig.appBackground != null) {
@@ -499,7 +498,7 @@ class MainActivity : AppCompatActivity() {
                 profileListEmptyListener()
             }
             DRAWER_PROFILE_SYNC_ALL -> {
-                SyncJob.run(app)
+                ApiService.startAndRequest(this, SyncRequest())
             }
             else -> {
                 loadTarget(id)
@@ -569,6 +568,47 @@ class MainActivity : AppCompatActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSyncErrorEvent(event: SyncErrorEvent) {
 
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onAppManagerDetectedEvent(event: AppManagerDetectedEvent) {
+        if (app.appConfig.dontShowAppManagerDialog)
+            return
+        MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.app_manager_dialog_title)
+                .setMessage(R.string.app_manager_dialog_text)
+                .setPositiveButton(R.string.ok) { dialog, which ->
+                    try {
+                        val intent = Intent()
+                        intent.component = ComponentName(
+                                "com.huawei.systemmanager",
+                                "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"
+                        )
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        try {
+                            val intent = Intent()
+                            intent.component = ComponentName(
+                                    "com.asus.mobilemanager",
+                                    "com.asus.mobilemanager.MainActivity"
+                            )
+                            startActivity(intent)
+                        } catch (e: Exception) {
+                            try {
+                                startActivity(Intent(android.provider.Settings.ACTION_SETTINGS))
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                Toast.makeText(this, R.string.app_manager_open_failed, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+                .setNeutralButton(R.string.dont_ask_again) { dialog, which ->
+                    app.appConfig.dontShowAppManagerDialog = true
+                    app.saveConfig("dontShowAppManagerDialog")
+                }
+                .setCancelable(false)
+                .show()
     }
     private fun fragmentToFeature(currentFragment: Int): Int {
         return when (currentFragment) {

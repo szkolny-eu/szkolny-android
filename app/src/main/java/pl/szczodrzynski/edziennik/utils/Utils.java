@@ -14,15 +14,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.annotation.AttrRes;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -64,8 +66,6 @@ import javax.crypto.ShortBufferException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import androidx.core.content.FileProvider;
-
 import pl.szczodrzynski.edziennik.App;
 
 public class Utils {
@@ -106,7 +106,7 @@ public class Utils {
 
     public static void d(String TAG, String message) {
         if (App.devMode) {
-            Log.d(TAG, message);
+            Log.d("Szkolny/"+TAG, message);
             //debugLog.add(TAG+": "+message);
         }
     }

@@ -978,4 +978,8 @@
     <string name="edziennik_progress_endpoint_timetable">Pobieranie planu lekcji...</string>
     <string name="edziennik_progress_endpoint_proposed_grades">Pobieranie ocen proponowanych...</string>
     <string name="edziennik_progress_endpoint_exams">Pobieranie listy sprawdzianów...</string>
+    <string name="app_manager_dialog_title">Wykryto problem z synchronizacją</string>
+    <string name="app_manager_dialog_text">Na urządzeniu prawdopodobnie zainstalowany jest menedżer aplikacji, który może powodować problemy z synchronizacją automatyczną.\n\nNależy wyłączyć w ustawieniach telefonu optymalizację baterii dla aplikacji Szkolny.eu.\n\nKliknij OK, aby przejść do ustawień telefonu.</string>
+    <string name="dont_ask_again">Nie pytaj ponownie</string>
+    <string name="app_manager_open_failed">Nie udało się otworzyć ustawień</string>
 </resources>

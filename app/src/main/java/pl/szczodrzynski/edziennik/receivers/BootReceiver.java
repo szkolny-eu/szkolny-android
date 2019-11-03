@@ -11,8 +11,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
-import androidx.core.content.FileProvider;
 import android.widget.Toast;
+
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
-import pl.szczodrzynski.edziennik.sync.SyncJob;
+import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
@@ -81,7 +82,7 @@ public class BootReceiver extends BroadcastReceiver {
         }
         else
         {
-            SyncJob.schedule(app);
+            SyncWorker.Companion.scheduleNext(app);
             if (app.networkUtils.isOnline())
             {
                 checkUpdate(context, intent);

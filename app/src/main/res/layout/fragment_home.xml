@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".HomeFragment">
 
@@ -31,69 +30,41 @@
                 android:layout_margin="8dp"
                 tools:text="TextView" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mobidziennikMessagesSwitch"
-                android:layout_margin="8dp"
+            <LinearLayout
+                android:id="@+id/devMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:text="Zmień moduł wiadomości"
-                android:visibility="gone"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/composeButton"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:visibility="gone"
-                android:text="Compose" />
+                android:orientation="vertical"
+                tools:visibility="visible">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mobidziennikMessagesSwitch"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_margin="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Zmień moduł wiadomości" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/testButton"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Start Service"
-                android:visibility="gone"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/composeButton"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="Compose" />
+                </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/test2"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Sync profile - view home"
-                android:visibility="gone"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/test3"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Sync profile - view messages sent"
-                android:visibility="gone"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/test4"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Sync profile - view grades"
-                android:visibility="gone"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/test5"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Mark all announcements as read"
-                android:visibility="gone"/>
-
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pruneWorkButton"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="Prune finished work" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator>

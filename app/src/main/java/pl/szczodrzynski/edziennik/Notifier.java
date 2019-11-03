@@ -19,14 +19,11 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
-import pl.szczodrzynski.edziennik.sync.SyncJob;
-import pl.szczodrzynski.edziennik.sync.SyncService;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
 import static androidx.core.app.NotificationCompat.PRIORITY_DEFAULT;
 import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
-import static pl.szczodrzynski.edziennik.sync.SyncService.ACTION_CANCEL;
 
 public class Notifier {
 
@@ -127,17 +124,17 @@ public class Notifier {
          | |__| | (_| | || (_| | | |__| |  __/ |_
          |_____/ \__,_|\__\__,_|  \_____|\___|\_*/
     public Notification notificationGetDataShow(int maxProgress) {
-        Intent notificationIntent = new Intent(app.getContext(), SyncService.class);
+        /*Intent notificationIntent = new Intent(app.getContext(), SyncService.class);
         notificationIntent.setAction(ACTION_CANCEL);
         PendingIntent pendingIntent = PendingIntent.getService(app.getContext(), 0,
-                notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);*/
 
         getDataNotificationBuilder = new NotificationCompat.Builder(app, GROUP_KEY_GET_DATA)
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .setColor(notificationColor)
                 .setContentTitle(app.getString(R.string.notification_get_data_title))
                 .setContentText(app.getString(R.string.notification_get_data_text))
-                .addAction(R.drawable.ic_notification, app.getString(R.string.notification_get_data_cancel), pendingIntent)
+                //.addAction(R.drawable.ic_notification, app.getString(R.string.notification_get_data_cancel), pendingIntent)
                 //.setGroup(GROUP_KEY_GET_DATA)
                 .setOngoing(true)
                 .setProgress(maxProgress, 0, false)
@@ -209,10 +206,8 @@ public class Notifier {
 
         @Override
         protected void onHandleIntent(Intent intent) {
-            SyncJob.run((App) getApplication(), intent.getExtras().getInt("failedProfileId", -1), -1);
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            assert notificationManager != null;
-            notificationManager.cancel(ID_GET_DATA_ERROR);
+
+
         }
     }
 

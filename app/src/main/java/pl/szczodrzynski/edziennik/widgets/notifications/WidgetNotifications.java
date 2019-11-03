@@ -22,9 +22,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.sync.SyncJob;
+import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.api.v2.ApiService;
+import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest;
 import pl.szczodrzynski.edziennik.widgets.WidgetConfig;
 
 public class WidgetNotifications extends AppWidgetProvider {
@@ -35,7 +36,7 @@ public class WidgetNotifications extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (ACTION_SYNC_DATA.equals(intent.getAction())){
-            SyncJob.run((App) context.getApplicationContext());
+            ApiService.Companion.startAndRequest(context, new SyncRequest());
         }
         super.onReceive(context, intent);
     }

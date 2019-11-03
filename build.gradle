@@ -34,6 +34,7 @@ buildscript {
 
                 room             : "2.2.0-beta01",
                 lifecycle        : "2.2.0-alpha04",
+                work             : "2.2.0",
 
                 firebase         : '17.2.0',
                 firebasemessaging: "20.0.0",

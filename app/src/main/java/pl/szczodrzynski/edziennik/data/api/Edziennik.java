@@ -63,7 +63,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
-import pl.szczodrzynski.edziennik.sync.SyncJob;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Notification;
@@ -116,7 +115,6 @@ import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notificati
 import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_SERVER_MESSAGE;
 import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_TIMETABLE_LESSON_CHANGE;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_ENABLED;
-import static pl.szczodrzynski.edziennik.sync.SyncService.PROFILE_MAX_PROGRESS;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.ns;
 
@@ -592,12 +590,7 @@ public class Edziennik {
     }
 
     public void notifyAndReload() {
-        app.notifier.postAll(null);
-        app.saveConfig();
-        SyncJob.schedule(app);
-        Intent i = new Intent(Intent.ACTION_MAIN)
-                .putExtra("reloadProfileId", -1);
-        app.sendBroadcast(i);
+        // TODO \/
 
         Intent intent = new Intent(app.getContext(), WidgetTimetable.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
@@ -751,7 +744,7 @@ public class Edziennik {
         MaterialDialog progressDialog = new MaterialDialog.Builder(activity)
                 .title(dialogTitle)
                 .content(dialogText)
-                .progress(false, PROFILE_MAX_PROGRESS, false)
+                .progress(false, 110, false)
                 .canceledOnTouchOutside(false)
                 .show();
         SyncCallback guiSyncCallback = new SyncCallback() {

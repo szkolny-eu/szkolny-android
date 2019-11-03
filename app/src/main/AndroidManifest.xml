@@ -222,10 +222,6 @@
 
         <service android:name=".Notifier$GetDataRetryService" />
 
-        <service
-            android:name=".sync.SyncService"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/sync_service" />
         <receiver
             android:name=".receivers.SzkolnyReceiver"
             android:exported="true">

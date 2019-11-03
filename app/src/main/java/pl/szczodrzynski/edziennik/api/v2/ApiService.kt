@@ -39,6 +39,10 @@ class ApiService : Service() {
         fun start(context: Context) {
             context.startService(Intent(context, ApiService::class.java))
         }
+        fun startAndRequest(context: Context, request: Any) {
+            context.startService(Intent(context, ApiService::class.java))
+            EventBus.getDefault().postSticky(request)
+        }
     }
 
     private val app by lazy { applicationContext as App }

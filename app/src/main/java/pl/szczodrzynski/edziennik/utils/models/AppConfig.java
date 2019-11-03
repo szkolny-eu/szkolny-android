@@ -2,6 +2,7 @@ package pl.szczodrzynski.edziennik.utils.models;
 
 import android.util.Pair;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -115,4 +116,7 @@ public class AppConfig {
 
     @Nullable
     public String language = null;
+
+    @NonNull
+    public boolean dontShowAppManagerDialog = false;
 }
