@@ -9,9 +9,8 @@ import android.content.Context
 import android.content.Intent
 import pl.szczodrzynski.edziennik.api.v2.ApiService
 import pl.szczodrzynski.edziennik.api.v2.events.requests.ServiceCloseRequest
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest
 import pl.szczodrzynski.edziennik.api.v2.events.requests.TaskCancelRequest
+import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 
 class SzkolnyReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -19,8 +18,8 @@ class SzkolnyReceiver : BroadcastReceiver() {
         when (intent?.extras?.getString("task", null)) {
             "ServiceCloseRequest" -> ApiService.startAndRequest(context, ServiceCloseRequest())
             "TaskCancelRequest" -> ApiService.startAndRequest(context, TaskCancelRequest(intent.extras?.getInt("taskId", -1) ?: return))
-            "SyncRequest" -> ApiService.startAndRequest(context, SyncRequest())
-            "SyncProfileRequest" -> ApiService.startAndRequest(context, SyncProfileRequest(intent.extras?.getInt("profileId", -1) ?: return))
+            "SyncRequest" -> EdziennikTask.sync().enqueue(context)
+            "SyncProfileRequest" -> EdziennikTask.syncProfile(intent.extras?.getInt("profileId", -1) ?: return).enqueue(context)
         }
     }
 }

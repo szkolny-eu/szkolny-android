@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus
 
-import android.util.Log
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
@@ -20,7 +19,7 @@ import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.prepare
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
@@ -54,8 +53,8 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                                           |__*/
     override fun sync(featureIds: List<Int>, viewId: Int?) {
         data.prepare(librusLoginMethods, LibrusFeatures, featureIds, viewId)
-        Log.d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
-        Log.d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
+        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
         LibrusLogin(data) {
             LibrusData(data) {
                 completed()
@@ -84,7 +83,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun cancel() {
-        Utils.d(TAG, "Cancelled")
+        d(TAG, "Cancelled")
         data.cancel()
     }
 
@@ -94,7 +93,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                 callback.onCompleted()
             }
 
-            override fun onProgress(step: Int) {
+            override fun onProgress(step: Float) {
                 callback.onProgress(step)
             }
 

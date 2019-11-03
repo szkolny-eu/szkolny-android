@@ -236,7 +236,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         }
         else {
 
-            items.add(
+            /*items.add(
                     new MaterialAboutSwitchItem(
                             getString(R.string.settings_profile_notify_text),
                             getString(R.string.settings_profile_notify_subtext),
@@ -251,7 +251,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         app.profileSaveAsync();
                         return true;
                     }))
-            );
+            );*/
 
             items.add(
                     new MaterialAboutActionItem(

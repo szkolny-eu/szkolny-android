@@ -14,8 +14,6 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
         private const val TAG = "VulcanData"
     }
 
-    private var cancelled = false
-
     init {
         nextEndpoint(onSuccess)
     }
@@ -25,11 +23,12 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        if (cancelled) {
+        if (data.cancelled) {
             onSuccess()
             return
         }
         useEndpoint(data.targetEndpointIds.removeAt(0)) {
+            data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }

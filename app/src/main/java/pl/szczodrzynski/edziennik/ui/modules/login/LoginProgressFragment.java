@@ -1,6 +1,5 @@
 package pl.szczodrzynski.edziennik.ui.modules.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +20,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.v2.ApiService;
+import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent;
 import pl.szczodrzynski.edziennik.api.v2.events.FirstLoginFinishedEvent;
-import pl.szczodrzynski.edziennik.api.v2.events.SyncErrorEvent;
-import pl.szczodrzynski.edziennik.api.v2.events.requests.FirstLoginRequest;
+import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.api.AppError;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginProgressBinding;
@@ -63,12 +61,14 @@ public class LoginProgressFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSyncErrorEvent(SyncErrorEvent event) {
+    public void onSyncErrorEvent(ApiTaskErrorEvent event) {
         LoginActivity.error = event.getError().toAppError();
         if (getActivity() == null)
             return;
         nav.navigateUp();
     }
+
+    // TODO add progress bar in login
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -89,8 +89,7 @@ public class LoginProgressFragment extends Fragment {
         LoginStore loginStore = new LoginStore(-1, loginType, new JsonObject());
         loginStore.copyFrom(args);
 
-        getContext().startService(new Intent(app, ApiService.class));
-        EventBus.getDefault().postSticky(new FirstLoginRequest(loginStore));
+        EdziennikTask.Companion.firstLogin(loginStore).enqueue(getContext());
     }
 
     @Override

@@ -13,6 +13,6 @@ import pl.szczodrzynski.edziennik.api.v2.models.LoginMethod
  */
 interface EndpointCallback {
     fun onError(apiError: ApiError)
-    fun onProgress(step: Int)
+    fun onProgress(step: Float)
     fun onStartProgress(stringRes: Int)
 }

@@ -17,9 +17,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.v2.ApiService;
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest;
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest;
+import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType;
@@ -114,7 +112,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         app.notifier.postAll(profile);
                         app.saveConfig("notifications");*/
                         d(TAG, "Syncing profile " + profile.getId());
-                        ApiService.Companion.startAndRequest(app, new SyncProfileRequest(profile.getId(), null));
+                        EdziennikTask.Companion.syncProfile(profile.getId(), null).enqueue(app);
                     } else {
                         /*app.notifier.add(new Notification(app.getContext(), remoteMessage.getData().get("message"))
                                 .withProfileData(profile.id, profile.name)
@@ -125,7 +123,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         app.notifier.postAll(profile);
                         app.saveConfig("notifications");*/
                         d(TAG, "Syncing profile " + profile.getId());
-                        ApiService.Companion.startAndRequest(app, new SyncProfileRequest(profile.getId(), null));
+                        EdziennikTask.Companion.syncProfile(profile.getId(), null).enqueue(app);
                     }
                 }
             });

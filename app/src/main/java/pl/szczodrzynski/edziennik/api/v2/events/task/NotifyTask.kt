@@ -8,14 +8,22 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.Notifier.ID_NOTIFICATIONS
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.models.ApiTask
+import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.utils.models.Notification
 import kotlin.math.min
 
-class NotifyTask : ApiTask(-1) {
-    fun run(app: App) {
+class NotifyTask : IApiTask(-1) {
+    override fun prepare(app: App) {
+        taskName = app.getString(R.string.edziennik_notification_api_notify_title)
+    }
+
+    override fun cancel() {
+
+    }
+
+    fun run(app: App, taskCallback: EdziennikCallback) {
         val list = app.db.notificationDao().getNotPostedNow()
-        val notificationList = list.subList(0, min(8, list.size))
+        val notificationList = list.subList(0, min(15, list.size))
 
         var unreadCount = list.size
 
@@ -75,5 +83,7 @@ class NotifyTask : ApiTask(-1) {
         }
 
         app.db.notificationDao().setAllPosted()
+
+        taskCallback.onCompleted()
     }
 }

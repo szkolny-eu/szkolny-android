@@ -19,8 +19,6 @@ class TemplateData(val data: DataTemplate, val onSuccess: () -> Unit) {
         private const val TAG = "TemplateData"
     }
 
-    private var cancelled = false
-
     init {
         nextEndpoint(onSuccess)
     }
@@ -30,11 +28,12 @@ class TemplateData(val data: DataTemplate, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        if (cancelled) {
+        if (data.cancelled) {
             onSuccess()
             return
         }
         useEndpoint(data.targetEndpointIds.removeAt(0)) {
+            data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }

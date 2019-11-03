@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik
 
 import pl.szczodrzynski.edziennik.api.v2.*
-import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_PUSH_CONFIG
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
 
 const val ENDPOINT_MOBIDZIENNIK_API_MAIN                = 1000
@@ -22,17 +21,17 @@ const val ENDPOINT_MOBIDZIENNIK_API2_MAIN               = 3000
 
 val MobidziennikFeatures = listOf(
         // always synced
-        Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_ALWAYS_NEEDED, listOf(
+        /*Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_ALWAYS_NEEDED, listOf(
                 ENDPOINT_MOBIDZIENNIK_API_MAIN to LOGIN_METHOD_MOBIDZIENNIK_WEB,
                 ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL to LOGIN_METHOD_MOBIDZIENNIK_WEB
-        ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB)),
+        ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB)),*/
 
         // push config
-        Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_PUSH_CONFIG, listOf(
+        /*Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_PUSH_CONFIG, listOf(
                 ENDPOINT_MOBIDZIENNIK_API2_MAIN to LOGIN_METHOD_MOBIDZIENNIK_API2
         ), listOf(LOGIN_METHOD_MOBIDZIENNIK_API2)).withShouldSync { data ->
                 data.app.appConfig.fcmTokens[LOGIN_TYPE_MOBIDZIENNIK]?.second?.contains(data.profileId) == false
-        },
+        },*/
 
 
 

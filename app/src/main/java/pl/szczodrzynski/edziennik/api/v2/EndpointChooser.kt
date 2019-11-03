@@ -77,4 +77,7 @@ fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featu
 
     data.targetEndpointIds = data.targetEndpointIds.toHashSet().toMutableList()
     data.targetEndpointIds.sort()
+
+    progressCount = targetLoginMethodIds.size + targetEndpointIds.size
+    progressStep = if (progressCount <= 0) 0f else 100f / progressCount.toFloat()
 }

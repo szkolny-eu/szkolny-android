@@ -6,7 +6,6 @@ import android.content.*
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.*
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -34,8 +33,7 @@ import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.api.v2.ApiService
 import pl.szczodrzynski.edziennik.api.v2.events.*
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileRequest
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest
+import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.*
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
@@ -64,6 +62,7 @@ import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.navlib.*
@@ -77,7 +76,7 @@ import pl.szczodrzynski.navlib.drawer.items.withAppTitle
 import java.io.File
 import java.io.IOException
 import java.util.*
-
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -499,7 +498,7 @@ class MainActivity : AppCompatActivity() {
                 profileListEmptyListener()
             }
             DRAWER_PROFILE_SYNC_ALL -> {
-                ApiService.startAndRequest(this, SyncRequest())
+                EdziennikTask.sync().enqueue(this)
             }
             else -> {
                 loadTarget(id)
@@ -525,14 +524,14 @@ class MainActivity : AppCompatActivity() {
             else -> 0
         }
         EventBus.getDefault().postSticky(
-                SyncProfileRequest(
+                EdziennikTask.syncProfile(
                         App.profileId,
                         listOf(navTargetId to fragmentParam)
                 )
         )
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncStartedEvent(event: SyncStartedEvent) {
+    fun onSyncStartedEvent(event: ApiTaskStartedEvent) {
         swipeRefreshLayout.isRefreshing = true
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
@@ -543,17 +542,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncProgressEvent(event: SyncProgressEvent) {
+    fun onSyncProgressEvent(event: ApiTaskProgressEvent) {
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
                 subtitleFormat = null
                 subtitleFormatWithUnread = null
-                subtitle = getString(R.string.toolbar_subtitle_syncing_format, event.progress, event.progressRes?.let { getString(it) } ?: "")
+                subtitle = if (event.progress < 0f)
+                    event.progressText ?: ""
+                else
+                    getString(R.string.toolbar_subtitle_syncing_format, event.progress.roundToInt(), event.progressText ?: "")
+
             }
         }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncProfileFinishedEvent(event: SyncProfileFinishedEvent) {
+    fun onSyncProfileFinishedEvent(event: ApiTaskFinishedEvent) {
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
                 subtitleFormat = R.string.toolbar_subtitle
@@ -563,11 +566,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncFinishedEvent(event: SyncFinishedEvent) {
+    fun onSyncFinishedEvent(event: ApiTaskAllFinishedEvent) {
         swipeRefreshLayout.isRefreshing = false
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncErrorEvent(event: SyncErrorEvent) {
+    fun onSyncErrorEvent(event: ApiTaskErrorEvent) {
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -657,11 +660,11 @@ class MainActivity : AppCompatActivity() {
     }
     private fun handleIntent(extras: Bundle?) {
 
-        Log.d(TAG, "handleIntent() {")
+        d(TAG, "handleIntent() {")
         extras?.keySet()?.forEach { key ->
-            Log.d(TAG, "    \"$key\": "+extras.get(key))
+            d(TAG, "    \"$key\": "+extras.get(key))
         }
-        Log.d(TAG, "}")
+        d(TAG, "}")
 
         if (extras?.containsKey("reloadProfileId") == true) {
             val reloadProfileId = extras.getInt("reloadProfileId", -1)
@@ -785,7 +788,7 @@ class MainActivity : AppCompatActivity() {
     fun loadProfile(id: Int) = loadProfile(id, navTargetId)
     fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
     fun loadProfile(id: Int, drawerSelection: Int, arguments: Bundle? = null) {
-        Log.d("NavDebug", "loadProfile(id = $id, drawerSelection = $drawerSelection)")
+        d("NavDebug", "loadProfile(id = $id, drawerSelection = $drawerSelection)")
         if (app.profile != null && App.profileId == id) {
             drawer.currentProfile = app.profile.id
             loadTarget(drawerSelection, arguments)
@@ -825,7 +828,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun loadTarget(target: NavTarget, arguments: Bundle? = null) {
-        Log.d("NavDebug", "loadItem(id = ${target.id})")
+        d("NavDebug", "loadItem(id = ${target.id})")
 
         bottomSheet.close()
         bottomSheet.removeAllContextual()
@@ -838,7 +841,7 @@ class MainActivity : AppCompatActivity() {
         navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
 
-        Log.d("NavDebug", "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
+        d("NavDebug", "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
 
         val fragment = target.fragmentClass?.java?.newInstance() ?: return
         fragment.arguments = arguments
@@ -897,9 +900,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Log.d("NavDebug", "Current fragment ${navTarget.fragmentClass?.java?.simpleName}, pop to home ${navTarget.popToHome}, back stack:")
+        d("NavDebug", "Current fragment ${navTarget.fragmentClass?.java?.simpleName}, pop to home ${navTarget.popToHome}, back stack:")
         navBackStack.forEachIndexed { index, target2 ->
-            Log.d("NavDebug", " - $index: ${target2.fragmentClass?.java?.simpleName}")
+            d("NavDebug", " - $index: ${target2.fragmentClass?.java?.simpleName}")
         }
 
         transaction.replace(R.id.fragment, fragment)
@@ -990,7 +993,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setDrawerItems() {
-        Log.d("NavDebug", "setDrawerItems() app.profile = ${app.profile ?: "null"}")
+        d("NavDebug", "setDrawerItems() app.profile = ${app.profile ?: "null"}")
         val drawerItems = arrayListOf<IDrawerItem<*>>()
         val drawerProfiles = arrayListOf<ProfileSettingDrawerItem>()
 

@@ -32,6 +32,7 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             return
         }
         useEndpoint(data.targetEndpointIds.removeAt(0)) {
+            data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }

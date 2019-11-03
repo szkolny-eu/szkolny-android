@@ -24,8 +24,7 @@ import java.lang.reflect.Method;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.v2.ApiService;
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest;
+import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.widgets.WidgetConfig;
@@ -40,7 +39,7 @@ public class WidgetLuckyNumber extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (ACTION_SYNC_DATA.equals(intent.getAction())){
-            ApiService.Companion.startAndRequest(context, new SyncRequest());
+            EdziennikTask.Companion.sync().enqueue(context);
         }
         super.onReceive(context, intent);
     }

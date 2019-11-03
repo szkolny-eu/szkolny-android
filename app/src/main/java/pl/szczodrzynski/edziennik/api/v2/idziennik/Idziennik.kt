@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.api.v2.idziennik
 
-import android.util.Log
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.api.v2.idziennik.data.IdziennikData
@@ -17,7 +16,7 @@ import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.prepare
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
@@ -51,8 +50,8 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
                                           |__*/
     override fun sync(featureIds: List<Int>, viewId: Int?) {
         data.prepare(idziennikLoginMethods, IdziennikFeatures, featureIds, viewId)
-        Log.d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
-        Log.d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
+        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
         IdziennikLogin(data) {
             IdziennikData(data) {
                 completed()
@@ -75,7 +74,7 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
     }
 
     override fun cancel() {
-        Utils.d(TAG, "Cancelled")
+        d(TAG, "Cancelled")
         data.cancel()
     }
 
@@ -85,7 +84,7 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
                 callback.onCompleted()
             }
 
-            override fun onProgress(step: Int) {
+            override fun onProgress(step: Float) {
                 callback.onProgress(step)
             }
 

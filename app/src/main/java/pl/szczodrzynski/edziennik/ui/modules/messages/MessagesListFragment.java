@@ -1,13 +1,9 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages;
 
 
-import android.content.Context;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Html;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,28 +17,19 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.data.api.AppError;
-import pl.szczodrzynski.edziennik.data.api.Edziennik;
-import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback;
-import pl.szczodrzynski.edziennik.databinding.MessagesListBinding;
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message;
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull;
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipientFull;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
+import pl.szczodrzynski.edziennik.databinding.MessagesListBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
-import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 
 public class MessagesListFragment extends Fragment {
@@ -94,66 +81,6 @@ public class MessagesListFragment extends Fragment {
             getArguments().remove("messageId");
             activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, args);
             return;
-        }
-
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_LIBRUS && app.profile.getStudentData("accountPassword", null) == null && false) {
-            new MaterialDialog.Builder(activity)
-                    .title("Wiadomości w systemie Synergia")
-                    .content("Moduł Wiadomości w aplikacji Szkolny.eu jest przeglądarką zasobów szkolnego konta Synergia. Z tego powodu, musisz wpisać swoje hasło do tego konta, aby móc korzystać z tej funkcji.")
-                    .positiveText(R.string.ok)
-                    .onPositive(((dialog, which) -> {
-                        new MaterialDialog.Builder(activity)
-                                .title("Zaloguj się")
-                                .content(Html.fromHtml("Podaj hasło do konta Synergia z loginem <b>"+app.profile.getStudentData("accountLogin", "???")+"</b>"))
-                                .inputType(InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                                .input(null, null, (dialog1, input) -> {
-                                    app.profile.putStudentData("accountPassword", input.toString());
-                                    Edziennik.getApi(app, app.profile.getLoginStoreType()).syncMessages(activity, new SyncCallback() {
-                                        @Override
-                                        public void onLoginFirst(List<Profile> profileList, LoginStore loginStore) {
-
-                                        }
-
-                                        @Override
-                                        public void onSuccess(Context activityContext, ProfileFull profileFull) {
-                                            app.profile.putStudentData("accountPassword", input.toString());
-                                            app.profileSaveFullAsync(profileFull);
-                                            ((MainActivity) activityContext).recreate();
-                                        }
-
-                                        @Override
-                                        public void onError(Context activityContext, AppError error) {
-                                            new Handler(activityContext.getMainLooper()).post(() -> {
-                                                app.profile.removeStudentData("accountPassword");
-                                                app.profileSaveFullAsync(app.profile);
-                                                new MaterialDialog.Builder(activity)
-                                                        .title(R.string.login_failed)
-                                                        .content(R.string.login_failed_text)
-                                                        .positiveText(R.string.ok)
-                                                        .neutralText(R.string.report)
-                                                        .onNeutral(((dialog2, which1) -> {
-                                                            app.apiEdziennik.guiReportError(getActivity(), error, null);
-                                                        }))
-                                                        .show();
-                                            });
-                                        }
-
-                                        @Override
-                                        public void onProgress(int progressStep) {
-
-                                        }
-
-                                        @Override
-                                        public void onActionStarted(int stringResId) {
-
-                                        }
-                                    }, app.profile);
-                                })
-                                .positiveText(R.string.ok)
-                                .negativeText(R.string.cancel)
-                                .show();
-                    }))
-                    .show();
         }
 
         if (getArguments() != null) {

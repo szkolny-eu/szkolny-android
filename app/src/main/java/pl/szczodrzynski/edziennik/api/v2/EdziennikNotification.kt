@@ -10,9 +10,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationCompat.PRIORITY_LOW
 import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import pl.szczodrzynski.edziennik.R
+import kotlin.math.roundToInt
 
 
 class EdziennikNotification(val context: Context) {
@@ -92,18 +92,18 @@ class EdziennikNotification(val context: Context) {
         return this
     }
 
-    fun setProgress(progress: Int): EdziennikNotification {
-        notificationBuilder.setProgress(100, progress, false)
+    fun setProgress(progress: Float): EdziennikNotification {
+        notificationBuilder.setProgress(100, progress.roundToInt(), progress < 0f)
         return this
     }
-    fun setProgressRes(progressRes: Int): EdziennikNotification {
-        notificationBuilder.setContentTitle(context.getString(progressRes))
+    fun setProgressText(progressText: String?): EdziennikNotification {
+        notificationBuilder.setContentTitle(progressText)
         return this
     }
 
-    fun setCurrentTask(taskId: Int, profileName: String?): EdziennikNotification {
-        notificationBuilder.setProgress(100, 0, false)
-        notificationBuilder.setContentTitle(context.getString(R.string.edziennik_notification_api_sync_title_format, profileName))
+    fun setCurrentTask(taskId: Int, progressText: String?): EdziennikNotification {
+        notificationBuilder.setProgress(100, 0, true)
+        notificationBuilder.setContentTitle(progressText)
         notificationBuilder.apply {
             val str = errorCountText()
             setStyle(NotificationCompat.BigTextStyle().bigText(str))

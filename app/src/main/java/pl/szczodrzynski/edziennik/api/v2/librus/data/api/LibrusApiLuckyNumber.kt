@@ -4,16 +4,17 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
+import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_LUCKY_NUMBER
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.getInt
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Time
 
 class LibrusApiLuckyNumber(override val data: DataLibrus,
                            val onSuccess: () -> Unit) : LibrusApi(data) {
@@ -25,17 +26,25 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
         data.profile?.luckyNumber = -1
         data.profile?.luckyNumberDate = null
 
+        var nextSync = System.currentTimeMillis() + 2*DAY*1000
+
         apiGet(TAG, "LuckyNumbers") { json ->
             if (json.isJsonNull) {
                 //profile?.luckyNumberEnabled = false
             } else {
                 json.getJsonObject("LuckyNumber")?.also { luckyNumberEl ->
 
+                    val luckyNumberDate = Date.fromY_m_d(luckyNumberEl.getString("LuckyNumberDay")) ?: Date.getToday()
+                    val luckyNumber = luckyNumberEl.getInt("LuckyNumber") ?: -1
                     val luckyNumberObject = LuckyNumber(
                             profileId,
-                            Date.fromY_m_d(luckyNumberEl.getString("LuckyNumberDay")) ?: Date.getToday(),
-                            luckyNumberEl.getInt("LuckyNumber") ?: -1
+                            luckyNumberDate,
+                            luckyNumber
                     )
+
+                    //if (luckyNumberDate > Date.getToday()) {
+                        nextSync = luckyNumberDate.combineWith(Time(15, 0, 0))
+                    //}
 
                     data.luckyNumberList.add(luckyNumberObject)
                     data.metadataList.add(
@@ -50,7 +59,7 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
                 }
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_LUCKY_NUMBER, SYNC_ALWAYS)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_LUCKY_NUMBER, syncAt = nextSync)
             onSuccess()
         }
     }

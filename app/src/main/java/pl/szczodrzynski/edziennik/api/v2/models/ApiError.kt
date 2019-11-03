@@ -51,4 +51,10 @@ class ApiError(val tag: String, val errorCode: Int) {
                 errorCode, response, throwable, apiResponse
         )
     }
+
+    override fun toString(): String {
+        return "ApiError(tag='$tag', errorCode=$errorCode, profileId=$profileId, throwable=$throwable, apiResponse=$apiResponse, request=$request, response=$response, isCritical=$isCritical)"
+    }
+
+
 }

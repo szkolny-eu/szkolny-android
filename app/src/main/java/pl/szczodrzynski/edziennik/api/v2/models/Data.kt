@@ -91,6 +91,15 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
      * to run.
      */
     var targetEndpointIds = mutableListOf<Int>()
+    /**
+     * A count of all network requests to do.
+     */
+    var progressCount: Int = 0
+    /**
+     * A number by which the progress will be incremented, every time
+     * a login method/endpoint finishes its job.
+     */
+    var progressStep: Float = 0f
 
     /**
      * A map of endpoint IDs to JSON objects, specifying their arguments bundle.
@@ -386,7 +395,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         callback.onError(apiError)
     }
 
-    fun progress(step: Int) {
+    fun progress(step: Float) {
         callback.onProgress(step)
     }
 

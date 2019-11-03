@@ -5,7 +5,8 @@
 package pl.szczodrzynski.edziennik.api.v2.template.login
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.*
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_TEMPLATE_API
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_TEMPLATE_WEB
 import pl.szczodrzynski.edziennik.api.v2.template.DataTemplate
 import pl.szczodrzynski.edziennik.utils.Utils
 
@@ -30,6 +31,7 @@ class TemplateLogin(val data: DataTemplate, val onSuccess: () -> Unit) {
             return
         }
         useLoginMethod(data.targetLoginMethodIds.removeAt(0)) { usedMethodId ->
+            data.progress(data.progressStep)
             if (usedMethodId != -1)
                 data.loginMethods.add(usedMethodId)
             nextLoginMethod(onSuccess)

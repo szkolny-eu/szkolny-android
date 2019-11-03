@@ -17,8 +17,6 @@ class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
         private const val TAG = "IdziennikData"
     }
 
-    private var cancelled = false
-
     init {
         nextEndpoint(onSuccess)
     }
@@ -28,11 +26,12 @@ class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        if (cancelled) {
+        if (data.cancelled) {
             onSuccess()
             return
         }
         useEndpoint(data.targetEndpointIds.removeAt(0)) {
+            data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }

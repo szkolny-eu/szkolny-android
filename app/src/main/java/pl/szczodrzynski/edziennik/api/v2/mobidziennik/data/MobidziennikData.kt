@@ -32,6 +32,7 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             return
         }
         useEndpoint(data.targetEndpointIds.removeAt(0)) {
+            data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }

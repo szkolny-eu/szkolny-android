@@ -4,4 +4,4 @@
 
 package pl.szczodrzynski.edziennik.api.v2.events
 
-class SyncProfileFinishedEvent(val profileId: Int)
+class ApiTaskAllFinishedEvent

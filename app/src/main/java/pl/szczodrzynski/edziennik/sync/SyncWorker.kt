@@ -8,8 +8,7 @@ import androidx.work.impl.WorkManagerImpl
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MINUTE
-import pl.szczodrzynski.edziennik.api.v2.ApiService
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest
+import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 import pl.szczodrzynski.edziennik.formatDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.util.concurrent.TimeUnit
@@ -101,7 +100,7 @@ class SyncWorker(val context: Context, val params: WorkerParameters) : Worker(co
 
     override fun doWork(): Result {
         d(TAG, "Running worker ID ${params.id}")
-        ApiService.startAndRequest(context, SyncRequest())
+        EdziennikTask.sync().enqueue(context)
         rescheduleNext(context as App)
         return Result.success()
     }

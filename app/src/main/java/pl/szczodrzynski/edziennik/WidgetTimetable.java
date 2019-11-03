@@ -28,8 +28,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.api.v2.ApiService;
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncRequest;
+import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
@@ -67,7 +66,7 @@ public class WidgetTimetable extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (ACTION_SYNC_DATA.equals(intent.getAction())) {
-            ApiService.Companion.startAndRequest(context, new SyncRequest());
+            EdziennikTask.Companion.sync().enqueue(context);
         }
         super.onReceive(context, intent);
     }

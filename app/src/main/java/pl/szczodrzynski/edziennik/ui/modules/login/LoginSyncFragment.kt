@@ -15,12 +15,11 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.ApiService
-import pl.szczodrzynski.edziennik.api.v2.events.SyncErrorEvent
-import pl.szczodrzynski.edziennik.api.v2.events.SyncFinishedEvent
-import pl.szczodrzynski.edziennik.api.v2.events.SyncProgressEvent
-import pl.szczodrzynski.edziennik.api.v2.events.SyncStartedEvent
-import pl.szczodrzynski.edziennik.api.v2.events.requests.SyncProfileListRequest
+import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskAllFinishedEvent
+import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent
+import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskProgressEvent
+import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskStartedEvent
+import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event.*
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
@@ -29,6 +28,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.REG
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.REGISTRATION_ENABLED
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.REGISTRATION_UNSPECIFIED
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginSyncBinding
+import kotlin.math.roundToInt
 
 class LoginSyncFragment : Fragment() {
 
@@ -47,23 +47,24 @@ class LoginSyncFragment : Fragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncStartedEvent(event: SyncStartedEvent) {
+    fun onSyncStartedEvent(event: ApiTaskStartedEvent) {
         b.loginSyncSubtitle1.text = Html.fromHtml(getString(R.string.login_sync_subtitle_1_format, event.profile?.name ?: ""))
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncFinishedEvent(event: SyncFinishedEvent) {
+    fun onSyncFinishedEvent(event: ApiTaskAllFinishedEvent) {
         nav.navigate(R.id.loginFinishFragment, null, LoginActivity.navOptions)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncProgressEvent(event: SyncProgressEvent) {
-        b.loginSyncProgressBar.progress = event.progress
-        b.loginSyncSubtitle2.text = event.progressRes?.let { getString(it) }
+    fun onSyncProgressEvent(event: ApiTaskProgressEvent) {
+        b.loginSyncProgressBar.progress = event.progress.roundToInt()
+        b.loginSyncProgressBar.isIndeterminate = event.progress < 0f
+        b.loginSyncSubtitle2.text = event.progressText
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncErrorEvent(event: SyncErrorEvent) {
+    fun onSyncErrorEvent(event: ApiTaskErrorEvent) {
         LoginActivity.error = event.error.toAppError()
         nav.navigate(R.id.loginSyncErrorFragment, null, LoginActivity.navOptions)
     }
@@ -109,8 +110,7 @@ class LoginSyncFragment : Fragment() {
             }
             LoginFinishFragment.firstProfileId = firstProfileId
 
-            ApiService.start(activity)
-            EventBus.getDefault().postSticky(SyncProfileListRequest(profileIds))
+            EdziennikTask.syncProfileList(profileIds).enqueue(activity)
         }
     }
 
