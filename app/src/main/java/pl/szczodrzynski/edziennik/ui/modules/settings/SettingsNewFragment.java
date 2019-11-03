@@ -535,7 +535,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 List<CharSequence> intervalNames = new ArrayList<>();
                 if (App.devMode) {
                     intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_seconds, 30));
-                    intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 5));
+                    intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 2));
                 }
                 intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 30));
                 intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 45));
@@ -547,7 +547,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 List<Integer> intervals = new ArrayList<>();
                 if (App.devMode) {
                     intervals.add(30);
-                    intervals.add(5 * 60);
+                    intervals.add(2 * 60);
                 }
                 intervals.add(30 * 60);
                 intervals.add(45 * 60);

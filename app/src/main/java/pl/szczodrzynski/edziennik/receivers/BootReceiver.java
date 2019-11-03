@@ -82,7 +82,7 @@ public class BootReceiver extends BroadcastReceiver {
         }
         else
         {
-            SyncWorker.Companion.scheduleNext(app);
+            SyncWorker.Companion.scheduleNext(app, false);
             if (app.networkUtils.isOnline())
             {
                 checkUpdate(context, intent);

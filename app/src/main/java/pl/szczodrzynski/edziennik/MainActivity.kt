@@ -41,6 +41,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
+import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
@@ -369,7 +370,7 @@ class MainActivity : AppCompatActivity() {
 
         isStoragePermissionGranted()
 
-        //SyncWorker.scheduleNext(app)
+        SyncWorker.scheduleNext(app)
 
         // APP BACKGROUND
         if (app.appConfig.appBackground != null) {

@@ -310,7 +310,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
         //profileLoadById(appSharedPrefs.getInt("current_profile_id", 1));
 
         if (appConfig.registerSyncEnabled) {
-            SyncWorker.Companion.scheduleNext(this);
+            SyncWorker.Companion.scheduleNext(this, false);
         }
         else {
             SyncWorker.Companion.cancelNext(this);
