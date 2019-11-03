@@ -67,7 +67,7 @@ class IdziennikLoginWeb(val data: DataIdziennik, val onSuccess: () -> Unit) {
                         data.webSessionId = cookies.singleOrNull { it.name() == "ASP.NET_SessionId_iDziennik" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION
                         data.webAuth = cookies.singleOrNull { it.name() == ".ASPXAUTH" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH
                         data.apiBearer = cookies.singleOrNull { it.name() == "Bearer" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER
-                        data.loginExpiryTime = response.getUnixDate() + 45 * MINUTE
+                        data.loginExpiryTime = response.getUnixDate() + 30 * MINUTE /* after about 40 minutes the login didn't work already */
                         data.apiExpiryTime = response.getUnixDate() + 12 * HOUR /* actually it expires after 24 hours but I'm not sure when does the token refresh. */
                         return@run null
                     }?.let { errorCode ->
