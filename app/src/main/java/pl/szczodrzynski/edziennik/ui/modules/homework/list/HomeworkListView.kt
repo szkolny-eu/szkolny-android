@@ -5,13 +5,10 @@
 package pl.szczodrzynski.edziennik.ui.modules.homework.list
 
 import androidx.lifecycle.Lifecycle
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.ui.base.BaseView
 
 interface HomeworkListView : BaseView {
-
-    var app: App
 
     val viewLifecycle: Lifecycle
 

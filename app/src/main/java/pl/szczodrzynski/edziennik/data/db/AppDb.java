@@ -10,6 +10,8 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import javax.inject.Singleton;
+
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterDate;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterDateInt;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterJsonObject;
@@ -74,6 +76,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.TeamDao;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
+@Singleton
 @Database(entities = {
         Grade.class,
         //GradeCategory.class,
@@ -114,33 +117,60 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
 public abstract class AppDb extends RoomDatabase {
 
     public abstract GradeDao gradeDao();
+
     //public abstract GradeCategoryDao gradeCategoryDao();
     public abstract TeacherDao teacherDao();
+
     public abstract TeacherAbsenceDao teacherAbsenceDao();
+
     public abstract TeacherAbsenceTypeDao teacherAbsenceTypeDao();
+
     public abstract SubjectDao subjectDao();
+
     public abstract NoticeDao noticeDao();
+
     public abstract LessonDao lessonDao();
+
     public abstract LessonChangeDao lessonChangeDao();
+
     public abstract TeamDao teamDao();
+
     public abstract AttendanceDao attendanceDao();
+
     public abstract EventDao eventDao();
+
     public abstract EventTypeDao eventTypeDao();
+
     public abstract LoginStoreDao loginStoreDao();
+
     public abstract ProfileDao profileDao();
+
     public abstract LuckyNumberDao luckyNumberDao();
+
     public abstract AnnouncementDao announcementDao();
+
     public abstract GradeCategoryDao gradeCategoryDao();
+
     public abstract FeedbackMessageDao feedbackMessageDao();
+
     public abstract MessageDao messageDao();
+
     public abstract MessageRecipientDao messageRecipientDao();
+
     public abstract DebugLogDao debugLogDao();
+
     public abstract EndpointTimerDao endpointTimerDao();
+
     public abstract LessonRangeDao lessonRangeDao();
+
     public abstract NotificationDao notificationDao();
+
     public abstract ClassroomDao classroomDao();
+
     public abstract NoticeTypeDao noticeTypeDao();
+
     public abstract AttendanceTypeDao attendanceTypeDao();
+
     public abstract MetadataDao metadataDao();
 
     private static volatile AppDb INSTANCE;

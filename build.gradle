@@ -47,7 +47,8 @@ buildscript {
 
                 navlib           : "e4ad01dc87",
 
-                gifdrawable      : "1.2.15"
+                gifdrawable      : "1.2.15",
+                dagger           : "2.24"
         ]
     }
 

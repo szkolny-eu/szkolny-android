@@ -22,6 +22,7 @@ import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.multidex.MultiDex;
 import androidx.work.Configuration;
 
 import com.chuckerteam.chucker.api.ChuckerCollector;
@@ -59,6 +60,8 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import dagger.android.AndroidInjector;
+import dagger.android.support.DaggerApplication;
 import im.wangchao.mhttp.MHttp;
 import im.wangchao.mhttp.internal.cookie.PersistentCookieJar;
 import im.wangchao.mhttp.internal.cookie.cache.SetCookieCache;
@@ -77,6 +80,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
+import pl.szczodrzynski.edziennik.di.DaggerAppComponent;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.TLSSocketFactory;
 import pl.szczodrzynski.edziennik.sync.SyncWorker;
@@ -90,7 +94,7 @@ import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
 
-public class App extends androidx.multidex.MultiDexApplication implements Configuration.Provider {
+public class App extends DaggerApplication implements Configuration.Provider {
     private static final String TAG = "App";
     public static int profileId = -1;
     private Context mContext;
@@ -179,6 +183,17 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
         drawable.draw(canvas);
 
         return Icon.createWithBitmap(bitmap);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        return DaggerAppComponent.factory().create(this);
     }
 
     @Override
@@ -543,6 +558,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
             appConfig = new AppConfig(this);
         }
     }
+
     public void saveConfig()
     {
         try {
@@ -724,5 +740,4 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
             devMode = false;
         }
     }
-
 }

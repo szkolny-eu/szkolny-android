@@ -4,12 +4,9 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.homework
 
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.ui.base.BaseView
 
 interface HomeworkView : BaseView {
-
-    var app: App
 
     val markAsReadSuccessString: String
 

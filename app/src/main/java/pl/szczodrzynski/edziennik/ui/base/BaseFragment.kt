@@ -5,11 +5,11 @@
 package pl.szczodrzynski.edziennik.ui.base
 
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import dagger.android.support.DaggerFragment
 
-abstract class BaseFragment<T : BasePresenter<out BaseView>> : Fragment(), BaseView {
+abstract class BaseFragment<T : BasePresenter<out BaseView>> : DaggerFragment(), BaseView {
 
-    abstract val presenter: T
+    abstract var presenter: T
 
     override fun showMessage(text: String) {
         Toast.makeText(activity, text, Toast.LENGTH_SHORT).show()

@@ -1,18 +1,21 @@
 package pl.szczodrzynski.edziennik.data.db.modules.events;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQuery;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Transaction;
-import androidx.annotation.NonNull;
-import android.util.Log;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
+
+import javax.inject.Singleton;
 
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
@@ -21,6 +24,7 @@ import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_LESSON_CHANGE;
 
+@Singleton
 @Dao
 public abstract class EventDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -34,26 +38,32 @@ public abstract class EventDao {
 
     @Query("DELETE FROM events WHERE profileId = :profileId AND eventId = :id")
     public abstract void remove(int profileId, long id);
+
     @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND thingId = :thingId")
     public abstract void removeMetadata(int profileId, int thingType, long thingId);
+
     @Transaction
     public void remove(int profileId, int type, long id) {
         remove(profileId, id);
         removeMetadata(profileId, type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, id);
     }
+
     @Transaction
     public void remove(Event event) {
         remove(event.profileId, event.type, event.id);
     }
+
     @Transaction
     public void remove(int profileId, Event event) {
         remove(profileId, event.type, event.id);
     }
+
     @Query("DELETE FROM events WHERE teamId = :teamId AND eventId = :id")
     public abstract void removeByTeamId(long teamId, long id);
 
     @RawQuery(observedEntities = {Event.class})
     abstract LiveData<List<EventFull>> getAll(SupportSQLiteQuery query);
+
     public LiveData<List<EventFull>> getAll(int profileId, String filter) {
         String query = "SELECT \n" +
                 "*, \n" +
@@ -71,24 +81,31 @@ public abstract class EventDao {
         Log.d("DB", query);
         return getAll(new SimpleSQLiteQuery(query));
     }
+
     public LiveData<List<EventFull>> getAll(int profileId) {
         return getAll(profileId, "1");
     }
+
     public List<EventFull> getAllNow(int profileId) {
         return getAllNow(profileId, "1");
     }
+
     public LiveData<List<EventFull>> getAllWhere(int profileId, String filter) {
         return getAll(profileId, filter);
     }
+
     public LiveData<List<EventFull>> getAllByType(int profileId, int type, String filter) {
         return getAll(profileId, "eventType = "+type+" AND "+filter);
     }
+
     public LiveData<List<EventFull>> getAllByDate(int profileId, @NonNull Date date) {
         return getAll(profileId, "eventDate = '"+date.getStringY_m_d()+"'");
     }
+
     public List<EventFull> getAllByDateNow(int profileId, @NonNull Date date) {
         return getAllNow(profileId, "eventDate = '"+date.getStringY_m_d()+"'");
     }
+
     public LiveData<List<EventFull>> getAllByDateTime(int profileId, @NonNull Date date, Time time) {
         if (time == null)
             return getAllByDate(profileId, date);
@@ -97,6 +114,7 @@ public abstract class EventDao {
 
     @RawQuery
     abstract List<EventFull> getAllNow(SupportSQLiteQuery query);
+
     public List<EventFull> getAllNow(int profileId, String filter) {
         return getAllNow(new SimpleSQLiteQuery("SELECT \n" +
                 "*, \n" +
@@ -112,6 +130,7 @@ public abstract class EventDao {
                 "WHERE events.profileId = "+profileId+" AND events.eventBlacklisted = 0 AND "+filter+"\n" +
                 "ORDER BY eventStartTime, addedDate ASC"));
     }
+
     public List<EventFull> getNotNotifiedNow(int profileId) {
         return getAllNow(profileId, "notified = 0");
     }

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 
@@ -91,7 +92,7 @@ tasks.whenTaskAdded { task ->
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    annotationProcessor "androidx.room:room-compiler:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
     debugImplementation "com.amitshekhar.android:debug-db:1.0.5"
 
     implementation "android.arch.navigation:navigation-fragment-ktx:${versions.navigationFragment}"
@@ -164,6 +165,11 @@ dependencies {
     implementation "io.github.wulkanowy:signer-android:0.1.1"
 
     implementation "androidx.work:work-runtime-ktx:${versions.work}"
+
+    api "com.google.dagger:dagger:${versions.dagger}"
+    api "com.google.dagger:dagger-android-support:${versions.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
+    kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
 }
 repositories {
     mavenCentral()

@@ -7,9 +7,13 @@ package pl.szczodrzynski.edziennik.ui.modules.homework
 import android.os.AsyncTask
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.MetadataDao
 import pl.szczodrzynski.edziennik.ui.base.BasePresenter
+import javax.inject.Inject
 
-class HomeworkPresenter : BasePresenter<HomeworkView>() {
+class HomeworkPresenter @Inject constructor(
+        private val metadataDao: MetadataDao
+) : BasePresenter<HomeworkView>() {
 
     override fun onAttachView(view: HomeworkView) {
         super.onAttachView(view)
@@ -31,7 +35,7 @@ class HomeworkPresenter : BasePresenter<HomeworkView>() {
         view?.apply {
             closeBottomSheet()
             AsyncTask.execute {
-                app.db.metadataDao().setAllSeen(App.profileId, Metadata.TYPE_HOMEWORK, true)
+                metadataDao.setAllSeen(App.profileId, Metadata.TYPE_HOMEWORK, true)
             }
             showMessage(markAsReadSuccessString)
         }

@@ -19,12 +19,16 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.MetadataDao
 import pl.szczodrzynski.edziennik.databinding.RowHomeworkItemBinding
 import pl.szczodrzynski.edziennik.utils.Utils.bs
 import pl.szczodrzynski.edziennik.utils.models.Date
+import javax.inject.Inject
 import kotlin.math.abs
 
-class HomeworkListAdapter : RecyclerView.Adapter<HomeworkListAdapter.ViewHolder>() {
+class HomeworkListAdapter @Inject constructor(
+        private val metadataDao: MetadataDao
+) : RecyclerView.Adapter<HomeworkListAdapter.ViewHolder>() {
 
     val homeworkList: MutableList<EventFull> = mutableListOf()
     lateinit var onItemEditClick: (homework: EventFull) -> Unit
@@ -55,7 +59,7 @@ class HomeworkListAdapter : RecyclerView.Adapter<HomeworkListAdapter.ViewHolder>
 
                     homework.seen = true
                     AsyncTask.execute {
-                        app.db.metadataDao().setSeen(App.profileId, homework, true)
+                        metadataDao.setSeen(App.profileId, homework, true)
                     }
                 }
                 else -> b.homeworkItemTopic.background = null
@@ -86,7 +90,6 @@ class HomeworkListAdapter : RecyclerView.Adapter<HomeworkListAdapter.ViewHolder>
         fun getString(resId: Int, vararg formatArgs: Any): String = itemView.context.getString(resId, *formatArgs)
         fun getDrawable(resId: Int): Drawable? = ContextCompat.getDrawable(itemView.context, resId)
 
-        val app: App get() = itemView.context.applicationContext as App
         val resources: Resources get() = itemView.context.resources
 
         fun dateDiffString(diff: Int): String {

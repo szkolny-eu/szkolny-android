@@ -9,7 +9,8 @@ import androidx.room.Transaction;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
+import javax.inject.Singleton;
+
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
@@ -17,6 +18,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message;
+import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
 import pl.szczodrzynski.edziennik.utils.models.UnreadCounter;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ANNOUNCEMENT;
@@ -28,6 +30,7 @@ import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_MESSAGE;
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_NOTICE;
 
+@Singleton
 @Dao
 public abstract class MetadataDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -41,7 +44,6 @@ public abstract class MetadataDao {
 
     @Query("UPDATE metadata SET notified = :notified WHERE thingId = :thingId AND thingType = :thingType AND profileId = :profileId")
     abstract void updateNotified(int profileId, int thingType, long thingId, boolean notified);
-
 
 
     @Transaction
@@ -152,7 +154,6 @@ public abstract class MetadataDao {
     }
 
 
-
     @Query("UPDATE metadata SET seen = :seen WHERE profileId = :profileId AND thingType = :thingType")
     public abstract void setAllSeen(int profileId, int thingType, boolean seen);
 
@@ -164,7 +165,6 @@ public abstract class MetadataDao {
 
     @Query("UPDATE metadata SET notified = :notified WHERE profileId = :profileId")
     public abstract void setAllNotified(int profileId, boolean notified);
-
 
 
     @Query("SELECT count() FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND seen = 0")
@@ -183,7 +183,6 @@ public abstract class MetadataDao {
     public abstract LiveData<Integer> countUnseen();
 
 
-
     @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND thingId = :thingId")
     public abstract void delete(int profileId, int thingType, long thingId);
 
@@ -191,10 +190,8 @@ public abstract class MetadataDao {
     public abstract void deleteAll(int profileId);
 
 
-
     @Query("SELECT profileId, thingType, COUNT(thingId) AS count FROM metadata WHERE seen = 0 GROUP BY profileId, thingType")
     public abstract LiveData<List<UnreadCounter>> getUnreadCounts();
-
 
 
     @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = "+TYPE_GRADE+" AND thingId NOT IN (SELECT gradeId FROM grades WHERE profileId = :profileId);")

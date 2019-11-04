@@ -9,7 +9,6 @@ import android.os.*
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.Observer
@@ -26,6 +25,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
+import dagger.android.support.DaggerAppCompatActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -78,7 +78,7 @@ import java.io.IOException
 import java.util.*
 import kotlin.math.roundToInt
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
     companion object {
 
         var useOldMessages = false
@@ -340,7 +340,7 @@ class MainActivity : AppCompatActivity() {
         if (!profileListEmpty) {
             handleIntent(intent?.extras)
         }
-        app.db.profileDao().getAllFull().observe(this, Observer { profiles ->
+        app.db.profileDao().allFull.observe(this, Observer { profiles ->
             // TODO fix weird -1 profiles ???
             profiles.removeAll { it.id < 0 }
             drawer.setProfileList(profiles)
@@ -357,7 +357,7 @@ class MainActivity : AppCompatActivity() {
         if (app.profile != null)
             setDrawerItems()
 
-        app.db.metadataDao().getUnreadCounts().observe(this, Observer { unreadCounters ->
+        app.db.metadataDao().unreadCounts.observe(this, Observer { unreadCounters ->
             unreadCounters.map {
                 it.type = it.thingType
             }

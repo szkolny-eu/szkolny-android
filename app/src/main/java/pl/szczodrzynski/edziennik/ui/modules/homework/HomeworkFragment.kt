@@ -17,18 +17,21 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
+import javax.inject.Inject
 
 class HomeworkFragment : BaseFragment<HomeworkPresenter>(), HomeworkView {
     companion object {
         var pageSelection = 0
     }
 
-    override lateinit var app: App
-
     private lateinit var activity: MainActivity
     private lateinit var b: FragmentHomeworkBinding
 
-    override val presenter: HomeworkPresenter = HomeworkPresenter()
+    @Inject
+    override lateinit var presenter: HomeworkPresenter
+
+    @Inject
+    lateinit var app: App
 
     override val markAsReadSuccessString: String
         get() = getString(R.string.main_menu_mark_as_read_success)
@@ -40,8 +43,6 @@ class HomeworkFragment : BaseFragment<HomeworkPresenter>(), HomeworkView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity)
-        app = activity.application as App
-
         context!!.theme.applyStyle(Themes.appTheme, true)
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false)

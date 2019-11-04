@@ -20,17 +20,21 @@ import pl.szczodrzynski.edziennik.databinding.HomeworkListBinding
 import pl.szczodrzynski.edziennik.ui.base.BaseFragment
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.Themes
+import javax.inject.Inject
 
 class HomeworkListFragment : BaseFragment<HomeworkListPresenter>(), HomeworkListView {
-
-    override lateinit var app: App
 
     private lateinit var activity: MainActivity
     private lateinit var b: HomeworkListBinding
 
-    private lateinit var homeworkAdapter: HomeworkListAdapter
+    @Inject
+    override lateinit var presenter: HomeworkListPresenter
 
-    override val presenter: HomeworkListPresenter = HomeworkListPresenter()
+    @Inject
+    lateinit var app: App
+
+    @Inject
+    lateinit var homeworkAdapter: HomeworkListAdapter
 
     override val viewLifecycle: Lifecycle
         get() = lifecycle
@@ -52,7 +56,6 @@ class HomeworkListFragment : BaseFragment<HomeworkListPresenter>(), HomeworkList
         activity = (getActivity() as MainActivity?) ?: return null
         if (context == null)
             return null
-        app = activity.application as App
         context!!.theme.applyStyle(Themes.appTheme, true)
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false)
@@ -66,11 +69,11 @@ class HomeworkListFragment : BaseFragment<HomeworkListPresenter>(), HomeworkList
         if (app.profile == null || !isAdded)
             return
 
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.reverseLayout = true
-        layoutManager.stackFromEnd = true
+        val layoutManager = LinearLayoutManager(context).apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
 
-        homeworkAdapter = HomeworkListAdapter()
         homeworkAdapter.onItemEditClick = presenter::onItemEditClick
 
         b.homeworkView.apply {
