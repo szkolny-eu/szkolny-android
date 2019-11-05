@@ -930,6 +930,7 @@
     <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
     <string name="edziennik_progress_endpoint_school_info">Pobieram informacje o szkole...</string>
     <string name="edziennik_progress_endpoint_grades">Pobieranie ocen ucznia...</string>
+    <string name="edziennik_progress_endpoint_grade_categories">Pobieranie kategorii ocen...</string>
     <string name="edziennik_progress_login_template_web">Logowanie do Template WEB...</string>
     <string name="edziennik_progress_login_template_api">Logowanie do Template API...</string>
     <string name="edziennik_progress_login_mobidziennik_web">Logowanie do MobiDziennika...</string>
