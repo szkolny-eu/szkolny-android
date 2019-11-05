@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment {
         b.pruneWorkButton.setOnClickListener((v -> WorkManager.getInstance(app).pruneWork()));
 
         b.runChucker.setOnClickListener((v -> {
-            startActivity(Chucker.getLaunchIntent(activity, Chucker.SCREEN_HTTP));
+            startActivity(Chucker.getLaunchIntent(activity, 1));
         }));
 
         b.librusCaptchaButton.setOnClickListener((v -> {
