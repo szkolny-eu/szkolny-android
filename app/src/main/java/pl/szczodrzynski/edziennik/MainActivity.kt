@@ -2,10 +2,15 @@ package pl.szczodrzynski.edziennik
 
 import android.app.Activity
 import android.app.ActivityManager
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.*
+import android.provider.Settings
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -64,6 +69,7 @@ import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
+import pl.szczodrzynski.edziennik.utils.appManagerIntentList
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.navlib.*
 import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
@@ -582,28 +588,17 @@ class MainActivity : AppCompatActivity() {
                 .setMessage(R.string.app_manager_dialog_text)
                 .setPositiveButton(R.string.ok) { dialog, which ->
                     try {
-                        val intent = Intent()
-                        intent.component = ComponentName(
-                                "com.huawei.systemmanager",
-                                "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"
-                        )
-                        startActivity(intent)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        try {
-                            val intent = Intent()
-                            intent.component = ComponentName(
-                                    "com.asus.mobilemanager",
-                                    "com.asus.mobilemanager.MainActivity"
-                            )
-                            startActivity(intent)
-                        } catch (e: Exception) {
-                            try {
-                                startActivity(Intent(android.provider.Settings.ACTION_SETTINGS))
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                Toast.makeText(this, R.string.app_manager_open_failed, Toast.LENGTH_SHORT).show()
+                        for (intent in appManagerIntentList) {
+                            if (packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+                                startActivity(intent)
                             }
+                        }
+                    } catch (e: Exception) {
+                        try {
+                            startActivity(Intent(Settings.ACTION_SETTINGS))
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Toast.makeText(this, R.string.app_manager_open_failed, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
