@@ -984,4 +984,5 @@
     <string name="dont_ask_again">Nie pytaj ponownie</string>
     <string name="app_manager_open_failed">Nie udało się otworzyć ustawień</string>
     <string name="edziennik_notification_api_notify_title">Tworzenie powiadomień</string>
+    <string name="login_librus_captcha_title">Librus - logowanie</string>
 </resources>

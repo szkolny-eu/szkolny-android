@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import androidx.work.WorkManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.chuckerteam.chucker.api.Chucker;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
@@ -50,6 +51,7 @@ import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
 import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
+import pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusCaptchaActivity;
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeActivity;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Themes;
@@ -103,6 +105,14 @@ public class HomeFragment extends Fragment {
         }));
 
         b.pruneWorkButton.setOnClickListener((v -> WorkManager.getInstance(app).pruneWork()));
+
+        b.runChucker.setOnClickListener((v -> {
+            startActivity(Chucker.getLaunchIntent(activity, Chucker.SCREEN_HTTP));
+        }));
+
+        b.librusCaptchaButton.setOnClickListener((v -> {
+            startActivity(new Intent(activity, LoginLibrusCaptchaActivity.class));
+        }));
 
         //((TextView)v.findViewById(R.id.nextSync)).setText(getString(R.string.next_sync_format,Time.fromMillis(app.appJobs.syncJobTime).getStringHMS()));
 

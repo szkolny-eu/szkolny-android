@@ -36,24 +36,46 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:orientation="vertical"
-                tools:visibility="visible">
+                tools:visibility="visible"
+                tools:ignore="HardcodedText">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/librusCaptchaButton"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="Librus Captcha" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/runChucker"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="Launch Chucker" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/mobidziennikMessagesSwitch"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_margin="8dp"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
                         android:text="Zmień moduł wiadomości" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/composeButton"
                         style="@style/Widget.MaterialComponents.Button"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
+                        android:layout_weight="1"
                         android:text="Compose" />
                 </LinearLayout>
 
