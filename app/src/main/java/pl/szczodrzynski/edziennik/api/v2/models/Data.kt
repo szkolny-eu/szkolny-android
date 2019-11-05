@@ -390,8 +390,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     }
 
     fun error(apiError: ApiError) {
-        if (apiError.isCritical)
-            cancel()
         callback.onError(apiError)
     }
 

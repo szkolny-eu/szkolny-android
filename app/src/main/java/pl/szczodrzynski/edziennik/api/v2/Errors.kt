@@ -150,6 +150,7 @@ const val ERROR_IDZIENNIK_API_OTHER                         = 451
 
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 
+const val EXCEPTION_API_TASK                                = 900
 const val EXCEPTION_LOGIN_LIBRUS_API_TOKEN                  = 901
 const val EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN               = 902
 const val EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN            = 903

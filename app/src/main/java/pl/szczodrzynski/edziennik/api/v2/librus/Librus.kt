@@ -5,7 +5,7 @@
 package pl.szczodrzynski.edziennik.api.v2.librus
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
+import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
@@ -14,9 +14,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.firstlogin.LibrusFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLogin
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginApi
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginSynergia
-import pl.szczodrzynski.edziennik.api.v2.librusLoginMethods
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.api.v2.prepare
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -53,12 +51,28 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                                           |__*/
     override fun sync(featureIds: List<Int>, viewId: Int?) {
         data.prepare(librusLoginMethods, LibrusFeatures, featureIds, viewId)
-        d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
-        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        login()
+    }
+
+    private fun login() {
+        d(TAG, "Trying to login with ${data.targetLoginMethodIds}")
+        if (internalErrorList.isNotEmpty()) {
+            d(TAG, "  - Internal errors:")
+            internalErrorList.forEach { d(TAG, "      - code $it") }
+        }
         LibrusLogin(data) {
-            LibrusData(data) {
-                completed()
-            }
+            data()
+        }
+    }
+
+    private fun data() {
+        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        if (internalErrorList.isNotEmpty()) {
+            d(TAG, "  - Internal errors:")
+            internalErrorList.forEach { d(TAG, "      - code $it") }
+        }
+        LibrusData(data) {
+            completed()
         }
     }
 
@@ -102,15 +116,67 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             }
 
             override fun onError(apiError: ApiError) {
+                if (apiError.errorCode in internalErrorList) {
+                    // finish immediately if the same error occurs twice during the same sync
+                    callback.onError(apiError)
+                    return
+                }
+                internalErrorList.add(apiError.errorCode)
                 when (apiError.errorCode) {
-                    in internalErrorList -> {
-                        // finish immediately if the same error occurs twice during the same sync
-                        callback.onError(apiError)
+                    ERROR_LIBRUS_PORTAL_ACCESS_DENIED -> {
+                        data.loginMethods.remove(LOGIN_METHOD_LIBRUS_PORTAL)
+                        data.targetLoginMethodIds.add(LOGIN_METHOD_LIBRUS_PORTAL)
+                        data.targetLoginMethodIds.sort()
+                        data.portalTokenExpiryTime = 0
+                        login()
                     }
-                    CODE_INTERNAL_LIBRUS_ACCOUNT_410 -> {
-                        internalErrorList.add(apiError.errorCode)
-                        loginStore.removeLoginData("refreshToken") // force a clean login
-                        //loginLibrus()
+                    ERROR_LIBRUS_API_ACCESS_DENIED,
+                    ERROR_LIBRUS_API_TOKEN_EXPIRED -> {
+                        data.loginMethods.remove(LOGIN_METHOD_LIBRUS_API)
+                        data.targetLoginMethodIds.add(LOGIN_METHOD_LIBRUS_API)
+                        data.targetLoginMethodIds.sort()
+                        data.apiTokenExpiryTime = 0
+                        login()
+                    }
+                    ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED -> {
+                        data.loginMethods.remove(LOGIN_METHOD_LIBRUS_SYNERGIA)
+                        data.targetLoginMethodIds.add(LOGIN_METHOD_LIBRUS_SYNERGIA)
+                        data.targetLoginMethodIds.sort()
+                        data.synergiaSessionIdExpiryTime = 0
+                        login()
+                    }
+                    ERROR_LIBRUS_MESSAGES_ACCESS_DENIED -> {
+                        data.loginMethods.remove(LOGIN_METHOD_LIBRUS_MESSAGES)
+                        data.targetLoginMethodIds.add(LOGIN_METHOD_LIBRUS_MESSAGES)
+                        data.targetLoginMethodIds.sort()
+                        data.messagesSessionIdExpiryTime = 0
+                        login()
+                    }
+                    ERROR_LOGIN_LIBRUS_PORTAL_NO_CODE,
+                    ERROR_LOGIN_LIBRUS_PORTAL_CSRF_MISSING,
+                    ERROR_LOGIN_LIBRUS_PORTAL_CODE_REVOKED,
+                    ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED -> {
+                        login()
+                    }
+                    ERROR_LOGIN_LIBRUS_PORTAL_NO_REFRESH,
+                    ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_REVOKED,
+                    ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_INVALID -> {
+                        data.portalRefreshToken = null
+                        login()
+                    }
+                    ERROR_LOGIN_LIBRUS_SYNERGIA_TOKEN_INVALID,
+                    ERROR_LOGIN_LIBRUS_SYNERGIA_NO_TOKEN,
+                    ERROR_LOGIN_LIBRUS_SYNERGIA_NO_SESSION_ID -> {
+                        login()
+                    }
+                    ERROR_LOGIN_LIBRUS_MESSAGES_NO_SESSION_ID -> {
+                        login()
+                    }
+                    // TODO PORTAL CAPTCHA
+                    ERROR_LIBRUS_API_TIMETABLE_NOT_PUBLIC,
+                    ERROR_LIBRUS_API_LUCKY_NUMBER_NOT_ACTIVE,
+                    ERROR_LIBRUS_API_NOTES_NOT_ACTIVE -> {
+                        data()
                     }
                     else -> callback.onError(apiError)
                 }

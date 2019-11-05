@@ -90,6 +90,7 @@ class ApiService : Service() {
             errorList.add(apiError)
             apiError.throwable?.printStackTrace()
             if (apiError.isCritical) {
+                taskRunning?.cancel()
                 notification.setCriticalError().post()
                 taskRunning = null
                 taskIsRunning = false
@@ -154,10 +155,14 @@ class ApiService : Service() {
         // post an event
         EventBus.getDefault().post(ApiTaskStartedEvent(taskProfileId, task.profile))
 
-        when (task) {
-            is EdziennikTask -> task.run(app, taskCallback)
-            is NotifyTask -> task.run(app, taskCallback)
-            is ErrorReportTask -> task.run(app, taskCallback, notification, errorList)
+        try {
+            when (task) {
+                is EdziennikTask -> task.run(app, taskCallback)
+                is NotifyTask -> task.run(app, taskCallback)
+                is ErrorReportTask -> task.run(app, taskCallback, notification, errorList)
+            }
+        } catch (e: Exception) {
+            taskCallback.onError(ApiError(TAG, EXCEPTION_API_TASK).withThrowable(e))
         }
     }
 

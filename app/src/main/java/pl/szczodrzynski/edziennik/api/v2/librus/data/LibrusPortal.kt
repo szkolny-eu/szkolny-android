@@ -44,7 +44,10 @@ open class LibrusPortal(open val data: DataLibrus) {
                         "Access token is invalid" -> ERROR_LIBRUS_PORTAL_ACCESS_DENIED
                         "ApiDisabled" -> ERROR_LIBRUS_PORTAL_API_DISABLED
                         "Account not found" -> ERROR_LIBRUS_PORTAL_SYNERGIA_NOT_FOUND
-                        else -> ERROR_LIBRUS_PORTAL_OTHER
+                        else -> when (json.getString("hint")) {
+                            "Error while decoding to JSON" -> ERROR_LIBRUS_PORTAL_ACCESS_DENIED
+                            else -> ERROR_LIBRUS_PORTAL_OTHER
+                        }
                     }.let { errorCode ->
                         data.error(ApiError(tag, errorCode)
                                 .withApiResponse(json)

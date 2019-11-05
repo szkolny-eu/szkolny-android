@@ -8,6 +8,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
@@ -73,7 +74,7 @@ public class LoginStore {
         if (data == null)
             return defaultValue;
         JsonElement element = data.get(key);
-        if (element != null) {
+        if (element != null && !(element instanceof JsonNull)) {
             return element.getAsString();
         }
         return defaultValue;
@@ -83,7 +84,7 @@ public class LoginStore {
         if (data == null)
             return defaultValue;
         JsonElement element = data.get(key);
-        if (element != null) {
+        if (element != null && !(element instanceof JsonNull)) {
             return element.getAsInt();
         }
         return defaultValue;
@@ -93,7 +94,7 @@ public class LoginStore {
         if (data == null)
             return defaultValue;
         JsonElement element = data.get(key);
-        if (element != null) {
+        if (element != null && !(element instanceof JsonNull)) {
             return element.getAsLong();
         }
         return defaultValue;
@@ -103,7 +104,7 @@ public class LoginStore {
         if (data == null)
             return defaultValue;
         JsonElement element = data.get(key);
-        if (element != null) {
+        if (element != null && !(element instanceof JsonNull)) {
             return element.getAsFloat();
         }
         return defaultValue;
@@ -112,7 +113,7 @@ public class LoginStore {
         if (data == null)
             return defaultValue;
         JsonElement element = data.get(key);
-        if (element != null) {
+        if (element != null && !(element instanceof JsonNull)) {
             return element.getAsBoolean();
         }
         return defaultValue;
