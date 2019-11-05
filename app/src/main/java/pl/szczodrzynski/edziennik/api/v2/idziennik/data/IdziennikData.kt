@@ -41,43 +41,43 @@ class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
         when (endpointId) {
             ENDPOINT_IDZIENNIK_WEB_TIMETABLE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_timetable)
-                IdziennikWebTimetable(data) { onSuccess() }
+                IdziennikWebTimetable(data, onSuccess)
             }
             ENDPOINT_IDZIENNIK_WEB_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
-                IdziennikWebGrades(data) { onSuccess() }
+                IdziennikWebGrades(data, onSuccess)
             }
             ENDPOINT_IDZIENNIK_WEB_PROPOSED_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_proposed_grades)
-                IdziennikWebProposedGrades(data) { onSuccess() }
+                IdziennikWebProposedGrades(data, onSuccess)
             }
             ENDPOINT_IDZIENNIK_WEB_EXAMS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_exams)
-                IdziennikWebExams(data) { onSuccess() }
+                IdziennikWebExams(data, onSuccess)
             }
             ENDPOINT_IDZIENNIK_WEB_NOTICES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_notices)
-                IdziennikWebNotices(data) { onSuccess() }
+                IdziennikWebNotices(data, onSuccess)
             }
             ENDPOINT_IDZIENNIK_WEB_ANNOUNCEMENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_announcements)
-                IdziennikWebAnnouncements(data) { onSuccess() }
+                IdziennikWebAnnouncements(data, onSuccess)
             }
             ENDPOINT_IDZIENNIK_WEB_ATTENDANCE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance)
-                IdziennikWebAttendance(data) { onSuccess() }
+                IdziennikWebAttendance(data, onSuccess)
             }
             ENDPOINT_IDZIENNIK_API_CURRENT_REGISTER -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
-                IdziennikApiCurrentRegister(data) { onSuccess() }
+                IdziennikApiCurrentRegister(data, onSuccess)
             }
             ENDPOINT_IDZIENNIK_API_MESSAGES_INBOX -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
-                IdziennikApiMessagesInbox(data) { onSuccess() }
+                IdziennikApiMessagesInbox(data, onSuccess)
             }
             ENDPOINT_IDZIENNIK_API_MESSAGES_SENT -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
-                IdziennikApiMessagesSent(data) { onSuccess() }
+                IdziennikApiMessagesSent(data, onSuccess)
             }
             else -> onSuccess()
         }

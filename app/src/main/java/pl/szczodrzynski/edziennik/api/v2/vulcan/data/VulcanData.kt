@@ -38,39 +38,39 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
         when (endpointId) {
             ENDPOINT_VULCAN_API_DICTIONARIES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_dictionaries)
-                VulcanApiDictionaries(data) { onSuccess() }
+                VulcanApiDictionaries(data, onSuccess)
             }
             ENDPOINT_VULCAN_API_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
-                VulcanApiGrades(data) { onSuccess() }
+                VulcanApiGrades(data, onSuccess)
             }
             ENDPOINT_VULCAN_API_GRADES_SUMMARY -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_proposed_grades)
-                VulcanApiProposedGrades(data) { onSuccess() }
+                VulcanApiProposedGrades(data, onSuccess)
             }
             ENDPOINT_VULCAN_API_EVENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_events)
-                VulcanApiEvents(data, isHomework = false) { onSuccess() }
+                VulcanApiEvents(data, isHomework = false, onSuccess = onSuccess)
             }
             ENDPOINT_VULCAN_API_HOMEWORK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
-                VulcanApiEvents(data, isHomework = true) { onSuccess() }
+                VulcanApiEvents(data, isHomework = true, onSuccess = onSuccess)
             }
             ENDPOINT_VULCAN_API_NOTICES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_notices)
-                VulcanApiNotices(data) { onSuccess() }
+                VulcanApiNotices(data, onSuccess)
             }
             ENDPOINT_VULCAN_API_ATTENDANCE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance)
-                VulcanApiAttendance(data) { onSuccess() }
+                VulcanApiAttendance(data, onSuccess)
             }
             ENDPOINT_VULCAN_API_MESSAGES_INBOX -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
-                VulcanApiMessagesInbox(data) { onSuccess() }
+                VulcanApiMessagesInbox(data, onSuccess)
             }
             ENDPOINT_VULCAN_API_MESSAGES_SENT -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
-                VulcanApiMessagesSent(data) { onSuccess() }
+                VulcanApiMessagesSent(data, onSuccess)
             }
             else -> onSuccess()
         }

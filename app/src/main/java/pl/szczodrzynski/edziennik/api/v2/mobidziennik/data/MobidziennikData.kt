@@ -42,7 +42,7 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
         when (endpointId) {
             ENDPOINT_MOBIDZIENNIK_API_MAIN -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_data)
-                MobidziennikApi(data) { onSuccess() }
+                MobidziennikApi(data, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
