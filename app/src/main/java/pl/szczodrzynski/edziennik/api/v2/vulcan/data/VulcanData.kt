@@ -68,6 +68,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
                 VulcanApiMessagesInbox(data) { onSuccess() }
             }
+            ENDPOINT_VULCAN_API_MESSAGES_SENT -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
+                VulcanApiMessagesSent(data) { onSuccess() }
+            }
             else -> onSuccess()
         }
     }
