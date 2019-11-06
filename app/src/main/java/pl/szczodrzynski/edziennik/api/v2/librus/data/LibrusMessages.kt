@@ -12,13 +12,17 @@ import okhttp3.Cookie
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.parser.Parser
-import org.redundent.kotlin.xml.PrintOptions
-import org.redundent.kotlin.xml.xml
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.Utils.d
+import java.io.StringWriter
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 
 open class LibrusMessages(open val data: DataLibrus) {
     companion object {
@@ -80,7 +84,27 @@ open class LibrusMessages(open val data: DataLibrus) {
                         .secure().httpOnly().build()
         ))
 
-        val requestXml = xml("service") {
+
+        val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+        val doc = docBuilder.newDocument()
+        val serviceElement = doc.createElement("service")
+        val headerElement = doc.createElement("header")
+        val dataElement = doc.createElement("data")
+        for ((key, value) in parameters.orEmpty()) {
+            val element = doc.createElement(key)
+            element.appendChild(doc.createTextNode(value.toString()))
+            dataElement.appendChild(element)
+        }
+        serviceElement.appendChild(headerElement)
+        serviceElement.appendChild(dataElement)
+        doc.appendChild(serviceElement)
+        val transformer = TransformerFactory.newInstance().newTransformer()
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes")
+        val stringWriter = StringWriter()
+        transformer.transform(DOMSource(doc), StreamResult(stringWriter))
+        val requestXml = stringWriter.toString()
+
+        /*val requestXml = xml("service") {
             "header" { }
             "data" {
                 for ((key, value) in parameters.orEmpty()) {
@@ -92,7 +116,7 @@ open class LibrusMessages(open val data: DataLibrus) {
         }.toString(PrintOptions(
                 singleLineTextElements = true,
                 useSelfClosingTags = true
-        ))
+        ))*/
 
         Request.builder()
                 .url("$LIBRUS_MESSAGES_URL/$endpoint")
