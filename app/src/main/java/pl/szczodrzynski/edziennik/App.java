@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import com.hypertrack.hyperlog.HyperLog;
 import com.mikepenz.iconics.Iconics;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -81,6 +82,7 @@ import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.TLSSocketFactory;
 import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity;
+import pl.szczodrzynski.edziennik.utils.DebugLogFormat;
 import pl.szczodrzynski.edziennik.utils.PermissionChecker;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
@@ -294,6 +296,10 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
         }
 
         if (App.devMode || BuildConfig.DEBUG) {
+            HyperLog.initialize(this);
+            HyperLog.setLogLevel(Log.VERBOSE);
+            HyperLog.setLogFormat(new DebugLogFormat(this));
+
             ChuckerCollector chuckerCollector = new ChuckerCollector(this, true, RetentionManager.Period.ONE_HOUR);
             ChuckerInterceptor chuckerInterceptor = new ChuckerInterceptor(this, chuckerCollector);
             httpBuilder.addInterceptor(chuckerInterceptor);

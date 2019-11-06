@@ -26,6 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
+import com.hypertrack.hyperlog.HyperLog;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -106,15 +108,15 @@ public class Utils {
 
     public static void d(String TAG, String message) {
         if (App.devMode) {
-            Log.d("Szkolny/"+TAG, message);
+            HyperLog.d("Szkolny/"+TAG, message);
             //debugLog.add(TAG+": "+message);
         }
     }
     public static void c(String TAG, String message) {
-        if (App.devMode) {
+        /*if (App.devMode) {
             Log.d(TAG, "// " + message);
             ///debugLog.add(TAG+": // "+message);
-        }
+        }*/
     }
 
     /**

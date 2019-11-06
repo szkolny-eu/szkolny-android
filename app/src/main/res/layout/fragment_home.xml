@@ -40,6 +40,14 @@
                 tools:ignore="HardcodedText">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/getLogs"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="Save Debug Logs" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/librusCaptchaButton"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,11 +32,13 @@ import androidx.work.WorkManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.chuckerteam.chucker.api.Chucker;
+import com.hypertrack.hyperlog.HyperLog;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,6 +115,19 @@ public class HomeFragment extends Fragment {
 
         b.librusCaptchaButton.setOnClickListener((v -> {
             startActivity(new Intent(activity, LoginLibrusCaptchaActivity.class));
+        }));
+
+        b.getLogs.setOnClickListener((v -> {
+            File logs = HyperLog.getDeviceLogsInFile(activity, true);
+            Intent intent = new Intent(Intent.ACTION_SEND);
+
+            if(logs.exists()) {
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+logs.getAbsolutePath()));
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Share debug logs");
+                intent.putExtra(Intent.EXTRA_TEXT, "Share debug logs");
+                startActivity(Intent.createChooser(intent, "Share debug logs"));
+            }
         }));
 
         //((TextView)v.findViewById(R.id.nextSync)).setText(getString(R.string.next_sync_format,Time.fromMillis(app.appJobs.syncJobTime).getStringHMS()));

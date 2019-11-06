@@ -164,6 +164,8 @@ dependencies {
     implementation "io.github.wulkanowy:signer-android:0.1.1"
 
     implementation "androidx.work:work-runtime-ktx:${versions.work}"
+
+    implementation 'com.hypertrack:hyperlog:0.0.10'
 }
 repositories {
     mavenCentral()

@@ -533,7 +533,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             syncCardIntervalItem.setChecked(app.appConfig.registerSyncEnabled);
             syncCardIntervalItem.setOnClickAction(() -> {
                 List<CharSequence> intervalNames = new ArrayList<>();
-                if (App.devMode) {
+                if (App.devMode && false) {
                     intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_seconds, 30));
                     intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 2));
                 }
@@ -545,7 +545,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 3));
                 intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 4));
                 List<Integer> intervals = new ArrayList<>();
-                if (App.devMode) {
+                if (App.devMode && false) {
                     intervals.add(30);
                     intervals.add(2 * 60);
                 }
