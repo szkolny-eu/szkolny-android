@@ -36,7 +36,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
-import pl.szczodrzynski.edziennik.api.v2.ApiService
 import pl.szczodrzynski.edziennik.api.v2.events.*
 import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.*
@@ -524,17 +523,14 @@ class MainActivity : AppCompatActivity() {
     fun syncCurrentFeature() {
         swipeRefreshLayout.isRefreshing = true
         Toast.makeText(this, fragmentToSyncName(navTargetId), Toast.LENGTH_SHORT).show()
-        ApiService.start(this)
         val fragmentParam = when (navTargetId) {
             DRAWER_ITEM_MESSAGES -> MessagesFragment.pageSelection
             else -> 0
         }
-        EventBus.getDefault().postSticky(
-                EdziennikTask.syncProfile(
-                        App.profileId,
-                        listOf(navTargetId to fragmentParam)
-                )
-        )
+        EdziennikTask.syncProfile(
+                App.profileId,
+                listOf(navTargetId to fragmentParam)
+        ).enqueue(this)
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSyncStartedEvent(event: ApiTaskStartedEvent) {
@@ -783,7 +779,7 @@ class MainActivity : AppCompatActivity() {
     fun loadProfile(id: Int) = loadProfile(id, navTargetId)
     fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
     fun loadProfile(id: Int, drawerSelection: Int, arguments: Bundle? = null) {
-        d("NavDebug", "loadProfile(id = $id, drawerSelection = $drawerSelection)")
+        //d("NavDebug", "loadProfile(id = $id, drawerSelection = $drawerSelection)")
         if (app.profile != null && App.profileId == id) {
             drawer.currentProfile = app.profile.id
             loadTarget(drawerSelection, arguments)

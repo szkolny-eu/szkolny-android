@@ -6,6 +6,8 @@ package pl.szczodrzynski.edziennik.api.v2.events.task
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES.O
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.ApiService
@@ -25,7 +27,12 @@ abstract class IApiTask(open val profileId: Int) {
     abstract fun cancel()
 
     fun enqueue(context: Context) {
-        context.startService(Intent(context, ApiService::class.java))
+        Intent(context, ApiService::class.java).let {
+            if (SDK_INT >= O)
+                context.startForegroundService(it)
+            else
+                context.startService(it)
+        }
         EventBus.getDefault().postSticky(this)
     }
 

@@ -232,11 +232,13 @@ class ApiService : Service() {
           ____) |  __/ |   \ V /| | (_|  __/ | (_) \ V /  __/ |  | |  | | (_| |  __/\__ \
          |_____/ \___|_|    \_/ |_|\___\___|  \___/ \_/ \___|_|  |_|  |_|\__,_|\___||__*/
     override fun onCreate() {
+        d(TAG, "Service created")
         EventBus.getDefault().register(this)
         notification.setIdle().setCloseAction()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        d(TAG, "Foreground service onStartCommand")
         startForeground(EdziennikNotification.NOTIFICATION_ID, notification.notification)
         return START_NOT_STICKY
     }
