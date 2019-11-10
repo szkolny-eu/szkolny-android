@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                style="@style/Widget.MaterialComponents.AppBarLayout.Surface">
+
+                <com.nshmura.recyclertablayout.RecyclerTabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/colorSurface_6dp"
+                    app:rtl_tabTextAppearance="@style/rtl_RecyclerTabLayout.Tab"
+                    app:rtl_tabIndicatorColor="?colorPrimary"
+                    app:rtl_tabMinWidth="90dp"
+                    app:rtl_tabMaxWidth="300dp"
+                    app:rtl_tabSelectedTextColor="?colorPrimary"
+                    app:rtl_tabPaddingStart="16dp"
+                    app:rtl_tabPaddingEnd="16dp"
+                    app:rtl_tabPaddingTop="12dp"
+                    app:rtl_tabPaddingBottom="12dp"/>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </LinearLayout>
+</layout>

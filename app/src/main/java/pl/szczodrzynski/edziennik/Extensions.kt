@@ -6,8 +6,13 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.text.*
+import android.text.style.ForegroundColorSpan
+import android.text.style.StrikethroughSpan
 import android.util.LongSparseArray
 import android.util.SparseArray
+import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.core.util.forEach
 import com.google.gson.JsonArray
@@ -327,3 +332,63 @@ fun String.crc32(): Long {
 }
 
 fun Long.formatDate(format: String = "yyyy-MM-dd HH:mm:ss"): String = SimpleDateFormat(format).format(this)
+
+fun CharSequence?.asColoredSpannable(colorInt: Int): Spannable {
+    val spannable = SpannableString(this)
+    spannable.setSpan(ForegroundColorSpan(colorInt), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return spannable
+}
+fun CharSequence?.asStrikethroughSpannable(): Spannable {
+    val spannable = SpannableString(this)
+    spannable.setSpan(StrikethroughSpan(), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return spannable
+}
+
+/**
+ * Returns a new read-only list only of those given elements, that are not empty.
+ * Applies for CharSequence and descendants.
+ */
+fun <T : CharSequence> listOfNotEmpty(vararg elements: T): List<T> = elements.filterNot { it.isEmpty() }
+
+fun List<CharSequence>.concat(delimiter: String? = null): CharSequence {
+    if (this.isEmpty()) {
+        return ""
+    }
+
+    if (this.size == 1) {
+        return this[0]
+    }
+
+    var spanned = false
+    for (piece in this) {
+        if (piece is Spanned) {
+            spanned = true
+            break
+        }
+    }
+
+    var first = true
+    if (spanned) {
+        val ssb = SpannableStringBuilder()
+        for (piece in this) {
+            if (!first && delimiter != null)
+                ssb.append(delimiter)
+            first = false
+            ssb.append(piece)
+        }
+        return SpannedString(ssb)
+    } else {
+        val sb = StringBuilder()
+        for (piece in this) {
+            if (!first && delimiter != null)
+                sb.append(delimiter)
+            first = false
+            sb.append(piece)
+        }
+        return sb.toString()
+    }
+}
+
+fun TextView.setText(@StringRes resid: Int, vararg formatArgs: Any) {
+    text = context.getString(resid, formatArgs)
+}

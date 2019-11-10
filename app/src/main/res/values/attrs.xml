@@ -3,4 +3,8 @@
     <attr name="colorSection" format="color" />
     <attr name="cardBackgroundDimmed" format="color" />
     <attr name="cardBackgroundHighlight" format="color" />
+    <attr name="timetable_lesson_bg" format="reference" />
+    <attr name="timetable_lesson_cancelled_color" format="color" />
+    <attr name="timetable_lesson_change_color" format="color" />
+    <attr name="timetable_lesson_shifted_color" format="color" />
 </resources>

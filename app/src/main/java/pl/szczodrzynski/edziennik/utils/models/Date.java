@@ -182,6 +182,10 @@ public class Date implements Comparable<Date> {
         }
     }
 
+    public boolean isLeap() {
+        return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
+    }
+
     public static Date getToday()
     {
         Calendar cal = Calendar.getInstance();

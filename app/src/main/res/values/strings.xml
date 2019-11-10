@@ -985,4 +985,10 @@
     <string name="app_manager_open_failed">Nie udało się otworzyć ustawień</string>
     <string name="edziennik_notification_api_notify_title">Tworzenie powiadomień</string>
     <string name="login_librus_captcha_title">Librus - logowanie</string>
+    <string name="timetable_today">Dzisiaj</string>
+    <string name="timetable_lesson_cancelled">Lekcja odwołana</string>
+    <string name="timetable_lesson_change">Zastępstwo</string>
+    <string name="timetable_lesson_change_format">Zastępstwo: zamiast %s</string>
+    <string name="timetable_lesson_shifted_same_day">Lekcja przeniesiona na godz. %s</string>
+    <string name="timetable_lesson_shifted_other_day">Lekcja przeniesiona na %s, godz. %s</string>
 </resources>

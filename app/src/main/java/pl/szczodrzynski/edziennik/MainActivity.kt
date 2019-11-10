@@ -62,7 +62,7 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
-import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
+import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils

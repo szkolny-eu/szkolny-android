@@ -72,6 +72,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceTypeDao
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherDao;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.TeamDao;
+import pl.szczodrzynski.edziennik.data.db.modules.timetable.TimetableDao;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
 @Database(entities = {
@@ -103,7 +104,8 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         Classroom.class,
         NoticeType.class,
         AttendanceType.class,
-        Metadata.class}, version = 63)
+        pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson.class,
+        Metadata.class}, version = 64)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -141,6 +143,7 @@ public abstract class AppDb extends RoomDatabase {
     public abstract ClassroomDao classroomDao();
     public abstract NoticeTypeDao noticeTypeDao();
     public abstract AttendanceTypeDao attendanceTypeDao();
+    public abstract TimetableDao timetableDao();
     public abstract MetadataDao metadataDao();
 
     private static volatile AppDb INSTANCE;
@@ -729,6 +732,37 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("ALTER TABLE profiles ADD COLUMN studentSchoolYear TEXT DEFAULT NULL");
         }
     };
+    private static final Migration MIGRATION_63_64 = new Migration(63, 64) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            //database.execSQL("ALTER TABLE lessons RENAME TO lessonsOld;");
+            database.execSQL("CREATE TABLE timetable (" +
+                "profileId INTEGER NOT NULL," +
+                "id INTEGER NOT NULL," +
+                "type INTEGER NOT NULL," +
+
+                "date TEXT DEFAULT NULL," +
+                "lessonNumber INTEGER DEFAULT NULL," +
+                "startTime TEXT DEFAULT NULL," +
+                "endTime TEXT DEFAULT NULL," +
+                "subjectId INTEGER DEFAULT NULL," +
+                "teacherId INTEGER DEFAULT NULL," +
+                "teamId INTEGER DEFAULT NULL," +
+                "classroom TEXT DEFAULT NULL," +
+
+                "oldDate TEXT DEFAULT NULL," +
+                "oldLessonNumber INTEGER DEFAULT NULL," +
+                "oldStartTime TEXT DEFAULT NULL," +
+                "oldEndTime TEXT DEFAULT NULL," +
+                "oldSubjectId INTEGER DEFAULT NULL," +
+                "oldTeacherId INTEGER DEFAULT NULL," +
+                "oldTeamId INTEGER DEFAULT NULL," +
+                "oldClassroom TEXT DEFAULT NULL," +
+                    "PRIMARY KEY(id));");
+            database.execSQL("CREATE INDEX index_lessons_profileId_type_date ON timetable (profileId, type, date);");
+            database.execSQL("CREATE INDEX index_lessons_profileId_type_oldDate ON timetable (profileId, type, oldDate);");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -789,7 +823,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_59_60,
                                     MIGRATION_60_61,
                                     MIGRATION_61_62,
-                                    MIGRATION_62_63
+                                    MIGRATION_62_63,
+                                    MIGRATION_63_64
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

@@ -5,15 +5,77 @@
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api
 
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Time
 
 class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
     init {
-        for (lessonStr in rows) {
+        val lessons = rows.filterNot { it.isEmpty() }.map { it.split("|") }
+
+        for (lesson in lessons) {
+            val date = Date.fromYmd(lesson[2])
+            val startTime = Time.fromYmdHm(lesson[3])
+            val endTime = Time.fromYmdHm(lesson[4])
+            val id = date.combineWith(startTime) / 1000L
+
+            val subjectId = data.subjectList.singleOrNull { it.longName == lesson[5] }?.id ?: -1
+            val teacherId = data.teacherList.singleOrNull { it.fullNameLastFirst == (lesson[7]+" "+lesson[6]).fixName() }?.id ?: -1
+            val teamId = data.teamList.singleOrNull { it.name == lesson[8]+lesson[9] }?.id ?: -1
+            val classroom = lesson[11]
+
+            Lesson(data.profileId, id).also {
+                when (lesson[1]) {
+                    "plan_lekcji", "lekcja" -> {
+                        it.type = Lesson.TYPE_NORMAL
+                        it.date = date
+                        it.startTime = startTime
+                        it.endTime = endTime
+                        it.subjectId = subjectId
+                        it.teacherId = teacherId
+                        it.teamId = teamId
+                        it.classroom = classroom
+                    }
+                    "lekcja_odwolana" -> {
+                        it.type = Lesson.TYPE_CANCELLED
+                        it.date = date
+                        it.startTime = startTime
+                        it.endTime = endTime
+                        it.oldSubjectId = subjectId
+                        //it.oldTeacherId = teacherId
+                        it.oldTeamId = teamId
+                        //it.oldClassroom = classroom
+                    }
+                    "zastepstwo" -> {
+                        it.type = Lesson.TYPE_CHANGE
+                        it.date = date
+                        it.startTime = startTime
+                        it.endTime = endTime
+                        it.subjectId = subjectId
+                        it.teacherId = teacherId
+                        it.teamId = teamId
+                        it.classroom = classroom
+                    }
+                }
+
+                if (it.type != Lesson.TYPE_NORMAL) {
+                    data.metadataList.add(
+                            Metadata(
+                                    data.profileId,
+                                    Metadata.TYPE_LESSON_CHANGE,
+                                    it.id,
+                                    data.profile?.empty ?: false,
+                                    data.profile?.empty ?: false,
+                                    System.currentTimeMillis()
+                            ))
+                }
+                data.lessonNewList += it
+            }
+        }
+        /*for (lessonStr in rows) {
             if (lessonStr.isNotEmpty()) {
                 val lesson = lessonStr.split("|")
 
@@ -76,9 +138,9 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                         if (originalLesson == null) {
                             // original lesson doesn't exist, save a new addition
                             // TODO
-                            /*if (!RegisterLessonChange.existsAddition(app.profile, registerLessonChange)) {
+                            *//*if (!RegisterLessonChange.existsAddition(app.profile, registerLessonChange)) {
                             app.profile.timetable.addLessonAddition(registerLessonChange);
-                        }*/
+                        }*//*
                         } else {
                             // original lesson exists, so we need to compare them
                             if (!lessonChange.matches(originalLesson)) {
@@ -108,6 +170,6 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                     }
                 }
             }
-        }
+        }*/
     }
 }

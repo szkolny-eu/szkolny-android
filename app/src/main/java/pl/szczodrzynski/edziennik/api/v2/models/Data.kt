@@ -136,6 +136,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     var lessonsToRemove: DataRemoveModel? = null
     val lessonList = mutableListOf<Lesson>()
     val lessonChangeList = mutableListOf<LessonChange>()
+    val lessonNewList = mutableListOf<pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson>()
 
     var gradesToRemove: DataRemoveModel? = null
     val gradeList = mutableListOf<Grade>()
@@ -195,6 +196,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
         lessonList.clear()
         lessonChangeList.clear()
+        lessonNewList.clear()
         gradeList.clear()
         noticeList.clear()
         attendanceList.clear()
@@ -282,6 +284,10 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         }
         if (lessonChangeList.isNotEmpty())
             db.lessonChangeDao().addAll(lessonChangeList)
+        if (lessonNewList.isNotEmpty()) {
+            db.timetableDao().clear(profile.id)
+            db.timetableDao() += lessonNewList
+        }
         if (gradeList.isNotEmpty()) {
             db.gradeDao().addAll(gradeList)
         }

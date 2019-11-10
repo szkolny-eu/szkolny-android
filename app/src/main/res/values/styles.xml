@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorAccent">@color/colorAccent</item>
@@ -95,6 +95,11 @@
         <item name="mal_color_secondary">?android:textColorSecondary</item>
         <item name="mal_card_background">?colorSurface</item>
         <item name="mal_divider_color">@color/dividerColor</item>
+
+        <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_light</item>
+        <item name="timetable_lesson_cancelled_color">#9f9f9f</item>
+        <item name="timetable_lesson_change_color">#ffb300</item>
+        <item name="timetable_lesson_shifted_color">#4caf50</item>
     </style>
     <style name="AppTheme.Dark" parent="NavView.Dark">
         <item name="colorPrimary">#64b5f6</item>
@@ -119,6 +124,11 @@
         <item name="mal_color_secondary">@color/secondaryTextDark</item>
         <item name="mal_card_background">?colorSurface</item>
         <item name="mal_divider_color">@color/dividerColor</item>
+
+        <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_dark</item>
+        <item name="timetable_lesson_cancelled_color">#838383</item>
+        <item name="timetable_lesson_change_color">#ffb300</item>
+        <item name="timetable_lesson_shifted_color">#4caf50</item>
     </style>
 
 
