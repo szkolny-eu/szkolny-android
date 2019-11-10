@@ -17,6 +17,12 @@ class LessonFull(profileId: Int, id: Long) : Lesson(profileId, id) {
                 return oldDate
             return date ?: oldDate
         }
+    val displayLessonNumber: Int?
+        get() {
+            if (type == TYPE_SHIFTED_SOURCE)
+                return oldLessonNumber
+            return lessonNumber ?: oldLessonNumber
+        }
     val displayStartTime: Time?
         get() {
             if (type == TYPE_SHIFTED_SOURCE)

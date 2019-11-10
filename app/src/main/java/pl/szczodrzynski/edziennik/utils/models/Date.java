@@ -1,6 +1,7 @@
 package pl.szczodrzynski.edziennik.utils.models;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -216,6 +217,11 @@ public class Date implements Comparable<Date> {
     @Override
     public int compareTo(@NonNull Date o) {
         return this.getValue() - o.getValue();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return obj instanceof Date && this.getValue() == ((Date) obj).getValue();
     }
 
     @Override

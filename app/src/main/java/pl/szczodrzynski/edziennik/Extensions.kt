@@ -390,5 +390,5 @@ fun List<CharSequence>.concat(delimiter: String? = null): CharSequence {
 }
 
 fun TextView.setText(@StringRes resid: Int, vararg formatArgs: Any) {
-    text = context.getString(resid, formatArgs)
+    text = context.getString(resid, *formatArgs)
 }

@@ -991,4 +991,8 @@
     <string name="timetable_lesson_change_format">Zastępstwo: zamiast %s</string>
     <string name="timetable_lesson_shifted_same_day">Lekcja przeniesiona na godz. %s</string>
     <string name="timetable_lesson_shifted_other_day">Lekcja przeniesiona na %s, godz. %s</string>
+    <string name="timetable_lesson_shifted_from_same_day">Lekcja przeniesiona z godz. %s</string>
+    <string name="timetable_lesson_shifted_from_other_day">Lekcja przeniesiona z dnia %s, godz. %s</string>
+    <string name="timetable_lesson_shifted">Lekcja przeniesiona na inny termin</string>
+    <string name="timetable_lesson_shifted_from">Lekcja przeniesiona z innego terminu</string>
 </resources>

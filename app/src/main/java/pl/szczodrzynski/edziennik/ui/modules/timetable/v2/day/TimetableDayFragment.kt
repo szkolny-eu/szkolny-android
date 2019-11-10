@@ -122,7 +122,13 @@ class TimetableDayFragment(val date: Date) : Fragment() {
                 }.concat(arrowRight)
 
 
-            lb.subjectName.text = lesson.displaySubjectName?.let { if (lesson.type == Lesson.TYPE_CANCELLED) it.asStrikethroughSpannable().asColoredSpannable(colorSecondary) else it }
+            lb.lessonNumber = lesson.displayLessonNumber
+            lb.subjectName.text = lesson.displaySubjectName?.let {
+                if (lesson.type == Lesson.TYPE_CANCELLED || lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
+                    it.asStrikethroughSpannable().asColoredSpannable(colorSecondary)
+                else
+                    it
+            }
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
 
@@ -165,7 +171,55 @@ class TimetableDayFragment(val date: Date) : Fragment() {
                     }
 
                     lb.annotation.background.colorFilter = PorterDuffColorFilter(
-                            getColorFromAttr(activity, R.attr.timetable_lesson_cancelled_color),
+                            getColorFromAttr(activity, R.attr.timetable_lesson_change_color),
+                            PorterDuff.Mode.SRC_ATOP
+                    )
+                }
+                Lesson.TYPE_SHIFTED_SOURCE -> {
+                    lb.annotationVisible = true
+                    if (lesson.date != lesson.oldDate) {
+                        lb.annotation.setText(
+                                R.string.timetable_lesson_shifted_other_day,
+                                lesson.date?.stringY_m_d ?: "?",
+                                lesson.startTime?.stringHM ?: "?"
+                        )
+                    }
+                    else if (lesson.startTime != lesson.oldStartTime) {
+                        lb.annotation.setText(
+                                R.string.timetable_lesson_shifted_same_day,
+                                lesson.startTime?.stringHM ?: "?"
+                        )
+                    }
+                    else {
+                        lb.annotation.setText(R.string.timetable_lesson_shifted)
+                    }
+
+                    lb.annotation.background.colorFilter = PorterDuffColorFilter(
+                            getColorFromAttr(activity, R.attr.timetable_lesson_shifted_source_color),
+                            PorterDuff.Mode.SRC_ATOP
+                    )
+                }
+                Lesson.TYPE_SHIFTED_TARGET -> {
+                    lb.annotationVisible = true
+                    if (lesson.date != lesson.oldDate) {
+                        lb.annotation.setText(
+                                R.string.timetable_lesson_shifted_from_other_day,
+                                lesson.oldDate?.stringY_m_d ?: "?",
+                                lesson.oldStartTime?.stringHM ?: "?"
+                        )
+                    }
+                    else if (lesson.startTime != lesson.oldStartTime) {
+                        lb.annotation.setText(
+                                R.string.timetable_lesson_shifted_from_same_day,
+                                lesson.oldStartTime?.stringHM ?: "?"
+                        )
+                    }
+                    else {
+                        lb.annotation.setText(R.string.timetable_lesson_shifted_from)
+                    }
+
+                    lb.annotation.background.colorFilter = PorterDuffColorFilter(
+                            getColorFromAttr(activity, R.attr.timetable_lesson_shifted_target_color),
                             PorterDuff.Mode.SRC_ATOP
                     )
                 }

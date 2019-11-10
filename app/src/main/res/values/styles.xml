@@ -99,7 +99,8 @@
         <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_light</item>
         <item name="timetable_lesson_cancelled_color">#9f9f9f</item>
         <item name="timetable_lesson_change_color">#ffb300</item>
-        <item name="timetable_lesson_shifted_color">#4caf50</item>
+        <item name="timetable_lesson_shifted_source_color">#A1887F</item>
+        <item name="timetable_lesson_shifted_target_color">#4caf50</item>
     </style>
     <style name="AppTheme.Dark" parent="NavView.Dark">
         <item name="colorPrimary">#64b5f6</item>
@@ -128,7 +129,8 @@
         <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_dark</item>
         <item name="timetable_lesson_cancelled_color">#838383</item>
         <item name="timetable_lesson_change_color">#ffb300</item>
-        <item name="timetable_lesson_shifted_color">#4caf50</item>
+        <item name="timetable_lesson_shifted_source_color">#A1887F</item>
+        <item name="timetable_lesson_shifted_target_color">#4caf50</item>
     </style>
 
 

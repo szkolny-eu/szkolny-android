@@ -35,7 +35,8 @@ interface TimetableDao {
         LEFT JOIN teachers AS oldT ON timetable.profileId = oldT.profileId AND timetable.oldTeacherId = oldT.teacherId
         LEFT JOIN teams AS oldG ON timetable.profileId = oldG.profileId AND timetable.oldTeamId = oldG.teamId
         LEFT JOIN metadata ON id = thingId AND thingType = ${Metadata.TYPE_LESSON_CHANGE} AND metadata.profileId = timetable.profileId
-        WHERE timetable.profileId = :profileId AND (type != 3 AND date = :date) OR (type = 3 AND oldDate = :date)
+        WHERE timetable.profileId = :profileId AND (type != 3 AND date = :date) OR ((type = 3 OR type = 1) AND oldDate = :date)
+        ORDER BY type
     """)
     fun getForDate(profileId: Int, date: Date) : LiveData<List<LessonFull>>
 }

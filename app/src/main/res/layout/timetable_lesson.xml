@@ -8,6 +8,9 @@
         <variable
             name="annotationVisible"
             type="boolean"/>
+        <variable
+            name="lessonNumber"
+            type="Integer" />
     </data>
     <FrameLayout
         android:layout_width="match_parent"
@@ -91,11 +94,13 @@
                     android:layout_gravity="center_vertical"
                     android:fontFamily="sans-serif-condensed-light"
                     android:includeFontPadding="false"
-
+                    android:layout_marginBottom="-4dp"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
-                    android:text="9"
-                    tools:textSize="28sp"/>
+                    android:text="@{Integer.toString(lessonNumber)}"
+                    android:textSize="28sp"
+                    android:visibility="@{lessonNumber != null ? View.VISIBLE : View.GONE}"
+                    tools:text="3"/>
                 <!--android:layout_marginTop="@{annotationVisible ? `-4dp` : `4dp`}"
                     android:layout_marginBottom="@{annotationVisible ? `-4dp` : `0dp`}"-->
 

@@ -1,5 +1,7 @@
 package pl.szczodrzynski.edziennik.utils.models;
 
+import androidx.annotation.Nullable;
+
 import java.util.Calendar;
 
 public class Time {
@@ -171,6 +173,11 @@ public class Time {
     public static boolean inRange(Time startTime, Time endTime, Time currentTime)
     {
         return (currentTime.getValue() >= startTime.getValue() && currentTime.getValue() <= endTime.getValue());
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return obj instanceof Time && this.getValue() == ((Time) obj).getValue();
     }
 
     @Override
