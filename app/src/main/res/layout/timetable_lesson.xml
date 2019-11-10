@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="annotationVisible"
+            type="boolean"/>
+    </data>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,41 +29,49 @@
                 android:fontFamily="sans-serif-condensed"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
+                android:text="@string/timetable_lesson_cancelled"
                 android:textColor="#000"
                 android:textSize="12sp"
                 android:textStyle="italic"
-                android:text="@string/timetable_lesson_cancelled"
-                android:visibility="gone"
-                tools:visibility="visible"/>
+                android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
+                tools:text="Zastępstwo: zamiast lekcji język polski z Adam Dodatkowy"
+                tools:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:paddingTop="4dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+                <!--tools:background="@drawable/timetable_subject_color_rounded"-->
 
                 <TextView
                     android:id="@+id/subjectName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-light"
-                    android:maxLines="2"
+                    android:maxLines="@{annotationVisible ? 1 : 2}"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:text="pracownia urządzeń techniki komputerowej nazwa przedmiotu jest bardzo długa i pewnie się tu nie zmieści w ogóle" />
+                    app:autoSizeMaxTextSize="16sp"
+                    app:autoSizeMinTextSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    tools:maxLines="2"
+                    tools:text="pracownia urządzeń techniki komputerowej" />
 
                 <ImageView
                     android:id="@+id/attendanceIcon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_weight="0"
-                    tools:srcCompat="@sample/check"
+                    android:layout_gravity="center_vertical"
                     android:visibility="gone"
+                    tools:srcCompat="@sample/check"
                     tools:visibility="visible" />
 
                 <ImageView
@@ -69,6 +82,20 @@
                     app:srcCompat="@drawable/bg_circle"
                     android:visibility="gone" />
 
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:includeFontPadding="false"
+                    android:layout_marginTop="@{annotationVisible ? -4 : 4}"
+                    android:layout_marginBottom="@{annotationVisible ? -4 : 0}"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:text="9"
+                    tools:textSize="28sp"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -76,15 +103,14 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="bottom"
+                android:orientation="vertical"
                 android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:orientation="vertical">
+                android:paddingEnd="8dp">
 
                 <TextView
                     android:id="@+id/detailsFirst"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     tools:text="8:10 - 8:55 • 015 językowa → 016 językowa" />

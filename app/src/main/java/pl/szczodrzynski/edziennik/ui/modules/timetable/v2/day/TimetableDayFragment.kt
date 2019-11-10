@@ -129,10 +129,10 @@ class TimetableDayFragment(val date: Date) : Fragment() {
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
             when (lesson.type) {
                 Lesson.TYPE_NORMAL -> {
-                    lb.annotation.visibility = View.GONE
+                    lb.annotationVisible = false
                 }
                 Lesson.TYPE_CANCELLED -> {
-                    lb.annotation.visibility = View.VISIBLE
+                    lb.annotationVisible = true
                     lb.annotation.setText(R.string.timetable_lesson_cancelled)
                     lb.annotation.background.colorFilter = PorterDuffColorFilter(
                             getColorFromAttr(activity, R.attr.timetable_lesson_cancelled_color),
@@ -141,7 +141,7 @@ class TimetableDayFragment(val date: Date) : Fragment() {
                     //lb.subjectName.typeface = Typeface.DEFAULT
                 }
                 Lesson.TYPE_CHANGE -> {
-                    lb.annotation.visibility = View.VISIBLE
+                    lb.annotationVisible = true
                     if (lesson.subjectId != lesson.oldSubjectId && lesson.teacherId != lesson.oldTeacherId) {
                         lb.annotation.setText(
                                 R.string.timetable_lesson_change_format,
