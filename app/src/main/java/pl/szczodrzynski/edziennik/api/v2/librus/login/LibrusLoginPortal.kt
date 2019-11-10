@@ -7,14 +7,15 @@ import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.getInt
+import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
-import java.util.ArrayList
+import java.util.*
 import java.util.regex.Pattern
 
 class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
@@ -42,7 +43,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
         else {
             data.app.cookieJar.clearForDomain("portal.librus.pl")
-            authorize(LIBRUS_AUTHORIZE_URL)
+            authorize(if (data.fakeLogin) FAKE_LIBRUS_AUTHORIZE else LIBRUS_AUTHORIZE_URL)
         }
     }}
 
@@ -86,10 +87,10 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     }
 
     private fun login(csrfToken: String) {
-        d(TAG, "Request: Librus/Login/Portal - $LIBRUS_LOGIN_URL")
+        d(TAG, "Request: Librus/Login/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_LOGIN else LIBRUS_LOGIN_URL}")
 
         Request.builder()
-                .url(LIBRUS_LOGIN_URL)
+                .url(if (data.fakeLogin) FAKE_LIBRUS_LOGIN else LIBRUS_LOGIN_URL)
                 .userAgent(LIBRUS_USER_AGENT)
                 .addParameter("email", data.portalEmail)
                 .addParameter("password", data.portalPassword)
@@ -135,7 +136,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
 
     private var refreshTokenFailed = false
     private fun accessToken(code: String?, refreshToken: String?) {
-        d(TAG, "Request: Librus/Login/Portal - $LIBRUS_TOKEN_URL")
+        d(TAG, "Request: Librus/Login/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_TOKEN else LIBRUS_TOKEN_URL}")
 
         val onSuccess = { json: JsonObject, response: Response? ->
             data.portalAccessToken = json.getString("access_token")
@@ -204,7 +205,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
 
         Request.builder()
-                .url(LIBRUS_TOKEN_URL)
+                .url(if (data.fakeLogin) FAKE_LIBRUS_TOKEN else LIBRUS_TOKEN_URL)
                 .userAgent(LIBRUS_USER_AGENT)
                 .addParams(params)
                 .post()

@@ -43,7 +43,7 @@ class SynergiaTokenExtractor(override val data: DataLibrus, val onSuccess: () ->
         val accountLogin = data.apiLogin ?: return false
         data.portalAccessToken ?: return false
 
-        d(TAG, "Request: Librus/SynergiaTokenExtractor - $LIBRUS_ACCOUNT_URL$accountLogin")
+        d(TAG, "Request: Librus/SynergiaTokenExtractor - ${if (data.fakeLogin) FAKE_LIBRUS_ACCOUNT else LIBRUS_ACCOUNT_URL}$accountLogin")
 
         val onSuccess = { json: JsonObject, response: Response? ->
             // synergiaAccount is executed when a synergia token needs a refresh
@@ -67,7 +67,7 @@ class SynergiaTokenExtractor(override val data: DataLibrus, val onSuccess: () ->
             }
         }
 
-        portalGet(TAG, LIBRUS_ACCOUNT_URL+accountLogin, onSuccess = onSuccess)
+        portalGet(TAG, (if (data.fakeLogin) FAKE_LIBRUS_ACCOUNT else LIBRUS_ACCOUNT_URL)+accountLogin, onSuccess = onSuccess)
         return true
     }
 }

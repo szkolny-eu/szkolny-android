@@ -3,6 +3,7 @@ package pl.szczodrzynski.edziennik.api.v2.librus.firstlogin
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.ERROR_NO_STUDENTS_IN_ACCOUNT
+import pl.szczodrzynski.edziennik.api.v2.FAKE_LIBRUS_ACCOUNTS
 import pl.szczodrzynski.edziennik.api.v2.LIBRUS_ACCOUNTS_URL
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_MODE_LIBRUS_EMAIL
 import pl.szczodrzynski.edziennik.api.v2.events.FirstLoginFinishedEvent
@@ -29,7 +30,7 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
         if (data.loginStore.mode == LOGIN_MODE_LIBRUS_EMAIL) {
             // email login: use Portal for account list
             LibrusLoginPortal(data) {
-                portal.portalGet(TAG, LIBRUS_ACCOUNTS_URL) { json, response ->
+                portal.portalGet(TAG, if (data.fakeLogin) FAKE_LIBRUS_ACCOUNTS else LIBRUS_ACCOUNTS_URL) { json, response ->
                     val accounts = json.getJsonArray("accounts")
 
                     if (accounts == null || accounts.size() < 1) {

@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import pl.szczodrzynski.edziennik.App;
+import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent;
 import pl.szczodrzynski.edziennik.api.v2.events.FirstLoginFinishedEvent;
@@ -88,6 +89,10 @@ public class LoginProgressFragment extends Fragment {
 
         LoginStore loginStore = new LoginStore(-1, loginType, new JsonObject());
         loginStore.copyFrom(args);
+
+        if (BuildConfig.DEBUG && LoginChooserFragment.fakeLogin) {
+            loginStore.putLoginData("fakeLogin", true);
+        }
 
         EdziennikTask.Companion.firstLogin(loginStore).enqueue(getContext());
     }

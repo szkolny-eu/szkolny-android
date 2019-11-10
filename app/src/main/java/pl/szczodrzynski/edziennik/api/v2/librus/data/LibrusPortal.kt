@@ -24,7 +24,7 @@ open class LibrusPortal(open val data: DataLibrus) {
 
     fun portalGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, onSuccess: (json: JsonObject, response: Response?) -> Unit) {
 
-        d(tag, "Request: Librus/Portal - $LIBRUS_PORTAL_URL$endpoint")
+        d(tag, "Request: Librus/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_PORTAL else LIBRUS_PORTAL_URL}$endpoint")
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
@@ -81,7 +81,7 @@ open class LibrusPortal(open val data: DataLibrus) {
         }
 
         Request.builder()
-                .url(LIBRUS_PORTAL_URL + endpoint)
+                .url((if (data.fakeLogin) FAKE_LIBRUS_PORTAL else LIBRUS_PORTAL_URL) + endpoint)
                 .userAgent(LIBRUS_USER_AGENT)
                 .addHeader("Authorization", "Bearer ${data.portalAccessToken}")
                 .apply {

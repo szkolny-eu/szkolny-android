@@ -14,6 +14,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import pl.szczodrzynski.edziennik.App;
+import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginChooserBinding;
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity;
@@ -26,6 +27,7 @@ public class LoginChooserFragment extends Fragment {
     private NavController nav;
     private FragmentLoginChooserBinding b;
     private static final String TAG = "LoginTemplate";
+    public static boolean fakeLogin = false;
 
     public LoginChooserFragment() { }
 
@@ -70,6 +72,10 @@ public class LoginChooserFragment extends Fragment {
             // there is no profiles
             b.cancelButton.setVisibility(View.GONE);
         }
+
+        b.fakeLogin.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
+        b.fakeLogin.setChecked(fakeLogin);
+        b.fakeLogin.setOnCheckedChangeListener((v, isChecked) -> fakeLogin = isChecked);
 
         b.helpButton.setOnClickListener((v -> {
             startActivity(new Intent(getActivity(), FeedbackActivity.class));

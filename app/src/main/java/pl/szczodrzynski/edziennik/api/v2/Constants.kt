@@ -14,6 +14,14 @@ val SYSTEM_USER_AGENT = System.getProperty("http.agent") ?: "Dalvik/2.1.0 Androi
 
 val SERVER_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME} $SYSTEM_USER_AGENT"
 
+const val FAKE_LIBRUS_API = "http://librus.szkolny.eu/api"
+const val FAKE_LIBRUS_PORTAL = "http://librus.szkolny.eu"
+const val FAKE_LIBRUS_AUTHORIZE = "http://librus.szkolny.eu/authorize.php"
+const val FAKE_LIBRUS_LOGIN = "http://librus.szkolny.eu/login_action.php"
+const val FAKE_LIBRUS_TOKEN = "http://librus.szkolny.eu/access_token.php"
+const val FAKE_LIBRUS_ACCOUNT = "/synergia_accounts_fresh.php?login="
+const val FAKE_LIBRUS_ACCOUNTS = "/synergia_accounts.php"
+
 val LIBRUS_USER_AGENT = "$SYSTEM_USER_AGENT LibrusMobileApp"
 const val SYNERGIA_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0"
 const val LIBRUS_CLIENT_ID = "wmSyUMo8llDAs4y9tJVYY92oyZ6h4lAt7KCuy0Gv"

@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+
+        <import type="android.view.View" />
         <variable
             name="annotationVisible"
             type="boolean"/>
@@ -89,12 +91,13 @@
                     android:layout_gravity="center_vertical"
                     android:fontFamily="sans-serif-condensed-light"
                     android:includeFontPadding="false"
-                    android:layout_marginTop="@{annotationVisible ? -4 : 4}"
-                    android:layout_marginBottom="@{annotationVisible ? -4 : 0}"
+
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="9"
                     tools:textSize="28sp"/>
+                <!--android:layout_marginTop="@{annotationVisible ? `-4dp` : `4dp`}"
+                    android:layout_marginBottom="@{annotationVisible ? `-4dp` : `0dp`}"-->
 
             </LinearLayout>
 
