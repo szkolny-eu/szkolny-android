@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.getColorFromAttr
 import java.util.*
+import kotlin.math.min
 
 class TimetableDayFragment(val date: Date) : Fragment() {
     companion object {
@@ -99,6 +100,8 @@ class TimetableDayFragment(val date: Date) : Fragment() {
         b.noTimetableLayout.visibility = View.GONE
         b.noLessonsLayout.visibility = View.GONE
 
+        var firstEventMinute = 24*60
+
         val eventViews = mutableListOf<View>()
         val eventTimeRanges = mutableListOf<DayView.EventTimeRange>()
 
@@ -114,6 +117,8 @@ class TimetableDayFragment(val date: Date) : Fragment() {
         for (lesson in lessons) {
             val startTime = lesson.displayStartTime ?: continue
             val endTime = lesson.displayEndTime ?: continue
+
+            firstEventMinute = min(firstEventMinute, startTime.hour*60 + startTime.minute)
 
             // Try to recycle an existing event view if there are enough left, otherwise inflate
             // a new one
@@ -270,7 +275,9 @@ class TimetableDayFragment(val date: Date) : Fragment() {
             eventTimeRanges.add(DayView.EventTimeRange(startMinute, endMinute))
         }
 
+        val minuteHeight = (b.day.getHourTop(1) - b.day.getHourTop(0)).toFloat() / 60f
+        val firstEventTop = (firstEventMinute - b.day.startHour * 60) * minuteHeight
         b.day.setEventViews(eventViews, eventTimeRanges)
-        b.dayScroll.scrollTo(0, b.day.firstEventTop)
+        b.dayScroll.scrollTo(0, firstEventTop.toInt())
     }
 }

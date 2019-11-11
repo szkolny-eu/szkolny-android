@@ -179,6 +179,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     fun clear() {
         loginMethods.clear()
 
+        toRemove.clear()
         endpointTimers.clear()
         teacherList.clear()
         subjectList.clear()

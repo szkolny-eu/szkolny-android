@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -58,6 +59,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
 
             val weekStart = Date.fromY_m_d(getDate)
             val weekEnd = weekStart.clone().stepForward(0, 0, 6)
+            d(TAG, "Clearing lessons between ${weekStart.stringY_m_d} and ${weekEnd.stringY_m_d} - timetable downloaded for $getDate")
 
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
             data.setSyncNext(ENDPOINT_LIBRUS_API_TIMETABLES, SYNC_ALWAYS)
@@ -66,8 +68,6 @@ class LibrusApiTimetables(override val data: DataLibrus,
     }
 
     private fun parseLesson(lessonDate: Date, lesson: JsonObject) {
-        val lessonObject = Lesson(profileId, lesson.hashCode().toLong())
-
         val isSubstitution = lesson.getBoolean("IsSubstitutionClass") ?: false
         val isCancelled = lesson.getBoolean("IsCanceled") ?: false
 
@@ -79,6 +79,9 @@ class LibrusApiTimetables(override val data: DataLibrus,
         val classroomId = lesson.getJsonObject("Classroom")?.getLong("Id") ?: -1
         val virtualClassId = lesson.getJsonObject("VirtualClass")?.getLong("Id")
         val teamId = lesson.getJsonObject("Class")?.getLong("Id") ?: virtualClassId
+
+        val id = lessonDate.combineWith(startTime) / 6L * 10L + (lesson.hashCode() and 0xFFFF)
+        val lessonObject = Lesson(profileId, id)
 
         if (isSubstitution && isCancelled) {
             // shifted lesson - source
