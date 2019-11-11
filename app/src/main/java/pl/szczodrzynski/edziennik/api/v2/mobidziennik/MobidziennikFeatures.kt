@@ -21,10 +21,10 @@ const val ENDPOINT_MOBIDZIENNIK_API2_MAIN               = 3000
 
 val MobidziennikFeatures = listOf(
         // always synced
-        /*Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_ALWAYS_NEEDED, listOf(
+        Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_ALWAYS_NEEDED, listOf(
                 ENDPOINT_MOBIDZIENNIK_API_MAIN to LOGIN_METHOD_MOBIDZIENNIK_WEB,
                 ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL to LOGIN_METHOD_MOBIDZIENNIK_WEB
-        ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB)),*/
+        ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB)), // TODO divide features into separate view IDs (all with API_MAIN)
 
         // push config
         /*Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_PUSH_CONFIG, listOf(

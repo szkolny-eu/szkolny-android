@@ -4,7 +4,9 @@
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api
 
+import pl.szczodrzynski.edziennik.App.profileId
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
+import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.fixName
@@ -16,11 +18,24 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
     init {
         val lessons = rows.filterNot { it.isEmpty() }.map { it.split("|") }
 
+        val dataStart = Date.getToday()
+        val dataEnd = dataStart.clone().stepForward(0, 0, 7 + (6 - dataStart.weekDay))
+
+        data.toRemove.add(DataRemoveModel.Timetable.between(dataStart.clone(), dataEnd))
+
+        val dataDays = mutableListOf<Int>()
+        while (dataStart <= dataEnd) {
+            dataDays += dataStart.value
+            dataStart.stepForward(0, 0, 1)
+        }
+
         for (lesson in lessons) {
             val date = Date.fromYmd(lesson[2])
             val startTime = Time.fromYmdHm(lesson[3])
             val endTime = Time.fromYmdHm(lesson[4])
-            val id = date.combineWith(startTime) / 1000L
+            val id = date.combineWith(startTime) / 6L * 10L + (lesson.joinToString("|").hashCode() and 0xFFFF)
+
+            dataDays.remove(date.value)
 
             val subjectId = data.subjectList.singleOrNull { it.longName == lesson[5] }?.id ?: -1
             val teacherId = data.teacherList.singleOrNull { it.fullNameLastFirst == (lesson[7]+" "+lesson[6]).fixName() }?.id ?: -1
@@ -75,6 +90,15 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                 data.lessonNewList += it
             }
         }
+
+        for (day in dataDays) {
+            val lessonDate = Date.fromValue(day)
+            data.lessonNewList += Lesson(profileId, lessonDate.value.toLong()).apply {
+                type = Lesson.TYPE_NO_LESSONS
+                date = lessonDate
+            }
+        }
+
         /*for (lessonStr in rows) {
             if (lessonStr.isNotEmpty()) {
                 val lesson = lessonStr.split("|")

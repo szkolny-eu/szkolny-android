@@ -50,7 +50,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
                 }
 
                 if (day.isNullOrEmpty() || !lessonsFound) {
-                    data.lessonNewList += Lesson(profileId, lessonDate.inUnix).apply {
+                    data.lessonNewList += Lesson(profileId, lessonDate.value.toLong()).apply {
                         type = Lesson.TYPE_NO_LESSONS
                         date = lessonDate
                     }

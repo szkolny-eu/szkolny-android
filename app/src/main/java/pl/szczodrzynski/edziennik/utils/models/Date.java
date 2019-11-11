@@ -132,6 +132,13 @@ public class Date implements Comparable<Date> {
         return year * 10000 + month * 100 + day;
     }
 
+    public static Date fromValue(int value) {
+        int year = value / 10000;
+        int month = (value-year*10000) / 100;
+        int day = (value-year*10000-month*100);
+        return new Date(year, month, day);
+    }
+
     public String getStringValue()
     {
         return Integer.toString(getValue());
