@@ -21,7 +21,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
         fun sync() = EdziennikTask(-1, SyncRequest())
         fun syncProfile(profileId: Int, viewIds: List<Pair<Int, Int>>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(viewIds, arguments))
         fun syncProfileList(profileList: List<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
-        fun messageGet(profileId: Int, messageId: Int) = EdziennikTask(profileId, MessageGetRequest(messageId))
+        fun messageGet(profileId: Int, messageId: Long) = EdziennikTask(profileId, MessageGetRequest(messageId))
         fun announcementsRead(profileId: Int) = EdziennikTask(profileId, AnnouncementsReadRequest())
     }
 
@@ -87,6 +87,6 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     class SyncRequest
     data class SyncProfileRequest(val viewIds: List<Pair<Int, Int>>? = null, val arguments: JsonObject? = null)
     data class SyncProfileListRequest(val profileList: List<Int>)
-    data class MessageGetRequest(val messageId: Int)
+    data class MessageGetRequest(val messageId: Long)
     class AnnouncementsReadRequest
 }

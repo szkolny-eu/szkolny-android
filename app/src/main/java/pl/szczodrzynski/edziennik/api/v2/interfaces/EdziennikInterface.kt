@@ -8,7 +8,7 @@ import com.google.gson.JsonObject
 
 interface EdziennikInterface {
     fun sync(featureIds: List<Int>, viewId: Int? = null, arguments: JsonObject? = null)
-    fun getMessage(messageId: Int)
+    fun getMessage(messageId: Long)
     fun markAllAnnouncementsAsRead()
     fun firstLogin()
     fun cancel()

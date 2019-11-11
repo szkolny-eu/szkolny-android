@@ -61,7 +61,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
         }
     }
 
-    override fun getMessage(messageId: Int) {
+    override fun getMessage(messageId: Long) {
 
     }
 

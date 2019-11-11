@@ -61,7 +61,7 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
         }
     }
 
-    override fun getMessage(messageId: Int) {
+    override fun getMessage(messageId: Long) {
 
     }
 

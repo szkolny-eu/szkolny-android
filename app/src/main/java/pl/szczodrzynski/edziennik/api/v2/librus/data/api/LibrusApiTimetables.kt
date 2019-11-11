@@ -187,6 +187,6 @@ class LibrusApiTimetables(override val data: DataLibrus,
                             System.currentTimeMillis()
                     ))
         }
-        data.lessonNewList += lessonObject
+        data.lessonNewList.add(lessonObject)
     }
 }

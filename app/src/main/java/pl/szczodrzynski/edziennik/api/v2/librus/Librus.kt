@@ -10,10 +10,12 @@ import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
+import pl.szczodrzynski.edziennik.api.v2.librus.data.messages.LibrusMessagesGetMessage
 import pl.szczodrzynski.edziennik.api.v2.librus.data.synergia.LibrusSynergiaMarkAllAnnouncementsAsRead
 import pl.szczodrzynski.edziennik.api.v2.librus.firstlogin.LibrusFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLogin
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginApi
+import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginMessages
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginSynergia
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
@@ -78,8 +80,14 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
     }
 
-    override fun getMessage(messageId: Int) {
-
+    override fun getMessage(messageId: Long) {
+        LibrusLoginApi(data) {
+            LibrusLoginMessages(data) {
+                LibrusMessagesGetMessage(data, messageId) {
+                    completed()
+                }
+            }
+        }
     }
 
     override fun markAllAnnouncementsAsRead() {

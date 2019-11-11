@@ -61,7 +61,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
     }
 
-    override fun getMessage(messageId: Int) {
+    override fun getMessage(messageId: Long) {
 
     }
 
