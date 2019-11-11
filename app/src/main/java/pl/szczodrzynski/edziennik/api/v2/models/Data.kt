@@ -5,7 +5,7 @@ import android.util.SparseArray
 import androidx.core.util.size
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.DataNotifications
 import pl.szczodrzynski.edziennik.api.v2.EXCEPTION_NOTIFY_AND_SYNC
 import pl.szczodrzynski.edziennik.api.v2.ServerSync
@@ -38,8 +38,11 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceType
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
+import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.values
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -162,7 +165,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val db: AppDb by lazy { app.db }
 
     init {
-        if (BuildConfig.DEBUG) {
+        if (App.devMode) {
             fakeLogin = loginStore.hasLoginData("fakeLogin")
         }
         clear()
