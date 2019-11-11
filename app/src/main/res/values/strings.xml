@@ -1006,4 +1006,11 @@
     <string name="timetable_no_timetable_text">Nie pobrano planu lekcji na ten tydzień.</string>
     <string name="timetable_no_timetable_sync">Pobierz plan lekcji</string>
     <string name="timetable_no_timetable_week">na tydzień %s</string>
+    <string name="dialog_lesson_details_teacher">Nauczyciel</string>
+    <string name="dialog_lesson_details_classroom">Sala lekcyjna</string>
+    <string name="dialog_lesson_details_team">Grupa</string>
+    <string name="dialog_lesson_details_id">ID lekcji</string>
+    <string name="dialog_lesson_details_number">Nr lekcji</string>
+    <string name="dialog_lesson_details_shifted_to">Lekcja przeniesiona na %s</string>
+    <string name="dialog_lesson_details_shifted_from">Lekcja przeniesiona z %s</string>
 </resources>

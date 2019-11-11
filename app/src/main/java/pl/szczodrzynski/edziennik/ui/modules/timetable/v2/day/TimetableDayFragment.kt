@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2DayBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.timetable.LessonDetailsDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.getColorFromAttr
 import java.util.*
@@ -133,6 +134,8 @@ class TimetableDayFragment(val date: Date) : Fragment() {
 
             eventView.setOnClickListener {
                 Log.d(TAG, "Clicked ${it.tag}")
+                if (isAdded && it.tag is LessonFull)
+                    LessonDetailsDialog(activity, it.tag as LessonFull)
             }
 
 
@@ -221,21 +224,17 @@ class TimetableDayFragment(val date: Date) : Fragment() {
                 }
                 Lesson.TYPE_SHIFTED_SOURCE -> {
                     lb.annotationVisible = true
-                    if (lesson.date != lesson.oldDate) {
-                        lb.annotation.setText(
+                    when {
+                        lesson.date != lesson.oldDate -> lb.annotation.setText(
                                 R.string.timetable_lesson_shifted_other_day,
                                 lesson.date?.stringY_m_d ?: "?",
                                 lesson.startTime?.stringHM ?: "?"
                         )
-                    }
-                    else if (lesson.startTime != lesson.oldStartTime) {
-                        lb.annotation.setText(
+                        lesson.startTime != lesson.oldStartTime -> lb.annotation.setText(
                                 R.string.timetable_lesson_shifted_same_day,
                                 lesson.startTime?.stringHM ?: "?"
                         )
-                    }
-                    else {
-                        lb.annotation.setText(R.string.timetable_lesson_shifted)
+                        else -> lb.annotation.setText(R.string.timetable_lesson_shifted)
                     }
 
                     lb.annotation.background.colorFilter = PorterDuffColorFilter(
@@ -245,21 +244,17 @@ class TimetableDayFragment(val date: Date) : Fragment() {
                 }
                 Lesson.TYPE_SHIFTED_TARGET -> {
                     lb.annotationVisible = true
-                    if (lesson.date != lesson.oldDate) {
-                        lb.annotation.setText(
+                    when {
+                        lesson.date != lesson.oldDate -> lb.annotation.setText(
                                 R.string.timetable_lesson_shifted_from_other_day,
                                 lesson.oldDate?.stringY_m_d ?: "?",
                                 lesson.oldStartTime?.stringHM ?: "?"
                         )
-                    }
-                    else if (lesson.startTime != lesson.oldStartTime) {
-                        lb.annotation.setText(
+                        lesson.startTime != lesson.oldStartTime -> lb.annotation.setText(
                                 R.string.timetable_lesson_shifted_from_same_day,
                                 lesson.oldStartTime?.stringHM ?: "?"
                         )
-                    }
-                    else {
-                        lb.annotation.setText(R.string.timetable_lesson_shifted_from)
+                        else -> lb.annotation.setText(R.string.timetable_lesson_shifted_from)
                     }
 
                     lb.annotation.background.colorFilter = PorterDuffColorFilter(

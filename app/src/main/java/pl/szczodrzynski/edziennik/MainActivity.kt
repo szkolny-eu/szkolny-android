@@ -345,7 +345,7 @@ class MainActivity : AppCompatActivity() {
         if (!profileListEmpty) {
             handleIntent(intent?.extras)
         }
-        app.db.profileDao().getAllFull().observe(this, Observer { profiles ->
+        app.db.profileDao().allFull.observe(this, Observer { profiles ->
             // TODO fix weird -1 profiles ???
             profiles.removeAll { it.id < 0 }
             drawer.setProfileList(profiles)
@@ -362,7 +362,7 @@ class MainActivity : AppCompatActivity() {
         if (app.profile != null)
             setDrawerItems()
 
-        app.db.metadataDao().getUnreadCounts().observe(this, Observer { unreadCounters ->
+        app.db.metadataDao().unreadCounts.observe(this, Observer { unreadCounters ->
             unreadCounters.map {
                 it.type = it.thingType
             }
@@ -701,7 +701,8 @@ class MainActivity : AppCompatActivity() {
             }
             intentTargetId != -1 -> {
                 drawer.currentProfile = app.profile.id
-                loadTarget(intentTargetId, extras)
+                if (navTargetId != intentTargetId)
+                    loadTarget(intentTargetId, extras)
             }
             else -> {
                 drawer.currentProfile = app.profile.id

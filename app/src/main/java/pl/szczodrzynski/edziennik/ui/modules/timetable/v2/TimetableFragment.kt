@@ -1,5 +1,9 @@
 package pl.szczodrzynski.edziennik.ui.modules.timetable.v2
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +22,14 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 class TimetableFragment : Fragment() {
     companion object {
         private const val TAG = "TimetableFragment"
+        const val ACTION_SCROLL_TO_DATE = "pl.szczodrzynski.edziennik.timetable.SCROLL_TO_DATE"
     }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
     private lateinit var b: FragmentTimetableV2Binding
     private var fabShown = false
+    private val items = mutableListOf<Date>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -36,6 +42,24 @@ class TimetableFragment : Fragment() {
         // activity, context and profile is valid
         b = FragmentTimetableV2Binding.inflate(inflater)
         return b.root
+    }
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, i: Intent) {
+            if (!isAdded)
+                return
+            val dateStr = i.extras?.getString("date", null) ?: return
+            val date = Date.fromY_m_d(dateStr)
+            b.viewPager.setCurrentItem(items.indexOf(date), true)
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE))
+    }
+    override fun onPause() {
+        super.onPause()
+        activity.unregisterReceiver(broadcastReceiver)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,7 +75,7 @@ class TimetableFragment : Fragment() {
         b.timetableLayout.visibility = View.VISIBLE
         b.timetableNotPublicLayout.visibility = View.GONE
 
-        val items = mutableListOf<Date>()
+        items.clear()
 
         val monthDayCount = listOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
@@ -99,7 +123,7 @@ class TimetableFragment : Fragment() {
         b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, false)
 
         //activity.navView.bottomBar.fabEnable = true
-        activity.navView.bottomBar.fabExtendedText = getString(R.string.timetable_today)
+        activity.navView.bottomBar.fabExtendedText = getString(pl.szczodrzynski.edziennik.R.string.timetable_today)
         activity.navView.bottomBar.fabIcon = CommunityMaterial.Icon.cmd_calendar_today
         activity.navView.setFabOnClickListener(View.OnClickListener {
             b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, true)

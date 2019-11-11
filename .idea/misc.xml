@@ -6,8 +6,9 @@
     </configurations>
   </component>
   <component name="EntryPointsManager">
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="org.greenrobot.eventbus.Subscribe" />
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="androidx.databinding.BindingAdapter" />
+      <item index="1" class="java.lang.String" itemvalue="org.greenrobot.eventbus.Subscribe" />
     </list>
   </component>
   <component name="NullableNotNullManager">
