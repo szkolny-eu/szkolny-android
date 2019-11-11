@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.linkedin.android.tachyon.DayView
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
@@ -69,6 +71,9 @@ class TimetableDayFragment(val date: Date) : Fragment() {
             b.noTimetableSync.setOnClickListener {
                 EdziennikTask.syncProfile(
                         profileId = App.profileId,
+                        viewIds = listOf(
+                                DRAWER_ITEM_TIMETABLE to 0
+                        ),
                         arguments = JsonObject(
                                 "weekStart" to date.clone().stepForward(0, 0, -date.weekDay).stringY_m_d
                         )
@@ -80,6 +85,13 @@ class TimetableDayFragment(val date: Date) : Fragment() {
             b.dayScroll.visibility = View.GONE
             b.noTimetableLayout.visibility = View.GONE
             b.noLessonsLayout.visibility = View.VISIBLE
+            return
+        }
+
+        // reload the fragment when: no lessons, user wants to sync the week, the timetable is not public, pager gets removed
+        if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS && app.profile.getLoginData("timetableNotPublic", false)) {
+            activity.reloadTarget()
+            // TODO fix for (not really)possible infinite loops
             return
         }
 
