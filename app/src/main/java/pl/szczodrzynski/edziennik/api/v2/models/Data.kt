@@ -289,7 +289,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         if (lessonChangeList.isNotEmpty())
             db.lessonChangeDao().addAll(lessonChangeList)
         if (lessonNewList.isNotEmpty()) {
-            db.timetableDao().clear(profile.id)
             db.timetableDao() += lessonNewList
         }
         if (gradeList.isNotEmpty()) {
