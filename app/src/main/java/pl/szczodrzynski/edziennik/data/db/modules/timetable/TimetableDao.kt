@@ -17,6 +17,13 @@ interface TimetableDao {
     @Query("DELETE FROM timetable WHERE profileId = :profileId")
     fun clear(profileId: Int)
 
+    @Query("DELETE FROM timetable WHERE profileId = :profileId AND (type != 3 AND date >= :dateFrom) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom)")
+    fun clearFromDate(profileId: Int, dateFrom: Date)
+    @Query("DELETE FROM timetable WHERE profileId = :profileId AND (type != 3 AND date <= :dateTo) OR ((type = 3 OR type = 1) AND oldDate <= :dateTo)")
+    fun clearToDate(profileId: Int, dateTo: Date)
+    @Query("DELETE FROM timetable WHERE profileId = :profileId AND (type != 3 AND date >= :dateFrom AND date <= :dateTo) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom AND oldDate <= :dateTo)")
+    fun clearBetweenDates(profileId: Int, dateFrom: Date, dateTo: Date)
+
     @Query("""
         SELECT 
         timetable.*,

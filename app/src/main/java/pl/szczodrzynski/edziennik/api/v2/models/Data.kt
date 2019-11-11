@@ -57,6 +57,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val profileId
         get() = profile?.id ?: -1
 
+    var arguments: JsonObject? = null
+
     /**
      * A callback passed to all [Feature]s and [LoginMethod]s
      */
@@ -130,24 +132,20 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             mTeamClass = value
         }
 
-    var lessonsToRemove: DataRemoveModel? = null
+    var toRemove = mutableListOf<DataRemoveModel>()
+
     val lessonList = mutableListOf<Lesson>()
     val lessonChangeList = mutableListOf<LessonChange>()
     val lessonNewList = mutableListOf<pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson>()
 
-    var gradesToRemove: DataRemoveModel? = null
     val gradeList = mutableListOf<Grade>()
 
-    var eventsToRemove: DataRemoveModel? = null
     val eventList = mutableListOf<Event>()
 
-    var noticesToRemove: DataRemoveModel? = null
     val noticeList = mutableListOf<Notice>()
 
-    var attendancesToRemove: DataRemoveModel? = null
     val attendanceList = mutableListOf<Attendance>()
 
-    var announcementsToRemove: DataRemoveModel? = null
     val announcementList = mutableListOf<Announcement>()
 
     val luckyNumberList = mutableListOf<LuckyNumber>()
@@ -250,6 +248,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             app.profile.loginStoreData = loginStore.data
         }
 
+        // always present and not empty, during every sync
         db.endpointTimerDao().addAll(endpointTimers)
         db.teacherDao().clear(profileId)
         db.teacherDao().addAll(teacherList.values())
@@ -262,6 +261,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         db.gradeCategoryDao().clear(profileId)
         db.gradeCategoryDao().addAll(gradeCategories.values())
 
+        // may be empty - extracted from DB on demand, by an endpoint
         if (classrooms.size > 0)
             db.classroomDao().addAll(classrooms.values())
         if (attendanceTypes.size > 0)
@@ -273,11 +273,15 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         if (teacherAbsenceTypes.size > 0)
             db.teacherAbsenceTypeDao().addAll(teacherAbsenceTypes.values())
 
-        gradesToRemove?.let { it ->
-            it.removeAll?.let { _ -> db.gradeDao().clear(profileId) }
-            it.removeSemester?.let { semester -> db.gradeDao().clearForSemester(profileId, semester) }
+        // clear DB with DataRemoveModels added by endpoints
+        for (model in toRemove) {
+            when (model) {
+                is DataRemoveModel.Timetable -> model.commit(profileId, db.timetableDao())
+                is DataRemoveModel.Grades -> model.commit(profileId, db.gradeDao())
+            }
         }
 
+        // not extracted from DB - always new data
         if (lessonList.isNotEmpty()) {
             db.lessonDao().clear(profile.id)
             db.lessonDao().addAll(lessonList)

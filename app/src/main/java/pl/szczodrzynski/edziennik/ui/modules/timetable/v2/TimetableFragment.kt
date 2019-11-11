@@ -10,6 +10,7 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -41,6 +42,14 @@ class TimetableFragment : Fragment() {
         // TODO check if app, activity, b can be null
         if (app.profile == null || !isAdded)
             return
+
+        if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS && app.profile.getLoginData("timetableNotPublic", false)) {
+            b.timetableLayout.visibility = View.GONE
+            b.timetableNotPublicLayout.visibility = View.VISIBLE
+            return
+        }
+        b.timetableLayout.visibility = View.VISIBLE
+        b.timetableNotPublicLayout.visibility = View.GONE
 
         val items = mutableListOf<Date>()
 

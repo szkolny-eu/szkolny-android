@@ -4,11 +4,13 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus.data.api
 
+import androidx.core.util.isEmpty
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_TIMETABLES
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
+import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
@@ -22,20 +24,42 @@ class LibrusApiTimetables(override val data: DataLibrus,
     }
 
     init {
-        apiGet(TAG, "Timetables") { json ->
+        if (data.classrooms.isEmpty()) {
+            data.db.classroomDao().getAllNow(profileId).toSparseArray(data.classrooms) { it.id }
+        }
+
+        val currentWeekStart = Date.getToday().let { it.stepForward(0, 0, -it.weekDay) }
+        val getDate = data.arguments?.getString("weekStart") ?: currentWeekStart.stringY_m_d
+        apiGet(TAG, "Timetables?weekStart=$getDate") { json ->
             val days = json.getJsonObject("Timetable")
 
             days?.entrySet()?.forEach { (dateString, dayEl) ->
-                val lessonDate = dateString?.let { Date.fromY_m_d(it) } ?: return@forEach
                 val day = dayEl?.asJsonArray
+
+                val lessonDate = dateString?.let { Date.fromY_m_d(it) } ?: return@forEach
+
+                var lessonsFound = false
                 day?.forEach { lessonRangeEl ->
                     val lessonRange = lessonRangeEl?.asJsonArray?.asJsonObjectList()
+                    if (lessonRange?.isNullOrEmpty() == false)
+                        lessonsFound = true
                     lessonRange?.forEachIndexed { index, lesson ->
                         parseLesson(lessonDate, lesson)
                     }
                 }
+
+                if (day.isNullOrEmpty() || !lessonsFound) {
+                    data.lessonNewList += Lesson(profileId, lessonDate.inUnix).apply {
+                        type = Lesson.TYPE_NO_LESSONS
+                        date = lessonDate
+                    }
+                }
             }
 
+            val weekStart = Date.fromY_m_d(getDate)
+            val weekEnd = weekStart.clone().stepForward(0, 0, 6)
+
+            data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
             data.setSyncNext(ENDPOINT_LIBRUS_API_TIMETABLES, SYNC_ALWAYS)
             onSuccess()
         }

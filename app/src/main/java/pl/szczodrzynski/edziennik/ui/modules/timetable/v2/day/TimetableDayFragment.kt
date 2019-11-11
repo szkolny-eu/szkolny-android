@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.linkedin.android.tachyon.DayView
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2DayBinding
@@ -45,7 +46,6 @@ class TimetableDayFragment(val date: Date) : Fragment() {
             return
 
         Log.d(TAG, "onViewCreated, date=$date")
-        b.date.text = date.formattedString
 
         // Inflate a label view for each hour the day view will display
         val hourLabelViews = ArrayList<View>()
@@ -62,6 +62,31 @@ class TimetableDayFragment(val date: Date) : Fragment() {
     }
 
     private fun buildLessonViews(lessons: List<LessonFull>) {
+        if (lessons.isEmpty()) {
+            b.dayScroll.visibility = View.GONE
+            b.noTimetableLayout.visibility = View.VISIBLE
+            b.noLessonsLayout.visibility = View.GONE
+            b.noTimetableSync.setOnClickListener {
+                EdziennikTask.syncProfile(
+                        profileId = App.profileId,
+                        arguments = JsonObject(
+                                "weekStart" to date.clone().stepForward(0, 0, -date.weekDay).stringY_m_d
+                        )
+                ).enqueue(activity)
+            }
+            return
+        }
+        if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
+            b.dayScroll.visibility = View.GONE
+            b.noTimetableLayout.visibility = View.GONE
+            b.noLessonsLayout.visibility = View.VISIBLE
+            return
+        }
+
+        b.dayScroll.visibility = View.VISIBLE
+        b.noTimetableLayout.visibility = View.GONE
+        b.noLessonsLayout.visibility = View.GONE
+
         val eventViews = mutableListOf<View>()
         val eventTimeRanges = mutableListOf<DayView.EventTimeRange>()
 

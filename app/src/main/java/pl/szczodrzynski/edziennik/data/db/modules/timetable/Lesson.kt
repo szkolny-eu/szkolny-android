@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.utils.models.Time
         ])
 open class Lesson(val profileId: Int, @PrimaryKey val id: Long) {
     companion object {
+        const val TYPE_NO_LESSONS = -1
         const val TYPE_NORMAL = 0
         const val TYPE_CANCELLED = 1
         const val TYPE_CHANGE = 2

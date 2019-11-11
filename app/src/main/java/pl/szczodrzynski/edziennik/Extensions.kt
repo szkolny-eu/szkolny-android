@@ -392,3 +392,20 @@ fun List<CharSequence>.concat(delimiter: String? = null): CharSequence {
 fun TextView.setText(@StringRes resid: Int, vararg formatArgs: Any) {
     text = context.getString(resid, *formatArgs)
 }
+
+fun JsonObject(vararg properties: Pair<String, Any>): JsonObject {
+    return JsonObject().apply {
+        for (property in properties) {
+            when (property.second) {
+                is JsonElement -> add(property.first, property.second as JsonElement)
+                is String -> addProperty(property.first, property.second as String)
+                is Char -> addProperty(property.first, property.second as Char)
+                is Number -> addProperty(property.first, property.second as Number)
+                is Boolean -> addProperty(property.first, property.second as Boolean)
+            }
+        }
+    }
+}
+
+fun JsonArray?.isNullOrEmpty(): Boolean = (this?.size() ?: 0) == 0
+fun JsonArray.isEmpty(): Boolean = this.size() == 0

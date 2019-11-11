@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.librus
 
+import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
@@ -49,7 +50,8 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureIds: List<Int>, viewId: Int?) {
+    override fun sync(featureIds: List<Int>, viewId: Int?, arguments: JsonObject?) {
+        data.arguments = arguments
         data.prepare(librusLoginMethods, LibrusFeatures, featureIds, viewId)
         login()
     }
@@ -173,7 +175,10 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                         login()
                     }
                     // TODO PORTAL CAPTCHA
-                    ERROR_LIBRUS_API_TIMETABLE_NOT_PUBLIC,
+                    ERROR_LIBRUS_API_TIMETABLE_NOT_PUBLIC -> {
+                        loginStore.putLoginData("timetableNotPublic", true)
+                        data()
+                    }
                     ERROR_LIBRUS_API_LUCKY_NUMBER_NOT_ACTIVE,
                     ERROR_LIBRUS_API_NOTES_NOT_ACTIVE -> {
                         data()

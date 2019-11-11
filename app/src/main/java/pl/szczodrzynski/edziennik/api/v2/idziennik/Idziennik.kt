@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.idziennik
 
+import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.api.v2.idziennik.data.IdziennikData
@@ -48,7 +49,8 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureIds: List<Int>, viewId: Int?) {
+    override fun sync(featureIds: List<Int>, viewId: Int?, arguments: JsonObject?) {
+        data.arguments = arguments
         data.prepare(idziennikLoginMethods, IdziennikFeatures, featureIds, viewId)
         d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
         d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")

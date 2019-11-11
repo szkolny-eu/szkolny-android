@@ -4,8 +4,10 @@
 
 package pl.szczodrzynski.edziennik.api.v2.interfaces
 
+import com.google.gson.JsonObject
+
 interface EdziennikInterface {
-    fun sync(featureIds: List<Int>, viewId: Int? = null)
+    fun sync(featureIds: List<Int>, viewId: Int? = null, arguments: JsonObject? = null)
     fun getMessage(messageId: Int)
     fun markAllAnnouncementsAsRead()
     fun firstLogin()
