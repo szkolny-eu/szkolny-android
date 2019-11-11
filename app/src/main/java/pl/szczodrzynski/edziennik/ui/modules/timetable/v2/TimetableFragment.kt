@@ -75,6 +75,7 @@ class TimetableFragment : Fragment() {
         }
 
         val pagerAdapter = TimetablePagerAdapter(fragmentManager ?: return, items)
+        b.viewPager.offscreenPageLimit = 2
         b.viewPager.adapter = pagerAdapter
         b.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -92,7 +93,6 @@ class TimetableFragment : Fragment() {
                     fabShown = true
                 }
             }
-
         })
 
         b.tabLayout.setUpWithViewPager(b.viewPager)

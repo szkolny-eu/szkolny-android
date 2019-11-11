@@ -995,4 +995,15 @@
     <string name="timetable_lesson_shifted_from_other_day">Lekcja przeniesiona z dnia %s, godz. %s</string>
     <string name="timetable_lesson_shifted">Lekcja przeniesiona na inny termin</string>
     <string name="timetable_lesson_shifted_from">Lekcja przeniesiona z innego terminu</string>
+    <string name="timetable_not_public_title">Brak planu lekcji</string>
+    <string name="timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę.</string>
+    <string name="timetable_not_public_hint">Skontaktuj się z wychowawcą w celu udostępnienia planu lekcji.</string>
+    <string name="timetable_free_day_title">Dzień wolny</string>
+    <string name="timetable_free_day_text">W tym dniu nie ma lekcji:</string>
+    <string name="timetable_free_day_show">Pokaż plan lekcji</string>
+    <string name="timetable_no_lessons_title">Brak lekcji tego dnia</string>
+    <string name="timetable_no_timetable_title">Brak planu lekcji</string>
+    <string name="timetable_no_timetable_text">Nie pobrano planu lekcji na ten tydzień.</string>
+    <string name="timetable_no_timetable_sync">Pobierz plan lekcji</string>
+    <string name="timetable_no_timetable_week">na tydzień %s</string>
 </resources>

@@ -69,6 +69,7 @@ class TimetableDayFragment(val date: Date) : Fragment() {
             b.dayScroll.visibility = View.GONE
             b.noTimetableLayout.visibility = View.VISIBLE
             b.noLessonsLayout.visibility = View.GONE
+            val weekStart = date.clone().stepForward(0, 0, -date.weekDay).stringY_m_d
             b.noTimetableSync.setOnClickListener {
                 EdziennikTask.syncProfile(
                         profileId = App.profileId,
@@ -76,10 +77,11 @@ class TimetableDayFragment(val date: Date) : Fragment() {
                                 DRAWER_ITEM_TIMETABLE to 0
                         ),
                         arguments = JsonObject(
-                                "weekStart" to date.clone().stepForward(0, 0, -date.weekDay).stringY_m_d
+                                "weekStart" to weekStart
                         )
                 ).enqueue(activity)
             }
+            b.noTimetableWeek.setText(R.string.timetable_no_timetable_week, weekStart)
             return
         }
         if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {

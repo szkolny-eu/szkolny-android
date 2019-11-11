@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-light"
-                android:text="Brak lekcji tego dnia"
+                android:text="@string/timetable_no_lessons_title"
                 android:textSize="24sp" />
 
         </LinearLayout>
@@ -71,21 +71,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-light"
-                android:text="Dzień wolny"
+                android:text="@string/timetable_free_day_title"
                 android:textSize="24sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="W tym dniu nie ma lekcji:"
+                android:text="@string/timetable_free_day_text"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/freeDayText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ferie zimowe"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:gravity="center"
+                tools:text="Dzień wolny dla szkoły z puli dyrektorskiej z okazji obchodów Światowego Dnia Wtorku w mieście Poznań i na przedmieśiach"
                 android:textSize="16sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -93,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Pokaż plan lekcji" />
+                android:text="@string/timetable_free_day_show" />
 
         </LinearLayout>
 
@@ -104,7 +107,7 @@
             android:orientation="vertical"
             android:visibility="gone"
             android:gravity="center"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -116,14 +119,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-light"
-                android:text="Brak planu lekcji"
+                android:text="@string/timetable_no_timetable_title"
                 android:textSize="24sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Nie pobrano planu lekcji na ten tydzień."
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:gravity="center"
+                android:text="@string/timetable_no_timetable_text"
                 android:textSize="16sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -131,12 +137,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Pobierz plan lekcji" />
+                android:text="@string/timetable_no_timetable_sync" />
 
             <TextView
+                android:id="@+id/noTimetableWeek"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="na tydzień 2019-11-11"
+                tools:text="@string/timetable_no_timetable_week"
                 android:textSize="12sp"
                 android:textStyle="italic"/>
 
