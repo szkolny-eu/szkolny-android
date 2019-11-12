@@ -14,6 +14,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
@@ -43,7 +45,25 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
 
                     val senderLoginId = message.getString("NadawcaId") ?: return@forEach
                     val senderId = data.teacherList
-                            .singleOrNull { it.loginId == senderLoginId }?.id ?: return@forEach
+                            .singleOrNull { it.loginId == senderLoginId }?.id ?: {
+                        val senderName = message.getString("Nadawca") ?: ""
+                        val senderNameSplit = senderName.split(" ")
+
+                        if (senderNameSplit.size >= 2) {
+                            val senderLastName = senderNameSplit[0]
+                            val senderFirstName = senderNameSplit[1]
+
+                            val teacherObject = Teacher(
+                                    profileId,
+                                    -1 * Utils.crc16(senderName.toByteArray()).toLong(),
+                                    senderFirstName,
+                                    senderLastName,
+                                    senderLoginId
+                            )
+                            data.teacherList.put(teacherObject.id, teacherObject)
+                            teacherObject.id
+                        } else -1
+                    }.invoke()
 
                     val sentDate = message.getLong("DataWyslaniaUnixEpoch")?.let { it * 1000 }
                             ?: -1

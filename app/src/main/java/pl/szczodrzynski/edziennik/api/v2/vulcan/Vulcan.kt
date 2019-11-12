@@ -12,8 +12,10 @@ import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.prepare
 import pl.szczodrzynski.edziennik.api.v2.vulcan.data.VulcanData
+import pl.szczodrzynski.edziennik.api.v2.vulcan.data.api.VulcanApiMessagesChangeStatus
 import pl.szczodrzynski.edziennik.api.v2.vulcan.firstlogin.VulcanFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.vulcan.login.VulcanLogin
+import pl.szczodrzynski.edziennik.api.v2.vulcan.login.VulcanLoginApi
 import pl.szczodrzynski.edziennik.api.v2.vulcanLoginMethods
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
@@ -63,7 +65,11 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getMessage(message: MessageFull) {
-
+        VulcanLoginApi(data) {
+            VulcanApiMessagesChangeStatus(data, message) {
+                completed()
+            }
+        }
     }
 
     override fun markAllAnnouncementsAsRead() {

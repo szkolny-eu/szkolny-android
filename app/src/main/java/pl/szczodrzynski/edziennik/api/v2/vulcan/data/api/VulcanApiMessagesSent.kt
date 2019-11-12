@@ -54,12 +54,12 @@ class VulcanApiMessagesSent(override val data: DataVulcan, val onSuccess: () -> 
                     )
 
                     message.getJsonArray("Adresaci")?.asJsonObjectList()
-                            ?.forEachIndexed { _, recipient ->
+                            ?.onEach { recipient ->
 
                                 val recipientLoginId = recipient.getString("LoginId")
-                                        ?: return@forEachIndexed
+                                        ?: return@onEach
                                 val recipientId = data.teacherList.singleOrNull { it.loginId == recipientLoginId }?.id
-                                        ?: return@forEachIndexed
+                                        ?: return@onEach
 
                                 val readDate: Long = when (readBy) {
                                     0 -> 0
