@@ -71,7 +71,8 @@ class TimetableDayFragment(val date: Date) : Fragment() {
             b.noTimetableLayout.visibility = View.VISIBLE
             b.noLessonsLayout.visibility = View.GONE
             val weekStart = date.clone().stepForward(0, 0, -date.weekDay).stringY_m_d
-            b.noTimetableSync.setOnClickListener {
+            b.noTimetableSync.onClick {
+                it.isEnabled = false
                 EdziennikTask.syncProfile(
                         profileId = App.profileId,
                         viewIds = listOf(
