@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
@@ -20,7 +21,7 @@ import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class LibrusMessagesGetList(override val data: DataLibrus, private val type: Int = Message.TYPE_RECEIVED,
+class LibrusMessagesGetList(override val data: DataLibrus, private val type: Int = TYPE_RECEIVED,
                             archived: Boolean = false, val onSuccess: () -> Unit) : LibrusMessages(data) {
     companion object {
         const val TAG = "LibrusMessagesGetList"
@@ -28,7 +29,7 @@ class LibrusMessagesGetList(override val data: DataLibrus, private val type: Int
 
     init {
         val endpoint = when (type) {
-            Message.TYPE_RECEIVED -> "Inbox/action/GetList"
+            TYPE_RECEIVED -> "Inbox/action/GetList"
             Message.TYPE_SENT -> "Outbox/action/GetList"
             else -> null
         }
@@ -46,34 +47,38 @@ class LibrusMessagesGetList(override val data: DataLibrus, private val type: Int
                         else -> 0
                     }
                     val sentDate = Date.fromIso(element.select("sendDate").text().trim())
-                    var senderId: Long = -1
-                    var receiverId: Long = -1
 
-                    when (type) {
-                        Message.TYPE_RECEIVED -> {
-                            val senderFirstName = element.select("senderFirstName").text().trim()
-                            val senderLastName = element.select("senderLastName").text().trim()
-                            senderId = data.teacherList.singleOrNull {
-                                it.name == senderFirstName && it.surname == senderLastName
-                            }?.id ?: -1
-                        }
+                    val recipientFirstName = element.select(when (type) {
+                        TYPE_RECEIVED -> "senderFirstName"
+                        else -> "receiverFirstName"
+                    }).text().trim()
 
-                        Message.TYPE_SENT -> {
-                            val receiverFirstName = element.select("receiverFirstName").text().trim()
-                            val receiverLastName = element.select("receiverLastName").text().trim()
-                            receiverId = data.teacherList.singleOrNull {
-                                it.name == receiverFirstName && it.surname == receiverLastName
-                            }?.id ?: {
-                                val teacherObject = Teacher(
-                                        profileId,
-                                        -1 * Utils.crc16("$receiverFirstName $receiverLastName".toByteArray()).toLong(),
-                                        receiverFirstName,
-                                        receiverLastName
-                                )
-                                data.teacherList.put(teacherObject.id, teacherObject)
-                                teacherObject.id
-                            }.invoke()
-                        }
+                    val recipientLastName = element.select(when (type) {
+                        TYPE_RECEIVED -> "senderLastName"
+                        else -> "receiverLastName"
+                    }).text().trim()
+
+                    val recipientId = data.teacherList.singleOrNull {
+                        it.name == recipientFirstName && it.surname == recipientLastName
+                    }?.id ?: {
+                        val teacherObject = Teacher(
+                                profileId,
+                                -1 * Utils.crc16("$recipientFirstName $recipientLastName".toByteArray()).toLong(),
+                                recipientFirstName,
+                                recipientLastName
+                        )
+                        data.teacherList.put(teacherObject.id, teacherObject)
+                        teacherObject.id
+                    }.invoke()
+
+                    val senderId = when (type) {
+                        TYPE_RECEIVED -> recipientId
+                        else -> -1
+                    }
+
+                    val receiverId = when (type) {
+                        TYPE_RECEIVED -> -1
+                        else -> recipientId
                     }
 
                     val notified = when (type) {
@@ -112,7 +117,7 @@ class LibrusMessagesGetList(override val data: DataLibrus, private val type: Int
                 }
 
                 when (type) {
-                    Message.TYPE_RECEIVED -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_RECEIVED, SYNC_ALWAYS)
+                    TYPE_RECEIVED -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_RECEIVED, SYNC_ALWAYS)
                     Message.TYPE_SENT -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_SENT, DAY, DRAWER_ITEM_MESSAGES)
                 }
                 onSuccess()
