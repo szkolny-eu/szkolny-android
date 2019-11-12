@@ -41,11 +41,11 @@ buildscript {
                 play_services    : "17.0.0",
 
                 materialdialogs  : "0.9.6.0",
-                materialdrawer   : "62b24da031",
+                materialdrawer   : "cad66092a6",
                 iconics          : "4.0.1-b02",
                 font_cmd         : "3.5.95.1-kotlin",
 
-                navlib           : "e4ad01dc87",
+                navlib           : "8ae5e2b87a",
 
                 gifdrawable      : "1.2.15"
         ]
