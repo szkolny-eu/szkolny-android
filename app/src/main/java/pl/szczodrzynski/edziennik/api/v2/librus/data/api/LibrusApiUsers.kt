@@ -22,8 +22,8 @@ class LibrusApiUsers(override val data: DataLibrus,
 
             users?.forEach { user ->
                 val id = user.getLong("Id") ?: return@forEach
-                val firstName = user.getString("FirstName")?.fixWhiteSpaces() ?: ""
-                val lastName = user.getString("LastName")?.fixWhiteSpaces() ?: ""
+                val firstName = user.getString("FirstName")?.fixName() ?: ""
+                val lastName = user.getString("LastName")?.fixName() ?: ""
 
                 data.teacherList.put(id, Teacher(profileId, id, firstName, lastName))
             }

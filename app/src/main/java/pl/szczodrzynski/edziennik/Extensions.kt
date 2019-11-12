@@ -11,6 +11,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.util.LongSparseArray
 import android.util.SparseArray
+import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
@@ -409,3 +410,10 @@ fun JsonObject(vararg properties: Pair<String, Any>): JsonObject {
 
 fun JsonArray?.isNullOrEmpty(): Boolean = (this?.size() ?: 0) == 0
 fun JsonArray.isEmpty(): Boolean = this.size() == 0
+
+@Suppress("UNCHECKED_CAST")
+inline fun <T : View> T.onClick(crossinline onClickListener: (v: T) -> Unit) {
+    setOnClickListener { v: View ->
+        onClickListener(v as T)
+    }
+}

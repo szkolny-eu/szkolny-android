@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.api.v2.vulcan.firstlogin.VulcanFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.vulcan.login.VulcanLogin
 import pl.szczodrzynski.edziennik.api.v2.vulcanLoginMethods
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
@@ -61,7 +62,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
     }
 
-    override fun getMessage(messageId: Long) {
+    override fun getMessage(message: MessageFull) {
 
     }
 

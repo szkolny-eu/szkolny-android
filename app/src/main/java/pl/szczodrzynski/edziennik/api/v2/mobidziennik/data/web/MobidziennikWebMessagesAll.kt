@@ -8,9 +8,7 @@ import org.jsoup.Jsoup
 import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL
-import pl.szczodrzynski.edziennik.api.v2.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikWeb
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
@@ -79,7 +77,7 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
                         -1
                 )
 
-                data.messageList.add(message)
+                data.messageIgnoreList.add(message)
                 data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true, addedDate))
             }
 

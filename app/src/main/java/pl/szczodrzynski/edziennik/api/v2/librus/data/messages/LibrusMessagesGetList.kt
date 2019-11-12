@@ -99,7 +99,7 @@ class LibrusMessagesGetList(override val data: DataLibrus, private val type: Int
                             id
                     )
 
-                    data.messageList.add(messageObject)
+                    data.messageIgnoreList.add(messageObject)
                     data.messageRecipientList.add(messageRecipientObject)
                     data.metadataList.add(Metadata(
                             profileId,

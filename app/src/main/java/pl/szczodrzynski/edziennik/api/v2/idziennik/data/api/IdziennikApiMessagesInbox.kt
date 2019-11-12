@@ -75,7 +75,7 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
                         /*messageId*/ messageId
                 )
 
-                data.messageList.add(message)
+                data.messageIgnoreList.add(message)
                 data.messageRecipientList.add(messageRecipient)
                 data.messageMetadataList.add(Metadata(
                         profileId,

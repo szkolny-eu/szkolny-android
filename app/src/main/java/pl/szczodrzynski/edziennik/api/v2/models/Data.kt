@@ -156,6 +156,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val teacherAbsenceList = mutableListOf<TeacherAbsence>()
 
     val messageList = mutableListOf<Message>()
+    val messageIgnoreList = mutableListOf<Message>()
     val messageRecipientList = mutableListOf<MessageRecipient>()
     val messageRecipientIgnoreList = mutableListOf<MessageRecipient>()
 
@@ -205,7 +206,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         announcementList.clear()
         luckyNumberList.clear()
         teacherAbsenceList.clear()
-        messageList.clear()
+        messageIgnoreList.clear()
         messageRecipientList.clear()
         messageRecipientIgnoreList.clear()
         metadataList.clear()
@@ -285,6 +286,11 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             }
         }
 
+        if (metadataList.isNotEmpty())
+            db.metadataDao().addAllIgnore(metadataList)
+        if (messageMetadataList.isNotEmpty())
+            db.metadataDao().setSeen(messageMetadataList)
+
         // not extracted from DB - always new data
         if (lessonList.isNotEmpty()) {
             db.lessonDao().clear(profile.id)
@@ -316,15 +322,13 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.teacherAbsenceDao().addAll(teacherAbsenceList)
 
         if (messageList.isNotEmpty())
-            db.messageDao().addAllIgnore(messageList)
+            db.messageDao().addAll(messageList)
+        if (messageIgnoreList.isNotEmpty())
+            db.messageDao().addAllIgnore(messageIgnoreList)
         if (messageRecipientList.isNotEmpty())
             db.messageRecipientDao().addAll(messageRecipientList)
         if (messageRecipientIgnoreList.isNotEmpty())
             db.messageRecipientDao().addAllIgnore(messageRecipientIgnoreList)
-        if (metadataList.isNotEmpty())
-            db.metadataDao().addAllIgnore(metadataList)
-        if (messageMetadataList.isNotEmpty())
-            db.metadataDao().setSeen(messageMetadataList)
     }
 
     fun notifyAndSyncEvents(onSuccess: () -> Unit) {

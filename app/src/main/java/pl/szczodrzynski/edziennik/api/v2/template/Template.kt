@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.api.v2.template.firstlogin.TemplateFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLogin
 import pl.szczodrzynski.edziennik.api.v2.templateLoginMethods
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
@@ -61,7 +62,7 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
         }
     }
 
-    override fun getMessage(messageId: Long) {
+    override fun getMessage(message: MessageFull) {
 
     }
 

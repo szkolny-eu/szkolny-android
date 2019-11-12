@@ -1,7 +1,6 @@
 package pl.szczodrzynski.edziennik.data.db.modules.messages;
 
-import java.util.List;
-
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -10,6 +9,8 @@ import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteQuery;
+
+import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata;
 
@@ -22,6 +23,9 @@ import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_
 public abstract class MessageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract long add(Message message);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void addAll(List<Message> messageList);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract void addAllIgnore(List<Message> messageList);
@@ -56,6 +60,7 @@ public abstract class MessageDao {
                 "ORDER BY addedDate DESC"));
     }
 
+    @Nullable
     public MessageFull getById(int profileId, long messageId) {
         return getOneNow(new SimpleSQLiteQuery("SELECT \n" +
                 "*, \n" +

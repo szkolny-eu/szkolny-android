@@ -68,7 +68,7 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
                             id
                     )
 
-                    data.messageList.add(messageObject)
+                    data.messageIgnoreList.add(messageObject)
                     data.messageRecipientList.add(messageRecipientObject)
                     data.metadataList.add(Metadata(
                             profileId,

@@ -74,7 +74,7 @@ class IdziennikApiMessagesSent(override val data: DataIdziennik,
                     data.messageRecipientIgnoreList.add(messageRecipient)
                 }
 
-                data.messageList.add(message)
+                data.messageIgnoreList.add(message)
                 data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true, sentDate))
             }
 

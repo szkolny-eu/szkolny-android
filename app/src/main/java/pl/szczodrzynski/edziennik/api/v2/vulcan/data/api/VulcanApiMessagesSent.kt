@@ -80,7 +80,7 @@ class VulcanApiMessagesSent(override val data: DataVulcan, val onSuccess: () -> 
                                 data.messageRecipientList.add(messageRecipientObject)
                             }
 
-                    data.messageList.add(messageObject)
+                    data.messageIgnoreList.add(messageObject)
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_MESSAGE,

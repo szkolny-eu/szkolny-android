@@ -1,8 +1,6 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages
 
 import android.os.Bundle
-import android.text.Html
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.afollestad.materialdialogs.MaterialDialog
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskFinishedEvent
-import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.databinding.FragmentMessagesBinding
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -92,7 +86,7 @@ class MessagesFragment : Fragment() {
 
         b.tabLayout.setupWithViewPager(b.viewPager)
 
-        if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS && app.profile.getStudentData("accountPassword", null) == null) {
+        /*if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS && app.profile.getStudentData("accountPassword", null) == null) {
             MaterialDialog.Builder(activity)
                     .title("Wiadomości w systemie Synergia")
                     .content("Moduł Wiadomości w aplikacji Szkolny.eu jest przeglądarką zasobów szkolnego konta Synergia. Z tego powodu, musisz wpisać swoje hasło do tego konta, aby móc korzystać z tej funkcji.")
@@ -115,7 +109,7 @@ class MessagesFragment : Fragment() {
                                 .show()
                     }
                     .show()
-        }
+        }*/
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

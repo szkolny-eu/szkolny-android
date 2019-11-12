@@ -67,7 +67,7 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
                 if (hasAttachments)
                     message.setHasAttachments()
 
-                data.messageList.add(message)
+                data.messageIgnoreList.add(message)
                 data.messageMetadataList.add(
                         Metadata(
                                 profileId,

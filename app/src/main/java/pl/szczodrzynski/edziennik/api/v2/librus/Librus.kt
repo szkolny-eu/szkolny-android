@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginMessages
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginSynergia
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
@@ -80,11 +81,13 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
     }
 
-    override fun getMessage(messageId: Long) {
+    override fun getMessage(message: MessageFull) {
         LibrusLoginApi(data) {
-            LibrusLoginMessages(data) {
-                LibrusMessagesGetMessage(data, messageId) {
-                    completed()
+            LibrusLoginSynergia(data) {
+                LibrusLoginMessages(data) {
+                    LibrusMessagesGetMessage(data, message) {
+                        completed()
+                    }
                 }
             }
         }

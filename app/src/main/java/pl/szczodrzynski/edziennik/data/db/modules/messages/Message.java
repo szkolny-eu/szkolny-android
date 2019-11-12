@@ -1,19 +1,19 @@
 package pl.szczodrzynski.edziennik.data.db.modules.messages;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(tableName = "messages",
         primaryKeys = {"profileId", "messageId"},
         indices = {@Index(value = {"profileId"})})
 public class Message {
-    int profileId;
+    public int profileId;
 
     @ColumnInfo(name = "messageId")
     public long id;

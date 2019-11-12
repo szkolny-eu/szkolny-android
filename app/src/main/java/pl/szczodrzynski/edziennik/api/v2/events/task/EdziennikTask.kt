@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.api.v2.mobidziennik.Mobidziennik
 import pl.szczodrzynski.edziennik.api.v2.template.Template
 import pl.szczodrzynski.edziennik.api.v2.vulcan.Vulcan
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {
@@ -21,7 +22,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
         fun sync() = EdziennikTask(-1, SyncRequest())
         fun syncProfile(profileId: Int, viewIds: List<Pair<Int, Int>>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(viewIds, arguments))
         fun syncProfileList(profileList: List<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
-        fun messageGet(profileId: Int, messageId: Long) = EdziennikTask(profileId, MessageGetRequest(messageId))
+        fun messageGet(profileId: Int, message: MessageFull) = EdziennikTask(profileId, MessageGetRequest(message))
         fun announcementsRead(profileId: Int) = EdziennikTask(profileId, AnnouncementsReadRequest())
     }
 
@@ -39,7 +40,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             // get the requested profile and login store
             val profile = app.db.profileDao().getByIdNow(profileId)
             this.profile = profile
-            if (profile == null || !profile.syncEnabled) {
+            if (profile == null) {
                 return
             }
             val loginStore = app.db.loginStoreDao().getByIdNow(profile.loginStoreId) ?: return
@@ -69,7 +70,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
                     featureIds = request.viewIds?.flatMap { Features.getIdsByView(it.first, it.second) } ?: Features.getAllIds(),
                     viewId = request.viewIds?.get(0)?.first,
                     arguments = request.arguments)
-            is MessageGetRequest -> edziennikInterface?.getMessage(request.messageId)
+            is MessageGetRequest -> edziennikInterface?.getMessage(request.message)
             is FirstLoginRequest -> edziennikInterface?.firstLogin()
             is AnnouncementsReadRequest -> edziennikInterface?.markAllAnnouncementsAsRead()
         }
@@ -87,6 +88,6 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     class SyncRequest
     data class SyncProfileRequest(val viewIds: List<Pair<Int, Int>>? = null, val arguments: JsonObject? = null)
     data class SyncProfileListRequest(val profileList: List<Int>)
-    data class MessageGetRequest(val messageId: Long)
+    data class MessageGetRequest(val message: MessageFull)
     class AnnouncementsReadRequest
 }

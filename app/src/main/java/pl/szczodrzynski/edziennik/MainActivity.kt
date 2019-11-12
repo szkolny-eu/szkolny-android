@@ -57,7 +57,7 @@ import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesDetailsFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessageFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
@@ -203,7 +203,7 @@ class MainActivity : AppCompatActivity() {
             list += NavTarget(TARGET_GRADES_EDITOR, R.string.menu_grades_editor, GradesEditorFragment::class)
             list += NavTarget(TARGET_HELP, R.string.menu_help, HelpFragment::class)
             list += NavTarget(TARGET_FEEDBACK, R.string.menu_feedback, FeedbackFragment::class)
-            list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessagesDetailsFragment::class)
+            list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessageFragment::class)
             list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
 
             list
