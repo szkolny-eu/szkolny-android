@@ -4,39 +4,43 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.timetable
 
-import android.app.Activity
 import android.content.Intent
 import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
 import pl.szczodrzynski.edziennik.setText
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualV2Dialog
 import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
 
 class LessonDetailsDialog(
-        val activity: Activity,
+        val activity: AppCompatActivity,
         val lesson: LessonFull
 ) {
     companion object {
         private const val TAG = "LessonDetailsDialog"
     }
 
+    private lateinit var b: DialogLessonDetailsBinding
+    private lateinit var dialog: AlertDialog
+
     init { run {
-        val b = DialogLessonDetailsBinding.inflate(activity.layoutInflater)
-        val dialog = MaterialAlertDialogBuilder(activity)
+        b = DialogLessonDetailsBinding.inflate(activity.layoutInflater)
+        dialog = MaterialAlertDialogBuilder(activity)
                 .setView(b.root)
                 .setPositiveButton(R.string.close) { dialog, _ ->
                     dialog.dismiss()
                 }
                 .setNeutralButton(R.string.add) { dialog, _ ->
                     dialog.dismiss()
-                    MaterialAlertDialogBuilder(activity)
+                    EventManualV2Dialog(activity, lesson.profileId, lesson)
+                    /*MaterialAlertDialogBuilder(activity)
                             .setItems(R.array.main_menu_add_options) { dialog2, which ->
                                 dialog2.dismiss()
                                 EventManualDialog(activity, lesson.profileId)
@@ -53,11 +57,15 @@ class LessonDetailsDialog(
 
                             }
                             .setNegativeButton(R.string.cancel) { dialog2, _ -> dialog2.dismiss() }
-                            .show()
+                            .show()*/
                 }
                 .show()
+        update()
+    }}
+
+    private fun update() {
         b.lesson = lesson
-        val lessonDate = lesson.displayDate ?: return@run
+        val lessonDate = lesson.displayDate ?: return
         b.lessonDate.text = Week.getFullDayName(lessonDate.weekDay) + ", " + lessonDate.formattedString
 
         if (lesson.type >= Lesson.TYPE_SHIFTED_SOURCE) {
@@ -135,5 +143,5 @@ class LessonDetailsDialog(
         if (lesson.type != Lesson.TYPE_CANCELLED && lesson.teamId != null) {
             b.teamName = lesson.teamName
         }
-    }}
+    }
 }

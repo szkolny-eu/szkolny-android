@@ -4,11 +4,13 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
+import android.text.style.StyleSpan
 import android.util.LongSparseArray
 import android.util.SparseArray
 import android.view.View
@@ -16,6 +18,9 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.core.util.forEach
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -344,6 +349,11 @@ fun CharSequence?.asStrikethroughSpannable(): Spannable {
     spannable.setSpan(StrikethroughSpan(), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannable
 }
+fun CharSequence?.asItalicSpannable(): Spannable {
+    val spannable = SpannableString(this)
+    spannable.setSpan(StyleSpan(Typeface.ITALIC), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return spannable
+}
 
 /**
  * Returns a new read-only list only of those given elements, that are not empty.
@@ -416,4 +426,13 @@ inline fun <T : View> T.onClick(crossinline onClickListener: (v: T) -> Unit) {
     setOnClickListener { v: View ->
         onClickListener(v as T)
     }
+}
+
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(t: T?) {
+            observer.onChanged(t)
+            removeObserver(this)
+        }
+    })
 }

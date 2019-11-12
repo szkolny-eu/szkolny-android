@@ -1013,4 +1013,13 @@
     <string name="dialog_lesson_details_number">Nr lekcji</string>
     <string name="dialog_lesson_details_shifted_to">Lekcja przeniesiona na %s</string>
     <string name="dialog_lesson_details_shifted_from">Lekcja przeniesiona z %s</string>
+    <string name="dialog_event_manual_title">Dodaj wpis do terminarza</string>
+    <string name="dialog_event_manual_time">Lekcja/godzina</string>
+    <string name="dialog_event_manual_date_next_lesson">nast. lekcja %s</string>
+    <string name="dialog_event_manual_date_tomorrow">jutro (%s)</string>
+    <string name="dialog_event_manual_date_this_week">%s (%s)</string>
+    <string name="dialog_event_manual_date_other">-- inna data --</string>
+    <string name="dialog_event_manual_date_today">dzisiaj (%s)</string>
+    <string name="dialog_event_manual_date_next_week">następny %s (%s)</string>
+    <string name="dialog_event_manual_no_lessons">Nie ma lekcji tego dnia</string>
 </resources>

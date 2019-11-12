@@ -62,6 +62,25 @@ class LessonFull(profileId: Int, id: Long) : Lesson(profileId, id) {
             return classroom ?: oldClassroom
         }
 
+    val displayTeamId: Long?
+        get() {
+            if (type == TYPE_SHIFTED_SOURCE)
+                return oldTeamId
+            return teamId ?: oldTeamId
+        }
+    val displaySubjectId: Long?
+        get() {
+            if (type == TYPE_SHIFTED_SOURCE)
+                return oldSubjectId
+            return subjectId ?: oldSubjectId
+        }
+    val displayTeacherId: Long?
+        get() {
+            if (type == TYPE_SHIFTED_SOURCE)
+                return oldTeacherId
+            return teacherId ?: oldTeacherId
+        }
+
     // metadata
     var seen: Boolean = false
     var notified: Boolean = false

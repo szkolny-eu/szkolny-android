@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
+
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
@@ -83,6 +84,23 @@ public class Event {
         this.teacherId = teacherId;
         this.subjectId = subjectId;
         this.teamId = teamId;
+    }
+
+    @Override
+    public Event clone() throws CloneNotSupportedException {
+        return new Event(
+                profileId,
+                id,
+                eventDate.clone(),
+                startTime == null ? null : startTime.clone(),
+                topic,
+                color,
+                type,
+                addedManually,
+                subjectId,
+                teacherId,
+                teamId
+        );
     }
 
     @Override
