@@ -46,13 +46,10 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
                     val senderLoginId = message.getString("NadawcaId") ?: return@forEach
                     val senderId = data.teacherList
                             .singleOrNull { it.loginId == senderLoginId }?.id ?: {
+
                         val senderName = message.getString("Nadawca") ?: ""
-                        val senderNameSplit = senderName.split(" ")
 
-                        if (senderNameSplit.size >= 2) {
-                            val senderLastName = senderNameSplit[0]
-                            val senderFirstName = senderNameSplit[1]
-
+                        senderName.getLastFirstName()?.let { (senderLastName, senderFirstName) ->
                             val teacherObject = Teacher(
                                     profileId,
                                     -1 * Utils.crc16(senderName.toByteArray()).toLong(),
@@ -62,8 +59,8 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
                             )
                             data.teacherList.put(teacherObject.id, teacherObject)
                             teacherObject.id
-                        } else -1
-                    }.invoke()
+                        }
+                    }.invoke() ?: -1
 
                     val sentDate = message.getLong("DataWyslaniaUnixEpoch")?.let { it * 1000 }
                             ?: -1

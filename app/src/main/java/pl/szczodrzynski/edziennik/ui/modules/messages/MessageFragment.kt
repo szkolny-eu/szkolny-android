@@ -97,7 +97,7 @@ class MessageFragment : Fragment(), CoroutineScope {
                 val msg = app.db.messageDao().getById(App.profileId, messageId)?.also {
                     it.recipients = app.db.messageRecipientDao().getAllByMessageId(it.profileId, it.id)
                     if (it.body != null && !it.seen) {
-                        app.db.metadataDao().setSeen(it.profileId, message, true)
+                        app.db.metadataDao().setSeen(it.profileId, it, true)
                     }
                 }
                 msg

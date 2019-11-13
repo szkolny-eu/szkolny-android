@@ -14,6 +14,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanApiMessagesSent(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
@@ -23,11 +25,11 @@ class VulcanApiMessagesSent(override val data: DataVulcan, val onSuccess: () -> 
 
     init {
         data.profile?.also { profile ->
-            val startDate: String = when (profile.empty) {
-                true -> profile.getSemesterStart(profile.currentSemester).stringY_m_d
-                else -> Date.getToday().stepForward(0, -1, 0).stringY_m_d
+            val startDate: Long = when (profile.empty) {
+                true -> profile.getSemesterStart(profile.currentSemester).inUnix
+                else -> Date.getToday().stepForward(0, -1, 0).inUnix
             }
-            val endDate: String = profile.getSemesterEnd(profile.currentSemester).stringY_m_d
+            val endDate: Long = profile.getSemesterEnd(profile.currentSemester).inUnix
 
             apiGet(TAG, VULCAN_API_ENDPOINT_MESSAGES_SENT, parameters = mapOf(
                     "DataPoczatkowa" to startDate,
@@ -43,23 +45,27 @@ class VulcanApiMessagesSent(override val data: DataVulcan, val onSuccess: () -> 
                     val unreadBy = message.getInt("Nieprzeczytane") ?: 0
                     val sentDate = message.getLong("DataWyslaniaUnixEpoch")?.let { it * 1000 } ?: -1
 
-                    val messageObject = Message(
-                            profileId,
-                            id,
-                            subject,
-                            body,
-                            TYPE_SENT,
-                            -1,
-                            -1
-                    )
-
                     message.getJsonArray("Adresaci")?.asJsonObjectList()
-                            ?.onEach { recipient ->
+                            ?.onEach { receiver ->
 
-                                val recipientLoginId = recipient.getString("LoginId")
+                                val receiverLoginId = receiver.getString("LoginId")
                                         ?: return@onEach
-                                val recipientId = data.teacherList.singleOrNull { it.loginId == recipientLoginId }?.id
-                                        ?: return@onEach
+                                val receiverId = data.teacherList.singleOrNull { it.loginId == receiverLoginId }?.id
+                                        ?: {
+                                            val receiverName = receiver.getString("Nazwa") ?: ""
+
+                                            receiverName.getLastFirstName()?.let { (receiverLastName, receiverFirstName) ->
+                                                val teacherObject = Teacher(
+                                                        profileId,
+                                                        -1 * Utils.crc16(receiverName.toByteArray()).toLong(),
+                                                        receiverFirstName,
+                                                        receiverLastName,
+                                                        receiverLoginId
+                                                )
+                                                data.teacherList.put(teacherObject.id, teacherObject)
+                                                teacherObject.id
+                                            }
+                                        }.invoke() ?: -1
 
                                 val readDate: Long = when (readBy) {
                                     0 -> 0
@@ -71,7 +77,7 @@ class VulcanApiMessagesSent(override val data: DataVulcan, val onSuccess: () -> 
 
                                 val messageRecipientObject = MessageRecipient(
                                         profileId,
-                                        recipientId,
+                                        receiverId,
                                         -1,
                                         readDate,
                                         id
@@ -79,6 +85,16 @@ class VulcanApiMessagesSent(override val data: DataVulcan, val onSuccess: () -> 
 
                                 data.messageRecipientList.add(messageRecipientObject)
                             }
+
+                    val messageObject = Message(
+                            profileId,
+                            id,
+                            subject,
+                            body,
+                            TYPE_SENT,
+                            -1,
+                            -1
+                    )
 
                     data.messageIgnoreList.add(messageObject)
                     data.metadataList.add(Metadata(

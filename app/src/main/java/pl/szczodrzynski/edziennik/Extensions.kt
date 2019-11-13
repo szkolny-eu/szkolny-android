@@ -95,6 +95,15 @@ fun String.swapFirstLastName(): String {
     }
 }
 
+fun String.getFirstLastName(): Pair<String, String>? {
+    return this.split(" ").let {
+        if (it.size >= 2) Pair(it[0], it[1])
+        else null
+    }
+}
+
+fun String.getLastFirstName() = this.getFirstLastName()
+
 fun changeStringCase(s: String): String {
     val delimiters = " '-/"
     val sb = StringBuilder()
