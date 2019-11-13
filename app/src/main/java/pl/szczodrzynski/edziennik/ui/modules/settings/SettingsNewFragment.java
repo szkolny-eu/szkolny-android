@@ -50,6 +50,7 @@ import pl.szczodrzynski.edziennik.network.ServerRequest;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushConfigActivity;
 import pl.szczodrzynski.edziennik.utils.Themes;
@@ -263,7 +264,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .color(IconicsColor.colorInt(iconColor))
                     )
                     .setOnClickAction(() -> {
-                        app.apiEdziennik.guiRemoveProfile(activity, app.profile.getId(), app.profile.getName());
+                        new ProfileRemoveDialog(activity, app.profile.getId(), app.profile.getName());
                     })
             );
 

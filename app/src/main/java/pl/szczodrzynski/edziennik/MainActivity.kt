@@ -45,6 +45,7 @@ import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
@@ -1043,7 +1044,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 loadTarget(DRAWER_ITEM_SETTINGS, null)
             } else if (item.itemId == 2) {
-                app.apiEdziennik.guiRemoveProfile(this@MainActivity, profileId, profile.name?.getText(this).toString())
+                ProfileRemoveDialog(this, profileId, profile.name?.getText(this)?.toString() ?: "?")
             }
             true
         }

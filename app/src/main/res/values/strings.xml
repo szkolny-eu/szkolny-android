@@ -572,7 +572,7 @@
     <string name="profile_menu_open_settings">Ustawienia</string>
     <string name="profile_menu_remove">Usuń profil</string>
     <string name="profile_menu_remove_confirm">Potwierdź usunięcie</string>
-    <string name="profile_menu_remove_confirm_text_format">Zamierzasz usunąć profil %s. Oznacza to usunięcie z aplikacji wszystkich danych powiązanych z tym profilem (ocen, planu lekcji, sprawdzianów…).\n\nWiększość danych będziesz mógł pobrać na nowo poprzez ponowne zalogowanie się.\n\nCzy rzeczywiście chcesz usunąć profil %s?</string>
+    <string name="profile_menu_remove_confirm_text_format">Zamierzasz usunąć profil <b>%s</b>. Oznacza to usunięcie z aplikacji wszystkich danych powiązanych z tym profilem (ocen, planu lekcji, sprawdzianów…).\n\nWiększość danych będziesz mógł pobrać na nowo poprzez ponowne zalogowanie się.\n\nCzy rzeczywiście chcesz usunąć profil %s?</string>
     <string name="rate_snackbar_negative">Nigdy</string>
     <string name="rate_snackbar_neutral">Później</string>
     <string name="rate_snackbar_positive">Oceń teraz</string>
@@ -1022,4 +1022,5 @@
     <string name="dialog_event_manual_date_today">dzisiaj (%s)</string>
     <string name="dialog_event_manual_date_next_week">następny %s (%s)</string>
     <string name="dialog_event_manual_no_lessons">Nie ma lekcji tego dnia</string>
+    <string name="dialog_profile_remove_success">Profil został usunięty.</string>
 </resources>

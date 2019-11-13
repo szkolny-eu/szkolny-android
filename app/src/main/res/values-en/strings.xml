@@ -526,7 +526,7 @@
     <string name="profile_menu_open_settings">Settings</string>
     <string name="profile_menu_remove">Remove profile</string>
     <string name="profile_menu_remove_confirm">Are you sure?</string>
-    <string name="profile_menu_remove_confirm_text_format">You are trying to remove profile %s. This means removing this profile\'s data (grades, timetables, events…) from the app.\n\nYou\'ll be able to restore most of the data by logging in again.\n\nDo you really want to remove profile %s?</string>
+    <string name="profile_menu_remove_confirm_text_format">You are trying to remove profile <b>%s</b>. This means removing this profile\'s data (grades, timetables, events…) from the app.\n\nYou\'ll be able to restore most of the data by logging in again.\n\nDo you really want to remove profile %s?</string>
     <string name="rate_snackbar_negative">Never</string>
     <string name="rate_snackbar_neutral">Later</string>
     <string name="rate_snackbar_positive">Rate now</string>
