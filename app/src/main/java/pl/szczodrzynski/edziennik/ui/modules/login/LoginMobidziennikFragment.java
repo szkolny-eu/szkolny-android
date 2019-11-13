@@ -17,7 +17,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginMobidziennikBinding;
-import pl.szczodrzynski.edziennik.ui.dialogs.error.ErrorSnackbar;
+import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar;
 
 import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_ARCHIVED;
 import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_LOGIN;

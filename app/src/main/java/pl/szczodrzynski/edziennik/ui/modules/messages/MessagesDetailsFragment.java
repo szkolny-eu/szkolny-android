@@ -45,6 +45,7 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull;
 import pl.szczodrzynski.edziennik.databinding.MessagesDetailsBinding;
+import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDialog;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
@@ -320,7 +321,7 @@ public class MessagesDetailsFragment extends Fragment {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                app.apiEdziennik.guiReportException(activity, 355, e);
+                new ErrorDialog(activity, e);
             }
         }
     }
@@ -458,7 +459,7 @@ public class MessagesDetailsFragment extends Fragment {
                                 .positiveText(R.string.ok)
                                 .neutralColor(R.string.report)
                                 .onNeutral((dialog, which) -> {
-                                    app.apiEdziennik.guiReportException(activity, 433, event.exception);
+                                    new ErrorDialog(activity, event.exception);
                                 })
                                 .show();
                     }
@@ -466,7 +467,7 @@ public class MessagesDetailsFragment extends Fragment {
             }
         }
         catch (Exception e) {
-            app.apiEdziennik.guiReportException(activity, 425, e);
+            new ErrorDialog(activity, e);
         }
     }
 

@@ -35,7 +35,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginVulcanBinding;
-import pl.szczodrzynski.edziennik.ui.dialogs.error.ErrorSnackbar;
+import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar;
 import pl.szczodrzynski.edziennik.ui.modules.webpush.QrScannerActivity;
 import pl.szczodrzynski.edziennik.utils.Utils;
 

@@ -17,7 +17,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginLibrusBinding;
-import pl.szczodrzynski.edziennik.ui.dialogs.error.ErrorSnackbar;
+import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar;
 
 import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.ERROR_LOGIN_DATA_INVALID;
 import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED;

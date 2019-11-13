@@ -7,39 +7,36 @@ package pl.szczodrzynski.edziennik.api.v2
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ANNOUNCEMENTS
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCE
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_BEHAVIOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOME
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_BEHAVIOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
 
-const val FEATURE_ALL = 0
-const val FEATURE_TIMETABLE = 1
-const val FEATURE_AGENDA = 2
-const val FEATURE_GRADES = 3
-const val FEATURE_HOMEWORK = 4
-const val FEATURE_BEHAVIOUR = 5
-const val FEATURE_ATTENDANCE = 6
-const val FEATURE_MESSAGES_INBOX = 7
-const val FEATURE_MESSAGES_SENT = 8
-const val FEATURE_ANNOUNCEMENTS = 9
+internal const val FEATURE_TIMETABLE = 1
+internal const val FEATURE_AGENDA = 2
+internal const val FEATURE_GRADES = 3
+internal const val FEATURE_HOMEWORK = 4
+internal const val FEATURE_BEHAVIOUR = 5
+internal const val FEATURE_ATTENDANCE = 6
+internal const val FEATURE_MESSAGES_INBOX = 7
+internal const val FEATURE_MESSAGES_SENT = 8
+internal const val FEATURE_ANNOUNCEMENTS = 9
 
-const val FEATURE_ALWAYS_NEEDED = 100
-const val FEATURE_STUDENT_INFO = 101
-const val FEATURE_STUDENT_NUMBER = 109
-const val FEATURE_SCHOOL_INFO = 102
-const val FEATURE_CLASS_INFO = 103
-const val FEATURE_TEAM_INFO = 104
-const val FEATURE_LUCKY_NUMBER = 105
-const val FEATURE_TEACHERS = 106
-const val FEATURE_SUBJECTS = 107
-const val FEATURE_CLASSROOMS = 108
-const val FEATURE_PUSH_CONFIG = 120
-
-const val FEATURE_MESSAGE_GET = 201
+internal const val FEATURE_ALWAYS_NEEDED = 100
+internal const val FEATURE_STUDENT_INFO = 101
+internal const val FEATURE_STUDENT_NUMBER = 109
+internal const val FEATURE_SCHOOL_INFO = 102
+internal const val FEATURE_CLASS_INFO = 103
+internal const val FEATURE_TEAM_INFO = 104
+internal const val FEATURE_LUCKY_NUMBER = 105
+internal const val FEATURE_TEACHERS = 106
+internal const val FEATURE_SUBJECTS = 107
+internal const val FEATURE_CLASSROOMS = 108
+internal const val FEATURE_PUSH_CONFIG = 120
 
 object Features {
     private fun getAllNecessary(): List<Int> = listOf(

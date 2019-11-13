@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-11-13.
  */
 
-package pl.szczodrzynski.edziennik.ui.dialogs.error
+package pl.szczodrzynski.edziennik.ui.modules.error
 
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity

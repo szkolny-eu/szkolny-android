@@ -51,6 +51,7 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableBinding;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
+import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
 import pl.szczodrzynski.edziennik.utils.SpannableHtmlTagHandler;
 import pl.szczodrzynski.edziennik.utils.Themes;
@@ -422,7 +423,7 @@ public class TimetableFragment extends Fragment {
                     linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.row_timetable_block_item, null);
                 }
                 catch (Exception e) {
-                    app.apiEdziennik.guiReportException(activity, 385, e);
+                    new ErrorDialog(activity, e);
                     return;
                 }
 

@@ -45,13 +45,14 @@ import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
 import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment
 import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
+import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
 import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesFragment
@@ -469,7 +470,7 @@ class MainActivity : AppCompatActivity() {
                         .withIcon(CommunityMaterial.Icon2.cmd_sync)
                         .withOnClickListener(View.OnClickListener {
                             bottomSheet.close()
-                            app.apiEdziennik.guiSyncFeature(app, this, App.profileId, R.string.sync_dialog_title, R.string.sync_dialog_text, R.string.sync_done, fragmentToFeature(navTargetId))
+                            SyncViewListDialog(this, navTargetId)
                         }),
                 BottomSheetSeparatorItem(false),
                 BottomSheetPrimaryItem(false)
