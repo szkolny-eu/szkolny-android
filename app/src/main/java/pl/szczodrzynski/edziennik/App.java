@@ -68,11 +68,6 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
-import pl.szczodrzynski.edziennik.data.api.Edziennik;
-import pl.szczodrzynski.edziennik.data.api.Iuczniowie;
-import pl.szczodrzynski.edziennik.data.api.Librus;
-import pl.szczodrzynski.edziennik.data.api.Mobidziennik;
-import pl.szczodrzynski.edziennik.data.api.Vulcan;
 import pl.szczodrzynski.edziennik.data.db.AppDb;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
@@ -141,12 +136,6 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
     public PersistentCookieJar cookieJar;
     public OkHttpClient http;
     public OkHttpClient httpLazy;
-    //public Jakdojade apiJakdojade;
-    public Edziennik apiEdziennik;
-    public Mobidziennik apiMobidziennik;
-    public Iuczniowie apiIuczniowie;
-    public Librus apiLibrus;
-    public Vulcan apiVulcan;
 
     public SharedPreferences appSharedPrefs; // sharedPreferences for APPCONFIG + JOBS STORE
     public AppConfig appConfig; // APPCONFIG: common for all profiles
@@ -204,12 +193,6 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
         db = AppDb.getDatabase(this);
         gson = new Gson();
         networkUtils = new NetworkUtils(this);
-        apiEdziennik = new Edziennik(this);
-        //apiJakdojade = new Jakdojade(this);
-        apiMobidziennik = new Mobidziennik(this);
-        apiIuczniowie = new Iuczniowie(this);
-        apiLibrus = new Librus(this);
-        apiVulcan = new Vulcan(this);
 
         Iconics.init(getApplicationContext());
         Iconics.registerFont(SzkolnyFont.INSTANCE);
