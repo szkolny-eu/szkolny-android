@@ -44,16 +44,16 @@ class LibrusApiTimetables(override val data: DataLibrus,
                     val lessonRange = lessonRangeEl?.asJsonArray?.asJsonObjectList()
                     if (lessonRange?.isNullOrEmpty() == false)
                         lessonsFound = true
-                    lessonRange?.forEachIndexed { index, lesson ->
+                    lessonRange?.forEach { lesson ->
                         parseLesson(lessonDate, lesson)
                     }
                 }
 
                 if (day.isNullOrEmpty() || !lessonsFound) {
-                    data.lessonNewList += Lesson(profileId, lessonDate.value.toLong()).apply {
+                    data.lessonNewList.add(Lesson(profileId, lessonDate.value.toLong()).apply {
                         type = Lesson.TYPE_NO_LESSONS
                         date = lessonDate
-                    }
+                    })
                 }
             }
 

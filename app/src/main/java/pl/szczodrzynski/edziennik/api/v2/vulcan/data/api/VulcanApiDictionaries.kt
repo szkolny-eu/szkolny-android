@@ -35,7 +35,7 @@ class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> 
             elements?.getJsonArray("KategorieUwag")?.forEach { saveNoticeType(it.asJsonObject) }
             elements?.getJsonArray("KategorieFrekwencji")?.forEach { saveAttendanceType(it.asJsonObject) }
 
-            data.setSyncNext(ENDPOINT_VULCAN_API_DICTIONARIES, 4*DAY)
+            data.setSyncNext(ENDPOINT_VULCAN_API_DICTIONARIES, 4 * DAY)
             onSuccess()
         }
     }
@@ -73,7 +73,7 @@ class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> 
     }
 
     private fun saveLessonRange(lessonRange: JsonObject) {
-        val lessonNumber = lessonRange.getInt("Id") ?: return
+        val lessonNumber = lessonRange.getInt("Numer") ?: return
         val startTime = lessonRange.getString("PoczatekTekst")?.let { Time.fromH_m(it) } ?: return
         val endTime = lessonRange.getString("KoniecTekst")?.let { Time.fromH_m(it) } ?: return
 
@@ -126,8 +126,7 @@ class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> 
                 Attendance.TYPE_ABSENT_EXCUSED
             else
                 Attendance.TYPE_ABSENT
-        }
-        else {
+        } else {
             val belated = attendanceType.getBoolean("Spoznienie") ?: false
             val released = attendanceType.getBoolean("Zwolnienie") ?: false
             val present = attendanceType.getBoolean("Obecnosc") ?: true

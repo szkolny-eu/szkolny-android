@@ -55,7 +55,7 @@ class VulcanApiAttendance(override val data: DataVulcan, val onSuccess: () -> Un
                         lessonSemester,
                         attendance.getString("PrzedmiotNazwa") + attendanceCategory.name.let { " - $it" },
                         lessonDate,
-                        data.lessonRanges.get(attendance.getInt("IdPoraLekcji") ?: 0)?.startTime,
+                        data.lessonRanges.get(attendance.getInt("Numer") ?: 0)?.startTime,
                         type)
 
                 data.attendanceList.add(attendanceObject)

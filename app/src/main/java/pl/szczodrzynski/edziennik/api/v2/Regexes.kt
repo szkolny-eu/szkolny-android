@@ -60,4 +60,8 @@ object Regexes {
     val IDZIENNIK_LOGIN_FIRST_STUDENT by lazy {
         """<option.*?value="([0-9]+)"\sdata-id-ucznia="([A-z0-9]+?)".*?>(.+?)\s(.+?)\s*\((.+?),\s*(.+?)\)</option>""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
+
+    val VULCAN_SHITFT_ANNOTATION by lazy {
+        """\(przeniesiona (z|na) lekcj[ię] ([0-9]+), (.+)\)""".toRegex()
+    }
 }
