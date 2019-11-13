@@ -23,11 +23,11 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent;
 import pl.szczodrzynski.edziennik.api.v2.events.FirstLoginFinishedEvent;
 import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask;
-import pl.szczodrzynski.edziennik.data.api.AppError;
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginProgressBinding;
 
-import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_OTHER;
+import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.LOGIN_NO_ARGUMENTS;
 
 public class LoginProgressFragment extends Fragment {
 
@@ -62,7 +62,7 @@ public class LoginProgressFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSyncErrorEvent(ApiTaskErrorEvent event) {
-        LoginActivity.error = event.getError().toAppError();
+        LoginActivity.error = event.getError();
         if (getActivity() == null)
             return;
         nav.navigateUp();
@@ -79,7 +79,7 @@ public class LoginProgressFragment extends Fragment {
         LoginActivity.error = null;
 
         if (args == null) {
-            LoginActivity.error = new AppError(TAG, 72, CODE_OTHER, getString(R.string.login_error_no_arguments));
+            LoginActivity.error = new ApiError(TAG, LOGIN_NO_ARGUMENTS);
             nav.navigateUp();
             return;
         }

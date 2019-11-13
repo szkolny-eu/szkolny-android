@@ -1,17 +1,12 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.text.Html;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +14,18 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.chip.Chip;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
-import com.mikepenz.iconics.typeface.IIcon;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -39,36 +40,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
-import im.wangchao.mhttp.Response;
-import im.wangchao.mhttp.callback.FileCallbackHandler;
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.data.api.Edziennik;
-import pl.szczodrzynski.edziennik.data.api.AppError;
-import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback;
-import pl.szczodrzynski.edziennik.databinding.MessagesDetailsBinding;
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull;
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipientFull;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
-import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Time;
-import pl.szczodrzynski.edziennik.utils.Anim;
+import pl.szczodrzynski.edziennik.databinding.MessagesDetailsBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
 import static android.app.Activity.RESULT_OK;
-import static android.view.Gravity.CENTER_VERTICAL;
-import static android.view.Gravity.END;
 import static pl.szczodrzynski.edziennik.utils.Utils.getResizedBitmap;
 import static pl.szczodrzynski.edziennik.utils.Utils.getStringFromFile;
 import static pl.szczodrzynski.edziennik.utils.Utils.readableFileSize;
@@ -108,7 +88,7 @@ public class MessagesDetailsFragment extends Fragment {
 
         b.messageContent.setVisibility(View.GONE);
 
-        if (messageId != -1) {
+        /*if (messageId != -1) {
             AsyncTask.execute(() -> {
                 if (app == null || app.profile == null || activity == null || b == null || !isAdded())
                     return;
@@ -286,7 +266,7 @@ public class MessagesDetailsFragment extends Fragment {
                 });
 
             });
-        }
+        }*/
 
         // click to expand subject and sender
         b.messageSubject.setOnClickListener(v -> {
@@ -359,7 +339,7 @@ public class MessagesDetailsFragment extends Fragment {
 
         File storageDir = Utils.getStorageDir();
 
-        Edziennik.getApi(app, app.profile.getLoginStoreType()).getAttachment(activity, new SyncCallback() {
+        /*Edziennik.getApi(app, app.profile.getLoginStoreType()).getAttachment(activity, new SyncCallback() {
             @Override
             public void onLoginFirst(List<Profile> profileList, LoginStore loginStore) {
 
@@ -437,7 +417,7 @@ public class MessagesDetailsFragment extends Fragment {
                     }
                 })
                 .build()
-                .enqueue());
+                .enqueue());*/
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

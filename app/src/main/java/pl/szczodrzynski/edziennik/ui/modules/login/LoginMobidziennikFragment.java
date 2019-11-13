@@ -1,23 +1,23 @@
 package pl.szczodrzynski.edziennik.ui.modules.login;
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.danimahardhika.cafebar.CafeBar;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.api.AppError;
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginMobidziennikBinding;
+import pl.szczodrzynski.edziennik.ui.dialogs.error.ErrorSnackbar;
 
 import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_ARCHIVED;
 import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_LOGIN;
@@ -31,6 +31,7 @@ public class LoginMobidziennikFragment extends Fragment {
     private NavController nav;
     private FragmentLoginMobidziennikBinding b;
     private static final String TAG = "LoginMobidziennik";
+    private ErrorSnackbar errorSnackbar;
 
     public LoginMobidziennikFragment() { }
 
@@ -40,6 +41,7 @@ public class LoginMobidziennikFragment extends Fragment {
         if (getActivity() != null) {
             app = (App) getActivity().getApplicationContext();
             nav = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            errorSnackbar = ((LoginActivity) getActivity()).errorSnackbar;
         }
         else {
             return null;
@@ -54,9 +56,9 @@ public class LoginMobidziennikFragment extends Fragment {
         assert getActivity() != null;
 
         view.postDelayed(() -> {
-            AppError error = LoginActivity.error;
+            ApiError error = LoginActivity.error;
             if (error != null) {
-                switch (error.errorCode) {
+                switch (error.getErrorCode()) {
                     case CODE_INVALID_LOGIN:
                         b.loginPasswordLayout.setError(getString(R.string.login_error_incorrect_login_or_password));
                         break;
@@ -69,22 +71,8 @@ public class LoginMobidziennikFragment extends Fragment {
                     case CODE_INVALID_SERVER_ADDRESS:
                         b.loginServerAddressLayout.setError(getString(R.string.login_error_incorrect_address));
                         break;
-                    default:
-                        CafeBar.builder(getActivity())
-                                .to(b.root)
-                                .content(getString(R.string.login_error, error.asReadableString(getActivity())))
-                                .autoDismiss(false)
-                                .positiveText(R.string.ok)
-                                .onPositive(CafeBar::dismiss)
-                                .floating(true)
-                                .swipeToDismiss(true)
-                                .neutralText(R.string.more)
-                                .onNeutral(cafeBar -> app.apiEdziennik.guiShowErrorDialog(getActivity(), error, R.string.error_details))
-                                .negativeText(R.string.report)
-                                .onNegative((cafeBar -> app.apiEdziennik.guiReportError(getActivity(), error, null)))
-                                .show();
-                        break;
                 }
+                errorSnackbar.addError(error).show();
                 LoginActivity.error = null;
             }
         }, 100);

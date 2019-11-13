@@ -163,3 +163,5 @@ const val EXCEPTION_LIBRUS_MESSAGES_REQUEST                 = 911
 const val EXCEPTION_IDZIENNIK_WEB_REQUEST                   = 912
 const val EXCEPTION_IDZIENNIK_WEB_API_REQUEST               = 913
 const val EXCEPTION_IDZIENNIK_API_REQUEST                   = 914
+
+const val LOGIN_NO_ARGUMENTS                                = 1201

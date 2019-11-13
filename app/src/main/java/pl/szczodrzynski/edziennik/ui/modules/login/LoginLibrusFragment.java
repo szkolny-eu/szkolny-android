@@ -1,28 +1,26 @@
 package pl.szczodrzynski.edziennik.ui.modules.login;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.danimahardhika.cafebar.CafeBar;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.api.AppError;
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginLibrusBinding;
+import pl.szczodrzynski.edziennik.ui.dialogs.error.ErrorSnackbar;
 
-import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_LOGIN;
-import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_LIBRUS_NOT_ACTIVATED;
+import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.ERROR_LOGIN_DATA_INVALID;
+import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 
 public class LoginLibrusFragment extends Fragment {
@@ -31,6 +29,7 @@ public class LoginLibrusFragment extends Fragment {
     private NavController nav;
     private FragmentLoginLibrusBinding b;
     private static final String TAG = "LoginLibrus";
+    private ErrorSnackbar errorSnackbar;
 
     public LoginLibrusFragment() { }
 
@@ -40,6 +39,7 @@ public class LoginLibrusFragment extends Fragment {
         if (getActivity() != null) {
             app = (App) getActivity().getApplicationContext();
             nav = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            errorSnackbar = ((LoginActivity) getActivity()).errorSnackbar;
         }
         else {
             return null;
@@ -54,32 +54,17 @@ public class LoginLibrusFragment extends Fragment {
         assert getActivity() != null;
 
         view.postDelayed(() -> {
-            AppError error = LoginActivity.error;
+            ApiError error = LoginActivity.error;
             if (error != null) {
-                switch (error.errorCode) {
-                    case CODE_INVALID_LOGIN:
+                switch (error.getErrorCode()) {
+                    case ERROR_LOGIN_DATA_INVALID:
                         b.loginPasswordLayout.setError(getString(R.string.login_error_incorrect_login_or_password));
                         break;
-                    case CODE_LIBRUS_NOT_ACTIVATED:
+                    case ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED:
                         b.loginEmailLayout.setError(getString(R.string.login_error_account_not_activated));
                         break;
-                    default:
-                        CafeBar.builder(getActivity())
-                                .to(b.root)
-                                .content(getString(R.string.login_error, error.asReadableString(getActivity())))
-                                .duration(10000)
-                                .autoDismiss(false)
-                                .positiveText(R.string.ok)
-                                .onPositive(CafeBar::dismiss)
-                                .floating(true)
-                                .swipeToDismiss(true)
-                                .neutralText(R.string.more)
-                                .onNeutral(cafeBar -> app.apiEdziennik.guiShowErrorDialog(getActivity(), error, R.string.error_details))
-                                .negativeText(R.string.report)
-                                .onNegative((cafeBar -> app.apiEdziennik.guiReportError(getActivity(), error, null)))
-                                .show();
-                        break;
                 }
+                errorSnackbar.addError(error).show();
                 LoginActivity.error = null;
             }
         }, 100);

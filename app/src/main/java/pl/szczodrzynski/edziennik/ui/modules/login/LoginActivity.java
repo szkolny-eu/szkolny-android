@@ -15,8 +15,9 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.api.AppError;
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.ActivityLoginBinding;
+import pl.szczodrzynski.edziennik.ui.dialogs.error.ErrorSnackbar;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,7 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     public static final int RESULT_OK = 1;
     public static NavOptions navOptions;
 
-    static AppError error = null;
+    static ApiError error = null;
+    ErrorSnackbar errorSnackbar = new ErrorSnackbar(this);
 
     static List<LoginProfileObject> profileObjects;
     public static boolean firstCompleted = false; // if a profile is already added during *this* login. This means that LoginChooser has to navigateUp onBackPressed. Else, finish the activity.
@@ -69,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setTheme(R.style.AppTheme_Light);
+
         firstCompleted = false;
         profileObjects = new ArrayList<>();
         error = null;
@@ -82,6 +86,8 @@ public class LoginActivity extends AppCompatActivity {
 
         b = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_login, null, false);
         setContentView(b.getRoot());
+
+        errorSnackbar.setCoordinator(b.coordinator, null);
 
         app = (App) getApplication();
 

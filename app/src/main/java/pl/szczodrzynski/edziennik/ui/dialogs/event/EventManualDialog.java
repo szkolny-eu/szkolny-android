@@ -36,7 +36,6 @@ import java.util.List;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.api.AppError;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType;
@@ -54,7 +53,6 @@ import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.models.Week;
 
 import static pl.szczodrzynski.edziennik.App.APP_URL;
-import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_OTHER;
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.COLOR_DEFAULT;
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_UNDEFINED;
@@ -374,7 +372,8 @@ public class EventManualDialog {
                 }
             } catch (Exception e) {
                 activity.runOnUiThread(() -> {
-                    app.apiEdziennik.guiShowErrorDialog(activity, new AppError(TAG, 379, CODE_OTHER, null, e), R.string.error_occured);
+                    // TODO show error in EventManualDialog
+                    //app.apiEdziennik.guiShowErrorDialog(activity, new AppError(TAG, 379, CODE_OTHER, null, e), R.string.error_occured);
                 });
             }
         });

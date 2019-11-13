@@ -65,7 +65,7 @@ class LoginSyncFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSyncErrorEvent(event: ApiTaskErrorEvent) {
-        LoginActivity.error = event.error.toAppError()
+        LoginActivity.error = event.error
         nav.navigate(R.id.loginSyncErrorFragment, null, LoginActivity.navOptions)
     }
 

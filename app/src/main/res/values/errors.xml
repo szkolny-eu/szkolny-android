@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2019-11-13.
+  -->
+
+<resources>
+    <string name="error_50" translatable="false">ERROR_REQUEST_FAILURE</string>
+    <string name="error_51" translatable="false">ERROR_REQUEST_HTTP_400</string>
+    <string name="error_52" translatable="false">ERROR_REQUEST_HTTP_401</string>
+    <string name="error_53" translatable="false">ERROR_REQUEST_HTTP_403</string>
+    <string name="error_54" translatable="false">ERROR_REQUEST_HTTP_404</string>
+    <string name="error_55" translatable="false">ERROR_REQUEST_HTTP_405</string>
+    <string name="error_56" translatable="false">ERROR_REQUEST_HTTP_410</string>
+    <string name="error_57" translatable="false">ERROR_REQUEST_HTTP_500</string>
+    <string name="error_100" translatable="false">ERROR_RESPONSE_EMPTY</string>
+    <string name="error_101" translatable="false">ERROR_LOGIN_DATA_MISSING</string>
+    <string name="error_102" translatable="false">ERROR_LOGIN_DATA_INVALID</string>
+    <string name="error_105" translatable="false">ERROR_PROFILE_MISSING</string>
+    <string name="error_110" translatable="false">ERROR_INVALID_LOGIN_MODE</string>
+    <string name="error_111" translatable="false">ERROR_LOGIN_METHOD_NOT_SATISFIED</string>
+    <string name="error_112" translatable="false">ERROR_NOT_IMPLEMENTED</string>
+
+    <string name="error_115" translatable="false">ERROR_NO_STUDENTS_IN_ACCOUNT</string>
+
+    <string name="error_120" translatable="false">CODE_INTERNAL_LIBRUS_ACCOUNT_410</string>
+    <string name="error_121" translatable="false">CODE_INTERNAL_LIBRUS_SYNERGIA_EXPIRED</string>
+    <string name="error_124" translatable="false">ERROR_LOGIN_LIBRUS_API_CAPTCHA_NEEDED</string>
+    <string name="error_125" translatable="false">ERROR_LOGIN_LIBRUS_API_CONNECTION_PROBLEMS</string>
+    <string name="error_126" translatable="false">ERROR_LOGIN_LIBRUS_API_INVALID_CLIENT</string>
+    <string name="error_127" translatable="false">ERROR_LOGIN_LIBRUS_API_REG_ACCEPT_NEEDED</string>
+    <string name="error_128" translatable="false">ERROR_LOGIN_LIBRUS_API_CHANGE_PASSWORD_ERROR</string>
+    <string name="error_129" translatable="false">ERROR_LOGIN_LIBRUS_API_PASSWORD_CHANGE_REQUIRED</string>
+    <string name="error_130" translatable="false">ERROR_LOGIN_LIBRUS_API_INVALID_LOGIN</string>
+    <string name="error_131" translatable="false">ERROR_LOGIN_LIBRUS_API_OTHER</string>
+    <string name="error_132" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_CSRF_MISSING</string>
+    <string name="error_133" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED</string>
+    <string name="error_134" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR</string>
+    <string name="error_139" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_SYNERGIA_TOKEN_MISSING</string>
+    <string name="error_140" translatable="false">ERROR_LIBRUS_API_TOKEN_EXPIRED</string>
+    <string name="error_141" translatable="false">ERROR_LIBRUS_API_INSUFFICIENT_SCOPES</string>
+    <string name="error_142" translatable="false">ERROR_LIBRUS_API_OTHER</string>
+    <string name="error_143" translatable="false">ERROR_LIBRUS_API_ACCESS_DENIED</string>
+    <string name="error_144" translatable="false">ERROR_LIBRUS_API_RESOURCE_NOT_FOUND</string>
+    <string name="error_145" translatable="false">ERROR_LIBRUS_API_DATA_NOT_FOUND</string>
+    <string name="error_146" translatable="false">ERROR_LIBRUS_API_TIMETABLE_NOT_PUBLIC</string>
+    <string name="error_147" translatable="false">ERROR_LIBRUS_API_RESOURCE_ACCESS_DENIED</string>
+    <string name="error_148" translatable="false">ERROR_LIBRUS_API_INVALID_REQUEST_PARAMS</string>
+    <string name="error_149" translatable="false">ERROR_LIBRUS_API_INCORRECT_ENDPOINT</string>
+    <string name="error_150" translatable="false">ERROR_LIBRUS_API_LUCKY_NUMBER_NOT_ACTIVE</string>
+    <string name="error_151" translatable="false">ERROR_LIBRUS_API_NOTES_NOT_ACTIVE</string>
+    <string name="error_152" translatable="false">ERROR_LOGIN_LIBRUS_SYNERGIA_NO_TOKEN</string>
+    <string name="error_153" translatable="false">ERROR_LOGIN_LIBRUS_SYNERGIA_TOKEN_INVALID</string>
+    <string name="error_154" translatable="false">ERROR_LOGIN_LIBRUS_SYNERGIA_NO_SESSION_ID</string>
+    <string name="error_155" translatable="false">ERROR_LIBRUS_MESSAGES_ACCESS_DENIED</string>
+    <string name="error_156" translatable="false">ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED</string>
+    <string name="error_157" translatable="false">ERROR_LOGIN_LIBRUS_MESSAGES_NO_SESSION_ID</string>
+    <string name="error_158" translatable="false">ERROR_LIBRUS_PORTAL_ACCESS_DENIED</string>
+    <string name="error_159" translatable="false">ERROR_LIBRUS_PORTAL_API_DISABLED</string>
+    <string name="error_160" translatable="false">ERROR_LIBRUS_PORTAL_SYNERGIA_DISCONNECTED</string>
+    <string name="error_161" translatable="false">ERROR_LIBRUS_PORTAL_OTHER</string>
+    <string name="error_162" translatable="false">ERROR_LIBRUS_PORTAL_SYNERGIA_NOT_FOUND</string>
+    <string name="error_163" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_OTHER</string>
+    <string name="error_164" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED</string>
+    <string name="error_165" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_CODE_REVOKED</string>
+    <string name="error_166" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_NO_CLIENT_ID</string>
+    <string name="error_167" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_NO_CODE</string>
+    <string name="error_168" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_NO_REFRESH</string>
+    <string name="error_169" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_NO_REDIRECT</string>
+    <string name="error_170" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_UNSUPPORTED_GRANT</string>
+    <string name="error_171" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_INVALID_CLIENT_ID</string>
+    <string name="error_172" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_INVALID</string>
+    <string name="error_173" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_REVOKED</string>
+    <string name="error_174" translatable="false">ERROR_LIBRUS_SYNERGIA_OTHER</string>
+    <string name="error_175" translatable="false">ERROR_LIBRUS_SYNERGIA_MAINTENANCE</string>
+
+    <string name="error_201" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
+    <string name="error_202" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
+    <string name="error_203" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_DEVICE</string>
+    <string name="error_204" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_ARCHIVED</string>
+    <string name="error_205" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_MAINTENANCE</string>
+    <string name="error_206" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_ADDRESS</string>
+    <string name="error_210" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_OTHER</string>
+    <string name="error_211" translatable="false">ERROR_MOBIDZIENNIK_WEB_ACCESS_DENIED</string>
+    <string name="error_212" translatable="false">ERROR_MOBIDZIENNIK_WEB_NO_SESSION_KEY</string>
+    <string name="error_216" translatable="false">ERROR_MOBIDZIENNIK_WEB_NO_SESSION_VALUE</string>
+    <string name="error_213" translatable="false">ERROR_MOBIDZIENNIK_WEB_NO_SERVER_ID</string>
+    <string name="error_214" translatable="false">ERROR_MOBIDZIENNIK_WEB_INVALID_RESPONSE</string>
+    <string name="error_215" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_NO_SESSION_ID</string>
+
+    <string name="error_301" translatable="false">ERROR_LOGIN_VULCAN_INVALID_SYMBOL</string>
+    <string name="error_302" translatable="false">ERROR_LOGIN_VULCAN_INVALID_TOKEN</string>
+    <string name="error_309" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN</string>
+    <string name="error_310" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN_0_REMAINING</string>
+    <string name="error_311" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN_1_REMAINING</string>
+    <string name="error_312" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN_2_REMAINING</string>
+    <string name="error_321" translatable="false">ERROR_LOGIN_VULCAN_EXPIRED_TOKEN</string>
+    <string name="error_322" translatable="false">ERROR_LOGIN_VULCAN_OTHER</string>
+    <string name="error_330" translatable="false">ERROR_LOGIN_VULCAN_ONLY_KINDERGARTEN</string>
+    <string name="error_331" translatable="false">ERROR_LOGIN_VULCAN_NO_PUPILS</string>
+    <string name="error_340" translatable="false">ERROR_VULCAN_API_MAINTENANCE</string>
+    <string name="error_341" translatable="false">ERROR_VULCAN_API_BAD_REQUEST</string>
+    <string name="error_342" translatable="false">ERROR_VULCAN_API_OTHER</string>
+
+    <string name="error_401" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN</string>
+    <string name="error_402" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME</string>
+    <string name="error_403" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED</string>
+    <string name="error_404" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_MAINTENANCE</string>
+    <string name="error_405" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_SERVER_ERROR</string>
+    <string name="error_410" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_OTHER</string>
+    <string name="error_411" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_API_NO_ACCESS</string>
+    <string name="error_420" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION</string>
+    <string name="error_421" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH</string>
+    <string name="error_422" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER</string>
+    <string name="error_430" translatable="false">ERROR_IDZIENNIK_WEB_ACCESS_DENIED</string>
+    <string name="error_431" translatable="false">ERROR_IDZIENNIK_WEB_OTHER</string>
+    <string name="error_432" translatable="false">ERROR_IDZIENNIK_WEB_MAINTENANCE</string>
+    <string name="error_433" translatable="false">ERROR_IDZIENNIK_WEB_SERVER_ERROR</string>
+    <string name="error_434" translatable="false">ERROR_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED</string>
+    <string name="error_440" translatable="false">ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR</string>
+    <string name="error_441" translatable="false">ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA</string>
+    <string name="error_450" translatable="false">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
+    <string name="error_451" translatable="false">ERROR_IDZIENNIK_API_OTHER</string>
+
+    <string name="error_801" translatable="false">ERROR_TEMPLATE_WEB_OTHER</string>
+
+    <string name="error_900" translatable="false">EXCEPTION_API_TASK</string>
+    <string name="error_901" translatable="false">EXCEPTION_LOGIN_LIBRUS_API_TOKEN</string>
+    <string name="error_902" translatable="false">EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN</string>
+    <string name="error_903" translatable="false">EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN</string>
+    <string name="error_904" translatable="false">EXCEPTION_LIBRUS_API_REQUEST</string>
+    <string name="error_905" translatable="false">EXCEPTION_LIBRUS_SYNERGIA_REQUEST</string>
+    <string name="error_906" translatable="false">EXCEPTION_MOBIDZIENNIK_WEB_REQUEST</string>
+    <string name="error_907" translatable="false">EXCEPTION_VULCAN_API_REQUEST</string>
+    <string name="error_910" translatable="false">EXCEPTION_NOTIFY_AND_SYNC</string>
+    <string name="error_911" translatable="false">EXCEPTION_LIBRUS_MESSAGES_REQUEST</string>
+    <string name="error_912" translatable="false">EXCEPTION_IDZIENNIK_WEB_REQUEST</string>
+    <string name="error_913" translatable="false">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
+    <string name="error_914" translatable="false">EXCEPTION_IDZIENNIK_API_REQUEST</string>
+
+    <string name="error_1201" translatable="false">LOGIN_NO_ARGUMENTS</string>
+
+    <string name="error_50_reason">Błąd odpowiedzi serwera</string>
+    <string name="error_51_reason">Błąd serwera: nieprawidłowe zapytanie</string>
+    <string name="error_52_reason">Błąd serwera: odmowa dostępu</string>
+    <string name="error_53_reason">Błąd serwera: dostęp zabroniony</string>
+    <string name="error_54_reason">Błąd serwera: plik nie znaleziony</string>
+    <string name="error_55_reason">Błąd serwera: nieprawidłowa metoda zapytania</string>
+    <string name="error_56_reason">Błąd serwera: odpowiedź niedostępna</string>
+    <string name="error_57_reason">Wewnętrzny błąd serwera</string>
+    <string name="error_100_reason">Brak odpowiedzi serwera</string>
+    <string name="error_101_reason">Dane logowania niekompletne</string>
+    <string name="error_102_reason">Nieprawidłowe dane logowania</string>
+    <string name="error_105_reason">Profil nie został ustawiony</string>
+    <string name="error_110_reason">Nieprawidłowy sposób logowania</string>
+    <string name="error_111_reason">Nie można wywołać metody logowania</string>
+    <string name="error_112_reason">Nie zaimplementowano</string>
+
+    <string name="error_115_reason">Brak uczniów przypisanych do konta</string>
+
+    <string name="error_120_reason">CODE_INTERNAL_LIBRUS_ACCOUNT_410</string>
+    <string name="error_121_reason">CODE_INTERNAL_LIBRUS_SYNERGIA_EXPIRED</string>
+    <string name="error_124_reason">Wymagane wypełnienie CAPTCHA</string>
+    <string name="error_125_reason">Problem z połączeniem</string>
+    <string name="error_126_reason">Nieprawidłowy identyfikator klienta</string>
+    <string name="error_127_reason">Wymagana akceptacja regulaminu</string>
+    <string name="error_128_reason">Błąd zmiany hasła</string>
+    <string name="error_129_reason">Wymagana zmiana hasła</string>
+    <string name="error_130_reason">Nieprawidłowe dane logowania</string>
+    <string name="error_131_reason">Inny błąd logowania do API</string>
+    <string name="error_132_reason">Brak tokenu CSRF</string>
+    <string name="error_133_reason">Konto LIBRUS nie zostało aktywowane</string>
+    <string name="error_134_reason">Inny błąd logowania do Portalu LIBRUS</string>
+    <string name="error_139_reason">Nie znaleziono tokenu Synergia</string>
+    <string name="error_140_reason">Token API wygasł</string>
+    <string name="error_141_reason">Niewystarczające uprawnienia</string>
+    <string name="error_142_reason">Inny błąd API</string>
+    <string name="error_143_reason">Odmowa dostępu do API</string>
+    <string name="error_144_reason">Nie znaleziono zasobu API</string>
+    <string name="error_145_reason">Brak danych</string>
+    <string name="error_146_reason">Plan lekcji nie jest publiczny</string>
+    <string name="error_147_reason">Brak dostępu do zasobu</string>
+    <string name="error_148_reason">Nieprawidłowe parametry</string>
+    <string name="error_149_reason">Nieprawidłowy zasób</string>
+    <string name="error_150_reason">Szczęśliwy numerek nie jest aktywny</string>
+    <string name="error_151_reason">Uwagi nie są publiczne</string>
+    <string name="error_152_reason">Brak tokenu logowania Synergia</string>
+    <string name="error_153_reason">Nieprawidłowy token logowania Synergia</string>
+    <string name="error_154_reason">Brak ID sesji Synergia</string>
+    <string name="error_155_reason">Brak dostępu do Wiadomości</string>
+    <string name="error_156_reason">Brak dostępu do Synergii</string>
+    <string name="error_157_reason">Brak ID sesji Wiadomości</string>
+    <string name="error_158_reason">Odmowa dostępu do Portalu Librus</string>
+    <string name="error_159_reason">API Portalu Librus wyłączone</string>
+    <string name="error_160_reason">Konto Synergia zostało rozłączone</string>
+    <string name="error_161_reason">Inny błąd Portalu Librus</string>
+    <string name="error_162_reason">Nie znaleziono konta Synergia</string>
+    <string name="error_163_reason">Inny błąd logowania do Portalu Librus</string>
+    <string name="error_164_reason">ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED</string>
+    <string name="error_165_reason">ERROR_LOGIN_LIBRUS_PORTAL_CODE_REVOKED</string>
+    <string name="error_166_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_CLIENT_ID</string>
+    <string name="error_167_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_CODE</string>
+    <string name="error_168_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_REFRESH</string>
+    <string name="error_169_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_REDIRECT</string>
+    <string name="error_170_reason">ERROR_LOGIN_LIBRUS_PORTAL_UNSUPPORTED_GRANT</string>
+    <string name="error_171_reason">ERROR_LOGIN_LIBRUS_PORTAL_INVALID_CLIENT_ID</string>
+    <string name="error_172_reason">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_INVALID</string>
+    <string name="error_173_reason">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_REVOKED</string>
+    <string name="error_174_reason">ERROR_LIBRUS_SYNERGIA_OTHER</string>
+    <string name="error_175_reason">ERROR_LIBRUS_SYNERGIA_MAINTENANCE</string>
+
+    <string name="error_201_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
+    <string name="error_202_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
+    <string name="error_203_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_DEVICE</string>
+    <string name="error_204_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_ARCHIVED</string>
+    <string name="error_205_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_MAINTENANCE</string>
+    <string name="error_206_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_ADDRESS</string>
+    <string name="error_210_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_OTHER</string>
+    <string name="error_211_reason">ERROR_MOBIDZIENNIK_WEB_ACCESS_DENIED</string>
+    <string name="error_212_reason">ERROR_MOBIDZIENNIK_WEB_NO_SESSION_KEY</string>
+    <string name="error_216_reason">ERROR_MOBIDZIENNIK_WEB_NO_SESSION_VALUE</string>
+    <string name="error_213_reason">ERROR_MOBIDZIENNIK_WEB_NO_SERVER_ID</string>
+    <string name="error_214_reason">ERROR_MOBIDZIENNIK_WEB_INVALID_RESPONSE</string>
+    <string name="error_215_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_NO_SESSION_ID</string>
+
+    <string name="error_301_reason">ERROR_LOGIN_VULCAN_INVALID_SYMBOL</string>
+    <string name="error_302_reason">ERROR_LOGIN_VULCAN_INVALID_TOKEN</string>
+    <string name="error_309_reason">ERROR_LOGIN_VULCAN_INVALID_PIN</string>
+    <string name="error_310_reason">ERROR_LOGIN_VULCAN_INVALID_PIN_0_REMAINING</string>
+    <string name="error_311_reason">ERROR_LOGIN_VULCAN_INVALID_PIN_1_REMAINING</string>
+    <string name="error_312_reason">ERROR_LOGIN_VULCAN_INVALID_PIN_2_REMAINING</string>
+    <string name="error_321_reason">ERROR_LOGIN_VULCAN_EXPIRED_TOKEN</string>
+    <string name="error_322_reason">ERROR_LOGIN_VULCAN_OTHER</string>
+    <string name="error_330_reason">ERROR_LOGIN_VULCAN_ONLY_KINDERGARTEN</string>
+    <string name="error_331_reason">ERROR_LOGIN_VULCAN_NO_PUPILS</string>
+    <string name="error_340_reason">ERROR_VULCAN_API_MAINTENANCE</string>
+    <string name="error_341_reason">ERROR_VULCAN_API_BAD_REQUEST</string>
+    <string name="error_342_reason">ERROR_VULCAN_API_OTHER</string>
+
+    <string name="error_401_reason">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN</string>
+    <string name="error_402_reason">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME</string>
+    <string name="error_403_reason">ERROR_LOGIN_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED</string>
+    <string name="error_404_reason">ERROR_LOGIN_IDZIENNIK_WEB_MAINTENANCE</string>
+    <string name="error_405_reason">ERROR_LOGIN_IDZIENNIK_WEB_SERVER_ERROR</string>
+    <string name="error_410_reason">ERROR_LOGIN_IDZIENNIK_WEB_OTHER</string>
+    <string name="error_411_reason">ERROR_LOGIN_IDZIENNIK_WEB_API_NO_ACCESS</string>
+    <string name="error_420_reason">ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION</string>
+    <string name="error_421_reason">ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH</string>
+    <string name="error_422_reason">ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER</string>
+    <string name="error_430_reason">ERROR_IDZIENNIK_WEB_ACCESS_DENIED</string>
+    <string name="error_431_reason">ERROR_IDZIENNIK_WEB_OTHER</string>
+    <string name="error_432_reason">ERROR_IDZIENNIK_WEB_MAINTENANCE</string>
+    <string name="error_433_reason">ERROR_IDZIENNIK_WEB_SERVER_ERROR</string>
+    <string name="error_434_reason">ERROR_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED</string>
+    <string name="error_440_reason">ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR</string>
+    <string name="error_441_reason">ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA</string>
+    <string name="error_450_reason">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
+    <string name="error_451_reason">ERROR_IDZIENNIK_API_OTHER</string>
+
+    <string name="error_801_reason">ERROR_TEMPLATE_WEB_OTHER</string>
+
+    <string name="error_900_reason">EXCEPTION_API_TASK</string>
+    <string name="error_901_reason">EXCEPTION_LOGIN_LIBRUS_API_TOKEN</string>
+    <string name="error_902_reason">EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN</string>
+    <string name="error_903_reason">EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN</string>
+    <string name="error_904_reason">EXCEPTION_LIBRUS_API_REQUEST</string>
+    <string name="error_905_reason">EXCEPTION_LIBRUS_SYNERGIA_REQUEST</string>
+    <string name="error_906_reason">EXCEPTION_MOBIDZIENNIK_WEB_REQUEST</string>
+    <string name="error_907_reason">EXCEPTION_VULCAN_API_REQUEST</string>
+    <string name="error_910_reason">EXCEPTION_NOTIFY_AND_SYNC</string>
+    <string name="error_911_reason">EXCEPTION_LIBRUS_MESSAGES_REQUEST</string>
+    <string name="error_912_reason">EXCEPTION_IDZIENNIK_WEB_REQUEST</string>
+    <string name="error_913_reason">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
+    <string name="error_914_reason">EXCEPTION_IDZIENNIK_API_REQUEST</string>
+
+    <string name="error_1201_reason">Nie podano parametrów</string>
+</resources>

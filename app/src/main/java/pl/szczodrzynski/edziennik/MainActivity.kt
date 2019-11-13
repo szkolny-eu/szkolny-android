@@ -45,6 +45,7 @@ import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
@@ -215,6 +216,7 @@ class MainActivity : AppCompatActivity() {
     val navView: NavView by lazy { b.navView }
     val drawer: NavDrawer by lazy { navView.drawer }
     val bottomSheet: NavBottomSheet by lazy { navView.bottomSheet }
+    val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
 
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
 
@@ -246,6 +248,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContentView(b.root)
+
+        errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
         navLoading = true
 
@@ -574,7 +578,12 @@ class MainActivity : AppCompatActivity() {
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSyncErrorEvent(event: ApiTaskErrorEvent) {
-
+        navView.toolbar.apply {
+            subtitleFormat = R.string.toolbar_subtitle
+            subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
+            subtitle = "Gotowe"
+        }
+        errorSnackbar.addError(event.error).show()
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onAppManagerDetectedEvent(event: AppManagerDetectedEvent) {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -35,12 +33,6 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.api.AppError;
-import pl.szczodrzynski.edziennik.data.api.Edziennik;
-import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback;
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
 import pl.szczodrzynski.edziennik.databinding.ActivityComposeMessageBinding;
 import pl.szczodrzynski.edziennik.utils.Colors;
@@ -63,7 +55,7 @@ public class MessagesComposeActivity extends AppCompatActivity {
         b = DataBindingUtil.inflate(getLayoutInflater(), R.layout.activity_compose_message, null, false);
         setContentView(b.getRoot());
 
-        composeInfo = Edziennik.getApi(app, app.profile.getLoginStoreType()).getComposeInfo(app.profile);
+        /*composeInfo = Edziennik.getApi(app, app.profile.getLoginStoreType()).getComposeInfo(app.profile);
 
         Toolbar toolbar = b.toolbar;
         setSupportActionBar(toolbar);
@@ -99,7 +91,7 @@ public class MessagesComposeActivity extends AppCompatActivity {
             MessagesComposeSuggestionAdapter adapter = new MessagesComposeSuggestionAdapter(this, teachers);
             //ArrayAdapter<Teacher> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, teachers);
             b.nachoTextView.setAdapter(adapter);
-        });
+        });*/
         /*app.db.teacherDao().getAllTeachers(App.profileId).observe(this, teachers -> {
 
         });*/

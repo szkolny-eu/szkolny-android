@@ -1,6 +1,9 @@
 package pl.szczodrzynski.edziennik.ui.modules.login;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,13 +11,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginSyncErrorBinding;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 public class LoginSyncErrorFragment extends Fragment {
 
@@ -44,10 +44,10 @@ public class LoginSyncErrorFragment extends Fragment {
         assert getContext() != null;
         assert getActivity() != null;
 
-        b.errorDetails.setText(LoginActivity.error == null ? "" : LoginActivity.error.asReadableString(getActivity()));
+        b.errorDetails.setText(LoginActivity.error == null ? "" : LoginActivity.error.getStringReason(getActivity()));
 
         b.reportButton.setOnClickListener((v -> {
-            app.apiEdziennik.guiReportError(getActivity(), LoginActivity.error, null);
+            // TODO error report activity open here app.apiEdziennik.guiReportError(getActivity(), LoginActivity.error, null);
         }));
 
         b.nextButton.setOnClickListener((v -> {

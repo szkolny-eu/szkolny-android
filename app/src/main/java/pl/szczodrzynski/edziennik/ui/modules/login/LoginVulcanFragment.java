@@ -3,26 +3,23 @@ package pl.szczodrzynski.edziennik.ui.modules.login;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.danimahardhika.cafebar.CafeBar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -36,9 +33,10 @@ import javax.crypto.ShortBufferException;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.ui.modules.webpush.QrScannerActivity;
-import pl.szczodrzynski.edziennik.data.api.AppError;
+import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginVulcanBinding;
+import pl.szczodrzynski.edziennik.ui.dialogs.error.ErrorSnackbar;
+import pl.szczodrzynski.edziennik.ui.modules.webpush.QrScannerActivity;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
 import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_EXPIRED_TOKEN;
@@ -53,6 +51,7 @@ public class LoginVulcanFragment extends Fragment {
     private NavController nav;
     private FragmentLoginVulcanBinding b;
     private static final String TAG = "LoginVulcan";
+    private ErrorSnackbar errorSnackbar;
 
     public LoginVulcanFragment() { }
 
@@ -62,6 +61,7 @@ public class LoginVulcanFragment extends Fragment {
         if (getActivity() != null) {
             app = (App) getActivity().getApplicationContext();
             nav = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            errorSnackbar = ((LoginActivity) getActivity()).errorSnackbar;
         }
         else {
             return null;
@@ -76,9 +76,9 @@ public class LoginVulcanFragment extends Fragment {
         assert getActivity() != null;
 
         view.postDelayed(() -> {
-            AppError error = LoginActivity.error;
+            ApiError error = LoginActivity.error;
             if (error != null) {
-                switch (error.errorCode) {
+                switch (error.getErrorCode()) {
                     case CODE_INVALID_TOKEN:
                         b.loginTokenLayout.setError(getString(R.string.login_error_incorrect_token));
                         break;
@@ -89,28 +89,14 @@ public class LoginVulcanFragment extends Fragment {
                         b.loginSymbolLayout.setError(getString(R.string.login_error_incorrect_symbol));
                         break;
                     case CODE_INVALID_PIN:
-                        if (!"?".equals(error.errorText)) {
+                        /*if (!"?".equals(error.errorText)) {
                             b.loginPinLayout.setError(getString(R.string.login_error_incorrect_pin_format, error.errorText));
                             break;
-                        }
+                        }*/
                         b.loginPinLayout.setError(getString(R.string.login_error_incorrect_pin));
                         break;
-                    default:
-                        CafeBar.builder(getActivity())
-                                .to(b.root)
-                                .content(getString(R.string.login_error, error.asReadableString(getActivity())))
-                                .autoDismiss(false)
-                                .positiveText(R.string.ok)
-                                .onPositive(CafeBar::dismiss)
-                                .floating(true)
-                                .swipeToDismiss(true)
-                                .neutralText(R.string.more)
-                                .onNeutral(cafeBar -> app.apiEdziennik.guiShowErrorDialog(getActivity(), error, R.string.error_details))
-                                .negativeText(R.string.report)
-                                .onNegative((cafeBar -> app.apiEdziennik.guiReportError(getActivity(), error, null)))
-                                .show();
-                        break;
                 }
+                errorSnackbar.addError(error).show();
                 LoginActivity.error = null;
             }
         }, 100);

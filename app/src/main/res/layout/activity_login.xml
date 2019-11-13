@@ -8,15 +8,16 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <LinearLayout
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="32dp" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="visible">
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="32dp" />
 
             <fragment
                 android:id="@+id/nav_host_fragment"
@@ -30,7 +31,7 @@
 
                 app:layout_constraintTop_toTopOf="parent"
                 app:navGraph="@navigation/nav_login" />
-        </LinearLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <!--<io.codetail.widget.RevealFrameLayout
             android:layout_width="match_parent"
