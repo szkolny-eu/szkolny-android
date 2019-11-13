@@ -11,7 +11,6 @@ import androidx.core.graphics.ColorUtils
 import com.google.android.material.snackbar.Snackbar
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.AppError
 import pl.szczodrzynski.navlib.getColorFromAttr
 
 class ErrorSnackbar(val activity: AppCompatActivity) {
@@ -37,9 +36,6 @@ class ErrorSnackbar(val activity: AppCompatActivity) {
         showAbove?.let { snackbar?.anchorView = it }
     }
 
-    fun addError(appError: AppError) {
-
-    }
     fun addError(apiError: ApiError): ErrorSnackbar {
         errors += apiError
         snackbar?.setText(apiError.getStringReason(activity))

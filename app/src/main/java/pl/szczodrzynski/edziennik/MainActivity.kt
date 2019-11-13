@@ -38,7 +38,6 @@ import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.api.v2.events.*
 import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
-import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.*
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.network.ServerRequest
@@ -616,22 +615,7 @@ class MainActivity : AppCompatActivity() {
                 .setCancelable(false)
                 .show()
     }
-    private fun fragmentToFeature(currentFragment: Int): Int {
-        return when (currentFragment) {
-            DRAWER_ITEM_TIMETABLE -> FEATURE_TIMETABLE
-            DRAWER_ITEM_AGENDA -> FEATURE_AGENDA
-            DRAWER_ITEM_GRADES -> FEATURE_GRADES
-            DRAWER_ITEM_HOMEWORK -> FEATURE_HOMEWORK
-            DRAWER_ITEM_BEHAVIOUR -> FEATURE_NOTICES
-            DRAWER_ITEM_ATTENDANCE -> FEATURE_ATTENDANCE
-            DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
-                1 -> FEATURE_MESSAGES_OUTBOX
-                else -> FEATURE_MESSAGES_INBOX
-            }
-            DRAWER_ITEM_ANNOUNCEMENTS -> FEATURE_ANNOUNCEMENTS
-            else -> FEATURE_ALL
-        }
-    }
+
     private fun fragmentToSyncName(currentFragment: Int): Int {
         return when (currentFragment) {
             DRAWER_ITEM_TIMETABLE -> R.string.sync_feature_timetable

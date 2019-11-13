@@ -1292,8 +1292,6 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         if (app.profile == null)
             return new MaterialAboutList.Builder().build();
 
-        //configurableEndpoints = Edziennik.getApi(app, app.profile.loginStoreType).getConfigurableEndpoints(app.profile);
-
         MaterialAboutList materialAboutList = new MaterialAboutList();
         materialAboutList.addCard(getCardWithItems(null, getProfileCard(false)));
         materialAboutList.addCard(getCardWithItems(getString(R.string.settings_theme_title_text), getThemeCard(false)));
