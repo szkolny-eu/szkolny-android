@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api
 
-import pl.szczodrzynski.edziennik.App.profileId
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
@@ -93,7 +92,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
 
         for (day in dataDays) {
             val lessonDate = Date.fromValue(day)
-            data.lessonNewList += Lesson(profileId, lessonDate.value.toLong()).apply {
+            data.lessonNewList += Lesson(data.profileId, lessonDate.value.toLong()).apply {
                 type = Lesson.TYPE_NO_LESSONS
                 date = lessonDate
             }

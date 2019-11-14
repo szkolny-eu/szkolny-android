@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api
 
-import pl.szczodrzynski.edziennik.App.profileId
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.getById
@@ -25,7 +24,7 @@ class MobidziennikApiTeams(val data: DataMobidziennik, tableTeams: List<String>?
                 val teacherId = cols[4].toLongOrNull() ?: -1
 
                 val teamObject = Team(
-                        profileId,
+                        data.profileId,
                         id,
                         name,
                         type,
