@@ -1,8 +1,10 @@
 package pl.szczodrzynski.edziennik.ui.modules.timetable.v2
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.day.TimetableDayFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
 
@@ -16,7 +18,11 @@ class TimetablePagerAdapter(val fragmentManager: FragmentManager, val items: Lis
     private val weekEnd by lazy { weekStart.clone().stepForward(0, 0, 6) }
 
     override fun getItem(position: Int): Fragment {
-        return pl.szczodrzynski.edziennik.ui.modules.timetable.v2.day.TimetableDayFragment(items[position])
+        return TimetableDayFragment().apply {
+            arguments = Bundle().apply {
+                putInt("date", items[position].value)
+            }
+        }
         /*return TimetableDayFragment().apply {
             arguments = Bundle().also {
                 it.putLong("date", items[position].value.toLong())

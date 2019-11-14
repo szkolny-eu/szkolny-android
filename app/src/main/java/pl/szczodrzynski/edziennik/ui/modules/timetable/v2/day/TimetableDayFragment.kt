@@ -25,7 +25,7 @@ import pl.szczodrzynski.navlib.getColorFromAttr
 import java.util.*
 import kotlin.math.min
 
-class TimetableDayFragment(val date: Date) : Fragment() {
+class TimetableDayFragment() : Fragment() {
     companion object {
         private const val TAG = "TimetableDayFragment"
     }
@@ -33,6 +33,7 @@ class TimetableDayFragment(val date: Date) : Fragment() {
     private lateinit var app: App
     private lateinit var activity: MainActivity
     private lateinit var b: FragmentTimetableV2DayBinding
+    private lateinit var date: Date
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -40,7 +41,7 @@ class TimetableDayFragment(val date: Date) : Fragment() {
             return null
         app = activity.application as App
         b = FragmentTimetableV2DayBinding.inflate(inflater)
-        Log.d(TAG, "onCreateView, date=$date")
+        date = arguments?.getInt("date")?.let { Date.fromValue(it) } ?: Date.getToday()
         return b.root
     }
 
