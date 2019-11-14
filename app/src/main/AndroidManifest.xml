@@ -105,6 +105,11 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@style/AppTheme.NoDisplay" />
+        <activity android:name=".widgets.timetable.LessonDialogActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoDisplay" />
         <activity
             android:name=".ui.modules.settings.SettingsLicenseActivity"
             android:configChanges="orientation|keyboardHidden"

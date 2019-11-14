@@ -30,7 +30,9 @@ class EventManualV2Dialog(
         val defaultDate: Date? = null,
         val defaultTime: Time? = null,
         val defaultType: Int? = null,
-        val editingEvent: Event? = null
+        val editingEvent: Event? = null,
+        val onShowListener: ((tag: String) -> Unit)? = null,
+        val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
 
     companion object {
@@ -49,13 +51,16 @@ class EventManualV2Dialog(
 
     init { run {
         job = Job()
-
+        onShowListener?.invoke(TAG)
         b = DialogEventManualV2Binding.inflate(activity.layoutInflater)
         dialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.dialog_event_manual_title)
                 .setView(b.root)
                 .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
                 .setPositiveButton(R.string.save) { _, _ -> saveEvent() }
+                .setOnDismissListener {
+                    onDismissListener?.invoke(TAG)
+                }
                 .show()
 
         event = editingEvent?.clone() ?: Event().also { event ->

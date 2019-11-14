@@ -12,12 +12,13 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.DrawableRes;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
+import androidx.annotation.DrawableRes;
 
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -62,7 +63,7 @@ public class WidgetTimetableListProvider implements RemoteViewsService.RemoteVie
     public void onDataSetChanged() {
         // executed EVERY TIME
         Log.d(TAG, "onDataSetChanged for appWidgetId: "+appWidgetId);
-        lessons = WidgetTimetable.timetables == null ? null : WidgetTimetable.timetables.get(appWidgetId);
+        lessons = WidgetTimetable.Companion.getTimetables() == null ? null : WidgetTimetable.Companion.getTimetables().get(appWidgetId);
     }
 
     @Override
@@ -163,9 +164,13 @@ public class WidgetTimetableListProvider implements RemoteViewsService.RemoteVie
 
             Intent intent = new Intent();
             intent.putExtra("profileId", lesson.profileId);
-            intent.putExtra("date", lesson.lessonDate.getStringValue());
-            intent.putExtra("startTime", lesson.startTime.getStringValue());
-            intent.putExtra("endTime", lesson.endTime.getStringValue());
+            intent.putExtra("lessonId", lesson.lessonId);
+            if (lesson.lessonDate != null)
+                intent.putExtra("date", lesson.lessonDate.getStringValue());
+            if (lesson.startTime != null)
+                intent.putExtra("startTime", lesson.startTime.getStringValue());
+            if (lesson.endTime != null)
+                intent.putExtra("endTime", lesson.endTime.getStringValue());
             views.setOnClickFillInIntent(R.id.widgetTimetableRoot, intent);
 
             views.setTextViewText(R.id.widgetTimetableTime, lesson.startTime.getStringHM() + " - " + lesson.endTime.getStringHM());
@@ -239,30 +244,18 @@ public class WidgetTimetableListProvider implements RemoteViewsService.RemoteVie
                     }
                 }
             }
-            //views.setViewVisibility(R.id.widgetTimetableEvent1, View.VISIBLE);
-            //views.setBitmap(R.id.widgetTimetableEvent1, "setImageBitmap", getColoredBitmap(context, R.drawable.event_color_circle, 0xff4caf50, eventIndicatorSize, eventIndicatorSize));
+
+            if (lesson.subjectName == null) {
+                lesson.subjectName = context.getString(R.string.timetable_no_subject_name);
+            }
+            if (lesson.classroomName == null) {
+                lesson.classroomName = context.getString(R.string.timetable_no_classroom);
+            }
 
             views.setViewVisibility(R.id.widgetTimetableOldSubjectName, View.GONE);
             if (lesson.lessonChange) {
-                if (lesson.newSubjectName == null) {
-                    views.setTextViewText(R.id.widgetTimetableSubjectName, Html.fromHtml("<i>"+lesson.subjectName+"</i>"));
-                }
-                else {
-                    views.setViewVisibility(R.id.widgetTimetableOldSubjectName, View.VISIBLE);
-                    views.setTextViewText(R.id.widgetTimetableOldSubjectName, Html.fromHtml("<del>"+lesson.subjectName+"</del>"));
-                    views.setTextViewText(R.id.widgetTimetableSubjectName, lesson.newSubjectName);
-                }
-
-                if (lesson.newClassroomName == null) {
-                    if (lesson.classroomName == null || lesson.classroomName.equals("")) {
-                        lesson.classroomName = context.getString(R.string.timetable_no_classroom);
-                    }
-                    views.setTextViewText(R.id.widgetTimetableClassroomName, lesson.classroomName);
-                }
-                else {
-                    views.setTextViewText(R.id.widgetTimetableClassroomName, Html.fromHtml("<i>"+lesson.newClassroomName+"</i>"));
-                }
-
+                views.setTextViewText(R.id.widgetTimetableSubjectName, Html.fromHtml("<i>"+lesson.subjectName+"</i>"));
+                views.setTextViewText(R.id.widgetTimetableClassroomName, Html.fromHtml("<i>"+lesson.classroomName+"</i>"));
             }
             else if (lesson.lessonCancelled) {
                 views.setTextViewText(R.id.widgetTimetableSubjectName, Html.fromHtml("<del>"+lesson.subjectName+"</del>"));
@@ -272,7 +265,6 @@ public class WidgetTimetableListProvider implements RemoteViewsService.RemoteVie
                 views.setTextViewText(R.id.widgetTimetableSubjectName, lesson.subjectName);
                 views.setTextViewText(R.id.widgetTimetableClassroomName, lesson.classroomName);
             }
-
         }
         else if (!triedToReload) {
             // try to reload the widget

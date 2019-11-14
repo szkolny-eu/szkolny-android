@@ -9,6 +9,7 @@ public class ItemWidgetTimetableModel {
     public String separatorProfileName = null;
 
     public int profileId;
+    public long lessonId;
     public Date lessonDate;
     public Time startTime;
     public Time endTime;

@@ -162,8 +162,9 @@ fun colorFromName(context: Context, name: String?): Int {
     return context.getColorFromRes(color)
 }
 
-fun MutableList<out Profile>.filterOutArchived() {
+fun MutableList<Profile>.filterOutArchived(): MutableList<Profile> {
     this.removeAll { it.archived }
+    return this
 }
 
 fun Activity.isStoragePermissionGranted(): Boolean {

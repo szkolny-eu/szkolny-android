@@ -21,8 +21,8 @@ import java.util.List;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.WidgetTimetable;
-import pl.szczodrzynski.edziennik.databinding.DialogWidgetConfigBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+import pl.szczodrzynski.edziennik.databinding.DialogWidgetConfigBinding;
 import pl.szczodrzynski.edziennik.widgets.luckynumber.WidgetLuckyNumber;
 import pl.szczodrzynski.edziennik.widgets.notifications.WidgetNotifications;
 
@@ -78,7 +78,7 @@ public class WidgetConfigActivity extends Activity {
 
             AsyncTask.execute(() -> {
                 profileList = app.db.profileDao().getAllNow();
-                filterOutArchived(profileList);
+                profileList = filterOutArchived(profileList);
 
                 if (widgetType == WIDGET_NOTIFICATIONS)
                     this.runOnUiThread(this::configure);

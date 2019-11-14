@@ -21,7 +21,9 @@ import pl.szczodrzynski.edziennik.utils.models.Week
 
 class LessonDetailsDialog(
         val activity: AppCompatActivity,
-        val lesson: LessonFull
+        val lesson: LessonFull,
+        val onShowListener: ((tag: String) -> Unit)? = null,
+        val onDismissListener: ((tag: String) -> Unit)? = null
 ) {
     companion object {
         private const val TAG = "LessonDetailsDialog"
@@ -31,6 +33,7 @@ class LessonDetailsDialog(
     private lateinit var dialog: AlertDialog
 
     init { run {
+        onShowListener?.invoke(TAG)
         b = DialogLessonDetailsBinding.inflate(activity.layoutInflater)
         dialog = MaterialAlertDialogBuilder(activity)
                 .setView(b.root)
@@ -38,8 +41,13 @@ class LessonDetailsDialog(
                     dialog.dismiss()
                 }
                 .setNeutralButton(R.string.add) { dialog, _ ->
-                    dialog.dismiss()
-                    EventManualV2Dialog(activity, lesson.profileId, lesson)
+                    EventManualV2Dialog(
+                            activity,
+                            lesson.profileId,
+                            lesson,
+                            onShowListener = onShowListener,
+                            onDismissListener = onDismissListener
+                    )
                     /*MaterialAlertDialogBuilder(activity)
                             .setItems(R.array.main_menu_add_options) { dialog2, which ->
                                 dialog2.dismiss()
@@ -58,6 +66,9 @@ class LessonDetailsDialog(
                             }
                             .setNegativeButton(R.string.cancel) { dialog2, _ -> dialog2.dismiss() }
                             .show()*/
+                }
+                .setOnDismissListener {
+                    onDismissListener?.invoke(TAG)
                 }
                 .show()
         update()
