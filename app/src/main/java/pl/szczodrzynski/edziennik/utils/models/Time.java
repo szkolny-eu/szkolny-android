@@ -1,10 +1,11 @@
 package pl.szczodrzynski.edziennik.utils.models;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Calendar;
 
-public class Time {
+public class Time implements Comparable<Time> {
     public int hour = 0;
     public int minute = 0;
     public int second = 0;
@@ -173,6 +174,11 @@ public class Time {
     public static boolean inRange(Time startTime, Time endTime, Time currentTime)
     {
         return (currentTime.getValue() >= startTime.getValue() && currentTime.getValue() <= endTime.getValue());
+    }
+
+    @Override
+    public int compareTo(@NonNull Time o) {
+        return this.getValue() - o.getValue();
     }
 
     @Override

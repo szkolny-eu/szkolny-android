@@ -133,7 +133,18 @@ public class Date implements Comparable<Date> {
     }
 
     public Date stepForward(int years, int months, int days) {
-        Calendar c = Calendar.getInstance();
+        this.day += days;
+        if (day > daysInMonth()) {
+            day -= daysInMonth();
+            month++;
+        }
+        this.month += months;
+        if (month > 12) {
+            month -= 12;
+            year++;
+        }
+        this.year += years;
+        /*Calendar c = Calendar.getInstance();
         int newMonth = month + months;
         if (newMonth > 12) {
             newMonth = 1;
@@ -143,7 +154,7 @@ public class Date implements Comparable<Date> {
         c.setTimeInMillis(c.getTimeInMillis() + days * 24 * 60 * 60 * 1000);
         this.year = c.get(Calendar.YEAR);
         this.month = c.get(Calendar.MONTH) + 1;
-        this.day = c.get(Calendar.DAY_OF_MONTH);
+        this.day = c.get(Calendar.DAY_OF_MONTH);*/
         return this;
     }
 
@@ -164,6 +175,25 @@ public class Date implements Comparable<Date> {
 
     public boolean isLeap() {
         return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
+    }
+    public int daysInMonth() {
+        switch (month) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                return 31;
+            case 2: return isLeap() ? 29 : 28;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return 30;
+        }
+        return 31;
     }
 
     public String getStringYmd() {
