@@ -376,6 +376,11 @@ class MainActivity : AppCompatActivity() {
 
         b.swipeRefreshLayout.isEnabled = true
         b.swipeRefreshLayout.setOnRefreshListener { this.syncCurrentFeature() }
+        b.swipeRefreshLayout.setColorSchemeResources(
+                R.color.md_blue_500,
+                R.color.md_amber_500,
+                R.color.md_green_500
+        )
 
         isStoragePermissionGranted()
 
