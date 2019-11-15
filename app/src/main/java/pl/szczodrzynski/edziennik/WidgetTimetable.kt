@@ -185,12 +185,12 @@ class WidgetTimetable : AppWidgetProvider() {
             // search for lessons to display
             val timetableDate = Date.getToday()
             var checkedDays = 0
-            var lessons = lessonList.filter { it.profileId == profile.id && it.displayDate == timetableDate }
+            var lessons = lessonList.filter { it.profileId == profile.id && it.displayDate == timetableDate && it.type != Lesson.TYPE_NO_LESSONS }
             while ((lessons.isEmpty() || lessons.none {
                         it.displayDate != today || (it.displayDate == today && it.displayEndTime != null && it.displayEndTime!! >= now)
                     }) && checkedDays < 7) {
                 timetableDate.stepForward(0, 0, 1)
-                lessons = lessonList.filter { it.profileId == profile.id && it.displayDate == timetableDate }
+                lessons = lessonList.filter { it.profileId == profile.id && it.displayDate == timetableDate && it.type != Lesson.TYPE_NO_LESSONS }
                 checkedDays++
             }
 

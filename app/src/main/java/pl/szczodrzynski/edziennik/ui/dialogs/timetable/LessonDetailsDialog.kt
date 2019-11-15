@@ -33,6 +33,8 @@ class LessonDetailsDialog(
     private lateinit var dialog: AlertDialog
 
     init { run {
+        if (activity.isFinishing)
+            return@run
         onShowListener?.invoke(TAG)
         b = DialogLessonDetailsBinding.inflate(activity.layoutInflater)
         dialog = MaterialAlertDialogBuilder(activity)

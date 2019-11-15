@@ -50,6 +50,8 @@ class EventManualV2Dialog(
     private var defaultLoaded = false
 
     init { run {
+        if (activity.isFinishing)
+            return@run
         job = Job()
         onShowListener?.invoke(TAG)
         b = DialogEventManualV2Binding.inflate(activity.layoutInflater)
