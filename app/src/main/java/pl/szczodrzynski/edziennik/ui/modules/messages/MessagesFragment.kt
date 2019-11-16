@@ -77,7 +77,11 @@ class MessagesFragment : Fragment() {
         b.viewPager.currentItem = pageSelection
         b.viewPager.clearOnPageChangeListeners()
         b.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageScrollStateChanged(state: Int) {
+                if (b.refreshLayout != null) {
+                    b.refreshLayout.isEnabled = state == ViewPager.SCROLL_STATE_IDLE
+                }
+            }
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
                 pageSelection = position

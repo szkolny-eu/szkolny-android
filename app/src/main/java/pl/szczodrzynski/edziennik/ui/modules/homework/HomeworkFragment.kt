@@ -12,8 +12,8 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.databinding.FragmentHomeworkBinding
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.databinding.FragmentHomeworkBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -84,7 +84,11 @@ class HomeworkFragment : Fragment() {
         b.viewPager.currentItem = pageSelection
         b.viewPager.clearOnPageChangeListeners()
         b.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageScrollStateChanged(state: Int) {
+                if (b.refreshLayout != null) {
+                    b.refreshLayout.isEnabled = state == ViewPager.SCROLL_STATE_IDLE
+                }
+            }
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
                 pageSelection = position
