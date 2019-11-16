@@ -2,89 +2,96 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <FrameLayout
+
+    <pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/timetableLayout"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:visibility="gone">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?colorSurface"
-                style="@style/Widget.MaterialComponents.AppBarLayout.Surface">
-
-                <com.nshmura.recyclertablayout.RecyclerTabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@color/colorSurface_6dp"
-                    app:rtl_tabTextAppearance="@style/rtl_RecyclerTabLayout.Tab"
-                    app:rtl_tabIndicatorColor="?colorPrimary"
-                    app:rtl_tabMinWidth="90dp"
-                    app:rtl_tabMaxWidth="300dp"
-                    app:rtl_tabSelectedTextColor="?colorPrimary"
-                    app:rtl_tabPaddingStart="16dp"
-                    app:rtl_tabPaddingEnd="16dp"
-                    app:rtl_tabPaddingTop="12dp"
-                    app:rtl_tabPaddingBottom="12dp"/>
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPager"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/timetableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                tools:visibility="gone">
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <com.google.android.material.appbar.AppBarLayout
+                    style="@style/Widget.MaterialComponents.AppBarLayout.Surface"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?colorSurface">
 
-        <LinearLayout
-            android:id="@+id/timetableNotPublicLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:gravity="center"
-            tools:visibility="visible">
+                    <com.nshmura.recyclertablayout.RecyclerTabLayout
+                        android:id="@+id/tabLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/colorSurface_6dp"
+                        app:rtl_tabIndicatorColor="?colorPrimary"
+                        app:rtl_tabMaxWidth="300dp"
+                        app:rtl_tabMinWidth="90dp"
+                        app:rtl_tabPaddingBottom="12dp"
+                        app:rtl_tabPaddingEnd="16dp"
+                        app:rtl_tabPaddingStart="16dp"
+                        app:rtl_tabPaddingTop="12dp"
+                        app:rtl_tabSelectedTextColor="?colorPrimary"
+                        app:rtl_tabTextAppearance="@style/rtl_RecyclerTabLayout.Tab" />
+                </com.google.android.material.appbar.AppBarLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_no_timetable" />
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/timetable_not_public_title"
-                android:textSize="24sp" />
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
+            <LinearLayout
+                android:id="@+id/timetableNotPublicLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/timetable_not_public_text"
-                android:textSize="16sp" />
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:gravity="center"
-                android:text="@string/timetable_not_public_hint"
-                android:textSize="14sp" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_no_timetable" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/timetable_not_public_title"
+                    android:textSize="24sp" />
 
-    </FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:gravity="center"
+                    android:text="@string/timetable_not_public_text"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:gravity="center"
+                    android:text="@string/timetable_not_public_hint"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+    </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator>
 </layout>

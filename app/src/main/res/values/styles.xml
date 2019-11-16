@@ -101,6 +101,8 @@
         <item name="timetable_lesson_change_color">#ffb300</item>
         <item name="timetable_lesson_shifted_source_color">#A1887F</item>
         <item name="timetable_lesson_shifted_target_color">#4caf50</item>
+        <item name="hourDividerColor">#b0b0b0</item>
+        <item name="halfHourDividerColor">#e0e0e0</item>
     </style>
     <style name="AppTheme.Dark" parent="NavView.Dark">
         <item name="colorPrimary">#64b5f6</item>
@@ -131,6 +133,8 @@
         <item name="timetable_lesson_change_color">#ffb300</item>
         <item name="timetable_lesson_shifted_source_color">#A1887F</item>
         <item name="timetable_lesson_shifted_target_color">#4caf50</item>
+        <item name="hourDividerColor">#7fffffff</item>
+        <item name="halfHourDividerColor">#40ffffff</item>
     </style>
 
 

@@ -169,7 +169,7 @@ dependencies {
 
     implementation 'com.github.kuba2k2:RecyclerTabLayout:700f980584'
 
-    implementation 'com.github.kuba2k2:Tachyon:bbd421f994'
+    implementation 'com.github.kuba2k2:Tachyon:551943a6b5'
 }
 repositories {
     mavenCentral()

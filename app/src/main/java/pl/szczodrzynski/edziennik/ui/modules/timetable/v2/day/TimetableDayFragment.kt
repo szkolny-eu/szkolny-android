@@ -7,42 +7,97 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.asynclayoutinflater.view.AsyncLayoutInflater
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.linkedin.android.tachyon.DayView
+import com.linkedin.android.tachyon.DayViewConfig
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
-import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2DayBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
+import pl.szczodrzynski.edziennik.databinding.TimetableNoTimetableBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.timetable.LessonDetailsDialog
+import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment.Companion.DEFAULT_END_HOUR
+import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment.Companion.DEFAULT_START_HOUR
+import pl.szczodrzynski.edziennik.utils.ListenerScrollView
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.getColorFromAttr
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
 
-class TimetableDayFragment() : Fragment() {
+class TimetableDayFragment : Fragment(), CoroutineScope {
     companion object {
         private const val TAG = "TimetableDayFragment"
     }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-    private lateinit var b: FragmentTimetableV2DayBinding
+    private lateinit var inflater: AsyncLayoutInflater
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
     private lateinit var date: Date
+    private var startHour = DEFAULT_START_HOUR
+    private var endHour = DEFAULT_END_HOUR
+    private var firstEventMinute = 24*60
+
+    // find SwipeRefreshLayout in the hierarchy
+    private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
+    // the day ScrollView
+    private val dayScrollDelegate = lazy {
+        val dayScroll = ListenerScrollView(context!!)
+        dayScroll.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        dayScroll.setOnRefreshLayoutEnabledListener { enabled ->
+            refreshLayout?.isEnabled = enabled
+        }
+        dayScroll
+    }
+    private val dayScroll by dayScrollDelegate
+    // the lesson DayView
+    private val dayView by lazy {
+        val dayView = DayView(context!!, DayViewConfig(
+                startHour = startHour,
+                endHour = endHour,
+                dividerHeight = 1.dp,
+                halfHourHeight = 60.dp,
+                hourDividerColor = R.attr.hourDividerColor.resolveAttr(context),
+                halfHourDividerColor = R.attr.halfHourDividerColor.resolveAttr(context),
+                hourLabelWidth = 40.dp,
+                hourLabelMarginEnd = 10.dp,
+                eventMargin = 2.dp
+        ), true)
+        dayView.setPadding(10.dp)
+        dayScroll.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dayScroll.addView(dayView)
+        dayView
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         if (context == null)
             return null
         app = activity.application as App
-        b = FragmentTimetableV2DayBinding.inflate(inflater)
+        job = Job()
+        this.inflater = AsyncLayoutInflater(context!!)
         date = arguments?.getInt("date")?.let { Date.fromValue(it) } ?: Date.getToday()
-        return b.root
+        startHour = arguments?.getInt("startHour") ?: DEFAULT_START_HOUR
+        endHour = arguments?.getInt("endHour") ?: DEFAULT_END_HOUR
+        return FrameLayout(activity).apply {
+            layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,45 +107,42 @@ class TimetableDayFragment() : Fragment() {
 
         Log.d(TAG, "onViewCreated, date=$date")
 
-        // Inflate a label view for each hour the day view will display
-        val hourLabelViews = ArrayList<View>()
-        for (i in b.day.startHour..b.day.endHour) {
-            val hourLabelView = layoutInflater.inflate(R.layout.timetable_hour_label, b.day, false) as TextView
-            hourLabelView.text = "$i:00"
-            hourLabelViews.add(hourLabelView)
-        }
-        b.day.setHourLabelViews(hourLabelViews)
-
+        // observe lesson database
         app.db.timetableDao().getForDate(App.profileId, date).observe(this, Observer<List<LessonFull>> { lessons ->
-            buildLessonViews(lessons)
+            processLessonList(lessons)
         })
     }
 
-    private fun buildLessonViews(lessons: List<LessonFull>) {
+    private fun processLessonList(lessons: List<LessonFull>) {
+        // no lessons - timetable not downloaded yet
         if (lessons.isEmpty()) {
-            b.dayScroll.visibility = View.GONE
-            b.noTimetableLayout.visibility = View.VISIBLE
-            b.noLessonsLayout.visibility = View.GONE
-            val weekStart = date.clone().stepForward(0, 0, -date.weekDay).stringY_m_d
-            b.noTimetableSync.onClick {
-                it.isEnabled = false
-                EdziennikTask.syncProfile(
-                        profileId = App.profileId,
-                        viewIds = listOf(
-                                DRAWER_ITEM_TIMETABLE to 0
-                        ),
-                        arguments = JsonObject(
-                                "weekStart" to weekStart
-                        )
-                ).enqueue(activity)
+            inflater.inflate(R.layout.timetable_no_timetable, view as FrameLayout) { view, _, parent ->
+                parent?.removeAllViews()
+                parent?.addView(view)
+                val b = TimetableNoTimetableBinding.bind(view)
+                val weekStart = date.clone().stepForward(0, 0, -date.weekDay).stringY_m_d
+                b.noTimetableSync.onClick {
+                    it.isEnabled = false
+                    EdziennikTask.syncProfile(
+                            profileId = App.profileId,
+                            viewIds = listOf(
+                                    DRAWER_ITEM_TIMETABLE to 0
+                            ),
+                            arguments = JsonObject(
+                                    "weekStart" to weekStart
+                            )
+                    ).enqueue(activity)
+                }
+                b.noTimetableWeek.setText(R.string.timetable_no_timetable_week, weekStart)
             }
-            b.noTimetableWeek.setText(R.string.timetable_no_timetable_week, weekStart)
             return
         }
+        // one lesson indicating a day without lessons
         if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
-            b.dayScroll.visibility = View.GONE
-            b.noTimetableLayout.visibility = View.GONE
-            b.noLessonsLayout.visibility = View.VISIBLE
+            inflater.inflate(R.layout.timetable_no_lessons, view as FrameLayout) { view, _, parent ->
+                parent?.removeAllViews()
+                parent?.addView(view)
+            }
             return
         }
 
@@ -101,23 +153,37 @@ class TimetableDayFragment() : Fragment() {
             return
         }
 
-        b.dayScroll.visibility = View.VISIBLE
-        b.noTimetableLayout.visibility = View.GONE
-        b.noLessonsLayout.visibility = View.GONE
+        // clear the root view and add the ScrollView
+        (view as FrameLayout).removeAllViews()
+        (view as FrameLayout).addView(dayScroll)
 
-        var firstEventMinute = 24*60
+        // Inflate a label view for each hour the day view will display
+        val hourLabelViews = ArrayList<View>()
+        for (i in dayView.startHour..dayView.endHour) {
+            val hourLabelView = layoutInflater.inflate(R.layout.timetable_hour_label, dayView, false) as TextView
+            hourLabelView.text = "$i:00"
+            hourLabelViews.add(hourLabelView)
+        }
+        dayView.setHourLabelViews(hourLabelViews)
+
+        buildLessonViews(lessons)
+    }
+
+    private fun buildLessonViews(lessons: List<LessonFull>) {
+        if (!isAdded)
+            return
 
         val eventViews = mutableListOf<View>()
         val eventTimeRanges = mutableListOf<DayView.EventTimeRange>()
 
         // Reclaim all of the existing event views so we can reuse them if needed, this process
         // can be useful if your day view is hosted in a recycler view for example
-        val recycled = b.day.removeEventViews()
+        val recycled = dayView.removeEventViews()
         var remaining = recycled?.size ?: 0
 
         val arrowRight = " → "
         val bullet = " • "
-        val colorSecondary = getColorFromAttr(activity, android.R.attr.textColorSecondary)
+        val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
         for (lesson in lessons) {
             val startTime = lesson.displayStartTime ?: continue
@@ -127,7 +193,7 @@ class TimetableDayFragment() : Fragment() {
 
             // Try to recycle an existing event view if there are enough left, otherwise inflate
             // a new one
-            val eventView = (if (remaining > 0) recycled?.get(--remaining) else layoutInflater.inflate(R.layout.timetable_lesson, b.day, false))
+            val eventView = (if (remaining > 0) recycled?.get(--remaining) else layoutInflater.inflate(R.layout.timetable_lesson, dayView, false))
                     ?: continue
             val lb = TimetableLessonBinding.bind(eventView)
             eventViews += eventView
@@ -274,9 +340,16 @@ class TimetableDayFragment() : Fragment() {
             eventTimeRanges.add(DayView.EventTimeRange(startMinute, endMinute))
         }
 
-        val minuteHeight = (b.day.getHourTop(1) - b.day.getHourTop(0)).toFloat() / 60f
-        val firstEventTop = (firstEventMinute - b.day.startHour * 60) * minuteHeight
-        b.day.setEventViews(eventViews, eventTimeRanges)
-        b.dayScroll.scrollTo(0, firstEventTop.toInt())
+        dayView.setEventViews(eventViews, eventTimeRanges)
+        val firstEventTop = (firstEventMinute - dayView.startHour * 60) * dayView.minuteHeight
+        dayScroll.scrollTo(0, firstEventTop.toInt())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (dayScrollDelegate.isInitialized()) {
+            val firstEventTop = (firstEventMinute - dayView.startHour * 60) * dayView.minuteHeight
+            dayScroll.scrollTo(0, firstEventTop.toInt())
+        }
     }
 }

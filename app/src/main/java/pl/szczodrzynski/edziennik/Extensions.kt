@@ -4,7 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.*
@@ -13,9 +15,10 @@ import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.util.LongSparseArray
 import android.util.SparseArray
+import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.StringRes
+import androidx.annotation.*
 import androidx.core.app.ActivityCompat
 import androidx.core.util.forEach
 import androidx.lifecycle.LifecycleOwner
@@ -445,4 +448,50 @@ fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observ
             removeObserver(this)
         }
     })
+}
+
+/**
+ * Convert a value in dp to pixels.
+ */
+val Int.dp: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+/**
+ * Convert a value in pixels to dp.
+ */
+val Int.px: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+
+@ColorInt
+fun @receiver:AttrRes Int.resolveAttr(context: Context?): Int {
+    val typedValue = TypedValue()
+    context?.theme?.resolveAttribute(this, typedValue, true)
+    return typedValue.data
+}
+@ColorInt
+fun @receiver:ColorRes Int.resolveColor(context: Context): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        context.resources.getColor(this, context.theme)
+    }
+    else {
+        context.resources.getColor(this)
+    }
+}
+fun @receiver:DrawableRes Int.resolveDrawable(context: Context): Drawable {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        context.resources.getDrawable(this, context.theme)
+    }
+    else {
+        context.resources.getDrawable(this)
+    }
+}
+
+fun View.findParentById(targetId: Int): View? {
+    if (id == targetId) {
+        return this
+    }
+    val viewParent = this.parent ?: return null
+    if (viewParent is View) {
+        return viewParent.findParentById(targetId)
+    }
+    return null
 }

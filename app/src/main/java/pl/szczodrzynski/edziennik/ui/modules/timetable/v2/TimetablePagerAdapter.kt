@@ -8,7 +8,12 @@ import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.day.TimetableDayFragme
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
 
-class TimetablePagerAdapter(val fragmentManager: FragmentManager, val items: List<Date>) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class TimetablePagerAdapter(
+        fragmentManager: FragmentManager,
+        private val items: List<Date>,
+        private val startHour: Int,
+        private val endHour: Int
+) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     companion object {
         private const val TAG = "TimetablePagerAdapter"
     }
@@ -21,6 +26,8 @@ class TimetablePagerAdapter(val fragmentManager: FragmentManager, val items: Lis
         return TimetableDayFragment().apply {
             arguments = Bundle().apply {
                 putInt("date", items[position].value)
+                putInt("startHour", startHour)
+                putInt("endHour", endHour)
             }
         }
         /*return TimetableDayFragment().apply {
