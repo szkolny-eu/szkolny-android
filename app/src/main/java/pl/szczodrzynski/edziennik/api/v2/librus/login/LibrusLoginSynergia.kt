@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.api.v2.librus.login
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
-import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.api.v2.*
@@ -16,7 +15,6 @@ import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.getUnixDate
-import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection
 
@@ -86,6 +84,13 @@ class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Un
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(json: String?, response: Response?) {
                 val location = response?.headers()?.get("Location")
+                if (location?.endsWith("przerwa_techniczna") == true) {
+                    data.error(ApiError(TAG, ERROR_LIBRUS_SYNERGIA_MAINTENANCE)
+                            .withApiResponse(json)
+                            .withResponse(response))
+                    return
+                }
+
                 if (location?.endsWith("centrum_powiadomien") == true) {
                     val sessionId = data.app.cookieJar.getCookie("synergia.librus.pl", "DZIENNIKSID")
                     if (sessionId == null) {

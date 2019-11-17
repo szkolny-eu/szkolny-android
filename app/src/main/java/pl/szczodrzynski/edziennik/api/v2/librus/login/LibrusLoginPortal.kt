@@ -120,7 +120,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
 
                     override fun onFailure(response: Response, throwable: Throwable) {
                         if (response.code() == 403 || response.code() == 401) {
-                            data.error(ApiError(TAG, ERROR_LOGIN_DATA_INVALID)
+                            data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN)
                                     .withResponse(response)
                                     .withThrowable(throwable))
                             return

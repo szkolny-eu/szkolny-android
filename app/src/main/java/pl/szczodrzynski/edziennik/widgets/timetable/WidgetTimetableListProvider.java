@@ -173,7 +173,8 @@ public class WidgetTimetableListProvider implements RemoteViewsService.RemoteVie
                 intent.putExtra("endTime", lesson.endTime.getStringValue());
             views.setOnClickFillInIntent(R.id.widgetTimetableRoot, intent);
 
-            views.setTextViewText(R.id.widgetTimetableTime, lesson.startTime.getStringHM() + " - " + lesson.endTime.getStringHM());
+            if (lesson.startTime != null && lesson.endTime != null)
+                views.setTextViewText(R.id.widgetTimetableTime, lesson.startTime.getStringHM() + " - " + lesson.endTime.getStringHM());
 
             views.setViewVisibility(R.id.widgetTimetableEvent1, View.GONE);
             views.setViewVisibility(R.id.widgetTimetableEvent2, View.GONE);

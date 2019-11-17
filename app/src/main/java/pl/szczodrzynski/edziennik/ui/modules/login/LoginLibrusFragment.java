@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginLibrusBinding;
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar;
 
-import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.ERROR_LOGIN_DATA_INVALID;
+import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN;
 import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 
@@ -57,7 +57,7 @@ public class LoginLibrusFragment extends Fragment {
             ApiError error = LoginActivity.error;
             if (error != null) {
                 switch (error.getErrorCode()) {
-                    case ERROR_LOGIN_DATA_INVALID:
+                    case ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN:
                         b.loginPasswordLayout.setError(getString(R.string.login_error_incorrect_login_or_password));
                         break;
                     case ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED:

@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.utils.Utils.d
 
 open class LibrusSynergia(open val data: DataLibrus) {
     companion object {
-        const val TAG = "LibrusSynergia"
+        private const val TAG = "LibrusSynergia"
     }
 
     val profileId
@@ -29,6 +29,15 @@ open class LibrusSynergia(open val data: DataLibrus) {
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
+                val location = response?.headers()?.get("Location")
+                if (location?.endsWith("przerwa_techniczna") == true) {
+                    // double checking for maintenance?
+                    data.error(ApiError(TAG, ERROR_LIBRUS_SYNERGIA_MAINTENANCE)
+                            .withApiResponse(text)
+                            .withResponse(response))
+                    return
+                }
+
                 if (text.isNullOrEmpty()) {
                     data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
                             .withResponse(response))

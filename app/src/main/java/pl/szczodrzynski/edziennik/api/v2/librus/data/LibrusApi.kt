@@ -32,6 +32,13 @@ open class LibrusApi(open val data: DataLibrus) {
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
+                if (response?.code() == HTTP_UNAVAILABLE) {
+                    data.error(ApiError(tag, ERROR_LIBRUS_API_MAINTENANCE)
+                            .withApiResponse(json)
+                            .withResponse(response))
+                    return
+                }
+
                 if (json == null && response?.parserErrorBody == null) {
                     data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
                             .withResponse(response))
@@ -104,6 +111,7 @@ open class LibrusApi(open val data: DataLibrus) {
                 .allowErrorCode(HTTP_BAD_REQUEST)
                 .allowErrorCode(HTTP_FORBIDDEN)
                 .allowErrorCode(HTTP_UNAUTHORIZED)
+                .allowErrorCode(HTTP_UNAVAILABLE)
                 .callback(callback)
                 .build()
                 .enqueue()

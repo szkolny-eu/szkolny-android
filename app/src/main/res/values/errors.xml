@@ -72,6 +72,12 @@
     <string name="error_173" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_REVOKED</string>
     <string name="error_174" translatable="false">ERROR_LIBRUS_SYNERGIA_OTHER</string>
     <string name="error_175" translatable="false">ERROR_LIBRUS_SYNERGIA_MAINTENANCE</string>
+    <string name="error_176" translatable="false">ERROR_LIBRUS_MESSAGES_MAINTENANCE</string>
+    <string name="error_177" translatable="false">ERROR_LIBRUS_MESSAGES_ERROR</string>
+    <string name="error_178" translatable="false">ERROR_LIBRUS_MESSAGES_OTHER</string>
+    <string name="error_179" translatable="false">ERROR_LOGIN_LIBRUS_MESSAGES_INVALID_LOGIN</string>
+    <string name="error_180" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN</string>
+    <string name="error_181" translatable="false">ERROR_LIBRUS_API_MAINTENANCE</string>
 
     <string name="error_201" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_202" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
@@ -165,7 +171,7 @@
     <string name="error_127_reason">Wymagana akceptacja regulaminu</string>
     <string name="error_128_reason">Błąd zmiany hasła</string>
     <string name="error_129_reason">Wymagana zmiana hasła</string>
-    <string name="error_130_reason">Nieprawidłowe dane logowania</string>
+    <string name="error_130_reason">Librus API: nieprawidłowe dane logowania</string>
     <string name="error_131_reason">Inny błąd logowania do API</string>
     <string name="error_132_reason">Brak tokenu CSRF</string>
     <string name="error_133_reason">Konto LIBRUS nie zostało aktywowane</string>
@@ -206,7 +212,13 @@
     <string name="error_172_reason">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_INVALID</string>
     <string name="error_173_reason">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_REVOKED</string>
     <string name="error_174_reason">ERROR_LIBRUS_SYNERGIA_OTHER</string>
-    <string name="error_175_reason">ERROR_LIBRUS_SYNERGIA_MAINTENANCE</string>
+    <string name="error_175_reason">Librus Synergia: przerwa techniczna</string>
+    <string name="error_176_reason">Librus Wiadomości: przerwa techniczna</string>
+    <string name="error_177_reason">ERROR_LIBRUS_MESSAGES_ERROR</string>
+    <string name="error_178_reason">ERROR_LIBRUS_MESSAGES_OTHER</string>
+    <string name="error_179_reason">Librus Wiadomości: nieprawidłowe dane logowania</string>
+    <string name="error_180_reason">Librus Portal: nieprawidłowe dane logowania</string>
+    <string name="error_181_reason">Librus API: przerwa techniczna</string>
 
     <string name="error_201_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_202_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>

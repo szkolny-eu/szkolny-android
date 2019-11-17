@@ -16,8 +16,7 @@ import pl.szczodrzynski.edziennik.getInt
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import java.net.HttpURLConnection.HTTP_BAD_REQUEST
-import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
+import java.net.HttpURLConnection.*
 
 class LibrusLoginApi {
     companion object {
@@ -117,6 +116,13 @@ class LibrusLoginApi {
 
     private val tokenCallback = object : JsonCallbackHandler() {
         override fun onSuccess(json: JsonObject?, response: Response?) {
+            if (response?.code() == HTTP_UNAVAILABLE) {
+                data.error(ApiError(TAG, ERROR_LIBRUS_API_MAINTENANCE)
+                        .withApiResponse(json)
+                        .withResponse(response))
+                return
+            }
+
             if (json == null) {
                 data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
                         .withResponse(response))
@@ -176,6 +182,7 @@ class LibrusLoginApi {
                 .post()
                 .allowErrorCode(HTTP_BAD_REQUEST)
                 .allowErrorCode(HTTP_UNAUTHORIZED)
+                .allowErrorCode(HTTP_UNAVAILABLE)
                 .callback(tokenCallback)
                 .build()
                 .enqueue()

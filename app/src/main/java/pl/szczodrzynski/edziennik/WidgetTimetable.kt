@@ -214,8 +214,8 @@ class WidgetTimetable : AppWidgetProvider() {
 
                 model.lessonId = lesson.id
                 model.lessonDate = timetableDate
-                model.startTime = lesson.startTime
-                model.endTime = lesson.endTime
+                model.startTime = lesson.displayStartTime
+                model.endTime = lesson.displayEndTime
 
                 // check if the lesson has already passed or it's currently in progress
                 if (lesson.displayDate == today) {

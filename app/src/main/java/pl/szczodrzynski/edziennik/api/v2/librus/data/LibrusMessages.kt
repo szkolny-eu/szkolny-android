@@ -15,7 +15,6 @@ import org.jsoup.parser.Parser
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.io.StringWriter
 import javax.xml.parsers.DocumentBuilderFactory
@@ -43,19 +42,19 @@ open class LibrusMessages(open val data: DataLibrus) {
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
                 if (text.isNullOrEmpty()) {
-                    data.error(ApiError(LibrusSynergia.TAG, ERROR_RESPONSE_EMPTY)
+                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
                             .withResponse(response))
                     return
                 }
 
-                // TODO: Finish error handling
-
-                if ("error" in text) {
-                    when ("<type>(.*)</type>".toRegex().find(text)?.get(1)) {
-                        "eAccessDeny" -> data.error(ApiError(tag, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED)
-                                .withResponse(response)
-                                .withApiResponse(text))
-                    }
+                when {
+                    text.contains("<message>Niepoprawny login i/lub hasło.</message>") -> data.error(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_INVALID_LOGIN, response, text)
+                    text.contains("stop.png") -> data.error(TAG, ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED, response, text)
+                    text.contains("eAccessDeny") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
+                    text.contains("OffLine") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_MAINTENANCE, response, text)
+                    text.contains("<status>error</status>") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ERROR, response, text)
+                    text.contains("<type>eVarWhitThisNameNotExists</type>") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
+                    text.contains("<error>") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_OTHER, response, text)
                 }
 
                 try {
