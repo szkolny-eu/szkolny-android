@@ -10,8 +10,10 @@ import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikData
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikWebGetMessage
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.firstlogin.MobidziennikFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLogin
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLoginWeb
 import pl.szczodrzynski.edziennik.api.v2.mobidziennikLoginMethods
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.prepare
@@ -63,7 +65,11 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     }
 
     override fun getMessage(message: MessageFull) {
-
+        MobidziennikLoginWeb(data) {
+            MobidziennikWebGetMessage(data, message) {
+                completed()
+            }
+        }
     }
 
     override fun markAllAnnouncementsAsRead() {

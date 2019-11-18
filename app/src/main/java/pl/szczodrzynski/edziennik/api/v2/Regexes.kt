@@ -37,6 +37,16 @@ object Regexes {
         """events: (.+),$""".toRegex(RegexOption.MULTILINE)
     }
 
+    val MOBIDZIENNIK_MESSAGE_READ_DATE by lazy {
+        """czas przeczytania:.+?,\s([0-9]+)\s(.+?)\s([0-9]{4}),\sgodzina\s([0-9:]+)""".toRegex(RegexOption.DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_MESSAGE_SENT_READ_DATE by lazy {
+        """.+?,\s([0-9]+)\s(.+?)\s([0-9]{4}),\sgodzina\s([0-9:]+)""".toRegex(RegexOption.DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_MESSAGE_ATTACHMENT by lazy {
+        """href="https://.+?\.mobidziennik.pl/.+?&(?:amp;)?zalacznik=([0-9]+)"(?:.+?<small.+?\(([0-9.]+)\s(M|K|G|)B\))*""".toRegex(RegexOption.DOT_MATCHES_ALL)
+    }
+
 
 
     val IDZIENNIK_LOGIN_HIDDEN_FIELDS by lazy {
@@ -60,6 +70,8 @@ object Regexes {
     val IDZIENNIK_LOGIN_FIRST_STUDENT by lazy {
         """<option.*?value="([0-9]+)"\sdata-id-ucznia="([A-z0-9]+?)".*?>(.+?)\s(.+?)\s*\((.+?),\s*(.+?)\)</option>""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
+
+
 
     val VULCAN_SHITFT_ANNOTATION by lazy {
         """\(przeniesiona (z|na) lekcj[ię] ([0-9]+), (.+)\)""".toRegex()
