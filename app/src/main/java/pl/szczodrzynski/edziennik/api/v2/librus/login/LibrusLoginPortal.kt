@@ -99,6 +99,14 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                 .post()
                 .callback(object : JsonCallbackHandler() {
                     override fun onSuccess(json: JsonObject?, response: Response) {
+                        val location = response.headers()?.get("Location")
+                        if (location == "http://localhost/bar?command=close") {
+                            data.error(ApiError(TAG, ERROR_LIBRUS_PORTAL_MAINTENANCE)
+                                    .withApiResponse(json)
+                                    .withResponse(response))
+                            return
+                        }
+
                         if (json == null) {
                             if (response.parserErrorBody?.contains("wciąż nieaktywne") == true) {
                                 data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED)
