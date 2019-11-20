@@ -125,19 +125,22 @@ public class BootReceiver extends BroadcastReceiver {
                             String updateUrl = result.get("update_url").getAsString();
                             String updateFilename = result.get("update_filename").getAsString();
                             boolean updateMandatory = result.get("update_mandatory").getAsBoolean();
+                            boolean updateDirect = result.get("update_direct").getAsBoolean();
 
                             if (app.appConfig.updateVersion == null || !app.appConfig.updateVersion.equals(updateVersion)) {
                                 app.appConfig.updateVersion = updateVersion;
                                 app.appConfig.updateUrl = updateUrl;
                                 app.appConfig.updateFilename = updateFilename;
                                 app.appConfig.updateMandatory = updateMandatory;
+                                app.appConfig.updateDirect = updateDirect;
                                 app.saveConfig();
                             }
                             if (!UPDATES_ON_PLAY_STORE || intent.getBooleanExtra("UserChecked", false)) {
                                 app.notifier.notificationUpdatesShow(
                                         updateVersion,
                                         updateUrl,
-                                        updateFilename);
+                                        updateFilename,
+                                        updateDirect);
                             }
                         } else {
                             if (app.appConfig.updateVersion == null || !app.appConfig.updateVersion.equals("")) {
@@ -259,7 +262,7 @@ public class BootReceiver extends BroadcastReceiver {
 
         @Override
         protected void onHandleIntent(Intent intent) {
-            if (UPDATES_ON_PLAY_STORE) {
+            if (UPDATES_ON_PLAY_STORE && !intent.getBooleanExtra("update_direct", false)) {
                 Utils.openGooglePlay(this, "pl.szczodrzynski.edziennik");
                 return;
             }
@@ -270,7 +273,8 @@ public class BootReceiver extends BroadcastReceiver {
                     app.notifier.notificationUpdatesShow(
                             intent.getStringExtra("update_version"),
                             intent.getStringExtra("update_url"),
-                            intent.getStringExtra("update_filename"));
+                            intent.getStringExtra("update_filename"),
+                            intent.getBooleanExtra("update_direct", false));
                     return;
                 }
             }

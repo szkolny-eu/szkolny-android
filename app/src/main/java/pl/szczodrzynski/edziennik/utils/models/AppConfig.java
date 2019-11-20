@@ -95,6 +95,7 @@ public class AppConfig {
     public String updateUrl = "";
     public String updateFilename = "";
     public boolean updateMandatory = false;
+    public boolean updateDirect = false;
 
     public boolean webPushEnabled = false;
 

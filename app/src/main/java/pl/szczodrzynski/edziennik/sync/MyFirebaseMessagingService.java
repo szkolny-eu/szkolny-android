@@ -154,19 +154,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         String updateUrl = remoteMessage.getData().get("update_url");
                         String updateFilename = remoteMessage.getData().get("update_filename");
                         boolean updateMandatory = Boolean.parseBoolean(remoteMessage.getData().get("update_mandatory"));
+                        boolean updateDirect = Boolean.parseBoolean(remoteMessage.getData().get("update_direct"));
 
                         if (app.appConfig.updateVersion == null || !app.appConfig.updateVersion.equals(updateVersion)) {
                             app.appConfig.updateVersion = updateVersion;
                             app.appConfig.updateUrl = updateUrl;
                             app.appConfig.updateFilename = updateFilename;
                             app.appConfig.updateMandatory = updateMandatory;
+                            app.appConfig.updateDirect = updateDirect;
                             app.saveConfig("updateVersion", "updateUrl", "updateFilename", "updateMandatory");
                         }
                         if (!remoteMessage.getData().containsKey("update_silent")) {
                             app.notifier.notificationUpdatesShow(
                                     updateVersion,
                                     updateUrl,
-                                    updateFilename);
+                                    updateFilename,
+                                    updateDirect);
                         }
                     } else {
                         if (app.appConfig.updateVersion == null || !app.appConfig.updateVersion.equals("")) {

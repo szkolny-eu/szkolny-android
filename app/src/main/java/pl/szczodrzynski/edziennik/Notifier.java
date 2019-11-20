@@ -311,13 +311,14 @@ public class Notifier {
           \____/| .__/ \__,_|\__,_|\__\___||___/
                 | |
                 |*/
-    public void notificationUpdatesShow(String updateVersion, String updateUrl, String updateFilename) {
+    public void notificationUpdatesShow(String updateVersion, String updateUrl, String updateFilename, boolean updateDirect) {
         if (!app.appConfig.notifyAboutUpdates)
             return;
         Intent notificationIntent = new Intent(app.getContext(), BootReceiver.NotificationActionService.class)
                 .putExtra("update_version", updateVersion)
                 .putExtra("update_url", updateUrl)
-                .putExtra("update_filename", updateFilename);
+                .putExtra("update_filename", updateFilename)
+                .putExtra("update_direct", updateDirect);
 
         PendingIntent pendingIntent = PendingIntent.getService(app.getContext(), 0,
                 notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
