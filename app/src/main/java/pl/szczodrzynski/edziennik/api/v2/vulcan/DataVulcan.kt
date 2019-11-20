@@ -7,15 +7,14 @@ package pl.szczodrzynski.edziennik.api.v2.vulcan
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_METHOD_VULCAN_API
 import pl.szczodrzynski.edziennik.api.v2.models.Data
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
-    fun isApiLoginValid() = apiCertificateExpiryTime-30 > currentTimeUnix()
-            && apiCertificateKey.isNotNullNorEmpty()
+    fun isApiLoginValid() = /*apiCertificateExpiryTime-30 > currentTimeUnix()
+            &&*/ apiCertificateKey.isNotNullNorEmpty()
             && apiCertificatePrivate.isNotNullNorEmpty()
             && symbol.isNotNullNorEmpty()
 
