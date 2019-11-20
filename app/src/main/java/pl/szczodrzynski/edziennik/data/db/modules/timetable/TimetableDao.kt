@@ -47,7 +47,7 @@ interface TimetableDao {
 
     @Query("""
         $QUERY
-        WHERE timetable.profileId = :profileId AND (type != 3 AND date = :date) OR ((type = 3 OR type = 1) AND oldDate = :date)
+        WHERE timetable.profileId = :profileId AND ((type != 3 AND date = :date) OR ((type = 3 OR type = 1) AND oldDate = :date))
         ORDER BY id, type
     """)
     fun getForDate(profileId: Int, date: Date) : LiveData<List<LessonFull>>
@@ -58,7 +58,7 @@ interface TimetableDao {
         ORDER BY id, type
         LIMIT 1
     """)
-    fun getNextWithSubject(profileId: Int, today: Date, subjectId: Long) : LiveData<LessonFull>
+    fun getNextWithSubject(profileId: Int, today: Date, subjectId: Long) : LiveData<LessonFull?>
 
     @Query("""
         $QUERY

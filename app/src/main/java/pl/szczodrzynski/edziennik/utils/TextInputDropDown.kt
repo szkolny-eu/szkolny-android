@@ -75,21 +75,22 @@ class TextInputDropDown : TextInputEditText {
         }
     }
 
-    fun select(item: Item) {
+    fun select(item: Item): Item? {
         selected = item
         updateText()
+        return item
     }
 
-    fun select(id: Long?) {
-        items.singleOrNull { it.id == id }?.let { select(it) }
+    fun select(id: Long?): Item? {
+        return items.singleOrNull { it.id == id }?.let { select(it) }
     }
 
-    fun select(tag: Any?) {
-        items.singleOrNull { it.tag == tag }?.let { select(it) }
+    fun select(tag: Any?): Item? {
+        return items.singleOrNull { it.tag == tag }?.let { select(it) }
     }
 
-    fun select(index: Int) {
-        items.getOrNull(index)?.let { select(it) }
+    fun select(index: Int): Item? {
+        return items.getOrNull(index)?.let { select(it) }
     }
 
     fun deselect(): TextInputDropDown {

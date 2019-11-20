@@ -4,19 +4,25 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.event
 
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.jaredrummler.android.colorpicker.ColorPickerDialog
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
+import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -46,8 +52,10 @@ class EventManualV2Dialog(
     private val app by lazy { activity.application as App }
     private lateinit var b: DialogEventManualV2Binding
     private lateinit var dialog: AlertDialog
-    private lateinit var event: Event
     private var defaultLoaded = false
+
+    private lateinit var event: Event
+    private var customColor: Int? = null
 
     init { run {
         if (activity.isFinishing)
@@ -78,6 +86,17 @@ class EventManualV2Dialog(
             defaultType?.let {
                 event.type = it
             }*/
+        }
+
+        b.showMore.onClick { // TODO iconics is broken
+            it.apply {
+                refreshDrawableState()
+
+                if (isChecked)
+                    Anim.expand(b.moreLayout, 200, null)
+                else
+                    Anim.collapse(b.moreLayout, 200, null)
+            }
         }
 
         loadLists()
@@ -114,18 +133,33 @@ class EventManualV2Dialog(
                     ""
             )
             b.teacherDropdown += teachers.map { TextInputDropDown.Item(it.id, it.fullName, tag = it) }
+
+            // get the event type list
+            val eventTypes = app.db.eventTypeDao().getAllNow(profileId)
+            b.typeDropdown.clear()
+            b.typeDropdown += eventTypes.map { TextInputDropDown.Item(it.id, it.name, tag = it) }
         }
         deferred.await()
 
         b.teamDropdown.isEnabled = true
         b.subjectDropdown.isEnabled = true
         b.teacherDropdown.isEnabled = true
+        b.typeDropdown.isEnabled = true
+
+        b.typeDropdown.selected?.let { item ->
+            customColor = (item.tag as EventType).color
+        }
 
         // copy IDs from event being edited
         editingEvent?.let {
             b.teamDropdown.select(it.teamId)
             b.subjectDropdown.select(it.subjectId)
             b.teacherDropdown.select(it.teacherId)
+            b.typeDropdown.select(it.type)?.let { item ->
+                customColor = (item.tag as EventType).color
+            }
+            if (it.color != -1)
+                customColor = it.color
         }
 
         // copy IDs from the LessonFull
@@ -133,6 +167,30 @@ class EventManualV2Dialog(
             b.teamDropdown.select(it.displayTeamId)
             b.subjectDropdown.select(it.displaySubjectId)
             b.teacherDropdown.select(it.displayTeacherId)
+        }
+
+        b.typeDropdown.setOnChangeListener {
+            b.typeDropdown.background.colorFilter = PorterDuffColorFilter((it.tag as EventType).color, PorterDuff.Mode.SRC_ATOP)
+            customColor = null
+            return@setOnChangeListener true
+        }
+        customColor?.let {
+            b.typeDropdown.background.colorFilter = PorterDuffColorFilter(it, PorterDuff.Mode.SRC_ATOP)
+        }
+        b.typeColor.onClick {
+            val currentColor = (b.typeDropdown?.selected?.tag as EventType?)?.color ?: Event.COLOR_DEFAULT
+            val colorPickerDialog = ColorPickerDialog.newBuilder()
+                    .setColor(currentColor)
+                    .create()
+            colorPickerDialog.setColorPickerDialogListener(
+                    object : ColorPickerDialogListener {
+                        override fun onDialogDismissed(dialogId: Int) {}
+                        override fun onColorSelected(dialogId: Int, color: Int) {
+                            b.typeDropdown.background.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+                            customColor = color
+                        }
+                    })
+            colorPickerDialog.show(activity.fragmentManager, "color-picker-dialog")
         }
 
         loadDates()
@@ -205,12 +263,20 @@ class EventManualV2Dialog(
         val dates = deferred.await()
         b.dateDropdown.clear().append(dates)
 
-        editingEvent?.let {
-            b.dateDropdown.select(it.eventDate.value.toLong())
+        editingEvent?.eventDate?.let {
+            b.dateDropdown.select(TextInputDropDown.Item(
+                    it.value.toLong(),
+                    it.formattedString,
+                    tag = it
+            ))
         }
 
-        defaultLesson?.let {
-            b.dateDropdown.select(it.displayDate?.value?.toLong())
+        defaultLesson?.displayDate?.let {
+            b.dateDropdown.select(TextInputDropDown.Item(
+                    it.value.toLong(),
+                    it.formattedString,
+                    tag = it
+            ))
         }
 
         if (b.dateDropdown.selected == null) {
@@ -223,22 +289,19 @@ class EventManualV2Dialog(
             when {
                 // next lesson with specified subject
                 item.id < -1 -> {
+                    // TODO include lesson team in search
                     app.db.timetableDao().getNextWithSubject(profileId, Date.getToday(), -item.id).observeOnce(activity, Observer {
                         val lessonDate = it?.displayDate ?: return@Observer
-                        b.dateDropdown.selected = TextInputDropDown.Item(
+                        b.dateDropdown.select(TextInputDropDown.Item(
                                 lessonDate.value.toLong(),
                                 lessonDate.formattedString,
                                 tag = lessonDate
-                        )
-                        // TODO load correct hour when selecting next lesson
-                        b.dateDropdown.updateText()
-                        it.let {
-                            b.teamDropdown.select(it.displayTeamId)
-                            b.subjectDropdown.select(it.displaySubjectId)
-                            b.teacherDropdown.select(it.displayTeacherId)
-                        }
+                        ))
+                        b.teamDropdown.select(it.displayTeamId)
+                        b.subjectDropdown.select(it.displaySubjectId)
+                        b.teacherDropdown.select(it.displayTeacherId)
                         defaultLoaded = false
-                        loadHours()
+                        loadHours(it.displayStartTime)
                     })
                     return@setOnChangeListener false
                 }
@@ -251,12 +314,11 @@ class EventManualV2Dialog(
                             .apply {
                                 addOnPositiveButtonClickListener {
                                     val dateSelected = Date.fromMillis(it)
-                                    b.dateDropdown.selected = TextInputDropDown.Item(
+                                    b.dateDropdown.select(TextInputDropDown.Item(
                                             dateSelected.value.toLong(),
                                             dateSelected.formattedString,
                                             tag = dateSelected
-                                    )
-                                    b.dateDropdown.updateText()
+                                    ))
                                     loadHours()
                                 }
                                 show(this@EventManualV2Dialog.activity.supportFragmentManager, "MaterialDatePicker")
@@ -276,7 +338,7 @@ class EventManualV2Dialog(
         loadHours()
     }}
 
-    private fun loadHours() {
+    private fun loadHours(defaultHour: Time? = null) {
         b.timeDropdown.isEnabled = false
         // get the selected date
         val date = b.dateDropdown.selectedId?.let { Date.fromValue(it.toInt()) } ?: return
@@ -338,6 +400,10 @@ class EventManualV2Dialog(
                 defaultLesson?.let {
                     b.timeDropdown.select(it.displayStartTime?.value?.toLong())
                 }
+
+                defaultHour?.let {
+                    b.timeDropdown.select(it.value.toLong())
+                }
             }
             defaultLoaded = true
             b.timeDropdown.isEnabled = true
@@ -345,14 +411,14 @@ class EventManualV2Dialog(
             // attach a listener to time dropdown
             b.timeDropdown.setOnChangeListener { item ->
                 when {
-                    // custom start hour
-                    item.id == -1L -> {
-
-                        return@setOnChangeListener false
-                    }
                     // no lessons this day
                     item.id == -2L -> {
                         b.timeDropdown.deselect()
+                        return@setOnChangeListener false
+                    }
+                    // custom start hour
+                    item.id == -1L -> {
+
                         return@setOnChangeListener false
                     }
                     // selected a specific lesson

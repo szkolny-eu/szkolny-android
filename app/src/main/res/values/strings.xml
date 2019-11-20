@@ -1026,4 +1026,5 @@
     <string name="snackbar_error_text">Wystąpił błąd</string>
     <string name="dialog_sync_view_list_title">Synchronizacja ręczna</string>
     <string name="timetable_no_subject_name">(brak nazwy)</string>
+    <string name="dialog_event_manual_more_options">Więcej opcji</string>
 </resources>

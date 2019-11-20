@@ -132,28 +132,28 @@ class LessonDetailsDialog(
         if (lesson.type < Lesson.TYPE_SHIFTED_SOURCE && lesson.oldSubjectId != null && lesson.subjectId != lesson.oldSubjectId) {
             b.oldSubjectName = lesson.oldSubjectName
         }
-        if (lesson.type != Lesson.TYPE_CANCELLED && lesson.subjectId != null) {
+        if (lesson.type != Lesson.TYPE_CANCELLED && lesson.displaySubjectId != null) {
             b.subjectName = lesson.subjectName
         }
 
         if (lesson.type < Lesson.TYPE_SHIFTED_SOURCE && lesson.oldTeacherId != null && lesson.teacherId != lesson.oldTeacherId) {
             b.oldTeacherName = lesson.oldTeacherName
         }
-        if (lesson.type != Lesson.TYPE_CANCELLED && lesson.teacherId != null) {
+        if (lesson.type != Lesson.TYPE_CANCELLED && lesson.displayTeacherId != null) {
             b.teacherName = lesson.teacherName
         }
 
         if (lesson.oldClassroom != null && lesson.classroom != lesson.oldClassroom) {
             b.oldClassroom = lesson.oldClassroom
         }
-        if (lesson.type != Lesson.TYPE_CANCELLED && lesson.classroom != null) {
+        if (lesson.type != Lesson.TYPE_CANCELLED && lesson.displayClassroom != null) {
             b.classroom = lesson.classroom
         }
 
         if (lesson.type < Lesson.TYPE_SHIFTED_SOURCE && lesson.oldTeamId != null && lesson.teamId != lesson.oldTeamId) {
             b.oldTeamName = lesson.oldTeamName
         }
-        if (lesson.type != Lesson.TYPE_CANCELLED && lesson.teamId != null) {
+        if (lesson.type != Lesson.TYPE_CANCELLED && lesson.displayTeamId != null) {
             b.teamName = lesson.teamName
         }
     }
