@@ -1,9 +1,9 @@
 package pl.szczodrzynski.edziennik.data.db.modules.grades;
 
+import androidx.room.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.room.Entity;
 
 @Entity(tableName = "gradeCategories",
         primaryKeys = {"profileId", "categoryId"})
@@ -24,6 +24,9 @@ public class GradeCategory {
      * The Grade category is used only in API to cache the e-register's categories.
      */
     public int type = 0;
+
+    public static final int TYPE_NORMAL = 0;
+    public static final int TYPE_COMMENT = 1;
 
     public GradeCategory(int profileId, long categoryId, float weight, int color, String text) {
         this.profileId = profileId;

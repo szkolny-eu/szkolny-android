@@ -85,6 +85,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
                 LibrusApiGrades(data, onSuccess)
             }
+            ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grade_comments)
+                LibrusApiGradeComments(data, onSuccess)
+            }
             ENDPOINT_LIBRUS_API_NORMAL_GC -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
                 LibrusApiGradeCategories(data, onSuccess)

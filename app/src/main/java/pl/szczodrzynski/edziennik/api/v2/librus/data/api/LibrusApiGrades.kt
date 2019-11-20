@@ -6,6 +6,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADE
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
+import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -42,12 +43,21 @@ class LibrusApiGrades(override val data: DataLibrus,
                     weight = 0f
                 }
 
+                val description = grade.getJsonArray("Comments")?.asJsonObjectList()?.let { comments ->
+                    if (comments.isNotEmpty()) {
+                        data.gradeCategories.singleOrNull {
+                            it.type == GradeCategory.TYPE_COMMENT
+                                    && it.categoryId == comments[0].asJsonObject.getLong("Id")
+                        }?.text
+                    } else null
+                } ?: ""
+
                 val gradeObject = Grade(
                         profileId,
                         id,
                         categoryName,
                         color,
-                        "",
+                        description,
                         name,
                         value,
                         weight,
