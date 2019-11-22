@@ -60,6 +60,9 @@ class ApiService : Service() {
 
     private val notification by lazy { EdziennikNotification(this) }
 
+    private var lastEventTime = System.currentTimeMillis()
+    private var taskCancelTries = 0
+
     /*    ______    _     _                  _ _       _____      _ _ _                _
          |  ____|  | |   (_)                (_) |     / ____|    | | | |              | |
          | |__   __| |_____  ___ _ __  _ __  _| | __ | |     __ _| | | |__   __ _  ___| | __
@@ -68,22 +71,17 @@ class ApiService : Service() {
          |______\__,_/___|_|\___|_| |_|_| |_|_|_|\_\  \_____\__,_|_|_|_.__/ \__,_|\___|_|\*/
     private val taskCallback = object : EdziennikCallback {
         override fun onCompleted() {
+            lastEventTime = System.currentTimeMillis()
             d(TAG, "Task $taskRunningId (profile $taskProfileId) - $taskProgressText - finished")
-            //if (!taskCancelled) {
-                EventBus.getDefault().post(ApiTaskFinishedEvent(taskProfileId))
-            //}
-            taskIsRunning = false
-            taskRunningId = -1
-            taskRunning = null
-            taskProfileId = -1
-            taskProgress = -1f
-            taskProgressText = null
+            EventBus.getDefault().post(ApiTaskFinishedEvent(taskProfileId))
+            clearTask()
 
             notification.setIdle().post()
             runTask()
         }
 
         override fun onError(apiError: ApiError) {
+            lastEventTime = System.currentTimeMillis()
             d(TAG, "Task $taskRunningId threw an error - $apiError")
             apiError.profileId = taskProfileId
             EventBus.getDefault().post(ApiTaskErrorEvent(apiError))
@@ -92,9 +90,7 @@ class ApiService : Service() {
             if (apiError.isCritical) {
                 taskRunning?.cancel()
                 notification.setCriticalError().post()
-                taskRunning = null
-                taskIsRunning = false
-                taskRunningId = -1
+                clearTask()
                 runTask()
             }
             else {
@@ -103,6 +99,7 @@ class ApiService : Service() {
         }
 
         override fun onProgress(step: Float) {
+            lastEventTime = System.currentTimeMillis()
             if (step <= 0)
                 return
             if (taskProgress < 0)
@@ -115,6 +112,7 @@ class ApiService : Service() {
         }
 
         override fun onStartProgress(stringRes: Int) {
+            lastEventTime = System.currentTimeMillis()
             taskProgressText = getString(stringRes)
             d(TAG, "Task $taskRunningId progress: $taskProgressText")
             EventBus.getDefault().post(ApiTaskProgressEvent(taskProfileId, taskProgress, taskProgressText))
@@ -129,6 +127,7 @@ class ApiService : Service() {
             | | (_| \__ \   <  |  __/>  <  __/ (__| |_| | |_| | (_) | | | |
             |_|\__,_|___/_|\_\  \___/_/\_\___|\___|\__,_|\__|_|\___/|_| |*/
     private fun runTask() {
+        checkIfTaskFrozen()
         if (taskIsRunning)
             return
         if (taskCancelled || serviceClosed || (taskQueue.isEmpty() && finishingTaskQueue.isEmpty())) {
@@ -136,6 +135,8 @@ class ApiService : Service() {
             allCompleted()
             return
         }
+
+        lastEventTime = System.currentTimeMillis()
 
         val task = if (taskQueue.isEmpty()) finishingTaskQueue.removeAt(0) else taskQueue.removeAt(0)
         task.taskId = ++taskMaximumId
@@ -164,6 +165,48 @@ class ApiService : Service() {
         } catch (e: Exception) {
             taskCallback.onError(ApiError(TAG, EXCEPTION_API_TASK).withThrowable(e))
         }
+    }
+
+    /**
+     * Check if a task is inactive for more than 30 seconds.
+     * If the user tries to cancel a task with no success at least three times,
+     * consider it frozen as well.
+     *
+     * This usually means it is broken and won't become active again.
+     * This method cancels the task and removes any pointers to it.
+     */
+    private fun checkIfTaskFrozen(): Boolean {
+        if (System.currentTimeMillis() - lastEventTime > 30*1000
+                || taskCancelTries >= 3) {
+            val time = System.currentTimeMillis() - lastEventTime
+            d(TAG, "!!! Task $taskRunningId froze for $time ms. $taskRunning")
+            clearTask()
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Stops the service if the current task is frozen/broken.
+     */
+    private fun stopIfTaskFrozen() {
+        if (checkIfTaskFrozen()) {
+            stopSelf()
+        }
+    }
+
+    /**
+     * Remove any task descriptors or pointers from the service.
+     */
+    private fun clearTask() {
+        taskIsRunning = false
+        taskRunningId = -1
+        taskRunning = null
+        taskProfileId = -1
+        taskProgress = -1f
+        taskProgressText = null
+        taskCancelled = false
+        taskCancelTries = 0
     }
 
     private fun allCompleted() {
@@ -211,8 +254,10 @@ class ApiService : Service() {
         EventBus.getDefault().removeStickyEvent(request)
         d(TAG, request.toString())
 
+        taskCancelTries++
         taskCancelled = true
         taskRunning?.cancel()
+        stopIfTaskFrozen()
     }
     @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
     fun onServiceCloseRequest(request: ServiceCloseRequest) {
