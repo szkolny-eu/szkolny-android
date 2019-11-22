@@ -1028,4 +1028,6 @@
     <string name="timetable_no_subject_name">(brak nazwy)</string>
     <string name="dialog_event_manual_more_options">Więcej opcji</string>
     <string name="edziennik_progress_endpoint_grade_comments">Pobieranie komentarzy ocen...</string>
+    <string name="menu_remove_notifications">Usuń wszystkie</string>
+    <string name="menu_remove_notifications_success">Wyczyszczono powiadomienia</string>
 </resources>

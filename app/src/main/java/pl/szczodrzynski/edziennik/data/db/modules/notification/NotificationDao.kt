@@ -21,7 +21,10 @@ interface NotificationDao {
     @Query("DELETE FROM notifications WHERE profileId = :profileId")
     fun clear(profileId: Int)
 
-    @Query("SELECT * FROM notifications")
+    @Query("DELETE FROM notifications")
+    fun clearAll()
+
+    @Query("SELECT * FROM notifications ORDER BY addedDate DESC")
     fun getAll(): LiveData<List<Notification>>
 
     @Query("SELECT * FROM notifications")

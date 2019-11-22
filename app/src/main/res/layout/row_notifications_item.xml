@@ -1,75 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="?selectableItemBackground">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/notificationsItemCard"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="?selectableItemBackground"
-        app:cardElevation="4dp"
-        app:cardCornerRadius="5dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="3dp">
+        android:textAppearance="@style/NavView.TextView.Medium"
+        tools:text="Dzisiaj 1 to szczęśliwy numerek" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?selectableItemBackground"
-            android:orientation="vertical"
-            android:padding="8dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/notificationsItemDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textSize="16sp"
-                tools:text="date" />
+        <TextView
+            android:id="@+id/profileDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="Władca Androida • 22 listopada" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/notificationsItemText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:autoLink="all"
-                    tools:text="text" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/notificationsItemTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                    tools:text="title" />
-
-                <TextView
-                    android:id="@+id/notificationsItemType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                    tools:text="type" />
-            </LinearLayout>
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Szczęśliwy numerek" />
+    </LinearLayout>
 
 </LinearLayout>
