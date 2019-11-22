@@ -172,7 +172,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
                 "SZ9" -> "http://vulcan.szkolny.eu"
                 else -> null
             }
-            return if (url != null) "$url/$symbol" else null
+            return if (url != null) "$url/$symbol" else loginStore.getLoginData("apiUrl", null)
         }
 
     val fullApiUrl: String?

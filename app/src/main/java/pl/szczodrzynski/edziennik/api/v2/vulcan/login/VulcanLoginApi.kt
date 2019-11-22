@@ -38,10 +38,12 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                             if (data.apiToken?.get(0) == 'F') VULCAN_API_PASSWORD_FAKELOG else VULCAN_API_PASSWORD,
                             data.apiCertificatePfx ?: ""
                     )
-                    onSuccess()
-                    return@run
+                    data.loginStore.removeLoginData("certificatePfx")
                 } catch (e: Throwable) {
                     e.printStackTrace()
+                } finally {
+                    onSuccess()
+                    return@run
                 }
             }
             if (data.symbol.isNotNullNorEmpty() && data.apiToken.isNotNullNorEmpty() && data.apiPin.isNotNullNorEmpty()) {
