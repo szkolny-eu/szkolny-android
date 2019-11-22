@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.ui.dialogs.event
 
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -86,6 +87,7 @@ class EventManualV2Dialog(
             defaultType?.let {
                 event.type = it
             }*/
+            b.shareSwitch.isChecked = event.sharedBy != null
         }
 
         b.showMore.onClick { // TODO iconics is broken
@@ -99,8 +101,31 @@ class EventManualV2Dialog(
             }
         }
 
+        updateShareText()
+        b.shareSwitch.onChange { _, isChecked ->
+            updateShareText(isChecked)
+        }
+
         loadLists()
     }}
+
+    private fun updateShareText(checked: Boolean = b.shareSwitch.isChecked) {
+        val editingShared = editingEvent?.sharedBy != null
+        val editingOwn = editingEvent?.sharedBy == "self"
+
+        b.shareDetails.visibility = if (checked || editingShared)
+            View.VISIBLE
+        else View.GONE
+
+        val text = when {
+            checked && editingShared && editingOwn -> R.string.dialog_event_manual_share_will_change
+            checked && editingShared -> R.string.dialog_event_manual_share_will_request
+            !checked && editingShared -> R.string.dialog_event_manual_share_will_remove
+            else -> R.string.dialog_event_manual_share_first_notice
+        }
+
+        b.shareDetails.setText(text)
+    }
 
     private fun loadLists() { launch {
         val deferred = async(Dispatchers.Default) {

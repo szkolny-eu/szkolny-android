@@ -17,6 +17,7 @@ import android.util.LongSparseArray
 import android.util.SparseArray
 import android.util.TypedValue
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.annotation.*
 import androidx.core.app.ActivityCompat
@@ -438,6 +439,13 @@ fun JsonArray.isEmpty(): Boolean = this.size() == 0
 inline fun <T : View> T.onClick(crossinline onClickListener: (v: T) -> Unit) {
     setOnClickListener { v: View ->
         onClickListener(v as T)
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <T : CompoundButton> T.onChange(crossinline onChangeListener: (v: T, isChecked: Boolean) -> Unit) {
+    setOnCheckedChangeListener { buttonView, isChecked ->
+        onChangeListener(buttonView as T, isChecked)
     }
 }
 

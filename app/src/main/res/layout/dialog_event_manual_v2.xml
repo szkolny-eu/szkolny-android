@@ -117,7 +117,7 @@
             android:layout_marginTop="8dp"
             android:hint="@string/dialog_event_manual_topic">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                 android:id="@+id/topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
