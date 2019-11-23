@@ -694,10 +694,10 @@ class MainActivity : AppCompatActivity() {
             app.profile == null -> {
                 if (intentProfileId == -1)
                     intentProfileId = app.appSharedPrefs.getInt("current_profile_id", 1)
-                loadProfile(intentProfileId, intentTargetId)
+                loadProfile(intentProfileId, intentTargetId, extras)
             }
             intentProfileId != -1 -> {
-                loadProfile(intentProfileId, intentTargetId)
+                loadProfile(intentProfileId, intentTargetId, extras)
             }
             intentTargetId != -1 -> {
                 drawer.currentProfile = app.profile.id
