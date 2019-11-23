@@ -517,7 +517,7 @@ public class EventManualDialog {
 
         registerEventManualDateLayout = dialogView.findViewById(R.id.registerEventManualDateLayout);
         registerEventManualDate = dialogView.findViewById(R.id.registerEventManualDate);
-        registerEventManualDate.setCompoundDrawablesWithIntrinsicBounds(null, null, new IconicsDrawable(context, CommunityMaterial.Icon.cmd_calendar).size(IconicsSize.dp(16)).color(IconicsColor.colorInt(primaryTextColor)), null);
+        registerEventManualDate.setCompoundDrawablesWithIntrinsicBounds(null, null, new IconicsDrawable(context, CommunityMaterial.Icon.cmd_calendar_outline).size(IconicsSize.dp(16)).color(IconicsColor.colorInt(primaryTextColor)), null);
         //registerEventManualDate.setCompoundDrawablePadding(Utils.dpToPx(6));
         registerEventManualLessonLayout = dialogView.findViewById(R.id.registerEventManualLessonLayout);
         registerEventManualLesson = dialogView.findViewById(R.id.registerEventManualLesson);

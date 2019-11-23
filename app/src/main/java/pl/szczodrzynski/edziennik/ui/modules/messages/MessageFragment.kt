@@ -22,6 +22,7 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.IconicsSize
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -224,17 +225,18 @@ class MessageFragment : Fragment(), CoroutineScope {
                 attachmentChip.ellipsize = TextUtils.TruncateAt.MIDDLE
 
                 // create an icon for the attachment
-                var icon: IIcon = CommunityMaterial.Icon.cmd_file
+                var icon: IIcon = CommunityMaterial.Icon.cmd_file_outline
                 when (Utils.getExtensionFromFileName(name)) {
-                    "txt" -> icon = CommunityMaterial.Icon.cmd_file_document
-                    "doc", "docx", "odt", "rtf" -> icon = CommunityMaterial.Icon.cmd_file_word
-                    "xls", "xlsx", "ods" -> icon = CommunityMaterial.Icon.cmd_file_excel
-                    "ppt", "pptx", "odp" -> icon = CommunityMaterial.Icon.cmd_file_powerpoint
-                    "pdf" -> icon = CommunityMaterial.Icon.cmd_file_pdf
-                    "mp3", "wav", "aac" -> icon = CommunityMaterial.Icon.cmd_file_music
-                    "mp4", "avi", "3gp", "mkv", "flv" -> icon = CommunityMaterial.Icon.cmd_file_video
-                    "jpg", "jpeg", "png", "bmp", "gif" -> icon = CommunityMaterial.Icon.cmd_file_image
-                    "zip", "rar", "tar", "7z" -> icon = CommunityMaterial.Icon.cmd_file_lock
+                    "txt" -> icon = CommunityMaterial.Icon.cmd_file_document_outline
+                    "doc", "docx", "odt", "rtf" -> icon = SzkolnyFont.Icon.szf_file_word_outline
+                    "xls", "xlsx", "ods" -> icon = SzkolnyFont.Icon.szf_file_excel_outline
+                    "ppt", "pptx", "odp" -> icon = SzkolnyFont.Icon.szf_file_powerpoint_outline
+                    "pdf" -> icon = SzkolnyFont.Icon.szf_file_pdf_outline
+                    "mp3", "wav", "aac" -> icon = SzkolnyFont.Icon.szf_file_music_outline
+                    "mp4", "avi", "3gp", "mkv", "flv" -> icon = SzkolnyFont.Icon.szf_file_video_outline
+                    "jpg", "jpeg", "png", "bmp", "gif" -> icon = SzkolnyFont.Icon.szf_file_image_outline
+                    "zip", "rar", "tar", "7z" -> icon = SzkolnyFont.Icon.szf_zip_box_outline
+                    "html", "cpp", "c", "h", "css", "java", "py" -> icon = SzkolnyFont.Icon.szf_file_code_outline
                 }
                 attachmentChip.chipIcon = IconicsDrawable(activity).color(IconicsColor.colorRes(R.color.colorPrimary)).icon(icon).size(IconicsSize.dp(26))
                 attachmentChip.closeIcon = IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_check).size(IconicsSize.dp(18)).color(IconicsColor.colorInt(Utils.getAttr(activity, android.R.attr.textColorPrimary)))

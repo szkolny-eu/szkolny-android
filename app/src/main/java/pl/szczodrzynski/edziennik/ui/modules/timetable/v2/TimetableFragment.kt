@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
@@ -153,7 +153,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
 
         //activity.navView.bottomBar.fabEnable = true
         activity.navView.bottomBar.fabExtendedText = getString(R.string.timetable_today)
-        activity.navView.bottomBar.fabIcon = CommunityMaterial.Icon.cmd_calendar_today
+        activity.navView.bottomBar.fabIcon = SzkolnyFont.Icon.szf_calendar_today_outline
         activity.navView.setFabOnClickListener(View.OnClickListener {
             b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, true)
         })

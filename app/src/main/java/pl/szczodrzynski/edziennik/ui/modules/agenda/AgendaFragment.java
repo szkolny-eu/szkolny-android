@@ -6,14 +6,15 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.applandeo.materialcalendarview.CalendarView;
@@ -27,6 +28,7 @@ import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,13 +36,13 @@ import java.util.List;
 import java.util.Locale;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
+import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding;
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
@@ -51,11 +53,11 @@ import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeEve
 import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceCounter;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEvent;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEventRenderer;
-import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
@@ -102,7 +104,7 @@ public class AgendaFragment extends Fragment {
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_add_event)
                         .withDescription(R.string.menu_add_event_desc)
-                        .withIcon(CommunityMaterial.Icon.cmd_calendar_plus)
+                        .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             new MaterialDialog.Builder(activity)
@@ -122,7 +124,7 @@ public class AgendaFragment extends Fragment {
                         }),
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_agenda_change_view)
-                        .withIcon(viewType == AGENDA_DEFAULT ? CommunityMaterial.Icon.cmd_calendar : CommunityMaterial.Icon2.cmd_view_list)
+                        .withIcon(viewType == AGENDA_DEFAULT ? CommunityMaterial.Icon.cmd_calendar_outline : CommunityMaterial.Icon.cmd_format_list_bulleted_square)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             viewType = viewType == AGENDA_DEFAULT ? AGENDA_CALENDAR : AGENDA_DEFAULT;
@@ -133,7 +135,7 @@ public class AgendaFragment extends Fragment {
                 new BottomSheetSeparatorItem(true),
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_EVENT, true));

@@ -37,6 +37,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -103,7 +104,7 @@ public class TimetableFragment extends Fragment {
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_add_event)
                         .withDescription(R.string.menu_add_event_desc)
-                        .withIcon(CommunityMaterial.Icon.cmd_calendar_plus)
+                        .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             new MaterialDialog.Builder(activity)
@@ -132,7 +133,7 @@ public class TimetableFragment extends Fragment {
                 new BottomSheetSeparatorItem(true),
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_LESSON_CHANGE, true));

@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
             // home item
             list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragment::class)
                     .withTitle(R.string.app_name)
-                    .withIcon(CommunityMaterial.Icon2.cmd_home)
+                    .withIcon(CommunityMaterial.Icon2.cmd_home_outline)
                     .isInDrawer(true)
                     .isStatic(true)
                     .withPopToHome(false)
@@ -135,50 +135,50 @@ class MainActivity : AppCompatActivity() {
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_AGENDA, R.string.menu_agenda, AgendaFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_calendar)
+                    .withIcon(CommunityMaterial.Icon.cmd_calendar_outline)
                     .withBadgeTypeId(TYPE_EVENT)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_numeric_5_box)
+                    .withIcon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline)
                     .withBadgeTypeId(TYPE_GRADE)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_MESSAGES, R.string.menu_messages, MessagesFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_email)
+                    .withIcon(CommunityMaterial.Icon.cmd_email_outline)
                     .withBadgeTypeId(TYPE_MESSAGE)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_HOMEWORK, R.string.menu_homework, HomeworkFragment::class)
-                    .withIcon(SzkolnyFont.Icon.szf_file_document_edit)
+                    .withIcon(SzkolnyFont.Icon.szf_notebook_outline)
                     .withBadgeTypeId(TYPE_HOMEWORK)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_BEHAVIOUR, R.string.menu_notices, BehaviourFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_message_alert)
+                    .withIcon(CommunityMaterial.Icon.cmd_emoticon_outline)
                     .withBadgeTypeId(TYPE_NOTICE)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_ATTENDANCE, R.string.menu_attendance, AttendanceFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_calendar_remove)
+                    .withIcon(CommunityMaterial.Icon.cmd_calendar_remove_outline)
                     .withBadgeTypeId(TYPE_ATTENDANCE)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS, R.string.menu_announcements, AnnouncementsFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_bulletin_board)
+                    .withIcon(CommunityMaterial.Icon.cmd_bullhorn_outline)
                     .withBadgeTypeId(TYPE_ANNOUNCEMENT)
                     .isInDrawer(true)
 
 
             // static drawer items
             list += NavTarget(DRAWER_ITEM_NOTIFICATIONS, R.string.menu_notifications, NotificationsFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_bell_ring)
+                    .withIcon(CommunityMaterial.Icon.cmd_bell_ring_outline)
                     .isInDrawer(true)
                     .isStatic(true)
                     .isBelowSeparator(true)
 
             list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsNewFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_settings)
+                    .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
                     .isInDrawer(true)
                     .isStatic(true)
                     .isBelowSeparator(true)
@@ -197,7 +197,7 @@ class MainActivity : AppCompatActivity() {
                     .isInProfileList(false)
 
             list += NavTarget(DRAWER_PROFILE_SYNC_ALL, R.string.menu_sync_all, null)
-                    .withIcon(CommunityMaterial.Icon2.cmd_sync)
+                    .withIcon(CommunityMaterial.Icon.cmd_download_outline)
                     .isInProfileList(true)
 
 
@@ -434,7 +434,7 @@ class MainActivity : AppCompatActivity() {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
                         .content(R.string.rate_snackbar_text)
-                        .icon(IconicsDrawable(this).icon(CommunityMaterial.Icon2.cmd_star).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.getPrimaryTextColor(this))))
+                        .icon(IconicsDrawable(this).icon(CommunityMaterial.Icon2.cmd_star_outline).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.getPrimaryTextColor(this))))
                         .positiveText(R.string.rate_snackbar_positive)
                         .positiveColor(-0xb350b0)
                         .negativeText(R.string.rate_snackbar_negative)
@@ -471,7 +471,7 @@ class MainActivity : AppCompatActivity() {
         bottomSheet.appendItems(
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_sync)
-                        .withIcon(CommunityMaterial.Icon2.cmd_sync)
+                        .withIcon(CommunityMaterial.Icon.cmd_download_outline)
                         .withOnClickListener(View.OnClickListener {
                             bottomSheet.close()
                             SyncViewListDialog(this, navTargetId)
@@ -479,17 +479,17 @@ class MainActivity : AppCompatActivity() {
                 BottomSheetSeparatorItem(false),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_settings)
-                        .withIcon(CommunityMaterial.Icon2.cmd_settings)
+                        .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
                         .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) }),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_feedback)
-                        .withIcon(CommunityMaterial.Icon2.cmd_help_circle)
+                        .withIcon(CommunityMaterial.Icon2.cmd_help_circle_outline)
                         .withOnClickListener(View.OnClickListener { loadTarget(TARGET_FEEDBACK) })
         )
         if (App.devMode) {
             bottomSheet += BottomSheetPrimaryItem(false)
                     .withTitle(R.string.menu_debug)
-                    .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
+                    .withIcon(CommunityMaterial.Icon.cmd_android_studio)
                     .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_DEBUG) })
         }
 

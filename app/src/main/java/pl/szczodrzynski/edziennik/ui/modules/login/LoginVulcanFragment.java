@@ -104,7 +104,7 @@ public class LoginVulcanFragment extends Fragment {
         b.helpButton.setOnClickListener((v) -> nav.navigate(R.id.loginVulcanHelpFragment, null, LoginActivity.navOptions));
         b.backButton.setOnClickListener((v) -> nav.navigateUp());
 
-        b.loginQrScan.setImageDrawable(new IconicsDrawable(getActivity()).icon(CommunityMaterial.Icon2.cmd_qrcode).color(IconicsColor.colorInt(Color.BLACK)).size(IconicsSize.dp(72)));
+        b.loginQrScan.setImageDrawable(new IconicsDrawable(getActivity()).icon(CommunityMaterial.Icon2.cmd_qrcode_scan).color(IconicsColor.colorInt(Color.BLACK)).size(IconicsSize.dp(72)));
         b.loginQrScan.setOnClickListener((v -> {
             QrScannerActivity.resultHandler = result -> {
                 try {

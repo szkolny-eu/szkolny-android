@@ -37,6 +37,7 @@ import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -268,7 +269,7 @@ public class HomeFragment extends Fragment {
         activity.getBottomSheet().prependItems(
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_set_student_number)
-                        .withIcon(CommunityMaterial.Icon.cmd_counter)
+                        .withIcon(SzkolnyFont.Icon.szf_clipboard_list_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             setNumberDialog();
@@ -276,7 +277,7 @@ public class HomeFragment extends Fragment {
                 new BottomSheetSeparatorItem(true),
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_everything_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, true));

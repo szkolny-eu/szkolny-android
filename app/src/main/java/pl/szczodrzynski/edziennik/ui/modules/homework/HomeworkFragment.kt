@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
@@ -52,7 +53,7 @@ class HomeworkFragment : Fragment() {
                 BottomSheetPrimaryItem(true)
                 .withTitle(R.string.menu_add_event)
                 .withDescription(R.string.menu_add_event_desc)
-                .withIcon(CommunityMaterial.Icon.cmd_calendar_plus)
+                .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
                 .withOnClickListener(View.OnClickListener {
                     activity.bottomSheet.close()
                     EventManualDialog(activity).show(app, null, null, null, EventManualDialog.DIALOG_HOMEWORK)
@@ -60,7 +61,7 @@ class HomeworkFragment : Fragment() {
         BottomSheetSeparatorItem(true),
         BottomSheetPrimaryItem(true)
                 .withTitle(R.string.menu_mark_as_read)
-                .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                 .withOnClickListener(View.OnClickListener {
                     activity.bottomSheet.close()
                     AsyncTask.execute { app.db.metadataDao().setAllSeen(App.profileId, Metadata.TYPE_HOMEWORK, true) }

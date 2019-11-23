@@ -87,7 +87,7 @@ class WidgetTimetable : AppWidgetProvider() {
                     .colorInt(Color.WHITE)
                     .sizeDp(if (widgetConfig.bigStyle) 24 else 16).toBitmap())
 
-            views.setImageViewBitmap(R.id.widgetTimetableSync, IconicsDrawable(context, CommunityMaterial.Icon2.cmd_sync)
+            views.setImageViewBitmap(R.id.widgetTimetableSync, IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline)
                     .colorInt(Color.WHITE)
                     .sizeDp(if (widgetConfig.bigStyle) 24 else 16).toBitmap())
 

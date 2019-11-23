@@ -69,7 +69,7 @@ public class BehaviourFragment extends Fragment {
         activity.getBottomSheet().prependItems(
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_NOTICE, true));

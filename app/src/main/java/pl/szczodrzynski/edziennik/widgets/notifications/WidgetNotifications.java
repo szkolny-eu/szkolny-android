@@ -117,7 +117,7 @@ public class WidgetNotifications extends AppWidgetProvider {
                     .color(IconicsColor.colorInt(Color.WHITE))
                     .size(IconicsSize.dp(widgetConfig.bigStyle ? 24 : 16)).toBitmap());
 
-            views.setImageViewBitmap(R.id.widgetNotificationsSync, new IconicsDrawable(context, CommunityMaterial.Icon2.cmd_sync)
+            views.setImageViewBitmap(R.id.widgetNotificationsSync, new IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline)
                     .color(IconicsColor.colorInt(Color.WHITE))
                     .size(IconicsSize.dp(widgetConfig.bigStyle ? 24 : 16)).toBitmap());
 

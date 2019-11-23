@@ -95,7 +95,7 @@ public class AttendanceFragment extends Fragment {
         activity.getBottomSheet().prependItems(
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_ATTENDANCE, true));
@@ -133,7 +133,7 @@ public class AttendanceFragment extends Fragment {
                 CafeBar.builder(activity)
                         .to(activity.getNavView().getCoordinator())
                         .content(R.string.sync_old_data_info)
-                        .icon(new IconicsDrawable(activity).icon(CommunityMaterial.Icon2.cmd_sync).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.INSTANCE.getPrimaryTextColor(activity))))
+                        .icon(new IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_download_outline).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.INSTANCE.getPrimaryTextColor(activity))))
                         .positiveText(R.string.refresh)
                         .positiveColor(0xff4caf50)
                         .negativeText(R.string.ok)

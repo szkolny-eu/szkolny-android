@@ -29,6 +29,7 @@ import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -259,7 +260,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             getString(R.string.settings_profile_remove_text),
                             getString(R.string.settings_profile_remove_subtext),
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_delete_empty)
+                                    .icon(SzkolnyFont.Icon.szf_delete_empty_outline)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
@@ -287,7 +288,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             getString(R.string.settings_theme_theme_text),
                             Themes.INSTANCE.getThemeName(activity),
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_palette)
+                                    .icon(CommunityMaterial.Icon2.cmd_palette_outline)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
@@ -313,7 +314,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             getString(R.string.settings_theme_mini_drawer_text),
                             getString(R.string.settings_theme_mini_drawer_subtext),
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_chevron_left)
+                                    .icon(CommunityMaterial.Icon.cmd_dots_vertical)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
@@ -339,7 +340,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             getString(R.string.settings_theme_mini_drawer_buttons_text),
                             null,
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_menu)
+                                    .icon(CommunityMaterial.Icon.cmd_format_list_checks)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
@@ -403,7 +404,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             getString(R.string.settings_theme_drawer_header_text),
                             null,
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_image)
+                                    .icon(CommunityMaterial.Icon2.cmd_image_outline)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
@@ -504,7 +505,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 getString(R.string.settings_sync_wifi_text),
                 getString(R.string.settings_sync_wifi_subtext),
                 new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_wifi_strength_4)
+                        .icon(CommunityMaterial.Icon2.cmd_wifi_strength_2)
                         .size(IconicsSize.dp(iconSizeDp))
                         .color(IconicsColor.colorInt(iconColor))
         )
@@ -526,7 +527,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     getString(R.string.settings_sync_sync_interval_text),
                     getString(R.string.settings_sync_sync_interval_subtext_disabled),
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_sync)
+                            .icon(CommunityMaterial.Icon.cmd_download_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
@@ -619,7 +620,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     getString(R.string.settings_sync_quiet_hours_text),
                     getString(R.string.settings_sync_quiet_hours_subtext_disabled),
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_bell_sleep)
+                            .icon(CommunityMaterial.Icon.cmd_bell_sleep_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
@@ -740,7 +741,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 getString(R.string.settings_sync_notifications_settings_text),
                                 getString(R.string.settings_sync_notifications_settings_subtext),
                                 new IconicsDrawable(activity)
-                                        .icon(CommunityMaterial.Icon2.cmd_settings)
+                                        .icon(CommunityMaterial.Icon2.cmd_settings_outline)
                                         .size(IconicsSize.dp(iconSizeDp))
                                         .color(IconicsColor.colorInt(iconColor))
                         )
@@ -820,7 +821,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 getString(R.string.settings_register_shared_events_text),
                 getString(R.string.settings_register_shared_events_subtext),
                 new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_share_variant)
+                        .icon(CommunityMaterial.Icon2.cmd_share_outline)
                         .size(IconicsSize.dp(iconSizeDp))
                         .color(IconicsColor.colorInt(iconColor))
         )
@@ -888,7 +889,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     getString(R.string.settings_register_allow_registration_text),
                     getString(R.string.settings_register_allow_registration_subtext),
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_account_circle)
+                            .icon(CommunityMaterial.Icon.cmd_account_circle_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
@@ -958,7 +959,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     getString(R.string.settings_register_bell_sync_text),
                     getRegisterCardBellSyncSubText(),
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_alarm_bell)
+                            .icon(SzkolnyFont.Icon.szf_alarm_bell_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
@@ -1030,7 +1031,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             getString(R.string.settings_register_dont_count_zero_text),
                             null,
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_numeric_0_box)
+                                    .icon(CommunityMaterial.Icon2.cmd_numeric_0_box_outline)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
@@ -1065,7 +1066,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 getString(R.string.settings_register_show_teacher_absences_text),
                                 null,
                                 new IconicsDrawable(activity)
-                                        .icon(CommunityMaterial.Icon.cmd_account_arrow_right)
+                                        .icon(CommunityMaterial.Icon.cmd_account_arrow_right_outline)
                                         .size(IconicsSize.dp(iconSizeDp))
                                         .color(IconicsColor.colorInt(iconColor))
                         )
@@ -1109,7 +1110,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     .subTextColor(secondaryTextOnPrimaryBg)
                     .subText(BuildConfig.VERSION_NAME + ", " + BuildConfig.BUILD_TYPE)
                     .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_information)
+                            .icon(CommunityMaterial.Icon2.cmd_information_outline)
                             .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                             .size(IconicsSize.dp(iconSizeDp)))
                     .build();
@@ -1133,7 +1134,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     .textColor(primaryTextOnPrimaryBg)
                     .subTextColor(secondaryTextOnPrimaryBg)
                     .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_shield_half_full)
+                            .icon(CommunityMaterial.Icon2.cmd_shield_outline)
                             .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                             .size(IconicsSize.dp(iconSizeDp)))
                     .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://szkolny.eu/privacy-policy")))
@@ -1145,7 +1146,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     .subTextColor(secondaryTextOnPrimaryBg)
                     .subText(R.string.settings_about_discord_subtext)
                     .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_discord)
+                            .icon(SzkolnyFont.Icon.szf_discord_outline)
                             .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                             .size(IconicsSize.dp(iconSizeDp)))
                     .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://discord.gg/n9e8pWr")))
@@ -1270,7 +1271,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .textColor(primaryTextOnPrimaryBg)
                         .subTextColor(secondaryTextOnPrimaryBg)
                         .icon(new IconicsDrawable(activity)
-                                .icon(CommunityMaterial.Icon.cmd_bug)
+                                .icon(CommunityMaterial.Icon.cmd_bug_outline)
                                 .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                                 .size(IconicsSize.dp(iconSizeDp)))
                         .setOnClickAction(() -> {

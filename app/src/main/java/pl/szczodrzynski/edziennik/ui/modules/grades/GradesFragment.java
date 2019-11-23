@@ -132,7 +132,7 @@ public class GradesFragment extends Fragment {
                         }),
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_grades_color_mode)
-                        .withIcon(CommunityMaterial.Icon2.cmd_palette)
+                        .withIcon(CommunityMaterial.Icon2.cmd_palette_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             new MaterialDialog.Builder(activity)
@@ -195,7 +195,7 @@ public class GradesFragment extends Fragment {
                 new BottomSheetSeparatorItem(true),
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_GRADE, true));
