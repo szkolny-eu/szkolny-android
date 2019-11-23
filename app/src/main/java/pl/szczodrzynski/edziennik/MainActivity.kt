@@ -537,9 +537,16 @@ class MainActivity : AppCompatActivity() {
             DRAWER_ITEM_MESSAGES -> MessagesFragment.pageSelection
             else -> 0
         }
+        val arguments = when (navTargetId) {
+            DRAWER_ITEM_TIMETABLE -> JsonObject().apply {
+                addProperty("weekStart", TimetableFragment.pageSelection?.weekStart?.stringY_m_d)
+            }
+            else -> null
+        }
         EdziennikTask.syncProfile(
                 App.profileId,
-                listOf(navTargetId to fragmentParam)
+                listOf(navTargetId to fragmentParam),
+                arguments
         ).enqueue(this)
     }
     @Subscribe(threadMode = ThreadMode.MAIN)

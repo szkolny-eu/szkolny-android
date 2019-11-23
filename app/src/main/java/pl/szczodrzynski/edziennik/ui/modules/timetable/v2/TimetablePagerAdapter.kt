@@ -19,7 +19,7 @@ class TimetablePagerAdapter(
     }
 
     private val today by lazy { Date.getToday() }
-    private val weekStart by lazy { today.clone().stepForward(0, 0, -today.weekDay) }
+    private val weekStart by lazy { today.weekStart }
     private val weekEnd by lazy { weekStart.clone().stepForward(0, 0, 6) }
 
     override fun getItem(position: Int): Fragment {

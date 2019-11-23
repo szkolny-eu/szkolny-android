@@ -1,11 +1,12 @@
 package pl.szczodrzynski.edziennik.ui.modules.home;
 
-import androidx.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
+import androidx.databinding.DataBindingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.TimerTask;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.databinding.ActivityCounterBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
+import pl.szczodrzynski.edziennik.databinding.ActivityCounterBinding;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
@@ -88,7 +89,7 @@ public class CounterActivity extends AppCompatActivity {
     private void findLessons(Time syncedNow) {
         AsyncTask.execute(() -> {
             Date today = Date.getToday();
-            lessons = app.db.lessonDao().getAllNearestNow(App.profileId, today.clone().stepForward(0, 0, -today.getWeekDay()), today, syncedNow);
+            lessons = app.db.lessonDao().getAllNearestNow(App.profileId, today.getWeekStart(), today, syncedNow);
 
             if (lessons != null && lessons.size() != 0) {
                 Date displayingDate = lessons.get(0).lessonDate;

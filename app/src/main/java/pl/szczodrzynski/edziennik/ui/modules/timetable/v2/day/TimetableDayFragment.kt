@@ -120,7 +120,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
                 parent?.removeAllViews()
                 parent?.addView(view)
                 val b = TimetableNoTimetableBinding.bind(view)
-                val weekStart = date.clone().stepForward(0, 0, -date.weekDay).stringY_m_d
+                val weekStart = date.weekStart.stringY_m_d
                 b.noTimetableSync.onClick {
                     it.isEnabled = false
                     EdziennikTask.syncProfile(

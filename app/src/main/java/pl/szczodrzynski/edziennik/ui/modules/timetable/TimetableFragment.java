@@ -184,7 +184,7 @@ public class TimetableFragment extends Fragment {
                 if (app == null || app.profile == null || activity == null || b == null || !isAdded())
                     return;
 
-                List<LessonFull> lessons = app.db.lessonDao().getAllWeekNow(App.profileId, today.clone().stepForward(0, 0, -today.getWeekDay()), today);
+                List<LessonFull> lessons = app.db.lessonDao().getAllWeekNow(App.profileId, today.getWeekStart(), today);
                 displayingDate = HomeFragment.findDateWithLessons(App.profileId, lessons);
                 pageSelection = app.appConfig.timetableDisplayDaysBackward + Date.diffDays(displayingDate, today); // DEFAULT HERE
 
