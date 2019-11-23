@@ -247,6 +247,8 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
 
+            lb.unread = lesson.type != Lesson.TYPE_NORMAL && !lesson.seen
+
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
             when (lesson.type) {
                 Lesson.TYPE_NORMAL -> {

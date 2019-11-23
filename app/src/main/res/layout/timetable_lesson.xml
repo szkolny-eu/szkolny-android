@@ -11,6 +11,9 @@
         <variable
             name="lessonNumber"
             type="Integer" />
+        <variable
+            name="unread"
+            type="boolean" />
     </data>
     <FrameLayout
         android:layout_width="match_parent"
@@ -69,6 +72,17 @@
                     app:autoSizeTextType="uniform"
                     tools:maxLines="2"
                     tools:text="pracownia urządzeń techniki komputerowej" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingRight="8dp"
+                    android:visibility="@{unread ? View.VISIBLE : View.GONE}"
+                    app:srcCompat="@drawable/unread_red_circle" />
 
                 <ImageView
                     android:id="@+id/attendanceIcon"
