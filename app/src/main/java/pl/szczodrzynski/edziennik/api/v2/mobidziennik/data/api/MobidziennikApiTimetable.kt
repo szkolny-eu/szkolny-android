@@ -75,7 +75,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                     }
                 }
 
-                if (it.type != Lesson.TYPE_NORMAL) {
+                if (it.type != Lesson.TYPE_NORMAL && date >= Date.getToday()) {
                     data.metadataList.add(
                             Metadata(
                                     data.profileId,

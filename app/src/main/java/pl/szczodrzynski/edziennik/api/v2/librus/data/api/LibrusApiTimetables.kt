@@ -184,7 +184,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
             }
         }
 
-        if (lessonObject.type != Lesson.TYPE_NORMAL) {
+        if (lessonObject.type != Lesson.TYPE_NORMAL && lessonDate >= Date.getToday()) {
             data.metadataList.add(
                     Metadata(
                             data.profileId,

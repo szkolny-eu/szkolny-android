@@ -172,7 +172,7 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
                     }
                 }
 
-                if (type != Lesson.TYPE_NORMAL) {
+                if (type != Lesson.TYPE_NORMAL && lessonDate >= Date.getToday()) {
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_LESSON_CHANGE,

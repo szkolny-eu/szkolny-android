@@ -153,7 +153,7 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
                 dates.add(lessonDate.value)
                 lessons.add(lessonObject)
 
-                if (lessonObject.type != Lesson.TYPE_NORMAL) {
+                if (lessonObject.type != Lesson.TYPE_NORMAL && lessonDate >= Date.getToday()) {
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_LESSON_CHANGE,
