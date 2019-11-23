@@ -1030,4 +1030,5 @@
     <string name="edziennik_progress_endpoint_grade_comments">Pobieranie komentarzy ocen...</string>
     <string name="menu_remove_notifications">Usuń wszystkie</string>
     <string name="menu_remove_notifications_success">Wyczyszczono powiadomienia</string>
+    <string name="timetable_select_day">Wybierz dzień</string>
 </resources>

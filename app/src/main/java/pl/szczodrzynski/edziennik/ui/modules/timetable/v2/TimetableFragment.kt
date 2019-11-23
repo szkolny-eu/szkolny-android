@@ -4,21 +4,28 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
 
 class TimetableFragment : Fragment(), CoroutineScope {
@@ -150,6 +157,35 @@ class TimetableFragment : Fragment(), CoroutineScope {
 
         b.tabLayout.setUpWithViewPager(b.viewPager)
         b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, false)
+
+        activity.navView.bottomSheet.prependItems(
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.timetable_select_day)
+                        .withIcon(SzkolnyFont.Icon.szf_calendar_today_outline)
+                        .withOnClickListener(View.OnClickListener {
+                            activity.bottomSheet.close()
+                            MaterialDatePicker.Builder
+                                    .datePicker()
+                                    .setSelection(Date.getToday().inMillis)
+                                    .build()
+                                    .apply {
+                                        addOnPositiveButtonClickListener { dateInMillis ->
+                                            val dateSelected = Date.fromMillis(dateInMillis)
+                                            b.tabLayout.setCurrentItem(items.indexOfFirst { it == dateSelected }, true)
+                                        }
+                                        show(this@TimetableFragment.activity.supportFragmentManager, "MaterialDatePicker")
+                                    }
+                        }),
+                BottomSheetSeparatorItem(true),
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_mark_as_read)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
+                        .withOnClickListener(View.OnClickListener {
+                            activity.bottomSheet.close()
+                            AsyncTask.execute { app.db.metadataDao().setAllSeen(App.profileId, Metadata.TYPE_LESSON_CHANGE, true) }
+                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
+                        })
+        )
 
         //activity.navView.bottomBar.fabEnable = true
         activity.navView.bottomBar.fabExtendedText = getString(R.string.timetable_today)

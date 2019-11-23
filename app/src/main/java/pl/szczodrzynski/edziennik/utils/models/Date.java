@@ -134,11 +134,23 @@ public class Date implements Comparable<Date> {
 
     public Date stepForward(int years, int months, int days) {
         this.day += days;
+        if (day <= 0) {
+            month--;
+            if(month <= 0) {
+                month += 12;
+                year--;
+            }
+            day += daysInMonth();
+        }
         if (day > daysInMonth()) {
             day -= daysInMonth();
             month++;
         }
         this.month += months;
+        if(month <= 0) {
+            month += 12;
+            year--;
+        }
         if (month > 12) {
             month -= 12;
             year++;
@@ -176,6 +188,7 @@ public class Date implements Comparable<Date> {
     public boolean isLeap() {
         return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
     }
+
     public int daysInMonth() {
         switch (month) {
             case 1:
