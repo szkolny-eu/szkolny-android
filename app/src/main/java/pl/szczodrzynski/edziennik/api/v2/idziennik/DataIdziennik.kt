@@ -138,10 +138,12 @@ class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(
         val teacher = teacherList.singleOrNull { it.fullName == "$firstName $lastName" }
         return validateTeacher(teacher, firstName, lastName)
     }
+
     fun getTeacher(firstNameChar: Char, lastName: String): Teacher {
         val teacher = teacherList.singleOrNull { it.shortName == "$firstNameChar.$lastName" }
         return validateTeacher(teacher, firstNameChar.toString(), lastName)
     }
+
     fun getTeacherByLastFirst(nameLastFirst: String): Teacher {
         val nameParts = nameLastFirst.split(" ")
         return if (nameParts.size == 1) getTeacher(nameParts[0], "") else getTeacher(nameParts[1], nameParts[0])

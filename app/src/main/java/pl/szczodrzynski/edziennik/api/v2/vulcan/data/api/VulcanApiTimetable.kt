@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.utils.Utils.crc16
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Week
 
 class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
     companion object {
@@ -27,10 +28,15 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
     }
 
     init { data.profile?.also { profile ->
-        val currentWeekStart = Date.getToday().let { it.stepForward(0, 0, -it.weekDay) }
+        val currentWeekStart = Week.getWeekStart()
         val getDate = data.arguments?.getString("weekStart") ?: currentWeekStart.stringY_m_d
 
         val weekStart = Date.fromY_m_d(getDate)
+
+        if (Date.getToday().weekDay > 4 && weekStart == currentWeekStart) {
+            weekStart.stepForward(0, 0, 7)
+        }
+
         val weekEnd = weekStart.clone().stepForward(0, 0, 6)
 
         apiGet(TAG, VULCAN_API_ENDPOINT_TIMETABLE, parameters = mapOf(
@@ -40,8 +46,8 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
                 "IdOddzial" to data.studentClassId,
                 "IdOkresKlasyfikacyjny" to data.studentSemesterId
         )) { json, _ ->
-            val dates: MutableSet<Int> = mutableSetOf()
-            val lessons: MutableList<Lesson> = mutableListOf()
+            val dates = mutableSetOf<Int>()
+            val lessons = mutableListOf<Lesson>()
 
             json.getJsonArray("Data")?.asJsonObjectList()?.forEach { lesson ->
                 if (lesson.getBoolean("PlanUcznia") != true)

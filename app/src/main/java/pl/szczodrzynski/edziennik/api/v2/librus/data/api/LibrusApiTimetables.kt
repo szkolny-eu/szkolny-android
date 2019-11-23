@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.edziennik.utils.models.Week
 
 class LibrusApiTimetables(override val data: DataLibrus,
                         val onSuccess: () -> Unit) : LibrusApi(data) {
@@ -29,9 +30,18 @@ class LibrusApiTimetables(override val data: DataLibrus,
             data.db.classroomDao().getAllNow(profileId).toSparseArray(data.classrooms) { it.id }
         }
 
-        val currentWeekStart = Date.getToday().let { it.stepForward(0, 0, -it.weekDay) }
+        val currentWeekStart = Week.getWeekStart()
+
+        if (Date.getToday().weekDay > 4) {
+            currentWeekStart.stepForward(0, 0, 7)
+        }
+
         val getDate = data.arguments?.getString("weekStart") ?: currentWeekStart.stringY_m_d
-        apiGet(TAG, "Timetables?weekStart=$getDate") { json ->
+
+        val weekStart = Date.fromY_m_d(getDate)
+        val weekEnd = weekStart.clone().stepForward(0, 0, 6)
+
+        apiGet(TAG, "Timetables?weekStart=${weekStart.stringY_m_d}") { json ->
             val days = json.getJsonObject("Timetable")
 
             days?.entrySet()?.forEach { (dateString, dayEl) ->
@@ -57,8 +67,6 @@ class LibrusApiTimetables(override val data: DataLibrus,
                 }
             }
 
-            val weekStart = Date.fromY_m_d(getDate)
-            val weekEnd = weekStart.clone().stepForward(0, 0, 6)
             d(TAG, "Clearing lessons between ${weekStart.stringY_m_d} and ${weekEnd.stringY_m_d} - timetable downloaded for $getDate")
 
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
