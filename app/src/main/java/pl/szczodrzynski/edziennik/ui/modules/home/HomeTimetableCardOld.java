@@ -21,11 +21,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.databinding.CardTimetableBinding;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
+import pl.szczodrzynski.edziennik.databinding.CardTimetableBinding;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.models.Week;
@@ -35,8 +35,8 @@ import static pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange.TY
 import static pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment.updateInterval;
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 
-public class HomeTimetableCard {
-    private static final String TAG = "HomeTimetableCard";
+public class HomeTimetableCardOld {
+    private static final String TAG = "HomeTimetableCardOld";
     private App app;
     private MainActivity a;
     private HomeFragment f;
@@ -46,7 +46,7 @@ public class HomeTimetableCard {
     private Timer timetableTimer;
     private Time bellSyncTime = null;
 
-    public HomeTimetableCard(App app, MainActivity a, HomeFragment f, LayoutInflater layoutInflater, ViewGroup insertPoint) {
+    public HomeTimetableCardOld(App app, MainActivity a, HomeFragment f, LayoutInflater layoutInflater, ViewGroup insertPoint) {
         this.app = app;
         this.a = a;
         this.f = f;
