@@ -164,6 +164,8 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
                 "GD1" -> "https://uonetplus-komunikacja.edu.gdansk.pl"
                 "KA1" -> "https://uonetplus-komunikacja.mcuw.katowice.eu"
                 "KA2" -> "https://uonetplus-komunikacja-test.mcuw.katowice.eu"
+                "LU1" -> "https://uonetplus-komunikacja.edu.lublin.eu"
+                "LU2" -> "https://test-uonetplus-komunikacja.edu.lublin.eu"
                 "P03" -> "https://efeb-komunikacja-pro-efebmobile.pro.vulcan.pl"
                 "P01" -> "http://efeb-komunikacja.pro-hudson.win.vulcan.pl"
                 "P02" -> "http://efeb-komunikacja.pro-hudsonrc.win.vulcan.pl"
