@@ -33,16 +33,16 @@ class HomeTimetableCard(
         private val layoutInflater: LayoutInflater,
         private val insertPoint: ViewGroup
 ) {
+    companion object {
+        private const val TAG = "HomeTimetableCard"
+        const val TIME_TILL = 0
+        const val TIME_LEFT = 1
+    }
 
     private lateinit var timetableTimer: Timer
     private lateinit var b: CardTimetableBinding
 
     private var bellSyncTime: Time? = null
-
-    private companion object {
-        const val TIME_TILL = 0
-        const val TIME_LEFT = 1
-    }
 
     private var counterType = TIME_TILL
     private val counterTarget = Time(0, 0, 0)

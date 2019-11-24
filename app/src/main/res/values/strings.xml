@@ -1032,4 +1032,16 @@
     <string name="menu_remove_notifications">Usuń wszystkie</string>
     <string name="menu_remove_notifications_success">Wyczyszczono powiadomienia</string>
     <string name="timetable_select_day">Wybierz dzień</string>
+    <string name="card_action_move_up">Przesuń w górę</string>
+    <string name="card_action_move_down">Przesuń w dół</string>
+    <string name="home_lucky_number_details_click_to_set">%s • Kliknij, aby ustawić swój numerek.</string>
+    <string name="home_lucky_number_details">%s • Numer w dzienniku to %d</string>
+    <string name="home_lucky_number_no_info">Brak informacji o szczęśliwym numerku.</string>
+    <string name="home_lucky_number_yours_today">Dzisiaj to Ty masz szczęśliwy numerek!</string>
+    <string name="home_lucky_number_yours_tomorrow">Jutro to Ty masz szczęśliwy numerek!</string>
+    <string name="home_lucky_number_yours_later">Dnia %s Twój numerek jest szczęśliwy.</string>
+    <string name="home_lucky_number_later">Dnia %s szczęśliwy numerek to %d.</string>
+    <string name="home_lucky_number_today">%d to dzisiejszy szczęśliwy numerek.</string>
+    <string name="home_lucky_number_tomorrow">%d to szczęśliwy numerek na jutro.</string>
+    <string name="home_lucky_number_no_number">Nie ma dzisiaj szczęśliwego numerka.</string>
 </resources>

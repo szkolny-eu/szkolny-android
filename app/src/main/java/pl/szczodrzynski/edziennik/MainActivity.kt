@@ -56,7 +56,7 @@ import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
 import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentV2
 import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessageFragment
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
             val list: MutableList<NavTarget> = mutableListOf()
 
             // home item
-            list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragment::class)
+            list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragmentV2::class)
                     .withTitle(R.string.app_name)
                     .withIcon(CommunityMaterial.Icon2.cmd_home_outline)
                     .isInDrawer(true)
@@ -702,7 +702,10 @@ class MainActivity : AppCompatActivity() {
                 loadProfile(intentProfileId, intentTargetId, extras)
             }
             intentProfileId != -1 -> {
-                loadProfile(intentProfileId, intentTargetId, extras)
+                if (app.profile.id != intentProfileId)
+                    loadProfile(intentProfileId, intentTargetId, extras)
+                else
+                    loadTarget(intentTargetId, extras)
             }
             intentTargetId != -1 -> {
                 drawer.currentProfile = app.profile.id

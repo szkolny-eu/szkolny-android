@@ -29,6 +29,9 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
@@ -502,4 +505,16 @@ fun View.findParentById(targetId: Int): View? {
         return viewParent.findParentById(targetId)
     }
     return null
+}
+
+fun CoroutineScope.startCoroutineTimer(delayMillis: Long = 0, repeatMillis: Long = 0, action: () -> Unit) = launch {
+    delay(delayMillis)
+    if (repeatMillis > 0) {
+        while (true) {
+            action()
+            delay(repeatMillis)
+        }
+    } else {
+        action()
+    }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2019-11-24.
+  -->
+
+<resources>
+    <item name="move_card_down_action" type="id"/>
+    <item name="move_card_up_action" type="id"/>
+</resources>

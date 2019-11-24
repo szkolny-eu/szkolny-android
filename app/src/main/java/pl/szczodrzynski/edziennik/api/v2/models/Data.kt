@@ -375,7 +375,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     }
 
     fun shouldSyncLuckyNumber(): Boolean {
-        return (db.luckyNumberDao().getNearestFutureNow(profileId, Date.getToday()) ?: -1) == -1
+        return (db.luckyNumberDao().getNearestFutureNow(profileId, Date.getToday().value) ?: -1) == -1
     }
 
     fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {

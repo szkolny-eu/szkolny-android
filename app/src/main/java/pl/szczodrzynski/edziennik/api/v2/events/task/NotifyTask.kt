@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.Notifier.ID_NOTIFICATIONS
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
+import pl.szczodrzynski.edziennik.data.db.modules.notification.getNotificationTitle
 import pl.szczodrzynski.edziennik.utils.models.Notification
 import kotlin.math.min
 
@@ -33,9 +34,9 @@ class NotifyTask : IApiTask(-1) {
             val pendingIntent = PendingIntent.getActivity(app, notification.id, intent, 0)
             val notificationBuilder = NotificationCompat.Builder(app, app.notifier.notificationGroup)
                     // title, text, type, date
-                    .setContentTitle(notification.title)
+                    .setContentTitle(notification.profileName)
                     .setContentText(notification.text)
-                    .setSubText(Notification.stringType(app, notification.type))
+                    .setSubText(app.getNotificationTitle(notification.type))
                     .setWhen(notification.addedDate)
                     .setTicker(app.getString(R.string.notification_ticker_format, Notification.stringType(app, notification.type)))
                     // icon, color, lights, priority
