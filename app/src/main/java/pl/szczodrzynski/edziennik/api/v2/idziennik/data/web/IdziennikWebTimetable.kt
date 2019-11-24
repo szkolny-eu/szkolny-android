@@ -91,10 +91,9 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
                 val lessonDate = weekStart.clone().stepForward(0, 0, weekDay)
                 val classroom = lesson.getString("NazwaSali")
 
-                val id = lessonDate.combineWith(lessonRange.startTime) / 6L * 10L + (lesson.hashCode() and 0xFFFF)
                 val type = lesson.getInt("TypZastepstwa") ?: -1
 
-                val lessonObject = Lesson(profileId, id)
+                val lessonObject = Lesson(profileId, -1)
 
                 when (type) {
                     1, 2, 3, 4, 5 -> {
@@ -149,6 +148,8 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
                         }
                     }
                 }
+
+                lessonObject.id = lessonObject.buildId()
 
                 dates.add(lessonDate.value)
                 lessons.add(lessonObject)

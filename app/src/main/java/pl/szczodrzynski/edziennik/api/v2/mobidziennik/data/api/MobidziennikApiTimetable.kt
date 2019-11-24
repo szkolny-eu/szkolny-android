@@ -32,7 +32,6 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
             val date = Date.fromYmd(lesson[2])
             val startTime = Time.fromYmdHm(lesson[3])
             val endTime = Time.fromYmdHm(lesson[4])
-            val id = date.combineWith(startTime) / 6L * 10L + (lesson.joinToString("|").hashCode() and 0xFFFF)
 
             dataDays.remove(date.value)
 
@@ -41,7 +40,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
             val teamId = data.teamList.singleOrNull { it.name == lesson[8]+lesson[9] }?.id ?: -1
             val classroom = lesson[11]
 
-            Lesson(data.profileId, id).also {
+            Lesson(data.profileId, -1).also {
                 when (lesson[1]) {
                     "plan_lekcji", "lekcja" -> {
                         it.type = Lesson.TYPE_NORMAL
@@ -74,6 +73,8 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                         it.classroom = classroom
                     }
                 }
+
+                it.id = it.buildId()
 
                 val seen = profile.empty || date < Date.getToday()
 

@@ -114,9 +114,7 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
                     }
                 }
 
-                val id = lessonDate.combineWith(startTime) / 6L * 10L + (lesson.hashCode() and 0xFFFF)
-
-                val lessonObject = Lesson(profileId, id).apply {
+                val lessonObject = Lesson(profileId, -1).apply {
                     this.type = type
 
                     when (type) {
@@ -170,6 +168,8 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
                             }
                         }
                     }
+
+                    this.id = buildId()
                 }
 
                 val seen = profile.empty || lessonDate < Date.getToday()
@@ -178,7 +178,7 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_LESSON_CHANGE,
-                            id,
+                            lessonObject.id,
                             seen,
                             seen,
                             System.currentTimeMillis()

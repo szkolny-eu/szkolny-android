@@ -88,8 +88,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
         val virtualClassId = lesson.getJsonObject("VirtualClass")?.getLong("Id")
         val teamId = lesson.getJsonObject("Class")?.getLong("Id") ?: virtualClassId
 
-        val id = lessonDate.combineWith(startTime) / 6L * 10L + (lesson.hashCode() and 0xFFFF)
-        val lessonObject = Lesson(profileId, id)
+        val lessonObject = Lesson(profileId, -1)
 
         if (isSubstitution && isCancelled) {
             // shifted lesson - source
@@ -183,6 +182,8 @@ class LibrusApiTimetables(override val data: DataLibrus,
                 it.classroom = data.classrooms[classroomId]?.name
             }
         }
+
+        lessonObject.id = lessonObject.buildId()
 
         val seen = profile.empty || lessonDate < Date.getToday()
 

@@ -2,7 +2,6 @@ package pl.szczodrzynski.edziennik.data.db.modules.timetable
 
 import android.content.Context
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class LessonFull(profileId: Int, id: Long) : Lesson(profileId, id) {
@@ -13,25 +12,11 @@ class LessonFull(profileId: Int, id: Long) : Lesson(profileId, id) {
     var oldTeacherName: String? = null
     var oldTeamName: String? = null
 
-    val displayDate: Date?
-        get() {
-            if (type == TYPE_SHIFTED_SOURCE)
-                return oldDate
-            return date ?: oldDate
-        }
-
     val displayLessonNumber: Int?
         get() {
             if (type == TYPE_SHIFTED_SOURCE)
                 return oldLessonNumber
             return lessonNumber ?: oldLessonNumber
-        }
-
-    val displayStartTime: Time?
-        get() {
-            if (type == TYPE_SHIFTED_SOURCE)
-                return oldStartTime
-            return startTime ?: oldStartTime
         }
 
     val displayEndTime: Time?

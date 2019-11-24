@@ -121,7 +121,7 @@ public class Time implements Comparable<Time> {
 
     public String getStringValue()
     {
-        return (hour < 10 ? "0" : "")+Integer.toString(hour)+(minute < 10 ? "0" : "")+Integer.toString(minute)+(second < 10 ? "0" : "")+Integer.toString(second);
+        return (hour < 10 ? "0" : "")+ hour +(minute < 10 ? "0" : "")+ minute +(second < 10 ? "0" : "")+ second;
     }
 
     public String getStringHM()
@@ -129,18 +129,18 @@ public class Time implements Comparable<Time> {
         if (hour < 0) {
             return "";
         }
-        return Integer.toString(hour)+":"+(minute < 10 ? "0" : "")+Integer.toString(minute);
+        return hour +":"+(minute < 10 ? "0" : "")+ minute;
     }
     public String getStringH_M()
     {
         if (hour < 0) {
             return "";
         }
-        return Integer.toString(hour)+"-"+(minute < 10 ? "0" : "")+Integer.toString(minute);
+        return hour +"-"+(minute < 10 ? "0" : "")+ minute;
     }
     public String getStringHMS()
     {
-        return Integer.toString(hour)+":"+(minute < 10 ? "0" : "")+Integer.toString(minute)+":"+(second < 10 ? "0" : "")+Integer.toString(second);
+        return hour +":"+(minute < 10 ? "0" : "")+ minute +":"+(second < 10 ? "0" : "")+ second;
     }
 
     public static Time getNow()
@@ -193,5 +193,13 @@ public class Time implements Comparable<Time> {
                 ", minute=" + minute +
                 ", second=" + second +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int result = hour;
+        result = 31 * result + minute;
+        result = 31 * result + second;
+        return result;
     }
 }

@@ -538,9 +538,7 @@ class MainActivity : AppCompatActivity() {
             else -> 0
         }
         val arguments = when (navTargetId) {
-            DRAWER_ITEM_TIMETABLE -> JsonObject().apply {
-                addProperty("weekStart", TimetableFragment.pageSelection?.weekStart?.stringY_m_d)
-            }
+            DRAWER_ITEM_TIMETABLE -> JsonObject("weekStart" to TimetableFragment.pageSelection?.weekStart?.stringY_m_d)
             else -> null
         }
         EdziennikTask.syncProfile(

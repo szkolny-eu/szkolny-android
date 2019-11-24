@@ -272,4 +272,12 @@ public class Date implements Comparable<Date> {
                 ", day=" + day +
                 '}';
     }
+
+    @Override
+    public int hashCode() {
+        int result = year;
+        result = 31 * result + month;
+        result = 31 * result + day;
+        return result;
+    }
 }
