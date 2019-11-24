@@ -55,7 +55,7 @@ class DataNotifications(val data: Data) {
                     profileName = profileName,
                     viewId = DRAWER_ITEM_TIMETABLE,
                     addedDate = lesson.addedDate
-            ).addExtra("timetableDate", lesson.displayDate?.value?.toLong())
+            ).addExtra("timetableDate", lesson.displayDate?.stringY_m_d ?: "")
         }
 
         for (event in app.db.eventDao().getNotNotifiedNow(profileId)) {

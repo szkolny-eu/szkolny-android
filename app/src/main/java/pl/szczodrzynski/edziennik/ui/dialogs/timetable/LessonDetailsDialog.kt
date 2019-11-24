@@ -120,7 +120,7 @@ class LessonDetailsDialog(
                 dialog.dismiss()
                 val dateStr = otherLessonDate?.stringY_m_d ?: return@setOnClickListener
                 val intent = Intent(TimetableFragment.ACTION_SCROLL_TO_DATE).apply {
-                    putExtra("date", dateStr)
+                    putExtra("timetableDate", dateStr)
                 }
                 activity.sendBroadcast(intent)
             }

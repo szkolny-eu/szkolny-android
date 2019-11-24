@@ -67,7 +67,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
         override fun onReceive(context: Context, i: Intent) {
             if (!isAdded)
                 return
-            val dateStr = i.extras?.getString("date", null) ?: return
+            val dateStr = i.extras?.getString("timetableDate", null) ?: return
             val date = Date.fromY_m_d(dateStr)
             b.viewPager.setCurrentItem(items.indexOf(date), true)
         }
@@ -155,10 +155,10 @@ class TimetableFragment : Fragment(), CoroutineScope {
             }
         })
 
-        val selectedDate = arguments?.getLong("timetableDate", -1)?.let { if (it == -1L) null else it.toInt() }
+        val selectedDate = arguments?.getString("timetableDate", "")?.let { if (it.isBlank()) null else Date.fromY_m_d(it) }
 
         b.tabLayout.setUpWithViewPager(b.viewPager)
-        b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == selectedDate ?: today }, false)
+        b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == selectedDate?.value ?: today }, false)
 
         activity.navView.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)
