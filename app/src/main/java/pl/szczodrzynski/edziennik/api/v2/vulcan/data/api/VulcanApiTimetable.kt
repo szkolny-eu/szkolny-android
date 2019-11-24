@@ -29,14 +29,14 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
 
     init { data.profile?.also { profile ->
         val currentWeekStart = Week.getWeekStart()
+
+        if (Date.getToday().weekDay > 4) {
+            currentWeekStart.stepForward(0, 0, 7)
+        }
+
         val getDate = data.arguments?.getString("weekStart") ?: currentWeekStart.stringY_m_d
 
         val weekStart = Date.fromY_m_d(getDate)
-
-        if (Date.getToday().weekDay > 4 && weekStart == currentWeekStart) {
-            weekStart.stepForward(0, 0, 7)
-        }
-
         val weekEnd = weekStart.clone().stepForward(0, 0, 6)
 
         apiGet(TAG, VULCAN_API_ENDPOINT_TIMETABLE, parameters = mapOf(
