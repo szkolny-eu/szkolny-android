@@ -295,6 +295,7 @@
     <string name="lesson_break">Break</string>
     <string name="lesson_cancelled">Lesson cancelled</string>
     <string name="lesson_change">Lesson change</string>
+    <string name="lesson_shifted">Shifted lesson</string>
     <string name="lesson_timetable_change">Timetable change</string>
     <string name="loading">Loading…</string>
     <string name="login_allow_registration">Allow registration</string>

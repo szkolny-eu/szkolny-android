@@ -45,8 +45,8 @@ class DataNotifications(val data: Data) {
             return@run
         }
 
-        for (change in app.db.lessonChangeDao().getNotNotifiedNow(profileId)) {
-            val text = app.getString(R.string.notification_lesson_change_format, change.changeTypeStr(app), if (change.lessonDate == null) "" else change.lessonDate!!.formattedString, change.subjectLongName)
+        for (lesson in app.db.timetableDao().getNotNotifiedNow(profileId)) {
+            val text = app.getString(R.string.notification_lesson_change_format, lesson.getDisplayChangeType(app), if (lesson.displayDate == null) "" else lesson.displayDate!!.formattedString, lesson.changeSubjectName)
             data.notifications += Notification(
                     title = app.getNotificationTitle(TYPE_TIMETABLE_LESSON_CHANGE),
                     text = text,
@@ -54,8 +54,8 @@ class DataNotifications(val data: Data) {
                     profileId = profileId,
                     profileName = profileName,
                     viewId = DRAWER_ITEM_TIMETABLE,
-                    addedDate = change.addedDate
-            ).addExtra("timetableDate", change.lessonDate?.value?.toLong())
+                    addedDate = lesson.addedDate
+            ).addExtra("timetableDate", lesson.displayDate?.value?.toLong())
         }
 
         for (event in app.db.eventDao().getNotNotifiedNow(profileId)) {

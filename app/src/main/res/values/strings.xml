@@ -318,6 +318,7 @@
     <string name="lesson_break">Przerwa</string>
     <string name="lesson_cancelled">Lekcja odwołana</string>
     <string name="lesson_change">Zastępstwo</string>
+    <string name="lesson_shifted">Lekcja przeniesiona</string>
     <string name="lesson_timetable_change">Zmiana planu</string>
     <string name="loading">Ładowanie…</string>
     <string name="login_allow_registration">Zezwól na rejestrację</string>

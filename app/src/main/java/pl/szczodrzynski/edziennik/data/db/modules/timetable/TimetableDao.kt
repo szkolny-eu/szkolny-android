@@ -81,4 +81,10 @@ interface TimetableDao {
         ORDER BY id, type
     """)
     fun getByIdNow(profileId: Int, lessonId: Long) : LessonFull?
+
+    @Query("""
+        $QUERY
+        WHERE timetable.profileId = :profileId AND timetable.type NOT IN (${Lesson.TYPE_NORMAL}, ${Lesson.TYPE_NO_LESSONS}, ${Lesson.TYPE_SHIFTED_SOURCE}) AND metadata.notified = 0
+    """)
+    fun getNotNotifiedNow(profileId: Int): List<LessonFull>
 }
