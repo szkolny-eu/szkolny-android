@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-24.
   -->
 
@@ -30,8 +31,8 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:textAppearance="@style/NavView.TextView.Title"
-                android:text="@string/home_lucky_number_no_info" />
+                android:text="@string/home_lucky_number_no_info"
+                android:textAppearance="@style/NavView.TextView.Title" />
 
         </LinearLayout>
 

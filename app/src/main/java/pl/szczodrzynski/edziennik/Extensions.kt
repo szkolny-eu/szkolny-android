@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
+import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.navlib.R
 import pl.szczodrzynski.navlib.getColorFromRes
 import java.text.SimpleDateFormat
@@ -517,4 +518,18 @@ fun CoroutineScope.startCoroutineTimer(delayMillis: Long = 0, repeatMillis: Long
     } else {
         action()
     }
+}
+
+operator fun Time?.compareTo(other: Time?): Int {
+    if (this == null && other == null)
+        return 0
+    if (this == null)
+        return -1
+    if (other == null)
+        return 1
+    return this.compareTo(other)
+}
+
+operator fun StringBuilder.plusAssign(str: String?) {
+    this.append(str)
 }

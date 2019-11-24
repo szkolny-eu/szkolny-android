@@ -4,10 +4,13 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.home
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat
@@ -15,6 +18,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -22,8 +27,12 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeV2Binding
+import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeLuckyNumberCard
+import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeTimetableCard
 import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
 
 class HomeFragmentV2 : Fragment(), CoroutineScope {
@@ -62,8 +71,30 @@ class HomeFragmentV2 : Fragment(), CoroutineScope {
         if (app.profile == null || !isAdded)
             return
 
+        activity.bottomSheet.prependItems(
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_set_student_number)
+                        .withIcon(SzkolnyFont.Icon.szf_clipboard_list_outline)
+                        .withOnClickListener(OnClickListener {
+                            activity.bottomSheet.close()
+                            StudentNumberDialog(activity, app.profile) {
+                                app.profileSaveAsync()
+                            }
+                        }),
+                BottomSheetSeparatorItem(true),
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_mark_everything_as_read)
+                        .withIcon(Icon.cmd_eye_check_outline)
+                        .withOnClickListener(OnClickListener {
+                            activity.bottomSheet.close()
+                            AsyncTask.execute { app.db.metadataDao().setAllSeen(App.profileId, true) }
+                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
+                        })
+        )
+
         val items = mutableListOf<HomeCard>(
                 HomeLuckyNumberCard(0, app, activity, this, app.profile),
+                HomeTimetableCard(0, app, activity, this, app.profile),
                 HomeDummyCard(1),
                 HomeDummyCard(2),
                 HomeDummyCard(3),

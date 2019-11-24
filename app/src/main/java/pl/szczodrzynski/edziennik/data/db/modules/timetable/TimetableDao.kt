@@ -77,6 +77,13 @@ interface TimetableDao {
 
     @Query("""
         $QUERY
+        WHERE (type != 3 AND date >= :dateFrom AND date <= :dateTo) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom AND oldDate <= :dateTo)
+        ORDER BY profileId, id, type
+    """)
+    fun getBetweenDates(dateFrom: Date, dateTo: Date) : LiveData<List<LessonFull>>
+
+    @Query("""
+        $QUERY
         WHERE timetable.profileId = :profileId AND timetable.id = :lessonId
         ORDER BY id, type
     """)

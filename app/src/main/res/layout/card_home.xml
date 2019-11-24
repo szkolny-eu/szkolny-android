@@ -11,7 +11,4 @@
     android:layout_marginRight="16dp"
     android:layout_marginBottom="8dp"
     android:clickable="true"
-    android:focusable="true">
-
-    <include layout="@layout/card_home_lucky_number" />
-</com.google.android.material.card.MaterialCardView>
+    android:focusable="true" />
