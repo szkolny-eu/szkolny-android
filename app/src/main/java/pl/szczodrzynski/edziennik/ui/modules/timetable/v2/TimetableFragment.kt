@@ -155,8 +155,10 @@ class TimetableFragment : Fragment(), CoroutineScope {
             }
         })
 
+        val selectedDate = arguments?.getLong("timetableDate", -1)?.let { if (it == -1L) null else it.toInt() }
+
         b.tabLayout.setUpWithViewPager(b.viewPager)
-        b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, false)
+        b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == selectedDate ?: today }, false)
 
         activity.navView.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)

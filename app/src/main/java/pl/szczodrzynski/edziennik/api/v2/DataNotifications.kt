@@ -186,10 +186,10 @@ class DataNotifications(val data: Data) {
         val luckyNumbers = app.db.luckyNumberDao().getNotNotifiedNow(profileId)
         luckyNumbers?.removeAll { it.date < today }
         luckyNumbers?.forEach { luckyNumber ->
-            val text = when {
-                luckyNumber.date.value == todayValue -> // LN for today
+            val text = when (luckyNumber.date.value) {
+                todayValue -> // LN for today
                     app.getString(if (profile.studentNumber != -1 && profile.studentNumber == luckyNumber.number) R.string.notification_lucky_number_yours_format else R.string.notification_lucky_number_format, luckyNumber.number)
-                luckyNumber.date.value == todayValue + 1 -> // LN for tomorrow
+                todayValue + 1 -> // LN for tomorrow
                     app.getString(if (profile.studentNumber != -1 && profile.studentNumber == luckyNumber.number) R.string.notification_lucky_number_yours_tomorrow_format else R.string.notification_lucky_number_tomorrow_format, luckyNumber.number)
                 else -> // LN for later
                     app.getString(if (profile.studentNumber != -1 && profile.studentNumber == luckyNumber.number) R.string.notification_lucky_number_yours_later_format else R.string.notification_lucky_number_later_format, luckyNumber.date.formattedString, luckyNumber.number)
