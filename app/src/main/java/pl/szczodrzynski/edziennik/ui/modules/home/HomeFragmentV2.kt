@@ -94,23 +94,7 @@ class HomeFragmentV2 : Fragment(), CoroutineScope {
 
         val items = mutableListOf<HomeCard>(
                 HomeLuckyNumberCard(0, app, activity, this, app.profile),
-                HomeTimetableCard(0, app, activity, this, app.profile),
-                HomeDummyCard(1),
-                HomeDummyCard(2),
-                HomeDummyCard(3),
-                HomeDummyCard(4),
-                HomeDummyCard(5),
-                HomeDummyCard(6),
-                HomeDummyCard(7),
-                HomeDummyCard(8),
-                HomeDummyCard(9),
-                HomeDummyCard(10),
-                HomeDummyCard(11),
-                HomeDummyCard(12),
-                HomeDummyCard(13),
-                HomeDummyCard(14),
-                HomeDummyCard(15),
-                HomeDummyCard(16)
+                HomeTimetableCard(1, app, activity, this, app.profile)
         )
 
         val adapter = HomeCardAdapter(items)
