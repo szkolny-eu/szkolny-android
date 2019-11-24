@@ -172,13 +172,15 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
                     }
                 }
 
-                if (type != Lesson.TYPE_NORMAL && lessonDate >= Date.getToday()) {
+                val seen = profile.empty || lessonDate < Date.getToday()
+
+                if (type != Lesson.TYPE_NORMAL) {
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_LESSON_CHANGE,
                             id,
-                            profile.empty,
-                            profile.empty,
+                            seen,
+                            seen,
                             System.currentTimeMillis()
                     ))
                 }

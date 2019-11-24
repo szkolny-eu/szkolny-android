@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
-    init {
+    init { data.profile?.also { profile ->
         val lessons = rows.filterNot { it.isEmpty() }.map { it.split("|") }
 
         val dataStart = Date.getToday()
@@ -75,14 +75,16 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                     }
                 }
 
-                if (it.type != Lesson.TYPE_NORMAL && date >= Date.getToday()) {
+                val seen = profile.empty || date < Date.getToday()
+
+                if (it.type != Lesson.TYPE_NORMAL) {
                     data.metadataList.add(
                             Metadata(
                                     data.profileId,
                                     Metadata.TYPE_LESSON_CHANGE,
                                     it.id,
-                                    data.profile?.empty ?: false,
-                                    data.profile?.empty ?: false,
+                                    seen,
+                                    seen,
                                     System.currentTimeMillis()
                             ))
                 }
@@ -194,5 +196,5 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                 }
             }
         }*/
-    }
+    }}
 }

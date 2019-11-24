@@ -28,7 +28,7 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
         private const val TAG = "IdziennikWebTimetable"
     }
 
-    init {
+    init { data.profile?.also { profile ->
         val currentWeekStart = Week.getWeekStart()
 
         if (Date.getToday().weekDay > 4) {
@@ -153,13 +153,15 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
                 dates.add(lessonDate.value)
                 lessons.add(lessonObject)
 
+                val seen = profile.empty || lessonDate < Date.getToday()
+
                 if (lessonObject.type != Lesson.TYPE_NORMAL && lessonDate >= Date.getToday()) {
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_LESSON_CHANGE,
                             lessonObject.id,
-                            profile?.empty ?: false,
-                            profile?.empty ?: false,
+                            seen,
+                            seen,
                             System.currentTimeMillis()
                     ))
                 }
@@ -185,5 +187,5 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_TIMETABLE, SYNC_ALWAYS)
             onSuccess()
         }
-    }
+    }}
 }

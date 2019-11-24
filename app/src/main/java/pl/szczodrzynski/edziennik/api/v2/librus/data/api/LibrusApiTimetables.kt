@@ -75,7 +75,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
         }
     }
 
-    private fun parseLesson(lessonDate: Date, lesson: JsonObject) {
+    private fun parseLesson(lessonDate: Date, lesson: JsonObject) { data.profile?.also { profile ->
         val isSubstitution = lesson.getBoolean("IsSubstitutionClass") ?: false
         val isCancelled = lesson.getBoolean("IsCanceled") ?: false
 
@@ -184,17 +184,19 @@ class LibrusApiTimetables(override val data: DataLibrus,
             }
         }
 
-        if (lessonObject.type != Lesson.TYPE_NORMAL && lessonDate >= Date.getToday()) {
+        val seen = profile.empty || lessonDate < Date.getToday()
+
+        if (lessonObject.type != Lesson.TYPE_NORMAL) {
             data.metadataList.add(
                     Metadata(
-                            data.profileId,
+                            profileId,
                             Metadata.TYPE_LESSON_CHANGE,
                             lessonObject.id,
-                            data.profile?.empty ?: false,
-                            data.profile?.empty ?: false,
+                            seen,
+                            seen,
                             System.currentTimeMillis()
                     ))
         }
         data.lessonNewList.add(lessonObject)
-    }
+    }}
 }
