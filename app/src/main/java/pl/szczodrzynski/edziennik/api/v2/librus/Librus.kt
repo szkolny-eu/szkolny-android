@@ -10,13 +10,11 @@ import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusData
+import pl.szczodrzynski.edziennik.api.v2.librus.data.messages.LibrusMessagesGetAttachment
 import pl.szczodrzynski.edziennik.api.v2.librus.data.messages.LibrusMessagesGetMessage
 import pl.szczodrzynski.edziennik.api.v2.librus.data.synergia.LibrusSynergiaMarkAllAnnouncementsAsRead
 import pl.szczodrzynski.edziennik.api.v2.librus.firstlogin.LibrusFirstLogin
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLogin
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginApi
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginMessages
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginSynergia
+import pl.szczodrzynski.edziennik.api.v2.librus.login.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
@@ -82,11 +80,13 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getMessage(message: MessageFull) {
-        LibrusLoginApi(data) {
-            LibrusLoginSynergia(data) {
-                LibrusLoginMessages(data) {
-                    LibrusMessagesGetMessage(data, message) {
-                        completed()
+        LibrusLoginPortal(data) {
+            LibrusLoginApi(data) {
+                LibrusLoginSynergia(data) {
+                    LibrusLoginMessages(data) {
+                        LibrusMessagesGetMessage(data, message) {
+                            completed()
+                        }
                     }
                 }
             }
@@ -94,10 +94,26 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun markAllAnnouncementsAsRead() {
-        LibrusLoginApi(data) {
-            LibrusLoginSynergia(data) {
-                LibrusSynergiaMarkAllAnnouncementsAsRead(data) {
-                    completed()
+        LibrusLoginPortal(data) {
+            LibrusLoginApi(data) {
+                LibrusLoginSynergia(data) {
+                    LibrusSynergiaMarkAllAnnouncementsAsRead(data) {
+                        completed()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String) {
+        LibrusLoginPortal(data) {
+            LibrusLoginApi(data) {
+                LibrusLoginSynergia(data) {
+                    LibrusLoginMessages(data) {
+                        LibrusMessagesGetAttachment(data, messageId, attachmentId, attachmentName) {
+                            completed()
+                        }
+                    }
                 }
             }
         }

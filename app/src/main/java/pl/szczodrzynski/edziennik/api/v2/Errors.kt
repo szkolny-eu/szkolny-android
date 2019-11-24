@@ -48,6 +48,7 @@ const val ERROR_PROFILE_MISSING                             = 105
 const val ERROR_INVALID_LOGIN_MODE                          = 110
 const val ERROR_LOGIN_METHOD_NOT_SATISFIED                  = 111
 const val ERROR_NOT_IMPLEMENTED                             = 112
+const val ERROR_FILE_DOWNLOAD                               = 113
 
 const val ERROR_NO_STUDENTS_IN_ACCOUNT                      = 115
 

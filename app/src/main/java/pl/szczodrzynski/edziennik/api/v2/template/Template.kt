@@ -70,6 +70,10 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
 
     }
 
+    override fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String) {
+
+    }
+
     override fun firstLogin() {
         TemplateFirstLogin(data) {
             completed()

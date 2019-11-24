@@ -70,6 +70,10 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
 
     }
 
+    override fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String) {
+
+    }
+
     override fun firstLogin() {
         IdziennikFirstLogin(data) {
             completed()

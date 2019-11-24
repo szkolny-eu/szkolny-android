@@ -76,6 +76,10 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     }
 
+    override fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String) {
+
+    }
+
     override fun firstLogin() {
         MobidziennikFirstLogin(data) {
             completed()

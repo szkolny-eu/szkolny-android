@@ -24,6 +24,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
         fun syncProfileList(profileList: List<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
         fun messageGet(profileId: Int, message: MessageFull) = EdziennikTask(profileId, MessageGetRequest(message))
         fun announcementsRead(profileId: Int) = EdziennikTask(profileId, AnnouncementsReadRequest())
+        fun attachmentGet(profileId: Int, messageId: Long, attachmentId: Long, attachmentName: String) = EdziennikTask(profileId, AttachmentGetRequest(messageId, attachmentId, attachmentName))
     }
 
     private lateinit var loginStore: LoginStore
@@ -35,8 +36,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             loginStore = request.loginStore
             // save the profile ID and name as the current task's
             taskName = app.getString(R.string.edziennik_notification_api_first_login_title)
-        }
-        else {
+        } else {
             // get the requested profile and login store
             val profile = app.db.profileDao().getByIdNow(profileId)
             this.profile = profile
@@ -67,12 +67,14 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
         when (request) {
             is SyncProfileRequest -> edziennikInterface?.sync(
-                    featureIds = request.viewIds?.flatMap { Features.getIdsByView(it.first, it.second) } ?: Features.getAllIds(),
+                    featureIds = request.viewIds?.flatMap { Features.getIdsByView(it.first, it.second) }
+                            ?: Features.getAllIds(),
                     viewId = request.viewIds?.get(0)?.first,
                     arguments = request.arguments)
             is MessageGetRequest -> edziennikInterface?.getMessage(request.message)
             is FirstLoginRequest -> edziennikInterface?.firstLogin()
             is AnnouncementsReadRequest -> edziennikInterface?.markAllAnnouncementsAsRead()
+            is AttachmentGetRequest -> edziennikInterface?.getAttachment(request.messageId, request.attachmentId, request.attachmentName)
         }
     }
 
@@ -90,4 +92,5 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     data class SyncProfileListRequest(val profileList: List<Int>)
     data class MessageGetRequest(val message: MessageFull)
     class AnnouncementsReadRequest
+    data class AttachmentGetRequest(val messageId: Long, val attachmentId: Long, val attachmentName: String)
 }

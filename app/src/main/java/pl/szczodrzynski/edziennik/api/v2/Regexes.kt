@@ -76,4 +76,10 @@ object Regexes {
     val VULCAN_SHITFT_ANNOTATION by lazy {
         """\(przeniesiona (z|na) lekcj[ię] ([0-9]+), (.+)\)""".toRegex()
     }
+
+
+
+    val LIBRUS_ATTACHMENT_KEY by lazy {
+        """singleUseKey=([0-9A-f_]+)""".toRegex()
+    }
 }

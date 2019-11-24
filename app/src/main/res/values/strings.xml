@@ -449,7 +449,7 @@
     <string name="menu_timetable">Plan lekcji</string>
     <string name="messages_attachment_cannot_download">Nie można pobrać załącznika</string>
     <string name="messages_attachment_cannot_download_text">Wystąpił błąd wewnętrzny pobierania załącznika. Może to być spowodowane słabym połączeniem internetowym.</string>
-    <string name="messages_attachment_downloading_format" translatable="false">%s (%d%%)</string>
+    <string name="messages_attachment_downloading_format" translatable="false">%s (%.2fMB)</string>
     <string name="messages_attachment_format" translatable="false">%s (%s)</string>
     <string name="messages_attachment_no_size_format" translatable="false">%s</string>
     <string name="messages_compose_menu_attachment">Dodaj załącznik</string>

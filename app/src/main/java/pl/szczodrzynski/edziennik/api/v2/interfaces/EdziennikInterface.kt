@@ -11,6 +11,7 @@ interface EdziennikInterface {
     fun sync(featureIds: List<Int>, viewId: Int? = null, arguments: JsonObject? = null)
     fun getMessage(message: MessageFull)
     fun markAllAnnouncementsAsRead()
+    fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String)
     fun firstLogin()
     fun cancel()
 }

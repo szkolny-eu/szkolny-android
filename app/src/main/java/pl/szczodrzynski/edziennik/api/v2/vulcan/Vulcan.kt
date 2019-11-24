@@ -76,6 +76,10 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     }
 
+    override fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String) {
+        
+    }
+
     override fun firstLogin() {
         VulcanFirstLogin(data) {
             completed()

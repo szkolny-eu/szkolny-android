@@ -31,6 +31,9 @@ import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.api.v2.events.AttachmentGetEvent
+import pl.szczodrzynski.edziennik.api.v2.events.AttachmentGetEvent.Companion.TYPE_FINISHED
+import pl.szczodrzynski.edziennik.api.v2.events.AttachmentGetEvent.Companion.TYPE_PROGRESS
 import pl.szczodrzynski.edziennik.api.v2.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
@@ -225,18 +228,17 @@ class MessageFragment : Fragment(), CoroutineScope {
                 attachmentChip.ellipsize = TextUtils.TruncateAt.MIDDLE
 
                 // create an icon for the attachment
-                var icon: IIcon = CommunityMaterial.Icon.cmd_file_outline
-                when (Utils.getExtensionFromFileName(name)) {
-                    "txt" -> icon = CommunityMaterial.Icon.cmd_file_document_outline
-                    "doc", "docx", "odt", "rtf" -> icon = SzkolnyFont.Icon.szf_file_word_outline
-                    "xls", "xlsx", "ods" -> icon = SzkolnyFont.Icon.szf_file_excel_outline
-                    "ppt", "pptx", "odp" -> icon = SzkolnyFont.Icon.szf_file_powerpoint_outline
-                    "pdf" -> icon = SzkolnyFont.Icon.szf_file_pdf_outline
-                    "mp3", "wav", "aac" -> icon = SzkolnyFont.Icon.szf_file_music_outline
-                    "mp4", "avi", "3gp", "mkv", "flv" -> icon = SzkolnyFont.Icon.szf_file_video_outline
-                    "jpg", "jpeg", "png", "bmp", "gif" -> icon = SzkolnyFont.Icon.szf_file_image_outline
-                    "zip", "rar", "tar", "7z" -> icon = SzkolnyFont.Icon.szf_zip_box_outline
-                    "html", "cpp", "c", "h", "css", "java", "py" -> icon = SzkolnyFont.Icon.szf_file_code_outline
+                val icon: IIcon = when (Utils.getExtensionFromFileName(name)) {
+                    "doc", "docx", "odt", "rtf" -> SzkolnyFont.Icon.szf_file_word_outline
+                    "xls", "xlsx", "ods" -> SzkolnyFont.Icon.szf_file_excel_outline
+                    "ppt", "pptx", "odp" -> SzkolnyFont.Icon.szf_file_powerpoint_outline
+                    "pdf" -> SzkolnyFont.Icon.szf_file_pdf_outline
+                    "mp3", "wav", "aac" -> SzkolnyFont.Icon.szf_file_music_outline
+                    "mp4", "avi", "3gp", "mkv", "flv" -> SzkolnyFont.Icon.szf_file_video_outline
+                    "jpg", "jpeg", "png", "bmp", "gif" -> SzkolnyFont.Icon.szf_file_image_outline
+                    "zip", "rar", "tar", "7z" -> SzkolnyFont.Icon.szf_zip_box_outline
+                    "html", "cpp", "c", "h", "css", "java", "py" -> SzkolnyFont.Icon.szf_file_code_outline
+                    else -> CommunityMaterial.Icon.cmd_file_document_outline
                 }
                 attachmentChip.chipIcon = IconicsDrawable(activity).color(IconicsColor.colorRes(R.color.colorPrimary)).icon(icon).size(IconicsSize.dp(26))
                 attachmentChip.closeIcon = IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_check).size(IconicsSize.dp(18)).color(IconicsColor.colorInt(Utils.getAttr(activity, android.R.attr.textColorPrimary)))
@@ -245,7 +247,7 @@ class MessageFragment : Fragment(), CoroutineScope {
                 attachmentChip.tag = index
                 attachmentChip.setOnClickListener { v ->
                     if (v.tag is Int) {
-                        // TODO downloadAttachment(v.tag as Int)
+                        downloadAttachment(v.tag as Int)
                     }
                 }
                 attachmentLayout.addView(attachmentChip)
@@ -269,6 +271,60 @@ class MessageFragment : Fragment(), CoroutineScope {
         }
     }
 
+    private fun downloadAttachment(index: Int) {
+        val attachment = attachmentList[index]
+
+        if (attachment.downloaded != null) {
+            Utils.openFile(activity, File(attachment.downloaded))
+            return
+        }
+
+        attachment.chip.isEnabled = false
+        attachment.chip.setTextColor(Themes.getSecondaryTextColor(activity))
+        attachment.progressBar.visibility = View.VISIBLE
+
+        EdziennikTask.attachmentGet(
+                App.profileId,
+                attachment.messageId,
+                attachment.attachmentId,
+                attachment.attachmentName
+        ).enqueue(activity)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onAttachmentGetEvent(event: AttachmentGetEvent) {
+        attachmentList.firstOrNull { it.profileId == event.profileId
+                && it.messageId == event.messageId
+                && it.attachmentId == event.attachmentId }?.let { attachment ->
+
+            when (event.eventType) {
+                TYPE_FINISHED -> {
+                    // save the downloaded file name
+                    attachment.downloaded = event.fileName
+
+                    // set the correct name (and size)
+                    if (attachment.attachmentSize == -1L)
+                        attachment.chip.text = getString(R.string.messages_attachment_no_size_format, attachment.attachmentName)
+                    else
+                        attachment.chip.text = getString(R.string.messages_attachment_format, attachment.attachmentName, readableFileSize(attachment.attachmentSize))
+
+                    // hide the progress bar and show a tick icon
+                    attachment.progressBar.visibility = View.GONE
+                    attachment.chip.isEnabled = true
+                    attachment.chip.setTextColor(Themes.getPrimaryTextColor(activity))
+                    attachment.chip.isCloseIconVisible = true
+
+                    // open the file
+                    Utils.openFile(activity, File(attachment.downloaded))
+                }
+
+                TYPE_PROGRESS -> {
+                    attachment.chip.text = getString(R.string.messages_attachment_downloading_format, attachment.attachmentName, event.bytesWritten.toFloat() / 1000000)
+                }
+            }
+        }
+    }
+
     private fun checkAttachment(attachment: Attachment) {
         val storageDir = Environment.getExternalStoragePublicDirectory("Szkolny.eu")
         storageDir.mkdirs()
@@ -286,7 +342,6 @@ class MessageFragment : Fragment(), CoroutineScope {
                 e.printStackTrace()
                 //app.apiEdziennik.guiReportException(activity, 355, e)
             }
-
         }
     }
 
