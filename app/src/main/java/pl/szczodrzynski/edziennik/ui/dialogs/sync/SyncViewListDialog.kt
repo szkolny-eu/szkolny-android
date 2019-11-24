@@ -102,6 +102,12 @@ class SyncViewListDialog(
                         ).enqueue(activity)
                     }
                 }
+                .setNeutralButton(R.string.sync_feature_all) { _, _ ->
+                    dialog.dismiss()
+
+                    activity.swipeRefreshLayout.isRefreshing = true
+                    EdziennikTask.syncProfile(App.profileId).enqueue(activity)
+                }
                 .setNegativeButton(R.string.cancel) { _, _ ->
                     dialog.dismiss()
                 }
