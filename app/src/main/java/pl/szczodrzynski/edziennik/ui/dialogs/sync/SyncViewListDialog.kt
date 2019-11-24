@@ -94,11 +94,13 @@ class SyncViewListDialog(
                         listOfNotNull(*it.toTypedArray())
                     }
 
-                    activity.swipeRefreshLayout.isRefreshing = true
-                    EdziennikTask.syncProfile(
-                            App.profileId,
-                            selectedViewIds
-                    ).enqueue(activity)
+                    if (selectedViewIds.isNotEmpty()) {
+                        activity.swipeRefreshLayout.isRefreshing = true
+                        EdziennikTask.syncProfile(
+                                App.profileId,
+                                selectedViewIds
+                        ).enqueue(activity)
+                    }
                 }
                 .setNegativeButton(R.string.cancel) { _, _ ->
                     dialog.dismiss()
