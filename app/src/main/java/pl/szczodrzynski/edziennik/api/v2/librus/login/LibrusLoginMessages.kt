@@ -101,7 +101,7 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
         val loginElement = doc.createElement("login")
         loginElement.appendChild(doc.createTextNode(data.apiLogin))
         dataElement.appendChild(loginElement)
-        val passwordElement = doc.createElement("login")
+        val passwordElement = doc.createElement("password")
         passwordElement.appendChild(doc.createTextNode(data.apiPassword))
         dataElement.appendChild(passwordElement)
         val keyStrokeElement = doc.createElement("KeyStroke")
