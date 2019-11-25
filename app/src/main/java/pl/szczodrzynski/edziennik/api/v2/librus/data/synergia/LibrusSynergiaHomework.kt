@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.api.v2.POST
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusSynergia
+import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.get
@@ -66,8 +67,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
 
                     val notified = when (profile?.empty) {
                         true -> true
-                        false -> Date.getToday() < eventDate
-                        else -> false
+                        else -> eventDate < Date.getToday()
                     }
 
                     val eventObject = Event(
@@ -95,6 +95,8 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
                     ))
                 }
             }
+
+            data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
 
             // because this requires a synergia login (2 more requests) sync this every two hours or if explicit :D
             data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, 2 * HOUR, DRAWER_ITEM_HOMEWORK)

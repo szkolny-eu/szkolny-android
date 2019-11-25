@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.api
 import androidx.core.util.contains
 import pl.szczodrzynski.edziennik.api.v2.Regexes
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.DataMobidziennik
+import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -74,5 +75,7 @@ class MobidziennikApiEvents(val data: DataMobidziennik, rows: List<String>) {
                         ))
             }
         }
+
+        data.toRemove.add(DataRemoveModel.Events.futureExceptType(Event.TYPE_HOMEWORK))
     }
 }

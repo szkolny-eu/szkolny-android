@@ -283,6 +283,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             when (model) {
                 is DataRemoveModel.Timetable -> model.commit(profileId, db.timetableDao())
                 is DataRemoveModel.Grades -> model.commit(profileId, db.gradeDao())
+                is DataRemoveModel.Events -> model.commit(profileId, db.eventDao())
             }
         }
 
@@ -305,7 +306,6 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.gradeDao().addAll(gradeList)
         }
         if (eventList.isNotEmpty()) {
-            db.eventDao().removeFuture(profile.id, Date.getToday())
             db.eventDao().addAll(eventList)
         }
         if (noticeList.isNotEmpty()) {

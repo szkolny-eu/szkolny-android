@@ -1,16 +1,17 @@
 package pl.szczodrzynski.edziennik.data.db.modules.events;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQuery;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Transaction;
-import androidx.annotation.NonNull;
-import android.util.Log;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
@@ -129,6 +130,12 @@ public abstract class EventDao {
 
     @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate")
     public abstract void removeFuture(int profileId, Date todayDate);
+
+    @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType = :type")
+    public abstract void removeFutureWithType(int profileId, Date todayDate, int type);
+
+    @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType != :exceptType")
+    public abstract void removeFutureExceptType(int profileId, Date todayDate, int exceptType);
 
     @Query("UPDATE metadata SET seen = :seen WHERE profileId = :profileId AND (thingType = "+TYPE_EVENT+" OR thingType = "+TYPE_LESSON_CHANGE+" OR thingType = "+TYPE_HOMEWORK+") AND thingId IN (SELECT eventId FROM events WHERE profileId = :profileId AND eventDate = :date)")
     public abstract void setSeenByDate(int profileId, Date date, boolean seen);

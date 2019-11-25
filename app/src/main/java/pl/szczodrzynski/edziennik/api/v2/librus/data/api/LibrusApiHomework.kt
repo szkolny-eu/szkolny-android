@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.ENDPOINT_LIBRUS_API_HOMEWORK
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
+import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
@@ -54,6 +55,8 @@ class LibrusApiHomework(override val data: DataLibrus,
                         addedDate.inMillis
                 ))
             }
+
+            data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_HOMEWORK, SYNC_ALWAYS)
             onSuccess()

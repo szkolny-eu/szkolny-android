@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.api.v2.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.api.v2.idziennik.ENDPOINT_IDZIENNIK_WEB_EXAMS
 import pl.szczodrzynski.edziennik.api.v2.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson
@@ -34,14 +35,15 @@ class IdziennikWebExams(override val data: DataIdziennik,
     }
 
     private fun getExams() {
-        val param = JsonObject()
-        param.addProperty("strona", 1)
-        param.addProperty("iloscNaStrone", "99")
-        param.addProperty("iloscRekordow", -1)
-        param.addProperty("kolumnaSort", "ss.Nazwa,sp.Data_sprawdzianu")
-        param.addProperty("kierunekSort", 0)
-        param.addProperty("maxIloscZaznaczonych", 0)
-        param.addProperty("panelFiltrow", 0)
+        val param = JsonObject().apply {
+            addProperty("strona", 1)
+            addProperty("iloscNaStrone", "99")
+            addProperty("iloscRekordow", -1)
+            addProperty("kolumnaSort", "ss.Nazwa,sp.Data_sprawdzianu")
+            addProperty("kierunekSort", 0)
+            addProperty("maxIloscZaznaczonych", 0)
+            addProperty("panelFiltrow", 0)
+        }
 
         webApiGet(TAG, IDZIENNIK_WEB_EXAMS, mapOf(
                 "idP" to data.registerId,
@@ -106,6 +108,8 @@ class IdziennikWebExams(override val data: DataIdziennik,
                 examsNextMonthChecked = true
                 getExams()
             } else {
+                data.toRemove.add(DataRemoveModel.Events.futureExceptType(Event.TYPE_HOMEWORK))
+
                 data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_EXAMS, SYNC_ALWAYS)
                 onSuccess()
             }

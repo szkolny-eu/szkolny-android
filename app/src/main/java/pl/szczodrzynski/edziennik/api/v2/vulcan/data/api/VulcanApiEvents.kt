@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.api.v2.vulcan.data.api
 
 import pl.szczodrzynski.edziennik.api.v2.VULCAN_API_ENDPOINT_EVENTS
 import pl.szczodrzynski.edziennik.api.v2.VULCAN_API_ENDPOINT_HOMEWORK
+import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.api.v2.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_EVENTS
 import pl.szczodrzynski.edziennik.api.v2.vulcan.ENDPOINT_VULCAN_API_HOMEWORK
@@ -91,8 +92,14 @@ class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boo
             }
 
             when (isHomework) {
-                true -> data.setSyncNext(ENDPOINT_VULCAN_API_HOMEWORK, SYNC_ALWAYS)
-                false -> data.setSyncNext(ENDPOINT_VULCAN_API_EVENTS, SYNC_ALWAYS)
+                true -> {
+                    data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
+                    data.setSyncNext(ENDPOINT_VULCAN_API_HOMEWORK, SYNC_ALWAYS)
+                }
+                false -> {
+                    data.toRemove.add(DataRemoveModel.Events.futureExceptType(Event.TYPE_HOMEWORK))
+                    data.setSyncNext(ENDPOINT_VULCAN_API_EVENTS, SYNC_ALWAYS)
+                }
             }
             onSuccess()
         }
