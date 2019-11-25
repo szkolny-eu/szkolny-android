@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.api.v2.idziennik.data.web
 
 import com.google.gson.JsonObject
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.api.v2.ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA
 import pl.szczodrzynski.edziennik.api.v2.IDZIENNIK_WEB_EXAMS
 import pl.szczodrzynski.edziennik.api.v2.idziennik.DataIdziennik
@@ -14,13 +15,11 @@ import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikWebExams(override val data: DataIdziennik,
-                         val onSuccess: () -> Unit) : IdziennikWeb(data) {
+                        val onSuccess: () -> Unit) : IdziennikWeb(data) {
     companion object {
         private const val TAG = "IdziennikWebExams"
     }
@@ -57,28 +56,33 @@ class IdziennikWebExams(override val data: DataIdziennik,
                 return@webApiGet
             }
 
-            for (jExamEl in json.getAsJsonArray("ListK")) {
-                val jExam = jExamEl.asJsonObject
-                // jExam
-                val eventId = jExam.get("_recordId").asLong
-                val rSubject = data.getSubject(jExam.get("przedmiot").asString, -1, "")
-                val rTeacher = data.getTeacherByLastFirst(jExam.get("wpisal").asString)
-                val examDate = Date.fromY_m_d(jExam.get("data").asString)
-                val lessonObject = Lesson.getByWeekDayAndSubject(data.lessonList, examDate.weekDay, rSubject.id)
-                val examTime = lessonObject?.startTime
+            json.getJsonArray("ListK")?.asJsonObjectList()?.forEach { exam ->
+                val id = exam.getLong("_recordId") ?: return@forEach
+                val examDate = Date.fromY_m_d(exam.getString("data") ?: return@forEach)
+                val subjectId = data.getSubject(exam.getString("przedmiot") ?: return@forEach,
+                        -1, "").id
+                val teacherId = data.getTeacherByLastFirst(exam.getString("wpisal")
+                        ?: return@forEach).id
+                val lessonList = data.db.timetableDao().getForDateNow(profileId, examDate)
+                val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.startTime
+                val topic = exam.getString("zakres") ?: ""
 
-                val eventType = if (jExam.get("rodzaj").asString == "sprawdzian/praca klasowa") Event.TYPE_EXAM else Event.TYPE_SHORT_QUIZ
+                val eventType = when (exam.getString("rodzaj")) {
+                    "sprawdzian/praca klasowa" -> Event.TYPE_EXAM
+                    else -> Event.TYPE_SHORT_QUIZ
+                }
+
                 val eventObject = Event(
                         profileId,
-                        eventId,
+                        id,
                         examDate,
-                        examTime,
-                        jExam.get("zakres").asString,
+                        startTime,
+                        topic,
                         -1,
                         eventType,
                         false,
-                        rTeacher.id,
-                        rSubject.id,
+                        teacherId,
+                        subjectId,
                         data.teamClass?.id ?: -1
                 )
 

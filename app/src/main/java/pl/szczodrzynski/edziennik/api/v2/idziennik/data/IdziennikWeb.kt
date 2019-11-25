@@ -94,6 +94,7 @@ open class IdziennikWeb(open val data: DataIdziennik) {
                             is Long -> json.addProperty(name, value)
                             is Float -> json.addProperty(name, value)
                             is Char -> json.addProperty(name, value)
+                            is Boolean -> json.addProperty(name, value)
                         }
                     }
                     setJsonBody(json)

@@ -6,10 +6,10 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ANNOUNCEMENTS
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCE
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_BEHAVIOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_BEHAVIOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.*
@@ -74,6 +74,7 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_AGENDA)
                     fragmentIds.add(DRAWER_ITEM_GRADES)
                     fragmentIds.add(DRAWER_ITEM_MESSAGES)
+                    fragmentIds.add(DRAWER_ITEM_HOMEWORK)
                     fragmentIds.add(DRAWER_ITEM_BEHAVIOUR)
                     fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
                     fragmentIds.add(DRAWER_ITEM_ANNOUNCEMENTS)
@@ -87,9 +88,7 @@ class ProfileFull : Profile {
             return fragmentIds
         }
 
-    constructor() : super() {
-
-    }
+    constructor() : super()
 
     constructor(profile: Profile, loginStore: LoginStore) {
 
@@ -122,7 +121,7 @@ class ProfileFull : Profile {
         }*/
     }
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
     fun canChangeLoginPassword(): Boolean {
         return loginStoreType == LOGIN_TYPE_MOBIDZIENNIK || loginStoreType == LOGIN_TYPE_LIBRUS || loginStoreType == LOGIN_TYPE_IUCZNIOWIE

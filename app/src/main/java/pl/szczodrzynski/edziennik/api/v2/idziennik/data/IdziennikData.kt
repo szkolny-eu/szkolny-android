@@ -55,6 +55,10 @@ class IdziennikData(val data: DataIdziennik, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_exams)
                 IdziennikWebExams(data, onSuccess)
             }
+            ENDPOINT_IDZIENNIK_WEB_HOMEWORK -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_homework)
+                IdziennikWebHomework(data, onSuccess)
+            }
             ENDPOINT_IDZIENNIK_WEB_NOTICES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_notices)
                 IdziennikWebNotices(data, onSuccess)

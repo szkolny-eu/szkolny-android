@@ -54,6 +54,13 @@ interface TimetableDao {
 
     @Query("""
         $QUERY
+        WHERE timetable.profileId = :profileId AND ((type != 3 AND date = :date) OR ((type = 3 OR type = 1) AND oldDate = :date))
+        ORDER BY id, type
+    """)
+    fun getForDateNow(profileId: Int, date: Date) : List<LessonFull>
+
+    @Query("""
+        $QUERY
         WHERE timetable.profileId = :profileId AND ((type != 3 AND date > :today) OR ((type = 3 OR type = 1) AND oldDate > :today)) AND timetable.subjectId = :subjectId
         ORDER BY id, type
         LIMIT 1
