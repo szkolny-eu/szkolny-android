@@ -150,6 +150,7 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
     private fun saveSessionId(response: Response?, text: String?) {
         var sessionId = data.app.cookieJar.getCookie("wiadomosci.librus.pl", "DZIENNIKSID")
         sessionId = sessionId?.replace("-MAINT", "") // dunno what's this
+        sessionId = sessionId?.replace("MAINT", "") // dunno what's this
         if (sessionId == null) {
             data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_NO_SESSION_ID)
                     .withResponse(response)
