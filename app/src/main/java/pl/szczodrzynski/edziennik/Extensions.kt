@@ -36,7 +36,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.utils.models.Time
-import pl.szczodrzynski.navlib.R
 import pl.szczodrzynski.navlib.getColorFromRes
 import java.text.SimpleDateFormat
 import java.util.*
@@ -379,13 +378,13 @@ fun CharSequence?.asItalicSpannable(): Spannable {
  */
 fun <T : CharSequence> listOfNotEmpty(vararg elements: T): List<T> = elements.filterNot { it.isEmpty() }
 
-fun List<CharSequence>.concat(delimiter: String? = null): CharSequence {
+fun List<CharSequence?>.concat(delimiter: String? = null): CharSequence {
     if (this.isEmpty()) {
         return ""
     }
 
     if (this.size == 1) {
-        return this[0]
+        return this[0] ?: ""
     }
 
     var spanned = false
@@ -400,6 +399,8 @@ fun List<CharSequence>.concat(delimiter: String? = null): CharSequence {
     if (spanned) {
         val ssb = SpannableStringBuilder()
         for (piece in this) {
+            if (piece == null)
+                continue
             if (!first && delimiter != null)
                 ssb.append(delimiter)
             first = false
@@ -409,6 +410,8 @@ fun List<CharSequence>.concat(delimiter: String? = null): CharSequence {
     } else {
         val sb = StringBuilder()
         for (piece in this) {
+            if (piece == null)
+                continue
             if (!first && delimiter != null)
                 sb.append(delimiter)
             first = false
@@ -532,4 +535,55 @@ operator fun Time?.compareTo(other: Time?): Int {
 
 operator fun StringBuilder.plusAssign(str: String?) {
     this.append(str)
+}
+
+fun Context.timeTill(time: Int, delimiter: String = " "): String {
+    val parts = mutableListOf<Pair<Int, Int>>()
+
+    val hours = time / 3600
+    val minutes = (time - hours*3600) / 60
+    val seconds = time - minutes*60 - hours*3600
+
+    var prefixAdded = false
+    if (hours > 0) {
+        if (!prefixAdded) parts += R.plurals.time_till_text to hours; prefixAdded = true
+        parts += R.plurals.time_till_hours to hours
+    }
+    if (minutes > 0) {
+        if (!prefixAdded) parts += R.plurals.time_till_text to minutes; prefixAdded = true
+        parts += R.plurals.time_till_minutes to minutes
+    }
+    if (hours == 0 && minutes < 10) {
+        if (!prefixAdded) parts += R.plurals.time_till_text to seconds; prefixAdded = true
+        parts += R.plurals.time_till_seconds to seconds
+    }
+
+    return parts.joinToString(delimiter) { resources.getQuantityString(it.first, it.second, it.second) }
+}
+
+fun Context.timeLeft(time: Int, delimiter: String = " "): String {
+    val parts = mutableListOf<Pair<Int, Int>>()
+
+    val hours = time / 3600
+    val minutes = (time - hours*3600) / 60
+    val seconds = time - minutes*60 - hours*3600
+
+    var prefixAdded = false
+    if (hours > 0) {
+        if (!prefixAdded) parts += R.plurals.time_left_text to hours
+        prefixAdded = true
+        parts += R.plurals.time_left_hours to hours
+    }
+    if (minutes > 0) {
+        if (!prefixAdded) parts += R.plurals.time_left_text to minutes
+        prefixAdded = true
+        parts += R.plurals.time_left_minutes to minutes
+    }
+    if (hours == 0 && minutes < 10) {
+        if (!prefixAdded) parts += R.plurals.time_left_text to seconds
+        prefixAdded = true
+        parts += R.plurals.time_left_seconds to seconds
+    }
+
+    return parts.joinToString(delimiter) { resources.getQuantityString(it.first, it.second, it.second) }
 }

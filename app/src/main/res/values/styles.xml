@@ -82,6 +82,7 @@
         <item name="colorFab">#4CAF50</item>
         <item name="colorFabIcon">#c8e6c9</item>
         <item name="colorOnFab">#ffffff</item>
+        <item name="colorIcon">#8a000000</item>
 
         <item name="md_dark_theme">false</item>
         <item name="md_title_color">?android:textColorPrimary</item>
@@ -114,6 +115,7 @@
         <item name="colorFab">#4CAF50</item>
         <item name="colorFabIcon">#c8e6c9</item>
         <item name="colorOnFab">#ffffff</item>
+        <item name="colorIcon">#b4ffffff</item>
 
         <item name="md_dark_theme">true</item>
         <item name="md_title_color">?android:textColorPrimary</item>

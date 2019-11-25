@@ -59,6 +59,11 @@ open class Lesson(val profileId: Int, @PrimaryKey var id: Long) {
             return startTime ?: oldStartTime
         }
 
+    val isCancelled
+        get() = type == TYPE_CANCELLED || type == TYPE_SHIFTED_SOURCE
+    val isChange
+        get() = type == TYPE_CHANGE || type == TYPE_SHIFTED_TARGET
+
     fun buildId(): Long = (displayDate?.combineWith(displayStartTime) ?: 0L) / 6L * 10L + (hashCode() and 0xFFFF)
 
     override fun toString(): String {
@@ -110,7 +115,7 @@ open class Lesson(val profileId: Int, @PrimaryKey var id: Long) {
         return true
     }
 
-    override fun hashCode(): Int {
+    override fun hashCode(): Int { // intentionally ignoring ID and display* here
         var result = profileId
         result = 31 * result + type
         result = 31 * result + (date?.hashCode() ?: 0)
@@ -132,31 +137,3 @@ open class Lesson(val profileId: Int, @PrimaryKey var id: Long) {
         return result
     }
 }
-/*
-DROP TABLE lessons;
-DROP TABLE lessonChanges;
-CREATE TABLE lessons (
-	profileId INTEGER NOT NULL,
-	type INTEGER NOT NULL,
-
-	date TEXT DEFAULT NULL,
-	lessonNumber INTEGER DEFAULT NULL,
-	startTime TEXT DEFAULT NULL,
-	endTime TEXT DEFAULT NULL,
-	teacherId INTEGER DEFAULT NULL,
-	subjectId INTEGER DEFAULT NULL,
-	teamId INTEGER DEFAULT NULL,
-	classroom TEXT DEFAULT NULL,
-
-	oldDate TEXT DEFAULT NULL,
-	oldLessonNumber INTEGER DEFAULT NULL,
-	oldStartTime TEXT DEFAULT NULL,
-	oldEndTime TEXT DEFAULT NULL,
-	oldTeacherId INTEGER DEFAULT NULL,
-	oldSubjectId INTEGER DEFAULT NULL,
-	oldTeamId INTEGER DEFAULT NULL,
-	oldClassroom TEXT DEFAULT NULL,
-
-	PRIMARY KEY(profileId)
-);
-*/

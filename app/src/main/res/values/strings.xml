@@ -1044,4 +1044,14 @@
     <string name="home_lucky_number_today">%d to dzisiejszy szczęśliwy numerek.</string>
     <string name="home_lucky_number_tomorrow">%d to szczęśliwy numerek na jutro.</string>
     <string name="home_lucky_number_no_number">Nie ma dzisiaj szczęśliwego numerka.</string>
+    <string name="home_timetable_tomorrow">Jutro (%1$s)</string>
+    <string name="home_timetable_date_this_week">%1$s, %2$s</string>
+    <string name="home_timetable_date_future">%1$s, %2$s</string>
+    <string name="home_timetable_lessons_info">%d lekcji - %s do %s</string>
+    <string name="home_timetable_lesson_first">Pierwsza: %s</string>
+    <string name="home_timetable_later">Później:</string>
+    <string name="home_timetable_later_no_lessons">brak lekcji</string>
+    <string name="home_timetable_today">Dzisiaj</string>
+    <string name="home_timetable_lesson_ongoing">Teraz: %s</string>
+    <string name="home_timetable_lesson_not_started">Za chwilę: %s</string>
 </resources>

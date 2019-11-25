@@ -12,35 +12,10 @@
         android:orientation="vertical"
         tools:layout_margin="8dp">
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Title"
-            android:visibility="gone"
-            tools:text="Jutro" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Helper"
-            android:visibility="gone"
-            tools:text="7 lekcji - 8:10 do 14:45" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/dividerColor"
-            android:visibility="gone" />
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -48,57 +23,100 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <ProgressBar
-                    android:id="@+id/progressBar4"
-                    style="?android:attr/progressBarStyleHorizontal"
+                <TextView
+                    android:id="@+id/dayInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:max="45"
-                    android:progress="13"
-                    tools:visibility="gone" />
+                    android:textAppearance="@style/NavView.TextView.Title"
+                    tools:text="Jutro" />
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/lessonInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.Small"
-                    tools:text="09a komputerowa" />
+                    android:textAppearance="@style/NavView.TextView.Helper"
+                    tools:text="7 lekcji - 8:10 do 14:45" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/settings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:visibility="gone"
+                tools:src="@sample/settings" />
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/dividerColor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/lessonBig"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/NavView.TextView.Subtitle"
                     tools:text="Pierwsza: informatyka" />
 
+                <TextView
+                    android:id="@+id/classroom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/NavView.TextView.Small"
+                    tools:text="09a komputerowa" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:max="2700"
+                    android:progress="780" />
+
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/counter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
-                tools:text="zostały\n32 minuty"
-                tools:visibility="gone" />
+                tools:text="zostały\n2 minuty\n35 sekund" />
 
         </LinearLayout>
 
         <View
-            android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
-            android:background="@color/dividerColor"
-            android:visibility="gone" />
+            android:background="@color/dividerColor" />
 
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/nextLessons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="@style/NavView.TextView.Helper"
             tools:text="Póżniej:\n9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
 
     </LinearLayout>

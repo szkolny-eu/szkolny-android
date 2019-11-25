@@ -3,6 +3,8 @@ package pl.szczodrzynski.edziennik.utils.models;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Calendar;
 
 public class Time implements Comparable<Time> {
@@ -114,6 +116,10 @@ public class Time implements Comparable<Time> {
         return new Time(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND));
     }
 
+    public long getInUnix() {
+        return getInMillis() / 1000;
+    }
+
     public int getValue()
     {
         return hour * 10000 + minute * 100 + second;
@@ -201,5 +207,9 @@ public class Time implements Comparable<Time> {
         result = 31 * result + minute;
         result = 31 * result + second;
         return result;
+    }
+
+    public long minus(@NotNull Time other) {
+        return getInUnix() - other.getInUnix();
     }
 }
