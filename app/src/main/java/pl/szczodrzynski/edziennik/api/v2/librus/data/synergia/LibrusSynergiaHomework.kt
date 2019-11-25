@@ -56,16 +56,16 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
                     val id = "/podglad/([0-9]+)'".toRegex().find(
                             elements[9].select("input").attr("onclick")
                     )?.get(1)?.toLong() ?: return@forEachIndexed
-                    val startTime = data.lessonList.singleOrNull {
-                        it.weekDay == eventDate.weekDay && it.subjectId == subjectId
-                    }?.startTime
+
+                    val lessons = data.db.timetableDao().getForDateNow(profileId, eventDate)
+                    val startTime = lessons.firstOrNull { it.subjectId == subjectId }?.startTime
 
                     val moreInfo = graphElements[2 * i + 1].select("td[title]")
                             .attr("title").trim()
                     val description = "Treść: (.*)".toRegex(RegexOption.DOT_MATCHES_ALL).find(moreInfo)
                             ?.get(1)?.replace("<br.*/>".toRegex(), "\n")?.trim()
 
-                    val notified = when (profile?.empty) {
+                    val seen = when (profile?.empty) {
                         true -> true
                         else -> eventDate < Date.getToday()
                     }
@@ -89,8 +89,8 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
                             profileId,
                             Metadata.TYPE_HOMEWORK,
                             id,
-                            notified,
-                            notified,
+                            seen,
+                            seen,
                             addedDate
                     ))
                 }
