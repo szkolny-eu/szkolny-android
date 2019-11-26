@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.home.cards
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ class HomeTimetableCard(
     private lateinit var b: CardHomeTimetableBinding
 
     private val today = Date.getToday()
+    private var timetableDate: Date = Date.getToday()
     private val searchEnd = today.clone().stepForward(0, 0, 7)
 
     private var allLessons = listOf<LessonFull>()
@@ -89,6 +91,12 @@ class HomeTimetableCard(
             allLessons = it
             update()
         })
+
+        b.root.setOnClickListener {
+            activity.loadTarget(MainActivity.DRAWER_ITEM_TIMETABLE, Bundle().apply {
+                putString("timetableDate", timetableDate.stringY_m_d)
+            })
+        }
     }
 
     private fun update() { launch {
@@ -122,7 +130,8 @@ class HomeTimetableCard(
             }
             timetableDate
         }
-        val timetableDate = deferred.await()
+
+        timetableDate = deferred.await()
 
         val isToday = today == timetableDate
 
