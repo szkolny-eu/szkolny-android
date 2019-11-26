@@ -372,7 +372,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         buttonCaptions.add(getString(R.string.menu_settings));
                         //buttonCaptions.add(getString(R.string.title_debugging));
                         List<Integer> selectedIds = new ArrayList<>();
-                        for (int id: app.appConfig.miniDrawerButtonIds) {
+                        for (int id: app.config.getUi().getMiniMenuButtons()) {
                             selectedIds.add(buttonIds.indexOf(id));
                         }
                         new MaterialDialog.Builder(activity)
@@ -380,16 +380,16 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 .content(getString(R.string.settings_theme_mini_drawer_buttons_dialog_text))
                                 .items(buttonCaptions)
                                 .itemsCallbackMultiChoice(selectedIds.toArray(new Integer[0]), (dialog, which, text) -> {
-                                    app.appConfig.miniDrawerButtonIds.clear();
+                                    List<Integer> list = new ArrayList<>();
                                     for (int index: which) {
                                         if (index == -1)
                                             continue;
                                         // wtf
 
                                         int id = buttonIds.get(index);
-                                        app.appConfig.miniDrawerButtonIds.add(id);
+                                        list.add(id);
                                     }
-                                    app.saveConfig("miniDrawerButtonIds");
+                                    app.config.getUi().setMiniMenuButtons(list);
                                     activity.setDrawerItems();
                                     activity.getDrawer().updateBadges();
                                     return true;

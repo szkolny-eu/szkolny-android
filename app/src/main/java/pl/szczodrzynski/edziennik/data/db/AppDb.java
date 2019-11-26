@@ -10,6 +10,8 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import pl.szczodrzynski.edziennik.config.ConfigDao;
+import pl.szczodrzynski.edziennik.config.ConfigEntry;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterDate;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterDateInt;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterJsonObject;
@@ -105,7 +107,8 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         NoticeType.class,
         AttendanceType.class,
         pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson.class,
-        Metadata.class}, version = 64)
+        ConfigEntry.class,
+        Metadata.class}, version = 66)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -144,6 +147,7 @@ public abstract class AppDb extends RoomDatabase {
     public abstract NoticeTypeDao noticeTypeDao();
     public abstract AttendanceTypeDao attendanceTypeDao();
     public abstract TimetableDao timetableDao();
+    public abstract ConfigDao configDao();
     public abstract MetadataDao metadataDao();
 
     private static volatile AppDb INSTANCE;
@@ -763,6 +767,27 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("CREATE INDEX index_lessons_profileId_type_oldDate ON timetable (profileId, type, oldDate);");
         }
     };
+    private static final Migration MIGRATION_64_65 = new Migration(64, 65) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE config (" +
+                    "profileId INTEGER NOT NULL DEFAULT -1," +
+                    "`key` TEXT NOT NULL," +
+                    "value TEXT NOT NULL," +
+                    "PRIMARY KEY(profileId, `key`));");
+        }
+    };
+    private static final Migration MIGRATION_65_66 = new Migration(65, 66) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("DROP TABLE config;");
+            database.execSQL("CREATE TABLE config (" +
+                    "profileId INTEGER NOT NULL DEFAULT -1," +
+                    "`key` TEXT NOT NULL," +
+                    "value TEXT," +
+                    "PRIMARY KEY(profileId, `key`));");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -824,7 +849,9 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_60_61,
                                     MIGRATION_61_62,
                                     MIGRATION_62_63,
-                                    MIGRATION_63_64
+                                    MIGRATION_63_64,
+                                    MIGRATION_64_65,
+                                    MIGRATION_65_66
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

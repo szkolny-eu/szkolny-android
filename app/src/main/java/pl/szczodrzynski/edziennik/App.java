@@ -68,6 +68,7 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
+import pl.szczodrzynski.edziennik.config.Config;
 import pl.szczodrzynski.edziennik.data.db.AppDb;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
@@ -145,6 +146,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
     //public Register register; // REGISTER for current profile, read from registerStore
 
     public ProfileFull profile;
+    public Config config;
 
     // other stuff
     public Gson gson;
@@ -193,6 +195,8 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
         db = AppDb.getDatabase(this);
         gson = new Gson();
         networkUtils = new NetworkUtils(this);
+
+        config = new Config(db);
 
         Iconics.init(getApplicationContext());
         Iconics.registerFont(SzkolnyFont.INSTANCE);
@@ -636,6 +640,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
                 MainActivity.Companion.setUseOldMessages(profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK && appConfig.mobidziennikOldMessages == 1);
                 profileId = profile.getId();
                 appSharedPrefs.edit().putInt("current_profile_id", profile.getId()).apply();
+                config.setProfile(profileId);
             }
             else if (!loadedLast) {
                 profileLoadById(profileLastId(), true);

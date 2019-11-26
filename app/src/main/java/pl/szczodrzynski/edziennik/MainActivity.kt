@@ -973,7 +973,7 @@ class MainActivity : AppCompatActivity() {
         val item = DrawerPrimaryItem()
                 .withIdentifier(target.id.toLong())
                 .withName(target.name)
-                .withHiddenInMiniDrawer(!app.appConfig.miniDrawerButtonIds.contains(target.id))
+                .withHiddenInMiniDrawer(!app.config.ui.miniMenuButtons.contains(target.id))
                 .also { if (target.description != null) it.withDescription(target.description!!) }
                 .also { if (target.icon != null) it.withIcon(target.icon!!) }
                 .also { if (target.title != null) it.withAppTitle(getString(target.title!!)) }
