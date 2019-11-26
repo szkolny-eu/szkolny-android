@@ -53,10 +53,11 @@ class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boo
                 val eventDate = Date.fromY_m_d(event.getString("DataTekst") ?: return@forEach)
                 val subjectId = event.getLong("IdPrzedmiot") ?: -1
                 val teacherId = event.getLong("IdPracownik") ?: -1
-                val startTime = data.lessonList.singleOrNull {
-                    it.weekDay == eventDate.weekDay && it.subjectId == subjectId
-                }?.startTime
                 val topic = event.getString("Opis") ?: ""
+
+                val lessonList = data.db.timetableDao().getForDateNow(profileId, eventDate)
+                val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.startTime
+
                 val type = when (isHomework) {
                     true -> Event.TYPE_HOMEWORK
                     else -> when (event.getBoolean("Rodzaj")) {
