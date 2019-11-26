@@ -52,7 +52,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
     private lateinit var date: Date
     private var startHour = DEFAULT_START_HOUR
     private var endHour = DEFAULT_END_HOUR
-    private var firstEventMinute = 24*60
+    private var firstEventMinute = 24 * 60
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
@@ -189,7 +189,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
             val startTime = lesson.displayStartTime ?: continue
             val endTime = lesson.displayEndTime ?: continue
 
-            firstEventMinute = min(firstEventMinute, startTime.hour*60 + startTime.minute)
+            firstEventMinute = min(firstEventMinute, startTime.hour * 60 + startTime.minute)
 
             // Try to recycle an existing event view if there are enough left, otherwise inflate
             // a new one
@@ -265,26 +265,26 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
                 }
                 Lesson.TYPE_CHANGE -> {
                     lb.annotationVisible = true
-                    if (lesson.subjectId != lesson.oldSubjectId && lesson.teacherId != lesson.oldTeacherId) {
-                        lb.annotation.setText(
-                                R.string.timetable_lesson_change_format,
-                                "${lesson.oldSubjectName ?: "?"}, ${lesson.oldTeacherName ?: "?"}"
-                        )
-                    }
-                    else if (lesson.subjectId != lesson.oldSubjectId) {
-                        lb.annotation.setText(
-                                R.string.timetable_lesson_change_format,
-                                lesson.oldSubjectName ?: "?"
-                        )
-                    }
-                    else if (lesson.teacherId != lesson.oldTeacherId) {
-                        lb.annotation.setText(
-                                R.string.timetable_lesson_change_format,
-                                lesson.oldTeacherName ?: "?"
-                        )
-                    }
-                    else {
-                        lb.annotation.setText(R.string.timetable_lesson_change)
+                    when {
+                        lesson.subjectId != lesson.oldSubjectId && lesson.teacherId != lesson.oldTeacherId
+                                && lesson.oldSubjectName != null && lesson.oldTeacherName != null ->
+                            lb.annotation.setText(
+                                    R.string.timetable_lesson_change_format,
+                                    "${lesson.oldSubjectName ?: "?"}, ${lesson.oldTeacherName ?: "?"}"
+                            )
+
+                        lesson.subjectId != lesson.oldSubjectId && lesson.oldSubjectName != null ->
+                            lb.annotation.setText(
+                                    R.string.timetable_lesson_change_format,
+                                    lesson.oldSubjectName ?: "?"
+                            )
+
+                        lesson.teacherId != lesson.oldTeacherId && lesson.oldTeacherName != null ->
+                            lb.annotation.setText(
+                                    R.string.timetable_lesson_change_format,
+                                    lesson.oldTeacherName ?: "?"
+                            )
+                        else -> lb.annotation.setText(R.string.timetable_lesson_change)
                     }
 
                     lb.annotation.background.colorFilter = PorterDuffColorFilter(
@@ -295,15 +295,19 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
                 Lesson.TYPE_SHIFTED_SOURCE -> {
                     lb.annotationVisible = true
                     when {
-                        lesson.date != lesson.oldDate -> lb.annotation.setText(
-                                R.string.timetable_lesson_shifted_other_day,
-                                lesson.date?.stringY_m_d ?: "?",
-                                lesson.startTime?.stringHM ?: "?"
-                        )
-                        lesson.startTime != lesson.oldStartTime -> lb.annotation.setText(
-                                R.string.timetable_lesson_shifted_same_day,
-                                lesson.startTime?.stringHM ?: "?"
-                        )
+                        lesson.date != lesson.oldDate && lesson.date != null ->
+                            lb.annotation.setText(
+                                    R.string.timetable_lesson_shifted_other_day,
+                                    lesson.date?.stringY_m_d ?: "?",
+                                    lesson.startTime?.stringHM ?: ""
+                            )
+
+                        lesson.startTime != lesson.oldStartTime && lesson.startTime != null ->
+                            lb.annotation.setText(
+                                    R.string.timetable_lesson_shifted_same_day,
+                                    lesson.startTime?.stringHM ?: "?"
+                            )
+
                         else -> lb.annotation.setText(R.string.timetable_lesson_shifted)
                     }
 
@@ -315,15 +319,19 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
                 Lesson.TYPE_SHIFTED_TARGET -> {
                     lb.annotationVisible = true
                     when {
-                        lesson.date != lesson.oldDate -> lb.annotation.setText(
-                                R.string.timetable_lesson_shifted_from_other_day,
-                                lesson.oldDate?.stringY_m_d ?: "?",
-                                lesson.oldStartTime?.stringHM ?: "?"
-                        )
-                        lesson.startTime != lesson.oldStartTime -> lb.annotation.setText(
-                                R.string.timetable_lesson_shifted_from_same_day,
-                                lesson.oldStartTime?.stringHM ?: "?"
-                        )
+                        lesson.date != lesson.oldDate && lesson.oldDate != null ->
+                            lb.annotation.setText(
+                                    R.string.timetable_lesson_shifted_from_other_day,
+                                    lesson.oldDate?.stringY_m_d ?: "?",
+                                    lesson.oldStartTime?.stringHM ?: ""
+                            )
+
+                        lesson.startTime != lesson.oldStartTime && lesson.oldStartTime != null ->
+                            lb.annotation.setText(
+                                    R.string.timetable_lesson_shifted_from_same_day,
+                                    lesson.oldStartTime?.stringHM ?: "?"
+                            )
+
                         else -> lb.annotation.setText(R.string.timetable_lesson_shifted_from)
                     }
 
@@ -337,7 +345,8 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
 
             // The day view needs the event time ranges in the start minute/end minute format,
             // so calculate those here
-            val startMinute = 60 * (lesson.displayStartTime?.hour ?: 0) + (lesson.displayStartTime?.minute ?: 0)
+            val startMinute = 60 * (lesson.displayStartTime?.hour
+                    ?: 0) + (lesson.displayStartTime?.minute ?: 0)
             val endMinute = startMinute + 45
             eventTimeRanges.add(DayView.EventTimeRange(startMinute, endMinute))
         }
