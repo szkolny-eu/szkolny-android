@@ -59,13 +59,14 @@ class IdziennikWebExams(override val data: DataIdziennik,
             json.getJsonArray("ListK")?.asJsonObjectList()?.forEach { exam ->
                 val id = exam.getLong("_recordId") ?: return@forEach
                 val examDate = Date.fromY_m_d(exam.getString("data") ?: return@forEach)
-                val subjectId = data.getSubject(exam.getString("przedmiot") ?: return@forEach,
-                        -1, "").id
-                val teacherId = data.getTeacherByLastFirst(exam.getString("wpisal")
-                        ?: return@forEach).id
+                val subjectName = exam.getString("przedmiot") ?: return@forEach
+                val subjectId = data.getSubject(subjectName, null, subjectName).id
+                val teacherName = exam.getString("wpisal") ?: return@forEach
+                val teacherId = data.getTeacherByLastFirst(teacherName).id
+                val topic = exam.getString("zakres") ?: ""
+
                 val lessonList = data.db.timetableDao().getForDateNow(profileId, examDate)
                 val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.startTime
-                val topic = exam.getString("zakres") ?: ""
 
                 val eventType = when (exam.getString("rodzaj")) {
                     "sprawdzian/praca klasowa" -> Event.TYPE_EXAM

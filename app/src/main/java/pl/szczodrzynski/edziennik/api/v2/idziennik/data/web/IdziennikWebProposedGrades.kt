@@ -10,21 +10,24 @@ import pl.szczodrzynski.edziennik.api.v2.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.api.v2.idziennik.ENDPOINT_IDZIENNIK_WEB_PROPOSED_GRADES
 import pl.szczodrzynski.edziennik.api.v2.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_YEAR_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getJsonObject
+import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.Utils.getWordGradeValue
 
 class IdziennikWebProposedGrades(override val data: DataIdziennik,
-                         val onSuccess: () -> Unit) : IdziennikWeb(data) {
+                                 val onSuccess: () -> Unit) : IdziennikWeb(data) {
     companion object {
         private const val TAG = "IdziennikWebProposedGrades"
     }
 
-    init {
+    init { data.profile?.also { profile ->
         webApiGet(TAG, IDZIENNIK_WEB_MISSING_GRADES, mapOf(
                 "idPozDziennika" to data.registerId
         )) { result ->
@@ -34,17 +37,17 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                 return@webApiGet
             }
 
-            val jSubjects = json.getAsJsonArray("Przedmioty")
-            for (jSubjectEl in jSubjects) {
-                val jSubject = jSubjectEl.getAsJsonObject()
-                // jSubject
-                val rSubject = data.getSubject(jSubject.get("Przedmiot").getAsString(), -1, jSubject.get("Przedmiot").getAsString())
-                val semester1Proposed = jSubject.get("OcenaSem1").getAsString()
-                val semester2Proposed = jSubject.get("OcenaSem2").getAsString()
+            json.getJsonArray("Przedmioty")?.asJsonObjectList()?.forEach { subject ->
+                val subjectName = subject.getString("Przedmiot") ?: return@forEach
+                val subjectObject = data.getSubject(subjectName, null, subjectName)
+
+                val semester1Proposed = subject.getString("OcenaSem1") ?: ""
                 val semester1Value = getWordGradeValue(semester1Proposed)
+                val semester1Id = subjectObject.id * (-100) - 1
+
+                val semester2Proposed = subject.getString("OcenaSem2") ?: ""
                 val semester2Value = getWordGradeValue(semester2Proposed)
-                val semester1Id = rSubject.id * -100 - 1
-                val semester2Id = rSubject.id * -100 - 2
+                val semester2Id = subjectObject.id * (-100) - 2
 
                 if (semester1Proposed != "") {
                     val gradeObject = Grade(
@@ -58,17 +61,18 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                             0f,
                             1,
                             -1,
-                            rSubject.id)
-
-                    gradeObject.type = TYPE_SEMESTER1_PROPOSED
+                            subjectObject.id
+                    ).apply {
+                        type = TYPE_SEMESTER1_PROPOSED
+                    }
 
                     data.gradeList.add(gradeObject)
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_GRADE,
                             gradeObject.id,
-                            profile?.empty ?: false,
-                            profile?.empty ?: false,
+                            profile.empty,
+                            profile.empty,
                             System.currentTimeMillis()
                     ))
                 }
@@ -85,17 +89,18 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                             0f,
                             2,
                             -1,
-                            rSubject.id)
-
-                    gradeObject.type = TYPE_YEAR_PROPOSED
+                            subjectObject.id
+                    ).apply {
+                        type = TYPE_YEAR_PROPOSED
+                    }
 
                     data.gradeList.add(gradeObject)
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_GRADE,
                             gradeObject.id,
-                            profile?.empty ?: false,
-                            profile?.empty ?: false,
+                            profile.empty,
+                            profile.empty,
                             System.currentTimeMillis()
                     ))
                 }
@@ -104,5 +109,5 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_PROPOSED_GRADES, SYNC_ALWAYS)
             onSuccess()
         }
-    }
+    }}
 }
