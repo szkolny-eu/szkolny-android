@@ -36,13 +36,13 @@ class LibrusApiAttendances(override val data: DataLibrus,
                 val lessonNo = attendance.getInt("LessonNo") ?: return@forEach
                 val startTime = data.lessonRanges.get(lessonNo).startTime
                 val lessonDate = Date.fromY_m_d(attendance.getString("Date"))
-                val subjectId = data.lessonList.singleOrNull {
-                    it.weekDay ==  lessonDate.weekDay && it.startTime.value == startTime.value
-                }?.subjectId ?: -1
                 val semester = attendance.getInt("Semester") ?: return@forEach
                 val type = attendance.getJsonObject("Type")?.getLong("Id") ?: return@forEach
                 val typeObject = data.attendanceTypes.get(type)
                 val topic = typeObject?.name ?: ""
+
+                val lessonList = data.db.timetableDao().getForDateNow(profileId, lessonDate)
+                val subjectId = lessonList.firstOrNull { it.startTime == startTime }?.subjectId ?: -1
 
                 val attendanceObject = Attendance(
                         profileId,
