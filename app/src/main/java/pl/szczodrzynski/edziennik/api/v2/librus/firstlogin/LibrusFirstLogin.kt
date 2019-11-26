@@ -13,8 +13,8 @@ import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusPortal
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginApi
 import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginPortal
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.AppError.CODE_LIBRUS_DISCONNECTED
-import pl.szczodrzynski.edziennik.data.api.AppError.CODE_SYNERGIA_NOT_ACTIVATED
+import pl.szczodrzynski.edziennik.api.v2.models.AppError.CODE_LIBRUS_DISCONNECTED
+import pl.szczodrzynski.edziennik.api.v2.models.AppError.CODE_SYNERGIA_NOT_ACTIVATED
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 
 class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {

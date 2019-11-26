@@ -5,8 +5,8 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.api.v2.models.AppError.CODE_APP_SERVER_ERROR
 import pl.szczodrzynski.edziennik.api.v2.models.Data
-import pl.szczodrzynski.edziennik.data.api.AppError.CODE_APP_SERVER_ERROR
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore

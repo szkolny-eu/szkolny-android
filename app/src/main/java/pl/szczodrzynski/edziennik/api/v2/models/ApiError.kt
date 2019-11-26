@@ -8,7 +8,6 @@ import android.content.Context
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
-import pl.szczodrzynski.edziennik.data.api.AppError
 
 class ApiError(val tag: String, val errorCode: Int) {
     var profileId: Int? = null

@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik.data.api;
+/*
+ * Copyright (c) Kacper Ziubryniewicz 2019-11-26
+ */
+
+package pl.szczodrzynski.edziennik.api.v2.models;
 
 import android.content.Context;
 import android.os.AsyncTask;

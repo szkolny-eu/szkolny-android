@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.api.v2.DataNotifications
 import pl.szczodrzynski.edziennik.api.v2.EXCEPTION_NOTIFY_AND_SYNC
 import pl.szczodrzynski.edziennik.api.v2.ServerSync
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EndpointCallback
-import pl.szczodrzynski.edziennik.data.api.AppError.*
+import pl.szczodrzynski.edziennik.api.v2.models.AppError.*
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer

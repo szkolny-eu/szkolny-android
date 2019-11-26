@@ -19,10 +19,10 @@ import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginMobidziennikBinding;
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar;
 
-import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_ARCHIVED;
-import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_LOGIN;
-import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_INVALID_SERVER_ADDRESS;
-import static pl.szczodrzynski.edziennik.data.api.AppError.CODE_OLD_PASSWORD;
+import static pl.szczodrzynski.edziennik.api.v2.models.AppError.CODE_ARCHIVED;
+import static pl.szczodrzynski.edziennik.api.v2.models.AppError.CODE_INVALID_LOGIN;
+import static pl.szczodrzynski.edziennik.api.v2.models.AppError.CODE_INVALID_SERVER_ADDRESS;
+import static pl.szczodrzynski.edziennik.api.v2.models.AppError.CODE_OLD_PASSWORD;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 
 public class LoginMobidziennikFragment extends Fragment {
