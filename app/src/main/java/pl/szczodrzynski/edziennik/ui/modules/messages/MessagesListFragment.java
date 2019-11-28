@@ -106,7 +106,7 @@ public class MessagesListFragment extends Fragment {
             });*/
 
             Bundle args = new Bundle();
-            args.putLong("messageId", messagesAdapter.messageList.get(position).id);
+            args.putLong("messageId", messagesAdapter.getMessageList().get(position).id);
             activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, args);
 
             // KOD W WERSJI 2.7
