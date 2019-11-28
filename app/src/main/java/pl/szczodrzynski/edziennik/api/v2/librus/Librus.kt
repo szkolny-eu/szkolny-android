@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.api.v2.librus.firstlogin.LibrusFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.librus.login.*
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -105,12 +106,12 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
     }
 
-    override fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String) {
+    override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {
         LibrusLoginPortal(data) {
             LibrusLoginApi(data) {
                 LibrusLoginSynergia(data) {
                     LibrusLoginMessages(data) {
-                        LibrusMessagesGetAttachment(data, messageId, attachmentId, attachmentName) {
+                        LibrusMessagesGetAttachment(data, message, attachmentId, attachmentName) {
                             completed()
                         }
                     }

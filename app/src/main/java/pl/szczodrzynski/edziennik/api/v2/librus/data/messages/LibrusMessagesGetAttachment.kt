@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.api.v2.events.AttachmentGetEvent.Companion.TYP
 import pl.szczodrzynski.edziennik.api.v2.librus.DataLibrus
 import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.Utils
@@ -22,7 +23,7 @@ import java.io.File
 import kotlin.coroutines.CoroutineContext
 
 class LibrusMessagesGetAttachment(
-        override val data: DataLibrus, val messageId: Long, val attachmentId: Long,
+        override val data: DataLibrus, val message: Message, val attachmentId: Long,
         val attachmentName: String, val onSuccess: () -> Unit) : LibrusMessages(data), CoroutineScope {
     companion object {
         const val TAG = "LibrusMessagesGetAttachment"
@@ -38,7 +39,7 @@ class LibrusMessagesGetAttachment(
     init {
         messagesGet(TAG, "GetFileDownloadLink", parameters = mapOf(
                 "fileId" to attachmentId,
-                "msgId" to messageId,
+                "msgId" to message.id,
                 "archive" to 0
         )) { doc ->
             val downloadLink = doc.select("response GetFileDownloadLink downloadLink").text()
@@ -55,8 +56,6 @@ class LibrusMessagesGetAttachment(
                 data.error(ApiError(TAG, ERROR_FILE_DOWNLOAD)
                         .withApiResponse(doc.toString()))
             }
-
-            onSuccess()
         }
     }
 
@@ -92,12 +91,11 @@ class LibrusMessagesGetAttachment(
     private fun downloadAttachment(attachmentKey: String) {
         val targetFile = File(Utils.getStorageDir(), attachmentName)
 
-        sandboxGetFile(TAG, "CSDownload&singleUseKey=$attachmentKey",
-                targetFile, { file ->
+        sandboxGetFile(TAG, "CSDownload&singleUseKey=$attachmentKey", targetFile, { file ->
 
             val event = AttachmentGetEvent(
                     profileId,
-                    messageId,
+                    message.id,
                     attachmentId,
                     TYPE_FINISHED,
                     file.absolutePath
@@ -108,10 +106,12 @@ class LibrusMessagesGetAttachment(
 
             EventBus.getDefault().post(event)
 
+            onSuccess()
+
         }) { written, _ ->
             val event = AttachmentGetEvent(
                     profileId,
-                    messageId,
+                    message.id,
                     attachmentId,
                     TYPE_PROGRESS,
                     bytesWritten = written

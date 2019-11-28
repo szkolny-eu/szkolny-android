@@ -18,6 +18,7 @@ import pl.szczodrzynski.edziennik.api.v2.vulcan.login.VulcanLogin
 import pl.szczodrzynski.edziennik.api.v2.vulcan.login.VulcanLoginApi
 import pl.szczodrzynski.edziennik.api.v2.vulcanLoginMethods
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -76,7 +77,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     }
 
-    override fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String) {
+    override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {
         
     }
 

@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.api.v2.template.firstlogin.TemplateFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLogin
 import pl.szczodrzynski.edziennik.api.v2.templateLoginMethods
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -70,7 +71,7 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
 
     }
 
-    override fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String) {
+    override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {
 
     }
 

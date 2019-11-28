@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.api.v2.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.MobidziennikData
+import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikWebGetAttachment
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.data.web.MobidziennikWebGetMessage
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.firstlogin.MobidziennikFirstLogin
 import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLogin
@@ -18,6 +19,7 @@ import pl.szczodrzynski.edziennik.api.v2.mobidziennikLoginMethods
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.api.v2.prepare
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -76,8 +78,12 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     }
 
-    override fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String) {
-
+    override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {
+        MobidziennikLoginWeb(data) {
+            MobidziennikWebGetAttachment(data, message, attachmentId, attachmentName) {
+                completed()
+            }
+        }
     }
 
     override fun firstLogin() {

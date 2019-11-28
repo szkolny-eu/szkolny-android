@@ -125,6 +125,7 @@ class MessageFragment : Fragment(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onMessageGetEvent(event: MessageGetEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         // TODO remove this: message = event.message
         showMessage()
     }
@@ -197,6 +198,7 @@ class MessageFragment : Fragment(), CoroutineScope {
     private fun showAttachments() {
         if (message.attachmentIds != null) {
             val insertPoint = b.attachments
+            insertPoint.removeAllViews()
 
             val chipLayoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             chipLayoutParams.setMargins(0, Utils.dpToPx(8), 0, Utils.dpToPx(8))
@@ -285,7 +287,7 @@ class MessageFragment : Fragment(), CoroutineScope {
 
         EdziennikTask.attachmentGet(
                 App.profileId,
-                attachment.messageId,
+                message,
                 attachment.attachmentId,
                 attachment.attachmentName
         ).enqueue(activity)

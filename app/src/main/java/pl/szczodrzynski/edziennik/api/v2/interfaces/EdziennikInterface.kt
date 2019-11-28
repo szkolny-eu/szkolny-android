@@ -5,13 +5,14 @@
 package pl.szczodrzynski.edziennik.api.v2.interfaces
 
 import com.google.gson.JsonObject
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 
 interface EdziennikInterface {
     fun sync(featureIds: List<Int>, viewId: Int? = null, arguments: JsonObject? = null)
     fun getMessage(message: MessageFull)
     fun markAllAnnouncementsAsRead()
-    fun getAttachment(messageId: Long, attachmentId: Long, attachmentName: String)
+    fun getAttachment(message: Message, attachmentId: Long, attachmentName: String)
     fun firstLogin()
     fun cancel()
 }

@@ -196,7 +196,7 @@ open class LibrusMessages(open val data: DataLibrus) {
                 try {
                     onSuccess(file)
                 } catch (e: Exception) {
-                    data.error(ApiError(tag, EXCEPTION_LIBRUS_MESSAGES_REQUEST)
+                    data.error(ApiError(tag, EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST)
                             .withResponse(response)
                             .withThrowable(e))
                 }
@@ -206,7 +206,7 @@ open class LibrusMessages(open val data: DataLibrus) {
                 try {
                     onProgress(bytesWritten, bytesTotal)
                 } catch (e: Exception) {
-                    data.error(ApiError(tag, EXCEPTION_LIBRUS_MESSAGES_REQUEST)
+                    data.error(ApiError(tag, EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST)
                             .withThrowable(e))
                 }
             }
