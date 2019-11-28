@@ -1054,4 +1054,5 @@
     <string name="home_timetable_today">Dzisiaj</string>
     <string name="home_timetable_lesson_ongoing">Teraz: %s</string>
     <string name="home_timetable_lesson_not_started">Za chwilę: %s</string>
+    <string name="home_timetable_lessons_remaining">Pozostało lekcji: %d - do %s</string>
 </resources>

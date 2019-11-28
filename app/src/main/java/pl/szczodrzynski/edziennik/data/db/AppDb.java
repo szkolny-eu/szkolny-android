@@ -10,8 +10,8 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import pl.szczodrzynski.edziennik.config.ConfigDao;
-import pl.szczodrzynski.edziennik.config.ConfigEntry;
+import pl.szczodrzynski.edziennik.config.db.ConfigDao;
+import pl.szczodrzynski.edziennik.config.db.ConfigEntry;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterDate;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterDateInt;
 import pl.szczodrzynski.edziennik.data.db.converters.ConverterJsonObject;

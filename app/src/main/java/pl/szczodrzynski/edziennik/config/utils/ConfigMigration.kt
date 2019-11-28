@@ -1,10 +1,11 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-11-26.
+ * Copyright (c) Kuba Szczodrzyński 2019-11-27.
  */
 
-package pl.szczodrzynski.edziennik.config
+package pl.szczodrzynski.edziennik.config.utils
 
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.config.Config
 
 class ConfigMigration(config: Config) {
     init { config.apply {

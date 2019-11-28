@@ -1,48 +1,50 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-11-26.
+ * Copyright (c) Kuba Szczodrzyński 2019-11-27.
  */
 
-package pl.szczodrzynski.edziennik.config
+package pl.szczodrzynski.edziennik.config.utils
 
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
+import pl.szczodrzynski.edziennik.config.AbstractConfig
+import pl.szczodrzynski.edziennik.config.db.ConfigEntry
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 private val gson = Gson()
 
-fun Config.set(profileId: Int, key: String, value: Int) {
-    set(profileId, key, value.toString())
+fun AbstractConfig.set(key: String, value: Int) {
+    set(key, value.toString())
 }
-fun Config.set(profileId: Int, key: String, value: Boolean) {
-    set(profileId, key, value.toString())
+fun AbstractConfig.set(key: String, value: Boolean) {
+    set(key, value.toString())
 }
-fun Config.set(profileId: Int, key: String, value: Long) {
-    set(profileId, key, value.toString())
+fun AbstractConfig.set(key: String, value: Long) {
+    set(key, value.toString())
 }
-fun Config.set(profileId: Int, key: String, value: Float) {
-    set(profileId, key, value.toString())
+fun AbstractConfig.set(key: String, value: Float) {
+    set(key, value.toString())
 }
-fun Config.set(profileId: Int, key: String, value: Date?) {
-    set(profileId, key, value?.stringY_m_d)
+fun AbstractConfig.set(key: String, value: Date?) {
+    set(key, value?.stringY_m_d)
 }
-fun Config.set(profileId: Int, key: String, value: Time?) {
-    set(profileId, key, value?.stringValue)
+fun AbstractConfig.set(key: String, value: Time?) {
+    set(key, value?.stringValue)
 }
-fun Config.set(profileId: Int, key: String, value: JsonElement?) {
-    set(profileId, key, value?.toString())
+fun AbstractConfig.set(key: String, value: JsonElement?) {
+    set(key, value?.toString())
 }
-fun Config.set(profileId: Int, key: String, value: List<Any>?) {
-    set(profileId, key, value?.let { gson.toJson(it) })
+fun AbstractConfig.set(key: String, value: List<Any>?) {
+    set(key, value?.let { gson.toJson(it) })
 }
-fun Config.setStringList(profileId: Int, key: String, value: List<String>?) {
-    set(profileId, key, value?.let { gson.toJson(it) })
+fun AbstractConfig.setStringList(key: String, value: List<String>?) {
+    set(key, value?.let { gson.toJson(it) })
 }
-fun Config.setIntList(profileId: Int, key: String, value: List<Int>?) {
-    set(profileId, key, value?.let { gson.toJson(it) })
+fun AbstractConfig.setIntList(key: String, value: List<Int>?) {
+    set(key, value?.let { gson.toJson(it) })
 }
-fun Config.setLongList(profileId: Int, key: String, value: List<Long>?) {
-    set(profileId, key, value?.let { gson.toJson(it) })
+fun AbstractConfig.setLongList(key: String, value: List<Long>?) {
+    set(key, value?.let { gson.toJson(it) })
 }
 
 fun HashMap<String, String?>.get(key: String, default: String?): String? {
@@ -85,9 +87,10 @@ fun HashMap<String, String?>.getLongList(key: String, default: List<Long>?): Lis
     return this[key]?.let { gson.fromJson<List<Long>>(it, object: TypeToken<List<Long>>(){}.type) } ?: default
 }
 
-fun List<ConfigEntry>.toHashMap(map: HashMap<String, String?>) {
+fun List<ConfigEntry>.toHashMap(profileId: Int, map: HashMap<String, String?>) {
     map.clear()
     forEach {
-        map[it.key] = it.value
+        if (it.profileId == profileId)
+            map[it.key] = it.value
     }
 }

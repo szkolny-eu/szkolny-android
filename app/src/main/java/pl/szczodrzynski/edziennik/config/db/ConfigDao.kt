@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-11-26.
+ * Copyright (c) Kuba Szczodrzyński 2019-11-27.
  */
 
-package pl.szczodrzynski.edziennik.config
+package pl.szczodrzynski.edziennik.config.db
 
 import androidx.room.Dao
 import androidx.room.Insert

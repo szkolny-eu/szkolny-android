@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-11-26.
  */
 
-package pl.szczodrzynski.edziennik.config
+package pl.szczodrzynski.edziennik.config.db
 
 import androidx.room.Entity
 

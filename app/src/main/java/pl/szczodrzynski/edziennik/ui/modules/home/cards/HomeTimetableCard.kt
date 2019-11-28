@@ -145,6 +145,11 @@ class HomeTimetableCard(
         if (isToday) {
             // today
             b.dayInfo.setText(R.string.home_timetable_today)
+            b.lessonInfo.setText(
+                    R.string.home_timetable_lessons_remaining,
+                    lessons.size,
+                    lastLesson?.displayEndTime?.stringHM ?: "?"
+            )
             counterStart = firstLesson?.displayStartTime
             counterEnd = firstLesson?.displayEndTime
             val isOngoing = counterStart <= now && now <= counterEnd
