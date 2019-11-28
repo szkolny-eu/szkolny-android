@@ -587,3 +587,10 @@ fun Context.timeLeft(time: Int, delimiter: String = " "): String {
 
     return parts.joinToString(delimiter) { resources.getQuantityString(it.first, it.second, it.second) }
 }
+
+inline fun <reified T> Any?.instanceOfOrNull(): T? {
+    return when (this) {
+        is T -> this
+        else -> null
+    }
+}

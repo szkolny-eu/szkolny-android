@@ -42,7 +42,7 @@ class LessonDetailsDialog(
                 .setPositiveButton(R.string.close) { dialog, _ ->
                     dialog.dismiss()
                 }
-                .setNeutralButton(R.string.add) { dialog, _ ->
+                .setNeutralButton(R.string.add) { _, _ ->
                     EventManualV2Dialog(
                             activity,
                             lesson.profileId,

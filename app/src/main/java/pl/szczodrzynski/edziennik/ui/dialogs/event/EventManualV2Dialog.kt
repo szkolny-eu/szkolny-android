@@ -7,7 +7,9 @@ package pl.szczodrzynski.edziennik.ui.dialogs.event
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -18,7 +20,9 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
@@ -68,11 +72,21 @@ class EventManualV2Dialog(
                 .setTitle(R.string.dialog_event_manual_title)
                 .setView(b.root)
                 .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-                .setPositiveButton(R.string.save) { _, _ -> saveEvent() }
+                .setPositiveButton(R.string.save, null)
                 .setOnDismissListener {
                     onDismissListener?.invoke(TAG)
                 }
-                .show()
+                .create()
+                .apply {
+                    setOnShowListener { dialog ->
+                        val positiveButton = (dialog as AlertDialog).getButton(BUTTON_POSITIVE)
+                        positiveButton.setOnClickListener {
+                            saveEvent()
+                        }
+                    }
+
+                    show()
+                }
 
         event = editingEvent?.clone() ?: Event().also { event ->
             event.profileId = profileId
@@ -442,17 +456,16 @@ class EventManualV2Dialog(
 
             // attach a listener to time dropdown
             b.timeDropdown.setOnChangeListener { item ->
-                when {
+                when (item.id) {
                     // no lessons this day
-                    item.id == -2L -> {
+                    -2L -> {
                         b.timeDropdown.deselect()
                         return@setOnChangeListener false
                     }
-                    // custom start hour
-                    item.id == -1L -> {
 
-                        return@setOnChangeListener false
-                    }
+                    // custom start hour
+                    -1L -> return@setOnChangeListener false
+
                     // selected a specific lesson
                     else -> {
                         if (item.tag is LessonFull) {
@@ -461,7 +474,7 @@ class EventManualV2Dialog(
                             b.teamDropdown.deselect()
                             b.subjectDropdown.deselect()
                             b.teacherDropdown.deselect()
-                            item.tag.displayTeamId?.let { 
+                            item.tag.displayTeamId?.let {
                                 b.teamDropdown.select(it)
                             }
                             item.tag.displaySubjectId?.let {
@@ -479,6 +492,80 @@ class EventManualV2Dialog(
     }
 
     private fun saveEvent() {
+        val date = b.dateDropdown.selected?.tag.instanceOfOrNull<Date>()
+        val lesson = b.timeDropdown.selected?.tag.instanceOfOrNull<LessonFull>()
+        val team = b.teamDropdown.selected?.tag.instanceOfOrNull<Team>()
+        val share = b.shareSwitch.isChecked
+        val type = b.typeDropdown.selected?.tag.instanceOfOrNull<EventType>()
+        val topic = b.topic.text?.toString()
+        val subject = b.subjectDropdown.selected?.tag.instanceOfOrNull<Subject>()
+        val teacher = b.teacherDropdown.selected?.tag.instanceOfOrNull<Teacher>()
 
+        b.teamDropdown.error = null
+        b.typeDropdown.error = null
+        b.topic.error = null
+
+        var isError = false
+
+        if (share && team == null) {
+            b.teamDropdown.error = app.getString(R.string.dialog_event_manual_team_choose)
+            isError = true
+        }
+
+        if (type == null) {
+            b.typeDropdown.error = app.getString(R.string.dialog_event_manual_type_choose)
+            isError = true
+        }
+
+        if (topic.isNullOrBlank()) {
+            b.topic.error = app.getString(R.string.dialog_event_manual_topic_choose)
+            isError = true
+        }
+
+        if (isError) return
+
+        val id = System.currentTimeMillis()
+
+        val eventObject = Event(
+                profileId,
+                id,
+                date,
+                lesson?.displayStartTime,
+                topic,
+                customColor ?: -1,
+                type?.id?.toInt() ?: Event.TYPE_DEFAULT,
+                true,
+                teacher?.id ?: -1,
+                subject?.id ?: -1,
+                team?.id ?: -1
+        )
+
+        val metadataObject = Metadata(
+                profileId,
+                when (type?.id?.toInt()) {
+                    Event.TYPE_HOMEWORK -> Metadata.TYPE_HOMEWORK
+                    else -> Metadata.TYPE_EVENT
+                },
+                eventObject.id,
+                true,
+                true,
+                System.currentTimeMillis()
+        )
+
+        finishAdding(eventObject, metadataObject)
+    }
+
+    private fun finishAdding(eventObject: Event, metadataObject: Metadata) {
+        launch {
+            val deferred = async(Dispatchers.Default) {
+                app.db.eventDao().add(eventObject)
+                app.db.metadataDao().add(metadataObject)
+            }
+
+            deferred.await()
+        }
+
+        dialog.dismiss()
+        Toast.makeText(app, R.string.saved, Toast.LENGTH_SHORT).show()
     }
 }
