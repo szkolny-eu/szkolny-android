@@ -124,7 +124,7 @@ class MobidziennikWebGetMessage(
                     val attachmentName = it.ownText()
                     Regexes.MOBIDZIENNIK_MESSAGE_ATTACHMENT.find(it.outerHtml())?.let { match ->
                         val attachmentId = match[1].toLong()
-                        var size = match[2].toFloatOrNull() ?: 0f
+                        var size = match[2].toFloatOrNull() ?: -1f
                         when (match[3]) {
                             "K" -> size *= 1024f
                             "M" -> size *= 1024f * 1024f
