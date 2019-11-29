@@ -46,9 +46,9 @@ public class MessagesListFragment extends Fragment {
     static final long TRANSITION_DURATION = 300L;
     static final String TAP_POSITION = "tap_position";
 
-    private static int tapPosition = NO_POSITION;
-    private static int topPosition = NO_POSITION;
-    private static int bottomPosition = NO_POSITION;
+    private static int[] tapPositions = {NO_POSITION, NO_POSITION};
+    private static int[] topPositions = {NO_POSITION, NO_POSITION};
+    private static int[] bottomPositions = {NO_POSITION, NO_POSITION};
 
     private int messageType = Message.TYPE_RECEIVED;
 
@@ -93,11 +93,11 @@ public class MessagesListFragment extends Fragment {
 
         messagesAdapter = new MessagesAdapter(app, ((parent, view1, position, id) -> {
             // TODO ANIMATION
-            /*tapPosition = position;
-            topPosition = ((LinearLayoutManager) b.emailList.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-            bottomPosition = ((LinearLayoutManager) b.emailList.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+            tapPositions[messageType] = position;
+            topPositions[messageType] = ((LinearLayoutManager) b.emailList.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+            bottomPositions[messageType] = ((LinearLayoutManager) b.emailList.getLayoutManager()).findLastCompletelyVisibleItemPosition();
 
-            view1.getGlobalVisibleRect(viewRect);
+            /*view1.getGlobalVisibleRect(viewRect);
             ((Transition) MessagesListFragment.this.getExitTransition()).setEpicenterCallback(new Transition.EpicenterCallback() {
                 @Override
                 public Rect onGetEpicenter(@NonNull Transition transition) {
@@ -224,17 +224,36 @@ public class MessagesListFragment extends Fragment {
         b.progressBar.setVisibility(View.GONE);
         b.emailList.setVisibility(View.VISIBLE);
         messagesAdapter.setData(messageFulls);
+
+        LinearLayoutManager layoutManager = (LinearLayoutManager) b.emailList.getLayoutManager();
+        if (tapPositions[messageType] != NO_POSITION && layoutManager != null) {
+            //d("MessageList", "Scrolling");
+
+            if (topPositions[messageType] > layoutManager.findLastCompletelyVisibleItemPosition()) {
+                b.emailList.scrollToPosition(topPositions[messageType]);
+            }
+            else if (bottomPositions[messageType] < layoutManager.findFirstCompletelyVisibleItemPosition()) {
+                b.emailList.scrollToPosition(bottomPositions[messageType]);
+            }
+            else {
+                b.emailList.scrollToPosition(tapPositions[messageType]);
+            }
+
+            //tapPositions[messageType] = NO_POSITION;
+            //topPositions[messageType] = NO_POSITION;
+            //bottomPositions[messageType] = NO_POSITION;
+        }
         // TODO ANIMATION
         /*final ViewTreeObserver observer = viewParent.getViewTreeObserver();
         observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                viewParent.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                *//*viewParent.getViewTreeObserver().removeOnPreDrawListener(this);
                 if (getExitTransition() == null) {
                     setExitTransition(new SlideExplode().setDuration(TRANSITION_DURATION).setInterpolator(transitionInterpolator));
                 }
 
-                LinearLayoutManager layoutManager = (LinearLayoutManager) b.emailList.getLayoutManager();
                 View view2 = layoutManager != null ? layoutManager.findViewByPosition(tapPosition) : null;
                 if (view2 != null) {
                     view2.getGlobalVisibleRect(viewRect);
@@ -248,24 +267,8 @@ public class MessagesListFragment extends Fragment {
 
                 d("MessagesList", "topPosition "+topPosition);
                 d("MessagesList", "tapPosition "+tapPosition);
-                d("MessagesList", "bottomPosition "+bottomPosition);
-                if (tapPosition != NO_POSITION && layoutManager != null) {
-                    d("MessageList", "Scrolling");
+                d("MessagesList", "bottomPosition "+bottomPosition);*//*
 
-                    if (bottomPosition > layoutManager.findLastCompletelyVisibleItemPosition()) {
-                        b.emailList.scrollToPosition(bottomPosition);
-                    }
-                    else if (topPosition < layoutManager.findFirstCompletelyVisibleItemPosition()) {
-                        b.emailList.scrollToPosition(topPosition);
-                    }
-                    else {
-                        b.emailList.scrollToPosition(tapPosition);
-                    }
-
-                    tapPosition = NO_POSITION;
-                    topPosition = NO_POSITION;
-                    bottomPosition = NO_POSITION;
-                }
 
                 startPostponedEnterTransition();
                 return true;
@@ -276,7 +279,7 @@ public class MessagesListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        d("MessagesList", "onSaveInstanceState position "+tapPosition);
-        outState.putInt(TAP_POSITION, tapPosition);
+        d("MessagesList", "onSaveInstanceState position "+tapPositions[messageType]);
+        outState.putInt(TAP_POSITION, tapPositions[messageType]);
     }
 }
