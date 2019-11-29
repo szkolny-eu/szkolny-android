@@ -24,7 +24,7 @@ object Regexes {
         """Liczona do średniej:.*?<strong>nie<br/?></strong>""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
     val MOBIDZIENNIK_GRADES_DETAILS by lazy {
-        """<strong.*?>(.+?)</strong>.*?<sup>.+?</sup>.*?<small>\((.+?)\)</small>.*?<span>.*?Wartość oceny:.*?<strong>([0-9.]+)</strong>.*?Wpisał\(a\):.*?<strong>(.+?)</strong>""".toRegex(RegexOption.DOT_MATCHES_ALL)
+        """<strong.*?>(.+?)</strong>.*?<sup>.+?</sup>.*?(?:<small>\((.+?)\)</small>.*?)?<span>.*?Wartość oceny:.*?<strong>([0-9.]+)</strong>.*?Wpisał\(a\):.*?<strong>(.+?)</strong>.*?(?:Komentarz:.*?<strong>(.+?)</strong>)?</span>""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
 
     val MOBIDZIENNIK_EVENT_TYPE by lazy {

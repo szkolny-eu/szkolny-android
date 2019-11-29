@@ -96,12 +96,16 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                         if (Regexes.MOBIDZIENNIK_GRADES_COUNT_TO_AVG.containsMatchIn(html)) {
                             Regexes.MOBIDZIENNIK_GRADES_DETAILS.find(html)?.let { match ->
                                 val gradeName = match[1]
-                                val gradeDescription = match[2]
+                                var gradeDescription = match[2]
                                 val gradeValue = match[3].toFloatOrNull() ?: 0.0f
                                 val teacherName = match[4].fixWhiteSpaces()
 
                                 val teacherId = data.teacherList.singleOrNull { it.fullNameLastFirst == teacherName }?.id ?: -1
                                 val subjectId = data.subjectList.singleOrNull { it.longName == subjectName }?.id ?: -1
+
+                                if (match[5].isNotEmpty()) {
+                                    gradeDescription += "\n"+match[5].replace("<br>", "\n")
+                                }
 
                                 val gradeObject = Grade(
                                         profileId,
