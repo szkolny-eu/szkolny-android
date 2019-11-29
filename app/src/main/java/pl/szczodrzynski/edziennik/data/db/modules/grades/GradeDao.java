@@ -1,18 +1,16 @@
 package pl.szczodrzynski.edziennik.data.db.modules.grades;
 
+import android.util.LongSparseArray;
+
 import androidx.lifecycle.LiveData;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQuery;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.room.Transaction;
-
-import android.util.LongSparseArray;
-import android.util.SparseArray;
-import android.util.SparseIntArray;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
@@ -132,5 +130,9 @@ public abstract class GradeDao {
                 gradeAddedDates.put(ids.get(index), addedDates.get(index));
             }
         }
+    }
+
+    public LiveData<List<GradeFull>> getAllFromDate(int profileId, int semester, long date) {
+        return getAllWhere(profileId, "gradeSemester = " + semester + "  AND addedDate > " + date);
     }
 }

@@ -28,6 +28,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeV2Binding
 import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
+import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeGradesCard
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeLuckyNumberCard
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeTimetableCard
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -94,7 +95,8 @@ class HomeFragmentV2 : Fragment(), CoroutineScope {
 
         val items = mutableListOf<HomeCard>(
                 HomeLuckyNumberCard(0, app, activity, this, app.profile),
-                HomeTimetableCard(1, app, activity, this, app.profile)
+                HomeTimetableCard(1, app, activity, this, app.profile),
+                HomeGradesCard(2, app, activity, this, app.profile)
         )
 
         val adapter = HomeCardAdapter(items)

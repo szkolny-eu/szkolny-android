@@ -1,5 +1,7 @@
 package pl.szczodrzynski.edziennik.utils.models;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
@@ -43,8 +45,9 @@ public class ItemGradesSubjectModel {
 
     public boolean expandView = false;
 
-    public static ItemGradesSubjectModel searchModelBySubjectId(List<ItemGradesSubjectModel> subjectList, long id) {
-        for (ItemGradesSubjectModel subjectModel: subjectList) {
+    public static @Nullable
+    ItemGradesSubjectModel searchModelBySubjectId(List<ItemGradesSubjectModel> subjectList, long id) {
+        for (ItemGradesSubjectModel subjectModel : subjectList) {
             if (subjectModel.subject != null && subjectModel.subject.id == id) {
                 return subjectModel;
             }
