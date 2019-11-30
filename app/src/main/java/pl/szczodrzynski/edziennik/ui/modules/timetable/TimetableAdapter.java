@@ -5,15 +5,16 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -27,11 +28,11 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
-import pl.szczodrzynski.edziennik.utils.models.Date;
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialogOld;
 import pl.szczodrzynski.edziennik.utils.SpannableHtmlTagHandler;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
 
@@ -159,7 +160,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
             }
         }
 
-        holder.timetableItemCard.setOnClickListener(v -> new EventListDialog(context).show(app, lessonDate, lesson.startTime));
+        holder.timetableItemCard.setOnClickListener(v -> new EventListDialogOld(context).show(app, lessonDate, lesson.startTime));
     }
 
     @Override

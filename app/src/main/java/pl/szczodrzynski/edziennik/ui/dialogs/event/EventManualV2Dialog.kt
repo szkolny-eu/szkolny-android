@@ -194,6 +194,8 @@ class EventManualV2Dialog(
             b.teamDropdown.select(it.teamId)
             b.subjectDropdown.select(it.subjectId)
             b.teacherDropdown.select(it.teacherId)
+            b.topic.setText(it.topic)
+            b.shareSwitch.isChecked = true
             b.typeDropdown.select(it.type)?.let { item ->
                 customColor = (item.tag as EventType).color
             }

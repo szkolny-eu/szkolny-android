@@ -3,13 +3,14 @@ package pl.szczodrzynski.edziennik.ui.dialogs.event;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.mikepenz.iconics.view.IconicsTextView;
@@ -20,21 +21,21 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
-import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 
-public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
-    private static final String TAG = "EventListAdapter";
+public class EventListAdapterOld extends RecyclerView.Adapter<EventListAdapterOld.ViewHolder> {
+    private static final String TAG = "EventListAdapterOld";
     private Context context;
     private List<EventFull> examList;
-    private EventListDialog parentDialog;
+    private EventListDialogOld parentDialog;
 
     //getting the context and product list with constructor
-    public EventListAdapter(Context mCtx, List<EventFull> examList, EventListDialog parentDialog) {
+    public EventListAdapterOld(Context mCtx, List<EventFull> examList, EventListDialogOld parentDialog) {
         this.context = mCtx;
         this.examList = examList;
         this.parentDialog = parentDialog;
@@ -42,15 +43,15 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     @NonNull
     @Override
-    public EventListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EventListAdapterOld.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.row_dialog_event_list_item, parent, false);
-        return new EventListAdapter.ViewHolder(view);
+        return new EventListAdapterOld.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EventListAdapterOld.ViewHolder holder, int position) {
         App app = (App) context.getApplicationContext();
 
         EventFull event = examList.get(position);

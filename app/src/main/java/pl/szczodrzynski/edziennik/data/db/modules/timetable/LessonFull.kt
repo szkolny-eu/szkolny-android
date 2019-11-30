@@ -84,23 +84,43 @@ class LessonFull(profileId: Int, id: Long) : Lesson(profileId, id) {
         })
     }
 
-    val changeSubjectName: String
-        get() {
-            val first = when (type) {
-                TYPE_CHANGE, TYPE_CANCELLED, TYPE_SHIFTED_SOURCE -> oldSubjectName
-                else -> subjectName
-            }
-
-            val second = when (type) {
-                TYPE_CHANGE -> subjectName
-                else -> null
-            }
-
-            return when (second) {
-                null -> first ?: ""
-                else -> "$first -> $second"
-            }
+    private fun changeText(actual: String?, old: String?): String {
+        val first = when (type) {
+            TYPE_CHANGE, TYPE_CANCELLED, TYPE_SHIFTED_SOURCE -> old
+            else -> actual
         }
+
+        val second = when (type) {
+            TYPE_CHANGE -> actual
+            else -> null
+        }
+
+        return when (second) {
+            null -> first ?: ""
+            first -> second
+            else -> "$first -> $second"
+        }
+    }
+
+    val changeSubjectName: String
+        get() = changeText(subjectName, oldSubjectName)
+
+    val isSubjectNameChanged: Boolean
+        get() = type == TYPE_CHANGE && subjectName != oldSubjectName
+
+
+    val changeTeacherName: String
+        get() = changeText(teacherName, oldTeacherName)
+
+    val isTeacherNameChanged: Boolean
+        get() = type == TYPE_CHANGE && teacherName != oldTeacherName
+
+
+    val changeClassroom: String
+        get() = changeText(classroom, oldClassroom)
+
+    val isClassroomChanged: Boolean
+        get() = type == TYPE_CHANGE && classroom != oldClassroom
 
     // metadata
     var seen: Boolean = false

@@ -311,7 +311,7 @@ public class AgendaFragment extends Fragment {
                         int scrolledDate = Date.fromCalendar(calendar).getValue();
                         if (unreadEventDates.contains(scrolledDate)) {
                             AsyncTask.execute(() -> app.db.eventDao().setSeenByDate(App.profileId, Date.fromYmd(intToStr(scrolledDate)), true));
-                            unreadEventDates.remove(unreadEventDates.indexOf(scrolledDate));
+                            unreadEventDates.remove((Integer) scrolledDate);
                         }
                     }
 
@@ -319,9 +319,23 @@ public class AgendaFragment extends Fragment {
                     public void onEventSelected(CalendarEvent calendarEvent) {
                         if (calendarEvent instanceof BaseCalendarEvent) {
                             if (!calendarEvent.isPlaceholder() && !calendarEvent.isAllDay()) {
-                                new EventListDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()), Time.fromMillis(calendarEvent.getStartTime().getTimeInMillis()), true);
+                                // new EventListDialogOld(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()), Time.fromMillis(calendarEvent.getStartTime().getTimeInMillis()), true);
+                                new EventListDialog(
+                                        activity,
+                                        App.profileId,
+                                        Date.fromCalendar(calendarEvent.getInstanceDay()),
+                                        Time.fromMillis(calendarEvent.getStartTime().getTimeInMillis()),
+                                        null,
+                                        null);
                             } else {
-                                new EventListDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
+                                // new EventListDialogOld(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
+                                new EventListDialog(
+                                        activity,
+                                        App.profileId,
+                                        Date.fromCalendar(calendarEvent.getInstanceDay()),
+                                        null,
+                                        null,
+                                        null);
                             }
                         } else if (calendarEvent instanceof LessonChangeEvent) {
                             new LessonChangeDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
@@ -403,10 +417,18 @@ public class AgendaFragment extends Fragment {
                     int scrolledDate = dayDate.getValue();
                     if (unreadEventDates.contains(scrolledDate)) {
                         AsyncTask.execute(() -> app.db.eventDao().setSeenByDate(App.profileId, Date.fromYmd(intToStr(scrolledDate)), true));
-                        unreadEventDates.remove(unreadEventDates.indexOf(scrolledDate));
+                        unreadEventDates.remove((Integer) scrolledDate);
                     }
 
-                    new EventListDialog(getContext()).show(app, dayDate);
+                    // new EventListDialogOld(getContext()).show(app, dayDate);
+                    new EventListDialog(
+                            activity,
+                            App.profileId,
+                            dayDate,
+                            null,
+                            null,
+                            null
+                    );
                 });
                 b_calendar.progressBar.setVisibility(View.GONE);
             });

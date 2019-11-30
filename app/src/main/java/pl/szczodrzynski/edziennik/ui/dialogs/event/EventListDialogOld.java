@@ -8,13 +8,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
@@ -26,16 +26,16 @@ import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
-public class EventListDialog {
+public class EventListDialogOld {
     private App app;
     private Context context;
     private int profileId;
 
-    public EventListDialog(Context context) {
+    public EventListDialogOld(Context context) {
         this.context = context;
         this.profileId = App.profileId;
     }
-    public EventListDialog(Context context, int profileId) {
+    public EventListDialogOld(Context context, int profileId) {
         this.context = context;
         this.profileId = profileId;
     }
@@ -47,7 +47,7 @@ public class EventListDialog {
     public boolean callDismissListener = true;
     private LessonFull lesson;
 
-    public EventListDialog withDismissListener(DialogInterface.OnDismissListener dismissListener) {
+    public EventListDialogOld withDismissListener(DialogInterface.OnDismissListener dismissListener) {
         this.dismissListener = dismissListener;
         return this;
     }
@@ -222,7 +222,7 @@ public class EventListDialog {
                 dialogView.findViewById(R.id.textNoEvents).setVisibility(View.VISIBLE);
             }
             else {
-                EventListAdapter adapter = new EventListAdapter(context, events, this);
+                EventListAdapterOld adapter = new EventListAdapterOld(context, events, this);
                 examsView.setAdapter(adapter);
             }
         });

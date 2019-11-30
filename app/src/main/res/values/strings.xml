@@ -1056,4 +1056,5 @@
     <string name="home_timetable_lesson_not_started">Za chwilę: %s</string>
     <string name="home_timetable_lessons_remaining">Pozostało lekcji: %d - do %s</string>
     <string name="grade_subject_format">z %s</string>
+    <string name="concat_2_strings" translatable="false">%s%s</string>
 </resources>

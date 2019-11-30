@@ -224,8 +224,8 @@ class HomeTimetableCard(
 
     private val LessonFull?.subjectSpannable: CharSequence
         get() = if (this == null) "?" else when {
-            isCancelled -> displaySubjectName.asStrikethroughSpannable()
-            isChange -> displaySubjectName.asItalicSpannable()
+            isCancelled -> displaySubjectName?.asStrikethroughSpannable() ?: "?"
+            isChange -> displaySubjectName?.asItalicSpannable() ?: "?"
             else -> displaySubjectName ?: "?"
         }
 
