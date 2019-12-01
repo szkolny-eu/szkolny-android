@@ -102,11 +102,13 @@ class HomeGradesCard(
 
         b.gradeList.removeAllViews()
 
-        val textLayoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-        textLayoutParams.setMargins(0, 0, 5.dp, 0)
+        val textLayoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+            setMargins(0, 0, 5.dp, 0)
+        }
 
-        val linearLayoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-        linearLayoutParams.setMargins(8.dp, 0, 8.dp, 5.dp)
+        val linearLayoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
+            setMargins(2.dp, 0, 2.dp, 5.dp)
+        }
 
         subjects.forEach { subject ->
             val gradeItem = LinearLayout(b.gradeList.context)
