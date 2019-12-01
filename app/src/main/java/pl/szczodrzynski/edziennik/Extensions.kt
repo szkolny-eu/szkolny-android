@@ -200,6 +200,7 @@ const val DAY = 24L*HOUR
 const val WEEK = 7L*DAY
 const val MONTH = 30L*DAY
 const val YEAR = 365L*DAY
+const val MS = 1000L
 
 fun <T> LongSparseArray<T>.values(): List<T> {
     val result = mutableListOf<T>()

@@ -243,7 +243,7 @@ class MainActivity : AppCompatActivity() {
 
         setTheme(Themes.appTheme)
 
-        app.appConfig.language?.let {
+        app.config.ui.language?.let {
             setLanguage(it)
         }
 
@@ -306,10 +306,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             drawer.apply {
-                setAccountHeaderBackground(app.appConfig.headerBackground)
+                setAccountHeaderBackground(app.config.ui.headerBackground)
 
                 drawerProfileListEmptyListener = {
-                    app.appConfig.loginFinished = false
+                    app.config.loginFinished = false
                     app.saveConfig("loginFinished")
                     profileListEmptyListener()
                 }
@@ -334,7 +334,7 @@ class MainActivity : AppCompatActivity() {
                 drawerProfileSettingClickListener = this@MainActivity.profileSettingClickListener
 
                 miniDrawerVisibleLandscape = null
-                miniDrawerVisiblePortrait = app.appConfig.miniDrawerVisible
+                miniDrawerVisiblePortrait = app.config.ui.miniMenuVisible
             }
         }
 
@@ -387,21 +387,23 @@ class MainActivity : AppCompatActivity() {
         SyncWorker.scheduleNext(app)
 
         // APP BACKGROUND
-        if (app.appConfig.appBackground != null) {
+        if (app.config.ui.appBackground != null) {
             try {
-                var bg = app.appConfig.appBackground
-                val bgDir = File(Environment.getExternalStoragePublicDirectory("Szkolny.eu"), "bg")
-                if (bgDir.exists()) {
-                    val files = bgDir.listFiles()
-                    val r = Random()
-                    val i = r.nextInt(files.size)
-                    bg = files[i].toString()
-                }
-                val linearLayout = b.root
-                if (bg.endsWith(".gif")) {
-                    linearLayout.background = GifDrawable(bg)
-                } else {
-                    linearLayout.background = BitmapDrawable.createFromPath(bg)
+                app.config.ui.appBackground?.let {
+                    var bg = it
+                    val bgDir = File(Environment.getExternalStoragePublicDirectory("Szkolny.eu"), "bg")
+                    if (bgDir.exists()) {
+                        val files = bgDir.listFiles()
+                        val r = Random()
+                        val i = r.nextInt(files.size)
+                        bg = files[i].toString()
+                    }
+                    val linearLayout = b.root
+                    if (bg.endsWith(".gif")) {
+                        linearLayout.background = GifDrawable(bg)
+                    } else {
+                        linearLayout.background = BitmapDrawable.createFromPath(bg)
+                    }
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -409,7 +411,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // WHAT'S NEW DIALOG
-        if (app.appConfig.lastAppVersion != BuildConfig.VERSION_CODE) {
+        if (app.config.appVersion < BuildConfig.VERSION_CODE) {
             ServerRequest(app, app.requestScheme + APP_URL + "main.php?just_updated", "MainActivity/JU")
                     .run { e, result ->
                         Handler(Looper.getMainLooper()).post {
@@ -420,17 +422,16 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }
-            if (app.appConfig.lastAppVersion < 170) {
+            if (app.config.appVersion < 170) {
                 //Intent intent = new Intent(this, ChangelogIntroActivity.class);
                 //startActivity(intent);
             } else {
-                app.appConfig.lastAppVersion = BuildConfig.VERSION_CODE
-                app.saveConfig("lastAppVersion")
+                app.config.appVersion = BuildConfig.VERSION_CODE
             }
         }
 
         // RATE SNACKBAR
-        if (app.appConfig.appRateSnackbarTime != 0L && app.appConfig.appRateSnackbarTime <= System.currentTimeMillis()) {
+        if (app.config.appRateSnackbarTime != 0L && app.config.appRateSnackbarTime <= System.currentTimeMillis()) {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
                         .content(R.string.rate_snackbar_text)
@@ -444,20 +445,17 @@ class MainActivity : AppCompatActivity() {
                         .onPositive { cafeBar ->
                             Utils.openGooglePlay(this)
                             cafeBar.dismiss()
-                            app.appConfig.appRateSnackbarTime = 0
-                            app.saveConfig("appRateSnackbarTime")
+                            app.config.appRateSnackbarTime = 0
                         }
                         .onNegative { cafeBar ->
                             Toast.makeText(this, "Szkoda, opinie innych pomagają mi rozwijać aplikację.", Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
-                            app.appConfig.appRateSnackbarTime = 0
-                            app.saveConfig("appRateSnackbarTime")
+                            app.config.appRateSnackbarTime = 0
                         }
                         .onNeutral { cafeBar ->
                             Toast.makeText(this, "OK", Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
-                            app.appConfig.appRateSnackbarTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
-                            app.saveConfig("appRateSnackbarTime")
+                            app.config.appRateSnackbarTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
                         }
                         .autoDismiss(false)
                         .swipeToDismiss(true)
@@ -696,7 +694,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         when {
-            app.profile == null -> {
+            app.profile == null || app.profile.id == -1 -> {
                 if (intentProfileId == -1)
                     intentProfileId = app.appSharedPrefs.getInt("current_profile_id", 1)
                 loadProfile(intentProfileId, intentTargetId, extras)
@@ -763,7 +761,7 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
             else {
-                if (!app.appConfig.loginFinished)
+                if (!app.config.loginFinished)
                     finish()
                 else {
                     handleIntent(data?.extras)
@@ -800,7 +798,7 @@ class MainActivity : AppCompatActivity() {
             this.runOnUiThread {
                 if (app.profile == null) {
                     LoginActivity.firstCompleted = false
-                    if (app.appConfig.loginFinished) {
+                    if (app.config.loginFinished) {
                         // this shouldn't run
                         profileListEmptyListener()
                     }

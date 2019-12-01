@@ -310,7 +310,7 @@ public class HomeFragment extends Fragment {
 
     public static long updateInterval(App app, Time diff) {
         //Log.d(TAG, "Millis is "+System.currentTimeMillis() % 1000+", update in "+(1000-(System.currentTimeMillis() % 1000)));
-        if (app.appConfig.countInSeconds) {
+        if (app.config.getTimetable().getCountInSeconds()) {
             return 1000-(System.currentTimeMillis() % 1000);
         }
         if (diff.minute > 10) {
@@ -587,7 +587,7 @@ public class HomeFragment extends Fragment {
     private void configCardGrades(Context c, LayoutInflater layoutInflater, Activity a, ViewGroup insertPoint) {
         View root = layoutInflater.inflate(R.layout.card_grades, null);
         DisplayMetrics displayMetrics = c.getResources().getDisplayMetrics();
-        updateCardGrades(c, a, root, displayMetrics.widthPixels - Utils.dpToPx((app.appConfig.miniDrawerVisible ? 72 : 0)/*miniDrawer size*/ + 24 + 24/*left and right offsets*/ + 16/*ellipsize width*/));
+        updateCardGrades(c, a, root, displayMetrics.widthPixels - Utils.dpToPx((app.config.getUi().getMiniMenuVisible() ? 72 : 0)/*miniDrawer size*/ + 24 + 24/*left and right offsets*/ + 16/*ellipsize width*/));
         insertPoint.addView(root, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 

@@ -560,6 +560,7 @@
     <string name="opening_file">Otwieranie %s</string>
     <string name="opening_file_no_app">Brak aplikacji otwierającej ten typ pliku</string>
     <string name="please_wait">Proszę czekać</string>
+    <string name="preference_file" translatable="false">pl.szczodrzynski.edziennik_preferences</string>
     <string name="preference_file_global" translatable="false">pl.szczodrzynski.edziennik_profiles</string>
     <string name="preference_file_register" translatable="false">pl.szczodrzynski.edziennik_profile%d_register</string>
     <string name="prefix" translatable="false">pl</string>

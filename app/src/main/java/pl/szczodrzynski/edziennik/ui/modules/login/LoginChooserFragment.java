@@ -59,7 +59,7 @@ public class LoginChooserFragment extends Fragment {
             b.cancelButton.setVisibility(View.VISIBLE);
             b.cancelButton.setOnClickListener((v -> nav.navigateUp()));
         }
-        else if (app.appConfig.loginFinished) {
+        else if (app.config.getLoginFinished()) {
             // we are navigated here from AppDrawer
             b.cancelButton.setVisibility(View.VISIBLE);
             b.cancelButton.setOnClickListener((v -> {

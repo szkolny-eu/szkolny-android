@@ -23,6 +23,7 @@ import java.util.List;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.config.ProfileConfigGrades;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
@@ -32,15 +33,15 @@ import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
+import static pl.szczodrzynski.edziennik.config.ConfigGrades.ORDER_BY_DATE_ASC;
+import static pl.szczodrzynski.edziennik.config.ConfigGrades.ORDER_BY_DATE_DESC;
+import static pl.szczodrzynski.edziennik.config.ConfigGrades.ORDER_BY_SUBJECT_ASC;
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_GRADE;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_AVG_2_AVG;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_AVG_2_SEM;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_SEM_2_AVG;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_SEM_2_SEM;
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_ALL_GRADES;
-import static pl.szczodrzynski.edziennik.utils.models.AppConfig.ORDER_BY_DATE_ASC;
-import static pl.szczodrzynski.edziennik.utils.models.AppConfig.ORDER_BY_DATE_DESC;
-import static pl.szczodrzynski.edziennik.utils.models.AppConfig.ORDER_BY_SUBJECT_ASC;
 
 public class GradesFragment extends Fragment {
 
@@ -135,12 +136,12 @@ public class GradesFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon2.cmd_palette_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
+                            ProfileConfigGrades config = app.config.getFor(app.profileId).getGrades();
                             new MaterialDialog.Builder(activity)
                                     .title(R.string.dialog_grades_color_mode_title)
                                     .items(R.array.dialog_grades_color_modes)
-                                    .itemsCallbackSingleChoice(app.profile.getGradeColorMode(), (dialog, view1, which, text) -> {
-                                        app.profile.setGradeColorMode(which);
-                                        app.profileSaveAsync();
+                                    .itemsCallbackSingleChoice(config.getColorMode(), (dialog, view1, which, text) -> {
+                                        config.setColorMode(which);
                                         activity.reloadTarget();
                                         return true;
                                     })
@@ -154,9 +155,8 @@ public class GradesFragment extends Fragment {
                             new MaterialDialog.Builder(activity)
                                     .title(R.string.dialog_grades_sort_title)
                                     .items(R.array.dialog_grades_sort_modes)
-                                    .itemsCallbackSingleChoice(app.appConfig.gradesOrderBy, (dialog, view1, which, text) -> {
-                                        app.appConfig.gradesOrderBy = which;
-                                        app.saveConfig("gradesOrderBy");
+                                    .itemsCallbackSingleChoice(app.config.getGrades().getOrderBy(), (dialog, view1, which, text) -> {
+                                        app.config.getGrades().setOrderBy(which);
                                         activity.reloadTarget();
                                         return true;
                                     })
@@ -228,13 +228,13 @@ public class GradesFragment extends Fragment {
 
         long finalExpandSubjectId = expandSubjectId;
         String orderBy;
-        if (app.appConfig.gradesOrderBy == ORDER_BY_SUBJECT_ASC) {
+        if (app.config.getGrades().getOrderBy() == ORDER_BY_SUBJECT_ASC) {
             orderBy = "subjectLongName ASC, addedDate DESC";
         }
-        else if (app.appConfig.gradesOrderBy == ORDER_BY_DATE_DESC) {
+        else if (app.config.getGrades().getOrderBy() == ORDER_BY_DATE_DESC) {
             orderBy = "addedDate DESC";
         }
-        else if (app.appConfig.gradesOrderBy == ORDER_BY_DATE_ASC) {
+        else if (app.config.getGrades().getOrderBy() == ORDER_BY_DATE_ASC) {
             orderBy = "addedDate ASC";
         }
         else {
@@ -247,11 +247,13 @@ public class GradesFragment extends Fragment {
 
             subjectList = new ArrayList<>();
 
+            ProfileConfigGrades config = app.config.getFor(app.profileId).getGrades();
+
             // now we have all grades from the newest to the oldest
             for (GradeFull grade: grades) {
                 ItemGradesSubjectModel model = ItemGradesSubjectModel.searchModelBySubjectId(subjectList, grade.subjectId);
                 if (model == null) {
-                    model = new ItemGradesSubjectModel(app.profile, new Subject(App.profileId, grade.subjectId, grade.subjectLongName, grade.subjectShortName), new ArrayList<>(), new ArrayList<>());//ItemGradesSubjectModel.searchModelBySubjectId(subjectList, grade.subjectId);
+                    model = new ItemGradesSubjectModel(app.profile, new Subject(app.profileId, grade.subjectId, grade.subjectLongName, grade.subjectShortName), new ArrayList<>(), new ArrayList<>());//ItemGradesSubjectModel.searchModelBySubjectId(subjectList, grade.subjectId);
                     subjectList.add(model);
                     if (model.subject != null && model.subject.id == finalExpandSubjectId) {
                         model.expandView = true;
@@ -303,7 +305,7 @@ public class GradesFragment extends Fragment {
                         // do not show *normal* grades with negative weight - these are historical grades - Iuczniowie
                         continue;
                     }
-                    if (app.appConfig.dontCountZeroToAverage && grade.name.equals("0")) {
+                    if (!config.getCountZeroToAvg() && grade.name.equals("0")) {
                         weight = 0;
                     }
                     float valueWeighted = grade.value * weight;

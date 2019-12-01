@@ -101,12 +101,11 @@ class LoginSyncFragment : Fragment() {
                 d(TAG, loginStore.toString())
             }*/
 
-            if (app.appConfig.loginFinished) {
+            if (app.config.loginFinished) {
                 LoginFinishFragment.firstRun = false
             } else {
                 LoginFinishFragment.firstRun = true
-                app.appConfig.loginFinished = true
-                app.saveConfig("loginFinished")
+                app.config.loginFinished = true
             }
             LoginFinishFragment.firstProfileId = firstProfileId
 
@@ -140,7 +139,8 @@ class LoginSyncFragment : Fragment() {
                 EventType(profileId, TYPE_INFORMATION.toLong(), getString(R.string.event_information), COLOR_INFORMATION)
         )
         app.db.eventTypeDao().addAll(typeList)
-        app.profileSaveFull(profile, loginStore)
+        app.db.profileDao().add(profile)
+        app.db.loginStoreDao().add(loginStore)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

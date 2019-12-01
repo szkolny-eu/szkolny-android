@@ -49,17 +49,17 @@ public class CounterActivity extends AppCompatActivity {
         Time now = Time.getNow();
         Time syncedNow = now;
         //Time updateDiff = null;
-        if (app.appConfig.bellSyncDiff != null) {
-            if (app.appConfig.bellSyncMultiplier < 0) {
+        if (app.config.getTimetable().getBellSyncDiff() != null) {
+            if (app.config.getTimetable().getBellSyncMultiplier() < 0) {
                 // the bell is too fast, need to step further to go with it
                 // add some time
-                syncedNow = Time.sum(now, app.appConfig.bellSyncDiff);
+                syncedNow = Time.sum(now, app.config.getTimetable().getBellSyncDiff());
                 //Toast.makeText(c, "Bell sync diff is "+app.appConfig.bellSyncDiff.getStringHMS()+"\n\n  Synced now is "+syncedNow.getStringHMS(), Toast.LENGTH_LONG).show();
             }
-            if (app.appConfig.bellSyncMultiplier > 0) {
+            if (app.config.getTimetable().getBellSyncMultiplier() > 0) {
                 // the bell is delayed, need to roll the "now" time back
                 // subtract some time
-                syncedNow = Time.diff(now, app.appConfig.bellSyncDiff);
+                syncedNow = Time.diff(now, app.config.getTimetable().getBellSyncDiff());
             }
         }
 
@@ -153,7 +153,7 @@ public class CounterActivity extends AppCompatActivity {
     private short counterType = TIME_LEFT;
     private long updateCounter(Time syncedNow) {
         Time diff = Time.diff(counterTarget, syncedNow);
-        b.timeLeft.setText(counterType == TIME_TILL ? HomeFragment.timeTill(app, diff, app.appConfig.countInSeconds, "\n") : HomeFragment.timeLeft(app, diff, app.appConfig.countInSeconds, "\n"));
+        b.timeLeft.setText(counterType == TIME_TILL ? HomeFragment.timeTill(app, diff, app.config.getTimetable().getCountInSeconds(), "\n") : HomeFragment.timeLeft(app, diff, app.config.getTimetable().getCountInSeconds(), "\n"));
         return updateInterval(app, diff);
     }
 

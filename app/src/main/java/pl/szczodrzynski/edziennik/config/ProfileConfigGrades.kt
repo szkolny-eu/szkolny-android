@@ -9,7 +9,7 @@ import pl.szczodrzynski.edziennik.config.utils.set
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.COLOR_MODE_WEIGHTED
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.YEAR_ALL_GRADES
 
-class ProfileConfigGrades(val config: ProfileConfig) {
+class ProfileConfigGrades(private val config: ProfileConfig) {
     private var mColorMode: Int? = null
     var colorMode: Int
         get() { mColorMode = mColorMode ?: config.values.get("gradesColorMode", COLOR_MODE_WEIGHTED); return mColorMode ?: COLOR_MODE_WEIGHTED }

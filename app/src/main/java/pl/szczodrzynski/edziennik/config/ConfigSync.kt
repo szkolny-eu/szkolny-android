@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.config
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.set
 
-class ConfigSync(val config: Config) {
+class ConfigSync(private val config: Config) {
     private var mSyncEnabled: Boolean? = null
     var enabled: Boolean
         get() { mSyncEnabled = mSyncEnabled ?: config.values.get("syncEnabled", true); return mSyncEnabled ?: true }
@@ -27,4 +27,61 @@ class ConfigSync(val config: Config) {
     var notifyAboutUpdates: Boolean
         get() { mNotifyAboutUpdates = mNotifyAboutUpdates ?: config.values.get("notifyAboutUpdates", true); return mNotifyAboutUpdates ?: true }
         set(value) { config.set("notifyAboutUpdates", value); mNotifyAboutUpdates = value }
+
+    /*     ____        _      _     _
+          / __ \      (_)    | |   | |
+         | |  | |_   _ _  ___| |_  | |__   ___  _   _ _ __ ___
+         | |  | | | | | |/ _ \ __| | '_ \ / _ \| | | | '__/ __|
+         | |__| | |_| | |  __/ |_  | | | | (_) | |_| | |  \__ \
+          \___\_\\__,_|_|\___|\__| |_| |_|\___/ \__,_|_|  |__*/
+    private var mQuietHoursStart: Long? = null
+    var quietHoursStart: Long
+        get() { mQuietHoursStart = mQuietHoursStart ?: config.values.get("quietHoursStart", 0L); return mQuietHoursStart ?: 0L }
+        set(value) { config.set("quietHoursStart", value); mQuietHoursStart = value }
+
+    private var mQuietHoursEnd: Long? = null
+    var quietHoursEnd: Long
+        get() { mQuietHoursEnd = mQuietHoursEnd ?: config.values.get("quietHoursEnd", 0L); return mQuietHoursEnd ?: 0L }
+        set(value) { config.set("quietHoursEnd", value); mQuietHoursEnd = value }
+
+    private var mQuietDuringLessons: Boolean? = null
+    var quietDuringLessons: Boolean
+        get() { mQuietDuringLessons = mQuietDuringLessons ?: config.values.get("quietDuringLessons", false); return mQuietDuringLessons ?: false }
+        set(value) { config.set("quietDuringLessons", value); mQuietDuringLessons = value }
+
+    /*    ______ _____ __  __   _______    _
+         |  ____/ ____|  \/  | |__   __|  | |
+         | |__ | |    | \  / |    | | ___ | | _____ _ __  ___
+         |  __|| |    | |\/| |    | |/ _ \| |/ / _ \ '_ \/ __|
+         | |   | |____| |  | |    | | (_) |   <  __/ | | \__ \
+         |_|    \_____|_|  |_|    |_|\___/|_|\_\___|_| |_|__*/
+    private var mTokenApp: String? = null
+    var tokenApp: String?
+        get() { mTokenApp = mTokenApp ?: config.values.get("tokenApp", null as String?); return mTokenApp }
+        set(value) { config.set("tokenApp", value); mTokenApp = value }
+    private var mTokenMobidziennik: String? = null
+    var tokenMobidziennik: String?
+        get() { mTokenMobidziennik = mTokenMobidziennik ?: config.values.get("tokenMobidziennik", null as String?); return mTokenMobidziennik }
+        set(value) { config.set("tokenMobidziennik", value); mTokenMobidziennik = value }
+    private var mTokenLibrus: String? = null
+    var tokenLibrus: String?
+        get() { mTokenLibrus = mTokenLibrus ?: config.values.get("tokenLibrus", null as String?); return mTokenLibrus }
+        set(value) { config.set("tokenLibrus", value); mTokenLibrus = value }
+    private var mTokenVulcan: String? = null
+    var tokenVulcan: String?
+        get() { mTokenVulcan = mTokenVulcan ?: config.values.get("tokenVulcan", null as String?); return mTokenVulcan }
+        set(value) { config.set("tokenVulcan", value); mTokenVulcan = value }
+
+    private var mTokenMobidziennikList: List<Int>? = null
+    var tokenMobidziennikList: List<Int>
+        get() { mTokenMobidziennikList = mTokenMobidziennikList ?: config.values.get("tokenMobidziennikList", listOf()); return mTokenMobidziennikList ?: listOf() }
+        set(value) { config.set("tokenMobidziennikList", value); mTokenMobidziennikList = value }
+    private var mTokenLibrusList: List<Int>? = null
+    var tokenLibrusList: List<Int>
+        get() { mTokenLibrusList = mTokenLibrusList ?: config.values.get("tokenLibrusList", listOf()); return mTokenLibrusList ?: listOf() }
+        set(value) { config.set("tokenLibrusList", value); mTokenLibrusList = value }
+    private var mTokenVulcanList: List<Int>? = null
+    var tokenVulcanList: List<Int>
+        get() { mTokenVulcanList = mTokenVulcanList ?: config.values.get("tokenVulcanList", listOf()); return mTokenVulcanList ?: listOf() }
+        set(value) { config.set("tokenVulcanList", value); mTokenVulcanList = value }
 }

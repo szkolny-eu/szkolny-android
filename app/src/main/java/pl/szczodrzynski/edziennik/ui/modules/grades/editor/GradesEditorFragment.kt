@@ -13,12 +13,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.databinding.FragmentGradesEditorBinding
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.YEAR_1_AVG_2_AVG
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.YEAR_1_AVG_2_SEM
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.YEAR_1_SEM_2_AVG
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.YEAR_ALL_GRADES
+import pl.szczodrzynski.edziennik.databinding.FragmentGradesEditorBinding
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Themes
 import java.text.DecimalFormat
@@ -33,6 +33,8 @@ class GradesEditorFragment : Fragment() {
 /*
     private val navController: NavController by lazy { Navigation.findNavController(b.root) }
 */
+
+    private val config by lazy { app.config.getFor(App.profileId).grades }
 
     private var subjectId: Long = -1
     private var semester: Int = 1
@@ -108,7 +110,7 @@ class GradesEditorFragment : Fragment() {
                         continue
                     }
                     var weight = editorGrade.weight
-                    if (app.appConfig.dontCountZeroToAverage && editorGrade.name == "0") {
+                    if (!config.countZeroToAvg && editorGrade.name == "0") {
                         weight = 0f
                     }
                     val value = editorGrade.value * weight
@@ -173,7 +175,7 @@ class GradesEditorFragment : Fragment() {
         averageSemester = 0f
         for (editorGrade in editorGrades) {
             var weight = editorGrade.weight
-            if (app.appConfig.dontCountZeroToAverage && editorGrade.name == "0") {
+            if (!config.countZeroToAvg && editorGrade.name == "0") {
                 weight = 0f
             }
             val value = editorGrade.value * weight
@@ -216,7 +218,7 @@ class GradesEditorFragment : Fragment() {
                             continue
                         }
                         var weight = grade.weight
-                        if (app.appConfig.dontCountZeroToAverage && grade.name == "0") {
+                        if (!config.countZeroToAvg && grade.name == "0") {
                             weight = 0f
                         }
                         val value = grade.value * weight

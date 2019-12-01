@@ -18,7 +18,6 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Base64;
 import android.util.Log;
-import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -71,7 +70,6 @@ import okhttp3.TlsVersion;
 import pl.szczodrzynski.edziennik.config.Config;
 import pl.szczodrzynski.edziennik.data.db.AppDb;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
@@ -84,9 +82,7 @@ import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.edziennik.utils.models.AppConfig;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
-import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
 
 public class App extends androidx.multidex.MultiDexApplication implements Configuration.Provider {
     private static final String TAG = "App";
@@ -197,6 +193,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
         networkUtils = new NetworkUtils(this);
 
         config = new Config(db);
+        config.migrate(this);
 
         Iconics.init(getApplicationContext());
         Iconics.registerFont(SzkolnyFont.INSTANCE);
@@ -212,7 +209,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
 
         loadConfig();
 
-        Themes.INSTANCE.setThemeInt(appConfig.appTheme);
+        Themes.INSTANCE.setThemeInt(config.getUi().getTheme());
 
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
@@ -231,7 +228,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
         if ("f054761fbdb6a238".equals(deviceId) || BuildConfig.DEBUG) {
             devMode = true;
         }
-        else if (appConfig.devModePassword != null) {
+        else if (config.getDevModePassword() != null) {
             checkDevModePassword();
         }
 
@@ -302,7 +299,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
 
         //profileLoadById(appSharedPrefs.getInt("current_profile_id", 1));
 
-        if (appConfig.registerSyncEnabled) {
+        if (config.getSync().getEnabled()) {
             SyncWorker.Companion.scheduleNext(this, false);
         }
         else {
@@ -366,11 +363,10 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
                 shortcutManager.setDynamicShortcuts(Arrays.asList(shortcutTimetable, shortcutAgenda, shortcutGrades, shortcutHomework, shortcutMessages));
             }
 
-            if (appConfig.appInstalledTime == 0) {
+            if (config.getAppInstalledTime() == 0) {
                 try {
-                    appConfig.appInstalledTime = getPackageManager().getPackageInfo(getPackageName(), 0).firstInstallTime;
-                    appConfig.appRateSnackbarTime = appConfig.appInstalledTime + 7 * 24 * 60 * 60 * 1000;
-                    saveConfig("appInstalledTime", "appRateSnackbarTime");
+                    config.setAppInstalledTime(getPackageManager().getPackageInfo(getPackageName(), 0).firstInstallTime);
+                    config.setAppRateSnackbarTime(config.getAppInstalledTime() + 7 * 24 * 60 * 60 * 1000);
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -438,9 +434,9 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
                 final long startTime = System.currentTimeMillis();
                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
                     Log.d(TAG, "Token for App is " + instanceIdResult.getToken() + ", ID is " + instanceIdResult.getId()+". Time is "+(System.currentTimeMillis() - startTime));
-                    appConfig.fcmToken = instanceIdResult.getToken();
+                    config.getSync().setTokenApp(instanceIdResult.getToken());
                 });
-                FirebaseInstanceId.getInstance(pushMobidziennikApp).getInstanceId().addOnSuccessListener(instanceIdResult -> {
+                /*FirebaseInstanceId.getInstance(pushMobidziennikApp).getInstanceId().addOnSuccessListener(instanceIdResult -> {
                     Log.d(TAG, "Token for Mobidziennik is " + instanceIdResult.getToken() + ", ID is " + instanceIdResult.getId());
                     appConfig.fcmTokens.put(LOGIN_TYPE_MOBIDZIENNIK, new Pair<>(instanceIdResult.getToken(), new ArrayList<>()));
                 });
@@ -454,7 +450,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
                     if (pair == null || pair.first == null || !pair.first.equals(instanceIdResult.getToken())) {
                         appConfig.fcmTokens.put(LOGIN_TYPE_VULCAN, new Pair<>(instanceIdResult.getToken(), new ArrayList<>()));
                     }
-                });
+                });*/
 
 
                 FirebaseMessaging.getInstance().subscribeToTopic(getPackageName());
@@ -517,7 +513,8 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
                     e.printStackTrace();
                 } catch (NoSuchFieldException e) {
                     e.printStackTrace();
-                    appSharedPrefs.edit().remove("app.appConfig."+fieldName).apply();
+                    Log.w(TAG, "Should remove app.appConfig."+fieldName);
+                    //appSharedPrefs.edit().remove("app.appConfig."+fieldName).apply(); TODO migration
                 }
             }
         }
@@ -589,7 +586,11 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
         //appSharedPrefs.edit().putString("config", gson.toJson(appConfig)).apply();
     }
 
-
+    public void profileSave() {
+        AsyncTask.execute(() -> {
+            db.profileDao().add(profile);
+        });
+    }
 
     public void profileSaveAsync() {
         AsyncTask.execute(() -> {
@@ -609,14 +610,6 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
     public void profileSaveFull(ProfileFull profileFull) {
         db.profileDao().add(profileFull);
         db.loginStoreDao().add(profileFull);
-    }
-    public void profileSaveFull(Profile profile, LoginStore loginStore) {
-        db.profileDao().add(profile);
-        db.loginStoreDao().add(loginStore);
-    }
-
-    public ProfileFull profileGetOrNull(int id) {
-        return db.profileDao().getFullByIdNow(id);
     }
 
     public void profileLoadById(int id) {
@@ -711,7 +704,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
 
     public void checkDevModePassword() {
         try {
-            devMode = Utils.AESCrypt.decrypt("nWFVxY65Pa8/aRrT7EylNAencmOD+IxUY2Gg/beiIWY=", appConfig.devModePassword).equals("ok here you go it's enabled now")
+            devMode = Utils.AESCrypt.decrypt("nWFVxY65Pa8/aRrT7EylNAencmOD+IxUY2Gg/beiIWY=", config.getDevModePassword()).equals("ok here you go it's enabled now")
                     || BuildConfig.DEBUG;
         } catch (Exception e) {
             e.printStackTrace();

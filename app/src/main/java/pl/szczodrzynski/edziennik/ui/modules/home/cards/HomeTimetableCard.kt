@@ -80,9 +80,9 @@ class HomeTimetableCard(
                 .sizeDp(20))
 
         // get current bell-sync params
-        if (app.appConfig.bellSyncDiff != null) {
-            bellSyncDiffMillis = (app.appConfig.bellSyncDiff.hour * 60 * 60 * 1000 + app.appConfig.bellSyncDiff.minute * 60 * 1000 + app.appConfig.bellSyncDiff.second * 1000).toLong()
-            bellSyncDiffMillis *= app.appConfig.bellSyncMultiplier.toLong()
+        app.config.timetable.bellSyncDiff?.let {
+            bellSyncDiffMillis = (it.hour * 60 * 60 * 1000 + it.minute * 60 * 1000 + it.second * 1000).toLong()
+            bellSyncDiffMillis *= app.config.timetable.bellSyncMultiplier.toLong()
             bellSyncDiffMillis *= -1
         }
 

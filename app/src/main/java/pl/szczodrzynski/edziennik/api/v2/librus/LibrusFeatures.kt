@@ -60,7 +60,7 @@ val LibrusFeatures = listOf(
         Feature(LOGIN_TYPE_LIBRUS, FEATURE_PUSH_CONFIG, listOf(
                 ENDPOINT_LIBRUS_API_PUSH_CONFIG to LOGIN_METHOD_LIBRUS_API
         ), listOf(LOGIN_METHOD_LIBRUS_API)).withShouldSync { data ->
-                data.app.appConfig.fcmTokens[LOGIN_TYPE_LIBRUS]?.second?.contains(data.profileId) == false
+                !data.app.config.sync.tokenLibrusList.contains(data.profileId)
         },
 
 

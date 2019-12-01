@@ -93,8 +93,8 @@ public class Notifier {
 
     public boolean shouldBeQuiet() {
         long now = Time.getNow().getInMillis();
-        long start = app.appConfig.quietHoursStart;
-        long end = app.appConfig.quietHoursEnd;
+        long start = app.config.getSync().getQuietHoursStart();
+        long end = app.config.getSync().getQuietHoursEnd();
         if (start > end) {
             end += 1000 * 60 * 60 * 24;
             //Log.d(TAG, "Night passing");
@@ -104,7 +104,7 @@ public class Notifier {
             //Log.d(TAG, "Now is smaller");
         }
         //Log.d(TAG, "Start is "+start+", now is "+now+", end is "+end);
-        return app.appConfig.quietHoursStart > 0 && now >= start && now <= end;
+        return start > 0 && now >= start && now <= end;
     }
 
     public int getNotificationDefaults() {
@@ -312,7 +312,7 @@ public class Notifier {
                 | |
                 |*/
     public void notificationUpdatesShow(String updateVersion, String updateUrl, String updateFilename, boolean updateDirect) {
-        if (!app.appConfig.notifyAboutUpdates)
+        if (!app.config.getSync().getNotifyAboutUpdates())
             return;
         Intent notificationIntent = new Intent(app.getContext(), BootReceiver.NotificationActionService.class)
                 .putExtra("update_version", updateVersion)
@@ -340,7 +340,7 @@ public class Notifier {
     }
 
     public void notificationUpdatesHide() {
-        if (!app.appConfig.notifyAboutUpdates)
+        if (!app.config.getSync().getNotifyAboutUpdates())
             return;
         notificationManager.cancel(ID_UPDATES);
     }

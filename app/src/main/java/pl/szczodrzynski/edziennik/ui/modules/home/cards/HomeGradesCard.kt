@@ -116,7 +116,7 @@ class HomeGradesCard(
 
             var totalWidth = 0
             val maxWidth = (app.resources.displayMetrics.widthPixels -
-                    Utils.dpToPx((if (app.appConfig.miniDrawerVisible) 72 else 0) /*miniDrawer size*/ +
+                    Utils.dpToPx((if (app.config.ui.miniMenuVisible) 72 else 0) /*miniDrawer size*/ +
                             24 + 24 /*left and right offsets*/ +
                             16 /*ellipsize width*/)) / 1.5f
 

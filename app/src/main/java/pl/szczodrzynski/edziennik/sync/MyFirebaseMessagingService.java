@@ -47,9 +47,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Log.d(TAG, "New token: "+s);
         App app = (App)getApplicationContext();
-        if (app.appConfig.fcmToken == null || !app.appConfig.fcmToken.equals(s)) {
-            app.appConfig.fcmToken = s;
-            app.saveConfig();
+        if (app.config.getSync().getTokenApp() == null || !app.config.getSync().getTokenApp().equals(s)) {
+            app.config.getSync().setTokenApp(s);
         }
     }
 
@@ -198,8 +197,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         else {
                             feedbackMessage.sentTime = Long.parseLong(remoteMessage.getData().get("sent_time"));
                             if (feedbackMessage.text.startsWith("devmode")) {
-                                app.appConfig.devModePassword = feedbackMessage.text.replace("devmode", "");
-                                app.saveConfig("devModePassword");
+                                app.config.setDevModePassword(feedbackMessage.text.replace("devmode", ""));
                                 app.checkDevModePassword();
                                 feedbackMessage.text = "devmode "+(App.devMode ? "allowed" : "disallowed");
                             }

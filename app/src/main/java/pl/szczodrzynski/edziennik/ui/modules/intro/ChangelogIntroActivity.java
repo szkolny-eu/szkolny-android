@@ -78,7 +78,6 @@ public class ChangelogIntroActivity extends IntroActivity {
                     .build());
         }*/
 
-        app.appConfig.lastAppVersion = BuildConfig.VERSION_CODE;
-        app.appConfig.savePending = true;
+        app.config.setAppVersion(BuildConfig.VERSION_CODE);
     }
 }

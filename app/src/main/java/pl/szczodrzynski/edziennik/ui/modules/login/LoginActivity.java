@@ -91,9 +91,8 @@ public class LoginActivity extends AppCompatActivity {
 
         app = (App) getApplication();
 
-        if (!app.appConfig.loginFinished) {
-            app.appConfig.miniDrawerVisible = getResources().getConfiguration().smallestScreenWidthDp > 480;
-            app.saveConfig("miniDrawerVisible");
+        if (!app.config.getLoginFinished()) {
+            app.config.getUi().setMiniMenuVisible(getResources().getConfiguration().smallestScreenWidthDp > 480);
         }
 
         /*b.getRoot().addOnLayoutChangeListener(((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {

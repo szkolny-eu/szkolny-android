@@ -79,7 +79,7 @@ class HomeFragmentV2 : Fragment(), CoroutineScope {
                         .withOnClickListener(OnClickListener {
                             activity.bottomSheet.close()
                             StudentNumberDialog(activity, app.profile) {
-                                app.profileSaveAsync()
+                                app.profileSave()
                             }
                         }),
                 BottomSheetSeparatorItem(true),

@@ -2,6 +2,7 @@ package pl.szczodrzynski.edziennik.data.db.modules.profiles
 
 import android.content.Context
 import androidx.room.ColumnInfo
+import androidx.room.Ignore
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ANNOUNCEMENTS
@@ -122,6 +123,9 @@ class ProfileFull : Profile {
     }
 
     constructor(context: Context) : super(context)
+
+    @Ignore
+    constructor(id: Int, name: String, subname: String, loginStoreId: Int) : super(id, name, subname, loginStoreId)
 
     fun canChangeLoginPassword(): Boolean {
         return loginStoreType == LOGIN_TYPE_MOBIDZIENNIK || loginStoreType == LOGIN_TYPE_LIBRUS || loginStoreType == LOGIN_TYPE_IUCZNIOWIE

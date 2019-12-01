@@ -84,7 +84,7 @@ public class AgendaFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        viewType = app.profile.getAgendaViewType();
+        viewType = app.config.getUi().getAgendaViewType();
         if (viewType == AGENDA_DEFAULT) {
             b_default = DataBindingUtil.inflate(inflater, R.layout.fragment_agenda_default, container, false);
             return b_default.getRoot();
@@ -128,8 +128,7 @@ public class AgendaFragment extends Fragment {
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             viewType = viewType == AGENDA_DEFAULT ? AGENDA_CALENDAR : AGENDA_DEFAULT;
-                            app.profile.setAgendaViewType(viewType);
-                            app.profileSaveAsync();
+                            app.config.getUi().setAgendaViewType(viewType);
                             activity.reloadTarget();
                         }),
                 new BottomSheetSeparatorItem(true),

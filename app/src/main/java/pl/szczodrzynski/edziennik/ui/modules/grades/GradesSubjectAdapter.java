@@ -28,15 +28,15 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.MainActivity;
+import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.AppDb;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
-import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
 import pl.szczodrzynski.edziennik.utils.Anim;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -219,7 +219,7 @@ public class GradesSubjectAdapter extends ArrayAdapter<ItemGradesSubjectModel> i
                 layoutParams.setMargins(0, 0, _5dp, 0);
 
                 DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-                int maxWidthPx = displayMetrics.widthPixels - Utils.dpToPx((app.appConfig.miniDrawerVisible ? 72 : 0)/*miniDrawer size*/ + 8 + 8/*left and right offsets*/ + 24/*ellipsize width*/);
+                int maxWidthPx = displayMetrics.widthPixels - Utils.dpToPx((app.config.getUi().getMiniMenuVisible() ? 72 : 0)/*miniDrawer size*/ + 8 + 8/*left and right offsets*/ + 24/*ellipsize width*/);
                 int totalWidthPx = 0;
                 boolean ellipsized = false;
 

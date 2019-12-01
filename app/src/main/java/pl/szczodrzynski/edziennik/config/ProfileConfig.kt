@@ -26,6 +26,7 @@ class ProfileConfig(val db: AppDb, val profileId: Int, rawEntries: List<ConfigEn
 
     val values: HashMap<String, String?> = hashMapOf()
 
+    val grades by lazy { ProfileConfigGrades(this) }
     /*
     val sync by lazy { ConfigSync(this) }
     val timetable by lazy { ConfigTimetable(this) }

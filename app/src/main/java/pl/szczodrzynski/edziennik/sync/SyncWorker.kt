@@ -57,16 +57,16 @@ class SyncWorker(val context: Context, val params: WorkerParameters) : Worker(co
         /**
          * Cancel any existing sync jobs and schedule a new one.
          *
-         * If [registerSyncEnabled] is not true, just cancel every job.
+         * If [ConfigSync.enabled] is not true, just cancel every job.
          */
         fun rescheduleNext(app: App) {
             cancelNext(app)
-            val enableSync = app.appConfig.registerSyncEnabled
+            val enableSync = app.config.sync.enabled
             if (!enableSync) {
                 return
             }
-            val onlyWifi = app.appConfig.registerSyncOnlyWifi
-            val syncInterval = app.appConfig.registerSyncInterval.toLong()
+            val onlyWifi = app.config.sync.onlyWifi
+            val syncInterval = app.config.sync.interval.toLong()
 
             val syncAt = System.currentTimeMillis() + syncInterval*1000
             d(TAG, "Scheduling work at ${syncAt.formatDate()}")

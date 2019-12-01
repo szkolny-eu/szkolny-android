@@ -149,10 +149,10 @@ public class TimetableFragment extends Fragment {
         Date today = Date.getToday();
 
         Date date = Date.getToday();
-        int weekBeginning = app.appConfig.timetableDisplayDaysBackward - date.getWeekDay();
+        int weekBeginning = 2 - date.getWeekDay();
         int weekEnd = weekBeginning + 6;
-        date.stepForward(0, 0, 0 - (app.appConfig.timetableDisplayDaysBackward));
-        for (int i = 0; i < app.appConfig.timetableDisplayDaysForward + app.appConfig.timetableDisplayDaysBackward + 1; i++) {
+        date.stepForward(0, 0, 0 - (2));
+        for (int i = 0; i < 7 + 2 + 1; i++) {
             Bundle args = new Bundle();
             args.putLong("date", date.getValue());
             TimetableDayFragment timetableDayFragment = new TimetableDayFragment();
@@ -176,7 +176,7 @@ public class TimetableFragment extends Fragment {
 
             Log.d(TAG, "Got date "+getArguments().getLong("timetableDate", 0));
 
-            pageSelection = app.appConfig.timetableDisplayDaysBackward + Date.diffDays(gotDate, today);
+            pageSelection = 2 + Date.diffDays(gotDate, today);
             displayingDate = gotDate;
         }
         else if (pageSelection == -1) {
@@ -186,7 +186,7 @@ public class TimetableFragment extends Fragment {
 
                 List<LessonFull> lessons = app.db.lessonDao().getAllWeekNow(App.profileId, today.getWeekStart(), today);
                 displayingDate = HomeFragment.findDateWithLessons(App.profileId, lessons);
-                pageSelection = app.appConfig.timetableDisplayDaysBackward + Date.diffDays(displayingDate, today); // DEFAULT HERE
+                pageSelection = 2 + Date.diffDays(displayingDate, today); // DEFAULT HERE
 
                 activity.runOnUiThread(() -> {
                     viewPager.setCurrentItem(pageSelection, false);

@@ -77,17 +77,16 @@ public class HomeTimetableCardOld {
                 new MaterialDialog.Builder(a)
                         .title(R.string.bell_sync_title)
                         .content(app.getString(R.string.bell_sync_howto, bellSyncTime.getStringHM())+
-                                (app.appConfig.bellSyncDiff != null ?
-                                        ""+app.getString(R.string.bell_sync_current_dialog, (app.appConfig.bellSyncMultiplier == -1 ? "-" : "+")+app.appConfig.bellSyncDiff.getStringHMS())
+                                (app.config.getTimetable().getBellSyncDiff() != null ?
+                                        ""+app.getString(R.string.bell_sync_current_dialog, (app.config.getTimetable().getBellSyncMultiplier() == -1 ? "-" : "+")+app.config.getTimetable().getBellSyncDiff().getStringHMS())
                                         : ""))
                         .positiveText(R.string.ok)
                         .negativeText(R.string.cancel)
                         .neutralText(R.string.reset)
                         .onPositive((dialog, which) -> {
                             Time bellDiff = Time.diff(Time.getNow(), bellSyncTime);
-                            app.appConfig.bellSyncDiff = bellDiff;
-                            app.appConfig.bellSyncMultiplier = (bellSyncTime.getValue() > Time.getNow().getValue() ? -1 : 1);
-                            app.saveConfig("bellSyncDiff", "bellSyncMultiplier");
+                            app.config.getTimetable().setBellSyncDiff(bellDiff);
+                            app.config.getTimetable().setBellSyncMultiplier(bellSyncTime.getValue() > Time.getNow().getValue() ? -1 : 1);
                             new MaterialDialog.Builder(a)
                                     .title(R.string.bell_sync_title)
                                     .content(app.getString(R.string.bell_sync_results, (bellSyncTime.getValue() > Time.getNow().getValue() ? "-" : "+"), bellDiff.getStringHMS()))
@@ -101,9 +100,8 @@ public class HomeTimetableCardOld {
                                     .positiveText(R.string.yes)
                                     .negativeText(R.string.no)
                                     .onPositive(((dialog1, which1) -> {
-                                        app.appConfig.bellSyncDiff = null;
-                                        app.appConfig.bellSyncMultiplier = 0;
-                                        app.saveConfig("bellSyncDiff", "bellSyncMultiplier");
+                                        app.config.getTimetable().setBellSyncDiff(null);
+                                        app.config.getTimetable().setBellSyncMultiplier(0);
                                     }))
                                     .show();
                         })
@@ -125,17 +123,17 @@ public class HomeTimetableCardOld {
         Time now = Time.getNow();
         Time syncedNow = now;
         //Time updateDiff = null;
-        if (app.appConfig.bellSyncDiff != null) {
-            if (app.appConfig.bellSyncMultiplier < 0) {
+        if (app.config.getTimetable().getBellSyncDiff() != null) {
+            if (app.config.getTimetable().getBellSyncMultiplier() < 0) {
                 // the bell is too fast, need to step further to go with it
                 // add some time
-                syncedNow = Time.sum(now, app.appConfig.bellSyncDiff);
+                syncedNow = Time.sum(now, app.config.getTimetable().getBellSyncDiff());
                 //Toast.makeText(c, "Bell sync diff is "+app.appConfig.bellSyncDiff.getStringHMS()+"\n\n  Synced now is "+syncedNow.getStringHMS(), Toast.LENGTH_LONG).show();
             }
-            if (app.appConfig.bellSyncMultiplier > 0) {
+            if (app.config.getTimetable().getBellSyncMultiplier() > 0) {
                 // the bell is delayed, need to roll the "now" time back
                 // subtract some time
-                syncedNow = Time.diff(now, app.appConfig.bellSyncDiff);
+                syncedNow = Time.diff(now, app.config.getTimetable().getBellSyncDiff());
             }
         }
 
@@ -230,7 +228,7 @@ public class HomeTimetableCardOld {
     private short counterType = TIME_TILL;
     private long updateCounter(Time syncedNow) {
         Time diff = Time.diff(counterTarget, syncedNow);
-        b.cardTimetableTimeLeft.setText(counterType == TIME_TILL ? HomeFragment.timeTill(app, diff, app.appConfig.countInSeconds) : HomeFragment.timeLeft(app, diff, app.appConfig.countInSeconds));
+        b.cardTimetableTimeLeft.setText(counterType == TIME_TILL ? HomeFragment.timeTill(app, diff, app.config.getTimetable().getCountInSeconds()) : HomeFragment.timeLeft(app, diff, app.config.getTimetable().getCountInSeconds()));
         bellSyncTime = counterTarget;
         b.cardTimetableFullscreenCounter.setVisibility(View.VISIBLE);
         return updateInterval(app, diff);

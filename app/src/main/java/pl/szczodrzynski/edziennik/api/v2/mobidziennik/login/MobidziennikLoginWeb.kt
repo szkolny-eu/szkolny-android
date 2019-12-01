@@ -91,7 +91,7 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
                 .addParameter("ip", data.app.deviceId)
                 .addParameter("login", data.loginUsername)
                 .addParameter("haslo", data.loginPassword)
-                .addParameter("token", data.app.appConfig.fcmTokens[LOGIN_TYPE_MOBIDZIENNIK]?.first)
+                .addParameter("token", data.app.config.sync.tokenMobidziennik)
                 .post()
                 .callback(callback)
                 .build()

@@ -74,8 +74,8 @@ class HomeTimetableCard(
                         .title(R.string.bell_sync_title)
                         .content(app.getString(R.string.bell_sync_howto, bellSyncTime!!.stringHM).toString() +
                                 when {
-                                    app.appConfig.bellSyncDiff != null -> app.getString(R.string.bell_sync_current_dialog,
-                                            (if (app.appConfig.bellSyncMultiplier == -1) "-" else "+") + app.appConfig.bellSyncDiff.stringHMS)
+                                    app.config.timetable.bellSyncDiff != null -> app.getString(R.string.bell_sync_current_dialog,
+                                            (if (app.config.timetable.bellSyncMultiplier == -1) "-" else "+") + app.config.timetable.bellSyncDiff?.stringHMS)
                                     else -> ""
                                 })
                         .positiveText(R.string.ok)
@@ -83,9 +83,8 @@ class HomeTimetableCard(
                         .neutralText(R.string.reset)
                         .onPositive { _, _: DialogAction? ->
                             val bellDiff = Time.diff(Time.getNow(), bellSyncTime)
-                            app.appConfig.bellSyncDiff = bellDiff
-                            app.appConfig.bellSyncMultiplier = if (bellSyncTime!!.value > Time.getNow().value) -1 else 1
-                            app.saveConfig("bellSyncDiff", "bellSyncMultiplier")
+                            app.config.timetable.bellSyncDiff = bellDiff
+                            app.config.timetable.bellSyncMultiplier = if (bellSyncTime!!.value > Time.getNow().value) -1 else 1
 
                             MaterialDialog.Builder(activity)
                                     .title(R.string.bell_sync_title)
@@ -100,8 +99,8 @@ class HomeTimetableCard(
                                     .positiveText(R.string.yes)
                                     .negativeText(R.string.no)
                                     .onPositive { _, _ ->
-                                        app.appConfig.bellSyncDiff = null
-                                        app.appConfig.bellSyncMultiplier = 0
+                                        app.config.timetable.bellSyncDiff = null
+                                        app.config.timetable.bellSyncMultiplier = 0
                                         app.saveConfig("bellSyncDiff", "bellSyncMultiplier")
                                     }
                                     .show()
@@ -129,10 +128,10 @@ class HomeTimetableCard(
 
         val now = Time.getNow()
 
-        val syncedNow: Time = when (app.appConfig.bellSyncDiff != null) {
+        val syncedNow: Time = when (app.config.timetable.bellSyncDiff != null) {
             true -> when {
-                app.appConfig.bellSyncMultiplier < 0 -> Time.sum(now, app.appConfig.bellSyncDiff)
-                app.appConfig.bellSyncMultiplier > 0 -> Time.diff(now, app.appConfig.bellSyncDiff)
+                app.config.timetable.bellSyncMultiplier < 0 -> Time.sum(now, app.config.timetable.bellSyncDiff)
+                app.config.timetable.bellSyncMultiplier > 0 -> Time.diff(now, app.config.timetable.bellSyncDiff)
                 else -> now
             }
             else -> now
@@ -148,8 +147,8 @@ class HomeTimetableCard(
     private fun updateCounter(syncedNow: Time): Long {
         val diff = Time.diff(counterTarget, syncedNow)
         b.cardTimetableTimeLeft.text = when (counterType) {
-            TIME_TILL -> HomeFragment.timeTill(app, diff, app.appConfig.countInSeconds)
-            else -> HomeFragment.timeLeft(app, diff, app.appConfig.countInSeconds)
+            TIME_TILL -> HomeFragment.timeTill(app, diff, app.config.timetable.countInSeconds)
+            else -> HomeFragment.timeLeft(app, diff, app.config.timetable.countInSeconds)
         }
         bellSyncTime = counterTarget.clone()
         b.cardTimetableFullscreenCounter.visibility = View.VISIBLE

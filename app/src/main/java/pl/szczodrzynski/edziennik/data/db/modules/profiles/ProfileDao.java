@@ -1,5 +1,6 @@
 package pl.szczodrzynski.edziennik.data.db.modules.profiles;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -24,6 +25,7 @@ public interface ProfileDao {
     @Query("SELECT profiles.*, loginStores.loginStoreType, loginStores.loginStoreData FROM profiles LEFT JOIN loginStores ON profiles.loginStoreId = loginStores.loginStoreId WHERE profileId = :profileId")
     LiveData<ProfileFull> getById(int profileId);
 
+    @Nullable
     @Query("SELECT profiles.*, loginStores.loginStoreType, loginStores.loginStoreData FROM profiles LEFT JOIN loginStores ON profiles.loginStoreId = loginStores.loginStoreId WHERE profileId = :profileId")
     ProfileFull getFullByIdNow(int profileId);
 

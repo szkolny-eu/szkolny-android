@@ -1,10 +1,5 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -12,12 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -27,17 +19,13 @@ import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
@@ -49,8 +37,6 @@ import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDialog;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
-import static android.app.Activity.RESULT_OK;
-import static pl.szczodrzynski.edziennik.utils.Utils.getResizedBitmap;
 import static pl.szczodrzynski.edziennik.utils.Utils.getStringFromFile;
 import static pl.szczodrzynski.edziennik.utils.Utils.readableFileSize;
 
@@ -522,69 +508,6 @@ public class MessagesDetailsFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-            Uri uri = result.getUri();
-
-            File photoFile = new File(uri.getPath());
-            File destFile = new File(getContext().getFilesDir(),"teacher_"+message.senderId+".jpg");
-            if (destFile.exists()) {
-                destFile.delete();
-                destFile = new File(getContext().getFilesDir(),"teacher_"+message.senderId+".jpg");
-            }
-
-
-            if (result.getCropRect().width() > 512) {
-                Bitmap bigImage = BitmapFactory.decodeFile(uri.getPath());
-                Bitmap smallImage = getResizedBitmap(bigImage, 512, 512);
-                try (FileOutputStream out = new FileOutputStream(destFile)) {
-                    smallImage.compress(Bitmap.CompressFormat.JPEG, 80, out); // bmp is your Bitmap instance
-                    // PNG is a lossless format, the compression factor (100) is ignored
-                    Bitmap profileImage;
-                    profileImage = BitmapFactory.decodeFile(destFile.getAbsolutePath());
-                    profileImage = ThumbnailUtils.extractThumbnail(profileImage, Math.min(profileImage.getWidth(), profileImage.getHeight()), Math.min(profileImage.getWidth(), profileImage.getHeight()));
-                    RoundedBitmapDrawable roundDrawable = RoundedBitmapDrawableFactory.create(app.getResources(), profileImage);
-                    roundDrawable.setCircular(true);
-                    b.messageProfileImage.setImageDrawable(roundDrawable);
-                    if (app.appConfig.teacherImages == null) {
-                        app.appConfig.teacherImages = new HashMap<>();
-                    }
-                    app.appConfig.teacherImages.put(message.senderId, true);
-                    app.saveConfig("teacherImages");
-                    if (photoFile.exists()) {
-                        photoFile.delete();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-                if (photoFile.renameTo(destFile)) {
-                    // success
-                    Bitmap profileImage;
-                    profileImage = BitmapFactory.decodeFile(destFile.getAbsolutePath());
-                    profileImage = ThumbnailUtils.extractThumbnail(profileImage, Math.min(profileImage.getWidth(), profileImage.getHeight()), Math.min(profileImage.getWidth(), profileImage.getHeight()));
-                    RoundedBitmapDrawable roundDrawable = RoundedBitmapDrawableFactory.create(app.getResources(), profileImage);
-                    roundDrawable.setCircular(true);
-                    b.messageProfileImage.setImageDrawable(roundDrawable);
-                    if (app.appConfig.teacherImages == null) {
-                        app.appConfig.teacherImages = new HashMap<>();
-                    }
-                    app.appConfig.teacherImages.put(message.senderId, true);
-                    app.saveConfig("teacherImages");
-                }
-                else {
-                    // not this time
-                    Toast.makeText(app, R.string.error_occured, Toast.LENGTH_LONG).show();
-                }
-            }
-        }
     }
 }
 

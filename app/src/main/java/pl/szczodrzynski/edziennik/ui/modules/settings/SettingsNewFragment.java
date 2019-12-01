@@ -296,12 +296,11 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         new MaterialDialog.Builder(activity)
                                 .title(R.string.settings_theme_theme_text)
                                 .items(Themes.INSTANCE.getThemeNames(activity))
-                                .itemsCallbackSingleChoice(app.appConfig.appTheme, (dialog, itemView, which, text) -> {
-                                    if (app.appConfig.appTheme == which)
+                                .itemsCallbackSingleChoice(app.config.getUi().getTheme(), (dialog, itemView, which, text) -> {
+                                    if (app.config.getUi().getTheme() == which)
                                         return true;
-                                    app.appConfig.appTheme = which;
-                                    Themes.INSTANCE.setThemeInt(app.appConfig.appTheme);
-                                    app.saveConfig("appTheme");
+                                    app.config.getUi().setTheme(which);
+                                    Themes.INSTANCE.setThemeInt(app.config.getUi().getTheme());
                                     activity.recreate();
                                     return true;
                                 })
@@ -318,14 +317,13 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                    .setChecked(app.appConfig.miniDrawerVisible)
+                    .setChecked(app.config.getUi().getMiniMenuVisible())
                     .setOnChangeAction((isChecked, tag) -> {
                         // 0,1  1
                         // 0,0  0
                         // 1,1  0
                         // 1,0  1
-                        app.appConfig.miniDrawerVisible = isChecked;
-                        app.saveConfig("miniDrawerVisible");
+                        app.config.getUi().setMiniMenuVisible(isChecked);
                         activity.getNavView().drawer.setMiniDrawerVisiblePortrait(isChecked);
                         return true;
                     })
@@ -409,7 +407,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .color(IconicsColor.colorInt(iconColor))
                     )
                     .setOnClickAction(() -> {
-                        if (app.appConfig.headerBackground != null) {
+                        if (app.config.getUi().getHeaderBackground() != null) {
                             new MaterialDialog.Builder(activity)
                                     .title(R.string.what_do_you_want_to_do)
                                     .items(getString(R.string.settings_theme_drawer_header_dialog_set), getString(R.string.settings_theme_drawer_header_dialog_restore))
@@ -418,12 +416,11 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                             startActivityForResult(CropImage.getPickImageChooserIntent(activity), 22);
                                         } else {
                                             MainActivity ac = (MainActivity) getActivity();
-                                            app.appConfig.headerBackground = null;
+                                            app.config.getUi().setHeaderBackground(null);
                                             if (ac != null) {
                                                 ac.getDrawer().setAccountHeaderBackground(null);
                                                 ac.getDrawer().open();
                                             }
-                                            app.saveConfig("headerBackground");
                                         }
                                     })
                                     .show();
@@ -444,7 +441,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .color(IconicsColor.colorInt(iconColor))
                     )
                     .setOnClickAction(() -> {
-                        if (app.appConfig.appBackground != null) {
+                        if (app.config.getUi().getAppBackground() != null) {
                             new MaterialDialog.Builder(activity)
                                     .title(R.string.what_do_you_want_to_do)
                                     .items(getString(R.string.settings_theme_app_background_dialog_set), getString(R.string.settings_theme_app_background_dialog_restore))
@@ -452,8 +449,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         if (position == 0) {
                                             startActivityForResult(CropImage.getPickImageChooserIntent(activity), 23);
                                         } else {
-                                            app.appConfig.appBackground = null;
-                                            app.saveConfig("appBackground");
+                                            app.config.getUi().setAppBackground(null);
                                             activity.recreate();
                                         }
                                     })
@@ -479,25 +475,25 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                  |__*/
     private String getSyncCardIntervalSubText() {
 
-        if (app.appConfig.registerSyncInterval < 60 * 60)
+        if (app.config.getSync().getInterval() < 60 * 60)
             return getString(
                     R.string.settings_sync_sync_interval_subtext_format,
-                    HomeFragment.plural(activity, R.plurals.time_till_minutes, app.appConfig.registerSyncInterval / 60)
+                    HomeFragment.plural(activity, R.plurals.time_till_minutes, app.config.getSync().getInterval() / 60)
             );
         return getString(
                 R.string.settings_sync_sync_interval_subtext_format,
-                HomeFragment.plural(activity, R.plurals.time_till_hours, app.appConfig.registerSyncInterval / 60 / 60) +
-                (app.appConfig.registerSyncInterval / 60 % 60 == 0 ?
+                HomeFragment.plural(activity, R.plurals.time_till_hours, app.config.getSync().getInterval() / 60 / 60) +
+                (app.config.getSync().getInterval() / 60 % 60 == 0 ?
                         "" :
-                        " " + HomeFragment.plural(activity, R.plurals.time_till_minutes, app.appConfig.registerSyncInterval / 60 % 60)
+                        " " + HomeFragment.plural(activity, R.plurals.time_till_minutes, app.config.getSync().getInterval() / 60 % 60)
                 )
         );
     }
     private String getSyncCardQuietHoursSubText() {
         return getString(
-                app.appConfig.quietHoursStart >= app.appConfig.quietHoursEnd ? R.string.settings_sync_quiet_hours_subtext_next_day_format : R.string.settings_sync_quiet_hours_subtext_format,
-                Time.fromMillis(Math.abs(app.appConfig.quietHoursStart)).getStringHM(),
-                Time.fromMillis(app.appConfig.quietHoursEnd).getStringHM()
+                app.config.getSync().getQuietHoursStart() >= app.config.getSync().getQuietHoursEnd() ? R.string.settings_sync_quiet_hours_subtext_next_day_format : R.string.settings_sync_quiet_hours_subtext_format,
+                Time.fromMillis(Math.abs(app.config.getSync().getQuietHoursStart())).getStringHM(),
+                Time.fromMillis(app.config.getSync().getQuietHoursEnd()).getStringHM()
         );
     }
     private MaterialAboutItem getSyncCardWifiItem() {
@@ -509,10 +505,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .size(IconicsSize.dp(iconSizeDp))
                         .color(IconicsColor.colorInt(iconColor))
         )
-        .setChecked(app.appConfig.registerSyncOnlyWifi)
+        .setChecked(app.config.getSync().getOnlyWifi())
         .setOnChangeAction((isChecked, tag) -> {
-            app.appConfig.registerSyncOnlyWifi = isChecked;
-            app.saveConfig("registerSyncOnlyWifi");
+            app.config.getSync().setOnlyWifi(isChecked);
             SyncWorker.Companion.rescheduleNext(app);
             return true;
         });
@@ -532,7 +527,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             .color(IconicsColor.colorInt(iconColor))
             );
             syncCardIntervalItem.setSubTextChecked(getSyncCardIntervalSubText());
-            syncCardIntervalItem.setChecked(app.appConfig.registerSyncEnabled);
+            syncCardIntervalItem.setChecked(app.config.getSync().getEnabled());
             syncCardIntervalItem.setOnClickAction(() -> {
                 List<CharSequence> intervalNames = new ArrayList<>();
                 if (App.devMode && false) {
@@ -562,39 +557,37 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .title(getString(R.string.settings_sync_sync_interval_dialog_title))
                         .content(getString(R.string.settings_sync_sync_interval_dialog_text))
                         .items(intervalNames)
-                        .itemsCallbackSingleChoice(intervals.indexOf(app.appConfig.registerSyncInterval), (dialog, itemView, which, text) -> {
-                            app.appConfig.registerSyncInterval = intervals.get(which);
+                        .itemsCallbackSingleChoice(intervals.indexOf(app.config.getSync().getInterval()), (dialog, itemView, which, text) -> {
+                            app.config.getSync().setInterval(intervals.get(which));
                             syncCardIntervalItem.setSubTextChecked(getSyncCardIntervalSubText());
                             syncCardIntervalItem.setChecked(true);
-                            if (!app.appConfig.registerSyncEnabled) {
+                            if (!app.config.getSync().getEnabled()) {
                                 addCardItem(CARD_SYNC, 1, getSyncCardWifiItem());
                             }
                             else {
                                 refreshMaterialAboutList();
                             }
-                            app.appConfig.registerSyncEnabled = true;
+                            app.config.getSync().setEnabled(true);
                             // app.appConfig modifications have to surround syncCardIntervalItem and those ifs
-                            app.saveConfig("registerSyncInterval", "registerSyncEnabled");
                             SyncWorker.Companion.rescheduleNext(app);
                             return true;
                         })
                         .show();
             });
             syncCardIntervalItem.setOnChangeAction((isChecked, tag) -> {
-                if (isChecked && !app.appConfig.registerSyncEnabled) {
+                if (isChecked && !app.config.getSync().getEnabled()) {
                     addCardItem(CARD_SYNC, 1, getSyncCardWifiItem());
                 }
                 else if (!isChecked) {
                     removeCardItem(CARD_SYNC, 1);
                 }
-                app.appConfig.registerSyncEnabled = isChecked;
-                app.saveConfig("registerSyncEnabled");
+                app.config.getSync().setEnabled(isChecked);
                 SyncWorker.Companion.rescheduleNext(app);
                 return true;
             });
             items.add(syncCardIntervalItem);
 
-            if (app.appConfig.registerSyncEnabled) {
+            if (app.config.getSync().getEnabled()) {
                 items.add(getSyncCardWifiItem());
             }
 
@@ -624,7 +617,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
-            syncCardQuietHoursItem.setChecked(app.appConfig.quietHoursStart > 0);
+            syncCardQuietHoursItem.setChecked(app.config.getSync().getQuietHoursStart() > 0);
             syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
             syncCardQuietHoursItem.setOnClickAction(() -> {
                 new MaterialDialog.Builder(activity)
@@ -636,11 +629,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .itemsCallback((dialog, itemView, position, text) -> {
                             if (position == 0) {
                                 // set beginning
-                                Time time = Time.fromMillis(Math.abs(app.appConfig.quietHoursStart));
+                                Time time = Time.fromMillis(Math.abs(app.config.getSync().getQuietHoursStart()));
                                 TimePickerDialog.newInstance((v2, hourOfDay, minute, second) -> {
                                     // if it's disabled, it'll be enabled automatically
-                                    app.appConfig.quietHoursStart = new Time(hourOfDay, minute, second).getInMillis();
-                                    app.saveConfig("quietHoursStart");
+                                    app.config.getSync().setQuietHoursStart(new Time(hourOfDay, minute, second).getInMillis());
                                     syncCardQuietHoursItem.setChecked(true);
                                     syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
                                     refreshMaterialAboutList();
@@ -648,15 +640,13 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             }
                             else {
                                 // set end
-                                Time time = Time.fromMillis(app.appConfig.quietHoursEnd);
+                                Time time = Time.fromMillis(app.config.getSync().getQuietHoursEnd());
                                 TimePickerDialog.newInstance((v2, hourOfDay, minute, second) -> {
-                                    if (app.appConfig.quietHoursStart < 0) {
+                                    if (app.config.getSync().getQuietHoursStart() < 0) {
                                         // if it's disabled, enable
-                                        app.appConfig.quietHoursStart *= -1;
-                                        app.saveConfig("quietHoursStart");
+                                        app.config.getSync().setQuietHoursStart(-1 * app.config.getSync().getQuietHoursStart());
                                     }
-                                    app.appConfig.quietHoursEnd = new Time(hourOfDay, minute, second).getInMillis();
-                                    app.saveConfig("quietHoursEnd");
+                                    app.config.getSync().setQuietHoursEnd(new Time(hourOfDay, minute, second).getInMillis());
                                     syncCardQuietHoursItem.setChecked(true);
                                     syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
                                     refreshMaterialAboutList();
@@ -666,20 +656,17 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .show();
             });
             syncCardQuietHoursItem.setOnChangeAction((isChecked, tag) -> {
-                if (isChecked && app.appConfig.quietHoursStart < 0) {
-                    app.appConfig.quietHoursStart *= -1;
-                    app.saveConfig("quietHoursStart");
+                if (isChecked && app.config.getSync().getQuietHoursStart() < 0) {
+                    app.config.getSync().setQuietHoursStart(app.config.getSync().getQuietHoursStart() * -1);
                 }
-                else if (!isChecked && app.appConfig.quietHoursStart > 0) {
-                    app.appConfig.quietHoursStart *= -1;
-                    app.saveConfig("quietHoursStart");
+                else if (!isChecked && app.config.getSync().getQuietHoursStart() > 0) {
+                    app.config.getSync().setQuietHoursStart(app.config.getSync().getQuietHoursStart() * -1);
                 }
-                else if (isChecked && app.appConfig.quietHoursStart == 0) {
-                    app.appConfig.quietHoursStart = new Time(22, 30, 0).getInMillis();
-                    app.appConfig.quietHoursEnd = new Time(5, 30, 0).getInMillis();
+                else if (isChecked && app.config.getSync().getQuietHoursStart() == 0) {
+                    app.config.getSync().setQuietHoursStart(new Time(22, 30, 0).getInMillis());
+                    app.config.getSync().setQuietHoursEnd(new Time(5, 30, 0).getInMillis());
                     syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
                     refreshMaterialAboutList();
-                    app.saveConfig("quietHoursStart", "quietHoursEnd");
                 }
                 return true;
             });
@@ -727,10 +714,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                    .setChecked(app.appConfig.notifyAboutUpdates)
+                    .setChecked(app.config.getSync().getNotifyAboutUpdates())
                     .setOnChangeAction((isChecked, tag) -> {
-                        app.appConfig.notifyAboutUpdates = isChecked;
-                        app.saveConfig("notifyAboutUpdates");
+                        app.config.getSync().setNotifyAboutUpdates(isChecked);
                         return true;
                     })
             );
@@ -809,11 +795,11 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         }
     }
     private String getRegisterCardBellSyncSubText() {
-        if (app.appConfig.bellSyncDiff == null)
+        if (app.config.getTimetable().getBellSyncDiff() == null)
             return getString(R.string.settings_register_bell_sync_subtext_disabled);
         return getString(
                 R.string.settings_register_bell_sync_subtext_format,
-                (app.appConfig.bellSyncMultiplier == -1 ? "-" : "+") + app.appConfig.bellSyncDiff.getStringHMS()
+                (app.config.getTimetable().getBellSyncMultiplier() == -1 ? "-" : "+") + app.config.getTimetable().getBellSyncDiff().getStringHMS()
         );
     }
     private MaterialAboutItem getRegisterCardSharedEventsItem() {
@@ -972,8 +958,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .neutralText(R.string.reset)
                         .inputRangeRes(8, 8, R.color.md_red_500)
                         .input("±H:MM:SS",
-                                (app.appConfig.bellSyncDiff != null
-                                        ? (app.appConfig.bellSyncMultiplier == -1 ? "-" : "+") + app.appConfig.bellSyncDiff.getStringHMS()
+                                (app.config.getTimetable().getBellSyncDiff() != null
+                                        ? (app.config.getTimetable().getBellSyncMultiplier() == -1 ? "-" : "+") + app.config.getTimetable().getBellSyncDiff().getStringHMS()
                                         : ""), (dialog, input) -> {
                                     if (input == null)
                                         return;
@@ -986,10 +972,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         return;
                                     }
                                     if (input.charAt(0) == '+') {
-                                        app.appConfig.bellSyncMultiplier = 1;
+                                        app.config.getTimetable().setBellSyncMultiplier(1);
                                     }
                                     else if (input.charAt(0) == '-') {
-                                        app.appConfig.bellSyncMultiplier = -1;
+                                        app.config.getTimetable().setBellSyncMultiplier(-1);
                                     }
                                     else {
                                         Toast.makeText(activity, R.string.bell_sync_adjust_error, Toast.LENGTH_SHORT).show();
@@ -1010,15 +996,13 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         return;
                                     }
 
-                                    app.appConfig.bellSyncDiff = new Time(hour, minute, second);
-                                    app.saveConfig("bellSyncDiff", "bellSyncMultiplier");
+                                    app.config.getTimetable().setBellSyncDiff(new Time(hour, minute, second));
                                     registerCardBellSyncItem.setSubText(getRegisterCardBellSyncSubText());
                                     refreshMaterialAboutList();
                                 })
                         .onNeutral(((dialog, which) -> {
-                            app.appConfig.bellSyncDiff = null;
-                            app.appConfig.bellSyncMultiplier = 0;
-                            app.saveConfig("bellSyncDiff", "bellSyncMultiplier");
+                            app.config.getTimetable().setBellSyncDiff(null);
+                            app.config.getTimetable().setBellSyncMultiplier(0);
                             registerCardBellSyncItem.setSubText(getRegisterCardBellSyncSubText());
                             refreshMaterialAboutList();
                         }))
@@ -1035,9 +1019,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                            .setChecked(app.appConfig.dontCountZeroToAverage)
+                            .setChecked(!app.config.getFor(app.profileId).getGrades().getCountZeroToAvg())
                             .setOnChangeAction((isChecked, tag) -> {
-                                app.appConfig.dontCountZeroToAverage = isChecked;
+                                app.config.getFor(app.profileId).getGrades().setCountZeroToAvg(!isChecked);
                                 app.saveConfig("dontCountZeroToAverage");
                                 return true;
                             })
@@ -1052,10 +1036,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                    .setChecked(app.appConfig.countInSeconds)
+                    .setChecked(app.config.getTimetable().getCountInSeconds())
                     .setOnChangeAction((isChecked, tag) -> {
-                        app.appConfig.countInSeconds = isChecked;
-                        app.saveConfig("countInSeconds");
+                        app.config.getTimetable().setCountInSeconds(isChecked);
                         return true;
                     })
             );
@@ -1166,17 +1149,17 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 .title(getString(R.string.settings_about_language_dialog_title))
                                 .content(getString(R.string.settings_about_language_dialog_text))
                                 .items(getString(R.string.language_system), getString(R.string.language_polish), getString(R.string.language_english))
-                                .itemsCallbackSingleChoice(app.appConfig.language == null ? 0 : app.appConfig.language.equals("pl") ? 1 : 2, (dialog, itemView, which, text) -> {
+                                .itemsCallbackSingleChoice(app.config.getUi().getLanguage() == null ? 0 : app.config.getUi().getLanguage().equals("pl") ? 1 : 2, (dialog, itemView, which, text) -> {
                                     switch (which) {
                                         case 0:
-                                            app.appConfig.language = null;
+                                            app.config.getUi().setLanguage(null);
                                             initDefaultLocale();
                                             break;
                                         case 1:
-                                            app.appConfig.language = "pl";
+                                            app.config.getUi().setLanguage("pl");
                                             break;
                                         case 2:
-                                            app.appConfig.language = "en";
+                                            app.config.getUi().setLanguage("en");
                                             break;
                                     }
                                     app.saveConfig("language");
@@ -1397,10 +1380,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         else if (requestCode == 22 && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             if (uri != null) {
-                app.appConfig.headerBackground = getRealPathFromURI(getContext(), uri);
-                app.saveConfig("headerBackground");
+                app.config.getUi().setHeaderBackground(getRealPathFromURI(getContext(), uri));
                 if (activity != null) {
-                    activity.getDrawer().setAccountHeaderBackground(app.appConfig.headerBackground);
+                    activity.getDrawer().setAccountHeaderBackground(app.config.getUi().getHeaderBackground());
                     activity.getDrawer().open();
                 }
             }
@@ -1408,8 +1390,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         else if (requestCode == 23 && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             if (uri != null) {
-                app.appConfig.appBackground = getRealPathFromURI(getContext(), uri);
-                app.saveConfig("appBackground");
+                app.config.getUi().setAppBackground(getRealPathFromURI(getContext(), uri));
                 if (activity != null) {
                     activity.recreate();
                 }
