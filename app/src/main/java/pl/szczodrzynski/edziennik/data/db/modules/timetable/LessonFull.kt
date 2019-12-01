@@ -96,9 +96,9 @@ class LessonFull(profileId: Int, id: Long) : Lesson(profileId, id) {
         }
 
         return when (second) {
-            null -> first ?: ""
+            null -> first.orEmpty()
             first -> second
-            else -> "$first -> $second"
+            else -> if (first != null) "$first -> $second" else second.orEmpty()
         }
     }
 
