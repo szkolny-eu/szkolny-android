@@ -23,11 +23,12 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EventListAdapter(
         val context: Context,
-        val eventList: List<EventFull>,
         val parentDialog: EventListDialog
 ) : RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
 
     private val app by lazy { context.applicationContext as App }
+
+    val eventList = mutableListOf<EventFull>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)

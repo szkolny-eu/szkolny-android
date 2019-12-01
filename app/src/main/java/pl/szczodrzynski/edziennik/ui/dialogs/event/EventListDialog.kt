@@ -43,6 +43,7 @@ class EventListDialog(
     private val app by lazy { activity.application as App }
     private lateinit var b: DialogEventListBinding
     private lateinit var dialog: AlertDialog
+    private lateinit var adapter: EventListAdapter
 
     private var lesson: LessonFull? = null
 
@@ -111,16 +112,24 @@ class EventListDialog(
         b.eventListView.apply {
             setHasFixedSize(false)
             isNestedScrollingEnabled = true
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(activity)
         }
+
+        adapter = EventListAdapter(activity, this@EventListDialog)
+        b.eventListView.adapter = adapter
 
         app.db.eventDao().getAllByDateTime(profileId, date, time).observe(activity, Observer { events ->
             if (events.isNullOrEmpty()) {
                 b.eventListView.visibility = View.GONE
                 b.textNoEvents.visibility = View.VISIBLE
             } else {
-                val adapter = EventListAdapter(activity, events, this)
-                b.eventListView.adapter = adapter
+                adapter.run {
+                    eventList.apply {
+                        clear()
+                        addAll(events)
+                    }
+                    notifyDataSetChanged()
+                }
             }
         })
     }
