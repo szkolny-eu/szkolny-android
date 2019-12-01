@@ -108,7 +108,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
         Log.d(TAG, "onViewCreated, date=$date")
 
         // observe lesson database
-        app.db.timetableDao().getForDate(App.profileId, date).observe(this, Observer<List<LessonFull>> { lessons ->
+        app.db.timetableDao().getForDate(App.profileId, date).observe(this, Observer { lessons ->
             processLessonList(lessons)
         })
     }

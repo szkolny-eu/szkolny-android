@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
@@ -21,7 +22,9 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
+import pl.szczodrzynski.edziennik.observeOnce
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -152,6 +155,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
                     activity.gainAttentionFAB()
                     fabShown = true
                 }
+                markLessonsAsSeen()
             }
         })
 
@@ -196,4 +200,15 @@ class TimetableFragment : Fragment(), CoroutineScope {
             b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, true)
         })
     }}
+
+    private fun markLessonsAsSeen() = pageSelection?.let { date ->
+        app.db.timetableDao().getForDate(App.profileId, date).observeOnce(this@TimetableFragment, Observer { lessons ->
+            lessons.forEach { lesson ->
+                if (lesson.type != Lesson.TYPE_NORMAL && lesson.type != Lesson.TYPE_NO_LESSONS
+                        && !lesson.seen) {
+                    app.db.metadataDao().setSeen(lesson.profileId, lesson, true)
+                }
+            }
+        })
+    }
 }

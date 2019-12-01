@@ -9,7 +9,6 @@ import androidx.room.Transaction;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
@@ -17,6 +16,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message;
+import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
 import pl.szczodrzynski.edziennik.utils.models.UnreadCounter;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ANNOUNCEMENT;
@@ -85,6 +85,11 @@ public abstract class MetadataDao {
                 updateSeen(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).changeId, seen);
             }
         }
+        if (o instanceof pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) {
+            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) o).getId(), seen, false, 0)) == -1) {
+                updateSeen(profileId, TYPE_LESSON_CHANGE, ((pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) o).getId(), seen);
+            }
+        }
         if (o instanceof Announcement) {
             if (add(new Metadata(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).id, seen, false, 0)) == -1) {
                 updateSeen(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).id, seen);
@@ -127,6 +132,11 @@ public abstract class MetadataDao {
         if (o instanceof LessonFull) {
             if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).changeId, false, notified, 0)) == -1) {
                 updateNotified(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).changeId, notified);
+            }
+        }
+        if (o instanceof pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) {
+            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) o).getId(), false, notified, 0)) == -1) {
+                updateNotified(profileId, TYPE_LESSON_CHANGE, ((pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) o).getId(), notified);
             }
         }
         if (o instanceof Announcement) {
