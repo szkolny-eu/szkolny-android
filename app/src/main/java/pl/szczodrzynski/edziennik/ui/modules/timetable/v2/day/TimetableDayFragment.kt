@@ -120,7 +120,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
     private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>) {
         // no lessons - timetable not downloaded yet
         if (lessons.isEmpty()) {
-            inflater.inflate(R.layout.timetable_no_timetable, view as FrameLayout) { view, _, parent ->
+            inflater.inflate(R.layout.timetable_no_timetable, view as FrameLayout?) { view, _, parent ->
                 parent?.removeAllViews()
                 parent?.addView(view)
                 val b = TimetableNoTimetableBinding.bind(view)
@@ -143,7 +143,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
         }
         // one lesson indicating a day without lessons
         if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
-            inflater.inflate(R.layout.timetable_no_lessons, view as FrameLayout) { view, _, parent ->
+            inflater.inflate(R.layout.timetable_no_lessons, view as FrameLayout?) { view, _, parent ->
                 parent?.removeAllViews()
                 parent?.addView(view)
             }
