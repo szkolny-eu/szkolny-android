@@ -804,7 +804,10 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     setDrawerItems()
-                    drawer.currentProfile = app.profile.id
+                    // the drawer profile is updated automatically when the drawer item is clicked
+                    // update it manually when switching profiles from other source
+                    //if (drawer.currentProfile != app.profile.id)
+                        drawer.currentProfile = app.profile.id
                     loadTarget(drawerSelection, arguments)
                 }
             }

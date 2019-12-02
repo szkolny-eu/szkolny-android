@@ -22,8 +22,8 @@ buildscript {
 
                 androidX         : '1.0.0',
                 annotation       : '1.1.0',
-                recyclerView     : '1.1.0-rc01',
-                material         : '1.2.0-alpha01',
+                recyclerView     : '1.1.0',
+                material         : '1.2.0-alpha02',
                 appcompat        : '1.1.0',
                 constraintLayout : '2.0.0-beta3',
                 cardview         : '1.0.0',
@@ -36,16 +36,16 @@ buildscript {
                 lifecycle        : "2.2.0-rc02",
                 work             : "2.2.0",
 
-                firebase         : '17.2.0',
+                firebase         : '17.2.1',
                 firebasemessaging: "20.0.0",
                 play_services    : "17.0.0",
 
                 materialdialogs  : "0.9.6.0",
                 materialdrawer   : "cad66092a6",
-                iconics          : "4.0.1-b02",
+                iconics          : "4.0.1",
                 font_cmd         : "3.5.95.1-kotlin",
 
-                navlib           : "8ae5e2b87a",
+                navlib           : "8b31921697",
 
                 gifdrawable      : "1.2.15"
         ]
