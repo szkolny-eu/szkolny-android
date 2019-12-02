@@ -687,7 +687,6 @@ class MainActivity : AppCompatActivity() {
         }*/
 
         if (navLoading) {
-            navLoading = false
             b.fragment.removeAllViews()
             if (intentTargetId == -1)
                 intentTargetId = HOME_ID
@@ -707,13 +706,14 @@ class MainActivity : AppCompatActivity() {
             }
             intentTargetId != -1 -> {
                 drawer.currentProfile = app.profile.id
-                if (navTargetId != intentTargetId)
+                if (navTargetId != intentTargetId || navLoading)
                     loadTarget(intentTargetId, extras)
             }
             else -> {
                 drawer.currentProfile = app.profile.id
             }
         }
+        navLoading = false
     }
 
     override fun recreate() {
