@@ -88,19 +88,12 @@ class EventManualV2Dialog(
                     show()
                 }
 
+        defaultType?.let {
+            event.type = it
+        }
+
         event = editingEvent?.clone() ?: Event().also { event ->
             event.profileId = profileId
-            /*defaultDate?.let {
-                event.eventDate = it
-                b.date = it
-            }
-            defaultTime?.let {
-                event.startTime = it
-                b.time = it
-            }
-            defaultType?.let {
-                event.type = it
-            }*/
             b.shareSwitch.isChecked = event.sharedBy != null
         }
 
@@ -304,6 +297,16 @@ class EventManualV2Dialog(
         val dates = deferred.await()
         b.dateDropdown.clear().append(dates)
 
+        defaultDate?.let {
+            event.eventDate = it
+            if (b.dateDropdown.select(it) == null)
+                b.dateDropdown.select(TextInputDropDown.Item(
+                        it.value.toLong(),
+                        it.formattedString,
+                        tag = it
+                ))
+        }
+
         editingEvent?.eventDate?.let {
             b.dateDropdown.select(TextInputDropDown.Item(
                     it.value.toLong(),
@@ -441,6 +444,16 @@ class EventManualV2Dialog(
                 b.teacherDropdown.deselect()
             }
             else {
+                defaultTime?.let {
+                    event.startTime = it
+                    if (b.timeDropdown.select(it) == null)
+                        b.timeDropdown.select(TextInputDropDown.Item(
+                                it.value.toLong(),
+                                it.stringHM,
+                                tag = it
+                        ))
+                }
+
                 editingEvent?.let {
                     b.timeDropdown.select(it.startTime?.value?.toLong())
                 }
