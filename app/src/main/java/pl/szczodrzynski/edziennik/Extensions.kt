@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -36,6 +38,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.navlib.getColorFromAttr
 import pl.szczodrzynski.navlib.getColorFromRes
 import java.text.SimpleDateFormat
 import java.util.*
@@ -594,4 +597,12 @@ inline fun <reified T> Any?.instanceOfOrNull(): T? {
         is T -> this
         else -> null
     }
+}
+
+fun Drawable.setTintColor(color: Int): Drawable {
+    colorFilter = PorterDuffColorFilter(
+            color,
+            PorterDuff.Mode.SRC_ATOP
+    )
+    return this
 }

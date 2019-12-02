@@ -73,16 +73,16 @@
                     tools:maxLines="2"
                     tools:text="pracownia urządzeń techniki komputerowej" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <View
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
                     android:layout_gravity="center_vertical"
-                    android:paddingStart="8dp"
-                    android:paddingLeft="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingRight="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:visibility="@{unread ? View.VISIBLE : View.GONE}"
-                    app:srcCompat="@drawable/unread_red_circle" />
+                    android:background="@drawable/unread_red_circle" />
 
                 <ImageView
                     android:id="@+id/attendanceIcon"
@@ -125,29 +125,65 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="bottom"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp">
 
-                <TextView
-                    android:id="@+id/detailsFirst"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    tools:text="8:10 - 8:55 • 015 językowa → 016 językowa" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/detailsSecond"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="middle"
-                    android:singleLine="true"
-                    android:textAppearance="@style/NavView.TextView.Helper"
-                    android:textSize="12sp"
-                    tools:text="Paweł Informatyczny • 2b3T n1" />
+                    <TextView
+                        android:id="@+id/detailsFirst"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        tools:text="8:10 - 8:55 • 015 językowa → 016 językowa" />
+
+                    <TextView
+                        android:id="@+id/detailsSecond"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="middle"
+                        android:singleLine="true"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:textSize="12sp"
+                        tools:text="Paweł Informatyczny • 2b3T n1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="end|bottom"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/event3"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
+                        tools:background="@drawable/unread_red_circle" />
+
+                    <View
+                        android:id="@+id/event2"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
+                        tools:background="@drawable/unread_red_circle" />
+
+                    <View
+                        android:id="@+id/event1"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
+                        tools:background="@drawable/unread_red_circle" />
+                </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </FrameLayout>
 </layout>

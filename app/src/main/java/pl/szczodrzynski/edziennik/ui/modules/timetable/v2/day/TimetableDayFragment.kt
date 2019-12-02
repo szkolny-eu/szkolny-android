@@ -15,13 +15,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
@@ -109,11 +108,16 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
 
         // observe lesson database
         app.db.timetableDao().getForDate(App.profileId, date).observe(this, Observer { lessons ->
-            processLessonList(lessons)
+            launch {
+                val events = withContext(Dispatchers.Default) {
+                    app.db.eventDao().getAllByDateNow(App.profileId, date)
+                }
+                processLessonList(lessons, events)
+            }
         })
     }
 
-    private fun processLessonList(lessons: List<LessonFull>) {
+    private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>) {
         // no lessons - timetable not downloaded yet
         if (lessons.isEmpty()) {
             inflater.inflate(R.layout.timetable_no_timetable, view as FrameLayout) { view, _, parent ->
@@ -166,10 +170,10 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
         }
         dayView.setHourLabelViews(hourLabelViews)
 
-        buildLessonViews(lessons)
+        buildLessonViews(lessons, events)
     }
 
-    private fun buildLessonViews(lessons: List<LessonFull>) {
+    private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>) {
         if (!isAdded)
             return
 
@@ -204,6 +208,26 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
                 Log.d(TAG, "Clicked ${it.tag}")
                 if (isAdded && it.tag is LessonFull)
                     LessonDetailsDialog(activity, it.tag as LessonFull)
+            }
+
+            val eventList = events.filter { it.startTime != null && it.startTime == lesson.displayStartTime }.take(3)
+            eventList.getOrNull(0).let {
+                lb.event1.visibility = if (it == null) View.GONE else View.VISIBLE
+                lb.event1.background = it?.let {
+                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.getColor())
+                }
+            }
+            eventList.getOrNull(1).let {
+                lb.event2.visibility = if (it == null) View.GONE else View.VISIBLE
+                lb.event2.background = it?.let {
+                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.getColor())
+                }
+            }
+            eventList.getOrNull(2).let {
+                lb.event3.visibility = if (it == null) View.GONE else View.VISIBLE
+                lb.event3.background = it?.let {
+                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.getColor())
+                }
             }
 
 
@@ -311,10 +335,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
                         else -> lb.annotation.setText(R.string.timetable_lesson_shifted)
                     }
 
-                    lb.annotation.background.colorFilter = PorterDuffColorFilter(
-                            getColorFromAttr(activity, R.attr.timetable_lesson_shifted_source_color),
-                            PorterDuff.Mode.SRC_ATOP
-                    )
+                    lb.annotation.background.setTintColor(R.attr.timetable_lesson_shifted_source_color.resolveAttr(activity))
                 }
                 Lesson.TYPE_SHIFTED_TARGET -> {
                     lb.annotationVisible = true
