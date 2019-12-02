@@ -88,12 +88,11 @@ class EventManualV2Dialog(
                     show()
                 }
 
-        defaultType?.let {
-            event.type = it
-        }
-
         event = editingEvent?.clone() ?: Event().also { event ->
             event.profileId = profileId
+            defaultType?.let {
+                event.type = it
+            }
             b.shareSwitch.isChecked = event.sharedBy != null
         }
 
