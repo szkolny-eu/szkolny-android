@@ -13,9 +13,10 @@ import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeworkBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualV2Dialog
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -56,7 +57,7 @@ class HomeworkFragment : Fragment() {
                 .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
                 .withOnClickListener(View.OnClickListener {
                     activity.bottomSheet.close()
-                    EventManualDialog(activity).show(app, null, null, null, EventManualDialog.DIALOG_HOMEWORK)
+                    EventManualV2Dialog(activity, App.profileId, defaultType = Event.TYPE_HOMEWORK)
                 }),
         BottomSheetSeparatorItem(true),
         BottomSheetPrimaryItem(true)
@@ -102,7 +103,7 @@ class HomeworkFragment : Fragment() {
         activity.navView.bottomBar.fabExtendedText = getString(R.string.add)
         activity.navView.bottomBar.fabIcon = CommunityMaterial.Icon2.cmd_plus
         activity.navView.setFabOnClickListener(View.OnClickListener {
-            EventManualDialog(activity).show(app, null, null, null, EventManualDialog.DIALOG_HOMEWORK)
+            EventManualV2Dialog(activity, App.profileId)
         })
 
         activity.gainAttention()

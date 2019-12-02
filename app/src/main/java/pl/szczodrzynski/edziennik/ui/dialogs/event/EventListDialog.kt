@@ -64,6 +64,8 @@ class EventListDialog(
                                 activity,
                                 lesson?.profileId ?: profileId,
                                 lesson,
+                                date,
+                                time,
                                 onShowListener = onShowListener,
                                 onDismissListener = onDismissListener
                         )

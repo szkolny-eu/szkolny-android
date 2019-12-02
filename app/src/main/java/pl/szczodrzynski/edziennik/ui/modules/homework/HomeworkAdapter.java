@@ -4,21 +4,23 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
+import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualV2Dialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
@@ -92,7 +94,16 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
 
         holder.homeworkItemEdit.setVisibility((homework.addedManually ? View.VISIBLE : View.GONE));
         holder.homeworkItemEdit.setOnClickListener(v -> {
-            new EventManualDialog(context).show(app, homework, null, null, EventManualDialog.DIALOG_HOMEWORK);
+            new EventManualV2Dialog(
+                    (MainActivity) context,
+                    homework.profileId,
+                    null,
+                    null,
+                    null,
+                    null,
+                    homework,
+                    null,
+                    null);
         });
 
         if (homework.sharedBy == null) {
