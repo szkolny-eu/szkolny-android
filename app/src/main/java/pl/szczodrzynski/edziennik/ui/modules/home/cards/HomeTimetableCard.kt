@@ -32,7 +32,7 @@ import pl.szczodrzynski.navlib.colorAttr
 import kotlin.coroutines.CoroutineContext
 
 class HomeTimetableCard(
-        val id: Int,
+        override val id: Int,
         val app: App,
         val activity: MainActivity,
         val fragment: HomeFragmentV2,

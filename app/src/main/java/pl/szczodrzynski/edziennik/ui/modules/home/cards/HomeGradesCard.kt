@@ -43,7 +43,7 @@ import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel
 import kotlin.coroutines.CoroutineContext
 
 class HomeGradesCard(
-        val id: Int,
+        override val id: Int,
         val app: App,
         val activity: MainActivity,
         val fragment: HomeFragmentV2,

@@ -74,8 +74,9 @@ fun HashMap<String, String?>.get(key: String, default: JsonObject?): JsonObject?
 fun HashMap<String, String?>.get(key: String, default: JsonArray?): JsonArray? {
     return this[key]?.let { JsonParser().parse(it)?.asJsonArray } ?: default
 }
-fun <T> HashMap<String, String?>.get(key: String, default: List<T>?): List<T>? {
-    return this[key]?.let { gson.fromJson<List<T>>(it, object: TypeToken<List<T>>(){}.type) } ?: default
+/* !!! cannot use mutable list here - modifying it will not update the DB */
+fun <T> HashMap<String, String?>.get(key: String, default: List<T>?, classOfT: Class<T>): List<T>? {
+    return this[key]?.let { ConfigGsonUtils().deserializeList<T>(gson, it, classOfT) } ?: default
 }
 fun HashMap<String, String?>.getStringList(key: String, default: List<String>?): List<String>? {
     return this[key]?.let { gson.fromJson<List<String>>(it, object: TypeToken<List<String>>(){}.type) } ?: default

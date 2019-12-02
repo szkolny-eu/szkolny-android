@@ -41,6 +41,12 @@ class HomeFragmentV2 : Fragment(), CoroutineScope {
         private const val TAG = "HomeFragment"
 
         fun swapCards(fromPosition: Int, toPosition: Int, cardAdapter: HomeCardAdapter) {
+            val homeCards = App.getConfig().ui.homeCards.toMutableList()
+            val fromPair = homeCards[fromPosition]
+            homeCards[fromPosition] = homeCards[toPosition]
+            homeCards[toPosition] = fromPair
+            App.getConfig().ui.homeCards = homeCards
+
             val fromCard = cardAdapter.items[fromPosition]
             cardAdapter.items[fromPosition] = cardAdapter.items[toPosition]
             cardAdapter.items[toPosition] = fromCard
@@ -93,11 +99,28 @@ class HomeFragmentV2 : Fragment(), CoroutineScope {
                         })
         )
 
-        val items = mutableListOf<HomeCard>(
-                HomeLuckyNumberCard(0, app, activity, this, app.profile),
-                HomeTimetableCard(1, app, activity, this, app.profile),
-                HomeGradesCard(2, app, activity, this, app.profile)
-        )
+        val showUnified = false
+
+        val cards = app.config.ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
+        if (cards.isEmpty()) {
+            cards += listOf(
+                    HomeCardModel(app.profile.id, HomeCard.CARD_LUCKY_NUMBER),
+                    HomeCardModel(app.profile.id, HomeCard.CARD_TIMETABLE),
+                    /*HomeCardModel(app.profile.id, HomeCard.CARD_EVENTS),*/
+                    HomeCardModel(app.profile.id, HomeCard.CARD_GRADES)
+            )
+            app.config.ui.homeCards = app.config.ui.homeCards.toMutableList().also { it.addAll(cards) }
+        }
+
+        val items = mutableListOf<HomeCard>()
+        cards.mapNotNullTo(items) {
+            when (it.cardId) {
+                HomeCard.CARD_LUCKY_NUMBER -> HomeLuckyNumberCard(it.cardId, app, activity, this, app.profile)
+                HomeCard.CARD_TIMETABLE -> HomeTimetableCard(it.cardId, app, activity, this, app.profile)
+                HomeCard.CARD_GRADES -> HomeGradesCard(it.cardId, app, activity, this, app.profile)
+                else -> null
+            }
+        }
 
         val adapter = HomeCardAdapter(items)
         val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter, b.refreshLayout))

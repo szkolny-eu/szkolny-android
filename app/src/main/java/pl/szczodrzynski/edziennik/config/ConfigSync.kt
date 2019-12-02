@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.config
 
 import pl.szczodrzynski.edziennik.config.utils.get
+import pl.szczodrzynski.edziennik.config.utils.getIntList
 import pl.szczodrzynski.edziennik.config.utils.set
 
 class ConfigSync(private val config: Config) {
@@ -74,14 +75,14 @@ class ConfigSync(private val config: Config) {
 
     private var mTokenMobidziennikList: List<Int>? = null
     var tokenMobidziennikList: List<Int>
-        get() { mTokenMobidziennikList = mTokenMobidziennikList ?: config.values.get("tokenMobidziennikList", listOf()); return mTokenMobidziennikList ?: listOf() }
+        get() { mTokenMobidziennikList = mTokenMobidziennikList ?: config.values.getIntList("tokenMobidziennikList", listOf()); return mTokenMobidziennikList ?: listOf() }
         set(value) { config.set("tokenMobidziennikList", value); mTokenMobidziennikList = value }
     private var mTokenLibrusList: List<Int>? = null
     var tokenLibrusList: List<Int>
-        get() { mTokenLibrusList = mTokenLibrusList ?: config.values.get("tokenLibrusList", listOf()); return mTokenLibrusList ?: listOf() }
+        get() { mTokenLibrusList = mTokenLibrusList ?: config.values.getIntList("tokenLibrusList", listOf()); return mTokenLibrusList ?: listOf() }
         set(value) { config.set("tokenLibrusList", value); mTokenLibrusList = value }
     private var mTokenVulcanList: List<Int>? = null
     var tokenVulcanList: List<Int>
-        get() { mTokenVulcanList = mTokenVulcanList ?: config.values.get("tokenVulcanList", listOf()); return mTokenVulcanList ?: listOf() }
+        get() { mTokenVulcanList = mTokenVulcanList ?: config.values.getIntList("tokenVulcanList", listOf()); return mTokenVulcanList ?: listOf() }
         set(value) { config.set("tokenVulcanList", value); mTokenVulcanList = value }
 }

@@ -26,7 +26,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
 class HomeLuckyNumberCard(
-        val id: Int,
+        override val id: Int,
         val app: App,
         val activity: MainActivity,
         val fragment: HomeFragmentV2,

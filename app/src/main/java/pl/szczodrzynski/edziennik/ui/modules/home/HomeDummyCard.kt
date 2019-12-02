@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.startCoroutineTimer
 import kotlin.coroutines.CoroutineContext
 
-class HomeDummyCard(val id: Int) : HomeCard, CoroutineScope {
+class HomeDummyCard(override val id: Int) : HomeCard, CoroutineScope {
     companion object {
         private const val TAG = "HomeDummyCard"
     }

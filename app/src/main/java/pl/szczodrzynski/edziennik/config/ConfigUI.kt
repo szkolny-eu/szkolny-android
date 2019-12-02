@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.config
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.getIntList
 import pl.szczodrzynski.edziennik.config.utils.set
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardModel
 
 class ConfigUI(private val config: Config) {
     private var mTheme: Int? = null
@@ -43,4 +44,9 @@ class ConfigUI(private val config: Config) {
     var agendaViewType: Int
         get() { mAgendaViewType = mAgendaViewType ?: config.values.get("agendaViewType", 0); return mAgendaViewType ?: 0 }
         set(value) { config.set("agendaViewType", value); mAgendaViewType = value }
+
+    private var mHomeCards: List<HomeCardModel>? = null
+    var homeCards: List<HomeCardModel>
+        get() { mHomeCards = mHomeCards ?: config.values.get("homeCards", listOf(), HomeCardModel::class.java); return mHomeCards ?: listOf() }
+        set(value) { config.set("homeCards", value); mHomeCards = value }
 }

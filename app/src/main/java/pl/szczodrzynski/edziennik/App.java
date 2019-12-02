@@ -143,6 +143,10 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
 
     public ProfileFull profile;
     public Config config;
+    private static Config mConfig;
+    public static Config getConfig() {
+        return mConfig;
+    }
 
     // other stuff
     public Gson gson;
@@ -194,6 +198,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
 
         config = new Config(db);
         config.migrate(this);
+        mConfig = config;
 
         Iconics.init(getApplicationContext());
         Iconics.registerFont(SzkolnyFont.INSTANCE);
