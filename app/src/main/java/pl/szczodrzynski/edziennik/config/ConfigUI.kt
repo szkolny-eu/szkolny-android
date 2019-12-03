@@ -22,12 +22,12 @@ class ConfigUI(private val config: Config) {
 
     private var mHeaderBackground: String? = null
     var headerBackground: String?
-        get() { mHeaderBackground = mHeaderBackground ?: config.values.get("headerBackground", null as String?); return mHeaderBackground }
+        get() { mHeaderBackground = mHeaderBackground ?: config.values.get("headerBg", null as String?); return mHeaderBackground }
         set(value) { config.set("headerBg", value); mHeaderBackground = value }
 
     private var mAppBackground: String? = null
     var appBackground: String?
-        get() { mAppBackground = mAppBackground ?: config.values.get("appBackground", null as String?); return mAppBackground }
+        get() { mAppBackground = mAppBackground ?: config.values.get("appBg", null as String?); return mAppBackground }
         set(value) { config.set("appBg", value); mAppBackground = value }
 
     private var mMiniMenuVisible: Boolean? = null
