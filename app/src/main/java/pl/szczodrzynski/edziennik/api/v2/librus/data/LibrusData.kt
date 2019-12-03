@@ -93,6 +93,14 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
                 LibrusApiGradeCategories(data, onSuccess)
             }
+            ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_behaviour_grades)
+                LibrusApiBehaviourGrades(data, onSuccess)
+            }
+            ENDPOINT_LIBRUS_API_BEHAVIOUR_GC -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
+                LibrusApiBehaviourGradeCategories(data, onSuccess)
+            }
             // TODO grades
 
             ENDPOINT_LIBRUS_API_EVENT_TYPES -> {

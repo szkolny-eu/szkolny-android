@@ -1058,4 +1058,5 @@
     <string name="home_timetable_lessons_remaining">Pozostało lekcji: %d - do %s</string>
     <string name="grade_subject_format">z %s</string>
     <string name="concat_2_strings" translatable="false">%s%s</string>
+    <string name="edziennik_progress_endpoint_behaviour_grades">Pobieranie ocen z zachowania...</string>
 </resources>

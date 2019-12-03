@@ -17,15 +17,15 @@ public class ItemGradesSubjectModel {
     public int semester1Unread = 0;
     public int semester2Unread = 0;
 
-    public float semester1Average = -1;
+    public float semester1Average = 0;
     public GradeFull semester1Proposed = null;
     public GradeFull semester1Final = null;
 
-    public float semester2Average = -1;
+    public float semester2Average = 0;
     public GradeFull semester2Proposed = null;
     public GradeFull semester2Final = null;
 
-    public float yearAverage = -1;
+    public float yearAverage = 0;
     public GradeFull yearProposed = null;
     public GradeFull yearFinal = null;
 
