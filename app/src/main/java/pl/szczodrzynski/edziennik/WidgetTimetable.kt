@@ -255,7 +255,7 @@ class WidgetTimetable : AppWidgetProvider() {
 
                 // add every event on this lesson
                 for (event in events) {
-                    if (event.startTime != null && event.startTime != lesson.displayStartTime)
+                    if (event.startTime == null || event.startTime != lesson.displayStartTime)
                         continue
                     model.eventColors.add(if (event.type == TYPE_HOMEWORK) ItemWidgetTimetableModel.EVENT_COLOR_HOMEWORK else event.getColor())
                 }
