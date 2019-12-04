@@ -4,9 +4,12 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.messages
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.text.Html
+import android.text.Html.FROM_HTML_MODE_COMPACT
 import android.text.TextUtils
 import android.view.Gravity.CENTER_VERTICAL
 import android.view.Gravity.END
@@ -15,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import com.mikepenz.iconics.IconicsColor
@@ -51,6 +55,7 @@ import pl.szczodrzynski.navlib.colorAttr
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
+import kotlin.text.RegexOption.IGNORE_CASE
 
 class MessageFragment : Fragment(), CoroutineScope {
     companion object {
@@ -153,7 +158,33 @@ class MessageFragment : Fragment(), CoroutineScope {
     }
 
     private fun showMessage() {
-        b.body.text = Html.fromHtml(message.body?.replace("\\[META:[A-z0-9]+;[0-9-]+]".toRegex(), ""))
+        val hexPattern = "(#[a-fA-F0-9]{6})"
+        val colorRegex = "(?:color=\"$hexPattern\")|(?:style=\"color: ?${hexPattern})"
+                .toRegex(IGNORE_CASE)
+
+        var text = (message.body ?: "")
+                .replace("\\[META:[A-z0-9]+;[0-9-]+]".toRegex(), "")
+                .replace("background-color: ?$hexPattern;".toRegex(), "")
+
+        colorRegex.findAll(text).forEach { result ->
+            val group = result.groups.drop(1).firstOrNull { it != null } ?: return@forEach
+
+            val color = Color.parseColor(group.value)
+            val luminance = ColorUtils.calculateLuminance(color)
+
+            if (Themes.isDark && luminance <= 0.5) {
+                text = text.replaceRange(group.range, "#FFFFFF")
+            } else if (!Themes.isDark && luminance > 0.5) {
+                text = text.replaceRange(group.range, "#000000")
+            }
+        }
+
+        b.body.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(text, FROM_HTML_MODE_COMPACT)
+        } else {
+            Html.fromHtml(text)
+        }
+
         b.date.text = getString(R.string.messages_date_time_format, Date.fromMillis(message.addedDate).formattedStringShort, Time.fromMillis(message.addedDate).stringHM)
 
         val messageInfo = MessagesUtils.getMessageInfo(app, message, 40, 20, 14, 10)
