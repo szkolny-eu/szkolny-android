@@ -38,7 +38,7 @@ class LibrusMessagesGetMessage(
             val body = Base64.decode(message.select("Message").text(), Base64.DEFAULT)
                     .toString(Charset.defaultCharset())
                     .replace("\n", "<br>")
-                    .replace("<!\\[CDATA\\[", "")
+                    .replace("<![CDATA[", "")
                     .replace("]]>", "")
 
             messageObject.apply {
