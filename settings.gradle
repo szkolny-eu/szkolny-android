@@ -1,3 +1,4 @@
+rootProject.name='Szkolny.eu'
 include ':app', ':agendacalendarview', ':mhttp', ':material-about-library', ':cafebar', ':szkolny-font', ':nachos', ':community-material'
 /*
 include ':Navigation'
