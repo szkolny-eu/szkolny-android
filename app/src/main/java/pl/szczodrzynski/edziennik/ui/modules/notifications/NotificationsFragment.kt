@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.App
@@ -71,9 +70,8 @@ class NotificationsFragment : Fragment() {
                         b.notificationsView.adapter = adapter
                         b.notificationsView.apply {
                             setHasFixedSize(true)
-                            layoutManager = LinearLayoutManager(context).apply {
-                                addItemDecoration(SimpleDividerItemDecoration(context))
-                            }
+                            layoutManager = LinearLayoutManager(context)
+                            addItemDecoration(SimpleDividerItemDecoration(context))
                         }
                     }
                     adapter.notifyDataSetChanged()

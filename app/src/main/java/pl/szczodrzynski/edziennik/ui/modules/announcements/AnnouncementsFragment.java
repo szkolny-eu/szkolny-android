@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.databinding.DialogAnnouncementBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAnnouncementsBinding;
+import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
@@ -77,9 +78,7 @@ public class AnnouncementsFragment extends Fragment {
         recyclerView = b.announcementsView;
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-
-
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(view.getContext()));
 
         app.db.announcementDao().getAll(App.profileId).observe(this, announcements -> {
             if (app == null || app.profile == null || activity == null || b == null || !isAdded())
