@@ -1,7 +1,6 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages
 
 import android.graphics.Typeface
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,15 +39,9 @@ class MessagesAdapter(private val app: App, private val onItemClickListener: OnI
         b.messageSubject.text = message.subject
         b.messageDate.text = Date.fromMillis(message.addedDate).formattedStringShort
         b.messageAttachmentImage.visibility = if (message.hasAttachments()) View.VISIBLE else View.GONE
-        try {
-            b.messageBody.text = Html.fromHtml(
-                    if (message.body == null) "" else message.body!!
-                            .substring(0, message.body!!.length.coerceAtMost(200))
-                            .replace("\\[META:[A-z0-9]+;[0-9-]+]".toRegex(), "")
-            )
-        } catch (e: Exception) {
-            // TODO ???
-        }
+
+        val text = message.body?.substring(0, message.body!!.length.coerceAtMost(200)) ?: ""
+        b.messageBody.text = MessagesUtils.htmlToSpannable(text)
 
         if (message.type == Message.TYPE_SENT || message.type == Message.TYPE_DRAFT || message.seen) {
             b.messageSender.setTextAppearance(b.messageSender.context, R.style.NavView_TextView_Small)
