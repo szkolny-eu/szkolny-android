@@ -1,7 +1,5 @@
 package pl.szczodrzynski.edziennik.data.db.modules.announcements;
 
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -10,6 +8,8 @@ import androidx.room.Query;
 import androidx.room.RawQuery;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteQuery;
+
+import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata;
 
@@ -36,7 +36,7 @@ public abstract class AnnouncementDao {
                 "LEFT JOIN teachers USING(profileId, teacherId)\n" +
                 "LEFT JOIN metadata ON announcementId = thingId AND thingType = "+TYPE_ANNOUNCEMENT+" AND metadata.profileId = "+profileId+"\n" +
                 "WHERE announcements.profileId = "+profileId+" AND "+filter+"\n" +
-                "ORDER BY addedDate DESC"));
+                "ORDER BY announcementStartDate DESC"));
     }
     public LiveData<List<AnnouncementFull>> getAll(int profileId) {
         return getAll(profileId, "1");
@@ -55,7 +55,7 @@ public abstract class AnnouncementDao {
                 "LEFT JOIN teachers USING(profileId, teacherId)\n" +
                 "LEFT JOIN metadata ON announcementId = thingId AND thingType = "+TYPE_ANNOUNCEMENT+" AND metadata.profileId = "+profileId+"\n" +
                 "WHERE announcements.profileId = "+profileId+" AND "+filter+"\n" +
-                "ORDER BY addedDate DESC"));
+                "ORDER BY announcementStartDate DESC"));
     }
     public List<AnnouncementFull> getNotNotifiedNow(int profileId) {
         return getAllNow(profileId, "notified = 0");
