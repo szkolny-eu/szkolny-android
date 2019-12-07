@@ -108,7 +108,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         AttendanceType.class,
         pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson.class,
         ConfigEntry.class,
-        Metadata.class}, version = 66)
+        Metadata.class}, version = 67)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -788,6 +788,33 @@ public abstract class AppDb extends RoomDatabase {
                     "PRIMARY KEY(profileId, `key`));");
         }
     };
+    private static final Migration MIGRATION_66_67 = new Migration(66, 67) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("DELETE FROM grades WHERE (gradeId=-1 OR gradeId=-2) AND gradeType=20");
+            database.execSQL("DELETE FROM metadata WHERE (thingId=-1 OR thingId=-2) AND thingType=1");
+
+            database.execSQL("ALTER TABLE gradeCategories RENAME TO _gradeCategories");
+            database.execSQL("CREATE TABLE gradeCategories (" +
+                    "profileId INTEGER NOT NULL," +
+                    "categoryId INTEGER NOT NULL," +
+                    "weight REAL NOT NULL," +
+                    "color INTEGER NOT NULL," +
+                    "`text` TEXT," +
+                    "columns TEXT," +
+                    "valueFrom REAL NOT NULL," +
+                    "valueTo REAL NOT NULL," +
+                    "type INTEGER NOT NULL," +
+                    "PRIMARY KEY(profileId, categoryId, type))");
+
+            database.execSQL("INSERT INTO gradeCategories (profileId, categoryId, weight, color," +
+                    "`text`, columns, valueFrom, valueTo, type) " +
+                    "SELECT profileId, categoryId, weight, color, `text`, columns, valueFrom," +
+                    "valueTo, type FROM _gradeCategories");
+
+            database.execSQL("DROP TABLE _gradeCategories");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -851,7 +878,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_62_63,
                                     MIGRATION_63_64,
                                     MIGRATION_64_65,
-                                    MIGRATION_65_66
+                                    MIGRATION_65_66,
+                                    MIGRATION_66_67
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

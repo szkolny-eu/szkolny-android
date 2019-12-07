@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(tableName = "gradeCategories",
-        primaryKeys = {"profileId", "categoryId"})
+        primaryKeys = {"profileId", "categoryId", "type"})
 public class GradeCategory {
     public int profileId;
 
@@ -26,8 +26,9 @@ public class GradeCategory {
     public int type = 0;
 
     public static final int TYPE_NORMAL = 0;
-    public static final int TYPE_COMMENT = 1;
+    public static final int TYPE_NORMAL_COMMENT = 1;
     public static final int TYPE_BEHAVIOUR = 2;
+    public static final int TYPE_BEHAVIOUR_COMMENT = 3;
 
     public GradeCategory(int profileId, long categoryId, float weight, int color, String text) {
         this.profileId = profileId;

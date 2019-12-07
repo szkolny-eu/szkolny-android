@@ -28,7 +28,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
 
             val semester1StartGradeObject = Grade(
                     profileId,
-                    -1,
+                    -101,
                     data.app.getString(R.string.grade_start_points),
                     0xffbdbdbd.toInt(),
                     data.app.getString(R.string.grade_start_points_format, 1),
@@ -44,7 +44,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
             data.metadataList.add(Metadata(
                     profileId,
                     Metadata.TYPE_GRADE,
-                    -1,
+                    semester1StartGradeObject.id,
                     true,
                     true,
                     profile.getSemesterStart(1).inMillis
@@ -52,7 +52,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
 
             val semester2StartGradeObject = Grade(
                     profileId,
-                    -2,
+                    -102,
                     data.app.getString(R.string.grade_start_points),
                     0xffbdbdbd.toInt(),
                     data.app.getString(R.string.grade_start_points_format, 2),
@@ -68,7 +68,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
             data.metadataList.add(Metadata(
                     profileId,
                     Metadata.TYPE_GRADE,
-                    -2,
+                    semester2StartGradeObject.id,
                     true,
                     true,
                     profile.getSemesterStart(2).inMillis
@@ -101,21 +101,35 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                     it.categoryId == categoryId && it.type == GradeCategory.TYPE_BEHAVIOUR
                 }
 
+                val categoryName = category?.text ?: ""
+
+                val description = grade.getJsonArray("Comments")?.asJsonObjectList()?.let { comments ->
+                    if (comments.isNotEmpty()) {
+                        data.gradeCategories.singleOrNull {
+                            it.type == GradeCategory.TYPE_BEHAVIOUR_COMMENT
+                                    && it.categoryId == comments[0].asJsonObject.getLong("Id")
+                        }?.text
+                    } else null
+                } ?: ""
+
+                val valueFrom = value ?: category?.valueFrom ?: 0f
+                val valueTo = category?.valueTo ?: 0f
+
                 val gradeObject = Grade(
                         profileId,
                         id,
-                        category?.text ?: "",
+                        categoryName,
                         color,
-                        "",
+                        description,
                         name,
-                        value ?: category?.valueFrom ?: 0f,
+                        valueFrom,
                         -1f,
                         semester,
                         teacherId,
                         1
                 ).apply {
                     type = Grade.TYPE_BEHAVIOUR
-                    valueMax = category?.valueTo ?: 0f
+                    valueMax = valueTo
                 }
 
                 data.gradeList.add(gradeObject)

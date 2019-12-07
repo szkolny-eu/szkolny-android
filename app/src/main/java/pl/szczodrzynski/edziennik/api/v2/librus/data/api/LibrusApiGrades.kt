@@ -46,7 +46,7 @@ class LibrusApiGrades(override val data: DataLibrus,
                 val description = grade.getJsonArray("Comments")?.asJsonObjectList()?.let { comments ->
                     if (comments.isNotEmpty()) {
                         data.gradeCategories.singleOrNull {
-                            it.type == GradeCategory.TYPE_COMMENT
+                            it.type == GradeCategory.TYPE_NORMAL_COMMENT
                                     && it.categoryId == comments[0].asJsonObject.getLong("Id")
                         }?.text
                     } else null

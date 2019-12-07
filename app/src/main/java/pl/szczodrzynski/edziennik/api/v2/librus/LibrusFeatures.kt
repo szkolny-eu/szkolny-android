@@ -7,52 +7,53 @@ package pl.szczodrzynski.edziennik.api.v2.librus
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.models.Feature
 
-const val ENDPOINT_LIBRUS_API_ME                        = 1001
-const val ENDPOINT_LIBRUS_API_SCHOOLS                   = 1002
-const val ENDPOINT_LIBRUS_API_CLASSES                   = 1003
-const val ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES           = 1004
-const val ENDPOINT_LIBRUS_API_UNITS                     = 1005
-const val ENDPOINT_LIBRUS_API_USERS                     = 1006
-const val ENDPOINT_LIBRUS_API_SUBJECTS                  = 1007
-const val ENDPOINT_LIBRUS_API_CLASSROOMS                = 1008
-const val ENDPOINT_LIBRUS_API_PUSH_CONFIG               = 1010
-const val ENDPOINT_LIBRUS_API_TIMETABLES                = 1015
-const val ENDPOINT_LIBRUS_API_SUBSTITUTIONS             = 1016
-const val ENDPOINT_LIBRUS_API_NORMAL_GC                 = 1021
-const val ENDPOINT_LIBRUS_API_POINT_GC                  = 1022
-const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_GC            = 1023
-const val ENDPOINT_LIBRUS_API_TEXT_GC                   = 1024
-const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GC       = 1025
-const val ENDPOINT_LIBRUS_API_BEHAVIOUR_GC              = 1026
-const val ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS = 1030
-const val ENDPOINT_LIBRUS_API_NORMAL_GRADES             = 1031
-const val ENDPOINT_LIBRUS_API_POINT_GRADES              = 1032
-const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES        = 1033
-const val ENDPOINT_LIBRUS_API_TEXT_GRADES               = 1034
-const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GRADES   = 1035
-const val ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES          = 1036
-const val ENDPOINT_LIBRUS_API_EVENT_TYPES               = 1040
-const val ENDPOINT_LIBRUS_API_EVENTS                    = 1041
-const val ENDPOINT_LIBRUS_API_HOMEWORK                  = 1050
-const val ENDPOINT_LIBRUS_API_LUCKY_NUMBER              = 1060
-const val ENDPOINT_LIBRUS_API_NOTICE_TYPES              = 1070
-const val ENDPOINT_LIBRUS_API_NOTICES                   = 1071
-const val ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES          = 1080
-const val ENDPOINT_LIBRUS_API_ATTENDANCES               = 1081
-const val ENDPOINT_LIBRUS_API_ANNOUNCEMENTS             = 1090
-const val ENDPOINT_LIBRUS_API_PT_MEETINGS               = 1100
-const val ENDPOINT_LIBRUS_API_TEACHER_FREE_DAY_TYPES    = 1109
-const val ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS         = 1110
-const val ENDPOINT_LIBRUS_API_SCHOOL_FREE_DAYS          = 1120
-const val ENDPOINT_LIBRUS_API_CLASS_FREE_DAYS           = 1130
-const val ENDPOINT_LIBRUS_SYNERGIA_INFO                 = 2010
-const val ENDPOINT_LIBRUS_SYNERGIA_GRADES               = 2020
-const val ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK             = 2030
-const val ENDPOINT_LIBRUS_MESSAGES_RECEIVED             = 3010
-const val ENDPOINT_LIBRUS_MESSAGES_SENT                 = 3020
-const val ENDPOINT_LIBRUS_MESSAGES_TRASH                = 3030
-const val ENDPOINT_LIBRUS_MESSAGES_RECEIVERS            = 3040
-const val ENDPOINT_LIBRUS_MESSAGES_GET                  = 3040
+const val ENDPOINT_LIBRUS_API_ME                                       = 1001
+const val ENDPOINT_LIBRUS_API_SCHOOLS                                  = 1002
+const val ENDPOINT_LIBRUS_API_CLASSES                                  = 1003
+const val ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES                          = 1004
+const val ENDPOINT_LIBRUS_API_UNITS                                    = 1005
+const val ENDPOINT_LIBRUS_API_USERS                                    = 1006
+const val ENDPOINT_LIBRUS_API_SUBJECTS                                 = 1007
+const val ENDPOINT_LIBRUS_API_CLASSROOMS                               = 1008
+const val ENDPOINT_LIBRUS_API_PUSH_CONFIG                              = 1010
+const val ENDPOINT_LIBRUS_API_TIMETABLES                               = 1015
+const val ENDPOINT_LIBRUS_API_SUBSTITUTIONS                            = 1016
+const val ENDPOINT_LIBRUS_API_NORMAL_GRADE_CATEGORIES                  = 1021
+const val ENDPOINT_LIBRUS_API_POINT_GRADE_CATEGORIES                   = 1022
+const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADE_CATEGORIES             = 1023
+const val ENDPOINT_LIBRUS_API_TEXT_GRADE_CATEGORIES                    = 1024
+const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GRADE_CATEGORIES        = 1025
+const val ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_CATEGORIES               = 1026
+const val ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_COMMENTS                 = 1027
+const val ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS                    = 1030
+const val ENDPOINT_LIBRUS_API_NORMAL_GRADES                            = 1031
+const val ENDPOINT_LIBRUS_API_POINT_GRADES                             = 1032
+const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES                       = 1033
+const val ENDPOINT_LIBRUS_API_TEXT_GRADES                              = 1034
+const val ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GRADES                  = 1035
+const val ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES                         = 1036
+const val ENDPOINT_LIBRUS_API_EVENT_TYPES                              = 1040
+const val ENDPOINT_LIBRUS_API_EVENTS                                   = 1041
+const val ENDPOINT_LIBRUS_API_HOMEWORK                                 = 1050
+const val ENDPOINT_LIBRUS_API_LUCKY_NUMBER                             = 1060
+const val ENDPOINT_LIBRUS_API_NOTICE_TYPES                             = 1070
+const val ENDPOINT_LIBRUS_API_NOTICES                                  = 1071
+const val ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES                         = 1080
+const val ENDPOINT_LIBRUS_API_ATTENDANCES                              = 1081
+const val ENDPOINT_LIBRUS_API_ANNOUNCEMENTS                            = 1090
+const val ENDPOINT_LIBRUS_API_PT_MEETINGS                              = 1100
+const val ENDPOINT_LIBRUS_API_TEACHER_FREE_DAY_TYPES                   = 1109
+const val ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS                        = 1110
+const val ENDPOINT_LIBRUS_API_SCHOOL_FREE_DAYS                         = 1120
+const val ENDPOINT_LIBRUS_API_CLASS_FREE_DAYS                          = 1130
+const val ENDPOINT_LIBRUS_SYNERGIA_INFO                                = 2010
+const val ENDPOINT_LIBRUS_SYNERGIA_GRADES                              = 2020
+const val ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK                            = 2030
+const val ENDPOINT_LIBRUS_MESSAGES_RECEIVED                            = 3010
+const val ENDPOINT_LIBRUS_MESSAGES_SENT                                = 3020
+const val ENDPOINT_LIBRUS_MESSAGES_TRASH                               = 3030
+const val ENDPOINT_LIBRUS_MESSAGES_RECEIVERS                           = 3040
+const val ENDPOINT_LIBRUS_MESSAGES_GET                                 = 3040
 
 val LibrusFeatures = listOf(
 
@@ -92,13 +93,14 @@ val LibrusFeatures = listOf(
          * All grades + categories.
          */
         Feature(LOGIN_TYPE_LIBRUS, FEATURE_GRADES, listOf(
-                ENDPOINT_LIBRUS_API_NORMAL_GC to LOGIN_METHOD_LIBRUS_API,
-                ENDPOINT_LIBRUS_API_POINT_GC to LOGIN_METHOD_LIBRUS_API,
-                ENDPOINT_LIBRUS_API_DESCRIPTIVE_GC to LOGIN_METHOD_LIBRUS_API,
-                ENDPOINT_LIBRUS_API_TEXT_GC to LOGIN_METHOD_LIBRUS_API,
-                ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GC to LOGIN_METHOD_LIBRUS_API,
-                ENDPOINT_LIBRUS_API_BEHAVIOUR_GC to LOGIN_METHOD_LIBRUS_API,
+                ENDPOINT_LIBRUS_API_NORMAL_GRADE_CATEGORIES to LOGIN_METHOD_LIBRUS_API,
+                ENDPOINT_LIBRUS_API_POINT_GRADE_CATEGORIES to LOGIN_METHOD_LIBRUS_API,
+                ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADE_CATEGORIES to LOGIN_METHOD_LIBRUS_API,
+                ENDPOINT_LIBRUS_API_TEXT_GRADE_CATEGORIES to LOGIN_METHOD_LIBRUS_API,
+                ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GRADE_CATEGORIES to LOGIN_METHOD_LIBRUS_API,
+                ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_CATEGORIES to LOGIN_METHOD_LIBRUS_API,
                 ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS to LOGIN_METHOD_LIBRUS_API,
+                ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_COMMENTS to LOGIN_METHOD_LIBRUS_API,
                 ENDPOINT_LIBRUS_API_NORMAL_GRADES to LOGIN_METHOD_LIBRUS_API,
                 ENDPOINT_LIBRUS_API_POINT_GRADES to LOGIN_METHOD_LIBRUS_API,
                 ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES to LOGIN_METHOD_LIBRUS_API,
