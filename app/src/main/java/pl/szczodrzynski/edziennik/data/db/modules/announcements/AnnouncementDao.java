@@ -36,7 +36,7 @@ public abstract class AnnouncementDao {
                 "LEFT JOIN teachers USING(profileId, teacherId)\n" +
                 "LEFT JOIN metadata ON announcementId = thingId AND thingType = "+TYPE_ANNOUNCEMENT+" AND metadata.profileId = "+profileId+"\n" +
                 "WHERE announcements.profileId = "+profileId+" AND "+filter+"\n" +
-                "ORDER BY announcementStartDate DESC"));
+                "ORDER BY addedDate DESC"));
     }
     public LiveData<List<AnnouncementFull>> getAll(int profileId) {
         return getAll(profileId, "1");
@@ -55,7 +55,7 @@ public abstract class AnnouncementDao {
                 "LEFT JOIN teachers USING(profileId, teacherId)\n" +
                 "LEFT JOIN metadata ON announcementId = thingId AND thingType = "+TYPE_ANNOUNCEMENT+" AND metadata.profileId = "+profileId+"\n" +
                 "WHERE announcements.profileId = "+profileId+" AND "+filter+"\n" +
-                "ORDER BY announcementStartDate DESC"));
+                "ORDER BY addedDate DESC"));
     }
     public List<AnnouncementFull> getNotNotifiedNow(int profileId) {
         return getAllNow(profileId, "notified = 0");

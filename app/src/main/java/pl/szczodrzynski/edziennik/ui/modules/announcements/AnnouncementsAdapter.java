@@ -62,7 +62,13 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdap
         b.announcementsItemSender.setText(item.teacherFullName);
         b.announcementsItemTitle.setText(item.subject);
         b.announcementsItemText.setText(item.text);
-        b.announcementsItemDate.setText(item.startDate.getFormattedString());
+
+        if (item.endDate == null) {
+            b.announcementsItemDate.setText(item.startDate.getFormattedString());
+        } else {
+            b.announcementsItemDate.setText(context.getString(R.string.date_relative_format, item.startDate.getFormattedStringShort(), item.endDate.getFormattedStringShort()));
+        }
+
         if (!item.seen) {
             b.announcementsItemTitle.setBackground(context.getResources().getDrawable(R.drawable.bg_rounded_8dp));
             b.announcementsItemTitle.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));

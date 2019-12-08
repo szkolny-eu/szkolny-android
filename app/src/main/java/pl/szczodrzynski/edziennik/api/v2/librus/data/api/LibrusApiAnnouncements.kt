@@ -11,7 +11,6 @@ import pl.szczodrzynski.edziennik.api.v2.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusApiAnnouncements(override val data: DataLibrus,
@@ -20,19 +19,19 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
         const val TAG = "LibrusApiAnnouncements"
     }
 
-    init {
+    init { data.profile?.also { profile ->
         apiGet(TAG, "SchoolNotices") { json ->
             val announcements = json.getJsonArray("SchoolNotices").asJsonObjectList()
 
             announcements?.forEach { announcement ->
-                val id = Utils.crc16(announcement.getString("Id")?.toByteArray()
-                        ?: return@forEach).toLong()
+                val id = announcement.getString("Id")?.crc32() ?: return@forEach
                 val subject = announcement.getString("Subject") ?: ""
                 val text = announcement.getString("Content") ?: ""
                 val startDate = Date.fromY_m_d(announcement.getString("StartDate"))
                 val endDate = Date.fromY_m_d(announcement.getString("EndDate"))
                 val teacherId = announcement.getJsonObject("AddedBy")?.getLong("Id") ?: -1
-                val addedDate = Date.fromIso(announcement.getString("CreationDate"))
+                val addedDate = announcement.getString("CreationDate")?.let { Date.fromIso(it) }
+                        ?: System.currentTimeMillis()
                 val read = announcement.getBoolean("WasRead") ?: false
 
                 val announcementObject = Announcement(
@@ -51,7 +50,7 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
                         Metadata.TYPE_ANNOUNCEMENT,
                         id,
                         read,
-                        read,
+                        profile.empty || read,
                         addedDate
                 ))
             }
@@ -59,5 +58,5 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
             data.setSyncNext(ENDPOINT_LIBRUS_API_ANNOUNCEMENTS, SYNC_ALWAYS)
             onSuccess()
         }
-    }
+    }}
 }
