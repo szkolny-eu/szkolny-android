@@ -40,6 +40,11 @@ class ConfigUI(private val config: Config) {
         get() { mMiniMenuButtons = mMiniMenuButtons ?: config.values.getIntList("miniMenuButtons", listOf()); return mMiniMenuButtons ?: listOf() }
         set(value) { config.set("miniMenuButtons", value); mMiniMenuButtons = value }
 
+    private var mOpenDrawerOnBackPressed: Boolean? = null
+    var openDrawerOnBackPressed: Boolean
+        get() { mOpenDrawerOnBackPressed = mOpenDrawerOnBackPressed ?: config.values.get("openDrawerOnBackPressed", false); return mOpenDrawerOnBackPressed ?: false }
+        set(value) { config.set("openDrawerOnBackPressed", value); mOpenDrawerOnBackPressed = value }
+
     private var mAgendaViewType: Int? = null
     var agendaViewType: Int
         get() { mAgendaViewType = mAgendaViewType ?: config.values.get("agendaViewType", 0); return mAgendaViewType ?: 0 }

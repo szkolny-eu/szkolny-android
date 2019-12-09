@@ -1063,30 +1063,11 @@ class MainActivity : AppCompatActivity() {
     private var targetHomeId: Int = -1
     override fun onBackPressed() {
         if (!b.navView.onBackPressed()) {
-
-            navigateUp()
-
-            /*val currentDestinationId = navController.currentDestination?.id
-
-            if (if (targetHomeId != -1 && targetPopToHomeList.contains(navController.currentDestination?.id)) {
-                        if (!navController.popBackStack(targetHomeId, false)) {
-                            navController.navigateUp()
-                        }
-                        true
-                    } else {
-                        navController.navigateUp()
-                    }) {
-                val currentId = navController.currentDestination?.id ?: -1
-                val drawerSelection = navTargetList
-                        .singleOrNull {
-                            it.navGraphId == currentId
-                        }?.also {
-                            navView.toolbar.setTitle(it.title ?: it.name)
-                        }?.id ?: -1
-                drawer.setSelection(drawerSelection, false)
+            if (App.getConfig().ui.openDrawerOnBackPressed) {
+                b.navView.drawer.toggle()
             } else {
-                super.onBackPressed()
-            }*/
+                navigateUp()
+            }
         }
     }
 }

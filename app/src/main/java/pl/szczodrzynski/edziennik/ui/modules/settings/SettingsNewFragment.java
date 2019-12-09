@@ -461,6 +461,21 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     })
             );
 
+            items.add(
+                    new MaterialAboutSwitchItem(
+                            getString(R.string.settings_theme_open_drawer_on_back_pressed_text),
+                            null,
+                            new IconicsDrawable(activity)
+                                    .icon(CommunityMaterial.Icon2.cmd_menu_open)
+                                    .size(IconicsSize.dp(iconSizeDp))
+                                    .color(IconicsColor.colorInt(iconColor))
+                    )
+                            .setChecked(app.config.getUi().getOpenDrawerOnBackPressed())
+                            .setOnChangeAction((isChecked, tag) -> {
+                                app.config.getUi().setOpenDrawerOnBackPressed(isChecked);
+                                return true;
+                            })
+            );
         }
         return items;
     }
@@ -1019,9 +1034,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                            .setChecked(!app.config.getFor(app.profileId).getGrades().getCountZeroToAvg())
+                            .setChecked(!app.config.getFor(App.profileId).getGrades().getCountZeroToAvg())
                             .setOnChangeAction((isChecked, tag) -> {
-                                app.config.getFor(app.profileId).getGrades().setCountZeroToAvg(!isChecked);
+                                app.config.getFor(App.profileId).getGrades().setCountZeroToAvg(!isChecked);
                                 app.saveConfig("dontCountZeroToAverage");
                                 return true;
                             })

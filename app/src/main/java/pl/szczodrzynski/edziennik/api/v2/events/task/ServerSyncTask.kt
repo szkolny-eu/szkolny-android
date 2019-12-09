@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
 
 class ServerSyncTask : IApiTask(-1) {
     override fun prepare(app: App) {
-        taskName = app.getString(R.string.edziennik_notification_api_notify_title) // TODO text
+        taskName = app.getString(R.string.edziennik_szkolny_api_sync_title) // TODO text
     }
 
     override fun cancel() {
