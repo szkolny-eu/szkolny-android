@@ -21,9 +21,9 @@ class ServerSyncTask : IApiTask(-1) {
     }
 
     fun run(app: App, profiles: List<ProfileFull>, taskCallback: EdziennikCallback) {
-        val api = SzkolnyApi(app, profiles)
+        val api = SzkolnyApi(app)
 
-        val events = api.getEvents()
+        val events = api.getEvents(profiles)
 
         if (events.isNotEmpty()) {
             app.db.eventDao().addAll(events)

@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import java.util.concurrent.TimeUnit.SECONDS
 
-class SzkolnyApi(val app: App, val profiles: List<ProfileFull>) {
+class SzkolnyApi(val app: App) {
 
     private var api: SzkolnyService
 
@@ -49,7 +49,7 @@ class SzkolnyApi(val app: App, val profiles: List<ProfileFull>) {
         api = retrofit.create()
     }
 
-    fun getEvents(): List<EventFull> {
+    fun getEvents(profiles: List<ProfileFull>): List<EventFull> {
         val teams = app.db.teamDao().allNow
 
         val response = api.serverSync(ServerSyncRequest(
