@@ -39,7 +39,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             taskName = app.getString(R.string.edziennik_notification_api_first_login_title)
         } else {
             // get the requested profile and login store
-            val profile = app.db.profileDao().getByIdNow(profileId)
+            val profile = app.db.profileDao().getFullByIdNow(profileId)
             this.profile = profile
             if (profile == null) {
                 return

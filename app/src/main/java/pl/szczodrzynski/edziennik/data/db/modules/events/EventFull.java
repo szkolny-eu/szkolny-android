@@ -10,6 +10,7 @@ public class EventFull extends Event {
     public String subjectShortName = "";
 
     public String teamName = "";
+    public String teamCode = null;
 
     // metadata
     public boolean seen;

@@ -170,6 +170,9 @@ dependencies {
     implementation 'com.github.kuba2k2:RecyclerTabLayout:700f980584'
 
     implementation 'com.github.kuba2k2:Tachyon:551943a6b5'
+
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
 }
 repositories {
     mavenCentral()

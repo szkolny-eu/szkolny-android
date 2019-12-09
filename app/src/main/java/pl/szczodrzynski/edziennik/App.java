@@ -222,7 +222,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
                 byte[] signatureBytes = signature.toByteArray();
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signatureBytes);
-                this.signature = Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                this.signature = Base64.encodeToString(md.digest(), Base64.NO_WRAP);
                 //Log.d(TAG, "Signature is "+this.signature);
             }
         }

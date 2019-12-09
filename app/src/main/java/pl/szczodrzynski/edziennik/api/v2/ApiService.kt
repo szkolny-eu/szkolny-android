@@ -15,12 +15,10 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.events.*
 import pl.szczodrzynski.edziennik.api.v2.events.requests.ServiceCloseRequest
 import pl.szczodrzynski.edziennik.api.v2.events.requests.TaskCancelRequest
-import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
-import pl.szczodrzynski.edziennik.api.v2.events.task.ErrorReportTask
-import pl.szczodrzynski.edziennik.api.v2.events.task.IApiTask
-import pl.szczodrzynski.edziennik.api.v2.events.task.NotifyTask
+import pl.szczodrzynski.edziennik.api.v2.events.task.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -41,8 +39,8 @@ class ApiService : Service() {
     private val app by lazy { applicationContext as App }
 
     private val finishingTaskQueue = mutableListOf(
-            NotifyTask(),
-            ErrorReportTask()
+            ServerSyncTask(),
+            NotifyTask()
     )
     private val taskQueue = mutableListOf<IApiTask>()
     private val errorList = mutableListOf<ApiError>()
@@ -62,6 +60,8 @@ class ApiService : Service() {
 
     private var lastEventTime = System.currentTimeMillis()
     private var taskCancelTries = 0
+
+    private val syncingProfiles = mutableListOf<ProfileFull>()
 
     /*    ______    _     _                  _ _       _____      _ _ _                _
          |  ____|  | |   (_)                (_) |     / ____|    | | | |              | |
@@ -156,11 +156,14 @@ class ApiService : Service() {
         // post an event
         EventBus.getDefault().post(ApiTaskStartedEvent(taskProfileId, task.profile))
 
+        task.profile?.let { syncingProfiles.add(it) }
+
         try {
             when (task) {
                 is EdziennikTask -> task.run(app, taskCallback)
                 is NotifyTask -> task.run(app, taskCallback)
                 is ErrorReportTask -> task.run(app, taskCallback, notification, errorList)
+                is ServerSyncTask -> task.run(app, syncingProfiles, taskCallback)
             }
         } catch (e: Exception) {
             taskCallback.onError(ApiError(TAG, EXCEPTION_API_TASK).withThrowable(e))

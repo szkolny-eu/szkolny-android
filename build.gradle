@@ -47,7 +47,9 @@ buildscript {
 
                 navlib           : "8b31921697",
 
-                gifdrawable      : "1.2.15"
+                gifdrawable      : "1.2.15",
+
+                retrofit         : '2.6.2'
         ]
     }
 

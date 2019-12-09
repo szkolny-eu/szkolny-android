@@ -103,6 +103,13 @@ public class Time implements Comparable<Time> {
         }
     }
 
+    public static Time fromValue(int value) {
+        int hours = value / 10000;
+        int minutes = (value - hours * 10000) / 100;
+        int seconds = (value - hours * 10000 - minutes * 100);
+        return new Time(hours, minutes, seconds);
+    }
+
     public long getInMillis() {
         Calendar c = Calendar.getInstance();
         c.set(2000, 0, 1, hour, minute, second);

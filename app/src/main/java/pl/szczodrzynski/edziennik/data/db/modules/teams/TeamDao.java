@@ -31,6 +31,9 @@ public abstract class TeamDao {
     @Query("SELECT * FROM teams WHERE profileId = :profileId ORDER BY teamType, teamName ASC")
     public abstract List<Team> getAllNow(int profileId);
 
+    @Query("SELECT * FROM teams ORDER BY teamType, teamName ASC")
+    public abstract List<Team> getAllNow();
+
     @Query("SELECT * FROM teams WHERE profileId = :profileId AND teamType = 1")
     public abstract LiveData<Team> getClass(int profileId);
 

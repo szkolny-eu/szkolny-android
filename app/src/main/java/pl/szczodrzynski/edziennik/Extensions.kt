@@ -15,6 +15,8 @@ import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
+import android.util.Base64.NO_WRAP
+import android.util.Base64.encodeToString
 import android.util.LongSparseArray
 import android.util.SparseArray
 import android.util.TypedValue
@@ -34,15 +36,20 @@ import im.wangchao.mhttp.Response
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.RequestBody
+import okio.Buffer
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.utils.models.Time
-import pl.szczodrzynski.navlib.getColorFromAttr
 import pl.szczodrzynski.navlib.getColorFromRes
+import java.math.BigInteger
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.zip.CRC32
+import javax.crypto.Mac
+import javax.crypto.spec.SecretKeySpec
 
 
 fun List<Teacher>.byId(id: Long) = firstOrNull { it.id == id }
@@ -356,6 +363,28 @@ fun String.crc32(): Long {
     val crc = CRC32()
     crc.update(toByteArray())
     return crc.value
+}
+
+fun String.hmacSHA1(password: String): String {
+    val key = SecretKeySpec(password.toByteArray(), "HmacSHA1")
+
+    val mac = Mac.getInstance("HmacSHA1").apply {
+        init(key)
+        update(this@hmacSHA1.toByteArray())
+    }
+
+    return encodeToString(mac.doFinal(), NO_WRAP)
+}
+
+fun String.md5(): String {
+    val md = MessageDigest.getInstance("MD5")
+    return BigInteger(1, md.digest(toByteArray())).toString(16).padStart(32, '0')
+}
+
+fun RequestBody.bodyToString(): String {
+    val buffer = Buffer()
+    writeTo(buffer)
+    return buffer.readUtf8()
 }
 
 fun Long.formatDate(format: String = "yyyy-MM-dd HH:mm:ss"): String = SimpleDateFormat(format).format(this)

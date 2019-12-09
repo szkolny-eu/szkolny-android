@@ -11,11 +11,11 @@ import android.os.Build.VERSION_CODES.O
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.ApiService
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
 
 abstract class IApiTask(open val profileId: Int) {
     var taskId: Int = 0
-    var profile: Profile? = null
+    var profile: ProfileFull? = null
     var taskName: String? = null
 
     /**
