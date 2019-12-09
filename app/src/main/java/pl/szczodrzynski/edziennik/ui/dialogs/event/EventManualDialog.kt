@@ -34,7 +34,7 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
 import kotlin.coroutines.CoroutineContext
 
-class EventManualV2Dialog(
+class EventManualDialog(
         val activity: AppCompatActivity,
         val profileId: Int,
         val defaultLesson: LessonFull? = null,
@@ -370,7 +370,7 @@ class EventManualV2Dialog(
                                     ))
                                     loadHours()
                                 }
-                                show(this@EventManualV2Dialog.activity.supportFragmentManager, "MaterialDatePicker")
+                                show(this@EventManualDialog.activity.supportFragmentManager, "MaterialDatePicker")
                             }
 
                     return@setOnChangeListener false

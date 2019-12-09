@@ -60,7 +60,7 @@ class EventListDialog(
                     .setView(b.root)
                     .setPositiveButton(R.string.close) { dialog, _ -> dialog.dismiss() }
                     .setNeutralButton(R.string.add) { _, _ ->
-                        EventManualV2Dialog(
+                        EventManualDialog(
                                 activity,
                                 lesson?.profileId ?: profileId,
                                 lesson,

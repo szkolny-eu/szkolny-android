@@ -44,7 +44,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialogOld;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeCounter;
@@ -113,10 +113,10 @@ public class AgendaFragment extends Fragment {
                                     .itemsCallback((dialog, itemView, position, text) -> {
                                         switch (position) {
                                             case 0:
-                                                new EventManualDialog(activity).show(app, null, null, null, EventManualDialog.DIALOG_EVENT);
+                                                new EventManualDialogOld(activity).show(app, null, null, null, EventManualDialogOld.DIALOG_EVENT);
                                                 break;
                                             case 1:
-                                                new EventManualDialog(activity).show(app, null, null, null, EventManualDialog.DIALOG_HOMEWORK);
+                                                new EventManualDialogOld(activity).show(app, null, null, null, EventManualDialogOld.DIALOG_HOMEWORK);
                                                 break;
                                         }
                                     })

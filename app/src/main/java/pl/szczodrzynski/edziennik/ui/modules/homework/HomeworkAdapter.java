@@ -20,7 +20,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualV2Dialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
@@ -94,7 +94,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
 
         holder.homeworkItemEdit.setVisibility((homework.addedManually ? View.VISIBLE : View.GONE));
         holder.homeworkItemEdit.setOnClickListener(v -> {
-            new EventManualV2Dialog(
+            new EventManualDialog(
                     (MainActivity) context,
                     homework.profileId,
                     null,

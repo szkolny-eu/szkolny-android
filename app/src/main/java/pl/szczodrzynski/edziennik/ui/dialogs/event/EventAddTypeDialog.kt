@@ -28,15 +28,15 @@ class EventAddTypeDialog(
         dialog = MaterialAlertDialogBuilder(activity)
                 .setItems(R.array.main_menu_add_options) { dialog, which ->
                     dialog.dismiss()
-                    EventManualDialog(activity, profileId)
+                    EventManualDialogOld(activity, profileId)
                             .show(
                                     activity.application as App,
                                     null,
                                     date,
                                     time,
                                     when (which) {
-                                        1 -> EventManualDialog.DIALOG_HOMEWORK
-                                        else -> EventManualDialog.DIALOG_EVENT
+                                        1 -> EventManualDialogOld.DIALOG_HOMEWORK
+                                        else -> EventManualDialogOld.DIALOG_EVENT
                                     }
                             )
 

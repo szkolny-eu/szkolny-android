@@ -41,6 +41,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher;
@@ -56,23 +57,22 @@ import static pl.szczodrzynski.edziennik.App.APP_URL;
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.COLOR_DEFAULT;
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_UNDEFINED;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_ENABLED;
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 import static pl.szczodrzynski.edziennik.utils.Utils.ns;
 
-public class EventManualDialog {
-    private static final String TAG = "EventManualDialog";
+public class EventManualDialogOld {
+    private static final String TAG = "EventManualDialogOld";
     private App app;
     private Context context;
     private int profileId;
     private ProfileFull profile = null;
 
-    public EventManualDialog(Context context, int profileId) {
+    public EventManualDialogOld(Context context, int profileId) {
         this.context = context;
         this.activity = (AppCompatActivity) context;
         this.profileId = profileId;
     }
-    public EventManualDialog(Context context) {
+    public EventManualDialogOld(Context context) {
         this.context = context;
         this.activity = (AppCompatActivity) context;
         this.profileId = App.profileId;
@@ -199,7 +199,7 @@ public class EventManualDialog {
             metadata.addedDate = editingEvent.addedDate;
         }
         if (registerEventManualShare.isChecked()) {
-            if (profile.getRegistration() != REGISTRATION_ENABLED) {
+            if (profile.getRegistration() != Profile.REGISTRATION_ENABLED) {
                 new MaterialDialog.Builder(context)
                         .title(R.string.dialog_event_manual_must_register_title)
                         .content(R.string.dialog_event_manual_must_register_text)
@@ -207,7 +207,7 @@ public class EventManualDialog {
                         .negativeText(R.string.no_thanks)
                         .neutralText(R.string.more)
                         .onPositive(((dialog1, which) -> {
-                            profile.setRegistration(REGISTRATION_ENABLED);
+                            profile.setRegistration(Profile.REGISTRATION_ENABLED);
                             app.profileSaveAsync(profile);
                         }))
                         .onNeutral(((dialog1, which) -> {
@@ -372,7 +372,7 @@ public class EventManualDialog {
                 }
             } catch (Exception e) {
                 activity.runOnUiThread(() -> {
-                    // TODO show error in EventManualDialog
+                    // TODO show error in EventManualDialogOld
                     //app.apiEdziennik.guiShowErrorDialog(activity, new AppError(TAG, 379, CODE_OTHER, null, e), R.string.error_occured);
                 });
             }
@@ -402,7 +402,7 @@ public class EventManualDialog {
     private DialogInterface.OnDismissListener dismissListener;
     private boolean callDismissListener = true;
 
-    public EventManualDialog withDismissListener(DialogInterface.OnDismissListener dismissListener) {
+    public EventManualDialogOld withDismissListener(DialogInterface.OnDismissListener dismissListener) {
         this.dismissListener = dismissListener;
         return this;
     }

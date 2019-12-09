@@ -28,7 +28,6 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialogOld;
 import pl.szczodrzynski.edziennik.utils.SpannableHtmlTagHandler;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
@@ -160,7 +159,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.View
             }
         }
 
-        holder.timetableItemCard.setOnClickListener(v -> new EventListDialogOld(context).show(app, lessonDate, lesson.startTime));
+        // holder.timetableItemCard.setOnClickListener(v -> new EventListDialogOld(context).show(app, lessonDate, lesson.startTime));
     }
 
     @Override

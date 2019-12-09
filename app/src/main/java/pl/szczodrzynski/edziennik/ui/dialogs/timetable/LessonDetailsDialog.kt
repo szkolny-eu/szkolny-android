@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
 import pl.szczodrzynski.edziennik.setText
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualV2Dialog
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -43,7 +43,7 @@ class LessonDetailsDialog(
                     dialog.dismiss()
                 }
                 .setNeutralButton(R.string.add) { _, _ ->
-                    EventManualV2Dialog(
+                    EventManualDialog(
                             activity,
                             lesson.profileId,
                             lesson,
@@ -53,15 +53,15 @@ class LessonDetailsDialog(
                     /*MaterialAlertDialogBuilder(activity)
                             .setItems(R.array.main_menu_add_options) { dialog2, which ->
                                 dialog2.dismiss()
-                                EventManualDialog(activity, lesson.profileId)
+                                EventManualDialogOld(activity, lesson.profileId)
                                         .show(
                                                 activity.application as App,
                                                 null,
                                                 lesson.displayDate,
                                                 lesson.displayStartTime,
                                                 when (which) {
-                                                    1 -> EventManualDialog.DIALOG_HOMEWORK
-                                                    else -> EventManualDialog.DIALOG_EVENT
+                                                    1 -> EventManualDialogOld.DIALOG_HOMEWORK
+                                                    else -> EventManualDialogOld.DIALOG_EVENT
                                                 }
                                         )
 

@@ -1,7 +1,5 @@
 package pl.szczodrzynski.edziennik.widgets.timetable;
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.WidgetTimetable;
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialogOld;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
@@ -52,7 +48,7 @@ public class LessonDetailsActivity extends AppCompatActivity {
             Time startTime = Time.fromHms(extras.getString("startTime", "20181109"));
             //Time endTime = Time.fromHms(extras.getString("endTime", "20181109"));
 
-            new EventListDialogOld(this, profileId)
+            /* new EventListDialogOld(this, profileId)
                     .withDismissListener((dialog -> {
                         finish();
                         Intent intent = new Intent(app.getContext(), WidgetTimetable.class);
@@ -62,7 +58,7 @@ public class LessonDetailsActivity extends AppCompatActivity {
                         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
                         app.sendBroadcast(intent);
                     }))
-                    .show(app, date, startTime);
+                    .show(app, date, startTime); */
             return;
         }
         Toast.makeText(app, R.string.error_reading_lesson_details, Toast.LENGTH_SHORT).show();
