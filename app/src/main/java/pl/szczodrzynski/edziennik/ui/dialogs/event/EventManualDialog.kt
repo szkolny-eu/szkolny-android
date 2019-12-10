@@ -9,6 +9,7 @@ import android.graphics.PorterDuffColorFilter
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL
 import androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -19,6 +20,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
@@ -41,7 +43,7 @@ class EventManualDialog(
         val defaultDate: Date? = null,
         val defaultTime: Time? = null,
         val defaultType: Int? = null,
-        val editingEvent: Event? = null,
+        val editingEvent: EventFull? = null,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
@@ -57,6 +59,7 @@ class EventManualDialog(
     private val app by lazy { activity.application as App }
     private lateinit var b: DialogEventManualV2Binding
     private lateinit var dialog: AlertDialog
+    private var removeEventDialog: AlertDialog? = null
     private var defaultLoaded = false
 
     private lateinit var event: Event
@@ -73,6 +76,11 @@ class EventManualDialog(
                 .setView(b.root)
                 .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
                 .setPositiveButton(R.string.save, null)
+                .apply {
+                    if (editingEvent != null) {
+                        setNeutralButton(R.string.remove, null)
+                    }
+                }
                 .setOnDismissListener {
                     onDismissListener?.invoke(TAG)
                 }
@@ -80,8 +88,13 @@ class EventManualDialog(
                 .apply {
                     setOnShowListener { dialog ->
                         val positiveButton = (dialog as AlertDialog).getButton(BUTTON_POSITIVE)
-                        positiveButton.setOnClickListener {
+                        positiveButton?.setOnClickListener {
                             saveEvent()
+                        }
+
+                        val negativeButton = dialog.getButton(BUTTON_NEUTRAL)
+                        negativeButton?.setOnClickListener {
+                            showRemoveEventDialog()
                         }
                     }
 
@@ -114,6 +127,25 @@ class EventManualDialog(
 
         loadLists()
     }}
+
+    private fun showRemoveEventDialog() {
+        removeEventDialog = MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.are_you_sure)
+                .setMessage(activity.getString(R.string.dialog_register_event_manual_remove_confirmation))
+                .setPositiveButton(R.string.yes, null)
+                .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
+                .create()
+                .apply {
+                    setOnShowListener { dialog ->
+                        val positiveButton = (dialog as AlertDialog).getButton(BUTTON_POSITIVE)
+                        positiveButton?.setOnClickListener {
+                            removeEvent()
+                        }
+                    }
+
+                    show()
+                }
+    }
 
     private fun updateShareText(checked: Boolean = b.shareSwitch.isChecked) {
         val editingShared = editingEvent?.sharedBy != null
@@ -191,8 +223,7 @@ class EventManualDialog(
             b.subjectDropdown.select(it.subjectId)
             b.teacherDropdown.select(it.teacherId)
             b.topic.setText(it.topic)
-            b.shareSwitch.isChecked = true
-            b.typeDropdown.select(it.type)?.let { item ->
+            b.typeDropdown.select(it.type.toLong())?.let { item ->
                 customColor = (item.tag as EventType).color
             }
             if (it.color != -1)
@@ -548,7 +579,7 @@ class EventManualDialog(
 
         val eventObject = Event(
                 profileId,
-                id,
+                editingEvent?.id ?: id,
                 date,
                 lesson?.displayStartTime,
                 topic,
@@ -569,7 +600,7 @@ class EventManualDialog(
                 eventObject.id,
                 true,
                 true,
-                System.currentTimeMillis()
+                editingEvent?.addedDate ?: System.currentTimeMillis()
         )
 
         finishAdding(eventObject, metadataObject)
@@ -577,15 +608,27 @@ class EventManualDialog(
 
     private fun finishAdding(eventObject: Event, metadataObject: Metadata) {
         launch {
-            val deferred = async(Dispatchers.Default) {
+            withContext(Dispatchers.Default) {
                 app.db.eventDao().add(eventObject)
                 app.db.metadataDao().add(metadataObject)
             }
-
-            deferred.await()
         }
 
         dialog.dismiss()
         Toast.makeText(app, R.string.saved, Toast.LENGTH_SHORT).show()
+        (activity as MainActivity).reloadTarget()
+    }
+
+    private fun removeEvent() {
+        launch {
+            withContext(Dispatchers.Default) {
+                app.db.eventDao().remove(editingEvent)
+            }
+        }
+
+        removeEventDialog?.dismiss()
+        dialog.dismiss()
+        Toast.makeText(app, R.string.removed, Toast.LENGTH_SHORT).show()
+        (activity as MainActivity).reloadTarget()
     }
 }
