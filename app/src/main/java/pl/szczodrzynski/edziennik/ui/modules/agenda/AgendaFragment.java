@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.github.tibolte.agendacalendarview.AgendaCalendarView;
@@ -44,7 +43,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialogOld;
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeCounter;
@@ -107,20 +106,17 @@ public class AgendaFragment extends Fragment {
                         .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            new MaterialDialog.Builder(activity)
-                                    .title(R.string.main_menu_add)
-                                    .items(R.array.main_menu_add_options)
-                                    .itemsCallback((dialog, itemView, position, text) -> {
-                                        switch (position) {
-                                            case 0:
-                                                new EventManualDialogOld(activity).show(app, null, null, null, EventManualDialogOld.DIALOG_EVENT);
-                                                break;
-                                            case 1:
-                                                new EventManualDialogOld(activity).show(app, null, null, null, EventManualDialogOld.DIALOG_HOMEWORK);
-                                                break;
-                                        }
-                                    })
-                                    .show();
+                            new EventManualDialog(
+                                    activity,
+                                    App.profileId,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                            );
                         }),
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_agenda_change_view)

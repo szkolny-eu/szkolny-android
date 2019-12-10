@@ -177,6 +177,10 @@ class EventManualDialog(
         b.teacherDropdown.isEnabled = true
         b.typeDropdown.isEnabled = true
 
+        defaultType?.let {
+            b.typeDropdown.select(it.toLong())
+        }
+
         b.typeDropdown.selected?.let { item ->
             customColor = (item.tag as EventType).color
         }
@@ -207,9 +211,11 @@ class EventManualDialog(
             customColor = null
             return@setOnChangeListener true
         }
+
         (customColor ?: Event.COLOR_DEFAULT).let {
             b.typeColor.background.colorFilter = PorterDuffColorFilter(it, PorterDuff.Mode.SRC_ATOP)
         }
+
         b.typeColor.onClick {
             val currentColor = (b.typeDropdown?.selected?.tag as EventType?)?.color ?: Event.COLOR_DEFAULT
             val colorPickerDialog = ColorPickerDialog.newBuilder()
