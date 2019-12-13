@@ -24,7 +24,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
@@ -64,6 +63,8 @@ class EventManualDialog(
 
     private lateinit var event: Event
     private var customColor: Int? = null
+    private val editingShared = editingEvent?.sharedBy != null
+    private val editingOwn = editingEvent?.sharedBy == "self"
 
     init { run {
         if (activity.isFinishing)
@@ -106,8 +107,9 @@ class EventManualDialog(
             defaultType?.let {
                 event.type = it
             }
-            b.shareSwitch.isChecked = event.sharedBy != null
         }
+        b.shareSwitch.isChecked = editingShared
+        b.shareSwitch.isEnabled = !editingShared || (editingShared && editingOwn)
 
         b.showMore.onClick { // TODO iconics is broken
             it.apply {
@@ -128,29 +130,7 @@ class EventManualDialog(
         loadLists()
     }}
 
-    private fun showRemoveEventDialog() {
-        removeEventDialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.are_you_sure)
-                .setMessage(activity.getString(R.string.dialog_register_event_manual_remove_confirmation))
-                .setPositiveButton(R.string.yes, null)
-                .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
-                .create()
-                .apply {
-                    setOnShowListener { dialog ->
-                        val positiveButton = (dialog as AlertDialog).getButton(BUTTON_POSITIVE)
-                        positiveButton?.setOnClickListener {
-                            removeEvent()
-                        }
-                    }
-
-                    show()
-                }
-    }
-
     private fun updateShareText(checked: Boolean = b.shareSwitch.isChecked) {
-        val editingShared = editingEvent?.sharedBy != null
-        val editingOwn = editingEvent?.sharedBy == "self"
-
         b.shareDetails.visibility = if (checked || editingShared)
             View.VISIBLE
         else View.GONE
@@ -490,8 +470,13 @@ class EventManualDialog(
                         ))
                 }
 
-                editingEvent?.let {
-                    b.timeDropdown.select(it.startTime?.value?.toLong())
+                editingEvent?.startTime?.let {
+                    if (b.timeDropdown.select(it) == null)
+                        b.timeDropdown.select(TextInputDropDown.Item(
+                                it.value.toLong(),
+                                it.stringHM,
+                                tag = it
+                        ))
                 }
 
                 defaultLesson?.let {
@@ -542,15 +527,40 @@ class EventManualDialog(
         })
     }
 
+    private fun showRemoveEventDialog() {
+        val shareNotice = when {
+            editingShared && editingOwn -> "\n\n"+activity.getString(R.string.dialog_event_manual_remove_shared_self)
+            editingShared && !editingOwn -> "\n\n"+activity.getString(R.string.dialog_event_manual_remove_shared)
+            else -> ""
+        }
+        removeEventDialog = MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.are_you_sure)
+                .setMessage(activity.getString(R.string.dialog_register_event_manual_remove_confirmation)+shareNotice)
+                .setPositiveButton(R.string.yes, null)
+                .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
+                .create()
+                .apply {
+                    setOnShowListener { dialog ->
+                        val positiveButton = (dialog as AlertDialog).getButton(BUTTON_POSITIVE)
+                        positiveButton?.setOnClickListener {
+                            removeEvent()
+                        }
+                    }
+
+                    show()
+                }
+    }
+
     private fun saveEvent() {
         val date = b.dateDropdown.selected?.tag.instanceOfOrNull<Date>()
         val lesson = b.timeDropdown.selected?.tag.instanceOfOrNull<LessonFull>()
-        val team = b.teamDropdown.selected?.tag.instanceOfOrNull<Team>()
-        val share = b.shareSwitch.isChecked
-        val type = b.typeDropdown.selected?.tag.instanceOfOrNull<EventType>()
+        val teamId = b.teamDropdown.selected?.id
+        val type = b.typeDropdown.selected?.id
         val topic = b.topic.text?.toString()
-        val subject = b.subjectDropdown.selected?.tag.instanceOfOrNull<Subject>()
-        val teacher = b.teacherDropdown.selected?.tag.instanceOfOrNull<Teacher>()
+        val subjectId = b.subjectDropdown.selected?.id
+        val teacherId = b.teacherDropdown.selected?.id
+
+        val share = b.shareSwitch.isChecked
 
         b.teamDropdown.error = null
         b.typeDropdown.error = null
@@ -558,7 +568,7 @@ class EventManualDialog(
 
         var isError = false
 
-        if (share && team == null) {
+        if (share && teamId == null) {
             b.teamDropdown.error = app.getString(R.string.dialog_event_manual_team_choose)
             isError = true
         }
@@ -584,16 +594,16 @@ class EventManualDialog(
                 lesson?.displayStartTime,
                 topic,
                 customColor ?: -1,
-                type?.id?.toInt() ?: Event.TYPE_DEFAULT,
+                type?.toInt() ?: Event.TYPE_DEFAULT,
                 true,
-                teacher?.id ?: -1,
-                subject?.id ?: -1,
-                team?.id ?: -1
+                teacherId ?: -1,
+                subjectId ?: -1,
+                teamId ?: -1
         )
 
         val metadataObject = Metadata(
                 profileId,
-                when (type?.id?.toInt()) {
+                when (type?.toInt()) {
                     Event.TYPE_HOMEWORK -> Metadata.TYPE_HOMEWORK
                     else -> Metadata.TYPE_EVENT
                 },
@@ -603,7 +613,35 @@ class EventManualDialog(
                 editingEvent?.addedDate ?: System.currentTimeMillis()
         )
 
-        finishAdding(eventObject, metadataObject)
+        if (!share && !editingShared) {
+            Toast.makeText(activity, "Save without sharing", Toast.LENGTH_SHORT).show()
+            finishAdding(eventObject, metadataObject)
+        }
+        else if (editingShared && !editingOwn) {
+            Toast.makeText(activity, "Request editing somebody's event", Toast.LENGTH_SHORT).show()
+        }
+        else if (!share && editingShared) {
+            Toast.makeText(activity, "Unshare own event", Toast.LENGTH_SHORT).show()
+        }
+        else if (share) {
+            Toast.makeText(activity, "Share/update own event", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(activity, "Unknown action :(", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun removeEvent() {
+        if (editingShared && editingOwn) {
+            Toast.makeText(activity, "Unshare + remove own event", Toast.LENGTH_SHORT).show()
+        }
+        else if (editingShared && !editingOwn) {
+            Toast.makeText(activity, "Remove + blacklist somebody's event", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(activity, "Remove event", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun finishAdding(eventObject: Event, metadataObject: Metadata) {
@@ -615,11 +653,11 @@ class EventManualDialog(
         }
 
         dialog.dismiss()
-        Toast.makeText(app, R.string.saved, Toast.LENGTH_SHORT).show()
-        (activity as MainActivity).reloadTarget()
+        Toast.makeText(activity, R.string.saved, Toast.LENGTH_SHORT).show()
+        if (activity is MainActivity)
+            activity.reloadTarget()
     }
-
-    private fun removeEvent() {
+    private fun finishRemoving() {
         launch {
             withContext(Dispatchers.Default) {
                 app.db.eventDao().remove(editingEvent)
@@ -628,7 +666,8 @@ class EventManualDialog(
 
         removeEventDialog?.dismiss()
         dialog.dismiss()
-        Toast.makeText(app, R.string.removed, Toast.LENGTH_SHORT).show()
-        (activity as MainActivity).reloadTarget()
+        Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
+        if (activity is MainActivity)
+            activity.reloadTarget()
     }
 }

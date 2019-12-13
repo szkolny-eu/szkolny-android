@@ -55,7 +55,7 @@ class EventListAdapter(
             b.eventListItemSharedBy.text = app.getString(R.string.event_shared_by_format, if (event.sharedBy == "self") app.getString(R.string.event_shared_by_self) else event.sharedByName)
             b.eventListItemSharedBy.visibility = if (event.sharedByName.isNullOrBlank()) View.GONE else View.VISIBLE
 
-            b.eventListItemEdit.visibility = if (event.addedManually && (event.sharedBy == null || event.sharedBy == "self")) View.VISIBLE else View.GONE
+            b.eventListItemEdit.visibility = if (event.addedManually) View.VISIBLE else View.GONE
             b.eventListItemEdit.setOnClickListener {
                 parentDialog.dismiss()
 

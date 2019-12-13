@@ -78,6 +78,7 @@ class TextInputDropDown : TextInputEditText {
     fun select(item: Item): Item? {
         selected = item
         updateText()
+        error = null
         return item
     }
 
