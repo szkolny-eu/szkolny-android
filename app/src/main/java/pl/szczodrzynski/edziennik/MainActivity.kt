@@ -37,7 +37,7 @@ import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.api.v2.events.*
-import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
+import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.network.ServerRequest

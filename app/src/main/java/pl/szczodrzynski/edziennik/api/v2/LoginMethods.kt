@@ -4,17 +4,17 @@
 
 package pl.szczodrzynski.edziennik.api.v2
 
-import pl.szczodrzynski.edziennik.api.v2.idziennik.login.IdziennikLoginApi
-import pl.szczodrzynski.edziennik.api.v2.idziennik.login.IdziennikLoginWeb
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginApi
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginMessages
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginPortal
-import pl.szczodrzynski.edziennik.api.v2.librus.login.LibrusLoginSynergia
-import pl.szczodrzynski.edziennik.api.v2.mobidziennik.login.MobidziennikLoginWeb
+import pl.szczodrzynski.edziennik.api.v2.edziennik.idziennik.login.IdziennikLoginApi
+import pl.szczodrzynski.edziennik.api.v2.edziennik.idziennik.login.IdziennikLoginWeb
+import pl.szczodrzynski.edziennik.api.v2.edziennik.librus.login.LibrusLoginApi
+import pl.szczodrzynski.edziennik.api.v2.edziennik.librus.login.LibrusLoginMessages
+import pl.szczodrzynski.edziennik.api.v2.edziennik.librus.login.LibrusLoginPortal
+import pl.szczodrzynski.edziennik.api.v2.edziennik.librus.login.LibrusLoginSynergia
+import pl.szczodrzynski.edziennik.api.v2.edziennik.mobidziennik.login.MobidziennikLoginWeb
+import pl.szczodrzynski.edziennik.api.v2.edziennik.template.login.TemplateLoginApi
+import pl.szczodrzynski.edziennik.api.v2.edziennik.template.login.TemplateLoginWeb
+import pl.szczodrzynski.edziennik.api.v2.edziennik.vulcan.login.VulcanLoginApi
 import pl.szczodrzynski.edziennik.api.v2.models.LoginMethod
-import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLoginApi
-import pl.szczodrzynski.edziennik.api.v2.template.login.TemplateLoginWeb
-import pl.szczodrzynski.edziennik.api.v2.vulcan.login.VulcanLoginApi
 
 // librus
 // mobidziennik

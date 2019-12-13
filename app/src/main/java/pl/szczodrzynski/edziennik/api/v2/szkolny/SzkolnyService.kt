@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.api.v2.szkolny
 
+import pl.szczodrzynski.edziennik.api.v2.szkolny.request.EventShareRequest
 import pl.szczodrzynski.edziennik.api.v2.szkolny.request.ServerSyncRequest
 import pl.szczodrzynski.edziennik.api.v2.szkolny.response.ApiResponse
 import pl.szczodrzynski.edziennik.api.v2.szkolny.response.ServerSyncResponse
@@ -15,4 +16,7 @@ interface SzkolnyService {
 
     @POST("appSync")
     fun serverSync(@Body request: ServerSyncRequest): Call<ApiResponse<ServerSyncResponse>>
+
+    @POST("share")
+    fun shareEvent(@Body request: EventShareRequest): Call<ApiResponse<Nothing>>
 }

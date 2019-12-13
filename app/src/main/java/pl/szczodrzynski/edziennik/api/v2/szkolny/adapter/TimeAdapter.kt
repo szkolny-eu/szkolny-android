@@ -11,7 +11,13 @@ import com.google.gson.stream.JsonWriter
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class TimeAdapter : TypeAdapter<Time>() {
-    override fun write(writer: JsonWriter?, value: Time?) {}
+    override fun write(writer: JsonWriter?, time: Time?) {
+        if (time == null) {
+            writer?.nullValue()
+        } else {
+            writer?.value(time.value)
+        }
+    }
 
     override fun read(reader: JsonReader?): Time? {
         if (reader?.peek() == JsonToken.NULL) {

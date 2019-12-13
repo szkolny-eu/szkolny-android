@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
 
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
@@ -84,6 +85,11 @@ public class Event {
         this.teacherId = teacherId;
         this.subjectId = subjectId;
         this.teamId = teamId;
+    }
+
+    @Ignore
+    public EventFull withMetadata(Metadata metadata) {
+        return new EventFull(this, metadata);
     }
 
     @Override

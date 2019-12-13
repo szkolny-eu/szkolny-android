@@ -35,7 +35,7 @@ import pl.szczodrzynski.edziennik.api.v2.events.AttachmentGetEvent
 import pl.szczodrzynski.edziennik.api.v2.events.AttachmentGetEvent.Companion.TYPE_FINISHED
 import pl.szczodrzynski.edziennik.api.v2.events.AttachmentGetEvent.Companion.TYPE_PROGRESS
 import pl.szczodrzynski.edziennik.api.v2.events.MessageGetEvent
-import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
+import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding

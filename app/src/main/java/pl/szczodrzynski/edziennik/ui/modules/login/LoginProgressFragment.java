@@ -22,8 +22,8 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent;
 import pl.szczodrzynski.edziennik.api.v2.events.FirstLoginFinishedEvent;
-import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
+import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginProgressBinding;
 

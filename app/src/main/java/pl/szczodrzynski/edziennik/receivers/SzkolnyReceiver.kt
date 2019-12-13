@@ -10,7 +10,7 @@ import android.content.Intent
 import pl.szczodrzynski.edziennik.api.v2.ApiService
 import pl.szczodrzynski.edziennik.api.v2.events.requests.ServiceCloseRequest
 import pl.szczodrzynski.edziennik.api.v2.events.requests.TaskCancelRequest
-import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
+import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
 
 class SzkolnyReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

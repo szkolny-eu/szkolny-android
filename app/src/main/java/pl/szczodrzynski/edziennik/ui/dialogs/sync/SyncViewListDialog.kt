@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
+import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import kotlin.coroutines.CoroutineContext

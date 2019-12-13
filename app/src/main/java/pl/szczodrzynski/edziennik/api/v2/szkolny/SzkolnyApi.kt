@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.api.v2.szkolny.adapter.DateAdapter
 import pl.szczodrzynski.edziennik.api.v2.szkolny.adapter.TimeAdapter
 import pl.szczodrzynski.edziennik.api.v2.szkolny.interceptor.SignatureInterceptor
+import pl.szczodrzynski.edziennik.api.v2.szkolny.request.EventShareRequest
 import pl.szczodrzynski.edziennik.api.v2.szkolny.request.ServerSyncRequest
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
@@ -95,5 +96,27 @@ class SzkolnyApi(val app: App) {
         }
 
         return events
+    }
+
+    fun shareEvent(event: EventFull) {
+        val team = app.db.teamDao().getByIdNow(event.profileId, event.teamId)
+
+        api.shareEvent(EventShareRequest(
+                deviceId = app.deviceId,
+                sharedByName = event.sharedByName,
+                shareTeamCode = team.code,
+                event = event
+        )).execute()
+    }
+
+    fun unshareEvent(event: EventFull) {
+        val team = app.db.teamDao().getByIdNow(event.profileId, event.teamId)
+
+        api.shareEvent(EventShareRequest(
+                deviceId = app.deviceId,
+                sharedByName = event.sharedByName,
+                unshareTeamCode = team.code,
+                eventId = event.id
+        )).execute()
     }
 }

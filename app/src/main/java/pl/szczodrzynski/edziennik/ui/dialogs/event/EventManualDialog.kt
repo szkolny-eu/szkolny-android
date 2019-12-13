@@ -19,6 +19,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.api.v2.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
@@ -613,34 +614,58 @@ class EventManualDialog(
                 editingEvent?.addedDate ?: System.currentTimeMillis()
         )
 
-        if (!share && !editingShared) {
-            Toast.makeText(activity, "Save without sharing", Toast.LENGTH_SHORT).show()
-            finishAdding(eventObject, metadataObject)
-        }
-        else if (editingShared && !editingOwn) {
-            Toast.makeText(activity, "Request editing somebody's event", Toast.LENGTH_SHORT).show()
-        }
-        else if (!share && editingShared) {
-            Toast.makeText(activity, "Unshare own event", Toast.LENGTH_SHORT).show()
-        }
-        else if (share) {
-            Toast.makeText(activity, "Share/update own event", Toast.LENGTH_SHORT).show()
-        }
-        else {
-            Toast.makeText(activity, "Unknown action :(", Toast.LENGTH_SHORT).show()
-        }
+        launch {
+            val profile = app.db.profileDao().getFullByIdNow(profileId)
 
+            if (!share && !editingShared) {
+                Toast.makeText(activity, "Save without sharing", Toast.LENGTH_SHORT).show()
+                finishAdding(eventObject, metadataObject)
+            }
+            else if (editingShared && !editingOwn) {
+                Toast.makeText(activity, "Request editing somebody's event", Toast.LENGTH_SHORT).show()
+                // TODO
+            }
+            else if (!share && editingShared) {
+                Toast.makeText(activity, "Unshare own event", Toast.LENGTH_SHORT).show()
+
+                editingEvent?.let { SzkolnyTask.unshareEvent(it).enqueue(activity) }
+                finishRemoving()
+            }
+            else if (share) {
+                Toast.makeText(activity, "Share/update own event", Toast.LENGTH_SHORT).show()
+
+                eventObject.apply {
+                    sharedBy = profile?.usernameId
+                    sharedByName = profile?.studentNameLong
+                }
+
+                metadataObject.addedDate = System.currentTimeMillis()
+
+                SzkolnyTask.shareEvent(eventObject.withMetadata(metadataObject)).enqueue(activity)
+
+                eventObject.sharedBy = "self"
+                finishAdding(eventObject, metadataObject)
+            }
+            else {
+                Toast.makeText(activity, "Unknown action :(", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun removeEvent() {
         if (editingShared && editingOwn) {
             Toast.makeText(activity, "Unshare + remove own event", Toast.LENGTH_SHORT).show()
+
+            editingEvent?.let { SzkolnyTask.unshareEvent(it).enqueue(activity) }
+            finishRemoving()
         }
         else if (editingShared && !editingOwn) {
             Toast.makeText(activity, "Remove + blacklist somebody's event", Toast.LENGTH_SHORT).show()
+            // TODO
         }
         else {
             Toast.makeText(activity, "Remove event", Toast.LENGTH_SHORT).show()
+            finishRemoving()
         }
     }
 

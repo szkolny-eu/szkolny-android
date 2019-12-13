@@ -15,9 +15,9 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.events.*
 import pl.szczodrzynski.edziennik.api.v2.events.requests.ServiceCloseRequest
 import pl.szczodrzynski.edziennik.api.v2.events.requests.TaskCancelRequest
-import pl.szczodrzynski.edziennik.api.v2.events.task.*
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.api.v2.task.*
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import kotlin.math.min
@@ -38,8 +38,10 @@ class ApiService : Service() {
 
     private val app by lazy { applicationContext as App }
 
+    private val syncingProfiles = mutableListOf<ProfileFull>()
+
     private val finishingTaskQueue = mutableListOf(
-            ServerSyncTask(),
+            SzkolnyTask.sync(syncingProfiles),
             NotifyTask()
     )
     private val taskQueue = mutableListOf<IApiTask>()
@@ -60,8 +62,6 @@ class ApiService : Service() {
 
     private var lastEventTime = System.currentTimeMillis()
     private var taskCancelTries = 0
-
-    private val syncingProfiles = mutableListOf<ProfileFull>()
 
     /*    ______    _     _                  _ _       _____      _ _ _                _
          |  ____|  | |   (_)                (_) |     / ____|    | | | |              | |
@@ -163,7 +163,7 @@ class ApiService : Service() {
                 is EdziennikTask -> task.run(app, taskCallback)
                 is NotifyTask -> task.run(app, taskCallback)
                 is ErrorReportTask -> task.run(app, taskCallback, notification, errorList)
-                is ServerSyncTask -> task.run(app, syncingProfiles, taskCallback)
+                is SzkolnyTask -> task.run(app, taskCallback)
             }
         } catch (e: Exception) {
             taskCallback.onError(ApiError(TAG, EXCEPTION_API_TASK).withThrowable(e))

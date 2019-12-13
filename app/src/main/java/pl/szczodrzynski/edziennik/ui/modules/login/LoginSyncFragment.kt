@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskProgressEvent
 import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskStartedEvent
-import pl.szczodrzynski.edziennik.api.v2.events.task.EdziennikTask
+import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event.*
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
