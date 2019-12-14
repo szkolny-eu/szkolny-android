@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -28,7 +27,7 @@ public class LoginStore {
     @ColumnInfo(name = "loginStoreData")
     public JsonObject data;
 
-    @Ignore
+    @ColumnInfo(name = "loginStoreMode")
     public int mode = 0;
     public static final int LOGIN_MODE_LIBRUS_EMAIL = 0;
     public static final int LOGIN_MODE_LIBRUS_SYNERGIA = 1;

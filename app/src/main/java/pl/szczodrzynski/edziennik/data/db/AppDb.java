@@ -108,7 +108,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         AttendanceType.class,
         pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson.class,
         ConfigEntry.class,
-        Metadata.class}, version = 68)
+        Metadata.class}, version = 69)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -823,6 +823,12 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("DELETE FROM metadata WHERE thingType=7");
         }
     };
+    private static final Migration MIGRATION_68_69 = new Migration(68, 69) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE loginStores ADD COLUMN loginStoreMode INTEGER NOT NULL DEFAULT 0");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -888,7 +894,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_64_65,
                                     MIGRATION_65_66,
                                     MIGRATION_66_67,
-                                    MIGRATION_67_68
+                                    MIGRATION_67_68,
+                                    MIGRATION_68_69
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

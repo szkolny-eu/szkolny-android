@@ -51,6 +51,7 @@ public class LoginChooserFragment extends Fragment {
 
         b.loginMobidziennikLogo.setOnClickListener((v) -> nav.navigate(R.id.loginMobidziennikFragment, null, LoginActivity.navOptions));
         b.loginLibrusLogo.setOnClickListener((v) -> nav.navigate(R.id.loginLibrusFragment, null, LoginActivity.navOptions));
+        b.loginLibrusJstLogo.setOnClickListener((v) -> nav.navigate(R.id.loginLibrusJstFragment, null, LoginActivity.navOptions));
         b.loginVulcanLogo.setOnClickListener((v) -> nav.navigate(R.id.loginVulcanFragment, null, LoginActivity.navOptions));
         b.loginIuczniowieLogo.setOnClickListener((v) -> nav.navigate(R.id.loginIuczniowieFragment, null, LoginActivity.navOptions));
 

@@ -148,16 +148,16 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
      */
     private var mApiCode: String? = null
     var apiCode: String?
-        get() { mApiCode = mApiCode ?: profile?.getStudentData("accountCode", null); return mApiCode }
-        set(value) { profile?.putStudentData("accountCode", value) ?: return; mApiCode = value }
+        get() { mApiCode = mApiCode ?: loginStore.getLoginData("accountCode", null); return mApiCode }
+        set(value) { loginStore.putLoginData("accountCode", value) ?: return; mApiCode = value }
     /**
      * A JST login PIN.
      * Used only during first login in JST mode.
      */
     private var mApiPin: String? = null
     var apiPin: String?
-        get() { mApiPin = mApiPin ?: profile?.getStudentData("accountPin", null); return mApiPin }
-        set(value) { profile?.putStudentData("accountPin", value) ?: return; mApiPin = value }
+        get() { mApiPin = mApiPin ?: loginStore.getLoginData("accountPin", null); return mApiPin }
+        set(value) { loginStore.putLoginData("accountPin", value) ?: return; mApiPin = value }
 
     /**
      * A Synergia API access token.
@@ -168,7 +168,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mApiAccessToken: String? = null
     var apiAccessToken: String?
         get() { mApiAccessToken = mApiAccessToken ?: profile?.getStudentData("accountToken", null); return mApiAccessToken }
-        set(value) { profile?.putStudentData("accountToken", value) ?: return; mApiAccessToken = value }
+        set(value) { mApiAccessToken = value; profile?.putStudentData("accountToken", value) ?: return; }
     /**
      * A Synergia API refresh token.
      * Used when refreshing the [apiAccessToken] in JST, Synergia modes.
@@ -176,7 +176,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mApiRefreshToken: String? = null
     var apiRefreshToken: String?
         get() { mApiRefreshToken = mApiRefreshToken ?: profile?.getStudentData("accountRefreshToken", null); return mApiRefreshToken }
-        set(value) { profile?.putStudentData("accountRefreshToken", value) ?: return; mApiRefreshToken = value }
+        set(value) { mApiRefreshToken = value; profile?.putStudentData("accountRefreshToken", value) ?: return; }
     /**
      * The expiry time for [apiAccessToken], as a UNIX timestamp.
      * Used when refreshing the [apiAccessToken] in JST, Synergia modes.
@@ -185,7 +185,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mApiTokenExpiryTime: Long? = null
     var apiTokenExpiryTime: Long
         get() { mApiTokenExpiryTime = mApiTokenExpiryTime ?: profile?.getStudentData("accountTokenTime", 0L); return mApiTokenExpiryTime ?: 0L }
-        set(value) { profile?.putStudentData("accountTokenTime", value) ?: return; mApiTokenExpiryTime = value }
+        set(value) { mApiTokenExpiryTime = value; profile?.putStudentData("accountTokenTime", value) ?: return; }
 
     /*     _____                            _
           / ____|                          (_)

@@ -85,6 +85,36 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
             LibrusLoginApi(data) {
                 api.apiGet(TAG, "Me") { json ->
 
+                    val profile = Profile()
+
+                    val me = json.getJsonObject("Me")
+                    val account = me?.getJsonObject("Account")
+                    val user = me?.getJsonObject("User")
+
+                    profile.putStudentData("isPremium", account?.getBoolean("IsPremium") == true || account?.getBoolean("IsPremiumDemo") == true)
+
+                    val isParent = account?.getInt("GroupId") == 5
+                    profile.accountNameLong =
+                            if (isParent)
+                                buildFullName(account?.getString("FirstName"), account?.getString("LastName"))
+                            else null
+
+                    profile.studentNameLong =
+                            buildFullName(user?.getString("FirstName"), user?.getString("LastName"))
+
+                    profile.studentNameShort = profile.studentNameLong?.getShortName()
+                    profile.name = profile.studentNameLong
+                    profile.subname = account.getString("Login")
+                    profile.empty = true
+                    profile.putStudentData("accountId", account.getInt("Id") ?: 0)
+                    profile.putStudentData("accountLogin", profile.subname)
+                    profile.putStudentData("accountToken", data.apiAccessToken)
+                    profile.putStudentData("accountRefreshToken", data.apiRefreshToken)
+                    profile.putStudentData("accountTokenTime", data.apiTokenExpiryTime)
+                    profileList.add(profile)
+
+                    EventBus.getDefault().post(FirstLoginFinishedEvent(profileList, data.loginStore))
+                    onSuccess()
                 }
             }
         }

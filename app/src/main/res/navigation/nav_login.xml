@@ -16,6 +16,9 @@
             android:id="@+id/action_loginTypeFragment_to_loginLibrusFragment"
             app:destination="@id/loginLibrusFragment" />
         <action
+            android:id="@+id/action_loginTypeFragment_to_loginLibrusJstFragment"
+            app:destination="@id/loginLibrusJstFragment" />
+        <action
             android:id="@+id/action_loginTypeFragment_to_loginVulcanFragment"
             app:destination="@id/loginVulcanFragment" />
         <action
@@ -44,6 +47,15 @@
             app:destination="@id/loginLibrusHelpFragment" />
         <action
             android:id="@+id/action_loginLibrusFragment_to_loginProgressFragment"
+            app:destination="@id/loginProgressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginLibrusJstFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusJstFragment"
+        android:label="fragment_login_librus_jst"
+        tools:layout="@layout/fragment_login_librus_jst" >
+        <action
+            android:id="@+id/action_loginLibrusJstFragment_to_loginProgressFragment"
             app:destination="@id/loginProgressFragment" />
     </fragment>
     <fragment

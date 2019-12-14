@@ -349,7 +349,7 @@
     <string name="login_librus_help_subtitle">In order to use the app you need a Librus account. You can create it on portal.librus.pl. Use the data you normally enter in the fields marked on the image.</string>
     <string name="login_librus_help_title">Help - Librus</string>
     <string name="login_librus_subtitle">Log in using your Librus account data (created before on your e-mail address). You can\'t login using the data provided by your school. In case of any problems, use the button below the form.</string>
-    <string name="login_librus_title">Log in - Librus</string>
+    <string name="login_librus_jst_title">Log in - Librus JST</string>
     <string name="login_migration_error_format">A migration error has occurred. It\'s already reported, which means I\'ll try to fix it.\n\nYou can continue using the app. In case of any problems try to remove the profile and create it again.</string>
     <string name="login_migration_subtitle">The app got a huge update. If you encounter any problems, feel free to contact me using the Feedback option in the menu.</string>
     <string name="login_migration_title">Szkolny.eu has been updated</string>

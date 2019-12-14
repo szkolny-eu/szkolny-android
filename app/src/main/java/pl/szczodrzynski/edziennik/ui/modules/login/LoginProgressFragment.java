@@ -85,8 +85,10 @@ public class LoginProgressFragment extends Fragment {
         }
 
         int loginType = args.getInt("loginType", -1);
+        int loginMode = args.getInt("loginMode", 0);
 
         LoginStore loginStore = new LoginStore(-1, loginType, new JsonObject());
+        loginStore.mode = loginMode;
         loginStore.copyFrom(args);
 
         if (App.devMode && LoginChooserFragment.fakeLogin) {

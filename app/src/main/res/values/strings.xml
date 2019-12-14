@@ -373,6 +373,7 @@
     <string name="login_librus_help_title">Pomoc - Librus</string>
     <string name="login_librus_subtitle">Zaloguj się danymi swojego konta Librus (założonego wcześniej na swój adres e-mail). Nie należy logować się danymi otrzymanymi ze swojej szkoły. W razie problemów skorzystaj z przycisku pod formularzem.</string>
     <string name="login_librus_title">Zaloguj się - Librus</string>
+    <string name="login_librus_jst_title">Zaloguj się - Librus JST</string>
     <string name="login_migration_error_format">Wystąpił błąd w migracji danych. Został on już zgłoszony, co oznacza, że postaram się go naprawić.\n\nMożesz zacząć korzystać z aplikacji, jednak w przypadku jakichś błędów spróbuj usunąć profil i zalogować się ponownie.</string>
     <string name="login_migration_subtitle">Aplikacja otrzymała dużą aktualizację. Jeżeli będą występować jakieś problemy w działaniu, możesz się ze mną skontaktować używając pozycji Pomoc i opinie w menu.</string>
     <string name="login_migration_title">Szkolny.eu został zaktualizowany</string>
@@ -1061,4 +1062,9 @@
     <string name="edziennik_progress_endpoint_behaviour_grades">Pobieranie ocen z zachowania...</string>
     <string name="edziennik_szkolny_api_sync_title">Synchronizowanie udostępnionych wydarzeń...</string>
     <string name="settings_theme_open_drawer_on_back_pressed_text">Otwieraj menu przyciskiem wstecz</string>
+    <string name="login_librus_jst_subtitle">Zaloguj się tokenem i kodem PIN, który można wygenerować po zalogowanu się do Synergii w zakładce Aplikacje mobilne.</string>
+    <string name="login_error_incorrect_token_or_pin">Nieprawidłowy token lub PIN</string>
+    <string name="login_error_incorrect_code_or_pin">Nieprawidłowy kod lub PIN</string>
+    <string name="login_error_incorrect_code">Nieprawidłowy kod</string>
+    <string name="login_error_no_code">Podaj kod</string>
 </resources>
