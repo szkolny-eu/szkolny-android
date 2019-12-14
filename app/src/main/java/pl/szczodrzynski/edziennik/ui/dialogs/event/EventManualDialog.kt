@@ -628,8 +628,8 @@ class EventManualDialog(
             else if (!share && editingShared) {
                 Toast.makeText(activity, "Unshare own event", Toast.LENGTH_SHORT).show()
 
-                editingEvent?.let { SzkolnyTask.unshareEvent(it).enqueue(activity) }
-                finishRemoving()
+                SzkolnyTask.unshareEvent(eventObject.withMetadata(metadataObject)).enqueue(activity)
+                finishAdding(eventObject, metadataObject)
             }
             else if (share) {
                 Toast.makeText(activity, "Share/update own event", Toast.LENGTH_SHORT).show()

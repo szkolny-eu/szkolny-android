@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit.SECONDS
 
 class SzkolnyApi(val app: App) {
 
-    private var api: SzkolnyService
+    private val api: SzkolnyService
 
     init {
         val okHttpClient: OkHttpClient = app.http.newBuilder()
