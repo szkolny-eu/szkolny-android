@@ -26,7 +26,7 @@ open class MobidziennikWeb(open val data: DataMobidziennik) {
     val profile
         get() = data.profile
 
-    fun webGet(tag: String, endpoint: String, method: Int = GET, payload: List<Pair<String, String>>? = null, onSuccess: (text: String) -> Unit) {
+    fun webGet(tag: String, endpoint: String, method: Int = GET, onSuccess: (text: String) -> Unit) {
         val url = "https://${data.loginServerName}.mobidziennik.pl$endpoint"
 
         d(tag, "Request: Mobidziennik/Web - $url")

@@ -27,6 +27,8 @@ import pl.szczodrzynski.edziennik.utils.Utils.d
 class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
         private const val TAG = "Mobidziennik"
+
+        const val API_KEY = "szkolny_eu_72c7dbc8b97f1e5dd2d118cacf51c2b8543d15c0f65b7a59979adb0a1296b235d7febb826dd2a28688def6efe0811b924b04d7f3c7b7d005354e06dc56815d57"
     }
 
     val internalErrorList = mutableListOf<Int>()

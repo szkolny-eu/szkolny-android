@@ -9,6 +9,7 @@ import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.api.v2.*
 import pl.szczodrzynski.edziennik.api.v2.edziennik.mobidziennik.DataMobidziennik
+import pl.szczodrzynski.edziennik.api.v2.edziennik.mobidziennik.Mobidziennik
 import pl.szczodrzynski.edziennik.api.v2.models.ApiError
 import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
@@ -92,6 +93,7 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
                 .addParameter("login", data.loginUsername)
                 .addParameter("haslo", data.loginPassword)
                 .addParameter("token", data.app.config.sync.tokenMobidziennik)
+                .addParameter("ta_api", Mobidziennik.API_KEY)
                 .post()
                 .callback(callback)
                 .build()
