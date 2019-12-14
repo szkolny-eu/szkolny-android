@@ -105,6 +105,7 @@ public class Mobidziennik implements EdziennikInterface {
     }
 
     private static final String TAG = "api.Mobidziennik";
+    private static final String API_KEY = "szkolny_eu_72c7dbc8b97f1e5dd2d118cacf51c2b8543d15c0f65b7a59979adb0a1296b235d7febb826dd2a28688def6efe0811b924b04d7f3c7b7d005354e06dc56815d57";
 
     private App app;
     private Context activityContext = null;
@@ -421,6 +422,7 @@ public class Mobidziennik implements EdziennikInterface {
                 .addParameter("login", loginUsername)
                 .addParameter("haslo", loginPassword)
                 .addParameter("token", app.appConfig.fcmTokens.get(LOGIN_TYPE_MOBIDZIENNIK).first)
+                .addParameter("ta_api", API_KEY)
                 .post()
                 .callback(new TextCallbackHandler() {
                     @Override
