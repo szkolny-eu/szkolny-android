@@ -15,6 +15,12 @@ android {
         versionCode release.versionCode
         versionName release.versionName
         multiDexEnabled true
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+            }
+        }
     }
     buildTypes {
         applicationVariants.all { variant ->
@@ -61,6 +67,12 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/library-core_release.kotlin_module'
+    }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.10.2"
+        }
     }
 }
 

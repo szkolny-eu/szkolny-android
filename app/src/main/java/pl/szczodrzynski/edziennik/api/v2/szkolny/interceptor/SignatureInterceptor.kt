@@ -11,7 +11,6 @@ import pl.szczodrzynski.edziennik.*
 class SignatureInterceptor(val app: App) : Interceptor {
     companion object {
         private const val API_KEY = "szkolny_android_42a66f0842fc7da4e37c66732acf705a"
-        private const val API_PASSWORD = "HodrJ+6OAl9zqlK1IlYBUg=="
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -32,7 +31,7 @@ class SignatureInterceptor(val app: App) : Interceptor {
 
     private fun sign(timestamp: Long, body: String, url: String): String {
         val content = timestamp.toString().md5() + body.md5() + url.md5()
-        val password = API_PASSWORD + BuildConfig.VERSION_CODE.toString() + app.signature
+        val password = Signing.appPassword + BuildConfig.VERSION_CODE.toString() + Signing.appCertificate
 
         return content.hmacSHA1(password)
     }

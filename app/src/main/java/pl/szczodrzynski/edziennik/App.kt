@@ -126,7 +126,7 @@ class Szkolny : /*MultiDexApplication(),*/ Configuration.Provider, CoroutineScop
         if (config.devModePassword != null)
             checkDevModePassword()
 
-
+        Signing.getCert(this)
 
         launch { async(Dispatchers.Default) {
             if (config.sync.enabled) {

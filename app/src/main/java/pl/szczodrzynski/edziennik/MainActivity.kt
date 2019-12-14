@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.*
 import android.provider.Settings
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -37,6 +38,7 @@ import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.api.v2.events.*
+import pl.szczodrzynski.edziennik.api.v2.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
@@ -248,6 +250,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContentView(b.root)
+
+        Log.d(TAG, Signing.appPassword)
 
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 

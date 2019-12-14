@@ -381,6 +381,12 @@ fun String.md5(): String {
     return BigInteger(1, md.digest(toByteArray())).toString(16).padStart(32, '0')
 }
 
+fun String.sha256(): ByteArray {
+    val md = MessageDigest.getInstance("SHA-256")
+    md.update(toByteArray())
+    return md.digest()
+}
+
 fun RequestBody.bodyToString(): String {
     val buffer = Buffer()
     writeTo(buffer)
