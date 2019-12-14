@@ -38,7 +38,7 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
 
     private fun completed() {
         data.saveData()
-        data.notifyAndSyncEvents {
+        data.notify {
             callback.onCompleted()
         }
     }

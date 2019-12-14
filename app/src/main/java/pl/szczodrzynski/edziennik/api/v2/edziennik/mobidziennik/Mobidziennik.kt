@@ -41,7 +41,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     private fun completed() {
         data.saveData()
-        data.notifyAndSyncEvents {
+        data.notify {
             callback.onCompleted()
         }
     }

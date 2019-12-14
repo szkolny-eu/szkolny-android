@@ -7,8 +7,7 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.api.v2.DataNotifications
-import pl.szczodrzynski.edziennik.api.v2.EXCEPTION_NOTIFY_AND_SYNC
-import pl.szczodrzynski.edziennik.api.v2.ServerSync
+import pl.szczodrzynski.edziennik.api.v2.EXCEPTION_NOTIFY
 import pl.szczodrzynski.edziennik.api.v2.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.api.v2.models.AppError.*
 import pl.szczodrzynski.edziennik.data.db.AppDb
@@ -331,19 +330,15 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             db.messageRecipientDao().addAllIgnore(messageRecipientIgnoreList)
     }
 
-    fun notifyAndSyncEvents(onSuccess: () -> Unit) {
+    fun notify(onSuccess: () -> Unit) {
         if (profile == null) {
             onSuccess()
             return
         }
         try {
             DataNotifications(this)
-            ServerSync(this) {
-                db.notificationDao().addAll(notifications)
-                onSuccess()
-            }
         } catch (e: Exception) {
-            error(ApiError(TAG, EXCEPTION_NOTIFY_AND_SYNC)
+            error(ApiError(TAG, EXCEPTION_NOTIFY)
                     .withThrowable(e))
         }
     }
