@@ -14,8 +14,8 @@ import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent
-import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.databinding.FragmentMessagesBinding
 import pl.szczodrzynski.edziennik.utils.Themes

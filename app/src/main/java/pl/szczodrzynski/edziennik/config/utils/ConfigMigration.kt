@@ -10,9 +10,9 @@ import com.google.gson.reflect.TypeToken
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_MOBIDZIENNIK
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_VULCAN
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_VULCAN
 import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.utils.models.Time
 

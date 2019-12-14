@@ -21,7 +21,7 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event.TYPE_HOMEWORK
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.utils.models.Date

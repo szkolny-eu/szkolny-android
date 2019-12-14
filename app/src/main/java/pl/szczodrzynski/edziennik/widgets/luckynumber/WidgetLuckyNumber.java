@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask;
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.widgets.WidgetConfig;

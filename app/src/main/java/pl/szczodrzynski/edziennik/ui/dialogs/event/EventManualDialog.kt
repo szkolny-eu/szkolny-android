@@ -19,7 +19,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.api.v2.task.SzkolnyTask
+import pl.szczodrzynski.edziennik.data.api.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType

@@ -235,7 +235,7 @@
 
         <service android:name=".Notifier$GetDataRetryService" />
 
-        <service android:name=".api.v2.ApiService" />
+        <service android:name="pl.szczodrzynski.edziennik.data.api.ApiService" />
     </application>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

@@ -67,7 +67,7 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
-import pl.szczodrzynski.edziennik.api.v2.szkolny.interceptor.Signing;
+import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing;
 import pl.szczodrzynski.edziennik.config.Config;
 import pl.szczodrzynski.edziennik.data.db.AppDb;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;

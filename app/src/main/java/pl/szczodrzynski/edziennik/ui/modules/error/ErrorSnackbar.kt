@@ -10,7 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.ColorUtils
 import com.google.android.material.snackbar.Snackbar
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.models.ApiError
+import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.navlib.getColorFromAttr
 
 class ErrorSnackbar(val activity: AppCompatActivity) {

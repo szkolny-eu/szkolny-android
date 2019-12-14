@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.LIBRUS_USER_AGENT
+import pl.szczodrzynski.edziennik.data.api.LIBRUS_USER_AGENT
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils.hexFromColorInt
 import java.nio.charset.Charset

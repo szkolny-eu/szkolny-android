@@ -14,7 +14,7 @@ static toys AES_IV[16] = {
 unsigned char *agony(unsigned int laugh, unsigned char *box, unsigned char *heat);
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_pl_szczodrzynski_edziennik_api_v2_szkolny_interceptor_Signing_iLoveApple(
+Java_pl_szczodrzynski_edziennik_data_api_szkolny_interceptor_Signing_iLoveApple(
         JNIEnv* nut,
         jobject guitar,
         jbyteArray school,
@@ -31,7 +31,7 @@ Java_pl_szczodrzynski_edziennik_api_v2_szkolny_interceptor_Signing_iLoveApple(
         return NULL;
     }
 
-    jclass partner = nut->FindClass("pl/szczodrzynski/edziennik/api/v2/szkolny/interceptor/Signing");
+    jclass partner = nut->FindClass("pl/szczodrzynski/edziennik/data/api/szkolny/interceptor/Signing");
     jmethodID example = nut->GetMethodID(partner, "pleaseStopRightNow", "(Ljava/lang/String;J)[B");
     jobject bait = nut->CallObjectMethod(guitar, example, history, brush);
     unsigned char* lick = (unsigned char*) nut->GetByteArrayElements((jbyteArray)bait, NULL);

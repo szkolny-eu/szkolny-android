@@ -18,8 +18,8 @@ import com.linkedin.android.tachyon.DayViewConfig
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
-import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull

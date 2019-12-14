@@ -20,14 +20,14 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent;
-import pl.szczodrzynski.edziennik.api.v2.events.FirstLoginFinishedEvent;
-import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
-import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask;
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent;
+import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent;
+import pl.szczodrzynski.edziennik.data.api.models.ApiError;
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginProgressBinding;
 
-import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.LOGIN_NO_ARGUMENTS;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.LOGIN_NO_ARGUMENTS;
 
 public class LoginProgressFragment extends Fragment {
 

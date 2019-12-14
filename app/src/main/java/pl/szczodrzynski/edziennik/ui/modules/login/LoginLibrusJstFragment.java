@@ -19,11 +19,11 @@ import androidx.navigation.Navigation;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.api.v2.models.ApiError;
+import pl.szczodrzynski.edziennik.data.api.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginLibrusJstBinding;
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar;
 
-import static pl.szczodrzynski.edziennik.api.v2.ErrorsKt.ERROR_LOGIN_LIBRUS_API_INVALID_LOGIN;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_LIBRUS_API_INVALID_LOGIN;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_MODE_LIBRUS_JST;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 

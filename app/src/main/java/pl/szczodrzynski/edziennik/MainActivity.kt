@@ -37,9 +37,9 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App.APP_URL
-import pl.szczodrzynski.edziennik.api.v2.events.*
-import pl.szczodrzynski.edziennik.api.v2.szkolny.interceptor.Signing
-import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.api.events.*
+import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.network.ServerRequest

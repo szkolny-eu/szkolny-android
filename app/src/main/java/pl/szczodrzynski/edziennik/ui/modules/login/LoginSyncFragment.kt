@@ -15,11 +15,11 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskAllFinishedEvent
-import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskErrorEvent
-import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskProgressEvent
-import pl.szczodrzynski.edziennik.api.v2.events.ApiTaskStartedEvent
-import pl.szczodrzynski.edziennik.api.v2.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskProgressEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskStartedEvent
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event.*
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore

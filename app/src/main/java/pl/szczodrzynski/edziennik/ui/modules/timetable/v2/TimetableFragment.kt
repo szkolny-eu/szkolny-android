@@ -20,7 +20,7 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.api.v2.LOGIN_TYPE_LIBRUS
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding

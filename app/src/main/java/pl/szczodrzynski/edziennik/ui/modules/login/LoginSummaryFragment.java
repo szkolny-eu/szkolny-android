@@ -28,13 +28,13 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginSummaryBinding;
 import pl.szczodrzynski.edziennik.databinding.RowLoginProfileListItemBinding;
 
-import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_MODE_LIBRUS_EMAIL;
-import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_MODE_VULCAN_API;
-import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_MODE_VULCAN_WEB;
-import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_TYPE_IDZIENNIK;
-import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_TYPE_LIBRUS;
-import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_TYPE_MOBIDZIENNIK;
-import static pl.szczodrzynski.edziennik.api.v2.LoginMethodsKt.LOGIN_TYPE_VULCAN;
+import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_MODE_LIBRUS_EMAIL;
+import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_MODE_VULCAN_API;
+import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_MODE_VULCAN_WEB;
+import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_TYPE_IDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_TYPE_LIBRUS;
+import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_TYPE_VULCAN;
 
 public class LoginSummaryFragment extends Fragment {
 
