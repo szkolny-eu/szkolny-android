@@ -72,6 +72,7 @@ public class AgendaFragment extends Fragment {
     private FragmentAgendaDefaultBinding b_default = null;
     private FragmentAgendaCalendarBinding b_calendar = null;
     private int viewType = AGENDA_DEFAULT;
+    private Date actualDate = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,7 +111,7 @@ public class AgendaFragment extends Fragment {
                                     activity,
                                     App.profileId,
                                     null,
-                                    null,
+                                    actualDate,
                                     null,
                                     null,
                                     null,
@@ -137,7 +138,24 @@ public class AgendaFragment extends Fragment {
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                         })
         );
+
+        activity.getNavView().bottomBar.setFabEnable(true);
+        activity.getNavView().bottomBar.setFabExtendedText(getString(R.string.add));
+        activity.getNavView().bottomBar.setFabIcon(CommunityMaterial.Icon2.cmd_plus);
+        activity.getNavView().setFabOnClickListener(v -> new EventManualDialog(
+                activity,
+                App.profileId,
+                null,
+                actualDate,
+                null,
+                null,
+                null,
+                null,
+                null
+        ));
+
         activity.gainAttention();
+        activity.gainAttentionFAB();
 
         if (viewType == AGENDA_DEFAULT) {
             createDefaultAgendaView();
@@ -303,7 +321,8 @@ public class AgendaFragment extends Fragment {
 
                     @Override
                     public void onScrollToDate(Calendar calendar) {
-                        int scrolledDate = Date.fromCalendar(calendar).getValue();
+                        actualDate = Date.fromCalendar(calendar);
+                        int scrolledDate = actualDate.getValue();
                         if (unreadEventDates.contains(scrolledDate)) {
                             AsyncTask.execute(() -> app.db.eventDao().setSeenByDate(App.profileId, Date.fromYmd(intToStr(scrolledDate)), true));
                             unreadEventDates.remove((Integer) scrolledDate);

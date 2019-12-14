@@ -99,12 +99,17 @@ class HomeworkFragment : Fragment() {
 
         b.tabLayout.setupWithViewPager(b.viewPager)
 
-        activity.navView.bottomBar.fabEnable = true
-        activity.navView.bottomBar.fabExtendedText = getString(R.string.add)
-        activity.navView.bottomBar.fabIcon = CommunityMaterial.Icon2.cmd_plus
-        activity.navView.setFabOnClickListener(View.OnClickListener {
-            EventManualDialog(activity, App.profileId, defaultType = Event.TYPE_HOMEWORK)
-        })
+        activity.navView.apply {
+            bottomBar.apply {
+                fabEnable = true
+                fabExtendedText = getString(R.string.add)
+                fabIcon = CommunityMaterial.Icon2.cmd_plus
+            }
+
+            setFabOnClickListener(View.OnClickListener {
+                EventManualDialog(activity, App.profileId, defaultType = Event.TYPE_HOMEWORK)
+            })
+        }
 
         activity.gainAttention()
         activity.gainAttentionFAB()
