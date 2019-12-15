@@ -54,4 +54,9 @@ class ConfigUI(private val config: Config) {
     var homeCards: List<HomeCardModel>
         get() { mHomeCards = mHomeCards ?: config.values.get("homeCards", listOf(), HomeCardModel::class.java); return mHomeCards ?: listOf() }
         set(value) { config.set("homeCards", value); mHomeCards = value }
+
+    private var mSnowfall: Boolean? = null
+    var snowfall: Boolean
+        get() { mSnowfall = mSnowfall ?: config.values.get("snowfall", false); return mSnowfall ?: false }
+        set(value) { config.set("snowfall", value); mSnowfall = value }
 }

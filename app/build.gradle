@@ -185,6 +185,8 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+
+    implementation 'com.github.jetradarmobile:android-snowfall:1.2.0'
 }
 repositories {
     mavenCentral()

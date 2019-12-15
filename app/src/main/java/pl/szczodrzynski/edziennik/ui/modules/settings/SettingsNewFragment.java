@@ -56,6 +56,7 @@ import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushConfigActivity;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
 import static android.app.Activity.RESULT_OK;
@@ -282,6 +283,26 @@ public class SettingsNewFragment extends MaterialAboutFragment {
     private ArrayList<MaterialAboutItem> getThemeCard(boolean expandedOnly) {
         ArrayList<MaterialAboutItem> items = new ArrayList<>();
         if (!expandedOnly) {
+
+            Date today = Date.getToday();
+            if (today.month == 12 || today.month == 1) {
+                items.add(
+                        new MaterialAboutSwitchItem(
+                                getString(R.string.settings_theme_snowfall_text),
+                                getString(R.string.settings_theme_snowfall_subtext),
+                                new IconicsDrawable(activity)
+                                        .icon(CommunityMaterial.Icon2.cmd_snowflake)
+                                        .size(IconicsSize.dp(iconSizeDp))
+                                        .color(IconicsColor.colorInt(iconColor))
+                        )
+                        .setChecked(app.config.getUi().getSnowfall())
+                        .setOnChangeAction((isChecked, tag) -> {
+                            app.config.getUi().setSnowfall(isChecked);
+                            activity.recreate();
+                            return true;
+                        })
+                );
+            }
 
             items.add(
                     new MaterialAboutActionItem(

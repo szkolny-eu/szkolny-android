@@ -1067,4 +1067,10 @@
     <string name="login_error_incorrect_code_or_pin">Nieprawidłowy kod lub PIN</string>
     <string name="login_error_incorrect_code">Nieprawidłowy kod</string>
     <string name="login_error_no_code">Podaj kod</string>
+    <string name="event_list_added_by_format">Dodano %1$s przez %2$s%3$s</string>
+    <string name="event_list_added_by_unknown_format">Dodano %1$s%3$s</string>
+    <string name="event_list_shared_by_format">Udostępniono %1$s przez %2$s%3$s</string>
+    <string name="event_list_shared_by_self_format">Udostępniono %1$s przez Ciebie%3$s</string>
+    <string name="settings_theme_snowfall_text">Pada śnieg, pada śnieg</string>
+    <string name="settings_theme_snowfall_subtext">Dzwonią dzwonki sań</string>
 </resources>

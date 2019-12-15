@@ -73,6 +73,7 @@ import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
 import pl.szczodrzynski.edziennik.utils.appManagerIntentList
+import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.navlib.*
 import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
@@ -412,6 +413,12 @@ class MainActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+        }
+
+        // IT'S WINTER MY DUDES
+        val today = Date.getToday()
+        if ((today.month == 12 || today.month == 1) && app.config.ui.snowfall) {
+            b.rootFrame.addView(layoutInflater.inflate(R.layout.snowfall, b.rootFrame, false))
         }
 
         // WHAT'S NEW DIALOG
