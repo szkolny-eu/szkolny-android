@@ -337,6 +337,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         }
         try {
             DataNotifications(this)
+            db.notificationDao().addAll(notifications)
             onSuccess()
         } catch (e: Exception) {
             error(ApiError(TAG, EXCEPTION_NOTIFY)

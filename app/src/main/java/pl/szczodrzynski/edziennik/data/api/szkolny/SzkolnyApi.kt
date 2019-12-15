@@ -52,6 +52,7 @@ class SzkolnyApi(val app: App) {
 
     fun getEvents(profiles: List<ProfileFull>): List<EventFull> {
         val teams = app.db.teamDao().allNow
+        val notifications = app.db.notificationDao().getNotPostedNow()
 
         val response = api.serverSync(ServerSyncRequest(
                 deviceId = app.deviceId,
@@ -74,7 +75,8 @@ class SzkolnyApi(val app: App) {
                             profile.loginStoreType,
                             teams.filter { it.profileId == profile.id }.map { it.code }
                     )
-                }
+                },
+                notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type, it.text) }
         )).execute().body()
 
         val events = mutableListOf<EventFull>()

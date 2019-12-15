@@ -24,7 +24,7 @@ class NotifyTask : IApiTask(-1) {
 
     fun run(app: App, taskCallback: EdziennikCallback) {
         val list = app.db.notificationDao().getNotPostedNow()
-        val notificationList = list.subList(0, min(15, list.size))
+        val notificationList = list.subList(0, min(10, list.size))
 
         var unreadCount = list.size
 

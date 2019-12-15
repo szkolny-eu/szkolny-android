@@ -10,7 +10,9 @@ data class ServerSyncRequest(
         val device: Device? = null,
 
         val userCodes: List<String>,
-        val users: List<User>? = null
+        val users: List<User>? = null,
+
+        val notifications: List<Notification>? = null
 ) {
     data class Device(
             val osType: String,
@@ -29,5 +31,11 @@ data class ServerSyncRequest(
             val studentNameShort: String,
             val loginType: Int,
             val teamCodes: List<String>
+    )
+
+    data class Notification(
+            val profileName: String,
+            val type: Int,
+            val text: String
     )
 }
