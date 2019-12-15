@@ -50,3 +50,12 @@
 -keepclassmembernames class kotlinx.** {
     volatile <fields>;
 }
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keep class pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing { public final byte[] pleaseStopRightNow(java.lang.String, long); }
+
+-keepclassmembernames class pl.szczodrzynski.edziennik.data.api.szkolny.request.** { *; }
+-keepclassmembernames class pl.szczodrzynski.edziennik.data.api.szkolny.response.** { *; }
