@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.ui.dialogs.event
 
 import android.graphics.Typeface
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -117,7 +118,9 @@ class EventListDialog(
             layoutManager = LinearLayoutManager(activity)
         }
 
-        adapter = EventListAdapter(activity, this@EventListDialog)
+        adapter = EventListAdapter(activity) {
+            Toast.makeText(activity, "Event clicked ${it.topic}", Toast.LENGTH_SHORT).show()
+        }
         b.eventListView.adapter = adapter
 
         app.db.eventDao().getAllByDateTime(profileId, date, time).observe(activity, Observer { events ->
@@ -126,10 +129,10 @@ class EventListDialog(
                 b.textNoEvents.visibility = View.VISIBLE
             } else {
                 adapter.run {
-                    eventList.apply {
+                    /*items.apply {
                         clear()
                         addAll(events)
-                    }
+                    }*/
                     notifyDataSetChanged()
                 }
             }

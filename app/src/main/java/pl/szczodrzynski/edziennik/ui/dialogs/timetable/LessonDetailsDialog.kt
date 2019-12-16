@@ -50,24 +50,6 @@ class LessonDetailsDialog(
                             onShowListener = onShowListener,
                             onDismissListener = onDismissListener
                     )
-                    /*MaterialAlertDialogBuilder(activity)
-                            .setItems(R.array.main_menu_add_options) { dialog2, which ->
-                                dialog2.dismiss()
-                                EventManualDialogOld(activity, lesson.profileId)
-                                        .show(
-                                                activity.application as App,
-                                                null,
-                                                lesson.displayDate,
-                                                lesson.displayStartTime,
-                                                when (which) {
-                                                    1 -> EventManualDialogOld.DIALOG_HOMEWORK
-                                                    else -> EventManualDialogOld.DIALOG_EVENT
-                                                }
-                                        )
-
-                            }
-                            .setNegativeButton(R.string.cancel) { dialog2, _ -> dialog2.dismiss() }
-                            .show()*/
                 }
                 .setOnDismissListener {
                     onDismissListener?.invoke(TAG)

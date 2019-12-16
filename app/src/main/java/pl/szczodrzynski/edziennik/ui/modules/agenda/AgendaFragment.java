@@ -42,7 +42,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding;
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.day.DayDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog;
@@ -56,7 +56,6 @@ import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
@@ -332,7 +331,7 @@ public class AgendaFragment extends Fragment {
                     @Override
                     public void onEventSelected(CalendarEvent calendarEvent) {
                         if (calendarEvent instanceof BaseCalendarEvent) {
-                            if (!calendarEvent.isPlaceholder() && !calendarEvent.isAllDay()) {
+                            /*if (!calendarEvent.isPlaceholder() && !calendarEvent.isAllDay()) {
                                 // new EventListDialogOld(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()), Time.fromMillis(calendarEvent.getStartTime().getTimeInMillis()), true);
                                 new EventListDialog(
                                         activity,
@@ -341,16 +340,23 @@ public class AgendaFragment extends Fragment {
                                         Time.fromMillis(calendarEvent.getStartTime().getTimeInMillis()),
                                         null,
                                         null);
-                            } else {
+                            } else {*/
                                 // new EventListDialogOld(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
-                                new EventListDialog(
+                            new DayDialog(
+                                    activity,
+                                    App.profileId,
+                                    Date.fromCalendar(calendarEvent.getInstanceDay()),
+                                    null,
+                                    null
+                            );
+                                /*new EventListDialog(
                                         activity,
                                         App.profileId,
                                         Date.fromCalendar(calendarEvent.getInstanceDay()),
                                         null,
                                         null,
-                                        null);
-                            }
+                                        null);*/
+                            //}
                         } else if (calendarEvent instanceof LessonChangeEvent) {
                             new LessonChangeDialog(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
                             //Toast.makeText(app, "Clicked "+((LessonChangeEvent) calendarEvent).getLessonChangeDate().getFormattedString(), Toast.LENGTH_SHORT).show();
@@ -434,15 +440,22 @@ public class AgendaFragment extends Fragment {
                         unreadEventDates.remove((Integer) scrolledDate);
                     }
 
+                    new DayDialog(
+                            activity,
+                            App.profileId,
+                            dayDate,
+                            null,
+                            null
+                    );
                     // new EventListDialogOld(getContext()).show(app, dayDate);
-                    new EventListDialog(
+                    /*new EventListDialog(
                             activity,
                             App.profileId,
                             dayDate,
                             null,
                             null,
                             null
-                    );
+                    );*/
                 });
                 b_calendar.progressBar.setVisibility(View.GONE);
             });

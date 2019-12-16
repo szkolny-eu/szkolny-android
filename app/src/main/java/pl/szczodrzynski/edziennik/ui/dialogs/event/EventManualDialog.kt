@@ -94,8 +94,8 @@ class EventManualDialog(
                             saveEvent()
                         }
 
-                        val negativeButton = dialog.getButton(BUTTON_NEUTRAL)
-                        negativeButton?.setOnClickListener {
+                        val neutralButton = dialog.getButton(BUTTON_NEUTRAL)
+                        neutralButton?.setOnClickListener {
                             showRemoveEventDialog()
                         }
                     }

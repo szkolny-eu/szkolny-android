@@ -5,41 +5,72 @@
 package pl.szczodrzynski.edziennik.ui.dialogs.event
 
 import android.content.Context
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.modules.events.Event
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
-import pl.szczodrzynski.edziennik.databinding.RowDialogEventListItemBinding
-import pl.szczodrzynski.edziennik.utils.Utils.bs
+import pl.szczodrzynski.edziennik.databinding.EventListItemBinding
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EventListAdapter(
         val context: Context,
-        val parentDialog: EventListDialog
+        val onItemClick: ((event: EventFull) -> Unit)? = null,
+        val onEventEditClick: ((event: EventFull) -> Unit)? = null
 ) : RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
 
     private val app by lazy { context.applicationContext as App }
 
-    val eventList = mutableListOf<EventFull>()
+    var items = listOf<EventFull>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view: RowDialogEventListItemBinding = DataBindingUtil.inflate(inflater, R.layout.row_dialog_event_list_item, parent, false)
+        val view = EventListItemBinding.inflate(inflater, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val event = eventList[position]
+        val event = items[position]
+        val b = holder.b
 
-        holder.apply {
+        b.root.onClick {
+            onItemClick?.invoke(event)
+        }
+
+        val bullet = " • "
+
+        b.topic.text = event.topic
+
+        b.details.text = mutableListOf<CharSequence?>(
+                event.typeName,
+                event.startTime?.stringHM ?: app.getString(R.string.event_all_day),
+                event.subjectLongName
+        ).concat(bullet)
+
+        b.addedBy.setText(
+                when (event.sharedBy) {
+                    null -> when {
+                        event.addedManually -> R.string.event_list_added_by_self_format
+                        event.teacherFullName == null -> R.string.event_list_added_by_unknown_format
+                        else -> R.string.event_list_added_by_format
+                    }
+                    "self" -> R.string.event_list_shared_by_self_format
+                    else -> R.string.event_list_shared_by_format
+                },
+                Date.fromMillis(event.addedDate).formattedString,
+                event.sharedByName ?: event.teacherFullName ?: "",
+                event.teamName?.let { bullet+it } ?: ""
+        )
+
+        b.typeColor.background?.setTintColor(event.getColor())
+
+        b.editButton.visibility = if (event.addedManually) View.VISIBLE else View.GONE
+        b.editButton.onClick {
+            onEventEditClick?.invoke(event)
+        }
+
+        /*with(holder) {
             b.eventListItemRoot.background.colorFilter = when (event.type) {
                 Event.TYPE_HOMEWORK -> PorterDuffColorFilter(0xffffffff.toInt(), PorterDuff.Mode.CLEAR)
                 else -> PorterDuffColorFilter(event.color, PorterDuff.Mode.MULTIPLY)
@@ -67,10 +98,10 @@ class EventListAdapter(
                         onDismissListener = parentDialog.onDismissListener
                 )
             }
-        }
+        }*/
     }
 
-    override fun getItemCount(): Int = eventList.size
+    override fun getItemCount() = items.size
 
-    class ViewHolder(val b: RowDialogEventListItemBinding) : RecyclerView.ViewHolder(b.root)
+    class ViewHolder(val b: EventListItemBinding) : RecyclerView.ViewHolder(b.root)
 }
