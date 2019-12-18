@@ -152,7 +152,7 @@ class EventDetailsDialog(
         removeEventDialog?.dismiss()
         dialog.dismiss()
         Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
-        if (activity is MainActivity)
+        if (activity is MainActivity && activity.navTargetId == MainActivity.DRAWER_ITEM_AGENDA)
             activity.reloadTarget()
     }
 }
