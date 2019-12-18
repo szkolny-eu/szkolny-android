@@ -68,6 +68,7 @@ public abstract class EventDao {
                 "LEFT JOIN eventTypes USING(profileId, eventType)\n" +
                 "LEFT JOIN metadata ON eventId = thingId AND (thingType = " + TYPE_EVENT + " OR thingType = " + TYPE_HOMEWORK + ") AND metadata.profileId = "+profileId+"\n" +
                 "WHERE events.profileId = "+profileId+" AND events.eventBlacklisted = 0 AND "+filter+"\n" +
+                "GROUP BY eventId\n" +
                 "ORDER BY eventDate, eventStartTime ASC";
         Log.d("DB", query);
         return getAll(new SimpleSQLiteQuery(query));
@@ -111,6 +112,7 @@ public abstract class EventDao {
                 "LEFT JOIN eventTypes USING(profileId, eventType)\n" +
                 "LEFT JOIN metadata ON eventId = thingId AND (thingType = " + TYPE_EVENT + " OR thingType = " + TYPE_HOMEWORK + ") AND metadata.profileId = "+profileId+"\n" +
                 "WHERE events.profileId = "+profileId+" AND events.eventBlacklisted = 0 AND "+filter+"\n" +
+                "GROUP BY eventId\n" +
                 "ORDER BY eventStartTime, addedDate ASC"));
     }
     public List<EventFull> getNotNotifiedNow(int profileId) {

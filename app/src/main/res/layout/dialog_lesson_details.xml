@@ -154,13 +154,13 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{teacherName != null || oldTeacherName != null ? View.VISIBLE : View.GONE}">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/NavView.TextView.Helper"
-                        android:text="@string/dialog_lesson_details_teacher"
-                        android:visibility="@{teacherName != null || oldTeacherName != null ? View.VISIBLE : View.GONE}"/>
+                        android:text="@string/dialog_lesson_details_teacher" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -184,13 +184,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{teamName != null || oldTeamName != null ? View.VISIBLE : View.GONE}">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/NavView.TextView.Helper"
-                        android:text="@string/dialog_lesson_details_team"
-                        android:visibility="@{teamName != null || oldTeamName != null ? View.VISIBLE : View.GONE}"/>
+                        android:text="@string/dialog_lesson_details_team" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -223,14 +223,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{classroom != null || oldClassroom != null ? View.VISIBLE : View.GONE}">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:textAppearance="@style/NavView.TextView.Helper"
-                        android:text="@string/dialog_lesson_details_classroom"
-                        android:visibility="@{classroom != null || oldClassroom != null ? View.VISIBLE : View.GONE}"/>
+                        android:text="@string/dialog_lesson_details_classroom" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -253,13 +253,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{App.devMode ? View.VISIBLE : View.GONE}">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:textAppearance="@style/NavView.TextView.Helper"
-                        android:visibility="@{App.devMode ? View.VISIBLE : View.GONE}"
                         android:text="@string/dialog_lesson_details_id" />
 
                     <TextView
@@ -268,7 +268,6 @@
                         android:layout_marginTop="0dp"
                         android:text="@{Long.toString(lesson.id)}"
                         android:textIsSelectable="true"
-                        android:visibility="@{App.devMode ? View.VISIBLE : View.GONE}"
                         tools:text="12345" />
                 </LinearLayout>
 
