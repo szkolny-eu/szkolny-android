@@ -30,6 +30,21 @@
         <item>grudzień</item>
     </array>
 
+    <array name="months_day_of_array">
+        <item>stycznia</item>
+        <item>lutego</item>
+        <item>marca</item>
+        <item>kwietnia</item>
+        <item>maja</item>
+        <item>czerwca</item>
+        <item>lipca</item>
+        <item>sierpnia</item>
+        <item>września</item>
+        <item>października</item>
+        <item>listopada</item>
+        <item>grudnia</item>
+    </array>
+
     <array name="main_menu_add_options">
         <item>Wydarzenie</item>
         <item>Zadanie domowe</item>
@@ -1070,8 +1085,8 @@
     <string name="event_list_added_by_format">Dodano %1$s przez %2$s%3$s</string>
     <string name="event_list_added_by_unknown_format">Dodano %1$s%3$s</string>
     <string name="event_list_added_by_self_format">Dodano %1$s przez Ciebie%3$s</string>
-    <string name="event_list_shared_by_format">Udostępniono %1$s przez %2$s%3$s</string>
-    <string name="event_list_shared_by_self_format">Udostępniono %1$s przez Ciebie%3$s</string>
+    <string name="event_list_shared_by_format">{cmd-share-variant} %1$s przez %2$s%3$s</string>
+    <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie%3$s</string>
     <string name="settings_theme_snowfall_text">Pada śnieg, pada śnieg</string>
     <string name="settings_theme_snowfall_subtext">Dzwonią dzwonki sań</string>
     <string name="dialog_day_no_events">Brak wydarzeń tego dnia.</string>
@@ -1079,4 +1094,14 @@
     <string name="dialog_lesson_go_to_button">Przejdź</string>
     <string name="dialog_no_events_hint">Możesz wpisać wydarzenie ręcznie, używając przycisku Dodaj.</string>
     <string name="dialog_lesson_no_events">Brak wydarzeń na tej lekcji.</string>
+    <string name="dialog_event_details_teacher">Nauczyciel</string>
+    <string name="dialog_event_details_subject">Przedmiot</string>
+    <string name="dialog_event_details_team">Grupa</string>
+    <string name="dialog_event_details_added_by">Dodano</string>
+    <string name="dialog_event_details_topic">Temat</string>
+    <string name="event_details_added_by_format">%1$s przez %2$s</string>
+    <string name="event_details_added_by_unknown_format">%1$s</string>
+    <string name="event_details_added_by_self_format">%1$s przez Ciebie</string>
+    <string name="event_details_shared_by_format">{cmd-share-variant} %1$s przez %2$s</string>
+    <string name="event_details_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie</string>
 </resources>

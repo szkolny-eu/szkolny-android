@@ -51,7 +51,6 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableBinding;
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialogOld;
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
 import pl.szczodrzynski.edziennik.utils.SpannableHtmlTagHandler;
@@ -113,10 +112,10 @@ public class TimetableFragment extends Fragment {
                                     .itemsCallback((dialog, itemView, position, text) -> {
                                         switch (position) {
                                             case 0:
-                                                new EventManualDialogOld(activity).show(app, null, displayingDate, null, EventManualDialogOld.DIALOG_EVENT);
+                                                //new EventManualDialogOld(activity).show(app, null, displayingDate, null, EventManualDialogOld.DIALOG_EVENT);
                                                 break;
                                             case 1:
-                                                new EventManualDialogOld(activity).show(app, null, displayingDate, null, EventManualDialogOld.DIALOG_HOMEWORK);
+                                                //new EventManualDialogOld(activity).show(app, null, displayingDate, null, EventManualDialogOld.DIALOG_HOMEWORK);
                                                 break;
                                         }
                                     })

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2019-12-18.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="pl.szczodrzynski.edziennik.App"/>
+        <variable
+            name="event"
+            type="pl.szczodrzynski.edziennik.data.db.modules.events.EventFull" />
+        <variable name="eventShared" type="boolean" />
+        <variable name="eventOwn" type="boolean" />
+        <variable name="details" type="java.lang.CharSequence" />
+        <variable name="monthName" type="String" />
+    </data>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingRight="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/typeColor"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/unread_red_circle" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{event.typeName}"
+                        android:textIsSelectable="true"
+                        android:textAppearance="@style/NavView.TextView.Title"
+                        android:visibility="@{event.typeName == null ? View.GONE : View.VISIBLE}"
+                        tools:text="sprawdzian" />
+
+                    <TextView
+                        android:id="@+id/lessonDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"
+                        android:textAppearance="@style/NavView.TextView.Subtitle"
+                        android:text="@{details}"
+                        android:visibility="@{details == null ? View.GONE : View.VISIBLE}"
+                        tools:text="język angielski • 2B3T a2"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:text="@{event.startTime == null ? @string/event_all_day : event.startTime.stringHM}"
+                        tools:text="14:50"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@{Integer.toString(event.eventDate.day)}"
+                        android:textSize="36sp"
+                        tools:text="14" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{monthName}"
+                        tools:text="listopada" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:text="@string/dialog_event_details_teacher"
+                android:visibility="@{event.teacherFullName != null ? View.VISIBLE : View.GONE}"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{event.teacherFullName}"
+                android:textIsSelectable="true"
+                android:visibility="@{event.teacherFullName != null ? View.VISIBLE : View.GONE}"
+                tools:text="Janósz Kowalski" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:text="@string/dialog_event_details_added_by"/>
+            <com.mikepenz.iconics.view.IconicsTextView
+                android:id="@+id/addedBy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                tools:text="18 grudnia, 23:17 przez Janósz Kowalski" />
+
+            <!--<View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/dividerColor"/>-->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:text="@string/dialog_event_details_topic"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{event.topic}"
+                android:textIsSelectable="true"
+                android:textAppearance="@style/NavView.TextView.Medium"
+                tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

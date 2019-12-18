@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogDayBinding
 import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.setText
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
@@ -88,6 +89,12 @@ class DayDialog(
                 activity,
                 onItemClick = {
                     Toast.makeText(activity, "Event clicked ${it.topic}", Toast.LENGTH_SHORT).show()
+                    EventDetailsDialog(
+                            activity,
+                            it,
+                            onShowListener = onShowListener,
+                            onDismissListener = onDismissListener
+                    )
                 },
                 onEventEditClick = {
                     EventManualDialog(

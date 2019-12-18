@@ -229,7 +229,7 @@ class MainActivity : AppCompatActivity() {
 
     private val fragmentManager by lazy { supportFragmentManager }
     private lateinit var navTarget: NavTarget
-    private val navTargetId
+    val navTargetId
         get() = navTarget.id
 
     private val navBackStack = mutableListOf<NavTarget>()

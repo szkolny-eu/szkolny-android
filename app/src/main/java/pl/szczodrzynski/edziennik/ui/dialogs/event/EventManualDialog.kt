@@ -19,6 +19,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.data.api.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
@@ -86,6 +87,7 @@ class EventManualDialog(
                 .setOnDismissListener {
                     onDismissListener?.invoke(TAG)
                 }
+                .setCancelable(false)
                 .create()
                 .apply {
                     setOnShowListener { dialog ->
@@ -666,7 +668,7 @@ class EventManualDialog(
 
         dialog.dismiss()
         Toast.makeText(activity, R.string.saved, Toast.LENGTH_SHORT).show()
-        if (activity is MainActivity)
+        if (activity is MainActivity && activity.navTargetId == DRAWER_ITEM_AGENDA)
             activity.reloadTarget()
     }
     private fun finishRemoving() {

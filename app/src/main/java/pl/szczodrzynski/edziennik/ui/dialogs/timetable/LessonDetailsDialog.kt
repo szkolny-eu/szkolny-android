@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
 import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.setText
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment
@@ -166,6 +167,12 @@ class LessonDetailsDialog(
                 activity,
                 onItemClick = {
                     Toast.makeText(activity, "Event clicked ${it.topic}", Toast.LENGTH_SHORT).show()
+                    EventDetailsDialog(
+                            activity,
+                            it,
+                            onShowListener = onShowListener,
+                            onDismissListener = onDismissListener
+                    )
                 },
                 onEventEditClick = {
                     EventManualDialog(
