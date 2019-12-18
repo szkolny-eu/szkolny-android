@@ -11,6 +11,7 @@
       <item index="1" class="java.lang.String" itemvalue="org.greenrobot.eventbus.Subscribe" />
     </list>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />
     <option name="myDefaultNotNull" value="androidx.annotation.RecentlyNonNull" />

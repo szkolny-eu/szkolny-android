@@ -45,12 +45,13 @@
 
             <TextView
                 android:id="@+id/topic"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAppearance="@style/NavView.TextView.Medium"
                 android:maxLines="3"
-                tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
+                android:ellipsize="end"
+                tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia. Nie wiem co się dzieje w tym roku nie będzie już religii w szkołach podstawowych w Polsce i Europie zachodniej Afryki" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/editButton"
@@ -71,6 +72,6 @@
             android:textAppearance="@style/NavView.TextView.Helper"
             android:singleLine="true"
             android:ellipsize="middle"
-            android:text="Udostępniono 10 grudnia przez Ktoś Z Twojej Klasy • 2B3T" />
+            tools:text="Udostępniono 10 grudnia przez Ktoś Z Twojej Klasy • 2B3T" />
     </LinearLayout>
 </layout>

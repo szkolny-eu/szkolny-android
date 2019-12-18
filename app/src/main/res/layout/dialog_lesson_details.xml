@@ -21,20 +21,24 @@
         <variable name="oldTeamName" type="String" />
         <variable name="teamName" type="String" />
     </data>
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="24dp">
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="24dp"
+            android:paddingRight="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -110,7 +114,9 @@
                 android:id="@+id/shiftedLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -129,99 +135,185 @@
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Przejdź" />
+                    android:text="@string/dialog_lesson_go_to_button" />
 
             </LinearLayout>
 
-            <TextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:text="@string/dialog_lesson_details_teacher"
+                        android:visibility="@{teacherName != null || oldTeacherName != null ? View.VISIBLE : View.GONE}"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:text="@{oldTeacherName}"
+                        android:textIsSelectable="true"
+                        android:singleLine="true"
+                        android:visibility="@{oldTeacherName != null ? View.VISIBLE : View.GONE}"
+                        app:strikeThrough="@{true}"
+                        tools:text="Janósz Kowalski" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{teacherName}"
+                        android:textIsSelectable="true"
+                        android:visibility="@{teacherName != null ? View.VISIBLE : View.GONE}"
+                        tools:text="Janósz Kowalski" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:text="@string/dialog_lesson_details_team"
+                        android:visibility="@{teamName != null || oldTeamName != null ? View.VISIBLE : View.GONE}"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:text="@{oldTeamName}"
+                        android:textIsSelectable="true"
+                        android:visibility="@{oldTeamName != null ? View.VISIBLE : View.GONE}"
+                        app:strikeThrough="@{true}"
+                        tools:text="013 informatyczna" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{teamName}"
+                        android:textIsSelectable="true"
+                        android:visibility="@{teamName != null ? View.VISIBLE : View.GONE}"
+                        tools:text="013 informatyczna" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:text="@string/dialog_lesson_details_classroom"
+                        android:visibility="@{classroom != null || oldClassroom != null ? View.VISIBLE : View.GONE}"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:text="@{oldClassroom}"
+                        android:textIsSelectable="true"
+                        android:visibility="@{oldClassroom != null ? View.VISIBLE : View.GONE}"
+                        app:strikeThrough="@{true}"
+                        tools:text="013 informatyczna" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{classroom}"
+                        android:textIsSelectable="true"
+                        android:visibility="@{classroom != null ? View.VISIBLE : View.GONE}"
+                        tools:text="013 informatyczna" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:visibility="@{App.devMode ? View.VISIBLE : View.GONE}"
+                        android:text="@string/dialog_lesson_details_id" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:text="@{Long.toString(lesson.id)}"
+                        android:textIsSelectable="true"
+                        android:visibility="@{App.devMode ? View.VISIBLE : View.GONE}"
+                        tools:text="12345" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/eventsNoData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/ic_no_events"
+                    android:drawablePadding="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/dialog_lesson_no_events"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dialog_no_events_hint"
+                    android:gravity="center"
+                    android:textStyle="italic"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/eventsView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:text="@string/dialog_lesson_details_teacher"
-                android:visibility="@{teacherName != null || oldTeacherName != null ? View.VISIBLE : View.GONE}"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:text="@{oldTeacherName}"
-                android:textIsSelectable="true"
-                android:visibility="@{oldTeacherName != null ? View.VISIBLE : View.GONE}"
-                app:strikeThrough="@{true}"
-                tools:text="Janósz Kowalski" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{teacherName}"
-                android:textIsSelectable="true"
-                android:visibility="@{teacherName != null ? View.VISIBLE : View.GONE}"
-                tools:text="Janósz Kowalski" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:text="@string/dialog_lesson_details_classroom"
-                android:visibility="@{classroom != null || oldClassroom != null ? View.VISIBLE : View.GONE}"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:text="@{oldClassroom}"
-                android:textIsSelectable="true"
-                android:visibility="@{oldClassroom != null ? View.VISIBLE : View.GONE}"
-                app:strikeThrough="@{true}"
-                tools:text="013 informatyczna" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{classroom}"
-                android:textIsSelectable="true"
-                android:visibility="@{classroom != null ? View.VISIBLE : View.GONE}"
-                tools:text="013 informatyczna" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:text="@string/dialog_lesson_details_team"
-                android:visibility="@{teamName != null || oldTeamName != null ? View.VISIBLE : View.GONE}"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:text="@{oldTeamName}"
-                android:textIsSelectable="true"
-                android:visibility="@{oldTeamName != null ? View.VISIBLE : View.GONE}"
-                app:strikeThrough="@{true}"
-                tools:text="013 informatyczna" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{teamName}"
-                android:textIsSelectable="true"
-                android:visibility="@{teamName != null ? View.VISIBLE : View.GONE}"
-                tools:text="013 informatyczna" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:visibility="@{App.devMode ? View.VISIBLE : View.GONE}"
-                android:text="@string/dialog_lesson_details_id" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:text="@{Long.toString(lesson.id)}"
-                android:textIsSelectable="true"
-                android:visibility="@{App.devMode ? View.VISIBLE : View.GONE}"
-                tools:text="12345" />
+                android:clipToPadding="false"
+                tools:visibility="visible"
+                tools:listitem="@layout/event_list_item" />
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

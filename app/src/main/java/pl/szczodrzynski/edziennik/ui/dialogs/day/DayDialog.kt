@@ -92,7 +92,7 @@ class DayDialog(
                 onEventEditClick = {
                     EventManualDialog(
                             activity,
-                            profileId,
+                            it.profileId,
                             editingEvent = it,
                             onShowListener = onShowListener,
                             onDismissListener = onDismissListener
@@ -105,6 +105,7 @@ class DayDialog(
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter
                 b.eventsView.apply {
+                    isNestedScrollingEnabled = false
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
                     addItemDecoration(SimpleDividerItemDecoration(context))

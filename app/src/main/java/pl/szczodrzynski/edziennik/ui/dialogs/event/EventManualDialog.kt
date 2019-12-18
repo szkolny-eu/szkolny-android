@@ -461,7 +461,7 @@ class EventManualDialog(
                 b.teacherDropdown.deselect()
             }
             else {
-                defaultTime?.let {
+                val setTime: (Time) -> Unit = {
                     event.startTime = it
                     if (b.timeDropdown.select(it) == null)
                         b.timeDropdown.select(TextInputDropDown.Item(
@@ -470,23 +470,10 @@ class EventManualDialog(
                                 tag = it
                         ))
                 }
-
-                editingEvent?.startTime?.let {
-                    if (b.timeDropdown.select(it) == null)
-                        b.timeDropdown.select(TextInputDropDown.Item(
-                                it.value.toLong(),
-                                it.stringHM,
-                                tag = it
-                        ))
-                }
-
-                defaultLesson?.let {
-                    b.timeDropdown.select(it.displayStartTime?.value?.toLong())
-                }
-
-                defaultHour?.let {
-                    b.timeDropdown.select(it.value.toLong())
-                }
+                defaultTime?.let(setTime)
+                editingEvent?.startTime?.let(setTime)
+                defaultLesson?.displayStartTime?.let(setTime)
+                defaultHour?.let(setTime)
             }
             defaultLoaded = true
             b.timeDropdown.isEnabled = true
@@ -554,7 +541,7 @@ class EventManualDialog(
 
     private fun saveEvent() {
         val date = b.dateDropdown.selected?.tag.instanceOfOrNull<Date>()
-        val lesson = b.timeDropdown.selected?.tag.instanceOfOrNull<LessonFull>()
+        val startTime = b.timeDropdown.selected?.tag.instanceOfOrNull<Time>()
         val teamId = b.teamDropdown.selected?.id
         val type = b.typeDropdown.selected?.id
         val topic = b.topic.text?.toString()
@@ -592,7 +579,7 @@ class EventManualDialog(
                 profileId,
                 editingEvent?.id ?: id,
                 date,
-                lesson?.displayStartTime,
+                startTime,
                 topic,
                 customColor ?: -1,
                 type?.toInt() ?: Event.TYPE_DEFAULT,

@@ -8,25 +8,25 @@
     <data>
 
     </data>
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="24dp"
+            android:orientation="vertical"
             android:paddingLeft="16dp"
+            android:paddingTop="24dp"
             android:paddingRight="16dp">
 
             <TextView
                 android:id="@+id/dayDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textIsSelectable="true"
-                android:textAppearance="@style/NavView.TextView.Title"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:textAppearance="@style/NavView.TextView.Title"
+                android:textIsSelectable="true"
                 tools:text="wtorek, 17 grudnia" />
 
             <include
@@ -34,10 +34,10 @@
                 layout="@layout/row_lesson_change_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginBottom="5dp"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
@@ -78,7 +78,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Możesz wpisać wydarzenie ręcznie, używając przycisku Dodaj."
+                    android:text="@string/dialog_no_events_hint"
                     android:gravity="center"
                     android:textStyle="italic"/>
 
@@ -90,9 +90,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:clipToPadding="false"
-                tools:visibility="gone"
+                tools:visibility="visible"
                 tools:listitem="@layout/event_list_item" />
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>
