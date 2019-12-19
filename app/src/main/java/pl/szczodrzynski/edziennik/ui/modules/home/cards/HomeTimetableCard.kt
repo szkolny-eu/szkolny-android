@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.CardHomeTimetableBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.bell.BellSyncTimeChooseDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentV2
@@ -78,6 +79,16 @@ class HomeTimetableCard(
         b.settings.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_settings_outline)
                 .colorAttr(activity, R.attr.colorIcon)
                 .sizeDp(20))
+
+        b.bellSync.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon.cmd_alarm_bell)
+                .colorAttr(activity, R.attr.colorIcon)
+                .sizeDp(20))
+
+        b.bellSync.setOnClickListener {
+            BellSyncTimeChooseDialog(
+                    activity
+            )
+        }
 
         // get current bell-sync params
         app.config.timetable.bellSyncDiff?.let {
