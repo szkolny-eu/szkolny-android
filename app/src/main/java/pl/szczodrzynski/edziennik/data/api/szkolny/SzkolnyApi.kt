@@ -14,6 +14,8 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.TimeAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.EventShareRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ServerSyncRequest
+import pl.szczodrzynski.edziennik.data.api.szkolny.request.WebPushRequest
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -120,5 +122,35 @@ class SzkolnyApi(val app: App) {
                 unshareTeamCode = team.code,
                 eventId = event.id
         )).execute()
+    }
+
+    fun pairBrowser(browserId: String?, pairToken: String?): List<WebPushResponse.Browser> {
+        val response = api.webPush(WebPushRequest(
+                action = "pairBrowser",
+                deviceId = app.deviceId,
+                browserId = browserId,
+                pairToken = pairToken
+        )).execute().body()
+
+        return response?.data?.browsers ?: emptyList()
+    }
+
+    fun listBrowsers(): List<WebPushResponse.Browser> {
+        val response = api.webPush(WebPushRequest(
+                action = "listBrowsers",
+                deviceId = app.deviceId
+        )).execute().body()
+
+        return response?.data?.browsers ?: emptyList()
+    }
+
+    fun unpairBrowser(browserId: String): List<WebPushResponse.Browser> {
+        val response = api.webPush(WebPushRequest(
+                action = "unpairBrowser",
+                deviceId = app.deviceId,
+                browserId = browserId
+        )).execute().body()
+
+        return response?.data?.browsers ?: emptyList()
     }
 }

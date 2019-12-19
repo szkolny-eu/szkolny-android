@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2019-12-19.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Przekazywanie powiadomień pozwala na połączenie komputera, na którym będą pokazywane powiadomienia otrzymane w aplikacji Szkolny.eu na telefonie.\n\nDzięki temu będziesz zawsze wiedział wszystko na bieżąco, nie patrząc nawet na swój telefon."/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Jak połączyć komputer z aplikacją?"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Na komputerze otwórz stronę http://szkolny.eu/wp\n2. Zezwól stronie na wyświetlanie powiadomień dot. danych z dziennika.\n3. Kliknij przycisk &quot;Skanuj&quot; poniżej lub przepisz token ze strony."/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Sparuj przeglądarkę"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/scanQrCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Skanuj kod QR" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tokenLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Token">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tokenEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="1A22IT" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/tokenAccept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="OK" />
+            </LinearLayout>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Połączone przeglądarki"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/browsersNoData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:drawableTop="@drawable/ic_web_push_no_browsers"
+                android:drawablePadding="16dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Brak połączonych przeglądarek"
+                android:textSize="18sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/browsersView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                tools:visibility="visible"
+                tools:listitem="@layout/web_push_browser_item" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

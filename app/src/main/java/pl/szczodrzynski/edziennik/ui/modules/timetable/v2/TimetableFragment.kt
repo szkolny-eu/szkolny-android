@@ -53,8 +53,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
-        if (context == null)
-            return null
+        context ?: return null
         app = activity.application as App
         job = Job()
         context!!.theme.applyStyle(Themes.appTheme, true)

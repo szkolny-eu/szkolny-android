@@ -67,6 +67,7 @@ import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment
+import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity() {
         const val TARGET_HELP = 502
         const val TARGET_FEEDBACK = 120
         const val TARGET_MESSAGES_DETAILS = 503
+        const val TARGET_WEB_PUSH = 140
 
         const val HOME_ID = DRAWER_ITEM_HOME
 
@@ -209,6 +211,7 @@ class MainActivity : AppCompatActivity() {
             list += NavTarget(TARGET_HELP, R.string.menu_help, HelpFragment::class)
             list += NavTarget(TARGET_FEEDBACK, R.string.menu_feedback, FeedbackFragment::class)
             list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessageFragment::class)
+            list += NavTarget(TARGET_WEB_PUSH, R.string.menu_web_push, WebPushFragment::class)
             list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
 
             list

@@ -34,8 +34,7 @@ class NotificationsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
-        if (context == null)
-            return null
+        context ?: return null
         app = activity.application as App
         context!!.theme.applyStyle(Themes.appTheme, true)
         if (app.profile == null)

@@ -53,7 +53,6 @@ import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
-import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushConfigActivity;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.edziennik.utils.models.Date;
@@ -718,8 +717,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .color(IconicsColor.colorInt(iconColor))
                     )
                     .setOnClickAction(() -> {
-                        Intent i = new Intent(activity, WebPushConfigActivity.class);
-                        startActivity(i);
+                        activity.loadTarget(MainActivity.TARGET_WEB_PUSH, null);
                     })
             );
 

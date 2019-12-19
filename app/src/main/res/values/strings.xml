@@ -1104,4 +1104,9 @@
     <string name="event_details_added_by_self_format">%1$s przez Ciebie</string>
     <string name="event_details_shared_by_format">{cmd-share-variant} %1$s przez %2$s</string>
     <string name="event_details_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie</string>
+    <string name="web_push_token_invalid">Token nie wygląda na prawidłowy</string>
+    <string name="menu_web_push">Przekazywanie powiadomień</string>
+    <string name="qr_scanner_dialog_title">Skanuj kod QR</string>
+    <string name="web_push_unpair_button">Odłącz</string>
+    <string name="web_push_date_paired_format">Połączono %s</string>
 </resources>
