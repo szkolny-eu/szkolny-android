@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
@@ -38,6 +39,10 @@ class EventDetailsDialog(
         get() = job + Dispatchers.Main
 
     private lateinit var adapter: EventListAdapter
+
+    private val api by lazy {
+        SzkolnyApi(app)
+    }
 
     init { run {
         if (activity.isFinishing)
@@ -126,19 +131,27 @@ class EventDetailsDialog(
     }
 
     private fun removeEvent() {
-        if (eventShared && eventOwn) {
-            Toast.makeText(activity, "Unshare + remove own event", Toast.LENGTH_SHORT).show()
+        launch {
+            if (eventShared && eventOwn) {
+                Toast.makeText(activity, "Unshare + remove own event", Toast.LENGTH_SHORT).show()
 
-            SzkolnyTask.unshareEvent(event).enqueue(activity)
-            finishRemoving()
-        }
-        else if (eventShared && !eventOwn) {
-            Toast.makeText(activity, "Remove + blacklist somebody's event", Toast.LENGTH_SHORT).show()
-            // TODO
-        }
-        else {
-            Toast.makeText(activity, "Remove event", Toast.LENGTH_SHORT).show()
-            finishRemoving()
+                val response = withContext(Dispatchers.Default) {
+                    api.unshareEvent(event!!)
+                }
+
+                response?.errors?.ifNotEmpty {
+                    Toast.makeText(activity, "Error: "+it[0].reason, Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                finishRemoving()
+            } else if (eventShared && !eventOwn) {
+                Toast.makeText(activity, "Remove + blacklist somebody's event", Toast.LENGTH_SHORT).show()
+                // TODO
+            } else {
+                Toast.makeText(activity, "Remove event", Toast.LENGTH_SHORT).show()
+                finishRemoving()
+            }
         }
     }
 

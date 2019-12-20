@@ -20,6 +20,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
@@ -60,13 +61,17 @@ class EventManualDialog(
     private val app by lazy { activity.application as App }
     private lateinit var b: DialogEventManualV2Binding
     private lateinit var dialog: AlertDialog
-    private var removeEventDialog: AlertDialog? = null
-    private var defaultLoaded = false
 
     private lateinit var event: Event
     private var customColor: Int? = null
     private val editingShared = editingEvent?.sharedBy != null
     private val editingOwn = editingEvent?.sharedBy == "self"
+    private var removeEventDialog: AlertDialog? = null
+    private var defaultLoaded = false
+
+    private val api by lazy {
+        SzkolnyApi(app)
+    }
 
     init { run {
         if (activity.isFinishing)
@@ -617,7 +622,21 @@ class EventManualDialog(
             else if (!share && editingShared) {
                 Toast.makeText(activity, "Unshare own event", Toast.LENGTH_SHORT).show()
 
-                SzkolnyTask.unshareEvent(eventObject.withMetadata(metadataObject)).enqueue(activity)
+                eventObject.apply {
+                    sharedBy = null
+                    sharedByName = profile?.studentNameLong
+                }
+
+                val response = withContext(Dispatchers.Default) {
+                    api.unshareEvent(eventObject)
+                }
+
+                response?.errors?.ifNotEmpty {
+                    Toast.makeText(activity, "Error: "+it[0].reason, Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                eventObject.sharedByName = null
                 finishAdding(eventObject, metadataObject)
             }
             else if (share) {
@@ -630,7 +649,14 @@ class EventManualDialog(
 
                 metadataObject.addedDate = System.currentTimeMillis()
 
-                SzkolnyTask.shareEvent(eventObject.withMetadata(metadataObject)).enqueue(activity)
+                val response = withContext(Dispatchers.Default) {
+                    api.shareEvent(eventObject.withMetadata(metadataObject))
+                }
+
+                response?.errors?.ifNotEmpty {
+                    Toast.makeText(activity, "Error: "+it[0].reason, Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
 
                 eventObject.sharedBy = "self"
                 finishAdding(eventObject, metadataObject)
@@ -642,19 +668,27 @@ class EventManualDialog(
     }
 
     private fun removeEvent() {
-        if (editingShared && editingOwn) {
-            Toast.makeText(activity, "Unshare + remove own event", Toast.LENGTH_SHORT).show()
+        launch {
+            if (editingShared && editingOwn) {
+                Toast.makeText(activity, "Unshare + remove own event", Toast.LENGTH_SHORT).show()
 
-            editingEvent?.let { SzkolnyTask.unshareEvent(it).enqueue(activity) }
-            finishRemoving()
-        }
-        else if (editingShared && !editingOwn) {
-            Toast.makeText(activity, "Remove + blacklist somebody's event", Toast.LENGTH_SHORT).show()
-            // TODO
-        }
-        else {
-            Toast.makeText(activity, "Remove event", Toast.LENGTH_SHORT).show()
-            finishRemoving()
+                val response = withContext(Dispatchers.Default) {
+                    api.unshareEvent(editingEvent!!)
+                }
+
+                response?.errors?.ifNotEmpty {
+                    Toast.makeText(activity, "Error: "+it[0].reason, Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                finishRemoving()
+            } else if (editingShared && !editingOwn) {
+                Toast.makeText(activity, "Remove + blacklist somebody's event", Toast.LENGTH_SHORT).show()
+                // TODO
+            } else {
+                Toast.makeText(activity, "Remove event", Toast.LENGTH_SHORT).show()
+                finishRemoving()
+            }
         }
     }
 

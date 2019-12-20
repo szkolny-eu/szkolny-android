@@ -36,7 +36,7 @@ class Szkolny(val app: App, val callback: EdziennikCallback) {
         completed()
     }
 
-    fun shareEvent(event: EventFull) {
+    /*fun shareEvent(event: EventFull) {
         api.shareEvent(event)
         completed()
     }
@@ -44,7 +44,7 @@ class Szkolny(val app: App, val callback: EdziennikCallback) {
     fun unshareEvent(event: EventFull) {
         api.unshareEvent(event)
         completed()
-    }
+    }*/
 
     private fun completed() {
         callback.onCompleted()

@@ -641,3 +641,8 @@ fun Drawable.setTintColor(color: Int): Drawable {
     )
     return this
 }
+
+inline fun <T> List<T>.ifNotEmpty(block: (List<T>) -> Unit) {
+    if (!isEmpty())
+        block(this)
+}

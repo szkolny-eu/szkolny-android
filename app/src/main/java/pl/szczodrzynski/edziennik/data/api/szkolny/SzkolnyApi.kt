@@ -15,7 +15,9 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureIntercep
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.EventShareRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ServerSyncRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.WebPushRequest
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
+import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -102,29 +104,33 @@ class SzkolnyApi(val app: App) {
         return events
     }
 
-    fun shareEvent(event: EventFull) {
+    fun shareEvent(event: EventFull): ApiResponse<Nothing>? {
         val team = app.db.teamDao().getByIdNow(event.profileId, event.teamId)
 
-        api.shareEvent(EventShareRequest(
+        return api.shareEvent(EventShareRequest(
                 deviceId = app.deviceId,
                 sharedByName = event.sharedByName,
                 shareTeamCode = team.code,
                 event = event
-        )).execute()
+        )).execute().body()
     }
 
-    fun unshareEvent(event: EventFull) {
+    fun unshareEvent(event: Event): ApiResponse<Nothing>? {
         val team = app.db.teamDao().getByIdNow(event.profileId, event.teamId)
 
-        api.shareEvent(EventShareRequest(
+        return api.shareEvent(EventShareRequest(
                 deviceId = app.deviceId,
                 sharedByName = event.sharedByName,
                 unshareTeamCode = team.code,
                 eventId = event.id
-        )).execute()
+        )).execute().body()
     }
 
-    fun pairBrowser(browserId: String?, pairToken: String?): List<WebPushResponse.Browser> {
+    /*fun eventEditRequest(requesterName: String, event: Event): ApiResponse<Nothing>? {
+
+    }*/
+
+    fun pairBrowser(browserId: String?, pairToken: String?, onError: ((List<ApiResponse.Error>) -> Unit)? = null): List<WebPushResponse.Browser> {
         val response = api.webPush(WebPushRequest(
                 action = "pairBrowser",
                 deviceId = app.deviceId,
@@ -132,10 +138,15 @@ class SzkolnyApi(val app: App) {
                 pairToken = pairToken
         )).execute().body()
 
+        response?.errors?.let {
+            onError?.invoke(it)
+            return emptyList()
+        }
+
         return response?.data?.browsers ?: emptyList()
     }
 
-    fun listBrowsers(): List<WebPushResponse.Browser> {
+    fun listBrowsers(onError: ((List<ApiResponse.Error>) -> Unit)? = null): List<WebPushResponse.Browser> {
         val response = api.webPush(WebPushRequest(
                 action = "listBrowsers",
                 deviceId = app.deviceId

@@ -16,8 +16,8 @@ class SzkolnyTask(val request: Any) : IApiTask(-1) {
         private const val TAG = "SzkolnyTask"
 
         fun sync(profiles: List<ProfileFull>) = SzkolnyTask(SyncRequest(profiles))
-        fun shareEvent(event: EventFull) = SzkolnyTask(ShareEventRequest(event))
-        fun unshareEvent(event: EventFull) = SzkolnyTask(UnshareEventRequest(event))
+        /*fun shareEvent(event: EventFull) = SzkolnyTask(ShareEventRequest(event))
+        fun unshareEvent(event: EventFull) = SzkolnyTask(UnshareEventRequest(event))*/
     }
 
     private lateinit var szkolny: Szkolny
@@ -35,12 +35,12 @@ class SzkolnyTask(val request: Any) : IApiTask(-1) {
 
         when (request) {
             is SyncRequest -> szkolny.sync(request.profiles)
-            is ShareEventRequest -> szkolny.shareEvent(request.event)
-            is UnshareEventRequest -> szkolny.unshareEvent(request.event)
+            /*is ShareEventRequest -> szkolny.shareEvent(request.event)
+            is UnshareEventRequest -> szkolny.unshareEvent(request.event)*/
         }
     }
 
     data class SyncRequest(val profiles: List<ProfileFull>)
-    data class ShareEventRequest(val event: EventFull)
-    data class UnshareEventRequest(val event: EventFull)
+    /*data class ShareEventRequest(val event: EventFull)
+    data class UnshareEventRequest(val event: EventFull)*/
 }

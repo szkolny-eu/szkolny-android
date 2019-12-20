@@ -14,6 +14,7 @@ data class EventShareRequest (
         val sharedByName: String,
         val shareTeamCode: String? = null,
         val unshareTeamCode: String? = null,
+        val requesterName: String? = null,
 
         val eventId: Long? = null,
         val event: EventFull? = null
