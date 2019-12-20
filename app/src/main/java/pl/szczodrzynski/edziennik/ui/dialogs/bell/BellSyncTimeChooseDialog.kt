@@ -129,7 +129,7 @@ class BellSyncTimeChooseDialog(
                     app.config.timetable.bellSyncMultiplier = 0
 
                     confirmDialog.dismiss()
-                    dialog.dismiss()
+                    initView()
                     if (activity is MainActivity) activity.reloadTarget()
                 }
                 .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }

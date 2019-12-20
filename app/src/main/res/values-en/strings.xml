@@ -76,9 +76,9 @@
     <string name="bell_sync_adjust_error">Incorrect format</string>
     <string name="bell_sync_cannot_now">Calibration is impossible, because there are no lessons now. Try again, i.e. in the end of the lesson or break. Remember that you should run this even before planned bell time.</string>
     <string name="bell_sync_current_dialog">\n\nCurrent calibration: %s</string>
-    <string name="bell_sync_howto">Click OK, when the bell rings. The counter\'s time will be calibrated to the bell time.\n\nPlanned bell time is %s</string>
+    <string name="bell_sync_howto">Click the bell icon, when the bell rings. The counter\'s time will be calibrated to the bell time.\n\nPlanned bell time is %s\n\nThe bell time difference at the moment is %s</string>
     <string name="bell_sync_reset_confirm">Do you want to reset the calibration?</string>
-    <string name="bell_sync_results">The bell is inexact by %s%s</string>
+    <string name="bell_sync_results">The bell is inexact by %s</string>
     <string name="bell_sync_title">Calibrate with the school bell</string>
     <string name="bell_sync_time_title">Time of the bell to synchronize</string>
     <string name="bell_sync_lesson_item">lesson %s (%s)</string>
@@ -873,4 +873,5 @@
     <string name="login_summary_account_child">(child)</string>
     <string name="login_summary_account_parent">(parent)</string>
     <string name="toolbar_subtitle_syncing">Syncing...</string>
+    <string name="bell_sync_choose_howto">Choose the nearest bell to synchronize.</string>
 </resources>

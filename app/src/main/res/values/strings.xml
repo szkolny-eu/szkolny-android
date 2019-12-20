@@ -98,10 +98,10 @@
     <string name="bell_sync_adjust_error">Nieprawidłowy format</string>
     <string name="bell_sync_cannot_now">Synchronizacja jest niemożliwa, ponieważ teraz nie ma żadnych lekcji. Spróbuj jeszcze raz np. pod koniec lekcji albo przerwy. Pamiętaj, że powinieneś to uruchomić jeszcze przed planowanym czasem dzwonka.</string>
     <string name="bell_sync_current_dialog">"\n\nAktualna kalibracja to %s"</string>
-    <string name="bell_sync_howto">Kliknij OK, kiedy dzwonek zadzwoni. Licznik czasu zostanie zsynchronizowany z czasem dzwonka.\n\nCzas według planu to %s</string>
+    <string name="bell_sync_howto">Kliknij w ikonę dzwonka, kiedy dzwonek zadzwoni. Licznik czasu zostanie zsynchronizowany z czasem dzwonka.\n\nCzas według planu to %s\n\nAktualna różnica wynosi %s</string>
     <string name="bell_sync_choose_howto">Wybierz najbliższy dzwonek, abyś mógł go zsynchronizować z aplikacją.</string>
     <string name="bell_sync_reset_confirm">Czy na pewno zresetować synchronizację?</string>
-    <string name="bell_sync_results">Dzwonek jest niedokładny o %s%s</string>
+    <string name="bell_sync_results">Dzwonek jest niedokładny o %s</string>
     <string name="bell_sync_title">Synchronizacja z dzwonkiem</string>
     <string name="bell_sync_time_title">Godzina dzwonka do synchronizacji</string>
     <string name="bell_sync_lesson_item">lekcja %s (%s)</string>

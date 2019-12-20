@@ -10,10 +10,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogBellSyncBinding
+import pl.szczodrzynski.edziennik.startCoroutineTimer
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
 
@@ -37,6 +39,16 @@ class BellSyncDialog(
 
     private val app by lazy { activity.application as App }
 
+    private var counterJob: Job? = null
+
+    private val actualBellDiff: Pair<Time, Int>
+        get() {
+            val now = Time.getNow()
+            val bellDiff = Time.diff(now, bellTime)
+            val multiplier = if (bellTime > now) -1 else 1
+            return Pair(bellDiff, multiplier)
+        }
+
     init { apply {
         if (activity.isFinishing)
             return@apply
@@ -52,18 +64,15 @@ class BellSyncDialog(
     }}
 
     private fun initView() {
-        b.bellSyncHowto.text = app.getString(R.string.bell_sync_howto, bellTime.stringHM)
-
         b.bellSyncButton.setOnClickListener {
-            val now = Time.getNow()
-            val bellDiff = Time.diff(now, bellTime)
-            val multiplier = if (bellTime > now) -1 else 1
+            val (bellDiff, multiplier) = actualBellDiff
+            val bellDiffText = (if (multiplier == -1) '-' else '+') + bellDiff.stringHMS
             app.config.timetable.bellSyncDiff = bellDiff
             app.config.timetable.bellSyncMultiplier = multiplier
 
             MaterialAlertDialogBuilder(activity)
                     .setTitle(R.string.bell_sync_title)
-                    .setMessage(app.getString(R.string.bell_sync_results, if (multiplier == -1) '-' else '+', bellDiff.stringHMS))
+                    .setMessage(app.getString(R.string.bell_sync_results, bellDiffText))
                     .setPositiveButton(R.string.ok) { resultsDialog, _ ->
                         resultsDialog.dismiss()
                         dialog.dismiss()
@@ -72,8 +81,16 @@ class BellSyncDialog(
                     .show()
         }
 
-        if (Time.diff(Time.getNow(), bellTime) > Time(0, 10, 0)) { // Easter egg ^^
+        if (Time.diff(Time.getNow(), bellTime) > Time(2, 0, 0)) { // Easter egg ^^
             b.bellSyncButton.setImageDrawable(app.resources.getDrawable(R.drawable.ic_bell_wtf)) // wtf
+        }
+
+        launch {
+            counterJob = startCoroutineTimer(repeatMillis = 1000) {
+                val (bellDiff, multiplier) = actualBellDiff
+                val bellDiffText = (if (multiplier == -1) '-' else '+') + bellDiff.stringHMS
+                b.bellSyncHowto.text = app.getString(R.string.bell_sync_howto, bellTime.stringHM, bellDiffText)
+            }
         }
     }
 }
