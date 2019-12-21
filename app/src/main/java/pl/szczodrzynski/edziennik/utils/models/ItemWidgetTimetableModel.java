@@ -25,4 +25,8 @@ public class ItemWidgetTimetableModel {
     public List<Integer> eventColors = new ArrayList<>();
     public boolean bigStyle = false;
     public boolean darkTheme = false;
+
+    public boolean isNoTimetableItem = false;
+    public boolean isNoLessonsItem = false;
+    public boolean isNotPublicItem = false;
 }

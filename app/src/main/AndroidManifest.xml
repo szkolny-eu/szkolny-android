@@ -99,12 +99,6 @@
                                     __/ |
                                    |_
         -->
-        <activity
-            android:name=".widgets.timetable.LessonDetailsActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:theme="@style/AppTheme.NoDisplay" />
         <activity android:name=".widgets.timetable.LessonDialogActivity"
             android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"

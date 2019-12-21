@@ -43,6 +43,8 @@ class WidgetTimetable : AppWidgetProvider() {
         super.onReceive(context, intent)
     }
 
+    private val ignoreCancelled = true
+
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         val thisWidget = ComponentName(context, WidgetTimetable::class.java)
 
@@ -122,7 +124,7 @@ class WidgetTimetable : AppWidgetProvider() {
                         val method = declaredMethods[m]
                         if (method.name == "setDrawableParameters") {
                             method.isAccessible = true
-                            method.invoke(views, R.id.widgetTimetableListView, true, -1, colorFilter.toInt(), mode, -1)
+                            method.invoke(views, R.id.widgetTimetableBackground, true, -1, colorFilter.toInt(), mode, -1)
                             method.invoke(views, R.id.widgetTimetableHeader, true, -1, colorFilter.toInt(), mode, -1)
                             break
                         }
@@ -185,12 +187,30 @@ class WidgetTimetable : AppWidgetProvider() {
             // search for lessons to display
             val timetableDate = Date.getToday()
             var checkedDays = 0
-            var lessons = lessonList.filter { it.profileId == profile.id && it.displayDate == timetableDate && it.type != Lesson.TYPE_NO_LESSONS }
+            var lessons = lessonList.filter {
+                it.profileId == profile.id
+                        && it.displayDate == timetableDate
+                        && it.displayEndTime > now
+                        && !(it.isCancelled && ignoreCancelled)
+            }
             while ((lessons.isEmpty() || lessons.none {
-                        it.displayDate != today || (it.displayDate == today && it.displayEndTime != null && it.displayEndTime!! >= now)
+                        it.type != Lesson.TYPE_NO_LESSONS
+                                && (it.displayDate != today
+                                || (it.displayDate == today
+                                && it.displayEndTime != null
+                                && it.displayEndTime!! >= now))
                     }) && checkedDays < 7) {
+
                 timetableDate.stepForward(0, 0, 1)
-                lessons = lessonList.filter { it.profileId == profile.id && it.displayDate == timetableDate && it.type != Lesson.TYPE_NO_LESSONS }
+                lessons = lessonList.filter {
+                    it.profileId == profile.id
+                            && it.displayDate == timetableDate
+                            && !(it.isCancelled && ignoreCancelled)
+                }
+
+                if (lessons.isEmpty() && timetableDate.weekDay <= 5)
+                    break
+
                 checkedDays++
             }
 
@@ -199,6 +219,32 @@ class WidgetTimetable : AppWidgetProvider() {
                 if (lessons.isNotEmpty())
                     displayingDate = timetableDate
                 profileId = profile.id
+                if (lessons.isEmpty()) {
+                    views.setViewVisibility(R.id.widgetTimetableListView, View.GONE)
+                    views.setViewVisibility(R.id.widgetTimetableNoTimetable, View.VISIBLE)
+                }
+                if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
+                    views.setViewVisibility(R.id.widgetTimetableListView, View.GONE)
+                    views.setViewVisibility(R.id.widgetTimetableNoLessons, View.VISIBLE)
+                }
+            }
+            else {
+                if (lessons.isEmpty()) {
+                    val separator = ItemWidgetTimetableModel()
+                    separator.profileId = profile.id
+                    separator.bigStyle = widgetConfig.bigStyle
+                    separator.darkTheme = widgetConfig.darkTheme
+                    separator.isNoTimetableItem = true;
+                    models.add(separator)
+                }
+                if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
+                    val separator = ItemWidgetTimetableModel()
+                    separator.profileId = profile.id
+                    separator.bigStyle = widgetConfig.bigStyle
+                    separator.darkTheme = widgetConfig.darkTheme
+                    separator.isNoLessonsItem = true;
+                    models.add(separator)
+                }
             }
 
             // get all events for the current date
@@ -298,13 +344,6 @@ class WidgetTimetable : AppWidgetProvider() {
         val pendingOpenIntent = PendingIntent.getActivity(app, appWidgetId, openIntent, 0)
         views.setOnClickPendingIntent(R.id.widgetTimetableHeader, pendingOpenIntent)
 
-        if (lessonList.isEmpty()) {
-            views.setViewVisibility(R.id.widgetTimetableLoading, View.VISIBLE)
-            views.setRemoteAdapter(R.id.widgetTimetableListView, Intent())
-            views.setTextViewText(R.id.widgetTimetableLoading, app.getString(R.string.widget_timetable_no_lessons))
-            return
-        }
-
         timetables!!.put(appWidgetId, models)
 
         // apply the list service to the list view
@@ -315,7 +354,7 @@ class WidgetTimetable : AppWidgetProvider() {
 
         // create an intent used to display the lesson details dialog
         val intentTemplate = Intent(app, LessonDialogActivity::class.java)
-        intentTemplate.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        intentTemplate.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK /*or Intent.FLAG_ACTIVITY_CLEAR_TASK*/)
         val pendingIntentTimetable = PendingIntent.getActivity(app, appWidgetId, intentTemplate, 0)
         views.setPendingIntentTemplate(R.id.widgetTimetableListView, pendingIntentTimetable)
 
@@ -336,11 +375,8 @@ class WidgetTimetable : AppWidgetProvider() {
     }
 
     companion object {
-
-
-        val ACTION_SYNC_DATA = "ACTION_SYNC_DATA"
-        private val TAG = "WidgetTimetable"
-        private val modeInt = 0
+        const val ACTION_SYNC_DATA = "ACTION_SYNC_DATA"
+        private const val TAG = "WidgetTimetable"
 
         var timetables: SparseArray<List<ItemWidgetTimetableModel>>? = null
 

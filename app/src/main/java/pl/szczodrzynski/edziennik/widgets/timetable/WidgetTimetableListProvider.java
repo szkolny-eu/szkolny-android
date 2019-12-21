@@ -33,6 +33,8 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
+
 public class WidgetTimetableListProvider implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = "WidgetTimetableProvider";
@@ -149,12 +151,45 @@ public class WidgetTimetableListProvider implements RemoteViewsService.RemoteVie
                 views.setViewVisibility(R.id.widgetTimetableProfileName, View.VISIBLE);
                 views.setViewVisibility(R.id.widgetTimetableContent, View.GONE);
                 views.setTextViewText(R.id.widgetTimetableProfileName, lesson.separatorProfileName);
+                views.setTextViewTextSize(R.id.widgetTimetableProfileName, COMPLEX_UNIT_SP, lesson.bigStyle ? 30 : 20);
+                views.setTextColor(R.id.widgetTimetableProfileName, lesson.darkTheme ? 0xff000000 : 0xffffffff);
 
                 Intent intent = new Intent();
                 intent.putExtra("profileId", lesson.profileId);
                 intent.putExtra("separatorItem", true);
                 views.setOnClickFillInIntent(R.id.widgetTimetableRoot, intent);
 
+                return views;
+            }
+
+            if (lesson.isNoTimetableItem) {
+                views.setImageViewBitmap(R.id.widgetTimetableBackground, null);
+                views.setViewVisibility(R.id.widgetTimetableProfileName, View.VISIBLE);
+                views.setViewVisibility(R.id.widgetTimetableContent, View.GONE);
+                views.setTextViewText(R.id.widgetTimetableProfileName, context.getString(R.string.widget_timetable_short_no_timetable));
+                views.setTextViewTextSize(R.id.widgetTimetableProfileName, COMPLEX_UNIT_SP, lesson.bigStyle ? 26 : 18);
+                views.setTextColor(R.id.widgetTimetableProfileName, lesson.darkTheme ? 0xffffffff : 0xff000000);
+
+                Intent intent = new Intent();
+                intent.putExtra("profileId", lesson.profileId);
+                intent.putExtra("separatorItem", true);
+                intent.putExtra("isNoTimetableItem", true);
+                views.setOnClickFillInIntent(R.id.widgetTimetableRoot, intent);
+                return views;
+            }
+            if (lesson.isNoLessonsItem) {
+                views.setImageViewBitmap(R.id.widgetTimetableBackground, null);
+                views.setViewVisibility(R.id.widgetTimetableProfileName, View.VISIBLE);
+                views.setViewVisibility(R.id.widgetTimetableContent, View.GONE);
+                views.setTextViewText(R.id.widgetTimetableProfileName, context.getString(R.string.widget_timetable_short_no_lessons));
+                views.setTextViewTextSize(R.id.widgetTimetableProfileName, COMPLEX_UNIT_SP, lesson.bigStyle ? 26 : 18);
+                views.setTextColor(R.id.widgetTimetableProfileName, lesson.darkTheme ? 0xffffffff : 0xff000000);
+
+                Intent intent = new Intent();
+                intent.putExtra("profileId", lesson.profileId);
+                intent.putExtra("separatorItem", true);
+                intent.putExtra("isNoLessonsItem", true);
+                views.setOnClickFillInIntent(R.id.widgetTimetableRoot, intent);
                 return views;
             }
 

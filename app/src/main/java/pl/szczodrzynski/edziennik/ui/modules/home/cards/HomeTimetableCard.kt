@@ -137,20 +137,25 @@ class HomeTimetableCard(
                 it.profileId == profile.id
                         && it.displayDate == timetableDate
                         && it.displayEndTime > now
-                        && it.type != Lesson.TYPE_NO_LESSONS
                         && !(it.isCancelled && ignoreCancelled)
             }
             while ((lessons.isEmpty() || lessons.none {
-                        it.displayDate != today || (it.displayDate == today && it.displayEndTime != null && it.displayEndTime!! >= now)
+                        it.type != Lesson.TYPE_NO_LESSONS
+                                && (it.displayDate != today
+                                || (it.displayDate == today
+                                && it.displayEndTime != null
+                                && it.displayEndTime!! >= now))
                     }) && checkedDays < 7) {
 
                 timetableDate.stepForward(0, 0, 1)
                 lessons = allLessons.filter {
                     it.profileId == profile.id
                             && it.displayDate == timetableDate
-                            && it.type != Lesson.TYPE_NO_LESSONS
                             && !(it.isCancelled && ignoreCancelled)
                 }
+
+                if (lessons.isEmpty() && timetableDate.weekDay <= 5)
+                    break
 
                 checkedDays++
             }
@@ -164,7 +169,7 @@ class HomeTimetableCard(
             b.timetableLayout.visibility = View.GONE
             b.noTimetableLayout.visibility = View.VISIBLE
             b.noLessonsLayout.visibility = View.GONE
-            val weekStart = timetableDate.clone().weekStart
+            val weekStart = timetableDate.weekStart
             b.noTimetableText.setText(
                     R.string.home_timetable_no_timetable_text,
                     weekStart.stringY_m_d
@@ -188,6 +193,7 @@ class HomeTimetableCard(
             b.timetableLayout.visibility = View.GONE
             b.noTimetableLayout.visibility = View.GONE
             b.noLessonsLayout.visibility = View.VISIBLE
+            timetableDate = timetableDate.weekStart
             return@launch
         }
 
