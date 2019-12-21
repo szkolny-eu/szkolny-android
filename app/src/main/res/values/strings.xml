@@ -1113,4 +1113,11 @@
     <string name="qr_scanner_dialog_title">Skanuj kod QR</string>
     <string name="web_push_unpair_button">Odłącz</string>
     <string name="web_push_date_paired_format">Połączono %s</string>
+    <string name="home_timetable_no_timetable">Nie pobrano planu lekcji</string>
+    <string name="home_timetable_no_timetable_text">Plan lekcji na tydzień %s nie został jeszcze pobrany.</string>
+    <string name="home_timetable_no_timetable_sync">Pobierz</string>
+    <string name="home_timetable_no_lessons">Nie ma żadnych lekcji</string>
+    <string name="home_timetable_no_lessons_text">Przez następne 7 dni nie ma żadnych lekcji.</string>
+    <string name="home_timetable_not_public">Brak planu lekcji</string>
+    <string name="home_timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę.\n\nSkontaktuj się z wychowawcą.</string>
 </resources>

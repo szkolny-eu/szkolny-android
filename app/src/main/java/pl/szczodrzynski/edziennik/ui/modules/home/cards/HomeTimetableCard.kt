@@ -14,9 +14,16 @@ import androidx.core.view.setMargins
 import androidx.lifecycle.Observer
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
@@ -80,7 +87,7 @@ class HomeTimetableCard(
                 .colorAttr(activity, R.attr.colorIcon)
                 .sizeDp(20))
 
-        b.bellSync.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon.cmd_alarm_bell)
+        b.bellSync.setImageDrawable(IconicsDrawable(activity, SzkolnyFont.Icon.szf_alarm_bell_outline)
                 .colorAttr(activity, R.attr.colorIcon)
                 .sizeDp(20))
 
@@ -88,6 +95,18 @@ class HomeTimetableCard(
             BellSyncTimeChooseDialog(
                     activity
             )
+        }
+
+        b.root.onClick {
+            activity.loadTarget(MainActivity.DRAWER_ITEM_TIMETABLE, Bundle().apply {
+                putString("timetableDate", timetableDate.stringY_m_d)
+            })
+        }
+
+        if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS && app.profile.getLoginData("timetableNotPublic", false)) {
+            b.timetableLayout.visibility = View.GONE
+            b.notPublicLayout.visibility = View.VISIBLE
+            return
         }
 
         // get current bell-sync params
@@ -103,11 +122,7 @@ class HomeTimetableCard(
             update()
         })
 
-        b.root.setOnClickListener {
-            activity.loadTarget(MainActivity.DRAWER_ITEM_TIMETABLE, Bundle().apply {
-                putString("timetableDate", timetableDate.stringY_m_d)
-            })
-        }
+        EventBus.getDefault().register(this)
     }
 
     private fun update() { launch {
@@ -143,6 +158,42 @@ class HomeTimetableCard(
         }
 
         timetableDate = deferred.await()
+
+        if (lessons.isEmpty()) {
+            // timetable is not downloaded yet
+            b.timetableLayout.visibility = View.GONE
+            b.noTimetableLayout.visibility = View.VISIBLE
+            b.noLessonsLayout.visibility = View.GONE
+            val weekStart = timetableDate.clone().weekStart
+            b.noTimetableText.setText(
+                    R.string.home_timetable_no_timetable_text,
+                    weekStart.stringY_m_d
+            )
+            b.noTimetableSync.onClick {
+                it.isEnabled = false
+                EdziennikTask.syncProfile(
+                        profileId = App.profileId,
+                        viewIds = listOf(
+                                MainActivity.DRAWER_ITEM_TIMETABLE to 0
+                        ),
+                        arguments = JsonObject(
+                                "weekStart" to weekStart
+                        )
+                ).enqueue(activity)
+            }
+            return@launch
+        }
+        if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
+            // in next 7 days only NO_LESSONS is found
+            b.timetableLayout.visibility = View.GONE
+            b.noTimetableLayout.visibility = View.GONE
+            b.noLessonsLayout.visibility = View.VISIBLE
+            return@launch
+        }
+
+        b.timetableLayout.visibility = View.VISIBLE
+        b.noTimetableLayout.visibility = View.GONE
+        b.noLessonsLayout.visibility = View.GONE
 
         val isToday = today == timetableDate
 
@@ -288,6 +339,11 @@ class HomeTimetableCard(
             b.progress.max = lessonLength.toInt()
             b.progress.progress = timePassed.toInt()
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSyncFinishedEvent(event: ApiTaskAllFinishedEvent) {
+        b.noTimetableSync.isEnabled = true
     }
 
     override fun unbind(position: Int, holder: HomeCardAdapter.ViewHolder) = Unit

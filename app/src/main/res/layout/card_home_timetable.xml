@@ -6,124 +6,256 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:layout_margin="8dp">
 
         <LinearLayout
+            android:id="@+id/noTimetableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <View
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/ic_sync"/>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/dayInfo"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/NavView.TextView.Title"
-                    tools:text="Jutro" />
+                    android:text="@string/home_timetable_no_timetable" />
 
                 <TextView
-                    android:id="@+id/lessonInfo"
-                    android:layout_width="match_parent"
+                    android:id="@+id/noTimetableText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.Helper"
-                    tools:text="7 lekcji - 8:10 do 14:45" />
+                    android:textSize="16sp"
+                    android:text="@string/home_timetable_no_timetable_text"/>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/noTimetableSync"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:text="@string/home_timetable_no_timetable_sync" />
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/settings"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:visibility="gone"
-                tools:src="@sample/settings" />
-
-            <ImageView
-                android:id="@+id/bellSync"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"
-                android:background="?selectableItemBackgroundBorderless"
-                tools:src="@sample/settings" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/dividerColor" />
-
         <LinearLayout
+            android:id="@+id/noLessonsLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            tools:layout_marginTop="150dp"
+            tools:visibility="visible">
+
+            <View
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/ic_timetable"/>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lessonBig"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.Subtitle"
-                    tools:text="Pierwsza: informatyka" />
+                    android:textAppearance="@style/NavView.TextView.Title"
+                    android:text="@string/home_timetable_no_lessons" />
 
                 <TextView
-                    android:id="@+id/classroom"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.Small"
-                    tools:text="09a komputerowa" />
-
-                <ProgressBar
-                    android:id="@+id/progress"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:max="2700"
-                    android:progress="780" />
+                    android:textSize="16sp"
+                    android:text="@string/home_timetable_no_lessons_text"/>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/counter"
-                android:layout_width="wrap_content"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/notPublicLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:layout_marginTop="220dp"
+            tools:visibility="visible">
+
+            <View
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/ic_no_timetable"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                tools:text="zostały\n2 minuty\n35 sekund" />
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/NavView.TextView.Title"
+                    android:text="@string/home_timetable_not_public" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="@string/home_timetable_not_public_text"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/dividerColor" />
-
-        <TextView
-            android:id="@+id/nextLessons"
+        <LinearLayout
+            android:id="@+id/timetableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Helper"
-            tools:text="Póżniej:\n9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
+            android:orientation="vertical"
+            tools:layout_marginTop="350dp">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/dayInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Title"
+                        tools:text="Jutro" />
+
+                    <TextView
+                        android:id="@+id/lessonInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        tools:text="7 lekcji - 8:10 do 14:45" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/settings"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:visibility="gone"
+                    tools:src="@sample/settings" />
+
+                <ImageView
+                    android:id="@+id/bellSync"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    tools:src="@sample/settings" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/dividerColor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lessonBig"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Subtitle"
+                        tools:text="Pierwsza: informatyka" />
+
+                    <TextView
+                        android:id="@+id/classroom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Small"
+                        tools:text="09a komputerowa" />
+
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        tools:max="2700"
+                        tools:progress="780" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    tools:text="zostały\n2 minuty\n35 sekund" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/dividerColor" />
+
+            <TextView
+                android:id="@+id/nextLessons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                tools:text="Póżniej:\n9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 </layout>
