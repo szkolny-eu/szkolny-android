@@ -53,7 +53,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
 import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
-import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding;
+import pl.szczodrzynski.edziennik.databinding.FragmentHomeOldBinding;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusCaptchaActivity;
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeActivity;
@@ -67,7 +67,6 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
 import static pl.szczodrzynski.edziennik.App.UPDATES_ON_PLAY_STORE;
-import static pl.szczodrzynski.edziennik.MainActivity.DRAWER_ITEM_GRADES;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_FINAL;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_PROPOSED;
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER2_FINAL;
@@ -76,11 +75,11 @@ import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_YEAR_
 import static pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_YEAR_PROPOSED;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 
-public class HomeFragment extends Fragment {
-    private static final String TAG = "HomeFragment";
+public class HomeFragmentOld extends Fragment {
+    private static final String TAG = "HomeFragmentOld";
     private App app = null;
     private MainActivity activity = null;
-    private FragmentHomeBinding b = null;
+    private FragmentHomeOldBinding b = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +91,7 @@ public class HomeFragment extends Fragment {
         if (app.profile == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_home_old, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
         return b.getRoot();
     }
@@ -261,7 +260,7 @@ public class HomeFragment extends Fragment {
             b.cardLuckyNumber.setOnClickListener(v1 -> setNumberDialog());
         }
 
-        timetableCard = new HomeTimetableCard(app, activity, this, layoutInflater, insertPoint);
+        timetableCard = new HomeTimetableCardOld(app, activity, this, layoutInflater, insertPoint);
         timetableCard.run();
 
         configCardGrades(activity, layoutInflater, activity, insertPoint);
@@ -571,7 +570,7 @@ public class HomeFragment extends Fragment {
         Button cardGradesButton = root.findViewById(R.id.cardGradesButton);
         buttonAddDrawable(c, cardGradesButton, CommunityMaterial.Icon.cmd_arrow_right);
         cardGradesButton.setOnClickListener((v1 -> new Handler().postDelayed(() -> a.runOnUiThread(() -> {
-            activity.loadTarget(DRAWER_ITEM_GRADES, null);
+            activity.loadTarget(MainActivity.DRAWER_ITEM_GRADES, null);
         }), 100)));
 
         //new Handler().postDelayed(() -> a.runOnUiThread(() -> updateCardGrades(c, a, root)), newRefreshInterval);
@@ -591,5 +590,5 @@ public class HomeFragment extends Fragment {
         insertPoint.addView(root, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
-    private HomeTimetableCard timetableCard;
+    private HomeTimetableCardOld timetableCard;
 }

@@ -21,7 +21,7 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentOld;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
@@ -53,7 +53,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
             else if (dayDiff == 2) {
                 return context.getString(R.string.the_day_after);
             }
-            return HomeFragment.plural(context, R.plurals.time_till_days, Math.abs(dayDiff));
+            return HomeFragmentOld.plural(context, R.plurals.time_till_days, Math.abs(dayDiff));
         }
         else if (dayDiff < 0) {
             if (dayDiff == -1) {
@@ -62,7 +62,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
             else if (dayDiff == -2) {
                 return context.getString(R.string.the_day_before);
             }
-            return context.getString(R.string.ago_format, HomeFragment.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
+            return context.getString(R.string.ago_format, HomeFragmentOld.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
         }
         return context.getString(R.string.today);
     }

@@ -167,7 +167,7 @@ public class Time implements Comparable<Time> {
         long t2millis = t2.getInMillis();
         int multiplier = (t1millis > t2millis ? 1 : -1);
         Time diff = Time.fromMillis((t1millis - t2millis)*multiplier);
-        diff.hour -= 1;
+        // diff.hour -= 1;
         return diff;
     }
 
@@ -175,7 +175,7 @@ public class Time implements Comparable<Time> {
         long t1millis = t1.getInMillis();
         long t2millis = t2.getInMillis();
         Time sum = Time.fromMillis((t1millis + t2millis));
-        sum.hour += 1;
+        // sum.hour += 1;
         return sum;
     }
 

@@ -59,6 +59,10 @@ class BellSyncDialog(
                 .setTitle(R.string.bell_sync_title)
                 .setView(b.root)
                 .setNeutralButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+                .setOnDismissListener {
+                    counterJob?.cancel()
+                    onDismissListener?.invoke(TAG)
+                }
                 .show()
         initView()
     }}

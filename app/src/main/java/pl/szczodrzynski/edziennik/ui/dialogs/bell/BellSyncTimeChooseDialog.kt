@@ -12,7 +12,6 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogBellSyncTimeChooseBinding
-import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -26,6 +25,8 @@ class BellSyncTimeChooseDialog(
 
     companion object {
         const val TAG = "BellSyncTimeChooseDialog"
+
+        private const val MAX_DIFF_MINUTES = 10
     }
 
     private lateinit var job: Job
@@ -39,7 +40,7 @@ class BellSyncTimeChooseDialog(
 
     private val today = Date.getToday()
     private val selectedTime: Time?
-        get() = b.timeDropdown.selected?.id?.let { Time.fromValue(it.toInt()) }
+        get() = b.timeDropdown.selected?.tag as Time?
 
     init { apply {
         if (activity.isFinishing)
@@ -57,15 +58,15 @@ class BellSyncTimeChooseDialog(
                     }
                 }
                 .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-                .setNeutralButton(R.string.reset, null)
                 .setOnDismissListener {
                     onDismissListener?.invoke(TAG)
                 }
-                .show()
-
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).onClick {
-            showResetDialog()
-        }
+                .create()
+                .apply {
+                    setButton(AlertDialog.BUTTON_NEUTRAL, app.getString(R.string.reset)) { _, _ ->
+                        showResetDialog()
+                    }
+                }
 
         initView()
     }}
@@ -85,6 +86,17 @@ class BellSyncTimeChooseDialog(
         loadTimeList()
     }
 
+    private fun checkForLessons(timeList: List<Time>): Boolean {
+        return if (timeList.isNotEmpty()) {
+            val now = Time.getNow()
+            val first = timeList.first()
+            val last = timeList.last()
+
+            now.stepForward(0, MAX_DIFF_MINUTES, 0) >= first &&
+                    now.stepForward(0, -1 * MAX_DIFF_MINUTES, 0) <= last
+        } else false
+    }
+
     private fun loadTimeList() { launch {
         val timeItems = withContext(Dispatchers.Default) {
             val lessons = app.db.timetableDao().getForDateNow(App.profileId, today)
@@ -94,30 +106,41 @@ class BellSyncTimeChooseDialog(
                 items += TextInputDropDown.Item(
                         it.startTime?.value?.toLong() ?: return@forEach,
                         app.getString(R.string.bell_sync_lesson_item, it.displaySubjectName, it.startTime?.stringHM),
-                        tag = it
+                        tag = it.startTime
                 )
 
                 items += TextInputDropDown.Item(
                         it.endTime?.value?.toLong() ?: return@forEach,
                         app.getString(R.string.bell_sync_break_item, it.endTime?.stringHM),
-                        tag = it
+                        tag = it.endTime
                 )
             }
 
             items
         }
 
-        b.timeDropdown.clear()
-        b.timeDropdown.append(timeItems)
-        timeItems.forEachIndexed { index, item ->
-            val time = Time.fromValue(item.id.toInt())
-            if (time < Time.getNow()) {
-                b.timeDropdown.select(if (timeItems.size > index + 1) timeItems[index + 1] else item)
+        if (!checkForLessons(timeItems.map { it.tag as Time })) {
+            /* Synchronization not possible */
+            MaterialAlertDialogBuilder(activity)
+                    .setTitle(R.string.bell_sync_title)
+                    .setMessage(R.string.bell_sync_cannot_now)
+                    .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+                    .show()
+        } else {
+            b.timeDropdown.clear()
+            b.timeDropdown.append(timeItems)
+            timeItems.forEachIndexed { index, item ->
+                val time = item.tag as Time
+                if (time < Time.getNow()) {
+                    b.timeDropdown.select(if (timeItems.size > index + 1) timeItems[index + 1] else item)
+                }
             }
-        }
 
-        b.timeDropdown.isEnabled = true
-        // TODO Fix popup cutting off
+            b.timeDropdown.isEnabled = true
+            // TODO Fix popup cutting off
+
+            dialog.show()
+        }
     }}
 
     private fun showResetDialog() {

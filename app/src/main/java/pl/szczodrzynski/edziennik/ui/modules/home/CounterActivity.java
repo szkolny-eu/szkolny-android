@@ -20,7 +20,7 @@ import pl.szczodrzynski.edziennik.databinding.ActivityCounterBinding;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
-import static pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment.updateInterval;
+import static pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentOld.updateInterval;
 
 public class CounterActivity extends AppCompatActivity {
 
@@ -153,7 +153,7 @@ public class CounterActivity extends AppCompatActivity {
     private short counterType = TIME_LEFT;
     private long updateCounter(Time syncedNow) {
         Time diff = Time.diff(counterTarget, syncedNow);
-        b.timeLeft.setText(counterType == TIME_TILL ? HomeFragment.timeTill(app, diff, app.config.getTimetable().getCountInSeconds(), "\n") : HomeFragment.timeLeft(app, diff, app.config.getTimetable().getCountInSeconds(), "\n"));
+        b.timeLeft.setText(counterType == TIME_TILL ? HomeFragmentOld.timeTill(app, diff, app.config.getTimetable().getCountInSeconds(), "\n") : HomeFragmentOld.timeLeft(app, diff, app.config.getTimetable().getCountInSeconds(), "\n"));
         return updateInterval(app, diff);
     }
 

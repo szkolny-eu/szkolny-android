@@ -52,7 +52,7 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableBinding;
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDialog;
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentOld;
 import pl.szczodrzynski.edziennik.utils.SpannableHtmlTagHandler;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
@@ -184,7 +184,7 @@ public class TimetableFragment extends Fragment {
                     return;
 
                 List<LessonFull> lessons = app.db.lessonDao().getAllWeekNow(App.profileId, today.getWeekStart(), today);
-                displayingDate = HomeFragment.findDateWithLessons(App.profileId, lessons);
+                displayingDate = HomeFragmentOld.findDateWithLessons(App.profileId, lessons);
                 pageSelection = 2 + Date.diffDays(displayingDate, today); // DEFAULT HERE
 
                 activity.runOnUiThread(() -> {

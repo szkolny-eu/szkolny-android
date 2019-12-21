@@ -52,7 +52,7 @@ import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentOld;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.edziennik.utils.models.Date;
@@ -513,14 +513,14 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         if (app.config.getSync().getInterval() < 60 * 60)
             return getString(
                     R.string.settings_sync_sync_interval_subtext_format,
-                    HomeFragment.plural(activity, R.plurals.time_till_minutes, app.config.getSync().getInterval() / 60)
+                    HomeFragmentOld.plural(activity, R.plurals.time_till_minutes, app.config.getSync().getInterval() / 60)
             );
         return getString(
                 R.string.settings_sync_sync_interval_subtext_format,
-                HomeFragment.plural(activity, R.plurals.time_till_hours, app.config.getSync().getInterval() / 60 / 60) +
+                HomeFragmentOld.plural(activity, R.plurals.time_till_hours, app.config.getSync().getInterval() / 60 / 60) +
                 (app.config.getSync().getInterval() / 60 % 60 == 0 ?
                         "" :
-                        " " + HomeFragment.plural(activity, R.plurals.time_till_minutes, app.config.getSync().getInterval() / 60 % 60)
+                        " " + HomeFragmentOld.plural(activity, R.plurals.time_till_minutes, app.config.getSync().getInterval() / 60 % 60)
                 )
         );
     }
@@ -566,16 +566,16 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             syncCardIntervalItem.setOnClickAction(() -> {
                 List<CharSequence> intervalNames = new ArrayList<>();
                 if (App.devMode && false) {
-                    intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_seconds, 30));
-                    intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 2));
+                    intervalNames.add(HomeFragmentOld.plural(activity, R.plurals.time_till_seconds, 30));
+                    intervalNames.add(HomeFragmentOld.plural(activity, R.plurals.time_till_minutes, 2));
                 }
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 30));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 45));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 1));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 1)+" "+HomeFragment.plural(activity, R.plurals.time_till_minutes, 30));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 2));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 3));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 4));
+                intervalNames.add(HomeFragmentOld.plural(activity, R.plurals.time_till_minutes, 30));
+                intervalNames.add(HomeFragmentOld.plural(activity, R.plurals.time_till_minutes, 45));
+                intervalNames.add(HomeFragmentOld.plural(activity, R.plurals.time_till_hours, 1));
+                intervalNames.add(HomeFragmentOld.plural(activity, R.plurals.time_till_hours, 1)+" "+ HomeFragmentOld.plural(activity, R.plurals.time_till_minutes, 30));
+                intervalNames.add(HomeFragmentOld.plural(activity, R.plurals.time_till_hours, 2));
+                intervalNames.add(HomeFragmentOld.plural(activity, R.plurals.time_till_hours, 3));
+                intervalNames.add(HomeFragmentOld.plural(activity, R.plurals.time_till_hours, 4));
                 List<Integer> intervals = new ArrayList<>();
                 if (App.devMode && false) {
                     intervals.add(30);

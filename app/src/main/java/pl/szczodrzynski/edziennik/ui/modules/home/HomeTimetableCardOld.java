@@ -32,21 +32,21 @@ import pl.szczodrzynski.edziennik.utils.models.Week;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange.TYPE_CANCELLED;
 import static pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange.TYPE_CHANGE;
-import static pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment.updateInterval;
+import static pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentOld.updateInterval;
 import static pl.szczodrzynski.edziennik.utils.Utils.bs;
 
 public class HomeTimetableCardOld {
     private static final String TAG = "HomeTimetableCardOld";
     private App app;
     private MainActivity a;
-    private HomeFragment f;
+    private HomeFragmentOld f;
     private LayoutInflater layoutInflater;
     private ViewGroup insertPoint;
     private CardTimetableBinding b;
     private Timer timetableTimer;
     private Time bellSyncTime = null;
 
-    public HomeTimetableCardOld(App app, MainActivity a, HomeFragment f, LayoutInflater layoutInflater, ViewGroup insertPoint) {
+    public HomeTimetableCardOld(App app, MainActivity a, HomeFragmentOld f, LayoutInflater layoutInflater, ViewGroup insertPoint) {
         this.app = app;
         this.a = a;
         this.f = f;
@@ -109,7 +109,7 @@ public class HomeTimetableCardOld {
             }
         });
 
-        HomeFragment.buttonAddDrawable(a, b.cardTimetableButton, CommunityMaterial.Icon.cmd_arrow_right);
+        HomeFragmentOld.buttonAddDrawable(a, b.cardTimetableButton, CommunityMaterial.Icon.cmd_arrow_right);
     }
 
     private List<LessonFull> lessons = new ArrayList<>();
@@ -228,7 +228,7 @@ public class HomeTimetableCardOld {
     private short counterType = TIME_TILL;
     private long updateCounter(Time syncedNow) {
         Time diff = Time.diff(counterTarget, syncedNow);
-        b.cardTimetableTimeLeft.setText(counterType == TIME_TILL ? HomeFragment.timeTill(app, diff, app.config.getTimetable().getCountInSeconds()) : HomeFragment.timeLeft(app, diff, app.config.getTimetable().getCountInSeconds()));
+        b.cardTimetableTimeLeft.setText(counterType == TIME_TILL ? HomeFragmentOld.timeTill(app, diff, app.config.getTimetable().getCountInSeconds()) : HomeFragmentOld.timeLeft(app, diff, app.config.getTimetable().getCountInSeconds()));
         bellSyncTime = counterTarget;
         b.cardTimetableFullscreenCounter.setVisibility(View.VISIBLE);
         return updateInterval(app, diff);

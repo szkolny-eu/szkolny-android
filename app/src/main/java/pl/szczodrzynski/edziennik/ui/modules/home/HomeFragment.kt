@@ -26,7 +26,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.databinding.FragmentHomeV2Binding
+import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeGradesCard
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeLuckyNumberCard
@@ -38,7 +38,7 @@ import kotlin.coroutines.CoroutineContext
 
 class HomeFragmentV2 : Fragment(), CoroutineScope {
     companion object {
-        private const val TAG = "HomeFragment"
+        private const val TAG = "HomeFragmentOld"
 
         fun swapCards(fromPosition: Int, toPosition: Int, cardAdapter: HomeCardAdapter) {
             val homeCards = App.getConfig().ui.homeCards.toMutableList()
@@ -56,7 +56,7 @@ class HomeFragmentV2 : Fragment(), CoroutineScope {
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-    private lateinit var b: FragmentHomeV2Binding
+    private lateinit var b: FragmentHomeBinding
 
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
@@ -67,7 +67,7 @@ class HomeFragmentV2 : Fragment(), CoroutineScope {
         context ?: return null
         app = activity.application as App
         context!!.theme.applyStyle(Themes.appTheme, true)
-        b = FragmentHomeV2Binding.inflate(inflater)
+        b = FragmentHomeBinding.inflate(inflater)
         b.refreshLayout.setParent(activity.swipeRefreshLayout)
         job = Job()
         return b.root
