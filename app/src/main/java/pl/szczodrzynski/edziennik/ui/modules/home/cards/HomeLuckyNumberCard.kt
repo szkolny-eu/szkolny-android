@@ -21,7 +21,7 @@ import pl.szczodrzynski.edziennik.databinding.CardHomeLuckyNumberBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardAdapter
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentV2
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
@@ -29,7 +29,7 @@ class HomeLuckyNumberCard(
         override val id: Int,
         val app: App,
         val activity: MainActivity,
-        val fragment: HomeFragmentV2,
+        val fragment: HomeFragment,
         val profile: Profile
 ) : HomeCard, CoroutineScope {
     companion object {

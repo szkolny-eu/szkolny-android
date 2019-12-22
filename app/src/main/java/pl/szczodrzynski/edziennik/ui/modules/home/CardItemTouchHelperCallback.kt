@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.ui.modules.home
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentV2.Companion.swapCards
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment.Companion.swapCards
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
 
 class CardItemTouchHelperCallback(private val cardAdapter: HomeCardAdapter, private val refreshLayout: SwipeRefreshLayoutNoIndicator?) : ItemTouchHelper.Callback() {

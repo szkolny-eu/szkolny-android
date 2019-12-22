@@ -28,6 +28,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
+import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeDebugCard
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeGradesCard
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeLuckyNumberCard
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeTimetableCard
@@ -36,9 +37,9 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
 
-class HomeFragmentV2 : Fragment(), CoroutineScope {
+class HomeFragment : Fragment(), CoroutineScope {
     companion object {
-        private const val TAG = "HomeFragmentOld"
+        private const val TAG = "HomeFragment"
 
         fun swapCards(fromPosition: Int, toPosition: Int, cardAdapter: HomeCardAdapter) {
             val homeCards = App.getConfig().ui.homeCards.toMutableList()
@@ -121,6 +122,8 @@ class HomeFragmentV2 : Fragment(), CoroutineScope {
                 else -> null
             }
         }
+        if (App.devMode)
+            items += HomeDebugCard(100, app, activity, this, app.profile)
 
         val adapter = HomeCardAdapter(items)
         val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter, b.refreshLayout))

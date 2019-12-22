@@ -58,7 +58,7 @@ import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
 import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentV2
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessageFragment
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
             val list: MutableList<NavTarget> = mutableListOf()
 
             // home item
-            list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragmentV2::class)
+            list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragment::class)
                     .withTitle(R.string.app_name)
                     .withIcon(CommunityMaterial.Icon2.cmd_home_outline)
                     .isInDrawer(true)
