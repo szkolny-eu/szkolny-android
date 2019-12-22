@@ -158,8 +158,8 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
         }
 
         // clear the root view and add the ScrollView
-        (view as FrameLayout).removeAllViews()
-        (view as FrameLayout).addView(dayScroll)
+        (view as FrameLayout?)?.removeAllViews()
+        (view as FrameLayout?)?.addView(dayScroll)
 
         // Inflate a label view for each hour the day view will display
         val hourLabelViews = ArrayList<View>()
