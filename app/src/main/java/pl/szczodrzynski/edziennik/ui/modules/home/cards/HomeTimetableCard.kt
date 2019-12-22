@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.home.cards
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.CardHomeTimetableBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.bell.BellSyncTimeChooseDialog
+import pl.szczodrzynski.edziennik.ui.modules.home.CounterActivity
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
@@ -66,7 +68,7 @@ class HomeTimetableCard(
 
     private var bellSyncDiffMillis = 0L
     private val syncedNow: Time
-        get() = Time.fromMillis(Time.getNow().inMillis + bellSyncDiffMillis)
+        get() = Time.fromMillis(Time.getNow().inMillis - bellSyncDiffMillis)
 
     private var counterJob: Job? = null
     private var counterStart: Time? = null
@@ -91,10 +93,18 @@ class HomeTimetableCard(
                 .colorAttr(activity, R.attr.colorIcon)
                 .sizeDp(20))
 
+        b.showCounter.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon.cmd_fullscreen)
+                .colorAttr(activity, R.attr.colorIcon)
+                .sizeDp(20))
+
         b.bellSync.setOnClickListener {
             BellSyncTimeChooseDialog(
                     activity
             )
+        }
+
+        b.showCounter.setOnClickListener {
+            activity.startActivity(Intent(activity, CounterActivity::class.java))
         }
 
         b.root.onClick {
@@ -113,7 +123,6 @@ class HomeTimetableCard(
         app.config.timetable.bellSyncDiff?.let {
             bellSyncDiffMillis = (it.hour * 60 * 60 * 1000 + it.minute * 60 * 1000 + it.second * 1000).toLong()
             bellSyncDiffMillis *= app.config.timetable.bellSyncMultiplier.toLong()
-            bellSyncDiffMillis *= -1
         }
 
         // get all lessons within the search bounds

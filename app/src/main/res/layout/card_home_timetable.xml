@@ -183,6 +183,14 @@
                     android:padding="10dp"
                     android:background="?selectableItemBackgroundBorderless"
                     tools:src="@sample/settings" />
+
+                <ImageView
+                    android:id="@+id/showCounter"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    tools:src="@sample/settings" />
             </LinearLayout>
 
             <View

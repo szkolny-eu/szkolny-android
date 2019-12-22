@@ -22,9 +22,9 @@ import pl.szczodrzynski.edziennik.utils.models.Time;
 
 import static pl.szczodrzynski.edziennik.ui.modules.home.HomeFragmentOld.updateInterval;
 
-public class CounterActivity extends AppCompatActivity {
+public class CounterActivityOld extends AppCompatActivity {
 
-    private static final String TAG = "CounterActivity";
+    private static final String TAG = "CounterActivityOld";
     private App app;
     private ActivityCounterBinding b;
 

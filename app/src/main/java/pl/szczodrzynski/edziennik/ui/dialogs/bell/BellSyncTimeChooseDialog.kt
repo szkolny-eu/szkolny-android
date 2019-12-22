@@ -11,6 +11,7 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.databinding.DialogBellSyncTimeChooseBinding
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -103,17 +104,22 @@ class BellSyncTimeChooseDialog(
             val items = mutableListOf<TextInputDropDown.Item>()
 
             lessons.forEach {
-                items += TextInputDropDown.Item(
-                        it.startTime?.value?.toLong() ?: return@forEach,
-                        app.getString(R.string.bell_sync_lesson_item, it.displaySubjectName, it.startTime?.stringHM),
-                        tag = it.startTime
-                )
+                if (it.type != Lesson.TYPE_NO_LESSONS &&
+                        it.type != Lesson.TYPE_CANCELLED &&
+                        it.type != Lesson.TYPE_SHIFTED_SOURCE) {
 
-                items += TextInputDropDown.Item(
-                        it.endTime?.value?.toLong() ?: return@forEach,
-                        app.getString(R.string.bell_sync_break_item, it.endTime?.stringHM),
-                        tag = it.endTime
-                )
+                    items += TextInputDropDown.Item(
+                            it.displayStartTime?.value?.toLong() ?: return@forEach,
+                            app.getString(R.string.bell_sync_lesson_item, it.displaySubjectName, it.displayStartTime?.stringHM),
+                            tag = it.displayStartTime
+                    )
+
+                    items += TextInputDropDown.Item(
+                            it.displayEndTime?.value?.toLong() ?: return@forEach,
+                            app.getString(R.string.bell_sync_break_item, it.displayEndTime?.stringHM),
+                            tag = it.displayEndTime
+                    )
+                }
             }
 
             items

@@ -61,7 +61,7 @@ public class HomeTimetableCardOld {
         insertPoint.addView(b.getRoot(), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         b.cardTimetableFullscreenCounter.setOnClickListener((v -> {
-            Intent intent = new Intent(a, CounterActivity.class);
+            Intent intent = new Intent(a, CounterActivityOld.class);
             a.startActivity(intent);
         }));
 

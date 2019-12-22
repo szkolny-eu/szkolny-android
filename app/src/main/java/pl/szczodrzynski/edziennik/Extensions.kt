@@ -576,52 +576,65 @@ operator fun StringBuilder.plusAssign(str: String?) {
     this.append(str)
 }
 
-fun Context.timeTill(time: Int, delimiter: String = " "): String {
+fun Context.timeTill(time: Int, delimiter: String = " ", countInSeconds: Boolean = false): String {
     val parts = mutableListOf<Pair<Int, Int>>()
 
     val hours = time / 3600
     val minutes = (time - hours*3600) / 60
     val seconds = time - minutes*60 - hours*3600
 
-    var prefixAdded = false
-    if (hours > 0) {
-        if (!prefixAdded) parts += R.plurals.time_till_text to hours; prefixAdded = true
-        parts += R.plurals.time_till_hours to hours
-    }
-    if (minutes > 0) {
-        if (!prefixAdded) parts += R.plurals.time_till_text to minutes; prefixAdded = true
-        parts += R.plurals.time_till_minutes to minutes
-    }
-    if (hours == 0 && minutes < 10) {
-        if (!prefixAdded) parts += R.plurals.time_till_text to seconds; prefixAdded = true
-        parts += R.plurals.time_till_seconds to seconds
+    if (!countInSeconds) {
+        var prefixAdded = false
+        if (hours > 0) {
+            if (!prefixAdded) parts += R.plurals.time_till_text to hours
+            prefixAdded = true
+            parts += R.plurals.time_till_hours to hours
+        }
+        if (minutes > 0) {
+            if (!prefixAdded) parts += R.plurals.time_till_text to minutes
+            prefixAdded = true
+            parts += R.plurals.time_till_minutes to minutes
+        }
+        if (hours == 0 && minutes < 10) {
+            if (!prefixAdded) parts += R.plurals.time_till_text to seconds
+            prefixAdded = true
+            parts += R.plurals.time_till_seconds to seconds
+        }
+    } else {
+        parts += R.plurals.time_till_text to time
+        parts += R.plurals.time_till_seconds to time
     }
 
     return parts.joinToString(delimiter) { resources.getQuantityString(it.first, it.second, it.second) }
 }
 
-fun Context.timeLeft(time: Int, delimiter: String = " "): String {
+fun Context.timeLeft(time: Int, delimiter: String = " ", countInSeconds: Boolean = false): String {
     val parts = mutableListOf<Pair<Int, Int>>()
 
     val hours = time / 3600
     val minutes = (time - hours*3600) / 60
     val seconds = time - minutes*60 - hours*3600
 
-    var prefixAdded = false
-    if (hours > 0) {
-        if (!prefixAdded) parts += R.plurals.time_left_text to hours
-        prefixAdded = true
-        parts += R.plurals.time_left_hours to hours
-    }
-    if (minutes > 0) {
-        if (!prefixAdded) parts += R.plurals.time_left_text to minutes
-        prefixAdded = true
-        parts += R.plurals.time_left_minutes to minutes
-    }
-    if (hours == 0 && minutes < 10) {
-        if (!prefixAdded) parts += R.plurals.time_left_text to seconds
-        prefixAdded = true
-        parts += R.plurals.time_left_seconds to seconds
+    if (!countInSeconds) {
+        var prefixAdded = false
+        if (hours > 0) {
+            if (!prefixAdded) parts += R.plurals.time_left_text to hours
+            prefixAdded = true
+            parts += R.plurals.time_left_hours to hours
+        }
+        if (minutes > 0) {
+            if (!prefixAdded) parts += R.plurals.time_left_text to minutes
+            prefixAdded = true
+            parts += R.plurals.time_left_minutes to minutes
+        }
+        if (hours == 0 && minutes < 10) {
+            if (!prefixAdded) parts += R.plurals.time_left_text to seconds
+            prefixAdded = true
+            parts += R.plurals.time_left_seconds to seconds
+        }
+    } else {
+        parts += R.plurals.time_left_text to time
+        parts += R.plurals.time_left_seconds to time
     }
 
     return parts.joinToString(delimiter) { resources.getQuantityString(it.first, it.second, it.second) }

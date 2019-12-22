@@ -1124,4 +1124,6 @@
     <string name="widget_timetable_no_lessons_found">Brak lekcji przez następne 7 dni.</string>
     <string name="widget_timetable_short_no_timetable">Nie pobrano planu lekcji.</string>
     <string name="widget_timetable_short_no_lessons">Brak lekcji przez nast. 7 dni.</string>
+    <string name="no_lessons_today">Nie ma dzisiaj żadnych lekcji!</string>
+    <string name="lessons_finished">Nie ma dzisiaj więcej lekcji!</string>
 </resources>
