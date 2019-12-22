@@ -77,6 +77,9 @@ class HomeTimetableCard(
 
     private val ignoreCancelled = true
 
+    private val countInSeconds: Boolean
+        get() = app.config.timetable.countInSeconds
+
     override fun bind(position: Int, holder: HomeCardAdapter.ViewHolder) {
         holder.root.removeAllViews()
         b = CardHomeTimetableBinding.inflate(LayoutInflater.from(holder.root.context))
@@ -341,7 +344,7 @@ class HomeTimetableCard(
             b.progress.visibility = View.GONE
             b.counter.visibility = View.VISIBLE
             val diff = counterStart - now
-            b.counter.text = activity.timeTill(diff.toInt(), "\n")
+            b.counter.text = activity.timeTill(diff.toInt(), "\n", countInSeconds)
         }
         else {
             // the lesson is right now
@@ -350,7 +353,7 @@ class HomeTimetableCard(
             val lessonLength = counterEnd - counterStart
             val timePassed = now - counterStart
             val timeLeft = counterEnd - now
-            b.counter.text = activity.timeLeft(timeLeft.toInt(), "\n")
+            b.counter.text = activity.timeLeft(timeLeft.toInt(), "\n", countInSeconds)
             b.progress.max = lessonLength.toInt()
             b.progress.progress = timePassed.toInt()
         }
