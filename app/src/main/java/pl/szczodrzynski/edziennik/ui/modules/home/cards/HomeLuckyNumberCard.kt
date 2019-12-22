@@ -51,6 +51,9 @@ class HomeLuckyNumberCard(
         val today = Date.getToday()
         val todayValue = today.value
 
+        val tomorrow = Date.getToday().stepForward(0, 0, 1)
+        val tomorrowValue = tomorrow.value
+
         val subTextRes = if (profile.studentNumber == -1)
             R.string.home_lucky_number_details_click_to_set
         else
@@ -59,28 +62,26 @@ class HomeLuckyNumberCard(
 
         app.db.luckyNumberDao().getNearestFuture(App.profileId, todayValue).observe(fragment, Observer { luckyNumber ->
             val isYours = luckyNumber?.number == profile.studentNumber
-            val titleRes = when {
-                luckyNumber == null -> R.string.home_lucky_number_no_info
-                luckyNumber.number == -1 -> R.string.home_lucky_number_no_number
+            val res: Pair<Int, Array<out Any>> = when {
+                luckyNumber == null -> R.string.home_lucky_number_no_info to emptyArray()
+                luckyNumber.number == -1 -> R.string.home_lucky_number_no_number to emptyArray()
                 else -> when (isYours) {
                     true -> when (luckyNumber.date.value) {
-                        todayValue -> R.string.home_lucky_number_yours_today
-                        todayValue + 1 -> R.string.home_lucky_number_yours_tomorrow
-                        else -> R.string.home_lucky_number_yours_later
+                        todayValue -> R.string.home_lucky_number_yours_today to emptyArray()
+                        tomorrowValue -> R.string.home_lucky_number_yours_tomorrow to emptyArray()
+                        else -> R.string.home_lucky_number_yours_later to arrayOf(luckyNumber.date.formattedString)
                     }
                     false -> when (luckyNumber.date.value) {
-                        todayValue -> R.string.home_lucky_number_today
-                        todayValue + 1 -> R.string.home_lucky_number_tomorrow
-                        else -> R.string.home_lucky_number_later
+                        todayValue -> R.string.home_lucky_number_today to arrayOf(luckyNumber.number)
+                        tomorrowValue -> R.string.home_lucky_number_tomorrow to arrayOf(luckyNumber.number)
+                        else -> R.string.home_lucky_number_later to arrayOf(luckyNumber.date.formattedString, luckyNumber.number)
                     }
                 }
             }
 
-            b.title.setText(
-                    titleRes,
-                    luckyNumber?.number ?: 0,
-                    luckyNumber?.date?.formattedString ?: ""
-            )
+            val (titleRes, resArguments) = res
+
+            b.title.setText(titleRes, *resArguments)
 
             val drawableRes = when {
                 luckyNumber == null || luckyNumber.number == -1 -> R.drawable.emoji_sad
