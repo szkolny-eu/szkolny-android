@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_WEB_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
@@ -23,7 +24,7 @@ class IdziennikWebGrades(override val data: DataIdziennik,
         private const val TAG = "IdziennikWebGrades"
     }
 
-    init {
+    init { data.profile?.also { profile ->
         webApiGet(TAG, IDZIENNIK_WEB_GRADES, mapOf(
                 "idPozDziennika" to data.registerId
         )) { result ->
@@ -141,15 +142,22 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                                     profileId,
                                     Metadata.TYPE_GRADE,
                                     id,
-                                    data.profile?.empty ?: false,
-                                    data.profile?.empty ?: false,
+                                    data.profile.empty,
+                                    data.profile.empty,
                                     addedDate
                             ))
                 }
             }
 
+            data.toRemove.addAll(listOf(
+                    Grade.TYPE_NORMAL,
+                    Grade.TYPE_SEMESTER1_FINAL,
+                    Grade.TYPE_YEAR_FINAL
+            ).map {
+                DataRemoveModel.Grades.semesterWithType(profile.currentSemester, it)
+            })
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_GRADES, SYNC_ALWAYS)
             onSuccess()
         }
-    }
+    } ?: onSuccess() }
 }

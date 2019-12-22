@@ -4,13 +4,14 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web
 
+import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.api.ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA
 import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_WEB_MISSING_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_WEB_PROPOSED_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.asJsonObjectList
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.TYPE_SEMESTER1_PROPOSED
@@ -106,8 +107,11 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                 }
             }
 
+            data.toRemove.addAll(listOf(TYPE_SEMESTER1_PROPOSED, TYPE_YEAR_PROPOSED).map {
+                DataRemoveModel.Grades.semesterWithType(profile.currentSemester, it)
+            })
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_PROPOSED_GRADES, SYNC_ALWAYS)
             onSuccess()
         }
-    }}
+    } ?: onSuccess() }
 }

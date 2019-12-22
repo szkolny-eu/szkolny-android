@@ -4,8 +4,10 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
+import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.*
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.utils.Utils
@@ -17,7 +19,7 @@ class LibrusApiGrades(override val data: DataLibrus,
         const val TAG = "LibrusApiGrades"
     }
 
-    init {
+    init { data.profile?.also { profile ->
         apiGet(TAG, "Grades") { json ->
             val grades = json.getJsonArray("Grades").asJsonObjectList()
 
@@ -68,15 +70,15 @@ class LibrusApiGrades(override val data: DataLibrus,
 
                 when {
                     grade.getBoolean("IsConstituent") ?: false ->
-                        gradeObject.type = Grade.TYPE_NORMAL
+                        gradeObject.type = TYPE_NORMAL
                     grade.getBoolean("IsSemester") ?: false -> // semester final
-                        gradeObject.type = if (gradeObject.semester == 1) Grade.TYPE_SEMESTER1_FINAL else Grade.TYPE_SEMESTER2_FINAL
+                        gradeObject.type = if (gradeObject.semester == 1) TYPE_SEMESTER1_FINAL else TYPE_SEMESTER2_FINAL
                     grade.getBoolean("IsSemesterProposition") ?: false -> // semester proposed
-                        gradeObject.type = if (gradeObject.semester == 1) Grade.TYPE_SEMESTER1_PROPOSED else Grade.TYPE_SEMESTER2_PROPOSED
+                        gradeObject.type = if (gradeObject.semester == 1) TYPE_SEMESTER1_PROPOSED else TYPE_SEMESTER2_PROPOSED
                     grade.getBoolean("IsFinal") ?: false -> // year final
-                        gradeObject.type = Grade.TYPE_YEAR_FINAL
+                        gradeObject.type = TYPE_YEAR_FINAL
                     grade.getBoolean("IsFinalProposition") ?: false -> // year final
-                        gradeObject.type = Grade.TYPE_YEAR_PROPOSED
+                        gradeObject.type = TYPE_YEAR_PROPOSED
                 }
 
                 grade.getJsonObject("Improvement")?.also {
@@ -94,14 +96,25 @@ class LibrusApiGrades(override val data: DataLibrus,
                                 profileId,
                                 Metadata.TYPE_GRADE,
                                 id,
-                                profile?.empty ?: false,
-                                profile?.empty ?: false,
+                                profile.empty,
+                                profile.empty,
                                 addedDate
                         ))
             }
 
+            data.toRemove.addAll(listOf(
+                    TYPE_NORMAL,
+                    TYPE_SEMESTER1_FINAL,
+                    TYPE_SEMESTER2_FINAL,
+                    TYPE_SEMESTER1_PROPOSED,
+                    TYPE_SEMESTER2_PROPOSED,
+                    TYPE_YEAR_FINAL,
+                    TYPE_YEAR_PROPOSED
+            ).map {
+                DataRemoveModel.Grades.semesterWithType(profile.currentSemester, it)
+            })
             data.setSyncNext(ENDPOINT_LIBRUS_API_NORMAL_GRADES, SYNC_ALWAYS)
             onSuccess()
         }
-    }
+    } ?: onSuccess() }
 }

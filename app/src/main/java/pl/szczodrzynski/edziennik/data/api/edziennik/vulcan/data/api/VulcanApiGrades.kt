@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
@@ -109,6 +110,7 @@ class VulcanApiGrades(override val data: DataVulcan, val onSuccess: () -> Unit) 
                 ))
             }
 
+            data.toRemove.add(DataRemoveModel.Grades.semesterWithType(data.studentSemesterNumber, Grade.TYPE_NORMAL))
             data.setSyncNext(ENDPOINT_VULCAN_API_GRADES, SYNC_ALWAYS)
             onSuccess()
         }

@@ -27,8 +27,14 @@ public abstract class GradeDao {
     @Query("DELETE FROM grades WHERE profileId = :profileId")
     public abstract void clear(int profileId);
 
+    @Query("DELETE FROM grades WHERE profileId = :profileId AND gradeType = :type")
+    public abstract void clearWithType(int profileId, int type);
+
     @Query("DELETE FROM grades WHERE profileId = :profileId AND gradeSemester = :semester")
     public abstract void clearForSemester(int profileId, int semester);
+
+    @Query("DELETE FROM grades WHERE profileId = :profileId AND gradeSemester = :semester AND gradeType = :type")
+    public abstract void clearForSemesterWithType(int profileId, int semester, int type);
 
     @RawQuery(observedEntities = {Grade.class})
     abstract LiveData<List<GradeFull>> getAll(SupportSQLiteQuery query);

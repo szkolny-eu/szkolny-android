@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
@@ -25,8 +26,10 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
         private const val TAG = "MobidziennikWebGrades"
     }
 
-    init {
-        webGet(TAG, "/dziennik/oceny?semestr=${profile?.currentSemester ?: 1}") { text ->
+    init { data.profile?.also { profile ->
+        val currentSemester = profile.currentSemester
+
+        webGet(TAG, "/dziennik/oceny?semestr=$currentSemester") { text ->
             MobidziennikLuckyNumberExtractor(data, text)
 
             val doc = Jsoup.parse(text)
@@ -90,7 +93,7 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                             )
                             val time = Time.fromH_m_s(it[4])
                             gradeAddedDateMillis = gradeAddedDate.combineWith(time)
-                            gradeSemester = profile?.dateToSemester(gradeAddedDate) ?: 1
+                            gradeSemester = profile.dateToSemester(gradeAddedDate)
                         }
 
                         if (Regexes.MOBIDZIENNIK_GRADES_COUNT_TO_AVG.containsMatchIn(html)) {
@@ -129,8 +132,8 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                                                 profileId,
                                                 Metadata.TYPE_GRADE,
                                                 gradeObject.id,
-                                                profile?.empty ?: false,
-                                                profile?.empty ?: false,
+                                                profile.empty,
+                                                profile.empty,
                                                 gradeAddedDateMillis
                                         ))
                             }
@@ -143,8 +146,9 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                 }
             }
 
+            data.toRemove.add(DataRemoveModel.Grades.semesterWithType(currentSemester, Grade.TYPE_NORMAL))
             data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_GRADES, SYNC_ALWAYS)
             onSuccess()
         }
-    }
+    }}
 }

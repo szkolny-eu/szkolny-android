@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
@@ -23,7 +24,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
 
     private val nameFormat by lazy { DecimalFormat("#.##") }
 
-    init { data.profile?.let { profile ->
+    init { data.profile?.also { profile ->
         apiGet(TAG, "BehaviourGrades/Points") { json ->
 
             if (data.startPointsSemester1 > 0) {
@@ -147,8 +148,9 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                 ))
             }
 
+            data.toRemove.add(DataRemoveModel.Grades.semesterWithType(profile.currentSemester, Grade.TYPE_BEHAVIOUR))
             data.setSyncNext(ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES, SYNC_ALWAYS)
             onSuccess()
         }
-    }}
+    } ?: onSuccess() }
 }
