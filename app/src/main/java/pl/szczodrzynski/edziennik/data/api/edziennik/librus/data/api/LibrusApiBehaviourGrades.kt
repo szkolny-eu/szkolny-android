@@ -26,53 +26,57 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
     init { data.profile?.let { profile ->
         apiGet(TAG, "BehaviourGrades/Points") { json ->
 
-            val semester1StartGradeObject = Grade(
-                    profileId,
-                    -101,
-                    data.app.getString(R.string.grade_start_points),
-                    0xffbdbdbd.toInt(),
-                    data.app.getString(R.string.grade_start_points_format, 1),
-                    nameFormat.format(data.startPointsSemester1),
-                    data.startPointsSemester1.toFloat(),
-                    -1f,
-                    1,
-                    -1,
-                    1
-            ).apply { type = Grade.TYPE_BEHAVIOUR }
+            if (data.startPointsSemester1 > 0) {
+                val semester1StartGradeObject = Grade(
+                        profileId,
+                        -101,
+                        data.app.getString(R.string.grade_start_points),
+                        0xffbdbdbd.toInt(),
+                        data.app.getString(R.string.grade_start_points_format, 1),
+                        nameFormat.format(data.startPointsSemester1),
+                        data.startPointsSemester1.toFloat(),
+                        -1f,
+                        1,
+                        -1,
+                        1
+                ).apply { type = Grade.TYPE_BEHAVIOUR }
 
-            data.gradeList.add(semester1StartGradeObject)
-            data.metadataList.add(Metadata(
-                    profileId,
-                    Metadata.TYPE_GRADE,
-                    semester1StartGradeObject.id,
-                    true,
-                    true,
-                    profile.getSemesterStart(1).inMillis
-            ))
+                data.gradeList.add(semester1StartGradeObject)
+                data.metadataList.add(Metadata(
+                        profileId,
+                        Metadata.TYPE_GRADE,
+                        semester1StartGradeObject.id,
+                        true,
+                        true,
+                        profile.getSemesterStart(1).inMillis
+                ))
+            }
 
-            val semester2StartGradeObject = Grade(
-                    profileId,
-                    -102,
-                    data.app.getString(R.string.grade_start_points),
-                    0xffbdbdbd.toInt(),
-                    data.app.getString(R.string.grade_start_points_format, 2),
-                    nameFormat.format(data.startPointsSemester2),
-                    data.startPointsSemester2.toFloat(),
-                    -1f,
-                    2,
-                    -1,
-                    1
-            ).apply { type = Grade.TYPE_BEHAVIOUR }
+            if (data.startPointsSemester2 > 0) {
+                val semester2StartGradeObject = Grade(
+                        profileId,
+                        -102,
+                        data.app.getString(R.string.grade_start_points),
+                        0xffbdbdbd.toInt(),
+                        data.app.getString(R.string.grade_start_points_format, 2),
+                        nameFormat.format(data.startPointsSemester2),
+                        data.startPointsSemester2.toFloat(),
+                        -1f,
+                        2,
+                        -1,
+                        1
+                ).apply { type = Grade.TYPE_BEHAVIOUR }
 
-            data.gradeList.add(semester2StartGradeObject)
-            data.metadataList.add(Metadata(
-                    profileId,
-                    Metadata.TYPE_GRADE,
-                    semester2StartGradeObject.id,
-                    true,
-                    true,
-                    profile.getSemesterStart(2).inMillis
-            ))
+                data.gradeList.add(semester2StartGradeObject)
+                data.metadataList.add(Metadata(
+                        profileId,
+                        Metadata.TYPE_GRADE,
+                        semester2StartGradeObject.id,
+                        true,
+                        true,
+                        profile.getSemesterStart(2).inMillis
+                ))
+            }
 
             json.getJsonArray("Grades")?.asJsonObjectList()?.forEach { grade ->
                 val id = grade.getLong("Id") ?: return@forEach
