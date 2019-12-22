@@ -124,12 +124,12 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                         }
                         1 -> {
                             gradeObject.type = Grade.TYPE_SEMESTER1_FINAL
-                            gradeObject.name = name
+                            gradeObject.name = value.toInt().toString()
                             gradeObject.weight = 0f
                         }
                         2 -> {
                             gradeObject.type = Grade.TYPE_YEAR_FINAL
-                            gradeObject.name = name
+                            gradeObject.name = value.toInt().toString()
                             gradeObject.weight = 0f
                         }
                     }
