@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api
 
+import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginApi
@@ -128,6 +129,14 @@ val idziennikLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_IDZIENNIK, LOGIN_METHOD_IDZIENNIK_API, IdziennikLoginApi::class.java)
                 .withIsPossible { _, _ -> true }
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_IDZIENNIK_WEB }
+)
+
+const val LOGIN_TYPE_EDUDZIENNIK = 5
+const val LOGIN_METHOD_EDUDZIENNIK_WEB = 100
+val edudziennikLoginMethods = listOf(
+        LoginMethod(LOGIN_TYPE_EDUDZIENNIK, LOGIN_METHOD_EDUDZIENNIK_WEB, EdudziennikLoginWeb::class.java)
+                .withIsPossible { _, _ -> true }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
 )
 
 val templateLoginMethods = listOf(

@@ -184,18 +184,17 @@
                             android:layout_height="100dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginLeft="16dp"
-                            android:layout_weight="1"
-                            android:visibility="invisible">
+                            android:layout_weight="1">
 
-                            <!--<ImageView
-                                android:id="@+id/loginIuczniowieLogo"
+                            <ImageView
+                                android:id="@+id/loginEdudziennikLogo"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:adjustViewBounds="true"
                                 android:background="@drawable/bg_rounded_ripple"
                                 android:padding="16dp"
                                 android:scaleType="fitCenter"
-                                app:srcCompat="@drawable/login_logo_iuczniowie" />-->
+                                app:srcCompat="@drawable/login_logo_edudziennik" />
                         </FrameLayout>
 
                     </LinearLayout>

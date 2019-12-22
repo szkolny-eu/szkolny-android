@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.Edudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.Idziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.Librus
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.Mobidziennik
@@ -59,6 +60,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             LOGIN_TYPE_MOBIDZIENNIK -> Mobidziennik(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_VULCAN -> Vulcan(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_IDZIENNIK -> Idziennik(app, profile, loginStore, taskCallback)
+            LOGIN_TYPE_EDUDZIENNIK -> Edudziennik(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_TEMPLATE -> Template(app, profile, loginStore, taskCallback)
             else -> null
         }

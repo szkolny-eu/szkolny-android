@@ -126,6 +126,18 @@
             app:destination="@id/loginProgressFragment" />
     </fragment>
     <fragment
+        android:id="@+id/loginEdudziennikFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginEdudziennikFragment"
+        android:label="fragment_login_edudziennik"
+        tools:layout="@layout/fragment_login_edudziennik" >
+        <!--<action
+            android:id="@+id/action_loginLibrusFragment_to_loginLibrusHelpFragment"
+            app:destination="@id/loginLibrusHelpFragment" />-->
+        <action
+            android:id="@+id/action_loginEdudziennikFragment_to_loginProgressFragment"
+            app:destination="@id/loginProgressFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/loginVulcanHelpFragment"
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginVulcanHelpFragment"
         android:label="fragment_login_vulcan_help"
