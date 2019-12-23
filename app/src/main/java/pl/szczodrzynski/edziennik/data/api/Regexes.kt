@@ -82,4 +82,10 @@ object Regexes {
     val LIBRUS_ATTACHMENT_KEY by lazy {
         """singleUseKey=([0-9A-f_]+)""".toRegex()
     }
+
+
+
+    val EDUDZIENNIK_STUDENT_ID by lazy {
+        """""".toRegex()
+    }
 }

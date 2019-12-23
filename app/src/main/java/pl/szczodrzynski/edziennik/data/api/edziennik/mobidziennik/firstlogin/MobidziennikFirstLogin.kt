@@ -7,7 +7,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.Mobidzie
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
     companion object {
@@ -39,12 +39,11 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
                     if (student1.size == 2)
                         return@forEach
 
-                    val today = Date.getToday()
                     val profile = Profile()
                     profile.studentNameLong = "${student1[2]} ${student1[4]}".fixName()
                     profile.studentNameShort = "${student1[2]} ${student1[4][0]}.".fixName()
                     profile.accountNameLong = if (accountNameLong == profile.studentNameLong) null else accountNameLong
-                    profile.studentSchoolYear = "${today.year}/${today.year+1}"
+                    profile.studentSchoolYear = Utils.getCurrentSchoolYear()
                     profile.name = profile.studentNameLong
                     profile.subname = data.loginUsername
                     profile.empty = true

@@ -158,6 +158,10 @@ const val ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA               = 441
 const val ERROR_IDZIENNIK_API_ACCESS_DENIED                 = 450
 const val ERROR_IDZIENNIK_API_OTHER                         = 451
 
+const val ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN         = 501
+const val ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER                 = 510
+const val ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID         = 511
+
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 
 const val EXCEPTION_API_TASK                                = 900

@@ -4,16 +4,20 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data
 
-import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.currentTimeUnix
-import pl.szczodrzynski.edziennik.data.api.ERROR_TEMPLATE_WEB_OTHER
-import pl.szczodrzynski.edziennik.data.api.GET
+import im.wangchao.mhttp.Request
+import im.wangchao.mhttp.Response
+import im.wangchao.mhttp.callback.TextCallbackHandler
+import okhttp3.Cookie
+import pl.szczodrzynski.edziennik.data.api.EDUDZIENNIK_USER_AGENT
+import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
+import pl.szczodrzynski.edziennik.data.api.ERROR_RESPONSE_EMPTY
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.utils.Utils.d
 
 open class EdudziennikWeb(open val data: DataEdudziennik) {
     companion object {
-        private const val TAG = "TemplateWeb"
+        private const val TAG = "EdudziennikWeb"
     }
 
     val profileId
@@ -22,24 +26,51 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
     val profile
         get() = data.profile
 
-    /**
-     * This will be used by all TemplateWeb* endpoints.
-     *
-     * You can customize this method's parameters to best fit the implemented e-register.
-     * Just make sure that [tag] and [onSuccess] is present.
-     */
-    fun webGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, onSuccess: (json: JsonObject?) -> Unit) {
-        val json = JsonObject()
-        json.addProperty("foo", "bar")
-        json.addProperty("sample", "text")
-
-        if (currentTimeUnix() % 4L == 0L) {
-            // let's set a 20% chance of error, just as a test
-            data.error(ApiError(tag, ERROR_TEMPLATE_WEB_OTHER)
-                    .withApiResponse("404 Not Found - this is the text returned by the API"))
-            return
+    fun webGet(tag: String, endpoint: String, onSuccess: (text: String) -> Unit) {
+        val url = "https://dziennikel.appspot.com/" + when (endpoint.endsWith('/') || endpoint.isEmpty()) {
+            true -> endpoint
+            else -> "$endpoint/"
         }
 
-        onSuccess(json)
+        d(tag, "Request: Edudziennik/Web - $url")
+
+        val callback = object : TextCallbackHandler() {
+            override fun onSuccess(text: String?, response: Response?) {
+                if (text == null || response == null) {
+                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
+                            .withResponse(response))
+                    return
+                }
+
+                onSuccess(text)
+            }
+
+            override fun onFailure(response: Response?, throwable: Throwable?) {
+                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                        .withResponse(response)
+                        .withThrowable(throwable))
+            }
+        }
+
+        data.app.cookieJar.saveFromResponse(null, listOf(
+                Cookie.Builder()
+                        .name("sessionid")
+                        .value(data.webSessionId!!)
+                        .domain("dziennikel.appspot.com")
+                        .secure().httpOnly().build(),
+                Cookie.Builder()
+                        .name("semester")
+                        .value((profile?.currentSemester ?: 1).toString())
+                        .domain("dziennikel.appspot.com")
+                        .secure().httpOnly().build()
+        ))
+
+        Request.builder()
+                .url(url)
+                .userAgent(EDUDZIENNIK_USER_AGENT)
+                .get()
+                .callback(callback)
+                .build()
+                .enqueue()
     }
 }

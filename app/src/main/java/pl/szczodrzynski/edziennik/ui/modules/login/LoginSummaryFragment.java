@@ -31,6 +31,7 @@ import pl.szczodrzynski.edziennik.databinding.RowLoginProfileListItemBinding;
 import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_MODE_LIBRUS_EMAIL;
 import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_MODE_VULCAN_API;
 import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_MODE_VULCAN_WEB;
+import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_TYPE_EDUDZIENNIK;
 import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_TYPE_IDZIENNIK;
 import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_TYPE_LIBRUS;
 import static pl.szczodrzynski.edziennik.data.api.LoginMethodsKt.LOGIN_TYPE_MOBIDZIENNIK;
@@ -224,6 +225,9 @@ public class LoginSummaryFragment extends Fragment {
                 else if (m.loginMode == LOGIN_MODE_VULCAN_API) {
                     imageRes = R.drawable.logo_dzienniczek;
                 }
+            }
+            else if (m.loginType == LOGIN_TYPE_EDUDZIENNIK) {
+                imageRes = R.drawable.logo_edudziennik;
             }
             if (imageRes != 0) {
                 b.registerIcon.setImageResource(imageRes);

@@ -39,6 +39,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -418,7 +419,7 @@ public class Utils {
             byte[] iv = new byte[16];
             IvParameterSpec ivSpec = new IvParameterSpec(iv);
             cipher.init(Cipher.ENCRYPT_MODE, keyObj, ivSpec);
-            byte [] encryptedByteValue = cipher.doFinal(value.getBytes("utf-8"));
+            byte [] encryptedByteValue = cipher.doFinal(value.getBytes(StandardCharsets.UTF_8));
             String encryptedValue64 = Base64.encodeToString(encryptedByteValue, Base64.DEFAULT);
             return encryptedValue64;
 
@@ -433,7 +434,7 @@ public class Utils {
             cipher.init(Cipher.DECRYPT_MODE, keyObj, ivSpec);
             byte[] decryptedValue64 = Base64.decode(value, Base64.DEFAULT);
             byte [] decryptedByteValue = cipher.doFinal(decryptedValue64);
-            String decryptedValue = new String(decryptedByteValue,"utf-8");
+            String decryptedValue = new String(decryptedByteValue, StandardCharsets.UTF_8);
             return decryptedValue;
 
         }
@@ -612,7 +613,7 @@ public class Utils {
             if (sourceFile.isDirectory()) {
                 zipSubFolder(out, sourceFile, sourceFile.getParent().length());
             } else {
-                byte data[] = new byte[BUFFER];
+                byte[] data = new byte[BUFFER];
                 FileInputStream fi = new FileInputStream(sourcePath);
                 origin = new BufferedInputStream(fi, BUFFER);
                 ZipEntry entry = new ZipEntry(getLastPathComponent(sourcePath));
@@ -648,7 +649,7 @@ public class Utils {
             if (file.isDirectory()) {
                 zipSubFolder(out, file, basePathLength);
             } else {
-                byte data[] = new byte[BUFFER];
+                byte[] data = new byte[BUFFER];
                 String unmodifiedFilePath = file.getPath();
                 String relativePath = unmodifiedFilePath
                         .substring(basePathLength);
@@ -796,5 +797,11 @@ public class Utils {
         Date date=cal.getTime();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return dateFormat.format(date);
+    }
+
+    public static String getCurrentSchoolYear() {
+        pl.szczodrzynski.edziennik.utils.models.Date today = pl.szczodrzynski.edziennik.utils.models.Date.getToday();
+        if (today.month >= 9) return today.year + "/" + (today.year + 1);
+        else return (today.year - 1) + "/" + today.year;
     }
 }

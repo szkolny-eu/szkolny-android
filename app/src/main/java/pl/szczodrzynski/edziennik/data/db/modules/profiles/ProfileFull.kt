@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_EDUDZIENNIK
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.*
 import java.util.*
@@ -57,19 +58,7 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
                     return fragmentIds
                 }
-                LOGIN_TYPE_LIBRUS -> {
-                    fragmentIds = ArrayList()
-                    fragmentIds.add(DRAWER_ITEM_TIMETABLE)
-                    fragmentIds.add(DRAWER_ITEM_AGENDA)
-                    fragmentIds.add(DRAWER_ITEM_GRADES)
-                    fragmentIds.add(DRAWER_ITEM_MESSAGES)
-                    fragmentIds.add(DRAWER_ITEM_HOMEWORK)
-                    fragmentIds.add(DRAWER_ITEM_BEHAVIOUR)
-                    fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
-                    fragmentIds.add(DRAWER_ITEM_ANNOUNCEMENTS)
-                    return fragmentIds
-                }
-                LOGIN_TYPE_IUCZNIOWIE -> {
+                LOGIN_TYPE_LIBRUS, LOGIN_TYPE_IUCZNIOWIE, LOGIN_TYPE_EDUDZIENNIK -> {
                     fragmentIds = ArrayList()
                     fragmentIds.add(DRAWER_ITEM_TIMETABLE)
                     fragmentIds.add(DRAWER_ITEM_AGENDA)

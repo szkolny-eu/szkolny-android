@@ -4,11 +4,9 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik
 
-import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.currentTimeUnix
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_API
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_WEB
+import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_EDUDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
@@ -21,24 +19,39 @@ import pl.szczodrzynski.edziennik.isNotNullNorEmpty
  */
 class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
-    fun isWebLoginValid() = webExpiryTime-30 > currentTimeUnix() && webCookie.isNotNullNorEmpty()
-    fun isApiLoginValid() = apiExpiryTime-30 > currentTimeUnix() && apiToken.isNotNullNorEmpty()
+    fun isWebLoginValid() = webSessionIdExpiryTime-30 > currentTimeUnix() && webSessionId.isNotNullNorEmpty()
 
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isWebLoginValid()) {
-            loginMethods += LOGIN_METHOD_TEMPLATE_WEB
-            app.cookieJar.saveFromResponse(null, listOf(
-                    Cookie.Builder()
-                            .name("AuthCookie")
-                            .value(webCookie!!)
-                            .domain("eregister.example.com")
-                            .secure().httpOnly().build()
-            ))
+            loginMethods += LOGIN_METHOD_EDUDZIENNIK_WEB
         }
-        if (isApiLoginValid())
-            loginMethods += LOGIN_METHOD_TEMPLATE_API
     }
+
+    private var mLoginEmail: String? = null
+    var loginEmail: String?
+        get() { mLoginEmail = mLoginEmail ?: loginStore.getLoginData("email", null); return mLoginEmail }
+        set(value) { loginStore.putLoginData("email", value); mLoginEmail = value }
+
+    private var mLoginPassword: String? = null
+    var loginPassword: String?
+        get() { mLoginPassword = mLoginPassword ?: loginStore.getLoginData("password", null); return mLoginPassword }
+        set(value) { loginStore.putLoginData("password", value); mLoginPassword = value }
+
+    private var mStudentId: String? = null
+    var studentId: String?
+        get() { mStudentId = mStudentId ?: profile?.getStudentData("studentId", null); return mStudentId }
+        set(value) { profile?.putStudentData("studentId", value) ?: return; mStudentId = value }
+
+    private var mSchoolId: String? = null
+    var schoolId: String?
+        get() { mSchoolId = mSchoolId ?: profile?.getStudentData("schoolId", null); return mSchoolId }
+        set(value) { profile?.putStudentData("schoolId", value) ?: return; mSchoolId = value }
+
+    private var mCourseId: String? = null
+    var courseId: String?
+        get() { mCourseId = mCourseId ?: profile?.getStudentData("courseId", null); return mCourseId }
+        set(value) { profile?.putStudentData("courseId", value) ?: return; mCourseId = value }
 
     /*   __          __  _
          \ \        / / | |
@@ -46,31 +59,22 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
            \ \/  \/ / _ \ '_ \
             \  /\  /  __/ |_) |
              \/  \/ \___|_._*/
-    private var mWebCookie: String? = null
-    var webCookie: String?
-        get() { mWebCookie = mWebCookie ?: profile?.getStudentData("webCookie", null); return mWebCookie }
-        set(value) { profile?.putStudentData("webCookie", value) ?: return; mWebCookie = value }
+    private var mWebSessionId: String? = null
+    var webSessionId: String?
+        get() { mWebSessionId = mWebSessionId ?: loginStore.getLoginData("sessionId", null); return mWebSessionId }
+        set(value) { loginStore.putLoginData("sessionId", value); mWebSessionId = value }
 
-    private var mWebExpiryTime: Long? = null
-    var webExpiryTime: Long
-        get() { mWebExpiryTime = mWebExpiryTime ?: profile?.getStudentData("webExpiryTime", 0L); return mWebExpiryTime ?: 0L }
-        set(value) { profile?.putStudentData("webExpiryTime", value) ?: return; mWebExpiryTime = value }
+    private var mWebSessionIdExpiryTime: Long? = null
+    var webSessionIdExpiryTime: Long
+        get() { mWebSessionIdExpiryTime = mWebSessionIdExpiryTime ?: loginStore.getLoginData("webSessionIdExpiryTime", 0L); return mWebSessionIdExpiryTime ?: 0L }
+        set(value) { loginStore.putLoginData("webSessionIdExpiryTime", value); mWebSessionIdExpiryTime = value }
 
-    /*                   _
-             /\         (_)
-            /  \   _ __  _
-           / /\ \ | '_ \| |
-          / ____ \| |_) | |
-         /_/    \_\ .__/|_|
-                  | |
-                  |*/
-    private var mApiToken: String? = null
-    var apiToken: String?
-        get() { mApiToken = mApiToken ?: profile?.getStudentData("apiToken", null); return mApiToken }
-        set(value) { profile?.putStudentData("apiToken", value) ?: return; mApiToken = value }
+    val studentEndpoint: String
+        get() = "Students/$studentId/"
 
-    private var mApiExpiryTime: Long? = null
-    var apiExpiryTime: Long
-        get() { mApiExpiryTime = mApiExpiryTime ?: profile?.getStudentData("apiExpiryTime", 0L); return mApiExpiryTime ?: 0L }
-        set(value) { profile?.putStudentData("apiExpiryTime", value) ?: return; mApiExpiryTime = value }
+    val schoolEndpoint: String
+        get() = "Schools/$schoolId/"
+
+    val courseEndpoint: String
+        get() = "Schools/$courseId/"
 }

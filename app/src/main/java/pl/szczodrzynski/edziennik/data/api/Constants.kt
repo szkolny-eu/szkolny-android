@@ -101,3 +101,5 @@ const val VULCAN_API_ENDPOINT_MESSAGES_RECEIVED = "mobile-api/Uczen.v3.Uczen/Wia
 const val VULCAN_API_ENDPOINT_MESSAGES_SENT = "mobile-api/Uczen.v3.Uczen/WiadomosciWyslane"
 const val VULCAN_API_ENDPOINT_MESSAGES_CHANGE_STATUS = "mobile-api/Uczen.v3.Uczen/ZmienStatusWiadomosci"
 const val VULCAN_API_ENDPOINT_PUSH = "mobile-api/Uczen.v3.Uczen/UstawPushToken"
+
+val EDUDZIENNIK_USER_AGENT = SYSTEM_USER_AGENT
