@@ -46,7 +46,7 @@ class EdudziennikLogin(val data: DataEdudziennik, val onSuccess: () -> Unit) {
         Utils.d(TAG, "Using login method $loginMethodId")
         when (loginMethodId) {
             LOGIN_METHOD_EDUDZIENNIK_WEB -> {
-                data.startProgress(R.string.edziennik_progress_login_template_web)
+                data.startProgress(R.string.edziennik_progress_login_edudziennik_web)
                 EdudziennikLoginWeb(data) { onSuccess(loginMethodId) }
             }
         }

@@ -4,6 +4,8 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
+import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_CLASS_DETAIL_ID
+import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SCHOOL_DETAIL_ID
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_START
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
@@ -18,14 +20,10 @@ class EdudziennikWebStart(override val data: DataEdudziennik,
 
     init { data.profile?.also { profile ->
         webGet(TAG, data.studentEndpoint + "start") { text ->
-            val schoolId = """<a id="School_detail".*?href="/Students/${data.studentId}/School/(\w+?)/""".toRegex(RegexOption.DOT_MATCHES_ALL)
-                    .find(text)?.get(1)
-
+            val schoolId = EDUDZIENNIK_SCHOOL_DETAIL_ID.find(text)?.get(1)
             data.schoolId = schoolId
 
-            val classId = """<a id="Klass_detail".*?href="/Students/${data.studentId}/Klass/(\w+?)/""".toRegex(RegexOption.DOT_MATCHES_ALL)
-                    .find(text)?.get(1)
-
+            val classId = EDUDZIENNIK_CLASS_DETAIL_ID.find(text)?.get(1)
             data.classId = classId
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_START, SYNC_ALWAYS)

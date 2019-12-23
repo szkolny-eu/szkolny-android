@@ -86,6 +86,19 @@ object Regexes {
 
 
     val EDUDZIENNIK_STUDENT_ID by lazy {
-        """/Students/(\w+?)/""".toRegex()
+        """/Students/([\w-_]+?)/""".toRegex()
+    }
+    val EDUDZIENNIK_SUBJECT_ID by lazy {
+        """/Courses/([\w-_]+?)/""".toRegex()
+    }
+    val EDUDZIENNIK_TEACHER_ID by lazy {
+        """/Teachers/([\w-_]+?)/""".toRegex()
+    }
+
+    val EDUDZIENNIK_SCHOOL_DETAIL_ID by lazy {
+        """<a id="School_detail".*?/School/([\w-_]+?)/""".toRegex(RegexOption.DOT_MATCHES_ALL)
+    }
+    val EDUDZIENNIK_CLASS_DETAIL_ID by lazy {
+        """<a id="Klass_detail".*?/Klass/([\w-_]+?)/""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }
 }
