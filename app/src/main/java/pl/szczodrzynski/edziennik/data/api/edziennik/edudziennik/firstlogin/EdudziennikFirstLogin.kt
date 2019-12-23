@@ -33,6 +33,8 @@ class EdudziennikFirstLogin(val data: DataEdudziennik, val onSuccess: () -> Unit
 
                 doc.select("ul ul > li").first().children().forEach {
                     val studentId = EDUDZIENNIK_STUDENT_ID.find(it.attr("href"))?.get(1)
+                    if (studentId.isNullOrBlank()) return@forEach
+
                     val studentName = it.text().fixName()
 
                     val profile = Profile()

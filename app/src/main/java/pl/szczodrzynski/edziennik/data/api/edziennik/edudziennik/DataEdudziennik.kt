@@ -48,10 +48,10 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
         get() { mSchoolId = mSchoolId ?: profile?.getStudentData("schoolId", null); return mSchoolId }
         set(value) { profile?.putStudentData("schoolId", value) ?: return; mSchoolId = value }
 
-    private var mCourseId: String? = null
-    var courseId: String?
-        get() { mCourseId = mCourseId ?: profile?.getStudentData("courseId", null); return mCourseId }
-        set(value) { profile?.putStudentData("courseId", value) ?: return; mCourseId = value }
+    private var mClassId: String? = null
+    var classId: String?
+        get() { mClassId = mClassId ?: profile?.getStudentData("classId", null); return mClassId }
+        set(value) { profile?.putStudentData("classId", value) ?: return; mClassId = value }
 
     /*   __          __  _
          \ \        / / | |
@@ -75,6 +75,12 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
     val schoolEndpoint: String
         get() = "Schools/$schoolId/"
 
+    val schoolClassEndpoint: String
+        get() = "Schools/$classId/"
+
+    val studentAndClassEndpoint: String
+        get() = "Students/$studentId/Klass/$classId/"
+
     val courseEndpoint: String
-        get() = "Schools/$courseId/"
+        get() = "Course/$studentId/"
 }

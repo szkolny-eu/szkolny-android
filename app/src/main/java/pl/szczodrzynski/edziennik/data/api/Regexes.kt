@@ -86,6 +86,6 @@ object Regexes {
 
 
     val EDUDZIENNIK_STUDENT_ID by lazy {
-        """""".toRegex()
+        """/Students/(\w+?)/""".toRegex()
     }
 }

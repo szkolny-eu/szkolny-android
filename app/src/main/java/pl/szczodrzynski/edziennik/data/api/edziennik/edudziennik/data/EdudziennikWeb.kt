@@ -26,7 +26,7 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
     val profile
         get() = data.profile
 
-    fun webGet(tag: String, endpoint: String, onSuccess: (text: String) -> Unit) {
+    fun webGet(tag: String, endpoint: String, xhr: Boolean = false, onSuccess: (text: String) -> Unit) {
         val url = "https://dziennikel.appspot.com/" + when (endpoint.endsWith('/') || endpoint.isEmpty()) {
             true -> endpoint
             else -> "$endpoint/"
@@ -68,6 +68,9 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
         Request.builder()
                 .url(url)
                 .userAgent(EDUDZIENNIK_USER_AGENT)
+                .apply {
+                    if (xhr) header("X-Requested-With", "XMLHttpRequest")
+                }
                 .get()
                 .callback(callback)
                 .build()
