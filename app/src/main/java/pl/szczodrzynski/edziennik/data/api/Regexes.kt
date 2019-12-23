@@ -91,14 +91,15 @@ object Regexes {
 
 
 
-    val EDUDZIENNIK_STUDENT_START_ID by lazy {
-        """/Students/([\w-_]+?)/start""".toRegex()
+    val EDUDZIENNIK_STUDENTS_START by lazy {
+        """<li><a href="/Students/([\w-_]+?)/start/">([\w\s]+?)</a>""".toRegex()
     }
+    val EDUDZIENNIK_ACCOUNT_NAME_START by lazy {
+        """<span id="user_dn">([\w\s]+?)</span>""".toRegex()
+    }
+
     val EDUDZIENNIK_SUBJECT_ID by lazy {
         """/Courses/([\w-_]+?)/""".toRegex()
-    }
-    val EDUDZIENNIK_TEACHER_ID by lazy {
-        """/Teachers/([\w-_]+?)/""".toRegex()
     }
     val EDUDZIENNIK_GRADE_ID by lazy {
         """/Grades/([\w-_]+?)/""".toRegex()

@@ -5,8 +5,8 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.firstlogin
 
 import org.greenrobot.eventbus.EventBus
-import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_STUDENT_START_ID
+import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_ACCOUNT_NAME_START
+import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_STUDENTS_START
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLoginWeb
@@ -28,14 +28,13 @@ class EdudziennikFirstLogin(val data: DataEdudziennik, val onSuccess: () -> Unit
     init {
         EdudziennikLoginWeb(data) {
             web.webGet(TAG, "") { text ->
-                val doc = Jsoup.parse(text)
-                val accountName = doc.select("#user_dn").first().text().fixName()
+                val accountName = EDUDZIENNIK_ACCOUNT_NAME_START.find(text)?.get(1)?.fixName()
 
-                doc.select("ul ul").first().select("li > a").forEach {
-                    val studentId = EDUDZIENNIK_STUDENT_START_ID.find(it.attr("href"))?.get(1)
-                    if (studentId.isNullOrBlank()) return@forEach
+                EDUDZIENNIK_STUDENTS_START.findAll(text).forEach {
+                    val studentId = it[1]
+                    val studentName = it[2].fixName()
 
-                    val studentName = it.text().fixName()
+                    if (studentId.isBlank() || studentName.isBlank()) return@forEach
 
                     val profile = Profile()
                     profile.studentNameLong = studentName
