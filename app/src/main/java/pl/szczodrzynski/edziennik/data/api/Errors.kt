@@ -161,6 +161,7 @@ const val ERROR_IDZIENNIK_API_OTHER                         = 451
 const val ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN         = 501
 const val ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER                 = 510
 const val ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID         = 511
+const val ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC        = 520
 
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 

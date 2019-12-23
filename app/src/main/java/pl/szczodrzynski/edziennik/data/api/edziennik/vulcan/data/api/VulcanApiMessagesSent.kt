@@ -54,7 +54,7 @@ class VulcanApiMessagesSent(override val data: DataVulcan, val onSuccess: () -> 
                                         ?: {
                                             val receiverName = receiver.getString("Nazwa") ?: ""
 
-                                            receiverName.getLastFirstName()?.let { (receiverLastName, receiverFirstName) ->
+                                            receiverName.splitName()?.let { (receiverLastName, receiverFirstName) ->
                                                 val teacherObject = Teacher(
                                                         profileId,
                                                         -1 * Utils.crc16(receiverName.toByteArray()).toLong(),

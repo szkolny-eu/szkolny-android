@@ -22,7 +22,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
@@ -116,7 +115,7 @@ class HomeTimetableCard(
             })
         }
 
-        if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS && app.profile.getLoginData("timetableNotPublic", false)) {
+        if (app.profile.getLoginData("timetableNotPublic", false)) {
             b.timetableLayout.visibility = View.GONE
             b.notPublicLayout.visibility = View.VISIBLE
             return

@@ -112,14 +112,12 @@ fun String.swapFirstLastName(): String {
     }
 }
 
-fun String.getFirstLastName(): Pair<String, String>? {
+fun String.splitName(): Pair<String, String>? {
     return this.split(" ").let {
         if (it.size >= 2) Pair(it[0], it[1])
         else null
     }
 }
-
-fun String.getLastFirstName() = this.getFirstLastName()
 
 fun changeStringCase(s: String): String {
     val delimiters = " '-/"
@@ -177,6 +175,20 @@ fun colorFromName(context: Context, name: String?): Int {
         else -> R.color.md_light_green_A700
     }
     return context.getColorFromRes(color)
+}
+
+fun colorFromCssName(name: String): Int {
+    return when (name) {
+        "red" -> 0xffff0000
+        "green" -> 0xff008000
+        "blue" -> 0xff0000ff
+        "violet" -> 0xffee82ee
+        "brown" -> 0xffa52a2a
+        "orange" -> 0xffffa500
+        "black" -> 0xff000000
+        "white" -> 0xffffffff
+        else -> -1
+    }.toInt()
 }
 
 fun MutableList<Profile>.filterOutArchived(): MutableList<Profile> {

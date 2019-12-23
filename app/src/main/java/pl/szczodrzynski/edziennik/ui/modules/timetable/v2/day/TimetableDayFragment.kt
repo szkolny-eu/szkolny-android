@@ -18,7 +18,6 @@ import com.linkedin.android.tachyon.DayViewConfig
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
@@ -151,7 +150,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
         }
 
         // reload the fragment when: no lessons, user wants to sync the week, the timetable is not public, pager gets removed
-        if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS && app.profile.getLoginData("timetableNotPublic", false)) {
+        if (app.profile.getLoginData("timetableNotPublic", false)) {
             activity.reloadTarget()
             // TODO fix for (not really)possible infinite loops
             return

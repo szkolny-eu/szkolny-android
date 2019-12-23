@@ -20,23 +20,23 @@ class EdudziennikWebLuckyNumber(override val data: DataEdudziennik,
 
     init { data.profile?.also { profile ->
         webGet(TAG, data.schoolEndpoint + "Lucky", xhr = true) { text ->
-            val luckyNumber = text.toInt()
+            text.toIntOrNull()?.let { luckyNumber ->
+                val luckyNumberObject = LuckyNumber(
+                        profileId,
+                        Date.getToday(),
+                        luckyNumber
+                )
 
-            val luckyNumberObject = LuckyNumber(
-                    profileId,
-                    Date.getToday(),
-                    luckyNumber
-            )
-
-            data.luckyNumberList.add(luckyNumberObject)
-            data.metadataList.add(Metadata(
-                    profileId,
-                    Metadata.TYPE_LUCKY_NUMBER,
-                    luckyNumberObject.date.value.toLong(),
-                    profile.empty,
-                    profile.empty,
-                    System.currentTimeMillis()
-            ))
+                data.luckyNumberList.add(luckyNumberObject)
+                data.metadataList.add(Metadata(
+                        profileId,
+                        Metadata.TYPE_LUCKY_NUMBER,
+                        luckyNumberObject.date.value.toLong(),
+                        profile.empty,
+                        profile.empty,
+                        System.currentTimeMillis()
+                ))
+            }
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER, SYNC_ALWAYS)
             onSuccess()

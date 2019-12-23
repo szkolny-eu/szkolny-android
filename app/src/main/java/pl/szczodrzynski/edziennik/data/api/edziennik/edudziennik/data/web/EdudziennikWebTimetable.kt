@@ -5,18 +5,19 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SUBJECT_ID
-import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_TEACHER_ID
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
+import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
+import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.splitName
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -51,7 +52,16 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
                 dataStart.stepForward(0, 0, 1)
             }
 
-            doc.select("#Schedule tbody").first().children().forEach { row ->
+            val table = doc.select("#Schedule tbody").first()
+
+            if (table.text().trim() == "Brak planu lekcji.") {
+                data.error(ApiError(TAG, ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC)
+                        .withApiResponse(text))
+                onSuccess()
+                return@webGet
+            }
+
+            table.children().forEach { row ->
                 val rowElements = row.children()
 
                 val lessonNumber = rowElements[0].text().toInt()
@@ -75,30 +85,16 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
 
                     val subjectElement = info[0].child(0)
                     val subjectId = EDUDZIENNIK_SUBJECT_ID.find(subjectElement.attr("href"))?.get(1)
-                            ?.crc32() ?: return@forEachIndexed
-
-                    val subject = data.subjectList.singleOrNull { it.id == subjectId } ?: run {
-                        val subjectName = subjectElement.text().trim()
-                        val subjectObject = Subject(profileId, subjectId, subjectName, subjectName)
-
-                        data.subjectList.put(subjectId, subjectObject)
-                        subjectObject
-                    }
+                            ?: return@forEachIndexed
+                    val subjectName = subjectElement.text().trim()
+                    val subject = data.getSubject(subjectId, subjectName)
 
                     /* Getting teacher */
 
                     val teacherElement = info[1].child(0)
-                    val teacherId = EDUDZIENNIK_TEACHER_ID.find(teacherElement.attr("href"))?.get(1)
-                            ?.crc32() ?: return@forEachIndexed
-
-                    val teacher = data.teacherList.singleOrNull { it.id == teacherId } ?: run {
-                        val teacherName = teacherElement.text().trim()
-                        val teacherObject = teacherName.getLastFirstName()?.let { (teacherLastName, teacherFirstName) ->
-                            Teacher(profileId, teacherId, teacherFirstName, teacherLastName)
-                        }
-
-                        data.teacherList.put(teacherId, teacherObject)
-                        teacherObject
+                    val teacherName = teacherElement.text().trim()
+                    val teacher = teacherName.splitName()?.let { (teacherLastName, teacherFirstName) ->
+                        data.getTeacher(teacherFirstName, teacherLastName)
                     } ?: return@forEachIndexed
 
                     val lessonObject = Lesson(profileId, -1).also {

@@ -6,6 +6,8 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik
 
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.data.api.ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC
+import pl.szczodrzynski.edziennik.data.api.ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID
 import pl.szczodrzynski.edziennik.data.api.edudziennikLoginMethods
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikData
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.firstlogin.EdudziennikFirstLogin
@@ -62,6 +64,28 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
         }
     }
 
+    private fun login() {
+        d(TAG, "Trying to login with ${data.targetLoginMethodIds}")
+        if (internalErrorList.isNotEmpty()) {
+            d(TAG, "  - Internal errors:")
+            internalErrorList.forEach { d(TAG, "      - code $it") }
+        }
+        EdudziennikLogin(data) {
+            data()
+        }
+    }
+
+    private fun data() {
+        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        if (internalErrorList.isNotEmpty()) {
+            d(TAG, "  - Internal errors:")
+            internalErrorList.forEach { d(TAG, "      - code $it") }
+        }
+        EdudziennikData(data) {
+            completed()
+        }
+    }
+
     override fun getMessage(message: MessageFull) {
 
     }
@@ -100,10 +124,19 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
             }
 
             override fun onError(apiError: ApiError) {
+                if (apiError.errorCode in internalErrorList) {
+                    // finish immediately if the same error occurs twice during the same sync
+                    callback.onError(apiError)
+                    return
+                }
+                internalErrorList.add(apiError.errorCode)
                 when (apiError.errorCode) {
-                    in internalErrorList -> {
-                        // finish immediately if the same error occurs twice during the same sync
-                        callback.onError(apiError)
+                    ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID -> {
+                        login()
+                    }
+                    ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC -> {
+                        loginStore.putLoginData("timetableNotPublic", true)
+                        data()
                     }
                     else -> callback.onError(apiError)
                 }

@@ -4,13 +4,13 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik
 
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.currentTimeUnix
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_EDUDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 
 /**
  * Use http://patorjk.com/software/taag/#p=display&f=Big for the ascii art
@@ -61,8 +61,8 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
              \/  \/ \___|_._*/
     private var mWebSessionId: String? = null
     var webSessionId: String?
-        get() { mWebSessionId = mWebSessionId ?: loginStore.getLoginData("sessionId", null); return mWebSessionId }
-        set(value) { loginStore.putLoginData("sessionId", value); mWebSessionId = value }
+        get() { mWebSessionId = mWebSessionId ?: loginStore.getLoginData("webSessionId", null); return mWebSessionId }
+        set(value) { loginStore.putLoginData("webSessionId", value); mWebSessionId = value }
 
     private var mWebSessionIdExpiryTime: Long? = null
     var webSessionIdExpiryTime: Long
@@ -86,4 +86,23 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
 
     val timetableEndpoint: String
         get() = "Plan/$studentId/"
+
+    fun getSubject(longId: String, name: String): Subject {
+        val id = longId.crc32()
+        return subjectList.singleOrNull { it.id == id } ?: run {
+            val subject = Subject(profileId, id, name, name)
+            subjectList.put(id, subject)
+            subject
+        }
+    }
+
+    fun getTeacher(firstName: String, lastName: String): Teacher {
+        val name = "$firstName $lastName".fixName()
+        val id = name.crc32()
+        return teacherList.singleOrNull { it.id == id } ?: run {
+            val teacher = Teacher(profileId, id, firstName, lastName)
+            teacherList.put(id, teacher)
+            teacher
+        }
+    }
 }

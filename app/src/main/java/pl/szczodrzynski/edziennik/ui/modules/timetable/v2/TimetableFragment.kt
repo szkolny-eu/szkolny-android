@@ -20,7 +20,6 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
@@ -88,7 +87,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
         if (app.profile == null || !isAdded)
             return@launch
 
-        if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS && app.profile.getLoginData("timetableNotPublic", false)) {
+        if (app.profile.getLoginData("timetableNotPublic", false)) {
             b.timetableLayout.visibility = View.GONE
             b.timetableNotPublicLayout.visibility = View.VISIBLE
             return@launch

@@ -49,7 +49,7 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
 
                         val senderName = message.getString("Nadawca") ?: ""
 
-                        senderName.getLastFirstName()?.let { (senderLastName, senderFirstName) ->
+                        senderName.splitName()?.let { (senderLastName, senderFirstName) ->
                             val teacherObject = Teacher(
                                     profileId,
                                     -1 * Utils.crc16(senderName.toByteArray()).toLong(),

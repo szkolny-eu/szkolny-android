@@ -5,6 +5,12 @@
 package pl.szczodrzynski.edziennik.data.api
 
 object Regexes {
+    val STYLE_CSS_COLOR by lazy {
+        """color: \w+?;?"?""".toRegex()
+    }
+
+
+
     val MOBIDZIENNIK_GRADES_SUBJECT_NAME by lazy {
         """<div.*?>\n*\s*(.+?)\s*\n*(?:<.*?)??</div>""".toRegex(RegexOption.DOT_MATCHES_ALL)
     }

@@ -37,7 +37,7 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
                 if (text == null || response == null) {
-                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
+                    data.error(ApiError(tag, ERROR_RESPONSE_EMPTY)
                             .withResponse(response))
                     return
                 }
@@ -46,7 +46,7 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
-                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
+                data.error(ApiError(tag, ERROR_REQUEST_FAILURE)
                         .withResponse(response)
                         .withThrowable(throwable))
             }
