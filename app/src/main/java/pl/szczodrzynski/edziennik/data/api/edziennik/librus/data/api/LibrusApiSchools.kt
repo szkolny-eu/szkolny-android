@@ -26,12 +26,7 @@ class LibrusApiSchools(override val data: DataLibrus,
 
             // create the school's short name using first letters of each long name's word
             // append the town name and save to student data
-            var schoolNameShort = ""
-            schoolNameLong?.split(" ")?.forEach {
-                if (it.isBlank())
-                    return@forEach
-                schoolNameShort += it[0].toLowerCase()
-            }
+            val schoolNameShort = schoolNameLong?.firstLettersName
             val schoolTown = school?.getString("Town")?.toLowerCase(Locale.getDefault())
             data.schoolName = schoolId.toString() + schoolNameShort + "_" + schoolTown
 

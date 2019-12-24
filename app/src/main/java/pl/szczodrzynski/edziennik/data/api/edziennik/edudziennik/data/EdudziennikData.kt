@@ -5,10 +5,8 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
-import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER
-import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_START
-import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE
+import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.*
+import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web.EdudziennikWebExams
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web.EdudziennikWebLuckyNumber
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web.EdudziennikWebStart
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web.EdudziennikWebTimetable
@@ -48,6 +46,10 @@ class EdudziennikData(val data: DataEdudziennik, val onSuccess: () -> Unit) {
             ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_timetable)
                 EdudziennikWebTimetable(data, onSuccess)
+            }
+            ENDPOINT_EDUDZIENNIK_WEB_EXAMS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_exams)
+                EdudziennikWebExams(data, onSuccess)
             }
             ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)

@@ -671,3 +671,14 @@ inline fun <T> List<T>.ifNotEmpty(block: (List<T>) -> Unit) {
     if (!isEmpty())
         block(this)
 }
+
+val String.firstLettersName: String
+    get() {
+        var nameShort = ""
+        this.split(" ").forEach {
+            if (it.isBlank())
+                return@forEach
+            nameShort += it[0].toLowerCase()
+        }
+        return nameShort
+    }

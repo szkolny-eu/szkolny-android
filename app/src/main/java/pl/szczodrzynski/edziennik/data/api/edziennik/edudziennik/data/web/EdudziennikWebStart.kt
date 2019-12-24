@@ -10,15 +10,21 @@ import org.jsoup.nodes.Document
 import pl.szczodrzynski.edziennik.colorFromCssName
 import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_CLASS_DETAIL_ID
+import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_CLASS_DETAIL_NAME
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_GRADE_ID
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SCHOOL_DETAIL_ID
+import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SCHOOL_DETAIL_NAME
 import pl.szczodrzynski.edziennik.data.api.Regexes.STYLE_CSS_COLOR
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_START
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
+import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.*
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
+import pl.szczodrzynski.edziennik.firstLettersName
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -42,11 +48,33 @@ class EdudziennikWebStart(override val data: DataEdudziennik,
     }
 
     private fun getInfo(text: String) {
-        val schoolId = EDUDZIENNIK_SCHOOL_DETAIL_ID.find(text)?.get(1)
+        val schoolId = EDUDZIENNIK_SCHOOL_DETAIL_ID.find(text)?.get(1)?.trim()
+        val schoolName = EDUDZIENNIK_SCHOOL_DETAIL_NAME.find(text)?.get(1)?.trim()
         data.schoolId = schoolId
 
-        val classId = EDUDZIENNIK_CLASS_DETAIL_ID.find(text)?.get(1)
+        val classId = EDUDZIENNIK_CLASS_DETAIL_ID.find(text)?.get(1)?.trim()
+        val className = EDUDZIENNIK_CLASS_DETAIL_NAME.find(text)?.get(1)?.trim()
         data.classId = classId
+
+        if (classId == null || className == null || schoolId == null || schoolName == null) {
+            // TODO data.error(
+            return
+        }
+
+        val teamId = classId.crc32()
+        val teamCode = schoolId.crc32().toString() + schoolName.firstLettersName + "_edu:" + className
+
+        val teamObject = Team(
+                profileId,
+                teamId,
+                className,
+                Team.TYPE_CLASS,
+                teamCode,
+                -1
+        )
+
+        data.teamClass = teamObject
+        data.teamList.put(teamObject.id, teamObject)
     }
 
     private fun getGrades(doc: Document) { data.profile?.also { profile ->
@@ -148,8 +176,8 @@ class EdudziennikWebStart(override val data: DataEdudziennik,
                         subject.id
                 ).apply {
                     type = when (semester) {
-                        1 -> Grade.TYPE_SEMESTER1_PROPOSED
-                        else -> Grade.TYPE_SEMESTER2_PROPOSED
+                        1 -> TYPE_SEMESTER1_PROPOSED
+                        else -> TYPE_SEMESTER2_PROPOSED
                     }
                 }
 
@@ -181,8 +209,8 @@ class EdudziennikWebStart(override val data: DataEdudziennik,
                         subject.id
                 ).apply {
                     type = when (semester) {
-                        1 -> Grade.TYPE_SEMESTER1_FINAL
-                        else -> Grade.TYPE_SEMESTER2_FINAL
+                        1 -> TYPE_SEMESTER1_FINAL
+                        else -> TYPE_SEMESTER2_FINAL
                     }
                 }
 
@@ -197,5 +225,16 @@ class EdudziennikWebStart(override val data: DataEdudziennik,
                 ))
             }
         }
-    } ?: onSuccess() }
+
+        data.toRemove.addAll(listOf(
+                TYPE_NORMAL,
+                TYPE_SEMESTER1_PROPOSED,
+                TYPE_SEMESTER2_PROPOSED,
+                TYPE_SEMESTER1_FINAL,
+                TYPE_SEMESTER2_FINAL
+        ).map {
+            DataRemoveModel.Grades.semesterWithType(profile.currentSemester, it)
+        })
+
+    }}
 }
