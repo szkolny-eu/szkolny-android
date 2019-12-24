@@ -82,7 +82,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
                     val course = lesson.select(".course").firstOrNull() ?: return@forEachIndexed
                     val info = course.select("span > span")
 
-                    if (info.size < 2) return@forEachIndexed
+                    if (info.isEmpty()) return@forEachIndexed
 
                     val type = when (course.hasClass("substitute")) {
                         true -> Lesson.TYPE_CHANGE
@@ -99,11 +99,13 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
 
                     /* Getting teacher */
 
-                    val teacherElement = info[1].child(0)
-                    val teacherName = teacherElement.text().trim()
-                    val teacher = teacherName.splitName()?.let { (teacherLastName, teacherFirstName) ->
-                        data.getTeacher(teacherFirstName, teacherLastName)
-                    } ?: return@forEachIndexed
+                    val teacherId = if (info.size >= 2) {
+                        val teacherElement = info[1].child(0)
+                        val teacherName = teacherElement.text().trim()
+                        teacherName.splitName()?.let { (teacherLastName, teacherFirstName) ->
+                            data.getTeacher(teacherFirstName, teacherLastName)
+                        }?.id ?: -1
+                    } else -1
 
                     val lessonObject = Lesson(profileId, -1).also {
                         it.type = type
@@ -112,7 +114,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
                         it.startTime = startTime
                         it.endTime = endTime
                         it.subjectId = subject.id
-                        it.teacherId = teacher.id
+                        it.teacherId = teacherId
 
                         it.id = it.buildId()
                     }

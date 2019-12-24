@@ -133,6 +133,6 @@ object Regexes {
         """<a id="Klass_detail".*?/Klass/([\w-_]+?)/""".toRegex(DOT_MATCHES_ALL)
     }
     val EDUDZIENNIK_CLASS_DETAIL_NAME by lazy {
-        """<a id="Klass_detail".*?>Klasa (.*?)</a>""".toRegex(DOT_MATCHES_ALL)
+        """<a id="Klass_detail".*?>(.*?)</a>""".toRegex(DOT_MATCHES_ALL)
     }
 }
