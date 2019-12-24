@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_EDUDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
+import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
@@ -119,6 +120,15 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
             val teacher = Teacher(profileId, id, firstName, lastName)
             teacherList.put(id, teacher)
             teacher
+        }
+    }
+
+    fun getEventType(longId: String, name: String): EventType {
+        val id = longId.crc16().toLong()
+        return eventTypes.singleOrNull { it.id == id } ?: run {
+            val eventType = EventType(profileId, id, name, colorFromName(app, name))
+            eventTypes.put(id, eventType)
+            eventType
         }
     }
 }

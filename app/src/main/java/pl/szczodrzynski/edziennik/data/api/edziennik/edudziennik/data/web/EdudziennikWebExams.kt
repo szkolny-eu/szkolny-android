@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
 import org.jsoup.Jsoup
 import pl.szczodrzynski.edziennik.crc32
+import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_EVENT_TYPE_ID
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_EXAM_ID
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SUBJECT_ID
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
@@ -46,16 +47,20 @@ class EdudziennikWebExams(override val data: DataEdudziennik,
                 val lessons = data.app.db.timetableDao().getForDateNow(profileId, date)
                 val startTime = lessons.firstOrNull { it.subjectId == subject.id }?.startTime
 
-                val description = examElement.child(3).text()
+                val eventTypeElement = examElement.child(3).child(0)
+                val eventTypeId = EDUDZIENNIK_EVENT_TYPE_ID.find(eventTypeElement.attr("href"))?.get(1)
+                        ?: return@forEach
+                val eventTypeName = eventTypeElement.text()
+                val eventType = data.getEventType(eventTypeId, eventTypeName)
 
                 val eventObject = Event(
                         profileId,
                         id,
                         date,
                         startTime,
-                        "$topic\n$description",
+                        topic,
                         -1,
-                        Event.TYPE_DEFAULT,
+                        eventType.id.toInt(),
                         false,
                         -1,
                         subject.id,
