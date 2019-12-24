@@ -162,6 +162,7 @@ const val ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN         = 501
 const val ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER                 = 510
 const val ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID         = 511
 const val ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC        = 520
+const val ERROR_EDUDZIENNIK_WEB_TEAM_MISSING                = 530
 
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 
@@ -180,5 +181,6 @@ const val EXCEPTION_LIBRUS_MESSAGES_REQUEST                 = 911
 const val EXCEPTION_IDZIENNIK_WEB_REQUEST                   = 912
 const val EXCEPTION_IDZIENNIK_WEB_API_REQUEST               = 913
 const val EXCEPTION_IDZIENNIK_API_REQUEST                   = 914
+const val EXCEPTION_EDUDZIENNIK_WEB_REQUEST                 = 920
 
 const val LOGIN_NO_ARGUMENTS                                = 1201

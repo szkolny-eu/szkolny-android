@@ -11,6 +11,7 @@ import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.data.api.EDUDZIENNIK_USER_AGENT
 import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
 import pl.szczodrzynski.edziennik.data.api.ERROR_RESPONSE_EMPTY
+import pl.szczodrzynski.edziennik.data.api.EXCEPTION_EDUDZIENNIK_WEB_REQUEST
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -42,7 +43,14 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
                     return
                 }
 
-                onSuccess(text)
+                try {
+                    onSuccess(text)
+                } catch (e: Exception) {
+                    data.error(ApiError(tag, EXCEPTION_EDUDZIENNIK_WEB_REQUEST)
+                            .withThrowable(e)
+                            .withResponse(response)
+                            .withApiResponse(text))
+                }
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
