@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
+import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_EDUDZIENNIK
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.*
@@ -36,6 +37,7 @@ class ProfileFull : Profile {
                 LOGIN_TYPE_LIBRUS -> getStudentData("schoolName", "LIBRUS_UN") + ":" + getStudentData("accountLogin", "LIBRUS_LOGIN_UN")
                 LOGIN_TYPE_IUCZNIOWIE -> getLoginData("schoolName", "IUCZNIOWIE_UN") + ":" + getLoginData("username", "IUCZNIOWIE_UN") + ":" + getStudentData("registerId", -1)
                 LOGIN_TYPE_VULCAN -> getStudentData("schoolName", "VULCAN_UN") + ":" + getStudentData("studentId", -1)
+                LOGIN_TYPE_EDUDZIENNIK -> getStudentData("schoolName", "EDU_UN") + ":" + getLoginData("email", "EDU_UN") + ":" + getStudentData("studentId", null)?.crc32()
                 LOGIN_TYPE_DEMO -> getLoginData("serverName", "DEMO_UN") + ":" + getLoginData("username", "DEMO_UN") + ":" + getStudentData("studentId", -1)
                 else -> "TYPE_UNKNOWN"
             }

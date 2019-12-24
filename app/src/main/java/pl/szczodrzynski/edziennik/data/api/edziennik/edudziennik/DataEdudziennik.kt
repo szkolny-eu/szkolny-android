@@ -75,6 +75,11 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
          | |  | | __| '_ \ / _ \ '__|
          | |__| | |_| | | |  __/ |
           \____/ \__|_| |_|\___|*/
+    private var mSchoolName: String? = null
+    var schoolName: String?
+        get() { mSchoolName = mSchoolName ?: profile?.getStudentData("schoolName", null); return mSchoolName }
+        set(value) { profile?.putStudentData("schoolName", value) ?: return; mSchoolName = value }
+
     private var mTimetableNotPublic: Boolean? = null
     var timetableNotPublic: Boolean
         get() { mTimetableNotPublic = mTimetableNotPublic ?: profile?.getStudentData("timetableNotPublic", false); return mTimetableNotPublic ?: false }

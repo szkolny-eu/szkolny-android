@@ -20,21 +20,24 @@ class EdudziennikWebStartInfo(val data: DataEdudziennik, val text: String) {
 
     init { run {
         val schoolId = Regexes.EDUDZIENNIK_SCHOOL_DETAIL_ID.find(text)?.get(1)?.trim()
-        val schoolName = Regexes.EDUDZIENNIK_SCHOOL_DETAIL_NAME.find(text)?.get(1)?.trim()
+        val schoolLongName = Regexes.EDUDZIENNIK_SCHOOL_DETAIL_NAME.find(text)?.get(1)?.trim()
         data.schoolId = schoolId
 
         val classId = Regexes.EDUDZIENNIK_CLASS_DETAIL_ID.find(text)?.get(1)?.trim()
         val className = Regexes.EDUDZIENNIK_CLASS_DETAIL_NAME.find(text)?.get(1)?.trim()
         data.classId = classId
 
-        if (classId == null || className == null || schoolId == null || schoolName == null) {
+        if (classId == null || className == null || schoolId == null || schoolLongName == null) {
             data.error(ApiError(TAG, ERROR_EDUDZIENNIK_WEB_TEAM_MISSING)
                     .withApiResponse(text))
             return@run
         }
 
+        val schoolName = schoolId.crc32().toString() + schoolLongName.firstLettersName + "_edu"
+        data.schoolName = schoolName
+
         val teamId = classId.crc32()
-        val teamCode = schoolId.crc32().toString() + schoolName.firstLettersName + "_edu:" + className
+        val teamCode = "$schoolName:$className"
 
         val teamObject = Team(
                 data.profileId,
