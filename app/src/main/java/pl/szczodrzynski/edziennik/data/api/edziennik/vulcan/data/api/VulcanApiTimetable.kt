@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api
 
 import androidx.core.util.set
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.Regexes
+import pl.szczodrzynski.edziennik.data.api.Regexes.VULCAN_SHIFT_ANNOTATION
 import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_TIMETABLE
@@ -144,7 +144,7 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
                     }
 
                     if (type == Lesson.TYPE_SHIFTED_SOURCE || type == Lesson.TYPE_SHIFTED_TARGET) {
-                        val shift = Regexes.VULCAN_SHITFT_ANNOTATION.find(changeAnnotation)
+                        val shift = VULCAN_SHIFT_ANNOTATION.find(changeAnnotation)
                         val oldLessonNumber = shift?.get(2)?.toInt()
                         val oldLessonDate = shift?.get(3)?.let { Date.fromd_m_Y(it) }
 

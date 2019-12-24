@@ -150,7 +150,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
         }
 
         // reload the fragment when: no lessons, user wants to sync the week, the timetable is not public, pager gets removed
-        if (app.profile.getLoginData("timetableNotPublic", false)) {
+        if (app.profile.getStudentData("timetableNotPublic", false)) {
             activity.reloadTarget()
             // TODO fix for (not really)possible infinite loops
             return

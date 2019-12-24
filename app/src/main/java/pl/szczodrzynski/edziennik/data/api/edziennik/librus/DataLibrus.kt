@@ -6,12 +6,12 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.librus
 
 import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_PORTAL
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_SYNERGIA
 import pl.szczodrzynski.edziennik.data.api.models.Data
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
@@ -149,7 +149,8 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mApiCode: String? = null
     var apiCode: String?
         get() { mApiCode = mApiCode ?: loginStore.getLoginData("accountCode", null); return mApiCode }
-        set(value) { loginStore.putLoginData("accountCode", value) ?: return; mApiCode = value }
+        set(value) {
+            loginStore.putLoginData("accountCode", value); mApiCode = value }
     /**
      * A JST login PIN.
      * Used only during first login in JST mode.
@@ -157,7 +158,8 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mApiPin: String? = null
     var apiPin: String?
         get() { mApiPin = mApiPin ?: loginStore.getLoginData("accountPin", null); return mApiPin }
-        set(value) { loginStore.putLoginData("accountPin", value) ?: return; mApiPin = value }
+        set(value) {
+            loginStore.putLoginData("accountPin", value); mApiPin = value }
 
     /**
      * A Synergia API access token.
@@ -256,6 +258,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     var startPointsSemester1: Int
         get() { mStartPointsSemester1 = mStartPointsSemester1 ?: profile?.getStudentData("startPointsSemester1", 0); return mStartPointsSemester1 ?: 0 }
         set(value) { profile?.putStudentData("startPointsSemester1", value) ?: return; mStartPointsSemester1 = value }
+
     private var mStartPointsSemester2: Int? = null
     var startPointsSemester2: Int
         get() { mStartPointsSemester2 = mStartPointsSemester2 ?: profile?.getStudentData("startPointsSemester2", 0); return mStartPointsSemester2 ?: 0 }
@@ -265,8 +268,14 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     var enablePointGrades: Boolean
         get() { mEnablePointGrades = mEnablePointGrades ?: profile?.getStudentData("enablePointGrades", true); return mEnablePointGrades ?: true }
         set(value) { profile?.putStudentData("enablePointGrades", value) ?: return; mEnablePointGrades = value }
+
     private var mEnableDescriptiveGrades: Boolean? = null
     var enableDescriptiveGrades: Boolean
         get() { mEnableDescriptiveGrades = mEnableDescriptiveGrades ?: profile?.getStudentData("enableDescriptiveGrades", true); return mEnableDescriptiveGrades ?: true }
         set(value) { profile?.putStudentData("enableDescriptiveGrades", value) ?: return; mEnableDescriptiveGrades = value }
+
+    private var mTimetableNotPublic: Boolean? = null
+    var timetableNotPublic: Boolean
+        get() { mTimetableNotPublic = mTimetableNotPublic ?: profile?.getStudentData("timetableNotPublic", false); return mTimetableNotPublic ?: false }
+        set(value) { profile?.putStudentData("timetableNotPublic", value) ?: return; mTimetableNotPublic = value }
 }

@@ -69,6 +69,8 @@ class LibrusApiTimetables(override val data: DataLibrus,
 
             d(TAG, "Clearing lessons between ${weekStart.stringY_m_d} and ${weekEnd.stringY_m_d} - timetable downloaded for $getDate")
 
+            if (data.timetableNotPublic) data.timetableNotPublic = false
+
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
             data.setSyncNext(ENDPOINT_LIBRUS_API_TIMETABLES, SYNC_ALWAYS)
             onSuccess()

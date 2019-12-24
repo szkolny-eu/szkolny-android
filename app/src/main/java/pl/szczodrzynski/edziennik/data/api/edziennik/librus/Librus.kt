@@ -204,7 +204,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                     }
                     // TODO PORTAL CAPTCHA
                     ERROR_LIBRUS_API_TIMETABLE_NOT_PUBLIC -> {
-                        loginStore.putLoginData("timetableNotPublic", true)
+                        data.timetableNotPublic = true
                         data()
                     }
                     ERROR_LIBRUS_API_LUCKY_NUMBER_NOT_ACTIVE,

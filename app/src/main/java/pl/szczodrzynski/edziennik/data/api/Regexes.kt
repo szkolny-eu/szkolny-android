@@ -79,7 +79,7 @@ object Regexes {
 
 
 
-    val VULCAN_SHITFT_ANNOTATION by lazy {
+    val VULCAN_SHIFT_ANNOTATION by lazy {
         """\(przeniesiona (z|na) lekcj[ię] ([0-9]+), (.+)\)""".toRegex()
     }
 
@@ -92,10 +92,10 @@ object Regexes {
 
 
     val EDUDZIENNIK_STUDENTS_START by lazy {
-        """<li><a href="/Students/([\w-_]+?)/start/">([\w\s]+?)</a>""".toRegex()
+        """<li><a href="/Students/([\w-_]+?)/start/">(.*?)</a>""".toRegex()
     }
     val EDUDZIENNIK_ACCOUNT_NAME_START by lazy {
-        """<span id="user_dn">([\w\s]+?)</span>""".toRegex()
+        """<span id='user_dn'>(.*?)</span>""".toRegex()
     }
 
     val EDUDZIENNIK_SUBJECT_ID by lazy {

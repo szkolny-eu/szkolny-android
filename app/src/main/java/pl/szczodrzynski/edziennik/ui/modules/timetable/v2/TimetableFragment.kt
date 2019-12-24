@@ -87,7 +87,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
         if (app.profile == null || !isAdded)
             return@launch
 
-        if (app.profile.getLoginData("timetableNotPublic", false)) {
+        if (app.profile.getStudentData("timetableNotPublic", false)) {
             b.timetableLayout.visibility = View.GONE
             b.timetableNotPublicLayout.visibility = View.VISIBLE
             return@launch

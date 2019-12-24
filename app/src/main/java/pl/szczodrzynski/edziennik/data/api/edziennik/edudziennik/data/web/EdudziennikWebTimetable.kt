@@ -137,6 +137,8 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
 
             d(TAG, "Clearing lessons between ${weekStart.stringY_m_d} and ${weekEnd.stringY_m_d} - timetable downloaded for $getDate")
 
+            if (data.timetableNotPublic) data.timetableNotPublic = false
+
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE, SYNC_ALWAYS)
             onSuccess()

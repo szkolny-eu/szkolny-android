@@ -115,7 +115,7 @@ class HomeTimetableCard(
             })
         }
 
-        if (app.profile.getLoginData("timetableNotPublic", false)) {
+        if (app.profile.getStudentData("timetableNotPublic", false)) {
             b.timetableLayout.visibility = View.GONE
             b.notPublicLayout.visibility = View.VISIBLE
             return

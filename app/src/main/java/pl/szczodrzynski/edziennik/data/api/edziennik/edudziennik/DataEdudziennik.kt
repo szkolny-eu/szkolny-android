@@ -69,6 +69,17 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
         get() { mWebSessionIdExpiryTime = mWebSessionIdExpiryTime ?: loginStore.getLoginData("webSessionIdExpiryTime", 0L); return mWebSessionIdExpiryTime ?: 0L }
         set(value) { loginStore.putLoginData("webSessionIdExpiryTime", value); mWebSessionIdExpiryTime = value }
 
+    /*     ____  _   _
+          / __ \| | | |
+         | |  | | |_| |__   ___ _ __
+         | |  | | __| '_ \ / _ \ '__|
+         | |__| | |_| | | |  __/ |
+          \____/ \__|_| |_|\___|*/
+    private var mTimetableNotPublic: Boolean? = null
+    var timetableNotPublic: Boolean
+        get() { mTimetableNotPublic = mTimetableNotPublic ?: profile?.getStudentData("timetableNotPublic", false); return mTimetableNotPublic ?: false }
+        set(value) { profile?.putStudentData("timetableNotPublic", value) ?: return; mTimetableNotPublic = value }
+
     val studentEndpoint: String
         get() = "Students/$studentId/"
 

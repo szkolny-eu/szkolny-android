@@ -135,7 +135,7 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
                         login()
                     }
                     ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC -> {
-                        loginStore.putLoginData("timetableNotPublic", true)
+                        data.timetableNotPublic = true
                         data()
                     }
                     else -> callback.onError(apiError)
