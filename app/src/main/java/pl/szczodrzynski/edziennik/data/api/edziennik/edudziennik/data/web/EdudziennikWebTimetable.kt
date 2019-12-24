@@ -13,10 +13,12 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.Edudzienni
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.splitName
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -69,6 +71,12 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
                 val times = rowElements[1].text().split('-')
                 val startTime = Time.fromH_m(times[0].trim())
                 val endTime = Time.fromH_m(times[1].trim())
+
+                data.lessonRanges.singleOrNull {
+                    it.lessonNumber == lessonNumber && it.startTime == startTime && it.endTime == endTime
+                } ?: run {
+                    data.lessonRanges.put(lessonNumber, LessonRange(profileId, lessonNumber, startTime, endTime))
+                }
 
                 rowElements.subList(2, rowElements.size).forEachIndexed { index, lesson ->
                     val course = lesson.select(".course").firstOrNull() ?: return@forEachIndexed

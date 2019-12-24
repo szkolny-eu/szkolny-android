@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.models.Feature
 const val ENDPOINT_EDUDZIENNIK_WEB_START                = 1000
 const val ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE            = 1001
 const val ENDPOINT_EDUDZIENNIK_WEB_EXAMS                = 1002
+const val ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE           = 1003
 const val ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER         = 1010
 
 val EdudziennikFeatures = listOf(
@@ -27,6 +28,10 @@ val EdudziennikFeatures = listOf(
 
         Feature(LOGIN_TYPE_EDUDZIENNIK, FEATURE_AGENDA, listOf(
                 ENDPOINT_EDUDZIENNIK_WEB_EXAMS to LOGIN_METHOD_EDUDZIENNIK_WEB
+        ), listOf(LOGIN_METHOD_EDUDZIENNIK_WEB)),
+
+        Feature(LOGIN_TYPE_EDUDZIENNIK, FEATURE_ATTENDANCE, listOf(
+                ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE to LOGIN_METHOD_EDUDZIENNIK_WEB
         ), listOf(LOGIN_METHOD_EDUDZIENNIK_WEB)),
 
         Feature(LOGIN_TYPE_EDUDZIENNIK, FEATURE_LUCKY_NUMBER, listOf(
