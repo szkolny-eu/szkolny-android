@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -20,7 +19,7 @@ class EdudziennikWebLuckyNumber(override val data: DataEdudziennik,
 
     init { data.profile?.also { profile ->
         webGet(TAG, data.schoolEndpoint + "Lucky", xhr = true) { text ->
-            text.toIntOrNull()?.let { luckyNumber ->
+            text.toIntOrNull()?.also { luckyNumber ->
                 val luckyNumberObject = LuckyNumber(
                         profileId,
                         Date.getToday(),
@@ -38,7 +37,9 @@ class EdudziennikWebLuckyNumber(override val data: DataEdudziennik,
                 ))
             }
 
-            data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER, SYNC_ALWAYS)
+            val nextSync = Date.getToday().stepForward(0, 0, 1).inMillis
+
+            data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER, syncAt = nextSync)
             onSuccess()
         }
     } ?: onSuccess() }

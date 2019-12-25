@@ -17,7 +17,7 @@ class EdudziennikWebTeachers(override val data: DataEdudziennik,
         private const val TAG = "EdudziennikWebTeachers"
     }
 
-    init { data.profile?.also { profile ->
+    init {
         webGet(TAG, data.studentAndTeacherClassEndpoint + "grid") { text ->
             EDUDZIENNIK_TEACHERS.findAll(text).forEach {
                 val lastName = it[1].trim()
@@ -28,5 +28,5 @@ class EdudziennikWebTeachers(override val data: DataEdudziennik,
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_TEACHERS, MONTH)
             onSuccess()
         }
-    } ?: onSuccess() }
+    }
 }

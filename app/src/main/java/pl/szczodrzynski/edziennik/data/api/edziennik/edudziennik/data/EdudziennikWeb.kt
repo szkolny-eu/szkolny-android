@@ -8,10 +8,7 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
-import pl.szczodrzynski.edziennik.data.api.EDUDZIENNIK_USER_AGENT
-import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
-import pl.szczodrzynski.edziennik.data.api.ERROR_RESPONSE_EMPTY
-import pl.szczodrzynski.edziennik.data.api.EXCEPTION_EDUDZIENNIK_WEB_REQUEST
+import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -54,7 +51,11 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
-                data.error(ApiError(tag, ERROR_REQUEST_FAILURE)
+                val error = when (response?.code()) {
+                    402 -> ERROR_EDUDZIENNIK_WEB_LIMITED_ACCESS
+                    else -> ERROR_REQUEST_FAILURE
+                }
+                data.error(ApiError(tag, error)
                         .withResponse(response)
                         .withThrowable(throwable))
             }
