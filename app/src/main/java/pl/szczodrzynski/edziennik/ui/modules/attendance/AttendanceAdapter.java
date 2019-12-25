@@ -22,7 +22,7 @@ import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.T
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT_EXCUSED;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED_EXCUSED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_FREE;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_DAY_FREE;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_PRESENT;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_RELEASED;
 
@@ -58,7 +58,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         holder.attendanceTime.setText(attendance.startTime.getStringHM());
 
         switch (attendance.type) {
-            case TYPE_FREE:
+            case TYPE_DAY_FREE:
                 holder.attendanceType.getBackground().setColorFilter(new PorterDuffColorFilter(0xff166ee0, PorterDuff.Mode.MULTIPLY));
                 holder.attendanceType.setText(R.string.attendance_free_day);
                 break;
