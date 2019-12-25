@@ -40,8 +40,8 @@ class EdudziennikWebAttendance(override val data: DataEdudziennik,
                             "nieobecność" -> Attendance.TYPE_ABSENT
                             "spóźnienie" -> Attendance.TYPE_BELATED
                             "nieobecność usprawiedliwiona" -> Attendance.TYPE_ABSENT_EXCUSED
-                            "dzień wolny" -> Attendance.TYPE_RELEASED
-                            "brak zajęć" -> Attendance.TYPE_RELEASED
+                            "dzień wolny" -> Attendance.TYPE_FREE
+                            "brak zajęć" -> Attendance.TYPE_FREE
                             "oddelegowany" -> Attendance.TYPE_RELEASED
                             else -> Attendance.TYPE_CUSTOM
                         }

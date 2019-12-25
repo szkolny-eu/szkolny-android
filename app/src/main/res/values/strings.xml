@@ -83,6 +83,7 @@
     <string name="attendance_belated_excused" translatable="false">su</string>
     <string name="attendance_present" translatable="false">ob</string>
     <string name="attendance_released" translatable="false">zw</string>
+    <string name="attendance_free_day" translatable="false">w</string>
     <string name="attendances_absent">Nieobecności:</string>
     <string name="attendances_absent_unexcused">W tym nieusprawiedliwione:</string>
     <string name="attendances_belated">Spóźnienia:</string>

@@ -35,6 +35,7 @@ public class Attendance {
     public static final int TYPE_BELATED = 4;
     public static final int TYPE_BELATED_EXCUSED = 5;
     public static final int TYPE_CUSTOM = 6;
+    public static final int TYPE_FREE = 7;
     @ColumnInfo(name = "attendanceType")
     public int type = TYPE_PRESENT;
 

@@ -4,12 +4,13 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.T
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT_EXCUSED;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_FREE;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_PRESENT;
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_RELEASED;
 
@@ -56,6 +58,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         holder.attendanceTime.setText(attendance.startTime.getStringHM());
 
         switch (attendance.type) {
+            case TYPE_FREE:
+                holder.attendanceType.getBackground().setColorFilter(new PorterDuffColorFilter(0xff166ee0, PorterDuff.Mode.MULTIPLY));
+                holder.attendanceType.setText(R.string.attendance_free_day);
+                break;
             case TYPE_ABSENT:
                 holder.attendanceType.getBackground().setColorFilter(new PorterDuffColorFilter(0xfff44336, PorterDuff.Mode.MULTIPLY));
                 holder.attendanceType.setText(R.string.attendance_absent);
