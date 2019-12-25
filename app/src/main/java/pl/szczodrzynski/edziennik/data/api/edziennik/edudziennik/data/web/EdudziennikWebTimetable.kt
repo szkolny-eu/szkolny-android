@@ -57,82 +57,87 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
             val table = doc.select("#Schedule tbody").first()
 
             if (table.text().trim() == "Brak planu lekcji.") {
-                data.error(ApiError(TAG, ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC)
-                        .withApiResponse(text))
-                onSuccess()
-                return@webGet
-            }
+                val today = Date.getToday()
+                val schoolYearStart = if (today.month >= 9) today.year else today.year - 1
 
-            table.children().forEach { row ->
-                val rowElements = row.children()
-
-                val lessonNumber = rowElements[0].text().toInt()
-
-                val times = rowElements[1].text().split('-')
-                val startTime = Time.fromH_m(times[0].trim())
-                val endTime = Time.fromH_m(times[1].trim())
-
-                data.lessonRanges.singleOrNull {
-                    it.lessonNumber == lessonNumber && it.startTime == startTime && it.endTime == endTime
-                } ?: run {
-                    data.lessonRanges.put(lessonNumber, LessonRange(profileId, lessonNumber, startTime, endTime))
+                if (weekStart >= Date(schoolYearStart, 9, 1)) {
+                    data.error(ApiError(TAG, ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC)
+                            .withApiResponse(text))
+                    onSuccess()
+                    return@webGet
                 }
+            } else {
+                table.children().forEach { row ->
+                    val rowElements = row.children()
 
-                rowElements.subList(2, rowElements.size).forEachIndexed { index, lesson ->
-                    val course = lesson.select(".course").firstOrNull() ?: return@forEachIndexed
-                    val info = course.select("span > span")
+                    val lessonNumber = rowElements[0].text().toInt()
 
-                    if (info.isEmpty()) return@forEachIndexed
+                    val times = rowElements[1].text().split('-')
+                    val startTime = Time.fromH_m(times[0].trim())
+                    val endTime = Time.fromH_m(times[1].trim())
 
-                    val type = when (course.hasClass("substitute")) {
-                        true -> Lesson.TYPE_CHANGE
-                        else -> Lesson.TYPE_NORMAL
+                    data.lessonRanges.singleOrNull {
+                        it.lessonNumber == lessonNumber && it.startTime == startTime && it.endTime == endTime
+                    } ?: run {
+                        data.lessonRanges.put(lessonNumber, LessonRange(profileId, lessonNumber, startTime, endTime))
                     }
 
-                    /* Getting subject */
+                    rowElements.subList(2, rowElements.size).forEachIndexed { index, lesson ->
+                        val course = lesson.select(".course").firstOrNull() ?: return@forEachIndexed
+                        val info = course.select("span > span")
 
-                    val subjectElement = info[0].child(0)
-                    val subjectId = EDUDZIENNIK_SUBJECT_ID.find(subjectElement.attr("href"))?.get(1)
-                            ?: return@forEachIndexed
-                    val subjectName = subjectElement.text().trim()
-                    val subject = data.getSubject(subjectId, subjectName)
+                        if (info.isEmpty()) return@forEachIndexed
 
-                    /* Getting teacher */
+                        val type = when (course.hasClass("substitute")) {
+                            true -> Lesson.TYPE_CHANGE
+                            else -> Lesson.TYPE_NORMAL
+                        }
 
-                    val teacherId = if (info.size >= 2) {
-                        val teacherElement = info[1].child(0)
-                        val teacherName = teacherElement.text().trim()
-                        teacherName.splitName()?.let { (teacherLastName, teacherFirstName) ->
-                            data.getTeacher(teacherFirstName, teacherLastName)
-                        }?.id ?: -1
-                    } else -1
+                        /* Getting subject */
 
-                    val lessonObject = Lesson(profileId, -1).also {
-                        it.type = type
-                        it.date = weekStart.clone().stepForward(0, 0, index)
-                        it.lessonNumber = lessonNumber
-                        it.startTime = startTime
-                        it.endTime = endTime
-                        it.subjectId = subject.id
-                        it.teacherId = teacherId
+                        val subjectElement = info[0].child(0)
+                        val subjectId = EDUDZIENNIK_SUBJECT_ID.find(subjectElement.attr("href"))?.get(1)
+                                ?: return@forEachIndexed
+                        val subjectName = subjectElement.text().trim()
+                        val subject = data.getSubject(subjectId, subjectName)
 
-                        it.id = it.buildId()
-                    }
+                        /* Getting teacher */
 
-                    data.lessonNewList.add(lessonObject)
-                    dataDays.remove(lessonObject.date!!.value)
+                        val teacherId = if (info.size >= 2) {
+                            val teacherElement = info[1].child(0)
+                            val teacherName = teacherElement.text().trim()
+                            teacherName.splitName()?.let { (teacherLastName, teacherFirstName) ->
+                                data.getTeacher(teacherFirstName, teacherLastName)
+                            }?.id ?: -1
+                        } else -1
 
-                    if (type != Lesson.TYPE_NORMAL) {
-                        val seen = profile.empty || lessonObject.date!! < Date.getToday()
+                        val lessonObject = Lesson(profileId, -1).also {
+                            it.type = type
+                            it.date = weekStart.clone().stepForward(0, 0, index)
+                            it.lessonNumber = lessonNumber
+                            it.startTime = startTime
+                            it.endTime = endTime
+                            it.subjectId = subject.id
+                            it.teacherId = teacherId
 
-                        data.metadataList.add(Metadata(
-                                profileId,
-                                Metadata.TYPE_LESSON_CHANGE,
-                                lessonObject.id,
-                                seen,
-                                seen,
-                                System.currentTimeMillis()
-                        ))
+                            it.id = it.buildId()
+                        }
+
+                        data.lessonNewList.add(lessonObject)
+                        dataDays.remove(lessonObject.date!!.value)
+
+                        if (type != Lesson.TYPE_NORMAL) {
+                            val seen = profile.empty || lessonObject.date!! < Date.getToday()
+
+                            data.metadataList.add(Metadata(
+                                    profileId,
+                                    Metadata.TYPE_LESSON_CHANGE,
+                                    lessonObject.id,
+                                    seen,
+                                    seen,
+                                    System.currentTimeMillis()
+                            ))
+                        }
                     }
                 }
             }

@@ -19,6 +19,7 @@
     <string name="error_110" translatable="false">ERROR_INVALID_LOGIN_MODE</string>
     <string name="error_111" translatable="false">ERROR_LOGIN_METHOD_NOT_SATISFIED</string>
     <string name="error_112" translatable="false">ERROR_NOT_IMPLEMENTED</string>
+    <string name="error_113" translatable="false">ERROR_FILE_DOWNLOAD</string>
 
     <string name="error_115" translatable="false">ERROR_NO_STUDENTS_IN_ACCOUNT</string>
 
@@ -132,6 +133,7 @@
     <string name="error_511" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID</string>
     <string name="error_520" translatable="false">ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC</string>
     <string name="error_521" translatable="false">ERROR_EDUDZIENNIK_WEB_LIMITED_ACCESS</string>
+    <string name="error_522" translatable="false">ERROR_EDUDZIENNIK_WEB_SESSION_EXPIRED</string>
     <string name="error_530" translatable="false">ERROR_EDUDZIENNIK_WEB_TEAM_MISSING</string>
 
     <string name="error_801" translatable="false">ERROR_TEMPLATE_WEB_OTHER</string>
@@ -168,6 +170,7 @@
     <string name="error_110_reason">Nieprawidłowy sposób logowania</string>
     <string name="error_111_reason">Nie można wywołać metody logowania</string>
     <string name="error_112_reason">Nie zaimplementowano</string>
+    <string name="error_113_reason">Wystąpił błąd podczas pobierania pliku</string>
 
     <string name="error_115_reason">Brak uczniów przypisanych do konta</string>
 
@@ -281,6 +284,7 @@
     <string name="error_511_reason">Brak ID sesji</string>
     <string name="error_520_reason">Plan lekcji niedostępny</string>
     <string name="error_521_reason">Ograniczony dostęp do dziennika</string>
+    <string name="error_522_reason">Sesja wygasła</string>
     <string name="error_530_reason">Nie można pobrać informacji o klasie i szkole</string>
 
     <string name="error_801_reason">ERROR_TEMPLATE_WEB_OTHER</string>

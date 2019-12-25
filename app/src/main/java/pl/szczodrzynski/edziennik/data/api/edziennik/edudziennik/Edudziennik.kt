@@ -6,16 +6,13 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik
 
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC
-import pl.szczodrzynski.edziennik.data.api.ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID
-import pl.szczodrzynski.edziennik.data.api.edudziennikLoginMethods
+import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikData
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.firstlogin.EdudziennikFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLogin
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.prepare
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
@@ -131,6 +128,9 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
                 }
                 internalErrorList.add(apiError.errorCode)
                 when (apiError.errorCode) {
+                    ERROR_EDUDZIENNIK_WEB_SESSION_EXPIRED -> {
+                        login()
+                    }
                     ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID -> {
                         login()
                     }

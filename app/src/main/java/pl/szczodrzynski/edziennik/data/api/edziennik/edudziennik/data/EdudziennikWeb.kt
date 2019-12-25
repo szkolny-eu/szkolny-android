@@ -53,6 +53,7 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
             override fun onFailure(response: Response?, throwable: Throwable?) {
                 val error = when (response?.code()) {
                     402 -> ERROR_EDUDZIENNIK_WEB_LIMITED_ACCESS
+                    403 -> ERROR_EDUDZIENNIK_WEB_SESSION_EXPIRED
                     else -> ERROR_REQUEST_FAILURE
                 }
                 data.error(ApiError(tag, error)
