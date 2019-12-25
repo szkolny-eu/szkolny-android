@@ -138,4 +138,8 @@ object Regexes {
     val EDUDZIENNIK_CLASS_DETAIL_NAME by lazy {
         """<a id="Klass_detail".*?>(.*?)</a>""".toRegex(DOT_MATCHES_ALL)
     }
+
+    val EDUDZIENNIK_TEACHERS by lazy {
+        """<div class="teacher">.*?<p>(.+?) (.+?)</p>""".toRegex(DOT_MATCHES_ALL)
+    }
 }

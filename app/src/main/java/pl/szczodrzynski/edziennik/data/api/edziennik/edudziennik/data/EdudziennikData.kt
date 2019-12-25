@@ -40,6 +40,14 @@ class EdudziennikData(val data: DataEdudziennik, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_data)
                 EdudziennikWebStart(data, onSuccess)
             }
+            ENDPOINT_EDUDZIENNIK_WEB_TEACHERS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_teachers)
+                EdudziennikWebTeachers(data, onSuccess)
+            }
+            ENDPOINT_EDUDZIENNIK_WEB_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grades)
+                EdudziennikWebGrades(data, onSuccess)
+            }
             ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_timetable)
                 EdudziennikWebTimetable(data, onSuccess)
@@ -51,10 +59,6 @@ class EdudziennikData(val data: DataEdudziennik, val onSuccess: () -> Unit) {
             ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance)
                 EdudziennikWebAttendance(data, onSuccess)
-            }
-            ENDPOINT_EDUDZIENNIK_WEB_GRADES -> {
-                data.startProgress(R.string.edziennik_progress_endpoint_grades)
-                EdudziennikWebGrades(data, onSuccess)
             }
             ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)

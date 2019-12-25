@@ -8,15 +8,20 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.models.Feature
 
 const val ENDPOINT_EDUDZIENNIK_WEB_START                = 1000
-const val ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE            = 1001
-const val ENDPOINT_EDUDZIENNIK_WEB_EXAMS                = 1002
-const val ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE           = 1003
-const val ENDPOINT_EDUDZIENNIK_WEB_GRADES               = 1004
-const val ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER         = 1010
+const val ENDPOINT_EDUDZIENNIK_WEB_TEACHERS             = 1001
+const val ENDPOINT_EDUDZIENNIK_WEB_GRADES               = 1011
+const val ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE            = 1012
+const val ENDPOINT_EDUDZIENNIK_WEB_EXAMS                = 1013
+const val ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE           = 1014
+const val ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER         = 1030
 
 val EdudziennikFeatures = listOf(
         Feature(LOGIN_TYPE_EDUDZIENNIK, FEATURE_STUDENT_INFO, listOf(
                 ENDPOINT_EDUDZIENNIK_WEB_START to LOGIN_METHOD_EDUDZIENNIK_WEB
+        ), listOf(LOGIN_METHOD_EDUDZIENNIK_WEB)),
+
+        Feature(LOGIN_TYPE_EDUDZIENNIK, FEATURE_TEACHERS, listOf(
+                ENDPOINT_EDUDZIENNIK_WEB_TEACHERS to LOGIN_METHOD_EDUDZIENNIK_WEB
         ), listOf(LOGIN_METHOD_EDUDZIENNIK_WEB)),
 
         Feature(LOGIN_TYPE_EDUDZIENNIK, FEATURE_TIMETABLE, listOf(

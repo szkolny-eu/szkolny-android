@@ -92,17 +92,14 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
     val schoolEndpoint: String
         get() = "Schools/$schoolId/"
 
-    val schoolClassEndpoint: String
-        get() = "Schools/$classId/"
-
     val studentAndClassEndpoint: String
         get() = "Students/$studentId/Klass/$classId/"
 
-    val courseEndpoint: String
-        get() = "Course/$studentId/"
-
     val timetableEndpoint: String
         get() = "Plan/$studentId/"
+
+    val studentAndTeacherClassEndpoint: String
+        get() = "Students/$studentId/Teachers/$classId/"
 
     fun getSubject(longId: String, name: String): Subject {
         val id = longId.crc32()
