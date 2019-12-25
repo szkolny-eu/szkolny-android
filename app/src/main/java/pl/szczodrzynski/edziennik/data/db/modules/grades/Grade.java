@@ -41,8 +41,8 @@ public class Grade {
     public static final int TYPE_SEMESTER2_FINAL = 4;
     public static final int TYPE_YEAR_PROPOSED = 5;
     public static final int TYPE_YEAR_FINAL = 6;
-    public static final int TYPE_POINT = 10;
-    public static final int TYPE_BEHAVIOUR = 20;
+    public static final int TYPE_POINT_AVG = 10;
+    public static final int TYPE_POINT_SUM = 20;
     public static final int TYPE_DESCRIPTIVE = 30;
     public static final int TYPE_TEXT = 40;
     @ColumnInfo(name = "gradeType")

@@ -21,8 +21,8 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradeDetailsDialog;
-import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.Colors;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.COLOR_MODE_DEFAULT;
 
@@ -84,13 +84,13 @@ public class GradesListAdapter extends RecyclerView.Adapter<GradesListAdapter.Vi
         if (grade.weight < 0) {
             grade.weight *= -1;
         }
-        if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_TEXT || grade.type == Grade.TYPE_BEHAVIOUR) {
+        if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_TEXT || grade.type == Grade.TYPE_POINT_SUM) {
             holder.gradesListWeight.setVisibility(View.GONE);
             grade.weight = 0;
         }
         else {
             holder.gradesListWeight.setVisibility(View.VISIBLE);
-            if (grade.type == Grade.TYPE_POINT) {
+            if (grade.type == Grade.TYPE_POINT_AVG) {
                 holder.gradesListWeight.setText(app.getString(R.string.grades_max_points_format, format.format(grade.valueMax)));
             }
             else if (grade.weight == 0) {

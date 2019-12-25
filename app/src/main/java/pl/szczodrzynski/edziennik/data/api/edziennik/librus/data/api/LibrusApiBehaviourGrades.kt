@@ -40,7 +40,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         1,
                         -1,
                         1
-                ).apply { type = Grade.TYPE_BEHAVIOUR }
+                ).apply { type = Grade.TYPE_POINT_SUM }
 
                 data.gradeList.add(semester1StartGradeObject)
                 data.metadataList.add(Metadata(
@@ -66,7 +66,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         2,
                         -1,
                         1
-                ).apply { type = Grade.TYPE_BEHAVIOUR }
+                ).apply { type = Grade.TYPE_POINT_SUM }
 
                 data.gradeList.add(semester2StartGradeObject)
                 data.metadataList.add(Metadata(
@@ -133,7 +133,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         teacherId,
                         1
                 ).apply {
-                    type = Grade.TYPE_BEHAVIOUR
+                    type = Grade.TYPE_POINT_SUM
                     valueMax = valueTo
                 }
 
@@ -148,7 +148,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                 ))
             }
 
-            data.toRemove.add(DataRemoveModel.Grades.semesterWithType(profile.currentSemester, Grade.TYPE_BEHAVIOUR))
+            data.toRemove.add(DataRemoveModel.Grades.semesterWithType(profile.currentSemester, Grade.TYPE_POINT_SUM))
             data.setSyncNext(ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES, SYNC_ALWAYS)
             onSuccess()
         }

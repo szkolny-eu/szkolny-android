@@ -9,12 +9,14 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
+
 import androidx.core.graphics.ColorUtils;
-import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Random;
+
+import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 
 public class Colors {
 
@@ -110,10 +112,10 @@ public class Colors {
 
     public static int gradeToColor(Grade grade)
     {
-        if (grade.type == Grade.TYPE_BEHAVIOUR) {
+        if (grade.type == Grade.TYPE_POINT_SUM) {
             return grade.value < 0 ? 0xfff44336 : grade.value > 0 ? 0xff4caf50 : 0xffbdbdbd;
         }
-        else if (grade.type == Grade.TYPE_POINT) {
+        else if (grade.type == Grade.TYPE_POINT_AVG) {
             return Color.parseColor("#"+gradeValueToColorStr(grade.value/grade.valueMax*100));
         }
         else if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_TEXT) {

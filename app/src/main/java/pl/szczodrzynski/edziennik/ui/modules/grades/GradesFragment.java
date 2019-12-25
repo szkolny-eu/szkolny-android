@@ -136,7 +136,7 @@ public class GradesFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon2.cmd_palette_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            ProfileConfigGrades config = app.config.getFor(app.profileId).getGrades();
+                            ProfileConfigGrades config = app.config.getFor(App.profileId).getGrades();
                             new MaterialDialog.Builder(activity)
                                     .title(R.string.dialog_grades_color_mode_title)
                                     .items(R.array.dialog_grades_color_modes)
@@ -247,13 +247,13 @@ public class GradesFragment extends Fragment {
 
             subjectList = new ArrayList<>();
 
-            ProfileConfigGrades config = app.config.getFor(app.profileId).getGrades();
+            ProfileConfigGrades config = app.config.getFor(App.profileId).getGrades();
 
             // now we have all grades from the newest to the oldest
             for (GradeFull grade: grades) {
                 ItemGradesSubjectModel model = ItemGradesSubjectModel.searchModelBySubjectId(subjectList, grade.subjectId);
                 if (model == null) {
-                    model = new ItemGradesSubjectModel(app.profile, new Subject(app.profileId, grade.subjectId, grade.subjectLongName, grade.subjectShortName), new ArrayList<>(), new ArrayList<>());//ItemGradesSubjectModel.searchModelBySubjectId(subjectList, grade.subjectId);
+                    model = new ItemGradesSubjectModel(app.profile, new Subject(App.profileId, grade.subjectId, grade.subjectLongName, grade.subjectShortName), new ArrayList<>(), new ArrayList<>());//ItemGradesSubjectModel.searchModelBySubjectId(subjectList, grade.subjectId);
                     subjectList.add(model);
                     if (model.subject != null && model.subject.id == finalExpandSubjectId) {
                         model.expandView = true;
@@ -266,7 +266,7 @@ public class GradesFragment extends Fragment {
                     model.semester2Unread++;
                 }
                 // COUNT POINT GRADES
-                if (grade.type == Grade.TYPE_POINT) {
+                if (grade.type == Grade.TYPE_POINT_AVG) {
                     model.isPointSubject = true;
                     if (grade.semester == 1) {
                         model.gradeSumOverall += grade.value;
@@ -285,7 +285,7 @@ public class GradesFragment extends Fragment {
                         model.grades2.add(grade);
                     }
                 }
-                else if (grade.type == Grade.TYPE_BEHAVIOUR) {
+                else if (grade.type == Grade.TYPE_POINT_SUM) {
                     model.isBehaviourSubject = true;
                     if (grade.semester == 1) {
                         model.semester1Average += grade.value;

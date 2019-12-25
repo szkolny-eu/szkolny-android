@@ -41,7 +41,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                 val subject = data.getSubject(subjectId, subjectName)
 
                 val gradeType = when {
-                    subjectElement.select("#sum").text().isNotBlank() -> TYPE_BEHAVIOUR
+                    subjectElement.select("#sum").text().isNotBlank() -> TYPE_POINT_SUM
                     else -> TYPE_NORMAL
                 }
 
@@ -192,7 +192,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
             if (!subjects.isNullOrEmpty()) {
                 data.toRemove.addAll(listOf(
                         TYPE_NORMAL,
-                        TYPE_BEHAVIOUR,
+                        TYPE_POINT_SUM,
                         TYPE_SEMESTER1_PROPOSED,
                         TYPE_SEMESTER2_PROPOSED,
                         TYPE_SEMESTER1_FINAL,

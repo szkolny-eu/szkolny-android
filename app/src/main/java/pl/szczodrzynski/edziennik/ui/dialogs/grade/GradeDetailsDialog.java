@@ -17,10 +17,10 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListAdapter;
-import pl.szczodrzynski.edziennik.databinding.DialogGradeDetailsBinding;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
+import pl.szczodrzynski.edziennik.databinding.DialogGradeDetailsBinding;
+import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListAdapter;
 import pl.szczodrzynski.edziennik.utils.Colors;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.COLOR_MODE_DEFAULT;
@@ -85,12 +85,12 @@ public class GradeDetailsDialog {
         if (grade.weight < 0) {
             grade.weight *= -1;
         }
-        if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_TEXT || grade.type == Grade.TYPE_BEHAVIOUR) {
+        if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_TEXT || grade.type == Grade.TYPE_POINT_SUM) {
             b.setWeightText(null);
             grade.weight = 0;
         }
         else {
-            if (grade.type == Grade.TYPE_POINT) {
+            if (grade.type == Grade.TYPE_POINT_AVG) {
                 b.setWeightText(app.getString(R.string.grades_max_points_format, format.format(grade.valueMax)));
             }
             else if (grade.weight == 0) {
