@@ -76,8 +76,11 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                     }
 
                     val info = gradesInfo[index]
-                    val category = info.child(4).text().trim()
-                    val description = info.ownText()
+                    val fullName = info.child(0).text().trim()
+                    val columnName = info.child(4).text().trim()
+                    val comment = info.ownText()
+
+                    val description = columnName + if (comment.isNotBlank()) " - $comment" else ""
 
                     val (teacherLastName, teacherFirstName) = info.child(1).text().split(' ')
                     val teacher = data.getTeacher(teacherFirstName, teacherLastName)
@@ -98,7 +101,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                     val gradeObject = Grade(
                             profileId,
                             id,
-                            category,
+                            fullName,
                             color,
                             description,
                             name,
