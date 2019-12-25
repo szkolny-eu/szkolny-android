@@ -40,17 +40,26 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                 val subjectName = subjectElement.child(0).text().trim()
                 val subject = data.getSubject(subjectId, subjectName)
 
-                val grades = subjectElement.select(".grade")
+                val gradeType = when {
+                    subjectElement.select("#sum").text().isNotBlank() -> TYPE_BEHAVIOUR
+                    else -> TYPE_NORMAL
+                }
+
+                val gradeCountToAverage = subjectElement.select("#avg").text().isNotBlank()
+
+                val grades = subjectElement.select(".grade[data-edited]")
                 val gradesInfo = subjectElement.select(".grade-tip")
 
-                val gradeValues = subjects.select(".avg-$subjectId .grade-tip > p").first()
-                        .text().split('+').map {
-                            val split = it.split('*')
-                            val weight = split[0].trim().toFloat()
-                            val value = split[1].trim().toFloat()
+                val gradeValues = if (grades.isNotEmpty()) {
+                    subjects.select(".avg-$subjectId .grade-tip > p").first()
+                            .text().split('+').map {
+                                val split = it.split('*')
+                                val weight = split[0].trim().toFloat()
+                                val value = split[1].trim().toFloat()
 
-                            Pair(value, weight)
-                        }
+                                Pair(value, weight)
+                            }
+                } else emptyList()
 
                 grades.forEachIndexed { index, gradeElement ->
                     val id = Regexes.EDUDZIENNIK_GRADE_ID.find(gradeElement.attr("href"))?.get(1)?.crc32()
@@ -67,7 +76,8 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                     }
 
                     val info = gradesInfo[index]
-                    val description = info.child(4).text().trim()
+                    val category = info.child(4).text().trim()
+                    val description = info.ownText()
 
                     val (teacherLastName, teacherFirstName) = info.child(1).text().split(' ')
                     val teacher = data.getTeacher(teacherFirstName, teacherLastName)
@@ -88,16 +98,18 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                     val gradeObject = Grade(
                             profileId,
                             id,
-                            "",
+                            category,
                             color,
                             description,
                             name,
                             value,
-                            weight,
+                            if (gradeCountToAverage) weight else 0f,
                             profile.currentSemester,
                             teacher.id,
                             subject.id
-                    )
+                    ).apply {
+                        type = gradeType
+                    }
 
                     data.gradeList.add(gradeObject)
                     data.metadataList.add(Metadata(
@@ -180,6 +192,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
             if (!subjects.isNullOrEmpty()) {
                 data.toRemove.addAll(listOf(
                         TYPE_NORMAL,
+                        TYPE_BEHAVIOUR,
                         TYPE_SEMESTER1_PROPOSED,
                         TYPE_SEMESTER2_PROPOSED,
                         TYPE_SEMESTER1_FINAL,
