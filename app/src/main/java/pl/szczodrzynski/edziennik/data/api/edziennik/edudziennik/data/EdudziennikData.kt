@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.utils.Utils
 
 class EdudziennikData(val data: DataEdudziennik, val onSuccess: () -> Unit) {
     companion object {
-        private const val TAG = "TemplateData"
+        private const val TAG = "EdudziennikData"
     }
 
     init {

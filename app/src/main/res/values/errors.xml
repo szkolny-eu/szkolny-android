@@ -127,6 +127,13 @@
     <string name="error_450" translatable="false">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
     <string name="error_451" translatable="false">ERROR_IDZIENNIK_API_OTHER</string>
 
+    <string name="error_501" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN</string>
+    <string name="error_510" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER</string>
+    <string name="error_511" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID</string>
+    <string name="error_520" translatable="false">ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC</string>
+    <string name="error_521" translatable="false">ERROR_EDUDZIENNIK_WEB_LIMITED_ACCESS</string>
+    <string name="error_530" translatable="false">ERROR_EDUDZIENNIK_WEB_TEAM_MISSING</string>
+
     <string name="error_801" translatable="false">ERROR_TEMPLATE_WEB_OTHER</string>
 
     <string name="error_900" translatable="false">EXCEPTION_API_TASK</string>
@@ -142,6 +149,7 @@
     <string name="error_912" translatable="false">EXCEPTION_IDZIENNIK_WEB_REQUEST</string>
     <string name="error_913" translatable="false">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
     <string name="error_914" translatable="false">EXCEPTION_IDZIENNIK_API_REQUEST</string>
+    <string name="error_920" translatable="false">EXCEPTION_EDUDZIENNIK_WEB_REQUEST</string>
 
     <string name="error_1201" translatable="false">LOGIN_NO_ARGUMENTS</string>
 
@@ -268,6 +276,13 @@
     <string name="error_450_reason">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
     <string name="error_451_reason">ERROR_IDZIENNIK_API_OTHER</string>
 
+    <string name="error_501_reason">Błędny email lub hasło</string>
+    <string name="error_510_reason">Inny błąd logowania</string>
+    <string name="error_511_reason">Brak ID sesji</string>
+    <string name="error_520_reason">Plan lekcji niedostępny</string>
+    <string name="error_521_reason">Ograniczony dostęp do dziennika</string>
+    <string name="error_530_reason">Nie można pobrać informacji o klasie i szkole</string>
+
     <string name="error_801_reason">ERROR_TEMPLATE_WEB_OTHER</string>
 
     <string name="error_900_reason">EXCEPTION_API_TASK</string>
@@ -283,6 +298,7 @@
     <string name="error_912_reason">EXCEPTION_IDZIENNIK_WEB_REQUEST</string>
     <string name="error_913_reason">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
     <string name="error_914_reason">EXCEPTION_IDZIENNIK_API_REQUEST</string>
+    <string name="error_920_reason">Wystąpił błąd</string>
 
     <string name="error_1201_reason">Nie podano parametrów</string>
 </resources>
