@@ -99,6 +99,9 @@ object Regexes {
     val EDUDZIENNIK_ACCOUNT_NAME_START by lazy {
         """<span id='user_dn'>(.*?)</span>""".toRegex()
     }
+    val EDUDZIENNIK_SUBJECTS_START by lazy {
+        """<a class="menu-course" href="/Students/[\w-_]+?/Courses/([\w-_]+)/">(.+?)</a>""".toRegex()
+    }
 
     val EDUDZIENNIK_ATTENDANCE_ENTRIES by lazy {
         """<td id="([\d-]+?):(\d+?)".*?>(.+?)</td>""".toRegex()
