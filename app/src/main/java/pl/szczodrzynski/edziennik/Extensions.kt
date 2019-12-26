@@ -43,6 +43,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.navlib.getColorFromRes
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
@@ -681,4 +683,11 @@ val String.firstLettersName: String
             nameShort += it[0].toLowerCase()
         }
         return nameShort
+    }
+
+val Throwable.stackTraceString: String
+    get() {
+        val sw = StringWriter()
+        printStackTrace(PrintWriter(sw))
+        return sw.toString()
     }
