@@ -113,6 +113,10 @@ object Regexes {
         """\((.+?)\) (.+)""".toRegex()
     }
 
+    val EDUDZIENNIK_ANNOUNCEMENT_DESCRIPTION by lazy {
+        """<div class="desc">.*?<p>(.*?)</p>""".toRegex(DOT_MATCHES_ALL)
+    }
+
     val EDUDZIENNIK_SUBJECT_ID by lazy {
         """/Courses/([\w-_]+?)/""".toRegex()
     }
@@ -124,6 +128,9 @@ object Regexes {
     }
     val EDUDZIENNIK_EVENT_TYPE_ID by lazy {
         """/GradeLabels/([\w-_]+?)/""".toRegex()
+    }
+    val EDUDZIENNIK_ANNOUNCEMENT_ID by lazy {
+        """/Announcement/([\w-_]+?)/""".toRegex()
     }
 
     val EDUDZIENNIK_SCHOOL_DETAIL_ID by lazy {

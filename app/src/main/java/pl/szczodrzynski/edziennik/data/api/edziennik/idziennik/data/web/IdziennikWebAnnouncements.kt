@@ -54,7 +54,8 @@ class IdziennikWebAnnouncements(override val data: DataIdziennik,
                         jAnnouncement.get("Tresc").asString,
                         startDate,
                         null,
-                        rTeacher.id
+                        rTeacher.id,
+                        null
                 )
                 data.announcementList.add(announcementObject)
                 data.metadataList.add(Metadata(

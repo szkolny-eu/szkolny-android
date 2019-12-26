@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.*
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
@@ -104,6 +105,10 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                 }
             }
         }
+    }
+
+    override fun getAnnouncement(announcement: AnnouncementFull) {
+
     }
 
     override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {

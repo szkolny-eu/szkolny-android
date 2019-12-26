@@ -8,11 +8,14 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikData
+import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web.EdudziennikWebGetAnnouncement
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.firstlogin.EdudziennikFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLogin
+import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
@@ -89,6 +92,14 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
 
     override fun markAllAnnouncementsAsRead() {
 
+    }
+
+    override fun getAnnouncement(announcement: AnnouncementFull) {
+        EdudziennikLoginWeb(data) {
+            EdudziennikWebGetAnnouncement(data, announcement) {
+                completed()
+            }
+        }
     }
 
     override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {

@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.prepare
+import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
@@ -68,6 +69,10 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
     }
 
     override fun markAllAnnouncementsAsRead() {
+
+    }
+
+    override fun getAnnouncement(announcement: AnnouncementFull) {
 
     }
 

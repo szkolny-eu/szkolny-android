@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
+
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
 @Entity(tableName = "announcements",
@@ -18,6 +19,7 @@ public class Announcement {
 
     @ColumnInfo(name = "announcementSubject")
     public String subject;
+    @Nullable
     @ColumnInfo(name = "announcementText")
     public String text;
     @Nullable
@@ -29,10 +31,14 @@ public class Announcement {
 
     public long teacherId;
 
+    @Nullable
+    @ColumnInfo(name = "announcementIdString")
+    public String idString;
+
     @Ignore
     public Announcement() {}
 
-    public Announcement(int profileId, long id, String subject, String text, @Nullable Date startDate, @Nullable Date endDate, long teacherId) {
+    public Announcement(int profileId, long id, String subject, String text, @Nullable Date startDate, @Nullable Date endDate, long teacherId, @Nullable String idString) {
         this.profileId = profileId;
         this.id = id;
         this.subject = subject;
@@ -40,6 +46,7 @@ public class Announcement {
         this.startDate = startDate;
         this.endDate = endDate;
         this.teacherId = teacherId;
+        this.idString = idString;
     }
 }
 

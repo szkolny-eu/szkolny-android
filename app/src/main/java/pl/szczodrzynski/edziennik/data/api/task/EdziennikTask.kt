@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.template.Template
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.Vulcan
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
+import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
@@ -26,6 +27,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
         fun syncProfileList(profileList: List<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
         fun messageGet(profileId: Int, message: MessageFull) = EdziennikTask(profileId, MessageGetRequest(message))
         fun announcementsRead(profileId: Int) = EdziennikTask(profileId, AnnouncementsReadRequest())
+        fun announcementGet(profileId: Int, announcement: AnnouncementFull) = EdziennikTask(profileId, AnnouncementGetRequest(announcement))
         fun attachmentGet(profileId: Int, message: Message, attachmentId: Long, attachmentName: String) = EdziennikTask(profileId, AttachmentGetRequest(message, attachmentId, attachmentName))
     }
 
@@ -77,6 +79,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             is MessageGetRequest -> edziennikInterface?.getMessage(request.message)
             is FirstLoginRequest -> edziennikInterface?.firstLogin()
             is AnnouncementsReadRequest -> edziennikInterface?.markAllAnnouncementsAsRead()
+            is AnnouncementGetRequest -> edziennikInterface?.getAnnouncement(request.announcement)
             is AttachmentGetRequest -> edziennikInterface?.getAttachment(request.message, request.attachmentId, request.attachmentName)
         }
     }
@@ -95,5 +98,6 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     data class SyncProfileListRequest(val profileList: List<Int>)
     data class MessageGetRequest(val message: MessageFull)
     class AnnouncementsReadRequest
+    data class AnnouncementGetRequest(val announcement: AnnouncementFull)
     data class AttachmentGetRequest(val message: Message, val attachmentId: Long, val attachmentName: String)
 }

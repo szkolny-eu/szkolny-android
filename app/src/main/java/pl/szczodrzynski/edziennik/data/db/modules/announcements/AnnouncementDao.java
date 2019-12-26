@@ -23,6 +23,9 @@ public abstract class AnnouncementDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void addAll(List<Announcement> announcementList);
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public abstract void addAllIgnore(List<Announcement> announcementList);
+
     @Query("DELETE FROM announcements WHERE profileId = :profileId")
     public abstract void clear(int profileId);
 

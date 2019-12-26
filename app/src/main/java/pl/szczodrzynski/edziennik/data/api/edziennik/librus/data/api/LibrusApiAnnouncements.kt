@@ -24,7 +24,8 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
             val announcements = json.getJsonArray("SchoolNotices").asJsonObjectList()
 
             announcements?.forEach { announcement ->
-                val id = announcement.getString("Id")?.crc32() ?: return@forEach
+                val longId = announcement.getString("Id") ?: return@forEach
+                val id = longId.crc32()
                 val subject = announcement.getString("Subject") ?: ""
                 val text = announcement.getString("Content") ?: ""
                 val startDate = Date.fromY_m_d(announcement.getString("StartDate"))
@@ -41,7 +42,8 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
                         text,
                         startDate,
                         endDate,
-                        teacherId
+                        teacherId,
+                        longId
                 )
 
                 data.announcementList.add(announcementObject)

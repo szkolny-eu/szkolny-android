@@ -17,9 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent;
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
+import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull;
 import pl.szczodrzynski.edziennik.databinding.DialogAnnouncementBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAnnouncementsBinding;
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
@@ -33,6 +40,7 @@ public class AnnouncementsFragment extends Fragment {
     private App app = null;
     private MainActivity activity = null;
     private FragmentAnnouncementsBinding b = null;
+    private boolean dialogOpened = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,20 +105,13 @@ public class AnnouncementsFragment extends Fragment {
                     return;
                 }*/
                 AnnouncementsAdapter announcementsAdapter = new AnnouncementsAdapter(activity, announcements, (v, announcement) -> {
-                    MaterialDialog dialog = new MaterialDialog.Builder(activity)
-                            .title(announcement.subject)
-                            .customView(R.layout.dialog_announcement, true)
-                            .positiveText(R.string.ok)
-                            .show();
-                    DialogAnnouncementBinding b = DialogAnnouncementBinding.bind(dialog.getCustomView());
-                    b.text.setText(announcement.teacherFullName+"\n\n"+ (announcement.startDate != null ? announcement.startDate.getFormattedString() : "-")+" do "+ (announcement.endDate != null ? announcement.endDate.getFormattedString() : "-")+"\n\n" +announcement.text);
-                    if (!announcement.seen) {
-                        announcement.seen = true;
-                        AsyncTask.execute(() -> {
-                            app.db.metadataDao().setSeen(App.profileId, announcement, true);
-                        });
-                        if (recyclerView.getAdapter() != null)
-                            recyclerView.getAdapter().notifyDataSetChanged();
+                    if (!dialogOpened) {
+                        dialogOpened = true;
+                        if (announcement.text == null) {
+                            EdziennikTask.Companion.announcementGet(App.profileId, announcement).enqueue(requireContext());
+                        } else {
+                            showAnnouncementDetailsDialog(announcement);
+                        }
                     }
                 });
 
@@ -127,5 +128,44 @@ public class AnnouncementsFragment extends Fragment {
                 b.announcementsNoData.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onAnnouncementGetEvent(AnnouncementGetEvent event) {
+        EventBus.getDefault().removeStickyEvent(event);
+        showAnnouncementDetailsDialog(event.getAnnouncement());
+    }
+
+    private void showAnnouncementDetailsDialog(AnnouncementFull announcement) {
+        if (!dialogOpened) {
+            MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                    .title(announcement.subject)
+                    .customView(R.layout.dialog_announcement, true)
+                    .positiveText(R.string.ok)
+                    .dismissListener(v -> dialogOpened = false)
+                    .show();
+            DialogAnnouncementBinding b = DialogAnnouncementBinding.bind(dialog.getCustomView());
+            b.text.setText(announcement.teacherFullName+"\n\n"+ (announcement.startDate != null ? announcement.startDate.getFormattedString() : "-")+" do "+ (announcement.endDate != null ? announcement.endDate.getFormattedString() : "-")+"\n\n" +announcement.text);
+            if (!announcement.seen) {
+                announcement.seen = true;
+                AsyncTask.execute(() -> {
+                    app.db.metadataDao().setSeen(App.profileId, announcement, true);
+                });
+                if (recyclerView.getAdapter() != null)
+                    recyclerView.getAdapter().notifyDataSetChanged();
+            }
+        }
     }
 }
