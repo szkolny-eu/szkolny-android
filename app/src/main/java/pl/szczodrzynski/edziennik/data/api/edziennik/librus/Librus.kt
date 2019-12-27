@@ -8,6 +8,7 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusData
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.api.LibrusApiAnnouncementMarkAsRead
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetAttachment
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaMarkAllAnnouncementsAsRead
@@ -108,7 +109,13 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getAnnouncement(announcement: AnnouncementFull) {
-
+        LibrusLoginPortal(data) {
+            LibrusLoginApi(data) {
+                LibrusApiAnnouncementMarkAsRead(data, announcement) {
+                    completed()
+                }
+            }
+        }
     }
 
     override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {

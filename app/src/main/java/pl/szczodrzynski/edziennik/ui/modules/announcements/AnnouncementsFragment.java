@@ -33,6 +33,7 @@ import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
+import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_LIBRUS;
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ANNOUNCEMENT;
 
 public class AnnouncementsFragment extends Fragment {
@@ -40,7 +41,6 @@ public class AnnouncementsFragment extends Fragment {
     private App app = null;
     private MainActivity activity = null;
     private FragmentAnnouncementsBinding b = null;
-    private boolean dialogOpened = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,8 +70,12 @@ public class AnnouncementsFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_ANNOUNCEMENT, true));
-                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
+                            if (app.profile.getLoginStoreType() == LOGIN_TYPE_LIBRUS) {
+                                EdziennikTask.Companion.announcementsRead(App.profileId).enqueue(requireContext());
+                            } else {
+                                AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_ANNOUNCEMENT, true));
+                                Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
+                            }
                         })
         );
 
@@ -105,13 +109,10 @@ public class AnnouncementsFragment extends Fragment {
                     return;
                 }*/
                 AnnouncementsAdapter announcementsAdapter = new AnnouncementsAdapter(activity, announcements, (v, announcement) -> {
-                    if (!dialogOpened) {
-                        dialogOpened = true;
-                        if (announcement.text == null) {
-                            EdziennikTask.Companion.announcementGet(App.profileId, announcement).enqueue(requireContext());
-                        } else {
-                            showAnnouncementDetailsDialog(announcement);
-                        }
+                    if (announcement.text == null || (app.profile.getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.seen)) {
+                        EdziennikTask.Companion.announcementGet(App.profileId, announcement).enqueue(requireContext());
+                    } else {
+                        showAnnouncementDetailsDialog(announcement);
                     }
                 });
 
@@ -149,23 +150,18 @@ public class AnnouncementsFragment extends Fragment {
     }
 
     private void showAnnouncementDetailsDialog(AnnouncementFull announcement) {
-        if (!dialogOpened) {
-            MaterialDialog dialog = new MaterialDialog.Builder(activity)
-                    .title(announcement.subject)
-                    .customView(R.layout.dialog_announcement, true)
-                    .positiveText(R.string.ok)
-                    .dismissListener(v -> dialogOpened = false)
-                    .show();
-            DialogAnnouncementBinding b = DialogAnnouncementBinding.bind(dialog.getCustomView());
-            b.text.setText(announcement.teacherFullName+"\n\n"+ (announcement.startDate != null ? announcement.startDate.getFormattedString() : "-")+" do "+ (announcement.endDate != null ? announcement.endDate.getFormattedString() : "-")+"\n\n" +announcement.text);
-            if (!announcement.seen) {
-                announcement.seen = true;
-                AsyncTask.execute(() -> {
-                    app.db.metadataDao().setSeen(App.profileId, announcement, true);
-                });
-                if (recyclerView.getAdapter() != null)
-                    recyclerView.getAdapter().notifyDataSetChanged();
-            }
+        MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                .title(announcement.subject)
+                .customView(R.layout.dialog_announcement, true)
+                .positiveText(R.string.ok)
+                .show();
+        DialogAnnouncementBinding b = DialogAnnouncementBinding.bind(dialog.getCustomView());
+        b.text.setText(announcement.teacherFullName+"\n\n"+ (announcement.startDate != null ? announcement.startDate.getFormattedString() : "-") + (announcement.endDate != null ? " do " + announcement.endDate.getFormattedString() : "")+"\n\n" +announcement.text);
+        if (!announcement.seen) {
+            announcement.seen = true;
+            AsyncTask.execute(() -> app.db.metadataDao().setSeen(App.profileId, announcement, true));
+            if (recyclerView.getAdapter() != null)
+                recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
 }

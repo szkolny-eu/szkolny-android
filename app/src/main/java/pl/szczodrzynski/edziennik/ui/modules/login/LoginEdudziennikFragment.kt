@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_EDUDZIENNIK
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_EDUDZIENNIK
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginEdudziennikBinding
 import pl.szczodrzynski.edziennik.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar

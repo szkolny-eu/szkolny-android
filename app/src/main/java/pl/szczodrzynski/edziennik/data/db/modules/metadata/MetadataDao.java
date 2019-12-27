@@ -172,6 +172,12 @@ public abstract class MetadataDao {
     @Query("UPDATE metadata SET seen = :seen WHERE profileId = :profileId")
     public abstract void setAllSeen(int profileId, boolean seen);
 
+    @Query("UPDATE metadata SET seen = :seen WHERE profileId = :profileId AND thingType != " + TYPE_MESSAGE)
+    public abstract void setAllSeenExceptMessages(int profileId, boolean seen);
+
+    @Query("UPDATE metadata SET seen = :seen WHERE profileId = :profileId AND thingType != " + TYPE_MESSAGE + " AND thingType != " + TYPE_ANNOUNCEMENT)
+    public abstract void setAllSeenExceptMessagesAndAnnouncements(int profileId, boolean seen);
+
     @Query("UPDATE metadata SET notified = :notified WHERE profileId = :profileId")
     public abstract void setAllNotified(int profileId, boolean notified);
 

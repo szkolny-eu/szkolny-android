@@ -111,7 +111,7 @@ class LibrusMessagesGetMessage(
             }
 
             if (!messageObject.seen) {
-                data.messageMetadataList.add(Metadata(
+                data.setSeenMetadataList.add(Metadata(
                         messageObject.profileId,
                         Metadata.TYPE_MESSAGE,
                         messageObject.id,

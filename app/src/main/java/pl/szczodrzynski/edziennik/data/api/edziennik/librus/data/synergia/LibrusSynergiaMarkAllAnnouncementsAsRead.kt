@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusSynergia
+import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 
 class LibrusSynergiaMarkAllAnnouncementsAsRead(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusSynergia(data) {
     companion object {
@@ -14,6 +15,7 @@ class LibrusSynergiaMarkAllAnnouncementsAsRead(override val data: DataLibrus, va
 
     init {
         synergiaGet(TAG, "ogloszenia") {
+            data.app.db.metadataDao().setAllSeen(profileId, Metadata.TYPE_ANNOUNCEMENT, true)
             onSuccess()
         }
     }

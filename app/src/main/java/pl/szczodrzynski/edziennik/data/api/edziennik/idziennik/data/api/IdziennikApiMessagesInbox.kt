@@ -5,11 +5,11 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.api
 
 import com.google.gson.JsonArray
+import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_API_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_API_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikApi
-import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_DELETED
@@ -77,7 +77,7 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
 
                 data.messageIgnoreList.add(message)
                 data.messageRecipientList.add(messageRecipient)
-                data.messageMetadataList.add(Metadata(
+                data.setSeenMetadataList.add(Metadata(
                         profileId,
                         Metadata.TYPE_MESSAGE,
                         message.id,

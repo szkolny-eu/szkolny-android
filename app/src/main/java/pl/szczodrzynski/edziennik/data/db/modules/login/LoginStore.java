@@ -23,6 +23,7 @@ public class LoginStore {
     public final static int LOGIN_TYPE_LIBRUS = 2;
     public final static int LOGIN_TYPE_VULCAN = 4;
     public final static int LOGIN_TYPE_IUCZNIOWIE = 3;
+    public final static int LOGIN_TYPE_EDUDZIENNIK = 5;
     public final static int LOGIN_TYPE_DEMO = 20;
     @ColumnInfo(name = "loginStoreData")
     public JsonObject data;

@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.home
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,12 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon
 import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeDebugCard
@@ -95,7 +93,14 @@ class HomeFragment : Fragment(), CoroutineScope {
                         .withIcon(Icon.cmd_eye_check_outline)
                         .withOnClickListener(OnClickListener {
                             activity.bottomSheet.close()
-                            AsyncTask.execute { app.db.metadataDao().setAllSeen(App.profileId, true) }
+                            launch { withContext(Dispatchers.Default) {
+                                if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS) {
+                                    app.db.metadataDao().setAllSeenExceptMessagesAndAnnouncements(App.profileId, true)
+                                } else {
+                                    app.db.metadataDao().setAllSeenExceptMessages(App.profileId, true)
+                                }
+                            } }
+
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
                         })
         )

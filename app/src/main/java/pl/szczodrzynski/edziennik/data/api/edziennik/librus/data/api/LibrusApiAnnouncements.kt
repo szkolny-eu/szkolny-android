@@ -47,7 +47,7 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
                 )
 
                 data.announcementList.add(announcementObject)
-                data.metadataList.add(Metadata(
+                data.setSeenMetadataList.add(Metadata(
                         profileId,
                         Metadata.TYPE_ANNOUNCEMENT,
                         id,

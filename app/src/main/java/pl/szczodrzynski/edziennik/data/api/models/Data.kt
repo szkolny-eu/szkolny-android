@@ -161,7 +161,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val messageRecipientIgnoreList = mutableListOf<MessageRecipient>()
 
     val metadataList = mutableListOf<Metadata>()
-    val messageMetadataList = mutableListOf<Metadata>()
+    val setSeenMetadataList = mutableListOf<Metadata>()
 
     val db: AppDb by lazy { app.db }
 
@@ -212,7 +212,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         messageRecipientList.clear()
         messageRecipientIgnoreList.clear()
         metadataList.clear()
-        messageMetadataList.clear()
+        setSeenMetadataList.clear()
     }
 
     open fun saveData() {
@@ -291,8 +291,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
         if (metadataList.isNotEmpty())
             db.metadataDao().addAllIgnore(metadataList)
-        if (messageMetadataList.isNotEmpty())
-            db.metadataDao().setSeen(messageMetadataList)
+        if (setSeenMetadataList.isNotEmpty())
+            db.metadataDao().setSeen(setSeenMetadataList)
 
         // not extracted from DB - always new data
         if (lessonList.isNotEmpty()) {

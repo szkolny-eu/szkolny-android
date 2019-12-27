@@ -136,7 +136,7 @@ class MobidziennikWebGetMessage(
             }
 
             if (!message.seen) { // TODO discover why this monstrosity instead of MetadataDao.setSeen
-                data.messageMetadataList.add(Metadata(
+                data.setSeenMetadataList.add(Metadata(
                         message.profileId,
                         Metadata.TYPE_MESSAGE,
                         message.id,

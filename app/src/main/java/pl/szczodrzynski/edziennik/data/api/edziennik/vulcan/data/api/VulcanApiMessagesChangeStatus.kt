@@ -32,7 +32,7 @@ class VulcanApiMessagesChangeStatus(
             )) { _, _ ->
 
                 if (!messageObject.seen) {
-                    data.messageMetadataList.add(Metadata(
+                    data.setSeenMetadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_MESSAGE,
                             messageObject.id,
