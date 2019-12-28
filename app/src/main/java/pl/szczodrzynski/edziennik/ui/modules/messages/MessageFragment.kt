@@ -28,18 +28,16 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent.Companion.TYPE_FINISHED
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent.Companion.TYPE_PROGRESS
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_IUCZNIOWIE
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
-import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
@@ -136,20 +134,34 @@ class MessageFragment : Fragment(), CoroutineScope {
             return
         }
 
-        var readByAll = true
-        message.recipients?.forEach { recipient ->
-            if (recipient.id == -1L)
-                recipient.fullName = app.profile.accountNameLong ?: app.profile.studentNameLong
-            if (message.type == TYPE_SENT && recipient.readDate < 1)
-                readByAll = false
+        if (app.profile.loginStoreType == LOGIN_TYPE_IUCZNIOWIE) {
+            val meta = "\\[META:([A-z0-9]+);([0-9-]+)]".toRegex().find(message.body!!)
+            val messageIdBefore = meta?.get(2)?.toLong() ?: -1
+
+            if (messageIdBefore == -1L) {
+                EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
+                return
+            }
         }
+
+
         // if a sent msg is not read by everyone, download it again to check the read status
-        if (!readByAll) {
+        if (!checkRecipients()) {
             EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
             return
         }
 
         showMessage()
+    }
+
+    private fun checkRecipients(): Boolean {
+        message.recipients?.forEach { recipient ->
+            if (recipient.id == -1L)
+                recipient.fullName = app.profile.accountNameLong ?: app.profile.studentNameLong
+            if (message.type == TYPE_SENT && recipient.readDate < 1)
+                return false
+        }
+        return true
     }
 
     private fun showMessage() {

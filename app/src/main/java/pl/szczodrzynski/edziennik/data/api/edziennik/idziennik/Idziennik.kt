@@ -8,8 +8,10 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikData
+import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebGetMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.firstlogin.IdziennikFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLogin
+import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.idziennikLoginMethods
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
@@ -65,7 +67,11 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
     }
 
     override fun getMessage(message: MessageFull) {
-
+        IdziennikLoginWeb(data) {
+            IdziennikWebGetMessage(data, message) {
+                completed()
+            }
+        }
     }
 
     override fun markAllAnnouncementsAsRead() {

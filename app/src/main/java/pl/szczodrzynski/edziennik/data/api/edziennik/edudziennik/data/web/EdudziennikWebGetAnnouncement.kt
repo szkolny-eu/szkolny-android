@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.get
 
 class EdudziennikWebGetAnnouncement(
         override val data: DataEdudziennik,
-        announcement: AnnouncementFull,
+        private val announcement: AnnouncementFull,
         val onSuccess: () -> Unit
 ) : EdudziennikWeb(data) {
     companion object {

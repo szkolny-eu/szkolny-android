@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 
 class LibrusApiAnnouncementMarkAsRead(
         override val data: DataLibrus,
-        announcement: AnnouncementFull,
+        private val announcement: AnnouncementFull,
         val onSuccess: () -> Unit
 ) : LibrusApi(data) {
     companion object {
