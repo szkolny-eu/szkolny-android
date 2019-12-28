@@ -70,6 +70,7 @@ const val IDZIENNIK_WEB_ATTENDANCE = "mod_panelRodzica/obecnosci/WS_obecnosciUcz
 const val IDZIENNIK_WEB_ANNOUNCEMENTS = "mod_panelRodzica/tabOgl/WS_tablicaOgloszen.asmx/GetOgloszenia"
 const val IDZIENNIK_WEB_MESSAGES_LIST = "mod_komunikator/WS_wiadomosci.asmx/PobierzListeWiadomosci"
 const val IDZIENNIK_WEB_GET_MESSAGE = "mod_komunikator/WS_wiadomosci.asmx/PobierzWiadomosc"
+const val IDZIENNIK_WEB_GET_ATTACHMENT = "mod_komunikator/Download.ashx"
 
 val IDZIENNIK_API_USER_AGENT = SYSTEM_USER_AGENT
 const val IDZIENNIK_API_URL = "https://iuczniowie.progman.pl/idziennik/api"

@@ -152,6 +152,7 @@
     <string name="error_913" translatable="false">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
     <string name="error_914" translatable="false">EXCEPTION_IDZIENNIK_API_REQUEST</string>
     <string name="error_920" translatable="false">EXCEPTION_EDUDZIENNIK_WEB_REQUEST</string>
+    <string name="error_921" translatable="false">EXCEPTION_EDUDZIENNIK_FILE_REQUEST</string>
 
     <string name="error_1201" translatable="false">LOGIN_NO_ARGUMENTS</string>
 
@@ -303,6 +304,7 @@
     <string name="error_913_reason">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
     <string name="error_914_reason">EXCEPTION_IDZIENNIK_API_REQUEST</string>
     <string name="error_920_reason">Wystąpił błąd</string>
+    <string name="error_921_reason">Wystąpił błąd podczas pobierania pliku</string>
 
     <string name="error_1201_reason">Nie podano parametrów</string>
 </resources>

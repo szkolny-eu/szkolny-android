@@ -8,12 +8,14 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
+import im.wangchao.mhttp.callback.FileCallbackHandler
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
+import java.io.File
 import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
 import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 
@@ -152,6 +154,56 @@ open class IdziennikWeb(open val data: DataIdziennik) {
                 .url("$IDZIENNIK_WEB_URL/$endpoint")
                 .userAgent(IDZIENNIK_USER_AGENT)
                 .get()
+                .callback(callback)
+                .build()
+                .enqueue()
+    }
+
+    fun webGetFile(tag: String, endpoint: String, targetFile: File, parameters: Map<String, Any>,
+                   onSuccess: (file: File) -> Unit, onProgress: (written: Long, total: Long) -> Unit) {
+
+        d(tag, "Request: Idziennik/Web - $IDZIENNIK_WEB_URL/$endpoint")
+
+        val callback = object : FileCallbackHandler(targetFile) {
+            override fun onSuccess(file: File?, response: Response?) {
+                if (file == null) {
+                    data.error(ApiError(TAG, ERROR_FILE_DOWNLOAD)
+                            .withResponse(response))
+                    return
+                }
+
+                try {
+                    onSuccess(file)
+                } catch (e: Exception) {
+                    data.error(ApiError(tag, EXCEPTION_EDUDZIENNIK_FILE_REQUEST)
+                            .withResponse(response)
+                            .withThrowable(e))
+                }
+            }
+
+            override fun onProgress(bytesWritten: Long, bytesTotal: Long) {
+                try {
+                    onProgress(bytesWritten, bytesTotal)
+                } catch (e: Exception) {
+                    data.error(ApiError(tag, EXCEPTION_EDUDZIENNIK_FILE_REQUEST)
+                            .withThrowable(e))
+                }
+            }
+
+            override fun onFailure(response: Response?, throwable: Throwable?) {
+                data.error(ApiError(tag, ERROR_REQUEST_FAILURE)
+                        .withResponse(response)
+                        .withThrowable(throwable))
+            }
+        }
+
+        Request.builder()
+                .url("$IDZIENNIK_WEB_URL/$endpoint")
+                .userAgent(IDZIENNIK_USER_AGENT)
+                .apply {
+                    parameters.forEach { (k, v) -> addParameter(k, v) }
+                }
+                .post()
                 .callback(callback)
                 .build()
                 .enqueue()

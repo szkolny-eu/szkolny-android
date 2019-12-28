@@ -184,5 +184,6 @@ const val EXCEPTION_IDZIENNIK_WEB_REQUEST                   = 912
 const val EXCEPTION_IDZIENNIK_WEB_API_REQUEST               = 913
 const val EXCEPTION_IDZIENNIK_API_REQUEST                   = 914
 const val EXCEPTION_EDUDZIENNIK_WEB_REQUEST                 = 920
+const val EXCEPTION_EDUDZIENNIK_FILE_REQUEST                = 921
 
 const val LOGIN_NO_ARGUMENTS                                = 1201

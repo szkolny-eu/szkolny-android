@@ -8,6 +8,7 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikData
+import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebGetAttachment
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebGetMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.firstlogin.IdziennikFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLogin
@@ -83,7 +84,11 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
     }
 
     override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {
-
+        IdziennikLoginWeb(data) {
+            IdziennikWebGetAttachment(data, message, attachmentId, attachmentName) {
+                completed()
+            }
+        }
     }
 
     override fun firstLogin() {
