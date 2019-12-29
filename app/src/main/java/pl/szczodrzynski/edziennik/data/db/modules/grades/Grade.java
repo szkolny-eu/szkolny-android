@@ -44,6 +44,7 @@ public class Grade {
     public static final int TYPE_POINT_AVG = 10;
     public static final int TYPE_POINT_SUM = 20;
     public static final int TYPE_DESCRIPTIVE = 30;
+    public static final int TYPE_DESCRIPTIVE_TEXT = 31;
     public static final int TYPE_TEXT = 40;
     @ColumnInfo(name = "gradeType")
     public int type = TYPE_NORMAL;

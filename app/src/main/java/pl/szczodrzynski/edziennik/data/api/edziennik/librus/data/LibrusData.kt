@@ -93,6 +93,14 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
                 LibrusApiDescriptiveGradeCategories(data, onSuccess)
             }
+            ENDPOINT_LIBRUS_API_TEXT_GRADE_CATEGORIES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
+                LibrusApiTextGradeCategories(data, onSuccess)
+            }
+            ENDPOINT_LIBRUS_API_POINT_GRADE_CATEGORIES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
+                LibrusApiPointGradeCategories(data, onSuccess)
+            }
 
             ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_comments)
@@ -115,7 +123,14 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_descriptive_grades)
                 LibrusApiDescriptiveGrades(data, onSuccess)
             }
-            // TODO grades
+            ENDPOINT_LIBRUS_API_TEXT_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_descriptive_grades)
+                LibrusApiTextGrades(data, onSuccess)
+            }
+            ENDPOINT_LIBRUS_API_POINT_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_point_grades)
+                LibrusApiPointGrades(data, onSuccess)
+            }
 
             ENDPOINT_LIBRUS_API_EVENT_TYPES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_event_types)

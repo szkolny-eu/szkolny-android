@@ -1132,4 +1132,5 @@
     <string name="edziennik_progress_login_edudziennik_web">Logowanie do Edudziennika</string>
     <string name="dialog_error_details_title">Szczegóły błędu</string>
     <string name="edziennik_progress_endpoint_descriptive_grades">Pobieranie ocen opisowych...</string>
+    <string name="edziennik_progress_endpoint_point_grades">Pobieranie ocen punktowych...</string>
 </resources>

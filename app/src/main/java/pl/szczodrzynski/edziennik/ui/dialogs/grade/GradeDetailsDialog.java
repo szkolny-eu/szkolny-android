@@ -85,7 +85,7 @@ public class GradeDetailsDialog {
         if (grade.weight < 0) {
             grade.weight *= -1;
         }
-        if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_TEXT || grade.type == Grade.TYPE_POINT_SUM) {
+        if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_DESCRIPTIVE_TEXT || grade.type == Grade.TYPE_TEXT || grade.type == Grade.TYPE_POINT_SUM) {
             b.setWeightText(null);
             grade.weight = 0;
         }

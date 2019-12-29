@@ -118,7 +118,7 @@ public class Colors {
         else if (grade.type == Grade.TYPE_POINT_AVG) {
             return Color.parseColor("#"+gradeValueToColorStr(grade.value/grade.valueMax*100));
         }
-        else if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_TEXT) {
+        else if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_DESCRIPTIVE_TEXT || grade.type == Grade.TYPE_TEXT) {
             return grade.color;
         }
         else {

@@ -31,6 +31,7 @@ public class GradeCategory {
     public static final int TYPE_BEHAVIOUR_COMMENT = 3;
     public static final int TYPE_DESCRIPTIVE = 4;
     public static final int TYPE_TEXT = 5;
+    public static final int TYPE_POINT = 6;
 
     public GradeCategory(int profileId, long categoryId, float weight, int color, String text) {
         this.profileId = profileId;
