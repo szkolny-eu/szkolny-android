@@ -27,43 +27,45 @@ class EdudziennikWebAnnouncements(override val data: DataEdudziennik,
         webGet(TAG, data.schoolClassEndpoint + "Announcements") { text ->
             val doc = Jsoup.parse(text)
 
-            doc.select("table.list tbody tr").forEach { announcementElement ->
-                val titleElement = announcementElement.child(0).child(0)
+            if (doc.getElementsByClass("message").text().trim() != "Brak ogłoszeń.") {
+                doc.select("table.list tbody tr").forEach { announcementElement ->
+                    val titleElement = announcementElement.child(0).child(0)
 
-                val longId = EDUDZIENNIK_ANNOUNCEMENT_ID.find(titleElement.attr("href"))?.get(1)
-                        ?: return@forEach
-                val id = longId.crc32()
-                val subject = titleElement.text()
+                    val longId = EDUDZIENNIK_ANNOUNCEMENT_ID.find(titleElement.attr("href"))?.get(1)
+                            ?: return@forEach
+                    val id = longId.crc32()
+                    val subject = titleElement.text()
 
-                val teacherName = announcementElement.child(1).text()
-                val teacher = teacherName.splitName()?.let { (teacherFirstName, teacherLastName) ->
-                    data.getTeacher(teacherFirstName, teacherLastName)
-                } ?: return@forEach
+                    val teacherName = announcementElement.child(1).text()
+                    val teacher = teacherName.splitName()?.let { (teacherFirstName, teacherLastName) ->
+                        data.getTeacher(teacherFirstName, teacherLastName)
+                    } ?: return@forEach
 
-                val dateString = announcementElement.getElementsByClass("datetime").first().text()
-                val startDate = Date.fromY_m_d(dateString)
-                val addedDate = Date.fromIsoHm(dateString)
+                    val dateString = announcementElement.getElementsByClass("datetime").first().text()
+                    val startDate = Date.fromY_m_d(dateString)
+                    val addedDate = Date.fromIsoHm(dateString)
 
-                val announcementObject = Announcement(
-                        profileId,
-                        id,
-                        subject,
-                        null,
-                        startDate,
-                        null,
-                        teacher.id,
-                        longId
-                )
+                    val announcementObject = Announcement(
+                            profileId,
+                            id,
+                            subject,
+                            null,
+                            startDate,
+                            null,
+                            teacher.id,
+                            longId
+                    )
 
-                data.announcementIgnoreList.add(announcementObject)
-                data.metadataList.add(Metadata(
-                        profileId,
-                        Metadata.TYPE_ANNOUNCEMENT,
-                        id,
-                        profile.empty,
-                        profile.empty,
-                        addedDate
-                ))
+                    data.announcementIgnoreList.add(announcementObject)
+                    data.metadataList.add(Metadata(
+                            profileId,
+                            Metadata.TYPE_ANNOUNCEMENT,
+                            id,
+                            profile.empty,
+                            profile.empty,
+                            addedDate
+                    ))
+                }
             }
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_ANNOUNCEMENTS, SYNC_ALWAYS)

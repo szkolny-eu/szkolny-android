@@ -104,6 +104,9 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
     val studentAndTeacherClassEndpoint: String
         get() = "Students/$studentId/Teachers/$classId/"
 
+    val courseStudentEndpoint: String
+        get() = "Course/$studentId/"
+
     fun getSubject(longId: String, name: String): Subject {
         val id = longId.crc32()
         return subjectList.singleOrNull { it.id == id } ?: run {
