@@ -29,6 +29,8 @@ public class GradeCategory {
     public static final int TYPE_NORMAL_COMMENT = 1;
     public static final int TYPE_BEHAVIOUR = 2;
     public static final int TYPE_BEHAVIOUR_COMMENT = 3;
+    public static final int TYPE_DESCRIPTIVE = 4;
+    public static final int TYPE_TEXT = 5;
 
     public GradeCategory(int profileId, long categoryId, float weight, int color, String text) {
         this.profileId = profileId;

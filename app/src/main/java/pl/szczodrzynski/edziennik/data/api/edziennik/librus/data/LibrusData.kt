@@ -89,6 +89,11 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
                 LibrusApiBehaviourGradeCategories(data, onSuccess)
             }
+            ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADE_CATEGORIES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
+                LibrusApiDescriptiveGradeCategories(data, onSuccess)
+            }
+
             ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_comments)
                 LibrusApiGradeComments(data, onSuccess)
@@ -97,6 +102,7 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_comments)
                 LibrusApiBehaviourGradeComments(data, onSuccess)
             }
+
             ENDPOINT_LIBRUS_API_NORMAL_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
                 LibrusApiGrades(data, onSuccess)
@@ -104,6 +110,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_behaviour_grades)
                 LibrusApiBehaviourGrades(data, onSuccess)
+            }
+            ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_descriptive_grades)
+                LibrusApiDescriptiveGrades(data, onSuccess)
             }
             // TODO grades
 
