@@ -29,7 +29,7 @@ public abstract class AnnouncementDao {
     @Query("DELETE FROM announcements WHERE profileId = :profileId")
     public abstract void clear(int profileId);
 
-    @RawQuery(observedEntities = {Announcement.class})
+    @RawQuery(observedEntities = {Announcement.class, Metadata.class})
     abstract LiveData<List<AnnouncementFull>> getAll(SupportSQLiteQuery query);
     public LiveData<List<AnnouncementFull>> getAll(int profileId, String filter) {
         return getAll(new SimpleSQLiteQuery("SELECT \n" +

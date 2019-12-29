@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.api
 
 import org.greenrobot.eventbus.EventBus
+import pl.szczodrzynski.edziennik.data.api.POST
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent
@@ -21,7 +22,7 @@ class LibrusApiAnnouncementMarkAsRead(
     }
 
     init {
-        apiGet(TAG, "SchoolNotices/MarkAsRead/${announcement.idString}") {
+        apiGet(TAG, "SchoolNotices/MarkAsRead/${announcement.idString}", method = POST) {
             announcement.seen = true
 
             EventBus.getDefault().postSticky(AnnouncementGetEvent(announcement))
