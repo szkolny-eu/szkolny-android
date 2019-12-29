@@ -697,6 +697,9 @@ public class GradesSubjectAdapter extends ArrayAdapter<ItemGradesSubjectModel> i
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        if (position >= subjectList.size()) {
+            return convertView;
+        }
         ItemGradesSubjectModel model = subjectList.get(position);
         if (model == null) {
             //Toast.makeText(activity, "return convertView;", Toast.LENGTH_SHORT).show();
