@@ -1242,7 +1242,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             .icon(CommunityMaterial.Icon2.cmd_radar)
                             .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                             .size(IconicsSize.dp(iconSizeDp)))
-                    .setOnClickAction(() -> new ChangelogDialog().show(getActivity().getSupportFragmentManager(), "whats_new"))
+                    .setOnClickAction(() -> new ChangelogDialog(activity, null, null))
                     .build());
 
             items.add(new MaterialAboutActionItem.Builder()

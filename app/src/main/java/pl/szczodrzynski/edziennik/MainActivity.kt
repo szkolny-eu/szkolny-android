@@ -9,7 +9,10 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.os.*
+import android.os.AsyncTask
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
@@ -36,13 +39,11 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
-import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
-import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
@@ -426,16 +427,7 @@ class MainActivity : AppCompatActivity() {
 
         // WHAT'S NEW DIALOG
         if (app.config.appVersion < BuildConfig.VERSION_CODE) {
-            ServerRequest(app, app.requestScheme + APP_URL + "main.php?just_updated", "MainActivity/JU")
-                    .run { e, result ->
-                        Handler(Looper.getMainLooper()).post {
-                            try {
-                                ChangelogDialog().show(supportFragmentManager, "whats_new")
-                            } catch (e2: Exception) {
-                                e2.printStackTrace()
-                            }
-                        }
-                    }
+            ChangelogDialog(this)
             if (app.config.appVersion < 170) {
                 //Intent intent = new Intent(this, ChangelogIntroActivity.class);
                 //startActivity(intent);
