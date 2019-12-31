@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 import org.jsoup.Jsoup
 import pl.szczodrzynski.edziennik.data.api.ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SUBJECT_ID
+import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_TEACHER_ID
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
@@ -105,9 +106,10 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
 
                         val teacherId = if (info.size >= 2) {
                             val teacherElement = info[1].child(0)
+                            val teacherLongId = EDUDZIENNIK_TEACHER_ID.find(teacherElement.attr("href"))?.get(1)
                             val teacherName = teacherElement.text().trim()
                             teacherName.splitName()?.let { (teacherLastName, teacherFirstName) ->
-                                data.getTeacher(teacherFirstName, teacherLastName)
+                                data.getTeacher(teacherFirstName, teacherLastName, teacherLongId)
                             }?.id ?: -1
                         } else -1
 

@@ -116,11 +116,13 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
         }
     }
 
-    fun getTeacher(firstName: String, lastName: String): Teacher {
+    fun getTeacher(firstName: String, lastName: String, longId: String? = null): Teacher {
         val name = "$firstName $lastName".fixName()
         val id = name.crc32()
-        return teacherList.singleOrNull { it.id == id } ?: run {
-            val teacher = Teacher(profileId, id, firstName, lastName)
+        return teacherList.singleOrNull { it.id == id }?.also {
+            if (longId != null && it.loginId == null) it.loginId = longId
+        } ?: run {
+            val teacher = Teacher(profileId, id, firstName, lastName, longId)
             teacherList.put(id, teacher)
             teacher
         }
