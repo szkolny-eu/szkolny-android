@@ -31,6 +31,8 @@ const val CODE_SYNERGIA_NOT_ACTIVATED                       = 32
 const val CODE_LIBRUS_DISCONNECTED                          = 31
 const val CODE_PROFILE_ARCHIVED                             = 30*/
 
+const val ERROR_APP_CRASH                                   = 1
+
 const val ERROR_REQUEST_FAILURE                             = 50
 const val ERROR_REQUEST_HTTP_400                            = 51
 const val ERROR_REQUEST_HTTP_401                            = 52
