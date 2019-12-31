@@ -60,7 +60,7 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
                     return fragmentIds
                 }
-                LOGIN_TYPE_LIBRUS, LOGIN_TYPE_IUCZNIOWIE, LOGIN_TYPE_EDUDZIENNIK -> {
+                LOGIN_TYPE_LIBRUS, LOGIN_TYPE_IUCZNIOWIE -> {
                     fragmentIds = ArrayList()
                     fragmentIds.add(DRAWER_ITEM_TIMETABLE)
                     fragmentIds.add(DRAWER_ITEM_AGENDA)
@@ -68,6 +68,16 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_MESSAGES)
                     fragmentIds.add(DRAWER_ITEM_HOMEWORK)
                     fragmentIds.add(DRAWER_ITEM_BEHAVIOUR)
+                    fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
+                    fragmentIds.add(DRAWER_ITEM_ANNOUNCEMENTS)
+                    return fragmentIds
+                }
+                LOGIN_TYPE_EDUDZIENNIK -> {
+                    fragmentIds = ArrayList()
+                    fragmentIds.add(DRAWER_ITEM_TIMETABLE)
+                    fragmentIds.add(DRAWER_ITEM_AGENDA)
+                    fragmentIds.add(DRAWER_ITEM_GRADES)
+                    fragmentIds.add(DRAWER_ITEM_HOMEWORK)
                     fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
                     fragmentIds.add(DRAWER_ITEM_ANNOUNCEMENTS)
                     return fragmentIds
