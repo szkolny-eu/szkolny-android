@@ -9,6 +9,7 @@ data class ErrorReportRequest(
         val errors: List<Error>
 ) {
     data class Error(
+            val id: Long,
             val tag: String,
             val errorCode: Int,
             val errorText: String?,

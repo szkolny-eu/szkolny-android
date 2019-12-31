@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.stackTraceString
 
 class ApiError(val tag: String, val errorCode: Int) {
+    val id = System.currentTimeMillis()
     var profileId: Int? = null
     var throwable: Throwable? = null
     var apiResponse: String? = null
@@ -44,14 +45,6 @@ class ApiError(val tag: String, val errorCode: Int) {
     fun setCritical(isCritical: Boolean): ApiError {
         this.isCritical = isCritical
         return this
-    }
-
-    fun toAppError(): AppError {
-        return AppError(
-                tag,
-                -1,
-                errorCode, response, throwable, apiResponse
-        )
     }
 
     fun getStringText(context: Context): String {
@@ -91,6 +84,7 @@ class ApiError(val tag: String, val errorCode: Int) {
             "HTTP "+it.code()+" "+it.message()+"\n" + it.headers() + "\n\n" + it.parserErrorBody
         }
         return ErrorReportRequest.Error(
+                id = id,
                 tag = tag,
                 errorCode = errorCode,
                 errorText = getStringText(context),
