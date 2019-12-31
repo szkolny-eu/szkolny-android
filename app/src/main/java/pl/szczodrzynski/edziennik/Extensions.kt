@@ -424,6 +424,11 @@ fun CharSequence?.asItalicSpannable(): Spannable {
     spannable.setSpan(StyleSpan(Typeface.ITALIC), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannable
 }
+fun CharSequence?.asBoldSpannable(): Spannable {
+    val spannable = SpannableString(this)
+    spannable.setSpan(StyleSpan(Typeface.BOLD), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    return spannable
+}
 
 /**
  * Returns a new read-only list only of those given elements, that are not empty.

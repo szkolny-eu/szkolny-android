@@ -8,6 +8,8 @@ import android.content.Context
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
+import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
+import pl.szczodrzynski.edziennik.stackTraceString
 
 class ApiError(val tag: String, val errorCode: Int) {
     var profileId: Int? = null
@@ -52,6 +54,15 @@ class ApiError(val tag: String, val errorCode: Int) {
         )
     }
 
+    fun getStringText(context: Context): String {
+        return context.resources.getIdentifier("error_${errorCode}", "string", context.packageName).let {
+            if (it != 0)
+                context.getString(it)
+            else
+                "?"
+        }
+    }
+
     fun getStringReason(context: Context): String {
         return context.resources.getIdentifier("error_${errorCode}_reason", "string", context.packageName).let {
             if (it != 0)
@@ -65,5 +76,31 @@ class ApiError(val tag: String, val errorCode: Int) {
         return "ApiError(tag='$tag', errorCode=$errorCode, profileId=$profileId, throwable=$throwable, apiResponse=$apiResponse, request=$request, response=$response, isCritical=$isCritical)"
     }
 
+    fun toReportableError(context: Context): ErrorReportRequest.Error {
+        val requestString = request?.let {
+            it.method() + " " + it.url() + "\n" + it.headers()
+        }
+        val responseString = response?.let {
+            if (it.parserErrorBody == null) {
+                try {
+                    it.parserErrorBody = it.raw().body()?.string()
+                } catch (e: Exception) {
+                    it.parserErrorBody = e.stackTraceString
+                }
+            }
+            "HTTP "+it.code()+" "+it.message()+"\n" + it.headers() + "\n\n" + it.parserErrorBody
+        }
+        return ErrorReportRequest.Error(
+                tag = tag,
+                errorCode = errorCode,
+                errorText = getStringText(context),
+                errorReason = getStringReason(context),
+                stackTrace = throwable?.stackTraceString,
+                request = requestString,
+                response = responseString,
+                apiResponse = apiResponse,
+                isCritical = isCritical
+        )
+    }
 
 }

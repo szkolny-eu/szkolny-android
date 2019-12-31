@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.szkolny
 
+import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.EventShareRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ServerSyncRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.WebPushRequest
@@ -24,4 +25,7 @@ interface SzkolnyService {
 
     @POST("webPush")
     fun webPush(@Body request: WebPushRequest): Call<ApiResponse<WebPushResponse>>
+
+    @POST("errorReport")
+    fun errorReport(@Body request: ErrorReportRequest): Call<ApiResponse<Nothing>>
 }

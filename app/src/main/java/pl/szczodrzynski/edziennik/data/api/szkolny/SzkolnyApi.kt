@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.DateAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.TimeAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
+import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.EventShareRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ServerSyncRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.WebPushRequest
@@ -163,5 +164,12 @@ class SzkolnyApi(val app: App) {
         )).execute().body()
 
         return response?.data?.browsers ?: emptyList()
+    }
+
+    fun errorReport(errors: List<ErrorReportRequest.Error>): ApiResponse<Nothing>? {
+        return api.errorReport(ErrorReportRequest(
+                deviceId = app.deviceId,
+                errors = errors
+        )).execute().body()
     }
 }
