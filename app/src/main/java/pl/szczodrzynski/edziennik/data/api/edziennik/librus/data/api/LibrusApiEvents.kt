@@ -70,7 +70,10 @@ class LibrusApiEvents(override val data: DataLibrus,
                         ))
             }
 
-            data.toRemove.add(DataRemoveModel.Events.futureExceptType(Event.TYPE_HOMEWORK))
+            data.toRemove.add(DataRemoveModel.Events.futureExceptTypes(listOf(
+                    Event.TYPE_HOMEWORK,
+                    Event.TYPE_PT_MEETING
+            )))
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_EVENTS, SYNC_ALWAYS)
             onSuccess()

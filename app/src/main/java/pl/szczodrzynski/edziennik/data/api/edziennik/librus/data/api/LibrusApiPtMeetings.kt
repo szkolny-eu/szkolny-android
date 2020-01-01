@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_PT_MEETINGS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -60,6 +61,8 @@ class LibrusApiPtMeetings(override val data: DataLibrus,
                                 System.currentTimeMillis()
                         ))
             }
+
+            data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_PT_MEETING))
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_PT_MEETINGS, 12*HOUR)
             onSuccess()

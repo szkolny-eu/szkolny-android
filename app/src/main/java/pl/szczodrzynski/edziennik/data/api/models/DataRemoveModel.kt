@@ -47,15 +47,17 @@ open class DataRemoveModel {
         }
     }
 
-    class Events(private val type: Int?, private val exceptType: Int?) : DataRemoveModel() {
+    class Events(private val type: Int?, private val exceptType: Int?, private val exceptTypes: List<Int>?) : DataRemoveModel() {
         companion object {
-            fun futureExceptType(exceptType: Int) = Events(null, exceptType)
-            fun futureWithType(type: Int) = Events(type, null)
+            fun futureExceptType(exceptType: Int) = Events(null, exceptType, null)
+            fun futureExceptTypes(exceptTypes: List<Int>) = Events(null, null, exceptTypes)
+            fun futureWithType(type: Int) = Events(type, null, null)
         }
 
         fun commit(profileId: Int, dao: EventDao) {
             type?.let { dao.removeFutureWithType(profileId, Date.getToday(), it) }
             exceptType?.let { dao.removeFutureExceptType(profileId, Date.getToday(), it) }
+            exceptTypes?.let { dao.removeFutureExceptTypes(profileId, Date.getToday(), it) }
         }
     }
 }

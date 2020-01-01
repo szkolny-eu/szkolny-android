@@ -130,14 +130,25 @@ public abstract class EventDao {
     @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0")
     public abstract void removeNotManual(int profileId);
 
-    @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate")
-    public abstract void removeFuture(int profileId, Date todayDate);
+    @RawQuery
+    abstract long removeFuture(SupportSQLiteQuery query);
+    @Transaction
+    public void removeFuture(int profileId, Date todayDate, String filter) {
+        removeFuture(new SimpleSQLiteQuery("DELETE FROM events WHERE profileId = " + profileId
+                + " AND eventAddedManually = 0 AND eventDate >= '" + todayDate.getStringY_m_d() + "'" +
+                " AND " + filter));
+    }
 
     @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType = :type")
     public abstract void removeFutureWithType(int profileId, Date todayDate, int type);
 
     @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType != :exceptType")
     public abstract void removeFutureExceptType(int profileId, Date todayDate, int exceptType);
+
+    @Transaction
+    public void removeFutureExceptTypes(int profileId, Date todayDate, List<Integer> exceptTypes) {
+        removeFuture(profileId, todayDate, "eventType NOT IN " + exceptTypes.toString().replace('[', '(').replace(']', ')'));
+    }
 
     @Query("UPDATE metadata SET seen = :seen WHERE profileId = :profileId AND (thingType = "+TYPE_EVENT+" OR thingType = "+TYPE_LESSON_CHANGE+" OR thingType = "+TYPE_HOMEWORK+") AND thingId IN (SELECT eventId FROM events WHERE profileId = :profileId AND eventDate = :date)")
     public abstract void setSeenByDate(int profileId, Date date, boolean seen);
