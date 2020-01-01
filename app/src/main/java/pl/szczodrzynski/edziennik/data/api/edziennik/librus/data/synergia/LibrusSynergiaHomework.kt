@@ -25,12 +25,8 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
 
     init {
         synergiaGet(TAG, "moje_zadania", method = POST, parameters = mapOf(
-                "dataOd" to
-                        if (data.profile?.empty != false)
-                            profile!!.getSemesterStart(1).stringY_m_d
-                        else
-                            Date.getToday().stringY_m_d,
-                "dataDo" to profile!!.getSemesterEnd(profile?.currentSemester ?: 2).stringY_m_d,
+                "dataOd" to Date.getToday().stringY_m_d,
+                "dataDo" to Date.getToday().stepForward(0, 0, 7).stringY_m_d,
                 "przedmiot" to -1
 
         )) { text ->
