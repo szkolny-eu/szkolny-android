@@ -78,6 +78,7 @@ class ProfileFull : Profile {
                     fragmentIds.add(DRAWER_ITEM_AGENDA)
                     fragmentIds.add(DRAWER_ITEM_GRADES)
                     fragmentIds.add(DRAWER_ITEM_HOMEWORK)
+                    fragmentIds.add(DRAWER_ITEM_BEHAVIOUR)
                     fragmentIds.add(DRAWER_ITEM_ATTENDANCE)
                     fragmentIds.add(DRAWER_ITEM_ANNOUNCEMENTS)
                     return fragmentIds

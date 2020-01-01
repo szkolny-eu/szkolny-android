@@ -16,6 +16,7 @@ const val ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE           = 1014
 const val ENDPOINT_EDUDZIENNIK_WEB_ANNOUNCEMENTS        = 1015
 const val ENDPOINT_EDUDZIENNIK_WEB_HOMEWORK             = 1016
 const val ENDPOINT_EDUDZIENNIK_WEB_EVENTS               = 1017
+const val ENDPOINT_EDUDZIENNIK_WEB_NOTES                = 1018
 const val ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER         = 1030
 
 val EdudziennikFeatures = listOf(
@@ -49,6 +50,11 @@ val EdudziennikFeatures = listOf(
         /* Homework */
         Feature(LOGIN_TYPE_EDUDZIENNIK, FEATURE_HOMEWORK, listOf(
                 ENDPOINT_EDUDZIENNIK_WEB_HOMEWORK to LOGIN_METHOD_EDUDZIENNIK_WEB
+        ), listOf(LOGIN_METHOD_EDUDZIENNIK_WEB)),
+
+        /* Behaviour */
+        Feature(LOGIN_TYPE_EDUDZIENNIK, FEATURE_BEHAVIOUR, listOf(
+                ENDPOINT_EDUDZIENNIK_WEB_NOTES to LOGIN_METHOD_EDUDZIENNIK_WEB
         ), listOf(LOGIN_METHOD_EDUDZIENNIK_WEB)),
 
         /* Attendance */

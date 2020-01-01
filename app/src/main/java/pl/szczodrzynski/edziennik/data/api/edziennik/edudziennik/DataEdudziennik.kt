@@ -92,6 +92,9 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
     val schoolEndpoint: String
         get() = "Schools/$schoolId/"
 
+    val classStudentEndpoint: String
+        get() = "Class/$studentId/"
+
     val schoolClassEndpoint: String
         get() = "Schools/$classId/"
 
@@ -129,6 +132,16 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
             teacherList.put(id, teacher)
             teacher
         }
+    }
+
+    fun getTeacherByFirstLast(nameFirstLast: String, longId: String? = null): Teacher {
+        val nameParts = nameFirstLast.split(" ")
+        return getTeacher(nameParts[0], nameParts[1], longId)
+    }
+
+    fun getTeacherByLastFirst(nameLastFirst: String, longId: String? = null): Teacher {
+        val nameParts = nameLastFirst.split(" ")
+        return getTeacher(nameParts[1], nameParts[0], longId)
     }
 
     fun getEventType(longId: String, name: String): EventType {
