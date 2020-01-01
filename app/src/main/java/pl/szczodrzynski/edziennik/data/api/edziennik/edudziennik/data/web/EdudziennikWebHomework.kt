@@ -30,7 +30,7 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
             val doc = Jsoup.parseBodyFragment("<table>" + text.trim() + "</table>")
 
             if (doc.getElementsByClass("message").text().trim() != "Brak prac domowych") {
-                doc.select("tr").forEach { homeworkElement ->
+                doc.getElementsByTag("tr").forEach { homeworkElement ->
                     val dateElement = homeworkElement.getElementsByClass("date").first().child(0)
                     val id = EDUDZIENNIK_HOMEWORK_ID.find(dateElement.attr("href"))?.get(1)?.crc32()
                             ?: return@forEach

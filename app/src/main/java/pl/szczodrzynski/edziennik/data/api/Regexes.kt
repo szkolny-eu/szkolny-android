@@ -138,6 +138,9 @@ object Regexes {
     val EDUDZIENNIK_TEACHER_ID by lazy {
         """/Teachers/([\w-_]+?)/""".toRegex()
     }
+    val EDUDZIENNIK_EVENT_ID by lazy {
+        """/KlassEvent/([\w-_]+?)/""".toRegex()
+    }
 
     val EDUDZIENNIK_SCHOOL_DETAIL_ID by lazy {
         """<a id="School_detail".*?/School/([\w-_]+?)/""".toRegex(DOT_MATCHES_ALL)

@@ -68,6 +68,10 @@ class EdudziennikData(val data: DataEdudziennik, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
                 EdudziennikWebHomework(data, onSuccess)
             }
+            ENDPOINT_EDUDZIENNIK_WEB_EVENTS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_events)
+                EdudziennikWebEvents(data, onSuccess)
+            }
             ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
                 EdudziennikWebLuckyNumber(data, onSuccess)

@@ -98,6 +98,9 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
     val studentAndClassEndpoint: String
         get() = "Students/$studentId/Klass/$classId/"
 
+    val studentAndClassesEndpoint: String
+        get() = "Students/$studentId/Classes/$classId/"
+
     val timetableEndpoint: String
         get() = "Plan/$studentId/"
 

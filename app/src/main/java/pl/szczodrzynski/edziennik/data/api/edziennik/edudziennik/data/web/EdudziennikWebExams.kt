@@ -45,7 +45,7 @@ class EdudziennikWebExams(override val data: DataEdudziennik,
                 val date = Date.fromY_m_d(dateString)
 
                 val lessons = data.app.db.timetableDao().getForDateNow(profileId, date)
-                val startTime = lessons.firstOrNull { it.subjectId == subject.id }?.displayStartTime
+                val startTime = lessons.firstOrNull { it.displaySubjectId == subject.id }?.displayStartTime
 
                 val eventTypeElement = examElement.child(3).child(0)
                 val eventTypeId = EDUDZIENNIK_EVENT_TYPE_ID.find(eventTypeElement.attr("href"))?.get(1)
@@ -78,7 +78,10 @@ class EdudziennikWebExams(override val data: DataEdudziennik,
                 ))
             }
 
-            data.toRemove.add(DataRemoveModel.Events.futureExceptType(Event.TYPE_HOMEWORK))
+            data.toRemove.add(DataRemoveModel.Events.futureExceptTypes(listOf(
+                    Event.TYPE_HOMEWORK,
+                    Event.TYPE_CLASS_EVENT
+            )))
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_EXAMS, SYNC_ALWAYS)
             onSuccess()
