@@ -39,7 +39,7 @@ class MessagesComposeSuggestionAdapter(
         if (teacher.image == null)
             teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
 
-        if (teacher.id in -24L..-1L) {
+        if (teacher.id in -24L..0L) {
             name.text = Teacher.typeName(context, (teacher.id * -1).toInt())
             type.setText(R.string.teachers_browse_category)
             image.setImageBitmap(null)

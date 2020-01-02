@@ -191,7 +191,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.recipients.chipTokenizer = SpanChipTokenizer<ChipSpan>(activity, object : ChipSpanChipCreator() {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan? {
                 val teacher = data as Teacher?
-                if (teacher!!.id in -24L..-1L) {
+                if (teacher!!.id in -24L..0L) {
                     val type = (teacher.id * -1).toInt()
 
                     val textColorPrimary = android.R.attr.textColorPrimary.resolveAttr(activity)
