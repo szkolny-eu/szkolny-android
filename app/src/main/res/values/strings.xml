@@ -1146,4 +1146,5 @@
     <string name="compose">Napisz</string>
     <string name="messages_reply">Odpowiedz</string>
     <string name="error_unknown_format">Kod błędu: %d (w %s)</string>
+    <string name="messages_compose_recipient_exists">Ten odbiorca został już wybrany</string>
 </resources>

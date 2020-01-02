@@ -275,8 +275,10 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                     return null
                 }
                 b.recipients.allChips.forEach {
-                    if (it.data == data)
+                    if (it.data == data) {
+                        Toast.makeText(activity, R.string.messages_compose_recipient_exists, Toast.LENGTH_SHORT).show()
                         return null
+                    }
                 }
                 val chipSpan = ChipSpan(context, data.fullName, BitmapDrawable(context.resources, data.image), data)
                 chipSpan.setIconBackgroundColor(Colors.stringToMaterialColor(data.fullName))
