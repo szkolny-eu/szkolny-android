@@ -23,9 +23,13 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
         const val TAG = "LibrusSynergiaHomework"
     }
 
-    init {
+    init { data.profile?.also { profile ->
         synergiaGet(TAG, "moje_zadania", method = POST, parameters = mapOf(
-                "dataOd" to Date.getToday().stringY_m_d,
+                "dataOd" to
+                        if (!data.profile.empty)
+                            profile.getSemesterStart(1).stringY_m_d
+                        else
+                            Date.getToday().stringY_m_d,
                 "dataDo" to Date.getToday().stepForward(0, 0, 7).stringY_m_d,
                 "przedmiot" to -1
 
@@ -61,7 +65,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
                     val description = "Treść: (.*)".toRegex(RegexOption.DOT_MATCHES_ALL).find(moreInfo)
                             ?.get(1)?.replace("<br.*/>".toRegex(), "\n")?.trim()
 
-                    val seen = when (profile?.empty) {
+                    val seen = when (profile.empty) {
                         true -> true
                         else -> eventDate < Date.getToday()
                     }
@@ -98,5 +102,5 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
             data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, 2 * HOUR, DRAWER_ITEM_HOMEWORK)
             onSuccess()
         }
-    }
+    } ?: onSuccess() }
 }

@@ -26,7 +26,7 @@ class NotifyTask : IApiTask(-1) {
         val list = app.db.notificationDao().getNotPostedNow()
         val notificationList = list.subList(0, min(10, list.size))
 
-        var unreadCount = list.size
+        val unreadCount = list.size
 
         for (notification in notificationList) {
             val intent = Intent(app, MainActivity::class.java)
