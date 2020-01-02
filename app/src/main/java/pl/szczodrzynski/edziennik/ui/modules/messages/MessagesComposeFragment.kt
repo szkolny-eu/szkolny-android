@@ -14,7 +14,6 @@ import android.text.SpannableStringBuilder
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -254,24 +253,6 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                                 }
                             }
                             .show()
-
-                    /*MaterialDialog.Builder(activity)
-                            .title(R.string.messages_compose_recipients_title)
-                            .content(getString(R.string.messages_compose_recipients_text_format, Teacher.typeName(activity, type)))
-                            .items(categoryNames)
-                            .itemsCallbackMultiChoice(null) { dialog: MaterialDialog?, which: Array<Int>, text1: Array<CharSequence?>? ->
-                                val chipInfoList = mutableListOf<ChipInfo>()
-                                for (index in which) {
-                                    val selected = category[index]
-                                    selected.image = getProfileImage(48, 24, 16, 12, 1, selected.fullName)
-                                    chipInfoList.add(ChipInfo(selected.fullName, selected))
-                                }
-                                b.recipients.addTextWithChips(chipInfoList)
-                                true
-                            }
-                            .positiveText(R.string.ok)
-                            .negativeText(R.string.cancel)
-                            .show()*/
                     return null
                 }
                 b.recipients.allChips.forEach {
@@ -295,11 +276,10 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.recipients.setIllegalCharacterIdentifier { c ->
             c.toString().matches("[\\n;:_ ]".toRegex())
         }
-        b.recipients.setOnChipClickListener { chip, _ ->
+        /*b.recipients.setOnChipClickListener { chip, _ ->
             Toast.makeText(app, "onChipClick: " + chip.text, Toast.LENGTH_SHORT).show()
-        }
+        }*/
         b.recipients.setOnChipRemoveListener { chip ->
-            Log.d(TAG, "onChipRemoved: " + chip.text)
             b.recipients.setSelection(b.recipients.text.length)
         }
 
@@ -365,7 +345,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
                 if (arguments?.getString("type") == "reply") {
                     // add greeting text
-                    span.replace(0, 0, "\n\nPozdrawiam,\n${app.profile.accountNameLong
+                    span.replace(0, 0, "\n\nZ poważaniem,\n${app.profile.accountNameLong
                             ?: app.profile.studentNameLong ?: ""}\n\n\n")
 
                     teachers.firstOrNull { it.id == msg.senderId }?.let { teacher ->
