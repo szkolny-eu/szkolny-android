@@ -50,7 +50,6 @@ import pl.szczodrzynski.edziennik.utils.Themes.getPrimaryTextColor
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.navlib.elevateSurface
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.text.replace
 
@@ -190,22 +189,24 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
         b.recipients.chipTokenizer = SpanChipTokenizer<ChipSpan>(activity, object : ChipSpanChipCreator() {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan? {
-                val teacher = data as Teacher?
-                if (teacher!!.id in -24L..0L) {
-                    val type = (teacher.id * -1).toInt()
+                if (data == null || data !is Teacher)
+                    return null
+                if (data.id in -24L..0L) {
+                    val type = (data.id * -1).toInt()
 
                     val textColorPrimary = android.R.attr.textColorPrimary.resolveAttr(activity)
                     val textColorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
-                    val category: MutableList<Teacher> = ArrayList()
-                    val categoryNames: MutableList<CharSequence> = ArrayList()
-                    teachers.forEach {
-                        if (it.isType(type)) {
-                            category += it
-                            val name = it.fullName
+                    val category = mutableListOf<Teacher>()
+                    val categoryNames = mutableListOf<CharSequence>()
+                    val categoryCheckedItems = mutableListOf<Boolean>()
+                    teachers.forEach { teacher ->
+                        if (teacher.isType(type)) {
+                            category += teacher
+                            val name = teacher.fullName
                             val description = when (type) {
                                 Teacher.TYPE_TEACHER -> null
-                                Teacher.TYPE_PARENTS_COUNCIL -> it.typeDescription
+                                Teacher.TYPE_PARENTS_COUNCIL -> teacher.typeDescription
                                 Teacher.TYPE_SCHOOL_PARENTS_COUNCIL -> null
                                 Teacher.TYPE_PEDAGOGUE -> null
                                 Teacher.TYPE_LIBRARIAN -> null
@@ -213,11 +214,11 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                                 Teacher.TYPE_SUPER_ADMIN -> null
                                 Teacher.TYPE_SECRETARIAT -> null
                                 Teacher.TYPE_PRINCIPAL -> null
-                                Teacher.TYPE_EDUCATOR -> it.typeDescription
-                                Teacher.TYPE_PARENT -> it.typeDescription
-                                Teacher.TYPE_STUDENT -> it.typeDescription
+                                Teacher.TYPE_EDUCATOR -> teacher.typeDescription
+                                Teacher.TYPE_PARENT -> teacher.typeDescription
+                                Teacher.TYPE_STUDENT -> teacher.typeDescription
                                 Teacher.TYPE_SPECIALIST -> null
-                                else -> it.typeDescription
+                                else -> teacher.typeDescription
                             }
                             categoryNames += listOfNotNull(
                                     name.asSpannable(
@@ -228,6 +229,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                                             AbsoluteSizeSpan(14.dp)
                                     )
                             ).concat("\n")
+                            categoryCheckedItems += b.recipients.allChips.firstOrNull { it.data == teacher } != null
                         }
                     }
 
@@ -236,12 +238,20 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                             //.setMessage(getString(R.string.messages_compose_recipients_text_format, Teacher.typeName(activity, type)))
                             .setPositiveButton("OK", null)
                             .setNeutralButton("Anuluj", null)
-                            .setMultiChoiceItems(categoryNames.toTypedArray(), categoryNames.map { false }.toBooleanArray()) { dialog, which, isChecked ->
-                                val chipInfoList = mutableListOf<ChipInfo>()
-                                val selected = category[which]
-                                selected.image = getProfileImage(48, 24, 16, 12, 1, selected.fullName)
-                                chipInfoList.add(ChipInfo(selected.fullName, selected))
-                                b.recipients.addTextWithChips(chipInfoList)
+                            .setMultiChoiceItems(categoryNames.toTypedArray(), categoryCheckedItems.toBooleanArray()) { _, which, isChecked ->
+                                val teacher = category[which]
+                                if (isChecked) {
+                                    val chipInfoList = mutableListOf<ChipInfo>()
+                                    teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
+                                    chipInfoList.add(ChipInfo(teacher.fullName, teacher))
+                                    b.recipients.addTextWithChips(chipInfoList)
+                                }
+                                else {
+                                    b.recipients.allChips.forEach {
+                                        if (it.data == teacher)
+                                            b.recipients.chipTokenizer?.deleteChipAndPadding(it, b.recipients.text)
+                                    }
+                                }
                             }
                             .show()
 
@@ -264,8 +274,12 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                             .show()*/
                     return null
                 }
-                val chipSpan = ChipSpan(context, teacher.fullName, BitmapDrawable(context.resources, teacher.image), teacher)
-                chipSpan.setIconBackgroundColor(Colors.stringToMaterialColor(teacher.fullName))
+                b.recipients.allChips.forEach {
+                    if (it.data == data)
+                        return null
+                }
+                val chipSpan = ChipSpan(context, data.fullName, BitmapDrawable(context.resources, data.image), data)
+                chipSpan.setIconBackgroundColor(Colors.stringToMaterialColor(data.fullName))
                 return chipSpan
             }
 
