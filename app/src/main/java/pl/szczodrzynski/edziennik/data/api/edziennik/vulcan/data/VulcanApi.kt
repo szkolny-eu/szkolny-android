@@ -27,6 +27,9 @@ open class VulcanApi(open val data: DataVulcan) {
     val profileId
         get() = data.profile?.id ?: -1
 
+    val profile
+        get() = data.profile
+
     fun apiGet(
             tag: String,
             endpoint: String,

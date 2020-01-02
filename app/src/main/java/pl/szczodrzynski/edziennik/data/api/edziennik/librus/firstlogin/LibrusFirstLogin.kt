@@ -2,10 +2,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.librus.firstlogin
 
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.ERROR_NO_STUDENTS_IN_ACCOUNT
-import pl.szczodrzynski.edziennik.data.api.FAKE_LIBRUS_ACCOUNTS
-import pl.szczodrzynski.edziennik.data.api.LIBRUS_ACCOUNTS_URL
-import pl.szczodrzynski.edziennik.data.api.LOGIN_MODE_LIBRUS_EMAIL
+import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusPortal
@@ -13,8 +10,6 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginPortal
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_LIBRUS_DISCONNECTED
-import pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_SYNERGIA_NOT_ACTIVATED
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 
 class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
@@ -46,8 +41,8 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
 
                         val state = account.getString("state")
                         when (state) {
-                            "requiring_an_action" -> CODE_LIBRUS_DISCONNECTED
-                            "need-activation" -> CODE_SYNERGIA_NOT_ACTIVATED
+                            "requiring_an_action" -> ERROR_LIBRUS_PORTAL_SYNERGIA_DISCONNECTED
+                            "need-activation" -> ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED
                             else -> null
                         }?.let { errorCode ->
                             data.error(ApiError(TAG, errorCode)

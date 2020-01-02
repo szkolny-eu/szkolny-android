@@ -34,7 +34,9 @@ import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent.Companion.T
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent.Companion.TYPE_PROGRESS
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_IUCZNIOWIE
+import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
@@ -88,36 +90,62 @@ class MessageFragment : Fragment(), CoroutineScope {
         )
         b.closeButton.setOnClickListener { activity.navigateUp() }
 
-        val messageId = arguments?.getLong("messageId")
-        if (messageId == null) {
-            activity.navigateUp()
-            return
-        }
-
-        launch {
-            val deferred = async(Dispatchers.Default) {
-                val msg = app.db.messageDao().getById(App.profileId, messageId)?.also {
-                    it.recipients = app.db.messageRecipientDao().getAllByMessageId(it.profileId, it.id)
-                    if (it.body != null && !it.seen) {
-                        app.db.metadataDao().setSeen(it.profileId, it, true)
-                    }
-                }
-                msg
-            }
-            val msg = deferred.await() ?: run {
-                return@launch
-            }
-            message = msg
-            b.subject.text = message.subject
-            checkMessage()
-        }
-
         // click to expand subject and sender
         b.subject.onClick {
             it.maxLines = if (it.maxLines == 30) 2 else 30
         }
         b.sender.onClick {
             it.maxLines = if (it.maxLines == 30) 2 else 30
+        }
+
+        b.replyButton.onClick {
+            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE, Bundle(
+                    "message" to app.gson.toJson(message),
+                    "type" to "reply"
+            ))
+        }
+        b.forwardButton.onClick {
+            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE, Bundle(
+                    "message" to app.gson.toJson(message),
+                    "type" to "forward"
+            ))
+        }
+
+        launch {
+
+            val messageString = arguments?.getString("message")
+            val messageId = arguments?.getLong("messageId")
+            if (messageId == null) {
+                activity.navigateUp()
+                return@launch
+            }
+
+            val msg = withContext(Dispatchers.Default) {
+
+                val msg =
+                        if (messageString != null)
+                            app.gson.fromJson(messageString, MessageFull::class.java)?.also {
+                                //it.body = null
+                                it.addedDate = arguments?.getLong("sentDate") ?: System.currentTimeMillis()
+                            }
+                        else
+                            app.db.messageDao().getById(App.profileId, messageId)
+
+                msg?.also {
+                    it.recipients = app.db.messageRecipientDao().getAllByMessageId(it.profileId, it.id)
+                    if (it.body != null && !it.seen) {
+                        app.db.metadataDao().setSeen(it.profileId, it, true)
+                    }
+                }
+
+            } ?: run {
+                activity.navigateUp()
+                return@launch
+            }
+
+            message = msg
+            b.subject.text = message.subject
+            checkMessage()
         }
     }
 
@@ -146,7 +174,7 @@ class MessageFragment : Fragment(), CoroutineScope {
 
 
         // if a sent msg is not read by everyone, download it again to check the read status
-        if (!checkRecipients()) {
+        if (!checkRecipients() && app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
             EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
             return
         }
@@ -157,7 +185,7 @@ class MessageFragment : Fragment(), CoroutineScope {
     private fun checkRecipients(): Boolean {
         message.recipients?.forEach { recipient ->
             if (recipient.id == -1L)
-                recipient.fullName = app.profile.accountNameLong ?: app.profile.studentNameLong
+                recipient.fullName = app.profile.accountNameLong ?: app.profile.studentNameLong ?: ""
             if (message.type == TYPE_SENT && recipient.readDate < 1)
                 return false
         }
@@ -173,6 +201,22 @@ class MessageFragment : Fragment(), CoroutineScope {
         b.sender.text = messageInfo.profileName
 
         b.subject.text = message.subject
+
+        b.replyButton.visibility = if (message.type == TYPE_RECEIVED) View.VISIBLE else View.INVISIBLE
+        if (message.type == TYPE_RECEIVED) {
+            activity.navView.apply {
+                bottomBar.apply {
+                    fabEnable = true
+                    fabExtendedText = getString(R.string.messages_reply)
+                    fabIcon = CommunityMaterial.Icon2.cmd_reply
+                }
+
+                setFabOnClickListener(View.OnClickListener {
+                    b.replyButton.performClick()
+                })
+            }
+            activity.gainAttentionFAB()
+        }
 
         val messageRecipients = StringBuilder("<ul>")
         message.recipients?.forEach { recipient ->

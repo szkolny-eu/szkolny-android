@@ -20,6 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.databinding.CardHomeDebugBinding
 import pl.szczodrzynski.edziennik.dp
@@ -28,7 +29,6 @@ import pl.szczodrzynski.edziennik.ui.modules.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusCaptchaActivity
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeActivity
 import kotlin.coroutines.CoroutineContext
 
 class HomeDebugCard(
@@ -54,9 +54,26 @@ class HomeDebugCard(
         }
         holder.root += b.root
 
-        b.composeButton.onClick {
-            app.startActivity(Intent(activity, MessagesComposeActivity::class.java));
+        b.composeNewButton.onClick {
+            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE)
         }
+
+        b.migrate71.onClick {
+            app.db.compileStatement("DELETE FROM messages WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0);").executeUpdateDelete()
+            app.db.compileStatement("DELETE FROM messageRecipients WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0);").executeUpdateDelete()
+            app.db.compileStatement("DELETE FROM teachers WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0);").executeUpdateDelete()
+            app.db.compileStatement("DELETE FROM endpointTimers WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0);").executeUpdateDelete()
+            app.db.compileStatement("DELETE FROM metadata WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0) AND thingType = 8;").executeUpdateDelete()
+            app.db.compileStatement("UPDATE profiles SET empty = 1 WHERE archived = 0;").executeUpdateDelete()
+            app.db.compileStatement("UPDATE profiles SET lastReceiversSync = 0 WHERE archived = 0;").executeUpdateDelete()
+            app.profile.lastReceiversSync = 0
+            app.profile.empty = true
+        }
+
+        b.syncReceivers.onClick {
+            EdziennikTask.recipientListGet(App.profileId).enqueue(activity)
+        }
+
 
         b.pruneWorkButton.onClick {
             WorkManager.getInstance(app).pruneWork()

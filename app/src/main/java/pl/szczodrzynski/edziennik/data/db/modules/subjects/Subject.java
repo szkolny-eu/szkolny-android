@@ -1,10 +1,11 @@
 package pl.szczodrzynski.edziennik.data.db.modules.subjects;
 
-import java.util.List;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import pl.szczodrzynski.edziennik.utils.Colors;
+
+import java.util.List;
+
+import pl.szczodrzynski.edziennik.ExtensionsKt;
 
 @Entity(tableName = "subjects",
         primaryKeys = {"profileId", "subjectId"})
@@ -26,7 +27,7 @@ public class Subject {
         this.id = id;
         this.longName = longName;
         this.shortName = shortName;
-        this.color = Colors.stringToColor(this.longName);
+        this.color = ExtensionsKt.colorFromName(longName);
     }
 
     @Override

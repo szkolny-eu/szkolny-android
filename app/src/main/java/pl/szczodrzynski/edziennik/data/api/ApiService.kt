@@ -44,6 +44,7 @@ class ApiService : Service() {
             SzkolnyTask.sync(syncingProfiles),
             NotifyTask()
     )
+    private val allTaskList = mutableListOf<IApiTask>()
     private val taskQueue = mutableListOf<IApiTask>()
     private val errorList = mutableListOf<ApiError>()
 
@@ -73,7 +74,7 @@ class ApiService : Service() {
         override fun onCompleted() {
             lastEventTime = System.currentTimeMillis()
             d(TAG, "Task $taskRunningId (profile $taskProfileId) - $taskProgressText - finished")
-            EventBus.getDefault().post(ApiTaskFinishedEvent(taskProfileId))
+            EventBus.getDefault().postSticky(ApiTaskFinishedEvent(taskProfileId))
             clearTask()
 
             notification.setIdle().post()
@@ -84,7 +85,7 @@ class ApiService : Service() {
             lastEventTime = System.currentTimeMillis()
             d(TAG, "Task $taskRunningId threw an error - $apiError")
             apiError.profileId = taskProfileId
-            EventBus.getDefault().post(ApiTaskErrorEvent(apiError))
+            EventBus.getDefault().postSticky(ApiTaskErrorEvent(apiError))
             errorList.add(apiError)
             apiError.throwable?.printStackTrace()
             if (apiError.isCritical) {
@@ -194,7 +195,7 @@ class ApiService : Service() {
      */
     private fun stopIfTaskFrozen() {
         if (checkIfTaskFrozen()) {
-            stopSelf()
+            allCompleted()
         }
     }
 
@@ -213,7 +214,7 @@ class ApiService : Service() {
     }
 
     private fun allCompleted() {
-        EventBus.getDefault().post(ApiTaskAllFinishedEvent())
+        EventBus.getDefault().postSticky(ApiTaskAllFinishedEvent())
         stopSelf()
     }
 
@@ -227,6 +228,11 @@ class ApiService : Service() {
     fun onApiTask(task: IApiTask) {
         EventBus.getDefault().removeStickyEvent(task)
         d(TAG, task.toString())
+
+        // fix for duplicated tasks, thank you EventBus
+        if (task in allTaskList)
+            return
+        allTaskList += task
 
         if (task is EdziennikTask) {
             when (task.request) {
@@ -270,7 +276,7 @@ class ApiService : Service() {
         serviceClosed = true
         taskCancelled = true
         taskRunning?.cancel()
-        stopSelf()
+        allCompleted()
     }
 
     /*     _____                 _                                     _     _

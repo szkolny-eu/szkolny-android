@@ -55,6 +55,7 @@ open class IdziennikApi(open val data: DataIdziennik) {
                 }
                 error?.let { code ->
                     when (code) {
+                        "Uczeń nie posiada aktywnej pozycji w dzienniku" -> ERROR_IDZIENNIK_API_NO_REGISTER
                         "Authorization has been denied for this request." -> ERROR_IDZIENNIK_API_ACCESS_DENIED
                         else -> ERROR_IDZIENNIK_API_OTHER
                     }.let { errorCode ->
@@ -107,6 +108,7 @@ open class IdziennikApi(open val data: DataIdziennik) {
                         }
                     }
                 }
+                .allowErrorCode(HttpURLConnection.HTTP_BAD_REQUEST)
                 .allowErrorCode(HttpURLConnection.HTTP_UNAUTHORIZED)
                 .allowErrorCode(HttpURLConnection.HTTP_INTERNAL_ERROR)
                 .callback(callback)

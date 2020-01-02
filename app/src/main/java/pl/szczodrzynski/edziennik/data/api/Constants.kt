@@ -70,6 +70,8 @@ const val IDZIENNIK_WEB_ATTENDANCE = "mod_panelRodzica/obecnosci/WS_obecnosciUcz
 const val IDZIENNIK_WEB_ANNOUNCEMENTS = "mod_panelRodzica/tabOgl/WS_tablicaOgloszen.asmx/GetOgloszenia"
 const val IDZIENNIK_WEB_MESSAGES_LIST = "mod_komunikator/WS_wiadomosci.asmx/PobierzListeWiadomosci"
 const val IDZIENNIK_WEB_GET_MESSAGE = "mod_komunikator/WS_wiadomosci.asmx/PobierzWiadomosc"
+const val IDZIENNIK_WEB_GET_RECIPIENT_LIST = "mod_komunikator/WS_wiadomosci.asmx/pobierzListeOdbiorcowPanelRodzic"
+const val IDZIENNIK_WEB_SEND_MESSAGE = "mod_komunikator/WS_wiadomosci.asmx/WyslijWiadomosc"
 const val IDZIENNIK_WEB_GET_ATTACHMENT = "mod_komunikator/Download.ashx"
 
 val IDZIENNIK_API_USER_AGENT = SYSTEM_USER_AGENT
@@ -102,6 +104,7 @@ const val VULCAN_API_ENDPOINT_ATTENDANCE = "mobile-api/Uczen.v3.Uczen/Frekwencje
 const val VULCAN_API_ENDPOINT_MESSAGES_RECEIVED = "mobile-api/Uczen.v3.Uczen/WiadomosciOdebrane"
 const val VULCAN_API_ENDPOINT_MESSAGES_SENT = "mobile-api/Uczen.v3.Uczen/WiadomosciWyslane"
 const val VULCAN_API_ENDPOINT_MESSAGES_CHANGE_STATUS = "mobile-api/Uczen.v3.Uczen/ZmienStatusWiadomosci"
+const val VULCAN_API_ENDPOINT_MESSAGES_ADD = "mobile-api/Uczen.v3.Uczen/DodajWiadomosc"
 const val VULCAN_API_ENDPOINT_PUSH = "mobile-api/Uczen.v3.Uczen/UstawPushToken"
 
 const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"

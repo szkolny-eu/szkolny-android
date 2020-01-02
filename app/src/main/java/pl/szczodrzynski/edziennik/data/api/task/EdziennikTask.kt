@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {
@@ -26,9 +27,11 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
         fun syncProfile(profileId: Int, viewIds: List<Pair<Int, Int>>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(viewIds, arguments))
         fun syncProfileList(profileList: List<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
         fun messageGet(profileId: Int, message: MessageFull) = EdziennikTask(profileId, MessageGetRequest(message))
+        fun messageSend(profileId: Int, recipients: List<Teacher>, subject: String, text: String) = EdziennikTask(profileId, MessageSendRequest(recipients, subject, text))
         fun announcementsRead(profileId: Int) = EdziennikTask(profileId, AnnouncementsReadRequest())
         fun announcementGet(profileId: Int, announcement: AnnouncementFull) = EdziennikTask(profileId, AnnouncementGetRequest(announcement))
         fun attachmentGet(profileId: Int, message: Message, attachmentId: Long, attachmentName: String) = EdziennikTask(profileId, AttachmentGetRequest(message, attachmentId, attachmentName))
+        fun recipientListGet(profileId: Int) = EdziennikTask(profileId, RecipientListGetRequest())
     }
 
     private lateinit var loginStore: LoginStore
@@ -77,10 +80,12 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
                     viewId = request.viewIds?.get(0)?.first,
                     arguments = request.arguments)
             is MessageGetRequest -> edziennikInterface?.getMessage(request.message)
+            is MessageSendRequest -> edziennikInterface?.sendMessage(request.recipients, request.subject, request.text)
             is FirstLoginRequest -> edziennikInterface?.firstLogin()
             is AnnouncementsReadRequest -> edziennikInterface?.markAllAnnouncementsAsRead()
             is AnnouncementGetRequest -> edziennikInterface?.getAnnouncement(request.announcement)
             is AttachmentGetRequest -> edziennikInterface?.getAttachment(request.message, request.attachmentId, request.attachmentName)
+            is RecipientListGetRequest -> edziennikInterface?.getRecipientList()
         }
     }
 
@@ -97,7 +102,9 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     data class SyncProfileRequest(val viewIds: List<Pair<Int, Int>>? = null, val arguments: JsonObject? = null)
     data class SyncProfileListRequest(val profileList: List<Int>)
     data class MessageGetRequest(val message: MessageFull)
+    data class MessageSendRequest(val recipients: List<Teacher>, val subject: String, val text: String)
     class AnnouncementsReadRequest
     data class AnnouncementGetRequest(val announcement: AnnouncementFull)
     data class AttachmentGetRequest(val message: Message, val attachmentId: Long, val attachmentName: String)
+    class RecipientListGetRequest
 }

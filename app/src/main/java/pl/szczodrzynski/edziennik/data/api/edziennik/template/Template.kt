@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
@@ -68,6 +69,10 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
 
     }
 
+    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
+
+    }
+
     override fun markAllAnnouncementsAsRead() {
 
     }
@@ -77,6 +82,10 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
     }
 
     override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {
+
+    }
+
+    override fun getRecipientList() {
 
     }
 

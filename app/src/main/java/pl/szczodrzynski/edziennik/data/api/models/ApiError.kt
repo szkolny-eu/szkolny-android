@@ -8,10 +8,11 @@ import android.content.Context
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.stackTraceString
 
-class ApiError(val tag: String, val errorCode: Int) {
+class ApiError(val tag: String, var errorCode: Int) {
     val id = System.currentTimeMillis()
     var profileId: Int? = null
     var throwable: Throwable? = null
@@ -61,7 +62,7 @@ class ApiError(val tag: String, val errorCode: Int) {
             if (it != 0)
                 context.getString(it)
             else
-                "?"
+                context.getString(R.string.error_unknown_format, errorCode, tag)
         }
     }
 

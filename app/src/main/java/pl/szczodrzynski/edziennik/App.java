@@ -67,8 +67,9 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
-import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing;
 import pl.szczodrzynski.edziennik.config.Config;
+import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing;
+import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.AppDb;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
@@ -437,6 +438,11 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
                             .build(),
                     "Vulcan"
             );
+
+            if (config.getRunSync()) {
+                config.setRunSync(false);
+                EdziennikTask.Companion.sync().enqueue(this);
+            }
 
             try {
                 final long startTime = System.currentTimeMillis();

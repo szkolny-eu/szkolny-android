@@ -5,6 +5,7 @@
 
 <resources>
     <string name="error_1" translatable="false">ERROR_APP_CRASH</string>
+    <string name="error_10" translatable="false">ERROR_MESSAGE_NOT_SENT</string>
 
     <string name="error_50" translatable="false">ERROR_REQUEST_FAILURE</string>
     <string name="error_51" translatable="false">ERROR_REQUEST_HTTP_400</string>
@@ -13,7 +14,13 @@
     <string name="error_54" translatable="false">ERROR_REQUEST_HTTP_404</string>
     <string name="error_55" translatable="false">ERROR_REQUEST_HTTP_405</string>
     <string name="error_56" translatable="false">ERROR_REQUEST_HTTP_410</string>
-    <string name="error_57" translatable="false">ERROR_REQUEST_HTTP_500</string>
+    <string name="error_57" translatable="false">ERROR_REQUEST_HTTP_424</string>
+    <string name="error_58" translatable="false">ERROR_REQUEST_HTTP_500</string>
+    <string name="error_59" translatable="false">ERROR_REQUEST_HTTP_503</string>
+    <string name="error_60" translatable="false">ERROR_REQUEST_FAILURE_HOSTNAME_NOT_FOUND</string>
+    <string name="error_61" translatable="false">ERROR_REQUEST_FAILURE_TIMEOUT</string>
+    <string name="error_62" translatable="false">ERROR_REQUEST_FAILURE_NO_INTERNET</string>
+    <string name="error_63" translatable="false">ERROR_REQUEST_FAILURE_SSL_ERROR</string>
     <string name="error_100" translatable="false">ERROR_RESPONSE_EMPTY</string>
     <string name="error_101" translatable="false">ERROR_LOGIN_DATA_MISSING</string>
     <string name="error_102" translatable="false">ERROR_LOGIN_DATA_INVALID</string>
@@ -81,6 +88,7 @@
     <string name="error_179" translatable="false">ERROR_LOGIN_LIBRUS_MESSAGES_INVALID_LOGIN</string>
     <string name="error_180" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN</string>
     <string name="error_181" translatable="false">ERROR_LIBRUS_API_MAINTENANCE</string>
+    <string name="error_182" translatable="false">ERROR_LIBRUS_PORTAL_MAINTENANCE</string>
 
     <string name="error_201" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_202" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
@@ -129,6 +137,7 @@
     <string name="error_441" translatable="false">ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA</string>
     <string name="error_450" translatable="false">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
     <string name="error_451" translatable="false">ERROR_IDZIENNIK_API_OTHER</string>
+    <string name="error_452" translatable="false">ERROR_IDZIENNIK_API_NO_REGISTER</string>
 
     <string name="error_501" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_510" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER</string>
@@ -148,7 +157,9 @@
     <string name="error_905" translatable="false">EXCEPTION_LIBRUS_SYNERGIA_REQUEST</string>
     <string name="error_906" translatable="false">EXCEPTION_MOBIDZIENNIK_WEB_REQUEST</string>
     <string name="error_907" translatable="false">EXCEPTION_VULCAN_API_REQUEST</string>
-    <string name="error_910" translatable="false">EXCEPTION_NOTIFY_AND_SYNC</string>
+    <string name="error_908" translatable="false">EXCEPTION_MOBIDZIENNIK_WEB_FILE_REQUEST</string>
+    <string name="error_909" translatable="false">EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST</string>
+    <string name="error_910" translatable="false">EXCEPTION_NOTIFY</string>
     <string name="error_911" translatable="false">EXCEPTION_LIBRUS_MESSAGES_REQUEST</string>
     <string name="error_912" translatable="false">EXCEPTION_IDZIENNIK_WEB_REQUEST</string>
     <string name="error_913" translatable="false">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
@@ -159,6 +170,7 @@
     <string name="error_1201" translatable="false">LOGIN_NO_ARGUMENTS</string>
 
     <string name="error_1_reason">Aplikacja przestała działać</string>
+    <string name="error_10_reason">Nie udało się wysłać wiadomości: nowa wiadomość nie została odnaleziona na liście wiadomości wysłanych</string>
 
     <string name="error_50_reason">Błąd odpowiedzi serwera</string>
     <string name="error_51_reason">Błąd serwera: nieprawidłowe zapytanie</string>
@@ -167,7 +179,13 @@
     <string name="error_54_reason">Błąd serwera: plik nie znaleziony</string>
     <string name="error_55_reason">Błąd serwera: nieprawidłowa metoda zapytania</string>
     <string name="error_56_reason">Błąd serwera: odpowiedź niedostępna</string>
-    <string name="error_57_reason">Wewnętrzny błąd serwera</string>
+    <string name="error_57_reason">Błąd serwera: niespełnione zależności</string>
+    <string name="error_58_reason">Wewnętrzny błąd serwera</string>
+    <string name="error_59_reason">Usługa tymczasowo niedostępna</string>
+    <string name="error_60_reason">Brak internetu: nie znaleziono adresu serwera</string>
+    <string name="error_61_reason">Brak internetu: przekroczono czas oczekiwania</string>
+    <string name="error_62_reason">Brak internetu</string>
+    <string name="error_63_reason">Brak internetu: połączenie SSL nie powiodło się</string>
     <string name="error_100_reason">Brak odpowiedzi serwera</string>
     <string name="error_101_reason">Dane logowania niekompletne</string>
     <string name="error_102_reason">Nieprawidłowe dane logowania</string>
@@ -235,6 +253,7 @@
     <string name="error_179_reason">Librus Wiadomości: nieprawidłowe dane logowania</string>
     <string name="error_180_reason">Librus Portal: nieprawidłowe dane logowania</string>
     <string name="error_181_reason">Librus API: przerwa techniczna</string>
+    <string name="error_182_reason">Librus Portal: przerwa techniczna</string>
 
     <string name="error_201_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_202_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
@@ -283,6 +302,7 @@
     <string name="error_441_reason">ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA</string>
     <string name="error_450_reason">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
     <string name="error_451_reason">ERROR_IDZIENNIK_API_OTHER</string>
+    <string name="error_452_reason">ERROR_IDZIENNIK_API_NO_REGISTER</string>
 
     <string name="error_501_reason">Błędny email lub hasło</string>
     <string name="error_510_reason">Inny błąd logowania</string>
@@ -302,7 +322,9 @@
     <string name="error_905_reason">EXCEPTION_LIBRUS_SYNERGIA_REQUEST</string>
     <string name="error_906_reason">EXCEPTION_MOBIDZIENNIK_WEB_REQUEST</string>
     <string name="error_907_reason">EXCEPTION_VULCAN_API_REQUEST</string>
-    <string name="error_910_reason">EXCEPTION_NOTIFY_AND_SYNC</string>
+    <string name="error_908_reason">EXCEPTION_MOBIDZIENNIK_WEB_FILE_REQUEST</string>
+    <string name="error_909_reason">EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST</string>
+    <string name="error_910_reason">EXCEPTION_NOTIFY</string>
     <string name="error_911_reason">EXCEPTION_LIBRUS_MESSAGES_REQUEST</string>
     <string name="error_912_reason">EXCEPTION_IDZIENNIK_WEB_REQUEST</string>
     <string name="error_913_reason">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>

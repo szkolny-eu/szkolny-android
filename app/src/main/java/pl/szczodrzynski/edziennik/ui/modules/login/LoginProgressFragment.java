@@ -60,7 +60,7 @@ public class LoginProgressFragment extends Fragment {
         nav.navigate(R.id.loginSummaryFragment, null, LoginActivity.navOptions);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onSyncErrorEvent(ApiTaskErrorEvent event) {
         LoginActivity.error = event.getError();
         if (getActivity() == null)

@@ -26,8 +26,15 @@ open class MobidziennikWeb(open val data: DataMobidziennik) {
     val profile
         get() = data.profile
 
-    fun webGet(tag: String, endpoint: String, method: Int = GET, onSuccess: (text: String) -> Unit) {
-        val url = "https://${data.loginServerName}.mobidziennik.pl$endpoint"
+    fun webGet(
+            tag: String,
+            endpoint: String,
+            method: Int = GET,
+            parameters: List<Pair<String, Any>> = emptyList(),
+            fullUrl: String? = null,
+            onSuccess: (text: String) -> Unit
+    ) {
+        val url = fullUrl ?: "https://${data.loginServerName}.mobidziennik.pl$endpoint"
 
         d(tag, "Request: Mobidziennik/Web - $url")
 
@@ -91,6 +98,15 @@ open class MobidziennikWeb(open val data: DataMobidziennik) {
         Request.builder()
                 .url(url)
                 .userAgent(MOBIDZIENNIK_USER_AGENT)
+                .apply {
+                    when (method) {
+                        GET -> get()
+                        POST -> post()
+                    }
+                    parameters.map { (name, value) ->
+                        addParameter(name, value)
+                    }
+                }
                 .callback(callback)
                 .build()
                 .enqueue()

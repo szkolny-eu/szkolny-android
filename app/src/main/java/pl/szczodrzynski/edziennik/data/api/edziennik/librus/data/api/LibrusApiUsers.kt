@@ -25,7 +25,14 @@ class LibrusApiUsers(override val data: DataLibrus,
                 val firstName = user.getString("FirstName")?.fixName() ?: ""
                 val lastName = user.getString("LastName")?.fixName() ?: ""
 
-                data.teacherList.put(id, Teacher(profileId, id, firstName, lastName))
+                val teacher = Teacher(profileId, id, firstName, lastName)
+
+                if (user.getBoolean("IsSchoolAdministrator") == true)
+                    teacher.setTeacherType(Teacher.TYPE_SCHOOL_ADMIN)
+                if (user.getBoolean("IsPedagogue") == true)
+                    teacher.setTeacherType(Teacher.TYPE_PEDAGOGUE)
+
+                data.teacherList.put(id, teacher)
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_USERS, 4*DAY)

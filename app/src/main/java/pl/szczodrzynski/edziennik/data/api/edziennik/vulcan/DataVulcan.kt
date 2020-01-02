@@ -171,7 +171,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
                 "P02" -> "http://efeb-komunikacja.pro-hudsonrc.win.vulcan.pl"
                 "P90" -> "http://efeb-komunikacja-pro-mwujakowska.neo.win.vulcan.pl"
                 "FK1", "FS1" -> "http://api.fakelog.cf"
-                "SZ9" -> "http://vulcan.szkolny.eu"
+                "SZ9" -> "http://hack.szkolny.eu"
                 else -> null
             }
             return if (url != null) "$url/$symbol" else loginStore.getLoginData("apiUrl", null)

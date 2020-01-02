@@ -7,11 +7,11 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.api
 import com.google.gson.JsonArray
 import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
+import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_API_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_API_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikApi
-import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
@@ -62,7 +62,7 @@ class IdziennikApiMessagesSent(override val data: DataIdziennik,
                         lastName = "użytkownik"
                     }
                     val rTeacher = data.getTeacher(firstName, lastName)
-                    rTeacher.loginId = recipient.get("id").asString + ":" + recipient.get("usr").asString
+                    rTeacher.loginId = /*recipient.get("id").asString + ":" + */recipient.get("usr").asString
 
                     val messageRecipient = MessageRecipient(
                             profileId,

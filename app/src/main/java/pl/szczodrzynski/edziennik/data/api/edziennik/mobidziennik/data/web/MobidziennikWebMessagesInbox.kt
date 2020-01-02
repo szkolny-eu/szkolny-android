@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -48,7 +49,7 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
                 val addedDate = Date.fromIsoHm(addedDateEl.text())
 
                 val senderEl = item.select("td:eq(2)").first()
-                val senderName = senderEl.ownText()
+                val senderName = senderEl.ownText().fixName()
                 val senderId = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }?.id ?: -1
                 data.messageRecipientIgnoreList.add(MessageRecipient(profileId, -1, id))
 

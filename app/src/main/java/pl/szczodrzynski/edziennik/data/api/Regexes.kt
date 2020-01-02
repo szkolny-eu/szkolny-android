@@ -55,6 +55,10 @@ object Regexes {
         """href="https://.+?\.mobidziennik.pl/.+?&(?:amp;)?zalacznik=([0-9]+)"(?:.+?<small.+?\(([0-9.]+)\s(M|K|G|)B\))*""".toRegex(DOT_MATCHES_ALL)
     }
 
+    val MOBIDZIENNIK_MESSAGE_RECIPIENTS_JSON by lazy {
+        """odbiorcy: (\[.+?\]),${'$'}""".toRegex(RegexOption.MULTILINE)
+    }
+
 
 
     val IDZIENNIK_LOGIN_HIDDEN_FIELDS by lazy {
@@ -77,6 +81,9 @@ object Regexes {
     }
     val IDZIENNIK_LOGIN_FIRST_STUDENT by lazy {
         """<option.*?value="([0-9]+)"\sdata-id-ucznia="([A-z0-9]+?)".*?>(.+?)\s(.+?)\s*\((.+?),\s*(.+?)\)</option>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val IDZIENNIK_MESSAGES_RECIPIENT_PARENT by lazy {
+        """(.+?)\s\((.+)\)""".toRegex()
     }
 
 

@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipientFull
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.Utils.monthFromName
@@ -67,7 +68,7 @@ class MobidziennikWebGetMessage(
                         message.id
                 )
 
-                recipient.fullName = profile?.accountNameLong ?: profile?.studentNameLong
+                recipient.fullName = profile?.accountNameLong ?: profile?.studentNameLong ?: ""
 
                 messageRecipientList.add(recipient)
             } else {
@@ -76,7 +77,7 @@ class MobidziennikWebGetMessage(
 
                 content.select("table.spis tr:has(td)")?.forEach { recipientEl ->
                     val senderEl = recipientEl.select("td:eq(0)").first()
-                    val senderName = senderEl.text()
+                    val senderName = senderEl.text().fixName()
 
                     val teacher = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }
                     val receiverId = teacher?.id ?: -1
@@ -117,7 +118,7 @@ class MobidziennikWebGetMessage(
 
             // this needs to be at the end
             message.apply {
-                this.body = body.html()
+                this.body = body.html().replace("\n", "<br>")
 
                 clearAttachments()
                 content.select("ul li").map { it.select("a").first() }.forEach {

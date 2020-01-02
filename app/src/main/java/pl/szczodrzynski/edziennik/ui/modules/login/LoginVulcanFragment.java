@@ -39,10 +39,10 @@ import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar;
 import pl.szczodrzynski.edziennik.ui.modules.webpush.QrScannerActivity;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_EXPIRED_TOKEN;
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_INVALID_PIN;
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_INVALID_SYMBOL;
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_INVALID_TOKEN;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_VULCAN_EXPIRED_TOKEN;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_VULCAN_INVALID_PIN;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_VULCAN_INVALID_SYMBOL;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_VULCAN_INVALID_TOKEN;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
 
 public class LoginVulcanFragment extends Fragment {
@@ -79,16 +79,16 @@ public class LoginVulcanFragment extends Fragment {
             ApiError error = LoginActivity.error;
             if (error != null) {
                 switch (error.getErrorCode()) {
-                    case CODE_INVALID_TOKEN:
+                    case ERROR_LOGIN_VULCAN_INVALID_TOKEN:
                         b.loginTokenLayout.setError(getString(R.string.login_error_incorrect_token));
                         break;
-                    case CODE_EXPIRED_TOKEN:
+                    case ERROR_LOGIN_VULCAN_EXPIRED_TOKEN:
                         b.loginTokenLayout.setError(getString(R.string.login_error_expired_token));
                         break;
-                    case CODE_INVALID_SYMBOL:
+                    case ERROR_LOGIN_VULCAN_INVALID_SYMBOL:
                         b.loginSymbolLayout.setError(getString(R.string.login_error_incorrect_symbol));
                         break;
-                    case CODE_INVALID_PIN:
+                    case ERROR_LOGIN_VULCAN_INVALID_PIN:
                         /*if (!"?".equals(error.errorText)) {
                             b.loginPinLayout.setError(getString(R.string.login_error_incorrect_pin_format, error.errorText));
                             break;

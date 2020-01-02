@@ -9,21 +9,14 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
+import pl.szczodrzynski.edziennik.fixName
+import pl.szczodrzynski.edziennik.getNameInitials
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
 import kotlin.math.roundToInt
 
 object MessagesUtils {
-    private fun getInitials(name: String?): String {
-        if (name == null || name.isEmpty()) return ""
-        val nameUppercase = name.toUpperCase()
-        val nameParts = nameUppercase.split(" ").toTypedArray()
-        return if (nameParts.size <= 1) (if (nameUppercase.isEmpty()) '?' else nameUppercase[0]).toString()
-        else (if (nameParts[0].isEmpty()) '?' else nameParts[0][0]).toString() +
-                if (nameParts[1].isEmpty()) "?" else nameParts[1][0]
-    }
-
     private fun getPaintCenter(textPaint: Paint): Int {
         return ((textPaint.descent() + textPaint.ascent()) / 2).roundToInt()
     }
@@ -52,7 +45,7 @@ object MessagesUtils {
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeBig
                 canvas.drawArc(rectF, 0f, 360f, true, circlePaint)
-                canvas.drawText(getInitials(name), diameter / 2, diameter / 2 - getPaintCenter(textPaint), textPaint)
+                canvas.drawText(name.getNameInitials(), diameter / 2, diameter / 2 - getPaintCenter(textPaint), textPaint)
             }
             count == 2 -> { // top
                 name = names[0]
@@ -60,14 +53,14 @@ object MessagesUtils {
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeMedium
                 canvas.drawArc(rectF, 180f, 180f, true, circlePaint)
-                canvas.drawText(getInitials(name), diameter / 2, diameter / 4 - getPaintCenter(textPaint), textPaint)
+                canvas.drawText(name.getNameInitials(), diameter / 2, diameter / 4 - getPaintCenter(textPaint), textPaint)
                 // bottom
                 name = names[1]
                 circlePaint.color = Colors.stringToMaterialColor(name).also { color = it }
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeMedium
                 canvas.drawArc(rectF, 0f, 180f, true, circlePaint)
-                canvas.drawText(getInitials(name), diameter / 2, diameter / 4 * 3 - getPaintCenter(textPaint), textPaint)
+                canvas.drawText(name.getNameInitials(), diameter / 2, diameter / 4 * 3 - getPaintCenter(textPaint), textPaint)
             }
             count == 3 -> { // upper left
                 name = names[0]
@@ -75,21 +68,21 @@ object MessagesUtils {
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeSmall
                 canvas.drawArc(rectF, 180f, 90f, true, circlePaint)
-                canvas.drawText(getInitials(name), diameter / 4, diameter / 4 - getPaintCenter(textPaint) + diameter / 32, textPaint)
+                canvas.drawText(name.getNameInitials(), diameter / 4, diameter / 4 - getPaintCenter(textPaint) + diameter / 32, textPaint)
                 // upper right
                 name = names[1]
                 circlePaint.color = Colors.stringToMaterialColor(name).also { color = it }
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeSmall
                 canvas.drawArc(rectF, 270f, 90f, true, circlePaint)
-                canvas.drawText(getInitials(name), diameter / 4 * 3, diameter / 4 - getPaintCenter(textPaint) + diameter / 32, textPaint)
+                canvas.drawText(name.getNameInitials(), diameter / 4 * 3, diameter / 4 - getPaintCenter(textPaint) + diameter / 32, textPaint)
                 // bottom
                 name = names[2]
                 circlePaint.color = Colors.stringToMaterialColor(name).also { color = it }
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeMedium
                 canvas.drawArc(rectF, 0f, 180f, true, circlePaint)
-                canvas.drawText(getInitials(name), diameter / 2, diameter / 4 * 3 - getPaintCenter(textPaint), textPaint)
+                canvas.drawText(name.getNameInitials(), diameter / 2, diameter / 4 * 3 - getPaintCenter(textPaint), textPaint)
             }
             count >= 4 -> { // upper left
                 name = names[0]
@@ -97,21 +90,21 @@ object MessagesUtils {
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeSmall
                 canvas.drawArc(rectF, 180f, 90f, true, circlePaint)
-                canvas.drawText(getInitials(name), diameter / 4, diameter / 4 - getPaintCenter(textPaint) + diameter / 32, textPaint)
+                canvas.drawText(name.getNameInitials(), diameter / 4, diameter / 4 - getPaintCenter(textPaint) + diameter / 32, textPaint)
                 // upper right
                 name = names[1]
                 circlePaint.color = Colors.stringToMaterialColor(name).also { color = it }
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeSmall
                 canvas.drawArc(rectF, 270f, 90f, true, circlePaint)
-                canvas.drawText(getInitials(name), diameter / 4 * 3, diameter / 4 - getPaintCenter(textPaint) + diameter / 32, textPaint)
+                canvas.drawText(name.getNameInitials(), diameter / 4 * 3, diameter / 4 - getPaintCenter(textPaint) + diameter / 32, textPaint)
                 // bottom left
                 name = names[2]
                 circlePaint.color = Colors.stringToMaterialColor(name).also { color = it }
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeSmall
                 canvas.drawArc(rectF, 90f, 90f, true, circlePaint)
-                canvas.drawText(getInitials(name), diameter / 4, diameter / 4 * 3 - getPaintCenter(textPaint) - diameter / 32, textPaint)
+                canvas.drawText(name.getNameInitials(), diameter / 4, diameter / 4 * 3 - getPaintCenter(textPaint) - diameter / 32, textPaint)
                 // bottom right
                 if (count == 4) name = names[3]
                 if (count > 4) name = "..."
@@ -119,7 +112,7 @@ object MessagesUtils {
                 textPaint.color = ColorUtils.blendARGB(Colors.legibleTextColor(color), color, 0.30f)
                 textPaint.textSize = textSizeSmall
                 canvas.drawArc(rectF, 0f, 90f, true, circlePaint)
-                canvas.drawText(if (count > 4) "+" + (count - 3) else getInitials(name), diameter / 4 * 3, diameter / 4 * 3 - getPaintCenter(textPaint) - diameter / 32, textPaint)
+                canvas.drawText(if (count > 4) "+" + (count - 3) else name.getNameInitials(), diameter / 4 * 3, diameter / 4 * 3 - getPaintCenter(textPaint) - diameter / 32, textPaint)
             }
         }
         return bitmap
@@ -129,8 +122,8 @@ object MessagesUtils {
         var profileImage: Bitmap? = null
         var profileName: String? = null
         if (message.type == Message.TYPE_RECEIVED || message.type == Message.TYPE_DELETED) {
-            profileName = message.senderFullName
-            profileImage = getProfileImage(diameterDp, textSizeBigDp, textSizeMediumDp, textSizeSmallDp, 1, message.senderFullName)
+            profileName = message.senderFullName?.fixName()
+            profileImage = getProfileImage(diameterDp, textSizeBigDp, textSizeMediumDp, textSizeSmallDp, 1, profileName)
         } else if (message.type == Message.TYPE_SENT || message.type == Message.TYPE_DRAFT && message.recipients != null) {
             when (val count = message.recipients?.size ?: 0) {
                 0 -> {

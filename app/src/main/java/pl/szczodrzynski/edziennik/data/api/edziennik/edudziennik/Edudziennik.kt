@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
@@ -29,6 +30,7 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
 
     val internalErrorList = mutableListOf<Int>()
     val data: DataEdudziennik
+    private var afterLogin: (() -> Unit)? = null
 
     init {
         data = DataEdudziennik(app, profile, loginStore).apply {
@@ -55,21 +57,17 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
     override fun sync(featureIds: List<Int>, viewId: Int?, arguments: JsonObject?) {
         data.arguments = arguments
         data.prepare(edudziennikLoginMethods, EdudziennikFeatures, featureIds, viewId)
-        d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
-        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
-        EdudziennikLogin(data) {
-            EdudziennikData(data) {
-                completed()
-            }
-        }
+        login()
     }
 
-    private fun login() {
+    private fun login(loginMethodId: Int? = null, afterLogin: (() -> Unit)? = null) {
         d(TAG, "Trying to login with ${data.targetLoginMethodIds}")
         if (internalErrorList.isNotEmpty()) {
             d(TAG, "  - Internal errors:")
             internalErrorList.forEach { d(TAG, "      - code $it") }
         }
+        loginMethodId?.let { data.prepareFor(edudziennikLoginMethods, it) }
+        afterLogin?.let { this.afterLogin = it }
         EdudziennikLogin(data) {
             data()
         }
@@ -81,18 +79,14 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
             d(TAG, "  - Internal errors:")
             internalErrorList.forEach { d(TAG, "      - code $it") }
         }
-        EdudziennikData(data) {
+        afterLogin?.invoke() ?: EdudziennikData(data) {
             completed()
         }
     }
 
-    override fun getMessage(message: MessageFull) {
-
-    }
-
-    override fun markAllAnnouncementsAsRead() {
-
-    }
+    override fun getMessage(message: MessageFull) {}
+    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {}
+    override fun markAllAnnouncementsAsRead() {}
 
     override fun getAnnouncement(announcement: AnnouncementFull) {
         EdudziennikLoginWeb(data) {
@@ -102,16 +96,10 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
         }
     }
 
-    override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {
+    override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {}
+    override fun getRecipientList() {}
 
-    }
-
-    override fun firstLogin() {
-        EdudziennikFirstLogin(data) {
-            completed()
-        }
-    }
-
+    override fun firstLogin() { EdudziennikFirstLogin(data) { completed() } }
     override fun cancel() {
         d(TAG, "Cancelled")
         data.cancel()
@@ -119,18 +107,9 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
 
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {
         return object : EdziennikCallback {
-            override fun onCompleted() {
-                callback.onCompleted()
-            }
-
-            override fun onProgress(step: Float) {
-                callback.onProgress(step)
-            }
-
-            override fun onStartProgress(stringRes: Int) {
-                callback.onStartProgress(stringRes)
-            }
-
+            override fun onCompleted() { callback.onCompleted() }
+            override fun onProgress(step: Float) { callback.onProgress(step) }
+            override fun onStartProgress(stringRes: Int) { callback.onStartProgress(stringRes) }
             override fun onError(apiError: ApiError) {
                 if (apiError.errorCode in internalErrorList) {
                     // finish immediately if the same error occurs twice during the same sync

@@ -176,7 +176,7 @@ open class Profile : IDrawerProfile {
         }
 
         return context.getDrawableFromRes(R.drawable.profile).also {
-            it.colorFilter = PorterDuffColorFilter(colorFromName(context, name), PorterDuff.Mode.DST_OVER)
+            it.colorFilter = PorterDuffColorFilter(colorFromName(name), PorterDuff.Mode.DST_OVER)
         }
 
         /*if (profileImage == null) {
@@ -192,11 +192,11 @@ open class Profile : IDrawerProfile {
             try {
                 ImageHolder(image ?: "")
             } catch (_: Exception) {
-                ImageHolder(R.drawable.profile, colorFromName(context, name))
+                ImageHolder(R.drawable.profile, colorFromName(name))
             }
         }
         else {
-            ImageHolder(R.drawable.profile, colorFromName(context, name))
+            ImageHolder(R.drawable.profile, colorFromName(name))
         }
     }
     override fun applyImageTo(imageView: ImageView) {

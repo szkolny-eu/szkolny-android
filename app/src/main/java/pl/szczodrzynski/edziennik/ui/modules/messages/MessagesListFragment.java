@@ -46,9 +46,9 @@ public class MessagesListFragment extends Fragment {
     static final long TRANSITION_DURATION = 300L;
     static final String TAP_POSITION = "tap_position";
 
-    private static int[] tapPositions = {NO_POSITION, NO_POSITION};
-    private static int[] topPositions = {NO_POSITION, NO_POSITION};
-    private static int[] bottomPositions = {NO_POSITION, NO_POSITION};
+    public static int[] tapPositions = {NO_POSITION, NO_POSITION};
+    public static int[] topPositions = {NO_POSITION, NO_POSITION};
+    public static int[] bottomPositions = {NO_POSITION, NO_POSITION};
 
     private int messageType = Message.TYPE_RECEIVED;
 

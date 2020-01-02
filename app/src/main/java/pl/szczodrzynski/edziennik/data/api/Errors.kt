@@ -32,6 +32,7 @@ const val CODE_LIBRUS_DISCONNECTED                          = 31
 const val CODE_PROFILE_ARCHIVED                             = 30*/
 
 const val ERROR_APP_CRASH                                   = 1
+const val ERROR_MESSAGE_NOT_SENT                            = 10
 
 const val ERROR_REQUEST_FAILURE                             = 50
 const val ERROR_REQUEST_HTTP_400                            = 51
@@ -40,10 +41,13 @@ const val ERROR_REQUEST_HTTP_403                            = 53
 const val ERROR_REQUEST_HTTP_404                            = 54
 const val ERROR_REQUEST_HTTP_405                            = 55
 const val ERROR_REQUEST_HTTP_410                            = 56
-const val ERROR_REQUEST_HTTP_500                            = 57
+const val ERROR_REQUEST_HTTP_424                            = 57
+const val ERROR_REQUEST_HTTP_500                            = 58
+const val ERROR_REQUEST_HTTP_503                            = 59
 const val ERROR_REQUEST_FAILURE_HOSTNAME_NOT_FOUND          = 60
 const val ERROR_REQUEST_FAILURE_TIMEOUT                     = 61
 const val ERROR_REQUEST_FAILURE_NO_INTERNET                 = 62
+const val ERROR_REQUEST_FAILURE_SSL_ERROR                   = 63
 const val ERROR_RESPONSE_EMPTY                              = 100
 const val ERROR_LOGIN_DATA_MISSING                          = 101
 const val ERROR_PROFILE_MISSING                             = 105
@@ -159,6 +163,7 @@ const val ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR        = 440
 const val ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA               = 441
 const val ERROR_IDZIENNIK_API_ACCESS_DENIED                 = 450
 const val ERROR_IDZIENNIK_API_OTHER                         = 451
+const val ERROR_IDZIENNIK_API_NO_REGISTER                   = 452
 
 const val ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN         = 501
 const val ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER                 = 510

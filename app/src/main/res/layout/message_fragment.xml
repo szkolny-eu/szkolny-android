@@ -68,7 +68,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="40dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -253,10 +254,11 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     android:orientation="horizontal"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     tools:visibility="visible">
 
                     <LinearLayout
+                        android:id="@+id/replyButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="4dp"
@@ -269,6 +271,15 @@
                         android:paddingTop="8dp"
                         android:paddingRight="4dp"
                         android:paddingBottom="8dp">
+
+                        <com.mikepenz.iconics.view.IconicsImageView
+                            android:id="@+id/replyIcon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:padding="4dp"
+                            app:iiv_color="?android:textColorSecondary"
+                            app:iiv_icon="cmd-reply"
+                            tools:srcCompat="@android:drawable/ic_menu_revert" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -277,16 +288,10 @@
                             android:text="Odpowiedz"
                             android:textAppearance="@style/NavView.TextView.Small" />
 
-                        <com.mikepenz.iconics.view.IconicsImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:padding="4dp"
-                            app:iiv_color="?android:textColorSecondary"
-                            app:iiv_icon="cmd-reply"
-                            tools:srcCompat="@android:drawable/ic_menu_revert" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/forwardButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="4dp"
@@ -299,6 +304,15 @@
                         android:paddingTop="8dp"
                         android:paddingRight="4dp"
                         android:paddingBottom="8dp">
+
+                        <com.mikepenz.iconics.view.IconicsImageView
+                            android:id="@+id/forwardIcon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:padding="4dp"
+                            app:iiv_color="?android:textColorSecondary"
+                            app:iiv_icon="cmd-arrow-right-thick"
+                            tools:srcCompat="@android:drawable/ic_media_ff" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -308,13 +322,6 @@
                             android:textAllCaps="false"
                             android:textAppearance="@style/NavView.TextView.Small" />
 
-                        <com.mikepenz.iconics.view.IconicsImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:padding="4dp"
-                            app:iiv_color="?android:textColorSecondary"
-                            app:iiv_icon="cmd-share"
-                            tools:srcCompat="@android:drawable/ic_media_ff" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -329,14 +336,8 @@
                         android:paddingLeft="4dp"
                         android:paddingTop="8dp"
                         android:paddingRight="4dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Usuń"
-                            android:textAppearance="@style/NavView.TextView.Small" />
+                        android:paddingBottom="8dp"
+                        android:visibility="invisible">
 
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:layout_width="24dp"
@@ -345,6 +346,14 @@
                             app:iiv_color="?android:textColorSecondary"
                             app:iiv_icon="cmd-delete"
                             tools:srcCompat="@android:drawable/ic_menu_delete" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Usuń"
+                            android:textAppearance="@style/NavView.TextView.Small" />
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

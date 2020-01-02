@@ -6,22 +6,24 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.CODE_INTERNAL_LIBRUS_ACCOUNT_410
+import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanData
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiMessagesChangeStatus
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiSendMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin.VulcanFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLogin
-import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginApi
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.prepare
+import pl.szczodrzynski.edziennik.data.api.prepareFor
 import pl.szczodrzynski.edziennik.data.api.vulcanLoginMethods
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
@@ -31,6 +33,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     val internalErrorList = mutableListOf<Int>()
     val data: DataVulcan
+    private var afterLogin: (() -> Unit)? = null
 
     init {
         data = DataVulcan(app, profile, loginStore).apply {
@@ -57,18 +60,44 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     override fun sync(featureIds: List<Int>, viewId: Int?, arguments: JsonObject?) {
         data.arguments = arguments
         data.prepare(vulcanLoginMethods, VulcanFeatures, featureIds, viewId)
-        d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
-        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        login()
+    }
+
+    private fun login(loginMethodId: Int? = null, afterLogin: (() -> Unit)? = null) {
+        d(TAG, "Trying to login with ${data.targetLoginMethodIds}")
+        if (internalErrorList.isNotEmpty()) {
+            d(TAG, "  - Internal errors:")
+            internalErrorList.forEach { d(TAG, "      - code $it") }
+        }
+        loginMethodId?.let { data.prepareFor(vulcanLoginMethods, it) }
+        afterLogin?.let { this.afterLogin = it }
         VulcanLogin(data) {
-            VulcanData(data) {
+            data()
+        }
+    }
+
+    private fun data() {
+        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        if (internalErrorList.isNotEmpty()) {
+            d(TAG, "  - Internal errors:")
+            internalErrorList.forEach { d(TAG, "      - code $it") }
+        }
+        afterLogin?.invoke() ?: VulcanData(data) {
+            completed()
+        }
+    }
+
+    override fun getMessage(message: MessageFull) {
+        login(LOGIN_METHOD_VULCAN_API) {
+            VulcanApiMessagesChangeStatus(data, message) {
                 completed()
             }
         }
     }
 
-    override fun getMessage(message: MessageFull) {
-        VulcanLoginApi(data) {
-            VulcanApiMessagesChangeStatus(data, message) {
+    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
+        login(LOGIN_METHOD_VULCAN_API) {
+            VulcanApiSendMessage(data, recipients, subject, text) {
                 completed()
             }
         }
@@ -86,12 +115,11 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         
     }
 
-    override fun firstLogin() {
-        VulcanFirstLogin(data) {
-            completed()
-        }
+    override fun getRecipientList() {
+
     }
 
+    override fun firstLogin() { VulcanFirstLogin(data) { completed() } }
     override fun cancel() {
         d(TAG, "Cancelled")
         data.cancel()
@@ -99,29 +127,17 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {
         return object : EdziennikCallback {
-            override fun onCompleted() {
-                callback.onCompleted()
-            }
-
-            override fun onProgress(step: Float) {
-                callback.onProgress(step)
-            }
-
-            override fun onStartProgress(stringRes: Int) {
-                callback.onStartProgress(stringRes)
-            }
-
+            override fun onCompleted() { callback.onCompleted() }
+            override fun onProgress(step: Float) { callback.onProgress(step) }
+            override fun onStartProgress(stringRes: Int) { callback.onStartProgress(stringRes) }
             override fun onError(apiError: ApiError) {
+                if (apiError.errorCode in internalErrorList) {
+                    // finish immediately if the same error occurs twice during the same sync
+                    callback.onError(apiError)
+                    return
+                }
+                internalErrorList.add(apiError.errorCode)
                 when (apiError.errorCode) {
-                    in internalErrorList -> {
-                        // finish immediately if the same error occurs twice during the same sync
-                        callback.onError(apiError)
-                    }
-                    CODE_INTERNAL_LIBRUS_ACCOUNT_410 -> {
-                        internalErrorList.add(apiError.errorCode)
-                        loginStore.removeLoginData("refreshToken") // force a clean login
-                        //loginLibrus()
-                    }
                     else -> callback.onError(apiError)
                 }
             }

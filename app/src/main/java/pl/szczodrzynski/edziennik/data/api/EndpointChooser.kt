@@ -81,3 +81,32 @@ fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featu
     progressCount = targetLoginMethodIds.size + targetEndpointIds.size
     progressStep = if (progressCount <= 0) 0f else 100f / progressCount.toFloat()
 }
+
+fun Data.prepareFor(loginMethods: List<LoginMethod>, loginMethodId: Int) {
+    val possibleLoginMethods = this.loginMethods.toMutableList()
+
+    loginMethods.forEach {
+        if (it.isPossible(profile, loginStore))
+            possibleLoginMethods += it.loginMethodId
+    }
+
+    targetEndpointIds.clear()
+    targetLoginMethodIds.clear()
+
+    // check the login method for any dependencies
+    var requiredLoginMethod: Int? = loginMethodId
+    while (requiredLoginMethod != LOGIN_METHOD_NOT_NEEDED) {
+        loginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let {
+            if (requiredLoginMethod != null)
+                targetLoginMethodIds.add(requiredLoginMethod!!)
+            requiredLoginMethod = it.requiredLoginMethod(profile, loginStore)
+        }
+    }
+
+    // sort and distinct every login method
+    targetLoginMethodIds = targetLoginMethodIds.toHashSet().toMutableList()
+    targetLoginMethodIds.sort()
+
+    progressCount = 0
+    progressStep = 0f
+}

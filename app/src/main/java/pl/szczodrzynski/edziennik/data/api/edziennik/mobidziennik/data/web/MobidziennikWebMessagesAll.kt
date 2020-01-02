@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -55,14 +56,15 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
 
                 if (type == TYPE_RECEIVED) {
                     // search sender teacher
-                    val senderName = senderEl.text()
+                    val senderName = senderEl.text().fixName()
                     senderId = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }?.id ?: -1
                     data.messageRecipientList.add(MessageRecipient(profileId, -1, id))
                 } else {
                     // TYPE_SENT, so multiple recipients possible
                     val recipientNames = senderEl.text().split(", ")
                     for (recipientName in recipientNames) {
-                        val recipientId = data.teacherList.singleOrNull { it.fullNameLastFirst == recipientName }?.id ?: -1
+                        val name = recipientName.fixName()
+                        val recipientId = data.teacherList.singleOrNull { it.fullNameLastFirst == name }?.id ?: -1
                         data.messageRecipientIgnoreList.add(MessageRecipient(profileId, recipientId, id))
                     }
                 }

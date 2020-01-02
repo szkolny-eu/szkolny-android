@@ -19,8 +19,8 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginIuczniowieBinding;
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar;
 
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_INVALID_LOGIN;
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_INVALID_SCHOOL_NAME;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_IUCZNIOWIE;
 
 public class LoginIuczniowieFragment extends Fragment {
@@ -57,10 +57,10 @@ public class LoginIuczniowieFragment extends Fragment {
             ApiError error = LoginActivity.error;
             if (error != null) {
                 switch (error.getErrorCode()) {
-                    case CODE_INVALID_SCHOOL_NAME:
+                    case ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME:
                         b.loginSchoolNameLayout.setError(getString(R.string.login_error_incorrect_school_name));
                         break;
-                    case CODE_INVALID_LOGIN:
+                    case ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN:
                         b.loginPasswordLayout.setError(getString(R.string.login_error_incorrect_login_or_password));
                         break;
                 }

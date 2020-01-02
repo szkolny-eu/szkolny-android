@@ -147,7 +147,7 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
     fun getEventType(longId: String, name: String): EventType {
         val id = longId.crc16().toLong()
         return eventTypes.singleOrNull { it.id == id } ?: run {
-            val eventType = EventType(profileId, id, name, colorFromName(app, name))
+            val eventType = EventType(profileId, id, name, colorFromName(name))
             eventTypes.put(id, eventType)
             eventType
         }

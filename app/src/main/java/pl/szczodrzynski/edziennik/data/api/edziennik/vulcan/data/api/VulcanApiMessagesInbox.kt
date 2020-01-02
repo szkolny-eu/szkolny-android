@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
+import kotlin.text.replace
 
 class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
     companion object {
@@ -26,11 +27,11 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
     init {
         data.profile?.also { profile ->
 
-            val startDate: String = when (profile.empty) {
-                true -> profile.getSemesterStart(profile.currentSemester).stringY_m_d
-                else -> Date.getToday().stepForward(0, -1, 0).stringY_m_d
+            val startDate = when (profile.empty) {
+                true -> profile.getSemesterStart(profile.currentSemester).inUnix
+                else -> Date.getToday().stepForward(0, -2, 0).inUnix
             }
-            val endDate: String = profile.getSemesterEnd(profile.currentSemester).stringY_m_d
+            val endDate = Date.getToday().stepForward(0, 1, 0).inUnix
 
             apiGet(TAG, VULCAN_API_ENDPOINT_MESSAGES_RECEIVED, parameters = mapOf(
                     "DataPoczatkowa" to startDate,
@@ -71,7 +72,7 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
                             profileId,
                             id,
                             subject,
-                            body,
+                            body.replace("\n", "<br>"),
                             TYPE_RECEIVED,
                             senderId,
                             -1

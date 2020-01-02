@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2019-12-22.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="40dp"
+            android:orientation="vertical"><!-- half of the FAB's size -->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/recipientsLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="filled">
+
+                <com.hootsuite.nachos.NachoTextView
+                    android:id="@+id/recipients"
+                    style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:focusedByDefault="true"
+                    android:hint="@string/messages_compose_to_hint" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/subjectLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="filled"
+                app:counterEnabled="true"
+                tools:counterMaxLength="180">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/subject"
+                    style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/messages_compose_subject_hint"
+                    android:singleLine="true"
+                    tools:text="kachoomba"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="filled"
+                app:counterEnabled="true"
+                tools:counterMaxLength="1983">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:minLines="3"
+                    android:hint="@string/messages_compose_text_hint"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    tools:text="Witam,\n\nchciałem przekazać bardzo ważną wiadomość.\nJest to cytat znanej osoby.\n\n&quot;To jest tak, ale nie. Pamiętaj żeby oczywiście&quot;\n\nCytat ma bardzo duże przesłanie i ogromny wpływ na dzisiejszą kulturę i rozwój współczesnej cywilizacji.\n\nJako zadanie domowe, należy wypisać 5 pierwszych liczb pierwszych. Uzasadnij decyzję, odwołując się do cytatu i 3 innych przykładów z literatury lub filmu.\n\nPozdrawiam,\nJa."
+                    android:inputType="textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--<com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/fontStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="4dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fontStyleBold"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    tools:icon="@sample/format-bold"
+                    app:iconPadding="0dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fontStyleItalic"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    tools:icon="@sample/format-bold"
+                    app:iconPadding="0dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fontStyleUnderline"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    tools:icon="@sample/format-bold"
+                    app:iconPadding="0dp"/>
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>-->
+
+            <Button
+                android:id="@+id/breakpoints"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="Breakpoints!"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

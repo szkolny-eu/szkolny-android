@@ -69,6 +69,23 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/AppTheme.MaterialAlertDialog.TitleText</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/AppTheme.MaterialAlertDialog.BodyText</item>
+    </style>
+    <style name="AppTheme.MaterialAlertDialog.TitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="textSize">20sp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="textColor">?android:textColorPrimary</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+    <style name="AppTheme.MaterialAlertDialog.BodyText">
+        <item name="textSize">16sp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="textColor">?android:textColorSecondary</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
     <style name="AppTheme" parent="NavView" />
 
     <!-- Base application theme. -->
@@ -104,6 +121,8 @@
         <item name="timetable_lesson_shifted_target_color">#4caf50</item>
         <item name="hourDividerColor">#b0b0b0</item>
         <item name="halfHourDividerColor">#e0e0e0</item>
+
+        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
     </style>
     <style name="AppTheme.Dark" parent="NavView.Dark">
         <item name="colorPrimary">#64b5f6</item>
@@ -137,6 +156,8 @@
         <item name="timetable_lesson_shifted_target_color">#4caf50</item>
         <item name="hourDividerColor">#7fffffff</item>
         <item name="halfHourDividerColor">#40ffffff</item>
+
+        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
     </style>
 
 

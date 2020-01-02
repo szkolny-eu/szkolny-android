@@ -84,6 +84,11 @@ public class Colors {
             0xFF6D4C41
     };
 
+    /**
+     * Used for teacher's images (e.g. in messages or announcements).
+     * @param s teacher's fullName
+     * @return a material color based on the fullName hash
+     */
     public static int stringToMaterialColor(String s) {
         long seed = 1;
         try {

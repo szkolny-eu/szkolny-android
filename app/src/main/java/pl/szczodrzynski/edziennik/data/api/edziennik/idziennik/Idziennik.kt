@@ -6,23 +6,23 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.idziennik
 
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.CODE_INTERNAL_LIBRUS_ACCOUNT_410
+import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikData
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebGetAttachment
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebGetMessage
+import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebGetRecipientList
+import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebSendMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.firstlogin.IdziennikFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLogin
-import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLoginWeb
-import pl.szczodrzynski.edziennik.data.api.idziennikLoginMethods
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.prepare
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
@@ -32,6 +32,7 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
 
     val internalErrorList = mutableListOf<Int>()
     val data: DataIdziennik
+    private var afterLogin: (() -> Unit)? = null
 
     init {
         data = DataIdziennik(app, profile, loginStore).apply {
@@ -58,45 +59,69 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
     override fun sync(featureIds: List<Int>, viewId: Int?, arguments: JsonObject?) {
         data.arguments = arguments
         data.prepare(idziennikLoginMethods, IdziennikFeatures, featureIds, viewId)
-        d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
-        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        login()
+    }
+
+    private fun login(loginMethodId: Int? = null, afterLogin: (() -> Unit)? = null) {
+        d(TAG, "Trying to login with ${data.targetLoginMethodIds}")
+        if (internalErrorList.isNotEmpty()) {
+            d(TAG, "  - Internal errors:")
+            internalErrorList.forEach { d(TAG, "      - code $it") }
+        }
+        loginMethodId?.let { data.prepareFor(idziennikLoginMethods, it) }
+        afterLogin?.let { this.afterLogin = it }
         IdziennikLogin(data) {
-            IdziennikData(data) {
-                completed()
-            }
+            data()
+        }
+    }
+
+    private fun data() {
+        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        if (internalErrorList.isNotEmpty()) {
+            d(TAG, "  - Internal errors:")
+            internalErrorList.forEach { d(TAG, "      - code $it") }
+        }
+        afterLogin?.invoke() ?: IdziennikData(data) {
+            completed()
         }
     }
 
     override fun getMessage(message: MessageFull) {
-        IdziennikLoginWeb(data) {
+        login(LOGIN_METHOD_IDZIENNIK_WEB) {
             IdziennikWebGetMessage(data, message) {
                 completed()
             }
         }
     }
 
-    override fun markAllAnnouncementsAsRead() {
-
+    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
+        login(LOGIN_METHOD_IDZIENNIK_API) {
+            IdziennikWebSendMessage(data, recipients, subject, text) {
+                completed()
+            }
+        }
     }
 
-    override fun getAnnouncement(announcement: AnnouncementFull) {
-
-    }
+    override fun markAllAnnouncementsAsRead() {}
+    override fun getAnnouncement(announcement: AnnouncementFull) {}
 
     override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {
-        IdziennikLoginWeb(data) {
+        login(LOGIN_METHOD_IDZIENNIK_WEB) {
             IdziennikWebGetAttachment(data, message, attachmentId, attachmentName) {
                 completed()
             }
         }
     }
 
-    override fun firstLogin() {
-        IdziennikFirstLogin(data) {
-            completed()
+    override fun getRecipientList() {
+        login(LOGIN_METHOD_IDZIENNIK_WEB) {
+            IdziennikWebGetRecipientList(data) {
+                completed()
+            }
         }
     }
 
+    override fun firstLogin() { IdziennikFirstLogin(data) { completed() } }
     override fun cancel() {
         d(TAG, "Cancelled")
         data.cancel()
@@ -104,28 +129,29 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
 
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {
         return object : EdziennikCallback {
-            override fun onCompleted() {
-                callback.onCompleted()
-            }
-
-            override fun onProgress(step: Float) {
-                callback.onProgress(step)
-            }
-
-            override fun onStartProgress(stringRes: Int) {
-                callback.onStartProgress(stringRes)
-            }
-
+            override fun onCompleted() { callback.onCompleted() }
+            override fun onProgress(step: Float) { callback.onProgress(step) }
+            override fun onStartProgress(stringRes: Int) { callback.onStartProgress(stringRes) }
             override fun onError(apiError: ApiError) {
+                if (apiError.errorCode in internalErrorList) {
+                    // finish immediately if the same error occurs twice during the same sync
+                    callback.onError(apiError)
+                    return
+                }
+                internalErrorList.add(apiError.errorCode)
                 when (apiError.errorCode) {
-                    in internalErrorList -> {
-                        // finish immediately if the same error occurs twice during the same sync
-                        callback.onError(apiError)
+                    ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION,
+                    ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH,
+                    ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER,
+                    ERROR_IDZIENNIK_WEB_ACCESS_DENIED,
+                    ERROR_IDZIENNIK_API_ACCESS_DENIED -> {
+                        data.loginMethods.remove(LOGIN_METHOD_IDZIENNIK_WEB)
+                        data.prepareFor(idziennikLoginMethods, LOGIN_METHOD_IDZIENNIK_WEB)
+                        data.loginExpiryTime = 0
+                        login()
                     }
-                    CODE_INTERNAL_LIBRUS_ACCOUNT_410 -> {
-                        internalErrorList.add(apiError.errorCode)
-                        loginStore.removeLoginData("refreshToken") // force a clean login
-                        //loginLibrus()
+                    ERROR_IDZIENNIK_API_NO_REGISTER -> {
+                        data()
                     }
                     else -> callback.onError(apiError)
                 }

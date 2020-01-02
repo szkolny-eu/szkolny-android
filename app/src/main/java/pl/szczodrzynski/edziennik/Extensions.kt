@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -15,6 +16,7 @@ import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
+import android.util.Base64
 import android.util.Base64.NO_WRAP
 import android.util.Base64.encodeToString
 import android.util.LongSparseArray
@@ -42,10 +44,10 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.utils.models.Time
-import pl.szczodrzynski.navlib.getColorFromRes
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.math.BigInteger
+import java.nio.charset.Charset
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
@@ -99,12 +101,31 @@ fun Bundle?.getString(key: String, defaultValue: String): String {
     return this?.getString(key, defaultValue) ?: defaultValue
 }
 
-fun String.fixName(): String {
-    return this.fixWhiteSpaces().toProperCase()
+/**
+ * `   The quick BROWN_fox Jumps OveR THE       LAZy-DOG.   `
+ *
+ * converts to
+ *
+ * `The Quick Brown_fox Jumps Over The Lazy-Dog.`
+ */
+fun String?.fixName(): String {
+    return this?.fixWhiteSpaces()?.toProperCase() ?: ""
 }
 
+/**
+ * `The quick BROWN_fox Jumps OveR THE       LAZy-DOG.`
+ *
+ * converts to
+ *
+ * `The Quick Brown_fox Jumps Over The       Lazy-Dog.`
+ */
 fun String.toProperCase(): String = changeStringCase(this)
 
+/**
+ * `John Smith` -> `Smith John`
+ *
+ * `JOHN SMith` -> `SMith JOHN`
+ */
 fun String.swapFirstLastName(): String {
     return this.split(" ").let {
         if (it.size > 1)
@@ -150,33 +171,52 @@ fun String.getShortName(): String {
     }
 }
 
-fun List<String>.join(delimiter: String): String {
-    return this.joinToString(delimiter)
+/**
+ * "John Smith"             -> "JS"
+ *
+ * "JOHN SMith"             -> "JS"
+ *
+ * "John"                   -> "J"
+ *
+ * "John "                  -> "J"
+ *
+ * "John     Smith      "   -> "JS"
+ *
+ * " "                      -> ""
+ *
+ * "  "                     -> ""
+ */
+fun String?.getNameInitials(): String {
+    if (this.isNullOrBlank()) return ""
+    return this.toUpperCase().fixWhiteSpaces().split(" ").take(2).map { it[0] }.joinToString("")
 }
 
-fun colorFromName(context: Context, name: String?): Int {
+fun List<String>.join(delimiter: String): String {
+    return concat(delimiter).toString()
+}
+
+fun colorFromName(name: String?): Int {
     var crc = (name ?: "").crc16()
     crc = (crc and 0xff) or (crc shr 8)
     crc %= 16
-    val color = when (crc) {
-        13 -> R.color.md_red_500
-        4  -> R.color.md_pink_A400
-        2  -> R.color.md_purple_A400
-        9  -> R.color.md_deep_purple_A700
-        5  -> R.color.md_indigo_500
-        1  -> R.color.md_indigo_A700
-        6  -> R.color.md_cyan_A200
-        14 -> R.color.md_teal_400
-        15 -> R.color.md_green_500
-        7  -> R.color.md_yellow_A700
-        3  -> R.color.md_deep_orange_A400
-        8  -> R.color.md_deep_orange_A700
-        10 -> R.color.md_brown_500
-        12 -> R.color.md_grey_400
-        11 -> R.color.md_blue_grey_400
-        else -> R.color.md_light_green_A700
-    }
-    return context.getColorFromRes(color)
+    return when (crc) {
+        13 -> 0xffF44336
+        4  -> 0xffF50057
+        2  -> 0xffD500F9
+        9  -> 0xff6200EA
+        5  -> 0xff3F51B5
+        1  -> 0xff304FFE
+        6  -> 0xff18FFFF
+        14 -> 0xff26A69A
+        15 -> 0xff4CAF50
+        7  -> 0xffFFD600
+        3  -> 0xffFF3D00
+        8  -> 0xffDD2C00
+        10 -> 0xff795548
+        12 -> 0xffBDBDBD
+        11 -> 0xff78909C
+        else -> 0xff64DD17
+    }.toInt()
 }
 
 fun colorFromCssName(name: String): Int {
@@ -238,6 +278,21 @@ fun <T> SparseArray<T>.values(): List<T> {
     val result = mutableListOf<T>()
     forEach { _, value ->
         result += value
+    }
+    return result
+}
+
+fun <K, V> List<Pair<K, V>>.keys(): List<K> {
+    val result = mutableListOf<K>()
+    forEach { pair ->
+        result += pair.first
+    }
+    return result
+}
+fun <K, V> List<Pair<K, V>>.values(): List<V> {
+    val result = mutableListOf<V>()
+    forEach { pair ->
+        result += pair.second
     }
     return result
 }
@@ -429,6 +484,24 @@ fun CharSequence?.asBoldSpannable(): Spannable {
     spannable.setSpan(StyleSpan(Typeface.BOLD), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannable
 }
+fun CharSequence.asSpannable(vararg spans: Any, substring: String? = null, ignoreCase: Boolean = false): Spannable {
+    val spannable = SpannableString(this)
+    if (substring == null) {
+        spans.forEach {
+            spannable.setSpan(it, 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+    }
+    else if (substring.isNotEmpty()) {
+        var index = indexOf(substring, ignoreCase = ignoreCase)
+        while (index >= 0) {
+            spans.forEach {
+                spannable.setSpan(it, index, index + substring.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            index = indexOf(substring, startIndex = index + 1, ignoreCase = ignoreCase);
+        }
+    }
+    return spannable
+}
 
 /**
  * Returns a new read-only list only of those given elements, that are not empty.
@@ -436,7 +509,7 @@ fun CharSequence?.asBoldSpannable(): Spannable {
  */
 fun <T : CharSequence> listOfNotEmpty(vararg elements: T): List<T> = elements.filterNot { it.isEmpty() }
 
-fun List<CharSequence?>.concat(delimiter: String? = null): CharSequence {
+fun List<CharSequence?>.concat(delimiter: CharSequence? = null): CharSequence {
     if (this.isEmpty()) {
         return ""
     }
@@ -445,11 +518,13 @@ fun List<CharSequence?>.concat(delimiter: String? = null): CharSequence {
         return this[0] ?: ""
     }
 
-    var spanned = false
-    for (piece in this) {
-        if (piece is Spanned) {
-            spanned = true
-            break
+    var spanned = delimiter is Spanned
+    if (!spanned) {
+        for (piece in this) {
+            if (piece is Spanned) {
+                spanned = true
+                break
+            }
         }
     }
 
@@ -497,8 +572,44 @@ fun JsonObject(vararg properties: Pair<String, Any?>): JsonObject {
     }
 }
 
+fun JsonArray(vararg properties: Any?): JsonArray {
+    return JsonArray().apply {
+        for (property in properties) {
+            when (property) {
+                is JsonElement -> add(property as JsonElement?)
+                is String -> add(property as String?)
+                is Char -> add(property as Char?)
+                is Number -> add(property as Number?)
+                is Boolean -> add(property as Boolean?)
+            }
+        }
+    }
+}
+
+fun Bundle(vararg properties: Pair<String, Any?>): Bundle {
+    return Bundle().apply {
+        for (property in properties) {
+            when (property.second) {
+                is String -> putString(property.first, property.second as String?)
+                is Char -> putChar(property.first, property.second as Char)
+                is Int -> putInt(property.first, property.second as Int)
+                is Long -> putLong(property.first, property.second as Long)
+                is Float -> putFloat(property.first, property.second as Float)
+                is Short -> putShort(property.first, property.second as Short)
+                is Double -> putDouble(property.first, property.second as Double)
+                is Boolean -> putBoolean(property.first, property.second as Boolean)
+            }
+        }
+    }
+}
+
 fun JsonArray?.isNullOrEmpty(): Boolean = (this?.size() ?: 0) == 0
 fun JsonArray.isEmpty(): Boolean = this.size() == 0
+operator fun JsonArray.plusAssign(o: JsonElement) = this.add(o)
+operator fun JsonArray.plusAssign(o: String) = this.add(o)
+operator fun JsonArray.plusAssign(o: Char) = this.add(o)
+operator fun JsonArray.plusAssign(o: Number) = this.add(o)
+operator fun JsonArray.plusAssign(o: Boolean) = this.add(o)
 
 @Suppress("UNCHECKED_CAST")
 inline fun <T : View> T.onClick(crossinline onClickListener: (v: T) -> Unit) {
@@ -696,3 +807,75 @@ val Throwable.stackTraceString: String
         printStackTrace(PrintWriter(sw))
         return sw.toString()
     }
+
+inline fun <T> LongSparseArray<T>.filter(predicate: (T) -> Boolean): List<T> {
+    val destination = ArrayList<T>()
+    this.forEach { _, element -> if (predicate(element)) destination.add(element) }
+    return destination
+}
+
+fun CharSequence.replace(oldValue: String, newValue: CharSequence, ignoreCase: Boolean = false): CharSequence =
+        splitToSequence(oldValue, ignoreCase = ignoreCase).toList().concat(newValue)
+
+fun Int.toColorStateList(): ColorStateList {
+    val states = arrayOf(
+        intArrayOf( android.R.attr.state_enabled ),
+        intArrayOf(-android.R.attr.state_enabled ),
+        intArrayOf(-android.R.attr.state_checked ),
+        intArrayOf( android.R.attr.state_pressed )
+    )
+
+    val colors = intArrayOf(
+            this,
+            this,
+            this,
+            this
+    )
+
+    return ColorStateList(states, colors);
+}
+
+fun SpannableStringBuilder.appendText(text: CharSequence): SpannableStringBuilder {
+    append(text)
+    return this
+}
+fun SpannableStringBuilder.appendSpan(text: CharSequence, what: Any, flags: Int): SpannableStringBuilder {
+    val start: Int = length
+    append(text)
+    setSpan(what, start, length, flags)
+    return this
+}
+
+fun joinNotNullStrings(delimiter: String = "", vararg parts: String?): String {
+    var first = true
+    val sb = StringBuilder()
+    for (part in parts) {
+        if (part == null)
+            continue
+        if (!first)
+            sb += delimiter
+        first = false
+        sb += part
+    }
+    return sb.toString()
+}
+
+fun String.notEmptyOrNull(): String? {
+    return if (isEmpty())
+        null
+    else
+        this
+}
+
+fun String.base64Encode(): String {
+    return encodeToString(toByteArray(), NO_WRAP)
+}
+fun ByteArray.base64Encode(): String {
+    return encodeToString(this, NO_WRAP)
+}
+fun String.base64Decode(): ByteArray {
+    return Base64.decode(this, Base64.DEFAULT)
+}
+fun String.base64DecodeToString(): String {
+    return Base64.decode(this, Base64.DEFAULT).toString(Charset.defaultCharset())
+}

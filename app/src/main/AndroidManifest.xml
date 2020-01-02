@@ -33,11 +33,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.modules.messages.MessagesComposeActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/messages_compose_title"
-            android:theme="@style/AppTheme.Black" />
-        <activity
             android:name=".ui.modules.feedback.FeedbackActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"

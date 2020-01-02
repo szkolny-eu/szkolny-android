@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_DELETED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.getBoolean
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.Utils.crc32
@@ -51,11 +52,18 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
                 val sentDate = Date.fromIso(jMessage.getString("dataWyslania"))
 
                 val sender = jMessage.getAsJsonObject("nadawca")
+                var firstName = sender.getString("imie")
+                var lastName = sender.getString("nazwisko")
+                if (firstName.isNullOrEmpty() || lastName.isNullOrEmpty()) {
+                    firstName = "usunięty"
+                    lastName = "użytkownik"
+                }
                 val rTeacher = data.getTeacher(
-                        sender.getString("imie") ?: "",
-                        sender.getString("nazwisko") ?: ""
+                        firstName,
+                        lastName
                 )
-                rTeacher.loginId = sender.getString("id") + ":" + sender.getString("usr")
+                rTeacher.loginId = /*sender.getString("id") + ":" + */sender.getString("usr")
+                rTeacher.setTeacherType(Teacher.TYPE_OTHER)
 
                 val message = Message(
                         profileId,

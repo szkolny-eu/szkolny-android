@@ -1,39 +1,37 @@
-package pl.szczodrzynski.edziennik.data.db.modules.teachers;
+package pl.szczodrzynski.edziennik.data.db.modules.teachers
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
-import java.util.List;
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
-public interface TeacherDao {
+interface TeacherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void add(Teacher teacher);
+    fun add(teacher: Teacher)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void addAll(List<Teacher> teacherList);
+    fun addAll(teacherList: List<Teacher>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void addAllIgnore(List<Teacher> teacherList);
+    fun addAllIgnore(teacherList: List<Teacher>)
 
     @Query("DELETE FROM teachers WHERE profileId = :profileId")
-    void clear(int profileId);
+    fun clear(profileId: Int)
 
     @Query("SELECT * FROM teachers WHERE profileId = :profileId AND teacherId = :id")
-    LiveData<Teacher> getById(int profileId, long id);
+    fun getById(profileId: Int, id: Long): LiveData<Teacher?>
 
     @Query("SELECT * FROM teachers WHERE profileId = :profileId AND teacherId = :id")
-    Teacher getByIdNow(int profileId, long id);
+    fun getByIdNow(profileId: Int, id: Long): Teacher?
 
     @Query("SELECT * FROM teachers WHERE profileId = :profileId AND teacherType <= 127 ORDER BY teacherName, teacherSurname ASC")
-    LiveData<List<Teacher>> getAllTeachers(int profileId);
+    fun getAllTeachers(profileId: Int): LiveData<List<Teacher>>
 
     @Query("SELECT * FROM teachers WHERE profileId = :profileId ORDER BY teacherName, teacherSurname ASC")
-    List<Teacher> getAllNow(int profileId);
+    fun getAllNow(profileId: Int): List<Teacher>
 
     @Query("UPDATE teachers SET teacherLoginId = :loginId WHERE profileId = :profileId AND teacherId = :id")
-    void updateLoginId(int profileId, long id, String loginId);
+    fun updateLoginId(profileId: Int, id: Long, loginId: String?)
 }

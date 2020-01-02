@@ -23,6 +23,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
+import androidx.recyclerview.widget.RecyclerView
 import com.danimahardhika.cafebar.CafeBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.IconicsColor
@@ -53,6 +54,7 @@ import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
 import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment
+import pl.szczodrzynski.edziennik.ui.modules.base.MainSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
@@ -63,7 +65,9 @@ import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessageFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesListFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
@@ -120,6 +124,7 @@ class MainActivity : AppCompatActivity() {
         const val TARGET_HELP = 502
         const val TARGET_FEEDBACK = 120
         const val TARGET_MESSAGES_DETAILS = 503
+        const val TARGET_MESSAGES_COMPOSE = 504
         const val TARGET_WEB_PUSH = 140
 
         const val HOME_ID = DRAWER_ITEM_HOME
@@ -211,7 +216,8 @@ class MainActivity : AppCompatActivity() {
             list += NavTarget(TARGET_GRADES_EDITOR, R.string.menu_grades_editor, GradesEditorFragment::class)
             list += NavTarget(TARGET_HELP, R.string.menu_help, HelpFragment::class)
             list += NavTarget(TARGET_FEEDBACK, R.string.menu_feedback, FeedbackFragment::class)
-            list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessageFragment::class)
+            list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessageFragment::class).withPopTo(DRAWER_ITEM_MESSAGES)
+            list += NavTarget(TARGET_MESSAGES_COMPOSE, R.string.menu_message_compose, MessagesComposeFragment::class)
             list += NavTarget(TARGET_WEB_PUSH, R.string.menu_web_push, WebPushFragment::class)
             list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
 
@@ -223,6 +229,7 @@ class MainActivity : AppCompatActivity() {
     val navView: NavView by lazy { b.navView }
     val drawer: NavDrawer by lazy { navView.drawer }
     val bottomSheet: NavBottomSheet by lazy { navView.bottomSheet }
+    val mainSnackbar: MainSnackbar by lazy { MainSnackbar(this) }
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
 
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
@@ -233,10 +240,11 @@ class MainActivity : AppCompatActivity() {
 
     private val fragmentManager by lazy { supportFragmentManager }
     private lateinit var navTarget: NavTarget
+    private var navArguments: Bundle? = null
     val navTargetId
         get() = navTarget.id
 
-    private val navBackStack = mutableListOf<NavTarget>()
+    private val navBackStack = mutableListOf<Pair<NavTarget, Bundle?>>()
     private var navLoading = true
 
     /*     ____           _____                _
@@ -258,6 +266,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(TAG, Signing.appPassword)
 
+        mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
         navLoading = true
@@ -552,7 +561,7 @@ class MainActivity : AppCompatActivity() {
         ).enqueue(this)
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncStartedEvent(event: ApiTaskStartedEvent) {
+    fun onApiTaskStartedEvent(event: ApiTaskStartedEvent) {
         swipeRefreshLayout.isRefreshing = true
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
@@ -563,7 +572,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncProgressEvent(event: ApiTaskProgressEvent) {
+    fun onApiTaskProgressEvent(event: ApiTaskProgressEvent) {
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
                 subtitleFormat = null
@@ -576,8 +585,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncProfileFinishedEvent(event: ApiTaskFinishedEvent) {
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onApiTaskFinishedEvent(event: ApiTaskFinishedEvent) {
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
                 subtitleFormat = R.string.toolbar_subtitle
@@ -586,17 +595,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncFinishedEvent(event: ApiTaskAllFinishedEvent) {
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onApiTaskAllFinishedEvent(event: ApiTaskAllFinishedEvent) {
         swipeRefreshLayout.isRefreshing = false
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncErrorEvent(event: ApiTaskErrorEvent) {
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onApiTaskErrorEvent(event: ApiTaskErrorEvent) {
         navView.toolbar.apply {
             subtitleFormat = R.string.toolbar_subtitle
             subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
             subtitle = "Gotowe"
         }
+        mainSnackbar.dismiss()
         errorSnackbar.addError(event.error).show()
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -800,6 +810,10 @@ class MainActivity : AppCompatActivity() {
         }
         AsyncTask.execute {
             app.profileLoadById(id)
+            MessagesFragment.pageSelection = -1
+            MessagesListFragment.tapPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
+            MessagesListFragment.topPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
+            MessagesListFragment.bottomPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
 
             this.runOnUiThread {
                 if (app.profile == null) {
@@ -825,7 +839,7 @@ class MainActivity : AppCompatActivity() {
             loadId = DRAWER_ITEM_HOME
         }
         val target = navTargetList
-                .singleOrNull { it.id == loadId }
+                .firstOrNull { it.id == loadId }
         if (target == null) {
             Toast.makeText(this, getString(R.string.error_invalid_fragment, id), Toast.LENGTH_LONG).show()
             loadTarget(navTargetList.first(), arguments)
@@ -835,7 +849,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun loadTarget(target: NavTarget, arguments: Bundle? = null) {
-        d("NavDebug", "loadItem(id = ${target.id})")
+        d("NavDebug", "loadTarget(target = $target, arguments = $arguments)")
 
         bottomSheet.close()
         bottomSheet.removeAllContextual()
@@ -862,7 +876,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
         else {
-            navBackStack.lastIndexOf(target).let {
+            navBackStack.keys().lastIndexOf(target).let {
                 if (it == -1)
                     return@let target
                 // pop the back stack up until that target
@@ -893,8 +907,9 @@ class MainActivity : AppCompatActivity() {
                         R.anim.task_open_enter,
                         R.anim.task_open_exit
                 )
-                navBackStack.add(navTarget)
+                navBackStack.add(navTarget to arguments)
                 navTarget = target
+                navArguments = arguments
             }
         }
 
@@ -909,7 +924,7 @@ class MainActivity : AppCompatActivity() {
 
         d("NavDebug", "Current fragment ${navTarget.fragmentClass?.java?.simpleName}, pop to home ${navTarget.popToHome}, back stack:")
         navBackStack.forEachIndexed { index, target2 ->
-            d("NavDebug", " - $index: ${target2.fragmentClass?.java?.simpleName}")
+            d("NavDebug", " - $index: ${target2.first.fragmentClass?.java?.simpleName}")
         }
 
         transaction.replace(R.id.fragment, fragment)
@@ -934,11 +949,18 @@ class MainActivity : AppCompatActivity() {
             return false
         }
         // TODO back stack argument support
-        if (navTarget.popToHome) {
-            loadTarget(HOME_ID)
-        }
-        else {
-            loadTarget(navBackStack.last())
+        when {
+            navTarget.popToHome -> {
+                loadTarget(HOME_ID)
+            }
+            navTarget.popTo != null -> {
+                loadTarget(navTarget.popTo ?: HOME_ID)
+            }
+            else -> {
+                navBackStack.last().let {
+                    loadTarget(it.first, it.second)
+                }
+            }
         }
         return true
     }
@@ -953,6 +975,8 @@ class MainActivity : AppCompatActivity() {
      * that something has changed in the bottom sheet.
      */
     fun gainAttention() {
+        if (app.config.ui.bottomSheetOpened || true)
+            return
         b.navView.postDelayed({
             navView.gainAttentionOnBottomBar()
         }, 2000)
@@ -1076,4 +1100,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun snackbar(text: String, actionText: String? = null, onClick: (() -> Unit)? = null) = mainSnackbar.snackbar(text, actionText, onClick)
+    fun snackbarDismiss() = mainSnackbar.dismiss()
 }

@@ -56,7 +56,6 @@ import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeOldBinding;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusCaptchaActivity;
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeActivity;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
@@ -104,7 +103,6 @@ public class HomeFragmentOld extends Fragment {
         b.devMode.setVisibility(App.devMode ? View.VISIBLE : View.GONE);
 
         b.composeButton.setOnClickListener((v -> {
-            startActivity(new Intent(activity, MessagesComposeActivity.class));
         }));
 
         b.pruneWorkButton.setOnClickListener((v -> WorkManager.getInstance(app).pruneWork()));

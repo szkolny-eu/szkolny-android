@@ -19,10 +19,10 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError;
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginMobidziennikBinding;
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar;
 
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_ARCHIVED;
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_INVALID_LOGIN;
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_INVALID_SERVER_ADDRESS;
-import static pl.szczodrzynski.edziennik.data.api.models.AppError.CODE_OLD_PASSWORD;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_MOBIDZIENNIK_WEB_ARCHIVED;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_ADDRESS;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN;
+import static pl.szczodrzynski.edziennik.data.api.ErrorsKt.ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD;
 import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 
 public class LoginMobidziennikFragment extends Fragment {
@@ -59,16 +59,16 @@ public class LoginMobidziennikFragment extends Fragment {
             ApiError error = LoginActivity.error;
             if (error != null) {
                 switch (error.getErrorCode()) {
-                    case CODE_INVALID_LOGIN:
+                    case ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN:
                         b.loginPasswordLayout.setError(getString(R.string.login_error_incorrect_login_or_password));
                         break;
-                    case CODE_OLD_PASSWORD:
+                    case ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD:
                         b.loginPasswordLayout.setError(getString(R.string.login_error_old_password));
                         break;
-                    case CODE_ARCHIVED:
+                    case ERROR_LOGIN_MOBIDZIENNIK_WEB_ARCHIVED:
                         b.loginUsernameLayout.setError(getString(R.string.sync_error_archived));
                         break;
-                    case CODE_INVALID_SERVER_ADDRESS:
+                    case ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_ADDRESS:
                         b.loginServerAddressLayout.setError(getString(R.string.login_error_incorrect_address));
                         break;
                 }

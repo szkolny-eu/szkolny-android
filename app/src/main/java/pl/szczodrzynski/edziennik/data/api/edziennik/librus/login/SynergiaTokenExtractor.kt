@@ -59,7 +59,7 @@ class SynergiaTokenExtractor(override val data: DataLibrus, val onSuccess: () ->
                 data.apiTokenExpiryTime = response.getUnixDate() + 6 * 60 * 60
 
                 // TODO remove this
-                data.profile?.studentNameLong = json.getString("studentName")
+                data.profile?.studentNameLong = json.getString("studentName") ?: ""
                 val nameParts = json.getString("studentName")?.split(" ")
                 data.profile?.studentNameShort = nameParts?.get(0) + " " + nameParts?.get(1)?.get(0)
 

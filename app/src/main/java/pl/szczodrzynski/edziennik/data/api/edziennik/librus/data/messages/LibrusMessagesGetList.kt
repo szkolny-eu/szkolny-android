@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -51,12 +52,12 @@ class LibrusMessagesGetList(override val data: DataLibrus, private val type: Int
                     val recipientFirstName = element.select(when (type) {
                         TYPE_RECEIVED -> "senderFirstName"
                         else -> "receiverFirstName"
-                    }).text().trim()
+                    }).text().fixName()
 
                     val recipientLastName = element.select(when (type) {
                         TYPE_RECEIVED -> "senderLastName"
                         else -> "receiverLastName"
-                    }).text().trim()
+                    }).text().fixName()
 
                     val recipientId = data.teacherList.singleOrNull {
                         it.name == recipientFirstName && it.surname == recipientLastName

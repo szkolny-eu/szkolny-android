@@ -64,6 +64,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mAppRateSnackbarTime = mAppRateSnackbarTime ?: values.get("appRateSnackbarTime", 0L); return mAppRateSnackbarTime ?: 0L }
         set(value) { set("appRateSnackbarTime", value); mAppRateSnackbarTime = value }
 
+    private var mRunSync: Boolean? = null
+    var runSync: Boolean
+        get() { mRunSync = mRunSync ?: values.get("runSync", false); return mRunSync ?: false }
+        set(value) { set("runSync", value); mRunSync = value }
+
     private var rawEntries: List<ConfigEntry> = db.configDao().getAllNow()
     private val profileConfigs: HashMap<Int, ProfileConfig> = hashMapOf()
     init {
@@ -75,6 +80,9 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
     }
     fun getFor(profileId: Int): ProfileConfig {
         return profileConfigs[profileId] ?: ProfileConfig(db, profileId, rawEntries)
+    }
+    fun forProfile(): ProfileConfig {
+        return profileConfigs[App.profileId] ?: ProfileConfig(db, App.profileId, rawEntries)
     }
 
     fun setProfile(profileId: Int) {

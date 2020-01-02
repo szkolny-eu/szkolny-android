@@ -108,7 +108,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         AttendanceType.class,
         pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson.class,
         ConfigEntry.class,
-        Metadata.class}, version = 70)
+        Metadata.class}, version = 71)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -836,6 +836,19 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("DELETE FROM announcements");
         }
     };
+    private static final Migration MIGRATION_70_71 = new Migration(70, 71) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("DELETE FROM messages WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0);");
+            database.execSQL("DELETE FROM messageRecipients WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0);");
+            database.execSQL("DELETE FROM teachers WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0);");
+            database.execSQL("DELETE FROM endpointTimers WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0);");
+            database.execSQL("DELETE FROM metadata WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0) AND thingType = 8;");
+            database.execSQL("UPDATE profiles SET empty = 1 WHERE archived = 0;");
+            database.execSQL("UPDATE profiles SET lastReceiversSync = 0 WHERE archived = 0;");
+            database.execSQL("INSERT INTO config (profileId, `key`, value) VALUES (-1, \"runSync\", \"true\");");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -903,7 +916,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_66_67,
                                     MIGRATION_67_68,
                                     MIGRATION_68_69,
-                                    MIGRATION_69_70
+                                    MIGRATION_69_70,
+                                    MIGRATION_70_71
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

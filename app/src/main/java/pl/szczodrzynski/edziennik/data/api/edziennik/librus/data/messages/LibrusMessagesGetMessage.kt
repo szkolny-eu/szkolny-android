@@ -14,7 +14,10 @@ import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipientFull
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.fixName
+import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.notEmptyOrNull
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.nio.charset.Charset
@@ -56,11 +59,45 @@ class LibrusMessagesGetMessage(
 
             when (messageObject.type) {
                 TYPE_RECEIVED -> {
-                    val senderLoginId = message.select("senderId").text()
-                    data.teacherList.singleOrNull { it.id == messageObject.senderId }?.loginId = senderLoginId
+                    val senderLoginId = message.select("senderId").text().notEmptyOrNull()
+                    val senderGroupId = message.select("senderGroupId").text().toIntOrNull()
+                    val userClass = message.select("userClass").text().notEmptyOrNull()
+                    data.teacherList.singleOrNull { it.id == messageObject.senderId }?.apply {
+                        loginId = senderLoginId
+                        setTeacherType(when (senderGroupId) {
+                            /* https://api.librus.pl/2.0/Messages/Role */
+                            0, 1, 99 -> Teacher.TYPE_SUPER_ADMIN
+                            2 -> Teacher.TYPE_SCHOOL_ADMIN
+                            3 -> Teacher.TYPE_PRINCIPAL
+                            4 -> Teacher.TYPE_TEACHER
+                            5, 9 -> {
+                                if (typeDescription == null)
+                                    typeDescription = userClass
+                                Teacher.TYPE_PARENT
+                            }
+                            7 -> Teacher.TYPE_SECRETARIAT
+                            8 -> {
+                                if (typeDescription == null)
+                                    typeDescription = userClass
+                                Teacher.TYPE_STUDENT
+                            }
+                            10 -> Teacher.TYPE_PEDAGOGUE
+                            11 -> Teacher.TYPE_LIBRARIAN
+                            12 -> Teacher.TYPE_SPECIALIST
+                            21 -> {
+                                typeDescription = "Jednostka Nadrzędna"
+                                Teacher.TYPE_OTHER
+                            }
+                            50 -> {
+                                typeDescription = "Jednostka Samorządu Terytorialnego"
+                                Teacher.TYPE_OTHER
+                            }
+                            else -> Teacher.TYPE_OTHER
+                        })
+                    }
 
                     val readDateText = message.select("readDate").text()
-                    val readDate = when (readDateText.isNotEmpty()) {
+                    val readDate = when (readDateText.isNotNullNorEmpty()) {
                         true -> Date.fromIso(readDateText)
                         else -> 0
                     }
@@ -73,7 +110,7 @@ class LibrusMessagesGetMessage(
                             messageObject.id
                     )
 
-                    messageRecipientObject.fullName = profile.accountNameLong ?: profile.studentNameLong
+                    messageRecipientObject.fullName = profile.accountNameLong ?: profile.studentNameLong ?: ""
 
                     messageRecipientList.add(messageRecipientObject)
                 }
@@ -90,7 +127,7 @@ class LibrusMessagesGetMessage(
                         teacher?.loginId = receiverLoginId
 
                         val readDateText = message.select("readed").text()
-                        val readDate = when (readDateText.isNotEmpty()) {
+                        val readDate = when (readDateText.isNotNullNorEmpty()) {
                             true -> Date.fromIso(readDateText)
                             else -> 0
                         }

@@ -483,6 +483,7 @@
     <string name="messages_compose_title">Napisz wiadomość</string>
     <string name="messages_compose_to_hint">Do</string>
     <string name="messages_date_time_format" translatable="false">%s, %s</string>
+    <string name="messages_reply_date_time_format">%s o %s</string>
     <string name="messages_download_error">Błąd pobierania wiadomości</string>
     <string name="messages_draft_title">Wersja robocza</string>
     <string name="messages_recipient_list_download_error">Błąd pobierania listy odbiorców</string>
@@ -1125,6 +1126,8 @@
     <string name="widget_timetable_no_lessons_found">Brak lekcji przez następne 7 dni.</string>
     <string name="widget_timetable_short_no_timetable">Nie pobrano planu lekcji.</string>
     <string name="widget_timetable_short_no_lessons">Brak lekcji przez nast. 7 dni.</string>
+    <string name="messages_compose_text_hint">Napisz wiadomość...</string>
+    <string name="menu_message_compose">Napisz wiadomość</string>
     <string name="no_lessons_today">Nie ma dzisiaj żadnych lekcji!</string>
     <string name="lessons_finished">Nie ma dzisiaj więcej lekcji!</string>
     <string name="login_edudziennik_title">Zaloguj się - Edudziennik</string>
@@ -1133,4 +1136,14 @@
     <string name="dialog_error_details_title">Szczegóły błędu</string>
     <string name="edziennik_progress_endpoint_descriptive_grades">Pobieranie ocen opisowych…</string>
     <string name="edziennik_progress_endpoint_point_grades">Pobieranie ocen punktowych…</string>
+    <string name="teacher_specialist">Specjaliści</string>
+    <string name="messages_compose_send">Wyślij</string>
+    <string name="messages_compose_recipients_error">Sprawdź poprawność wybranych odbiorców</string>
+    <string name="messages_compose_recipients_empty">Wybierz odbiorców</string>
+    <string name="messages_compose_subject_empty">Wpisz temat o długości co najmniej 3 znaków</string>
+    <string name="messages_compose_text_empty">Wpisz treść wiadomości</string>
+    <string name="messages_sent_success">Wiadomość została wysłana</string>
+    <string name="compose">Napisz</string>
+    <string name="messages_reply">Odpowiedz</string>
+    <string name="error_unknown_format">Kod błędu: %d (w %s)</string>
 </resources>

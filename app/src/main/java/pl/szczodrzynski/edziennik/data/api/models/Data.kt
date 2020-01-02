@@ -3,13 +3,12 @@ package pl.szczodrzynski.edziennik.data.api.models
 import android.util.LongSparseArray
 import android.util.SparseArray
 import androidx.core.util.size
+import androidx.room.OnConflictStrategy
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.DataNotifications
-import pl.szczodrzynski.edziennik.data.api.EXCEPTION_NOTIFY
+import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.interfaces.EndpointCallback
-import pl.szczodrzynski.edziennik.data.api.models.AppError.*
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
 import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
@@ -116,6 +115,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
     val teamList = LongSparseArray<Team>()
     val lessonRanges = SparseArray<LessonRange>()
     val gradeCategories = LongSparseArray<GradeCategory>()
+
+    var teacherOnConflictStrategy = OnConflictStrategy.IGNORE
 
     val classrooms = LongSparseArray<Classroom>()
     val attendanceTypes = LongSparseArray<AttendanceType>()
@@ -257,9 +258,10 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
 
         // always present and not empty, during every sync
         db.endpointTimerDao().addAll(endpointTimers)
-        db.teacherDao().clear(profileId)
-        db.teacherDao().addAll(teacherList.values())
-        db.subjectDao().clear(profileId)
+        if (teacherOnConflictStrategy == OnConflictStrategy.IGNORE)
+            db.teacherDao().addAllIgnore(teacherList.values())
+        else if (teacherOnConflictStrategy == OnConflictStrategy.REPLACE)
+            db.teacherDao().addAll(teacherList.values())
         db.subjectDao().addAll(subjectList.values())
         db.teamDao().clear(profileId)
         db.teamDao().addAll(teamList.values())
@@ -380,7 +382,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         return (db.luckyNumberDao().getNearestFutureNow(profileId, Date.getToday().value) ?: -1) == -1
     }
 
-    fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {
+    /*fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {
         val code = when (throwable) {
             is UnknownHostException, is SSLException, is InterruptedIOException -> CODE_NO_INTERNET
             is SocketTimeoutException -> CODE_TIMEOUT
@@ -392,23 +394,36 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
         error(ApiError(tag, code).apply {
             profileId = profile?.id ?: -1
         }.withResponse(response).withThrowable(throwable).withApiResponse(apiResponse))
-    }
+    }*/
 
     fun error(tag: String, errorCode: Int, response: Response? = null, apiResponse: String? = null) {
-        val code = when (null) {
-            is UnknownHostException, is SSLException, is InterruptedIOException -> CODE_NO_INTERNET
-            is SocketTimeoutException -> CODE_TIMEOUT
-            else -> when (response?.code()) {
-                400, 401, 424, 500, 503, 404 -> CODE_MAINTENANCE
-                else -> errorCode
-            }
-        }
-        error(ApiError(tag, code).apply {
+        error(ApiError(tag, errorCode).apply {
             profileId = profile?.id ?: -1
         }.withResponse(response).withApiResponse(apiResponse))
     }
 
     fun error(apiError: ApiError) {
+        apiError.errorCode = when (apiError.throwable) {
+            is UnknownHostException -> ERROR_REQUEST_FAILURE_HOSTNAME_NOT_FOUND
+            is SSLException -> ERROR_REQUEST_FAILURE_SSL_ERROR
+            is InterruptedIOException -> ERROR_REQUEST_FAILURE_NO_INTERNET
+            is SocketTimeoutException -> ERROR_REQUEST_FAILURE_TIMEOUT
+            else ->
+                if (apiError.errorCode == ERROR_REQUEST_FAILURE)
+                    when (apiError.response?.code()) {
+                        400 -> ERROR_REQUEST_HTTP_400
+                        401 -> ERROR_REQUEST_HTTP_401
+                        403 -> ERROR_REQUEST_HTTP_403
+                        404 -> ERROR_REQUEST_HTTP_404
+                        405 -> ERROR_REQUEST_HTTP_405
+                        410 -> ERROR_REQUEST_HTTP_410
+                        424 -> ERROR_REQUEST_HTTP_424
+                        500 -> ERROR_REQUEST_HTTP_500
+                        503 -> ERROR_REQUEST_HTTP_503
+                        else -> apiError.errorCode
+                    }
+                else apiError.errorCode
+        }
         callback.onError(apiError)
     }
 
