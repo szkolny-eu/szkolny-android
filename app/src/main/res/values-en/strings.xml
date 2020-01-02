@@ -551,7 +551,7 @@
     <string name="settings_about_licenses_text">Open-source licenses</string>
     <string name="settings_about_privacy_policy_text">Privacy policy</string>
     <string name="settings_about_register_title_text">E-register</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - November 2019</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - January 2020</string>
     <string name="settings_about_update_subtext">Click to check for updates</string>
     <string name="settings_about_update_text">Update</string>
     <string name="settings_about_version_text">Version</string>
