@@ -193,7 +193,7 @@ class HomeTimetableCard(
                                 MainActivity.DRAWER_ITEM_TIMETABLE to 0
                         ),
                         arguments = JsonObject(
-                                "weekStart" to weekStart
+                                "weekStart" to weekStart.stringY_m_d
                         )
                 ).enqueue(activity)
             }
