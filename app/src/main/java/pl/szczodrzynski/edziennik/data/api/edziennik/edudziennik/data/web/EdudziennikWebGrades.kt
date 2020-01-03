@@ -54,10 +54,10 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                     subjects.select(".avg-$subjectId .grade-tip > p").first()
                             .text().split('+').map {
                                 val split = it.split('*')
-                                val weight = split[0].trim().toFloat()
-                                val value = split[1].trim().toFloat()
+                                val value = split[1].trim().toFloatOrNull()
+                                val weight = value?.let { split[0].trim().toFloatOrNull() } ?: 0f
 
-                                Pair(value, weight)
+                                Pair(value ?: 0f, weight)
                             }
                 } else emptyList()
 
