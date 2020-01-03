@@ -44,7 +44,7 @@ class LibrusApiDescriptiveGrades(override val data: DataLibrus,
                 val category = data.gradeCategories.singleOrNull {
                     it.categoryId == categoryId && it.type == when (type) {
                         TYPE_DESCRIPTIVE_TEXT -> GradeCategory.TYPE_DESCRIPTIVE
-                        else -> GradeCategory.TYPE_TEXT
+                        else -> GradeCategory.TYPE_NORMAL
                     }
                 }
 
