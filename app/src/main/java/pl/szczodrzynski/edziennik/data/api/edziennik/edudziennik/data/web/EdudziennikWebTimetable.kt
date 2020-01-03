@@ -20,7 +20,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.singleOrNull
-import pl.szczodrzynski.edziennik.splitName
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -108,10 +107,8 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
                             val teacherElement = info[1].child(0)
                             val teacherLongId = EDUDZIENNIK_TEACHER_ID.find(teacherElement.attr("href"))?.get(1)
                             val teacherName = teacherElement.text().trim()
-                            teacherName.splitName()?.let { (teacherLastName, teacherFirstName) ->
-                                data.getTeacher(teacherFirstName, teacherLastName, teacherLongId)
-                            }?.id ?: -1
-                        } else -1
+                            data.getTeacherByLastFirst(teacherName, teacherLongId).id
+                        } else null
 
                         val lessonObject = Lesson(profileId, -1).also {
                             it.type = type
@@ -121,6 +118,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
                             it.endTime = endTime
                             it.subjectId = subject.id
                             it.teacherId = teacherId
+                            it.teamId = data.teamClass?.id
 
                             it.id = it.buildId()
                         }

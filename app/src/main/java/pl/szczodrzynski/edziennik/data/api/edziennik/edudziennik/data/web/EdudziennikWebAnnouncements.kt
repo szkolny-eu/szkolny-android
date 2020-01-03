@@ -14,7 +14,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.splitName
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EdudziennikWebAnnouncements(override val data: DataEdudziennik,
@@ -37,9 +36,7 @@ class EdudziennikWebAnnouncements(override val data: DataEdudziennik,
                     val subject = titleElement.text()
 
                     val teacherName = announcementElement.child(1).text()
-                    val teacher = teacherName.splitName()?.let { (teacherFirstName, teacherLastName) ->
-                        data.getTeacher(teacherFirstName, teacherLastName)
-                    } ?: return@forEach
+                    val teacher = data.getTeacherByFirstLast(teacherName)
 
                     val dateString = announcementElement.getElementsByClass("datetime").first().text()
                     val startDate = Date.fromY_m_d(dateString)

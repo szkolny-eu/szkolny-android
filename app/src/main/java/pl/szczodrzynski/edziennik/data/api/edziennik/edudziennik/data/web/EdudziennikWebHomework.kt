@@ -16,7 +16,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.splitName
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EdudziennikWebHomework(override val data: DataEdudziennik,
@@ -46,9 +45,7 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
                     val startTime = lessons.firstOrNull { it.subjectId == subject.id }?.displayStartTime
 
                     val teacherName = homeworkElement.child(2).text()
-                    val teacher = teacherName.splitName()?.let { (teacherFirstName, teacherLastName) ->
-                        data.getTeacher(teacherFirstName, teacherLastName)
-                    } ?: return@forEach
+                    val teacher = data.getTeacherByFirstLast(teacherName)
 
                     val topic = homeworkElement.child(4).text()
 

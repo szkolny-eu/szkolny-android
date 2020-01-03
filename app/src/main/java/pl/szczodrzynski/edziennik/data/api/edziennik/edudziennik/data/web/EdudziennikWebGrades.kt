@@ -82,8 +82,8 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
 
                     val description = columnName + if (comment.isNotBlank()) " - $comment" else ""
 
-                    val (teacherLastName, teacherFirstName) = info.child(1).text().split(' ')
-                    val teacher = data.getTeacher(teacherFirstName, teacherLastName)
+                    val teacherName = info.child(1).text()
+                    val teacher = data.getTeacherByLastFirst(teacherName)
 
                     val addedDate = info.child(2).text().split(' ').let {
                         val day = it[0].toInt()
