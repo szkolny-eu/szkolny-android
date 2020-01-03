@@ -42,7 +42,7 @@ class EdudziennikWebNotes(override val data: DataEdudziennik,
                         profileId,
                         id,
                         description,
-                        profile.currentSemester,
+                        data.currentSemester,
                         Notice.TYPE_NEUTRAL,
                         teacher.id
                 )

@@ -61,6 +61,7 @@ class EdudziennikLoginWeb(val data: DataEdudziennik, val onSuccess: () -> Unit) 
 
                 val cookies = data.app.cookieJar.getForDomain("dziennikel.appspot.com")
                 val sessionId = cookies.firstOrNull { it.name() == "sessionid" }?.value()
+                val semester = cookies.firstOrNull { it.name() == "semester" }?.value()?.toIntOrNull()
 
                 if (sessionId == null) {
                     data.error(ApiError(TAG, ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID)
@@ -70,6 +71,7 @@ class EdudziennikLoginWeb(val data: DataEdudziennik, val onSuccess: () -> Unit) 
                 }
 
                 data.webSessionId = sessionId
+                semester?.let { data.webSemester = it }
                 data.webSessionIdExpiryTime = response.getUnixDate() + 45 * 60 /* 45 min */
                 onSuccess()
             }

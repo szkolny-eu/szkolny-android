@@ -22,6 +22,9 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
 
     fun isWebLoginValid() = webSessionIdExpiryTime-30 > currentTimeUnix() && webSessionId.isNotNullNorEmpty()
 
+    val currentSemester: Int
+        get() = webSemester
+
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isWebLoginValid()) {
@@ -64,6 +67,11 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
     var webSessionId: String?
         get() { mWebSessionId = mWebSessionId ?: loginStore.getLoginData("webSessionId", null); return mWebSessionId }
         set(value) { loginStore.putLoginData("webSessionId", value); mWebSessionId = value }
+
+    private var mWebSemester: Int? = null
+    var webSemester: Int
+        get() { mWebSemester = mWebSemester ?: loginStore.getLoginData("webSemester", 1); return mWebSemester ?: 1 }
+        set(value) { loginStore.putLoginData("webSemester", value); mWebSemester = value }
 
     private var mWebSessionIdExpiryTime: Long? = null
     var webSessionIdExpiryTime: Long

@@ -107,7 +107,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             name,
                             value,
                             if (gradeCountToAverage) weight else 0f,
-                            profile.currentSemester,
+                            data.currentSemester,
                             teacher.id,
                             subject.id
                     ).apply {
@@ -137,7 +137,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             proposed,
                             proposed.toFloatOrNull() ?: 0f,
                             0f,
-                            profile.currentSemester,
+                            data.currentSemester,
                             -1,
                             subject.id
                     ).apply {
@@ -170,7 +170,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             final,
                             final.toFloatOrNull() ?: 0f,
                             0f,
-                            profile.currentSemester,
+                            data.currentSemester,
                             -1,
                             subject.id
                     ).apply {
@@ -201,7 +201,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                         TYPE_SEMESTER1_FINAL,
                         TYPE_SEMESTER2_FINAL
                 ).map {
-                    DataRemoveModel.Grades.semesterWithType(profile.currentSemester, it)
+                    DataRemoveModel.Grades.semesterWithType(data.currentSemester, it)
                 })
             }
 
