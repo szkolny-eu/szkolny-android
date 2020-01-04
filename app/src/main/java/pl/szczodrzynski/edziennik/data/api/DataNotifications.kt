@@ -47,7 +47,6 @@ class DataNotifications(val data: Data) {
 
         val today = Date.getToday()
         val todayValue = today.value
-        profile.currentSemester = profile.dateToSemester(today)
 
         for (lesson in app.db.timetableDao().getNotNotifiedNow(profileId)) {
             val text = app.getString(R.string.notification_lesson_change_format, lesson.getDisplayChangeType(app), if (lesson.displayDate == null) "" else lesson.displayDate!!.formattedString, lesson.changeSubjectName)

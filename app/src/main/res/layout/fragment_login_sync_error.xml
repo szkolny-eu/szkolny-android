@@ -69,15 +69,6 @@
             android:layout_marginBottom="16dp"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/reportButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="@string/report_error"
-                android:textAllCaps="false" />
-
             <Space
                 android:layout_width="0.0dip"
                 android:layout_height="0.0dip"

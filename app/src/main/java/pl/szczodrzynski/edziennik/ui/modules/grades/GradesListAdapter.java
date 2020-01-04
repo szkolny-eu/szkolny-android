@@ -56,7 +56,7 @@ public class GradesListAdapter extends RecyclerView.Adapter<GradesListAdapter.Vi
         }));
 
         int gradeColor;
-        if (app.profile.getGradeColorMode() == COLOR_MODE_DEFAULT) {
+        if (App.getConfig().forProfile().getGrades().getColorMode() == COLOR_MODE_DEFAULT) {
             gradeColor = grade.color;
         }
         else {

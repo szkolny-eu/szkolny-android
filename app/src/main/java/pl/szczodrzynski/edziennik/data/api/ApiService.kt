@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.data.api.events.requests.TaskCancelRequest
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.task.*
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -38,7 +38,7 @@ class ApiService : Service() {
 
     private val app by lazy { applicationContext as App }
 
-    private val syncingProfiles = mutableListOf<ProfileFull>()
+    private val syncingProfiles = mutableListOf<Profile>()
 
     private val finishingTaskQueue = mutableListOf(
             SzkolnyTask.sync(syncingProfiles),

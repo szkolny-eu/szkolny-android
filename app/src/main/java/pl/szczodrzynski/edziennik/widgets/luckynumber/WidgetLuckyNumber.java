@@ -26,7 +26,6 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
-import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.widgets.WidgetConfig;
 
 import static pl.szczodrzynski.edziennik.utils.Utils.getCellsForSize;
@@ -159,7 +158,7 @@ public class WidgetLuckyNumber extends AppWidgetProvider {
                 }
             }
 
-            Profile profile = app.db.profileDao().getFullByIdNow(widgetConfig.profileId);
+            Profile profile = app.db.profileDao().getByIdNow(widgetConfig.profileId);
             IIcon icon = CommunityMaterial.Icon.cmd_emoticon_dead_outline;
             boolean noNumberText = false;
             if (profile == null) {
@@ -174,8 +173,8 @@ public class WidgetLuckyNumber extends AppWidgetProvider {
                 // profile is available, show its name
                 views.setTextViewText(R.id.widgetLuckyNumberProfileRight, profile.getName());
                 views.setTextViewText(R.id.widgetLuckyNumberProfileBottom, profile.getName());
-
-                if (profile.getLuckyNumberEnabled()
+                 // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                /*if (profile.getLuckyNumberEnabled()
                         && profile.getLuckyNumber() != -1
                         && profile.getLuckyNumberDate() != null
                         && profile.getLuckyNumberDate().getValue() == Date.getToday().getValue()) {
@@ -197,7 +196,7 @@ public class WidgetLuckyNumber extends AppWidgetProvider {
                     views.setTextViewText(R.id.widgetLuckyNumberTextRight, null);
                     views.setTextViewText(R.id.widgetLuckyNumberTextBottom, null);
                     icon = CommunityMaterial.Icon.cmd_emoticon_sad_outline;
-                }
+                }*/
             }
 
             views.setViewVisibility(R.id.widgetLuckyNumberTextRightLayout, noNumberText ? View.GONE : View.VISIBLE);

@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.firstlogin
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.data.api.ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR
 import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_WEB_SETTINGS
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_IDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
@@ -16,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.set
 import pl.szczodrzynski.edziennik.swapFirstLastName
 
 class IdziennikFirstLogin(val data: DataIdziennik, val onSuccess: () -> Unit) {
@@ -27,6 +29,10 @@ class IdziennikFirstLogin(val data: DataIdziennik, val onSuccess: () -> Unit) {
     private val profileList = mutableListOf<Profile>()
 
     init {
+        val loginStoreId = data.loginStore.id
+        val loginStoreType = LOGIN_TYPE_IDZIENNIK
+        var firstProfileId = loginStoreId
+
         IdziennikLoginWeb(data) {
             web.webGet(TAG, IDZIENNIK_WEB_SETTINGS) { text ->
                 //val accounts = json.getJsonArray("accounts")
@@ -34,12 +40,15 @@ class IdziennikFirstLogin(val data: DataIdziennik, val onSuccess: () -> Unit) {
                 val isParent = Regexes.IDZIENNIK_LOGIN_FIRST_IS_PARENT.find(text)?.get(1) != "0"
                 val accountNameLong = if (isParent)
                     Regexes.IDZIENNIK_LOGIN_FIRST_ACCOUNT_NAME.find(text)?.get(1)?.swapFirstLastName()?.fixName()
-                else
-                    null
+                else null
 
+                var schoolYearStart: Int? = null
+                var schoolYearEnd: Int? = null
                 var schoolYearName: String? = null
-                val schoolYear = Regexes.IDZIENNIK_LOGIN_FIRST_SCHOOL_YEAR.find(text)?.let {
-                    schoolYearName = it[2]
+                val schoolYearId = Regexes.IDZIENNIK_LOGIN_FIRST_SCHOOL_YEAR.find(text)?.let {
+                    schoolYearName = it[2]+"/"+it[3]
+                    schoolYearStart = it[2].toIntOrNull()
+                    schoolYearEnd = it[3].toIntOrNull()
                     it[1].toIntOrNull()
                 } ?: run {
                     data.error(ApiError(TAG, ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR)
@@ -57,18 +66,26 @@ class IdziennikFirstLogin(val data: DataIdziennik, val onSuccess: () -> Unit) {
                             val lastName = match[4]
                             val className = match[5] + " " + match[6]
 
-                            val profile = Profile()
-                            profile.studentNameLong = "$firstName $lastName".fixName()
-                            profile.studentNameShort = "$firstName ${lastName[0]}.".fixName()
-                            profile.accountNameLong = accountNameLong
-                            profile.studentClassName = className
-                            profile.studentSchoolYear = schoolYearName
-                            profile.name = profile.studentNameLong
-                            profile.subname = data.webUsername
-                            profile.empty = true
-                            profile.putStudentData("studentId", studentId)
-                            profile.putStudentData("registerId", registerId)
-                            profile.putStudentData("schoolYearId", schoolYear)
+                            val studentNameLong = "$firstName $lastName".fixName()
+                            val studentNameShort = "$firstName ${lastName[0]}.".fixName()
+                            val accountName = if (accountNameLong == studentNameLong) null else accountNameLong
+
+                            val profile = Profile(
+                                    firstProfileId++,
+                                    loginStoreId,
+                                    loginStoreType,
+                                    studentNameLong,
+                                    data.webUsername,
+                                    studentNameLong,
+                                    studentNameShort,
+                                    accountName
+                            ).apply {
+                                schoolYearStart?.let { studentSchoolYearStart = it }
+                                studentClassName = className
+                                studentData["studentId"] = studentId
+                                studentData["registerId"] = registerId
+                                studentData["schoolYearId"] = schoolYearId
+                            }
                             profileList.add(profile)
                         }
 

@@ -35,7 +35,7 @@ import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent.Companion.T
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_IUCZNIOWIE
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.Companion.LOGIN_TYPE_IDZIENNIK
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
@@ -162,7 +162,7 @@ class MessageFragment : Fragment(), CoroutineScope {
             return
         }
 
-        if (app.profile.loginStoreType == LOGIN_TYPE_IUCZNIOWIE) {
+        if (app.profile.loginStoreType == LOGIN_TYPE_IDZIENNIK) {
             val meta = "\\[META:([A-z0-9]+);([0-9-]+)]".toRegex().find(message.body!!)
             val messageIdBefore = meta?.get(2)?.toLong() ?: -1
 
@@ -185,7 +185,7 @@ class MessageFragment : Fragment(), CoroutineScope {
     private fun checkRecipients(): Boolean {
         message.recipients?.forEach { recipient ->
             if (recipient.id == -1L)
-                recipient.fullName = app.profile.accountNameLong ?: app.profile.studentNameLong ?: ""
+                recipient.fullName = app.profile.accountName ?: app.profile.studentNameLong ?: ""
             if (message.type == TYPE_SENT && recipient.readDate < 1)
                 return false
         }

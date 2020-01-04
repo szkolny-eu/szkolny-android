@@ -8,8 +8,6 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
-
 @Dao
 public abstract class LoginStoreDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -26,10 +24,6 @@ public abstract class LoginStoreDao {
 
     @Query("SELECT * FROM loginStores WHERE loginStoreId = :loginStoreId")
     public abstract LoginStore getByIdNow(int loginStoreId);
-
-    public void add(ProfileFull profileFull) {
-        add(new LoginStore(profileFull.getLoginStoreId(), profileFull.getLoginStoreType(), profileFull.getLoginStoreData()));
-    }
 
     @Query("UPDATE loginStores SET loginStoreId = :targetId WHERE loginStoreId = :sourceId")
     public abstract void changeId(int sourceId, int targetId);

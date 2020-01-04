@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
@@ -13,8 +14,8 @@ import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
-    fun isApiLoginValid() = /*apiCertificateExpiryTime-30 > currentTimeUnix()
-            &&*/ apiCertificateKey.isNotNullNorEmpty()
+    fun isApiLoginValid() = currentSemesterEndDate-30 > currentTimeUnix()
+            && apiCertificateKey.isNotNullNorEmpty()
             && apiCertificatePrivate.isNotNullNorEmpty()
             && symbol.isNotNullNorEmpty()
 
@@ -24,6 +25,8 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
             loginMethods += LOGIN_METHOD_VULCAN_API
         }
     }
+
+    override fun generateUserCode() = "$schoolName:$studentId"
 
     /**
      * A UONET+ client symbol.
@@ -107,6 +110,16 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mStudentSemesterNumber = mStudentSemesterNumber ?: profile?.getStudentData("studentSemesterNumber", 0); return mStudentSemesterNumber ?: 0 }
         set(value) { profile?.putStudentData("studentSemesterNumber", value) ?: return; mStudentSemesterNumber = value }
 
+    /**
+     * Date of the end of the current semester ([studentSemesterNumber]).
+     *
+     * After this date, an API refresh of student list is required.
+     */
+    private var mCurrentSemesterEndDate: Long? = null
+    var currentSemesterEndDate: Long
+        get() { mCurrentSemesterEndDate = mCurrentSemesterEndDate ?: profile?.getStudentData("currentSemesterEndDate", 0L); return mCurrentSemesterEndDate ?: 0L }
+        set(value) { profile?.putStudentData("currentSemesterEndDate", value) ?: return; mCurrentSemesterEndDate = value }
+
     /*             _____ _____        ____
              /\   |  __ \_   _|      |___ \
             /  \  | |__) || |   __   ____) |
@@ -139,6 +152,12 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mApiCertificateKey = mApiCertificateKey ?: loginStore.getLoginData("certificateKey", null); return mApiCertificateKey }
         set(value) { loginStore.putLoginData("certificateKey", value); mApiCertificateKey = value }
 
+    /**
+     * This is not meant for normal usage.
+     *
+     * It provides a backward compatibility (<4.0) in order
+     * to migrate and use private keys instead of PFX.
+     */
     private var mApiCertificatePfx: String? = null
     var apiCertificatePfx: String?
         get() { mApiCertificatePfx = mApiCertificatePfx ?: loginStore.getLoginData("certificatePfx", null); return mApiCertificatePfx }
@@ -148,11 +167,6 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     var apiCertificatePrivate: String?
         get() { mApiCertificatePrivate = mApiCertificatePrivate ?: loginStore.getLoginData("certificatePrivate", null); return mApiCertificatePrivate }
         set(value) { loginStore.putLoginData("certificatePrivate", value); mApiCertificatePrivate = value }
-
-    private var mApiCertificateExpiryTime: Int? = null
-    var apiCertificateExpiryTime: Int
-        get() { mApiCertificateExpiryTime = mApiCertificateExpiryTime ?: loginStore.getLoginData("certificateExpiryTime", 0); return mApiCertificateExpiryTime ?: 0 }
-        set(value) { loginStore.putLoginData("certificateExpiryTime", value); mApiCertificateExpiryTime = value }
 
     val apiUrl: String?
         get() {

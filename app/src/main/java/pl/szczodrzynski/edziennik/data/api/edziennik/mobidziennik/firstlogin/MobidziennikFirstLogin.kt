@@ -1,13 +1,15 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.firstlogin
 
 import org.greenrobot.eventbus.EventBus
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.set
+import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
     companion object {
@@ -18,6 +20,10 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
     private val profileList = mutableListOf<Profile>()
 
     init {
+        val loginStoreId = data.loginStore.id
+        val loginStoreType = LOGIN_TYPE_MOBIDZIENNIK
+        var firstProfileId = loginStoreId
+
         MobidziennikLoginWeb(data) {
             web.webGet(TAG, "/api/zrzutbazy") { text ->
                 val tables = text.split("T@B#LA")
@@ -32,6 +38,21 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
                             }
                 }
 
+                var dateSemester1Start: Date? = null
+                var dateSemester2Start: Date? = null
+                var dateYearEnd: Date? = null
+                for (row in tables[3].split("\n")) {
+                    if (row.isEmpty())
+                        continue
+                    val cols = row.split("|")
+
+                    when (cols[1]) {
+                        "semestr1_poczatek" -> dateSemester1Start = Date.fromYmd(cols[3])
+                        "semestr2_poczatek" -> dateSemester2Start = Date.fromYmd(cols[3])
+                        "koniec_roku_szkolnego" -> dateYearEnd = Date.fromYmd(cols[3])
+                    }
+                }
+
                 tables[8].split("\n").forEach { student ->
                     if (student.isEmpty())
                         return@forEach
@@ -39,15 +60,28 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
                     if (student1.size == 2)
                         return@forEach
 
-                    val profile = Profile()
-                    profile.studentNameLong = "${student1[2]} ${student1[4]}".fixName()
-                    profile.studentNameShort = "${student1[2]} ${student1[4][0]}.".fixName()
-                    profile.accountNameLong = if (accountNameLong == profile.studentNameLong) null else accountNameLong
-                    profile.studentSchoolYear = Utils.getCurrentSchoolYear()
-                    profile.name = profile.studentNameLong
-                    profile.subname = data.loginUsername
-                    profile.empty = true
-                    profile.putStudentData("studentId", student1[0].toInt())
+                    val studentNameLong = "${student1[2]} ${student1[4]}".fixName()
+                    val studentNameShort = "${student1[2]} ${student1[4][0]}.".fixName()
+                    val accountName = if (accountNameLong == studentNameLong) null else accountNameLong
+
+                    val profile = Profile(
+                            firstProfileId++,
+                            loginStoreId,
+                            loginStoreType,
+                            studentNameLong,
+                            data.loginUsername,
+                            studentNameLong,
+                            studentNameShort,
+                            accountName
+                    ).apply {
+                        studentData["studentId"] = student1[0].toInt()
+                    }
+                    dateSemester1Start?.let {
+                        profile.dateSemester1Start = it
+                        profile.studentSchoolYearStart = it.year
+                    }
+                    dateSemester2Start?.let { profile.dateSemester2Start = it }
+                    dateYearEnd?.let { profile.dateYearEnd = it }
                     profileList.add(profile)
                 }
 

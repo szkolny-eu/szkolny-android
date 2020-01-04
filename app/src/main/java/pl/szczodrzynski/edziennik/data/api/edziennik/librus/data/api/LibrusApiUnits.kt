@@ -23,7 +23,7 @@ class LibrusApiUnits(override val data: DataLibrus,
         }
 
         apiGet(TAG, "Units") { json ->
-            val units = json.getJsonArray("Units").asJsonObjectList()
+            val units = json.getJsonArray("Units")?.asJsonObjectList()
 
             units?.singleOrNull { it.getLong("Id") == data.unitId }?.also { unit ->
                 val startPoints = unit.getJsonObject("BehaviourGradesSettings")?.getJsonObject("StartPoints")

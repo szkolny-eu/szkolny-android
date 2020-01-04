@@ -312,10 +312,7 @@ public class AttendanceFragment extends Fragment {
         float attendancePercentage;
 
         // in Mobidziennik there are no TYPE_PRESENT records so we cannot calculate the percentage
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK && false) {
-            attendancePercentage = app.profile.getAttendancePercentage();
-        }
-        else if (app.profile.getLoginStoreType() == LOGIN_TYPE_VULCAN) {
+        if (app.profile.getLoginStoreType() == LOGIN_TYPE_VULCAN) {
             float allCount = presentCount + absentCount + belatedCount; // do not count releases
             float present = allCount - absentCount;
             attendancePercentage = present / allCount * 100.0f;

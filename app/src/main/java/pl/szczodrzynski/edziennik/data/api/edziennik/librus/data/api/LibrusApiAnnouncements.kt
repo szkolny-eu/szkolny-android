@@ -21,7 +21,7 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
 
     init { data.profile?.also { profile ->
         apiGet(TAG, "SchoolNotices") { json ->
-            val announcements = json.getJsonArray("SchoolNotices").asJsonObjectList()
+            val announcements = json.getJsonArray("SchoolNotices")?.asJsonObjectList()
 
             announcements?.forEach { announcement ->
                 val longId = announcement.getString("Id") ?: return@forEach

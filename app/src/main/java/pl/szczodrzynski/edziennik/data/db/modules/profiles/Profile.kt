@@ -1,10 +1,13 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-1-3.
+ */
+
 package pl.szczodrzynski.edziennik.data.db.modules.profiles
 
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
-import android.net.ConnectivityManager
 import android.widget.ImageView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.room.ColumnInfo
@@ -12,7 +15,9 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import com.google.gson.JsonObject
 import pl.droidsonroids.gif.GifDrawable
-import pl.szczodrzynski.edziennik.colorFromName
+import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_EDUDZIENNIK
+import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.ImageHolder
 import pl.szczodrzynski.navlib.R
@@ -20,143 +25,91 @@ import pl.szczodrzynski.navlib.drawer.IDrawerProfile
 import pl.szczodrzynski.navlib.getDrawableFromRes
 
 @Entity(tableName = "profiles", primaryKeys = ["profileId"])
-open class Profile : IDrawerProfile {
+open class Profile(
+        @ColumnInfo(name = "profileId")
+        override val id: Int,
+        val loginStoreId: Int,
+        val loginStoreType: Int,
 
-    @ColumnInfo(name = "profileId")
-    override var id = -1
-    override var name: String? = ""
-    override var subname: String? = null
+        override var name: String,
+        override var subname: String?,
+
+        /**
+         * The name of the student.
+         * This doesn't change, no matter if it's a parent or student account.
+         */
+        var studentNameLong: String,
+        var studentNameShort: String,
+        /**
+         * A full name of the account owner.
+         * If null, then it's a student account.
+         * If not null, then it's a parent account with this name.
+         */
+        var accountName: String?,
+
+        val studentData: JsonObject = JsonObject()
+
+) : IDrawerProfile {
+    companion object {
+        const val REGISTRATION_UNSPECIFIED = 0
+        const val REGISTRATION_DISABLED = 1
+        const val REGISTRATION_ENABLED = 2
+        const val COLOR_MODE_DEFAULT = 0
+        const val COLOR_MODE_WEIGHTED = 1
+        const val AGENDA_DEFAULT = 0
+        const val AGENDA_CALENDAR = 1
+        const val YEAR_1_AVG_2_AVG = 0
+        const val YEAR_1_SEM_2_AVG = 1
+        const val YEAR_1_AVG_2_SEM = 2
+        const val YEAR_1_SEM_2_SEM = 3
+        const val YEAR_ALL_GRADES = 4
+    }
+
     override var image: String? = null
-    /*public String name = "";
-    public String subname = null;
-    public String image = null;*/
 
-    var syncEnabled = true
-    var syncNotifications = true
-    var enableSharedEvents = true
-    var countInSeconds = false
-    var loggedIn = false
     var empty = true
     var archived = false
 
-    /**
-     * The name of the student.
-     * This doesn't change, no matter if it's a parent or student account.
-     */
-    var studentNameLong: String? = null
-    var studentNameShort: String? = null
+    var syncEnabled = true
+    var enableSharedEvents = true
+    var registration = REGISTRATION_UNSPECIFIED
+    var userCode = ""
+
     /**
      * The student's number in the class register.
      */
     var studentNumber = -1
-    var studentData: JsonObject? = null
-
-    /**
-     * A full name of the account owner.
-     * If null, then it's a student account.
-     * If not null, then it's a parent account with this name.
-     */
-    var accountNameLong: String? = null
-
     var studentClassName: String? = null
-    var studentSchoolYear: String? = null
+    var studentSchoolYearStart = Date.getToday().let { if (it.month < 9) it.year - 1 else it.year }
 
-    var registration = REGISTRATION_UNSPECIFIED
-
-    var gradeColorMode = COLOR_MODE_WEIGHTED
-    var agendaViewType = AGENDA_DEFAULT
-
-    var yearAverageMode = YEAR_ALL_GRADES
-
-    var currentSemester = 1
-
-    var attendancePercentage: Float = 0.0f
-
-    var dateSemester1Start: Date? = null
-    var dateSemester2Start: Date? = null
-    var dateYearEnd: Date? = null
-
-    var luckyNumberEnabled = true
-    var luckyNumber = -1
-    var luckyNumberDate: Date? = null
-
-    //public Map<Integer, Pair<String, Integer>> eventTypes;
-
-    var loginStoreId = id
-
-    var changedEndpoints: List<String>? = null
+    var dateSemester1Start = Date(studentSchoolYearStart, 9, 1)
+    var dateSemester2Start = Date(studentSchoolYearStart + 1, 2, 1)
+    var dateYearEnd = Date(studentSchoolYearStart + 1, 6, 30)
+    fun getSemesterStart(semester: Int) = if (semester == 1) dateSemester1Start else dateSemester2Start
+    fun getSemesterEnd(semester: Int) = if (semester == 1) dateSemester2Start.clone().stepForward(0, 0, -1) else dateYearEnd
+    fun dateToSemester(date: Date) = if (date.value >= getSemesterStart(2).value) 2 else 1
+    @delegate:Ignore
+    val currentSemester by lazy { dateToSemester(Date.getToday()) }
 
     var disabledNotifications: List<Long>? = null
 
-    var lastFullSync: Long = 0
     var lastReceiversSync: Long = 0
 
-    fun shouldFullSync(context: Context): Boolean {
-        val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-        // if time since last full sync is > 7 days and wifi is connected
-        // or
-        // if time since last full sync is > 14 days, regardless of wifi state
-        return System.currentTimeMillis() - lastFullSync > 7 * 24 * 60 * 60 * 1000 && mWifi.isConnected || System.currentTimeMillis() - lastFullSync > 14 * 24 * 60 * 60 * 1000
-    }
+    fun hasStudentData(key: String) = studentData.has(key)
+    fun getStudentData(key: String, defaultValue: Boolean) = studentData.getBoolean(key) ?: defaultValue
+    fun getStudentData(key: String, defaultValue: String?) = studentData.getString(key) ?: defaultValue
+    fun getStudentData(key: String, defaultValue: Int) = studentData.getInt(key) ?: defaultValue
+    fun getStudentData(key: String, defaultValue: Long) = studentData.getLong(key) ?: defaultValue
+    fun getStudentData(key: String, defaultValue: Float) = studentData.getFloat(key) ?: defaultValue
+    fun getStudentData(key: String, defaultValue: Char) = studentData.getChar(key) ?: defaultValue
+    fun putStudentData(key: String, value: Boolean) { studentData[key] = value }
+    fun putStudentData(key: String, value: String?) { studentData[key] = value }
+    fun putStudentData(key: String, value: Number) { studentData[key] = value }
+    fun putStudentData(key: String, value: Char) { studentData[key] = value }
+    fun removeStudentData(key: String) { studentData.remove(key) }
 
-    @Ignore
-    constructor(id: Int, name: String, subname: String, loginStoreId: Int) : this() {
-        this.id = id
-        this.name = name
-        this.subname = subname
-        this.loginStoreId = loginStoreId
-    }
-
-    constructor() {
-        //eventTypes = new HashMap<>();
-        val today = Date.getToday()
-        val schoolYearStart = if (today.month < 9) today.year - 1 else today.year
-        dateSemester1Start = Date(schoolYearStart, 9, 1)
-        dateSemester2Start = Date(schoolYearStart + 1, 2, 1)
-        dateYearEnd = Date(schoolYearStart + 1, 6, 30)
-    }
-
-    fun getSemesterStart(semester: Int): Date {
-        if (dateSemester1Start == null || dateSemester2Start == null || dateYearEnd == null) {
-            val today = Date.getToday()
-            val schoolYearStart = if (today.month < 9) today.year - 1 else today.year
-            dateSemester1Start = Date(schoolYearStart, 9, 1)
-            dateSemester2Start = Date(schoolYearStart + 1, 2, 1)
-            dateYearEnd = Date(schoolYearStart + 1, 6, 30)
-        }
-
-        return if (semester == 1)
-            dateSemester1Start!!
-        else
-            dateSemester2Start!!
-    }
-
-    fun getSemesterEnd(semester: Int): Date {
-        if (dateSemester1Start == null || dateSemester2Start == null || dateYearEnd == null) {
-            val today = Date.getToday()
-            val schoolYearStart = if (today.month < 9) today.year - 1 else today.year
-            dateSemester1Start = Date(schoolYearStart, 9, 1)
-            dateSemester2Start = Date(schoolYearStart + 1, 2, 1)
-            dateYearEnd = Date(schoolYearStart + 1, 6, 30)
-        }
-
-        return if (semester == 1)
-            dateSemester2Start!!.clone().stepForward(0, 0, -1)
-        else
-            dateYearEnd!!
-    }
-
-    fun dateToSemester(date: Date?): Int {
-        if (date == null)
-            return 1
-        return if (date.value >= getSemesterStart(2).value) 2 else 1
-    }
-
-    @Ignore
-    constructor(context: Context) {
-        //RegisterEvent.checkPredefinedEventTypes(context, eventTypes);
-    }
+    val isParent
+        get() = accountName != null
 
     override fun getImageDrawable(context: Context): Drawable {
 
@@ -179,13 +132,6 @@ open class Profile : IDrawerProfile {
             it.colorFilter = PorterDuffColorFilter(colorFromName(name), PorterDuff.Mode.DST_OVER)
         }
 
-        /*if (profileImage == null) {
-            profileImage = BitmapFactory.decodeResource(getResources(), pl.szczodrzynski.edziennik.R.drawable.profile);
-        }
-        profileImage = ThumbnailUtils.extractThumbnail(profileImage, Math.min(profileImage.getWidth(), profileImage.getHeight()), Math.min(profileImage.getWidth(), profileImage.getHeight()));
-        RoundedBitmapDrawable roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), profileImage);
-        roundDrawable.setCircular(true);
-        return roundDrawable;*/
     }
     override fun getImageHolder(context: Context): ImageHolder {
         return if (!image.isNullOrEmpty()) {
@@ -203,130 +149,43 @@ open class Profile : IDrawerProfile {
         getImageHolder(imageView.context).applyTo(imageView)
     }
 
-    fun hasStudentData(key: String): Boolean {
-        if (studentData == null)
-            return false
-        return studentData?.has(key) ?: false
-    }
-
-    fun getStudentData(key: String, defaultValue: String?): String? {
-        if (studentData == null)
-            return defaultValue
-        val element = studentData!!.get(key)
-        return if (element != null) {
-            element.asString
-        } else defaultValue
-    }
-
-    fun getStudentData(key: String, defaultValue: Int): Int {
-        if (studentData == null)
-            return defaultValue
-        val element = studentData!!.get(key)
-        return element?.asInt ?: defaultValue
-    }
-
-    fun getStudentData(key: String, defaultValue: Long): Long {
-        if (studentData == null)
-            return defaultValue
-        val element = studentData!!.get(key)
-        return element?.asLong ?: defaultValue
-    }
-
-    fun getStudentData(key: String, defaultValue: Float): Float {
-        if (studentData == null)
-            return defaultValue
-        val element = studentData!!.get(key)
-        return element?.asFloat ?: defaultValue
-    }
-
-    fun getStudentData(key: String, defaultValue: Boolean): Boolean {
-        if (studentData == null)
-            return defaultValue
-        val element = studentData!!.get(key)
-        return element?.asBoolean ?: defaultValue
-    }
-
-    fun putStudentData(key: String, value: String?) {
-        if (studentData == null)
-            studentData = JsonObject()
-        studentData!!.addProperty(key, value)
-    }
-
-    fun putStudentData(key: String, value: Int) {
-        if (studentData == null)
-            studentData = JsonObject()
-        studentData!!.addProperty(key, value)
-    }
-
-    fun putStudentData(key: String, value: Long) {
-        if (studentData == null)
-            studentData = JsonObject()
-        studentData!!.addProperty(key, value)
-    }
-
-    fun putStudentData(key: String, value: Float) {
-        if (studentData == null)
-            studentData = JsonObject()
-        studentData!!.addProperty(key, value)
-    }
-
-    fun putStudentData(key: String, value: Boolean) {
-        if (studentData == null)
-            studentData = JsonObject()
-        studentData!!.addProperty(key, value)
-    }
-
-    fun removeStudentData(key: String) {
-        if (studentData == null)
-            studentData = JsonObject()
-        studentData!!.remove(key)
-    }
-
-    fun clearStudentStore() {
-        studentData = JsonObject()
-    }
-
-    override fun toString(): String {
-        return "Profile{" +
-                "id=" + id +
-                ", name='" + name + '\''.toString() +
-                ", subname='" + subname + '\''.toString() +
-                ", image='" + image + '\''.toString() +
-                ", syncEnabled=" + syncEnabled +
-                ", syncNotifications=" + syncNotifications +
-                ", enableSharedEvents=" + enableSharedEvents +
-                ", empty=" + empty +
-                ", studentNameLong='" + studentNameLong + '\''.toString() +
-                ", studentNameShort='" + studentNameShort + '\''.toString() +
-                ", studentNumber=" + studentNumber +
-                ", studentData=" + studentData.toString() +
-                ", registration=" + registration +
-                ", gradeColorMode=" + gradeColorMode +
-                ", agendaViewType=" + agendaViewType +
-                ", currentSemester=" + currentSemester +
-                ", attendancePercentage=" + attendancePercentage +
-                ", dateSemester1Start=" + dateSemester1Start +
-                ", dateSemester2Start=" + dateSemester2Start +
-                ", dateYearEnd=" + dateYearEnd +
-                ", luckyNumberEnabled=" + luckyNumberEnabled +
-                ", luckyNumber=" + luckyNumber +
-                ", luckyNumberDate=" + luckyNumberDate +
-                ", loginStoreId=" + loginStoreId +
-                '}'.toString()
-    }
-
-    companion object {
-        const val REGISTRATION_UNSPECIFIED = 0
-        const val REGISTRATION_DISABLED = 1
-        const val REGISTRATION_ENABLED = 2
-        const val COLOR_MODE_DEFAULT = 0
-        const val COLOR_MODE_WEIGHTED = 1
-        const val AGENDA_DEFAULT = 0
-        const val AGENDA_CALENDAR = 1
-        const val YEAR_1_AVG_2_AVG = 0
-        const val YEAR_1_SEM_2_AVG = 1
-        const val YEAR_1_AVG_2_SEM = 2
-        const val YEAR_1_SEM_2_SEM = 3
-        const val YEAR_ALL_GRADES = 4
-    }
+    val supportedFragments: List<Int>
+        get() = when (loginStoreType) {
+            LoginStore.LOGIN_TYPE_MOBIDZIENNIK,
+            LoginStore.LOGIN_TYPE_DEMO,
+            LoginStore.LOGIN_TYPE_VULCAN -> listOf(
+                    MainActivity.DRAWER_ITEM_TIMETABLE,
+                    MainActivity.DRAWER_ITEM_AGENDA,
+                    MainActivity.DRAWER_ITEM_GRADES,
+                    MainActivity.DRAWER_ITEM_MESSAGES,
+                    MainActivity.DRAWER_ITEM_HOMEWORK,
+                    MainActivity.DRAWER_ITEM_BEHAVIOUR,
+                    MainActivity.DRAWER_ITEM_ATTENDANCE
+            )
+            LoginStore.LOGIN_TYPE_LIBRUS,
+            LoginStore.LOGIN_TYPE_IDZIENNIK -> listOf(
+                    MainActivity.DRAWER_ITEM_TIMETABLE,
+                    MainActivity.DRAWER_ITEM_AGENDA,
+                    MainActivity.DRAWER_ITEM_GRADES,
+                    MainActivity.DRAWER_ITEM_MESSAGES,
+                    MainActivity.DRAWER_ITEM_HOMEWORK,
+                    MainActivity.DRAWER_ITEM_BEHAVIOUR,
+                    MainActivity.DRAWER_ITEM_ATTENDANCE,
+                    MainActivity.DRAWER_ITEM_ANNOUNCEMENTS
+            )
+            LOGIN_TYPE_EDUDZIENNIK -> listOf(
+                    MainActivity.DRAWER_ITEM_TIMETABLE,
+                    MainActivity.DRAWER_ITEM_AGENDA,
+                    MainActivity.DRAWER_ITEM_GRADES,
+                    MainActivity.DRAWER_ITEM_HOMEWORK,
+                    MainActivity.DRAWER_ITEM_BEHAVIOUR,
+                    MainActivity.DRAWER_ITEM_ATTENDANCE,
+                    MainActivity.DRAWER_ITEM_ANNOUNCEMENTS
+            )
+            else -> listOf(
+                    MainActivity.DRAWER_ITEM_TIMETABLE,
+                    MainActivity.DRAWER_ITEM_AGENDA,
+                    MainActivity.DRAWER_ITEM_GRADES
+            )
+        }
 }

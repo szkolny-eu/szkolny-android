@@ -138,7 +138,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
         content = content.replace("\n".toRegex(), "<br>")
         contentPlain += "\n" + Build.MANUFACTURER + "\n" + Build.BRAND + "\n" + Build.MODEL + "\n" + Build.DEVICE + "\n"
         if (app.profile != null && app.profile.registration == Profile.REGISTRATION_ENABLED) {
-            contentPlain += "U: " + app.profile.usernameId + "\nS: " + app.profile.studentNameLong + "\n"
+            contentPlain += "U: " + app.profile.userCode + "\nS: " + app.profile.studentNameLong + "\n"
         }
         contentPlain += BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE
         return if (plain) contentPlain else content

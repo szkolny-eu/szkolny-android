@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
@@ -221,10 +220,8 @@ public class Notifier {
         app.appConfig.notifications.add(notification);
     }
 
-    public void postAll(ProfileFull profile) {
+    public void postAll() {
         Collections.sort(app.appConfig.notifications, (o1, o2) -> (o2.addedDate - o1.addedDate > 0) ? 1 : (o2.addedDate - o1.addedDate < 0) ? -1 : 0);
-        if (profile != null && !profile.getSyncNotifications())
-            return;
 
         if (app.appConfig.notifications.size() > 40) {
             app.appConfig.notifications.subList(40, app.appConfig.notifications.size() - 1).clear();

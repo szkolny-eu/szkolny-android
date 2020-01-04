@@ -18,7 +18,7 @@ class LibrusApiSubjects(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "Subjects") { json ->
-            val subjects = json.getJsonArray("Subjects").asJsonObjectList()
+            val subjects = json.getJsonArray("Subjects")?.asJsonObjectList()
 
             subjects?.forEach { subject ->
                 val id = subject.getLong("Id") ?: return@forEach

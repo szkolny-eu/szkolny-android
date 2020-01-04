@@ -814,7 +814,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                       __/ |
                      |__*/
     private String getRegisterCardAverageModeSubText() {
-        switch (app.profile.getYearAverageMode()) {
+        switch (App.getConfig().forProfile().getGrades().getYearAverageMode()) {
             default:
             case YEAR_1_AVG_2_AVG:
                 return getString(R.string.settings_register_avg_mode_0_short);
@@ -894,9 +894,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .title(getString(R.string.settings_register_avg_mode_dialog_title))
                         .content(getString(R.string.settings_register_avg_mode_dialog_text))
                         .items(modeNames)
-                        .itemsCallbackSingleChoice(modeIds.indexOf(app.profile.getYearAverageMode()), (dialog, itemView, which, text) -> {
-                            app.profile.setYearAverageMode(modeIds.get(which));
-                            app.profileSaveAsync();
+                        .itemsCallbackSingleChoice(modeIds.indexOf(App.getConfig().forProfile().getGrades().getYearAverageMode()), (dialog, itemView, which, text) -> {
+                            App.getConfig().forProfile().getGrades().setYearAverageMode(modeIds.get(which));
                             registerCardAverageModeItem.setSubText(getRegisterCardAverageModeSubText());
                             refreshMaterialAboutList();
                             return true;
@@ -946,7 +945,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         .negativeText(R.string.abort)
                                         .show();
                                 new ServerRequest(app, app.requestScheme + APP_URL + "main.php?unregister", "Edziennik/UREG", app.profile)
-                                        .withUsername(app.profile.getUsernameId())
+                                        .withUsername(app.profile.getUserCode())
                                         .run((e, result) -> {
                                             progressDialog.dismiss();
                                             if (result == null || !result.get("success").getAsString().equals("true")) {

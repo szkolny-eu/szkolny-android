@@ -18,7 +18,7 @@ class LibrusApiEventTypes(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "HomeWorks/Categories") { json ->
-            val eventTypes = json.getJsonArray("Categories").asJsonObjectList()
+            val eventTypes = json.getJsonArray("Categories")?.asJsonObjectList()
 
             eventTypes?.forEach { eventType ->
                 val id = eventType.getLong("Id") ?: return@forEach

@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.firstlogin
 
 import org.greenrobot.eventbus.EventBus
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_EDUDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_ACCOUNT_NAME_START
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_STUDENTS_START
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
@@ -15,7 +16,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.getShortName
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.set
 
 class EdudziennikFirstLogin(val data: DataEdudziennik, val onSuccess: () -> Unit) {
     companion object {
@@ -26,25 +27,35 @@ class EdudziennikFirstLogin(val data: DataEdudziennik, val onSuccess: () -> Unit
     private val profileList = mutableListOf<Profile>()
 
     init {
+        val loginStoreId = data.loginStore.id
+        val loginStoreType = LOGIN_TYPE_EDUDZIENNIK
+        var firstProfileId = loginStoreId
+
         EdudziennikLoginWeb(data) {
             web.webGet(TAG, "") { text ->
-                val accountName = EDUDZIENNIK_ACCOUNT_NAME_START.find(text)?.get(1)?.fixName()
+                val accountNameLong = EDUDZIENNIK_ACCOUNT_NAME_START.find(text)?.get(1)?.fixName()
 
                 EDUDZIENNIK_STUDENTS_START.findAll(text).forEach {
                     val studentId = it[1]
-                    val studentName = it[2].fixName()
+                    val studentNameLong = it[2].fixName()
 
-                    if (studentId.isBlank() || studentName.isBlank()) return@forEach
+                    if (studentId.isBlank() || studentNameLong.isBlank()) return@forEach
 
-                    val profile = Profile()
-                    profile.studentNameLong = studentName
-                    profile.studentNameShort = studentName.getShortName()
-                    profile.accountNameLong = if (studentName == accountName) null else accountName
-                    profile.studentSchoolYear = Utils.getCurrentSchoolYear()
-                    profile.name = studentName
-                    profile.subname = data.loginEmail
-                    profile.empty = true
-                    profile.putStudentData("studentId", studentId)
+                    val studentNameShort = studentNameLong.getShortName()
+                    val accountName = if (accountNameLong == studentNameLong) null else accountNameLong
+
+                    val profile = Profile(
+                            firstProfileId++,
+                            loginStoreId,
+                            loginStoreType,
+                            studentNameLong,
+                            data.loginEmail,
+                            studentNameLong,
+                            studentNameShort,
+                            accountName
+                    ).apply {
+                        studentData["studentId"] = studentId
+                    }
                     profileList.add(profile)
                 }
 

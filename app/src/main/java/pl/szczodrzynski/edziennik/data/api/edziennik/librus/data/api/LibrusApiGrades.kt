@@ -21,7 +21,7 @@ class LibrusApiGrades(override val data: DataLibrus,
 
     init { data.profile?.also { profile ->
         apiGet(TAG, "Grades") { json ->
-            val grades = json.getJsonArray("Grades").asJsonObjectList()
+            val grades = json.getJsonArray("Grades")?.asJsonObjectList()
 
             grades?.forEach { grade ->
                 val id = grade.getLong("Id") ?: return@forEach

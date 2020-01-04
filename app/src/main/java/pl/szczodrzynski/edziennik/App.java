@@ -73,7 +73,6 @@ import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.AppDb;
 import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.TLSSocketFactory;
 import pl.szczodrzynski.edziennik.sync.SyncWorker;
@@ -139,11 +138,10 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
     public SharedPreferences appSharedPrefs; // sharedPreferences for APPCONFIG + JOBS STORE
     public AppConfig appConfig; // APPCONFIG: common for all profiles
     //public AppProfile profile; // current profile
-    public JsonObject loginStore = null;
     public SharedPreferences registerStore; // sharedPreferences for REGISTER
     //public Register register; // REGISTER for current profile, read from registerStore
 
-    public ProfileFull profile;
+    public Profile profile;
     public Config config;
     private static Config mConfig;
     public static Config getConfig() {
@@ -616,15 +614,6 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
             db.profileDao().add(profile);
         });
     }
-    public void profileSaveFullAsync(ProfileFull profile) {
-        AsyncTask.execute(() -> {
-            profileSaveFull(profile);
-        });
-    }
-    public void profileSaveFull(ProfileFull profileFull) {
-        db.profileDao().add(profileFull);
-        db.loginStoreDao().add(profileFull);
-    }
 
     public void profileLoadById(int id) {
         profileLoadById(id, false);
@@ -638,7 +627,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
             return;
         }*/
         if (profile == null || profile.getId() != id) {
-            profile = db.profileDao().getFullByIdNow(id);
+            profile = db.profileDao().getByIdNow(id);
             /*if (profile == null) {
                 profileLoadById(id);
                 return;
@@ -656,12 +645,6 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
                 profileId = -1;
             }
         }
-    }
-
-    public void profileLoad(ProfileFull profile) {
-        MainActivity.Companion.setUseOldMessages(profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK && appConfig.mobidziennikOldMessages == 1);
-        this.profile = profile;
-        profileId = profile.getId();
     }
 
     /*public void profileRemove(int id)
@@ -703,11 +686,13 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
     }*/
 
     public int profileFirstId() {
-        return db.profileDao().getFirstId();
+        Integer id = db.profileDao().getFirstId();
+        return id == null ? 1 : id;
     }
 
     public int profileLastId() {
-        return db.profileDao().getLastId();
+        Integer id = db.profileDao().getLastId();
+        return id == null ? 1 : id;
     }
 
 

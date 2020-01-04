@@ -110,7 +110,7 @@ class LibrusMessagesGetMessage(
                             messageObject.id
                     )
 
-                    messageRecipientObject.fullName = profile.accountNameLong ?: profile.studentNameLong ?: ""
+                    messageRecipientObject.fullName = profile.accountName ?: profile.studentNameLong ?: ""
 
                     messageRecipientList.add(messageRecipientObject)
                 }

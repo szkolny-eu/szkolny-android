@@ -14,6 +14,9 @@ public class ItemGradesSubjectModel {
     public List<GradeFull> grades1;
     public List<GradeFull> grades2;
 
+    public int colorMode;
+    public int yearAverageMode;
+
     public int semester1Unread = 0;
     public int semester2Unread = 0;
 

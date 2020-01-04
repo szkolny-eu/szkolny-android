@@ -36,7 +36,7 @@ class VulcanApiSendMessage(
             }
         }
         val params = mapOf(
-                "NadawcaWiadomosci" to (profile?.accountNameLong ?: profile?.studentNameLong ?: ""),
+                "NadawcaWiadomosci" to (profile?.accountName ?: profile?.studentNameLong ?: ""),
                 "Tytul" to subject,
                 "Tresc" to text,
                 "Adresaci" to recipientsArray,

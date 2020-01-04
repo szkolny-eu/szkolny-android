@@ -32,6 +32,8 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
         }
     }
 
+    override fun generateUserCode() = "$schoolName:$loginEmail:${studentId?.crc32()}"
+
     private var mLoginEmail: String? = null
     var loginEmail: String?
         get() { mLoginEmail = mLoginEmail ?: loginStore.getLoginData("email", null); return mLoginEmail }

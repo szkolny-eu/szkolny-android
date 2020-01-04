@@ -491,7 +491,7 @@ public class GradesSubjectAdapter extends ArrayAdapter<ItemGradesSubjectModel> i
                         continue;
 
                     int gradeColor;
-                    if (model.profile.getGradeColorMode() == COLOR_MODE_DEFAULT) {
+                    if (model.colorMode == COLOR_MODE_DEFAULT) {
                         gradeColor = grade.color;
                     } else {
                         gradeColor = Colors.gradeToColor(grade);
@@ -581,13 +581,13 @@ public class GradesSubjectAdapter extends ArrayAdapter<ItemGradesSubjectModel> i
                             }
                             arguments.putInt("semester", 1);
                             //d(TAG, "Model is " + model);
-                            switch (model.profile.getYearAverageMode()) {
+                            switch (model.yearAverageMode) {
                                 case YEAR_1_SEM_2_AVG:
                                 case YEAR_1_SEM_2_SEM:
                                     arguments.putInt("averageMode", -1);
                                     break;
                                 default:
-                                    arguments.putInt("averageMode", model.semester2Final == null && model.profile.getYearAverageMode() == YEAR_1_AVG_2_SEM ? -1 : model.profile.getYearAverageMode());
+                                    arguments.putInt("averageMode", model.semester2Final == null && model.yearAverageMode == YEAR_1_AVG_2_SEM ? -1 : model.yearAverageMode);
                                     arguments.putFloat("yearAverageBefore", model.yearAverage);
                                     arguments.putFloat("gradeSumOtherSemester", model.gradeSumSemester2);
                                     arguments.putFloat("gradeCountOtherSemester", model.gradeCountSemester2);
@@ -607,13 +607,13 @@ public class GradesSubjectAdapter extends ArrayAdapter<ItemGradesSubjectModel> i
                             }
                             arguments.putInt("semester", 2);
                             //d(TAG, "Model is " + model);
-                            switch (model.profile.getYearAverageMode()) {
+                            switch (model.yearAverageMode) {
                                 case YEAR_1_AVG_2_SEM:
                                 case YEAR_1_SEM_2_SEM:
                                     arguments.putInt("averageMode", -1);
                                     break;
                                 default:
-                                    arguments.putInt("averageMode", model.semester1Final == null && model.profile.getYearAverageMode() == YEAR_1_SEM_2_AVG ? -1 : model.profile.getYearAverageMode());
+                                    arguments.putInt("averageMode", model.semester1Final == null && model.yearAverageMode == YEAR_1_SEM_2_AVG ? -1 : model.yearAverageMode);
                                     arguments.putFloat("yearAverageBefore", model.yearAverage);
                                     arguments.putFloat("gradeSumOtherSemester", model.gradeSumSemester1);
                                     arguments.putFloat("gradeCountOtherSemester", model.gradeCountSemester1);

@@ -68,7 +68,7 @@ class MobidziennikWebGetMessage(
                         message.id
                 )
 
-                recipient.fullName = profile?.accountNameLong ?: profile?.studentNameLong ?: ""
+                recipient.fullName = profile?.accountName ?: profile?.studentNameLong ?: ""
 
                 messageRecipientList.add(recipient)
             } else {

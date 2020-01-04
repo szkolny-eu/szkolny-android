@@ -10,13 +10,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
-import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
 import pl.szczodrzynski.edziennik.databinding.FragmentMessagesBinding
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -129,26 +125,6 @@ class MessagesFragment : Fragment() {
                     }
                     .show()
         }*/
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncProfileFinishedEvent(event: ApiTaskFinishedEvent) {
-        if (event.profileId == App.profileId) {
-            app.profileSaveFullAsync(app.profile)
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSyncErrorEvent(event: ApiTaskErrorEvent) {
-        app.profile.removeStudentData("accountPassword")
-        app.profileSaveFullAsync(app.profile)
-        /*MaterialDialog.Builder(activity)
-                .title(R.string.login_failed)
-                .content(R.string.login_failed_text)
-                .positiveText(R.string.ok)
-                .neutralText(R.string.report)
-                .onNeutral { dialog2, which1 -> app.apiEdziennik.guiReportError(getActivity(), error, null) }
-                .show()*/
     }
 
     override fun onStart() {

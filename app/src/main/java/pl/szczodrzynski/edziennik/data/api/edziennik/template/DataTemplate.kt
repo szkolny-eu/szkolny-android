@@ -6,10 +6,10 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.template
 
 import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
@@ -39,6 +39,8 @@ class DataTemplate(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
         if (isApiLoginValid())
             loginMethods += LOGIN_METHOD_TEMPLATE_API
     }
+
+    override fun generateUserCode() = "TEMPLATE:DO_NOT_USE"
 
     /*   __          __  _
          \ \        / / | |

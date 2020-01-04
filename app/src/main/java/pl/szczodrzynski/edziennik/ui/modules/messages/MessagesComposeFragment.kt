@@ -173,7 +173,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             LoginStore.LOGIN_TYPE_MOBIDZIENNIK -> 100
             LoginStore.LOGIN_TYPE_LIBRUS -> 150
             LoginStore.LOGIN_TYPE_VULCAN -> 200
-            LoginStore.LOGIN_TYPE_IUCZNIOWIE -> 180
+            LoginStore.LOGIN_TYPE_IDZIENNIK -> 180
             LoginStore.LOGIN_TYPE_EDUDZIENNIK -> 0
             else -> -1
         }
@@ -181,7 +181,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             LoginStore.LOGIN_TYPE_MOBIDZIENNIK -> -1
             LoginStore.LOGIN_TYPE_LIBRUS -> 20000
             LoginStore.LOGIN_TYPE_VULCAN -> -1
-            LoginStore.LOGIN_TYPE_IUCZNIOWIE -> 1983
+            LoginStore.LOGIN_TYPE_IDZIENNIK -> 1983
             LoginStore.LOGIN_TYPE_EDUDZIENNIK -> 0
             else -> -1
         }
@@ -345,7 +345,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
                 if (arguments?.getString("type") == "reply") {
                     // add greeting text
-                    span.replace(0, 0, "\n\nZ poważaniem,\n${app.profile.accountNameLong
+                    span.replace(0, 0, "\n\nZ poważaniem,\n${app.profile.accountName
                             ?: app.profile.studentNameLong ?: ""}\n\n\n")
 
                     teachers.firstOrNull { it.id == msg.senderId }?.let { teacher ->
@@ -415,7 +415,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         if (b.textLayout.counterMaxLength != -1 && b.text.length() > b.textLayout.counterMaxLength)
             return
 
-        var textHtml = if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN && app.profile.loginStoreType != LoginStore.LOGIN_TYPE_IUCZNIOWIE) {
+        var textHtml = if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN && app.profile.loginStoreType != LoginStore.LOGIN_TYPE_IDZIENNIK) {
             HtmlCompat.toHtml(SpannableString(text), HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
                     .replace("\n", "")
                     .replace(" dir=\"ltr\"", "")
@@ -458,7 +458,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         EventBus.getDefault().removeStickyEvent(event)
 
         if (event.message == null) {
-            activity.errorSnackbar.addError(ApiError(TAG, ERROR_MESSAGE_NOT_SENT)).show()
+            activity.error(ApiError(TAG, ERROR_MESSAGE_NOT_SENT))
             return
         }
 

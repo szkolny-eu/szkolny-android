@@ -24,7 +24,7 @@ class LibrusApiMe(override val data: DataLibrus,
             data.isPremium = account?.getBoolean("IsPremium") == true || account?.getBoolean("IsPremiumDemo") == true
 
             val isParent = account?.getInt("GroupId") == 5
-            data.profile?.accountNameLong =
+            data.profile?.accountName =
                     if (isParent)
                         buildFullName(account?.getString("FirstName"), account?.getString("LastName"))
                     else null

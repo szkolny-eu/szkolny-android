@@ -23,7 +23,7 @@ import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
 // vulcan
 // mobireg
 
-const val SYNERGIA_API_ENABLED = true
+const val SYNERGIA_API_ENABLED = false
 
 
 

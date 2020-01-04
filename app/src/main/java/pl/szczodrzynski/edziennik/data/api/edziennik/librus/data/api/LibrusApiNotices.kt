@@ -26,7 +26,7 @@ class LibrusApiNotices(override val data: DataLibrus,
         }
 
         apiGet(TAG, "Notes") { json ->
-            val notes = json.getJsonArray("Notes").asJsonObjectList()
+            val notes = json.getJsonArray("Notes")?.asJsonObjectList()
 
             notes?.forEach { note ->
                 val id = note.getLong("Id") ?: return@forEach

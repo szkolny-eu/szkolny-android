@@ -41,6 +41,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.data.api.events.*
+import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
@@ -321,6 +322,10 @@ class MainActivity : AppCompatActivity() {
                 removeAllItems()
                 toggleGroupEnabled = false
                 textInputEnabled = false
+                onCloseListener = {
+                    if (!app.config.ui.bottomSheetOpened)
+                        app.config.ui.bottomSheetOpened = true
+                }
             }
 
             drawer.apply {
@@ -328,7 +333,6 @@ class MainActivity : AppCompatActivity() {
 
                 drawerProfileListEmptyListener = {
                     app.config.loginFinished = false
-                    app.saveConfig("loginFinished")
                     profileListEmptyListener()
                 }
                 drawerItemSelectedListener = { id, position, drawerItem ->
@@ -368,10 +372,8 @@ class MainActivity : AppCompatActivity() {
         if (!profileListEmpty) {
             handleIntent(intent?.extras)
         }
-        app.db.profileDao().allFull.observe(this, Observer { profiles ->
-            // TODO fix weird -1 profiles ???
-            profiles.removeAll { it.id < 0 }
-            drawer.setProfileList(profiles)
+        app.db.profileDao().all.observe(this, Observer { profiles ->
+            drawer.setProfileList(profiles.filter { it.id >= 0 }.toMutableList())
             if (profileListEmpty) {
                 profileListEmpty = false
                 handleIntent(intent?.extras)
@@ -505,13 +507,6 @@ class MainActivity : AppCompatActivity() {
                     .withIcon(CommunityMaterial.Icon.cmd_android_studio)
                     .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_DEBUG) })
         }
-
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onDestroy() {
-        EventBus.getDefault().unregister(this)
-        super.onDestroy()
     }
 
     var profileListEmptyListener = {
@@ -520,9 +515,6 @@ class MainActivity : AppCompatActivity() {
     private var profileSettingClickListener = { id: Int, view: View? ->
         when (id) {
             DRAWER_PROFILE_ADD_NEW -> {
-                LoginActivity.privacyPolicyAccepted = true
-                // else it would try to navigateUp onBackPressed, which it can't do. There is no parent fragment
-                LoginActivity.firstCompleted = false
                 profileListEmptyListener()
             }
             DRAWER_PROFILE_SYNC_ALL -> {
@@ -601,6 +593,7 @@ class MainActivity : AppCompatActivity() {
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onApiTaskErrorEvent(event: ApiTaskErrorEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         navView.toolbar.apply {
             subtitleFormat = R.string.toolbar_subtitle
             subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
@@ -754,10 +747,12 @@ class MainActivity : AppCompatActivity() {
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_MAIN)
         registerReceiver(intentReceiver, filter)
+        EventBus.getDefault().register(this)
         super.onResume()
     }
     override fun onPause() {
         unregisterReceiver(intentReceiver)
+        EventBus.getDefault().unregister(this)
         super.onPause()
     }
 
@@ -817,7 +812,6 @@ class MainActivity : AppCompatActivity() {
 
             this.runOnUiThread {
                 if (app.profile == null) {
-                    LoginActivity.firstCompleted = false
                     if (app.config.loginFinished) {
                         // this shouldn't run
                         profileListEmptyListener()
@@ -1101,6 +1095,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun error(error: ApiError) = errorSnackbar.addError(error).show()
     fun snackbar(text: String, actionText: String? = null, onClick: (() -> Unit)? = null) = mainSnackbar.snackbar(text, actionText, onClick)
     fun snackbarDismiss() = mainSnackbar.dismiss()
 }

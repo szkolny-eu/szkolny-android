@@ -69,6 +69,7 @@ fun JsonObject?.getString(key: String): String? = get(key)?.let { if (it.isJsonN
 fun JsonObject?.getInt(key: String): Int? = get(key)?.let { if (it.isJsonNull) null else it.asInt }
 fun JsonObject?.getLong(key: String): Long? = get(key)?.let { if (it.isJsonNull) null else it.asLong }
 fun JsonObject?.getFloat(key: String): Float? = get(key)?.let { if(it.isJsonNull) null else it.asFloat }
+fun JsonObject?.getChar(key: String): Char? = get(key)?.let { if(it.isJsonNull) null else it.asCharacter }
 fun JsonObject?.getJsonObject(key: String): JsonObject? = get(key)?.let { if (it.isJsonNull) null else it.asJsonObject }
 fun JsonObject?.getJsonArray(key: String): JsonArray? = get(key)?.let { if (it.isJsonNull) null else it.asJsonArray }
 
@@ -77,10 +78,23 @@ fun JsonObject?.getString(key: String, defaultValue: String): String = get(key)?
 fun JsonObject?.getInt(key: String, defaultValue: Int): Int = get(key)?.let { if (it.isJsonNull) defaultValue else it.asInt } ?: defaultValue
 fun JsonObject?.getLong(key: String, defaultValue: Long): Long = get(key)?.let { if (it.isJsonNull) defaultValue else it.asLong } ?: defaultValue
 fun JsonObject?.getFloat(key: String, defaultValue: Float): Float = get(key)?.let { if(it.isJsonNull) defaultValue else it.asFloat } ?: defaultValue
+fun JsonObject?.getChar(key: String, defaultValue: Char): Char = get(key)?.let { if(it.isJsonNull) defaultValue else it.asCharacter } ?: defaultValue
 fun JsonObject?.getJsonObject(key: String, defaultValue: JsonObject): JsonObject = get(key)?.let { if (it.isJsonNull) defaultValue else it.asJsonObject } ?: defaultValue
 fun JsonObject?.getJsonArray(key: String, defaultValue: JsonArray): JsonArray = get(key)?.let { if (it.isJsonNull) defaultValue else it.asJsonArray } ?: defaultValue
 
-fun JsonArray?.asJsonObjectList() = this?.map { it.asJsonObject }
+operator fun JsonObject.set(key: String, value: JsonElement) = this.add(key, value)
+operator fun JsonObject.set(key: String, value: Boolean) = this.addProperty(key, value)
+operator fun JsonObject.set(key: String, value: String?) = this.addProperty(key, value)
+operator fun JsonObject.set(key: String, value: Number) = this.addProperty(key, value)
+operator fun JsonObject.set(key: String, value: Char) = this.addProperty(key, value)
+
+operator fun Profile.set(key: String, value: JsonElement) = this.studentData.add(key, value)
+operator fun Profile.set(key: String, value: Boolean) = this.studentData.addProperty(key, value)
+operator fun Profile.set(key: String, value: String?) = this.studentData.addProperty(key, value)
+operator fun Profile.set(key: String, value: Number) = this.studentData.addProperty(key, value)
+operator fun Profile.set(key: String, value: Char) = this.studentData.addProperty(key, value)
+
+fun JsonArray.asJsonObjectList() = this.map { it.asJsonObject }
 
 fun CharSequence?.isNotNullNorEmpty(): Boolean {
     return this != null && this.isNotEmpty()
@@ -233,10 +247,7 @@ fun colorFromCssName(name: String): Int {
     }.toInt()
 }
 
-fun MutableList<Profile>.filterOutArchived(): MutableList<Profile> {
-    this.removeAll { it.archived }
-    return this
-}
+fun List<Profile>.filterOutArchived() = this.filter { !it.archived }
 
 fun Activity.isStoragePermissionGranted(): Boolean {
     return if (Build.VERSION.SDK_INT >= 23) {

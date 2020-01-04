@@ -39,7 +39,7 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
                     "LoginId" to data.studentLoginId,
                     "IdUczen" to data.studentId
             )) { json, _ ->
-                json.getJsonArray("Data").asJsonObjectList()?.forEach { message ->
+                json.getJsonArray("Data")?.asJsonObjectList()?.forEach { message ->
                     val id = message.getLong("WiadomoscId") ?: return@forEach
                     val subject = message.getString("Tytul") ?: ""
                     val body = message.getString("Tresc") ?: ""

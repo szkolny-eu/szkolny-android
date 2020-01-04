@@ -22,6 +22,10 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
     private val profileList = mutableListOf<Profile>()
 
     init {
+        val loginStoreId = data.loginStore.id
+        val loginStoreType = LOGIN_TYPE_LIBRUS
+        var firstProfileId = loginStoreId
+
         if (data.loginStore.mode == LOGIN_MODE_LIBRUS_EMAIL) {
             // email login: use Portal for account list
             LibrusLoginPortal(data) {
@@ -55,18 +59,24 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                         val login = account.getString("login") ?: continue
                         val token = account.getString("accessToken") ?: continue
                         val tokenTime = (accountDataTime ?: 0) + DAY
-                        val name = account.getString("studentName")?.fixName() ?: ""
+                        val studentNameLong = account.getString("studentName").fixName()
+                        val studentNameShort = studentNameLong.getShortName()
 
-                        val profile = Profile()
-                        profile.studentNameLong = name
-                        profile.studentNameShort = name.getShortName()
-                        profile.name = profile.studentNameLong
-                        profile.subname = data.portalEmail
-                        profile.empty = true
-                        profile.putStudentData("accountId", id)
-                        profile.putStudentData("accountLogin", login)
-                        profile.putStudentData("accountToken", token)
-                        profile.putStudentData("accountTokenTime", tokenTime)
+                        val profile = Profile(
+                                firstProfileId++,
+                                loginStoreId,
+                                loginStoreType,
+                                studentNameLong,
+                                data.portalEmail,
+                                studentNameLong,
+                                studentNameShort,
+                                null
+                        ).apply {
+                            studentData["accountId"] = id
+                            studentData["accountLogin"] = login
+                            studentData["accountToken"] = token
+                            studentData["accountTokenTime"] = tokenTime
+                        }
                         profileList.add(profile)
                     }
 
@@ -80,32 +90,36 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
             LibrusLoginApi(data) {
                 api.apiGet(TAG, "Me") { json ->
 
-                    val profile = Profile()
-
                     val me = json.getJsonObject("Me")
                     val account = me?.getJsonObject("Account")
                     val user = me?.getJsonObject("User")
 
-                    profile.putStudentData("isPremium", account?.getBoolean("IsPremium") == true || account?.getBoolean("IsPremiumDemo") == true)
+                    val login = account.getString("Login")
+                    val isParent = account?.getInt("GroupId") in 5..6
 
-                    val isParent = account?.getInt("GroupId") == 5
-                    profile.accountNameLong =
-                            if (isParent)
-                                buildFullName(account?.getString("FirstName"), account?.getString("LastName"))
-                            else null
+                    val studentNameLong = buildFullName(user?.getString("FirstName"), user?.getString("LastName"))
+                    val studentNameShort = studentNameLong.getShortName()
+                    val accountNameLong = if (isParent)
+                        buildFullName(account?.getString("FirstName"), account?.getString("LastName"))
+                    else null
 
-                    profile.studentNameLong =
-                            buildFullName(user?.getString("FirstName"), user?.getString("LastName"))
-
-                    profile.studentNameShort = profile.studentNameLong?.getShortName()
-                    profile.name = profile.studentNameLong
-                    profile.subname = account.getString("Login")
-                    profile.empty = true
-                    profile.putStudentData("accountId", account.getInt("Id") ?: 0)
-                    profile.putStudentData("accountLogin", profile.subname)
-                    profile.putStudentData("accountToken", data.apiAccessToken)
-                    profile.putStudentData("accountRefreshToken", data.apiRefreshToken)
-                    profile.putStudentData("accountTokenTime", data.apiTokenExpiryTime)
+                    val profile = Profile(
+                            firstProfileId++,
+                            loginStoreId,
+                            loginStoreType,
+                            studentNameLong,
+                            login,
+                            studentNameLong,
+                            studentNameShort,
+                            accountNameLong
+                    ).apply {
+                        studentData["isPremium"] = account?.getBoolean("IsPremium") == true || account?.getBoolean("IsPremiumDemo") == true
+                        studentData["accountId"] = account.getInt("Id") ?: 0
+                        studentData["accountLogin"] = login
+                        studentData["accountToken"] = data.apiAccessToken
+                        studentData["accountTokenTime"] = data.apiTokenExpiryTime
+                        studentData["accountRefreshToken"] = data.apiRefreshToken
+                    }
                     profileList.add(profile)
 
                     EventBus.getDefault().post(FirstLoginFinishedEvent(profileList, data.loginStore))

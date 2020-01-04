@@ -27,7 +27,7 @@ class LibrusApiTeacherFreeDays(override val data: DataLibrus,
         }
 
         apiGet(TAG, "TeacherFreeDays") { json ->
-            val teacherAbsences = json.getJsonArray("TeacherFreeDays").asJsonObjectList()
+            val teacherAbsences = json.getJsonArray("TeacherFreeDays")?.asJsonObjectList()
 
             teacherAbsences?.forEach { teacherAbsence ->
                 val id = teacherAbsence.getLong("Id") ?: return@forEach

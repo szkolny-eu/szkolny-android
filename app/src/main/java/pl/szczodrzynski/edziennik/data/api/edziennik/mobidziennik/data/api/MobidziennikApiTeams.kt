@@ -53,6 +53,7 @@ class MobidziennikApiTeams(val data: DataMobidziennik, tableTeams: List<String>?
                     if (team.type == 1) {
                         data.profile?.studentNumber = studentNumber
                         data.teamClass = team
+                        data.profile?.studentClassName = team.name
                     }
                     data.teamList.put(teamId, team)
                 }

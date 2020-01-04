@@ -74,7 +74,7 @@ public class GradeDetailsDialog {
         b.setGrade(grade);
 
         int gradeColor;
-        if (app.profile.getGradeColorMode() == COLOR_MODE_DEFAULT) {
+        if (App.getConfig().getFor(profileId).getGrades().getColorMode() == COLOR_MODE_DEFAULT) {
             gradeColor = grade.color;
         }
         else {

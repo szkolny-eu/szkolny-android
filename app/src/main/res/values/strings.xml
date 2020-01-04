@@ -416,8 +416,7 @@
     <string name="login_summary_unregister_title">Na pewno wyłączyć rejestrację?</string>
     <string name="login_sync_error_subtitle">Podczas synchronizacji wystąpił błąd. Kliknij przycisk na dole strony, aby go zgłosić.\n\nProfile zostały zapisane, tak więc <b>aplikacja powinna działać poprawnie</b>. W razie co, możesz skorzystać z opcji Pomoc i opinie w menu.\n</string>
     <string name="login_sync_error_title">Błąd synchronizacji</string>
-    <string name="login_sync_subtitle_1_format"><![CDATA[Synchronizuję profil <b>%s</b>]]></string>
-    <string name="login_sync_subtitle_2_format" translatable="false">%s…</string>
+    <string name="login_sync_subtitle_1_format">Synchronizuję profil</string>
     <string name="login_sync_title">Synchronizacja…</string>
     <string name="login_vulcan_help_register">Rejestracja urządzenia:</string>
     <string name="login_vulcan_help_subtitle">Zaloguj się w wersji komputerowej dziennika Vulcan, a następnie wybierz opcję Dostęp mobilny. Kliknij Zarejestruj urządzenie mobilne. Możesz wpisać otrzymane dane lub zeskanować kod QR i wpisać sam kod PIN.</string>
@@ -1147,4 +1146,6 @@
     <string name="messages_reply">Odpowiedz</string>
     <string name="error_unknown_format">Kod błędu: %d (w %s)</string>
     <string name="messages_compose_recipient_exists">Ten odbiorca został już wybrany</string>
+    <string name="login_account_no_students">To konto nie ma żadnych uczniów</string>
+    <string name="login_account_no_students_text">Do tego konta nie ma przypisanego żadnego ucznia, dlatego zalogowanie nie jest możliwe.\n\nPrzypisz ucznia na stronie swojego e-dziennika lub zaloguj się kontem, które ma przypisanego ucznia.</string>
 </resources>

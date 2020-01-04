@@ -51,6 +51,8 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         }
     }
 
+    override fun generateUserCode() = "$schoolName:$apiLogin"
+
     fun getColor(id: Int?): Int {
         return when (id) {
              1 -> 0xFFF0E68C

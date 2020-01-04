@@ -20,7 +20,7 @@ class LibrusApiAttendanceTypes(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "Attendances/Types") { json ->
-            val attendanceTypes = json.getJsonArray("Types").asJsonObjectList()
+            val attendanceTypes = json.getJsonArray("Types")?.asJsonObjectList()
 
             attendanceTypes?.forEach { attendanceType ->
                 val id = attendanceType.getLong("Id") ?: return@forEach

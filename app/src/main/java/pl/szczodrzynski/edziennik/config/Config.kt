@@ -49,6 +49,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mLoginFinished = mLoginFinished ?: values.get("loginFinished", false); return mLoginFinished ?: false }
         set(value) { set("loginFinished", value); mLoginFinished = value }
 
+    private var mPrivacyPolicyAccepted: Boolean? = null
+    var privacyPolicyAccepted: Boolean
+        get() { mPrivacyPolicyAccepted = mPrivacyPolicyAccepted ?: values.get("privacyPolicyAccepted", false); return mPrivacyPolicyAccepted ?: false }
+        set(value) { set("privacyPolicyAccepted", value); mPrivacyPolicyAccepted = value }
+
     private var mDevModePassword: String? = null
     var devModePassword: String?
         get() { mDevModePassword = mDevModePassword ?: values.get("devModePassword", null as String?); return mDevModePassword }

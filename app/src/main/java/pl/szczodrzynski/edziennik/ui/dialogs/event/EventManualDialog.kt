@@ -21,7 +21,6 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.api.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
@@ -609,7 +608,7 @@ class EventManualDialog(
         )
 
         launch {
-            val profile = app.db.profileDao().getFullByIdNow(profileId)
+            val profile = app.db.profileDao().getByIdNow(profileId)
 
             if (!share && !editingShared) {
                 Toast.makeText(activity, "Save without sharing", Toast.LENGTH_SHORT).show()
@@ -643,7 +642,7 @@ class EventManualDialog(
                 Toast.makeText(activity, "Share/update own event", Toast.LENGTH_SHORT).show()
 
                 eventObject.apply {
-                    sharedBy = profile?.usernameId
+                    sharedBy = profile?.userCode
                     sharedByName = profile?.studentNameLong
                 }
 

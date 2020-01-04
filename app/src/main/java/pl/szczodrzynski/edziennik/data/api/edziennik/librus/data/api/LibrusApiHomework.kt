@@ -22,7 +22,7 @@ class LibrusApiHomework(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "HomeWorkAssignments") { json ->
-            val homeworkList = json.getJsonArray("HomeWorkAssignments").asJsonObjectList()
+            val homeworkList = json.getJsonArray("HomeWorkAssignments")?.asJsonObjectList()
 
             homeworkList?.forEach { homework ->
                 val id = homework.getLong("Id") ?: return@forEach

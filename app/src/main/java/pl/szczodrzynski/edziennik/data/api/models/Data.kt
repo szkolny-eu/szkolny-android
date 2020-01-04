@@ -46,7 +46,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLException
 
-open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
+abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
     companion object {
         private const val TAG = "Data"
     }
@@ -221,6 +221,7 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             return // return on first login
 
         profile.empty = false
+        profile.userCode = generateUserCode()
 
         db.profileDao().add(profile)
         db.loginStoreDao().add(loginStore)
@@ -230,30 +231,17 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
                 name = profile.name
                 subname = profile.subname
                 syncEnabled = profile.syncEnabled
-                loggedIn = profile.loggedIn
                 empty = profile.empty
                 archived = profile.archived
                 studentNameLong = profile.studentNameLong
                 studentNameShort = profile.studentNameShort
                 studentNumber = profile.studentNumber
-                studentData = profile.studentData
-                accountNameLong = profile.accountNameLong
-                yearAverageMode = profile.yearAverageMode
-                currentSemester = profile.currentSemester
-                attendancePercentage = profile.attendancePercentage
+                accountName = profile.accountName
                 dateSemester1Start = profile.dateSemester1Start
                 dateSemester2Start = profile.dateSemester2Start
                 dateYearEnd = profile.dateYearEnd
-                luckyNumberEnabled = profile.luckyNumberEnabled
-                luckyNumber = profile.luckyNumber
-                luckyNumberDate = profile.luckyNumberDate
-                lastFullSync = profile.lastFullSync
                 lastReceiversSync = profile.lastReceiversSync
             }
-        }
-        if (loginStore.id == app.profile?.loginStoreId) {
-            app.loginStore = loginStore.data
-            app.profile.loginStoreData = loginStore.data
         }
 
         // always present and not empty, during every sync
@@ -371,6 +359,8 @@ open class Data(val app: App, val profile: Profile?, val loginStore: LoginStore)
             endpointTimers.add(this)
         }
     }
+
+    abstract fun generateUserCode(): String
 
     fun cancel() {
         d("Data", "Cancelled")

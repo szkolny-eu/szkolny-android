@@ -17,7 +17,6 @@ import im.wangchao.mhttp.callback.JsonCallbackHandler;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_ENABLED;
@@ -33,8 +32,8 @@ public class ServerRequest {
         this(app, url, source, app.profile);
     }
 
-    public ServerRequest(App app, String url, String source, ProfileFull profileFull) {
-        this(app, url, source, profileFull, profileFull == null ? -1 : profileFull.getLoginStoreType(), profileFull == null ? "" : profileFull.getUsernameId());
+    public ServerRequest(App app, String url, String source, Profile profileFull) {
+        this(app, url, source, profileFull, profileFull == null ? -1 : profileFull.getLoginStoreType(), profileFull == null ? "" : profileFull.getUserCode());
     }
 
     public ServerRequest(App app, String url, String source, Profile profile, int loginStoreType, String usernameId) {

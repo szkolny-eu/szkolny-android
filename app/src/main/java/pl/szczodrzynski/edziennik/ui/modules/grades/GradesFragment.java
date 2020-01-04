@@ -71,7 +71,7 @@ public class GradesFragment extends Fragment {
     private boolean sortModeChanged = false;
 
     private String getRegisterCardAverageModeSubText() {
-        switch (app.profile.getYearAverageMode()) {
+        switch (App.getConfig().forProfile().getGrades().getYearAverageMode()) {
             default:
             case YEAR_1_AVG_2_AVG:
                 return getString(R.string.settings_register_avg_mode_0_short);
@@ -184,9 +184,8 @@ public class GradesFragment extends Fragment {
                                     .title(getString(R.string.settings_register_avg_mode_dialog_title))
                                     .content(getString(R.string.settings_register_avg_mode_dialog_text))
                                     .items(modeNames)
-                                    .itemsCallbackSingleChoice(modeIds.indexOf(app.profile.getYearAverageMode()), (dialog, itemView, which, text) -> {
-                                        app.profile.setYearAverageMode(modeIds.get(which));
-                                        app.profileSaveAsync();
+                                    .itemsCallbackSingleChoice(modeIds.indexOf(App.getConfig().forProfile().getGrades().getYearAverageMode()), (dialog, itemView, which, text) -> {
+                                        App.getConfig().forProfile().getGrades().setYearAverageMode(modeIds.get(which));
                                         activity.reloadTarget();
                                         return true;
                                     })
@@ -253,11 +252,16 @@ public class GradesFragment extends Fragment {
             for (GradeFull grade: grades) {
                 ItemGradesSubjectModel model = ItemGradesSubjectModel.searchModelBySubjectId(subjectList, grade.subjectId);
                 if (model == null) {
-                    model = new ItemGradesSubjectModel(app.profile, new Subject(App.profileId, grade.subjectId, grade.subjectLongName, grade.subjectShortName), new ArrayList<>(), new ArrayList<>());//ItemGradesSubjectModel.searchModelBySubjectId(subjectList, grade.subjectId);
+                    model = new ItemGradesSubjectModel(app.profile,
+                            new Subject(App.profileId, grade.subjectId, grade.subjectLongName, grade.subjectShortName),
+                            new ArrayList<>(),
+                            new ArrayList<>());
                     subjectList.add(model);
                     if (model.subject != null && model.subject.id == finalExpandSubjectId) {
                         model.expandView = true;
                     }
+                    model.colorMode = App.getConfig().forProfile().getGrades().getColorMode();
+                    model.yearAverageMode = App.getConfig().forProfile().getGrades().getYearAverageMode();
                 }
                 if (!grade.seen && grade.semester == 1) {
                     model.semester1Unread++;
@@ -376,7 +380,7 @@ public class GradesFragment extends Fragment {
                 else if (!model.isBehaviourSubject && model.isNormalSubject) {
                     // applies for normal grades & normal+descriptive grades
                     // calculate the normal grade average based on the user's setting
-                    switch (app.profile.getYearAverageMode()) {
+                    switch (App.getConfig().forProfile().getGrades().getYearAverageMode()) {
                         case YEAR_1_AVG_2_AVG:
                             model.yearAverage = (model.semester1Average + model.semester2Average) / 2;
                             break;

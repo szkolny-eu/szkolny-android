@@ -18,7 +18,7 @@ class LibrusApiUsers(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "Users") { json ->
-            val users = json.getJsonArray("Users").asJsonObjectList()
+            val users = json.getJsonArray("Users")?.asJsonObjectList()
 
             users?.forEach { user ->
                 val id = user.getLong("Id") ?: return@forEach

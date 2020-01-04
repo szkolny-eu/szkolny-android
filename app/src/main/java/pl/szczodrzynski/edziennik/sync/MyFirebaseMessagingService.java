@@ -22,7 +22,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType;
 import pl.szczodrzynski.edziennik.data.db.modules.feedback.FeedbackMessage;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull;
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
 import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment;
@@ -88,11 +88,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (studentIdStr != null) {
             int studentId = strToInt(studentIdStr);
             AsyncTask.execute(() -> {
-                List<ProfileFull> profileList = app.db.profileDao().getAllFullNow();
+                List<Profile> profileList = app.db.profileDao().getAllNow();
 
-                ProfileFull profile = null;
+                Profile profile = null;
 
-                for (ProfileFull profileFull: profileList) {
+                for (Profile profileFull: profileList) {
                     if (profileFull.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK
                             && studentId == profileFull.getStudentData("studentId", -1)) {
                         profile = profileFull;
@@ -185,7 +185,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             .withType(TYPE_SERVER_MESSAGE)
                             .withFragmentRedirect(MainActivity.DRAWER_ITEM_NOTIFICATIONS)
                     );
-                    app.notifier.postAll(null);
+                    app.notifier.postAll();
                     app.saveConfig("notifications");
                     break;
                 case "feedback_message_from_dev":
@@ -212,7 +212,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                     .withType(TYPE_FEEDBACK_MESSAGE)
                                     .withFragmentRedirect(MainActivity.TARGET_FEEDBACK)
                             );
-                            app.notifier.postAll(null);
+                            app.notifier.postAll();
                             app.saveConfig("notifications");
                         }
                     });
@@ -234,7 +234,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             .withType(TYPE_FEEDBACK_MESSAGE)
                             .withFragmentRedirect(MainActivity.TARGET_FEEDBACK)
                     );
-                    app.notifier.postAll(null);
+                    app.notifier.postAll();
                     app.saveConfig("notifications");
                     break;
                 case "ping":
@@ -254,8 +254,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         while (teamCode != null || teamUnshareCode != null) {
                             d(TAG, "Got an event for teamCode " + teamCode + " and teamUnshareCode " + teamUnshareCode);
                             // get the target Profile by the corresponding teamCode
-                            List<ProfileFull> profiles = app.db.profileDao().getByTeamCodeNowWithRegistration(teamCode == null ? teamUnshareCode : teamCode);
-                            for (ProfileFull profile : profiles) {
+                            List<Profile> profiles = app.db.profileDao().getByTeamCodeNowWithRegistration(teamCode == null ? teamUnshareCode : teamCode);
+                            for (Profile profile : profiles) {
                                 d(TAG, "Matched profile " + profile.getName());
                                 if (teamCode != null) {
                                     // SHARING
@@ -276,7 +276,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                                         // TODO? i guess
                                         Event oldEvent = app.db.eventDao().getByIdNow(profile.getId(), event.id);
-                                        if (event.sharedBy != null && event.sharedBy.equals(profile.getUsernameId())) {
+                                        if (event.sharedBy != null && event.sharedBy.equals(profile.getUserCode())) {
                                             d(TAG, "Shared by self! Changing name");
                                             event.sharedBy = "self";
                                             event.sharedByName = profile.getStudentNameLong();
@@ -318,7 +318,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 teamUnshareCode = null;
                             }
                         }
-                        app.notifier.postAll(null);
+                        app.notifier.postAll();
                         app.saveConfig();
                     });
                     break;

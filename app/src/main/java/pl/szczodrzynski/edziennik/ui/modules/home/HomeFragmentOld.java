@@ -51,7 +51,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
-import pl.szczodrzynski.edziennik.databinding.CardLuckyNumberBinding;
 import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeOldBinding;
 import pl.szczodrzynski.edziennik.receivers.BootReceiver;
@@ -238,24 +237,6 @@ public class HomeFragmentOld extends Fragment {
                     }
                 }));
             }
-        }
-
-        if (app.profile.getLuckyNumberEnabled()
-                && app.profile.getLuckyNumber() != -1
-                && app.profile.getLuckyNumberDate() != null && app.profile.getLuckyNumberDate().getValue() == Date.getToday().getValue()) {
-            CardLuckyNumberBinding b;
-            b = DataBindingUtil.inflate(layoutInflater, R.layout.card_lucky_number, insertPoint, false);
-            insertPoint.addView(b.getRoot());
-
-            b.cardLuckyNumberTitle.setText(getString(R.string.card_lucky_number_title_format, app.profile.getLuckyNumber()));
-            if (app.profile.getStudentNumber() == -1) {
-                b.cardLuckyNumberText.setText(R.string.card_lucky_number_not_set);
-            }
-            else {
-                b.cardLuckyNumberText.setText(getString(R.string.card_lucky_number_text_format, app.profile.getStudentNumber()));
-            }
-
-            b.cardLuckyNumber.setOnClickListener(v1 -> setNumberDialog());
         }
 
         timetableCard = new HomeTimetableCardOld(app, activity, this, layoutInflater, insertPoint);
@@ -498,7 +479,7 @@ public class HomeFragmentOld extends Fragment {
                         if (ellipsized)
                             continue;
                         int gradeColor;
-                        if (app.profile.getGradeColorMode() == Profile.COLOR_MODE_DEFAULT) {
+                        if (App.getConfig().forProfile().getGrades().getColorMode() == Profile.COLOR_MODE_DEFAULT) {
                             gradeColor = grade.color;
                         }
                         else {

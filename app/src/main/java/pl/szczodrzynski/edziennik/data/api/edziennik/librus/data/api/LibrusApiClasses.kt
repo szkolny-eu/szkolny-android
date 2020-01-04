@@ -38,6 +38,8 @@ class LibrusApiClasses(override val data: DataLibrus,
                         teacherId
                 )
 
+                data.profile?.studentClassName = name
+
                 data.teamList.put(id, teamObject)
 
                 data.unitId = studentClass.getJsonObject("Unit").getLong("Id") ?: 0L

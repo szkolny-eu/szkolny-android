@@ -25,9 +25,6 @@ class IdziennikApiCurrentRegister(override val data: DataIdziennik,
     }
 
     init {
-        data.profile?.luckyNumber = -1
-        data.profile?.luckyNumberDate = null
-
         apiGet(TAG, IDZIENNIK_API_CURRENT_REGISTER) { json ->
             if (json !is JsonObject) {
                 onSuccess()
@@ -37,9 +34,9 @@ class IdziennikApiCurrentRegister(override val data: DataIdziennik,
             var nextSync = System.currentTimeMillis() + 14*DAY*1000
 
             val settings = json.getJsonObject("ustawienia")?.apply {
-                profile?.dateSemester1Start = getString("poczatekSemestru1")?.let { Date.fromY_m_d(it) }
-                profile?.dateSemester2Start = getString("koniecSemestru1")?.let { Date.fromY_m_d(it).stepForward(0, 0, 1) }
-                profile?.dateYearEnd = getString("koniecSemestru2")?.let { Date.fromY_m_d(it) }
+                getString("poczatekSemestru1")?.let { profile?.dateSemester1Start = Date.fromY_m_d(it) }
+                getString("koniecSemestru1")?.let { profile?.dateSemester2Start = Date.fromY_m_d(it).stepForward(0, 0, 1) }
+                getString("koniecSemestru2")?.let { profile?.dateYearEnd = Date.fromY_m_d(it) }
             }
 
             json.getInt("szczesliwyNumerek")?.let { luckyNumber ->

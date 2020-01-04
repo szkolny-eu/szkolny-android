@@ -121,7 +121,7 @@ class HomeGradesCard(
                             16 /*ellipsize width*/)) / 1.5f
 
             subject.grades1.onEach { grade ->
-                val gradeColor = when (app.profile.gradeColorMode) {
+                val gradeColor = when (App.getConfig().forProfile().grades.colorMode) {
                     Profile.COLOR_MODE_DEFAULT -> grade.color
                     else -> Colors.gradeToColor(grade)
                 }

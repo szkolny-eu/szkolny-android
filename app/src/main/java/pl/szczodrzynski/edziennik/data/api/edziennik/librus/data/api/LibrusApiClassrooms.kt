@@ -19,7 +19,7 @@ class LibrusApiClassrooms(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "Classrooms") { json ->
-            val classrooms = json.getJsonArray("Classrooms").asJsonObjectList()
+            val classrooms = json.getJsonArray("Classrooms")?.asJsonObjectList()
 
             classrooms?.forEach { classroom ->
                 val id = classroom.getLong("Id") ?: return@forEach

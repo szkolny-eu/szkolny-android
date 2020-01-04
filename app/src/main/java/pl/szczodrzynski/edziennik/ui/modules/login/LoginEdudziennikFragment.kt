@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kacper Ziubryniewicz 2019-12-23
+ * Copyright (c) Kuba Szczodrzyński 2020-1-3.
  */
 
 package pl.szczodrzynski.edziennik.ui.modules.login
@@ -9,89 +9,85 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_EDUDZIENNIK
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_EDUDZIENNIK
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginEdudziennikBinding
-import pl.szczodrzynski.edziennik.startCoroutineTimer
-import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class LoginEdudziennikFragment : Fragment(), CoroutineScope {
+    companion object {
+        private const val TAG = "LoginEdudziennikFragment"
+    }
 
-    private val app by lazy { activity?.application as App? }
+    private lateinit var app: App
+    private lateinit var activity: LoginActivity
+    private lateinit var b: FragmentLoginEdudziennikBinding
+    private val nav by lazy { activity.nav }
 
-    private var job = Job()
+    private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    private lateinit var b: FragmentLoginEdudziennikBinding
-
-    private lateinit var nav: NavController
-    private lateinit var errorSnackbar: ErrorSnackbar
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity?.also { activity ->
-            nav = Navigation.findNavController(activity, R.id.nav_host_fragment)
-            errorSnackbar = (activity as LoginActivity).errorSnackbar
-        }
-
-        b = FragmentLoginEdudziennikBinding.inflate(inflater, container, false)
+        activity = (getActivity() as LoginActivity?) ?: return null
+        context ?: return null
+        app = activity.application as App
+        b = FragmentLoginEdudziennikBinding.inflate(inflater)
         return b.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { launch {
-        startCoroutineTimer(delayMillis = 100) {
-            val error = LoginActivity.error
-
-            if (error != null) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        activity.lastError?.let { error ->
+            activity.lastError = null
+            startCoroutineTimer(delayMillis = 100) {
                 when (error.errorCode) {
                     ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN ->
                         b.loginPasswordLayout.error = getString(R.string.login_error_incorrect_login_or_password)
                 }
-
-                errorSnackbar.addError(error)
-                LoginActivity.error = null
             }
         }
 
-        b.backButton.setOnClickListener { nav.navigateUp() }
-        b.loginButton.setOnClickListener { login() }
-    }}
+        b.backButton.onClick { nav.navigateUp() }
 
-    private fun login() {
-        var errors = false
+        b.loginButton.onClick {
+            var errors = false
 
-        b.loginEmailLayout.error = null
-        b.loginPasswordLayout.error = null
+            b.loginEmailLayout.error = null
+            b.loginPasswordLayout.error = null
 
-        val emailEditable = b.loginEmail.text
-        val passwordEditable = b.loginPassword.text
+            val email = b.loginEmail.text?.toString()?.toLowerCase(Locale.ROOT) ?: ""
+            val password = b.loginPassword.text?.toString() ?: ""
 
-        if (emailEditable.isNullOrBlank()) {
-            b.loginEmailLayout.error = getString(R.string.login_error_no_email)
-            errors = true
+            if (email.isBlank()) {
+                b.loginEmailLayout.error = getString(R.string.login_error_no_email)
+                errors = true
+            }
+            if (password.isBlank()) {
+                b.loginPasswordLayout.error = getString(R.string.login_error_no_password)
+                errors = true
+            }
+            if (errors) return@onClick
+
+            errors = false
+
+            b.loginEmail.setText(email)
+            if (!"([\\w.\\-_+]+)?\\w+@[\\w-_]+(\\.\\w+)+".toRegex().matches(email)) {
+                b.loginEmailLayout.error = getString(R.string.login_error_incorrect_email)
+                errors = true
+            }
+            if (errors) return@onClick
+
+            val args = Bundle(
+                    "loginType" to LOGIN_TYPE_EDUDZIENNIK,
+                    "email" to email,
+                    "password" to password
+            )
+            nav.navigate(R.id.loginProgressFragment, args, LoginActivity.navOptions)
         }
-
-        if (passwordEditable.isNullOrBlank()) {
-            b.loginPasswordLayout.error = getString(R.string.login_error_no_password)
-            errors = true
-        }
-
-        if (errors)
-            return
-
-        nav.navigate(R.id.loginProgressFragment, Bundle().apply {
-            putInt("loginType", LOGIN_TYPE_EDUDZIENNIK)
-            putString("email", emailEditable.toString())
-            putString("password", passwordEditable.toString())
-        }, LoginActivity.navOptions)
     }
 }

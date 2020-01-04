@@ -51,12 +51,12 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
                 return@webApiGet
             }
 
-            json.getJsonArray("GodzinyLekcyjne")?.asJsonObjectList()?.forEach { range ->
+            json.getJsonArray("GodzinyLekcyjne")?.asJsonObjectList()?.forEachIndexed { index, range ->
                 val lessonRange = LessonRange(
                         profileId,
-                        range.getInt("LiczbaP") ?: return@forEach,
-                        range.getString("Poczatek")?.let { Time.fromH_m(it) } ?: return@forEach,
-                        range.getString("Koniec")?.let { Time.fromH_m(it) } ?: return@forEach
+                        index + 1,
+                        range.getString("Poczatek")?.let { Time.fromH_m(it) } ?: return@forEachIndexed,
+                        range.getString("Koniec")?.let { Time.fromH_m(it) } ?: return@forEachIndexed
                 )
                 data.lessonRanges[lessonRange.lessonNumber] = lessonRange
             }

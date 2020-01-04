@@ -45,7 +45,7 @@ buildscript {
                 iconics          : "4.0.1",
                 font_cmd         : "3.5.95.1-kotlin",
 
-                navlib           : "8b31921697",
+                navlib           : "9c8fb47c52",
 
                 gifdrawable      : "1.2.15",
 

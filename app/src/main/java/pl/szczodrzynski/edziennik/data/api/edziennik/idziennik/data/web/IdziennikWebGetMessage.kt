@@ -57,7 +57,7 @@ class IdziennikWebGetMessage(
                         recipientObject.readDate = if (readDateString.isNullOrBlank()) System.currentTimeMillis()
                         else Date.fromIso(readDateString)
 
-                        recipientObject.fullName = profile.accountNameLong ?: profile.studentNameLong
+                        recipientObject.fullName = profile.accountName ?: profile.studentNameLong
 
                         data.messageRecipientList.add(recipientObject)
                         message.addRecipient(recipientObject)

@@ -18,7 +18,7 @@ class LibrusApiVirtualClasses(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "VirtualClasses") { json ->
-            val virtualClasses = json.getJsonArray("VirtualClasses").asJsonObjectList()
+            val virtualClasses = json.getJsonArray("VirtualClasses")?.asJsonObjectList()
 
             virtualClasses?.forEach { virtualClass ->
                 val id = virtualClass.getLong("Id") ?: return@forEach

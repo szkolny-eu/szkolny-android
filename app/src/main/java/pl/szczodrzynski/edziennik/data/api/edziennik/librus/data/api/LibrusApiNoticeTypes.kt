@@ -18,7 +18,7 @@ class LibrusApiNoticeTypes(override val data: DataLibrus,
 
     init {
         apiGet(TAG, "Notes/Categories") { json ->
-            val noticeTypes = json.getJsonArray("Categories").asJsonObjectList()
+            val noticeTypes = json.getJsonArray("Categories")?.asJsonObjectList()
 
             noticeTypes?.forEach { noticeType ->
                 val id = noticeType.getLong("Id") ?: return@forEach

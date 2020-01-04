@@ -10,10 +10,10 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import io.github.wulkanowy.signer.android.getPrivateKeyFromCert
+import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
@@ -32,6 +32,7 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
             onSuccess()
         }
         else {
+            // < v4.0 - PFX to Private Key migration
             if (data.apiCertificatePfx.isNotNullNorEmpty()) {
                 try {
                     data.apiCertificatePrivate = getPrivateKeyFromCert(
@@ -46,6 +47,16 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                     return@run
                 }
             }
+
+            if (data.apiCertificateKey.isNotNullNorEmpty()
+                    && data.apiCertificatePrivate.isNotNullNorEmpty()
+                    && data.symbol.isNotNullNorEmpty()) {
+                // (see data.isApiLoginValid())
+                // the semester end date is over
+                VulcanApiUpdateSemester(data, onSuccess)
+                return@run
+            }
+
             if (data.symbol.isNotNullNorEmpty() && data.apiToken.isNotNullNorEmpty() && data.apiPin.isNotNullNorEmpty()) {
                 loginWithToken()
             }
@@ -107,12 +118,10 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                 }
 
                 data.apiCertificateKey = cert.getString("CertyfikatKlucz")
-                data.apiCertificatePfx = cert.getString("CertyfikatPfx")
-                data.apiCertificateExpiryTime = 1598832000
                 data.apiToken = data.apiToken?.substring(0, 3)
                 data.apiCertificatePrivate = getPrivateKeyFromCert(
                         if (data.apiToken?.get(0) == 'F') VULCAN_API_PASSWORD_FAKELOG else VULCAN_API_PASSWORD,
-                        data.apiCertificatePfx ?: ""
+                        cert.getString("CertyfikatPfx") ?: ""
                 )
                 data.loginStore.removeLoginData("certificatePfx")
                 data.loginStore.removeLoginData("devicePin")

@@ -23,9 +23,6 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
     }
 
     init {
-        data.profile?.luckyNumber = -1
-        data.profile?.luckyNumberDate = null
-
         var nextSync = System.currentTimeMillis() + 2*DAY*1000
 
         apiGet(TAG, "LuckyNumbers") { json ->

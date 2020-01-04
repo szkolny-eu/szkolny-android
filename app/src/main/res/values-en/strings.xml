@@ -375,7 +375,7 @@
     <string name="login_summary_unregister_title">Turn off registration?</string>
     <string name="login_sync_error_subtitle">An error occurred during sync. Click the button on the bottom to report the error.\n\nProfiles were saved, so <b>the app should work correctly</b>. In case of any problems you can go to Feedback in the Drawer.\n</string>
     <string name="login_sync_error_title">Sync error</string>
-    <string name="login_sync_subtitle_1_format"><![CDATA[Syncing profile <b>%s</b>]]></string>
+    <string name="login_sync_subtitle_1_format">Syncing profile</string>
     <string name="login_sync_title">Syncing…</string>
     <string name="login_vulcan_help_register">Registering the device:</string>
     <string name="login_vulcan_help_subtitle">Login into desktop version of Vulcan e-register and select \"Dostęp mobilny\" option. Click \"Zarejestruj urządzenie mobilne\". You can type in the data or scan the QR code and type only the PIN.</string>

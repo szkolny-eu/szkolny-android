@@ -41,6 +41,8 @@ class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(
             loginMethods += LOGIN_METHOD_IDZIENNIK_API
     }
 
+    override fun generateUserCode() = "$webSchoolName:$webUsername:$registerId"
+
     private var mLoginExpiryTime: Long? = null
     var loginExpiryTime: Long
         get() { mLoginExpiryTime = mLoginExpiryTime ?: loginStore.getLoginData("loginExpiryTime", 0L); return mLoginExpiryTime ?: 0L }

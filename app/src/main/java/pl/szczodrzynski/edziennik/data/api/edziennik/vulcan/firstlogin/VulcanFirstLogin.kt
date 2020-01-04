@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.ERROR_NO_STUDENTS_IN_ACCOUNT
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_VULCAN
 import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_STUDENT_LIST
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
@@ -25,11 +26,15 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
     private val profileList = mutableListOf<Profile>()
 
     init {
+        val loginStoreId = data.loginStore.id
+        val loginStoreType = LOGIN_TYPE_VULCAN
+        var firstProfileId = loginStoreId
+
         VulcanLoginApi(data) {
             api.apiGet(TAG, VULCAN_API_ENDPOINT_STUDENT_LIST, baseUrl = true) { json, response ->
                 val students = json.getJsonArray("Data")
 
-                if (students == null || students.size() < 1) {
+                if (students == null || students.isEmpty()) {
                     data.error(ApiError(TAG, ERROR_NO_STUDENTS_IN_ACCOUNT)
                             .withResponse(response)
                             .withApiResponse(json))
@@ -53,49 +58,56 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
 
                     val userLogin = student.getString("UzytkownikLogin") ?: ""
                     val currentSemesterStartDate = student.getLong("OkresDataOd") ?: return@forEach
-                    val currentSemesterEndDate = (student.getLong("OkresDataDo")
-                            ?: return@forEach) + 86400
+                    val currentSemesterEndDate = (student.getLong("OkresDataDo") ?: return@forEach) + 86400
                     val studentSemesterNumber = student.getInt("OkresNumer") ?: return@forEach
 
-                    val newProfile = Profile()
-                    newProfile.empty = true
-
                     val isParent = student.getString("UzytkownikRola") == "opiekun"
-                    val userName = if (isParent)
+                    val accountName = if (isParent)
                         student.getString("UzytkownikNazwa")?.swapFirstLastName()?.fixName()
-                    else
-                        null
-                    newProfile.accountNameLong = userName
-                    newProfile.studentClassName = studentClassName
-                    val today = Date.getToday()
-                    newProfile.studentSchoolYear = "${today.year}/${today.year+1}"
+                    else null
 
-                    newProfile.putStudentData("studentId", studentId)
-                    newProfile.putStudentData("studentLoginId", studentLoginId)
-                    newProfile.putStudentData("studentClassId", studentClassId)
-                    newProfile.putStudentData("studentSemesterId", studentSemesterId)
-                    newProfile.putStudentData("schoolSymbol", schoolSymbol)
-                    newProfile.putStudentData("schoolName", schoolName)
-                    newProfile.putStudentData("currentSemesterEndDate", currentSemesterEndDate)
-                    newProfile.putStudentData("studentSemesterNumber", studentSemesterNumber)
-
+                    var dateSemester1Start: Date? = null
+                    var dateSemester2Start: Date? = null
+                    var dateYearEnd: Date? = null
                     when (studentSemesterNumber) {
                         1 -> {
-                            newProfile.dateSemester1Start = Date.fromMillis(currentSemesterStartDate * 1000)
-                            newProfile.dateSemester2Start = Date.fromMillis(currentSemesterEndDate * 1000)
+                            dateSemester1Start = Date.fromMillis(currentSemesterStartDate * 1000)
+                            dateSemester2Start = Date.fromMillis(currentSemesterEndDate * 1000)
                         }
                         2 -> {
-                            newProfile.dateSemester2Start = Date.fromMillis(currentSemesterStartDate * 1000)
-                            newProfile.dateYearEnd = Date.fromMillis(currentSemesterEndDate * 1000)
+                            dateSemester2Start = Date.fromMillis(currentSemesterStartDate * 1000)
+                            dateYearEnd = Date.fromMillis(currentSemesterEndDate * 1000)
                         }
                     }
 
-                    newProfile.studentNameLong = studentNameLong
-                    newProfile.studentNameShort = studentNameShort
-                    newProfile.name = studentNameLong
-                    newProfile.subname = userLogin
+                    val profile = Profile(
+                            firstProfileId++,
+                            loginStoreId,
+                            loginStoreType,
+                            studentNameLong,
+                            userLogin,
+                            studentNameLong,
+                            studentNameShort,
+                            accountName
+                    ).apply {
+                        this.studentClassName = studentClassName
+                        studentData["studentId"] = studentId
+                        studentData["studentLoginId"] = studentLoginId
+                        studentData["studentClassId"] = studentClassId
+                        studentData["studentSemesterId"] = studentSemesterId
+                        studentData["studentSemesterNumber"] = studentSemesterNumber
+                        studentData["schoolSymbol"] = schoolSymbol
+                        studentData["schoolName"] = schoolName
+                        studentData["currentSemesterEndDate"] = currentSemesterEndDate
+                    }
+                    dateSemester1Start?.let {
+                        profile.dateSemester1Start = it
+                        profile.studentSchoolYearStart = it.year
+                    }
+                    dateSemester2Start?.let { profile.dateSemester2Start = it }
+                    dateYearEnd?.let { profile.dateYearEnd = it }
 
-                    profileList.add(newProfile)
+                    profileList.add(profile)
                 }
 
                 EventBus.getDefault().post(FirstLoginFinishedEvent(profileList, data.loginStore))

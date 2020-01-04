@@ -20,7 +20,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
+import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import retrofit2.Retrofit
@@ -55,7 +55,7 @@ class SzkolnyApi(val app: App) {
         api = retrofit.create()
     }
 
-    fun getEvents(profiles: List<ProfileFull>): List<EventFull> {
+    fun getEvents(profiles: List<Profile>): List<EventFull> {
         val teams = app.db.teamDao().allNow
         val notifications = app.db.notificationDao().getNotPostedNow()
 
@@ -71,10 +71,10 @@ class SzkolnyApi(val app: App) {
                         appVersionCode = BuildConfig.VERSION_CODE,
                         syncInterval = app.config.sync.interval
                 ),
-                userCodes = profiles.map { it.usernameId },
+                userCodes = profiles.map { it.userCode },
                 users = profiles.map { profile ->
                     ServerSyncRequest.User(
-                            profile.usernameId,
+                            profile.userCode,
                             profile.studentNameLong ?: "",
                             profile.studentNameShort ?: "",
                             profile.loginStoreType,
@@ -97,7 +97,7 @@ class SzkolnyApi(val app: App) {
                     seen = profile?.empty ?: false
                     notified = profile?.empty ?: false
 
-                    if (profile?.usernameId == event.sharedBy) sharedBy = "self"
+                    if (profile?.userCode == event.sharedBy) sharedBy = "self"
                 })
             }
         }
