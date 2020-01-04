@@ -459,13 +459,13 @@ public class GradesFragment extends Fragment {
                 continue;
 
             // SEMESTER 1 GRADES & AVERAGES
-            if (subject.semester1Final != null) { // if final available, add to final grades & expected grades
+            if (subject.semester1Final != null && subject.semester1Final.value > 0) { // if final available, add to final grades & expected grades
                 semester1FinalSum += subject.semester1Final.value;
                 semester1FinalCount++;
                 semester1Sum += subject.semester1Final.value;
                 semester1Count++;
             }
-            else if (subject.semester1Proposed != null) { // if final not available, add proposed to expected grades
+            else if (subject.semester1Proposed != null && subject.semester1Proposed.value > 0) { // if final not available, add proposed to expected grades
                 semester1Sum += subject.semester1Proposed.value;
                 semester1Count++;
             }
@@ -475,19 +475,19 @@ public class GradesFragment extends Fragment {
                 semester1Sum += gradeFromAverage(subject.semester1Average);
                 semester1Count++;
             }
-            if (subject.semester1Proposed != null) { // add proposed to proposed grades even if final is available
+            if (subject.semester1Proposed != null && subject.semester1Proposed.value > 0) { // add proposed to proposed grades even if final is available
                 semester1ProposedSum += subject.semester1Proposed.value;
                 semester1ProposedCount++;
             }
 
             // SEMESTER 2 GRADES & AVERAGES
-            if (subject.semester2Final != null) { // if final available, add to final grades & expected grades
+            if (subject.semester2Final != null && subject.semester2Final.value > 0) { // if final available, add to final grades & expected grades
                 semester2FinalSum += subject.semester2Final.value;
                 semester2FinalCount++;
                 semester2Sum += subject.semester2Final.value;
                 semester2Count++;
             }
-            else if (subject.semester2Proposed != null) { // if final not available, add proposed to expected grades
+            else if (subject.semester2Proposed != null && subject.semester2Proposed.value > 0) { // if final not available, add proposed to expected grades
                 semester2Sum += subject.semester2Proposed.value;
                 semester2Count++;
             }
@@ -497,19 +497,19 @@ public class GradesFragment extends Fragment {
                 semester2Sum += gradeFromAverage(subject.semester2Average);
                 semester2Count++;
             }
-            if (subject.semester2Proposed != null) { // add proposed to proposed grades even if final is available
+            if (subject.semester2Proposed != null && subject.semester2Proposed.value > 0) { // add proposed to proposed grades even if final is available
                 semester2ProposedSum += subject.semester2Proposed.value;
                 semester2ProposedCount++;
             }
 
             // YEAR GRADES & AVERAGES
-            if (subject.yearFinal != null) { // if final available, add to final grades & expected grades
+            if (subject.yearFinal != null && subject.yearFinal.value > 0) { // if final available, add to final grades & expected grades
                 yearFinalSum += subject.yearFinal.value;
                 yearFinalCount++;
                 yearSum += subject.yearFinal.value;
                 yearCount++;
             }
-            else if (subject.yearProposed != null) { // if final not available, add proposed to expected grades
+            else if (subject.yearProposed != null && subject.yearProposed.value > 0) { // if final not available, add proposed to expected grades
                 yearSum += subject.yearProposed.value;
                 yearCount++;
             }
@@ -519,7 +519,7 @@ public class GradesFragment extends Fragment {
                 yearSum += gradeFromAverage(subject.yearAverage);
                 yearCount++;
             }
-            if (subject.yearProposed != null) { // add proposed to proposed grades even if final is available
+            if (subject.yearProposed != null && subject.yearProposed.value > 0) { // add proposed to proposed grades even if final is available
                 yearProposedSum += subject.yearProposed.value;
                 yearProposedCount++;
             }
