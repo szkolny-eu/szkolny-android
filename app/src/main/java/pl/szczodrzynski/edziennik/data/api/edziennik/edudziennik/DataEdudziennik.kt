@@ -22,9 +22,6 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
 
     fun isWebLoginValid() = webSessionIdExpiryTime-30 > currentTimeUnix() && webSessionId.isNotNullNorEmpty()
 
-    val currentSemester: Int
-        get() = webSemester
-
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isWebLoginValid()) {
@@ -70,11 +67,6 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
         get() { mWebSessionId = mWebSessionId ?: loginStore.getLoginData("webSessionId", null); return mWebSessionId }
         set(value) { loginStore.putLoginData("webSessionId", value); mWebSessionId = value }
 
-    private var mWebSemester: Int? = null
-    var webSemester: Int
-        get() { mWebSemester = mWebSemester ?: loginStore.getLoginData("webSemester", 1); return mWebSemester ?: 1 }
-        set(value) { loginStore.putLoginData("webSemester", value); mWebSemester = value }
-
     private var mWebSessionIdExpiryTime: Long? = null
     var webSessionIdExpiryTime: Long
         get() { mWebSessionIdExpiryTime = mWebSessionIdExpiryTime ?: loginStore.getLoginData("webSessionIdExpiryTime", 0L); return mWebSessionIdExpiryTime ?: 0L }
@@ -86,6 +78,11 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
          | |  | | __| '_ \ / _ \ '__|
          | |__| | |_| | | |  __/ |
           \____/ \__|_| |_|\___|*/
+    private var mCurrentSemester: Int? = null
+    var currentSemester: Int
+        get() { mCurrentSemester = mCurrentSemester ?: profile?.getStudentData("currentSemester", 1); return mCurrentSemester ?: 1 }
+        set(value) { profile?.putStudentData("currentSemester", value) ?: return; mCurrentSemester = value }
+
     private var mSchoolName: String? = null
     var schoolName: String?
         get() { mSchoolName = mSchoolName ?: profile?.getStudentData("schoolName", null); return mSchoolName }

@@ -70,7 +70,7 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
                         .secure().httpOnly().build(),
                 Cookie.Builder()
                         .name("semester")
-                        .value((data.webSemester).toString())
+                        .value((data.currentSemester).toString())
                         .domain("dziennikel.appspot.com")
                         .secure().httpOnly().build()
         ))
