@@ -30,7 +30,12 @@ class LibrusApiTextGrades(override val data: DataLibrus,
                 val teacherId = grade.getJsonObject("AddedBy")?.getLong("Id") ?: return@forEach
                 val semester = grade.getInt("Semester") ?: return@forEach
                 val subjectId = grade.getJsonObject("Subject")?.getLong("Id") ?: return@forEach
-                val description = grade.getString("RealGradeValue") ?: grade.getString("Map") ?: ""
+
+                val map = grade.getString("Map")
+                val realValue = grade.getString("RealGradeValue")
+
+                val name = map ?: realValue ?: return@forEach
+                val description = if (map != null && map != realValue) realValue ?: "" else ""
 
                 val categoryId = grade.getJsonObject("Skill")?.getLong("Id") ?: return@forEach
 
@@ -45,8 +50,8 @@ class LibrusApiTextGrades(override val data: DataLibrus,
                         id,
                         category?.text ?: "",
                         category?.color ?: -1,
-                        "",
                         description,
+                        name,
                         0f,
                         0f,
                         semester,

@@ -32,18 +32,15 @@ class LibrusApiGrades(override val data: DataLibrus,
                 val subjectId = grade.getJsonObject("Subject")?.getLong("Id") ?: -1
                 val addedDate = Date.fromIso(grade.getString("AddDate"))
 
-                val category = data.gradeCategories.singleOrNull { it.categoryId == categoryId }
-                val categoryName = category?.text ?: ""
-                val color = category?.color ?: -1
-                var weight = category?.weight ?: 0f
-                val value = Utils.getGradeValue(name)
-
-
-                if (name == "-" || name == "+"
-                        || name.equals("np", ignoreCase = true)
-                        || name.equals("bz", ignoreCase = true)) {
-                    weight = 0f
+                val category = data.gradeCategories.singleOrNull {
+                    it.categoryId == categoryId && it.type == GradeCategory.TYPE_NORMAL
                 }
+
+                val value = Utils.getGradeValue(name)
+                val weight = if (name == "-" || name == "+"
+                        || name.equals("np", ignoreCase = true)
+                        || name.equals("bz", ignoreCase = true)) 0f
+                else category?.weight ?: 0f
 
                 val description = grade.getJsonArray("Comments")?.asJsonObjectList()?.let { comments ->
                     if (comments.isNotEmpty()) {
@@ -57,8 +54,8 @@ class LibrusApiGrades(override val data: DataLibrus,
                 val gradeObject = Grade(
                         profileId,
                         id,
-                        categoryName,
-                        color,
+                        category?.text ?: "",
+                        category?.color ?: -1,
                         description,
                         name,
                         value,
