@@ -67,7 +67,8 @@ class TimetableFragment : Fragment(), CoroutineScope {
             return inflater.inflate(R.layout.fragment_loading, container, false)
         // activity, context and profile is valid
         b = FragmentTimetableV2Binding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
+        // TODO: 2020-01-05 resolve issues with page scrolling (and scrolling up) with viewpager and swipe to refresh
+        //b.refreshLayout.setParent(activity.swipeRefreshLayout)
         return b.root
     }
 
