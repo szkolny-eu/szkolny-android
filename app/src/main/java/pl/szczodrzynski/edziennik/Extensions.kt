@@ -210,25 +210,23 @@ fun List<String>.join(delimiter: String): String {
 }
 
 fun colorFromName(name: String?): Int {
-    var crc = (name ?: "").crc16()
-    crc = (crc and 0xff) or (crc shr 8)
-    crc %= 16
-    return when (crc) {
+    val i = (name ?: "").crc32()
+    return when ((i / 10 % 16 + 1).toInt()) {
         13 -> 0xffF44336
         4  -> 0xffF50057
         2  -> 0xffD500F9
         9  -> 0xff6200EA
-        5  -> 0xff3F51B5
+        5  -> 0xffFFAB00
         1  -> 0xff304FFE
-        6  -> 0xff18FFFF
+        6  -> 0xff40C4FF
         14 -> 0xff26A69A
-        15 -> 0xff4CAF50
+        15 -> 0xff00C853
         7  -> 0xffFFD600
         3  -> 0xffFF3D00
         8  -> 0xffDD2C00
         10 -> 0xff795548
-        12 -> 0xffBDBDBD
-        11 -> 0xff78909C
+        12 -> 0xff2979FF
+        11 -> 0xffFF6D00
         else -> 0xff64DD17
     }.toInt()
 }
