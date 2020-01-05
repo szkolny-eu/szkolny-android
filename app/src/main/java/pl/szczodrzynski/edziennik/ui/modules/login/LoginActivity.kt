@@ -82,7 +82,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
         b = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(b.root)
-        errorSnackbar.setCoordinator(b.coordinator, null)
+        errorSnackbar.setCoordinator(b.coordinator, b.snackbarAnchor)
 
         launch {
             app.config.loginFinished = app.db.profileDao().count > 0
