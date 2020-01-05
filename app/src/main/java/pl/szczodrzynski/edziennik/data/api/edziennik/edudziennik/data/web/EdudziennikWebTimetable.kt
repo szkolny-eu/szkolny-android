@@ -5,13 +5,11 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.data.api.ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SUBJECT_ID
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_TEACHER_ID
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
-import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
@@ -56,17 +54,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
 
             val table = doc.select("#Schedule tbody").first()
 
-            if (table.text().trim() == "Brak planu lekcji.") {
-                val today = Date.getToday()
-                val schoolYearStart = if (today.month >= 9) today.year else today.year - 1
-
-                if (weekStart >= Date(schoolYearStart, 9, 1)) {
-                    data.error(ApiError(TAG, ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC)
-                            .withApiResponse(text))
-                    onSuccess()
-                    return@webGet
-                }
-            } else {
+            if (!table.text().contains("Brak planu lekcji.")) {
                 table.children().forEach { row ->
                     val rowElements = row.children()
 
@@ -151,8 +139,6 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
             }
 
             d(TAG, "Clearing lessons between ${weekStart.stringY_m_d} and ${weekEnd.stringY_m_d} - timetable downloaded for $getDate")
-
-            if (data.timetableNotPublic) data.timetableNotPublic = false
 
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE, SYNC_ALWAYS)

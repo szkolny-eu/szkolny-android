@@ -142,7 +142,6 @@
     <string name="error_501" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_510" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER</string>
     <string name="error_511" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID</string>
-    <string name="error_520" translatable="false">ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC</string>
     <string name="error_521" translatable="false">ERROR_EDUDZIENNIK_WEB_LIMITED_ACCESS</string>
     <string name="error_522" translatable="false">ERROR_EDUDZIENNIK_WEB_SESSION_EXPIRED</string>
     <string name="error_530" translatable="false">ERROR_EDUDZIENNIK_WEB_TEAM_MISSING</string>
@@ -307,7 +306,6 @@
     <string name="error_501_reason">Błędny email lub hasło</string>
     <string name="error_510_reason">Inny błąd logowania</string>
     <string name="error_511_reason">Brak ID sesji</string>
-    <string name="error_520_reason">Plan lekcji niedostępny</string>
     <string name="error_521_reason">Ograniczony dostęp do dziennika</string>
     <string name="error_522_reason">Sesja wygasła</string>
     <string name="error_530_reason">Nie można pobrać informacji o klasie i szkole</string>

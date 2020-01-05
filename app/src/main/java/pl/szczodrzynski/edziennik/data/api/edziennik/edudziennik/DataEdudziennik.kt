@@ -88,11 +88,6 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
         get() { mSchoolName = mSchoolName ?: profile?.getStudentData("schoolName", null); return mSchoolName }
         set(value) { profile?.putStudentData("schoolName", value) ?: return; mSchoolName = value }
 
-    private var mTimetableNotPublic: Boolean? = null
-    var timetableNotPublic: Boolean
-        get() { mTimetableNotPublic = mTimetableNotPublic ?: profile?.getStudentData("timetableNotPublic", false); return mTimetableNotPublic ?: false }
-        set(value) { profile?.putStudentData("timetableNotPublic", value) ?: return; mTimetableNotPublic = value }
-
     val studentEndpoint: String
         get() = "Students/$studentId/"
 

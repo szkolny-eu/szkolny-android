@@ -124,8 +124,7 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
                     ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID -> {
                         login()
                     }
-                    ERROR_EDUDZIENNIK_WEB_TIMETABLE_NOT_PUBLIC -> {
-                        data.timetableNotPublic = true
+                    ERROR_EDUDZIENNIK_WEB_LIMITED_ACCESS -> {
                         data()
                     }
                     else -> callback.onError(apiError)

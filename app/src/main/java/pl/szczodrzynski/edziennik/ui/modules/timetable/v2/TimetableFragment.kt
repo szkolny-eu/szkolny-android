@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
 import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
@@ -24,6 +25,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
 import pl.szczodrzynski.edziennik.observeOnce
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -103,8 +105,8 @@ class TimetableFragment : Fragment(), CoroutineScope {
 
             val monthDayCount = listOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
-            val yearStart = app.profile.dateSemester1Start?.clone() ?: return@async
-            val yearEnd = app.profile.dateYearEnd ?: return@async
+            val yearStart = app.profile.dateSemester1Start.clone() ?: return@async
+            val yearEnd = app.profile.dateYearEnd
             while (yearStart.value <= yearEnd.value) {
                 items += yearStart.clone()
                 var maxDays = monthDayCount[yearStart.month-1]
@@ -180,6 +182,22 @@ class TimetableFragment : Fragment(), CoroutineScope {
                                         show(this@TimetableFragment.activity.supportFragmentManager, "MaterialDatePicker")
                                     }
                         }),
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_add_event)
+                        .withDescription(R.string.menu_add_event_desc)
+                        .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
+                        .withOnClickListener(View.OnClickListener {
+                            activity.bottomSheet.close()
+                            EventManualDialog(activity, App.profileId, defaultDate = pageSelection)
+                        }),
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_generate_block_timetable)
+                        .withDescription(R.string.menu_generate_block_timetable_desc)
+                        .withIcon(Icon2.cmd_table_large)
+                        .withOnClickListener(View.OnClickListener {
+                            activity.bottomSheet.close()
+                            //showBlockTimetableDialog()
+                        }),
                 BottomSheetSeparatorItem(true),
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_as_read)
@@ -198,6 +216,22 @@ class TimetableFragment : Fragment(), CoroutineScope {
             b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, true)
         })
     }}
+
+    /*private fun showBlockTimetableDialog() {
+        val weekCurrentStart = Week.getWeekStart()
+        val weekCurrentEnd = Week.getWeekEnd()
+        val weekNextStart = weekCurrentEnd.clone().stepForward(0, 0, 1)
+        val weekNextEnd = weekNextStart.clone().stepForward(0, 0, 6)
+
+        MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.timetable_generate_range)
+                .setMultiChoiceItems(arrayOf(
+                        getString(R.string.timetable_generate_current_week_format, weekCurrentStart.formattedStringShort, weekCurrentEnd.formattedStringShort),
+                        getString(R.string.timetable_generate_next_week_format, weekNextStart.formattedStringShort, weekNextEnd.formattedStringShort)
+                ), BooleanArray(2)) { dialog, which, isChecked ->
+
+                }
+    }*/
 
     private fun markLessonsAsSeen() = pageSelection?.let { date ->
         app.db.timetableDao().getForDate(App.profileId, date).observeOnce(this@TimetableFragment, Observer { lessons ->
