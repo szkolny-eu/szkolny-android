@@ -164,6 +164,7 @@ const val ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA               = 441
 const val ERROR_IDZIENNIK_API_ACCESS_DENIED                 = 450
 const val ERROR_IDZIENNIK_API_OTHER                         = 451
 const val ERROR_IDZIENNIK_API_NO_REGISTER                   = 452
+const val ERROR_IDZIENNIK_WEB_RECIPIENT_LIST_NO_PERMISSION  = 453
 
 const val ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN         = 501
 const val ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER                 = 510

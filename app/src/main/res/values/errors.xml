@@ -138,6 +138,7 @@
     <string name="error_450" translatable="false">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
     <string name="error_451" translatable="false">ERROR_IDZIENNIK_API_OTHER</string>
     <string name="error_452" translatable="false">ERROR_IDZIENNIK_API_NO_REGISTER</string>
+    <string name="error_453" translatable="false">ERROR_IDZIENNIK_WEB_RECIPIENT_LIST_NO_PERMISSION</string>
 
     <string name="error_501" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_510" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER</string>
@@ -254,33 +255,33 @@
     <string name="error_181_reason">Librus API: przerwa techniczna</string>
     <string name="error_182_reason">Librus Portal: przerwa techniczna</string>
 
-    <string name="error_201_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
-    <string name="error_202_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
-    <string name="error_203_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_DEVICE</string>
-    <string name="error_204_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_ARCHIVED</string>
-    <string name="error_205_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_MAINTENANCE</string>
-    <string name="error_206_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_ADDRESS</string>
-    <string name="error_210_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_OTHER</string>
-    <string name="error_211_reason">ERROR_MOBIDZIENNIK_WEB_ACCESS_DENIED</string>
-    <string name="error_212_reason">ERROR_MOBIDZIENNIK_WEB_NO_SESSION_KEY</string>
-    <string name="error_216_reason">ERROR_MOBIDZIENNIK_WEB_NO_SESSION_VALUE</string>
-    <string name="error_213_reason">ERROR_MOBIDZIENNIK_WEB_NO_SERVER_ID</string>
-    <string name="error_214_reason">ERROR_MOBIDZIENNIK_WEB_INVALID_RESPONSE</string>
-    <string name="error_215_reason">ERROR_LOGIN_MOBIDZIENNIK_WEB_NO_SESSION_ID</string>
+    <string name="error_201_reason">Nieprawidłowy login lub hasło</string>
+    <string name="error_202_reason">Podano stare hasło</string>
+    <string name="error_203_reason">Nieprawidłowe urządzenie - zgłoś błąd programiście</string>
+    <string name="error_204_reason">Dziennik jest archiwalny - logowanie nie jest możliwe</string>
+    <string name="error_205_reason">Chwilowa przerwa techniczna MobiDziennika, lub inny problem z serwerem</string>
+    <string name="error_206_reason">Nieprawidłowy adres szkoły</string>
+    <string name="error_210_reason">Nieznany błąd logowania do MobiDziennika</string>
+    <string name="error_211_reason">MobiDziennik: brak dostępu</string>
+    <string name="error_212_reason">MobiDziennik: brak klucza sesji</string>
+    <string name="error_216_reason">MobiDziennik: brak wartości sesji</string>
+    <string name="error_213_reason">MobiDziennik: brak identyfikatora serwera</string>
+    <string name="error_214_reason">MobiDziennik: błąd odpowiedzi serwera</string>
+    <string name="error_215_reason">Brak identyfikatora sesji przy logowaniu</string>
 
-    <string name="error_301_reason">ERROR_LOGIN_VULCAN_INVALID_SYMBOL</string>
-    <string name="error_302_reason">ERROR_LOGIN_VULCAN_INVALID_TOKEN</string>
-    <string name="error_309_reason">ERROR_LOGIN_VULCAN_INVALID_PIN</string>
-    <string name="error_310_reason">ERROR_LOGIN_VULCAN_INVALID_PIN_0_REMAINING</string>
-    <string name="error_311_reason">ERROR_LOGIN_VULCAN_INVALID_PIN_1_REMAINING</string>
-    <string name="error_312_reason">ERROR_LOGIN_VULCAN_INVALID_PIN_2_REMAINING</string>
-    <string name="error_321_reason">ERROR_LOGIN_VULCAN_EXPIRED_TOKEN</string>
-    <string name="error_322_reason">ERROR_LOGIN_VULCAN_OTHER</string>
-    <string name="error_330_reason">ERROR_LOGIN_VULCAN_ONLY_KINDERGARTEN</string>
-    <string name="error_331_reason">ERROR_LOGIN_VULCAN_NO_PUPILS</string>
-    <string name="error_340_reason">ERROR_VULCAN_API_MAINTENANCE</string>
-    <string name="error_341_reason">ERROR_VULCAN_API_BAD_REQUEST</string>
-    <string name="error_342_reason">ERROR_VULCAN_API_OTHER</string>
+    <string name="error_301_reason">Nieprawidłowy symbol</string>
+    <string name="error_302_reason">Nieprawidłowy token</string>
+    <string name="error_309_reason">Nieprawidłowy PIN</string>
+    <string name="error_310_reason">Nieprawidłowy PIN: pozostało 0 prób</string>
+    <string name="error_311_reason">Nieprawidłowy PIN: pozostała 1 próba</string>
+    <string name="error_312_reason">Nieprawidłowy PIN: pozostały 2 próby</string>
+    <string name="error_321_reason">Token wygasły, wygeneruj ponownie</string>
+    <string name="error_322_reason">Inny błąd logowania do Vulcana</string>
+    <string name="error_330_reason">Dziennik przedszkolny - logowanie niemożliwe</string>
+    <string name="error_331_reason">Brak uczniów przypisanych do konta, bądź ukończyli oni już szkołę</string>
+    <string name="error_340_reason">Vulcan: przerwa techniczna</string>
+    <string name="error_341_reason">Vulcan: błąd żądania, zgłoś błąd</string>
+    <string name="error_342_reason">Vulcan: inny błąd, wyślij zgłoszenie</string>
 
     <string name="error_401_reason">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_402_reason">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME</string>
@@ -302,6 +303,7 @@
     <string name="error_450_reason">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
     <string name="error_451_reason">ERROR_IDZIENNIK_API_OTHER</string>
     <string name="error_452_reason">ERROR_IDZIENNIK_API_NO_REGISTER</string>
+    <string name="error_453_reason">Twoje konto nie ma uprawnień do wysyłania wiadomości (bądź wystąpił inny błąd serwera iDziennika)</string>
 
     <string name="error_501_reason">Błędny email lub hasło</string>
     <string name="error_510_reason">Inny błąd logowania</string>

@@ -41,6 +41,13 @@ open class IdziennikWeb(open val data: DataIdziennik) {
                     return
                 }
 
+                if (response?.code() == HTTP_INTERNAL_ERROR && endpoint == IDZIENNIK_WEB_GET_RECIPIENT_LIST) {
+                    data.error(ApiError(tag, ERROR_IDZIENNIK_WEB_RECIPIENT_LIST_NO_PERMISSION)
+                            .withResponse(response)
+                            .withApiResponse(json))
+                    return
+                }
+
                 when {
                     response?.code() == HTTP_UNAUTHORIZED -> ERROR_IDZIENNIK_WEB_ACCESS_DENIED
                     response?.code() == HTTP_INTERNAL_ERROR -> ERROR_IDZIENNIK_WEB_SERVER_ERROR
