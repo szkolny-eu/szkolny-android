@@ -22,10 +22,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.danimahardhika.cafebar.CafeBar;
-import com.mikepenz.iconics.IconicsColor;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
 import java.text.DecimalFormat;
@@ -41,8 +37,6 @@ import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceFull;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.databinding.FragmentAttendanceBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
-import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Week;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT;
@@ -123,7 +117,7 @@ public class AttendanceFragment extends Fragment {
             popupMenu.show();
         }));
 
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK) {
+        /*if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK) {
             long attendanceLastSync = app.profile.getStudentData("attendanceLastSync", (long)0);
             if (attendanceLastSync == 0) {
                 attendanceLastSync = app.profile.getSemesterStart(1).getInMillis();
@@ -153,9 +147,9 @@ public class AttendanceFragment extends Fragment {
                         .floating(true)
                         .show();
             }
-        }
+        }*/
 
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK && false) {
+        if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK) {
             b.attendanceSummarySubject.setVisibility(View.GONE);
         }
         else {
