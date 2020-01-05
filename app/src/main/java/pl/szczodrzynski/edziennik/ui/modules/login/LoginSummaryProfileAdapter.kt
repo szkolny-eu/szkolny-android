@@ -9,13 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
 import pl.szczodrzynski.edziennik.databinding.RowLoginProfileListItemBinding
-import pl.szczodrzynski.edziennik.joinNotNullStrings
-import pl.szczodrzynski.edziennik.onClick
 
 class LoginSummaryProfileAdapter(
         val context: Context,
@@ -68,7 +65,7 @@ class LoginSummaryProfileAdapter(
         )
 
         b.root.onClick {
-            b.checkBox.performClick()
+            b.checkBox.trigger()
         }
         b.checkBox.setOnCheckedChangeListener { _, isChecked ->
             item.isSelected = isChecked

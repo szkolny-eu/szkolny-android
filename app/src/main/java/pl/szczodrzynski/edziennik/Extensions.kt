@@ -23,6 +23,7 @@ import android.util.LongSparseArray
 import android.util.SparseArray
 import android.util.TypedValue
 import android.view.View
+import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.annotation.*
@@ -506,7 +507,7 @@ fun CharSequence.asSpannable(vararg spans: Any, substring: String? = null, ignor
             spans.forEach {
                 spannable.setSpan(it, index, index + substring.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
-            index = indexOf(substring, startIndex = index + 1, ignoreCase = ignoreCase);
+            index = indexOf(substring, startIndex = index + 1, ignoreCase = ignoreCase)
         }
     }
     return spannable
@@ -841,7 +842,7 @@ fun Int.toColorStateList(): ColorStateList {
             this
     )
 
-    return ColorStateList(states, colors);
+    return ColorStateList(states, colors)
 }
 
 fun SpannableStringBuilder.appendText(text: CharSequence): SpannableStringBuilder {
@@ -888,3 +889,5 @@ fun String.base64Decode(): ByteArray {
 fun String.base64DecodeToString(): String {
     return Base64.decode(this, Base64.DEFAULT).toString(Charset.defaultCharset())
 }
+
+fun CheckBox.trigger() { isChecked = !isChecked }
