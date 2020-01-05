@@ -132,9 +132,9 @@ class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> 
             val present = attendanceType.getBoolean("Obecnosc") ?: true
             if (belated)
                 if (excused)
-                    Attendance.TYPE_ABSENT_EXCUSED
+                    Attendance.TYPE_BELATED_EXCUSED
                 else
-                    Attendance.TYPE_ABSENT
+                    Attendance.TYPE_BELATED
             else if (released)
                 Attendance.TYPE_RELEASED
             else if (present)
