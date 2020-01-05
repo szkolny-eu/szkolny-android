@@ -49,7 +49,7 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
                                     profileId,
                                     Metadata.TYPE_LUCKY_NUMBER,
                                     luckyNumberObject.date.value.toLong(),
-                                    profile?.empty ?: false,
+                                    true,
                                     profile?.empty ?: false,
                                     System.currentTimeMillis()
                             ))

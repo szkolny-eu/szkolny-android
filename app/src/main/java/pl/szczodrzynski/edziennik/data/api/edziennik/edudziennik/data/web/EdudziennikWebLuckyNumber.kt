@@ -32,7 +32,7 @@ class EdudziennikWebLuckyNumber(override val data: DataEdudziennik,
                         profileId,
                         Metadata.TYPE_LUCKY_NUMBER,
                         luckyNumberObject.date.value.toLong(),
-                        profile.empty,
+                        true,
                         profile.empty,
                         System.currentTimeMillis()
                 ))

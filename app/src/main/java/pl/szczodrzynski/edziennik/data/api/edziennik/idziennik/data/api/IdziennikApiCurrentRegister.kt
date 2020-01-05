@@ -77,7 +77,7 @@ class IdziennikApiCurrentRegister(override val data: DataIdziennik,
                                 profileId,
                                 Metadata.TYPE_LUCKY_NUMBER,
                                 luckyNumberObject.date.value.toLong(),
-                                data.profile?.empty ?: false,
+                                true,
                                 data.profile?.empty ?: false,
                                 System.currentTimeMillis()
                         ))
