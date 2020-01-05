@@ -117,6 +117,25 @@ public class Time implements Comparable<Time> {
         c.set(Calendar.MILLISECOND, 0);
         return c.getTimeInMillis();
     }
+
+    public long getInSeconds() {
+        return hour * 3600 + minute * 60 + second;
+    }
+
+    public int getInMinutes() {
+        return hour * 60 + minute;
+    }
+
+    public static Time fromSeconds(long inSeconds) {
+        int hours = (int) inSeconds / 3600;
+        int minutes = (int) (inSeconds - hours * 3600) / 60;
+        int seconds = (int) (inSeconds - hours * 3600 - minutes * 60);
+        Time time = new Time(hours, minutes, seconds);
+        while (time.hour < 0) time.hour += 24;
+        while (time.hour >= 24) time.hour -= 24;
+        return time;
+    }
+
     public static Time fromMillis(long millis) {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(millis);
@@ -156,6 +175,11 @@ public class Time implements Comparable<Time> {
         return hour +":"+(minute < 10 ? "0" : "")+ minute +":"+(second < 10 ? "0" : "")+ second;
     }
 
+    public String getStringH_M_S()
+    {
+        return hour +"-"+(minute < 10 ? "0" : "")+ minute +"-"+(second < 10 ? "0" : "")+ second;
+    }
+
     public static Time getNow()
     {
         Calendar cal = Calendar.getInstance();
@@ -163,20 +187,27 @@ public class Time implements Comparable<Time> {
     }
 
     public static Time diff(Time t1, Time t2) {
-        long t1millis = t1.getInMillis();
+        /*long t1millis = t1.getInMillis();
         long t2millis = t2.getInMillis();
         int multiplier = (t1millis > t2millis ? 1 : -1);
         Time diff = Time.fromMillis((t1millis - t2millis)*multiplier);
-        // diff.hour -= 1;
-        return diff;
+        diff.hour -= 1;
+        return diff;*/
+        long t1seconds = t1.getInSeconds();
+        long t2seconds = t2.getInSeconds();
+        int multiplier = (t1seconds > t2seconds ? 1 : -1);
+        return Time.fromSeconds((t1seconds - t2seconds) * multiplier);
     }
 
     public static Time sum(Time t1, Time t2) {
-        long t1millis = t1.getInMillis();
+        /*long t1millis = t1.getInMillis();
         long t2millis = t2.getInMillis();
         Time sum = Time.fromMillis((t1millis + t2millis));
-        // sum.hour += 1;
-        return sum;
+        sum.hour += 1;
+        return sum;*/
+        long t1seconds = t1.getInSeconds();
+        long t2seconds = t2.getInSeconds();
+        return Time.fromSeconds(t1seconds + t2seconds);
     }
 
     public static boolean inRange(Time startTime, Time endTime)
