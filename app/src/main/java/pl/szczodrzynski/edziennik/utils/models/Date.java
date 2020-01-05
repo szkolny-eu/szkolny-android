@@ -45,6 +45,10 @@ public class Date implements Comparable<Date> {
         return clone().stepForward(0, 0, -getWeekDay());
     }
 
+    public Date getWeekEnd() {
+        return clone().stepForward(0, 0, 6-getWeekDay());
+    }
+
     public static Date fromYmd(String dateTime) {
         return new Date(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(4, 6)), Integer.parseInt(dateTime.substring(6, 8)));
     }

@@ -26,6 +26,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
 import pl.szczodrzynski.edziennik.observeOnce
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.timetable.GenerateBlockTimetableDialog
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -196,7 +197,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
                         .withIcon(Icon2.cmd_table_large)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
-                            //showBlockTimetableDialog()
+                            GenerateBlockTimetableDialog(activity)
                         }),
                 BottomSheetSeparatorItem(true),
                 BottomSheetPrimaryItem(true)
@@ -216,22 +217,6 @@ class TimetableFragment : Fragment(), CoroutineScope {
             b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, true)
         })
     }}
-
-    /*private fun showBlockTimetableDialog() {
-        val weekCurrentStart = Week.getWeekStart()
-        val weekCurrentEnd = Week.getWeekEnd()
-        val weekNextStart = weekCurrentEnd.clone().stepForward(0, 0, 1)
-        val weekNextEnd = weekNextStart.clone().stepForward(0, 0, 6)
-
-        MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.timetable_generate_range)
-                .setMultiChoiceItems(arrayOf(
-                        getString(R.string.timetable_generate_current_week_format, weekCurrentStart.formattedStringShort, weekCurrentEnd.formattedStringShort),
-                        getString(R.string.timetable_generate_next_week_format, weekNextStart.formattedStringShort, weekNextEnd.formattedStringShort)
-                ), BooleanArray(2)) { dialog, which, isChecked ->
-
-                }
-    }*/
 
     private fun markLessonsAsSeen() = pageSelection?.let { date ->
         app.db.timetableDao().getForDate(App.profileId, date).observeOnce(this@TimetableFragment, Observer { lessons ->
