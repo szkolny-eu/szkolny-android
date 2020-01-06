@@ -173,7 +173,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
         }
         dayView.setHourLabelViews(hourLabelViews)
 
-        buildLessonViews(lessons, events)
+        buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events)
     }
 
     private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>) {
