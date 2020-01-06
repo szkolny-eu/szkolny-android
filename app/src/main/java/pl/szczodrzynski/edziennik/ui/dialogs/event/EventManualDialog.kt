@@ -611,15 +611,15 @@ class EventManualDialog(
             val profile = app.db.profileDao().getByIdNow(profileId)
 
             if (!share && !editingShared) {
-                Toast.makeText(activity, "Save without sharing", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.event_manual_saving, Toast.LENGTH_SHORT).show()
                 finishAdding(eventObject, metadataObject)
             }
             else if (editingShared && !editingOwn) {
-                Toast.makeText(activity, "Request editing somebody's event", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Opcja edycji wydarzeń innych uczniów nie została jeszcze zaimplementowana.", Toast.LENGTH_LONG).show()
                 // TODO
             }
             else if (!share && editingShared) {
-                Toast.makeText(activity, "Unshare own event", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.event_manual_unshare, Toast.LENGTH_SHORT).show()
 
                 eventObject.apply {
                     sharedBy = null
@@ -639,7 +639,7 @@ class EventManualDialog(
                 finishAdding(eventObject, metadataObject)
             }
             else if (share) {
-                Toast.makeText(activity, "Share/update own event", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.event_manual_share, Toast.LENGTH_SHORT).show()
 
                 eventObject.apply {
                     sharedBy = profile?.userCode
@@ -669,7 +669,7 @@ class EventManualDialog(
     private fun removeEvent() {
         launch {
             if (editingShared && editingOwn) {
-                Toast.makeText(activity, "Unshare + remove own event", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.event_manual_unshare_remove, Toast.LENGTH_SHORT).show()
 
                 val response = withContext(Dispatchers.Default) {
                     api.unshareEvent(editingEvent!!)
@@ -682,10 +682,10 @@ class EventManualDialog(
 
                 finishRemoving()
             } else if (editingShared && !editingOwn) {
-                Toast.makeText(activity, "Remove + blacklist somebody's event", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Nie zaimplementowana opcja :(", Toast.LENGTH_SHORT).show()
                 // TODO
             } else {
-                Toast.makeText(activity, "Remove event", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.event_manual_remove, Toast.LENGTH_SHORT).show()
                 finishRemoving()
             }
         }

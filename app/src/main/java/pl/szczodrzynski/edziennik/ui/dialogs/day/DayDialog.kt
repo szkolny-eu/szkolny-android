@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.ui.dialogs.day
 
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -88,7 +87,6 @@ class DayDialog(
         adapter = EventListAdapter(
                 activity,
                 onItemClick = {
-                    Toast.makeText(activity, "Event clicked ${it.topic}", Toast.LENGTH_SHORT).show()
                     EventDetailsDialog(
                             activity,
                             it,

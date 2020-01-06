@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.ui.dialogs.timetable
 
 import android.content.Intent
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -166,7 +165,6 @@ class LessonDetailsDialog(
         adapter = EventListAdapter(
                 activity,
                 onItemClick = {
-                    Toast.makeText(activity, "Event clicked ${it.topic}", Toast.LENGTH_SHORT).show()
                     EventDetailsDialog(
                             activity,
                             it,

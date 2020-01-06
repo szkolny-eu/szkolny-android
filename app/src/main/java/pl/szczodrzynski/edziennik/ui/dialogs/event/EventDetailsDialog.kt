@@ -11,7 +11,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.api.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -37,8 +36,6 @@ class EventDetailsDialog(
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
-
-    private lateinit var adapter: EventListAdapter
 
     private val api by lazy {
         SzkolnyApi(app)

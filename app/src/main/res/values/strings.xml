@@ -1152,4 +1152,9 @@
     <string name="timetable_generate_no_colors">Do wydruku (czarno-białe)</string>
     <string name="timetable_generate_selected_week">Na wybrany tydzień</string>
     <string name="edziennik_progress_endpoint_lessons">Pobieranie listy lekcji…</string>
+    <string name="event_manual_saving">Zapisuję wydarzenie...</string>
+    <string name="event_manual_unshare">Usuwam wydarzenie u reszty klasy...</string>
+    <string name="event_manual_share">Udostępniam wydarzenie...</string>
+    <string name="event_manual_unshare_remove">Usuwam udostępnione wydarzenie...</string>
+    <string name="event_manual_remove">Usuwam wydarzenie...</string>
 </resources>
