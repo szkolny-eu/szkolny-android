@@ -39,22 +39,22 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     val loginStores = mutableListOf<LoginStore>()
 
     override fun onBackPressed() {
-        val destination = nav.currentDestination
-        if (destination != null && destination.id == R.id.loginSyncErrorFragment) {
+        val destination = nav.currentDestination ?: run {
+            nav.navigateUp()
             return
         }
-        if (destination != null && destination.id == R.id.loginProgressFragment) {
+        if (destination.id == R.id.loginSyncErrorFragment)
             return
-        }
-        if (destination != null && destination.id == R.id.loginSyncFragment) {
+        if (destination.id == R.id.loginProgressFragment)
             return
-        }
-        if (destination != null && destination.id == R.id.loginChooserFragment && !app.config.loginFinished) {
+        if (destination.id == R.id.loginSyncFragment)
+            return
+        if (destination.id == R.id.loginChooserFragment) {
             setResult(Activity.RESULT_CANCELED)
             finish()
             return
         }
-        if (destination != null && destination.id == R.id.loginSummaryFragment) {
+        if (destination.id == R.id.loginSummaryFragment) {
             MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.are_you_sure)
                     .setMessage(R.string.login_cancel_confirmation)
