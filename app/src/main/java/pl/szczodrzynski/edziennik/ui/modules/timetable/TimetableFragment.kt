@@ -145,9 +145,10 @@ class TimetableFragment : Fragment(), CoroutineScope {
         b.viewPager.adapter = pagerAdapter
         b.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-                if (b.refreshLayout != null) {
+                // TODO: 2020-01-05 resolve issues with page scrolling (and scrolling up) with viewpager and swipe to refresh
+                /*if (b.refreshLayout != null) {
                     b.refreshLayout.isEnabled = state == ViewPager.SCROLL_STATE_IDLE
-                }
+                }*/
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
