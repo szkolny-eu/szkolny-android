@@ -13,10 +13,9 @@ import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement;
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance;
 import pl.szczodrzynski.edziennik.data.db.modules.events.Event;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message;
 import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
+import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull;
 import pl.szczodrzynski.edziennik.utils.models.UnreadCounter;
 
 import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ANNOUNCEMENT;
@@ -75,19 +74,9 @@ public abstract class MetadataDao {
                 updateSeen(profileId, ((Event) o).type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).id, seen);
             }
         }
-        if (o instanceof LessonChange) {
-            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonChange) o).id, seen, false, 0)) == -1) {
-                updateSeen(profileId, TYPE_LESSON_CHANGE, ((LessonChange) o).id, seen);
-            }
-        }
         if (o instanceof LessonFull) {
-            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).changeId, seen, false, 0)) == -1) {
-                updateSeen(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).changeId, seen);
-            }
-        }
-        if (o instanceof pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) {
-            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) o).getId(), seen, false, 0)) == -1) {
-                updateSeen(profileId, TYPE_LESSON_CHANGE, ((pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) o).getId(), seen);
+            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), seen, false, 0)) == -1) {
+                updateSeen(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), seen);
             }
         }
         if (o instanceof Announcement) {
@@ -124,19 +113,9 @@ public abstract class MetadataDao {
                 updateNotified(profileId, ((Event) o).type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).id, notified);
             }
         }
-        if (o instanceof LessonChange) {
-            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonChange) o).id, false, notified, 0)) == -1) {
-                updateNotified(profileId, TYPE_LESSON_CHANGE, ((LessonChange) o).id, notified);
-            }
-        }
         if (o instanceof LessonFull) {
-            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).changeId, false, notified, 0)) == -1) {
-                updateNotified(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).changeId, notified);
-            }
-        }
-        if (o instanceof pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) {
-            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) o).getId(), false, notified, 0)) == -1) {
-                updateNotified(profileId, TYPE_LESSON_CHANGE, ((pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull) o).getId(), notified);
+            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), false, notified, 0)) == -1) {
+                updateNotified(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), notified);
             }
         }
         if (o instanceof Announcement) {
@@ -228,9 +207,6 @@ public abstract class MetadataDao {
     @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = "+TYPE_HOMEWORK+" AND thingId NOT IN (SELECT eventId FROM events WHERE profileId = :profileId AND eventType = -1);")
     public abstract void deleteUnusedHomework(int profileId);
 
-    @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = "+TYPE_LESSON_CHANGE+" AND thingId NOT IN (SELECT lessonChangeId FROM lessonChanges WHERE profileId = :profileId);")
-    public abstract void deleteUnusedLessonChanges(int profileId);
-
     @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = "+TYPE_ANNOUNCEMENT+" AND thingId NOT IN (SELECT announcementId FROM announcements WHERE profileId = :profileId);")
     public abstract void deleteUnusedAnnouncements(int profileId);
 
@@ -244,7 +220,6 @@ public abstract class MetadataDao {
         deleteUnusedAttendance(profileId);
         deleteUnusedEvents(profileId);
         deleteUnusedHomework(profileId);
-        deleteUnusedLessonChanges(profileId);
         deleteUnusedAnnouncements(profileId);
         deleteUnusedMessages(profileId);
     }

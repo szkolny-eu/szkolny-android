@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZI
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
+import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.get
@@ -111,7 +111,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
                             it.id = it.buildId()
                         }
 
-                        data.lessonNewList.add(lessonObject)
+                        data.lessonList.add(lessonObject)
                         dataDays.remove(lessonObject.date!!.value)
 
                         if (type != Lesson.TYPE_NORMAL) {
@@ -132,7 +132,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
 
             for (day in dataDays) {
                 val lessonDate = Date.fromValue(day)
-                data.lessonNewList += Lesson(profileId, lessonDate.value.toLong()).apply {
+                data.lessonList += Lesson(profileId, lessonDate.value.toLong()).apply {
                     type = Lesson.TYPE_NO_LESSONS
                     date = lessonDate
                 }

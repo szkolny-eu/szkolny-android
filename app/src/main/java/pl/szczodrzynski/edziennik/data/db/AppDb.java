@@ -42,12 +42,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategoryDao;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeDao;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChangeDao;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonDao;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRangeDao;
+import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange;
+import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRangeDao;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStoreDao;
 import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber;
@@ -87,8 +83,6 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         TeacherAbsenceType.class,
         Subject.class,
         Notice.class,
-        Lesson.class,
-        LessonChange.class,
         Team.class,
         Attendance.class,
         Event.class,
@@ -110,7 +104,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         AttendanceType.class,
         pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson.class,
         ConfigEntry.class,
-        Metadata.class}, version = 72)
+        Metadata.class}, version = 73)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -127,8 +121,6 @@ public abstract class AppDb extends RoomDatabase {
     public abstract TeacherAbsenceTypeDao teacherAbsenceTypeDao();
     public abstract SubjectDao subjectDao();
     public abstract NoticeDao noticeDao();
-    public abstract LessonDao lessonDao();
-    public abstract LessonChangeDao lessonChangeDao();
     public abstract TeamDao teamDao();
     public abstract AttendanceDao attendanceDao();
     public abstract EventDao eventDao();
@@ -959,6 +951,16 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("DROP TABLE _userCodes;");
         }
     };
+    public static final Migration MIGRATION_72_73 = new Migration(72, 73) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // Mark as seen all lucky number metadata.
+            database.execSQL("UPDATE metadata SET seen=1 WHERE thingType=10");
+
+            database.execSQL("DROP TABLE lessons");
+            database.execSQL("DROP TABLE lessonChanges");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -1028,7 +1030,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_68_69,
                                     MIGRATION_69_70,
                                     MIGRATION_70_71,
-                                    MIGRATION_71_72
+                                    MIGRATION_71_72,
+                                    MIGRATION_72_73
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

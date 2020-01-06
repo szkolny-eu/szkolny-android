@@ -89,13 +89,13 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                                     System.currentTimeMillis()
                             ))
                 }
-                data.lessonNewList += it
+                data.lessonList += it
             }
         }
 
         for (day in dataDays) {
             val lessonDate = Date.fromValue(day)
-            data.lessonNewList += Lesson(data.profileId, lessonDate.value.toLong()).apply {
+            data.lessonList += Lesson(data.profileId, lessonDate.value.toLong()).apply {
                 type = Lesson.TYPE_NO_LESSONS
                 date = lessonDate
             }

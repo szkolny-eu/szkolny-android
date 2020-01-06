@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
+import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -182,7 +182,7 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
 
             d(TAG, "Clearing lessons between ${weekStart.stringY_m_d} and ${weekEnd.stringY_m_d} - timetable downloaded for $getDate")
 
-            data.lessonNewList.addAll(lessons)
+            data.lessonList.addAll(lessons)
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
 
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_TIMETABLE, SYNC_ALWAYS)

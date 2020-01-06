@@ -19,9 +19,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.events.Event
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
 import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.Lesson
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonChange
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
+import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange
 import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
 import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
@@ -36,6 +34,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceType
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
+import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -138,8 +137,6 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     var toRemove = mutableListOf<DataRemoveModel>()
 
     val lessonList = mutableListOf<Lesson>()
-    val lessonChangeList = mutableListOf<LessonChange>()
-    val lessonNewList = mutableListOf<pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson>()
 
     val gradeList = mutableListOf<Grade>()
 
@@ -199,8 +196,6 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         teacherAbsenceTypes.clear()
 
         lessonList.clear()
-        lessonChangeList.clear()
-        lessonNewList.clear()
         gradeList.clear()
         noticeList.clear()
         attendanceList.clear()
@@ -284,15 +279,8 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         if (setSeenMetadataList.isNotEmpty())
             db.metadataDao().setSeen(setSeenMetadataList)
 
-        // not extracted from DB - always new data
         if (lessonList.isNotEmpty()) {
-            db.lessonDao().clear(profile.id)
-            db.lessonDao().addAll(lessonList)
-        }
-        if (lessonChangeList.isNotEmpty())
-            db.lessonChangeDao().addAll(lessonChangeList)
-        if (lessonNewList.isNotEmpty()) {
-            db.timetableDao() += lessonNewList
+            db.timetableDao() += lessonList
         }
         if (gradeList.isNotEmpty()) {
             db.gradeDao().addAll(gradeList)

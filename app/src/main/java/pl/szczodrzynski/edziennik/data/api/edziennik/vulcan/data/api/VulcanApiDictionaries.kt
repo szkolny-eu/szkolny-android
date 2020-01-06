@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance
 import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceType
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonRange
+import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange
 import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeType
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher

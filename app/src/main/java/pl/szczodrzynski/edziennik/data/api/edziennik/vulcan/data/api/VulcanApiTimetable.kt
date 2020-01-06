@@ -203,7 +203,7 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
 
             d(TAG, "Clearing lessons between ${weekStart.stringY_m_d} and ${weekEnd.stringY_m_d} - timetable downloaded for $getDate")
 
-            data.lessonNewList.addAll(lessons)
+            data.lessonList.addAll(lessons)
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
 
             data.setSyncNext(ENDPOINT_VULCAN_API_TIMETABLE, SYNC_ALWAYS)

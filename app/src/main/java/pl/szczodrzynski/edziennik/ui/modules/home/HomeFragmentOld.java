@@ -48,7 +48,6 @@ import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
 import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
 import pl.szczodrzynski.edziennik.databinding.CardUpdateBinding;
@@ -58,7 +57,6 @@ import pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusCaptchaActivity;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
-import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
@@ -239,8 +237,8 @@ public class HomeFragmentOld extends Fragment {
             }
         }
 
-        timetableCard = new HomeTimetableCardOld(app, activity, this, layoutInflater, insertPoint);
-        timetableCard.run();
+        // timetableCard = new HomeTimetableCardOld(app, activity, this, layoutInflater, insertPoint);
+        // timetableCard.run();
 
         configCardGrades(activity, layoutInflater, activity, insertPoint);
 
@@ -369,60 +367,6 @@ public class HomeFragmentOld extends Fragment {
                 .color(IconicsColor.colorInt(Utils.getAttr(c, android.R.attr.textColorPrimary)))
                 .size(IconicsSize.dp(16)), null);
     }
-    public static Date findDateWithLessons(int profileId, List<LessonFull> lessons) {
-        return findDateWithLessons(profileId, lessons, 0);
-    }
-    public static Date findDateWithLessons(int profileId, List<LessonFull> lessons, int nextDayHourThreshold) {
-        return findDateWithLessons(profileId, lessons, Time.getNow(), nextDayHourThreshold);
-    }
-    public static Date findDateWithLessons(int profileId, List<LessonFull> lessons, Time now) {
-        return findDateWithLessons(profileId, lessons, now, 0);
-    }
-    public static Date findDateWithLessons(int profileId, @NonNull List<LessonFull> lessons, Time now, int nextDayHourThreshold) {
-        now = now.clone().stepForward(-nextDayHourThreshold, 0, 0);
-        Date displayingDate = Date.getToday();
-        int displayingWeekDay = displayingDate.getWeekDay();
-        //boolean foundSomething = false;
-        //int weekDayNum = displayingDate.getWeekDay();//Week.getTodayWeekDay();
-        //int checkedDays = 0;
-
-        for (LessonFull lesson: lessons) {
-            if (lesson.profileId != profileId)
-                continue;
-            if (lesson.weekDay == displayingWeekDay
-                    && now.getValue() <= lesson.endTime.getValue()) {
-                return lesson.lessonDate;
-            }
-            if (lesson.weekDay != displayingWeekDay) {
-                return lesson.lessonDate;
-            }
-        }
-        return displayingDate;
-
-        /*while (!foundSomething && checkedDays < 14)
-        {
-            weekDay = profile.timetable.weekdays[displayingDate.getWeekDay()];
-            if (weekDay.lessons.size() == 0) // this day has no lessons
-            {
-                displayingDate.stepForward(0, 0, 1);
-                checkedDays++;
-                continue;
-            }
-            if (displayingDate.getWeekDay() == Week.getTodayWeekDay() // today
-                    && now.getValue() > weekDay.lessons.get(weekDay.lessons.size() - 1).endTime.getValue()) // this day has lessons, but last lesson is over already
-            {
-                displayingDate.stepForward(0, 0, 1);
-                checkedDays++;
-                continue;
-            }
-            // this day has lessons, and we are during the lessons
-            foundSomething = true;
-        }
-        return displayingDate;*/
-    }
-
-
-
 
 
     private void updateCardGrades(Context c, Activity a, View root, int maxWidthPx) {
@@ -558,8 +502,8 @@ public class HomeFragmentOld extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (timetableCard != null)
-            timetableCard.destroy();
+        //if (timetableCard != null)
+        //    timetableCard.destroy();
     }
 
     private void configCardGrades(Context c, LayoutInflater layoutInflater, Activity a, ViewGroup insertPoint) {
@@ -568,6 +512,4 @@ public class HomeFragmentOld extends Fragment {
         updateCardGrades(c, a, root, displayMetrics.widthPixels - Utils.dpToPx((app.config.getUi().getMiniMenuVisible() ? 72 : 0)/*miniDrawer size*/ + 24 + 24/*left and right offsets*/ + 16/*ellipsize width*/));
         insertPoint.addView(root, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
-
-    private HomeTimetableCardOld timetableCard;
 }

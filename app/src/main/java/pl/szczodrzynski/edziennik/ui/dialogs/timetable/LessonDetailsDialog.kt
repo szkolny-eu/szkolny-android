@@ -25,7 +25,7 @@ import pl.szczodrzynski.edziennik.setText
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
-import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment
+import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week

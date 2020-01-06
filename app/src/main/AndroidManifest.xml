@@ -112,9 +112,6 @@
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".ui.modules.home.CounterActivityOld"
-            android:theme="@style/AppTheme.Black" />
-        <activity
             android:name=".ui.modules.home.CounterActivity"
             android:theme="@style/AppTheme.Black" />
         <activity android:name=".ui.modules.webpush.QrScannerActivity" />

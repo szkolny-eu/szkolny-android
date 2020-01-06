@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik.ui.modules.timetable.v2
+/*
+ * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ */
+
+package pl.szczodrzynski.edziennik.ui.modules.timetable
 
 import android.content.BroadcastReceiver
 import android.content.Context

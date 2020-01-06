@@ -1,24 +1,16 @@
 package pl.szczodrzynski.edziennik.ui.dialogs.lessonchange;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableAdapter;
 import pl.szczodrzynski.edziennik.databinding.DialogLessonChangeListBinding;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Time;
 
 public class LessonChangeDialog {
     private App app;
@@ -56,7 +48,7 @@ public class LessonChangeDialog {
         b.lessonChangeView.setHasFixedSize(true);
         b.lessonChangeView.setLayoutManager(new LinearLayoutManager(context));
 
-        app.db.lessonDao().getAllByDate(profileId, date, Time.getNow()).observe((LifecycleOwner) context, lessons -> {
+        /*app.db.lessonDao().getAllByDate(profileId, date, Time.getNow()).observe((LifecycleOwner) context, lessons -> {
             if (app == null || app.profile == null || b == null)
                 return;
 
@@ -72,6 +64,6 @@ public class LessonChangeDialog {
                 b.lessonChangeView.setAdapter(adapter);
                 b.lessonChangeView.setVisibility(View.VISIBLE);
             });
-        });
+        });*/
     }
 }

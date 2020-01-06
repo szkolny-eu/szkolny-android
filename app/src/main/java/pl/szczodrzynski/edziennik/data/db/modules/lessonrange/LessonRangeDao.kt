@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-10-5.
  */
 
-package pl.szczodrzynski.edziennik.data.db.modules.lessons
+package pl.szczodrzynski.edziennik.data.db.modules.lessonrange
 
 import androidx.room.Dao
 import androidx.room.Insert

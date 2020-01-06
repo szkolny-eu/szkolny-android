@@ -1,10 +1,13 @@
-package pl.szczodrzynski.edziennik.ui.modules.timetable.v2
+/*
+ * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ */
+
+package pl.szczodrzynski.edziennik.ui.modules.timetable
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.day.TimetableDayFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
 

@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik.ui.modules.timetable.v2.day
+/*
+ * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ */
+
+package pl.szczodrzynski.edziennik.ui.modules.timetable
 
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -25,8 +29,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableNoTimetableBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.timetable.LessonDetailsDialog
-import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment.Companion.DEFAULT_END_HOUR
-import pl.szczodrzynski.edziennik.ui.modules.timetable.v2.TimetableFragment.Companion.DEFAULT_START_HOUR
+import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
+import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
 import pl.szczodrzynski.edziennik.utils.ListenerScrollView
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.getColorFromAttr

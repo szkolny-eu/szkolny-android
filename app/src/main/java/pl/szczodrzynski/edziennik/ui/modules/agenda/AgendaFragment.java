@@ -38,7 +38,6 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
-import pl.szczodrzynski.edziennik.data.db.modules.lessons.LessonFull;
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding;
@@ -46,7 +45,6 @@ import pl.szczodrzynski.edziennik.ui.dialogs.day.DayDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog;
-import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeCounter;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeEvent;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeEventRenderer;
 import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceCounter;
@@ -174,7 +172,7 @@ public class AgendaFragment extends Fragment {
 
             List<CalendarEvent> eventList = new ArrayList<>();
 
-            List<LessonChangeCounter> lessonChangeCounters = app.db.lessonChangeDao().getLessonChangeCountersNow(App.profileId);
+            /* List<LessonChangeCounter> lessonChangeCounters = app.db.lessonChangeDao().getLessonChangeCountersNow(App.profileId);
             for (LessonChangeCounter counter : lessonChangeCounters) {
                 Calendar startTime = Calendar.getInstance();
                 Calendar endTime = Calendar.getInstance();
@@ -193,7 +191,7 @@ public class AgendaFragment extends Fragment {
                         counter.lessonChangeDate,
                         counter.lessonChangeCount
                 ));
-            }
+            } TODO: Implement new timetable lesson changes */
 
             if (app.profile.getStudentData("showTeacherAbsences", true)) {
                 List<TeacherAbsenceFull> teacherAbsenceList = app.db.teacherAbsenceDao().getAllFullNow(App.profileId);
@@ -407,7 +405,7 @@ public class AgendaFragment extends Fragment {
                 }
             }
 
-            List<LessonFull> lessonChanges = app.db.lessonChangeDao().getAllChangesWithLessonsNow(App.profileId);
+            /* List<LessonFull> lessonChanges = app.db.lessonChangeDao().getAllChangesWithLessonsNow(App.profileId);
 
             for (LessonFull lesson: lessonChanges) {
                 Calendar startTime = Calendar.getInstance();
@@ -423,7 +421,7 @@ public class AgendaFragment extends Fragment {
                         lesson.startTime.second);
                 Drawable eventIcon = new IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle).size(IconicsSize.dp(10)).color(IconicsColor.colorInt(0xff78909c));
                 eventList.add(new EventDay(startTime, eventIcon));
-            }
+            } TODO: Implement new timetable lesson changes */
 
             getActivity().runOnUiThread(() -> {
                 //List<EventDay> eventList = new ArrayList<>();
