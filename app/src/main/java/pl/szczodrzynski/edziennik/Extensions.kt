@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.database.Cursor
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
@@ -26,6 +27,9 @@ import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.annotation.*
 import androidx.core.app.ActivityCompat
+import androidx.core.database.getIntOrNull
+import androidx.core.database.getLongOrNull
+import androidx.core.database.getStringOrNull
 import androidx.core.util.forEach
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -938,3 +942,7 @@ fun Context.getNotificationTitle(type: Int): String {
         else -> R.string.notification_type_general
     })
 }
+
+fun Cursor?.getString(columnName: String) = this?.getStringOrNull(getColumnIndex(columnName))
+fun Cursor?.getInt(columnName: String) = this?.getIntOrNull(getColumnIndex(columnName))
+fun Cursor?.getLong(columnName: String) = this?.getLongOrNull(getColumnIndex(columnName))

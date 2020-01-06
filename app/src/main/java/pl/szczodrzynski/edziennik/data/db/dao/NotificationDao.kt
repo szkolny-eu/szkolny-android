@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.db.dao
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -36,4 +37,7 @@ interface NotificationDao {
 
     @Query("UPDATE notifications SET posted = 1 WHERE posted = 0")
     fun setAllPosted()
+
+    @Query("SELECT * FROM notifications ORDER BY addedDate DESC")
+    fun getAllCursor(): Cursor
 }

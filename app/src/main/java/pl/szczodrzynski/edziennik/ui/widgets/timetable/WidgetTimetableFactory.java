@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik.widgets.timetable;
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-1-6.
+ */
+
+package pl.szczodrzynski.edziennik.ui.widgets.timetable;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -28,14 +32,13 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.WidgetTimetable;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
-public class WidgetTimetableListProvider implements RemoteViewsService.RemoteViewsFactory {
+public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = "WidgetTimetableProvider";
     private Context context;
@@ -44,7 +47,7 @@ public class WidgetTimetableListProvider implements RemoteViewsService.RemoteVie
     private static boolean triedToReload = false;
 
     //For obtaining the activity's context and intent
-    public WidgetTimetableListProvider(Context context, Intent intent) {
+    public WidgetTimetableFactory(Context context, Intent intent) {
         this.context = context;
         this.appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
         // executed only ONCE
@@ -65,7 +68,7 @@ public class WidgetTimetableListProvider implements RemoteViewsService.RemoteVie
     public void onDataSetChanged() {
         // executed EVERY TIME
         Log.d(TAG, "onDataSetChanged for appWidgetId: "+appWidgetId);
-        lessons = WidgetTimetable.Companion.getTimetables() == null ? null : WidgetTimetable.Companion.getTimetables().get(appWidgetId);
+        lessons = WidgetTimetableProvider.Companion.getTimetables() == null ? null : WidgetTimetableProvider.Companion.getTimetables().get(appWidgetId);
     }
 
     @Override
@@ -306,11 +309,11 @@ public class WidgetTimetableListProvider implements RemoteViewsService.RemoteVie
             // try to reload the widget
             // only once
             triedToReload = true;
-            Intent intent = new Intent(context, WidgetTimetable.class);
+            Intent intent = new Intent(context, WidgetTimetableProvider.class);
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
             // since it seems the onUpdate() is only fired on that:
-            int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetTimetable.class));
+            int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetTimetableProvider.class));
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
             context.sendBroadcast(intent);
         }

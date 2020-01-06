@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.widgets.WidgetConfig;
+import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig;
 
 public class AppConfig {
 

@@ -25,10 +25,10 @@
 -keep class pl.szczodrzynski.edziennik.data.db.entity.Event { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.full.EventFull { *; }
 -keep class pl.szczodrzynski.edziennik.ui.modules.home.HomeCardModel { *; }
--keepclassmembers class pl.szczodrzynski.edziennik.widgets.WidgetConfig { public *; }
--keepnames class pl.szczodrzynski.edziennik.WidgetTimetable
--keepnames class pl.szczodrzynski.edziennik.notifications.WidgetNotifications
--keepnames class pl.szczodrzynski.edziennik.luckynumber.WidgetLuckyNumber
+-keepclassmembers class pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig { public *; }
+-keepnames class pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider
+-keepnames class pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider
+-keepnames class pl.szczodrzynski.edziennik.widgets.luckynumber.WidgetLuckyNumber
 
 -keep class .R
 -keep class **.R$* {

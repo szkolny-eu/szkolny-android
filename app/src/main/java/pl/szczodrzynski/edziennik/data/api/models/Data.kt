@@ -10,38 +10,14 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
-import pl.szczodrzynski.edziennik.data.db.entity.Announcement
-import pl.szczodrzynski.edziennik.data.db.entity.EndpointTimer
-import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType
-import pl.szczodrzynski.edziennik.data.db.entity.Classroom
-import pl.szczodrzynski.edziennik.data.db.entity.Event
-import pl.szczodrzynski.edziennik.data.db.entity.EventType
-import pl.szczodrzynski.edziennik.data.db.entity.Grade
-import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
-import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
-import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Notice
-import pl.szczodrzynski.edziennik.data.db.entity.NoticeType
-import pl.szczodrzynski.edziennik.data.db.entity.Notification
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.entity.Subject
-import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsence
-import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsenceType
-import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.data.db.entity.Lesson
-import pl.szczodrzynski.edziennik.data.db.entity.LibrusLesson
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.values
 import java.io.InterruptedIOException
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLException
@@ -390,7 +366,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         apiError.errorCode = when (apiError.throwable) {
             is UnknownHostException -> ERROR_REQUEST_FAILURE_HOSTNAME_NOT_FOUND
             is SSLException -> ERROR_REQUEST_FAILURE_SSL_ERROR
-            is InterruptedIOException -> ERROR_REQUEST_FAILURE_NO_INTERNET
+            is InterruptedIOException, is ConnectException -> ERROR_REQUEST_FAILURE_NO_INTERNET
             is SocketTimeoutException -> ERROR_REQUEST_FAILURE_TIMEOUT
             else ->
                 if (apiError.errorCode == ERROR_REQUEST_FAILURE)

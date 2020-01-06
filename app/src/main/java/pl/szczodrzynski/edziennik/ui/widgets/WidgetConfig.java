@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik.widgets;
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-1-6.
+ */
+
+package pl.szczodrzynski.edziennik.ui.widgets;
 
 public class WidgetConfig {
     public int profileId = -1;

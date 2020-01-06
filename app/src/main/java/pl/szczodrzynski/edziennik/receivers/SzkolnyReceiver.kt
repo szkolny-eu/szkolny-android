@@ -13,6 +13,10 @@ import pl.szczodrzynski.edziennik.data.api.events.requests.TaskCancelRequest
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 
 class SzkolnyReceiver : BroadcastReceiver() {
+    companion object {
+        const val ACTION = "pl.szczodrzynski.edziennik.SZKOLNY_MAIN"
+    }
+
     override fun onReceive(context: Context?, intent: Intent?) {
         context ?: return
         when (intent?.extras?.getString("task", null)) {

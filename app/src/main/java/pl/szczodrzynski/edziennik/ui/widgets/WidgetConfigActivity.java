@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik.widgets;
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-1-6.
+ */
+
+package pl.szczodrzynski.edziennik.ui.widgets;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
@@ -15,16 +19,17 @@ import android.widget.SeekBar;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
 import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.WidgetTimetable;
 import pl.szczodrzynski.edziennik.data.db.entity.Profile;
 import pl.szczodrzynski.edziennik.databinding.DialogWidgetConfigBinding;
+import pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider;
+import pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider;
 import pl.szczodrzynski.edziennik.widgets.luckynumber.WidgetLuckyNumber;
-import pl.szczodrzynski.edziennik.widgets.notifications.WidgetNotifications;
 
 import static pl.szczodrzynski.edziennik.ExtensionsKt.filterOutArchived;
 
@@ -130,17 +135,19 @@ public class WidgetConfigActivity extends Activity {
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel)
                 .onPositive(((dialog1, which) -> {
-                    app.appConfig.widgetTimetableConfigs.put(mAppWidgetId, new WidgetConfig(profileId, bigStyle, darkTheme, opacity));
-                    app.saveConfig("widgetTimetableConfigs");
+                    WidgetConfig config = new WidgetConfig(profileId, bigStyle, darkTheme, opacity);
+                    JsonObject configs = app.config.getWidgetConfigs();
+                    configs.add(Integer.toString(mAppWidgetId), app.gson.toJsonTree(config));
+                    app.config.setWidgetConfigs(configs);
 
                     Intent refreshIntent;
                     switch (widgetType) {
                         default:
                         case WIDGET_TIMETABLE:
-                            refreshIntent = new Intent(app.getContext(), WidgetTimetable.class);
+                            refreshIntent = new Intent(app.getContext(), WidgetTimetableProvider.class);
                             break;
                         case WIDGET_NOTIFICATIONS:
-                            refreshIntent = new Intent(app.getContext(), WidgetNotifications.class);
+                            refreshIntent = new Intent(app.getContext(), WidgetNotificationsProvider.class);
                             break;
                         case WIDGET_LUCKY_NUMBER:
                             refreshIntent = new Intent(app.getContext(), WidgetLuckyNumber.class);

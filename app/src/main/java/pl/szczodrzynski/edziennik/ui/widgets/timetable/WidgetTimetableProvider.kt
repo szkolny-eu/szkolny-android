@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-1-6.
+ */
+
+package pl.szczodrzynski.edziennik.ui.widgets.timetable
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -21,20 +25,50 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Event.TYPE_HOMEWORK
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.ui.widgets.LessonDialogActivity
+import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
-import pl.szczodrzynski.edziennik.widgets.WidgetConfig
-import pl.szczodrzynski.edziennik.widgets.timetable.LessonDialogActivity
-import pl.szczodrzynski.edziennik.widgets.timetable.WidgetTimetableService
 import java.lang.reflect.InvocationTargetException
 
 
-class WidgetTimetable : AppWidgetProvider() {
+class WidgetTimetableProvider : AppWidgetProvider() {
+    companion object {
+        const val ACTION_SYNC_DATA = "ACTION_SYNC_DATA"
+        private const val TAG = "WidgetTimetable"
+
+        var timetables: SparseArray<List<ItemWidgetTimetableModel>>? = null
+
+        fun getPendingSelfIntent(context: Context, action: String): PendingIntent {
+            val intent = Intent(context, WidgetTimetableProvider::class.java)
+            intent.action = action
+            return getPendingSelfIntent(context, intent)
+        }
+
+        fun getPendingSelfIntent(context: Context, intent: Intent): PendingIntent {
+            return PendingIntent.getBroadcast(context, 0, intent, 0)
+        }
+
+        fun drawableToBitmap(drawable: Drawable): Bitmap {
+
+            if (drawable is BitmapDrawable) {
+                return drawable.bitmap
+            }
+
+            val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+
+            return bitmap
+        }
+    }
 
     override fun onReceive(context: Context, intent: Intent) {
         if (ACTION_SYNC_DATA == intent.action) {
@@ -46,12 +80,12 @@ class WidgetTimetable : AppWidgetProvider() {
     private val ignoreCancelled = true
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        val thisWidget = ComponentName(context, WidgetTimetable::class.java)
+        val thisWidget = ComponentName(context, WidgetTimetableProvider::class.java)
 
         timetables = SparseArray()
-        //timetables.clear();
 
         val app = context.applicationContext as App
+        val widgetConfigs = app.config.widgetConfigs
 
         var bellSyncDiffMillis: Long = 0
         app.config.timetable.bellSyncDiff?.let {
@@ -63,37 +97,32 @@ class WidgetTimetable : AppWidgetProvider() {
         val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
 
         allWidgetIds?.forEach { appWidgetId ->
-            var widgetConfig = app.appConfig.widgetTimetableConfigs[appWidgetId]
-            if (widgetConfig == null) {
-                widgetConfig = WidgetConfig(app.profileFirstId())
-                app.appConfig.widgetTimetableConfigs[appWidgetId] = widgetConfig
-                app.appConfig.savePending = true
-            }
+            val config = widgetConfigs.getJsonObject(appWidgetId.toString())?.let { app.gson.fromJson(it, WidgetConfig::class.java) } ?: return@forEach
 
-            val views = if (widgetConfig.bigStyle) {
-                RemoteViews(context.packageName, if (widgetConfig.darkTheme) R.layout.widget_timetable_dark_big else R.layout.widget_timetable_big)
+            val views = if (config.bigStyle) {
+                RemoteViews(context.packageName, if (config.darkTheme) R.layout.widget_timetable_dark_big else R.layout.widget_timetable_big)
             } else {
-                RemoteViews(context.packageName, if (widgetConfig.darkTheme) R.layout.widget_timetable_dark else R.layout.widget_timetable)
+                RemoteViews(context.packageName, if (config.darkTheme) R.layout.widget_timetable_dark else R.layout.widget_timetable)
             }
 
-            val refreshIntent = Intent(app, WidgetTimetable::class.java)
+            val refreshIntent = Intent(app, WidgetTimetableProvider::class.java)
             refreshIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
-            val pendingRefreshIntent = PendingIntent.getBroadcast(context,
+            val refreshPendingIntent = PendingIntent.getBroadcast(context,
                     0, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-            views.setOnClickPendingIntent(R.id.widgetTimetableRefresh, pendingRefreshIntent)
+            views.setOnClickPendingIntent(R.id.widgetTimetableRefresh, refreshPendingIntent)
 
             views.setOnClickPendingIntent(R.id.widgetTimetableSync, getPendingSelfIntent(context, ACTION_SYNC_DATA))
 
             views.setImageViewBitmap(R.id.widgetTimetableRefresh, IconicsDrawable(context, CommunityMaterial.Icon2.cmd_refresh)
                     .colorInt(Color.WHITE)
-                    .sizeDp(if (widgetConfig.bigStyle) 24 else 16).toBitmap())
+                    .sizeDp(if (config.bigStyle) 24 else 16).toBitmap())
 
             views.setImageViewBitmap(R.id.widgetTimetableSync, IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline)
                     .colorInt(Color.WHITE)
-                    .sizeDp(if (widgetConfig.bigStyle) 24 else 16).toBitmap())
+                    .sizeDp(if (config.bigStyle) 24 else 16).toBitmap())
 
-            prepareAppWidget(app, appWidgetId, views, widgetConfig, bellSyncDiffMillis)
+            prepareAppWidget(app, appWidgetId, views, config, bellSyncDiffMillis)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widgetTimetableListView)
@@ -329,20 +358,20 @@ class WidgetTimetable : AppWidgetProvider() {
         }
 
         // intent running when the header is clicked
-        val openIntent = Intent(app, MainActivity::class.java)
-        openIntent.action = "android.intent.action.MAIN"
+        val headerIntent = Intent(app, MainActivity::class.java)
+        headerIntent.action = "android.intent.action.MAIN"
         if (!unified) {
             // per-profile widget should redirect to it + correct day
             profileId?.let {
-                openIntent.putExtra("profileId", it)
+                headerIntent.putExtra("profileId", it)
             }
             displayingDate?.let {
-                openIntent.putExtra("timetableDate", it.value)
+                headerIntent.putExtra("timetableDate", it.value)
             }
         }
-        openIntent.putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
-        val pendingOpenIntent = PendingIntent.getActivity(app, appWidgetId, openIntent, 0)
-        views.setOnClickPendingIntent(R.id.widgetTimetableHeader, pendingOpenIntent)
+        headerIntent.putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
+        val headerPendingIntent = PendingIntent.getActivity(app, appWidgetId, headerIntent, 0)
+        views.setOnClickPendingIntent(R.id.widgetTimetableHeader, headerPendingIntent)
 
         timetables!!.put(appWidgetId, models)
 
@@ -353,55 +382,21 @@ class WidgetTimetable : AppWidgetProvider() {
         views.setRemoteAdapter(R.id.widgetTimetableListView, listIntent)
 
         // create an intent used to display the lesson details dialog
-        val intentTemplate = Intent(app, LessonDialogActivity::class.java)
-        intentTemplate.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK /*or Intent.FLAG_ACTIVITY_CLEAR_TASK*/)
-        val pendingIntentTimetable = PendingIntent.getActivity(app, appWidgetId, intentTemplate, 0)
-        views.setPendingIntentTemplate(R.id.widgetTimetableListView, pendingIntentTimetable)
+        val itemIntent = Intent(app, LessonDialogActivity::class.java)
+        itemIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK /*or Intent.FLAG_ACTIVITY_CLEAR_TASK*/)
+        val itemPendingIntent = PendingIntent.getActivity(app, appWidgetId, itemIntent, 0)
+        views.setPendingIntentTemplate(R.id.widgetTimetableListView, itemPendingIntent)
 
         if (!unified)
             views.setScrollPosition(R.id.widgetTimetableListView, scrollPos)
     }
 
-    override fun onEnabled(context: Context) {
-        // Enter relevant functionality for when the first widget is created
-    }
-
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         val app = context.applicationContext as App
-        for (appWidgetId in appWidgetIds) {
-            app.appConfig.widgetTimetableConfigs.remove(appWidgetId)
+        val widgetConfigs = app.config.widgetConfigs
+        appWidgetIds.forEach {
+            widgetConfigs.remove(it.toString())
         }
-        app.saveConfig("widgetTimetableConfigs")
-    }
-
-    companion object {
-        const val ACTION_SYNC_DATA = "ACTION_SYNC_DATA"
-        private const val TAG = "WidgetTimetable"
-
-        var timetables: SparseArray<List<ItemWidgetTimetableModel>>? = null
-
-        fun getPendingSelfIntent(context: Context, action: String): PendingIntent {
-            val intent = Intent(context, WidgetTimetable::class.java)
-            intent.action = action
-            return getPendingSelfIntent(context, intent)
-        }
-
-        fun getPendingSelfIntent(context: Context, intent: Intent): PendingIntent {
-            return PendingIntent.getBroadcast(context, 0, intent, 0)
-        }
-
-        fun drawableToBitmap(drawable: Drawable): Bitmap {
-
-            if (drawable is BitmapDrawable) {
-                return drawable.bitmap
-            }
-
-            val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-
-            return bitmap
-        }
+        app.config.widgetConfigs = widgetConfigs
     }
 }

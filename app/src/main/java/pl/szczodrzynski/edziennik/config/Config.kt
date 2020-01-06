@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.config
 
+import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -73,6 +74,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
     var runSync: Boolean
         get() { mRunSync = mRunSync ?: values.get("runSync", false); return mRunSync ?: false }
         set(value) { set("runSync", value); mRunSync = value }
+
+    private var mWidgetConfigs: JsonObject? = null
+    var widgetConfigs: JsonObject
+        get() { mWidgetConfigs = mWidgetConfigs ?: values.get("widgetConfigs", JsonObject()); return mWidgetConfigs ?: JsonObject() }
+        set(value) { set("widgetConfigs", value); mWidgetConfigs = value }
 
     private var rawEntries: List<ConfigEntry> = db.configDao().getAllNow()
     private val profileConfigs: HashMap<Int, ProfileConfig> = hashMapOf()

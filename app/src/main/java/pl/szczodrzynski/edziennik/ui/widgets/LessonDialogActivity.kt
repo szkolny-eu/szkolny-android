@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-11-14.
  */
 
-package pl.szczodrzynski.edziennik.widgets.timetable
+package pl.szczodrzynski.edziennik.ui.widgets
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
