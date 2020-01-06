@@ -25,6 +25,9 @@ class LibrusApiAttendances(override val data: DataLibrus,
         if (data.attendanceTypes.isEmpty()) {
             data.db.attendanceTypeDao().getAllNow(profileId).toSparseArray(data.attendanceTypes) { it.id }
         }
+        if (data.librusLessons.isEmpty()) {
+            data.db.librusLessonDao().getAllNow(profileId).toSparseArray(data.librusLessons) { it.lessonId }
+        }
 
         apiGet(TAG, "Attendances") { json ->
             val attendances = json.getJsonArray("Attendances")?.asJsonObjectList()
@@ -32,23 +35,25 @@ class LibrusApiAttendances(override val data: DataLibrus,
             attendances?.forEach { attendance ->
                 val id = Utils.strToInt((attendance.getString("Id") ?: return@forEach)
                         .replace("[^\\d.]".toRegex(), "")).toLong()
-                val teacherId = attendance.getJsonObject("AddedBy")?.getLong("Id") ?: -1
+                val lessonId = attendance.getJsonObject("Lesson")?.getLong("Id") ?: -1
                 val lessonNo = attendance.getInt("LessonNo") ?: return@forEach
-                val startTime = data.lessonRanges.get(lessonNo).startTime
                 val lessonDate = Date.fromY_m_d(attendance.getString("Date"))
                 val semester = attendance.getInt("Semester") ?: return@forEach
                 val type = attendance.getJsonObject("Type")?.getLong("Id") ?: return@forEach
                 val typeObject = data.attendanceTypes.get(type)
                 val topic = typeObject?.name ?: ""
 
-                val lessonList = data.db.timetableDao().getForDateNow(profileId, lessonDate)
-                val subjectId = lessonList.firstOrNull { it.startTime == startTime }?.subjectId ?: -1
+                val startTime = data.lessonRanges.get(lessonNo).startTime
+
+                val lesson = if (lessonId != -1L)
+                    data.librusLessons.singleOrNull { it.lessonId == lessonId }
+                else null
 
                 val attendanceObject = Attendance(
                         profileId,
                         id,
-                        teacherId,
-                        subjectId,
+                        lesson?.teacherId ?: -1,
+                        lesson?.subjectId ?: -1,
                         semester,
                         topic,
                         lessonDate,

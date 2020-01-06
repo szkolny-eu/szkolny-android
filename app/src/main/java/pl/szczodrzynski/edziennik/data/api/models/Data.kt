@@ -35,6 +35,7 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceType
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
+import pl.szczodrzynski.edziennik.data.db.modules.timetable.LibrusLesson
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -122,6 +123,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     val noticeTypes = LongSparseArray<NoticeType>()
     val eventTypes = LongSparseArray<EventType>()
     val teacherAbsenceTypes = LongSparseArray<TeacherAbsenceType>()
+    val librusLessons = LongSparseArray<LibrusLesson>()
 
     private var mTeamClass: Team? = null
     var teamClass: Team?
@@ -194,6 +196,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         noticeTypes.clear()
         eventTypes.clear()
         teacherAbsenceTypes.clear()
+        librusLessons.clear()
 
         lessonList.clear()
         gradeList.clear()
@@ -264,6 +267,8 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             db.eventTypeDao().addAll(eventTypes.values())
         if (teacherAbsenceTypes.size > 0)
             db.teacherAbsenceTypeDao().addAll(teacherAbsenceTypes.values())
+        if (librusLessons.size > 0)
+            db.librusLessonDao().addAll(librusLessons.values())
 
         // clear DB with DataRemoveModels added by endpoints
         for (model in toRemove) {

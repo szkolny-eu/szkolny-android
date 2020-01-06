@@ -72,6 +72,8 @@ import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceTypeDao
 import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherDao;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.Team;
 import pl.szczodrzynski.edziennik.data.db.modules.teams.TeamDao;
+import pl.szczodrzynski.edziennik.data.db.modules.timetable.LibrusLesson;
+import pl.szczodrzynski.edziennik.data.db.modules.timetable.LibrusLessonDao;
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.TimetableDao;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
@@ -104,7 +106,8 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         AttendanceType.class,
         pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson.class,
         ConfigEntry.class,
-        Metadata.class}, version = 73)
+        LibrusLesson.class,
+        Metadata.class}, version = 74)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -142,6 +145,7 @@ public abstract class AppDb extends RoomDatabase {
     public abstract AttendanceTypeDao attendanceTypeDao();
     public abstract TimetableDao timetableDao();
     public abstract ConfigDao configDao();
+    public abstract LibrusLessonDao librusLessonDao();
     public abstract MetadataDao metadataDao();
 
     private static volatile AppDb INSTANCE;
@@ -961,6 +965,19 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("DROP TABLE lessonChanges");
         }
     };
+    public static final Migration MIGRATION_73_74 = new Migration(73, 74) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE librusLessons (" +
+                    "profileId INTEGER NOT NULL," +
+                    "lessonId INTEGER NOT NULL," +
+                    "teacherId INTEGER NOT NULL," +
+                    "subjectId INTEGER NOT NULL," +
+                    "teamId INTEGER," +
+                    "PRIMARY KEY(profileId, lessonId));");
+            database.execSQL("CREATE INDEX index_librusLessons_profileId ON librusLessons (profileId);");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -1031,7 +1048,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_69_70,
                                     MIGRATION_70_71,
                                     MIGRATION_71_72,
-                                    MIGRATION_72_73
+                                    MIGRATION_72_73,
+                                    MIGRATION_73_74
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

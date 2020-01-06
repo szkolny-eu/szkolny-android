@@ -75,6 +75,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_classrooms)
                 LibrusApiClassrooms(data, onSuccess)
             }
+            ENDPOINT_LIBRUS_API_LESSONS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_lessons)
+                LibrusApiLessons(data, onSuccess)
+            }
             // TODO push config
             ENDPOINT_LIBRUS_API_TIMETABLES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_timetable)

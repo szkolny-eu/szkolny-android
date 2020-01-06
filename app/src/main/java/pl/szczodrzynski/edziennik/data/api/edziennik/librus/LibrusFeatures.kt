@@ -15,6 +15,7 @@ const val ENDPOINT_LIBRUS_API_UNITS                                    = 1005
 const val ENDPOINT_LIBRUS_API_USERS                                    = 1006
 const val ENDPOINT_LIBRUS_API_SUBJECTS                                 = 1007
 const val ENDPOINT_LIBRUS_API_CLASSROOMS                               = 1008
+const val ENDPOINT_LIBRUS_API_LESSONS                                  = 1009
 const val ENDPOINT_LIBRUS_API_PUSH_CONFIG                              = 1010
 const val ENDPOINT_LIBRUS_API_TIMETABLES                               = 1015
 const val ENDPOINT_LIBRUS_API_SUBSTITUTIONS                            = 1016
@@ -56,6 +57,10 @@ const val ENDPOINT_LIBRUS_MESSAGES_RECEIVERS                           = 3040
 const val ENDPOINT_LIBRUS_MESSAGES_GET                                 = 3040
 
 val LibrusFeatures = listOf(
+
+        Feature(LOGIN_TYPE_LIBRUS, FEATURE_ALWAYS_NEEDED, listOf(
+                ENDPOINT_LIBRUS_API_LESSONS to LOGIN_METHOD_LIBRUS_API
+        ), listOf(LOGIN_METHOD_LIBRUS_API)),
 
         // push config
         Feature(LOGIN_TYPE_LIBRUS, FEATURE_PUSH_CONFIG, listOf(
