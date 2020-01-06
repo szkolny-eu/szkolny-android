@@ -141,21 +141,21 @@ class GenerateBlockTimetableDialog(
 
         val lessons: List<LessonFull> = allLessons.mapNotNull { lesson ->
             if (lesson.profileId != app.profile.id || lesson.type == Lesson.TYPE_NO_LESSONS
-                    || lesson.date == null || lesson.startTime == null || lesson.endTime == null)
+                    || lesson.displayDate == null || lesson.displayStartTime == null || lesson.displayEndTime == null)
                 return@mapNotNull null
 
-            if (lesson.date!!.weekDay > maxWeekDay)
-                maxWeekDay = lesson.date!!.weekDay
+            if (lesson.displayDate!!.weekDay > maxWeekDay)
+                maxWeekDay = lesson.displayDate!!.weekDay
 
-            lessonRanges[lesson.startTime!!.value] = lesson.endTime!!.value
-            weekDays[lesson.date!!.weekDay].add(lesson)
+            lessonRanges[lesson.displayStartTime!!.value] = lesson.displayEndTime!!.value
+            weekDays[lesson.displayDate!!.weekDay].add(lesson)
 
-            if (minTime == null || lesson.startTime!! < minTime!!) {
-                minTime = lesson.startTime!!.clone()
+            if (minTime == null || lesson.displayStartTime!! < minTime!!) {
+                minTime = lesson.displayStartTime!!.clone()
             }
 
-            if (maxTime == null || lesson.endTime!! > maxTime!!) {
-                maxTime = lesson.endTime!!.clone()
+            if (maxTime == null || lesson.displayEndTime!! > maxTime!!) {
+                maxTime = lesson.displayEndTime!!.clone()
             }
 
             return@mapNotNull lesson
@@ -184,9 +184,9 @@ class GenerateBlockTimetableDialog(
         }
 
         lessons.forEach { lesson ->
-            val lessonLength = Time.diff(lesson.endTime, lesson.startTime)
-            val firstOffset = Time.diff(lesson.startTime, minTime)
-            val lessonWeekDay = lesson.date!!.weekDay
+            val lessonLength = Time.diff(lesson.displayEndTime, lesson.displayStartTime)
+            val firstOffset = Time.diff(lesson.displayStartTime, minTime)
+            val lessonWeekDay = lesson.displayDate!!.weekDay
 
             val left = WIDTH_CONSTANT + lessonWeekDay * (WIDTH_WEEKDAY + WIDTH_SPACING)
             val top = heightProfileName + HEIGHT_CONSTANT + firstOffset.inMinutes * HEIGHT_MINUTE
@@ -216,17 +216,17 @@ class GenerateBlockTimetableDialog(
                 teamName.setTextColor(0xffaaaaaa.toInt())
             }
 
-            subjectName.text = lesson.subjectName ?: ""
-            classroomName.text = lesson.classroom ?: ""
-            teacherName.text = lesson.teacherName ?: ""
-            teamName.text = lesson.teamName ?: ""
+            subjectName.text = lesson.displaySubjectName ?: ""
+            classroomName.text = lesson.displayClassroom ?: ""
+            teacherName.text = lesson.displayTeacherName ?: ""
+            teamName.text = lesson.displayTeamName ?: ""
 
             when (lesson.type) {
                 Lesson.TYPE_NORMAL -> {}
                 Lesson.TYPE_CANCELLED, Lesson.TYPE_SHIFTED_SOURCE -> {
                     card.setCardBackgroundColor(Color.BLACK)
                     subjectName.setTextColor(Color.WHITE)
-                    subjectName.text = lesson.subjectName?.asStrikethroughSpannable() ?: ""
+                    subjectName.text = lesson.displaySubjectName?.asStrikethroughSpannable() ?: ""
                 }
                 else -> {
                     card.setCardBackgroundColor(0xff234158.toInt())
