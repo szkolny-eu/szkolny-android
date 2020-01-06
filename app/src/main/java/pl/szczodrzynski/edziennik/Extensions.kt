@@ -912,3 +912,5 @@ fun String.base64DecodeToString(): String {
 }
 
 fun CheckBox.trigger() { isChecked = !isChecked }
+
+fun Context.plural(@PluralsRes resId: Int, value: Int): String = resources.getQuantityString(resId, value, value)
