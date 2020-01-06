@@ -16,12 +16,10 @@ import android.text.*
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
+import android.util.*
 import android.util.Base64
 import android.util.Base64.NO_WRAP
 import android.util.Base64.encodeToString
-import android.util.LongSparseArray
-import android.util.SparseArray
-import android.util.TypedValue
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
@@ -55,6 +53,7 @@ import java.util.*
 import java.util.zip.CRC32
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
+import kotlin.Pair
 
 
 fun List<Teacher>.byId(id: Long) = firstOrNull { it.id == id }
@@ -284,8 +283,30 @@ fun <T> LongSparseArray<T>.values(): List<T> {
     return result
 }
 
+fun SparseArray<*>.keys(): List<Int> {
+    val result = mutableListOf<Int>()
+    forEach { key, _ ->
+        result += key
+    }
+    return result
+}
 fun <T> SparseArray<T>.values(): List<T> {
     val result = mutableListOf<T>()
+    forEach { _, value ->
+        result += value
+    }
+    return result
+}
+
+fun SparseIntArray.keys(): List<Int> {
+    val result = mutableListOf<Int>()
+    forEach { key, _ ->
+        result += key
+    }
+    return result
+}
+fun SparseIntArray.values(): List<Int> {
+    val result = mutableListOf<Int>()
     forEach { _, value ->
         result += value
     }

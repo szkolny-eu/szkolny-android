@@ -4,11 +4,15 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 
+import android.util.SparseArray
+import androidx.core.util.set
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
+import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange
 import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
 import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
 import pl.szczodrzynski.edziennik.fixName
+import pl.szczodrzynski.edziennik.keys
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -28,10 +32,15 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
             dataStart.stepForward(0, 0, 1)
         }
 
+        val lessonRanges = SparseArray<Time>()
+
         for (lesson in lessons) {
             val date = Date.fromYmd(lesson[2])
             val startTime = Time.fromYmdHm(lesson[3])
             val endTime = Time.fromYmdHm(lesson[4])
+
+            val startTimeValue = startTime.value
+            lessonRanges[startTimeValue] = endTime
 
             dataDays.remove(date.value)
 
@@ -45,6 +54,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                     "plan_lekcji", "lekcja" -> {
                         it.type = Lesson.TYPE_NORMAL
                         it.date = date
+                        it.lessonNumber = startTimeValue
                         it.startTime = startTime
                         it.endTime = endTime
                         it.subjectId = subjectId
@@ -54,9 +64,10 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                     }
                     "lekcja_odwolana" -> {
                         it.type = Lesson.TYPE_CANCELLED
-                        it.date = date
-                        it.startTime = startTime
-                        it.endTime = endTime
+                        it.oldDate = date
+                        it.oldLessonNumber = startTimeValue
+                        it.oldStartTime = startTime
+                        it.oldEndTime = endTime
                         it.oldSubjectId = subjectId
                         //it.oldTeacherId = teacherId
                         it.oldTeamId = teamId
@@ -65,6 +76,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                     "zastepstwo" -> {
                         it.type = Lesson.TYPE_CHANGE
                         it.date = date
+                        it.lessonNumber = startTimeValue
                         it.startTime = startTime
                         it.endTime = endTime
                         it.subjectId = subjectId
@@ -101,101 +113,19 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
             }
         }
 
-        /*for (lessonStr in rows) {
-            if (lessonStr.isNotEmpty()) {
-                val lesson = lessonStr.split("|")
-
-                if (lesson[0].toInt() != data.studentId)
-                    continue
-
-                if (lesson[1] == "plan_lekcji" || lesson[1] == "lekcja") {
-                    val lessonObject = Lesson(data.profileId, lesson[2], lesson[3], lesson[4])
-
-                    data.subjectList.singleOrNull { it.longName == lesson[5] }?.let {
-                        lessonObject.subjectId = it.id
-                    }
-                    data.teacherList.singleOrNull { it.fullNameLastFirst == (lesson[7]+" "+lesson[6]).fixName() }?.let {
-                        lessonObject.teacherId = it.id
-                    }
-                    data.teamList.singleOrNull { it.name == lesson[8]+lesson[9] }?.let {
-                        lessonObject.teamId = it.id
-                    }
-                    lessonObject.classroomName = lesson[11]
-                    data.lessonList.add(lessonObject)
-                }
+        lessonRanges.keys().sorted().forEachIndexed { index, startTime ->
+            data.lessonList.forEach {
+                if (it.lessonNumber == startTime)
+                    it.lessonNumber = index + 1
+                if (it.oldLessonNumber == startTime)
+                    it.oldLessonNumber = index + 1
             }
+            data.lessonRanges[index + 1] = LessonRange(
+                    profileId = profile.id,
+                    lessonNumber = index + 1,
+                    startTime = Time.fromValue(startTime),
+                    endTime = lessonRanges[startTime]
+            )
         }
-
-        // searching for all changes
-        for (lessonStr in rows) {
-            if (lessonStr.isNotEmpty()) {
-                val lesson = lessonStr.split("|")
-
-                if (lesson[0].toInt() != data.studentId)
-                    continue
-
-                if (lesson[1] == "zastepstwo" || lesson[1] == "lekcja_odwolana") {
-                    val lessonChange = LessonChange(data.profileId, lesson[2], lesson[3], lesson[4])
-
-                    data.subjectList.singleOrNull { it.longName == lesson[5] }?.let {
-                        lessonChange.subjectId = it.id
-                    }
-                    data.teacherList.singleOrNull { it.fullNameLastFirst == (lesson[7]+" "+lesson[6]).fixName() }?.let {
-                        lessonChange.teacherId = it.id
-                    }
-                    data.teamList.singleOrNull { it.name == lesson[8]+lesson[9] }?.let {
-                        lessonChange.teamId = it.id
-                    }
-
-                    if (lesson[1] == "zastepstwo") {
-                        lessonChange.type = LessonChange.TYPE_CHANGE
-                    }
-                    else if (lesson[1] == "lekcja_odwolana") {
-                        lessonChange.type = LessonChange.TYPE_CANCELLED
-                    }
-                    else if (lesson[1] == "lekcja") {
-                        lessonChange.type = LessonChange.TYPE_ADDED
-                    }
-                    lessonChange.classroomName = lesson[11]
-
-                    val originalLesson = lessonChange.getOriginalLesson(data.lessonList)
-
-                    if (lessonChange.type == LessonChange.TYPE_ADDED) {
-                        if (originalLesson == null) {
-                            // original lesson doesn't exist, save a new addition
-                            // TODO
-                            *//*if (!RegisterLessonChange.existsAddition(app.profile, registerLessonChange)) {
-                            app.profile.timetable.addLessonAddition(registerLessonChange);
-                        }*//*
-                        } else {
-                            // original lesson exists, so we need to compare them
-                            if (!lessonChange.matches(originalLesson)) {
-                                // the lessons are different, so it's probably a lesson change
-                                // ahhh this damn API
-                                lessonChange.type = LessonChange.TYPE_CHANGE
-                            }
-                        }
-
-                    }
-                    if (lessonChange.type != LessonChange.TYPE_ADDED) {
-                        // it's not a lesson addition
-                        data.lessonChangeList.add(lessonChange)
-                        data.metadataList.add(
-                                Metadata(
-                                        data.profileId,
-                                        Metadata.TYPE_LESSON_CHANGE,
-                                        lessonChange.id,
-                                        data.profile?.empty ?: false,
-                                        data.profile?.empty ?: false,
-                                        System.currentTimeMillis()
-                                ))
-                        if (originalLesson == null) {
-                            // there is no original lesson, so we have to add one in order to change it
-                            data.lessonList.add(Lesson.fromLessonChange(lessonChange))
-                        }
-                    }
-                }
-            }
-        }*/
     }}
 }
