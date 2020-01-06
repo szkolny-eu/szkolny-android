@@ -70,7 +70,7 @@ class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Un
             loginWithToken(json.getString("Token"))
         }
 
-        apiGet(TAG, "AutoLoginToken", POST, null, onSuccess)
+        apiGet(TAG, "AutoLoginToken", POST, onSuccess = onSuccess)
     }
 
     private fun loginWithToken(token: String?) {

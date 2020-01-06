@@ -26,7 +26,7 @@ open class LibrusApi(open val data: DataLibrus) {
     val profile
         get() = data.profile
 
-    fun apiGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, onSuccess: (json: JsonObject) -> Unit) {
+    fun apiGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, ignoreErrors: List<Int> = emptyList(), onSuccess: (json: JsonObject) -> Unit) {
 
         d(tag, "Request: Librus/Api - ${if (data.fakeLogin) FAKE_LIBRUS_API else LIBRUS_API_URL}/$endpoint")
 
@@ -65,10 +65,12 @@ open class LibrusApi(open val data: DataLibrus) {
                         "Nieprawidłowy węzeł." -> ERROR_LIBRUS_API_INCORRECT_ENDPOINT
                         else -> ERROR_LIBRUS_API_OTHER
                     }.let { errorCode ->
-                        data.error(ApiError(tag, errorCode)
-                                .withApiResponse(json)
-                                .withResponse(response))
-                        return
+                        if (errorCode !in ignoreErrors) {
+                            data.error(ApiError(tag, errorCode)
+                                    .withApiResponse(json)
+                                    .withResponse(response))
+                            return
+                        }
                     }
                 }
 

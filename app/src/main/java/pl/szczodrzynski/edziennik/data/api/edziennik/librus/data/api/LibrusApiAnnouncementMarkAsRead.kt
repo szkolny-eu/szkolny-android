@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.api
 
 import org.greenrobot.eventbus.EventBus
+import pl.szczodrzynski.edziennik.data.api.ERROR_LIBRUS_API_INVALID_REQUEST_PARAMS
 import pl.szczodrzynski.edziennik.data.api.POST
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
@@ -22,7 +23,8 @@ class LibrusApiAnnouncementMarkAsRead(
     }
 
     init {
-        apiGet(TAG, "SchoolNotices/MarkAsRead/${announcement.idString}", method = POST) {
+        apiGet(TAG, "SchoolNotices/MarkAsRead/${announcement.idString}", method = POST,
+                ignoreErrors = listOf(ERROR_LIBRUS_API_INVALID_REQUEST_PARAMS)) {
             announcement.seen = true
 
             EventBus.getDefault().postSticky(AnnouncementGetEvent(announcement))

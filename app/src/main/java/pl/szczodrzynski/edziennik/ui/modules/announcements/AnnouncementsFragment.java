@@ -109,7 +109,7 @@ public class AnnouncementsFragment extends Fragment {
                     return;
                 }*/
                 AnnouncementsAdapter announcementsAdapter = new AnnouncementsAdapter(activity, announcements, (v, announcement) -> {
-                    if (announcement.text == null || (app.profile.getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.seen)) {
+                    if (announcement.text == null || (app.profile.getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.seen && app.networkUtils.isOnline())) {
                         EdziennikTask.Companion.announcementGet(App.profileId, announcement).enqueue(requireContext());
                     } else {
                         showAnnouncementDetailsDialog(announcement);
@@ -157,7 +157,7 @@ public class AnnouncementsFragment extends Fragment {
                 .show();
         DialogAnnouncementBinding b = DialogAnnouncementBinding.bind(dialog.getCustomView());
         b.text.setText(announcement.teacherFullName+"\n\n"+ (announcement.startDate != null ? announcement.startDate.getFormattedString() : "-") + (announcement.endDate != null ? " do " + announcement.endDate.getFormattedString() : "")+"\n\n" +announcement.text);
-        if (!announcement.seen) {
+        if (!announcement.seen && app.profile.getLoginStoreType() != LOGIN_TYPE_LIBRUS) {
             announcement.seen = true;
             AsyncTask.execute(() -> app.db.metadataDao().setSeen(App.profileId, announcement, true));
             if (recyclerView.getAdapter() != null)
