@@ -95,7 +95,7 @@ operator fun Profile.set(key: String, value: String?) = this.studentData.addProp
 operator fun Profile.set(key: String, value: Number) = this.studentData.addProperty(key, value)
 operator fun Profile.set(key: String, value: Char) = this.studentData.addProperty(key, value)
 
-fun JsonArray.asJsonObjectList() = this.map { it.asJsonObject }
+fun JsonArray.asJsonObjectList() = this.mapNotNull { it.asJsonObject }
 
 fun CharSequence?.isNotNullNorEmpty(): Boolean {
     return this != null && this.isNotEmpty()
