@@ -13,8 +13,8 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOME
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
 
 internal const val FEATURE_TIMETABLE = 1
 internal const val FEATURE_AGENDA = 2

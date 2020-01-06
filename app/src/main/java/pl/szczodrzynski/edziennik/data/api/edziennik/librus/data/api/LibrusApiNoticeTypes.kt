@@ -8,7 +8,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_NOTICE_TYPES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
-import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeType
+import pl.szczodrzynski.edziennik.data.db.entity.NoticeType
 
 class LibrusApiNoticeTypes(override val data: DataLibrus,
                                val onSuccess: () -> Unit) : LibrusApi(data) {

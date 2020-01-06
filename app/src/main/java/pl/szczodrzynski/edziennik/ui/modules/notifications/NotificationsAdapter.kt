@@ -10,8 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.db.modules.notification.Notification
-import pl.szczodrzynski.edziennik.data.db.modules.notification.getNotificationTitle
+import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 

@@ -1,14 +1,13 @@
 package pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence
 
 import android.content.Context
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull
+import pl.szczodrzynski.edziennik.data.db.full.TeacherAbsenceFull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class TeacherAbsenceAdapter(

@@ -43,7 +43,7 @@ import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 
 import static pl.szczodrzynski.edziennik.App.APP_URL;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_ENABLED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.REGISTRATION_ENABLED;
 
 public class WebPushConfigActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private static final String TAG = "WebPushConfigActivity";

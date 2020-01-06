@@ -8,7 +8,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_LESSONS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.LibrusLesson
+import pl.szczodrzynski.edziennik.data.db.entity.LibrusLesson
 
 class LibrusApiLessons(override val data: DataLibrus,
                      val onSuccess: () -> Unit) : LibrusApi(data) {

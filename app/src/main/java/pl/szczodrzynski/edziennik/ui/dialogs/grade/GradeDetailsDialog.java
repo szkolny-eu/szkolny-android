@@ -17,13 +17,13 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
+import pl.szczodrzynski.edziennik.data.db.entity.Grade;
+import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
 import pl.szczodrzynski.edziennik.databinding.DialogGradeDetailsBinding;
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListAdapter;
 import pl.szczodrzynski.edziennik.utils.Colors;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.COLOR_MODE_DEFAULT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.COLOR_MODE_DEFAULT;
 
 public class GradeDetailsDialog {
     private App app;

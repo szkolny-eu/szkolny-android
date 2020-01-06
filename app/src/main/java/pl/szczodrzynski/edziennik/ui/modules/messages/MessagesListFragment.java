@@ -23,9 +23,9 @@ import java.util.List;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message;
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull;
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipientFull;
+import pl.szczodrzynski.edziennik.data.db.entity.Message;
+import pl.szczodrzynski.edziennik.data.db.full.MessageFull;
+import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull;
 import pl.szczodrzynski.edziennik.databinding.MessagesListBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 

@@ -8,8 +8,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.ActivityCounterBinding
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time

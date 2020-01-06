@@ -9,11 +9,11 @@ import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date

@@ -6,8 +6,8 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web
 
 import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
-import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikLuckyNumberExtractor(val data: DataMobidziennik, text: String) {

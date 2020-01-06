@@ -13,7 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.asSpannable
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.resolveAttr
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
 import java.util.*

@@ -25,8 +25,8 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
 import pl.szczodrzynski.edziennik.observeOnce
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog

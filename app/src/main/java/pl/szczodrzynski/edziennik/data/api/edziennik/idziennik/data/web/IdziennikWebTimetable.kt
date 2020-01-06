@@ -13,10 +13,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNI
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -55,7 +55,8 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
                 val lessonRange = LessonRange(
                         profileId,
                         index + 1,
-                        range.getString("Poczatek")?.let { Time.fromH_m(it) } ?: return@forEachIndexed,
+                        range.getString("Poczatek")?.let { Time.fromH_m(it) }
+                                ?: return@forEachIndexed,
                         range.getString("Koniec")?.let { Time.fromH_m(it) } ?: return@forEachIndexed
                 )
                 data.lessonRanges[lessonRange.lessonNumber] = lessonRange

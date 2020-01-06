@@ -9,7 +9,7 @@
         <import type="pl.szczodrzynski.edziennik.utils.models.Time"/>
         <variable
             name="grade"
-            type="pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull" />
+            type="pl.szczodrzynski.edziennik.data.db.full.GradeFull" />
         <variable
             name="historyVisible"
             type="boolean" />

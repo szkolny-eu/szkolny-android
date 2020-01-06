@@ -71,8 +71,8 @@ import pl.szczodrzynski.edziennik.config.Config;
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing;
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.AppDb;
-import pl.szczodrzynski.edziennik.data.db.modules.debuglog.DebugLog;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+import pl.szczodrzynski.edziennik.data.db.entity.DebugLog;
+import pl.szczodrzynski.edziennik.data.db.entity.Profile;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.network.TLSSocketFactory;
 import pl.szczodrzynski.edziennik.sync.SyncWorker;
@@ -83,7 +83,7 @@ import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.edziennik.utils.models.AppConfig;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
+import static pl.szczodrzynski.edziennik.data.db.entity.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 
 public class App extends androidx.multidex.MultiDexApplication implements Configuration.Provider {
     private static final String TAG = "App";

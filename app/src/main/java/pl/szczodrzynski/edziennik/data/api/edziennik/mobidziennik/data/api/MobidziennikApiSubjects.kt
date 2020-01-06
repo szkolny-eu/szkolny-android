@@ -5,7 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
 
 class MobidziennikApiSubjects(val data: DataMobidziennik, rows: List<String>) {
     init {

@@ -3,9 +3,9 @@ package pl.szczodrzynski.edziennik.data.api
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.api.models.Feature
 import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
-import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_NEVER
+import pl.szczodrzynski.edziennik.data.db.entity.EndpointTimer
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_NEVER
 
 fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featureIds: List<Int>, viewId: Int?) {
     val data = this
@@ -47,7 +47,8 @@ fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featu
             .onEach { feature ->
                 feature.endpointIds.forEach { endpoint ->
                     (data.endpointTimers
-                            .singleOrNull { it.endpointId == endpoint.first } ?: EndpointTimer(data.profile?.id ?: -1, endpoint.first))
+                            .singleOrNull { it.endpointId == endpoint.first } ?: EndpointTimer(data.profile?.id
+                            ?: -1, endpoint.first))
                             .let { timer ->
                                 if (timer.nextSync == SYNC_ALWAYS ||
                                         (viewId != null && timer.viewId == viewId) ||

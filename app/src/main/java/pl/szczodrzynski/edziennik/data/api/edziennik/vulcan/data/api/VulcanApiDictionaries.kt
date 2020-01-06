@@ -10,13 +10,13 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_DICTIONARIES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_DICTIONARIES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
-import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance
-import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceType
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
-import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange
-import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeType
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance
+import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType
+import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
+import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
+import pl.szczodrzynski.edziennik.data.db.entity.NoticeType
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {

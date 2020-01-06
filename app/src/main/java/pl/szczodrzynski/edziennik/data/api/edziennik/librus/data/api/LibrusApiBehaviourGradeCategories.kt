@@ -9,7 +9,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_CATEGORIES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
+import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
 
 class LibrusApiBehaviourGradeCategories(override val data: DataLibrus,
                                         val onSuccess: () -> Unit) : LibrusApi(data) {

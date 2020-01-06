@@ -6,8 +6,8 @@ package pl.szczodrzynski.edziennik.config
 
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.set
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.COLOR_MODE_WEIGHTED
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.YEAR_ALL_GRADES
+import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.COLOR_MODE_WEIGHTED
+import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.YEAR_ALL_GRADES
 
 class ProfileConfigGrades(private val config: ProfileConfig) {
     private var mColorMode: Int? = null

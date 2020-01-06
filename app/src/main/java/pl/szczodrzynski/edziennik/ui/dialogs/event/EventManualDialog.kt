@@ -21,14 +21,14 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.db.modules.events.Event
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
-import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull
+import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
+import pl.szczodrzynski.edziennik.data.db.entity.EventType
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
+import pl.szczodrzynski.edziennik.data.db.entity.Team
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
@@ -588,7 +588,8 @@ class EventManualDialog(
                 startTime,
                 topic,
                 customColor ?: -1,
-                type?.toInt() ?: Event.TYPE_DEFAULT,
+                type?.toInt()
+                        ?: Event.TYPE_DEFAULT,
                 true,
                 teacherId ?: -1,
                 subjectId ?: -1,

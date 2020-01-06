@@ -24,9 +24,9 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.config.ProfileConfigGrades;
-import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
+import pl.szczodrzynski.edziennik.data.db.entity.Grade;
+import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
+import pl.szczodrzynski.edziennik.data.db.entity.Subject;
 import pl.szczodrzynski.edziennik.databinding.FragmentGradesBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
@@ -36,12 +36,12 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 import static pl.szczodrzynski.edziennik.config.ConfigGrades.ORDER_BY_DATE_ASC;
 import static pl.szczodrzynski.edziennik.config.ConfigGrades.ORDER_BY_DATE_DESC;
 import static pl.szczodrzynski.edziennik.config.ConfigGrades.ORDER_BY_SUBJECT_ASC;
-import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_GRADE;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_AVG_2_AVG;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_AVG_2_SEM;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_SEM_2_AVG;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_SEM_2_SEM;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_ALL_GRADES;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_GRADE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_1_AVG_2_AVG;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_1_AVG_2_SEM;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_1_SEM_2_AVG;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_1_SEM_2_SEM;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_ALL_GRADES;
 
 public class GradesFragment extends Fragment {
 

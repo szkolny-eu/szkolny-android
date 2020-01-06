@@ -9,9 +9,9 @@ import pl.szczodrzynski.edziennik.data.api.POST
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
 class MobidziennikWebSendMessage(
         override val data: DataMobidziennik,

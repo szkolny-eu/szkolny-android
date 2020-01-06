@@ -4,6 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.events
 
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 
 class ApiTaskStartedEvent(val profileId: Int, val profile: Profile? = null)

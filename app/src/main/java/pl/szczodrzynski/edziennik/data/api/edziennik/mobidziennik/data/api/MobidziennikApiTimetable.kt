@@ -8,9 +8,9 @@ import android.util.SparseArray
 import androidx.core.util.set
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
+import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.keys
 import pl.szczodrzynski.edziennik.singleOrNull

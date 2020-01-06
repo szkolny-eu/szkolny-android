@@ -12,23 +12,23 @@ import java.util.Random;
 
 import pl.szczodrzynski.edziennik.R;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_AUTO_ARCHIVING;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_ERROR;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_FEEDBACK_MESSAGE;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_GENERAL;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_LUCKY_NUMBER;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_ANNOUNCEMENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_ATTENDANCE;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_EVENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_GRADE;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_HOMEWORK;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_MESSAGE;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_NOTICE;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_NEW_SHARED_EVENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_SERVER_MESSAGE;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_TIMETABLE_CHANGED;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_TIMETABLE_LESSON_CHANGE;
-import static pl.szczodrzynski.edziennik.data.db.modules.notification.Notification.TYPE_UPDATE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_AUTO_ARCHIVING;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_ERROR;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_FEEDBACK_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_GENERAL;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_LUCKY_NUMBER;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_ANNOUNCEMENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_ATTENDANCE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_GRADE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_NOTICE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_SERVER_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_TIMETABLE_CHANGED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_TIMETABLE_LESSON_CHANGE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_UPDATE;
 
 public class Notification {
     public int profileId;

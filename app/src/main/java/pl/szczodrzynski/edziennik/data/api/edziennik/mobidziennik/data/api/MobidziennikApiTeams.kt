@@ -5,7 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
-import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
+import pl.szczodrzynski.edziennik.data.db.entity.Team
 import pl.szczodrzynski.edziennik.getById
 import pl.szczodrzynski.edziennik.values
 

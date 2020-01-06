@@ -18,9 +18,9 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.request.ServerSyncRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.WebPushRequest
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
-import pl.szczodrzynski.edziennik.data.db.modules.events.Event
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import retrofit2.Retrofit

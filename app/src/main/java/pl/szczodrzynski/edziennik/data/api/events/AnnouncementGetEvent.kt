@@ -4,6 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.events
 
-import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
+import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 
 data class AnnouncementGetEvent(val announcement: AnnouncementFull)

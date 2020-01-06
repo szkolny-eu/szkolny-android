@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull;
+import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull;
 import pl.szczodrzynski.edziennik.databinding.RowAnnouncementsItemBinding;
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils;
 

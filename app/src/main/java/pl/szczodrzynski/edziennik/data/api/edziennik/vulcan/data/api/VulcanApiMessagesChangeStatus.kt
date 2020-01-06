@@ -7,10 +7,10 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api
 import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_MESSAGES_CHANGE_STATUS
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 
 class VulcanApiMessagesChangeStatus(
         override val data: DataVulcan,

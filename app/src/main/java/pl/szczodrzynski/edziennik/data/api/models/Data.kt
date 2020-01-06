@@ -10,32 +10,32 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
-import pl.szczodrzynski.edziennik.data.db.modules.announcements.Announcement
-import pl.szczodrzynski.edziennik.data.db.modules.api.EndpointTimer
-import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance
-import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceType
-import pl.szczodrzynski.edziennik.data.db.modules.classrooms.Classroom
-import pl.szczodrzynski.edziennik.data.db.modules.events.Event
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
-import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeCategory
-import pl.szczodrzynski.edziennik.data.db.modules.lessonrange.LessonRange
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
-import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice
-import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeType
-import pl.szczodrzynski.edziennik.data.db.modules.notification.Notification
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsence
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceType
-import pl.szczodrzynski.edziennik.data.db.modules.teams.Team
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.Lesson
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.LibrusLesson
+import pl.szczodrzynski.edziennik.data.db.entity.Announcement
+import pl.szczodrzynski.edziennik.data.db.entity.EndpointTimer
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance
+import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType
+import pl.szczodrzynski.edziennik.data.db.entity.Classroom
+import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.db.entity.EventType
+import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
+import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
+import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Notice
+import pl.szczodrzynski.edziennik.data.db.entity.NoticeType
+import pl.szczodrzynski.edziennik.data.db.entity.Notification
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsence
+import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsenceType
+import pl.szczodrzynski.edziennik.data.db.entity.Team
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.entity.LibrusLesson
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -334,7 +334,8 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     }
 
     fun setSyncNext(endpointId: Int, syncIn: Long? = null, viewId: Int? = null, syncAt: Long? = null) {
-        EndpointTimer(profile?.id ?: -1, endpointId).apply {
+        EndpointTimer(profile?.id
+                ?: -1, endpointId).apply {
             syncedNow()
 
             if (syncIn != null) {

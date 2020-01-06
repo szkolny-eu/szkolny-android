@@ -5,8 +5,8 @@
 package pl.szczodrzynski.edziennik.data.api.models
 
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_NOT_NEEDED
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 
 /**
  * A Login Method descriptor class.

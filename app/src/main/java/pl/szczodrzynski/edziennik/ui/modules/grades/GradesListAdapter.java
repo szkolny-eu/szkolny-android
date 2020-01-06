@@ -18,13 +18,13 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
+import pl.szczodrzynski.edziennik.data.db.entity.Grade;
+import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
 import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradeDetailsDialog;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.COLOR_MODE_DEFAULT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.COLOR_MODE_DEFAULT;
 
 public class GradesListAdapter extends RecyclerView.Adapter<GradesListAdapter.ViewHolder> {
     private Context mContext;

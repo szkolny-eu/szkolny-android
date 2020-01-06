@@ -5,8 +5,8 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Notice
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikApiNotices(val data: DataMobidziennik, rows: List<String>) {

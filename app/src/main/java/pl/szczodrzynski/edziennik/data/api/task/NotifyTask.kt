@@ -9,7 +9,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.Notifier.ID_NOTIFICATIONS
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
-import pl.szczodrzynski.edziennik.data.db.modules.notification.getNotificationTitle
+import pl.szczodrzynski.edziennik.getNotificationTitle
 import pl.szczodrzynski.edziennik.utils.models.Notification
 import kotlin.math.min
 

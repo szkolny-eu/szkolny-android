@@ -7,9 +7,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EdudziennikWebLuckyNumber(override val data: DataEdudziennik,

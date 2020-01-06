@@ -12,10 +12,10 @@ import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_API_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_API_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikApi
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipient
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.utils.Utils.crc32
 import pl.szczodrzynski.edziennik.utils.models.Date
 

@@ -19,10 +19,10 @@ import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskProgressEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskStartedEvent
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
-import pl.szczodrzynski.edziennik.data.db.modules.events.Event.*
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventType
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.REGISTRATION_DISABLED
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.Companion.REGISTRATION_ENABLED
+import pl.szczodrzynski.edziennik.data.db.entity.Event.*
+import pl.szczodrzynski.edziennik.data.db.entity.EventType
+import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_DISABLED
+import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_ENABLED
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginSyncBinding
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt

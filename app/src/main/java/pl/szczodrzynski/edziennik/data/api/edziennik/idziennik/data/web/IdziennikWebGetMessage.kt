@@ -10,11 +10,11 @@ import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_WEB_GET_MESSAGE
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message.TYPE_SENT
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageRecipientFull
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikWebGetMessage(

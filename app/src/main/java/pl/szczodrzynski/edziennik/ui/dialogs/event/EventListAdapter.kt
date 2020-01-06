@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.EventListItemBinding
 import pl.szczodrzynski.edziennik.utils.models.Date
 

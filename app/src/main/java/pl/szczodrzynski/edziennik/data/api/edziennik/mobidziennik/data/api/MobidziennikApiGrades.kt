@@ -6,9 +6,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade
-import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade.*
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.*
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 
 class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
     init { data.profile?.also { profile -> run {

@@ -9,7 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent
-import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
+import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.get
 
 class EdudziennikWebGetAnnouncement(

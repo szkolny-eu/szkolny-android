@@ -16,15 +16,15 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceFull;
+import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT_EXCUSED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED_EXCUSED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_DAY_FREE;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_PRESENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_RELEASED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_ABSENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_ABSENT_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_BELATED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_BELATED_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_DAY_FREE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_PRESENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_RELEASED;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
     private Context context;

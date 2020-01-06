@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
 class LibrusMessagesGetRecipientList(
         override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusMessages(data) {

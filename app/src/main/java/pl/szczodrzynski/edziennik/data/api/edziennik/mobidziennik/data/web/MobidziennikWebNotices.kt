@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_NOTICES
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 
 class MobidziennikWebNotices(override val data: DataMobidziennik,
                               val onSuccess: () -> Unit) : MobidziennikWeb(data)  {

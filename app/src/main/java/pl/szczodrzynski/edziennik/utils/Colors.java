@@ -16,7 +16,7 @@ import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Random;
 
-import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
+import pl.szczodrzynski.edziennik.data.db.entity.Grade;
 
 public class Colors {
 

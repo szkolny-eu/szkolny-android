@@ -10,7 +10,7 @@
         <import type="pl.szczodrzynski.edziennik.App"/>
         <variable
             name="event"
-            type="pl.szczodrzynski.edziennik.data.db.modules.events.EventFull" />
+            type="pl.szczodrzynski.edziennik.data.db.full.EventFull" />
         <variable name="eventShared" type="boolean" />
         <variable name="eventOwn" type="boolean" />
         <variable name="details" type="java.lang.CharSequence" />

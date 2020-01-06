@@ -4,9 +4,9 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
+import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
+import pl.szczodrzynski.edziennik.data.db.entity.Profile;
+import pl.szczodrzynski.edziennik.data.db.entity.Subject;
 
 public class ItemGradesSubjectModel {
     public Profile profile;

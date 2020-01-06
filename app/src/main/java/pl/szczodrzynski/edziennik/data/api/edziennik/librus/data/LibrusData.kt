@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetList
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaHomework
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaInfo
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {

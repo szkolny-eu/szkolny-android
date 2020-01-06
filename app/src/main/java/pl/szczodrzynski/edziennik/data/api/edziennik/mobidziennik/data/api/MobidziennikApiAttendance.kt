@@ -5,9 +5,9 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
-import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance
-import pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.*
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.*
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 
 class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) {
     init { run {

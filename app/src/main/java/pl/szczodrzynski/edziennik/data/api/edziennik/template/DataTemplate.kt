@@ -10,8 +10,8 @@ import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 
 /**

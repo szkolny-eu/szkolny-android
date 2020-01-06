@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginPortal
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 
 class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
     companion object {

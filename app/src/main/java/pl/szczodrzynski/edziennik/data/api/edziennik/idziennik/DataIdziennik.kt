@@ -10,10 +10,10 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_IDZIENNIK_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_IDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
 class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
@@ -130,7 +130,8 @@ class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(
             subjectList.singleOrNull { it.id == id }
 
         if (subject == null) {
-            subject = Subject(profileId, id ?: name.crc16().toLong(), name, shortName)
+            subject = Subject(profileId, id
+                    ?: name.crc16().toLong(), name, shortName)
             subjectList[subject.id] = subject
         }
         return subject

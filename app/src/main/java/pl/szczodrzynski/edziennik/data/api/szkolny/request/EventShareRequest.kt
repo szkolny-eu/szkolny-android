@@ -4,7 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.szkolny.request
 
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
 
 data class EventShareRequest (
 

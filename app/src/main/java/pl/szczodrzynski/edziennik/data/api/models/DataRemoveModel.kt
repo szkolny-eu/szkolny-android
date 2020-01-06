@@ -4,9 +4,9 @@
 
 package pl.szczodrzynski.edziennik.data.api.models
 
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventDao
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeDao
-import pl.szczodrzynski.edziennik.data.db.modules.timetable.TimetableDao
+import pl.szczodrzynski.edziennik.data.db.dao.EventDao
+import pl.szczodrzynski.edziennik.data.db.dao.GradeDao
+import pl.szczodrzynski.edziennik.data.db.dao.TimetableDao
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 open class DataRemoveModel {

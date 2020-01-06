@@ -25,13 +25,13 @@ import java.util.Locale;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
-import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeFull;
+import pl.szczodrzynski.edziennik.data.db.entity.Notice;
+import pl.szczodrzynski.edziennik.data.db.full.NoticeFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_NOTICE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_NOTICE;
 
 public class BehaviourFragment extends Fragment {
 

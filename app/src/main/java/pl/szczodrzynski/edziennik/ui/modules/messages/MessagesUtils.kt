@@ -7,8 +7,8 @@ import android.text.Spanned
 import androidx.core.graphics.ColorUtils
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
+import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.getNameInitials
 import pl.szczodrzynski.edziennik.utils.Colors

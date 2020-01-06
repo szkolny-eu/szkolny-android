@@ -10,8 +10,8 @@ import pl.szczodrzynski.edziennik.data.api.POST
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent
-import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 
 class LibrusApiAnnouncementMarkAsRead(
         override val data: DataLibrus,

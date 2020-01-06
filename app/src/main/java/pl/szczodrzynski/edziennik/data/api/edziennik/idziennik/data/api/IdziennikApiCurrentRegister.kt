@@ -10,8 +10,8 @@ import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_API_CURRENT_REGISTER
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_API_CURRENT_REGISTER
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikApi
-import pl.szczodrzynski.edziennik.data.db.modules.luckynumber.LuckyNumber
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.getInt
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.getString

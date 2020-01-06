@@ -22,8 +22,8 @@
 -keep class android.support.v7.widget.** { *; }
 
 -keep class pl.szczodrzynski.edziennik.utils.models.** { *; }
--keep class pl.szczodrzynski.edziennik.data.db.modules.events.Event { *; }
--keep class pl.szczodrzynski.edziennik.data.db.modules.events.EventFull { *; }
+-keep class pl.szczodrzynski.edziennik.data.db.entity.Event { *; }
+-keep class pl.szczodrzynski.edziennik.data.db.full.EventFull { *; }
 -keep class pl.szczodrzynski.edziennik.ui.modules.home.HomeCardModel { *; }
 -keepclassmembers class pl.szczodrzynski.edziennik.widgets.WidgetConfig { public *; }
 -keepnames class pl.szczodrzynski.edziennik.WidgetTimetable

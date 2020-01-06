@@ -4,6 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.events
 
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
 data class RecipientListGetEvent(val profileId: Int, val teacherList: List<Teacher>)

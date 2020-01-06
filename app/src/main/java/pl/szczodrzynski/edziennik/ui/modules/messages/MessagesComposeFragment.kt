@@ -38,9 +38,9 @@ import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
-import pl.szczodrzynski.edziennik.data.db.modules.messages.MessageFull
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
 import pl.szczodrzynski.edziennik.utils.Colors
@@ -233,7 +233,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                     }
 
                     MaterialAlertDialogBuilder(activity)
-                            .setTitle("Dodaj odbiorców - "+Teacher.typeName(activity, type))
+                            .setTitle("Dodaj odbiorców - "+ Teacher.typeName(activity, type))
                             //.setMessage(getString(R.string.messages_compose_recipients_text_format, Teacher.typeName(activity, type)))
                             .setPositiveButton("OK", null)
                             .setNeutralButton("Anuluj", null)

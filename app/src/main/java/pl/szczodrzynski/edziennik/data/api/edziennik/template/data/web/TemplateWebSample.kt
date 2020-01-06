@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOME
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.DataTemplate
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.ENDPOINT_TEMPLATE_WEB_SAMPLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.data.TemplateWeb
-import pl.szczodrzynski.edziennik.data.db.modules.api.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 
 class TemplateWebSample(override val data: DataTemplate,
                         val onSuccess: () -> Unit) : TemplateWeb(data) {

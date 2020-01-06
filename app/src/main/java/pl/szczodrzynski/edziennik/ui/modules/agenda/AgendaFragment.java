@@ -37,8 +37,8 @@ import java.util.Locale;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.events.EventFull;
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull;
+import pl.szczodrzynski.edziennik.data.db.full.EventFull;
+import pl.szczodrzynski.edziennik.data.db.full.TeacherAbsenceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding;
 import pl.szczodrzynski.edziennik.ui.dialogs.day.DayDialog;
@@ -57,9 +57,9 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_EVENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.AGENDA_CALENDAR;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.AGENDA_DEFAULT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.AGENDA_CALENDAR;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.AGENDA_DEFAULT;
 import static pl.szczodrzynski.edziennik.utils.Utils.intToStr;
 
 public class AgendaFragment extends Fragment {

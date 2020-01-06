@@ -6,8 +6,8 @@ package pl.szczodrzynski.edziennik.data.api.szkolny
 
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 
 class Szkolny(val app: App, val callback: EdziennikCallback) {
 

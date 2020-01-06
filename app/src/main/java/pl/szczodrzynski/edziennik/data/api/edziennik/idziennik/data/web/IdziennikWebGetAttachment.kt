@@ -9,7 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_WEB_GET_ATTACHMENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.Utils
 import java.io.File

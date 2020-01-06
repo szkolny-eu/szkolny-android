@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.ActivityLoginBinding
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import kotlin.coroutines.CoroutineContext

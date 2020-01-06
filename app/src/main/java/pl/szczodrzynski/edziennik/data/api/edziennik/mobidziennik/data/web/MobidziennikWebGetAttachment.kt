@@ -8,7 +8,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
-import pl.szczodrzynski.edziennik.data.db.modules.messages.Message
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.utils.Utils
 import java.io.File
 

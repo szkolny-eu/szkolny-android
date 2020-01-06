@@ -25,7 +25,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
+import pl.szczodrzynski.edziennik.data.db.entity.Profile;
 import pl.szczodrzynski.edziennik.widgets.WidgetConfig;
 
 import static pl.szczodrzynski.edziennik.utils.Utils.getCellsForSize;

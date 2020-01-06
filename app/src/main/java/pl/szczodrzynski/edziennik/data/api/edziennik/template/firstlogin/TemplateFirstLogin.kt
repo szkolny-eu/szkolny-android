@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.template.firstlogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.DataTemplate
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.data.TemplateApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.data.TemplateWeb
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 
 class TemplateFirstLogin(val data: DataTemplate, val onSuccess: () -> Unit) {
     companion object {

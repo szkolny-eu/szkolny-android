@@ -8,7 +8,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_CLASSROOMS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
-import pl.szczodrzynski.edziennik.data.db.modules.classrooms.Classroom
+import pl.szczodrzynski.edziennik.data.db.entity.Classroom
 import java.util.*
 
 class LibrusApiClassrooms(override val data: DataLibrus,

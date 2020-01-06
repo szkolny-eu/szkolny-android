@@ -11,7 +11,7 @@
         <import type="pl.szczodrzynski.edziennik.App"/>
         <variable
             name="lesson"
-            type="pl.szczodrzynski.edziennik.data.db.modules.timetable.LessonFull" />
+            type="pl.szczodrzynski.edziennik.data.db.full.LessonFull" />
         <variable name="oldSubjectName" type="String" />
         <variable name="subjectName" type="String" />
         <variable name="oldTeacherName" type="String" />
