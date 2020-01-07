@@ -219,7 +219,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
             var lessons = lessonList.filter {
                 it.profileId == profile.id
                         && it.displayDate == timetableDate
-                        && it.displayEndTime > now
+                        /*&& it.displayEndTime > now*/
                         && !(it.isCancelled && ignoreCancelled)
             }
             while ((lessons.isEmpty() || lessons.none {
