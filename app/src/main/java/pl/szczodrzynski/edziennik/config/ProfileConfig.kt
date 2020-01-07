@@ -37,6 +37,11 @@ class ProfileConfig(val db: AppDb, val profileId: Int, rawEntries: List<ConfigEn
         get() { mDataVersion = mDataVersion ?: values.get("dataVersion", 0); return mDataVersion ?: 0 }
         set(value) { set("dataVersion", value); mDataVersion = value }
 
+    private var mHash: String? = null
+    var hash: String
+        get() { mHash = mHash ?: values.get("hash", ""); return mHash ?: "" }
+        set(value) { set("hash", value); mHash = value }
+
     init {
         rawEntries.toHashMap(profileId, values)
         /*if (dataVersion < DATA_VERSION)

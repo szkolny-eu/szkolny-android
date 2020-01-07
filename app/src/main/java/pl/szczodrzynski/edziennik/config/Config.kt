@@ -40,6 +40,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mDataVersion = mDataVersion ?: values.get("dataVersion", 0); return mDataVersion ?: 0 }
         set(value) { set("dataVersion", value); mDataVersion = value }
 
+    private var mHash: String? = null
+    var hash: String
+        get() { mHash = mHash ?: values.get("hash", ""); return mHash ?: "" }
+        set(value) { set("hash", value); mHash = value }
+
     private var mAppVersion: Int? = null
     var appVersion: Int
         get() { mAppVersion = mAppVersion ?: values.get("appVersion", BuildConfig.VERSION_CODE); return mAppVersion ?: BuildConfig.VERSION_CODE }
@@ -90,11 +95,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
             ConfigMigration(app, this)
     }
     fun getFor(profileId: Int): ProfileConfig {
-        return profileConfigs[profileId] ?: ProfileConfig(db, profileId, rawEntries)
+        return profileConfigs[profileId] ?: ProfileConfig(db, profileId, db.configDao().getAllNow(profileId)).also {
+            profileConfigs[profileId] = it
+        }
     }
-    fun forProfile(): ProfileConfig {
-        return profileConfigs[App.profileId] ?: ProfileConfig(db, App.profileId, rawEntries)
-    }
+    fun forProfile() = getFor(App.profileId)
 
     fun setProfile(profileId: Int) {
     }

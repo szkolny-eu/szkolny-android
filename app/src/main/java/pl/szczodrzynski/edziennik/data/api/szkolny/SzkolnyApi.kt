@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.md5
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import retrofit2.Retrofit
@@ -61,25 +62,45 @@ class SzkolnyApi(val app: App) {
 
         val response = api.serverSync(ServerSyncRequest(
                 deviceId = app.deviceId,
-                device = ServerSyncRequest.Device(
-                        osType = "Android",
-                        osVersion = Build.VERSION.RELEASE,
-                        hardware = "${Build.MANUFACTURER} ${Build.MODEL}",
-                        pushToken = app.config.sync.tokenApp,
-                        appVersion = BuildConfig.VERSION_NAME,
-                        appType = BuildConfig.BUILD_TYPE,
-                        appVersionCode = BuildConfig.VERSION_CODE,
-                        syncInterval = app.config.sync.interval
-                ),
+                device = run {
+                    val config = app.config
+                    val device = ServerSyncRequest.Device(
+                            osType = "Android",
+                            osVersion = Build.VERSION.RELEASE,
+                            hardware = "${Build.MANUFACTURER} ${Build.MODEL}",
+                            pushToken = app.config.sync.tokenApp,
+                            appVersion = BuildConfig.VERSION_NAME,
+                            appType = BuildConfig.BUILD_TYPE,
+                            appVersionCode = BuildConfig.VERSION_CODE,
+                            syncInterval = app.config.sync.interval
+                    )
+                    device.toString().md5().let {
+                        if (it == config.hash)
+                            null
+                        else {
+                            config.hash = it
+                            device
+                        }
+                    }
+                },
                 userCodes = profiles.map { it.userCode },
-                users = profiles.map { profile ->
-                    ServerSyncRequest.User(
+                users = profiles.mapNotNull { profile ->
+                    val config = app.config.getFor(profile.id)
+                    val user = ServerSyncRequest.User(
                             profile.userCode,
                             profile.studentNameLong ?: "",
                             profile.studentNameShort ?: "",
                             profile.loginStoreType,
                             teams.filter { it.profileId == profile.id }.map { it.code }
                     )
+                    user.toString().md5().let {
+                        if (it == config.hash)
+                            null
+                        else {
+                            config.hash = it
+                            user
+                        }
+                    }
                 },
                 notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type, it.text) }
         )).execute().body()
