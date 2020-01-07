@@ -112,7 +112,7 @@ public class WidgetConfigActivity extends Activity {
                             .backgroundColor(Color.WHITE)
                             .build());
         }
-        if (profileList.size() > 1) {
+        if (profileList.size() > 1 && widgetType != WIDGET_LUCKY_NUMBER) {
             adapter.add(
                     new MaterialSimpleListItem.Builder(this)
                             .id(-1)
