@@ -36,8 +36,8 @@ public class EventFull extends Event {
                 event.color,
                 event.type,
                 event.addedManually,
-                event.subjectId,
                 event.teacherId,
+                event.subjectId,
                 event.teamId
         );
 
