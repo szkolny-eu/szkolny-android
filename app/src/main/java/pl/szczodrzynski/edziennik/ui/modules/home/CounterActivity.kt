@@ -6,11 +6,16 @@ package pl.szczodrzynski.edziennik.ui.modules.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.ActivityCounterBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.bell.BellSyncTimeChooseDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
@@ -32,7 +37,7 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
     private val syncedNow: Time
         get() = Time.fromMillis(Time.getNow().inMillis - bellSyncDiffMillis)
 
-    private val countInSeconts: Boolean
+    private val countInSeconds: Boolean
         get() = app.config.timetable.countInSeconds
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +57,13 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
                                     it.type != Lesson.TYPE_SHIFTED_SOURCE
                         })
             }
+        }
+
+        b.bellSync.setImageDrawable(IconicsDrawable(this@CounterActivity, SzkolnyFont.Icon.szf_alarm_bell_outline)
+                .colorInt(0xff404040.toInt())
+                .sizeDp(36))
+        b.bellSync.onClick {
+            BellSyncTimeChooseDialog(activity = this@CounterActivity)
         }
 
         app.config.timetable.bellSyncDiff?.let {
@@ -85,13 +97,13 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
                     b.lessonName.text = actual.displaySubjectName
 
                     val left = actual.displayEndTime!! - now
-                    b.timeLeft.text = timeLeft(left.toInt(), "\n", countInSeconts)
+                    b.timeLeft.text = timeLeft(left.toInt(), "\n", countInSeconds)
                 }
                 next != null -> {
                     b.lessonName.text = next.displaySubjectName
 
                     val till = next.displayStartTime!! - now
-                    b.timeLeft.text = timeTill(till.toInt(), "\n", countInSeconts)
+                    b.timeLeft.text = timeTill(till.toInt(), "\n", countInSeconds)
                 }
                 else -> {
                     b.lessonName.text = app.getString(R.string.lessons_finished)

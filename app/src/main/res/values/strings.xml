@@ -1157,4 +1157,5 @@
     <string name="event_manual_share">Udostępniam wydarzenie...</string>
     <string name="event_manual_unshare_remove">Usuwam udostępnione wydarzenie...</string>
     <string name="event_manual_remove">Usuwam wydarzenie...</string>
+    <string name="counter_activity_sync">Synchronizuj</string>
 </resources>
