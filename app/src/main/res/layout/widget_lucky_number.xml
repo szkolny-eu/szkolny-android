@@ -6,7 +6,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/widget_background"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:layout_width="200dp"
+    tools:layout_height="100dp"
+    tools:layout_gravity="center">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -18,7 +21,7 @@
             android:id="@+id/widgetLuckyNumberIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            tools:srcCompat="@android:drawable/btn_star_big_on" />
+            tools:srcCompat="@drawable/emoji_no_face" />
 
         <LinearLayout
             android:layout_width="wrap_content"

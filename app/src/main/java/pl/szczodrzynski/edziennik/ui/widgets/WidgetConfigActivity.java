@@ -27,9 +27,9 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.entity.Profile;
 import pl.szczodrzynski.edziennik.databinding.DialogWidgetConfigBinding;
+import pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider;
-import pl.szczodrzynski.edziennik.widgets.luckynumber.WidgetLuckyNumber;
 
 import static pl.szczodrzynski.edziennik.ExtensionsKt.filterOutArchived;
 
@@ -150,7 +150,7 @@ public class WidgetConfigActivity extends Activity {
                             refreshIntent = new Intent(app.getContext(), WidgetNotificationsProvider.class);
                             break;
                         case WIDGET_LUCKY_NUMBER:
-                            refreshIntent = new Intent(app.getContext(), WidgetLuckyNumber.class);
+                            refreshIntent = new Intent(app.getContext(), WidgetLuckyNumberProvider.class);
                             break;
                     }
                     refreshIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);

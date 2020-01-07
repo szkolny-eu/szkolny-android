@@ -98,7 +98,7 @@
         <service android:name=".ui.widgets.notifications.WidgetNotificationsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <!-- LUCKY NUMBER -->
-        <receiver android:name=".widgets.luckynumber.WidgetLuckyNumber"
+        <receiver android:name=".ui.widgets.luckynumber.WidgetLuckyNumberProvider"
             android:label="@string/widget_lucky_number_title">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
