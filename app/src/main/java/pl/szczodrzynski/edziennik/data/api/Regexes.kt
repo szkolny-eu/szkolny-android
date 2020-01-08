@@ -8,7 +8,7 @@ import kotlin.text.RegexOption.DOT_MATCHES_ALL
 
 object Regexes {
     val STYLE_CSS_COLOR by lazy {
-        """color: \w+?;?"?""".toRegex()
+        """color: (\w+);?""".toRegex()
     }
 
 
