@@ -4,6 +4,10 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.event
 
+import android.content.Intent
+import android.provider.CalendarContract
+import android.provider.CalendarContract.Events
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -101,6 +105,21 @@ class EventDetailsDialog(
                 Date.fromMillis(event.addedDate).formattedString,
                 event.sharedByName ?: event.teacherFullName ?: ""
         )
+
+        b.editButton.visibility = if (event.addedManually) View.VISIBLE else View.GONE
+        b.editButton.setOnClickListener {
+            EventManualDialog(
+                    activity,
+                    event.profileId,
+                    editingEvent = event,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener
+            )
+        }
+
+        b.saveInCalendarButton.setOnClickListener {
+            openInCalendar()
+        }
     }
 
     private fun showRemoveEventDialog() {
@@ -133,7 +152,7 @@ class EventDetailsDialog(
                 Toast.makeText(activity, "Unshare + remove own event", Toast.LENGTH_SHORT).show()
 
                 val response = withContext(Dispatchers.Default) {
-                    api.unshareEvent(event!!)
+                    api.unshareEvent(event)
                 }
 
                 response?.errors?.ifNotEmpty {
@@ -165,4 +184,31 @@ class EventDetailsDialog(
         if (activity is MainActivity && activity.navTargetId == MainActivity.DRAWER_ITEM_AGENDA)
             activity.reloadTarget()
     }
+
+    private fun openInCalendar() { launch {
+        val title = (event.typeName ?: "") +
+                (if (event.typeName.isNotNullNorBlank() && event.subjectLongName.isNotNullNorBlank()) " - " else " ") +
+                (event.subjectLongName ?: "")
+
+        val intent = Intent(Intent.ACTION_EDIT).apply {
+            data = Events.CONTENT_URI
+            putExtra(Events.TITLE, title)
+            putExtra(Events.DESCRIPTION, event.topic)
+
+            if (event.startTime == null) {
+                putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true)
+                putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.eventDate.inMillis)
+                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.eventDate.inMillis)
+            } else {
+                val startTime = event.eventDate.combineWith(event.startTime)
+                val endTime = startTime + 45 * 60 * 1000 /* 45 min */
+
+                putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false)
+                putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime)
+                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime)
+            }
+        }
+
+        activity.startActivity(intent)
+    }}
 }

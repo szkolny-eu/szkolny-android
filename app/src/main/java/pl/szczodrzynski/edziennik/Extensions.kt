@@ -105,6 +105,10 @@ fun CharSequence?.isNotNullNorEmpty(): Boolean {
     return this != null && this.isNotEmpty()
 }
 
+fun CharSequence?.isNotNullNorBlank(): Boolean {
+    return this != null && this.isNotBlank()
+}
+
 fun currentTimeUnix() = System.currentTimeMillis() / 1000
 
 fun Bundle?.getInt(key: String, defaultValue: Int): Int {
