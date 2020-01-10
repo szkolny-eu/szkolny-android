@@ -49,6 +49,7 @@ class ApiService : Service() {
     private val errorList = mutableListOf<ApiError>()
 
     private var serviceClosed = false
+        set(value) { field = value; notification.serviceClosed = value }
     private var taskCancelled = false
     private var taskIsRunning = false
     private var taskRunning: IApiTask? = null // for debug purposes
@@ -132,7 +133,6 @@ class ApiService : Service() {
         if (taskIsRunning)
             return
         if (taskCancelled || serviceClosed || (taskQueue.isEmpty() && finishingTaskQueue.isEmpty())) {
-            serviceClosed = false
             allCompleted()
             return
         }
@@ -214,6 +214,7 @@ class ApiService : Service() {
     }
 
     private fun allCompleted() {
+        serviceClosed = true
         EventBus.getDefault().postSticky(ApiTaskAllFinishedEvent())
         stopSelf()
     }
@@ -298,6 +299,8 @@ class ApiService : Service() {
     }
 
     override fun onDestroy() {
+        d(TAG, "Service destroyed")
+        serviceClosed = true
         EventBus.getDefault().unregister(this)
     }
 

@@ -35,6 +35,7 @@ class EdziennikNotification(val context: Context) {
 
     private var errorCount = 0
     private var criticalErrorCount = 0
+    var serviceClosed = false
 
     private fun cancelPendingIntent(taskId: Int): PendingIntent {
         val intent = Intent("pl.szczodrzynski.edziennik.SZKOLNY_MAIN")
@@ -134,6 +135,8 @@ class EdziennikNotification(val context: Context) {
     }
 
     fun post() {
+        if (serviceClosed)
+            return
         notificationManager.notify(NOTIFICATION_ID, notification)
     }
 
