@@ -20,6 +20,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 
+import com.chuckerteam.chucker.api.ChuckerCollector;
+import com.chuckerteam.chucker.api.ChuckerInterceptor;
+import com.chuckerteam.chucker.api.RetentionManager;
 import com.evernote.android.job.JobManager;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.FirebaseApp;
@@ -252,6 +255,12 @@ public class App extends androidx.multidex.MultiDexApplication {
             } catch (Exception exc) {
                 Log.e("OkHttpTLSCompat", "Error while setting TLS 1.2", exc);
             }
+        }
+
+        if (App.devMode || BuildConfig.DEBUG) {
+            ChuckerCollector chuckerCollector = new ChuckerCollector(this, true, RetentionManager.Period.ONE_HOUR);
+            ChuckerInterceptor chuckerInterceptor = new ChuckerInterceptor(this, chuckerCollector);
+            httpBuilder.addInterceptor(chuckerInterceptor);
         }
 
         http = httpBuilder.build();

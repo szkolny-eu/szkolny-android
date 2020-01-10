@@ -152,6 +152,9 @@ dependencies {
     implementation project(":nachos")
     //implementation project(":Navigation")
     implementation project(":szkolny-font")
+
+    debugImplementation "com.github.ChuckerTeam.Chucker:library:3.0.1"
+    releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.0.1"
 }
 repositories {
     mavenCentral()
