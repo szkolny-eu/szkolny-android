@@ -11,9 +11,9 @@ import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_ATTENDANCE_TYPES
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -77,14 +77,16 @@ class EdudziennikWebAttendance(override val data: DataEdudziennik,
                 )
 
                 data.attendanceList.add(attendanceObject)
-                data.metadataList.add(Metadata(
-                        profileId,
-                        Metadata.TYPE_ATTENDANCE,
-                        id,
-                        profile.empty,
-                        profile.empty,
-                        System.currentTimeMillis()
-                ))
+                if(type != Attendance.TYPE_PRESENT) {
+                    data.metadataList.add(Metadata(
+                            profileId,
+                            Metadata.TYPE_ATTENDANCE,
+                            id,
+                            profile.empty,
+                            profile.empty,
+                            System.currentTimeMillis()
+                    ))
+                }
             }
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE, SYNC_ALWAYS)

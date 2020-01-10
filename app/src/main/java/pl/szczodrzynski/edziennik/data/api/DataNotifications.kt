@@ -11,12 +11,8 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.Data
-import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.*
-import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.Notice
-import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_LUCKY_NUMBER
 import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_ANNOUNCEMENT
 import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_ATTENDANCE
@@ -128,13 +124,14 @@ class DataNotifications(val data: Data) {
         }
 
         for (attendance in app.db.attendanceDao().getNotNotifiedNow(profileId)) {
-            var attendanceTypeStr = app.getString(R.string.notification_type_attendance)
-            when (attendance.type) {
-                Attendance.TYPE_ABSENT -> attendanceTypeStr = app.getString(R.string.notification_absence)
-                Attendance.TYPE_ABSENT_EXCUSED -> attendanceTypeStr = app.getString(R.string.notification_absence_excused)
-                Attendance.TYPE_BELATED -> attendanceTypeStr = app.getString(R.string.notification_belated)
-                Attendance.TYPE_BELATED_EXCUSED -> attendanceTypeStr = app.getString(R.string.notification_belated_excused)
-                Attendance.TYPE_RELEASED -> attendanceTypeStr = app.getString(R.string.notification_release)
+            val attendanceTypeStr = when (attendance.type) {
+                Attendance.TYPE_ABSENT -> app.getString(R.string.notification_absence)
+                Attendance.TYPE_ABSENT_EXCUSED -> app.getString(R.string.notification_absence_excused)
+                Attendance.TYPE_BELATED -> app.getString(R.string.notification_belated)
+                Attendance.TYPE_BELATED_EXCUSED -> app.getString(R.string.notification_belated_excused)
+                Attendance.TYPE_RELEASED -> app.getString(R.string.notification_release)
+                Attendance.TYPE_DAY_FREE -> app.getString(R.string.notification_day_free)
+                else -> app.getString(R.string.notification_type_attendance)
             }
             val text = app.getString(
                     if (attendance.subjectLongName.isNullOrEmpty())
