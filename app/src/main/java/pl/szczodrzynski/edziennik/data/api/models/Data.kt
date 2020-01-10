@@ -366,8 +366,8 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         apiError.errorCode = when (apiError.throwable) {
             is UnknownHostException -> ERROR_REQUEST_FAILURE_HOSTNAME_NOT_FOUND
             is SSLException -> ERROR_REQUEST_FAILURE_SSL_ERROR
-            is InterruptedIOException, is ConnectException -> ERROR_REQUEST_FAILURE_NO_INTERNET
             is SocketTimeoutException -> ERROR_REQUEST_FAILURE_TIMEOUT
+            is InterruptedIOException, is ConnectException -> ERROR_REQUEST_FAILURE_NO_INTERNET
             else ->
                 if (apiError.errorCode == ERROR_REQUEST_FAILURE)
                     when (apiError.response?.code()) {
