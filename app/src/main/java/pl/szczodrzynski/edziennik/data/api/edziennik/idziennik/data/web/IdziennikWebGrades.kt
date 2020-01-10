@@ -13,9 +13,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNI
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikWebGrades(override val data: DataIdziennik,
@@ -89,11 +89,17 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                                         count += weight
                                     }
 
+                                    val historyColor = historyItem.getString("Kolor") ?: ""
+                                    colorInt = 0xff2196f3.toInt()
+                                    if (historyColor.isNotEmpty()) {
+                                        colorInt = Color.parseColor("#$historyColor")
+                                    }
+
                                     val historyObject = Grade(
                                             profileId,
                                             gradeObject.id * -1,
                                             historyItem.get("Kategoria").asString,
-                                            Color.parseColor("#" + historyItem.get("Kolor").asString),
+                                            colorInt,
                                             historyItem.get("Uzasadnienie").asString,
                                             historyItem.get("Ocena").asString,
                                             value,
