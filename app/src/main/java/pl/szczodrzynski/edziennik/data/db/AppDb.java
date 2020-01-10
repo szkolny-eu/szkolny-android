@@ -20,62 +20,62 @@ import pl.szczodrzynski.edziennik.data.db.converter.ConverterJsonObject;
 import pl.szczodrzynski.edziennik.data.db.converter.ConverterListLong;
 import pl.szczodrzynski.edziennik.data.db.converter.ConverterListString;
 import pl.szczodrzynski.edziennik.data.db.converter.ConverterTime;
-import pl.szczodrzynski.edziennik.data.db.entity.Announcement;
 import pl.szczodrzynski.edziennik.data.db.dao.AnnouncementDao;
-import pl.szczodrzynski.edziennik.data.db.entity.EndpointTimer;
-import pl.szczodrzynski.edziennik.data.db.dao.EndpointTimerDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Attendance;
 import pl.szczodrzynski.edziennik.data.db.dao.AttendanceDao;
-import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType;
 import pl.szczodrzynski.edziennik.data.db.dao.AttendanceTypeDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Classroom;
 import pl.szczodrzynski.edziennik.data.db.dao.ClassroomDao;
-import pl.szczodrzynski.edziennik.data.db.entity.DebugLog;
 import pl.szczodrzynski.edziennik.data.db.dao.DebugLogDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Event;
+import pl.szczodrzynski.edziennik.data.db.dao.EndpointTimerDao;
 import pl.szczodrzynski.edziennik.data.db.dao.EventDao;
-import pl.szczodrzynski.edziennik.data.db.entity.EventType;
 import pl.szczodrzynski.edziennik.data.db.dao.EventTypeDao;
-import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage;
 import pl.szczodrzynski.edziennik.data.db.dao.FeedbackMessageDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Grade;
-import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory;
 import pl.szczodrzynski.edziennik.data.db.dao.GradeCategoryDao;
 import pl.szczodrzynski.edziennik.data.db.dao.GradeDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Lesson;
-import pl.szczodrzynski.edziennik.data.db.entity.LessonRange;
 import pl.szczodrzynski.edziennik.data.db.dao.LessonRangeDao;
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore;
+import pl.szczodrzynski.edziennik.data.db.dao.LibrusLessonDao;
 import pl.szczodrzynski.edziennik.data.db.dao.LoginStoreDao;
-import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber;
 import pl.szczodrzynski.edziennik.data.db.dao.LuckyNumberDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Message;
 import pl.szczodrzynski.edziennik.data.db.dao.MessageDao;
-import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient;
 import pl.szczodrzynski.edziennik.data.db.dao.MessageRecipientDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata;
 import pl.szczodrzynski.edziennik.data.db.dao.MetadataDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Notice;
 import pl.szczodrzynski.edziennik.data.db.dao.NoticeDao;
-import pl.szczodrzynski.edziennik.data.db.entity.NoticeType;
 import pl.szczodrzynski.edziennik.data.db.dao.NoticeTypeDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Notification;
 import pl.szczodrzynski.edziennik.data.db.dao.NotificationDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Profile;
 import pl.szczodrzynski.edziennik.data.db.dao.ProfileDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Subject;
 import pl.szczodrzynski.edziennik.data.db.dao.SubjectDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Teacher;
-import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsence;
 import pl.szczodrzynski.edziennik.data.db.dao.TeacherAbsenceDao;
-import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsenceType;
 import pl.szczodrzynski.edziennik.data.db.dao.TeacherAbsenceTypeDao;
 import pl.szczodrzynski.edziennik.data.db.dao.TeacherDao;
-import pl.szczodrzynski.edziennik.data.db.entity.Team;
 import pl.szczodrzynski.edziennik.data.db.dao.TeamDao;
-import pl.szczodrzynski.edziennik.data.db.entity.LibrusLesson;
-import pl.szczodrzynski.edziennik.data.db.dao.LibrusLessonDao;
 import pl.szczodrzynski.edziennik.data.db.dao.TimetableDao;
+import pl.szczodrzynski.edziennik.data.db.entity.Announcement;
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance;
+import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType;
+import pl.szczodrzynski.edziennik.data.db.entity.Classroom;
+import pl.szczodrzynski.edziennik.data.db.entity.DebugLog;
+import pl.szczodrzynski.edziennik.data.db.entity.EndpointTimer;
+import pl.szczodrzynski.edziennik.data.db.entity.Event;
+import pl.szczodrzynski.edziennik.data.db.entity.EventType;
+import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage;
+import pl.szczodrzynski.edziennik.data.db.entity.Grade;
+import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory;
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson;
+import pl.szczodrzynski.edziennik.data.db.entity.LessonRange;
+import pl.szczodrzynski.edziennik.data.db.entity.LibrusLesson;
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore;
+import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber;
+import pl.szczodrzynski.edziennik.data.db.entity.Message;
+import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient;
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata;
+import pl.szczodrzynski.edziennik.data.db.entity.Notice;
+import pl.szczodrzynski.edziennik.data.db.entity.NoticeType;
+import pl.szczodrzynski.edziennik.data.db.entity.Notification;
+import pl.szczodrzynski.edziennik.data.db.entity.Profile;
+import pl.szczodrzynski.edziennik.data.db.entity.Subject;
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher;
+import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsence;
+import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsenceType;
+import pl.szczodrzynski.edziennik.data.db.entity.Team;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
 @Database(entities = {
@@ -108,7 +108,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date;
         Lesson.class,
         ConfigEntry.class,
         LibrusLesson.class,
-        Metadata.class}, version = 74)
+        Metadata.class}, version = 75)
 @TypeConverters({
         ConverterTime.class,
         ConverterDate.class,
@@ -979,6 +979,15 @@ public abstract class AppDb extends RoomDatabase {
             database.execSQL("CREATE INDEX index_librusLessons_profileId ON librusLessons (profileId);");
         }
     };
+    public static final Migration MIGRATION_74_75 = new Migration(74, 75) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE timetable RENAME TO _timetable;");
+            database.execSQL("CREATE TABLE timetable (profileId INTEGER NOT NULL,id INTEGER NOT NULL,type INTEGER NOT NULL,date TEXT DEFAULT NULL,lessonNumber INTEGER DEFAULT NULL,startTime TEXT DEFAULT NULL,endTime TEXT DEFAULT NULL,subjectId INTEGER DEFAULT NULL,teacherId INTEGER DEFAULT NULL,teamId INTEGER DEFAULT NULL,classroom TEXT DEFAULT NULL,oldDate TEXT DEFAULT NULL,oldLessonNumber INTEGER DEFAULT NULL,oldStartTime TEXT DEFAULT NULL,oldEndTime TEXT DEFAULT NULL,oldSubjectId INTEGER DEFAULT NULL,oldTeacherId INTEGER DEFAULT NULL,oldTeamId INTEGER DEFAULT NULL,oldClassroom TEXT DEFAULT NULL,PRIMARY KEY(profileId, id));");
+            database.execSQL("INSERT INTO timetable SELECT * FROM _timetable;");
+            database.execSQL("DROP TABLE _timetable;");
+        }
+    };
 
 
     public static AppDb getDatabase(final Context context) {
@@ -1050,7 +1059,8 @@ public abstract class AppDb extends RoomDatabase {
                                     MIGRATION_70_71,
                                     MIGRATION_71_72,
                                     MIGRATION_72_73,
-                                    MIGRATION_73_74
+                                    MIGRATION_73_74,
+                                    MIGRATION_74_75
                             )
                             .allowMainThreadQueries()
                             //.fallbackToDestructiveMigration()

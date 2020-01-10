@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.Index
-import androidx.room.PrimaryKey
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -14,8 +13,9 @@ import pl.szczodrzynski.edziennik.utils.models.Time
         indices = [
             Index(value = ["profileId", "type", "date"]),
             Index(value = ["profileId", "type", "oldDate"])
-        ])
-open class Lesson(val profileId: Int, @PrimaryKey var id: Long) {
+        ],
+        primaryKeys = ["profileId", "id"])
+open class Lesson(val profileId: Int, var id: Long) {
     companion object {
         const val TYPE_NO_LESSONS = -1
         const val TYPE_NORMAL = 0
