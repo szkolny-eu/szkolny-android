@@ -172,13 +172,13 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".sync.FirebaseBroadcastReceiver"
+        <!--<receiver android:name=".sync.FirebaseBroadcastReceiver"
             android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
         <receiver android:name=".receivers.SzkolnyReceiver"
             android:exported="true">
             <intent-filter>
@@ -193,16 +193,23 @@
               ____) |  __/ |   \ V /| | (_|  __/\__ \
              |_____/ \___|_|    \_/ |_|\___\___||___/
         -->
-        <service android:name=".sync.MyFirebaseMessagingService"
+        <!--<service android:name=".sync.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
+        </service>-->
         <service android:name=".receivers.BootReceiver$NotificationActionService" />
         <service android:name=".Notifier$GetDataRetryService" />
         <service android:name=".data.api.ApiService" />
+        <service android:name=".sync.MyFirebaseService"
+            android:exported="false">
+            <intent-filter android:priority="10000000">
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
 
         <!--
               _____                _     _

@@ -3,6 +3,7 @@ package pl.szczodrzynski.edziennik
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Resources
@@ -642,6 +643,28 @@ fun Bundle(vararg properties: Pair<String, Any?>): Bundle {
         }
     }
 }
+
+fun Bundle.toJsonObject(): JsonObject {
+    val json = JsonObject()
+    keySet()?.forEach { key ->
+        get(key)?.let {
+            when (it) {
+                is String -> json.addProperty(key, it)
+                is Char -> json.addProperty(key, it)
+                is Int -> json.addProperty(key, it)
+                is Long -> json.addProperty(key, it)
+                is Float -> json.addProperty(key, it)
+                is Short -> json.addProperty(key, it)
+                is Double -> json.addProperty(key, it)
+                is Boolean -> json.addProperty(key, it)
+                is Bundle -> json.add(key, it.toJsonObject())
+                else -> json.addProperty(key, it.toString())
+            }
+        }
+    }
+    return json
+}
+fun Intent.toJsonObject() = extras?.toJsonObject()
 
 fun JsonArray?.isNullOrEmpty(): Boolean = (this?.size() ?: 0) == 0
 fun JsonArray.isEmpty(): Boolean = this.size() == 0
