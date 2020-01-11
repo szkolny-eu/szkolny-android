@@ -4,6 +4,7 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
@@ -20,10 +21,10 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <View
+            <ImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="@drawable/ic_sync"/>
+                app:srcCompat="@drawable/ic_sync"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,10 +69,10 @@
             tools:layout_marginTop="150dp"
             tools:visibility="visible">
 
-            <View
+            <ImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="@drawable/ic_timetable"/>
+                app:srcCompat="@drawable/ic_timetable"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -105,10 +106,10 @@
             tools:layout_marginTop="220dp"
             tools:visibility="visible">
 
-            <View
+            <ImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="@drawable/ic_no_timetable"/>
+                app:srcCompat="@drawable/ic_no_timetable"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

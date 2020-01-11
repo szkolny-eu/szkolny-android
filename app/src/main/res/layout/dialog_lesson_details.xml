@@ -285,12 +285,12 @@
                 android:visibility="gone"
                 tools:visibility="visible">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:drawableTop="@drawable/ic_no_events"
+                    app:drawableTopCompat="@drawable/ic_no_events"
                     android:drawablePadding="16dp"
                     android:fontFamily="sans-serif-light"
                     android:text="@string/dialog_lesson_no_events"
