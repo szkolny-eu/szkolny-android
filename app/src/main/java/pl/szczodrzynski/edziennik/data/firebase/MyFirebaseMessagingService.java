@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik.sync;
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-1-11.
+ */
+
+package pl.szczodrzynski.edziennik.data.firebase;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,22 +23,18 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.entity.Event;
-import pl.szczodrzynski.edziennik.data.db.full.EventFull;
 import pl.szczodrzynski.edziennik.data.db.entity.EventType;
 import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage;
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore;
 import pl.szczodrzynski.edziennik.data.db.entity.Profile;
 import pl.szczodrzynski.edziennik.data.db.entity.Team;
+import pl.szczodrzynski.edziennik.data.db.full.EventFull;
 import pl.szczodrzynski.edziennik.network.ServerRequest;
 import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment;
 import pl.szczodrzynski.edziennik.utils.models.Notification;
 
 import static pl.szczodrzynski.edziennik.App.APP_URL;
 import static pl.szczodrzynski.edziennik.data.db.entity.Event.TYPE_HOMEWORK;
-import static pl.szczodrzynski.edziennik.data.db.entity.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
-import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_FEEDBACK_MESSAGE;
-import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_EVENT;
-import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_HOMEWORK;
-import static pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_SERVER_MESSAGE;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.strToInt;
 
@@ -93,7 +93,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Profile profile = null;
 
                 for (Profile profileFull: profileList) {
-                    if (profileFull.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK
+                    if (profileFull.getLoginStoreType() == LoginStore.LOGIN_TYPE_MOBIDZIENNIK
                             && studentId == profileFull.getStudentData("studentId", -1)) {
                         profile = profileFull;
                         break;
@@ -182,7 +182,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "message":
                     app.notifier.add(new Notification(app.getContext(), remoteMessage.getData().get("message"))
                             .withTitle(remoteMessage.getData().get("title"))
-                            .withType(TYPE_SERVER_MESSAGE)
+                            .withType(pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_SERVER_MESSAGE)
                             .withFragmentRedirect(MainActivity.DRAWER_ITEM_NOTIFICATIONS)
                     );
                     app.notifier.postAll();
@@ -209,7 +209,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                             app.notifier.add(new Notification(app.getContext(), feedbackMessage.text)
                                     .withTitle(remoteMessage.getData().get("title"))
-                                    .withType(TYPE_FEEDBACK_MESSAGE)
+                                    .withType(pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_FEEDBACK_MESSAGE)
                                     .withFragmentRedirect(MainActivity.TARGET_FEEDBACK)
                             );
                             app.notifier.postAll();
@@ -231,7 +231,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     });
                     app.notifier.add(new Notification(app.getContext(), remoteMessage.getData().get("message"))
                             .withTitle(remoteMessage.getData().get("title"))
-                            .withType(TYPE_FEEDBACK_MESSAGE)
+                            .withType(pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_FEEDBACK_MESSAGE)
                             .withFragmentRedirect(MainActivity.TARGET_FEEDBACK)
                     );
                     app.notifier.postAll();
@@ -285,7 +285,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                         EventType eventType = app.db.eventTypeDao().getByIdNow(profile.getId(), event.type);
                                         app.notifier.add(new Notification(app.getContext(), app.getString((oldEvent == null ? R.string.notification_shared_event_format : R.string.notification_shared_event_modified_format), event.sharedByName, eventType == null ? "wydarzenie" : eventType.name, event.eventDate.getFormattedString(), event.topic))
                                                 .withProfileData(profile.getId(), profile.getName())
-                                                .withType(event.type == TYPE_HOMEWORK ? TYPE_NEW_SHARED_HOMEWORK : TYPE_NEW_SHARED_EVENT)
+                                                .withType(event.type == TYPE_HOMEWORK ? pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_HOMEWORK : pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_EVENT)
                                                 .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                                 .withLongExtra("eventDate", event.eventDate.getValue())
                                         );
@@ -304,7 +304,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                     if (oldEvent != null) {
                                         app.notifier.add(new Notification(app.getContext(), app.getString(R.string.notification_shared_event_removed_format, oldEvent.sharedByName, oldEvent.typeName, oldEvent.eventDate.getFormattedString(), oldEvent.topic))
                                                 .withProfileData(profile.getId(), profile.getName())
-                                                .withType(oldEvent.type == TYPE_HOMEWORK ? TYPE_NEW_SHARED_HOMEWORK : TYPE_NEW_SHARED_EVENT)
+                                                .withType(oldEvent.type == TYPE_HOMEWORK ? pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_HOMEWORK : pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_EVENT)
                                                 .withFragmentRedirect(oldEvent.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
                                                 .withLongExtra("eventDate", oldEvent.eventDate.getValue())
                                         );

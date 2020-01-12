@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2020-1-11.
  */
 
-package pl.szczodrzynski.edziennik.sync
+package pl.szczodrzynski.edziennik.data.firebase
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent

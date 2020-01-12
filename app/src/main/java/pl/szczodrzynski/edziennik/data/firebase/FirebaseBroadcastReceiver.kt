@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-10-11.
+ * Copyright (c) Kuba Szczodrzyński 2020-1-11.
  */
 
-package pl.szczodrzynski.edziennik.sync
+package pl.szczodrzynski.edziennik.data.firebase
 
 import android.content.Context
 import android.content.Intent

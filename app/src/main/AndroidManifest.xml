@@ -203,7 +203,7 @@
         <service android:name=".receivers.BootReceiver$NotificationActionService" />
         <service android:name=".Notifier$GetDataRetryService" />
         <service android:name=".data.api.ApiService" />
-        <service android:name=".sync.MyFirebaseService"
+        <service android:name=".data.firebase.MyFirebaseService"
             android:exported="false">
             <intent-filter android:priority="10000000">
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

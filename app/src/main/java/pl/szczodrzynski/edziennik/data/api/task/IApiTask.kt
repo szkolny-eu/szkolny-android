@@ -39,4 +39,18 @@ abstract class IApiTask(open val profileId: Int) {
     override fun toString(): String {
         return "IApiTask(profileId=$profileId, taskId=$taskId, profile=$profile, taskName=$taskName)"
     }
+
+    companion object {
+        fun enqueueAll(context: Context, tasks: List<IApiTask>) {
+            Intent(context, ApiService::class.java).let {
+                if (SDK_INT >= O)
+                    context.startForegroundService(it)
+                else
+                    context.startService(it)
+            }
+            tasks.forEach {
+                EventBus.getDefault().postSticky(it)
+            }
+        }
+    }
 }
