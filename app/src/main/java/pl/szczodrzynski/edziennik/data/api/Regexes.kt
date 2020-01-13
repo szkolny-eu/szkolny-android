@@ -74,7 +74,7 @@ object Regexes {
         """id="ctl00_CzyRodzic" value="([01])" />""".toRegex()
     }
     val IDZIENNIK_LOGIN_FIRST_SCHOOL_YEAR by lazy {
-        """name="ctl00\\${'$'}dxComboRokSzkolny".+?selected="selected".*?value="([0-9]+)">([0-9]+)/([0-9]+)<""".toRegex(DOT_MATCHES_ALL)
+        """name="ctl00\${"$"}dxComboRokSzkolny".+?selected="selected".*?value="([0-9]+)">([0-9]+)/([0-9]+)<""".toRegex(DOT_MATCHES_ALL)
     }
     val IDZIENNIK_LOGIN_FIRST_STUDENT_SELECT by lazy {
         """<select.*?name="ctl00\${"$"}dxComboUczniowie".*?</select>""".toRegex(DOT_MATCHES_ALL)
