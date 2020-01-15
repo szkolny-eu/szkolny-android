@@ -29,7 +29,7 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
         val url = "https://dziennikel.appspot.com/" + when (endpoint.endsWith('/') || endpoint.contains('?') || endpoint.isEmpty()) {
             true -> endpoint
             else -> "$endpoint/"
-        } + (semester?.let { "?semester=$it" } ?: "")
+        } + (semester?.let { "?semester=" + if(it == -1) "all" else it } ?: "")
 
         d(tag, "Request: Edudziennik/Web - $url")
 

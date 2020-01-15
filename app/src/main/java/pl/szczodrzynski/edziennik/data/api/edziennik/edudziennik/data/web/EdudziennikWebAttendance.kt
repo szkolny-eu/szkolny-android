@@ -26,7 +26,7 @@ class EdudziennikWebAttendance(override val data: DataEdudziennik,
     }
 
     init { data.profile?.also { profile ->
-        webGet(TAG, data.studentEndpoint + "Presence") { text ->
+        webGet(TAG, data.studentEndpoint + "Presence", semester = -1) { text ->
 
             val attendanceTypes = EDUDZIENNIK_ATTENDANCE_TYPES.find(text)?.get(1)?.split(',')?.map {
                 val type = EDUDZIENNIK_ATTENDANCE_TYPE.find(it.trim())
