@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.utils.models.Date
 
 open class EdudziennikWeb(open val data: DataEdudziennik) {
     companion object {
@@ -40,6 +41,12 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
                     return
                 }
 
+                val cookies = data.app.cookieJar.getForDomain("dziennikel.appspot.com")
+                val semester = cookies.firstOrNull { it.name() == "semester" }?.value()?.toIntOrNull()
+
+                if (profile != null && semester == 2 && profile!!.dateSemester2Start > Date.getToday())
+                    profile!!.dateSemester2Start = Date.getToday().stepForward(0, 0, -1)
+
                 try {
                     onSuccess(text)
                 } catch (e: Exception) {
@@ -66,11 +73,6 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
                 Cookie.Builder()
                         .name("sessionid")
                         .value(data.webSessionId!!)
-                        .domain("dziennikel.appspot.com")
-                        .secure().httpOnly().build(),
-                Cookie.Builder()
-                        .name("semester")
-                        .value((data.currentSemester).toString())
                         .domain("dziennikel.appspot.com")
                         .secure().httpOnly().build()
         ))

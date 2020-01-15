@@ -13,10 +13,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.*
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -27,8 +27,15 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
         private const val TAG = "EdudziennikWebGrades"
     }
 
+    private var semester: Int = 1
+
     init { data.profile?.also { profile ->
-        webGet(TAG, data.studentEndpoint + "start") { text ->
+        semester = profile.currentSemester
+        getGrades()
+    } ?: onSuccess() }
+
+    private fun getGrades() { data.profile?.also { profile ->
+        webGet(TAG, data.studentEndpoint + "start/?semester=$semester") { text ->
             val doc = Jsoup.parse(text)
 
             val subjects = doc.select("#student_grades tbody").firstOrNull()?.children()
@@ -107,7 +114,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             name,
                             value,
                             if (gradeCountToAverage) weight else 0f,
-                            data.currentSemester,
+                            semester,
                             teacher.id,
                             subject.id
                     ).apply {
@@ -137,7 +144,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             proposed,
                             proposed.toFloatOrNull() ?: 0f,
                             0f,
-                            data.currentSemester,
+                            semester,
                             -1,
                             subject.id
                     ).apply {
@@ -170,7 +177,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             final,
                             final.toFloatOrNull() ?: 0f,
                             0f,
-                            data.currentSemester,
+                            semester,
                             -1,
                             subject.id
                     ).apply {
@@ -201,12 +208,17 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                         TYPE_SEMESTER1_FINAL,
                         TYPE_SEMESTER2_FINAL
                 ).map {
-                    DataRemoveModel.Grades.semesterWithType(data.currentSemester, it)
+                    DataRemoveModel.Grades.semesterWithType(semester, it)
                 })
             }
 
-            data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_GRADES, SYNC_ALWAYS)
-            onSuccess()
+            if (profile.empty && semester == 2) {
+                semester = 1
+                getGrades()
+            } else {
+                data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_GRADES, SYNC_ALWAYS)
+                onSuccess()
+            }
         }
-    }}
+    } ?: onSuccess() }
 }

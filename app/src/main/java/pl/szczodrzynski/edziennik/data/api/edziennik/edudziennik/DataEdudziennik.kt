@@ -7,11 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_EDUDZIENNIK_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
-import pl.szczodrzynski.edziennik.data.db.entity.EventType
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.entity.Subject
-import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.*
 
 /**
  * Use http://patorjk.com/software/taag/#p=display&f=Big for the ascii art
@@ -78,11 +74,6 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
          | |  | | __| '_ \ / _ \ '__|
          | |__| | |_| | | |  __/ |
           \____/ \__|_| |_|\___|*/
-    private var mCurrentSemester: Int? = null
-    var currentSemester: Int
-        get() { mCurrentSemester = mCurrentSemester ?: profile?.getStudentData("currentSemester", 1); return mCurrentSemester ?: 1 }
-        set(value) { profile?.putStudentData("currentSemester", value) ?: return; mCurrentSemester = value }
-
     private var mSchoolName: String? = null
     var schoolName: String?
         get() { mSchoolName = mSchoolName ?: profile?.getStudentData("schoolName", null); return mSchoolName }

@@ -13,7 +13,6 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EdudziennikLoginWeb(val data: DataEdudziennik, val onSuccess: () -> Unit) {
     companion object {
@@ -62,7 +61,6 @@ class EdudziennikLoginWeb(val data: DataEdudziennik, val onSuccess: () -> Unit) 
 
                 val cookies = data.app.cookieJar.getForDomain("dziennikel.appspot.com")
                 val sessionId = cookies.firstOrNull { it.name() == "sessionid" }?.value()
-                val semester = cookies.firstOrNull { it.name() == "semester" }?.value()?.toIntOrNull()
 
                 if (sessionId == null) {
                     data.error(ApiError(TAG, ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID)
@@ -72,14 +70,6 @@ class EdudziennikLoginWeb(val data: DataEdudziennik, val onSuccess: () -> Unit) 
                 }
 
                 data.webSessionId = sessionId
-
-                if (data.profile != null && semester != null) {
-                    data.currentSemester = semester
-
-                    if (semester == 2 && data.profile.dateSemester2Start > Date.getToday())
-                        data.profile.dateSemester2Start = Date.getToday().stepForward(0, 0, -1)
-                }
-
                 data.webSessionIdExpiryTime = response.getUnixDate() + 45 * 60 /* 45 min */
                 onSuccess()
             }
