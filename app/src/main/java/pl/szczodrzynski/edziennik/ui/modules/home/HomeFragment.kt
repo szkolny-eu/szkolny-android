@@ -23,7 +23,7 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeDebugCard
@@ -94,7 +94,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                         .withOnClickListener(OnClickListener {
                             activity.bottomSheet.close()
                             launch { withContext(Dispatchers.Default) {
-                                if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS) {
+                                if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS) {
                                     app.db.metadataDao().setAllSeenExceptMessagesAndAnnouncements(App.profileId, true)
                                 } else {
                                     app.db.metadataDao().setAllSeenExceptMessages(App.profileId, true)

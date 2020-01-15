@@ -36,6 +36,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
+import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -44,6 +45,7 @@ import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
@@ -93,9 +95,10 @@ import pl.szczodrzynski.navlib.drawer.items.withAppTitle
 import java.io.File
 import java.io.IOException
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope {
     companion object {
 
         var useOldMessages = false
@@ -108,6 +111,7 @@ class MainActivity : AppCompatActivity() {
         const val DRAWER_PROFILE_SYNC_ALL = 201
         const val DRAWER_PROFILE_EXPORT_DATA = 202
         const val DRAWER_PROFILE_MANAGE = 203
+        const val DRAWER_PROFILE_MARK_ALL_AS_READ = 204
         const val DRAWER_ITEM_HOME = 1
         const val DRAWER_ITEM_TIMETABLE = 11
         const val DRAWER_ITEM_AGENDA = 12
@@ -208,6 +212,10 @@ class MainActivity : AppCompatActivity() {
                     .withDescription(R.string.drawer_manage_profiles_desc)
                     .isInProfileList(false)
 
+            list += NavTarget(DRAWER_PROFILE_MARK_ALL_AS_READ, R.string.menu_mark_everything_as_read, null)
+                    .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
+                    .isInProfileList(true)
+
             list += NavTarget(DRAWER_PROFILE_SYNC_ALL, R.string.menu_sync_all, null)
                     .withIcon(CommunityMaterial.Icon.cmd_download_outline)
                     .isInProfileList(true)
@@ -225,6 +233,10 @@ class MainActivity : AppCompatActivity() {
             list
         }
     }
+
+    private var job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     val b: ActivitySzkolnyBinding by lazy { ActivitySzkolnyBinding.inflate(layoutInflater) }
     val navView: NavView by lazy { b.navView }
@@ -520,6 +532,17 @@ class MainActivity : AppCompatActivity() {
             DRAWER_PROFILE_SYNC_ALL -> {
                 EdziennikTask.sync().enqueue(this)
             }
+            DRAWER_PROFILE_MARK_ALL_AS_READ -> { launch {
+                withContext(Dispatchers.Default) {
+                    app.db.profileDao().allNow.forEach { profile ->
+                        if (profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS)
+                            app.db.metadataDao().setAllSeenExceptMessagesAndAnnouncements(profile.id, true)
+                        else
+                            app.db.metadataDao().setAllSeenExceptMessages(profile.id, true)
+                    }
+                }
+                Toast.makeText(this@MainActivity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
+            }}
             else -> {
                 loadTarget(id)
             }
