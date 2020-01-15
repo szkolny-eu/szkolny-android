@@ -27,17 +27,18 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
         private const val TAG = "EdudziennikWebGrades"
     }
 
-    private var semester: Int = 1
+    private var requestSemester: Int? = null
 
-    init { data.profile?.also { profile ->
-        semester = profile.currentSemester
+    init {
+        if (profile?.empty == true && data.currentSemester == 2) requestSemester = 1
         getGrades()
-    } ?: onSuccess() }
+    }
 
     private fun getGrades() { data.profile?.also { profile ->
-        webGet(TAG, data.studentEndpoint + "start/?semester=$semester") { text ->
-            val doc = Jsoup.parse(text)
+        webGet(TAG, data.studentEndpoint + "start", semester = requestSemester) { text ->
+            val semester = requestSemester ?: data.currentSemester
 
+            val doc = Jsoup.parse(text)
             val subjects = doc.select("#student_grades tbody").firstOrNull()?.children()
 
             subjects?.forEach { subjectElement ->
@@ -212,8 +213,8 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                 })
             }
 
-            if (profile.empty && semester == 2) {
-                semester = 1
+            if (profile.empty && requestSemester == 1 && data.currentSemester == 2) {
+                requestSemester = null
                 getGrades()
             } else {
                 data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_GRADES, SYNC_ALWAYS)

@@ -25,11 +25,11 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
     val profile
         get() = data.profile
 
-    fun webGet(tag: String, endpoint: String, xhr: Boolean = false, onSuccess: (text: String) -> Unit) {
+    fun webGet(tag: String, endpoint: String, xhr: Boolean = false, semester: Int? = null, onSuccess: (text: String) -> Unit) {
         val url = "https://dziennikel.appspot.com/" + when (endpoint.endsWith('/') || endpoint.contains('?') || endpoint.isEmpty()) {
             true -> endpoint
             else -> "$endpoint/"
-        }
+        } + (semester?.let { "?semester=$it" } ?: "")
 
         d(tag, "Request: Edudziennik/Web - $url")
 
@@ -41,11 +41,17 @@ open class EdudziennikWeb(open val data: DataEdudziennik) {
                     return
                 }
 
-                val cookies = data.app.cookieJar.getForDomain("dziennikel.appspot.com")
-                val semester = cookies.firstOrNull { it.name() == "semester" }?.value()?.toIntOrNull()
+                if (semester == null && url.contains("start")) {
+                    profile?.also { profile ->
+                        val cookies = data.app.cookieJar.getForDomain("dziennikel.appspot.com")
+                        val semesterCookie = cookies.firstOrNull { it.name() == "semester" }?.value()?.toIntOrNull()
 
-                if (profile != null && semester == 2 && profile!!.dateSemester2Start > Date.getToday())
-                    profile!!.dateSemester2Start = Date.getToday().stepForward(0, 0, -1)
+                        semesterCookie?.let { data.currentSemester = it }
+
+                        if (semesterCookie == 2 && profile.dateSemester2Start > Date.getToday())
+                            profile.dateSemester2Start = Date.getToday().stepForward(0, 0, -1)
+                    }
+                }
 
                 try {
                     onSuccess(text)
