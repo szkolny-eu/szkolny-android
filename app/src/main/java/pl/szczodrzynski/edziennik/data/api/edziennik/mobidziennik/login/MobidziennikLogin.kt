@@ -52,7 +52,7 @@ class MobidziennikLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             }
             LOGIN_METHOD_MOBIDZIENNIK_API2 -> {
                 data.startProgress(R.string.edziennik_progress_login_mobidziennik_api2)
-                //MobidziennikLoginApi2(data) { onSuccess(loginMethodId) }
+                MobidziennikLoginApi2(data) { onSuccess(loginMethodId) }
             }
         }
     }

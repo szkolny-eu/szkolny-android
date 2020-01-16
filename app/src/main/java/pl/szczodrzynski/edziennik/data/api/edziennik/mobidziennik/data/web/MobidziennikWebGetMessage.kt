@@ -12,9 +12,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.Mobidzien
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.singleOrNull
@@ -25,7 +25,7 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 class MobidziennikWebGetMessage(
         override val data: DataMobidziennik,
         private val message: MessageFull,
-        val onSuccess: () -> Unit) : MobidziennikWeb(data)  {
+        val onSuccess: () -> Unit) : MobidziennikWeb(data) {
     companion object {
         private const val TAG = "MobidziennikWebGetMessage"
     }

@@ -1159,4 +1159,5 @@
     <string name="event_manual_remove">Usuwam wydarzenie...</string>
     <string name="counter_activity_sync">Synchronizuj</string>
     <string name="notification_day_free">Dzień wolny</string>
+    <string name="edziennik_progress_endpoint_push_config">Konfigurowanie natychmiastowych powiadomień...</string>
 </resources>

@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.Mobidzien
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 
 class MobidziennikWebNotices(override val data: DataMobidziennik,
-                              val onSuccess: () -> Unit) : MobidziennikWeb(data)  {
+                              val onSuccess: () -> Unit) : MobidziennikWeb(data) {
     companion object {
         private const val TAG = "MobidziennikWebNotices"
     }

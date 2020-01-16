@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.error
 
-import android.graphics.Color
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -41,7 +40,7 @@ class ErrorSnackbar(val activity: AppCompatActivity) : CoroutineScope {
             if (errors.isNotEmpty()) {
                 val message = errors.map {
                     listOf(
-                            it.getStringReason(activity).asBoldSpannable().asColoredSpannable(Color.BLACK),
+                            it.getStringReason(activity).asBoldSpannable().asColoredSpannable(R.attr.colorOnBackground.resolveAttr(activity)),
                             if (App.devMode)
                                 it.throwable?.stackTraceString ?: it.throwable?.localizedMessage
                             else

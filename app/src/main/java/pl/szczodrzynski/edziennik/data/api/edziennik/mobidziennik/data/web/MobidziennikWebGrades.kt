@@ -11,9 +11,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidzienn
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.fixWhiteSpaces
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.singleOrNull
@@ -21,7 +21,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class MobidziennikWebGrades(override val data: DataMobidziennik,
-                              val onSuccess: () -> Unit) : MobidziennikWeb(data)  {
+                              val onSuccess: () -> Unit) : MobidziennikWeb(data) {
     companion object {
         private const val TAG = "MobidziennikWebGrades"
     }

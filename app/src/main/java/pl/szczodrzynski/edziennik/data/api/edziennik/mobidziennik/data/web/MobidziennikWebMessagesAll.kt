@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
-                                   val onSuccess: () -> Unit) : MobidziennikWeb(data)  {
+                                   val onSuccess: () -> Unit) : MobidziennikWeb(data) {
     companion object {
         private const val TAG = "MobidziennikWebMessagesAll"
     }

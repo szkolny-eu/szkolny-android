@@ -445,24 +445,32 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
             try {
                 final long startTime = System.currentTimeMillis();
                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
-                    Log.d(TAG, "Token for App is " + instanceIdResult.getToken() + ", ID is " + instanceIdResult.getId()+". Time is "+(System.currentTimeMillis() - startTime));
-                    config.getSync().setTokenApp(instanceIdResult.getToken());
+                    if (!instanceIdResult.getToken().equals(config.getSync().getTokenApp())) {
+                        Log.d(TAG, "Token for App is " + instanceIdResult.getToken());
+                        config.getSync().setTokenApp(instanceIdResult.getToken());
+                    }
                 });
-                /*FirebaseInstanceId.getInstance(pushMobidziennikApp).getInstanceId().addOnSuccessListener(instanceIdResult -> {
-                    Log.d(TAG, "Token for Mobidziennik is " + instanceIdResult.getToken() + ", ID is " + instanceIdResult.getId());
-                    appConfig.fcmTokens.put(LOGIN_TYPE_MOBIDZIENNIK, new Pair<>(instanceIdResult.getToken(), new ArrayList<>()));
+                FirebaseInstanceId.getInstance(pushMobidziennikApp).getInstanceId().addOnSuccessListener(instanceIdResult -> {
+                    if (!instanceIdResult.getToken().equals(config.getSync().getTokenMobidziennik())) {
+                        Log.d(TAG, "Token for Mobidziennik2 is " + instanceIdResult.getToken());
+                        config.getSync().setTokenMobidziennik(instanceIdResult.getToken());
+                        config.getSync().setTokenMobidziennikList(new ArrayList<>());
+                    }
                 });
                 FirebaseInstanceId.getInstance(pushLibrusApp).getInstanceId().addOnSuccessListener(instanceIdResult -> {
-                    Log.d(TAG, "Token for Librus is " + instanceIdResult.getToken() + ", ID is " + instanceIdResult.getId());
-                    appConfig.fcmTokens.put(LOGIN_TYPE_LIBRUS, new Pair<>(instanceIdResult.getToken(), new ArrayList<>()));
+                    if (!instanceIdResult.getToken().equals(config.getSync().getTokenLibrus())) {
+                        Log.d(TAG, "Token for Librus is " + instanceIdResult.getToken());
+                        config.getSync().setTokenLibrus(instanceIdResult.getToken());
+                        config.getSync().setTokenLibrusList(new ArrayList<>());
+                    }
                 });
                 FirebaseInstanceId.getInstance(pushVulcanApp).getInstanceId().addOnSuccessListener(instanceIdResult -> {
-                    Log.d(TAG, "Token for Vulcan is " + instanceIdResult.getToken() + ", ID is " + instanceIdResult.getId());
-                    Pair<String, List<Integer>> pair = appConfig.fcmTokens.get(LOGIN_TYPE_VULCAN);
-                    if (pair == null || pair.first == null || !pair.first.equals(instanceIdResult.getToken())) {
-                        appConfig.fcmTokens.put(LOGIN_TYPE_VULCAN, new Pair<>(instanceIdResult.getToken(), new ArrayList<>()));
+                    if (!instanceIdResult.getToken().equals(config.getSync().getTokenVulcan())) {
+                        Log.d(TAG, "Token for Vulcan is " + instanceIdResult.getToken());
+                        config.getSync().setTokenVulcan(instanceIdResult.getToken());
+                        config.getSync().setTokenVulcanList(new ArrayList<>());
                     }
-                });*/
+                });
 
 
                 FirebaseMessaging.getInstance().subscribeToTopic(getPackageName());

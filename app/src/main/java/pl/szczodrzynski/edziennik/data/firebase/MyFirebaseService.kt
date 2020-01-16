@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.firebase
 
+import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,10 @@ class MyFirebaseService : FirebaseService(), CoroutineScope {
     override fun onMessageReceived(message: Message) {
         launch(Dispatchers.Default) {
             Log.d(TAG, "Message received from ${message.from}: $message")
+            app.getSharedPreferences("firebase_service_log", Context.MODE_PRIVATE).edit().apply {
+                putString(System.currentTimeMillis().toString(), message.toString())
+                apply()
+            }
             val profiles = app.db.profileDao().profilesForSyncNow
             when (message.from) {
                 "640759989760" -> SzkolnyAppFirebase(app, profiles, message)

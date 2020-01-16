@@ -23,6 +23,10 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
             && webSessionKey.isNotNullNorEmpty()
             && webServerId.isNotNullNorEmpty()
 
+    fun isApi2LoginValid() = loginEmail.isNotNullNorEmpty()
+            && loginId.isNotNullNorEmpty()
+            && globalId.isNotNullNorEmpty()
+
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isWebLoginValid()) {
@@ -43,11 +47,6 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
     var loginServerName: String?
         get() { mLoginServerName = mLoginServerName ?: loginStore.getLoginData("serverName", null); return mLoginServerName }
         set(value) { loginStore.putLoginData("serverName", value); mLoginServerName = value }
-
-    private var mLoginEmail: String? = null
-    var loginEmail: String?
-        get() { mLoginEmail = mLoginEmail ?: loginStore.getLoginData("email", null); return mLoginEmail }
-        set(value) { loginStore.putLoginData("email", value); mLoginEmail = value }
 
     private var mLoginUsername: String? = null
     var loginUsername: String?
@@ -89,6 +88,48 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
     var webSessionIdExpiryTime: Long
         get() { mWebSessionIdExpiryTime = mWebSessionIdExpiryTime ?: loginStore.getLoginData("sessionIDTime", 0L); return mWebSessionIdExpiryTime ?: 0L }
         set(value) { loginStore.putLoginData("sessionIDTime", value); mWebSessionIdExpiryTime = value }
+
+    /*             _____ _____   ___
+             /\   |  __ \_   _| |__ \
+            /  \  | |__) || |      ) |
+           / /\ \ |  ___/ | |     / /
+          / ____ \| |    _| |_   / /_
+         /_/    \_\_|   |_____| |___*/
+    /**
+     * A global ID (whatever it is) used in API 2
+     * and Firebase push from Mobidziennik.
+     */
+    var globalId: String?
+        get() { mGlobalId = mGlobalId ?: profile?.getStudentData("globalId", null); return mGlobalId }
+        set(value) { profile?.putStudentData("globalId", value) ?: return; mGlobalId = value }
+    private var mGlobalId: String? = null
+
+    /**
+     * User's email that may or may not
+     * be retrieved from Web by [MobidziennikWebAccountEmail].
+     * Used to log in to API 2.
+     */
+    var loginEmail: String?
+        get() { mLoginEmail = mLoginEmail ?: profile?.getStudentData("email", null); return mLoginEmail }
+        set(value) { profile?.putStudentData("email", value); mLoginEmail = value }
+    private var mLoginEmail: String? = null
+
+    /**
+     * A login ID used in the API 2.
+     * Looks more or less like "7063@2019@zslpoznan".
+     */
+    var loginId: String?
+        get() { mLoginId = mLoginId ?: profile?.getStudentData("loginId", null); return mLoginId }
+        set(value) { profile?.putStudentData("loginId", value) ?: return; mLoginId = value }
+    private var mLoginId: String? = null
+
+    /**
+     * No need to explain.
+     */
+    var ciasteczkoAutoryzacji: String?
+        get() { mCiasteczkoAutoryzacji = mCiasteczkoAutoryzacji ?: profile?.getStudentData("ciasteczkoAutoryzacji", null); return mCiasteczkoAutoryzacji }
+        set(value) { profile?.putStudentData("ciasteczkoAutoryzacji", value) ?: return; mCiasteczkoAutoryzacji = value }
+    private var mCiasteczkoAutoryzacji: String? = null
 
 
     override fun saveData() {

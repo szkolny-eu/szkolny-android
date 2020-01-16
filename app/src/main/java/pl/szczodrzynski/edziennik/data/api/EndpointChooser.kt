@@ -91,7 +91,6 @@ fun Data.prepareFor(loginMethods: List<LoginMethod>, loginMethodId: Int) {
             possibleLoginMethods += it.loginMethodId
     }
 
-    targetEndpointIds.clear()
     targetLoginMethodIds.clear()
 
     // check the login method for any dependencies

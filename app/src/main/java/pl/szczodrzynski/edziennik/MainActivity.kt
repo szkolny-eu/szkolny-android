@@ -602,6 +602,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onApiTaskFinishedEvent(event: ApiTaskFinishedEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
                 subtitleFormat = R.string.toolbar_subtitle
@@ -612,6 +613,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onApiTaskAllFinishedEvent(event: ApiTaskAllFinishedEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         swipeRefreshLayout.isRefreshing = false
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -627,6 +629,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onAppManagerDetectedEvent(event: AppManagerDetectedEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         if (app.appConfig.dontShowAppManagerDialog)
             return
         MaterialAlertDialogBuilder(this)

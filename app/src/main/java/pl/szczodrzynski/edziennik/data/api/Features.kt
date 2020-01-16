@@ -41,6 +41,7 @@ internal const val FEATURE_PUSH_CONFIG = 120
 object Features {
     private fun getAllNecessary(): List<Int> = listOf(
             FEATURE_ALWAYS_NEEDED,
+            FEATURE_PUSH_CONFIG,
             FEATURE_STUDENT_INFO,
             FEATURE_STUDENT_NUMBER,
             FEATURE_SCHOOL_INFO,

@@ -133,7 +133,7 @@ open class FirebaseService : zzc() {
 
     data class Message(val messageId: String?, private val json: JsonObject) {
         val data = json.deepCopy()
-        val from by lazy { s("from") ?: "" }
+        val from by lazy { s("test.from") ?: s("from") ?: "" }
         val to by lazy { s("google.to") }
         val messageType by lazy { s("message_type") }
         val collapseKey by lazy { s("collapse_key") }

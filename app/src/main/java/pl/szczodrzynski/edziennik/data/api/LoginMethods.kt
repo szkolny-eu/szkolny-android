@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginMessages
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginPortal
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginSynergia
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLoginApi2
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.login.TemplateLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.login.TemplateLoginWeb
@@ -86,11 +87,11 @@ const val LOGIN_METHOD_MOBIDZIENNIK_API2 = 300
 val mobidziennikLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_MOBIDZIENNIK, LOGIN_METHOD_MOBIDZIENNIK_WEB, MobidziennikLoginWeb::class.java)
                 .withIsPossible { _, _ -> true }
-                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }/*,
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED },
 
         LoginMethod(LOGIN_TYPE_MOBIDZIENNIK, LOGIN_METHOD_MOBIDZIENNIK_API2, MobidziennikLoginApi2::class.java)
-                .withIsPossible { _, loginStore -> loginStore.hasLoginData("email") }
-                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }*/
+                .withIsPossible { profile, _ -> profile?.hasStudentData("email") == true }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
 )
 
 const val LOGIN_TYPE_VULCAN = 4
