@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.event
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.provider.CalendarContract
 import android.provider.CalendarContract.Events
@@ -209,6 +210,10 @@ class EventDetailsDialog(
             }
         }
 
-        activity.startActivity(intent)
+        try {
+            activity.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(activity, R.string.calendar_app_not_found, Toast.LENGTH_SHORT).show()
+        }
     }}
 }

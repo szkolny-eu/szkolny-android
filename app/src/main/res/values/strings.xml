@@ -1160,4 +1160,5 @@
     <string name="counter_activity_sync">Synchronizuj</string>
     <string name="notification_day_free">Dzień wolny</string>
     <string name="edziennik_progress_endpoint_push_config">Konfigurowanie natychmiastowych powiadomień...</string>
+    <string name="calendar_app_not_found">Nie znaleziono aplikacji kalendarza</string>
 </resources>
