@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.changelog
 
+import android.os.Build
 import android.text.Html
 import android.widget.ScrollView
 import android.widget.TextView
@@ -44,8 +45,13 @@ class ChangelogDialog(
 
         val text = app.assets.open("pl-changelog.html").bufferedReader().use {
             it.readText()
-        }.replace("<li>", "<br><li> - ")
-        textView.text = Html.fromHtml(text)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            textView.text = Html.fromHtml(text)
+        }
+        else {
+            textView.text = Html.fromHtml(text.replace("<li>", "<br><li> - "))
+        }
 
         val scrollView = ScrollView(activity)
         scrollView.addView(textView)
