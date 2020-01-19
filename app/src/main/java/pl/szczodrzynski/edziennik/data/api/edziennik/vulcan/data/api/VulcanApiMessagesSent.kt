@@ -99,7 +99,7 @@ class VulcanApiMessagesSent(override val data: DataVulcan, val onSuccess: () -> 
                     )
 
                     data.messageIgnoreList.add(messageObject)
-                    data.metadataList.add(Metadata(
+                    data.setSeenMetadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_MESSAGE,
                             id,

@@ -179,6 +179,11 @@ class MessageFragment : Fragment(), CoroutineScope {
             return
         }
 
+        if(message.type == TYPE_RECEIVED && !message.seen && app.profile.loginStoreType == LoginStore.LOGIN_TYPE_VULCAN) {
+            EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
+            return
+        }
+
         showMessage()
     }
 

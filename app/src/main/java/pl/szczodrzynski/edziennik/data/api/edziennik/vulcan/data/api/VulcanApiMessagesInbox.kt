@@ -9,12 +9,8 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_MESSAGES_RECEIVED
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.text.replace
@@ -88,7 +84,7 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
 
                     data.messageIgnoreList.add(messageObject)
                     data.messageRecipientList.add(messageRecipientObject)
-                    data.metadataList.add(Metadata(
+                    data.setSeenMetadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_MESSAGE,
                             id,
