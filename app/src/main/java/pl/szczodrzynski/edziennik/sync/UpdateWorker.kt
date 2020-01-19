@@ -10,6 +10,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.text.Html
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.work.*
 import kotlinx.coroutines.CoroutineScope
@@ -79,11 +80,15 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
                 val update = if (overrideUpdate == null) {
                     val api = SzkolnyApi(app)
                     val response = api.getUpdate("beta")
-                    if (response?.success != true)
+                    if (response?.success != true) {
+                        Toast.makeText(app, app.getString(R.string.notification_cant_check_update), Toast.LENGTH_SHORT).show()
                         return
+                    }
                     val updates = response.data
-                    if (updates?.isNotEmpty() != true)
+                    if (updates?.isNotEmpty() != true) {
+                        Toast.makeText(app, app.getString(R.string.notification_no_update), Toast.LENGTH_SHORT).show()
                         return
+                    }
                     updates[0]
                 }
                 else overrideUpdate
