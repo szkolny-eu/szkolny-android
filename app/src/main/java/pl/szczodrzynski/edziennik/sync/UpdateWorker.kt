@@ -76,7 +76,7 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
         fun runNow(app: App) {
             try {
                 val api = SzkolnyApi(app)
-                val response = api.getUpdate()
+                val response = api.getUpdate("beta")
                 if (response?.success != true)
                     return
                 val updates = response.data

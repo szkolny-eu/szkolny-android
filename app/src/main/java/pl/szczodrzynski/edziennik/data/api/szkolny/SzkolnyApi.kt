@@ -201,7 +201,7 @@ class SzkolnyApi(val app: App) {
         )).execute().body()
     }
 
-    fun getUpdate(): ApiResponse<List<Update>>? {
-        return api.updates().execute().body()
+    fun getUpdate(channel: String): ApiResponse<List<Update>>? {
+        return api.updates(channel).execute().body()
     }
 }
