@@ -509,7 +509,7 @@
     <string name="notification">Powiadomienie</string>
     <string name="notification_absence">Nieobecność</string>
     <string name="notification_absence_excused">Nieobecność usprawiedliwiona</string>
-    <string name="notification_announcement_format">Ogłoszenie szkolne: %s</string>
+    <string name="notification_announcement_format">Ogłoszenie szkolne od %s: %s</string>
     <string name="notification_attendance_format">%1$s na lekcji %2$s z dnia %3$s</string>
     <string name="notification_attendance_no_lesson_format">%1$s z dnia %3$s</string>
     <string name="notification_belated">Spóźnienie</string>
@@ -518,8 +518,8 @@
     <string name="notification_channel_get_data_name">Pobieranie danych</string>
     <string name="notification_channel_notifications_desc">Powiadomienie o nowej zawartości w e-dzienniku</string>
     <string name="notification_channel_notifications_name">Powiadomienia</string>
-    <string name="notification_channel_notifications_quiet_desc">Powiadomienie o nowej zawartości w e-dzienniku (bez dźwięku)</string>
-    <string name="notification_channel_notifications_quiet_name">Powiadomienia (cisza)</string>
+    <string name="notification_channel_notifications_quiet_desc">Powiadomienie o nowej zawartości w e-dzienniku (bez dźwięku - podczas ciszy nocnej)</string>
+    <string name="notification_channel_notifications_quiet_name">Powiadomienia (cisza nocna)</string>
     <string name="notification_channel_updates_desc">Powiadomienia o nowych wersjach aplikacji</string>
     <string name="notification_channel_updates_name">Aktualizacje</string>
     <string name="notification_downloading_update">Pobieranie aktualizacji…</string>
@@ -536,13 +536,13 @@
     <string name="notification_grade_format">Nowa ocena (%s) z %s</string>
     <string name="notification_homework_format">Zadanie domowe z %1$s na %2$s</string>
     <string name="notification_homework_no_subject_format">Zadanie domowe na %2$s</string>
-    <string name="notification_lesson_change_format" translatable="false">%s %s - %s</string>
-    <string name="notification_lucky_number_format">Dzisiaj %d to szczęśliwy numerek.</string>
-    <string name="notification_lucky_number_later_format">Szczęsliwy numerek na %s to %d.</string>
-    <string name="notification_lucky_number_tomorrow_format">Szczęsliwy numerek na jutro to %d.</string>
-    <string name="notification_lucky_number_yours_format">Dzisiaj to Ty masz szczęśliwy numerek! (%d)</string>
-    <string name="notification_lucky_number_yours_later_format">%s to Ty będziesz miał szczęśliwy numerek! (%d)</string>
-    <string name="notification_lucky_number_yours_tomorrow_format">Jutro to Ty masz szczęśliwy numerek! (%d)</string>
+    <string name="notification_lesson_change_format">%s dnia %s - %s</string>
+    <string name="notification_lucky_number_format">Dzisiaj %2$d to szczęśliwy numerek.</string>
+    <string name="notification_lucky_number_later_format">Szczęsliwy numerek na %1$s to %2$d.</string>
+    <string name="notification_lucky_number_tomorrow_format">Szczęsliwy numerek na jutro to %2$d.</string>
+    <string name="notification_lucky_number_yours_format">Dzisiaj to Ty masz szczęśliwy numerek! (%2$d)</string>
+    <string name="notification_lucky_number_yours_later_format">%1$s to Ty będziesz miał szczęśliwy numerek! (%2$d)</string>
+    <string name="notification_lucky_number_yours_tomorrow_format">Jutro to Ty masz szczęśliwy numerek! (%2$d)</string>
     <string name="notification_message_format">Nieodebrana wiadomość od %s: %s</string>
     <string name="notification_new_notification_title_format">Nowe powiadomienia: %d</string>
     <string name="notification_no_update">Brak dostępnej aktualizacji</string>
@@ -1161,4 +1161,8 @@
     <string name="notification_day_free">Dzień wolny</string>
     <string name="edziennik_progress_endpoint_push_config">Konfigurowanie natychmiastowych powiadomień...</string>
     <string name="calendar_app_not_found">Nie znaleziono aplikacji kalendarza</string>
+    <string name="edziennik_szkolny_creating_notifications">Tworzenie powiadomień...</string>
+    <string name="notification_type_new_shared_homework">Udostępniono zadanie domowe</string>
+    <string name="notification_type_removed_shared_event">Usunięto wydarzenie</string>
+    <string name="notification_click_to_see_all">Kliknij, aby zobaczyć wszystkie powiadomienia</string>
 </resources>

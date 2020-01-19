@@ -1,18 +1,5 @@
 package pl.szczodrzynski.edziennik.ui.modules.feedback;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
-import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.databinding.ActivityFeedbackBinding;
-import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage;
-import pl.szczodrzynski.edziennik.data.db.full.FeedbackMessageWithCount;
-import pl.szczodrzynski.edziennik.network.ServerRequest;
-import pl.szczodrzynski.edziennik.utils.Anim;
-import pl.szczodrzynski.edziennik.utils.Themes;
-import pl.szczodrzynski.edziennik.utils.Utils;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +15,9 @@ import android.view.animation.Animation;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.bassaer.chatmessageview.model.IChatUser;
 import com.github.bassaer.chatmessageview.model.Message;
@@ -36,7 +26,16 @@ import com.github.bassaer.chatmessageview.view.ChatView;
 import java.util.Calendar;
 import java.util.List;
 
-import static pl.szczodrzynski.edziennik.App.APP_URL;
+import pl.szczodrzynski.edziennik.App;
+import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage;
+import pl.szczodrzynski.edziennik.data.db.full.FeedbackMessageWithCount;
+import pl.szczodrzynski.edziennik.databinding.ActivityFeedbackBinding;
+import pl.szczodrzynski.edziennik.network.ServerRequest;
+import pl.szczodrzynski.edziennik.utils.Anim;
+import pl.szczodrzynski.edziennik.utils.Themes;
+import pl.szczodrzynski.edziennik.utils.Utils;
+
 import static pl.szczodrzynski.edziennik.utils.Utils.crc16;
 import static pl.szczodrzynski.edziennik.utils.Utils.openUrl;
 
@@ -101,7 +100,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 .content(R.string.sending_message)
                 .negativeText(R.string.cancel)
                 .show();
-        new ServerRequest(app, app.requestScheme + APP_URL + "main.php?feedback_message", "FeedbackSend")
+        new ServerRequest(app, "https://edziennik.szczodrzynski.pl/app/main.php?feedback_message", "FeedbackSend")
                 .setBodyParameter("message_text", text)
                 .setBodyParameter("target_device", deviceToSend == null ? "null" : deviceToSend)
                 .run(((e, result) -> {
@@ -199,7 +198,7 @@ public class FeedbackActivity extends AppCompatActivity {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                FeedbackMessage message = app.gson.fromJson(intent.getStringExtra("message"), FeedbackMessage.class);
+                FeedbackMessage message = app.getGson().fromJson(intent.getStringExtra("message"), FeedbackMessage.class);
                 Calendar c = Calendar.getInstance();
                 c.setTimeInMillis(message.sentTime);
                 Message chatMessage = new Message.Builder()
@@ -238,7 +237,7 @@ public class FeedbackActivity extends AppCompatActivity {
         mChatView.setMessageMarginTop(5);
         mChatView.setMessageMarginBottom(5);
 
-        if (App.devMode && app.deviceId.equals("f054761fbdb6a238")) {
+        if (App.Companion.getDevMode() && app.getDeviceId().equals("f054761fbdb6a238")) {
             b.targetDeviceLayout.setVisibility(View.VISIBLE);
             b.targetDeviceDropDown.setOnClickListener((v -> {
                 AsyncTask.execute(() -> {

@@ -17,6 +17,6 @@ class ConfigGrades(private val config: Config) {
 
     private var mOrderBy: Int? = null
     var orderBy: Int
-        get() { mOrderBy = mOrderBy ?: config.values.get("gradesOrderBy", 0); return mOrderBy ?: 0 }
+        get() { mOrderBy = mOrderBy ?: config.values.get("gradesOrderBy", 0); return mOrderBy ?: ORDER_BY_DATE_DESC }
         set(value) { config.set("gradesOrderBy", value); mOrderBy = value }
 }

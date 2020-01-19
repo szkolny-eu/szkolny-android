@@ -16,12 +16,13 @@ import pl.szczodrzynski.edziennik.config.utils.ConfigMigration
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.set
 import pl.szczodrzynski.edziennik.config.utils.toHashMap
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import kotlin.coroutines.CoroutineContext
 
 class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
     companion object {
-        const val DATA_VERSION = 2
+        const val DATA_VERSION = 10
     }
 
     private val job = Job()
@@ -44,6 +45,20 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
     var hash: String
         get() { mHash = mHash ?: values.get("hash", ""); return mHash ?: "" }
         set(value) { set("hash", value); mHash = value }
+
+    private var mLastProfileId: Int? = null
+    var lastProfileId: Int
+        get() { mLastProfileId = mLastProfileId ?: values.get("lastProfileId", 0); return mLastProfileId ?: 0 }
+        set(value) { set("lastProfileId", value); mLastProfileId = value }
+
+    private var mUpdatesChannel: String? = null
+    var updatesChannel: String
+        get() { mUpdatesChannel = mUpdatesChannel ?: values.get("updatesChannel", "release"); return mUpdatesChannel ?: "release" }
+        set(value) { set("updatesChannel", value); mUpdatesChannel = value }
+    private var mUpdate: Update? = null
+    var update: Update?
+        get() { mUpdate = mUpdate ?: values.get("update", null as Update?); return mUpdate ?: null as Update? }
+        set(value) { set("update", value); mUpdate = value }
 
     private var mAppVersion: Int? = null
     var appVersion: Int

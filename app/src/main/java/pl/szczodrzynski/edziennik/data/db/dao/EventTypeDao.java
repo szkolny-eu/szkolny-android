@@ -4,13 +4,13 @@
 
 package pl.szczodrzynski.edziennik.data.db.dao;
 
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.entity.EventType;
 
@@ -26,11 +26,14 @@ public interface EventTypeDao {
     void clear(int profileId);
 
     @Query("SELECT * FROM eventTypes WHERE profileId = :profileId AND eventType = :typeId")
-    EventType getByIdNow(int profileId, int typeId);
+    EventType getByIdNow(int profileId, long typeId);
 
     @Query("SELECT * FROM eventTypes WHERE profileId = :profileId")
     LiveData<List<EventType>> getAll(int profileId);
 
     @Query("SELECT * FROM eventTypes WHERE profileId = :profileId")
     List<EventType> getAllNow(int profileId);
+
+    @Query("SELECT * FROM eventTypes")
+    List<EventType> getAllNow();
 }

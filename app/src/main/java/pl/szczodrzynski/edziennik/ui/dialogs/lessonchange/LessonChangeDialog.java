@@ -19,7 +19,7 @@ public class LessonChangeDialog {
 
     public LessonChangeDialog(Context context) {
         this.context = context;
-        this.profileId = App.profileId;
+        this.profileId = App.Companion.getProfileId();
     }
     public LessonChangeDialog(Context context, int profileId) {
         this.context = context;

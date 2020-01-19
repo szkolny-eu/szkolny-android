@@ -94,7 +94,7 @@ class HomeLuckyNumberCard(
 
         holder.root.onClick {
             StudentNumberDialog(activity, profile, onDismissListener = {
-                app.profileSaveAsync(profile)
+                app.profileSave(profile)
                 val newSubTextRes = if (profile.studentNumber == -1)
                     R.string.home_lucky_number_details_click_to_set
                 else

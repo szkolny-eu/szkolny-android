@@ -13,9 +13,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_EXAMS
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -60,7 +60,7 @@ class EdudziennikWebExams(override val data: DataEdudziennik,
                         startTime,
                         topic,
                         -1,
-                        eventType.id.toInt(),
+                        eventType.id,
                         false,
                         -1,
                         subject.id,

@@ -53,8 +53,6 @@ public class BehaviourFragment extends Fragment {
             return null;
         app = (App) activity.getApplication();
         getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_behaviour, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
@@ -63,7 +61,7 @@ public class BehaviourFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        if (app == null || activity == null || b == null || !isAdded())
             return;
 
         activity.getBottomSheet().prependItems(
@@ -72,7 +70,7 @@ public class BehaviourFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_NOTICE, true));
+                            AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), TYPE_NOTICE, true));
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                         })
         );
@@ -99,8 +97,8 @@ public class BehaviourFragment extends Fragment {
         b.noticesView.setHasFixedSize(true);
         b.noticesView.setLayoutManager(linearLayoutManager);
 
-        app.db.noticeDao().getAll(App.profileId).observe(this, notices -> {
-            if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        app.db.noticeDao().getAll(App.Companion.getProfileId()).observe(this, notices -> {
+            if (app == null || activity == null || b == null || !isAdded())
                 return;
 
             if (notices == null) {

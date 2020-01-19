@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +24,8 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.config.ProfileConfigGrades;
 import pl.szczodrzynski.edziennik.data.db.entity.Grade;
-import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
 import pl.szczodrzynski.edziennik.data.db.entity.Subject;
+import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentGradesBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
@@ -56,8 +55,6 @@ public class GradesFragment extends Fragment {
             return null;
         app = (App) activity.getApplication();
         getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_grades, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
@@ -68,10 +65,8 @@ public class GradesFragment extends Fragment {
     ListView listView;
     List<ItemGradesSubjectModel> subjectList;
 
-    private boolean sortModeChanged = false;
-
     private String getRegisterCardAverageModeSubText() {
-        switch (App.getConfig().forProfile().getGrades().getYearAverageMode()) {
+        switch (App.Companion.getConfig().forProfile().getGrades().getYearAverageMode()) {
             default:
             case YEAR_1_AVG_2_AVG:
                 return getString(R.string.settings_register_avg_mode_0_short);
@@ -88,7 +83,7 @@ public class GradesFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        if (app == null || activity == null || b == null || !isAdded())
             return;
 
         /*activity.getBottomSheet().setToggleGroupEnabled(true);
@@ -136,7 +131,7 @@ public class GradesFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon2.cmd_palette_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            ProfileConfigGrades config = app.config.getFor(App.profileId).getGrades();
+                            ProfileConfigGrades config = app.getConfig().getFor(App.Companion.getProfileId()).getGrades();
                             new MaterialDialog.Builder(activity)
                                     .title(R.string.dialog_grades_color_mode_title)
                                     .items(R.array.dialog_grades_color_modes)
@@ -155,8 +150,8 @@ public class GradesFragment extends Fragment {
                             new MaterialDialog.Builder(activity)
                                     .title(R.string.dialog_grades_sort_title)
                                     .items(R.array.dialog_grades_sort_modes)
-                                    .itemsCallbackSingleChoice(app.config.getGrades().getOrderBy(), (dialog, view1, which, text) -> {
-                                        app.config.getGrades().setOrderBy(which);
+                                    .itemsCallbackSingleChoice(app.getConfig().getGrades().getOrderBy(), (dialog, view1, which, text) -> {
+                                        app.getConfig().getGrades().setOrderBy(which);
                                         activity.reloadTarget();
                                         return true;
                                     })
@@ -184,8 +179,8 @@ public class GradesFragment extends Fragment {
                                     .title(getString(R.string.settings_register_avg_mode_dialog_title))
                                     .content(getString(R.string.settings_register_avg_mode_dialog_text))
                                     .items(modeNames)
-                                    .itemsCallbackSingleChoice(modeIds.indexOf(App.getConfig().forProfile().getGrades().getYearAverageMode()), (dialog, itemView, which, text) -> {
-                                        App.getConfig().forProfile().getGrades().setYearAverageMode(modeIds.get(which));
+                                    .itemsCallbackSingleChoice(modeIds.indexOf(App.Companion.getConfig().forProfile().getGrades().getYearAverageMode()), (dialog, itemView, which, text) -> {
+                                        App.Companion.getConfig().forProfile().getGrades().setYearAverageMode(modeIds.get(which));
                                         activity.reloadTarget();
                                         return true;
                                     })
@@ -197,7 +192,7 @@ public class GradesFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_GRADE, true));
+                            AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), TYPE_GRADE, true));
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                         })
         );
@@ -227,41 +222,41 @@ public class GradesFragment extends Fragment {
 
         long finalExpandSubjectId = expandSubjectId;
         String orderBy;
-        if (app.config.getGrades().getOrderBy() == ORDER_BY_SUBJECT_ASC) {
+        if (app.getConfig().getGrades().getOrderBy() == ORDER_BY_SUBJECT_ASC) {
             orderBy = "subjectLongName ASC, addedDate DESC";
         }
-        else if (app.config.getGrades().getOrderBy() == ORDER_BY_DATE_DESC) {
+        else if (app.getConfig().getGrades().getOrderBy() == ORDER_BY_DATE_DESC) {
             orderBy = "addedDate DESC";
         }
-        else if (app.config.getGrades().getOrderBy() == ORDER_BY_DATE_ASC) {
+        else if (app.getConfig().getGrades().getOrderBy() == ORDER_BY_DATE_ASC) {
             orderBy = "addedDate ASC";
         }
         else {
             orderBy = "subjectLongName DESC, addedDate DESC";
         }
 
-        app.db.gradeDao().getAllOrderBy(App.profileId, orderBy).observe(this, grades -> {
-            if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        App.db.gradeDao().getAllOrderBy(App.Companion.getProfileId(), orderBy).observe(this, grades -> {
+            if (app == null || activity == null || b == null || !isAdded())
                 return;
 
             subjectList = new ArrayList<>();
 
-            ProfileConfigGrades config = app.config.getFor(App.profileId).getGrades();
+            ProfileConfigGrades config = app.getConfig().getFor(App.Companion.getProfileId()).getGrades();
 
             // now we have all grades from the newest to the oldest
             for (GradeFull grade: grades) {
                 ItemGradesSubjectModel model = ItemGradesSubjectModel.searchModelBySubjectId(subjectList, grade.subjectId);
                 if (model == null) {
-                    model = new ItemGradesSubjectModel(app.profile,
-                            new Subject(App.profileId, grade.subjectId, grade.subjectLongName, grade.subjectShortName),
+                    model = new ItemGradesSubjectModel(app.getProfile(),
+                            new Subject(App.Companion.getProfileId(), grade.subjectId, grade.subjectLongName, grade.subjectShortName),
                             new ArrayList<>(),
                             new ArrayList<>());
                     subjectList.add(model);
                     if (model.subject != null && model.subject.id == finalExpandSubjectId) {
                         model.expandView = true;
                     }
-                    model.colorMode = App.getConfig().forProfile().getGrades().getColorMode();
-                    model.yearAverageMode = App.getConfig().forProfile().getGrades().getYearAverageMode();
+                    model.colorMode = App.Companion.getConfig().forProfile().getGrades().getColorMode();
+                    model.yearAverageMode = App.Companion.getConfig().forProfile().getGrades().getYearAverageMode();
                 }
                 if (!grade.seen && grade.semester == 1) {
                     model.semester1Unread++;
@@ -380,7 +375,7 @@ public class GradesFragment extends Fragment {
                 else if (!model.isBehaviourSubject && model.isNormalSubject) {
                     // applies for normal grades & normal+descriptive grades
                     // calculate the normal grade average based on the user's setting
-                    switch (App.getConfig().forProfile().getGrades().getYearAverageMode()) {
+                    switch (App.Companion.getConfig().forProfile().getGrades().getYearAverageMode()) {
                         case YEAR_1_AVG_2_AVG:
                             model.yearAverage = (model.semester1Average + model.semester2Average) / 2;
                             break;
@@ -433,7 +428,7 @@ public class GradesFragment extends Fragment {
     }
 
     public void showAverages() {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded() || subjectList == null)
+        if (app == null || activity == null || b == null || !isAdded() || subjectList == null)
             return;
 
         float semester1Sum = 0;
@@ -528,8 +523,6 @@ public class GradesFragment extends Fragment {
                 yearProposedCount++;
             }
         }
-
-        DecimalFormat df = new DecimalFormat("0.00");
 
         String semester1ExpectedAverageStr = semester1Count > semester1ProposedCount || semester1Count > semester1FinalCount ? getString(R.string.dialog_averages_expected_format, 1, semester1Sum / semester1Count) : "";
         String semester1ProposedAverageStr = semester1ProposedCount > 0 ? getString(R.string.dialog_averages_proposed_format, 1, semester1ProposedSum / semester1ProposedCount) : "";

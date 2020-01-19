@@ -45,6 +45,35 @@ public class EventFull extends Event {
         this.sharedByName = event.sharedByName;
         this.blacklisted = event.blacklisted;
     }
+    public EventFull(EventFull event) {
+        super(
+                event.profileId,
+                event.id,
+                event.eventDate.clone(),
+                event.startTime == null ? null : event.startTime.clone(),
+                event.topic,
+                event.color,
+                event.type,
+                event.addedManually,
+                event.teacherId,
+                event.subjectId,
+                event.teamId
+        );
+
+        this.sharedBy = event.sharedBy;
+        this.sharedByName = event.sharedByName;
+        this.blacklisted = event.blacklisted;
+        this.typeName = event.typeName;
+        this.typeColor = event.typeColor;
+        this.teacherFullName = event.teacherFullName;
+        this.subjectLongName = event.subjectLongName;
+        this.subjectShortName = event.subjectShortName;
+        this.teamName = event.teamName;
+        this.teamCode = event.teamCode;
+        this.seen = event.seen;
+        this.notified = event.notified;
+        this.addedDate = event.addedDate;
+    }
 
     public EventFull(Event event, Metadata metadata) {
         this(event);

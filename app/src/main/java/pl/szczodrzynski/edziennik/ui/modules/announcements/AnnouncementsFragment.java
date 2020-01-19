@@ -24,8 +24,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent;
-import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull;
 import pl.szczodrzynski.edziennik.databinding.DialogAnnouncementBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAnnouncementsBinding;
@@ -49,8 +49,6 @@ public class AnnouncementsFragment extends Fragment {
             return null;
         app = (App) activity.getApplication();
         getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_announcements, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
@@ -61,7 +59,7 @@ public class AnnouncementsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        if (app == null || activity == null || b == null || !isAdded())
             return;
 
         activity.getBottomSheet().prependItems(
@@ -70,10 +68,10 @@ public class AnnouncementsFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            if (app.profile.getLoginStoreType() == LOGIN_TYPE_LIBRUS) {
-                                EdziennikTask.Companion.announcementsRead(App.profileId).enqueue(requireContext());
+                            if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_LIBRUS) {
+                                EdziennikTask.Companion.announcementsRead(App.Companion.getProfileId()).enqueue(requireContext());
                             } else {
-                                AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_ANNOUNCEMENT, true));
+                                AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), TYPE_ANNOUNCEMENT, true));
                                 Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -92,8 +90,8 @@ public class AnnouncementsFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(view.getContext()));
 
-        app.db.announcementDao().getAll(App.profileId).observe(this, announcements -> {
-            if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        app.db.announcementDao().getAll(App.Companion.getProfileId()).observe(this, announcements -> {
+            if (app == null || activity == null || b == null || !isAdded())
                 return;
 
             if (announcements == null) {
@@ -109,8 +107,8 @@ public class AnnouncementsFragment extends Fragment {
                     return;
                 }*/
                 AnnouncementsAdapter announcementsAdapter = new AnnouncementsAdapter(activity, announcements, (v, announcement) -> {
-                    if (announcement.text == null || (app.profile.getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.seen && app.networkUtils.isOnline())) {
-                        EdziennikTask.Companion.announcementGet(App.profileId, announcement).enqueue(requireContext());
+                    if (announcement.text == null || (app.getProfile().getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.seen && app.getNetworkUtils().isOnline())) {
+                        EdziennikTask.Companion.announcementGet(App.Companion.getProfileId(), announcement).enqueue(requireContext());
                     } else {
                         showAnnouncementDetailsDialog(announcement);
                     }
@@ -157,9 +155,9 @@ public class AnnouncementsFragment extends Fragment {
                 .show();
         DialogAnnouncementBinding b = DialogAnnouncementBinding.bind(dialog.getCustomView());
         b.text.setText(announcement.teacherFullName+"\n\n"+ (announcement.startDate != null ? announcement.startDate.getFormattedString() : "-") + (announcement.endDate != null ? " do " + announcement.endDate.getFormattedString() : "")+"\n\n" +announcement.text);
-        if (!announcement.seen && app.profile.getLoginStoreType() != LOGIN_TYPE_LIBRUS) {
+        if (!announcement.seen && app.getProfile().getLoginStoreType() != LOGIN_TYPE_LIBRUS) {
             announcement.seen = true;
-            AsyncTask.execute(() -> app.db.metadataDao().setSeen(App.profileId, announcement, true));
+            AsyncTask.execute(() -> App.db.metadataDao().setSeen(App.Companion.getProfileId(), announcement, true));
             if (recyclerView.getAdapter() != null)
                 recyclerView.getAdapter().notifyDataSetChanged();
         }

@@ -47,11 +47,11 @@ open class DataRemoveModel {
         }
     }
 
-    class Events(private val type: Int?, private val exceptType: Int?, private val exceptTypes: List<Int>?) : DataRemoveModel() {
+    class Events(private val type: Long?, private val exceptType: Long?, private val exceptTypes: List<Long>?) : DataRemoveModel() {
         companion object {
-            fun futureExceptType(exceptType: Int) = Events(null, exceptType, null)
-            fun futureExceptTypes(exceptTypes: List<Int>) = Events(null, null, exceptTypes)
-            fun futureWithType(type: Int) = Events(type, null, null)
+            fun futureExceptType(exceptType: Long) = Events(null, exceptType, null)
+            fun futureExceptTypes(exceptTypes: List<Long>) = Events(null, null, exceptTypes)
+            fun futureWithType(type: Long) = Events(type, null, null)
         }
 
         fun commit(profileId: Int, dao: EventDao) {

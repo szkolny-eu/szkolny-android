@@ -37,6 +37,9 @@ fun AbstractConfig.set(key: String, value: JsonElement?) {
 fun AbstractConfig.set(key: String, value: List<Any>?) {
     set(key, value?.let { gson.toJson(it) })
 }
+fun AbstractConfig.set(key: String, value: Any?) {
+    set(key, value?.let { gson.toJson(it) })
+}
 fun AbstractConfig.setStringList(key: String, value: List<String>?) {
     set(key, value?.let { gson.toJson(it) })
 }
@@ -73,6 +76,9 @@ fun HashMap<String, String?>.get(key: String, default: JsonObject?): JsonObject?
 }
 fun HashMap<String, String?>.get(key: String, default: JsonArray?): JsonArray? {
     return this[key]?.let { JsonParser().parse(it)?.asJsonArray } ?: default
+}
+inline fun <reified T> HashMap<String, String?>.get(key: String, default: T?): T? {
+    return this[key]?.let { Gson().fromJson(it, T::class.java) } ?: default
 }
 /* !!! cannot use mutable list here - modifying it will not update the DB */
 fun <T> HashMap<String, String?>.get(key: String, default: List<T>?, classOfT: Class<T>): List<T>? {

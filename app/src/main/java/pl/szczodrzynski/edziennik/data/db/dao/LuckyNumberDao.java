@@ -17,9 +17,9 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber;
-import pl.szczodrzynski.edziennik.data.db.full.LuckyNumberFull;
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata;
 import pl.szczodrzynski.edziennik.data.db.entity.Notice;
+import pl.szczodrzynski.edziennik.data.db.full.LuckyNumberFull;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 
 import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_LUCKY_NUMBER;
@@ -78,4 +78,10 @@ public abstract class LuckyNumberDao {
     public List<LuckyNumberFull> getNotNotifiedNow(int profileId) {
         return getAllNow(profileId, "notified = 0");
     }
+
+    @Query("SELECT * FROM luckyNumbers\n" +
+            "LEFT JOIN metadata ON luckyNumberDate = thingId AND thingType = "+TYPE_LUCKY_NUMBER+" AND metadata.profileId = luckyNumbers.profileId " +
+            "WHERE notified = 0 " +
+            "ORDER BY addedDate DESC")
+    public abstract List<LuckyNumberFull> getNotNotifiedNow();
 }

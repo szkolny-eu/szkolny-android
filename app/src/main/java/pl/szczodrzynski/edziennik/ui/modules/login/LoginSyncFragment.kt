@@ -14,11 +14,11 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskProgressEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskStartedEvent
-import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Event.*
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_DISABLED
@@ -63,17 +63,17 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
                 REGISTRATION_DISABLED
 
             val typeList = listOf(
-                    EventType(it.id, TYPE_HOMEWORK.toLong(), getString(R.string.event_type_homework), COLOR_HOMEWORK),
-                    EventType(it.id, TYPE_DEFAULT.toLong(), getString(R.string.event_other), COLOR_DEFAULT),
-                    EventType(it.id, TYPE_EXAM.toLong(), getString(R.string.event_exam), COLOR_EXAM),
-                    EventType(it.id, TYPE_SHORT_QUIZ.toLong(), getString(R.string.event_short_quiz), COLOR_SHORT_QUIZ),
-                    EventType(it.id, TYPE_ESSAY.toLong(), getString(R.string.event_essay), COLOR_SHORT_QUIZ),
-                    EventType(it.id, TYPE_PROJECT.toLong(), getString(R.string.event_project), COLOR_PROJECT),
-                    EventType(it.id, TYPE_PT_MEETING.toLong(), getString(R.string.event_pt_meeting), COLOR_PT_MEETING),
-                    EventType(it.id, TYPE_EXCURSION.toLong(), getString(R.string.event_excursion), COLOR_EXCURSION),
-                    EventType(it.id, TYPE_READING.toLong(), getString(R.string.event_reading), COLOR_READING),
-                    EventType(it.id, TYPE_CLASS_EVENT.toLong(), getString(R.string.event_class_event), COLOR_CLASS_EVENT),
-                    EventType(it.id, TYPE_INFORMATION.toLong(), getString(R.string.event_information), COLOR_INFORMATION)
+                    EventType(it.id, TYPE_HOMEWORK, getString(R.string.event_type_homework), COLOR_HOMEWORK),
+                    EventType(it.id, TYPE_DEFAULT, getString(R.string.event_other), COLOR_DEFAULT),
+                    EventType(it.id, TYPE_EXAM, getString(R.string.event_exam), COLOR_EXAM),
+                    EventType(it.id, TYPE_SHORT_QUIZ, getString(R.string.event_short_quiz), COLOR_SHORT_QUIZ),
+                    EventType(it.id, TYPE_ESSAY, getString(R.string.event_essay), COLOR_SHORT_QUIZ),
+                    EventType(it.id, TYPE_PROJECT, getString(R.string.event_project), COLOR_PROJECT),
+                    EventType(it.id, TYPE_PT_MEETING, getString(R.string.event_pt_meeting), COLOR_PT_MEETING),
+                    EventType(it.id, TYPE_EXCURSION, getString(R.string.event_excursion), COLOR_EXCURSION),
+                    EventType(it.id, TYPE_READING, getString(R.string.event_reading), COLOR_READING),
+                    EventType(it.id, TYPE_CLASS_EVENT, getString(R.string.event_class_event), COLOR_CLASS_EVENT),
+                    EventType(it.id, TYPE_INFORMATION, getString(R.string.event_information), COLOR_INFORMATION)
             )
             app.db.eventTypeDao().addAll(typeList)
         }
@@ -82,10 +82,8 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
         app.db.loginStoreDao().addAll(loginStores)
 
         finishArguments = Bundle(
-                "firstProfileId" to profiles.firstOrNull()?.id,
-                "firstRun" to !app.config.loginFinished
+                "firstProfileId" to profiles.firstOrNull()?.id
         )
-        app.config.loginFinished = true
 
         val profileIds = profiles.map { it.id }
         EdziennikTask.syncProfileList(profileIds).enqueue(activity)

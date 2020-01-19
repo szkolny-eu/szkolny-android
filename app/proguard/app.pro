@@ -28,7 +28,7 @@
 -keepclassmembers class pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig { public *; }
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider
--keepnames class pl.szczodrzynski.edziennik.widgets.luckynumber.WidgetLuckyNumber
+-keepnames class pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider
 
 -keep class .R
 -keep class **.R$* {

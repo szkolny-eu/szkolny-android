@@ -9,6 +9,11 @@ import pl.szczodrzynski.edziennik.config.utils.getIntList
 import pl.szczodrzynski.edziennik.config.utils.set
 
 class ConfigSync(private val config: Config) {
+    private var mDontShowAppManagerDialog: Boolean? = null
+    var dontShowAppManagerDialog: Boolean
+        get() { mDontShowAppManagerDialog = mDontShowAppManagerDialog ?: config.values.get("dontShowAppManagerDialog", false); return mDontShowAppManagerDialog ?: false }
+        set(value) { config.set("dontShowAppManagerDialog", value); mDontShowAppManagerDialog = value }
+
     private var mSyncEnabled: Boolean? = null
     var enabled: Boolean
         get() { mSyncEnabled = mSyncEnabled ?: config.values.get("syncEnabled", true); return mSyncEnabled ?: true }

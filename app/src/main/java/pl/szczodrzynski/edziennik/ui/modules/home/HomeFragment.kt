@@ -40,11 +40,11 @@ class HomeFragment : Fragment(), CoroutineScope {
         private const val TAG = "HomeFragment"
 
         fun swapCards(fromPosition: Int, toPosition: Int, cardAdapter: HomeCardAdapter) {
-            val homeCards = App.getConfig().ui.homeCards.toMutableList()
+            val homeCards = App.config.ui.homeCards.toMutableList()
             val fromPair = homeCards[fromPosition]
             homeCards[fromPosition] = homeCards[toPosition]
             homeCards[toPosition] = fromPair
-            App.getConfig().ui.homeCards = homeCards
+            App.config.ui.homeCards = homeCards
 
             val fromCard = cardAdapter.items[fromPosition]
             cardAdapter.items[fromPosition] = cardAdapter.items[toPosition]

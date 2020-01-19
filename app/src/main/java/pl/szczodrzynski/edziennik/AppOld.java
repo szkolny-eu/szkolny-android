@@ -1,91 +1,10 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-1-19.
+ */
+
 package pl.szczodrzynski.edziennik;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ShortcutInfo;
-import android.content.pm.ShortcutManager;
-import android.content.pm.Signature;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Icon;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Handler;
-import android.provider.Settings;
-import android.util.Base64;
-import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.work.Configuration;
-
-import com.chuckerteam.chucker.api.ChuckerCollector;
-import com.chuckerteam.chucker.api.ChuckerInterceptor;
-import com.chuckerteam.chucker.api.RetentionManager;
-import com.google.android.gms.security.ProviderInstaller;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.hypertrack.hyperlog.HyperLog;
-import com.mikepenz.iconics.Iconics;
-import com.mikepenz.iconics.IconicsColor;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.IconicsSize;
-import com.mikepenz.iconics.typeface.IIcon;
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont;
-
-import java.lang.reflect.Field;
-import java.security.KeyStore;
-import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ConcurrentModificationException;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-
-import cat.ereza.customactivityoncrash.config.CaocConfig;
-import im.wangchao.mhttp.MHttp;
-import im.wangchao.mhttp.internal.cookie.PersistentCookieJar;
-import im.wangchao.mhttp.internal.cookie.cache.SetCookieCache;
-import im.wangchao.mhttp.internal.cookie.persistence.SharedPrefsCookiePersistor;
-import me.leolin.shortcutbadger.ShortcutBadger;
-import okhttp3.ConnectionSpec;
-import okhttp3.OkHttpClient;
-import okhttp3.TlsVersion;
-import pl.szczodrzynski.edziennik.config.Config;
-import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing;
-import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
-import pl.szczodrzynski.edziennik.data.db.AppDb;
-import pl.szczodrzynski.edziennik.data.db.entity.DebugLog;
-import pl.szczodrzynski.edziennik.data.db.entity.Profile;
-import pl.szczodrzynski.edziennik.network.NetworkUtils;
-import pl.szczodrzynski.edziennik.network.TLSSocketFactory;
-import pl.szczodrzynski.edziennik.sync.SyncWorker;
-import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity;
-import pl.szczodrzynski.edziennik.utils.DebugLogFormat;
-import pl.szczodrzynski.edziennik.utils.PermissionChecker;
-import pl.szczodrzynski.edziennik.utils.Themes;
-import pl.szczodrzynski.edziennik.utils.Utils;
-import pl.szczodrzynski.edziennik.utils.models.AppConfig;
-
-import static pl.szczodrzynski.edziennik.data.db.entity.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
-
-public class App extends androidx.multidex.MultiDexApplication implements Configuration.Provider {
+/*public class AppOld extends androidx.multidex.MultiDexApplication implements Configuration.Provider {
     private static final String TAG = "App";
     public static int profileId = -1;
     private Context mContext;
@@ -379,36 +298,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
                 }
             }
 
-            /*Task<CapabilityInfo> capabilityInfoTask =
-                    Wearable.getCapabilityClient(this)
-                            .getCapability("edziennik_wear_app", CapabilityClient.FILTER_REACHABLE);
-            capabilityInfoTask.addOnCompleteListener((task) -> {
-                if (task.isSuccessful()) {
-                    CapabilityInfo capabilityInfo = task.getResult();
-                    assert capabilityInfo != null;
-                    Set<Node> nodes;
-                    nodes = capabilityInfo.getNodes();
-                    Log.d(TAG, "Nodes "+nodes);
 
-                    if (nodes.size() > 0) {
-                        Wearable.getMessageClient(this).sendMessage(
-                                nodes.toArray(new Node[]{})[0].getId(), "/ping", "Hello world".getBytes());
-                    }
-                } else {
-                    Log.d(TAG, "Capability request failed to return any results.");
-                }
-            });
-
-            Wearable.getDataClient(this).addListener(dataEventBuffer -> {
-                Log.d(TAG, "onDataChanged(): " + dataEventBuffer);
-
-                for (DataEvent event : dataEventBuffer) {
-                    if (event.getType() == DataEvent.TYPE_CHANGED) {
-                        String path = event.getDataItem().getUri().getPath();
-                        Log.d(TAG, "Data "+path+ " :: "+Arrays.toString(event.getDataItem().getData()));
-                    }
-                }
-            });*/
 
             FirebaseApp pushMobidziennikApp = FirebaseApp.initializeApp(
                     this,
@@ -498,14 +388,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
 
         if (appSharedPrefs.contains("profiles")) {
             SharedPreferences.Editor appSharedPrefsEditor = appSharedPrefs.edit();
-            /*List<Integer> appProfileIds = gson.fromJson(appSharedPrefs.getString("profiles", ""), new TypeToken<List<Integer>>(){}.getType());
-            for (int id: appProfileIds) {
-                AppProfile appProfile = gson.fromJson(appSharedPrefs.getString("profile"+id, ""), AppProfile.class);
-                if (appProfile != null) {
-                    appConfig.profiles.add(appProfile);
-                }
-                appSharedPrefsEditor.remove("profile"+id);
-            }*/
+
             appSharedPrefsEditor.remove("profiles");
             appSharedPrefsEditor.apply();
             //profilesSave();
@@ -539,16 +422,6 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
             }
         }
 
-        /*if (appConfig.lastAppVersion > BuildConfig.VERSION_CODE) {
-            BootReceiver br = new BootReceiver();
-            Intent i = new Intent();
-            //i.putExtra("UserChecked", true);
-            br.onReceive(getContext(), i);
-            Toast.makeText(mContext, R.string.warning_older_version_running, Toast.LENGTH_LONG).show();
-            //Toast.makeText(mContext, "Zaktualizuj aplikację.", Toast.LENGTH_LONG).show();
-            //System.exit(0);
-        }*/
-
         if (appConfig == null) {
             appConfig = new AppConfig(this);
         }
@@ -564,15 +437,7 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
             for (Map.Entry<String, JsonElement> entry : appConfigJson.entrySet()) {
                 String jsonObj;
                 jsonObj = entry.getValue().toString();
-            /*if (entry.getValue().isJsonObject()) {
-                jsonObj = entry.getValue().getAsJsonObject().toString();
-            }
-            else if (entry.getValue().isJsonArray()) {
-                jsonObj = entry.getValue().getAsJsonArray().toString();
-            }
-            else {
-                jsonObj = entry.getValue().toString();
-            }*/
+
                 appSharedPrefsEditor.putString("app.appConfig." + entry.getKey(), jsonObj);
             }
 
@@ -628,18 +493,10 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
     }
     public void profileLoadById(int id, boolean loadedLast) {
         //Log.d(TAG, "Loading ID "+id);
-        /*if (profile == null) {
-            profile = profileNew();
-            AppDb.profileId = profile.id;
-            appSharedPrefs.edit().putInt("current_profile_id", profile.id).apply();
-            return;
-        }*/
+
         if (profile == null || profile.getId() != id) {
             profile = db.profileDao().getByIdNow(id);
-            /*if (profile == null) {
-                profileLoadById(id);
-                return;
-            }*/
+
             if (profile != null) {
                 MainActivity.Companion.setUseOldMessages(profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK && appConfig.mobidziennikOldMessages == 1);
                 profileId = profile.getId();
@@ -654,44 +511,6 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
             }
         }
     }
-
-    /*public void profileRemove(int id)
-    {
-        Profile profile = db.profileDao().getFullByIdNow(id);
-
-        if (profile.id == profile.loginStoreId) {
-            // this profile is the owner of the login store
-            // we need to check if any other profile is using it
-            List<Integer> transferProfileIds = db.profileDao().getIdsByLoginStoreIdNow(profile.loginStoreId);
-            if (transferProfileIds.size() == 1) {
-                // this login store is free of users, remove it along with the profile
-                db.loginStoreDao().remove(profile.loginStoreId);
-                // the current store is removed, we are ready to remove the profile
-            }
-            else if (transferProfileIds.size() > 1) {
-                transferProfileIds.remove(transferProfileIds.indexOf(profile.id));
-                // someone is using the store
-                // we need to transfer it to the firstProfileId
-                db.loginStoreDao().changeId(profile.loginStoreId, transferProfileIds.get(0));
-                db.profileDao().changeStoreId(profile.loginStoreId, transferProfileIds.get(0));
-                // the current store is removed, we are ready to remove the profile
-            }
-        }
-        // else, the profile uses a store that it doesn't own
-        // leave the store and go on with removing
-
-        Log.d(TAG, "Before removal: "+db.profileDao().getAllNow().toString());
-        db.profileDao().remove(profile.id);
-        Log.d(TAG, "After removal: "+db.profileDao().getAllNow().toString());
-
-        *//*int newId = 1;
-        if (appConfig.profiles.size() > 0) {
-            newId = appConfig.profiles.get(appConfig.profiles.size() - 1).id;
-        }
-        Log.d(TAG, "New ID: "+newId);
-        //Toast.makeText(mContext, "selected new id "+newId, Toast.LENGTH_SHORT).show();
-        profileLoadById(newId);*//*
-    }*/
 
     public int profileFirstId() {
         Integer id = db.profileDao().getFirstId();
@@ -719,4 +538,4 @@ public class App extends androidx.multidex.MultiDexApplication implements Config
         }
     }
 
-}
+}*/

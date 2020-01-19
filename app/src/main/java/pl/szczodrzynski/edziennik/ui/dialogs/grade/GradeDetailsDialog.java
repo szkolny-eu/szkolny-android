@@ -32,7 +32,7 @@ public class GradeDetailsDialog {
 
     public GradeDetailsDialog(Context context) {
         this.context = context;
-        this.profileId = App.profileId;
+        this.profileId = App.Companion.getProfileId();
     }
     public GradeDetailsDialog(Context context, int profileId) {
         this.context = context;
@@ -74,7 +74,7 @@ public class GradeDetailsDialog {
         b.setGrade(grade);
 
         int gradeColor;
-        if (App.getConfig().getFor(profileId).getGrades().getColorMode() == COLOR_MODE_DEFAULT) {
+        if (App.Companion.getConfig().getFor(profileId).getGrades().getColorMode() == COLOR_MODE_DEFAULT) {
             gradeColor = grade.color;
         }
         else {
@@ -103,7 +103,7 @@ public class GradeDetailsDialog {
 
         b.setCommentVisible(false);
 
-        b.setDevMode(App.devMode);
+        b.setDevMode(App.Companion.getDevMode());
 
         b.gradeName.setTextColor(ColorUtils.calculateLuminance(gradeColor) > 0.25 ? 0xff000000 : 0xffffffff);
         b.gradeName.getBackground().setColorFilter(new PorterDuffColorFilter(gradeColor, PorterDuff.Mode.MULTIPLY));

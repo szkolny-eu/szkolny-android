@@ -11,11 +11,14 @@ import android.content.Intent
 import android.util.Log
 import com.google.firebase.iid.zzaq
 import com.google.firebase.iid.zzv
-import com.google.firebase.messaging.MessagingAnalytics
 import com.google.firebase.messaging.zzc
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.*
 import java.util.*
+import com.google.firebase.messaging.zzo.zza as logNotificationOpen
+import com.google.firebase.messaging.zzo.zza as logNotificationReceived
+import com.google.firebase.messaging.zzo.zzb as logNotificationDismiss
+import com.google.firebase.messaging.zzo.zzd as shouldUploadMetrics
 
 @SuppressLint("Registered")
 open class FirebaseService : zzc() {
@@ -45,8 +48,8 @@ open class FirebaseService : zzc() {
                 }
             }
 
-            if (MessagingAnalytics.shouldUploadMetrics(intent)) {
-                MessagingAnalytics.logNotificationOpen(intent)
+            if (shouldUploadMetrics(intent)) {
+                logNotificationOpen(intent)
             }
 
             return true
@@ -62,8 +65,8 @@ open class FirebaseService : zzc() {
 
         when (action) {
             "com.google.firebase.messaging.NOTIFICATION_DISMISS" -> {
-                if (MessagingAnalytics.shouldUploadMetrics(intent)) {
-                    MessagingAnalytics.logNotificationDismiss(intent)
+                if (shouldUploadMetrics(intent)) {
+                    logNotificationDismiss(intent)
                 }
             }
             "com.google.firebase.messaging.NEW_TOKEN" -> {
@@ -106,8 +109,8 @@ open class FirebaseService : zzc() {
         // get the message type
         when (val it = json.getString("message_type") ?: "gcm") {
             "gcm" -> { // 0
-                if (MessagingAnalytics.shouldUploadMetrics(intent)) {
-                    MessagingAnalytics.logNotificationReceived(intent)
+                if (shouldUploadMetrics(intent)) {
+                    logNotificationReceived(intent, null)
                 }
 
                 onMessageReceived(Message(messageId, json))

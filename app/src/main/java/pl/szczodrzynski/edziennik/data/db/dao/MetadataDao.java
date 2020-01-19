@@ -40,6 +40,9 @@ public abstract class MetadataDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract void addAllIgnore(List<Metadata> metadataList);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void addAllReplace(List<Metadata> metadataList);
+
     @Query("UPDATE metadata SET seen = :seen WHERE thingId = :thingId AND thingType = :thingType AND profileId = :profileId")
     abstract void updateSeen(int profileId, int thingType, long thingId, boolean seen);
 
@@ -164,6 +167,9 @@ public abstract class MetadataDao {
 
     @Query("UPDATE metadata SET notified = :notified WHERE profileId = :profileId")
     public abstract void setAllNotified(int profileId, boolean notified);
+
+    @Query("UPDATE metadata SET notified = :notified")
+    public abstract void setAllNotified(boolean notified);
 
 
 

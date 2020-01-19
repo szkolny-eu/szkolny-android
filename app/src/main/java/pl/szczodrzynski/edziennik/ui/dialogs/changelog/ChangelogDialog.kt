@@ -44,7 +44,7 @@ class ChangelogDialog(
 
         val text = app.assets.open("pl-changelog.html").bufferedReader().use {
             it.readText()
-        }
+        }.replace("<li>", "<br><li> - ")
         textView.text = Html.fromHtml(text)
 
         val scrollView = ScrollView(activity)

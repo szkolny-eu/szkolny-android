@@ -20,4 +20,7 @@ interface LibrusLessonDao {
 
     @Query("SELECT * FROM librusLessons WHERE profileId = :profileId")
     fun getAllNow(profileId: Int): List<LibrusLesson>
+
+    @Query("DELETE FROM librusLessons WHERE profileId = :profileId")
+    fun clear(profileId: Int)
 }

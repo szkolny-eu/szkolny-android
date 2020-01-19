@@ -82,7 +82,7 @@ public class WidgetConfigActivity extends Activity {
                 opacity = 0.8f;
 
             AsyncTask.execute(() -> {
-                profileList = app.db.profileDao().getAllNow();
+                profileList = App.db.profileDao().getAllNow();
                 profileList = filterOutArchived(profileList);
 
                 if (widgetType == WIDGET_NOTIFICATIONS)
@@ -136,21 +136,21 @@ public class WidgetConfigActivity extends Activity {
                 .negativeText(R.string.cancel)
                 .onPositive(((dialog1, which) -> {
                     WidgetConfig config = new WidgetConfig(profileId, bigStyle, darkTheme, opacity);
-                    JsonObject configs = app.config.getWidgetConfigs();
-                    configs.add(Integer.toString(mAppWidgetId), app.gson.toJsonTree(config));
-                    app.config.setWidgetConfigs(configs);
+                    JsonObject configs = app.getConfig().getWidgetConfigs();
+                    configs.add(Integer.toString(mAppWidgetId), app.getGson().toJsonTree(config));
+                    app.getConfig().setWidgetConfigs(configs);
 
                     Intent refreshIntent;
                     switch (widgetType) {
                         default:
                         case WIDGET_TIMETABLE:
-                            refreshIntent = new Intent(app.getContext(), WidgetTimetableProvider.class);
+                            refreshIntent = new Intent(app, WidgetTimetableProvider.class);
                             break;
                         case WIDGET_NOTIFICATIONS:
-                            refreshIntent = new Intent(app.getContext(), WidgetNotificationsProvider.class);
+                            refreshIntent = new Intent(app, WidgetNotificationsProvider.class);
                             break;
                         case WIDGET_LUCKY_NUMBER:
-                            refreshIntent = new Intent(app.getContext(), WidgetLuckyNumberProvider.class);
+                            refreshIntent = new Intent(app, WidgetLuckyNumberProvider.class);
                             break;
                     }
                     refreshIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);

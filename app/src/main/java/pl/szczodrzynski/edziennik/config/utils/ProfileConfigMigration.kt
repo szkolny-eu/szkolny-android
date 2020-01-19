@@ -4,23 +4,21 @@
 
 package pl.szczodrzynski.edziennik.config.utils
 
-import android.content.Context
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.config.Config
+import pl.szczodrzynski.edziennik.config.ProfileConfig
+import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.AGENDA_DEFAULT
+import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.COLOR_MODE_WEIGHTED
+import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.YEAR_ALL_GRADES
 
-class ProfileConfigMigration(app: App, config: Config) {
+class ProfileConfigMigration(config: ProfileConfig) {
     init { config.apply {
-        val p = app.getSharedPreferences("pl.szczodrzynski.edziennik_profiles", Context.MODE_PRIVATE)
-        val s = "app.appConfig"
 
         if (dataVersion < 1) {
+            grades.colorMode = COLOR_MODE_WEIGHTED
+            grades.countZeroToAvg = true
+            grades.yearAverageMode = YEAR_ALL_GRADES
+            ui.agendaViewType = AGENDA_DEFAULT
 
-            //dataVersion = 1
-        }
-        if (dataVersion < 2) {
-            //gradesColorMode do profilu !
-            //agendaViewType do profilu !
-            // app.appConfig.dontCountZeroToAverage do profilu !
+            dataVersion = 1
         }
     }}
 }

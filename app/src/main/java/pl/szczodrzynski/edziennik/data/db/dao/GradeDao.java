@@ -83,6 +83,13 @@ public abstract class GradeDao {
         return getAllNow(profileId, "gradeParentId = "+parentId);
     }
 
+    @Query("SELECT * FROM grades " +
+            "LEFT JOIN subjects USING(profileId, subjectId) " +
+            "LEFT JOIN metadata ON gradeId = thingId AND thingType = " + TYPE_GRADE + " AND metadata.profileId = grades.profileId " +
+            "WHERE notified = 0 " +
+            "ORDER BY addedDate DESC")
+    public abstract List<GradeFull> getNotNotifiedNow();
+
     @RawQuery
     abstract GradeFull getNow(SupportSQLiteQuery query);
     public GradeFull getNow(int profileId, String filter) {

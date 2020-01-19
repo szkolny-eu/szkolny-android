@@ -5,19 +5,19 @@
 package pl.szczodrzynski.edziennik.data.db.dao;
 
 import androidx.lifecycle.LiveData;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQuery;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
+
+import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance;
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull;
 import pl.szczodrzynski.edziennik.utils.models.Date;
-
-import java.util.List;
 
 import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ATTENDANCE;
 
@@ -71,6 +71,13 @@ public abstract class AttendanceDao {
     public List<AttendanceFull> getNotNotifiedNow(int profileId) {
         return getAllNow(profileId, "notified = 0");
     }
+
+    @Query("SELECT * FROM attendances " +
+            "LEFT JOIN subjects USING(profileId, subjectId) " +
+            "LEFT JOIN metadata ON attendanceId = thingId AND thingType = " + TYPE_ATTENDANCE + " AND metadata.profileId = attendances.profileId " +
+            "WHERE notified = 0 " +
+            "ORDER BY attendanceLessonDate DESC, attendanceStartTime DESC")
+    public abstract List<AttendanceFull> getNotNotifiedNow();
 
     // only absent and absent_excused count as absences
     // all the other types are counted as being present

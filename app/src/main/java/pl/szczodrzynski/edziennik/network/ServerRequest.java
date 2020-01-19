@@ -29,7 +29,7 @@ public class ServerRequest {
     private String source = "";
 
     public ServerRequest(App app, String url, String source) {
-        this(app, url, source, app.profile);
+        this(app, url, source, App.Companion.getProfile());
     }
 
     public ServerRequest(App app, String url, String source, Profile profileFull) {
@@ -40,7 +40,7 @@ public class ServerRequest {
         this.app = app;
         this.url = url;
         this.params = new ArrayList<>();
-        this.username = (profile != null && profile.getRegistration() == REGISTRATION_ENABLED ? usernameId : app.deviceId);
+        this.username = (profile != null && profile.getRegistration() == REGISTRATION_ENABLED ? usernameId : app.getDeviceId());
         this.source = source;
         if (profile != null && profile.getRegistration() == REGISTRATION_ENABLED) {
             this.setBodyParameter("login_type", Integer.toString(loginStoreType));
@@ -51,7 +51,7 @@ public class ServerRequest {
                 this.setBodyParameter("team_ids", "UI_THREAD");
             }
             else {
-                this.setBodyParameter("team_ids", app.gson.toJson(app.db.teamDao().getAllCodesNow(profile.getId())));
+                this.setBodyParameter("team_ids", app.getGson().toJson(App.db.teamDao().getAllCodesNow(profile.getId())));
             }
         }
     }
@@ -86,15 +86,15 @@ public class ServerRequest {
                 .addParameter("app_version_build_type", BuildConfig.BUILD_TYPE)
                 .addParameter("app_version_code", Integer.toString(BuildConfig.VERSION_CODE))
                 .addParameter("app_version", BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE + " (" + BuildConfig.VERSION_CODE + ")")
-                .addParameter("device_id", Settings.Secure.getString(app.getContext().getContentResolver(), Settings.Secure.ANDROID_ID))
+                .addParameter("device_id", Settings.Secure.getString(app.getContentResolver(), Settings.Secure.ANDROID_ID))
                 .addParameter("device_model", Build.MANUFACTURER+" "+Build.MODEL)
                 .addParameter("device_os_version", Build.VERSION.RELEASE)
-                .addParameter("fcm_token", app.config.getSync().getTokenApp())
-                .addParameter("signature", sign(app.signature, timestamp))
+                .addParameter("fcm_token", app.getConfig().getSync().getTokenApp())
+                .addParameter("signature", "TODO")
                 .addParameter("signature_timestamp", timestamp)
                 .addParameter("package_name", "pl.szczodrzynski.edziennik")
                 .addParameter("source", source)
-                .addParameter("update_frequency", app.config.getSync().getEnabled() ? app.config.getSync().getInterval() : -1)
+                .addParameter("update_frequency", app.getConfig().getSync().getEnabled() ? app.getConfig().getSync().getInterval() : -1)
                 .post()
                 .callback(new JsonCallbackHandler() {
                     @Override
@@ -123,15 +123,15 @@ public class ServerRequest {
                 .addParameter("app_version_build_type", BuildConfig.BUILD_TYPE)
                 .addParameter("app_version_code", Integer.toString(BuildConfig.VERSION_CODE))
                 .addParameter("app_version", BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE + " (" + BuildConfig.VERSION_CODE + ")")
-                .addParameter("device_id", Settings.Secure.getString(app.getContext().getContentResolver(), Settings.Secure.ANDROID_ID))
+                .addParameter("device_id", Settings.Secure.getString(app.getContentResolver(), Settings.Secure.ANDROID_ID))
                 .addParameter("device_model", Build.MANUFACTURER+" "+Build.MODEL)
                 .addParameter("device_os_version", Build.VERSION.RELEASE)
-                .addParameter("fcm_token", app.config.getSync().getTokenApp())
-                .addParameter("signature", sign(app.signature, timestamp))
+                .addParameter("fcm_token", app.getConfig().getSync().getTokenApp())
+                .addParameter("signature", "TODO")
                 .addParameter("signature_timestamp", timestamp)
                 .addParameter("package_name", "pl.szczodrzynski.edziennik")
                 .addParameter("source", source)
-                .addParameter("update_frequency", app.config.getSync().getEnabled() ? app.config.getSync().getInterval() : -1)
+                .addParameter("update_frequency", app.getConfig().getSync().getEnabled() ? app.getConfig().getSync().getInterval() : -1)
                 .post()
                 .build()
                 .execute();

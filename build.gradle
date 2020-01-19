@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.3.50'
+        kotlin_version = '1.3.61'
 
         release = [
                 versionName: "4.0-beta.3",
@@ -17,27 +17,27 @@ buildscript {
         ]
 
         versions = [
-                kotlin           : "1.3.50",
+                kotlin           : "1.3.61",
                 ktx              : "1.1.0",
 
                 androidX         : '1.0.0',
                 annotation       : '1.1.0',
-                recyclerView     : '1.1.0',
-                material         : '1.2.0-alpha02',
-                appcompat        : '1.1.0',
-                constraintLayout : '2.0.0-beta3',
+                recyclerView     : '1.2.0-alpha01',
+                material         : '1.2.0-alpha03',
+                appcompat        : '1.2.0-alpha01',
+                constraintLayout : '2.0.0-beta4',
                 cardview         : '1.0.0',
                 gridLayout       : '1.0.0',
                 navigation       : "2.0.0",
                 navigationFragment: "1.0.0",
                 legacy           : "1.0.0",
 
-                room             : "2.2.1",
-                lifecycle        : "2.2.0-rc02",
+                room             : "2.2.3",
+                lifecycle        : "2.2.0-rc03",
                 work             : "2.2.0",
 
-                firebase         : '17.2.1',
-                firebasemessaging: "20.0.0",
+                firebase         : '17.2.2',
+                firebasemessaging: "20.1.0",
                 play_services    : "17.0.0",
 
                 materialdialogs  : "0.9.6.0",
@@ -45,7 +45,7 @@ buildscript {
                 iconics          : "4.0.1",
                 font_cmd         : "3.5.95.1-kotlin",
 
-                navlib           : "9c8fb47c52",
+                navlib           : "5c8b13c0d9db0d9e822fdae82c8afca6c01ab41e",
 
                 gifdrawable      : "1.2.15",
 
@@ -61,9 +61,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.2'
+        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath 'me.tatarka:gradle-retrolambda:3.7.0'
-        classpath 'com.google.gms:google-services:4.3.1'
+        classpath 'com.google.gms:google-services:4.3.3'
         classpath 'io.fabric.tools:gradle:1.28.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
@@ -86,23 +86,6 @@ allprojects {
         maven { url "https://kotlin.bintray.com/kotlinx/" }
         maven { url "https://dl.bintray.com/wulkanowy/wulkanowy" }
     }
-}
-
-ext {
-    compileSdkVersion = 28
-    buildToolsVersion = '28.0.3'
-    targetSdkVersion = compileSdkVersion
-    minSdkVersion = 16
-
-    androidXAppCompat = '1.1.0-beta01'
-    androidXRecyclerView = '1.1.0-alpha06'
-    androidXCardView = '1.0.0'
-    androidXGridLayout = '1.0.0'
-    androidXConstraintLayout = '1.1.3'
-    googleMaterial = '1.1.0-alpha07'
-
-    iconics = '4.0.1-b01'
-    kotlin = '1.3.41'
 }
 
 task clean(type: Delete) {

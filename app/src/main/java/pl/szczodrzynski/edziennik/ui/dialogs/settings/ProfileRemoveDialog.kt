@@ -12,8 +12,6 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
-import pl.szczodrzynski.edziennik.utils.models.Notification
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class ProfileRemoveDialog(
@@ -52,25 +50,34 @@ class ProfileRemoveDialog(
             val profileObject = app.db.profileDao().getByIdNow(profileId) ?: return@async
             app.db.announcementDao().clear(profileId)
             app.db.attendanceDao().clear(profileId)
-            app.db.eventDao().clear(profileId)
-            app.db.eventTypeDao().clear(profileId)
-            app.db.gradeDao().clear(profileId)
-            app.db.gradeCategoryDao().clear(profileId)
-            app.db.luckyNumberDao().clear(profileId)
-            app.db.noticeDao().clear(profileId)
-            app.db.subjectDao().clear(profileId)
-            app.db.teacherDao().clear(profileId)
-            app.db.teamDao().clear(profileId)
-            app.db.messageRecipientDao().clear(profileId)
-            app.db.messageDao().clear(profileId)
-            app.db.endpointTimerDao().clear(profileId)
             app.db.attendanceTypeDao().clear(profileId)
             app.db.classroomDao().clear(profileId)
+            app.db.configDao().clear(profileId)
+            app.db.endpointTimerDao().clear(profileId)
+            app.db.eventDao().clear(profileId)
+            app.db.eventTypeDao().clear(profileId)
+            app.db.gradeCategoryDao().clear(profileId)
+            app.db.gradeDao().clear(profileId)
             app.db.lessonRangeDao().clear(profileId)
+            app.db.librusLessonDao().clear(profileId)
+            app.db.luckyNumberDao().clear(profileId)
+            app.db.messageDao().clear(profileId)
+            app.db.messageRecipientDao().clear(profileId)
+            app.db.noticeDao().clear(profileId)
             app.db.noticeTypeDao().clear(profileId)
+            app.db.noticeTypeDao().clear(profileId)
+            app.db.notificationDao().clear(profileId)
+            app.db.subjectDao().clear(profileId)
+            app.db.teacherAbsenceDao().clear(profileId)
             app.db.teacherAbsenceDao().clear(profileId)
             app.db.teacherAbsenceTypeDao().clear(profileId)
+            app.db.teacherDao().clear(profileId)
+            app.db.teamDao().clear(profileId)
             app.db.timetableDao().clear(profileId)
+
+            val homeCards = app.config.ui.homeCards.toMutableList()
+            homeCards.removeAll { it.profileId == profileId }
+            app.config.ui.homeCards = homeCards
 
             val loginStoreId = profileObject.loginStoreId
             val profilesUsingLoginStore = app.db.profileDao().getIdsByLoginStoreIdNow(loginStoreId)
@@ -80,18 +87,9 @@ class ProfileRemoveDialog(
             app.db.profileDao().remove(profileId)
             app.db.metadataDao().deleteAll(profileId)
 
-            val toRemove = ArrayList<Notification>()
-            for (notification in app.appConfig.notifications) {
-                if (notification.profileId == profileId) {
-                    toRemove.add(notification)
-                }
+            if (App.profileId == profileId) {
+                app.profileLoadLast { }
             }
-            app.appConfig.notifications.removeAll(toRemove)
-
-            app.profile = null
-            App.profileId = -1
-
-            app.profileLoadById(app.profileLastId())
         }
         deferred.await()
         dialog.dismiss()

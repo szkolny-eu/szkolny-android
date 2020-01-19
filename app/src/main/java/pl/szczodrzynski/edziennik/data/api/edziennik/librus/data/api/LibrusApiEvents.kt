@@ -10,9 +10,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_EVENTS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -34,7 +34,7 @@ class LibrusApiEvents(override val data: DataLibrus,
                 val id = event.getLong("Id") ?: return@forEach
                 val eventDate = Date.fromY_m_d(event.getString("Date"))
                 val topic = event.getString("Content") ?: ""
-                val type = event.getJsonObject("Category")?.getInt("Id") ?: -1
+                val type = event.getJsonObject("Category")?.getLong("Id") ?: -1
                 val teacherId = event.getJsonObject("CreatedBy")?.getLong("Id") ?: -1
                 val subjectId = event.getJsonObject("Subject")?.getLong("Id") ?: -1
                 val teamId = event.getJsonObject("Class")?.getLong("Id") ?: -1

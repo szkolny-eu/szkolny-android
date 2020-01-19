@@ -18,12 +18,12 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.prepare
 import pl.szczodrzynski.edziennik.data.api.prepareFor
 import pl.szczodrzynski.edziennik.data.api.vulcanLoginMethods
-import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
+import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
@@ -44,9 +44,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     private fun completed() {
         data.saveData()
-        data.notify {
-            callback.onCompleted()
-        }
+        callback.onCompleted()
     }
 
     /*    _______ _                     _                  _ _   _

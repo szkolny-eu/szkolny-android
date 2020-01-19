@@ -12,15 +12,14 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.DateAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.TimeAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
-import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
-import pl.szczodrzynski.edziennik.data.api.szkolny.request.EventShareRequest
-import pl.szczodrzynski.edziennik.data.api.szkolny.request.ServerSyncRequest
-import pl.szczodrzynski.edziennik.data.api.szkolny.request.WebPushRequest
+import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.data.db.entity.Event
-import pl.szczodrzynski.edziennik.data.db.full.EventFull
+import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.md5
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -56,9 +55,8 @@ class SzkolnyApi(val app: App) {
         api = retrofit.create()
     }
 
-    fun getEvents(profiles: List<Profile>): List<EventFull> {
+    fun getEvents(profiles: List<Profile>, notifications: List<Notification>, blacklistedIds: List<Long>): List<EventFull> {
         val teams = app.db.teamDao().allNow
-        val notifications = app.db.notificationDao().getNotPostedNow()
 
         val response = api.serverSync(ServerSyncRequest(
                 deviceId = app.deviceId,
@@ -88,8 +86,8 @@ class SzkolnyApi(val app: App) {
                     val config = app.config.getFor(profile.id)
                     val user = ServerSyncRequest.User(
                             profile.userCode,
-                            profile.studentNameLong ?: "",
-                            profile.studentNameShort ?: "",
+                            profile.studentNameLong,
+                            profile.studentNameShort,
                             profile.loginStoreType,
                             teams.filter { it.profileId == profile.id }.map { it.code }
                     )
@@ -108,17 +106,19 @@ class SzkolnyApi(val app: App) {
         val events = mutableListOf<EventFull>()
 
         response?.data?.events?.forEach { event ->
-            teams.filter { it.code == event.teamCode }.forEach { team ->
-                val profile = profiles.firstOrNull { it.id == team.profileId }
+            if (event.id in blacklistedIds)
+                return@forEach
+            teams.filter { it.code == event.teamCode }.onEach { team ->
+                val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@onEach
 
-                events.add(event.apply {
+                events.add(EventFull(event).apply {
                     profileId = team.profileId
                     teamId = team.id
                     addedManually = true
-                    seen = profile?.empty ?: false
-                    notified = profile?.empty ?: false
+                    seen = profile.empty
+                    notified = profile.empty
 
-                    if (profile?.userCode == event.sharedBy) sharedBy = "self"
+                    if (profile.userCode == event.sharedBy) sharedBy = "self"
                 })
             }
         }
@@ -192,5 +192,16 @@ class SzkolnyApi(val app: App) {
                 deviceId = app.deviceId,
                 errors = errors
         )).execute().body()
+    }
+
+    fun unregisterAppUser(userCode: String): ApiResponse<Nothing>? {
+        return api.appUser(AppUserRequest(
+                deviceId = app.deviceId,
+                userCode = userCode
+        )).execute().body()
+    }
+
+    fun getUpdate(): ApiResponse<List<Update>>? {
+        return api.updates().execute().body()
     }
 }

@@ -107,4 +107,18 @@ interface TimetableDao {
         WHERE timetable.profileId = :profileId AND timetable.type NOT IN (${Lesson.TYPE_NORMAL}, ${Lesson.TYPE_NO_LESSONS}, ${Lesson.TYPE_SHIFTED_SOURCE}) AND metadata.notified = 0
     """)
     fun getNotNotifiedNow(profileId: Int): List<LessonFull>
+
+    @Query("""
+        SELECT 
+        timetable.*,
+        teachers.teacherName ||" "|| teachers.teacherSurname AS teacherName,
+        oldT.teacherName ||" "|| oldT.teacherSurname AS oldTeacherName,
+        metadata.seen, metadata.notified, metadata.addedDate
+        FROM timetable
+        LEFT JOIN teachers USING(profileId, teacherId)
+        LEFT JOIN teachers AS oldT ON timetable.profileId = oldT.profileId AND timetable.oldTeacherId = oldT.teacherId
+        LEFT JOIN metadata ON id = thingId AND thingType = ${Metadata.TYPE_LESSON_CHANGE} AND metadata.profileId = timetable.profileId
+        WHERE timetable.type NOT IN (${Lesson.TYPE_NORMAL}, ${Lesson.TYPE_NO_LESSONS}, ${Lesson.TYPE_SHIFTED_SOURCE}) AND metadata.notified = 0
+    """)
+    fun getNotNotifiedNow(): List<LessonFull>
 }

@@ -26,7 +26,7 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Event.TYPE_HOMEWORK
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.ui.widgets.LessonDialogActivity
@@ -383,7 +383,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
 
         // create an intent used to display the lesson details dialog
         val itemIntent = Intent(app, LessonDialogActivity::class.java)
-        itemIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK /*or Intent.FLAG_ACTIVITY_CLEAR_TASK*/)
+        itemIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK/* or Intent.FLAG_ACTIVITY_CLEAR_TASK*/)
         val itemPendingIntent = PendingIntent.getActivity(app, appWidgetId, itemIntent, 0)
         views.setPendingIntentTemplate(R.id.widgetTimetableListView, itemPendingIntent)
 

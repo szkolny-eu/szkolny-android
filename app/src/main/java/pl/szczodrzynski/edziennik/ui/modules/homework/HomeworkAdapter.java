@@ -85,7 +85,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
             holder.homeworkItemTopic.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));
             homework.seen = true;
             AsyncTask.execute(() -> {
-                app.db.metadataDao().setSeen(App.profileId, homework, true);
+                App.db.metadataDao().setSeen(App.Companion.getProfileId(), homework, true);
             });
         }
         else {

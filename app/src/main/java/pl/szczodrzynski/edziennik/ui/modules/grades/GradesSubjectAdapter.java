@@ -31,8 +31,8 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.AppDb;
-import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
 import pl.szczodrzynski.edziennik.data.db.entity.Subject;
+import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
 import pl.szczodrzynski.edziennik.utils.Anim;
 import pl.szczodrzynski.edziennik.utils.Colors;
 import pl.szczodrzynski.edziennik.utils.Utils;
@@ -86,34 +86,34 @@ public class GradesSubjectAdapter extends ArrayAdapter<ItemGradesSubjectModel> i
 
     private boolean gradesSetAsRead(ViewHolder holder, ItemGradesSubjectModel model, int semester) {
         boolean somethingChanged = false;
-        AppDb db = AppDb.getDatabase(null);
+        AppDb db = App.Companion.getDb();
         if (semester == 1) {
             model.semester1Unread = 0;
             for (GradeFull grade : model.grades1) {
                 if (!grade.seen) {
-                    db.metadataDao().setSeen(App.profileId, grade, somethingChanged = true);
+                    db.metadataDao().setSeen(App.Companion.getProfileId(), grade, somethingChanged = true);
                 }
             }
             if (model.semester1Proposed != null && !model.semester1Proposed.seen)
-                db.metadataDao().setSeen(App.profileId, model.semester1Proposed, somethingChanged = true);
+                db.metadataDao().setSeen(App.Companion.getProfileId(), model.semester1Proposed, somethingChanged = true);
             if (model.semester1Final != null && !model.semester1Final.seen)
-                db.metadataDao().setSeen(App.profileId, model.semester1Final, somethingChanged = true);
+                db.metadataDao().setSeen(App.Companion.getProfileId(), model.semester1Final, somethingChanged = true);
         }
         else if (semester == 2) {
             model.semester2Unread = 0;
             for (GradeFull grade : model.grades2) {
                 if (!grade.seen) {
-                    db.metadataDao().setSeen(App.profileId, grade, somethingChanged = true);
+                    db.metadataDao().setSeen(App.Companion.getProfileId(), grade, somethingChanged = true);
                 }
             }
             if (model.semester2Proposed != null && !model.semester2Proposed.seen)
-                db.metadataDao().setSeen(App.profileId, model.semester2Proposed, somethingChanged = true);
+                db.metadataDao().setSeen(App.Companion.getProfileId(), model.semester2Proposed, somethingChanged = true);
             if (model.semester2Final != null && !model.semester2Final.seen)
-                db.metadataDao().setSeen(App.profileId, model.semester2Final, somethingChanged = true);
+                db.metadataDao().setSeen(App.Companion.getProfileId(), model.semester2Final, somethingChanged = true);
             if (model.yearProposed != null && !model.yearProposed.seen)
-                db.metadataDao().setSeen(App.profileId, model.yearProposed, somethingChanged = true);
+                db.metadataDao().setSeen(App.Companion.getProfileId(), model.yearProposed, somethingChanged = true);
             if (model.yearFinal != null && !model.yearFinal.seen)
-                db.metadataDao().setSeen(App.profileId, model.yearFinal, somethingChanged = true);
+                db.metadataDao().setSeen(App.Companion.getProfileId(), model.yearFinal, somethingChanged = true);
         }
         if (somethingChanged) updateSubjectSemesterBadges(holder, model);
         return somethingChanged;
@@ -219,7 +219,7 @@ public class GradesSubjectAdapter extends ArrayAdapter<ItemGradesSubjectModel> i
                 layoutParams.setMargins(0, 0, _5dp, 0);
 
                 DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-                int maxWidthPx = displayMetrics.widthPixels - Utils.dpToPx((app.config.getUi().getMiniMenuVisible() ? 72 : 0)/*miniDrawer size*/ + 8 + 8/*left and right offsets*/ + 24/*ellipsize width*/);
+                int maxWidthPx = displayMetrics.widthPixels - Utils.dpToPx((app.getConfig().getUi().getMiniMenuVisible() ? 72 : 0)/*miniDrawer size*/ + 8 + 8/*left and right offsets*/ + 24/*ellipsize width*/);
                 int totalWidthPx = 0;
                 boolean ellipsized = false;
 

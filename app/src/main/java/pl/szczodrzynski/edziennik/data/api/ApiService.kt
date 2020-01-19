@@ -12,12 +12,15 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.events.requests.ServiceCloseRequest
 import pl.szczodrzynski.edziennik.data.api.events.requests.TaskCancelRequest
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.task.*
+import pl.szczodrzynski.edziennik.data.api.task.ErrorReportTask
+import pl.szczodrzynski.edziennik.data.api.task.IApiTask
+import pl.szczodrzynski.edziennik.data.api.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import kotlin.math.min
@@ -40,11 +43,8 @@ class ApiService : Service() {
 
     private val syncingProfiles = mutableListOf<Profile>()
 
-    private val finishingTaskQueue = mutableListOf(
-            SzkolnyTask.sync(syncingProfiles),
-            NotifyTask()
-    )
-    private val allTaskList = mutableListOf<IApiTask>()
+    private var szkolnyTaskFinished = false
+    private val allTaskRequestList = mutableListOf<Any>()
     private val taskQueue = mutableListOf<IApiTask>()
     private val errorList = mutableListOf<ApiError>()
 
@@ -132,14 +132,20 @@ class ApiService : Service() {
         checkIfTaskFrozen()
         if (taskIsRunning)
             return
-        if (taskCancelled || serviceClosed || (taskQueue.isEmpty() && finishingTaskQueue.isEmpty())) {
+        if (taskCancelled || serviceClosed || (taskQueue.isEmpty() && szkolnyTaskFinished)) {
             allCompleted()
             return
         }
 
         lastEventTime = System.currentTimeMillis()
 
-        val task = if (taskQueue.isEmpty()) finishingTaskQueue.removeAt(0) else taskQueue.removeAt(0)
+        val task = if (taskQueue.isNotEmpty()) {
+            taskQueue.removeAt(0)
+        } else {
+            szkolnyTaskFinished = true
+            SzkolnyTask(app, syncingProfiles)
+        }
+
         task.taskId = ++taskMaximumId
         task.prepare(app)
         taskIsRunning = true
@@ -162,9 +168,8 @@ class ApiService : Service() {
         try {
             when (task) {
                 is EdziennikTask -> task.run(app, taskCallback)
-                is NotifyTask -> task.run(app, taskCallback)
                 is ErrorReportTask -> task.run(app, taskCallback, notification, errorList)
-                is SzkolnyTask -> task.run(app, taskCallback)
+                is SzkolnyTask -> task.run(taskCallback)
             }
         } catch (e: Exception) {
             taskCallback.onError(ApiError(TAG, EXCEPTION_API_TASK).withThrowable(e))
@@ -230,10 +235,12 @@ class ApiService : Service() {
         EventBus.getDefault().removeStickyEvent(task)
         d(TAG, task.toString())
 
-        // fix for duplicated tasks, thank you EventBus
-        if (task in allTaskList)
-            return
-        allTaskList += task
+        if (task is EdziennikTask) {
+            // fix for duplicated tasks, thank you EventBus
+            if (task.request in allTaskRequestList)
+                return
+            allTaskRequestList += task.request
+        }
 
         if (task is EdziennikTask) {
             when (task.request) {

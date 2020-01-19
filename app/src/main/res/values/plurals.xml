@@ -81,4 +81,76 @@
         <item quantity="many">%d błędów</item>
         <item quantity="other">%d błędów</item>
     </plurals>
+
+    <plurals name="notification_count_format">
+        <item quantity="one">Szkolny.eu: %d nowe powiadomienie</item> <!-- 1 -->
+        <item quantity="few">Szkolny.eu: %d nowe powiadomienia</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">Szkolny.eu: %d nowych powiadomień</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_count_short_format">
+        <item quantity="one">%d nowe powiadomienie</item> <!-- 1 -->
+        <item quantity="few">%d nowe powiadomienia</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d nowych powiadomień</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+
+    <plurals name="notification_new_timetable_change_format">
+        <item quantity="one">%d zmiana planu lekcji</item> <!-- 1 -->
+        <item quantity="few">%d zmiany planu lekcji</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d zmian planu lekcji</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_grades_format">
+        <item quantity="one">%d nowa ocena</item> <!-- 1 -->
+        <item quantity="few">%d nowe oceny</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d nowych ocen</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_events_format">
+        <item quantity="one">%d nowe wydarzenie</item> <!-- 1 -->
+        <item quantity="few">%d nowe wydarzenia</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d nowych wydarzeń</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_homework_format">
+        <item quantity="one">%d nowe zadanie domowe</item> <!-- 1 -->
+        <item quantity="few">%d nowe zadania domowe</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d nowych zadań domowych</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_shared_events_format">
+        <item quantity="one">%d udostępnione wydarzenie</item> <!-- 1 -->
+        <item quantity="few">%d udostępnione wydarzenia</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d udostępnionych wydarzeń</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_shared_homework_format">
+        <item quantity="one">%d udostępnione zadanie domowe</item> <!-- 1 -->
+        <item quantity="few">%d udostępnione zadania domowe</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d udostępnionych zadań domowych</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_messages_format">
+        <item quantity="one">%d nowa wiadomość</item> <!-- 1 -->
+        <item quantity="few">%d nowe wiadomości</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d nowych wiadomości</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_notices_format">
+        <item quantity="one">%d nowa uwaga</item> <!-- 1 -->
+        <item quantity="few">%d nowe uwagi</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d nowych uwag</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_attendance_format">
+        <item quantity="one">%d nowy wpis frekwencji</item> <!-- 1 -->
+        <item quantity="few">%d nowe wpisy frekwencji</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d nowych wpisów frekwencji</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_lucky_number_format">
+        <item quantity="one">szczęśliwy numerek</item> <!-- 1 -->
+        <item quantity="few">%d szczęśliwe numerki</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d szczęśliwych numerków</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_new_announcements_format">
+        <item quantity="one">%d nowe ogłoszenie</item> <!-- 1 -->
+        <item quantity="few">%d nowe ogłoszenia</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d nowych ogłoszeń</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
+    <plurals name="notification_other_format">
+        <item quantity="one">%d inne powiadomienie</item> <!-- 1 -->
+        <item quantity="few">%d inne powiadomienia</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d innych powiadomień</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
 </resources>

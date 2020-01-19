@@ -7,39 +7,39 @@ package pl.szczodrzynski.edziennik.data.api.task
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
-import pl.szczodrzynski.edziennik.data.api.szkolny.Szkolny
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.utils.Utils.d
 
-class SzkolnyTask(val request: Any) : IApiTask(-1) {
+class SzkolnyTask(val app: App, val syncingProfiles: List<Profile>) : IApiTask(-1) {
     companion object {
         private const val TAG = "SzkolnyTask"
-
-        fun sync(profiles: List<Profile>) = SzkolnyTask(SyncRequest(profiles))
-        /*fun shareEvent(event: EventFull) = SzkolnyTask(ShareEventRequest(event))
-        fun unshareEvent(event: EventFull) = SzkolnyTask(UnshareEventRequest(event))*/
     }
+    private val api by lazy { SzkolnyApi(app) }
+    private val profiles by lazy { app.db.profileDao().allNow }
+    override fun prepare(app: App) { taskName = app.getString(R.string.edziennik_szkolny_creating_notifications) }
+    override fun cancel() {}
 
-    private lateinit var szkolny: Szkolny
+    private val notificationList = mutableListOf<Notification>()
 
-    override fun prepare(app: App) {
-        taskName = app.getString(R.string.edziennik_szkolny_api_sync_title)
+    internal fun run(taskCallback: EdziennikCallback) {
+        val startTime = System.currentTimeMillis()
+        val notifications = Notifications(app, notificationList, profiles)
+        // create all e-register data notifications
+        notifications.run()
+        // send notifications to web push, get shared events
+        AppSync(app, notificationList, profiles, api).run()
+        // create notifications for shared events (not present before app sync)
+        notifications.sharedEventNotifications()
+        d(TAG, "Created ${notificationList.count()} notifications.")
+        // update the database
+        app.db.metadataDao().setAllNotified(true)
+        app.db.notificationDao().addAll(notificationList)
+        app.db.profileDao().setAllNotEmpty()
+        // post all notifications
+        PostNotifications(app, notificationList)
+        d(TAG, "SzkolnyTask: finished in ${System.currentTimeMillis()-startTime} ms.")
+        taskCallback.onCompleted()
     }
-
-    override fun cancel() {
-        // TODO
-    }
-
-    internal fun run(app: App, taskCallback: EdziennikCallback) {
-        szkolny = Szkolny(app, taskCallback)
-
-        when (request) {
-            is SyncRequest -> szkolny.sync(request.profiles)
-            /*is ShareEventRequest -> szkolny.shareEvent(request.event)
-            is UnshareEventRequest -> szkolny.unshareEvent(request.event)*/
-        }
-    }
-
-    data class SyncRequest(val profiles: List<Profile>)
-    /*data class ShareEventRequest(val event: EventFull)
-    data class UnshareEventRequest(val event: EventFull)*/
 }

@@ -52,9 +52,12 @@ interface ProfileDao {
     @Query("SELECT profiles.* FROM teams JOIN profiles USING(profileId) WHERE teamCode = :teamCode AND registration = " + Profile.REGISTRATION_ENABLED + " AND enableSharedEvents = 1")
     fun getByTeamCodeNowWithRegistration(teamCode: String?): List<Profile>
 
-    @get:Query("SELECT profileId FROM profiles WHERE profileId >= 0 ORDER BY profileId ASC LIMIT 1")
+    @get:Query("SELECT profileId FROM profiles WHERE profileId > 0 ORDER BY profileId ASC LIMIT 1")
     val firstId: Int?
 
-    @get:Query("SELECT profileId FROM profiles WHERE profileId >= 0 ORDER BY profileId DESC LIMIT 1")
+    @get:Query("SELECT profileId FROM profiles WHERE profileId > 0 ORDER BY profileId DESC LIMIT 1")
     val lastId: Int?
+
+    @Query("UPDATE profiles SET empty = 0")
+    fun setAllNotEmpty()
 }

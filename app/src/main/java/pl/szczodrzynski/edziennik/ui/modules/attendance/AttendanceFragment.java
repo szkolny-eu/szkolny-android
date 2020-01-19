@@ -33,8 +33,8 @@ import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull;
 import pl.szczodrzynski.edziennik.data.db.entity.Subject;
+import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAttendanceBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
@@ -73,8 +73,6 @@ public class AttendanceFragment extends Fragment {
             return null;
         app = (App) activity.getApplication();
         getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_attendance, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
@@ -83,7 +81,7 @@ public class AttendanceFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        if (app == null || activity == null || b == null || !isAdded())
             return;
 
         activity.getBottomSheet().prependItems(
@@ -92,7 +90,7 @@ public class AttendanceFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_ATTENDANCE, true));
+                            AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), TYPE_ATTENDANCE, true));
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                         })
         );
@@ -149,13 +147,13 @@ public class AttendanceFragment extends Fragment {
             }
         }*/
 
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK) {
+        if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK) {
             b.attendanceSummarySubject.setVisibility(View.GONE);
         }
         else {
             b.attendanceSummarySubject.setOnClickListener((v -> {
                 AsyncTask.execute(() -> {
-                    List<Subject> subjectList = app.db.subjectDao().getAllNow(App.profileId);
+                    List<Subject> subjectList = App.db.subjectDao().getAllNow(App.Companion.getProfileId());
                     PopupMenu popupMenu = new PopupMenu(activity, b.attendanceSummarySubject, Gravity.END);
                     popupMenu.getMenu().add(0, -1, 0, R.string.subject_filter_disabled);
                     int index = 0;
@@ -187,8 +185,8 @@ public class AttendanceFragment extends Fragment {
         b.attendanceView.setHasFixedSize(true);
         b.attendanceView.setLayoutManager(linearLayoutManager);
 
-        app.db.attendanceDao().getAll(App.profileId).observe(this, attendance -> {
-            if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        App.db.attendanceDao().getAll(App.Companion.getProfileId()).observe(this, attendance -> {
+            if (app == null || activity == null || b == null || !isAdded())
                 return;
 
             if (attendance == null) {
@@ -209,7 +207,7 @@ public class AttendanceFragment extends Fragment {
         subjectTotalCount = new LongSparseArray<>();
         subjectAbsentCount = new LongSparseArray<>();
         for (AttendanceFull attendance: attendanceList) {
-            if (app.profile.getLoginStoreType() == LOGIN_TYPE_VULCAN && attendance.type == TYPE_RELEASED)
+            if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_VULCAN && attendance.type == TYPE_RELEASED)
                 continue;
             int[] subjectTotal = subjectTotalCount.get(attendance.subjectId, new int[3]);
             int[] subjectAbsent = subjectAbsentCount.get(attendance.subjectId, new int[3]);
@@ -228,7 +226,7 @@ public class AttendanceFragment extends Fragment {
     }
 
     private void updateList() {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        if (app == null || activity == null || b == null || !isAdded())
             return;
 
         int presentCount = 0;
@@ -306,7 +304,7 @@ public class AttendanceFragment extends Fragment {
         float attendancePercentage;
 
         // in Mobidziennik there are no TYPE_PRESENT records so we cannot calculate the percentage
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_VULCAN) {
+        if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_VULCAN) {
             float allCount = presentCount + absentCount + belatedCount; // do not count releases
             float present = allCount - absentCount;
             attendancePercentage = present / allCount * 100.0f;

@@ -5,7 +5,7 @@
 package pl.szczodrzynski.edziennik.data.firebase
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.getString

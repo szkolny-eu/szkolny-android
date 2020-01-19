@@ -4,34 +4,18 @@
 
 package pl.szczodrzynski.edziennik.data.db.entity
 
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_AUTO_ARCHIVING
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_ERROR
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_FEEDBACK_MESSAGE
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_GENERAL
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_LUCKY_NUMBER
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_ANNOUNCEMENT
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_ATTENDANCE
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_EVENT
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_GRADE
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_HOMEWORK
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_MESSAGE
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_NOTICE
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_NEW_SHARED_EVENT
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_SERVER_MESSAGE
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_TIMETABLE_CHANGED
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_TIMETABLE_LESSON_CHANGE
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_UPDATE
+import pl.szczodrzynski.edziennik.MainActivity
 
 @Entity(tableName = "notifications")
 data class Notification(
         @PrimaryKey(autoGenerate = true)
-        val id: Int = 0,
+        val id: Long = 0,
 
         val title: String,
         val text: String,
@@ -41,7 +25,7 @@ data class Notification(
         val profileId: Int?,
         val profileName: String?,
 
-        var posted: Boolean = false,
+        var posted: Boolean = true,
 
         var viewId: Int? = null,
         var extras: JsonObject? = null,
@@ -59,6 +43,7 @@ data class Notification(
         const val TYPE_NEW_HOMEWORK = 10
         const val TYPE_NEW_SHARED_EVENT = 7
         const val TYPE_NEW_SHARED_HOMEWORK = 12
+        const val TYPE_REMOVED_SHARED_EVENT = 18
         const val TYPE_NEW_MESSAGE = 8
         const val TYPE_NEW_NOTICE = 9
         const val TYPE_NEW_ATTENDANCE = 13
@@ -67,6 +52,10 @@ data class Notification(
         const val TYPE_NEW_ANNOUNCEMENT = 15
         const val TYPE_FEEDBACK_MESSAGE = 16
         const val TYPE_AUTO_ARCHIVING = 17
+
+        fun buildId(profileId: Int, type: Int, itemId: Long): Long {
+            return 1000000000000 + profileId*10000000000 + type*100000000 + itemId;
+        }
     }
 
     fun addExtra(key: String, value: Long?): Notification {
@@ -99,5 +88,11 @@ data class Notification(
         } catch (e: NullPointerException) {
             e.printStackTrace()
         }
+    }
+
+    fun getPendingIntent(context: Context): PendingIntent {
+        val intent = Intent(context, MainActivity::class.java)
+        fillIntent(intent)
+        return PendingIntent.getActivity(context, id.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
     }
 }

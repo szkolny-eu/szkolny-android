@@ -78,6 +78,6 @@ public class ChangelogIntroActivity extends IntroActivity {
                     .build());
         }*/
 
-        app.config.setAppVersion(BuildConfig.VERSION_CODE);
+        app.getConfig().setAppVersion(BuildConfig.VERSION_CODE);
     }
 }

@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.widgets
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -46,7 +47,7 @@ class LessonDialogActivity : AppCompatActivity(), CoroutineScope {
                     val i = Intent(app, MainActivity::class.java)
                             .putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
                             .putExtra("profileId", profileId)
-                            .addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT)
+                            .addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT or FLAG_ACTIVITY_NEW_TASK)
                     app.startActivity(i)
                     finish()
                     return@async null

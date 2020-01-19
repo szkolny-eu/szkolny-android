@@ -42,7 +42,7 @@ class WidgetNotificationsFactory(val app: App, val config: WidgetConfig) : Remot
 
         val notification = cursor?.run {
             Notification(
-                    getInt("id") ?: 0,
+                    getLong("id") ?: 0,
                     getString("title") ?: "",
                     getString("text") ?: "",
                     getInt("type") ?: 0,

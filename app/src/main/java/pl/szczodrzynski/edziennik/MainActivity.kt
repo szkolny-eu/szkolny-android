@@ -1,6 +1,5 @@
 package pl.szczodrzynski.edziennik
 
-import android.app.Activity
 import android.app.ActivityManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,7 +8,6 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -41,15 +39,16 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
-import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
+import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
@@ -269,11 +268,20 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        d(TAG, "Activity created")
+
         setTheme(Themes.appTheme)
 
         app.config.ui.language?.let {
             setLanguage(it)
         }
+
+        if (App.profileId == 0) {
+            onProfileListEmptyEvent(ProfileListEmptyEvent())
+            return
+        }
+
+        d(TAG, "Profile is valid, inflating views")
 
         setContentView(b.root)
 
@@ -344,8 +352,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 setAccountHeaderBackground(app.config.ui.headerBackground)
 
                 drawerProfileListEmptyListener = {
-                    app.config.loginFinished = false
-                    profileListEmptyListener()
+                    onProfileListEmptyEvent(ProfileListEmptyEvent())
                 }
                 drawerItemSelectedListener = { id, position, drawerItem ->
                     loadTarget(id)
@@ -374,30 +381,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         navTarget = navTargetList[0]
 
-        var profileListEmpty = drawer.profileListEmpty
-
         if (savedInstanceState != null) {
             intent?.putExtras(savedInstanceState)
             savedInstanceState.clear()
         }
 
-        if (!profileListEmpty) {
-            handleIntent(intent?.extras)
-        }
         app.db.profileDao().all.observe(this, Observer { profiles ->
             drawer.setProfileList(profiles.filter { it.id >= 0 }.toMutableList())
-            if (profileListEmpty) {
-                profileListEmpty = false
-                handleIntent(intent?.extras)
-            }
-            else if (app.profile != null) {
-                drawer.currentProfile = app.profile.id
-            }
+            drawer.currentProfile = App.profileId
         })
 
-        // if null, getAllFull will load a profile and update drawerItems
-        if (app.profile != null)
-            setDrawerItems()
+        setDrawerItems()
+
+        handleIntent(intent?.extras)
 
         app.db.metadataDao().unreadCounts.observe(this, Observer { unreadCounters ->
             unreadCounters.map {
@@ -417,6 +413,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         isStoragePermissionGranted()
 
         SyncWorker.scheduleNext(app)
+        UpdateWorker.scheduleNext(app)
 
         // APP BACKGROUND
         if (app.config.ui.appBackground != null) {
@@ -521,13 +518,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    var profileListEmptyListener = {
-        startActivityForResult(Intent(this, LoginActivity::class.java), REQUEST_LOGIN_ACTIVITY)
-    }
     private var profileSettingClickListener = { id: Int, view: View? ->
         when (id) {
             DRAWER_PROFILE_ADD_NEW -> {
-                profileListEmptyListener()
+                startActivityForResult(Intent(this, LoginActivity::class.java), REQUEST_LOGIN_ACTIVITY)
             }
             DRAWER_PROFILE_SYNC_ALL -> {
                 EdziennikTask.sync().enqueue(this)
@@ -587,6 +581,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onProfileListEmptyEvent(event: ProfileListEmptyEvent) {
+        d(TAG, "Profile list is empty. Launch LoginActivity.")
+        app.config.loginFinished = false
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskProgressEvent(event: ApiTaskProgressEvent) {
         if (event.profileId == App.profileId) {
             navView.toolbar.apply {
@@ -630,7 +631,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onAppManagerDetectedEvent(event: AppManagerDetectedEvent) {
         EventBus.getDefault().removeStickyEvent(event)
-        if (app.appConfig.dontShowAppManagerDialog)
+        if (app.config.sync.dontShowAppManagerDialog)
             return
         MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.app_manager_dialog_title)
@@ -652,8 +653,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     }
                 }
                 .setNeutralButton(R.string.dont_ask_again) { dialog, which ->
-                    app.appConfig.dontShowAppManagerDialog = true
-                    app.saveConfig("dontShowAppManagerDialog")
+                    app.config.sync.dontShowAppManagerDialog = true
                 }
                 .setCancelable(false)
                 .show()
@@ -698,7 +698,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (extras?.containsKey("reloadProfileId") == true) {
             val reloadProfileId = extras.getInt("reloadProfileId", -1)
             extras.remove("reloadProfileId")
-            if (reloadProfileId == -1 || (app.profile != null && app.profile.id == reloadProfileId)) {
+            if (reloadProfileId == -1 || app.profile.id == reloadProfileId) {
                 reloadTarget()
                 return
             }
@@ -728,9 +728,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         when {
-            app.profile == null || app.profile.id == -1 -> {
+            app.profile.id == 0 -> {
                 if (intentProfileId == -1)
-                    intentProfileId = app.appSharedPrefs.getInt("current_profile_id", 1)
+                    intentProfileId = app.config.lastProfileId
                 loadProfile(intentProfileId, intentTargetId, extras)
             }
             intentProfileId != -1 -> {
@@ -769,7 +769,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         startActivity(intent)
     }
 
+    override fun onStart() {
+        d(TAG, "Activity started")
+        super.onStart()
+    }
+    override fun onStop() {
+        d(TAG, "Activity stopped")
+        super.onStop()
+    }
     override fun onResume() {
+        d(TAG, "Activity resumed")
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_MAIN)
         registerReceiver(intentReceiver, filter)
@@ -777,9 +786,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         super.onResume()
     }
     override fun onPause() {
+        d(TAG, "Activity paused")
         unregisterReceiver(intentReceiver)
         EventBus.getDefault().unregister(this)
         super.onPause()
+    }
+    override fun onDestroy() {
+        d(TAG, "Activity destroyed")
+        super.onDestroy()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -794,15 +808,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_LOGIN_ACTIVITY) {
-            if (resultCode == Activity.RESULT_CANCELED && false) {
+            if (!app.config.loginFinished)
                 finish()
-            }
             else {
-                if (!app.config.loginFinished)
-                    finish()
-                else {
-                    handleIntent(data?.extras)
-                }
+                handleIntent(data?.extras)
             }
         }
     }
@@ -823,34 +832,23 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     fun loadProfile(id: Int) = loadProfile(id, navTargetId)
     fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
     fun loadProfile(id: Int, drawerSelection: Int, arguments: Bundle? = null) {
-        //d("NavDebug", "loadProfile(id = $id, drawerSelection = $drawerSelection)")
-        if (app.profile != null && App.profileId == id) {
+        if (App.profileId == id) {
             drawer.currentProfile = app.profile.id
             loadTarget(drawerSelection, arguments)
             return
         }
-        AsyncTask.execute {
-            app.profileLoadById(id)
+        app.profileLoad(id) {
             MessagesFragment.pageSelection = -1
             MessagesListFragment.tapPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
             MessagesListFragment.topPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
             MessagesListFragment.bottomPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
 
-            this.runOnUiThread {
-                if (app.profile == null) {
-                    if (app.config.loginFinished) {
-                        // this shouldn't run
-                        profileListEmptyListener()
-                    }
-                } else {
-                    setDrawerItems()
-                    // the drawer profile is updated automatically when the drawer item is clicked
-                    // update it manually when switching profiles from other source
-                    //if (drawer.currentProfile != app.profile.id)
-                        drawer.currentProfile = app.profile.id
-                    loadTarget(drawerSelection, arguments)
-                }
-            }
+            setDrawerItems()
+            // the drawer profile is updated automatically when the drawer item is clicked
+            // update it manually when switching profiles from other source
+            //if (drawer.currentProfile != app.profile.id)
+            drawer.currentProfile = app.profileId
+            loadTarget(drawerSelection, arguments)
         }
     }
     fun loadTarget(id: Int, arguments: Bundle? = null) {
@@ -995,7 +993,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
      * that something has changed in the bottom sheet.
      */
     fun gainAttention() {
-        if (app.config.ui.bottomSheetOpened || true)
+        if (app.config.ui.bottomSheetOpened)
             return
         b.navView.postDelayed({
             navView.gainAttentionOnBottomBar()
@@ -1044,12 +1042,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun setDrawerItems() {
-        d("NavDebug", "setDrawerItems() app.profile = ${app.profile ?: "null"}")
+        d("NavDebug", "setDrawerItems() app.profile = ${app.profile}")
         val drawerItems = arrayListOf<IDrawerItem<*>>()
         val drawerProfiles = arrayListOf<ProfileSettingDrawerItem>()
 
-        val supportedFragments = if (app.profile == null) arrayListOf<Int>()
-        else app.profile.supportedFragments
+        val supportedFragments = app.profile.supportedFragments
 
         targetPopToHomeList.clear()
 
@@ -1113,7 +1110,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private var targetHomeId: Int = -1
     override fun onBackPressed() {
         if (!b.navView.onBackPressed()) {
-            if (App.getConfig().ui.openDrawerOnBackPressed) {
+            if (App.config.ui.openDrawerOnBackPressed) {
                 b.navView.drawer.toggle()
             } else {
                 navigateUp()

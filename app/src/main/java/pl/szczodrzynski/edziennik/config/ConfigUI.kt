@@ -45,11 +45,6 @@ class ConfigUI(private val config: Config) {
         get() { mOpenDrawerOnBackPressed = mOpenDrawerOnBackPressed ?: config.values.get("openDrawerOnBackPressed", false); return mOpenDrawerOnBackPressed ?: false }
         set(value) { config.set("openDrawerOnBackPressed", value); mOpenDrawerOnBackPressed = value }
 
-    private var mAgendaViewType: Int? = null
-    var agendaViewType: Int
-        get() { mAgendaViewType = mAgendaViewType ?: config.values.get("agendaViewType", 0); return mAgendaViewType ?: 0 }
-        set(value) { config.set("agendaViewType", value); mAgendaViewType = value }
-
     private var mHomeCards: List<HomeCardModel>? = null
     var homeCards: List<HomeCardModel>
         get() { mHomeCards = mHomeCards ?: config.values.get("homeCards", listOf(), HomeCardModel::class.java); return mHomeCards ?: listOf() }

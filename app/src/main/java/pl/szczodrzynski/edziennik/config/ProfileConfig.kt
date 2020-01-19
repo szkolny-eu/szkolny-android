@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.config.db.ConfigEntry
+import pl.szczodrzynski.edziennik.config.utils.ProfileConfigMigration
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.set
 import pl.szczodrzynski.edziennik.config.utils.toHashMap
@@ -27,6 +28,7 @@ class ProfileConfig(val db: AppDb, val profileId: Int, rawEntries: List<ConfigEn
     val values: HashMap<String, String?> = hashMapOf()
 
     val grades by lazy { ProfileConfigGrades(this) }
+    val ui by lazy { ProfileConfigUI(this) }
     /*
     val sync by lazy { ConfigSync(this) }
     val timetable by lazy { ConfigTimetable(this) }
@@ -44,8 +46,8 @@ class ProfileConfig(val db: AppDb, val profileId: Int, rawEntries: List<ConfigEn
 
     init {
         rawEntries.toHashMap(profileId, values)
-        /*if (dataVersion < DATA_VERSION)
-            ProfileConfigMigration(this)*/
+        if (dataVersion < DATA_VERSION)
+            ProfileConfigMigration(this)
     }
 
     override fun set(key: String, value: String?) {

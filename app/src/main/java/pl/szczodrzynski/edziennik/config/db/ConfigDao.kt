@@ -22,4 +22,7 @@ interface ConfigDao {
 
     @Query("SELECT * FROM config WHERE profileId = :profileId")
     fun getAllNow(profileId: Int): List<ConfigEntry>
+
+    @Query("DELETE FROM config WHERE profileId = :profileId")
+    fun clear(profileId: Int)
 }

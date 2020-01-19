@@ -34,7 +34,7 @@ public abstract class EventDao {
     public abstract long add(Event event);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void addAll(List<Event> eventList);
+    public abstract long[] addAll(List<Event> eventList);
 
     @Query("DELETE FROM events WHERE profileId = :profileId")
     public abstract void clear(int profileId);
@@ -44,7 +44,7 @@ public abstract class EventDao {
     @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND thingId = :thingId")
     public abstract void removeMetadata(int profileId, int thingType, long thingId);
     @Transaction
-    public void remove(int profileId, int type, long id) {
+    public void remove(int profileId, long type, long id) {
         remove(profileId, id);
         removeMetadata(profileId, type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, id);
     }
@@ -88,7 +88,7 @@ public abstract class EventDao {
     public LiveData<List<EventFull>> getAllWhere(int profileId, String filter) {
         return getAll(profileId, filter);
     }
-    public LiveData<List<EventFull>> getAllByType(int profileId, int type, String filter) {
+    public LiveData<List<EventFull>> getAllByType(int profileId, long type, String filter) {
         return getAll(profileId, "eventType = "+type+" AND "+filter);
     }
     public LiveData<List<EventFull>> getAllByDate(int profileId, @NonNull Date date) {
@@ -125,6 +125,24 @@ public abstract class EventDao {
         return getAllNow(profileId, "notified = 0");
     }
 
+    @Query("SELECT eventId FROM events WHERE profileId = :profileId AND eventBlacklisted = 1")
+    public abstract List<Long> getBlacklistedIds(int profileId);
+    @Query("SELECT eventId FROM events WHERE eventBlacklisted = 1")
+    public abstract List<Long> getBlacklistedIds();
+
+    @Query("SELECT " +
+            "*, " +
+            "eventTypes.eventTypeName AS typeName, " +
+            "eventTypes.eventTypeColor AS typeColor " +
+            "FROM events " +
+            "LEFT JOIN subjects USING(profileId, subjectId) " +
+            "LEFT JOIN eventTypes USING(profileId, eventType) " +
+            "LEFT JOIN metadata ON eventId = thingId AND (thingType = " + TYPE_EVENT + " OR thingType = " + TYPE_HOMEWORK + ") AND metadata.profileId = events.profileId " +
+            "WHERE events.eventBlacklisted = 0 AND notified = 0 " +
+            "GROUP BY eventId " +
+            "ORDER BY addedDate ASC")
+    public abstract List<EventFull> getNotNotifiedNow();
+
     public EventFull getByIdNow(int profileId, long eventId) {
         List<EventFull> eventList = getAllNow(profileId, "eventId = "+eventId);
         return eventList.size() == 0 ? null : eventList.get(0);
@@ -146,13 +164,13 @@ public abstract class EventDao {
     }
 
     @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType = :type")
-    public abstract void removeFutureWithType(int profileId, Date todayDate, int type);
+    public abstract void removeFutureWithType(int profileId, Date todayDate, long type);
 
     @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType != :exceptType")
-    public abstract void removeFutureExceptType(int profileId, Date todayDate, int exceptType);
+    public abstract void removeFutureExceptType(int profileId, Date todayDate, long exceptType);
 
     @Transaction
-    public void removeFutureExceptTypes(int profileId, Date todayDate, List<Integer> exceptTypes) {
+    public void removeFutureExceptTypes(int profileId, Date todayDate, List<Long> exceptTypes) {
         removeFuture(profileId, todayDate, "eventType NOT IN " + exceptTypes.toString().replace('[', '(').replace(']', ')'));
     }
 

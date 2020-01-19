@@ -5,36 +5,19 @@
 package pl.szczodrzynski.edziennik.data.firebase;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.BuildConfig;
-import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.api.task.EdziennikTask;
-import pl.szczodrzynski.edziennik.data.db.entity.Event;
-import pl.szczodrzynski.edziennik.data.db.entity.EventType;
-import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage;
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore;
 import pl.szczodrzynski.edziennik.data.db.entity.Profile;
-import pl.szczodrzynski.edziennik.data.db.entity.Team;
-import pl.szczodrzynski.edziennik.data.db.full.EventFull;
-import pl.szczodrzynski.edziennik.network.ServerRequest;
-import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment;
-import pl.szczodrzynski.edziennik.utils.models.Notification;
 
-import static pl.szczodrzynski.edziennik.App.APP_URL;
-import static pl.szczodrzynski.edziennik.data.db.entity.Event.TYPE_HOMEWORK;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.strToInt;
 
@@ -45,16 +28,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String s) {
         super.onNewToken(s);
 
-        Log.d(TAG, "New token: "+s);
+       /* Log.d(TAG, "New token: "+s);
         App app = (App)getApplicationContext();
         if (app.config.getSync().getTokenApp() == null || !app.config.getSync().getTokenApp().equals(s)) {
             app.config.getSync().setTokenApp(s);
-        }
+        }*/
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        App app = ((App) getApplicationContext());
+        /*App app = ((App) getApplicationContext());
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
 
         String from = remoteMessage.getFrom();
@@ -78,7 +61,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     processVulcanPush(app, remoteMessage);
                     break;
             }
-        }
+        }*/
     }
 
     private void processMobidziennikPush(App app, RemoteMessage remoteMessage) {
@@ -102,14 +85,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 if (profile != null) {
                     if (remoteMessage.getData().get("id_wiadomosci") != null) {
-                        /*app.notifier.add(new Notification(app.getContext(), remoteMessage.getData().get("message"))
-                                .withProfileData(profile.id, profile.name)
-                                .withTitle(remoteMessage.getData().get("title"))
-                                .withType(Notification.TYPE_NEW_MESSAGE)
-                                .withFragmentRedirect(MainActivity.DRAWER_ITEM_MESSAGES)
-                        );
-                        app.notifier.postAll(profile);
-                        app.saveConfig("notifications");*/
+
                         d(TAG, "Syncing profile " + profile.getId());
                         EdziennikTask.Companion.syncProfile(profile.getId(), null, null).enqueue(app);
                     } else {
@@ -141,7 +117,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void processAppPush(App app, RemoteMessage remoteMessage) {
         // Check if message contains a data payload.
-        String type = remoteMessage.getData().get("type");
+        /*String type = remoteMessage.getData().get("type");
         if (remoteMessage.getData().size() > 0
             && type != null) {
             //Log.d(TAG, "Message data payload: " + remoteMessage.sync());
@@ -239,90 +215,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     break;
                 case "ping":
                     // just a ping
-                    break;
-            /*    ______               _                  _
-                 |  ____|             | |                | |
-                 | |____   _____ _ __ | |_   ______   ___| |__   __ _ _ __ ___
-                 |  __\ \ / / _ \ '_ \| __| |______| / __| '_ \ / _` | '__/ _ \
-                 | |___\ V /  __/ | | | |_           \__ \ | | | (_| | | |  __/
-                 |______\_/ \___|_| |_|\__|          |___/_| |_|\__,_|_|  \__*/
-                case "event":
-                case "event_removed":
-                    AsyncTask.execute(() -> {
-                        String teamCode = remoteMessage.getData().get("team");
-                        String teamUnshareCode = remoteMessage.getData().get("team_unshare");
-                        while (teamCode != null || teamUnshareCode != null) {
-                            d(TAG, "Got an event for teamCode " + teamCode + " and teamUnshareCode " + teamUnshareCode);
-                            // get the target Profile by the corresponding teamCode
-                            List<Profile> profiles = app.db.profileDao().getByTeamCodeNowWithRegistration(teamCode == null ? teamUnshareCode : teamCode);
-                            for (Profile profile : profiles) {
-                                d(TAG, "Matched profile " + profile.getName());
-                                if (teamCode != null) {
-                                    // SHARING
-                                    JsonObject jEvent = new JsonParser().parse(remoteMessage.getData().get("data")).getAsJsonObject();
-                                    d(TAG, "An event is there! " + jEvent.toString());
-                                    // get the target Team from teamCode
-                                    Team team = app.db.teamDao().getByCodeNow(profile.getId(), teamCode);
-                                    if (team != null) {
-                                        d(TAG, "The target team is " + team.name + ", ID " + team.id);
-                                        // create the event from Json. Add the missing teamId and !!profileId!!
-                                        Event event = app.gson.fromJson(jEvent.toString(), Event.class);
-                                        if (jEvent.get("colorDefault") != null) {
-                                            event.color = -1;
-                                        }
-                                        event.profileId = profile.getId();
-                                        event.teamId = team.id;
-                                        d(TAG, "Created the event! " + event);
-
-                                        // TODO? i guess
-                                        Event oldEvent = app.db.eventDao().getByIdNow(profile.getId(), event.id);
-                                        if (event.sharedBy != null && event.sharedBy.equals(profile.getUserCode())) {
-                                            d(TAG, "Shared by self! Changing name");
-                                            event.sharedBy = "self";
-                                            event.sharedByName = profile.getStudentNameLong();
-                                        }
-                                        d(TAG, "Old event found? " + oldEvent);
-                                        EventType eventType = app.db.eventTypeDao().getByIdNow(profile.getId(), event.type);
-                                        app.notifier.add(new Notification(app.getContext(), app.getString((oldEvent == null ? R.string.notification_shared_event_format : R.string.notification_shared_event_modified_format), event.sharedByName, eventType == null ? "wydarzenie" : eventType.name, event.eventDate.getFormattedString(), event.topic))
-                                                .withProfileData(profile.getId(), profile.getName())
-                                                .withType(event.type == TYPE_HOMEWORK ? pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_HOMEWORK : pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_EVENT)
-                                                .withFragmentRedirect(event.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
-                                                .withLongExtra("eventDate", event.eventDate.getValue())
-                                        );
-                                        d(TAG, "Finishing adding event " + event);
-                                        app.db.eventDao().add(event);
-                                        try {
-                                            app.db.metadataDao().setBoth(profile.getId(), event, false, true, jEvent.get("addedDate").getAsLong());
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                } else {
-                                    // UNSHARING
-                                    long eventId = Long.parseLong(remoteMessage.getData().get("remove_id"));
-                                    EventFull oldEvent = app.db.eventDao().getByIdNow(profile.getId(), eventId);
-                                    if (oldEvent != null) {
-                                        app.notifier.add(new Notification(app.getContext(), app.getString(R.string.notification_shared_event_removed_format, oldEvent.sharedByName, oldEvent.typeName, oldEvent.eventDate.getFormattedString(), oldEvent.topic))
-                                                .withProfileData(profile.getId(), profile.getName())
-                                                .withType(oldEvent.type == TYPE_HOMEWORK ? pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_HOMEWORK : pl.szczodrzynski.edziennik.data.db.entity.Notification.TYPE_NEW_SHARED_EVENT)
-                                                .withFragmentRedirect(oldEvent.type == TYPE_HOMEWORK ? MainActivity.DRAWER_ITEM_HOMEWORK : MainActivity.DRAWER_ITEM_AGENDA)
-                                                .withLongExtra("eventDate", oldEvent.eventDate.getValue())
-                                        );
-                                        app.db.eventDao().remove(oldEvent);
-                                    }
-                                }
-                            }
-                            if (teamCode != null) {
-                                teamCode = null;
-                            } else {
-                                teamUnshareCode = null;
-                            }
-                        }
-                        app.notifier.postAll();
-                        app.saveConfig();
-                    });
-                    break;
+                    break
             }
-        }
+        }*/
     }
 }

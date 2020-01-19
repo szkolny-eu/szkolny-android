@@ -30,21 +30,21 @@ open class Profile(
         val loginStoreId: Int,
         val loginStoreType: Int,
 
-        override var name: String,
-        override var subname: String?,
+        override var name: String = "",
+        override var subname: String? = null,
 
         /**
          * The name of the student.
          * This doesn't change, no matter if it's a parent or student account.
          */
-        var studentNameLong: String,
-        var studentNameShort: String,
+        var studentNameLong: String = "",
+        var studentNameShort: String = "",
         /**
          * A full name of the account owner.
          * If null, then it's a student account.
          * If not null, then it's a parent account with this name.
          */
-        var accountName: String?,
+        var accountName: String? = null,
 
         val studentData: JsonObject = JsonObject()
 

@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 
 android {
     signingConfigs {
     }
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion setup.compileSdk
     defaultConfig {
         applicationId 'pl.szczodrzynski.edziennik'
         minSdkVersion setup.minSdk
@@ -103,7 +104,7 @@ tasks.whenTaskAdded { task ->
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    annotationProcessor "androidx.room:room-compiler:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
     debugImplementation "com.amitshekhar.android:debug-db:1.0.5"
 
     implementation "android.arch.navigation:navigation-fragment-ktx:${versions.navigationFragment}"

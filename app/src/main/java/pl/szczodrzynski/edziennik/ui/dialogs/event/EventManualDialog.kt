@@ -21,13 +21,8 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.data.db.entity.EventType
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Subject
-import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
 import pl.szczodrzynski.edziennik.utils.Anim
@@ -43,7 +38,7 @@ class EventManualDialog(
         val defaultLesson: LessonFull? = null,
         val defaultDate: Date? = null,
         val defaultTime: Time? = null,
-        val defaultType: Int? = null,
+        val defaultType: Long? = null,
         val editingEvent: EventFull? = null,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
@@ -149,7 +144,7 @@ class EventManualDialog(
             else -> R.string.dialog_event_manual_share_first_notice
         }
 
-        b.shareDetails.setText(text)
+        b.shareDetails.setText(text, event.sharedByName ?: "")
     }
 
     private fun loadLists() { launch {
@@ -588,8 +583,7 @@ class EventManualDialog(
                 startTime,
                 topic,
                 customColor ?: -1,
-                type?.toInt()
-                        ?: Event.TYPE_DEFAULT,
+                type ?: Event.TYPE_DEFAULT,
                 true,
                 teacherId ?: -1,
                 subjectId ?: -1,
@@ -598,7 +592,7 @@ class EventManualDialog(
 
         val metadataObject = Metadata(
                 profileId,
-                when (type?.toInt()) {
+                when (type) {
                     Event.TYPE_HOMEWORK -> Metadata.TYPE_HOMEWORK
                     else -> Metadata.TYPE_EVENT
                 },

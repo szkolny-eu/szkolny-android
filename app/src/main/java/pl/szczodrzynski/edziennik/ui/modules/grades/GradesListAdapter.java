@@ -52,11 +52,11 @@ public class GradesListAdapter extends RecyclerView.Adapter<GradesListAdapter.Vi
         GradeFull grade = gradeList.get(position);
 
         holder.root.setOnClickListener((v -> {
-            new GradeDetailsDialog(v.getContext(), App.profileId).show(app, grade);
+            new GradeDetailsDialog(v.getContext(), App.Companion.getProfileId()).show(app, grade);
         }));
 
         int gradeColor;
-        if (App.getConfig().forProfile().getGrades().getColorMode() == COLOR_MODE_DEFAULT) {
+        if (App.Companion.getConfig().forProfile().getGrades().getColorMode() == COLOR_MODE_DEFAULT) {
             gradeColor = grade.color;
         }
         else {

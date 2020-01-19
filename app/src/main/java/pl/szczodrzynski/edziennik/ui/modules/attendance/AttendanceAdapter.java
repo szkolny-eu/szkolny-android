@@ -97,7 +97,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
             holder.attendanceLessonTopic.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));
             attendance.seen = true;
             AsyncTask.execute(() -> {
-                app.db.metadataDao().setSeen(App.profileId, attendance, true);
+                App.db.metadataDao().setSeen(App.Companion.getProfileId(), attendance, true);
                 //Intent i = new Intent("android.intent.action.MAIN").putExtra(MainActivity.ACTION_UPDATE_BADGES, "yes, sure");
                 //context.sendBroadcast(i);
             });

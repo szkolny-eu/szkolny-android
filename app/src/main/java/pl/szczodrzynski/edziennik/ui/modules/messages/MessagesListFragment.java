@@ -59,8 +59,6 @@ public class MessagesListFragment extends Fragment {
             return null;
         app = (App) activity.getApplication();
         getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.messages_list, container, false);
         return b.getRoot();
@@ -68,7 +66,7 @@ public class MessagesListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        if (app == null || activity == null || b == null || !isAdded())
             return;
 
         long messageId = -1;
@@ -170,19 +168,19 @@ public class MessagesListFragment extends Fragment {
         b.emailList.setAdapter(messagesAdapter);
 
         if (messageType == Message.TYPE_RECEIVED) {
-            app.db.messageDao().getReceived(App.profileId).observe(this, messageFulls -> {
+            App.db.messageDao().getReceived(App.Companion.getProfileId()).observe(this, messageFulls -> {
                 createMessageList(messageFulls);
             });
         }
         else if (messageType == Message.TYPE_DELETED) {
-            app.db.messageDao().getDeleted(App.profileId).observe(this, messageFulls -> {
+            App.db.messageDao().getDeleted(App.Companion.getProfileId()).observe(this, messageFulls -> {
                 createMessageList(messageFulls);
             });
         }
         else if (messageType == Message.TYPE_SENT) {
-            app.db.messageDao().getSent(App.profileId).observe(this, messageFulls -> {
+            App.db.messageDao().getSent(App.Companion.getProfileId()).observe(this, messageFulls -> {
                 AsyncTask.execute(() -> {
-                    List<MessageRecipientFull> messageRecipients = app.db.messageRecipientDao().getAll(App.profileId);
+                    List<MessageRecipientFull> messageRecipients = App.db.messageRecipientDao().getAll(App.Companion.getProfileId());
                     List<Long> messageIds = new ArrayList<>();
                     for (MessageFull messageFull: messageFulls) {
                         messageIds.add(messageFull.id);

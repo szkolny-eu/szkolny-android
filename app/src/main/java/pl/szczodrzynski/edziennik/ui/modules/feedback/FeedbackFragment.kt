@@ -21,11 +21,10 @@ import com.github.bassaer.chatmessageview.model.IChatUser
 import com.github.bassaer.chatmessageview.model.Message
 import com.github.bassaer.chatmessageview.view.ChatView
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.App.APP_URL
-import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.databinding.FragmentFeedbackBinding
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
+import pl.szczodrzynski.edziennik.databinding.FragmentFeedbackBinding
 import pl.szczodrzynski.edziennik.network.ServerRequest
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -248,7 +247,7 @@ class FeedbackFragment : Fragment() {
                 .content(R.string.sending_message)
                 .negativeText(R.string.cancel)
                 .show()
-        ServerRequest(app, app.requestScheme + APP_URL + "main.php?feedback_message", "FeedbackSend")
+        ServerRequest(app, "https://edziennik.szczodrzynski.pl/app/main.php?feedback_message", "FeedbackSend")
                 .setBodyParameter("message_text", text)
                 .setBodyParameter("target_device", if (deviceToSend == null) "null" else deviceToSend)
                 .run { e, result ->

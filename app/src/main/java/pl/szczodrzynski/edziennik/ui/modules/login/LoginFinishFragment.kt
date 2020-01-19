@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.ui.modules.login
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +13,8 @@ import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginFinishBinding
-import pl.szczodrzynski.edziennik.onClick
 import kotlin.coroutines.CoroutineContext
 
 class LoginFinishFragment : Fragment(), CoroutineScope {
@@ -44,20 +40,38 @@ class LoginFinishFragment : Fragment(), CoroutineScope {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val firstRun = arguments?.getBoolean("firstRun", true) ?: true
+        val firstRun = !App.config.loginFinished
+        App.config.loginFinished = true
+
         if (!firstRun) {
             b.loginFinishSubtitle.setText(R.string.login_finish_subtitle_not_first_run)
         }
 
         b.finishButton.onClick {
-            val firstProfileId = arguments?.getInt("firstProfileId", -1) ?: -1
-            if (firstProfileId != -1) {
-                val intent = Intent()
-                intent.putExtra("profileId", firstProfileId)
-                intent.putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOME)
-                activity.setResult(Activity.RESULT_OK, intent)
+            val firstProfileId = arguments?.getInt("firstProfileId") ?: 0
+            if (firstProfileId == 0) {
+                activity.finish()
+                return@onClick
             }
-            activity.finish()
+
+            app.profileLoad(firstProfileId) {
+                if (firstRun) {
+                    activity.startActivity(Intent(
+                            activity,
+                            MainActivity::class.java,
+                            "profileId" to firstProfileId,
+                            "fragmentId" to MainActivity.DRAWER_ITEM_HOME
+                    ))
+                }
+                else {
+                    activity.setResult(Activity.RESULT_OK, Intent(
+                            null,
+                            "profileId" to firstProfileId,
+                            "fragmentId" to MainActivity.DRAWER_ITEM_HOME
+                    ))
+                }
+                activity.finish()
+            }
         }
     }
 }

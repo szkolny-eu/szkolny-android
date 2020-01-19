@@ -17,8 +17,8 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.entity.Message;
-import pl.szczodrzynski.edziennik.data.db.full.MessageFull;
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata;
+import pl.szczodrzynski.edziennik.data.db.full.MessageFull;
 
 import static pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_DELETED;
 import static pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED;
@@ -101,4 +101,14 @@ public abstract class MessageDao {
     public List<MessageFull> getReceivedNotNotifiedNow(int profileId) {
         return getReceivedNow(profileId, "notified = 0");
     }
+
+    @Query("SELECT " +
+            "*, " +
+            "teachers.teacherName || ' ' || teachers.teacherSurname AS senderFullName " +
+            "FROM messages " +
+            "LEFT JOIN teachers ON teachers.profileId = messages.profileId AND teacherId = senderId " +
+            "LEFT JOIN metadata ON messageId = thingId AND thingType = "+TYPE_MESSAGE+" AND metadata.profileId = messages.profileId " +
+            "WHERE messageType = 0 AND notified = 0 " +
+            "ORDER BY addedDate DESC")
+    public abstract List<MessageFull> getReceivedNotNotifiedNow();
 }

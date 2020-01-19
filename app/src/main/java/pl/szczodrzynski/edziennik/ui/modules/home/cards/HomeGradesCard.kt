@@ -29,9 +29,9 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.*
-import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
+import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.CardHomeGradesBinding
 import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCard
@@ -121,7 +121,7 @@ class HomeGradesCard(
                             16 /*ellipsize width*/)) / 1.5f
 
             subject.grades1.onEach { grade ->
-                val gradeColor = when (App.getConfig().forProfile().grades.colorMode) {
+                val gradeColor = when (App.config.forProfile().grades.colorMode) {
                     Profile.COLOR_MODE_DEFAULT -> grade.color
                     else -> Colors.gradeToColor(grade)
                 }

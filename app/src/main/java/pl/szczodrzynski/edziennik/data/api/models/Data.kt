@@ -194,7 +194,6 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         if (profile == null)
             return // return on first login
 
-        profile.empty = false
         profile.userCode = generateUserCode()
 
         db.profileDao().add(profile)
@@ -292,21 +291,6 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             db.messageRecipientDao().addAll(messageRecipientList)
         if (messageRecipientIgnoreList.isNotEmpty())
             db.messageRecipientDao().addAllIgnore(messageRecipientIgnoreList)
-    }
-
-    fun notify(onSuccess: () -> Unit) {
-        if (profile == null) {
-            onSuccess()
-            return
-        }
-        try {
-            DataNotifications(this)
-            db.notificationDao().addAll(notifications)
-            onSuccess()
-        } catch (e: Exception) {
-            error(ApiError(TAG, EXCEPTION_NOTIFY)
-                    .withThrowable(e))
-        }
     }
 
     fun setSyncNext(endpointId: Int, syncIn: Long? = null, viewId: Int? = null, syncAt: Long? = null) {

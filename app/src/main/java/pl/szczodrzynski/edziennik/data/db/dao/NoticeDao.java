@@ -5,13 +5,13 @@
 package pl.szczodrzynski.edziennik.data.db.dao;
 
 import androidx.lifecycle.LiveData;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQuery;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RawQuery;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
@@ -69,4 +69,14 @@ public abstract class NoticeDao {
     public List<NoticeFull> getNotNotifiedNow(int profileId) {
         return getAllNow(profileId, "notified = 0");
     }
+
+    @Query("SELECT " +
+            "*, " +
+            "teachers.teacherName || ' ' || teachers.teacherSurname AS teacherFullName " +
+            "FROM notices " +
+            "LEFT JOIN teachers USING(profileId, teacherId) " +
+            "LEFT JOIN metadata ON noticeId = thingId AND thingType = "+TYPE_NOTICE+" AND metadata.profileId = notices.profileId " +
+            "WHERE notified = 0 " +
+            "ORDER BY addedDate DESC")
+    public abstract List<NoticeFull> getNotNotifiedNow();
 }

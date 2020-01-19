@@ -16,8 +16,8 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.data.db.entity.Announcement;
-import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull;
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata;
+import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull;
 
 import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ANNOUNCEMENT;
 
@@ -69,4 +69,14 @@ public abstract class AnnouncementDao {
     public List<AnnouncementFull> getNotNotifiedNow(int profileId) {
         return getAllNow(profileId, "notified = 0");
     }
+
+    @Query("SELECT " +
+            "*, " +
+            "teachers.teacherName || ' ' || teachers.teacherSurname AS teacherFullName " +
+            "FROM announcements " +
+            "LEFT JOIN teachers USING(profileId, teacherId) " +
+            "LEFT JOIN metadata ON announcementId = thingId AND thingType = "+TYPE_ANNOUNCEMENT+" AND metadata.profileId = announcements.profileId " +
+            "WHERE notified = 0 " +
+            "ORDER BY addedDate DESC")
+    public abstract List<AnnouncementFull> getNotNotifiedNow();
 }

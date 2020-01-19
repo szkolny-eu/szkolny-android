@@ -1,14 +1,14 @@
 package pl.szczodrzynski.edziennik.ui.modules.base;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.textfield.TextInputEditText;
@@ -100,7 +100,7 @@ public class DebugFragment extends Fragment {
                             forceType = "i";
                             parameter = parameter.substring(0, parameter.length()-1);
                         }
-                        SimpleObj obj = app.gson.fromJson("{\"value\":"+parameter+"}", SimpleObj.class);
+                        SimpleObj obj = app.getGson().fromJson("{\"value\":"+parameter+"}", SimpleObj.class);
                         Class type = obj.value.getClass();
                         Object value = obj.value;
                         if ("d".equals(forceType)) {
@@ -180,7 +180,7 @@ public class DebugFragment extends Fragment {
                 getByPath(app, target, path, true);
                 // set the value if specified
                 if (valueToSet != null) {
-                    targetField.set(target, app.gson.fromJson(valueToSet, targetField.getGenericType()));
+                    targetField.set(target, app.getGson().fromJson(valueToSet, targetField.getGenericType()));
                     targetField = null;
                 }
                 if (targetField != null) {
@@ -194,7 +194,7 @@ public class DebugFragment extends Fragment {
                 return Log.getStackTraceString(e);
             }
         }
-        return app.gson.toJson(target);
+        return app.getGson().toJson(target);
     }
 
     @Override
@@ -218,13 +218,13 @@ public class DebugFragment extends Fragment {
         getView().findViewById(R.id.debugAppconfig).setOnClickListener(v -> {
             JsonRecyclerView mRecyclerView = getView().findViewById(R.id.rv_json);
             // bind json
-            mRecyclerView.bindJson(new Gson().toJson(app.appConfig));
+            mRecyclerView.bindJson(new Gson().toJson(app.getConfig()));
             mRecyclerView.setTextSize(20);
         });
         getView().findViewById(R.id.debugAppprofile).setOnClickListener(v -> {
             JsonRecyclerView mRecyclerView = getView().findViewById(R.id.rv_json);
             // bind json
-            mRecyclerView.bindJson(new Gson().toJson(app.profile));
+            mRecyclerView.bindJson(new Gson().toJson(app.getProfile()));
             mRecyclerView.setTextSize(20);
         });
     }

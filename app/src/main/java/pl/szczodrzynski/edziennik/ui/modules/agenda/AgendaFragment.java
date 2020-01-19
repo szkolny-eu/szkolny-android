@@ -78,10 +78,10 @@ public class AgendaFragment extends Fragment {
             return null;
         app = (App) activity.getApplication();
         getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
-        if (app.profile == null)
+        if (app.getProfile() == null)
             return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
-        viewType = app.config.getUi().getAgendaViewType();
+        viewType = app.getConfig().forProfile().getUi().getAgendaViewType();
         if (viewType == AGENDA_DEFAULT) {
             b_default = DataBindingUtil.inflate(inflater, R.layout.fragment_agenda_default, container, false);
             return b_default.getRoot();
@@ -94,7 +94,7 @@ public class AgendaFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (app == null || app.profile == null || activity == null || (b_default == null && b_calendar == null) || !isAdded())
+        if (app == null || activity == null || b_default == null && b_calendar == null || !isAdded())
             return;
 
         activity.getBottomSheet().prependItems(
@@ -106,7 +106,7 @@ public class AgendaFragment extends Fragment {
                             activity.getBottomSheet().close();
                             new EventManualDialog(
                                     activity,
-                                    App.profileId,
+                                    App.Companion.getProfileId(),
                                     null,
                                     actualDate,
                                     null,
@@ -122,7 +122,7 @@ public class AgendaFragment extends Fragment {
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
                             viewType = viewType == AGENDA_DEFAULT ? AGENDA_CALENDAR : AGENDA_DEFAULT;
-                            app.config.getUi().setAgendaViewType(viewType);
+                            app.getConfig().forProfile().getUi().setAgendaViewType(viewType);
                             activity.reloadTarget();
                         }),
                 new BottomSheetSeparatorItem(true),
@@ -131,7 +131,7 @@ public class AgendaFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_EVENT, true));
+                            AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), TYPE_EVENT, true));
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                         })
         );
@@ -141,7 +141,7 @@ public class AgendaFragment extends Fragment {
         activity.getNavView().bottomBar.setFabIcon(CommunityMaterial.Icon2.cmd_plus);
         activity.getNavView().setFabOnClickListener(v -> new EventManualDialog(
                 activity,
-                App.profileId,
+                App.Companion.getProfileId(),
                 null,
                 actualDate,
                 null,
@@ -167,7 +167,7 @@ public class AgendaFragment extends Fragment {
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> AsyncTask.execute(() -> {
-            if (app == null || app.profile == null || activity == null || b_default == null || !isAdded())
+            if (app == null || activity == null || b_default == null || !isAdded())
                 return;
 
             List<CalendarEvent> eventList = new ArrayList<>();
@@ -193,8 +193,8 @@ public class AgendaFragment extends Fragment {
                 ));
             } TODO: Implement new timetable lesson changes */
 
-            if (app.profile.getStudentData("showTeacherAbsences", true)) {
-                List<TeacherAbsenceFull> teacherAbsenceList = app.db.teacherAbsenceDao().getAllFullNow(App.profileId);
+            if (app.getProfile().getStudentData("showTeacherAbsences", true)) {
+                List<TeacherAbsenceFull> teacherAbsenceList = App.db.teacherAbsenceDao().getAllFullNow(App.Companion.getProfileId());
                 List<TeacherAbsenceCounter> teacherAbsenceCounters = new ArrayList<>();
 
                 for (TeacherAbsenceFull absence : teacherAbsenceList) {
@@ -226,7 +226,7 @@ public class AgendaFragment extends Fragment {
                             Colors.legibleTextColor(0xffff1744),
                             startTime,
                             endTime,
-                            App.profileId,
+                            App.Companion.getProfileId(),
                             date,
                             counter.getTeacherAbsenceCount()
                     ));
@@ -234,7 +234,7 @@ public class AgendaFragment extends Fragment {
             }
 
 
-            List<EventFull> events = app.db.eventDao().getAllNow(App.profileId);
+            List<EventFull> events = App.db.eventDao().getAllNow(App.Companion.getProfileId());
             for (EventFull event : events) {
                 Calendar startTime = Calendar.getInstance();
                 Calendar endTime = Calendar.getInstance();
@@ -321,7 +321,7 @@ public class AgendaFragment extends Fragment {
                         actualDate = Date.fromCalendar(calendar);
                         int scrolledDate = actualDate.getValue();
                         if (unreadEventDates.contains(scrolledDate)) {
-                            AsyncTask.execute(() -> app.db.eventDao().setSeenByDate(App.profileId, Date.fromYmd(intToStr(scrolledDate)), true));
+                            AsyncTask.execute(() -> App.db.eventDao().setSeenByDate(App.Companion.getProfileId(), Date.fromYmd(intToStr(scrolledDate)), true));
                             unreadEventDates.remove((Integer) scrolledDate);
                         }
                     }
@@ -342,7 +342,7 @@ public class AgendaFragment extends Fragment {
                                 // new EventListDialogOld(activity).show(app, Date.fromCalendar(calendarEvent.getInstanceDay()));
                             new DayDialog(
                                     activity,
-                                    App.profileId,
+                                    App.Companion.getProfileId(),
                                     Date.fromCalendar(calendarEvent.getInstanceDay()),
                                     null,
                                     null
@@ -373,7 +373,7 @@ public class AgendaFragment extends Fragment {
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> AsyncTask.execute(() -> {
-            if (app == null || app.profile == null || activity == null || b_calendar == null || !isAdded())
+            if (app == null || activity == null || b_calendar == null || !isAdded())
                 return;
             Context c = getContext();
             Activity a = getActivity();
@@ -385,7 +385,7 @@ public class AgendaFragment extends Fragment {
 
             List<EventDay> eventList = new ArrayList<>();
 
-            List<EventFull> events = app.db.eventDao().getAllNow(App.profileId);
+            List<EventFull> events = App.db.eventDao().getAllNow(App.Companion.getProfileId());
             for (EventFull event : events) {
                 if (event.eventDate == null)
                     continue;
@@ -434,13 +434,13 @@ public class AgendaFragment extends Fragment {
                     Date dayDate = Date.fromCalendar(eventDay.getCalendar());
                     int scrolledDate = dayDate.getValue();
                     if (unreadEventDates.contains(scrolledDate)) {
-                        AsyncTask.execute(() -> app.db.eventDao().setSeenByDate(App.profileId, Date.fromYmd(intToStr(scrolledDate)), true));
+                        AsyncTask.execute(() -> App.db.eventDao().setSeenByDate(App.Companion.getProfileId(), Date.fromYmd(intToStr(scrolledDate)), true));
                         unreadEventDates.remove((Integer) scrolledDate);
                     }
 
                     new DayDialog(
                             activity,
-                            App.profileId,
+                            App.Companion.getProfileId(),
                             dayDate,
                             null,
                             null

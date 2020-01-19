@@ -32,19 +32,19 @@ public class Event {
     public String topic;
     @ColumnInfo(name = "eventColor")
     public int color = -1;
-    public static final int TYPE_UNDEFINED = -2;
-    public static final int TYPE_HOMEWORK = -1;
-    public static final int TYPE_DEFAULT = 0;
-    public static final int TYPE_EXAM = 1;
-    public static final int TYPE_SHORT_QUIZ = 2;
-    public static final int TYPE_ESSAY = 3;
-    public static final int TYPE_PROJECT = 4;
-    public static final int TYPE_PT_MEETING = 5;
-    public static final int TYPE_EXCURSION = 6;
-    public static final int TYPE_READING = 7;
-    public static final int TYPE_CLASS_EVENT = 8;
-    public static final int TYPE_INFORMATION = 9;
-    public static final int TYPE_TEACHER_ABSENCE = 10;
+    public static final long TYPE_UNDEFINED = -2;
+    public static final long TYPE_HOMEWORK = -1;
+    public static final long TYPE_DEFAULT = 0;
+    public static final long TYPE_EXAM = 1;
+    public static final long TYPE_SHORT_QUIZ = 2;
+    public static final long TYPE_ESSAY = 3;
+    public static final long TYPE_PROJECT = 4;
+    public static final long TYPE_PT_MEETING = 5;
+    public static final long TYPE_EXCURSION = 6;
+    public static final long TYPE_READING = 7;
+    public static final long TYPE_CLASS_EVENT = 8;
+    public static final long TYPE_INFORMATION = 9;
+    public static final long TYPE_TEACHER_ABSENCE = 10;
     public static final int COLOR_HOMEWORK = 0xff795548;
     public static final int COLOR_DEFAULT = 0xffffc107;
     public static final int COLOR_EXAM = 0xfff44336;
@@ -58,7 +58,7 @@ public class Event {
     public static final int COLOR_INFORMATION = 0xff039be5;
     public static final int COLOR_TEACHER_ABSENCE = 0xff039be5;
     @ColumnInfo(name = "eventType")
-    public int type = TYPE_DEFAULT;
+    public long type = TYPE_DEFAULT;
     @ColumnInfo(name = "eventAddedManually")
     public boolean addedManually;
     @ColumnInfo(name = "eventSharedBy")
@@ -76,7 +76,7 @@ public class Event {
     @Ignore
     public Event() {}
 
-    public Event(int profileId, long id, Date eventDate, @Nullable Time startTime, String topic, int color, int type, boolean addedManually, long teacherId, long subjectId, long teamId)
+    public Event(int profileId, long id, Date eventDate, @Nullable Time startTime, String topic, int color, long type, boolean addedManually, long teacherId, long subjectId, long teamId)
     {
         this.profileId = profileId;
         this.id = id;
@@ -97,8 +97,8 @@ public class Event {
     }
 
     @Override
-    public Event clone() throws CloneNotSupportedException {
-        return new Event(
+    public Event clone() {
+        Event event = new Event(
                 profileId,
                 id,
                 eventDate.clone(),
@@ -111,6 +111,10 @@ public class Event {
                 teacherId,
                 teamId
         );
+        event.sharedBy = sharedBy;
+        event.sharedByName = sharedByName;
+        event.blacklisted = blacklisted;
+        return event;
     }
 
     @Override

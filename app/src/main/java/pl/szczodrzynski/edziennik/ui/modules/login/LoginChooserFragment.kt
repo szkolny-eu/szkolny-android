@@ -56,7 +56,7 @@ class LoginChooserFragment : Fragment() {
                 }
             }
             else -> {
-                // there is no profiles
+                // there are no profiles
                 b.cancelButton.visibility = View.GONE
             }
         }
