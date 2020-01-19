@@ -1024,3 +1024,11 @@ fun OkHttpClient.Builder.installHttpsSupport(context: Context) {
         }
     }
 }
+
+fun CharSequence.containsAll(list: List<CharSequence>, ignoreCase: Boolean = false): Boolean {
+    for (i in list) {
+        if (!contains(i, ignoreCase))
+            return false
+    }
+    return true
+}

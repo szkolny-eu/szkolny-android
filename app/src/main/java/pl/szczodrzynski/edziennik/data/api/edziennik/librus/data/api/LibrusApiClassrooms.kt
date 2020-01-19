@@ -25,9 +25,10 @@ class LibrusApiClassrooms(override val data: DataLibrus,
                 val id = classroom.getLong("Id") ?: return@forEach
                 val name = classroom.getString("Name")?.toLowerCase(Locale.getDefault()) ?: ""
                 val symbol = classroom.getString("Symbol")?.toLowerCase(Locale.getDefault()) ?: ""
-                val nameShort = name.split(" ").onEach { it[0] }.joinToString()
+                val nameShort = name.fixWhiteSpaces().split(" ").onEach { it[0] }.joinToString()
+                val symbolParts = symbol.fixWhiteSpaces().split(" ")
 
-                val friendlyName = if (name != symbol && !name.contains(symbol) && !nameShort.contains(symbol)) {
+                val friendlyName = if (name != symbol && !name.contains(symbol) && !name.containsAll(symbolParts) && !nameShort.contains(symbol)) {
                     classroom.getString("Symbol") + " " + classroom.getString("Name")
                 }
                 else {
