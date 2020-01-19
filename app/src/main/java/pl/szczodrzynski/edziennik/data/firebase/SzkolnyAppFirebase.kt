@@ -29,14 +29,33 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         message.data.getLong("eventId") ?: return@run,
                         message.data.getString("message") ?: return@run
                 )
+                "serverMessage",
+                "unpairedBrowser" -> serverMessage(
+                        message.data.getString("title") ?: "",
+                        message.data.getString("message") ?: ""
+                )
             }
         }
+    }
+
+    private fun serverMessage(title: String, message: String) {
+        val notification = Notification(
+                id = System.currentTimeMillis(),
+                title = title,
+                text = message,
+                type = Notification.TYPE_SERVER_MESSAGE,
+                profileId = null,
+                profileName = title
+        ).addExtra("action", "serverMessage").addExtra("serverMessageTitle", title).addExtra("serverMessageText", message)
+        app.db.notificationDao().add(notification)
+        PostNotifications(app, listOf(notification))
     }
 
     private fun sharedEvent(teamCode: String, jsonStr: String, message: String) {
         val json = JsonParser().parse(jsonStr).asJsonObject
         val teams = app.db.teamDao().allNow
-        val eventTypes = app.db.eventTypeDao().allNow
+        // not used, as the server provides a sharing message
+        //val eventTypes = app.db.eventTypeDao().allNow
 
         val events = mutableListOf<Event>()
         val metadataList = mutableListOf<Metadata>()

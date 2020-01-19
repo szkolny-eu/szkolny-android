@@ -49,6 +49,7 @@ import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
@@ -694,6 +695,22 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             d(TAG, "    \"$key\": "+extras.get(key))
         }
         d(TAG, "}")
+
+        if (extras?.containsKey("action") == true) {
+            val handled = when (extras.getString("action")) {
+                "serverMessage" -> {
+                    ServerMessageDialog(
+                            this,
+                            extras.getString("serverMessageTitle") ?: getString(R.string.app_name),
+                            extras.getString("serverMessageText") ?: ""
+                    )
+                    true
+                }
+                else -> false
+            }
+            if (handled)
+                return
+        }
 
         if (extras?.containsKey("reloadProfileId") == true) {
             val reloadProfileId = extras.getInt("reloadProfileId", -1)

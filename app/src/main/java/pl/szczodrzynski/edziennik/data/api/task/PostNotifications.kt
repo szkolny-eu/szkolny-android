@@ -9,9 +9,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.util.forEach
 import androidx.core.util.set
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_SERVER_MESSAGE
 import pl.szczodrzynski.edziennik.data.db.entity.Notification as AppNotification
 
-class PostNotifications(val app: App, nList: MutableList<AppNotification>) {
+class PostNotifications(val app: App, nList: List<AppNotification>) {
     companion object {
         private const val TAG = "PostNotifications"
     }
@@ -124,7 +125,7 @@ class PostNotifications(val app: App, nList: MutableList<AppNotification>) {
                 NotificationCompat.Builder(app, app.notifications.dataKey)
                         .setContentTitle(it.profileName ?: app.getString(R.string.app_name))
                         .setContentText(it.text)
-                        .setSubText(it.title)
+                        .setSubText(if (it.type == TYPE_SERVER_MESSAGE) null else it.title)
                         .setTicker("${it.profileName}: ${it.title}")
                         .setSmallIcon(R.drawable.ic_notification)
                         .setStyle(NotificationCompat.BigTextStyle()

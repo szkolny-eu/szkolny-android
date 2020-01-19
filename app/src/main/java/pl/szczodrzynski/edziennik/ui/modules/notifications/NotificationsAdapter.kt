@@ -53,7 +53,7 @@ class NotificationsAdapter(
 
             //Log.d(TAG, "Got date "+intent.getLongExtra("timetableDate", 0));
 
-            if (notification.profileId != -1 && notification.profileId != app.profile.id && context is Activity) {
+            if (notification.profileId != null && notification.profileId != -1 && notification.profileId != app.profile.id && context is Activity) {
                 Toast.makeText(app, app.getString(R.string.toast_changing_profile), Toast.LENGTH_LONG).show()
             }
             app.sendBroadcast(intent)
