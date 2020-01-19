@@ -6,11 +6,13 @@ package pl.szczodrzynski.edziennik.data.firebase
 
 import com.google.gson.JsonParser
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.task.PostNotifications
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -34,6 +36,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         message.data.getString("title") ?: "",
                         message.data.getString("message") ?: ""
                 )
+                "appUpdate" -> UpdateWorker.runNow(app, app.gson.fromJson(message.data.get("update"), Update::class.java))
             }
         }
     }

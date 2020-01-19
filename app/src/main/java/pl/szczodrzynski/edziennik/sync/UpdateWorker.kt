@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.utils.Utils
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
@@ -73,16 +74,19 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
             WorkManager.getInstance(app).cancelAllWorkByTag(TAG)
         }
 
-        fun runNow(app: App) {
+        fun runNow(app: App, overrideUpdate: Update? = null) {
             try {
-                val api = SzkolnyApi(app)
-                val response = api.getUpdate("beta")
-                if (response?.success != true)
-                    return
-                val updates = response.data
-                if (updates?.isNotEmpty() != true)
-                    return
-                val update = updates[0]
+                val update = if (overrideUpdate == null) {
+                    val api = SzkolnyApi(app)
+                    val response = api.getUpdate("beta")
+                    if (response?.success != true)
+                        return
+                    val updates = response.data
+                    if (updates?.isNotEmpty() != true)
+                        return
+                    updates[0]
+                }
+                else overrideUpdate
 
                 app.config.update = update
 
