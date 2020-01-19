@@ -25,6 +25,7 @@
     <string name="error_101" translatable="false">ERROR_LOGIN_DATA_MISSING</string>
     <string name="error_102" translatable="false">ERROR_LOGIN_DATA_INVALID</string>
     <string name="error_105" translatable="false">ERROR_PROFILE_MISSING</string>
+    <string name="error_106" translatable="false">ERROR_PROFILE_ARCHIVED</string>
     <string name="error_110" translatable="false">ERROR_INVALID_LOGIN_MODE</string>
     <string name="error_111" translatable="false">ERROR_LOGIN_METHOD_NOT_SATISFIED</string>
     <string name="error_112" translatable="false">ERROR_NOT_IMPLEMENTED</string>
@@ -190,6 +191,7 @@
     <string name="error_101_reason">Dane logowania niekompletne</string>
     <string name="error_102_reason">Nieprawidłowe dane logowania</string>
     <string name="error_105_reason">Profil nie został ustawiony</string>
+    <string name="error_106_reason">Profil jest archiwalny - synchronizacja profilu z poprzedniego roku szkolnego nie jest możliwa</string>
     <string name="error_110_reason">Nieprawidłowy sposób logowania</string>
     <string name="error_111_reason">Nie można wywołać metody logowania</string>
     <string name="error_112_reason">Nie zaimplementowano</string>
@@ -283,26 +285,26 @@
     <string name="error_341_reason">Vulcan: błąd żądania, zgłoś błąd</string>
     <string name="error_342_reason">Vulcan: inny błąd, wyślij zgłoszenie</string>
 
-    <string name="error_401_reason">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN</string>
-    <string name="error_402_reason">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME</string>
-    <string name="error_403_reason">ERROR_LOGIN_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED</string>
-    <string name="error_404_reason">ERROR_LOGIN_IDZIENNIK_WEB_MAINTENANCE</string>
-    <string name="error_405_reason">ERROR_LOGIN_IDZIENNIK_WEB_SERVER_ERROR</string>
-    <string name="error_410_reason">ERROR_LOGIN_IDZIENNIK_WEB_OTHER</string>
-    <string name="error_411_reason">ERROR_LOGIN_IDZIENNIK_WEB_API_NO_ACCESS</string>
-    <string name="error_420_reason">ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION</string>
-    <string name="error_421_reason">ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH</string>
-    <string name="error_422_reason">ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER</string>
-    <string name="error_430_reason">ERROR_IDZIENNIK_WEB_ACCESS_DENIED</string>
-    <string name="error_431_reason">ERROR_IDZIENNIK_WEB_OTHER</string>
-    <string name="error_432_reason">ERROR_IDZIENNIK_WEB_MAINTENANCE</string>
-    <string name="error_433_reason">ERROR_IDZIENNIK_WEB_SERVER_ERROR</string>
-    <string name="error_434_reason">ERROR_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED</string>
-    <string name="error_440_reason">ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR</string>
-    <string name="error_441_reason">ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA</string>
-    <string name="error_450_reason">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
-    <string name="error_451_reason">ERROR_IDZIENNIK_API_OTHER</string>
-    <string name="error_452_reason">ERROR_IDZIENNIK_API_NO_REGISTER</string>
+    <string name="error_401_reason">Nieprawidłowe dane logowania</string>
+    <string name="error_402_reason">Nieprawidłowa nazwa szkoły</string>
+    <string name="error_403_reason">iDziennik: wymagana zmiana hasła. Zaloguj się na stronie iDziennika, by dokonać zmiany hasła.</string>
+    <string name="error_404_reason">Chwilowa przerwa techniczna iDziennika, lub inny problem z serwerem</string>
+    <string name="error_405_reason">Chwilowa przerwa techniczna iDziennika, lub inny problem z serwerem (serwer zwrócił błąd)</string>
+    <string name="error_410_reason">iDziennik: inny błąd logowania</string>
+    <string name="error_411_reason">iDziennik: brak dostępu do API</string>
+    <string name="error_420_reason">iDziennik: nie znaleziono sesji</string>
+    <string name="error_421_reason">iDziennik: nie znaleziono tokenu autoryzacji</string>
+    <string name="error_422_reason">iDziennik: nie znaleziono tokenu API</string>
+    <string name="error_430_reason">iDziennik: brak dostępu. Zaloguj się ponownie.</string>
+    <string name="error_431_reason">iDziennik: inny błąd synchronizacji</string>
+    <string name="error_432_reason">Chwilowa przerwa techniczna iDziennika, lub inny problem z serwerem</string>
+    <string name="error_433_reason">Chwilowa przerwa techniczna iDziennika, lub inny problem z serwerem (serwer zwrócił błąd)</string>
+    <string name="error_434_reason">iDziennik: wymagana zmiana hasła. Zaloguj się na stronie iDziennika, by dokonać zmiany hasła.</string>
+    <string name="error_440_reason">iDziennik: nie znaleziono numeru roku szkolnego. Uczeń może nie być aktywny w aktualnym roku szkolnym.</string>
+    <string name="error_441_reason">iDziennik: serwer nie zwrócił żadnych danych</string>
+    <string name="error_450_reason">Brak dostępu do API iDziennika</string>
+    <string name="error_451_reason">Inny błąd API iDziennika</string>
+    <string name="error_452_reason">iDziennik: nie znaleziono ID dziennika. Zgłoś błąd programiście.</string>
     <string name="error_453_reason">Twoje konto nie ma uprawnień do wysyłania wiadomości (bądź wystąpił inny błąd serwera iDziennika)</string>
 
     <string name="error_501_reason">Błędny email lub hasło</string>
@@ -314,7 +316,7 @@
 
     <string name="error_801_reason">ERROR_TEMPLATE_WEB_OTHER</string>
 
-    <string name="error_900_reason">EXCEPTION_API_TASK</string>
+    <string name="error_900_reason">Błąd synchronizacji. Upewnij się, że masz połączenie z internetem, a następnie zgłoś błąd.</string>
     <string name="error_901_reason">EXCEPTION_LOGIN_LIBRUS_API_TOKEN</string>
     <string name="error_902_reason">EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN</string>
     <string name="error_903_reason">EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN</string>

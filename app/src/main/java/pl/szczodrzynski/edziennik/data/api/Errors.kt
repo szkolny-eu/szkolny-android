@@ -51,6 +51,7 @@ const val ERROR_REQUEST_FAILURE_SSL_ERROR                   = 63
 const val ERROR_RESPONSE_EMPTY                              = 100
 const val ERROR_LOGIN_DATA_MISSING                          = 101
 const val ERROR_PROFILE_MISSING                             = 105
+const val ERROR_PROFILE_ARCHIVED                            = 106
 const val ERROR_INVALID_LOGIN_MODE                          = 110
 const val ERROR_LOGIN_METHOD_NOT_SATISFIED                  = 111
 const val ERROR_NOT_IMPLEMENTED                             = 112

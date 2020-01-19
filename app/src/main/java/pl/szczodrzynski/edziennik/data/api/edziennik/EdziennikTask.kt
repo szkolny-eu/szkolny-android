@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.template.Template
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.Vulcan
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
+import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Message
@@ -62,6 +63,10 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     private var edziennikInterface: EdziennikInterface? = null
 
     internal fun run(app: App, taskCallback: EdziennikCallback) {
+        if (profile?.archived == true) {
+            taskCallback.onError(ApiError(TAG, ERROR_PROFILE_ARCHIVED))
+            return
+        }
         edziennikInterface = when (loginStore.type) {
             LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_MOBIDZIENNIK -> Mobidziennik(app, profile, loginStore, taskCallback)
