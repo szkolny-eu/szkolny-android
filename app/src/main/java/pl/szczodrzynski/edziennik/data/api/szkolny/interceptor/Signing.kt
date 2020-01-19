@@ -46,6 +46,6 @@ object Signing {
 
     /*fun provideKey(param1: String, param2: Long): ByteArray {*/
     fun pleaseStopRightNow(param1: String, param2: Long): ByteArray {
-        return "$param1.MTIzNDU2Nzg5MDKSFwSgcV===.$param2".sha256()
+        return "$param1.MTIzNDU2Nzg5MDzsOS3K08===.$param2".sha256()
     }
 }
