@@ -57,9 +57,11 @@ class PostNotifications(val app: App, nList: MutableList<AppNotification>) {
         return summaryTexts.concat(", ")
     }
 
-    init {
-        val notificationManager = app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    init { run {
         val count = nList.size
+        if (count == 0)
+            return@run
+        val notificationManager = app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val summaryCounts = SparseIntArray()
 
         val newNotificationsText = app.resources.getQuantityString(R.plurals.notification_count_format, count, count)
@@ -165,5 +167,5 @@ class PostNotifications(val app: App, nList: MutableList<AppNotification>) {
                 notificationManager.notify(app.notifications.dataId, summary)
             }
         }
-    }
+    }}
 }
