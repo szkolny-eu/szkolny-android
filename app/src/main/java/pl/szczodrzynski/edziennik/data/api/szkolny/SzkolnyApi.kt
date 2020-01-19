@@ -190,6 +190,7 @@ class SzkolnyApi(val app: App) {
     fun errorReport(errors: List<ErrorReportRequest.Error>): ApiResponse<Nothing>? {
         return api.errorReport(ErrorReportRequest(
                 deviceId = app.deviceId,
+                appVersion = BuildConfig.VERSION_NAME,
                 errors = errors
         )).execute().body()
     }

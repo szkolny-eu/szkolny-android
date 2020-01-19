@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.szkolny.request
 
 data class ErrorReportRequest(
         val deviceId: String,
+        val appVersion: String,
         val errors: List<Error>
 ) {
     data class Error(
