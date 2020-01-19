@@ -93,7 +93,7 @@ class ApiError(val tag: String, var errorCode: Int) {
                 stackTrace = throwable?.stackTraceString,
                 request = requestString,
                 response = responseString,
-                apiResponse = apiResponse,
+                apiResponse = apiResponse ?: response?.parserErrorBody,
                 isCritical = isCritical
         )
     }
