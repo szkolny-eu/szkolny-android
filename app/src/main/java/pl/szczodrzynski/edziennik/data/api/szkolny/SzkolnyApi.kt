@@ -57,7 +57,7 @@ class SzkolnyApi(val app: App) {
 
     private fun getDevice() = run {
         val config = app.config
-        val device = ApiRequest.Device(
+        val device = Device(
                 osType = "Android",
                 osVersion = Build.VERSION.RELEASE,
                 hardware = "${Build.MANUFACTURER} ${Build.MODEL}",
