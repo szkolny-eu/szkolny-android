@@ -5,10 +5,12 @@
 package pl.szczodrzynski.edziennik.data.api.szkolny.request
 
 data class ErrorReportRequest(
-        val deviceId: String,
+        override val deviceId: String,
+        override val device: Device? = null,
+
         val appVersion: String,
         val errors: List<Error>
-) {
+) : ApiRequest(deviceId, device) {
     data class Error(
             val id: Long,
             val tag: String,

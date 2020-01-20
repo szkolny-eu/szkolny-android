@@ -55,32 +55,34 @@ class SzkolnyApi(val app: App) {
         api = retrofit.create()
     }
 
+    private fun getDevice() = run {
+        val config = app.config
+        val device = ApiRequest.Device(
+                osType = "Android",
+                osVersion = Build.VERSION.RELEASE,
+                hardware = "${Build.MANUFACTURER} ${Build.MODEL}",
+                pushToken = app.config.sync.tokenApp,
+                appVersion = BuildConfig.VERSION_NAME,
+                appType = BuildConfig.BUILD_TYPE,
+                appVersionCode = BuildConfig.VERSION_CODE,
+                syncInterval = app.config.sync.interval
+        )
+        device.toString().md5().let {
+            if (it == config.hash)
+                null
+            else {
+                config.hash = it
+                device
+            }
+        }
+    }
+
     fun getEvents(profiles: List<Profile>, notifications: List<Notification>, blacklistedIds: List<Long>): List<EventFull> {
         val teams = app.db.teamDao().allNow
 
         val response = api.serverSync(ServerSyncRequest(
                 deviceId = app.deviceId,
-                device = run {
-                    val config = app.config
-                    val device = ServerSyncRequest.Device(
-                            osType = "Android",
-                            osVersion = Build.VERSION.RELEASE,
-                            hardware = "${Build.MANUFACTURER} ${Build.MODEL}",
-                            pushToken = app.config.sync.tokenApp,
-                            appVersion = BuildConfig.VERSION_NAME,
-                            appType = BuildConfig.BUILD_TYPE,
-                            appVersionCode = BuildConfig.VERSION_CODE,
-                            syncInterval = app.config.sync.interval
-                    )
-                    device.toString().md5().let {
-                        if (it == config.hash)
-                            null
-                        else {
-                            config.hash = it
-                            device
-                        }
-                    }
-                },
+                device = getDevice(),
                 userCodes = profiles.map { it.userCode },
                 users = profiles.mapNotNull { profile ->
                     val config = app.config.getFor(profile.id)
@@ -131,6 +133,7 @@ class SzkolnyApi(val app: App) {
 
         return api.shareEvent(EventShareRequest(
                 deviceId = app.deviceId,
+                device = getDevice(),
                 sharedByName = event.sharedByName,
                 shareTeamCode = team.code,
                 event = event
@@ -142,6 +145,7 @@ class SzkolnyApi(val app: App) {
 
         return api.shareEvent(EventShareRequest(
                 deviceId = app.deviceId,
+                device = getDevice(),
                 sharedByName = event.sharedByName,
                 unshareTeamCode = team.code,
                 eventId = event.id
@@ -154,8 +158,9 @@ class SzkolnyApi(val app: App) {
 
     fun pairBrowser(browserId: String?, pairToken: String?, onError: ((List<ApiResponse.Error>) -> Unit)? = null): List<WebPushResponse.Browser> {
         val response = api.webPush(WebPushRequest(
-                action = "pairBrowser",
                 deviceId = app.deviceId,
+                device = getDevice(),
+                action = "pairBrowser",
                 browserId = browserId,
                 pairToken = pairToken
         )).execute().body()
@@ -170,8 +175,9 @@ class SzkolnyApi(val app: App) {
 
     fun listBrowsers(onError: ((List<ApiResponse.Error>) -> Unit)? = null): List<WebPushResponse.Browser> {
         val response = api.webPush(WebPushRequest(
-                action = "listBrowsers",
-                deviceId = app.deviceId
+                deviceId = app.deviceId,
+                device = getDevice(),
+                action = "listBrowsers"
         )).execute().body()
 
         return response?.data?.browsers ?: emptyList()
@@ -179,8 +185,9 @@ class SzkolnyApi(val app: App) {
 
     fun unpairBrowser(browserId: String): List<WebPushResponse.Browser> {
         val response = api.webPush(WebPushRequest(
-                action = "unpairBrowser",
                 deviceId = app.deviceId,
+                device = getDevice(),
+                action = "unpairBrowser",
                 browserId = browserId
         )).execute().body()
 
@@ -190,6 +197,7 @@ class SzkolnyApi(val app: App) {
     fun errorReport(errors: List<ErrorReportRequest.Error>): ApiResponse<Nothing>? {
         return api.errorReport(ErrorReportRequest(
                 deviceId = app.deviceId,
+                device = getDevice(),
                 appVersion = BuildConfig.VERSION_NAME,
                 errors = errors
         )).execute().body()
@@ -198,6 +206,7 @@ class SzkolnyApi(val app: App) {
     fun unregisterAppUser(userCode: String): ApiResponse<Nothing>? {
         return api.appUser(AppUserRequest(
                 deviceId = app.deviceId,
+                device = getDevice(),
                 userCode = userCode
         )).execute().body()
     }

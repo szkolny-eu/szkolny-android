@@ -7,9 +7,10 @@ package pl.szczodrzynski.edziennik.data.api.szkolny.request
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 
 data class EventShareRequest (
+        override val deviceId: String,
+        override val device: Device? = null,
 
         val action: String = "event",
-        val deviceId: String,
 
         val sharedByName: String,
         val shareTeamCode: String? = null,
@@ -18,4 +19,4 @@ data class EventShareRequest (
 
         val eventId: Long? = null,
         val event: EventFull? = null
-)
+) : ApiRequest(deviceId, device)

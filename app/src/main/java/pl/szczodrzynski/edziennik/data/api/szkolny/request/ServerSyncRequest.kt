@@ -5,26 +5,14 @@
 package pl.szczodrzynski.edziennik.data.api.szkolny.request
 
 data class ServerSyncRequest(
-
-        val deviceId: String,
-        val device: Device? = null,
+        override val deviceId: String,
+        override val device: Device? = null,
 
         val userCodes: List<String>,
         val users: List<User>? = null,
 
         val notifications: List<Notification>? = null
-) {
-    data class Device(
-            val osType: String,
-            val osVersion: String,
-            val hardware: String,
-            val pushToken: String?,
-            val appVersion: String,
-            val appType: String,
-            val appVersionCode: Int,
-            val syncInterval: Int
-    )
-
+) : ApiRequest(deviceId, device) {
     data class User(
             val userCode: String,
             val studentName: String,

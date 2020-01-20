@@ -5,10 +5,11 @@
 package pl.szczodrzynski.edziennik.data.api.szkolny.request
 
 data class WebPushRequest(
+        override val deviceId: String,
+        override val device: Device? = null,
 
         val action: String,
-        val deviceId: String,
 
         val browserId: String? = null,
         val pairToken: String? = null
-)
+) : ApiRequest(deviceId, device)

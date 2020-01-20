@@ -5,8 +5,9 @@
 package pl.szczodrzynski.edziennik.data.api.szkolny.request
 
 data class AppUserRequest(
-        val action: String = "unregister",
+        override val deviceId: String,
+        override val device: Device? = null,
 
-        val deviceId: String,
+        val action: String = "unregister",
         val userCode: String
-)
+) : ApiRequest(deviceId, device)
