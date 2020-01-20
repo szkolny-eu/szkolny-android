@@ -29,7 +29,7 @@ import kotlin.math.roundToInt
 class ApiService : Service() {
     companion object {
         const val TAG = "ApiService"
-        const val NOTIFICATION_API_CHANNEL_ID = "pl.szczodrzynski.edziennik.GET_DATA"
+        const val NOTIFICATION_API_CHANNEL_ID = "pl.szczodrzynski.edziennik.SYNC"
         fun start(context: Context) {
             context.startService(Intent(context, ApiService::class.java))
         }
@@ -60,7 +60,7 @@ class ApiService : Service() {
     private var taskProgress = -1f
     private var taskProgressText: String? = null
 
-    private val notification by lazy { EdziennikNotification(this) }
+    private val notification by lazy { EdziennikNotification(app) }
 
     private var lastEventTime = System.currentTimeMillis()
     private var taskCancelTries = 0

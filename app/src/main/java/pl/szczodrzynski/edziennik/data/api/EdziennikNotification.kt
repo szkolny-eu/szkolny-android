@@ -11,19 +11,20 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_MIN
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import kotlin.math.roundToInt
 
 
-class EdziennikNotification(val context: Context) {
+class EdziennikNotification(val app: App) {
     companion object {
         const val NOTIFICATION_ID = 20191001
     }
 
-    private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
+    private val notificationManager by lazy { app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
     private val notificationBuilder: NotificationCompat.Builder by lazy {
-        NotificationCompat.Builder(context, ApiService.NOTIFICATION_API_CHANNEL_ID)
+        NotificationCompat.Builder(app, ApiService.NOTIFICATION_API_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setPriority(PRIORITY_MIN)
                 .setOngoing(true)
@@ -41,34 +42,34 @@ class EdziennikNotification(val context: Context) {
         val intent = Intent("pl.szczodrzynski.edziennik.SZKOLNY_MAIN")
         intent.putExtra("task", "TaskCancelRequest")
         intent.putExtra("taskId", taskId)
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT) as PendingIntent
+        return PendingIntent.getBroadcast(app, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT) as PendingIntent
     }
     private val closePendingIntent: PendingIntent
         get() {
             val intent = Intent("pl.szczodrzynski.edziennik.SZKOLNY_MAIN")
             intent.putExtra("task", "ServiceCloseRequest")
-            return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT) as PendingIntent
+            return PendingIntent.getBroadcast(app, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT) as PendingIntent
         }
 
     private fun errorCountText(): String? {
         var result = ""
         if (criticalErrorCount > 0) {
-            result += context.resources.getQuantityString(R.plurals.critical_errors_format, criticalErrorCount, criticalErrorCount)
+            result += app.resources.getQuantityString(R.plurals.critical_errors_format, criticalErrorCount, criticalErrorCount)
         }
         if (criticalErrorCount > 0 && errorCount > 0) {
             result += ", "
         }
         if (errorCount > 0) {
-            result += context.resources.getQuantityString(R.plurals.normal_errors_format, errorCount, errorCount)
+            result += app.resources.getQuantityString(R.plurals.normal_errors_format, errorCount, errorCount)
         }
         return if (result.isEmpty()) null else result
     }
 
     fun setIdle(): EdziennikNotification {
-        notificationBuilder.setContentTitle(context.getString(R.string.edziennik_notification_api_title))
+        notificationBuilder.setContentTitle(app.getString(R.string.edziennik_notification_api_title))
         notificationBuilder.setProgress(0, 0, false)
         notificationBuilder.apply {
-            val str = context.getString(R.string.edziennik_notification_api_text)
+            val str = app.getString(R.string.edziennik_notification_api_text)
             setStyle(NotificationCompat.BigTextStyle().bigText(str))
             setContentText(str)
         }
@@ -82,7 +83,7 @@ class EdziennikNotification(val context: Context) {
     }
     fun setCriticalError(): EdziennikNotification {
         criticalErrorCount++
-        notificationBuilder.setContentTitle(context.getString(R.string.edziennik_notification_api_error_title))
+        notificationBuilder.setContentTitle(app.getString(R.string.edziennik_notification_api_error_title))
         notificationBuilder.setProgress(0, 0, false)
         notificationBuilder.apply {
             val str = errorCountText()
@@ -119,7 +120,7 @@ class EdziennikNotification(val context: Context) {
         notificationBuilder.addAction(
                 NotificationCompat.Action(
                         R.drawable.ic_notification,
-                        context.getString(R.string.edziennik_notification_api_close),
+                        app.getString(R.string.edziennik_notification_api_close),
                         closePendingIntent
                 ))
         return this
@@ -129,7 +130,7 @@ class EdziennikNotification(val context: Context) {
         notificationBuilder.addAction(
                 NotificationCompat.Action(
                         R.drawable.ic_notification,
-                        context.getString(R.string.edziennik_notification_api_cancel),
+                        app.getString(R.string.edziennik_notification_api_cancel),
                         cancelPendingIntent(taskId)
                 ))
     }
@@ -137,7 +138,7 @@ class EdziennikNotification(val context: Context) {
     fun post() {
         if (serviceClosed)
             return
-        notificationManager.notify(NOTIFICATION_ID, notification)
+        notificationManager.notify(app.notifications.syncId, notification)
     }
 
 }
