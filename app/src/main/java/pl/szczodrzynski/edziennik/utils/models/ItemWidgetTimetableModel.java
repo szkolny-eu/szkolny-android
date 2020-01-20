@@ -1,5 +1,7 @@
 package pl.szczodrzynski.edziennik.utils.models;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,9 @@ public class ItemWidgetTimetableModel {
     public int profileId;
     public long lessonId;
     public Date lessonDate;
+    @NonNull
     public Time startTime;
+    @NonNull
     public Time endTime;
     public boolean lessonPassed;
     public boolean lessonCurrent;

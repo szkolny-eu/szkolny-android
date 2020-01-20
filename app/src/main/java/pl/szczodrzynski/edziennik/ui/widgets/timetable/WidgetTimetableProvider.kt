@@ -29,6 +29,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Event.TYPE_HOMEWORK
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_NO_LESSONS
 import pl.szczodrzynski.edziennik.ui.widgets.LessonDialogActivity
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -77,7 +78,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
         super.onReceive(context, intent)
     }
 
-    private val ignoreCancelled = true
+    private val ignoreCancelled = false
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         val thisWidget = ComponentName(context, WidgetTimetableProvider::class.java)
@@ -280,6 +281,8 @@ class WidgetTimetableProvider : AppWidgetProvider() {
             val events = app.db.eventDao().getAllByDateNow(profile.id, timetableDate)?.filterNotNull() ?: emptyList()
 
             lessons.forEachIndexed { pos, lesson ->
+                if (lesson.type == TYPE_NO_LESSONS)
+                    return@forEachIndexed
                 val model = ItemWidgetTimetableModel()
 
                 model.bigStyle = widgetConfig.bigStyle
@@ -289,8 +292,8 @@ class WidgetTimetableProvider : AppWidgetProvider() {
 
                 model.lessonId = lesson.id
                 model.lessonDate = timetableDate
-                model.startTime = lesson.displayStartTime
-                model.endTime = lesson.displayEndTime
+                model.startTime = lesson.displayStartTime ?: return@forEachIndexed
+                model.endTime = lesson.displayEndTime ?: return@forEachIndexed
 
                 // check if the lesson has already passed or it's currently in progress
                 if (lesson.displayDate == today) {
