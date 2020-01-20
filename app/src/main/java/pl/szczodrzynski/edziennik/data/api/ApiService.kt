@@ -301,7 +301,7 @@ class ApiService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         d(TAG, "Foreground service onStartCommand")
-        startForeground(EdziennikNotification.NOTIFICATION_ID, notification.notification)
+        startForeground(app.notifications.syncId, notification.notification)
         return START_NOT_STICKY
     }
 

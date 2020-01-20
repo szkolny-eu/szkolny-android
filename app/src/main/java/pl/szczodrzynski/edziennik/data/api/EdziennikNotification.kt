@@ -17,10 +17,6 @@ import kotlin.math.roundToInt
 
 
 class EdziennikNotification(val app: App) {
-    companion object {
-        const val NOTIFICATION_ID = 20191001
-    }
-
     private val notificationManager by lazy { app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
     private val notificationBuilder: NotificationCompat.Builder by lazy {
