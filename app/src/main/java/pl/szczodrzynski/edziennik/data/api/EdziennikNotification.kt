@@ -23,9 +23,6 @@ class EdziennikNotification(val app: App) {
         NotificationCompat.Builder(app, ApiService.NOTIFICATION_API_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setPriority(PRIORITY_MIN)
-                .setDefaults(0)
-                .setSound(null)
-                .setVibrate(longArrayOf(0))
                 .setOngoing(true)
                 .setLocalOnly(true)
     }
