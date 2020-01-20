@@ -5,6 +5,10 @@
 package pl.szczodrzynski.edziennik.data.firebase
 
 import com.google.gson.JsonParser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.task.PostNotifications
@@ -15,8 +19,17 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import kotlin.coroutines.CoroutineContext
 
-class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message: FirebaseService.Message) {
+class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message: FirebaseService.Message) : CoroutineScope {
+    companion object {
+        private const val TAG = "SzkolnyAppFirebase"
+    }
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
     init {
         run {
             val type = message.data.getString("type") ?: return@run
@@ -36,7 +49,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         message.data.getString("title") ?: "",
                         message.data.getString("message") ?: ""
                 )
-                "appUpdate" -> UpdateWorker.runNow(app, app.gson.fromJson(message.data.get("update"), Update::class.java))
+                "appUpdate" -> launch { UpdateWorker.runNow(app, app.gson.fromJson(message.data.get("update"), Update::class.java)) }
             }
         }
     }

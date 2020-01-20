@@ -13,10 +13,7 @@ import android.text.Html
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.work.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
@@ -75,23 +72,23 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
             WorkManager.getInstance(app).cancelAllWorkByTag(TAG)
         }
 
-        fun runNow(app: App, overrideUpdate: Update? = null) {
+        suspend fun runNow(app: App, overrideUpdate: Update? = null) {
             try {
-                val update = if (overrideUpdate == null) {
-                    val api = SzkolnyApi(app)
-                    val response = api.getUpdate("beta")
-                    if (response?.success != true) {
-                        Toast.makeText(app, app.getString(R.string.notification_cant_check_update), Toast.LENGTH_SHORT).show()
-                        return
-                    }
-                    val updates = response.data
-                    if (updates?.isNotEmpty() != true) {
-                        Toast.makeText(app, app.getString(R.string.notification_no_update), Toast.LENGTH_SHORT).show()
-                        return
-                    }
-                    updates[0]
-                }
-                else overrideUpdate
+                val update = overrideUpdate
+                        ?: run {
+                            val response = withContext(Dispatchers.Default) { SzkolnyApi(app).getUpdate("beta") }
+                            if (response?.success != true) {
+                                Toast.makeText(app, app.getString(R.string.notification_cant_check_update), Toast.LENGTH_SHORT).show()
+                                return@run null
+                            }
+                            val updates = response.data
+                            if (updates?.isNotEmpty() != true) {
+                                app.config.update = null
+                                Toast.makeText(app, app.getString(R.string.notification_no_update), Toast.LENGTH_SHORT).show()
+                                return@run null
+                            }
+                            updates[0]
+                        } ?: return
 
                 app.config.update = update
 
@@ -123,7 +120,7 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Default
+        get() = job + Dispatchers.Main
 
     override fun doWork(): Result {
         Utils.d(TAG, "Running worker ID ${params.id}")
@@ -138,5 +135,16 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
 
         rescheduleNext(this.context)
         return Result.success()
+    }
+
+    class JavaWrapper(app: App) : CoroutineScope {
+        private val job = Job()
+        override val coroutineContext: CoroutineContext
+            get() = job + Dispatchers.Main
+        init {
+            launch {
+                runNow(app)
+            }
+        }
     }
 }

@@ -1211,7 +1211,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .show();
                         } else {
                             AsyncTask.execute(() -> {
-                                UpdateWorker.Companion.runNow(app, null);
+                                new UpdateWorker.JavaWrapper(app);
                             });
                         }
                     })
