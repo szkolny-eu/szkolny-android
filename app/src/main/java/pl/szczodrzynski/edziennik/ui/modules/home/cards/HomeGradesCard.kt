@@ -69,7 +69,7 @@ class HomeGradesCard(
 
         val sevenDaysAgo = System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000
 
-        app.db.gradeDao().getAllFromDate(profile.id, profile.currentSemester, sevenDaysAgo).observe(fragment, Observer {
+        app.db.gradeDao().getAllFromDate(profile.id, sevenDaysAgo).observe(fragment, Observer {
             grades.apply {
                 clear()
                 addAll(it)

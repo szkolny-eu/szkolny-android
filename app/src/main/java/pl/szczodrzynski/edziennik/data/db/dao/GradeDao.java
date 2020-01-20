@@ -152,7 +152,7 @@ public abstract class GradeDao {
         }
     }
 
-    public LiveData<List<GradeFull>> getAllFromDate(int profileId, int semester, long date) {
-        return getAllWhere(profileId, "gradeSemester = " + semester + "  AND addedDate > " + date);
+    public LiveData<List<GradeFull>> getAllFromDate(int profileId, long date) {
+        return getAllWhere(profileId, "addedDate > " + date);
     }
 }
