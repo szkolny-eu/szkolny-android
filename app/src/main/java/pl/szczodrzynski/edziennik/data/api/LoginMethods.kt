@@ -90,7 +90,7 @@ val mobidziennikLoginMethods = listOf(
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED },
 
         LoginMethod(LOGIN_TYPE_MOBIDZIENNIK, LOGIN_METHOD_MOBIDZIENNIK_API2, MobidziennikLoginApi2::class.java)
-                .withIsPossible { profile, _ -> profile?.hasStudentData("email") == true }
+                .withIsPossible { profile, _ -> profile?.getStudentData("email", null) != null }
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
 )
 

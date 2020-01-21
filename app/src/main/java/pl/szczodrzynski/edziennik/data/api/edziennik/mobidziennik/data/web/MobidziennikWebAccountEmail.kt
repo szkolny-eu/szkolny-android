@@ -1,0 +1,31 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-1-21.
+ */
+
+package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web
+
+import pl.szczodrzynski.edziennik.DAY
+import pl.szczodrzynski.edziennik.data.api.Regexes
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
+import pl.szczodrzynski.edziennik.get
+
+class MobidziennikWebAccountEmail(override val data: DataMobidziennik,
+                              val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+    companion object {
+        private const val TAG = "MobidziennikWebAccountEmail"
+    }
+
+    init {
+        webGet(TAG, "/dziennik/edytujprofil") { text ->
+            MobidziennikLuckyNumberExtractor(data, text)
+
+            val email = Regexes.MOBIDZIENNIK_ACCOUNT_EMAIL.find(text)?.let { it[1] }
+            data.loginEmail = email
+
+            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL, if (email == null) 3*DAY else 7*DAY)
+            onSuccess()
+        }
+    }
+}

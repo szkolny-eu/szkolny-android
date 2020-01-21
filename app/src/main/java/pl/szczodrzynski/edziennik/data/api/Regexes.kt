@@ -56,7 +56,11 @@ object Regexes {
     }
 
     val MOBIDZIENNIK_MESSAGE_RECIPIENTS_JSON by lazy {
-        """odbiorcy: (\[.+?\]),${'$'}""".toRegex(RegexOption.MULTILINE)
+        """odbiorcy: (\[.+?]),${'$'}""".toRegex(RegexOption.MULTILINE)
+    }
+
+    val MOBIDZIENNIK_ACCOUNT_EMAIL by lazy {
+        """name="email" value="(.+?@.+?\..+?)"""".toRegex(DOT_MATCHES_ALL)
     }
 
 

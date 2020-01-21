@@ -1166,4 +1166,5 @@
     <string name="notification_type_removed_shared_event">Usunięto wydarzenie</string>
     <string name="notification_click_to_see_all">Kliknij, aby zobaczyć wszystkie powiadomienia</string>
     <string name="notification_cant_check_update">Nie udało się sprawdzić aktualizacji</string>
+    <string name="edziennik_progress_endpoint_account_details">Pobieranie szczegółów konta...</string>
 </resources>
