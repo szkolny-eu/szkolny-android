@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kacper Ziubryniewicz 2020-1-20
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/menu_grades_sort_mode"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/sortGradesByDateRadio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dialog_grades_config_sort_by_date"/>
+
+                <RadioButton
+                    android:id="@+id/sortGradesBySubjectRadio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dialog_grades_config_sort_by_subject"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/menu_grades_color_mode"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/gradeColorFromERegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dialog_grades_config_color_from_eregister"/>
+
+                <RadioButton
+                    android:id="@+id/gradeColorByValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dialog_grades_config_color_by_value"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/menu_grades_average_mode"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/gradeAverageMode4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_register_avg_mode_4"/>
+
+                <RadioButton
+                    android:id="@+id/gradeAverageMode0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_register_avg_mode_0"/>
+
+                <RadioButton
+                    android:id="@+id/gradeAverageMode1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_register_avg_mode_1"/>
+
+                <RadioButton
+                    android:id="@+id/gradeAverageMode2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_register_avg_mode_2"/>
+
+                <RadioButton
+                    android:id="@+id/gradeAverageMode3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_register_avg_mode_3"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/other"/>
+
+            <CheckBox
+                android:id="@+id/dontCountZeroToAverage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_register_dont_count_zero_text"/>
+        </LinearLayout>
+    </ScrollView>
+</layout>

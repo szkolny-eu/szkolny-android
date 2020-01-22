@@ -27,6 +27,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade;
 import pl.szczodrzynski.edziennik.data.db.entity.Subject;
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentGradesBinding;
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
@@ -127,64 +128,11 @@ public class GradesFragment extends Fragment {
                             showAverages();
                         }),
                 new BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_grades_color_mode)
-                        .withIcon(CommunityMaterial.Icon2.cmd_palette_outline)
+                        .withTitle(R.string.menu_grades_config)
+                        .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            ProfileConfigGrades config = app.getConfig().getFor(App.Companion.getProfileId()).getGrades();
-                            new MaterialDialog.Builder(activity)
-                                    .title(R.string.dialog_grades_color_mode_title)
-                                    .items(R.array.dialog_grades_color_modes)
-                                    .itemsCallbackSingleChoice(config.getColorMode(), (dialog, view1, which, text) -> {
-                                        config.setColorMode(which);
-                                        activity.reloadTarget();
-                                        return true;
-                                    })
-                                    .show();
-                        }),
-                new BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_grades_sort_mode)
-                        .withIcon(CommunityMaterial.Icon2.cmd_sort)
-                        .withOnClickListener(v3 -> {
-                            activity.getBottomSheet().close();
-                            new MaterialDialog.Builder(activity)
-                                    .title(R.string.dialog_grades_sort_title)
-                                    .items(R.array.dialog_grades_sort_modes)
-                                    .itemsCallbackSingleChoice(app.getConfig().getGrades().getOrderBy(), (dialog, view1, which, text) -> {
-                                        app.getConfig().getGrades().setOrderBy(which);
-                                        activity.reloadTarget();
-                                        return true;
-                                    })
-                                    .show();
-                        }),
-                new BottomSheetPrimaryItem(true)
-                        .withTitle(R.string.menu_grades_average_mode)
-                        .withDescription(getRegisterCardAverageModeSubText())
-                        .withIcon(CommunityMaterial.Icon2.cmd_scale_balance)
-                        .withOnClickListener(v3 -> {
-                            activity.getBottomSheet().close();
-                            List<CharSequence> modeNames = new ArrayList<>();
-                            modeNames.add(getString(R.string.settings_register_avg_mode_4));
-                            modeNames.add(getString(R.string.settings_register_avg_mode_0));
-                            modeNames.add(getString(R.string.settings_register_avg_mode_1));
-                            modeNames.add(getString(R.string.settings_register_avg_mode_2));
-                            modeNames.add(getString(R.string.settings_register_avg_mode_3));
-                            List<Integer> modeIds = new ArrayList<>();
-                            modeIds.add(YEAR_ALL_GRADES);
-                            modeIds.add(YEAR_1_AVG_2_AVG);
-                            modeIds.add(YEAR_1_SEM_2_AVG);
-                            modeIds.add(YEAR_1_AVG_2_SEM);
-                            modeIds.add(YEAR_1_SEM_2_SEM);
-                            new MaterialDialog.Builder(activity)
-                                    .title(getString(R.string.settings_register_avg_mode_dialog_title))
-                                    .content(getString(R.string.settings_register_avg_mode_dialog_text))
-                                    .items(modeNames)
-                                    .itemsCallbackSingleChoice(modeIds.indexOf(App.Companion.getConfig().forProfile().getGrades().getYearAverageMode()), (dialog, itemView, which, text) -> {
-                                        App.Companion.getConfig().forProfile().getGrades().setYearAverageMode(modeIds.get(which));
-                                        activity.reloadTarget();
-                                        return true;
-                                    })
-                                    .show();
+                            new GradesConfigDialog(activity, null, null);
                         }),
                 new BottomSheetSeparatorItem(true),
                 new BottomSheetPrimaryItem(true)

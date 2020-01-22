@@ -25,6 +25,7 @@ import android.util.Base64.encodeToString
 import android.view.View
 import android.widget.CheckBox
 import android.widget.CompoundButton
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.annotation.*
 import androidx.core.app.ActivityCompat
@@ -1032,3 +1033,6 @@ fun CharSequence.containsAll(list: List<CharSequence>, ignoreCase: Boolean = fal
     }
     return true
 }
+
+fun RadioButton.setOnSelectedListener(listener: (buttonView: CompoundButton) -> Unit)
+        = setOnCheckedChangeListener { buttonView, isChecked -> if (isChecked) listener(buttonView) }

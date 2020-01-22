@@ -938,7 +938,7 @@
     <string name="timetable_lesson_shifted_same_day">Lesson shifted to %s</string>
     <string name="timetable_no_lessons_title">No lessons this day</string>
     <string name="timetable_no_subject_name">(no name)</string>
-    <string name="timetable_no_timetable_sync">Synchronize the timetable</string>
+    <string name="timetable_no_timetable_sync">Synchronize</string>
     <string name="timetable_no_timetable_text">Timetable for this week hasn\'t been synchronized yet</string>
     <string name="timetable_no_timetable_title">No timetable</string>
     <string name="timetable_no_timetable_week">for week %s</string>
@@ -953,4 +953,10 @@
     <string name="widget_timetable_no_timetable">Timetable isn\'t synchronized. Open the app and synchronize the timetable.</string>
     <string name="widget_timetable_short_no_lessons">No lessons for the next 7 days.</string>
     <string name="widget_timetable_short_no_timetable">Timetable isn\'t synchronized.</string>
+    <string name="dialog_grades_config_sort_by_date">From newest</string>
+    <string name="dialog_grades_config_sort_by_subject">By subject name</string>
+    <string name="dialog_grades_config_color_from_eregister">From e-register</string>
+    <string name="dialog_grades_config_color_by_value">By grade\'s value</string>
+    <string name="other">Other</string>
+    <string name="menu_grades_config">Grades view config</string>
 </resources>

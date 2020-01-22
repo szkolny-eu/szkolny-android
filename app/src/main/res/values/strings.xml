@@ -1167,4 +1167,10 @@
     <string name="notification_click_to_see_all">Kliknij, aby zobaczyć wszystkie powiadomienia</string>
     <string name="notification_cant_check_update">Nie udało się sprawdzić aktualizacji</string>
     <string name="edziennik_progress_endpoint_account_details">Pobieranie szczegółów konta...</string>
+    <string name="dialog_grades_config_sort_by_date">Od najnowszych</string>
+    <string name="dialog_grades_config_sort_by_subject">Wg nazwy przedmiotu</string>
+    <string name="dialog_grades_config_color_from_eregister">Wg e-dziennika</string>
+    <string name="dialog_grades_config_color_by_value">Wg wartości oceny</string>
+    <string name="other">Inne</string>
+    <string name="menu_grades_config">Ustawienia widoku ocen</string>
 </resources>
