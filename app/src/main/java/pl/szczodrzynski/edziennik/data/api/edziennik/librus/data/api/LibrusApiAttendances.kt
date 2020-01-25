@@ -9,10 +9,9 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_ATTENDANCES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusApiAttendances(override val data: DataLibrus,
@@ -33,11 +32,12 @@ class LibrusApiAttendances(override val data: DataLibrus,
             val attendances = json.getJsonArray("Attendances")?.asJsonObjectList()
 
             attendances?.forEach { attendance ->
-                val id = Utils.strToInt((attendance.getString("Id") ?: return@forEach)
+                val id = ((attendance.getString("Id") ?: return@forEach)
                         .replace("[^\\d.]".toRegex(), "")).toLong()
                 val lessonId = attendance.getJsonObject("Lesson")?.getLong("Id") ?: -1
                 val lessonNo = attendance.getInt("LessonNo") ?: return@forEach
                 val lessonDate = Date.fromY_m_d(attendance.getString("Date"))
+                val teacherId = attendance.getJsonObject("AddedBy")?.getLong("Id")
                 val semester = attendance.getInt("Semester") ?: return@forEach
                 val type = attendance.getJsonObject("Type")?.getLong("Id") ?: return@forEach
                 val typeObject = data.attendanceTypes.get(type)
@@ -52,7 +52,7 @@ class LibrusApiAttendances(override val data: DataLibrus,
                 val attendanceObject = Attendance(
                         profileId,
                         id,
-                        lesson?.teacherId ?: -1,
+                        teacherId ?: lesson?.teacherId ?: -1,
                         lesson?.subjectId ?: -1,
                         semester,
                         topic,
