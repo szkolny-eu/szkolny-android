@@ -132,7 +132,7 @@ public class GradesFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            new GradesConfigDialog(activity, null, null);
+                            new GradesConfigDialog(activity, true, null, null);
                         }),
                 new BottomSheetSeparatorItem(true),
                 new BottomSheetPrimaryItem(true)

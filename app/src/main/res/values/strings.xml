@@ -1172,5 +1172,5 @@
     <string name="dialog_grades_config_color_from_eregister">Wg e-dziennika</string>
     <string name="dialog_grades_config_color_by_value">Wg wartości oceny</string>
     <string name="other">Inne</string>
-    <string name="menu_grades_config">Ustawienia widoku ocen</string>
+    <string name="menu_grades_config">Ustawienia ocen</string>
 </resources>

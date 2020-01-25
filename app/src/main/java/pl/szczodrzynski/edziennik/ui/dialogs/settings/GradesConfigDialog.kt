@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.setOnSelectedListener
 
 class GradesConfigDialog(
         val activity: AppCompatActivity,
+        private val reloadOnDismiss: Boolean = true,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
 ) {
@@ -39,9 +40,10 @@ class GradesConfigDialog(
         dialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.menu_grades_config)
                 .setView(b.root)
-                .setPositiveButton(R.string.ok) { dialog, _ ->
-                    dialog.dismiss()
-                    (activity as? MainActivity)?.reloadTarget()
+                .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+                .setOnDismissListener {
+                    onDismissListener?.invoke(TAG)
+                    if (reloadOnDismiss) (activity as? MainActivity)?.reloadTarget()
                 }
                 .create()
         initView()

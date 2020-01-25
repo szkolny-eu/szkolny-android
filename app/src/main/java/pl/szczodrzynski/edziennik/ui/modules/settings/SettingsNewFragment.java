@@ -52,6 +52,7 @@ import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.sync.UpdateWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
@@ -858,47 +859,20 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             return true;
         });
     }
-    private MaterialAboutActionItem registerCardAverageModeItem;
+
     private MaterialAboutSwitchItem registerCardAllowRegistrationItem;
     private MaterialAboutActionItem registerCardBellSyncItem;
     private ArrayList<MaterialAboutItem> getRegisterCard(boolean expandedOnly) {
         ArrayList<MaterialAboutItem> items = new ArrayList<>();
         if (!expandedOnly) {
-
-            registerCardAverageModeItem = new MaterialAboutActionItem(
-                    getString(R.string.settings_register_avg_mode_text),
-                    getRegisterCardAverageModeSubText(),
+            items.add(new MaterialAboutActionItem(
+                    getString(R.string.menu_grades_config),
+                    null,
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_scale_balance)
+                            .icon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
-            );
-            registerCardAverageModeItem.setOnClickAction(() -> {
-                List<CharSequence> modeNames = new ArrayList<>();
-                modeNames.add(getString(R.string.settings_register_avg_mode_4));
-                modeNames.add(getString(R.string.settings_register_avg_mode_0));
-                modeNames.add(getString(R.string.settings_register_avg_mode_1));
-                modeNames.add(getString(R.string.settings_register_avg_mode_2));
-                modeNames.add(getString(R.string.settings_register_avg_mode_3));
-                List<Integer> modeIds = new ArrayList<>();
-                modeIds.add(YEAR_ALL_GRADES);
-                modeIds.add(YEAR_1_AVG_2_AVG);
-                modeIds.add(YEAR_1_SEM_2_AVG);
-                modeIds.add(YEAR_1_AVG_2_SEM);
-                modeIds.add(YEAR_1_SEM_2_SEM);
-                new MaterialDialog.Builder(activity)
-                        .title(getString(R.string.settings_register_avg_mode_dialog_title))
-                        .content(getString(R.string.settings_register_avg_mode_dialog_text))
-                        .items(modeNames)
-                        .itemsCallbackSingleChoice(modeIds.indexOf(app.getConfig().forProfile().getGrades().getYearAverageMode()), (dialog, itemView, which, text) -> {
-                            app.getConfig().forProfile().getGrades().setYearAverageMode(modeIds.get(which));
-                            registerCardAverageModeItem.setSubText(getRegisterCardAverageModeSubText());
-                            refreshMaterialAboutList();
-                            return true;
-                        })
-                        .show();
-            });
-            items.add(registerCardAverageModeItem);
+            ).setOnClickAction(() -> new GradesConfigDialog(activity, false, null, null)));
 
             registerCardAllowRegistrationItem = new MaterialAboutSwitchItem(
                     getString(R.string.settings_register_allow_registration_text),
@@ -960,7 +934,6 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             items.add(getMoreItem(() -> addCardItems(CARD_REGISTER, getRegisterCard(true))));
         }
         else {
-
             registerCardBellSyncItem = new MaterialAboutActionItem(
                     getString(R.string.settings_register_bell_sync_text),
                     getRegisterCardBellSyncSubText(),
@@ -1029,22 +1002,6 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .show();
             });
             items.add(registerCardBellSyncItem);
-
-            items.add(
-                    new MaterialAboutSwitchItem(
-                            getString(R.string.settings_register_dont_count_zero_text),
-                            null,
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_numeric_0_box_outline)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
-                    )
-                            .setChecked(!app.getConfig().getFor(app.getProfileId()).getGrades().getCountZeroToAvg())
-                            .setOnChangeAction((isChecked, tag) -> {
-                                app.getConfig().getFor(app.getProfileId()).getGrades().setCountZeroToAvg(!isChecked);
-                                return true;
-                            })
-            );
 
             items.add(
                     new MaterialAboutSwitchItem(
