@@ -17,5 +17,5 @@ class TeacherAbsenceEventRenderer : EventRenderer<TeacherAbsenceEvent>() {
         changeCount?.text = event.teacherAbsenceCount.toString()
     }
 
-    override fun getEventLayout(): Int { return R.layout.agenda_event_teacher_absence }
+    override fun getEventLayout(): Int = R.layout.agenda_event_teacher_absence
 }

@@ -1,16 +1,16 @@
-package pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence
+package pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange
 
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.util.*
 
-class TeacherAbsenceCounter (
-    val teacherAbsenceDate: Date,
-    var teacherAbsenceCount: Int = 0
+class LessonChangeCounter(
+        val lessonChangeDate: Date,
+        var lessonChangeCount: Int
 ) {
     val startTime: Calendar
         get() = Calendar.getInstance().apply {
-            set(teacherAbsenceDate.year, teacherAbsenceDate.month - 1, teacherAbsenceDate.day, 10, 0, 0)
-        }
+                set(lessonChangeDate.year, lessonChangeDate.month - 1, lessonChangeDate.day, 10, 0, 0)
+            }
 
     val endTime: Calendar
         get() = Calendar.getInstance().apply {

@@ -10,6 +10,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
 
+import java.util.Calendar;
+
 import pl.szczodrzynski.edziennik.data.db.full.EventFull;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
@@ -94,6 +96,27 @@ public class Event {
     @Ignore
     public EventFull withMetadata(Metadata metadata) {
         return new EventFull(this, metadata);
+    }
+
+    @Ignore
+    public Calendar getStartTimeCalendar() {
+        Calendar c = Calendar.getInstance();
+        c.set(
+                eventDate.year,
+                eventDate.month - 1,
+                eventDate.day,
+                (startTime == null) ? 0 : startTime.hour,
+                (startTime == null) ? 0 : startTime.minute,
+                (startTime == null) ? 0 : startTime.second
+        );
+        return c;
+    }
+
+    @Ignore
+    public Calendar getEndTimeCalendar() {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(getStartTimeCalendar().getTimeInMillis() + (45 * 60 * 1000));
+        return c;
     }
 
     @Override

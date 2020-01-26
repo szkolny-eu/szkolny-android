@@ -46,24 +46,33 @@ interface TimetableDao {
 
     @Query("DELETE FROM timetable WHERE profileId = :profileId AND type != -1 AND ((type != 3 AND date >= :dateFrom) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom))")
     fun clearFromDate(profileId: Int, dateFrom: Date)
+
     @Query("DELETE FROM timetable WHERE profileId = :profileId AND type != -1 AND ((type != 3 AND date <= :dateTo) OR ((type = 3 OR type = 1) AND oldDate <= :dateTo))")
     fun clearToDate(profileId: Int, dateTo: Date)
+
     @Query("DELETE FROM timetable WHERE profileId = :profileId AND type != -1 AND ((type != 3 AND date >= :dateFrom AND date <= :dateTo) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom AND oldDate <= :dateTo))")
     fun clearBetweenDates(profileId: Int, dateFrom: Date, dateTo: Date)
 
     @Query("""
         $QUERY
-        WHERE timetable.profileId = :profileId AND ((type != 3 AND date = :date) OR ((type = 3 OR type = 1) AND oldDate = :date))
+        WHERE timetable.profileId = :profileId AND type != -1 AND type != 0
         ORDER BY id, type
     """)
-    fun getForDate(profileId: Int, date: Date) : LiveData<List<LessonFull>>
+    fun getAllChangesNow(profileId: Int): List<Lesson>
 
     @Query("""
         $QUERY
         WHERE timetable.profileId = :profileId AND ((type != 3 AND date = :date) OR ((type = 3 OR type = 1) AND oldDate = :date))
         ORDER BY id, type
     """)
-    fun getForDateNow(profileId: Int, date: Date) : List<LessonFull>
+    fun getForDate(profileId: Int, date: Date): LiveData<List<LessonFull>>
+
+    @Query("""
+        $QUERY
+        WHERE timetable.profileId = :profileId AND ((type != 3 AND date = :date) OR ((type = 3 OR type = 1) AND oldDate = :date))
+        ORDER BY id, type
+    """)
+    fun getForDateNow(profileId: Int, date: Date): List<LessonFull>
 
     @Query("""
         $QUERY
@@ -71,7 +80,7 @@ interface TimetableDao {
         ORDER BY id, type
         LIMIT 1
     """)
-    fun getNextWithSubject(profileId: Int, today: Date, subjectId: Long) : LiveData<LessonFull?>
+    fun getNextWithSubject(profileId: Int, today: Date, subjectId: Long): LiveData<LessonFull?>
 
     @Query("""
         $QUERY
@@ -86,21 +95,21 @@ interface TimetableDao {
         WHERE (type != 3 AND date >= :dateFrom AND date <= :dateTo) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom AND oldDate <= :dateTo)
         ORDER BY profileId, id, type
     """)
-    fun getBetweenDatesNow(dateFrom: Date, dateTo: Date) : List<LessonFull>
+    fun getBetweenDatesNow(dateFrom: Date, dateTo: Date): List<LessonFull>
 
     @Query("""
         $QUERY
         WHERE (type != 3 AND date >= :dateFrom AND date <= :dateTo) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom AND oldDate <= :dateTo)
         ORDER BY profileId, id, type
     """)
-    fun getBetweenDates(dateFrom: Date, dateTo: Date) : LiveData<List<LessonFull>>
+    fun getBetweenDates(dateFrom: Date, dateTo: Date): LiveData<List<LessonFull>>
 
     @Query("""
         $QUERY
         WHERE timetable.profileId = :profileId AND timetable.id = :lessonId
         ORDER BY id, type
     """)
-    fun getByIdNow(profileId: Int, lessonId: Long) : LessonFull?
+    fun getByIdNow(profileId: Int, lessonId: Long): LessonFull?
 
     @Query("""
         $QUERY

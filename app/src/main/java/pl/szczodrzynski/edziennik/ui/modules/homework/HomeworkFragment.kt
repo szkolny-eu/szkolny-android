@@ -37,8 +37,6 @@ class HomeworkFragment : Fragment() {
             return null
         app = activity.application as App
         context!!.theme.applyStyle(Themes.appTheme, true)
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false)
         // activity, context and profile is valid
         b = FragmentHomeworkBinding.inflate(inflater)
         b.refreshLayout.setParent(activity.swipeRefreshLayout)
