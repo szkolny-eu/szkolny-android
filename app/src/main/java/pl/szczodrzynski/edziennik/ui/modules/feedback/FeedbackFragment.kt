@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,9 @@ import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class FeedbackFragment : Fragment(), CoroutineScope {
+    companion object {
+        private const val TAG = "FeedbackFragment"
+    }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
@@ -60,6 +64,8 @@ class FeedbackFragment : Fragment(), CoroutineScope {
         context!!.theme.applyStyle(Themes.appTheme, true)
         // activity, context and profile is valid
         b = FragmentFeedbackBinding.inflate(inflater)
+        // prevent doubled received messages on enter
+        EventBus.getDefault().removeStickyEvent(FeedbackMessageEvent::class.java)
         return b.root
     }
 
@@ -97,7 +103,7 @@ class FeedbackFragment : Fragment(), CoroutineScope {
             val messages = withContext(Dispatchers.Default) { app.db.feedbackMessageDao().allWithCountNow }
             val popupMenu = PopupMenu(activity, b.targetDeviceDropDown)
             messages.forEachIndexed { index, m ->
-                popupMenu.menu.add(0, index, index, "${m.senderName} ${m.deviceName} (${m.count})")
+                popupMenu.menu.add(0, index, index, "${m.senderName} (${m.deviceId}) - ${m.deviceName}")
             }
             popupMenu.setOnMenuItemClickListener { item ->
                 b.targetDeviceDropDown.setText(item.title)
@@ -166,9 +172,16 @@ class FeedbackFragment : Fragment(), CoroutineScope {
             }
 
             if (isDev) {
-                messages.firstOrNull()?.let {
+                messages.firstOrNull { it.received }?.let {
                     currentDeviceId = it.deviceId
-                    b.targetDeviceDropDown.setText("${it.senderName} ${it.deviceName}")
+                    b.targetDeviceDropDown.setText("${it.senderName} (${it.deviceId}) - ${it.deviceName}")
+                }
+                // handle notification intent
+                arguments?.getString("feedbackMessageDeviceId")?.let { deviceId ->
+                    currentDeviceId = deviceId
+                    messages.firstOrNull { it.received && it.deviceId == deviceId }?.let {
+                        b.targetDeviceDropDown.setText("${it.senderName} (${it.deviceId}) - ${it.deviceName}")
+                    }
                 }
                 b.chatLayout.visibility = View.VISIBLE
                 b.inputLayout.visibility = View.GONE
@@ -190,21 +203,24 @@ class FeedbackFragment : Fragment(), CoroutineScope {
     }
 
     inner class User(val id: Int, val userName: String, val image: String?) : IChatUser {
-        override fun getIcon(): Bitmap? {
+        private val bitmap by lazy {
             if (image == null)
-                return BitmapFactory.decodeResource(activity.resources, R.drawable.profile_)
-            return Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888).also { bmp ->
-                launch {
-                    Coil.load(activity, image) {
-                        target {
-                            val canvas = Canvas(bmp)
-                            it.setBounds(0, 0, bmp.width, bmp.height)
-                            it.draw(canvas)
+                BitmapFactory.decodeResource(activity.resources, R.drawable.profile_)
+            else
+                Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888).also { bmp ->
+                    launch {
+                        Log.d(TAG, "Created image for $userName")
+                        Coil.load(activity, image) {
+                            target {
+                                val canvas = Canvas(bmp)
+                                it.setBounds(0, 0, bmp.width, bmp.height)
+                                it.draw(canvas)
+                            }
                         }
                     }
                 }
-            }
         }
+        override fun getIcon() = bitmap
 
         override fun getId() = id.toString()
         override fun getName() = userName

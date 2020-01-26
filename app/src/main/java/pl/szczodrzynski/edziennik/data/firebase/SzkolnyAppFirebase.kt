@@ -48,14 +48,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                 "appUpdate" -> launch { UpdateWorker.runNow(app, app.gson.fromJson(message.data.getString("update"), Update::class.java)) }
                 "feedbackMessage" -> launch {
                     val message = app.gson.fromJson(message.data.getString("message"), FeedbackMessage::class.java)
-                    if (message.deviceId == app.deviceId) {
-                        message.deviceId = null
-                        message.deviceName = null
-                    }
-                    withContext(Dispatchers.Default) {
-                        app.db.feedbackMessageDao().add(message)
-                    }
-                    EventBus.getDefault().postSticky(FeedbackMessageEvent(message))
+                    feedbackMessage(message)
                 }
             }
         }
@@ -72,6 +65,27 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
         ).addExtra("action", "serverMessage").addExtra("serverMessageTitle", title).addExtra("serverMessageText", message)
         app.db.notificationDao().add(notification)
         PostNotifications(app, listOf(notification))
+    }
+
+    private suspend fun feedbackMessage(message: FeedbackMessage) {
+        if (message.deviceId == app.deviceId) {
+            message.deviceId = null
+            message.deviceName = null
+        }
+        withContext(Dispatchers.Default) {
+            app.db.feedbackMessageDao().add(message)
+            val notification = Notification(
+                    id = System.currentTimeMillis(),
+                    title = "Wiadomość od ${message.senderName}",
+                    text = message.text,
+                    type = Notification.TYPE_FEEDBACK_MESSAGE,
+                    profileId = null,
+                    profileName = "Wiadomość od ${message.senderName}"
+            ).addExtra("action", "feedbackMessage").addExtra("feedbackMessageDeviceId", message.deviceId)
+            app.db.notificationDao().add(notification)
+            PostNotifications(app, listOf(notification))
+        }
+        EventBus.getDefault().postSticky(FeedbackMessageEvent(message))
     }
 
     private fun sharedEvent(teamCode: String, jsonStr: String, message: String) {

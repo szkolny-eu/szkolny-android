@@ -696,6 +696,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         d(TAG, "}")
 
+        var intentProfileId = -1
+        var intentTargetId = -1
+
         if (extras?.containsKey("action") == true) {
             val handled = when (extras.getString("action")) {
                 "serverMessage" -> {
@@ -705,6 +708,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                             extras.getString("serverMessageText") ?: ""
                     )
                     true
+                }
+                "feedbackMessage" -> {
+                    intentTargetId = TARGET_FEEDBACK
+                    false
                 }
                 else -> false
             }
@@ -721,17 +728,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
-        var intentProfileId = -1
-        var intentTargetId = -1
-
-        if (extras?.containsKey("profileId") == true) {
+        if (extras?.getInt("profileId", -1) != -1) {
             intentProfileId = extras.getInt("profileId", -1)
-            extras.remove("profileId")
+            extras?.remove("profileId")
         }
 
-        if (extras?.containsKey("fragmentId") == true) {
+        if (extras?.getInt("fragmentId", -1) != -1) {
             intentTargetId = extras.getInt("fragmentId", -1)
-            extras.remove("fragmentId")
+            extras?.remove("fragmentId")
         }
 
         /*if (intentTargetId == -1 && navController.currentDestination?.id == R.id.loadingFragment) {
