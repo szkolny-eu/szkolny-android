@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
@@ -213,5 +214,15 @@ class SzkolnyApi(val app: App) {
 
     fun getUpdate(channel: String): ApiResponse<List<Update>>? {
         return api.updates(channel).execute().body()
+    }
+
+    fun sendFeedbackMessage(senderName: String?, targetDeviceId: String?, text: String): FeedbackMessage? {
+        return api.feedbackMessage(FeedbackMessageRequest(
+                deviceId = app.deviceId,
+                device = getDevice(),
+                senderName = senderName,
+                targetDeviceId = targetDeviceId,
+                text = text
+        )).execute().body()?.data?.message
     }
 }

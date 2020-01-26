@@ -5,17 +5,13 @@
 package pl.szczodrzynski.edziennik.data.firebase
 
 import com.google.gson.JsonParser
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.events.FeedbackMessageEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.task.PostNotifications
-import pl.szczodrzynski.edziennik.data.db.entity.Event
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Notification
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -49,7 +45,18 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         message.data.getString("title") ?: "",
                         message.data.getString("message") ?: ""
                 )
-                "appUpdate" -> launch { UpdateWorker.runNow(app, app.gson.fromJson(message.data.get("update"), Update::class.java)) }
+                "appUpdate" -> launch { UpdateWorker.runNow(app, app.gson.fromJson(message.data.getString("update"), Update::class.java)) }
+                "feedbackMessage" -> launch {
+                    val message = app.gson.fromJson(message.data.getString("message"), FeedbackMessage::class.java)
+                    if (message.deviceId == app.deviceId) {
+                        message.deviceId = null
+                        message.deviceName = null
+                    }
+                    withContext(Dispatchers.Default) {
+                        app.db.feedbackMessageDao().add(message)
+                    }
+                    EventBus.getDefault().postSticky(FeedbackMessageEvent(message))
+                }
             }
         }
     }

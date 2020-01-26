@@ -5,10 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.szkolny
 
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.ServerSyncResponse
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -34,4 +31,7 @@ interface SzkolnyService {
 
     @GET("updates/app")
     fun updates(@Query("channel") channel: String = "release"): Call<ApiResponse<List<Update>>>
+
+    @POST("feedbackMessage")
+    fun feedbackMessage(@Body request: FeedbackMessageRequest): Call<ApiResponse<FeedbackMessageResponse>>
 }
