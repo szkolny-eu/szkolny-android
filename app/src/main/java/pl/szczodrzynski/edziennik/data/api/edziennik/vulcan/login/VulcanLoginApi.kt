@@ -13,6 +13,7 @@ import io.github.wulkanowy.signer.android.getPrivateKeyFromCert
 import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiUpdateSemester
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.getString

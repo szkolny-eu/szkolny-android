@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.models.Feature
 
-const val ENDPOINT_VULCAN_API_STUDENT_LIST        = 1000
+const val ENDPOINT_VULCAN_API_UPDATE_SEMESTER     = 1000
 const val ENDPOINT_VULCAN_API_DICTIONARIES        = 1010
 const val ENDPOINT_VULCAN_API_TIMETABLE           = 1020
 const val ENDPOINT_VULCAN_API_EVENTS = 1030
@@ -54,7 +54,7 @@ val VulcanFeatures = listOf(
         ), listOf(LOGIN_METHOD_VULCAN_API)),
 
         Feature(LOGIN_TYPE_VULCAN, FEATURE_ALWAYS_NEEDED, listOf(
-                ENDPOINT_VULCAN_API_STUDENT_LIST to LOGIN_METHOD_VULCAN_API,
+                ENDPOINT_VULCAN_API_UPDATE_SEMESTER to LOGIN_METHOD_VULCAN_API,
                 ENDPOINT_VULCAN_API_DICTIONARIES to LOGIN_METHOD_VULCAN_API
         ), listOf(LOGIN_METHOD_VULCAN_API))
         /*Feature(LOGIN_TYPE_VULCAN, FEATURE_STUDENT_INFO, listOf(

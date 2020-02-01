@@ -1,13 +1,14 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2020-1-3.
+ * Copyright (c) Kuba Szczodrzyński 2020-2-1.
  */
 
-package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login
+package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api
 
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.ERROR_NO_STUDENTS_IN_ACCOUNT
 import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_STUDENT_LIST
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_UPDATE_SEMESTER
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -66,6 +67,7 @@ class VulcanApiUpdateSemester(override val data: DataVulcan, val onSuccess: () -
                 dateYearEnd?.let { profile.dateYearEnd = it }
             }
 
+            data.setSyncNext(ENDPOINT_VULCAN_API_UPDATE_SEMESTER, if (data.studentSemesterNumber == 2) 7*DAY else 2*DAY)
             onSuccess()
         }
     } ?: onSuccess()}

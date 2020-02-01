@@ -36,6 +36,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
     private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId")
         when (endpointId) {
+            ENDPOINT_VULCAN_API_UPDATE_SEMESTER -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_student_info)
+                VulcanApiUpdateSemester(data, onSuccess)
+            }
             ENDPOINT_VULCAN_API_DICTIONARIES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_dictionaries)
                 VulcanApiDictionaries(data, onSuccess)
