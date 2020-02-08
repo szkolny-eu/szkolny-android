@@ -22,14 +22,11 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.events.FeedbackMessageEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
 import pl.szczodrzynski.edziennik.databinding.FragmentFeedbackBinding
-import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.openUrl
@@ -82,7 +79,7 @@ class FeedbackFragment : Fragment(), CoroutineScope {
             0 to User(0, "Ja", null)
     )
     private fun getUser(message: FeedbackMessage): User {
-        val userId = message.devId ?: if (message.received) 1 else 0
+        val userId = message.devId ?: if (message.received) -message.senderName.crc16() else 0
         return users[userId] ?: run {
             User(userId, message.senderName, message.devImage).also { users[userId] = it }
         }
@@ -118,13 +115,11 @@ class FeedbackFragment : Fragment(), CoroutineScope {
     }
 
     private suspend fun loadMessages(messageList: List<FeedbackMessage>? = null) {
-        /*if (messageList != null && messageList.isNotEmpty())
-            return*/
-        val messages = messageList ?: withContext(Dispatchers.Default) {
+        val messages = withContext(Dispatchers.Default) {
             if (currentDeviceId == null)
-                app.db.feedbackMessageDao().allNow
+                messageList ?: app.db.feedbackMessageDao().allNow
             else
-                app.db.feedbackMessageDao().getByDeviceIdNow(currentDeviceId!!)
+                messageList?.filter { it.deviceId == currentDeviceId } ?: app.db.feedbackMessageDao().getByDeviceIdNow(currentDeviceId!!)
         }
 
         if (messages.isNotEmpty()) {
@@ -172,14 +167,14 @@ class FeedbackFragment : Fragment(), CoroutineScope {
             }
 
             if (isDev) {
-                messages.firstOrNull { it.received }?.let {
+                messages.firstOrNull { it.received && it.devId == null }?.let {
                     currentDeviceId = it.deviceId
                     b.targetDeviceDropDown.setText("${it.senderName} (${it.deviceId}) - ${it.deviceName}")
                 }
                 // handle notification intent
                 arguments?.getString("feedbackMessageDeviceId")?.let { deviceId ->
-                    currentDeviceId = deviceId
-                    messages.firstOrNull { it.received && it.deviceId == deviceId }?.let {
+                    messages.firstOrNull { it.received && it.deviceId == deviceId && it.devId == null }?.let {
+                        currentDeviceId = deviceId
                         b.targetDeviceDropDown.setText("${it.senderName} (${it.deviceId}) - ${it.deviceName}")
                     }
                 }
