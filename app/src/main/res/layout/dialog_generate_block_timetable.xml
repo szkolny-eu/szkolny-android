@@ -35,6 +35,32 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/showTeachersNamesItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/showTeachersNamesCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:checked="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/timetable_generate_show_teachers_names" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/noColorsItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

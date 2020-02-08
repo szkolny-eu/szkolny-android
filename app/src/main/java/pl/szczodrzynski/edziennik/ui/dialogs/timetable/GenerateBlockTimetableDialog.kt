@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import android.view.View.MeasureSpec
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -60,6 +61,7 @@ class GenerateBlockTimetableDialog(
     private lateinit var b: DialogGenerateBlockTimetableBinding
 
     private var showProfileName: Boolean = false
+    private var showTeachersNames: Boolean = true
     private var noColors: Boolean = false
 
     init { run {
@@ -77,6 +79,9 @@ class GenerateBlockTimetableDialog(
 
         b.showProfileNameItem.onClick { b.showProfileNameCheckbox.trigger() }
         b.showProfileNameCheckbox.setOnCheckedChangeListener { _, isChecked -> showProfileName = isChecked }
+
+        b.showTeachersNamesItem.onClick { b.showTeachersNamesCheckbox.trigger() }
+        b.showTeachersNamesCheckbox.setOnCheckedChangeListener { _, isChecked -> showTeachersNames = isChecked }
 
         b.noColorsItem.onClick { b.noColorsCheckbox.trigger() }
         b.noColorsCheckbox.setOnCheckedChangeListener { _, isChecked -> noColors = isChecked }
@@ -220,6 +225,8 @@ class GenerateBlockTimetableDialog(
             classroomName.text = lesson.displayClassroom ?: ""
             teacherName.text = lesson.displayTeacherName ?: ""
             teamName.text = lesson.displayTeamName ?: ""
+
+            if (!showTeachersNames) teacherName.visibility = View.GONE
 
             when (lesson.type) {
                 Lesson.TYPE_NORMAL -> {}

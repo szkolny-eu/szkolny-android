@@ -1173,4 +1173,5 @@
     <string name="dialog_grades_config_color_by_value">Wg wartości oceny</string>
     <string name="other">Inne</string>
     <string name="menu_grades_config">Ustawienia ocen</string>
+    <string name="timetable_generate_show_teachers_names">Pokaż imiona i nazwiska nauczycieli</string>
 </resources>
