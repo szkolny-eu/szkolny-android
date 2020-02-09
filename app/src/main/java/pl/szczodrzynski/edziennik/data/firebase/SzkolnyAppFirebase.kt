@@ -47,7 +47,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                 )
                 "appUpdate" -> launch { UpdateWorker.runNow(app, app.gson.fromJson(message.data.getString("update"), Update::class.java)) }
                 "feedbackMessage" -> launch {
-                    val message = app.gson.fromJson(message.data.getString("message"), FeedbackMessage::class.java)
+                    val message = app.gson.fromJson(message.data.getString("message"), FeedbackMessage::class.java) ?: return@launch
                     feedbackMessage(message)
                 }
             }
