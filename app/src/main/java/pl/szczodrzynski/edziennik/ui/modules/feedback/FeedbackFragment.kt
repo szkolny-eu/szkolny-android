@@ -70,7 +70,7 @@ class FeedbackFragment : Fragment(), CoroutineScope {
     fun onFeedbackMessageEvent(event: FeedbackMessageEvent) {
         EventBus.getDefault().removeStickyEvent(event)
         val message = event.message
-        if (currentDeviceId != null && message.deviceId == currentDeviceId) {
+        if (currentDeviceId == null || message.deviceId == currentDeviceId) {
             val chatMessage = getChatMessage(message)
             if (message.received) chatView.receive(chatMessage)
             else chatView.send(chatMessage)
