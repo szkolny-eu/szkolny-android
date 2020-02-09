@@ -74,18 +74,20 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
         }
         withContext(Dispatchers.Default) {
             app.db.feedbackMessageDao().add(message)
-            val notification = Notification(
-                    id = System.currentTimeMillis(),
-                    title = "Wiadomość od ${message.senderName}",
-                    text = message.text,
-                    type = Notification.TYPE_FEEDBACK_MESSAGE,
-                    profileId = null,
-                    profileName = "Wiadomość od ${message.senderName}"
-            ).addExtra("action", "feedbackMessage").addExtra("feedbackMessageDeviceId", message.deviceId)
-            app.db.notificationDao().add(notification)
-            PostNotifications(app, listOf(notification))
+            if (!EventBus.getDefault().hasSubscriberForEvent(FeedbackMessageEvent::class.java)) {
+                val notification = Notification(
+                        id = System.currentTimeMillis(),
+                        title = "Wiadomość od ${message.senderName}",
+                        text = message.text,
+                        type = Notification.TYPE_FEEDBACK_MESSAGE,
+                        profileId = null,
+                        profileName = "Wiadomość od ${message.senderName}"
+                ).addExtra("action", "feedbackMessage").addExtra("feedbackMessageDeviceId", message.deviceId)
+                app.db.notificationDao().add(notification)
+                PostNotifications(app, listOf(notification))
+            }
+            EventBus.getDefault().postSticky(FeedbackMessageEvent(message))
         }
-        EventBus.getDefault().postSticky(FeedbackMessageEvent(message))
     }
 
     private fun sharedEvent(teamCode: String, jsonStr: String, message: String) {

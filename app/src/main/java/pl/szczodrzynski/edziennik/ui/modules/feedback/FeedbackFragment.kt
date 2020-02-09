@@ -70,9 +70,14 @@ class FeedbackFragment : Fragment(), CoroutineScope {
     fun onFeedbackMessageEvent(event: FeedbackMessageEvent) {
         EventBus.getDefault().removeStickyEvent(event)
         val message = event.message
-        val chatMessage = getChatMessage(message)
-        if (message.received) chatView.receive(chatMessage)
-        else chatView.send(chatMessage)
+        if (currentDeviceId != null && message.deviceId == currentDeviceId) {
+            val chatMessage = getChatMessage(message)
+            if (message.received) chatView.receive(chatMessage)
+            else chatView.send(chatMessage)
+        }
+        else {
+            Toast.makeText(context, "${message.senderName}: Nowa wiadomość w innym wątku.", Toast.LENGTH_LONG).show()
+        }
     }
 
     private val users = mutableMapOf(
