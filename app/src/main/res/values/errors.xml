@@ -90,6 +90,7 @@
     <string name="error_180" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN</string>
     <string name="error_181" translatable="false">ERROR_LIBRUS_API_MAINTENANCE</string>
     <string name="error_182" translatable="false">ERROR_LIBRUS_PORTAL_MAINTENANCE</string>
+    <string name="error_183" translatable="false">ERROR_LIBRUS_API_NOTICEBOARD_PROBLEM</string>
 
     <string name="error_201" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_202" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
@@ -256,6 +257,7 @@
     <string name="error_180_reason">Librus Portal: nieprawidłowe dane logowania</string>
     <string name="error_181_reason">Librus API: przerwa techniczna</string>
     <string name="error_182_reason">Librus Portal: przerwa techniczna</string>
+    <string name="error_183_reason">Wystąpił problem z tablicą ogłoszeń</string>
 
     <string name="error_201_reason">Nieprawidłowy login lub hasło</string>
     <string name="error_202_reason">Podano stare hasło</string>

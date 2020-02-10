@@ -63,6 +63,7 @@ open class LibrusApi(open val data: DataLibrus) {
                         "NotesIsNotActive" -> ERROR_LIBRUS_API_NOTES_NOT_ACTIVE
                         "InvalidRequest" -> ERROR_LIBRUS_API_INVALID_REQUEST_PARAMS
                         "Nieprawidłowy węzeł." -> ERROR_LIBRUS_API_INCORRECT_ENDPOINT
+                        "NoticeboardProblem" -> ERROR_LIBRUS_API_NOTICEBOARD_PROBLEM
                         else -> ERROR_LIBRUS_API_OTHER
                     }.let { errorCode ->
                         if (errorCode !in ignoreErrors) {
