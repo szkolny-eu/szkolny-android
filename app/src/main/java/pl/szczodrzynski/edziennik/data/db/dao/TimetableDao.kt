@@ -58,7 +58,14 @@ interface TimetableDao {
         WHERE timetable.profileId = :profileId AND type != -1 AND type != 0
         ORDER BY id, type
     """)
-    fun getAllChangesNow(profileId: Int): List<Lesson>
+    fun getAllChangesNow(profileId: Int): List<LessonFull>
+
+    @Query("""
+        $QUERY
+        WHERE timetable.profileId = :profileId AND type != -1 AND type != 0 AND ((type != 3 AND date = :date) OR ((type = 3 OR type = 1) AND oldDate = :date))
+        ORDER BY id, type
+    """)
+    fun getChangesForDateNow(profileId: Int, date: Date): List<LessonFull>
 
     @Query("""
         $QUERY

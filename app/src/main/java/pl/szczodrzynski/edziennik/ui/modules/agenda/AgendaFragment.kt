@@ -32,6 +32,7 @@ import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.day.DayDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeCounter
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchange.LessonChangeEvent
@@ -250,7 +251,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
 
                 when (event) {
                     is BaseCalendarEvent -> DayDialog(activity, app.profileId, date)
-                    // is LessonChangeEvent -> todo
+                    is LessonChangeEvent -> LessonChangeDialog(activity, app.profileId, date)
                     is TeacherAbsenceEvent -> TeacherAbsenceDialog(activity, app.profileId, date)
                 }
             }
