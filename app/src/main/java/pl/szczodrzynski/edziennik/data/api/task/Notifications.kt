@@ -37,7 +37,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun timetableNotifications() {
-        for (lesson in app.db.timetableDao().getNotNotifiedNow()) {
+        for (lesson in app.db.timetableDao().getNotNotifiedNow().filter { it.displayDate == null || it.displayDate!! >= today }) {
             val text = app.getString(
                     R.string.notification_lesson_change_format,
                     lesson.getDisplayChangeType(app),
@@ -58,7 +58,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun eventNotifications() {
-        for (event in app.db.eventDao().notNotifiedNow) {
+        for (event in app.db.eventDao().notNotifiedNow.filter { it.eventDate >= today }) {
             val text = if (event.type == Event.TYPE_HOMEWORK)
                 app.getString(
                         if (event.subjectLongName.isNullOrEmpty())
@@ -93,7 +93,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     fun sharedEventNotifications() {
-        for (event in app.db.eventDao().notNotifiedNow.filter { it.sharedBy != null }) {
+        for (event in app.db.eventDao().notNotifiedNow.filter { it.eventDate >= today && it.sharedBy != null }) {
             val text = app.getString(
                     R.string.notification_shared_event_format,
                     event.sharedByName,
