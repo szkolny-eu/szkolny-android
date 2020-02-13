@@ -155,7 +155,7 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
                 views.setViewVisibility(R.id.widgetTimetableContent, View.GONE);
                 views.setTextViewText(R.id.widgetTimetableProfileName, lesson.separatorProfileName);
                 views.setTextViewTextSize(R.id.widgetTimetableProfileName, COMPLEX_UNIT_SP, lesson.bigStyle ? 30 : 20);
-                views.setTextColor(R.id.widgetTimetableProfileName, lesson.darkTheme ? 0xff000000 : 0xffffffff);
+                views.setTextColor(R.id.widgetTimetableProfileName, lesson.darkTheme ? 0xffffffff : 0xff000000);
 
                 Intent intent = new Intent();
                 intent.putExtra("profileId", lesson.profileId);
