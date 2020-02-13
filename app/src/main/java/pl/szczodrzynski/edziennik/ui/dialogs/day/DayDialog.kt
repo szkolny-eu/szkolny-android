@@ -10,17 +10,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.R
+import kotlinx.android.synthetic.main.row_lesson_change_item.view.*
+import kotlinx.android.synthetic.main.row_teacher_absence_item.view.*
+import kotlinx.coroutines.*
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.DialogDayBinding
-import pl.szczodrzynski.edziennik.onClick
-import pl.szczodrzynski.edziennik.setText
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -77,12 +76,50 @@ class DayDialog(
         update()
     }}
 
-    private fun update() {
+    private fun update() { launch {
         b.dayDate.setText(
                 R.string.dialog_day_date_format,
                 Week.getFullDayName(date.weekDay),
                 date.formattedString
         )
+
+        val lessonChanges = withContext(Dispatchers.Default) {
+            app.db.timetableDao().getChangesForDateNow(profileId, date)
+        }
+
+        lessonChanges.ifNotEmpty {
+            b.lessonChangeContainer.visibility = View.VISIBLE
+            b.lessonChangeContainer.lessonChangeCount.text = it.size.toString()
+
+            b.lessonChangeLayout.onClick {
+                LessonChangeDialog(
+                        activity,
+                        profileId,
+                        date,
+                        onShowListener = onShowListener,
+                        onDismissListener = onDismissListener
+                )
+            }
+        }
+
+        val teacherAbsences = withContext(Dispatchers.Default) {
+            app.db.teacherAbsenceDao().getAllByDateNow(profileId, date)
+        }
+
+        teacherAbsences.ifNotEmpty {
+            b.teacherAbsenceContainer.visibility = View.VISIBLE
+            b.teacherAbsenceContainer.teacherAbsenceCount.text = it.size.toString()
+
+            b.teacherAbsenceLayout.onClick {
+                TeacherAbsenceDialog(
+                        activity,
+                        profileId,
+                        date,
+                        onShowListener = onShowListener,
+                        onDismissListener = onDismissListener
+                )
+            }
+        }
 
         adapter = EventListAdapter(
                 activity,
@@ -126,5 +163,5 @@ class DayDialog(
                 b.eventsNoData.visibility = View.VISIBLE
             }
         })
-    }
+    }}
 }

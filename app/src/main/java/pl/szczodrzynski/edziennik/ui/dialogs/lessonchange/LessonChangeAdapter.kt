@@ -4,27 +4,29 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.lessonchange
 
+import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.timetable.LessonDetailsDialog
 import pl.szczodrzynski.navlib.getColorFromAttr
 
-class LessonChangeAdapter(val activity: AppCompatActivity) : RecyclerView.Adapter<LessonChangeAdapter.ViewHolder>() {
+class LessonChangeAdapter(
+        val context: Context,
+        private val onItemClick: ((lesson: LessonFull) -> Unit)? = null
+) : RecyclerView.Adapter<LessonChangeAdapter.ViewHolder>() {
 
     var items = listOf<LessonFull>()
 
     private val arrowRight = " → "
     private val bullet = " • "
-    private val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
+    private val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -36,8 +38,8 @@ class LessonChangeAdapter(val activity: AppCompatActivity) : RecyclerView.Adapte
         val lesson = items[position]
         val b = holder.b
 
-        b.root.setOnClickListener {
-            LessonDetailsDialog(activity, lesson)
+        b.root.onClick {
+            onItemClick?.invoke(lesson)
         }
 
         val startTime = lesson.displayStartTime ?: return
@@ -99,7 +101,7 @@ class LessonChangeAdapter(val activity: AppCompatActivity) : RecyclerView.Adapte
                 b.annotationVisible = true
                 b.annotation.setText(R.string.timetable_lesson_cancelled)
                 b.annotation.background.colorFilter = PorterDuffColorFilter(
-                        getColorFromAttr(activity, R.attr.timetable_lesson_cancelled_color),
+                        getColorFromAttr(context, R.attr.timetable_lesson_cancelled_color),
                         PorterDuff.Mode.SRC_ATOP
                 )
                 //lb.subjectName.typeface = Typeface.DEFAULT
@@ -129,7 +131,7 @@ class LessonChangeAdapter(val activity: AppCompatActivity) : RecyclerView.Adapte
                 }
 
                 b.annotation.background.colorFilter = PorterDuffColorFilter(
-                        getColorFromAttr(activity, R.attr.timetable_lesson_change_color),
+                        getColorFromAttr(context, R.attr.timetable_lesson_change_color),
                         PorterDuff.Mode.SRC_ATOP
                 )
             }
@@ -152,7 +154,7 @@ class LessonChangeAdapter(val activity: AppCompatActivity) : RecyclerView.Adapte
                     else -> b.annotation.setText(R.string.timetable_lesson_shifted)
                 }
 
-                b.annotation.background.setTintColor(R.attr.timetable_lesson_shifted_source_color.resolveAttr(activity))
+                b.annotation.background.setTintColor(R.attr.timetable_lesson_shifted_source_color.resolveAttr(context))
             }
             Lesson.TYPE_SHIFTED_TARGET -> {
                 b.annotationVisible = true
@@ -174,7 +176,7 @@ class LessonChangeAdapter(val activity: AppCompatActivity) : RecyclerView.Adapte
                 }
 
                 b.annotation.background.colorFilter = PorterDuffColorFilter(
-                        getColorFromAttr(activity, R.attr.timetable_lesson_shifted_target_color),
+                        getColorFromAttr(context, R.attr.timetable_lesson_shifted_target_color),
                         PorterDuff.Mode.SRC_ATOP
                 )
             }

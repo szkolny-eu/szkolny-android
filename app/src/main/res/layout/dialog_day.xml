@@ -30,29 +30,43 @@
                 android:textIsSelectable="true"
                 tools:text="wtorek, 17 grudnia" />
 
-            <include
-                android:id="@+id/lessonChangeContainer"
-                layout="@layout/row_lesson_change_item"
+            <LinearLayout
+                android:id="@+id/lessonChangeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="5dp"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                android:background="?selectableItemBackground">
 
-            <include
-                android:id="@+id/teacherAbsenceContainer"
-                layout="@layout/row_teacher_absence_item"
+                <include
+                    android:id="@+id/lessonChangeContainer"
+                    layout="@layout/row_lesson_change_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="5dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/teacherAbsenceLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                android:background="?selectableItemBackground">
+
+                <include
+                    android:id="@+id/teacherAbsenceContainer"
+                    layout="@layout/row_teacher_absence_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/eventsNoData"

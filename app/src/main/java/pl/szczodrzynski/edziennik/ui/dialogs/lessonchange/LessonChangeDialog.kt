@@ -8,6 +8,7 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogLessonChangeListBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.timetable.LessonDetailsDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
@@ -53,7 +54,21 @@ class LessonChangeDialog(
             app.db.timetableDao().getChangesForDateNow(profileId, defaultDate)
         }
 
-        b.lessonChangeView.adapter = LessonChangeAdapter(activity).apply { items = lessonChanges }
+        val adapter = LessonChangeAdapter(
+                activity,
+                onItemClick = {
+                    LessonDetailsDialog(
+                            activity,
+                            it,
+                            onShowListener = onShowListener,
+                            onDismissListener = onDismissListener
+                    )
+                }
+        ).apply {
+            items = lessonChanges
+        }
+
+        b.lessonChangeView.adapter = adapter
         b.lessonChangeView.layoutManager = LinearLayoutManager(activity)
 
         dialog.show()
