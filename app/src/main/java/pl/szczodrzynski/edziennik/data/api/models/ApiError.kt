@@ -72,7 +72,7 @@ class ApiError(val tag: String, var errorCode: Int) {
 
     fun toReportableError(context: Context): ErrorReportRequest.Error {
         val requestString = request?.let {
-            it.method() + " " + it.url() + "\n" + it.headers()
+            it.method() + " " + it.url() + "\n" + it.headers() + "\n\n" + (it.jsonBody()?.toString() ?: "") + (it.textBody() ?: "")
         }
         val responseString = response?.let {
             if (it.parserErrorBody == null) {
