@@ -216,7 +216,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
             eventList.add(BaseCalendarEvent(
                     "${event.typeName} - ${event.topic}",
                     "",
-                    if (event.startTime == null) getString(R.string.agenda_event_all_day) else event.startTime!!.stringHM +
+                    (if (event.startTime == null) getString(R.string.agenda_event_all_day) else event.startTime!!.stringHM) +
                             (event.subjectLongName?.let { ", $it" } ?: "") +
                             (event.teacherFullName?.let { ", $it" } ?: "") +
                             (event.teamName?.let { ", $it" } ?: ""),
