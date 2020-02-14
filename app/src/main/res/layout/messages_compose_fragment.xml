@@ -54,7 +54,8 @@
                     android:focusableInTouchMode="true"
                     android:hint="@string/messages_compose_subject_hint"
                     android:singleLine="true"
-                    tools:text="kachoomba"/>
+                    tools:text="kachoomba"
+                    android:inputType="textCapSentences|textAutoCorrect|textShortMessage|textAutoComplete|textEmailSubject"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,7 +67,7 @@
                 app:boxBackgroundMode="filled"
                 app:counterEnabled="true"
                 tools:counterMaxLength="1983">
-                <com.google.android.material.textfield.TextInputEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -77,7 +78,7 @@
                     android:ems="10"
                     android:gravity="start|top"
                     tools:text="Witam,\n\nchciałem przekazać bardzo ważną wiadomość.\nJest to cytat znanej osoby.\n\n&quot;To jest tak, ale nie. Pamiętaj żeby oczywiście&quot;\n\nCytat ma bardzo duże przesłanie i ogromny wpływ na dzisiejszą kulturę i rozwój współczesnej cywilizacji.\n\nJako zadanie domowe, należy wypisać 5 pierwszych liczb pierwszych. Uzasadnij decyzję, odwołując się do cytatu i 3 innych przykładów z literatury lub filmu.\n\nPozdrawiam,\nJa."
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine|textAutoCorrect|textLongMessage|textAutoComplete|textCapSentences" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--<com.google.android.material.button.MaterialButtonToggleGroup
