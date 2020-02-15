@@ -1174,4 +1174,6 @@
     <string name="other">Inne</string>
     <string name="menu_grades_config">Ustawienia ocen</string>
     <string name="timetable_generate_show_teachers_names">Pokaż imiona i nazwiska nauczycieli</string>
+    <string name="messages_compose_confirm_title">Potwierdź wysłanie wiadomości</string>
+    <string name="messages_compose_confirm_text">Czy na pewno chcesz wysłać wiadomość do wybranych odbiorców?</string>
 </resources>

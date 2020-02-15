@@ -21,7 +21,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
-                app:boxBackgroundMode="filled">
+                app:boxBackgroundMode="filled"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/dropdown_arrow">
 
                 <com.hootsuite.nachos.NachoTextView
                     android:id="@+id/recipients"

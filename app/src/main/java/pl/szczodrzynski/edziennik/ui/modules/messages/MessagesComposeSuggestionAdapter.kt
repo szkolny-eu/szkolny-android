@@ -71,7 +71,12 @@ class MessagesComposeSuggestionAdapter(
         override fun performFiltering(prefix: CharSequence?): FilterResults {
             val results = FilterResults()
 
-            if (prefix.isNullOrEmpty()) {
+            if (prefix == null) {
+                originalList.filter { it.id in -24L..0L }.let {
+                    results.values = it
+                    results.count = it.size
+                }
+            } else if (prefix.isEmpty()) {
                 results.values = originalList
                 results.count = originalList.size
             } else {

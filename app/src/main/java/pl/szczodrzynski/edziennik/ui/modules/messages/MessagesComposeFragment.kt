@@ -17,6 +17,7 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
@@ -72,8 +73,6 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         context ?: return null
         app = activity.application as App
         context!!.theme.applyStyle(Themes.appTheme, true)
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false)
         // activity, context and profile is valid
         b = MessagesComposeFragmentBinding.inflate(inflater)
         return b.root
@@ -84,7 +83,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // TODO check if app, activity, b can be null
-        if (app.profile == null || !isAdded)
+        if (!isAdded)
             return
 
         EventBus.getDefault().register(this)
@@ -190,80 +189,94 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan? {
                 if (data == null || data !is Teacher)
                     return null
-                if (data.id in -24L..0L) {
-                    val type = (data.id * -1).toInt()
-
-                    val textColorPrimary = android.R.attr.textColorPrimary.resolveAttr(activity)
-                    val textColorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
-
-                    val category = mutableListOf<Teacher>()
-                    val categoryNames = mutableListOf<CharSequence>()
-                    val categoryCheckedItems = mutableListOf<Boolean>()
-                    teachers.forEach { teacher ->
-                        if (teacher.isType(type)) {
-                            category += teacher
-                            val name = teacher.fullName
-                            val description = when (type) {
-                                Teacher.TYPE_TEACHER -> null
-                                Teacher.TYPE_PARENTS_COUNCIL -> teacher.typeDescription
-                                Teacher.TYPE_SCHOOL_PARENTS_COUNCIL -> null
-                                Teacher.TYPE_PEDAGOGUE -> null
-                                Teacher.TYPE_LIBRARIAN -> null
-                                Teacher.TYPE_SCHOOL_ADMIN -> null
-                                Teacher.TYPE_SUPER_ADMIN -> null
-                                Teacher.TYPE_SECRETARIAT -> null
-                                Teacher.TYPE_PRINCIPAL -> null
-                                Teacher.TYPE_EDUCATOR -> teacher.typeDescription
-                                Teacher.TYPE_PARENT -> teacher.typeDescription
-                                Teacher.TYPE_STUDENT -> teacher.typeDescription
-                                Teacher.TYPE_SPECIALIST -> null
-                                else -> teacher.typeDescription
-                            }
-                            categoryNames += listOfNotNull(
-                                    name.asSpannable(
-                                            ForegroundColorSpan(textColorPrimary)
-                                    ),
-                                    description?.asSpannable(
-                                            ForegroundColorSpan(textColorSecondary),
-                                            AbsoluteSizeSpan(14.dp)
-                                    )
-                            ).concat("\n")
-                            categoryCheckedItems += b.recipients.allChips.firstOrNull { it.data == teacher } != null
+                if (data.id !in -24L..0L) {
+                    b.recipients.allChips.forEach {
+                        if (it.data == data) {
+                            Toast.makeText(activity, R.string.messages_compose_recipient_exists, Toast.LENGTH_SHORT).show()
+                            return null
                         }
                     }
+                    val chipSpan = ChipSpan(context, data.fullName, BitmapDrawable(context.resources, data.image), data)
+                    chipSpan.setIconBackgroundColor(Colors.stringToMaterialColor(data.fullName))
+                    return chipSpan
+                }
 
-                    MaterialAlertDialogBuilder(activity)
-                            .setTitle("Dodaj odbiorców - "+ Teacher.typeName(activity, type))
-                            //.setMessage(getString(R.string.messages_compose_recipients_text_format, Teacher.typeName(activity, type)))
-                            .setPositiveButton("OK", null)
-                            .setNeutralButton("Anuluj", null)
-                            .setMultiChoiceItems(categoryNames.toTypedArray(), categoryCheckedItems.toBooleanArray()) { _, which, isChecked ->
-                                val teacher = category[which]
-                                if (isChecked) {
-                                    val chipInfoList = mutableListOf<ChipInfo>()
-                                    teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
-                                    chipInfoList.add(ChipInfo(teacher.fullName, teacher))
-                                    b.recipients.addTextWithChips(chipInfoList)
-                                }
-                                else {
-                                    b.recipients.allChips.forEach {
-                                        if (it.data == teacher)
-                                            b.recipients.chipTokenizer?.deleteChipAndPadding(it, b.recipients.text)
-                                    }
+                val type = (data.id * -1).toInt()
+
+                val textColorPrimary = android.R.attr.textColorPrimary.resolveAttr(activity)
+                val textColorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
+
+                val sortByCategory = type in listOf(
+                        Teacher.TYPE_PARENTS_COUNCIL,
+                        Teacher.TYPE_EDUCATOR,
+                        Teacher.TYPE_STUDENT
+                )
+                val teachers = if (sortByCategory)
+                    teachers.sortedBy { it.typeDescription }
+                else
+                    teachers
+
+                val category = mutableListOf<Teacher>()
+                val categoryNames = mutableListOf<CharSequence>()
+                val categoryCheckedItems = mutableListOf<Boolean>()
+                teachers.forEach { teacher ->
+                    if (!teacher.isType(type))
+                        return@forEach
+
+                    category += teacher
+                    val name = teacher.fullName
+                    val description = when (type) {
+                        Teacher.TYPE_TEACHER -> null
+                        Teacher.TYPE_PARENTS_COUNCIL -> teacher.typeDescription
+                        Teacher.TYPE_SCHOOL_PARENTS_COUNCIL -> null
+                        Teacher.TYPE_PEDAGOGUE -> null
+                        Teacher.TYPE_LIBRARIAN -> null
+                        Teacher.TYPE_SCHOOL_ADMIN -> null
+                        Teacher.TYPE_SUPER_ADMIN -> null
+                        Teacher.TYPE_SECRETARIAT -> null
+                        Teacher.TYPE_PRINCIPAL -> null
+                        Teacher.TYPE_EDUCATOR -> teacher.typeDescription
+                        Teacher.TYPE_PARENT -> teacher.typeDescription
+                        Teacher.TYPE_STUDENT -> teacher.typeDescription
+                        Teacher.TYPE_SPECIALIST -> null
+                        else -> teacher.typeDescription
+                    }
+                    categoryNames += listOfNotNull(
+                            name.asSpannable(
+                                    ForegroundColorSpan(textColorPrimary)
+                            ),
+                            description?.asSpannable(
+                                    ForegroundColorSpan(textColorSecondary),
+                                    AbsoluteSizeSpan(14.dp)
+                            )
+                    ).concat("\n")
+
+                    // check the teacher if already added as a recipient
+                    categoryCheckedItems += b.recipients.allChips.firstOrNull { it.data == teacher } != null
+                }
+
+                MaterialAlertDialogBuilder(activity)
+                        .setTitle("Dodaj odbiorców - "+ Teacher.typeName(activity, type))
+                        //.setMessage(getString(R.string.messages_compose_recipients_text_format, Teacher.typeName(activity, type)))
+                        .setPositiveButton("OK", null)
+                        .setNeutralButton("Anuluj", null)
+                        .setMultiChoiceItems(categoryNames.toTypedArray(), categoryCheckedItems.toBooleanArray()) { _, which, isChecked ->
+                            val teacher = category[which]
+                            if (isChecked) {
+                                val chipInfoList = mutableListOf<ChipInfo>()
+                                teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
+                                chipInfoList.add(ChipInfo(teacher.fullName, teacher))
+                                b.recipients.addTextWithChips(chipInfoList)
+                            }
+                            else {
+                                b.recipients.allChips.forEach {
+                                    if (it.data == teacher)
+                                        b.recipients.chipTokenizer?.deleteChipAndPadding(it, b.recipients.text)
                                 }
                             }
-                            .show()
-                    return null
-                }
-                b.recipients.allChips.forEach {
-                    if (it.data == data) {
-                        Toast.makeText(activity, R.string.messages_compose_recipient_exists, Toast.LENGTH_SHORT).show()
-                        return null
-                    }
-                }
-                val chipSpan = ChipSpan(context, data.fullName, BitmapDrawable(context.resources, data.image), data)
-                chipSpan.setIconBackgroundColor(Colors.stringToMaterialColor(data.fullName))
-                return chipSpan
+                        }
+                        .show()
+                return null
             }
 
             override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
@@ -276,23 +289,33 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.recipients.setIllegalCharacterIdentifier { c ->
             c.toString().matches("[\\n;:_ ]".toRegex())
         }
-        /*b.recipients.setOnChipClickListener { chip, _ ->
-            Toast.makeText(app, "onChipClick: " + chip.text, Toast.LENGTH_SHORT).show()
-        }*/
-        b.recipients.setOnChipRemoveListener { chip ->
+        b.recipients.setOnChipRemoveListener { _ ->
             b.recipients.setSelection(b.recipients.text.length)
+        }
+
+        b.recipients.addTextChangedListener( beforeTextChanged = { _, _, _, _ ->
+            b.recipients.ignoreThreshold = false
+        })
+        b.recipients.onDismissListener = AutoCompleteTextView.OnDismissListener {
+            b.recipients.ignoreThreshold = false
+        }
+        b.recipientsLayout.setEndIconOnClickListener {
+            b.recipients.error = null
+            b.recipients.ignoreThreshold = true
+            b.recipients.showDropDown()
+            val adapter = b.recipients.adapter ?: return@setEndIconOnClickListener
+            if (adapter is MessagesComposeSuggestionAdapter)
+                adapter.filter.filter(null)
         }
 
         b.recipientsLayout.isEnabled = false
         b.subjectLayout.isEnabled = false
         b.textLayout.isEnabled = false
 
-        activity.navView.apply {
-            bottomBar.apply {
-                fabEnable = true
-                fabExtendedText = getString(R.string.messages_compose_send)
-                fabIcon = CommunityMaterial.Icon2.cmd_send
-            }
+        activity.navView.bottomBar.apply {
+            fabEnable = true
+            fabExtendedText = getString(R.string.messages_compose_send)
+            fabIcon = CommunityMaterial.Icon2.cmd_send
 
             setFabOnClickListener(View.OnClickListener {
                 sendMessage()
@@ -438,7 +461,14 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
         activity.bottomSheet.hideKeyboard()
 
-        EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), textHtml.trim()).enqueue(activity)
+        MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.messages_compose_confirm_title)
+                .setMessage(R.string.messages_compose_confirm_text)
+                .setPositiveButton(R.string.send) { _, _ ->
+                    EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), textHtml.trim()).enqueue(activity)
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
