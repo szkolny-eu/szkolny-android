@@ -4,6 +4,8 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.home.cards
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -25,10 +27,14 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.CardHomeDebugBinding
 import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.ui.dialogs.captcha.LibrusCaptchaDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
-import pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusCaptchaActivity
+import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfigActivity
+import pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider
+import pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider
+import pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider
 import kotlin.coroutines.CoroutineContext
 
 class HomeDebugCard(
@@ -53,10 +59,6 @@ class HomeDebugCard(
             setMargins(8.dp)
         }
         holder.root += b.root
-
-        b.composeNewButton.onClick {
-            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE)
-        }
 
         b.migrate71.onClick {
             app.db.compileStatement("DELETE FROM messages WHERE profileId IN (SELECT profileId FROM profiles WHERE archived = 0);").executeUpdateDelete()
@@ -84,7 +86,8 @@ class HomeDebugCard(
         }
 
         b.librusCaptchaButton.onClick {
-            app.startActivity(Intent(activity, LoginLibrusCaptchaActivity::class.java))
+            //app.startActivity(Intent(activity, LoginLibrusCaptchaActivity::class.java))
+            LibrusCaptchaDialog(activity, onSuccess = {}, onFailure = {})
         }
 
         b.getLogs.onClick {
@@ -97,6 +100,21 @@ class HomeDebugCard(
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Share debug logs")
                 intent.putExtra(Intent.EXTRA_TEXT, "Share debug logs")
                 app.startActivity(Intent.createChooser(intent, "Share debug logs"))
+            }
+        }
+
+        b.refreshWidget.onClick {
+            for (widgetType in 0..2) {
+                val theClass = when (widgetType) {
+                    WidgetConfigActivity.WIDGET_TIMETABLE -> WidgetTimetableProvider::class.java
+                    WidgetConfigActivity.WIDGET_NOTIFICATIONS -> WidgetNotificationsProvider::class.java
+                    WidgetConfigActivity.WIDGET_LUCKY_NUMBER -> WidgetLuckyNumberProvider::class.java
+                    else -> WidgetTimetableProvider::class.java
+                }
+                val intent = Intent(app, theClass)
+                intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, AppWidgetManager.getInstance(app).getAppWidgetIds(ComponentName(app, theClass)))
+                app.sendBroadcast(intent)
             }
         }
 

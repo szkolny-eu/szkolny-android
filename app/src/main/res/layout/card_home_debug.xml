@@ -32,6 +32,13 @@
             android:layout_height="wrap_content"
             android:text="Librus Captcha" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/refreshWidget"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Refresh all widgets" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,13 +57,6 @@
             android:layout_height="wrap_content"
             android:text="Messages"
             android:textSize="16sp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/composeNewButton"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Compose 2" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/migrate71"

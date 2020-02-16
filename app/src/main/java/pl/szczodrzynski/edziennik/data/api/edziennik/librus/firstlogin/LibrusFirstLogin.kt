@@ -33,9 +33,8 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                     val accounts = json.getJsonArray("accounts")
 
                     if (accounts == null || accounts.size() < 1) {
-                        data.error(ApiError(TAG, ERROR_NO_STUDENTS_IN_ACCOUNT)
-                                .withResponse(response)
-                                .withApiResponse(json))
+                        EventBus.getDefault().post(FirstLoginFinishedEvent(listOf(), data.loginStore))
+                        onSuccess()
                         return@portalGet
                     }
                     val accountDataTime = json.getLong("lastModification")

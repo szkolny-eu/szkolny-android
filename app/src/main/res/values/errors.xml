@@ -33,6 +33,9 @@
 
     <string name="error_115" translatable="false">ERROR_NO_STUDENTS_IN_ACCOUNT</string>
 
+    <string name="error_3000" translatable="false">ERROR_CAPTCHA_NEEDED</string>
+    <string name="error_3001" translatable="false">ERROR_CAPTCHA_LIBRUS_PORTAL</string>
+
     <string name="error_120" translatable="false">CODE_INTERNAL_LIBRUS_ACCOUNT_410</string>
     <string name="error_121" translatable="false">CODE_INTERNAL_LIBRUS_SYNERGIA_EXPIRED</string>
     <string name="error_124" translatable="false">ERROR_LOGIN_LIBRUS_API_CAPTCHA_NEEDED</string>
@@ -199,6 +202,9 @@
     <string name="error_113_reason">Wystąpił błąd podczas pobierania pliku</string>
 
     <string name="error_115_reason">Brak uczniów przypisanych do konta</string>
+
+    <string name="error_3000_reason">Wymagane rozwiązanie zadania Captcha</string>
+    <string name="error_3001_reason">Librus: wymagane rozwiązanie zadania Captcha</string>
 
     <string name="error_120_reason">CODE_INTERNAL_LIBRUS_ACCOUNT_410</string>
     <string name="error_121_reason">CODE_INTERNAL_LIBRUS_SYNERGIA_EXPIRED</string>

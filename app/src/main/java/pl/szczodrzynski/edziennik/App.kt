@@ -4,9 +4,6 @@
 
 package pl.szczodrzynski.edziennik
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
@@ -48,6 +45,8 @@ import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity
 import pl.szczodrzynski.edziennik.utils.*
+import pl.szczodrzynski.edziennik.utils.managers.NotificationChannelsManager
+import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
@@ -63,25 +62,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         var devMode = false
     }
 
-    val notifications by lazy { Notifications() }
-    inner class Notifications {
-        val syncId = 1
-        val syncKey = "pl.szczodrzynski.edziennik.SYNC"
-        val syncChannelName: String by lazy { getString(R.string.notification_channel_get_data_name) }
-        val syncChannelDesc: String by lazy { getString(R.string.notification_channel_get_data_desc) }
-        val dataId = 50
-        val dataKey = "pl.szczodrzynski.edziennik.DATA"
-        val dataChannelName: String by lazy { getString(R.string.notification_channel_notifications_name) }
-        val dataChannelDesc: String by lazy { getString(R.string.notification_channel_notifications_desc) }
-        val dataQuietId = 60
-        val dataQuietKey = "pl.szczodrzynski.edziennik.DATA_QUIET"
-        val dataQuietChannelName: String by lazy { getString(R.string.notification_channel_notifications_quiet_name) }
-        val dataQuietChannelDesc: String by lazy { getString(R.string.notification_channel_notifications_quiet_desc) }
-        val updatesId = 100
-        val updatesKey = "pl.szczodrzynski.edziennik.UPDATES"
-        val updatesChannelName: String by lazy { getString(R.string.notification_channel_updates_name) }
-        val updatesChannelDesc: String by lazy { getString(R.string.notification_channel_updates_desc) }
-    }
+    val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
+    val userActionManager by lazy { UserActionManager(this) }
 
     val db
         get() = App.db
@@ -99,7 +81,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             .setMinimumLoggingLevel(Log.VERBOSE)
             .build()
 
-    val preferences by lazy { getSharedPreferences(getString(R.string.preference_file), Context.MODE_PRIVATE) }
     val permissionChecker by lazy { PermissionChecker(this) }
     val networkUtils by lazy { NetworkUtils(this) }
     val gson by lazy { Gson() }
@@ -251,29 +232,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                     )
                 } // shortcuts - end
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-                    notificationManager.createNotificationChannel(
-                            NotificationChannel(notifications.syncKey, notifications.syncChannelName, NotificationManager.IMPORTANCE_MIN).apply {
-                                description = notifications.syncChannelDesc
-                            })
-                    notificationManager.createNotificationChannel(
-                            NotificationChannel(notifications.dataKey, notifications.dataChannelName, NotificationManager.IMPORTANCE_HIGH).apply {
-                                description = notifications.dataChannelDesc
-                                enableLights(true)
-                                lightColor = 0xff2196f3.toInt()
-                            })
-                    notificationManager.createNotificationChannel(
-                            NotificationChannel(notifications.dataQuietKey, notifications.dataQuietChannelName, NotificationManager.IMPORTANCE_LOW).apply {
-                                description = notifications.dataQuietChannelDesc
-                                setSound(null, null)
-                                enableVibration(false)
-                            })
-                    notificationManager.createNotificationChannel(
-                            NotificationChannel(notifications.updatesKey, notifications.updatesChannelName, NotificationManager.IMPORTANCE_DEFAULT).apply {
-                                description = notifications.updatesChannelDesc
-                            })
-                }
+                notificationChannelsManager.registerAllChannels()
 
 
                 if (config.appInstalledTime == 0L)

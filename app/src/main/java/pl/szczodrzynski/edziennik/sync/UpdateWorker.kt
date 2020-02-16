@@ -94,7 +94,7 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
 
                 val notificationIntent = Intent(app, UpdateDownloaderService::class.java)
                 val pendingIntent = PendingIntent.getService(app, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-                val notification = NotificationCompat.Builder(app, app.notifications.updatesKey)
+                val notification = NotificationCompat.Builder(app, app.notificationChannelsManager.updates.key)
                         .setContentTitle(app.getString(R.string.notification_updates_title))
                         .setContentText(app.getString(R.string.notification_updates_text, update.versionName))
                         .setTicker(app.getString(R.string.notification_updates_summary))
@@ -108,11 +108,11 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
                         .setLights(0xFF00FFFF.toInt(), 2000, 2000)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
-                        .setGroup(app.notifications.updatesKey)
+                        .setGroup(app.notificationChannelsManager.updates.key)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(false)
                         .build()
-                (app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).notify(app.notifications.updatesId, notification)
+                (app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).notify(app.notificationChannelsManager.updates.id, notification)
 
             } catch (ignore: Exception) { }
         }

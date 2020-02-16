@@ -86,9 +86,16 @@ class ApiService : Service() {
             lastEventTime = System.currentTimeMillis()
             d(TAG, "Task $taskRunningId threw an error - $apiError")
             apiError.profileId = taskProfileId
-            EventBus.getDefault().postSticky(ApiTaskErrorEvent(apiError))
-            errorList.add(apiError)
-            apiError.throwable?.printStackTrace()
+
+            if (app.userActionManager.requiresUserAction(apiError)) {
+                app.userActionManager.sendToUser(apiError)
+            }
+            else {
+                EventBus.getDefault().postSticky(ApiTaskErrorEvent(apiError))
+                errorList.add(apiError)
+                apiError.throwable?.printStackTrace()
+            }
+
             if (apiError.isCritical) {
                 taskRunning?.cancel()
                 notification.setCriticalError().post()
@@ -301,7 +308,7 @@ class ApiService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         d(TAG, "Foreground service onStartCommand")
-        startForeground(app.notifications.syncId, notification.notification)
+        startForeground(app.notificationChannelsManager.sync.id, notification.notification)
         return START_NOT_STICKY
     }
 

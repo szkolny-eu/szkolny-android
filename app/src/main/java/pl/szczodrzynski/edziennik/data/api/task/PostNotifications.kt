@@ -73,7 +73,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                 MainActivity::class.java,
                 "fragmentId" to MainActivity.DRAWER_ITEM_NOTIFICATIONS
         )
-        val summaryIntent = PendingIntent.getActivity(app, app.notifications.dataId, intent, PendingIntent.FLAG_ONE_SHOT)
+        val summaryIntent = PendingIntent.getActivity(app, app.notificationChannelsManager.data.id, intent, PendingIntent.FLAG_ONE_SHOT)
 
         // On Nougat or newer - show maximum 8 notifications
         // On Marshmallow or older - show maximum 4 notifications
@@ -89,7 +89,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
             }
 
             // Create a summary to show *instead* of notifications
-            val combined = NotificationCompat.Builder(app, app.notifications.dataKey)
+            val combined = NotificationCompat.Builder(app, app.notificationChannelsManager.data.key)
                     .setContentTitle(app.getString(R.string.app_name))
                     .setContentText(buildSummaryText(summaryCounts))
                     .setTicker(newNotificationsText)
@@ -112,7 +112,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                     .setLights(0xff2196f3.toInt(), 2000, 2000)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setDefaults(NotificationCompat.DEFAULT_ALL)
-                    .setGroup(app.notifications.dataKey)
+                    .setGroup(app.notificationChannelsManager.data.key)
                     .setContentIntent(summaryIntent)
                     .setAutoCancel(true)
                     .build()
@@ -122,7 +122,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
             // Less than 8 notifications
             val notifications = nList.map {
                 summaryCounts[it.type]++
-                NotificationCompat.Builder(app, app.notifications.dataKey)
+                NotificationCompat.Builder(app, app.notificationChannelsManager.data.key)
                         .setContentTitle(it.profileName ?: app.getString(R.string.app_name))
                         .setContentText(it.text)
                         .setSubText(if (it.type == TYPE_SERVER_MESSAGE) null else it.title)
@@ -135,7 +135,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                         .setLights(0xff2196f3.toInt(), 2000, 2000)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
-                        .setGroup(app.notifications.dataKey)
+                        .setGroup(app.notificationChannelsManager.data.key)
                         .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
                         .setContentIntent(it.getPendingIntent(app))
                         .setAutoCancel(true)
@@ -150,7 +150,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val summary = NotificationCompat.Builder(app, app.notifications.dataKey)
+                val summary = NotificationCompat.Builder(app, app.notificationChannelsManager.data.key)
                         .setContentTitle(newNotificationsText)
                         .setContentText(buildSummaryText(summaryCounts))
                         .setTicker(newNotificationsText)
@@ -159,13 +159,13 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                         .setLights(0xff2196f3.toInt(), 2000, 2000)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
-                        .setGroup(app.notifications.dataKey)
+                        .setGroup(app.notificationChannelsManager.data.key)
                         .setGroupSummary(true)
                         .setContentIntent(summaryIntent)
                         .setAutoCancel(true)
                         .build()
 
-                notificationManager.notify(app.notifications.dataId, summary)
+                notificationManager.notify(app.notificationChannelsManager.data.id, summary)
             }
         }
     }}

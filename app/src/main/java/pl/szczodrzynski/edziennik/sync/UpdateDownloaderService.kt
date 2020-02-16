@@ -92,7 +92,7 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
             return
         }
 
-        (app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(app.notifications.updatesId)
+        (app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(app.notificationChannelsManager.updates.id)
 
         val dir: File? = app.getExternalFilesDir(null)
         if (dir?.isDirectory == true) {

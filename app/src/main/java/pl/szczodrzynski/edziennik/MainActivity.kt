@@ -659,6 +659,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 .setCancelable(false)
                 .show()
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUserActionRequiredEvent(event: UserActionRequiredEvent) {
+        app.userActionManager.execute(this, event.profileId, event.type)
+    }
 
     private fun fragmentToSyncName(currentFragment: Int): Int {
         return when (currentFragment) {
@@ -713,10 +717,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     intentTargetId = TARGET_FEEDBACK
                     false
                 }
+                "userActionRequired" -> {
+                    app.userActionManager.execute(
+                            this,
+                            extras.getInt("profileId"),
+                            extras.getInt("type")
+                    )
+                    true
+                }
                 else -> false
             }
-            if (handled)
+            if (handled && !navLoading) {
                 return
+            }
         }
 
         if (extras?.containsKey("reloadProfileId") == true) {

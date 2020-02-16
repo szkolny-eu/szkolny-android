@@ -134,7 +134,7 @@ class EdziennikNotification(val app: App) {
     fun post() {
         if (serviceClosed)
             return
-        notificationManager.notify(app.notifications.syncId, notification)
+        notificationManager.notify(app.notificationChannelsManager.sync.id, notification)
     }
 
 }

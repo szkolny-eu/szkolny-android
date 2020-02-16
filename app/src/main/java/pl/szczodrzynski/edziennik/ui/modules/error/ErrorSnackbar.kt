@@ -41,6 +41,7 @@ class ErrorSnackbar(val activity: AppCompatActivity) : CoroutineScope {
                 val message = errors.map {
                     listOf(
                             it.getStringReason(activity).asBoldSpannable().asColoredSpannable(R.attr.colorOnBackground.resolveAttr(activity)),
+                            activity.getString(R.string.error_unknown_format, it.errorCode, it.tag),
                             if (App.devMode)
                                 it.throwable?.stackTraceString ?: it.throwable?.localizedMessage
                             else

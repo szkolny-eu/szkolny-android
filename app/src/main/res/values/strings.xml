@@ -1176,4 +1176,9 @@
     <string name="timetable_generate_show_teachers_names">Pokaż imiona i nazwiska nauczycieli</string>
     <string name="messages_compose_confirm_title">Potwierdź wysłanie wiadomości</string>
     <string name="messages_compose_confirm_text">Czy na pewno chcesz wysłać wiadomość do wybranych odbiorców?</string>
+    <string name="notification_channel_user_attention_name">Wymagane działanie</string>
+    <string name="notification_channel_user_attention_desc">Powiadomienia o problemie, który wymaga działania użytkownika (np. weryfikacja Captcha). Zalecane jest pozostawienie tej kategorii włączonej.</string>
+    <string name="notification_user_action_required_title">Wymagane działanie w aplikacji</string>
+    <string name="notification_user_action_required_text">Problem, który uniemożliwia synchronizację musi być rozwiązany przez użytkownika. Kliknij, aby uzyskać więcej informacji.</string>
+    <string name="notification_user_action_required_captcha_librus">Librus: wymagane rozwiązanie zadania Captcha. Kliknij, aby kontynuować logowanie do dziennika.</string>
 </resources>

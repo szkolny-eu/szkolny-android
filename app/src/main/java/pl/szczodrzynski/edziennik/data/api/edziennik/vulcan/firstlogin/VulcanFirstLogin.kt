@@ -6,14 +6,12 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin
 
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.ERROR_NO_STUDENTS_IN_ACCOUNT
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_VULCAN
 import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_STUDENT_LIST
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginApi
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
-import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -35,9 +33,8 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                 val students = json.getJsonArray("Data")
 
                 if (students == null || students.isEmpty()) {
-                    data.error(ApiError(TAG, ERROR_NO_STUDENTS_IN_ACCOUNT)
-                            .withResponse(response)
-                            .withApiResponse(json))
+                    EventBus.getDefault().post(FirstLoginFinishedEvent(listOf(), data.loginStore))
+                    onSuccess()
                     return@apiGet
                 }
 

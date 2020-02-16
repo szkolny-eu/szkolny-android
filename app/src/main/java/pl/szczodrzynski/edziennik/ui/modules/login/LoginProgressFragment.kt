@@ -19,10 +19,12 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.api.ERROR_CAPTCHA_NEEDED
 import pl.szczodrzynski.edziennik.data.api.LOGIN_NO_ARGUMENTS
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginProgressBinding
@@ -57,7 +59,13 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
             return
         }
 
+        doFirstLogin(args)
+    }
+
+    private fun doFirstLogin(args: Bundle) {
         launch {
+            activity.errorSnackbar.dismiss()
+
             val firstProfileId = (app.db.profileDao().lastId ?: 0) + 1
             val loginType = args.getInt("loginType", -1)
             val loginMode = args.getInt("loginMode", 0)
@@ -88,6 +96,7 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
         }
         activity.loginStores += event.loginStore
         activity.profiles += event.profileList.map { LoginSummaryProfileAdapter.Item(it) }
+        activity.errorSnackbar.dismiss()
         nav.navigate(R.id.loginSummaryFragment, null, LoginActivity.navOptions)
     }
 
@@ -96,6 +105,24 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
         EventBus.getDefault().removeStickyEvent(event)
         activity.error(event.error)
         nav.navigateUp()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUserActionRequiredEvent(event: UserActionRequiredEvent) {
+        val args = arguments ?: run {
+            activity.error(ApiError(TAG, LOGIN_NO_ARGUMENTS))
+            nav.navigateUp()
+            return
+        }
+
+        app.userActionManager.execute(activity, event.profileId, event.type, onSuccess = { code ->
+            args.putString("recaptchaCode", code)
+            args.putLong("recaptchaTime", System.currentTimeMillis())
+            doFirstLogin(args)
+        }, onFailure = {
+            activity.error(ApiError(TAG, ERROR_CAPTCHA_NEEDED))
+            nav.navigateUp()
+        })
     }
 
     override fun onStart() {

@@ -767,7 +767,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         .color(IconicsColor.colorInt(iconColor))
                         )
                         .setOnClickAction(() -> {
-                            String channel = app.getNotifications().getDataKey();
+                            String channel = app.getNotificationChannelsManager().getData().getKey();
                             Intent intent = new Intent();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                                 intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);

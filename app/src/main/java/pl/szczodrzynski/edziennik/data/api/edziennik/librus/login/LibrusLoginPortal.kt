@@ -7,12 +7,10 @@ import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.getString
-import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 import java.util.*
@@ -38,11 +36,21 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
             onSuccess()
         }
         else if (data.portalRefreshToken != null) {
-            data.app.cookieJar.clearForDomain("portal.librus.pl")
+            if (data.fakeLogin) {
+                data.app.cookieJar.clearForDomain("librus.szkolny.eu")
+            }
+            else {
+                data.app.cookieJar.clearForDomain("portal.librus.pl")
+            }
             accessToken(null, data.portalRefreshToken)
         }
         else {
-            data.app.cookieJar.clearForDomain("portal.librus.pl")
+            if (data.fakeLogin) {
+                data.app.cookieJar.clearForDomain("librus.szkolny.eu")
+            }
+            else {
+                data.app.cookieJar.clearForDomain("portal.librus.pl")
+            }
             authorize(if (data.fakeLogin) FAKE_LIBRUS_AUTHORIZE else LIBRUS_AUTHORIZE_URL)
         }
     }}
@@ -89,11 +97,20 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     private fun login(csrfToken: String) {
         d(TAG, "Request: Librus/Login/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_LOGIN else LIBRUS_LOGIN_URL}")
 
+        val recaptchaCode = data.arguments?.getString("recaptchaCode") ?: data.loginStore.getLoginData("recaptchaCode", null)
+        val recaptchaTime = data.arguments?.getLong("recaptchaTime") ?: data.loginStore.getLoginData("recaptchaTime", 0L)
+        data.loginStore.removeLoginData("recaptchaCode")
+        data.loginStore.removeLoginData("recaptchaTime")
+
         Request.builder()
                 .url(if (data.fakeLogin) FAKE_LIBRUS_LOGIN else LIBRUS_LOGIN_URL)
                 .userAgent(LIBRUS_USER_AGENT)
                 .addParameter("email", data.portalEmail)
                 .addParameter("password", data.portalPassword)
+                .also {
+                    if (recaptchaCode != null && System.currentTimeMillis() - recaptchaTime < 2*60*1000 /* 2 minutes */)
+                        it.addParameter("g-recaptcha-response", recaptchaCode)
+                }
                 .addHeader("X-CSRF-TOKEN", csrfToken)
                 .contentType(MediaTypeUtils.APPLICATION_JSON)
                 .post()
@@ -115,6 +132,12 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                             }
                             data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
                                     .withResponse(response))
+                            return
+                        }
+                        if (json.getBoolean("captchaRequired") == true) {
+                            data.error(ApiError(TAG, ERROR_CAPTCHA_LIBRUS_PORTAL)
+                                    .withResponse(response)
+                                    .withApiResponse(json))
                             return
                         }
                         if (json.get("errors") != null) {

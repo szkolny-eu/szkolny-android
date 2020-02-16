@@ -59,6 +59,9 @@ const val ERROR_FILE_DOWNLOAD                               = 113
 
 const val ERROR_NO_STUDENTS_IN_ACCOUNT                      = 115
 
+const val ERROR_CAPTCHA_NEEDED                              = 3000
+const val ERROR_CAPTCHA_LIBRUS_PORTAL                       = 3001
+
 const val CODE_INTERNAL_LIBRUS_ACCOUNT_410                  = 120
 const val CODE_INTERNAL_LIBRUS_SYNERGIA_EXPIRED             = 121
 const val ERROR_LOGIN_LIBRUS_API_CAPTCHA_NEEDED             = 124
