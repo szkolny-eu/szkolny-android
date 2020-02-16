@@ -100,6 +100,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mWidgetConfigs = mWidgetConfigs ?: values.get("widgetConfigs", JsonObject()); return mWidgetConfigs ?: JsonObject() }
         set(value) { set("widgetConfigs", value); mWidgetConfigs = value }
 
+    private var mLastAppSync: Long? = null
+    var lastAppSync: Long
+        get() { mLastAppSync = mLastAppSync ?: values.get("lastAppSync", 0L); return mLastAppSync ?: 0L }
+        set(value) { set("lastAppSync", value); mLastAppSync = value }
+
     private var rawEntries: List<ConfigEntry> = db.configDao().getAllNow()
     private val profileConfigs: HashMap<Int, ProfileConfig> = hashMapOf()
     init {
