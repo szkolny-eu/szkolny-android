@@ -53,7 +53,7 @@ class SzkolnyMobidziennikFirebase(val app: App, val profiles: List<Profile>, val
         /* assets/www/js/push.js */
         val viewIdPair = when (type) {
             "wiadOdebrana" -> DRAWER_ITEM_MESSAGES to TYPE_RECEIVED
-            "oceny", "ocenyKoncowe" -> DRAWER_ITEM_GRADES to 0
+            "oceny", "ocenyKoncowe", "zachowanie" -> DRAWER_ITEM_GRADES to 0
             "uwagi" -> DRAWER_ITEM_BEHAVIOUR to 0
             "nieobecnoscPierwszaLekcja", "nieobecnosciDzisiaj" -> DRAWER_ITEM_ATTENDANCE to 0
             else -> return@run
