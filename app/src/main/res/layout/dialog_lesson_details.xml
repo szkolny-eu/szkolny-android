@@ -10,6 +10,9 @@
         <import type="android.view.View"/>
         <import type="pl.szczodrzynski.edziennik.App"/>
         <variable
+            name="annotationVisible"
+            type="boolean"/>
+        <variable
             name="lesson"
             type="pl.szczodrzynski.edziennik.data.db.full.LessonFull" />
         <variable name="oldSubjectName" type="String" />
@@ -31,6 +34,22 @@
             android:paddingLeft="16dp"
             android:paddingTop="24dp"
             android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/annotation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/timetable_lesson_annotation"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/timetable_lesson_cancelled"
+                android:textColor="#000"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
+                tools:text="Zastępstwo: zamiast lekcji język polski z Adam Dodatkowy"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -4,8 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.timetable
 
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,7 +31,6 @@ import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Compani
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
 import pl.szczodrzynski.edziennik.utils.ListenerScrollView
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.navlib.getColorFromAttr
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
@@ -55,6 +52,8 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
     private var startHour = DEFAULT_START_HOUR
     private var endHour = DEFAULT_END_HOUR
     private var firstEventMinute = 24 * 60
+
+    private val utils by lazy { TimetableUtils() }
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
@@ -167,6 +166,8 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
         // Inflate a label view for each hour the day view will display
         val hourLabelViews = ArrayList<View>()
         for (i in dayView.startHour..dayView.endHour) {
+            if (!isAdded)
+                continue
             val hourLabelView = layoutInflater.inflate(R.layout.timetable_hour_label, dayView, false) as TextView
             hourLabelView.text = "$i:00"
             hourLabelViews.add(hourLabelView)
@@ -277,95 +278,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
             lb.unread = lesson.type != Lesson.TYPE_NORMAL && !lesson.seen
 
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
-            when (lesson.type) {
-                Lesson.TYPE_NORMAL -> {
-                    lb.annotationVisible = false
-                }
-                Lesson.TYPE_CANCELLED -> {
-                    lb.annotationVisible = true
-                    lb.annotation.setText(R.string.timetable_lesson_cancelled)
-                    lb.annotation.background.colorFilter = PorterDuffColorFilter(
-                            getColorFromAttr(activity, R.attr.timetable_lesson_cancelled_color),
-                            PorterDuff.Mode.SRC_ATOP
-                    )
-                    //lb.subjectName.typeface = Typeface.DEFAULT
-                }
-                Lesson.TYPE_CHANGE -> {
-                    lb.annotationVisible = true
-                    when {
-                        lesson.subjectId != lesson.oldSubjectId && lesson.teacherId != lesson.oldTeacherId
-                                && lesson.oldSubjectName != null && lesson.oldTeacherName != null ->
-                            lb.annotation.setText(
-                                    R.string.timetable_lesson_change_format,
-                                    "${lesson.oldSubjectName ?: "?"}, ${lesson.oldTeacherName ?: "?"}"
-                            )
-
-                        lesson.subjectId != lesson.oldSubjectId && lesson.oldSubjectName != null ->
-                            lb.annotation.setText(
-                                    R.string.timetable_lesson_change_format,
-                                    lesson.oldSubjectName ?: "?"
-                            )
-
-                        lesson.teacherId != lesson.oldTeacherId && lesson.oldTeacherName != null ->
-                            lb.annotation.setText(
-                                    R.string.timetable_lesson_change_format,
-                                    lesson.oldTeacherName ?: "?"
-                            )
-                        else -> lb.annotation.setText(R.string.timetable_lesson_change)
-                    }
-
-                    lb.annotation.background.colorFilter = PorterDuffColorFilter(
-                            getColorFromAttr(activity, R.attr.timetable_lesson_change_color),
-                            PorterDuff.Mode.SRC_ATOP
-                    )
-                }
-                Lesson.TYPE_SHIFTED_SOURCE -> {
-                    lb.annotationVisible = true
-                    when {
-                        lesson.date != lesson.oldDate && lesson.date != null ->
-                            lb.annotation.setText(
-                                    R.string.timetable_lesson_shifted_other_day,
-                                    lesson.date?.stringY_m_d ?: "?",
-                                    lesson.startTime?.stringHM ?: ""
-                            )
-
-                        lesson.startTime != lesson.oldStartTime && lesson.startTime != null ->
-                            lb.annotation.setText(
-                                    R.string.timetable_lesson_shifted_same_day,
-                                    lesson.startTime?.stringHM ?: "?"
-                            )
-
-                        else -> lb.annotation.setText(R.string.timetable_lesson_shifted)
-                    }
-
-                    lb.annotation.background.setTintColor(R.attr.timetable_lesson_shifted_source_color.resolveAttr(activity))
-                }
-                Lesson.TYPE_SHIFTED_TARGET -> {
-                    lb.annotationVisible = true
-                    when {
-                        lesson.date != lesson.oldDate && lesson.oldDate != null ->
-                            lb.annotation.setText(
-                                    R.string.timetable_lesson_shifted_from_other_day,
-                                    lesson.oldDate?.stringY_m_d ?: "?",
-                                    lesson.oldStartTime?.stringHM ?: ""
-                            )
-
-                        lesson.startTime != lesson.oldStartTime && lesson.oldStartTime != null ->
-                            lb.annotation.setText(
-                                    R.string.timetable_lesson_shifted_from_same_day,
-                                    lesson.oldStartTime?.stringHM ?: "?"
-                            )
-
-                        else -> lb.annotation.setText(R.string.timetable_lesson_shifted_from)
-                    }
-
-                    lb.annotation.background.colorFilter = PorterDuffColorFilter(
-                            getColorFromAttr(activity, R.attr.timetable_lesson_shifted_target_color),
-                            PorterDuff.Mode.SRC_ATOP
-                    )
-                }
-            }
-
+            lb.annotationVisible = utils.getAnnotation(activity, lesson, lb.annotation)
 
             // The day view needs the event time ranges in the start minute/end minute format,
             // so calculate those here
