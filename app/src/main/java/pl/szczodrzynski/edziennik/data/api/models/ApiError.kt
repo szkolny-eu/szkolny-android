@@ -9,10 +9,20 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.api.ERROR_API_EXCEPTION
+import pl.szczodrzynski.edziennik.data.api.ERROR_EXCEPTION
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApiException
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.stackTraceString
+import pl.szczodrzynski.edziennik.toErrorCode
 
 class ApiError(val tag: String, var errorCode: Int) {
+    companion object {
+        fun fromThrowable(tag: String, throwable: Throwable) =
+                ApiError(tag, throwable.toErrorCode() ?: ERROR_EXCEPTION)
+                        .withThrowable(throwable)
+    }
+
     val id = System.currentTimeMillis()
     var profileId: Int? = null
     var throwable: Throwable? = null
@@ -58,6 +68,8 @@ class ApiError(val tag: String, var errorCode: Int) {
     }
 
     fun getStringReason(context: Context): String {
+        if (errorCode == ERROR_API_EXCEPTION && throwable is SzkolnyApiException)
+            return throwable?.message.toString()
         return context.resources.getIdentifier("error_${errorCode}_reason", "string", context.packageName).let {
             if (it != 0)
                 context.getString(it)

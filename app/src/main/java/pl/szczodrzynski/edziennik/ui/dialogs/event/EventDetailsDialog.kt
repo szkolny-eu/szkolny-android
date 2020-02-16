@@ -150,23 +150,21 @@ class EventDetailsDialog(
     private fun removeEvent() {
         launch {
             if (eventShared && eventOwn) {
-                Toast.makeText(activity, "Unshare + remove own event", Toast.LENGTH_SHORT).show()
+                // unshare + remove own event
+                Toast.makeText(activity, R.string.event_manual_unshare_remove, Toast.LENGTH_SHORT).show()
 
-                val response = withContext(Dispatchers.Default) {
-                    api.unshareEvent(event)
-                }
-
-                response?.errors?.ifNotEmpty {
-                    Toast.makeText(activity, "Error: "+it[0].reason, Toast.LENGTH_SHORT).show()
-                    return@launch
-                }
+                api.runCatching(activity) {
+                    unshareEvent(event)
+                } ?: return@launch
 
                 finishRemoving()
             } else if (eventShared && !eventOwn) {
-                Toast.makeText(activity, "Remove + blacklist somebody's event", Toast.LENGTH_SHORT).show()
+                // remove + blacklist somebody's event
+                Toast.makeText(activity, "Nie zaimplementowana opcja :(", Toast.LENGTH_SHORT).show()
                 // TODO
             } else {
-                Toast.makeText(activity, "Remove event", Toast.LENGTH_SHORT).show()
+                // remove event
+                Toast.makeText(activity, R.string.event_manual_remove, Toast.LENGTH_SHORT).show()
                 finishRemoving()
             }
         }

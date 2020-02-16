@@ -49,15 +49,22 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.TlsVersion
 import okio.Buffer
+import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApiException
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.entity.Team
 import pl.szczodrzynski.edziennik.network.TLSSocketFactory
 import pl.szczodrzynski.edziennik.utils.models.Time
+import java.io.InterruptedIOException
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.math.BigInteger
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import java.nio.charset.Charset
 import java.security.KeyStore
 import java.security.MessageDigest
@@ -67,6 +74,7 @@ import java.util.zip.CRC32
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLException
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 import kotlin.Pair
@@ -1034,5 +1042,29 @@ fun CharSequence.containsAll(list: List<CharSequence>, ignoreCase: Boolean = fal
     return true
 }
 
-fun RadioButton.setOnSelectedListener(listener: (buttonView: CompoundButton) -> Unit)
+inline fun RadioButton.setOnSelectedListener(crossinline listener: (buttonView: CompoundButton) -> Unit)
         = setOnCheckedChangeListener { buttonView, isChecked -> if (isChecked) listener(buttonView) }
+
+fun Response.toErrorCode() = when (this.code()) {
+    400 -> ERROR_REQUEST_HTTP_400
+    401 -> ERROR_REQUEST_HTTP_401
+    403 -> ERROR_REQUEST_HTTP_403
+    404 -> ERROR_REQUEST_HTTP_404
+    405 -> ERROR_REQUEST_HTTP_405
+    410 -> ERROR_REQUEST_HTTP_410
+    424 -> ERROR_REQUEST_HTTP_424
+    500 -> ERROR_REQUEST_HTTP_500
+    503 -> ERROR_REQUEST_HTTP_503
+    else -> null
+}
+fun Throwable.toErrorCode() = when (this) {
+    is UnknownHostException -> ERROR_REQUEST_FAILURE_HOSTNAME_NOT_FOUND
+    is SSLException -> ERROR_REQUEST_FAILURE_SSL_ERROR
+    is SocketTimeoutException -> ERROR_REQUEST_FAILURE_TIMEOUT
+    is InterruptedIOException, is ConnectException -> ERROR_REQUEST_FAILURE_NO_INTERNET
+    is SzkolnyApiException -> this.error?.toErrorCode()
+    else -> null
+}
+private fun ApiResponse.Error.toErrorCode() = when (this.code) {
+    else -> ERROR_API_EXCEPTION
+}

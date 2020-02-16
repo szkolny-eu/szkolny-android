@@ -6,21 +6,13 @@ import androidx.core.util.size
 import androidx.room.OnConflictStrategy
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
 import pl.szczodrzynski.edziennik.data.api.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.*
-import pl.szczodrzynski.edziennik.singleOrNull
-import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.edziennik.values
-import java.io.InterruptedIOException
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
-import javax.net.ssl.SSLException
 
 abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
     companion object {
@@ -347,27 +339,12 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     }
 
     fun error(apiError: ApiError) {
-        apiError.errorCode = when (apiError.throwable) {
-            is UnknownHostException -> ERROR_REQUEST_FAILURE_HOSTNAME_NOT_FOUND
-            is SSLException -> ERROR_REQUEST_FAILURE_SSL_ERROR
-            is SocketTimeoutException -> ERROR_REQUEST_FAILURE_TIMEOUT
-            is InterruptedIOException, is ConnectException -> ERROR_REQUEST_FAILURE_NO_INTERNET
-            else ->
+        apiError.errorCode = apiError.throwable?.toErrorCode() ?:
                 if (apiError.errorCode == ERROR_REQUEST_FAILURE)
-                    when (apiError.response?.code()) {
-                        400 -> ERROR_REQUEST_HTTP_400
-                        401 -> ERROR_REQUEST_HTTP_401
-                        403 -> ERROR_REQUEST_HTTP_403
-                        404 -> ERROR_REQUEST_HTTP_404
-                        405 -> ERROR_REQUEST_HTTP_405
-                        410 -> ERROR_REQUEST_HTTP_410
-                        424 -> ERROR_REQUEST_HTTP_424
-                        500 -> ERROR_REQUEST_HTTP_500
-                        503 -> ERROR_REQUEST_HTTP_503
-                        else -> apiError.errorCode
-                    }
-                else apiError.errorCode
-        }
+                    apiError.response?.toErrorCode() ?: apiError.errorCode
+                else
+                    apiError.errorCode
+
         callback.onError(apiError)
     }
 

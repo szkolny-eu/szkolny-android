@@ -915,7 +915,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         .negativeText(R.string.abort)
                                         .show();
                                 AsyncTask.execute(() -> {
-                                    new SzkolnyApi(app).unregisterAppUser(app.getProfile().getUserCode());
+                                    new SzkolnyApi(app).runCatching(szkolnyApi -> null, szkolnyApi -> null);
                                     activity.runOnUiThread(() -> {
                                         progressDialog.dismiss();
                                         Toast.makeText(activity, getString(R.string.settings_register_allow_registration_dialog_disabling_finished), Toast.LENGTH_SHORT).show();

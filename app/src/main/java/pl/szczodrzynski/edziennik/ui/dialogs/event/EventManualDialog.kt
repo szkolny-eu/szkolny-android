@@ -621,14 +621,9 @@ class EventManualDialog(
                     sharedByName = profile?.studentNameLong
                 }
 
-                val response = withContext(Dispatchers.Default) {
-                    api.unshareEvent(eventObject)
-                }
-
-                response?.errors?.ifNotEmpty {
-                    Toast.makeText(activity, "Error: "+it[0].reason, Toast.LENGTH_SHORT).show()
-                    return@launch
-                }
+                api.runCatching(activity) {
+                    unshareEvent(eventObject)
+                } ?: return@launch
 
                 eventObject.sharedByName = null
                 finishAdding(eventObject, metadataObject)
@@ -643,14 +638,9 @@ class EventManualDialog(
 
                 metadataObject.addedDate = System.currentTimeMillis()
 
-                val response = withContext(Dispatchers.Default) {
-                    api.shareEvent(eventObject.withMetadata(metadataObject))
-                }
-
-                response?.errors?.ifNotEmpty {
-                    Toast.makeText(activity, "Error: "+it[0].reason, Toast.LENGTH_SHORT).show()
-                    return@launch
-                }
+                api.runCatching(activity) {
+                    shareEvent(eventObject.withMetadata(metadataObject))
+                } ?: return@launch
 
                 eventObject.sharedBy = "self"
                 finishAdding(eventObject, metadataObject)
@@ -664,22 +654,20 @@ class EventManualDialog(
     private fun removeEvent() {
         launch {
             if (editingShared && editingOwn) {
+                // unshare + remove own event
                 Toast.makeText(activity, R.string.event_manual_unshare_remove, Toast.LENGTH_SHORT).show()
 
-                val response = withContext(Dispatchers.Default) {
-                    api.unshareEvent(editingEvent!!)
-                }
-
-                response?.errors?.ifNotEmpty {
-                    Toast.makeText(activity, "Error: "+it[0].reason, Toast.LENGTH_SHORT).show()
-                    return@launch
-                }
+                api.runCatching(activity) {
+                    unshareEvent(editingEvent!!)
+                } ?: return@launch
 
                 finishRemoving()
             } else if (editingShared && !editingOwn) {
+                // remove + blacklist somebody's event
                 Toast.makeText(activity, "Nie zaimplementowana opcja :(", Toast.LENGTH_SHORT).show()
                 // TODO
             } else {
+                // remove event
                 Toast.makeText(activity, R.string.event_manual_remove, Toast.LENGTH_SHORT).show()
                 finishRemoving()
             }

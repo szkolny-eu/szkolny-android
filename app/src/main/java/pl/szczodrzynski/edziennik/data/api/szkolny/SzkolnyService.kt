@@ -18,16 +18,16 @@ interface SzkolnyService {
     fun serverSync(@Body request: ServerSyncRequest): Call<ApiResponse<ServerSyncResponse>>
 
     @POST("share")
-    fun shareEvent(@Body request: EventShareRequest): Call<ApiResponse<Nothing>>
+    fun shareEvent(@Body request: EventShareRequest): Call<ApiResponse<Unit>>
 
     @POST("webPush")
     fun webPush(@Body request: WebPushRequest): Call<ApiResponse<WebPushResponse>>
 
     @POST("errorReport")
-    fun errorReport(@Body request: ErrorReportRequest): Call<ApiResponse<Nothing>>
+    fun errorReport(@Body request: ErrorReportRequest): Call<ApiResponse<Unit>>
 
     @POST("appUser")
-    fun appUser(@Body request: AppUserRequest): Call<ApiResponse<Nothing>>
+    fun appUser(@Body request: AppUserRequest): Call<ApiResponse<Unit>>
 
     @GET("updates/app")
     fun updates(@Query("channel") channel: String = "release"): Call<ApiResponse<List<Update>>>

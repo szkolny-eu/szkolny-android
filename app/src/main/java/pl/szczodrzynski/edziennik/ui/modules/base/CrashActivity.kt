@@ -21,7 +21,6 @@ import pl.szczodrzynski.edziennik.data.api.ERROR_APP_CRASH
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.ifNotEmpty
 import pl.szczodrzynski.edziennik.utils.Themes.appTheme
 import kotlin.coroutines.CoroutineContext
 
@@ -86,22 +85,17 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
                         .show()
             } else {
                 launch {
-                    val response = withContext(Dispatchers.Default) {
-                        api.errorReport(listOf(getReportableError(intent)))
-                    }
+                    api.runCatching({
+                        withContext(Dispatchers.Default) {
+                            errorReport(listOf(getReportableError(intent)))
+                        }
+                    }, {
+                        Toast.makeText(app, getString(R.string.crash_report_cannot_send) + it, Toast.LENGTH_LONG).show()
+                    }) ?: return@launch
 
-                    response?.errors?.ifNotEmpty {
-                        Toast.makeText(app, getString(R.string.crash_report_cannot_send) + ": " + it[0].reason, Toast.LENGTH_LONG).show()
-                        return@launch
-                    }
-
-                    if (response != null) {
-                        Toast.makeText(app, getString(R.string.crash_report_sent), Toast.LENGTH_SHORT).show()
-                        reportButton.isEnabled = false
-                        reportButton.setTextColor(resources.getColor(android.R.color.darker_gray))
-                    } else {
-                        Toast.makeText(app, getString(R.string.crash_report_cannot_send) + " JsonObject equals null", Toast.LENGTH_LONG).show()
-                    }
+                    Toast.makeText(app, getString(R.string.crash_report_sent), Toast.LENGTH_SHORT).show()
+                    reportButton.isEnabled = false
+                    reportButton.setTextColor(resources.getColor(android.R.color.darker_gray))
                 }
             }
         }

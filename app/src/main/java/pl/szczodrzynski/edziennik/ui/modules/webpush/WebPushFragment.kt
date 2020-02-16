@@ -15,7 +15,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
@@ -93,9 +96,9 @@ class WebPushFragment : Fragment(), CoroutineScope {
         )
 
         launch {
-            val browsers = withContext(Dispatchers.Default) {
-                api.listBrowsers()
-            }
+            val browsers = api.runCatching(activity.errorSnackbar) {
+                listBrowsers()
+            } ?: return@launch
             updateBrowserList(browsers)
         }
     }
@@ -128,21 +131,22 @@ class WebPushFragment : Fragment(), CoroutineScope {
         b.tokenEditText.isEnabled = false
         b.tokenEditText.clearFocus()
         launch {
-            val browsers = withContext(Dispatchers.Default) {
-                api.pairBrowser(browserId, pairToken)
+            val browsers = api.runCatching(activity.errorSnackbar) {
+                pairBrowser(browserId, pairToken)
             }
             b.scanQrCode.isEnabled = true
             b.tokenAccept.isEnabled = true
             b.tokenEditText.isEnabled = true
-            updateBrowserList(browsers)
+            if (browsers != null)
+                updateBrowserList(browsers)
         }
     }
 
     private fun unpairBrowser(browserId: String) {
         launch {
-            val browsers = withContext(Dispatchers.Default) {
-                api.unpairBrowser(browserId)
-            }
+            val browsers = api.runCatching(activity.errorSnackbar) {
+                unpairBrowser(browserId)
+            } ?: return@launch
             updateBrowserList(browsers)
         }
     }

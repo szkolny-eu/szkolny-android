@@ -76,13 +76,15 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
             try {
                 val update = overrideUpdate
                         ?: run {
-                            val response = withContext(Dispatchers.Default) { SzkolnyApi(app).getUpdate("beta") }
-                            if (response?.success != true) {
-                                Toast.makeText(app, app.getString(R.string.notification_cant_check_update), Toast.LENGTH_SHORT).show()
-                                return@run null
-                            }
-                            val updates = response.data
-                            if (updates?.isNotEmpty() != true) {
+                            val updates = withContext(Dispatchers.Default) {
+                                SzkolnyApi(app).runCatching({
+                                    getUpdate("beta")
+                                }, {
+                                    Toast.makeText(app, app.getString(R.string.notification_cant_check_update), Toast.LENGTH_SHORT).show()
+                                })
+                            } ?: return@run null
+
+                            if (updates.isEmpty()) {
                                 app.config.update = null
                                 Toast.makeText(app, app.getString(R.string.notification_no_update), Toast.LENGTH_SHORT).show()
                                 return@run null

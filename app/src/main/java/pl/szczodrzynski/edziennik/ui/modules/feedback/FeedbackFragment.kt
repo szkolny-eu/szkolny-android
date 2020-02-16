@@ -239,22 +239,15 @@ class FeedbackFragment : Fragment(), CoroutineScope {
         }
 
         launch {
-            val message = withContext(Dispatchers.Default) {
-                try {
-                    api.sendFeedbackMessage(
-                            senderName = App.profile.accountName ?: App.profile.studentNameLong,
-                            targetDeviceId = if (isDev) currentDeviceId else null,
-                            text = text
-                    )?.also {
-                        app.db.feedbackMessageDao().add(it)
-                    }
-                } catch (ignore: Exception) { null }
-            }
-
-            if (message == null) {
-                Toast.makeText(app, "Nie udało się wysłać wiadomości.", Toast.LENGTH_SHORT).show()
-                return@launch
-            }
+            val message = api.runCatching(activity.errorSnackbar) {
+                val message = api.sendFeedbackMessage(
+                        senderName = App.profile.accountName ?: App.profile.studentNameLong,
+                        targetDeviceId = if (isDev) currentDeviceId else null,
+                        text = text
+                )
+                app.db.feedbackMessageDao().add(message)
+                message
+            } ?: return@launch
 
             b.chatLayout.visibility = View.VISIBLE
             b.inputLayout.visibility = View.GONE
