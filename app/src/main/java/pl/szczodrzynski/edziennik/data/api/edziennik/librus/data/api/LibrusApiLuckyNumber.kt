@@ -17,7 +17,9 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class LibrusApiLuckyNumber(override val data: DataLibrus,
-                           val onSuccess: () -> Unit) : LibrusApi(data) {
+                           override val lastSync: Long?,
+                           val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiLuckyNumber"
     }
@@ -57,7 +59,7 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_LUCKY_NUMBER, syncAt = nextSync)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_LUCKY_NUMBER)
         }
     }
 }

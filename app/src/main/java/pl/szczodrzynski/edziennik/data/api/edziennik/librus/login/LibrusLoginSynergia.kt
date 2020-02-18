@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection
 
-class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusApi(data) {
+class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusApi(data, null) {
     companion object {
         private const val TAG = "LoginLibrusSynergia"
     }

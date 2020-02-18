@@ -13,13 +13,15 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNI
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Announcement
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikWebAnnouncements(override val data: DataIdziennik,
-                          val onSuccess: () -> Unit) : IdziennikWeb(data) {
+                                override val lastSync: Long?,
+                                val onSuccess: (endpointId: Int) -> Unit
+) : IdziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "IdziennikWebAnnouncements"
     }
@@ -69,7 +71,7 @@ class IdziennikWebAnnouncements(override val data: DataIdziennik,
             }
 
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_ANNOUNCEMENTS, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_IDZIENNIK_WEB_ANNOUNCEMENTS)
         }
     }
 }

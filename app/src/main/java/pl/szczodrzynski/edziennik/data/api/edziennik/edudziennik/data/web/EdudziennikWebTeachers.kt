@@ -12,7 +12,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.Edudzienni
 import pl.szczodrzynski.edziennik.get
 
 class EdudziennikWebTeachers(override val data: DataEdudziennik,
-                             val onSuccess: () -> Unit) : EdudziennikWeb(data) {
+                             override val lastSync: Long?,
+                             val onSuccess: (endpointId: Int) -> Unit
+) : EdudziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "EdudziennikWebTeachers"
     }
@@ -26,7 +28,7 @@ class EdudziennikWebTeachers(override val data: DataEdudziennik,
             }
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_TEACHERS, MONTH)
-            onSuccess()
+            onSuccess(ENDPOINT_EDUDZIENNIK_WEB_TEACHERS)
         }
     }
 }

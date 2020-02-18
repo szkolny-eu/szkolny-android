@@ -15,7 +15,10 @@ import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.text.replace
 
-class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiMessagesInbox(override val data: DataVulcan,
+                             override val lastSync: Long?,
+                             val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApiMessagesInbox"
     }
@@ -95,8 +98,8 @@ class VulcanApiMessagesInbox(override val data: DataVulcan, val onSuccess: () ->
                 }
 
                 data.setSyncNext(ENDPOINT_VULCAN_API_MESSAGES_INBOX, SYNC_ALWAYS)
-                onSuccess()
+                onSuccess(ENDPOINT_VULCAN_API_MESSAGES_INBOX)
             }
-        } ?: onSuccess()
+        } ?: onSuccess(ENDPOINT_VULCAN_API_MESSAGES_INBOX)
     }
 }

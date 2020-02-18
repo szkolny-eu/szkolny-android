@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.*
 
-open class LibrusApi(open val data: DataLibrus) {
+open class LibrusApi(open val data: DataLibrus, open val lastSync: Long?) {
     companion object {
         private const val TAG = "LibrusApi"
     }

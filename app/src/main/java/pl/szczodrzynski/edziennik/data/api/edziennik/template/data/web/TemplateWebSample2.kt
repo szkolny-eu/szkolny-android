@@ -12,7 +12,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.template.data.TemplateWeb
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 
 class TemplateWebSample2(override val data: DataTemplate,
-                         val onSuccess: () -> Unit) : TemplateWeb(data) {
+                         override val lastSync: Long?,
+                         val onSuccess: (endpointId: Int) -> Unit
+) : TemplateWeb(data, lastSync) {
     companion object {
         private const val TAG = "TemplateWebSample2"
     }
@@ -33,7 +35,7 @@ class TemplateWebSample2(override val data: DataTemplate,
             // always, in every sync
             data.setSyncNext(ENDPOINT_TEMPLATE_WEB_SAMPLE_2, SYNC_ALWAYS)
 
-            onSuccess()
+            onSuccess(ENDPOINT_TEMPLATE_WEB_SAMPLE_2)
         }
     }
 }

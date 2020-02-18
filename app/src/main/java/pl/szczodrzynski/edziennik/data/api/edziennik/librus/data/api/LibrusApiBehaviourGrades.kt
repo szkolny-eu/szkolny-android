@@ -9,15 +9,17 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.text.DecimalFormat
 
 class LibrusApiBehaviourGrades(override val data: DataLibrus,
-                               val onSuccess: () -> Unit) : LibrusApi(data) {
+                               override val lastSync: Long?,
+                               val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiBehaviourGrades"
     }
@@ -150,7 +152,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
 
             data.toRemove.add(DataRemoveModel.Grades.semesterWithType(profile.currentSemester, Grade.TYPE_POINT_SUM))
             data.setSyncNext(ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES)
         }
-    } ?: onSuccess() }
+    } ?: onSuccess(ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES) }
 }

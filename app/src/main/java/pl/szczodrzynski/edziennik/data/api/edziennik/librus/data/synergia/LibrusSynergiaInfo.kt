@@ -10,7 +10,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_SYNERGIA_INFO
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusSynergia
 
-class LibrusSynergiaInfo(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusSynergia(data) {
+class LibrusSynergiaInfo(override val data: DataLibrus,
+                         override val lastSync: Long?,
+                         val onSuccess: (endpointId: Int) -> Unit
+) : LibrusSynergia(data, lastSync) {
     companion object {
         const val TAG = "LibrusSynergiaInfo"
     }
@@ -28,7 +31,7 @@ class LibrusSynergiaInfo(override val data: DataLibrus, val onSuccess: () -> Uni
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_INFO, MONTH)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_SYNERGIA_INFO)
         }
     }
 }

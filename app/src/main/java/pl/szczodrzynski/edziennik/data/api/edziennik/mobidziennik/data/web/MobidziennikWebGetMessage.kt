@@ -22,10 +22,10 @@ import pl.szczodrzynski.edziennik.utils.Utils.monthFromName
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
-class MobidziennikWebGetMessage(
-        override val data: DataMobidziennik,
-        private val message: MessageFull,
-        val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+class MobidziennikWebGetMessage(override val data: DataMobidziennik,
+                                private val message: MessageFull,
+                                val onSuccess: () -> Unit
+) : MobidziennikWeb(data, null) {
     companion object {
         private const val TAG = "MobidziennikWebGetMessage"
     }

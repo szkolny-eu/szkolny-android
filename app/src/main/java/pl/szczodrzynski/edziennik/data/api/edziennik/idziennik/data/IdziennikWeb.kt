@@ -19,7 +19,7 @@ import java.io.File
 import java.net.HttpURLConnection.HTTP_INTERNAL_ERROR
 import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 
-open class IdziennikWeb(open val data: DataIdziennik) {
+open class IdziennikWeb(open val data: DataIdziennik, open val lastSync: Long?) {
     companion object {
         const val TAG = "IdziennikWeb"
     }

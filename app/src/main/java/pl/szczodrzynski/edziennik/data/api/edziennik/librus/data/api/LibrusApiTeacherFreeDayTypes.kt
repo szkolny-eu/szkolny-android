@@ -11,7 +11,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsenceType
 
 class LibrusApiTeacherFreeDayTypes(override val data: DataLibrus,
-                                   val onSuccess: () -> Unit) : LibrusApi(data) {
+                                   override val lastSync: Long?,
+                                   val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiTeacherFreeDayTypes"
     }
@@ -34,7 +36,7 @@ class LibrusApiTeacherFreeDayTypes(override val data: DataLibrus,
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAY_TYPES, 7 * DAY)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAY_TYPES)
         }
     }
 }

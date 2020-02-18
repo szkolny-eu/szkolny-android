@@ -7,7 +7,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusSynergia
 
-class LibrusSynergiaTemplate(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusSynergia(data) {
+class LibrusSynergiaTemplate(override val data: DataLibrus,
+                             val onSuccess: () -> Unit
+) : LibrusSynergia(data, null) {
     companion object {
         const val TAG = "LibrusSynergia"
     }

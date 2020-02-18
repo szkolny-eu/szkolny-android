@@ -14,8 +14,8 @@ class TemplateFirstLogin(val data: DataTemplate, val onSuccess: () -> Unit) {
         private const val TAG = "TemplateFirstLogin"
     }
 
-    private val web = TemplateWeb(data)
-    private val api = TemplateApi(data)
+    private val web = TemplateWeb(data, null)
+    private val api = TemplateApi(data, null)
     private val profileList = mutableListOf<Profile>()
 
     init {

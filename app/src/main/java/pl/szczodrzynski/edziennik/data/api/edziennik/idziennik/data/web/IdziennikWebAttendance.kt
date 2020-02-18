@@ -4,23 +4,25 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web
 
+import pl.szczodrzynski.edziennik.crc16
 import pl.szczodrzynski.edziennik.data.api.ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA
 import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_WEB_ATTENDANCE
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_WEB_ATTENDANCE
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.crc16
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.*
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class IdziennikWebAttendance(override val data: DataIdziennik,
-                          val onSuccess: () -> Unit) : IdziennikWeb(data) {
+                             override val lastSync: Long?,
+                             val onSuccess: (endpointId: Int) -> Unit
+) : IdziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "IdziennikWebAttendance"
     }
@@ -137,7 +139,7 @@ class IdziennikWebAttendance(override val data: DataIdziennik,
                 getAttendance()
             } else {
                 data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_ATTENDANCE, SYNC_ALWAYS)
-                onSuccess()
+                onSuccess(ENDPOINT_IDZIENNIK_WEB_ATTENDANCE)
             }
         }
     }

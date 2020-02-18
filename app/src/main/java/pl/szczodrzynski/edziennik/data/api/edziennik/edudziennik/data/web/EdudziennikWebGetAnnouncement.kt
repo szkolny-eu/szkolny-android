@@ -12,11 +12,10 @@ import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.get
 
-class EdudziennikWebGetAnnouncement(
-        override val data: DataEdudziennik,
-        private val announcement: AnnouncementFull,
-        val onSuccess: () -> Unit
-) : EdudziennikWeb(data) {
+class EdudziennikWebGetAnnouncement(override val data: DataEdudziennik,
+                                    private val announcement: AnnouncementFull,
+                                    val onSuccess: () -> Unit
+) : EdudziennikWeb(data, null) {
     companion object {
         const val TAG = "EdudziennikWebGetAnnouncement"
     }

@@ -16,8 +16,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.Mobidzien
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
-class MobidziennikWebGetRecipientList(
-        override val data: DataMobidziennik, val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+class MobidziennikWebGetRecipientList(override val data: DataMobidziennik,
+                                      val onSuccess: () -> Unit
+) : MobidziennikWeb(data, null) {
     companion object {
         private const val TAG = "MobidziennikWebGetRecipientList"
     }

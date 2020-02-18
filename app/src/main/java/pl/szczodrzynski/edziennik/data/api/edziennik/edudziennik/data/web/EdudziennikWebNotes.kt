@@ -17,7 +17,9 @@ import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EdudziennikWebNotes(override val data: DataEdudziennik,
-                          val onSuccess: () -> Unit) : EdudziennikWeb(data) {
+                          override val lastSync: Long?,
+                          val onSuccess: (endpointId: Int) -> Unit
+) : EdudziennikWeb(data, lastSync) {
     companion object {
         const val TAG = "EdudziennikWebNotes"
     }
@@ -59,7 +61,7 @@ class EdudziennikWebNotes(override val data: DataEdudziennik,
             }
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_NOTES, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_EDUDZIENNIK_WEB_NOTES)
         }
-    } ?: onSuccess() }
+    } ?: onSuccess(ENDPOINT_EDUDZIENNIK_WEB_NOTES) }
 }

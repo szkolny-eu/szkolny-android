@@ -12,7 +12,9 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 
 class MobidziennikApi(override val data: DataMobidziennik,
-                      val onSuccess: () -> Unit) : MobidziennikWeb(data)  {
+                      override val lastSync: Long?,
+                      val onSuccess: (endpointId: Int) -> Unit
+) : MobidziennikWeb(data, lastSync)  {
     companion object {
         private const val TAG = "MobidziennikApi"
     }
@@ -47,7 +49,7 @@ class MobidziennikApi(override val data: DataMobidziennik,
             }
 
             data.setSyncNext(ENDPOINT_MOBIDZIENNIK_API_MAIN, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_MOBIDZIENNIK_API_MAIN)
         }
     }
 }

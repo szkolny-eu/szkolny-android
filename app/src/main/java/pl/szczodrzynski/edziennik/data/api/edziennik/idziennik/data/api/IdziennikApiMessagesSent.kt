@@ -20,7 +20,9 @@ import pl.szczodrzynski.edziennik.utils.Utils.crc32
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikApiMessagesSent(override val data: DataIdziennik,
-                                val onSuccess: () -> Unit) : IdziennikApi(data) {
+                               override val lastSync: Long?,
+                               val onSuccess: (endpointId: Int) -> Unit
+) : IdziennikApi(data, lastSync) {
     companion object {
         private const val TAG = "IdziennikApiMessagesSent"
     }
@@ -28,7 +30,7 @@ class IdziennikApiMessagesSent(override val data: DataIdziennik,
     init {
         apiGet(TAG, IDZIENNIK_API_MESSAGES_SENT) { json ->
             if (json !is JsonArray) {
-                onSuccess()
+                onSuccess(ENDPOINT_IDZIENNIK_API_MESSAGES_SENT)
                 return@apiGet
             }
 
@@ -79,7 +81,7 @@ class IdziennikApiMessagesSent(override val data: DataIdziennik,
             }
 
             data.setSyncNext(ENDPOINT_IDZIENNIK_API_MESSAGES_SENT, DAY, DRAWER_ITEM_MESSAGES)
-            onSuccess()
+            onSuccess(ENDPOINT_IDZIENNIK_API_MESSAGES_SENT)
         }
     }
 }

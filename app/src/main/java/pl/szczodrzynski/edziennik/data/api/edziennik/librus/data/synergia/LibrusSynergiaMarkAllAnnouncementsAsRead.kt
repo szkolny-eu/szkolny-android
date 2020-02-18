@@ -8,7 +8,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusSynergia
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 
-class LibrusSynergiaMarkAllAnnouncementsAsRead(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusSynergia(data) {
+class LibrusSynergiaMarkAllAnnouncementsAsRead(override val data: DataLibrus,
+                                               val onSuccess: () -> Unit
+) : LibrusSynergia(data, null) {
     companion object {
         const val TAG = "LibrusSynergiaMarkAllAnnouncementsAsRead"
     }

@@ -53,7 +53,7 @@ fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featu
                                 if (timer.nextSync == SYNC_ALWAYS ||
                                         (viewId != null && timer.viewId == viewId) ||
                                         (timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp)) {
-                                    data.targetEndpointIds.add(endpoint.first)
+                                    data.targetEndpointIds[endpoint.first] = timer.lastSync
                                     requiredLoginMethods.add(endpoint.second)
                                 }
                             }
@@ -76,8 +76,8 @@ fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featu
     data.targetLoginMethodIds = data.targetLoginMethodIds.toHashSet().toMutableList()
     data.targetLoginMethodIds.sort()
 
-    data.targetEndpointIds = data.targetEndpointIds.toHashSet().toMutableList()
-    data.targetEndpointIds.sort()
+    //data.targetEndpointIds = data.targetEndpointIds.toHashSet().toMutableList()
+    //data.targetEndpointIds.sort()
 
     progressCount = targetLoginMethodIds.size + targetEndpointIds.size
     progressStep = if (progressCount <= 0) 0f else 100f / progressCount.toFloat()

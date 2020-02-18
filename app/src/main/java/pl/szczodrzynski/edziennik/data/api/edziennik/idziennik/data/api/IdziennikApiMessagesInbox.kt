@@ -10,20 +10,18 @@ import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_API_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_API_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikApi
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_DELETED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.getBoolean
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.Utils.crc32
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikApiMessagesInbox(override val data: DataIdziennik,
-                                  val onSuccess: () -> Unit) : IdziennikApi(data) {
+                                override val lastSync: Long?,
+                                val onSuccess: (endpointId: Int) -> Unit
+) : IdziennikApi(data, lastSync) {
     companion object {
         private const val TAG = "IdziennikApiMessagesInbox"
     }
@@ -31,7 +29,7 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
     init {
         apiGet(TAG, IDZIENNIK_API_MESSAGES_INBOX) { json ->
             if (json !is JsonArray) {
-                onSuccess()
+                onSuccess(ENDPOINT_IDZIENNIK_API_MESSAGES_INBOX)
                 return@apiGet
             }
 
@@ -96,7 +94,7 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
             }
 
             data.setSyncNext(ENDPOINT_IDZIENNIK_API_MESSAGES_INBOX, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_IDZIENNIK_API_MESSAGES_INBOX)
         }
     }
 }

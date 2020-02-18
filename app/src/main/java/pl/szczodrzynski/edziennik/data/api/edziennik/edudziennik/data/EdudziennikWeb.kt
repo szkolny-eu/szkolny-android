@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-open class EdudziennikWeb(open val data: DataEdudziennik) {
+open class EdudziennikWeb(open val data: DataEdudziennik, open val lastSync: Long?) {
     companion object {
         private const val TAG = "EdudziennikWeb"
     }

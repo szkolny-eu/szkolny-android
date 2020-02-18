@@ -7,7 +7,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 
-class LibrusMessagesTemplate(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusMessages(data) {
+class LibrusMessagesTemplate(override val data: DataLibrus,
+                             val onSuccess: () -> Unit
+) : LibrusMessages(data, null) {
     companion object {
         const val TAG = "LibrusMessages"
     }

@@ -54,7 +54,7 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                     && data.symbol.isNotNullNorEmpty()) {
                 // (see data.isApiLoginValid())
                 // the semester end date is over
-                VulcanApiUpdateSemester(data, onSuccess)
+                VulcanApiUpdateSemester(data, null) { onSuccess() }
                 return@run
             }
 

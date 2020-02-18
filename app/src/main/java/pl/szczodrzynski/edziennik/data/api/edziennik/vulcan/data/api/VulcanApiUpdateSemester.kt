@@ -13,7 +13,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class VulcanApiUpdateSemester(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiUpdateSemester(override val data: DataVulcan,
+                              override val lastSync: Long?,
+                              val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApiUpdateSemester"
     }
@@ -68,7 +71,7 @@ class VulcanApiUpdateSemester(override val data: DataVulcan, val onSuccess: () -
             }
 
             data.setSyncNext(ENDPOINT_VULCAN_API_UPDATE_SEMESTER, if (data.studentSemesterNumber == 2) 7*DAY else 2*DAY)
-            onSuccess()
+            onSuccess(ENDPOINT_VULCAN_API_UPDATE_SEMESTER)
         }
-    } ?: onSuccess()}
+    } ?: onSuccess(ENDPOINT_VULCAN_API_UPDATE_SEMESTER) }
 }

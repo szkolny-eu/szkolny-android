@@ -15,7 +15,9 @@ import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusApiClasses(override val data: DataLibrus,
-                       val onSuccess: () -> Unit) : LibrusApi(data) {
+                       override val lastSync: Long?,
+                       val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiClasses"
     }
@@ -55,7 +57,7 @@ class LibrusApiClasses(override val data: DataLibrus,
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_CLASSES, 4 * DAY)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_CLASSES)
         }
     }
 }

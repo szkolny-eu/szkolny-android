@@ -29,56 +29,58 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        useEndpoint(data.targetEndpointIds.removeAt(0)) {
+        useEndpoint(data.targetEndpointIds.firstKey()) { endpointId ->
+            data.targetEndpointIds.remove(endpointId)
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }
 
-    private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
-        Utils.d(TAG, "Using endpoint $endpointId")
+    private fun useEndpoint(endpointId: Int, onSuccess: (endpointId: Int) -> Unit) {
+        val lastSync = data.targetEndpointIds[endpointId]
+        Utils.d(TAG, "Using endpoint $endpointId. Last sync time = $lastSync")
         when (endpointId) {
             ENDPOINT_MOBIDZIENNIK_API_MAIN -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_data)
-                MobidziennikApi(data, onSuccess)
+                MobidziennikApi(data, lastSync, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_API2_MAIN -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_push_config)
-                MobidziennikApi2Main(data, onSuccess)
+                MobidziennikApi2Main(data, lastSync, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
-                MobidziennikWebMessagesInbox(data) { onSuccess() }
+                MobidziennikWebMessagesInbox(data, lastSync, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages)
-                MobidziennikWebMessagesAll(data) { onSuccess() }
+                MobidziennikWebMessagesAll(data, lastSync, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_WEB_CALENDAR -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_calendar)
-                MobidziennikWebCalendar(data) { onSuccess() }
+                MobidziennikWebCalendar(data, lastSync, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_WEB_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
-                MobidziennikWebGrades(data) { onSuccess() }
+                MobidziennikWebGrades(data, lastSync, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_account_details)
-                MobidziennikWebAccountEmail(data) { onSuccess() }
+                MobidziennikWebAccountEmail(data, lastSync, onSuccess)
             }/*
             ENDPOINT_MOBIDZIENNIK_WEB_NOTICES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_behaviour)
-                MobidziennikWebNotices(data) { onSuccess() }
+                MobidziennikWebNotices(data, lastSync, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_WEB_ATTENDANCE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance)
-                MobidziennikWebAttendance(data) { onSuccess() }
+                MobidziennikWebAttendance(data, lastSync, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_WEB_MANUALS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
-                MobidziennikWebManuals(data) { onSuccess() }
+                MobidziennikWebManuals(data, lastSync, onSuccess)
             }*/
-            else -> onSuccess()
+            else -> onSuccess(endpointId)
         }
     }
 }

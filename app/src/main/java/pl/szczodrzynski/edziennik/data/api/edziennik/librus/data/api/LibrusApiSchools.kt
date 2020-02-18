@@ -13,7 +13,9 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
 
 class LibrusApiSchools(override val data: DataLibrus,
-                       val onSuccess: () -> Unit) : LibrusApi(data) {
+                       override val lastSync: Long?,
+                       val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiSchools"
     }
@@ -48,7 +50,7 @@ class LibrusApiSchools(override val data: DataLibrus,
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_SCHOOLS, 4 * DAY)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_SCHOOLS)
         }
     }
 }

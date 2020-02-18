@@ -12,7 +12,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.Mobidzien
 import pl.szczodrzynski.edziennik.get
 
 class MobidziennikWebAccountEmail(override val data: DataMobidziennik,
-                              val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+                                  override val lastSync: Long?,
+                                  val onSuccess: (endpointId: Int) -> Unit
+) : MobidziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "MobidziennikWebAccountEmail"
     }
@@ -25,7 +27,7 @@ class MobidziennikWebAccountEmail(override val data: DataMobidziennik,
             data.loginEmail = email
 
             data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL, if (email == null) 3*DAY else 7*DAY)
-            onSuccess()
+            onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL)
         }
     }
 }

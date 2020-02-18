@@ -17,7 +17,9 @@ import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
-                              val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+                                   override val lastSync: Long?,
+                                   val onSuccess: (endpointId: Int) -> Unit
+) : MobidziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "MobidziennikWebMessagesInbox"
     }
@@ -28,7 +30,7 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
 
             if (text.contains("Brak wiadomości odebranych.")) {
                 data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX, SYNC_ALWAYS)
-                onSuccess()
+                onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX)
                 return@webGet
             }
 
@@ -81,7 +83,7 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
             }
 
             data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_INBOX)
         }
     }
 }

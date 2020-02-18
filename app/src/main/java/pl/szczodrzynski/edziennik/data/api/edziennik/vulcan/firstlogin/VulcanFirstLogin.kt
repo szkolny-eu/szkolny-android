@@ -20,7 +20,7 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
         const val TAG = "VulcanFirstLogin"
     }
 
-    private val api = VulcanApi(data)
+    private val api = VulcanApi(data, null)
     private val profileList = mutableListOf<Profile>()
 
     init {

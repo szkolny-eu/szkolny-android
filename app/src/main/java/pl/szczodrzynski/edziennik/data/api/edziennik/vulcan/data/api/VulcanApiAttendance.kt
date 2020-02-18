@@ -6,13 +6,16 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_ATTENDANCE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_ATTENDANCE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_PRESENT
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class VulcanApiAttendance(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiAttendance(override val data: DataVulcan,
+                          override val lastSync: Long?,
+                          val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApiAttendance"
     }
@@ -72,7 +75,7 @@ class VulcanApiAttendance(override val data: DataVulcan, val onSuccess: () -> Un
             }
 
             data.setSyncNext(ENDPOINT_VULCAN_API_ATTENDANCE, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_VULCAN_API_ATTENDANCE)
         }
-    } ?: onSuccess()}
+    } ?: onSuccess(ENDPOINT_VULCAN_API_ATTENDANCE) }
 }

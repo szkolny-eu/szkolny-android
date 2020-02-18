@@ -8,7 +8,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 
 class LibrusApiTemplate(override val data: DataLibrus,
-                        val onSuccess: () -> Unit) : LibrusApi(data) {
+                        val onSuccess: () -> Unit
+) : LibrusApi(data, null) {
     companion object {
         const val TAG = "LibrusApi"
     }

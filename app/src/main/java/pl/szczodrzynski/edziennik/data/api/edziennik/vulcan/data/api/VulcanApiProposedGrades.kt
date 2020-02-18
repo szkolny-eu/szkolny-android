@@ -2,18 +2,21 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api
 
 import com.google.gson.JsonArray
 import pl.szczodrzynski.edziennik.HOUR
+import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_GRADES_PROPOSITIONS
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_GRADES_SUMMARY
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
-import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.utils.Utils
 
-class VulcanApiProposedGrades(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiProposedGrades(override val data: DataVulcan,
+                              override val lastSync: Long?,
+                              val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApiProposedGrades"
     }
@@ -35,9 +38,9 @@ class VulcanApiProposedGrades(override val data: DataVulcan, val onSuccess: () -
             }
 
             data.setSyncNext(ENDPOINT_VULCAN_API_GRADES_SUMMARY, 6*HOUR)
-            onSuccess()
+            onSuccess(ENDPOINT_VULCAN_API_GRADES_SUMMARY)
         }
-    } ?: onSuccess()}
+    } ?: onSuccess(ENDPOINT_VULCAN_API_GRADES_SUMMARY) }
 
     private fun processGradeList(grades: JsonArray, isFinal: Boolean) {
         grades.asJsonObjectList()?.forEach { grade ->

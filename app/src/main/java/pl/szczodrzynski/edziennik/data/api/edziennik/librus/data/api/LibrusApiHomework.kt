@@ -9,13 +9,15 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_HOMEWORK
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusApiHomework(override val data: DataLibrus,
-                        val onSuccess: () -> Unit) : LibrusApi(data) {
+                        override val lastSync: Long?,
+                        val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiHomework"
     }
@@ -59,7 +61,7 @@ class LibrusApiHomework(override val data: DataLibrus,
             data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_HOMEWORK, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_HOMEWORK)
         }
     }
 }

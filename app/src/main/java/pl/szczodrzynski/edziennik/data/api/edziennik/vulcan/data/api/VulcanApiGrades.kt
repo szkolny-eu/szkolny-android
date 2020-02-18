@@ -10,13 +10,16 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
-class VulcanApiGrades(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiGrades(override val data: DataVulcan,
+                      override val lastSync: Long?,
+                      val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApiGrades"
     }
@@ -112,7 +115,7 @@ class VulcanApiGrades(override val data: DataVulcan, val onSuccess: () -> Unit) 
 
             data.toRemove.add(DataRemoveModel.Grades.semesterWithType(data.studentSemesterNumber, Grade.TYPE_NORMAL))
             data.setSyncNext(ENDPOINT_VULCAN_API_GRADES, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_VULCAN_API_GRADES)
         }
-    } ?: onSuccess()}
+    } ?: onSuccess(ENDPOINT_VULCAN_API_GRADES) }
 }

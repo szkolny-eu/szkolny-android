@@ -11,10 +11,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.singleOrNull
@@ -24,7 +24,9 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
 
 class EdudziennikWebTimetable(override val data: DataEdudziennik,
-                              val onSuccess: () -> Unit) : EdudziennikWeb(data) {
+                              override val lastSync: Long?,
+                              val onSuccess: (endpointId: Int) -> Unit
+) : EdudziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "EdudziennikWebTimetable"
     }
@@ -142,7 +144,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
 
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE)
         }
-    } ?: onSuccess() }
+    } ?: onSuccess(ENDPOINT_EDUDZIENNIK_WEB_TIMETABLE) }
 }

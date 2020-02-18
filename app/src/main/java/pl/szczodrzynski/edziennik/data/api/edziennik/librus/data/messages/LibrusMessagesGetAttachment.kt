@@ -22,9 +22,12 @@ import pl.szczodrzynski.edziennik.utils.Utils
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 
-class LibrusMessagesGetAttachment(
-        override val data: DataLibrus, val message: Message, val attachmentId: Long,
-        val attachmentName: String, val onSuccess: () -> Unit) : LibrusMessages(data), CoroutineScope {
+class LibrusMessagesGetAttachment(override val data: DataLibrus,
+                                  val message: Message,
+                                  val attachmentId: Long,
+                                  val attachmentName: String,
+                                  val onSuccess: () -> Unit
+) : LibrusMessages(data, null), CoroutineScope {
     companion object {
         const val TAG = "LibrusMessagesGetAttachment"
     }

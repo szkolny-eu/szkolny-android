@@ -19,7 +19,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikWebGrades(override val data: DataIdziennik,
-                            val onSuccess: () -> Unit) : IdziennikWeb(data) {
+                         override val lastSync: Long?,
+                         val onSuccess: (endpointId: Int) -> Unit
+) : IdziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "IdziennikWebGrades"
     }
@@ -163,7 +165,7 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                 DataRemoveModel.Grades.semesterWithType(profile.currentSemester, it)
             })
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_GRADES, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_IDZIENNIK_WEB_GRADES)
         }
-    } ?: onSuccess() }
+    } ?: onSuccess(ENDPOINT_IDZIENNIK_WEB_GRADES) }
 }

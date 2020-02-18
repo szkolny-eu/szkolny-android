@@ -14,11 +14,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 
-class VulcanApiMessagesChangeStatus(
-        override val data: DataVulcan,
-        private val messageObject: MessageFull,
-        val onSuccess: () -> Unit
-) : VulcanApi(data) {
+class VulcanApiMessagesChangeStatus(override val data: DataVulcan,
+                                    private val messageObject: MessageFull,
+                                    val onSuccess: () -> Unit
+) : VulcanApi(data, null) {
     companion object {
         const val TAG = "VulcanApiMessagesChangeStatus"
     }

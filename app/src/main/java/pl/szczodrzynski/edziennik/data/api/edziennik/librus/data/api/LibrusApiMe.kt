@@ -10,7 +10,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 
 class LibrusApiMe(override val data: DataLibrus,
-                  val onSuccess: () -> Unit) : LibrusApi(data) {
+                  override val lastSync: Long?,
+                  val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiMe"
     }
@@ -33,7 +35,7 @@ class LibrusApiMe(override val data: DataLibrus,
                     buildFullName(user?.getString("FirstName"), user?.getString("LastName"))
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_ME, 2*DAY)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_ME)
         }
     }
 }

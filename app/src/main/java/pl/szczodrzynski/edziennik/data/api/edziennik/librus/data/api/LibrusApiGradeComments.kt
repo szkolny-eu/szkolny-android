@@ -8,11 +8,13 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 
 class LibrusApiGradeComments(override val data: DataLibrus,
-                             val onSuccess: () -> Unit) : LibrusApi(data) {
+                             override val lastSync: Long?,
+                             val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiGradeComments"
     }
@@ -38,7 +40,7 @@ class LibrusApiGradeComments(override val data: DataLibrus,
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS)
         }
     }
 }

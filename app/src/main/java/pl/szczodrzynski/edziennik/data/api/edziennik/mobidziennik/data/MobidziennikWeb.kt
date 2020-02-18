@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.io.File
 
-open class MobidziennikWeb(open val data: DataMobidziennik) {
+open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: Long?) {
     companion object {
         private const val TAG = "MobidziennikWeb"
     }

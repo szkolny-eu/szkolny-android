@@ -12,7 +12,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
 
 class LibrusApiBehaviourGradeCategories(override val data: DataLibrus,
-                                        val onSuccess: () -> Unit) : LibrusApi(data) {
+                                        override val lastSync: Long?,
+                                        val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiBehaviourGradeCategories"
     }
@@ -40,7 +42,7 @@ class LibrusApiBehaviourGradeCategories(override val data: DataLibrus,
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_CATEGORIES, 1 * WEEK)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_CATEGORIES)
         }
     }
 }

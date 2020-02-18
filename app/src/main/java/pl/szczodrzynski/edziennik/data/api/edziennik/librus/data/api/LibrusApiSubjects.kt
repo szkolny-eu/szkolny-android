@@ -11,7 +11,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 
 class LibrusApiSubjects(override val data: DataLibrus,
-                              val onSuccess: () -> Unit) : LibrusApi(data) {
+                        override val lastSync: Long?,
+                        val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiSubjects"
     }
@@ -31,7 +33,7 @@ class LibrusApiSubjects(override val data: DataLibrus,
             data.subjectList.put(1, Subject(profileId, 1, "Zachowanie", "zach"))
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_SUBJECTS, 4*DAY)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_SUBJECTS)
         }
     }
 }

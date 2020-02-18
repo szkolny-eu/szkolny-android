@@ -30,7 +30,7 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-open class LibrusMessages(open val data: DataLibrus) {
+open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
     companion object {
         private const val TAG = "LibrusMessages"
     }

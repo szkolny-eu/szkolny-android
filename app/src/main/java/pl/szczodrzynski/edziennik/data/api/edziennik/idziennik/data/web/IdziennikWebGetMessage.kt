@@ -12,16 +12,15 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class IdziennikWebGetMessage(
-        override val data: DataIdziennik,
-        private val message: MessageFull,
-        val onSuccess: () -> Unit
-) : IdziennikWeb(data) {
+class IdziennikWebGetMessage(override val data: DataIdziennik,
+                             private val message: MessageFull,
+                             val onSuccess: () -> Unit
+) : IdziennikWeb(data, null) {
     companion object {
         const val TAG = "IdziennikWebGetMessage"
     }

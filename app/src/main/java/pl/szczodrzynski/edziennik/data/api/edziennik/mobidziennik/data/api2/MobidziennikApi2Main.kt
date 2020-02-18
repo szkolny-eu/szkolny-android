@@ -19,7 +19,9 @@ import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikApi2Main(val data: DataMobidziennik,
-                           val onSuccess: () -> Unit) {
+                           val lastSync: Long?,
+                           val onSuccess: (endpointId: Int) -> Unit
+) {
     companion object {
         private const val TAG = "MobidziennikApi2Main"
     }
@@ -62,7 +64,7 @@ class MobidziennikApi2Main(val data: DataMobidziennik,
                 data.setSyncNext(ENDPOINT_MOBIDZIENNIK_API2_MAIN, SYNC_ALWAYS)
                 data.app.config.sync.tokenMobidziennikList =
                         data.app.config.sync.tokenMobidziennikList + profileId
-                onSuccess()
+                onSuccess(ENDPOINT_MOBIDZIENNIK_API2_MAIN)
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {

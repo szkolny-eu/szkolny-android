@@ -31,158 +31,160 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        useEndpoint(data.targetEndpointIds.removeAt(0)) {
+        useEndpoint(data.targetEndpointIds.firstKey()) { endpointId ->
+            data.targetEndpointIds.remove(endpointId)
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }
 
-    private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
-        Utils.d(TAG, "Using endpoint $endpointId")
+    private fun useEndpoint(endpointId: Int, onSuccess: (endpointId: Int) -> Unit) {
+        val lastSync = data.targetEndpointIds[endpointId]
+        Utils.d(TAG, "Using endpoint $endpointId. Last sync time = $lastSync")
         when (endpointId) {
             /**
              * API
              */
             ENDPOINT_LIBRUS_API_ME -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
-                LibrusApiMe(data, onSuccess)
+                LibrusApiMe(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_SCHOOLS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_school_info)
-                LibrusApiSchools(data, onSuccess)
+                LibrusApiSchools(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_CLASSES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_classes)
-                LibrusApiClasses(data, onSuccess)
+                LibrusApiClasses(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_teams)
-                LibrusApiVirtualClasses(data, onSuccess)
+                LibrusApiVirtualClasses(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_UNITS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_units)
-                LibrusApiUnits(data, onSuccess)
+                LibrusApiUnits(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_USERS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_teachers)
-                LibrusApiUsers(data, onSuccess)
+                LibrusApiUsers(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_SUBJECTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_subjects)
-                LibrusApiSubjects(data, onSuccess)
+                LibrusApiSubjects(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_CLASSROOMS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_classrooms)
-                LibrusApiClassrooms(data, onSuccess)
+                LibrusApiClassrooms(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_LESSONS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lessons)
-                LibrusApiLessons(data, onSuccess)
+                LibrusApiLessons(data, lastSync, onSuccess)
             }
             // TODO push config
             ENDPOINT_LIBRUS_API_TIMETABLES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_timetable)
-                LibrusApiTimetables(data, onSuccess)
+                LibrusApiTimetables(data, lastSync, onSuccess)
             }
 
             ENDPOINT_LIBRUS_API_NORMAL_GRADE_CATEGORIES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
-                LibrusApiGradeCategories(data, onSuccess)
+                LibrusApiGradeCategories(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_CATEGORIES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
-                LibrusApiBehaviourGradeCategories(data, onSuccess)
+                LibrusApiBehaviourGradeCategories(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADE_CATEGORIES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
-                LibrusApiDescriptiveGradeCategories(data, onSuccess)
+                LibrusApiDescriptiveGradeCategories(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_TEXT_GRADE_CATEGORIES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
-                LibrusApiTextGradeCategories(data, onSuccess)
+                LibrusApiTextGradeCategories(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_POINT_GRADE_CATEGORIES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_categories)
-                LibrusApiPointGradeCategories(data, onSuccess)
+                LibrusApiPointGradeCategories(data, lastSync, onSuccess)
             }
 
             ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_comments)
-                LibrusApiGradeComments(data, onSuccess)
+                LibrusApiGradeComments(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_COMMENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grade_comments)
-                LibrusApiBehaviourGradeComments(data, onSuccess)
+                LibrusApiBehaviourGradeComments(data, lastSync, onSuccess)
             }
 
             ENDPOINT_LIBRUS_API_NORMAL_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
-                LibrusApiGrades(data, onSuccess)
+                LibrusApiGrades(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_behaviour_grades)
-                LibrusApiBehaviourGrades(data, onSuccess)
+                LibrusApiBehaviourGrades(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_descriptive_grades)
-                LibrusApiDescriptiveGrades(data, onSuccess)
+                LibrusApiDescriptiveGrades(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_TEXT_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_descriptive_grades)
-                LibrusApiTextGrades(data, onSuccess)
+                LibrusApiTextGrades(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_POINT_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_point_grades)
-                LibrusApiPointGrades(data, onSuccess)
+                LibrusApiPointGrades(data, lastSync, onSuccess)
             }
 
             ENDPOINT_LIBRUS_API_EVENT_TYPES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_event_types)
-                LibrusApiEventTypes(data, onSuccess)
+                LibrusApiEventTypes(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_EVENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_events)
-                LibrusApiEvents(data, onSuccess)
+                LibrusApiEvents(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_HOMEWORK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
-                LibrusApiHomework(data, onSuccess)
+                LibrusApiHomework(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_LUCKY_NUMBER -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
-                LibrusApiLuckyNumber(data, onSuccess)
+                LibrusApiLuckyNumber(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_NOTICE_TYPES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_notice_types)
-                LibrusApiNoticeTypes(data, onSuccess)
+                LibrusApiNoticeTypes(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_NOTICES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_notices)
-                LibrusApiNotices(data, onSuccess)
+                LibrusApiNotices(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance_types)
-                LibrusApiAttendanceTypes(data, onSuccess)
+                LibrusApiAttendanceTypes(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_ATTENDANCES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance)
-                LibrusApiAttendances(data, onSuccess)
+                LibrusApiAttendances(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_ANNOUNCEMENTS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_announcements)
-                LibrusApiAnnouncements(data, onSuccess)
+                LibrusApiAnnouncements(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_PT_MEETINGS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_pt_meetings)
-                LibrusApiPtMeetings(data, onSuccess)
+                LibrusApiPtMeetings(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_TEACHER_FREE_DAY_TYPES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_teacher_free_day_types)
-                LibrusApiTeacherFreeDayTypes(data, onSuccess)
+                LibrusApiTeacherFreeDayTypes(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_teacher_free_days)
-                LibrusApiTeacherFreeDays(data, onSuccess)
+                LibrusApiTeacherFreeDays(data, lastSync, onSuccess)
             }
 
             /**
@@ -190,11 +192,11 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
              */
             ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
-                LibrusSynergiaHomework(data, onSuccess)
+                LibrusSynergiaHomework(data, lastSync, onSuccess)
             }
             ENDPOINT_LIBRUS_SYNERGIA_INFO -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
-                LibrusSynergiaInfo(data, onSuccess)
+                LibrusSynergiaInfo(data, lastSync, onSuccess)
             }
 
             /**
@@ -202,14 +204,14 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
              */
             ENDPOINT_LIBRUS_MESSAGES_RECEIVED -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
-                LibrusMessagesGetList(data, type = Message.TYPE_RECEIVED, onSuccess = onSuccess)
+                LibrusMessagesGetList(data, type = Message.TYPE_RECEIVED, lastSync = lastSync, onSuccess = onSuccess)
             }
             ENDPOINT_LIBRUS_MESSAGES_SENT -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
-                LibrusMessagesGetList(data, type = Message.TYPE_SENT, onSuccess = onSuccess)
+                LibrusMessagesGetList(data, type = Message.TYPE_SENT, lastSync = lastSync, onSuccess = onSuccess)
             }
 
-            else -> onSuccess()
+            else -> onSuccess(endpointId)
         }
     }
 }

@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection
 import java.util.*
 
-open class VulcanApi(open val data: DataVulcan) {
+open class VulcanApi(open val data: DataVulcan, open val lastSync: Long?) {
     companion object {
         const val TAG = "VulcanApi"
     }

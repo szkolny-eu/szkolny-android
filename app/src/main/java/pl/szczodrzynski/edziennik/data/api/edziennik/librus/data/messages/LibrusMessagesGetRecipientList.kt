@@ -15,8 +15,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
-class LibrusMessagesGetRecipientList(
-        override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusMessages(data) {
+class LibrusMessagesGetRecipientList(override val data: DataLibrus,
+                                     val onSuccess: () -> Unit
+) : LibrusMessages(data, null) {
     companion object {
         private const val TAG = "LibrusMessagesGetRecipientList"
     }

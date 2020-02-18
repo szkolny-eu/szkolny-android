@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.Utils
 import java.net.HttpURLConnection
 
-open class IdziennikApi(open val data: DataIdziennik) {
+open class IdziennikApi(open val data: DataIdziennik, open val lastSync: Long?) {
     companion object {
         const val TAG = "IdziennikApi"
     }

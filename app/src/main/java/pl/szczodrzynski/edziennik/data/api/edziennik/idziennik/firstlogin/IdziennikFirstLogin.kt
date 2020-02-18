@@ -25,7 +25,7 @@ class IdziennikFirstLogin(val data: DataIdziennik, val onSuccess: () -> Unit) {
         private const val TAG = "IdziennikFirstLogin"
     }
 
-    private val web = IdziennikWeb(data)
+    private val web = IdziennikWeb(data, null)
     private val profileList = mutableListOf<Profile>()
 
     init {

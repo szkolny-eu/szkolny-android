@@ -7,7 +7,10 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 
-class VulcanApiTemplate(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiTemplate(override val data: DataVulcan,
+                        override val lastSync: Long?,
+                        val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApi"
     }

@@ -55,10 +55,10 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
      */
     var targetLoginMethodIds = mutableListOf<Int>()
     /**
-     * A list of endpoint IDs that are still pending
+     * A map of endpoint ID to last sync time, that are still pending
      * to run.
      */
-    var targetEndpointIds = mutableListOf<Int>()
+    var targetEndpointIds = sortedMapOf<Int, Long?>()
     /**
      * A count of all network requests to do.
      */

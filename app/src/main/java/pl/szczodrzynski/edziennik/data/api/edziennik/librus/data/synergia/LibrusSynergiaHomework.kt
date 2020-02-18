@@ -18,7 +18,10 @@ import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () -> Unit) : LibrusSynergia(data) {
+class LibrusSynergiaHomework(override val data: DataLibrus,
+                             override val lastSync: Long?,
+                             val onSuccess: (endpointId: Int) -> Unit
+) : LibrusSynergia(data, lastSync) {
     companion object {
         const val TAG = "LibrusSynergiaHomework"
     }
@@ -98,9 +101,9 @@ class LibrusSynergiaHomework(override val data: DataLibrus, val onSuccess: () ->
 
             data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
 
-            // because this requires a synergia login (2 more requests) sync this every two hours or if explicit :D
-            data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, 2 * HOUR, DRAWER_ITEM_HOMEWORK)
-            onSuccess()
+            // because this requires a synergia login (2 more requests!!!) sync this every few hours or if explicit :D
+            data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, 5 * HOUR, DRAWER_ITEM_HOMEWORK)
+            onSuccess(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK)
         }
-    } ?: onSuccess() }
+    } ?: onSuccess(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK) }
 }

@@ -14,11 +14,10 @@ import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 
-class LibrusApiAnnouncementMarkAsRead(
-        override val data: DataLibrus,
-        private val announcement: AnnouncementFull,
-        val onSuccess: () -> Unit
-) : LibrusApi(data) {
+class LibrusApiAnnouncementMarkAsRead(override val data: DataLibrus,
+                                      private val announcement: AnnouncementFull,
+                                      val onSuccess: () -> Unit
+) : LibrusApi(data, null) {
     companion object {
         const val TAG = "LibrusApiAnnouncementMarkAsRead"
     }

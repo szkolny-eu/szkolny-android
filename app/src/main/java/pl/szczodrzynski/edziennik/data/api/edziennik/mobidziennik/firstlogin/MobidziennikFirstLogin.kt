@@ -16,7 +16,7 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
         private const val TAG = "MobidziennikFirstLogin"
     }
 
-    private val web = MobidziennikWeb(data)
+    private val web = MobidziennikWeb(data, null)
     private val profileList = mutableListOf<Profile>()
 
     init {

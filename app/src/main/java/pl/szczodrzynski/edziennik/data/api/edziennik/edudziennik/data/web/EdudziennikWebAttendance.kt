@@ -20,7 +20,9 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import java.util.*
 
 class EdudziennikWebAttendance(override val data: DataEdudziennik,
-                               val onSuccess: () -> Unit) : EdudziennikWeb(data) {
+                               override val lastSync: Long?,
+                               val onSuccess: (endpointId: Int) -> Unit
+) : EdudziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "EdudziennikWebAttendance"
     }
@@ -90,7 +92,7 @@ class EdudziennikWebAttendance(override val data: DataEdudziennik,
             }
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE)
         }
-    } ?: onSuccess() }
+    } ?: onSuccess(ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE) }
 }

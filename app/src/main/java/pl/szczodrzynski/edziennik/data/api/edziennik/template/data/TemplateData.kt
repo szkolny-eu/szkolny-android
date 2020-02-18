@@ -32,28 +32,30 @@ class TemplateData(val data: DataTemplate, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        useEndpoint(data.targetEndpointIds.removeAt(0)) {
+        useEndpoint(data.targetEndpointIds.firstKey()) { endpointId ->
+            data.targetEndpointIds.remove(endpointId)
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }
 
-    private fun useEndpoint(endpointId: Int, onSuccess: () -> Unit) {
-        Utils.d(TAG, "Using endpoint $endpointId")
+    private fun useEndpoint(endpointId: Int, onSuccess: (endpointId: Int) -> Unit) {
+        val lastSync = data.targetEndpointIds[endpointId]
+        Utils.d(TAG, "Using endpoint $endpointId. Last sync time = $lastSync")
         when (endpointId) {
             ENDPOINT_TEMPLATE_WEB_SAMPLE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
-                TemplateWebSample(data) { onSuccess() }
+                TemplateWebSample(data, lastSync, onSuccess)
             }
             ENDPOINT_TEMPLATE_WEB_SAMPLE_2 -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_school_info)
-                TemplateWebSample2(data) { onSuccess() }
+                TemplateWebSample2(data, lastSync, onSuccess)
             }
             ENDPOINT_TEMPLATE_API_SAMPLE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
-                TemplateApiSample(data) { onSuccess() }
+                TemplateApiSample(data, lastSync, onSuccess)
             }
-            else -> onSuccess()
+            else -> onSuccess(endpointId)
         }
     }
 }

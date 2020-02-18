@@ -12,18 +12,20 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNI
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.TYPE_SEMESTER1_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.TYPE_YEAR_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.Utils.getWordGradeValue
 
 class IdziennikWebProposedGrades(override val data: DataIdziennik,
-                                 val onSuccess: () -> Unit) : IdziennikWeb(data) {
+                                 override val lastSync: Long?,
+                                 val onSuccess: (endpointId: Int) -> Unit
+) : IdziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "IdziennikWebProposedGrades"
     }
@@ -111,7 +113,7 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                 DataRemoveModel.Grades.semesterWithType(profile.currentSemester, it)
             })
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_PROPOSED_GRADES, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_IDZIENNIK_WEB_PROPOSED_GRADES)
         }
-    } ?: onSuccess() }
+    } ?: onSuccess(ENDPOINT_IDZIENNIK_WEB_PROPOSED_GRADES) }
 }

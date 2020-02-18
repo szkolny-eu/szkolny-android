@@ -11,16 +11,20 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_HOMEWORK
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getBoolean
 import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getLong
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boolean, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiEvents(override val data: DataVulcan,
+                      override val lastSync: Long?,
+                      private val isHomework: Boolean,
+                      val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApiEvents"
     }
@@ -102,7 +106,7 @@ class VulcanApiEvents(override val data: DataVulcan, private val isHomework: Boo
                     data.setSyncNext(ENDPOINT_VULCAN_API_EVENTS, SYNC_ALWAYS)
                 }
             }
-            onSuccess()
+            onSuccess(if (isHomework) ENDPOINT_VULCAN_API_HOMEWORK else ENDPOINT_VULCAN_API_EVENTS)
         }
-    } ?: onSuccess()}
+    } ?: onSuccess(if (isHomework) ENDPOINT_VULCAN_API_HOMEWORK else ENDPOINT_VULCAN_API_EVENTS) }
 }

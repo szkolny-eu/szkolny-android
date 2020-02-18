@@ -11,10 +11,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
-import pl.szczodrzynski.edziennik.data.db.full.MessageFull
-import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.notEmptyOrNull
@@ -22,11 +22,10 @@ import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.nio.charset.Charset
 
-class LibrusMessagesGetMessage(
-        override val data: DataLibrus,
-        private val messageObject: MessageFull,
-        val onSuccess: () -> Unit
-) : LibrusMessages(data) {
+class LibrusMessagesGetMessage(override val data: DataLibrus,
+                               private val messageObject: MessageFull,
+                               val onSuccess: () -> Unit
+) : LibrusMessages(data, null) {
     companion object {
         const val TAG = "LibrusMessagesGetMessage"
     }

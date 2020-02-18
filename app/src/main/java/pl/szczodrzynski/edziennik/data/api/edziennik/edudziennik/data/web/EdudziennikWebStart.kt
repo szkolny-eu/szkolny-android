@@ -18,7 +18,9 @@ import pl.szczodrzynski.edziennik.firstLettersName
 import pl.szczodrzynski.edziennik.get
 
 class EdudziennikWebStart(override val data: DataEdudziennik,
-                          val onSuccess: () -> Unit) : EdudziennikWeb(data) {
+                          override val lastSync: Long?,
+                          val onSuccess: (endpointId: Int) -> Unit
+) : EdudziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "EdudziennikWebStart"
     }
@@ -29,7 +31,7 @@ class EdudziennikWebStart(override val data: DataEdudziennik,
             getSubjects(text)
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_START, MONTH)
-            onSuccess()
+            onSuccess(ENDPOINT_EDUDZIENNIK_WEB_START)
         }
     }
 

@@ -18,13 +18,12 @@ import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import java.util.*
 
-class IdziennikWebSendMessage(
-        override val data: DataIdziennik,
-        val recipients: List<Teacher>,
-        val subject: String,
-        val text: String,
-        val onSuccess: () -> Unit
-) : IdziennikWeb(data) {
+class IdziennikWebSendMessage(override val data: DataIdziennik,
+                              val recipients: List<Teacher>,
+                              val subject: String,
+                              val text: String,
+                              val onSuccess: () -> Unit
+) : IdziennikWeb(data, null) {
     companion object {
         private const val TAG = "IdziennikWebSendMessage"
     }
@@ -57,7 +56,7 @@ class IdziennikWebSendMessage(
                 return@webApiGet
             }
 
-            IdziennikApiMessagesSent(data) {
+            IdziennikApiMessagesSent(data, null) {
                 val message = data.messageIgnoreList.firstOrNull { it.type == Message.TYPE_SENT && it.subject == subject }
                 val metadata = data.metadataList.firstOrNull { it.thingType == Metadata.TYPE_MESSAGE && it.thingId == message?.id }
                 val event = MessageSentEvent(data.profileId, message, metadata?.addedDate)

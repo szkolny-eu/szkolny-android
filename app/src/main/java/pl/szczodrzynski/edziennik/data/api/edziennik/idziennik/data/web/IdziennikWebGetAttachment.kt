@@ -14,10 +14,12 @@ import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.Utils
 import java.io.File
 
-class IdziennikWebGetAttachment(
-        override val data: DataIdziennik, val message: Message, val attachmentId: Long,
-        val attachmentName: String, val onSuccess: () -> Unit
-) : IdziennikWeb(data) {
+class IdziennikWebGetAttachment(override val data: DataIdziennik,
+                                val message: Message,
+                                val attachmentId: Long,
+                                val attachmentName: String,
+                                val onSuccess: () -> Unit
+) : IdziennikWeb(data, null) {
     companion object {
         const val TAG = "IdziennikWebGetAttachment"
     }

@@ -13,17 +13,19 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNI
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
 
 class IdziennikWebTimetable(override val data: DataIdziennik,
-                            val onSuccess: () -> Unit) : IdziennikWeb(data) {
+                            override val lastSync: Long?,
+                            val onSuccess: (endpointId: Int) -> Unit
+) : IdziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "IdziennikWebTimetable"
     }
@@ -187,7 +189,7 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
 
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_TIMETABLE, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_IDZIENNIK_WEB_TIMETABLE)
         }
     }}
 }

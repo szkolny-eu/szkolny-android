@@ -9,16 +9,19 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_NOTICES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_NOTICES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getLong
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.toSparseArray
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class VulcanApiNotices(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiNotices(override val data: DataVulcan,
+                       override val lastSync: Long?,
+                       val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApiNotices"
     }
@@ -61,7 +64,7 @@ class VulcanApiNotices(override val data: DataVulcan, val onSuccess: () -> Unit)
             }
 
             data.setSyncNext(ENDPOINT_VULCAN_API_NOTICES, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_VULCAN_API_NOTICES)
         }
-    } ?: onSuccess()}
+    } ?: onSuccess(ENDPOINT_VULCAN_API_NOTICES) }
 }

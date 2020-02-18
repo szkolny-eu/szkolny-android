@@ -19,7 +19,9 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class IdziennikApiCurrentRegister(override val data: DataIdziennik,
-                          val onSuccess: () -> Unit) : IdziennikApi(data) {
+                                  override val lastSync: Long?,
+                                  val onSuccess: (endpointId: Int) -> Unit
+) : IdziennikApi(data, lastSync) {
     companion object {
         private const val TAG = "IdziennikApiCurrentRegister"
     }
@@ -27,7 +29,7 @@ class IdziennikApiCurrentRegister(override val data: DataIdziennik,
     init {
         apiGet(TAG, IDZIENNIK_API_CURRENT_REGISTER) { json ->
             if (json !is JsonObject) {
-                onSuccess()
+                onSuccess(ENDPOINT_IDZIENNIK_API_CURRENT_REGISTER)
                 return@apiGet
             }
 
@@ -85,7 +87,7 @@ class IdziennikApiCurrentRegister(override val data: DataIdziennik,
 
 
             data.setSyncNext(ENDPOINT_IDZIENNIK_API_CURRENT_REGISTER, syncAt = nextSync)
-            onSuccess()
+            onSuccess(ENDPOINT_IDZIENNIK_API_CURRENT_REGISTER)
         }
     }
 }

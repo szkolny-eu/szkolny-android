@@ -16,8 +16,9 @@ import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
-class IdziennikWebGetRecipientList(
-        override val data: DataIdziennik, val onSuccess: () -> Unit) : IdziennikWeb(data) {
+class IdziennikWebGetRecipientList(override val data: DataIdziennik,
+                                   val onSuccess: () -> Unit
+) : IdziennikWeb(data, null) {
     companion object {
         private const val TAG = "IdziennikWebGetRecipientList"
     }

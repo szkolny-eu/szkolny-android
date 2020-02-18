@@ -10,16 +10,13 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_DICTIONARIES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_DICTIONARIES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
-import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType
-import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
-import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
-import pl.szczodrzynski.edziennik.data.db.entity.NoticeType
-import pl.szczodrzynski.edziennik.data.db.entity.Subject
-import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.utils.models.Time
 
-class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiDictionaries(override val data: DataVulcan,
+                            override val lastSync: Long?,
+                            val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApiDictionaries"
     }
@@ -36,7 +33,7 @@ class VulcanApiDictionaries(override val data: DataVulcan, val onSuccess: () -> 
             elements?.getJsonArray("KategorieFrekwencji")?.forEach { saveAttendanceType(it.asJsonObject) }
 
             data.setSyncNext(ENDPOINT_VULCAN_API_DICTIONARIES, 4 * DAY)
-            onSuccess()
+            onSuccess(ENDPOINT_VULCAN_API_DICTIONARIES)
         }
     }
 

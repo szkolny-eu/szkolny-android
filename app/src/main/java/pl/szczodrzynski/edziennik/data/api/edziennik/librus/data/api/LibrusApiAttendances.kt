@@ -15,7 +15,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusApiAttendances(override val data: DataLibrus,
-                           val onSuccess: () -> Unit) : LibrusApi(data) {
+                           override val lastSync: Long?,
+                           val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiAttendances"
     }
@@ -77,7 +79,7 @@ class LibrusApiAttendances(override val data: DataLibrus,
             }
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_ATTENDANCES, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_ATTENDANCES)
         }
     }
 }

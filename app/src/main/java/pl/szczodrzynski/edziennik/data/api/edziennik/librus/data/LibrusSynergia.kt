@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
-open class LibrusSynergia(open val data: DataLibrus) {
+open class LibrusSynergia(open val data: DataLibrus, open val lastSync: Long?) {
     companion object {
         private const val TAG = "LibrusSynergia"
     }

@@ -21,7 +21,9 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class MobidziennikWebGrades(override val data: DataMobidziennik,
-                              val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+                            override val lastSync: Long?,
+                            val onSuccess: (endpointId: Int) -> Unit
+) : MobidziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "MobidziennikWebGrades"
     }
@@ -148,7 +150,7 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
 
             data.toRemove.add(DataRemoveModel.Grades.semesterWithType(currentSemester, Grade.TYPE_NORMAL))
             data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_GRADES, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_GRADES)
         }
     }}
 }

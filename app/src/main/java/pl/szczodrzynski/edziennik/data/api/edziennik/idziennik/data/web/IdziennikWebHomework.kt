@@ -13,13 +13,15 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNI
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikWebHomework(override val data: DataIdziennik,
-                           val onSuccess: () -> Unit) : IdziennikWeb(data) {
+                           override val lastSync: Long?,
+                           val onSuccess: (endpointId: Int) -> Unit
+) : IdziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "IdziennikWebHomework"
     }
@@ -92,7 +94,7 @@ class IdziennikWebHomework(override val data: DataIdziennik,
             data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
 
             data.setSyncNext(ENDPOINT_IDZIENNIK_WEB_HOMEWORK, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_IDZIENNIK_WEB_HOMEWORK)
         }
     }
 }

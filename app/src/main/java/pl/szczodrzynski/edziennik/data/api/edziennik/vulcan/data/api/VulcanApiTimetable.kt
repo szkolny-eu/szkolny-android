@@ -12,17 +12,16 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Subject
-import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.utils.Utils.crc16
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
 
-class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Unit) : VulcanApi(data) {
+class VulcanApiTimetable(override val data: DataVulcan,
+                         override val lastSync: Long?,
+                         val onSuccess: (endpointId: Int) -> Unit
+) : VulcanApi(data, lastSync) {
     companion object {
         const val TAG = "VulcanApiTimetable"
     }
@@ -207,7 +206,7 @@ class VulcanApiTimetable(override val data: DataVulcan, val onSuccess: () -> Uni
             data.toRemove.add(DataRemoveModel.Timetable.between(weekStart, weekEnd))
 
             data.setSyncNext(ENDPOINT_VULCAN_API_TIMETABLE, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_VULCAN_API_TIMETABLE)
         }
     }}
 }

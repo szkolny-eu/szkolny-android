@@ -15,7 +15,9 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class LibrusApiPtMeetings(override val data: DataLibrus,
-                       val onSuccess: () -> Unit) : LibrusApi(data) {
+                          override val lastSync: Long?,
+                          val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApiPtMeetings"
     }
@@ -65,7 +67,7 @@ class LibrusApiPtMeetings(override val data: DataLibrus,
             data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_PT_MEETING))
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_PT_MEETINGS, 12*HOUR)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_PT_MEETINGS)
         }
     }
 }

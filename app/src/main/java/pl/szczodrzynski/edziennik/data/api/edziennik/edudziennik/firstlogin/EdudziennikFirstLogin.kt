@@ -23,7 +23,7 @@ class EdudziennikFirstLogin(val data: DataEdudziennik, val onSuccess: () -> Unit
         private const val TAG = "EdudziennikFirstLogin"
     }
 
-    private val web = EdudziennikWeb(data)
+    private val web = EdudziennikWeb(data, null)
     private val profileList = mutableListOf<Profile>()
 
     init {

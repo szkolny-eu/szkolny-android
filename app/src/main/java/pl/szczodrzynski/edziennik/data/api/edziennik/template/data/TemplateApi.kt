@@ -5,13 +5,13 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.template.data
 
 import com.google.gson.JsonObject
+import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.ERROR_TEMPLATE_WEB_OTHER
 import pl.szczodrzynski.edziennik.data.api.GET
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.DataTemplate
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.currentTimeUnix
 
-open class TemplateApi(open val data: DataTemplate) {
+open class TemplateApi(open val data: DataTemplate, open val lastSync: Long?) {
     companion object {
         private const val TAG = "TemplateApi"
     }
@@ -34,7 +34,7 @@ open class TemplateApi(open val data: DataTemplate) {
         json.addProperty("sample", "text")
 
         if (currentTimeUnix() % 4L == 0L) {
-            // let's set a 20% chance of error, just as a test
+            // let's set a 25% chance of error, just as a test
             data.error(ApiError(tag, ERROR_TEMPLATE_WEB_OTHER)
                     .withApiResponse("404 Not Found - this is the text returned by the API"))
             return

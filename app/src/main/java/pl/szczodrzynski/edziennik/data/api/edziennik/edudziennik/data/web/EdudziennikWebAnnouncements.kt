@@ -11,13 +11,15 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_ANNOUNCEMENTS
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.db.entity.Announcement
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EdudziennikWebAnnouncements(override val data: DataEdudziennik,
-                                  val onSuccess: () -> Unit) : EdudziennikWeb(data) {
+                                  override val lastSync: Long?,
+                                  val onSuccess: (endpointId: Int) -> Unit
+) : EdudziennikWeb(data, lastSync) {
     companion object {
         const val TAG = "EdudziennikWebAnnouncements"
     }
@@ -66,7 +68,7 @@ class EdudziennikWebAnnouncements(override val data: DataEdudziennik,
             }
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_ANNOUNCEMENTS, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_EDUDZIENNIK_WEB_ANNOUNCEMENTS)
         }
-    } ?: onSuccess() }
+    } ?: onSuccess(ENDPOINT_EDUDZIENNIK_WEB_ANNOUNCEMENTS) }
 }

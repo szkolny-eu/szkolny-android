@@ -12,9 +12,12 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.utils.Utils
 import java.io.File
 
-class MobidziennikWebGetAttachment(
-        override val data: DataMobidziennik, val message: Message, val attachmentId: Long,
-        val attachmentName: String, val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+class MobidziennikWebGetAttachment(override val data: DataMobidziennik,
+                                   val message: Message,
+                                   val attachmentId: Long,
+                                   val attachmentName: String,
+                                   val onSuccess: () -> Unit
+) : MobidziennikWeb(data, null) {
     companion object {
         private const val TAG = "MobidziennikWebGetAttachment"
     }

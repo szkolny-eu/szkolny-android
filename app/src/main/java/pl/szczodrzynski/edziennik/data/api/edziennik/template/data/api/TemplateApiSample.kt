@@ -12,7 +12,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.template.data.TemplateApi
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 
 class TemplateApiSample(override val data: DataTemplate,
-                        val onSuccess: () -> Unit) : TemplateApi(data) {
+                        override val lastSync: Long?,
+                        val onSuccess: (endpointId: Int) -> Unit
+) : TemplateApi(data, lastSync) {
     companion object {
         private const val TAG = "TemplateApiSample"
     }
@@ -33,7 +35,7 @@ class TemplateApiSample(override val data: DataTemplate,
             // always, in every sync
             data.setSyncNext(ENDPOINT_TEMPLATE_API_SAMPLE, SYNC_ALWAYS)
 
-            onSuccess()
+            onSuccess(ENDPOINT_TEMPLATE_API_SAMPLE)
         }
     }
 }

@@ -7,13 +7,15 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EdudziennikWebLuckyNumber(override val data: DataEdudziennik,
-                                val onSuccess: () -> Unit) : EdudziennikWeb(data) {
+                                override val lastSync: Long?,
+                                val onSuccess: (endpointId: Int) -> Unit
+) : EdudziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "EdudziennikWebLuckyNumber"
     }
@@ -39,7 +41,7 @@ class EdudziennikWebLuckyNumber(override val data: DataEdudziennik,
             }
 
             data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER)
         }
-    } ?: onSuccess() }
+    } ?: onSuccess(ENDPOINT_EDUDZIENNIK_WEB_LUCKY_NUMBER) }
 }

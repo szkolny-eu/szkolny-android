@@ -19,7 +19,9 @@ import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
-                                   val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+                                 override val lastSync: Long?,
+                                 val onSuccess: (endpointId: Int) -> Unit
+) : MobidziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "MobidziennikWebMessagesAll"
     }
@@ -33,7 +35,7 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
             val listElement = doc.getElementsByClass("spis").first()
             if (listElement == null) {
                 data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, 7*DAY)
-                onSuccess()
+                onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL)
                 return@webGet
             }
             val list = listElement.getElementsByClass("podswietl")
@@ -83,10 +85,10 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
                 data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true, addedDate))
             }
 
-            // sync every 7 days as we probably don't except more than
+            // sync every 7 days as we probably don't expect more than
             // 30 received messages during a week, without any normal sync
             data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, 7*DAY)
-            onSuccess()
+            onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL)
         }
     }
 }

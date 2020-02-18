@@ -18,7 +18,9 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import java.util.*
 
 class MobidziennikWebCalendar(override val data: DataMobidziennik,
-                      val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+                              override val lastSync: Long?,
+                              val onSuccess: (endpointId: Int) -> Unit
+) : MobidziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "MobidziennikWebCalendar"
     }
@@ -95,7 +97,7 @@ class MobidziennikWebCalendar(override val data: DataMobidziennik,
             }
 
             data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_CALENDAR, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_CALENDAR)
         }
     }
 }

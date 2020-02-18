@@ -18,7 +18,7 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
     }
 
     private val portal = LibrusPortal(data)
-    private val api = LibrusApi(data)
+    private val api = LibrusApi(data, null)
     private val profileList = mutableListOf<Profile>()
 
     init {

@@ -10,7 +10,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.Mobidzien
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 
 class MobidziennikWebNotices(override val data: DataMobidziennik,
-                              val onSuccess: () -> Unit) : MobidziennikWeb(data) {
+                             override val lastSync: Long?,
+                             val onSuccess: (endpointId: Int) -> Unit
+) : MobidziennikWeb(data, lastSync) {
     companion object {
         private const val TAG = "MobidziennikWebNotices"
     }
@@ -18,7 +20,7 @@ class MobidziennikWebNotices(override val data: DataMobidziennik,
     init {
         // TODO this does no longer work: Mobidziennik changed their mobile page in 2019.09
         data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_NOTICES, SYNC_ALWAYS)
-        onSuccess()
+        onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_NOTICES)
         /*webGet(TAG, "/mobile/zachowanie") { text ->
             MobidziennikLuckyNumberExtractor(data, text)
 
