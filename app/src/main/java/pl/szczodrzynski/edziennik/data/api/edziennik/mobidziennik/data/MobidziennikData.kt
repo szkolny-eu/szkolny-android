@@ -52,6 +52,10 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
                 MobidziennikWebMessagesInbox(data, lastSync, onSuccess)
             }
+            ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_SENT -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
+                MobidziennikWebMessagesSent(data, lastSync, onSuccess)
+            }
             ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages)
                 MobidziennikWebMessagesAll(data, lastSync, onSuccess)

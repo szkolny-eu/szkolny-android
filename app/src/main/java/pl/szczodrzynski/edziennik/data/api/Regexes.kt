@@ -54,6 +54,9 @@ object Regexes {
     val MOBIDZIENNIK_MESSAGE_ATTACHMENT by lazy {
         """href="https://.+?\.mobidziennik.pl/.+?&(?:amp;)?zalacznik=([0-9]+)"(?:.+?<small.+?\(([0-9.]+)\s(M|K|G|)B\))*""".toRegex(DOT_MATCHES_ALL)
     }
+    val MOBIDZIENNIK_MESSAGE_SENT_READ_BY by lazy {
+        """([0-9]+)/([0-9]+)""".toRegex()
+    }
 
     val MOBIDZIENNIK_MESSAGE_RECIPIENTS_JSON by lazy {
         """odbiorcy: (\[.+?]),${'$'}""".toRegex(RegexOption.MULTILINE)

@@ -18,8 +18,9 @@ public class MessageRecipient {
     @ColumnInfo(name = "messageRecipientReplyId")
     public long replyId = -1;
     /**
-     * -1 for not read
-     * 0 for read, date unknown
+     * -1 for unknown
+     * 0 for not read
+     * 1 for read, date unknown
      * time in millis for read, date known
      */
     @ColumnInfo(name = "messageRecipientReadDate")
