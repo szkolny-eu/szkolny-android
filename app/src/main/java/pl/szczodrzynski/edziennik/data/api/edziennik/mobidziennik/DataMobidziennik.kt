@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik
 
 import android.util.LongSparseArray
-import androidx.core.util.isNotEmpty
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_MOBIDZIENNIK_WEB
@@ -39,9 +38,9 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
     val teachersMap = LongSparseArray<String>()
     val subjectsMap = LongSparseArray<String>()
 
-    val gradeAddedDates = LongSparseArray<Long>()
-    val gradeAverages = LongSparseArray<Float>()
-    val gradeColors = LongSparseArray<Int>()
+    val gradeAddedDates = sortedMapOf<Long, Long>()
+    val gradeAverages = sortedMapOf<Long, Float>()
+    val gradeColors = sortedMapOf<Long, Int>()
 
     private var mLoginServerName: String? = null
     var loginServerName: String?

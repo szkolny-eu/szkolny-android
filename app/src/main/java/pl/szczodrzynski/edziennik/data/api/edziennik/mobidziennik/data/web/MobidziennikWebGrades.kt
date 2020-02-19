@@ -138,11 +138,10 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                                                 gradeAddedDateMillis
                                         ))
                             }
-                        } else {
-                            data.gradeAverages.put(gradeId, gradeClassAverage)
-                            data.gradeAddedDates.put(gradeId, gradeAddedDateMillis)
-                            data.gradeColors.put(gradeId, gradeColor)
                         }
+                        data.gradeAverages[gradeId] = gradeClassAverage
+                        data.gradeAddedDates[gradeId] = gradeAddedDateMillis
+                        data.gradeColors[gradeId] = gradeColor
                     }
                 }
             }
