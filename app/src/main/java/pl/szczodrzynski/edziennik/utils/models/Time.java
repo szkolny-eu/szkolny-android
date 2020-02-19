@@ -30,15 +30,23 @@ public class Time implements Comparable<Time> {
 
     public Time parseFromYmdHm(String dateTime)
     {
-        this.hour = Integer.parseInt(dateTime.substring(8, 10));
-        this.minute = Integer.parseInt(dateTime.substring(10, 12));
-        this.second = 0;
+        try {
+            this.hour = Integer.parseInt(dateTime.substring(8, 10));
+            this.minute = Integer.parseInt(dateTime.substring(10, 12));
+            this.second = 0;
+        }
+        catch (Exception ignore) {}
         return this;
     }
 
     public static Time fromYmdHm(String dateTime)
     {
-        return new Time(Integer.parseInt(dateTime.substring(8, 10)), Integer.parseInt(dateTime.substring(10, 12)), 0);
+        try {
+            return new Time(Integer.parseInt(dateTime.substring(8, 10)), Integer.parseInt(dateTime.substring(10, 12)), 0);
+        }
+        catch (Exception e) {
+            return new Time(0, 0, 0);
+        }
     }
 
     public long combineWith(Date date) {

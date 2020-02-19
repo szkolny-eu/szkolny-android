@@ -50,7 +50,12 @@ public class Date implements Comparable<Date> {
     }
 
     public static Date fromYmd(String dateTime) {
-        return new Date(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(4, 6)), Integer.parseInt(dateTime.substring(6, 8)));
+        try {
+            return new Date(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(4, 6)), Integer.parseInt(dateTime.substring(6, 8)));
+        }
+        catch (Exception e) {
+            return new Date(2019, 1, 1);
+        }
     }
 
     public static Date fromMillis(long millis) {
@@ -68,7 +73,12 @@ public class Date implements Comparable<Date> {
     }
 
     public static Date fromY_m_d(String dateTime) {
-        return new Date(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(5, 7)), Integer.parseInt(dateTime.substring(8, 10)));
+        try {
+            return new Date(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(5, 7)), Integer.parseInt(dateTime.substring(8, 10)));
+        }
+        catch (Exception e) {
+            return new Date(2019, 1, 1);
+        }
     }
 
     public long getInMillis() {
@@ -83,15 +93,30 @@ public class Date implements Comparable<Date> {
     }
 
     public static Date fromd_m_Y(String dateTime) {
-        return new Date(Integer.parseInt(dateTime.substring(6, 10)), Integer.parseInt(dateTime.substring(3, 5)), Integer.parseInt(dateTime.substring(0, 2)));
+        try {
+            return new Date(Integer.parseInt(dateTime.substring(6, 10)), Integer.parseInt(dateTime.substring(3, 5)), Integer.parseInt(dateTime.substring(0, 2)));
+        }
+        catch (Exception e) {
+            return new Date(2019, 1, 1);
+        }
     }
 
     public static long fromIso(String dateTime) {
-        return Date.fromY_m_d(dateTime).combineWith(new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), Integer.parseInt(dateTime.substring(17, 19))));
+        try {
+            return Date.fromY_m_d(dateTime).combineWith(new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), Integer.parseInt(dateTime.substring(17, 19))));
+        }
+        catch (Exception e) {
+            return System.currentTimeMillis();
+        }
     }
 
     public static long fromIsoHm(String dateTime) {
-        return Date.fromY_m_d(dateTime).combineWith(new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), 0));
+        try {
+            return Date.fromY_m_d(dateTime).combineWith(new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), 0));
+        }
+        catch (Exception e) {
+            return System.currentTimeMillis();
+        }
     }
 
     public static Date fromValue(int value) {
