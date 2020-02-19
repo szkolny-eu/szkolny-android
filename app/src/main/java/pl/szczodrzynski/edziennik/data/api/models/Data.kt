@@ -262,6 +262,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
                 is DataRemoveModel.Timetable -> model.commit(profileId, db.timetableDao())
                 is DataRemoveModel.Grades -> model.commit(profileId, db.gradeDao())
                 is DataRemoveModel.Events -> model.commit(profileId, db.eventDao())
+                is DataRemoveModel.Attendance -> model.commit(profileId, db.attendanceDao())
             }
         }
 

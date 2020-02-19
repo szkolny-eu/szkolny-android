@@ -71,15 +71,15 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
             ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_account_details)
                 MobidziennikWebAccountEmail(data, lastSync, onSuccess)
-            }/*
-            ENDPOINT_MOBIDZIENNIK_WEB_NOTICES -> {
-                data.startProgress(R.string.edziennik_progress_endpoint_behaviour)
-                MobidziennikWebNotices(data, lastSync, onSuccess)
             }
             ENDPOINT_MOBIDZIENNIK_WEB_ATTENDANCE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance)
                 MobidziennikWebAttendance(data, lastSync, onSuccess)
-            }
+            }/*
+            ENDPOINT_MOBIDZIENNIK_WEB_NOTICES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_behaviour)
+                MobidziennikWebNotices(data, lastSync, onSuccess)
+            }]
             ENDPOINT_MOBIDZIENNIK_WEB_MANUALS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
                 MobidziennikWebManuals(data, lastSync, onSuccess)

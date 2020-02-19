@@ -39,7 +39,7 @@ class MobidziennikApi(override val data: DataMobidziennik,
                     9 -> MobidziennikApiTeams(data, null, rows)
                     14 -> MobidziennikApiGradeCategories(data, rows)
                     15 -> MobidziennikApiLessons(data, rows)
-                    16 -> MobidziennikApiAttendance(data, rows)
+                    //16 -> MobidziennikApiAttendance(data, rows) // disabled since the new web scrapper is used
                     17 -> MobidziennikApiNotices(data, rows)
                     18 -> MobidziennikApiGrades(data, rows)
                     21 -> MobidziennikApiEvents(data, rows)

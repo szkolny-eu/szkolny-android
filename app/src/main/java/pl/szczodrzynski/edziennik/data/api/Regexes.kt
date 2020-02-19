@@ -67,6 +67,23 @@ object Regexes {
     }
 
 
+    val MOBIDZIENNIK_ATTENDANCE_TABLE by lazy {
+        """<table .+?id="obecnosci_tabela">(.+?)</table>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_ATTENDANCE_LESSON_COUNT by lazy {
+        """rel="([0-9-]{10})" colspan="([0-9]+)"""".toRegex()
+    }
+    val MOBIDZIENNIK_ATTENDANCE_ENTRIES by lazy {
+        """font-size:.+?class=".*?">(.*?)</td>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_ATTENDANCE_RANGE by lazy {
+        """<span>([0-9:]+) - .+? (.+?)</span></a>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_ATTENDANCE_LESSON by lazy {
+        """<strong>(.+?) - (.*?)</strong>.+?<small>.+?\((.+?), .+?(.+?)\)""".toRegex(DOT_MATCHES_ALL)
+    }
+
+
 
     val IDZIENNIK_LOGIN_HIDDEN_FIELDS by lazy {
         """<input type="hidden".+?name="([A-z0-9_]+)?".+?value="([A-z0-9_+-/=]+)?".+?>""".toRegex(DOT_MATCHES_ALL)

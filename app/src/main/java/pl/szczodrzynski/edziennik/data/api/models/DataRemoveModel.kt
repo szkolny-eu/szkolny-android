@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.models
 
+import pl.szczodrzynski.edziennik.data.db.dao.AttendanceDao
 import pl.szczodrzynski.edziennik.data.db.dao.EventDao
 import pl.szczodrzynski.edziennik.data.db.dao.GradeDao
 import pl.szczodrzynski.edziennik.data.db.dao.TimetableDao
@@ -58,6 +59,18 @@ open class DataRemoveModel {
             type?.let { dao.removeFutureWithType(profileId, Date.getToday(), it) }
             exceptType?.let { dao.removeFutureExceptType(profileId, Date.getToday(), it) }
             exceptTypes?.let { dao.removeFutureExceptTypes(profileId, Date.getToday(), it) }
+        }
+    }
+
+    data class Attendance(private val dateFrom: Date?) : DataRemoveModel() {
+        companion object {
+            fun from(dateFrom: Date) = Attendance(dateFrom)
+        }
+
+        fun commit(profileId: Int, dao: AttendanceDao) {
+            if (dateFrom != null) {
+                dao.clearAfterDate(profileId, dateFrom)
+            }
         }
     }
 }

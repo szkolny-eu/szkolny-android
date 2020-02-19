@@ -45,7 +45,6 @@ import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_BELATED;
 import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_BELATED_EXCUSED;
 import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_PRESENT;
 import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_RELEASED;
-import static pl.szczodrzynski.edziennik.data.db.entity.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
 import static pl.szczodrzynski.edziennik.data.db.entity.LoginStore.LOGIN_TYPE_VULCAN;
 import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ATTENDANCE;
 
@@ -147,38 +146,33 @@ public class AttendanceFragment extends Fragment {
             }
         }*/
 
-        if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK) {
-            b.attendanceSummarySubject.setVisibility(View.GONE);
-        }
-        else {
-            b.attendanceSummarySubject.setOnClickListener((v -> {
-                AsyncTask.execute(() -> {
-                    List<Subject> subjectList = App.db.subjectDao().getAllNow(App.Companion.getProfileId());
-                    PopupMenu popupMenu = new PopupMenu(activity, b.attendanceSummarySubject, Gravity.END);
-                    popupMenu.getMenu().add(0, -1, 0, R.string.subject_filter_disabled);
-                    int index = 0;
-                    DecimalFormat format = new DecimalFormat("0.00");
-                    for (Subject subject: subjectList) {
-                        int total = subjectTotalCount.get(subject.id, new int[3])[displayMode];
-                        int absent = subjectAbsentCount.get(subject.id, new int[3])[displayMode];
-                        if (total == 0)
-                            continue;
-                        int present = total - absent;
-                        float percentage = (float)present / (float)total * 100.0f;
-                        String percentageStr = format.format(percentage);
-                        popupMenu.getMenu().add(0, (int)subject.id, index++, getString(R.string.subject_filter_format, subject.longName, percentageStr));
-                    }
-                    popupMenu.setOnMenuItemClickListener((item -> {
-                        subjectIdFilter = item.getItemId();
-                        b.attendanceSummarySubject.setText(item.getTitle().toString().replaceAll("\\s-\\s[0-9]{1,2}\\.[0-9]{1,2}%", ""));
-                        updateList();
-                        return true;
-                    }));
-                    new Handler(activity.getMainLooper()).post(popupMenu::show);
-                });
+        b.attendanceSummarySubject.setOnClickListener((v -> {
+            AsyncTask.execute(() -> {
+                List<Subject> subjectList = App.db.subjectDao().getAllNow(App.Companion.getProfileId());
+                PopupMenu popupMenu = new PopupMenu(activity, b.attendanceSummarySubject, Gravity.END);
+                popupMenu.getMenu().add(0, -1, 0, R.string.subject_filter_disabled);
+                int index = 0;
+                DecimalFormat format = new DecimalFormat("0.00");
+                for (Subject subject: subjectList) {
+                    int total = subjectTotalCount.get(subject.id, new int[3])[displayMode];
+                    int absent = subjectAbsentCount.get(subject.id, new int[3])[displayMode];
+                    if (total == 0)
+                        continue;
+                    int present = total - absent;
+                    float percentage = (float)present / (float)total * 100.0f;
+                    String percentageStr = format.format(percentage);
+                    popupMenu.getMenu().add(0, (int)subject.id, index++, getString(R.string.subject_filter_format, subject.longName, percentageStr));
+                }
+                popupMenu.setOnMenuItemClickListener((item -> {
+                    subjectIdFilter = item.getItemId();
+                    b.attendanceSummarySubject.setText(item.getTitle().toString().replaceAll("\\s-\\s[0-9]{1,2}\\.[0-9]{1,2}%", ""));
+                    updateList();
+                    return true;
+                }));
+                new Handler(activity.getMainLooper()).post(popupMenu::show);
+            });
 
-            }));
-        }
+        }));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 

@@ -58,10 +58,12 @@ val MobidziennikFeatures = listOf(
                 ENDPOINT_MOBIDZIENNIK_API_MAIN to LOGIN_METHOD_MOBIDZIENNIK_WEB,
                 ENDPOINT_MOBIDZIENNIK_WEB_NOTICES to LOGIN_METHOD_MOBIDZIENNIK_WEB
         ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB, LOGIN_METHOD_MOBIDZIENNIK_WEB)),
-        // attendance TODO implement website attendance scraping
-        /*Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_ATTENDANCE, listOf(
+        /**
+         * Attendance - only web scraping.
+         */
+        Feature(LOGIN_TYPE_MOBIDZIENNIK, FEATURE_ATTENDANCE, listOf(
                 ENDPOINT_MOBIDZIENNIK_WEB_ATTENDANCE to LOGIN_METHOD_MOBIDZIENNIK_WEB
-        ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB)),*/
+        ), listOf(LOGIN_METHOD_MOBIDZIENNIK_WEB)),
 
 
 
