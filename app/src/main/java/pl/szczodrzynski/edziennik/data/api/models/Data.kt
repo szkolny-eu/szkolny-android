@@ -11,12 +11,13 @@ import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
 import pl.szczodrzynski.edziennik.data.api.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.*
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginStore) {
     companion object {
         private const val TAG = "Data"
+        private val DEBUG = true && BuildConfig.DEBUG
     }
 
     var fakeLogin = false
@@ -148,6 +149,11 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         }
     }
 
+    private fun d(message: String) {
+        if (DEBUG)
+            Utils.d(TAG, message)
+    }
+
     fun clear() {
         loginMethods.clear()
 
@@ -185,13 +191,16 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     open fun saveData() {
         if (profile == null)
             return // return on first login
+        val totalStart = System.currentTimeMillis()
+        var startTime = System.currentTimeMillis()
+        d("Saving data to DB")
 
         profile.userCode = generateUserCode()
 
         db.profileDao().add(profile)
         db.loginStoreDao().add(loginStore)
 
-        if (profile.id == app.profile?.id) {
+        if (profile.id == app.profile.id) {
             app.profile.apply {
                 name = profile.name
                 subname = profile.subname
@@ -209,6 +218,9 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             }
         }
 
+        d("Profiles saved in ${System.currentTimeMillis()-startTime} ms")
+        startTime = System.currentTimeMillis()
+
         // always present and not empty, during every sync
         db.endpointTimerDao().addAll(endpointTimers)
         if (teacherOnConflictStrategy == OnConflictStrategy.IGNORE)
@@ -222,6 +234,9 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         db.lessonRangeDao().addAll(lessonRanges.values())
         db.gradeCategoryDao().clear(profileId)
         db.gradeCategoryDao().addAll(gradeCategories.values())
+
+        d("Maps saved in ${System.currentTimeMillis()-startTime} ms")
+        startTime = System.currentTimeMillis()
 
         // may be empty - extracted from DB on demand, by an endpoint
         if (classrooms.size > 0)
@@ -237,8 +252,12 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         if (librusLessons.size > 0)
             db.librusLessonDao().addAll(librusLessons.values())
 
+        d("On-demand maps saved in ${System.currentTimeMillis()-startTime} ms")
+        startTime = System.currentTimeMillis()
+
         // clear DB with DataRemoveModels added by endpoints
         for (model in toRemove) {
+            d("Clearing DB with $model")
             when (model) {
                 is DataRemoveModel.Timetable -> model.commit(profileId, db.timetableDao())
                 is DataRemoveModel.Grades -> model.commit(profileId, db.gradeDao())
@@ -246,10 +265,16 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             }
         }
 
+        d("DB cleared in ${System.currentTimeMillis()-startTime} ms")
+        startTime = System.currentTimeMillis()
+
         if (metadataList.isNotEmpty())
             db.metadataDao().addAllIgnore(metadataList)
         if (setSeenMetadataList.isNotEmpty())
             db.metadataDao().setSeen(setSeenMetadataList)
+
+        d("Metadata saved in ${System.currentTimeMillis()-startTime} ms")
+        startTime = System.currentTimeMillis()
 
         if (lessonList.isNotEmpty()) {
             db.timetableDao() += lessonList
@@ -283,6 +308,10 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             db.messageRecipientDao().addAll(messageRecipientList)
         if (messageRecipientIgnoreList.isNotEmpty())
             db.messageRecipientDao().addAllIgnore(messageRecipientIgnoreList)
+
+        d("Other data saved in ${System.currentTimeMillis()-startTime} ms")
+
+        d("Total save time: ${System.currentTimeMillis()-totalStart} ms")
     }
 
     fun setSyncNext(endpointId: Int, syncIn: Long? = null, viewId: Int? = null, syncAt: Long? = null) {
@@ -309,7 +338,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     abstract fun generateUserCode(): String
 
     fun cancel() {
-        d("Data", "Cancelled")
+        d("Cancelled")
         cancelled = true
         saveData()
     }

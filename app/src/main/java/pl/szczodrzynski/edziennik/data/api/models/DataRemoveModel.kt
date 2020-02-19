@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.data.db.dao.TimetableDao
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 open class DataRemoveModel {
-    class Timetable(private val dateFrom: Date?, private val dateTo: Date?) : DataRemoveModel() {
+    data class Timetable(private val dateFrom: Date?, private val dateTo: Date?) : DataRemoveModel() {
         companion object {
             fun from(dateFrom: Date) = Timetable(dateFrom, null)
             fun to(dateTo: Date) = Timetable(null, dateTo)
@@ -27,7 +27,7 @@ open class DataRemoveModel {
         }
     }
 
-    class Grades(private val all: Boolean, private val semester: Int?, private val type: Int?) : DataRemoveModel() {
+    data class Grades(private val all: Boolean, private val semester: Int?, private val type: Int?) : DataRemoveModel() {
         companion object {
             fun all() = Grades(true, null, null)
             fun allWithType(type: Int) = Grades(true, null, type)
@@ -47,7 +47,7 @@ open class DataRemoveModel {
         }
     }
 
-    class Events(private val type: Long?, private val exceptType: Long?, private val exceptTypes: List<Long>?) : DataRemoveModel() {
+    data class Events(private val type: Long?, private val exceptType: Long?, private val exceptTypes: List<Long>?) : DataRemoveModel() {
         companion object {
             fun futureExceptType(exceptType: Long) = Events(null, exceptType, null)
             fun futureExceptTypes(exceptTypes: List<Long>) = Events(null, null, exceptTypes)

@@ -74,17 +74,6 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
                     subjectId)
             gradeObject.type = type
 
-            data.toRemove.addAll(listOf(
-                    TYPE_NORMAL,
-                    TYPE_SEMESTER1_FINAL,
-                    TYPE_SEMESTER2_FINAL,
-                    TYPE_SEMESTER1_PROPOSED,
-                    TYPE_SEMESTER2_PROPOSED,
-                    TYPE_YEAR_FINAL,
-                    TYPE_YEAR_PROPOSED
-            ).map {
-                DataRemoveModel.Grades.semesterWithType(profile.currentSemester, it)
-            })
             data.gradeList.add(gradeObject)
             data.metadataList.add(
                     Metadata(
@@ -97,5 +86,16 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
                     ))
             addedDate++
         }
+        data.toRemove.addAll(listOf(
+                TYPE_NORMAL,
+                TYPE_SEMESTER1_FINAL,
+                TYPE_SEMESTER2_FINAL,
+                TYPE_SEMESTER1_PROPOSED,
+                TYPE_SEMESTER2_PROPOSED,
+                TYPE_YEAR_FINAL,
+                TYPE_YEAR_PROPOSED
+        ).map {
+            DataRemoveModel.Grades.semesterWithType(profile.currentSemester, it)
+        })
     }}}
 }

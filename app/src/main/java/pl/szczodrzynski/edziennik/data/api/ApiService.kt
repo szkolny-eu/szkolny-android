@@ -54,6 +54,7 @@ class ApiService : Service() {
     private var taskIsRunning = false
     private var taskRunning: IApiTask? = null // for debug purposes
     private var taskRunningId = -1
+    private var taskStartTime = 0L
     private var taskMaximumId = 0
 
     private var taskProfileId = -1
@@ -74,7 +75,7 @@ class ApiService : Service() {
     private val taskCallback = object : EdziennikCallback {
         override fun onCompleted() {
             lastEventTime = System.currentTimeMillis()
-            d(TAG, "Task $taskRunningId (profile $taskProfileId) - $taskProgressText - finished")
+            d(TAG, "Task $taskRunningId (profile $taskProfileId) finished in ${System.currentTimeMillis()-taskStartTime}")
             EventBus.getDefault().postSticky(ApiTaskFinishedEvent(taskProfileId))
             clearTask()
 
@@ -162,7 +163,7 @@ class ApiService : Service() {
         taskProgress = -1f
         taskProgressText = task.taskName
 
-        d(TAG, "Executing task $taskRunningId ($taskProgressText) - $task")
+        d(TAG, "Executing task $taskRunningId - ${task::class.java.name}")
 
         // update the notification
         notification.setCurrentTask(taskRunningId, taskProgressText).post()
@@ -172,6 +173,7 @@ class ApiService : Service() {
 
         task.profile?.let { syncingProfiles.add(it) }
 
+        taskStartTime = System.currentTimeMillis()
         try {
             when (task) {
                 is EdziennikTask -> task.run(app, taskCallback)
