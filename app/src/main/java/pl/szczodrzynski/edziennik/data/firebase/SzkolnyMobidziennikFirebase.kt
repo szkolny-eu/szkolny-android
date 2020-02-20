@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCE
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_BEHAVIOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
@@ -60,7 +61,8 @@ class SzkolnyMobidziennikFirebase(val app: App, val profiles: List<Profile>, val
         }
 
         val tasks = profiles.filter {
-            it.getStudentData("globalId", 0L) == globalId
+            it.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK &&
+                    it.getStudentData("globalId", 0L) == globalId
         }.map {
             EdziennikTask.syncProfile(it.id, listOf(viewIdPair))
         }

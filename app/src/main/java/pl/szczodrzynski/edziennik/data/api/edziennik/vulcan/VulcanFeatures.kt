@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.models.Feature
 
 const val ENDPOINT_VULCAN_API_UPDATE_SEMESTER     = 1000
+const val ENDPOINT_VULCAN_API_PUSH_CONFIG         = 1005
 const val ENDPOINT_VULCAN_API_DICTIONARIES        = 1010
 const val ENDPOINT_VULCAN_API_TIMETABLE           = 1020
 const val ENDPOINT_VULCAN_API_EVENTS = 1030
@@ -52,6 +53,13 @@ val VulcanFeatures = listOf(
         Feature(LOGIN_TYPE_VULCAN, FEATURE_MESSAGES_SENT, listOf(
                 ENDPOINT_VULCAN_API_MESSAGES_SENT to LOGIN_METHOD_VULCAN_API
         ), listOf(LOGIN_METHOD_VULCAN_API)),
+
+        // push config
+        Feature(LOGIN_TYPE_VULCAN, FEATURE_PUSH_CONFIG, listOf(
+                ENDPOINT_VULCAN_API_PUSH_CONFIG to LOGIN_METHOD_VULCAN_API
+        ), listOf(LOGIN_METHOD_VULCAN_API)).withShouldSync { data ->
+                !data.app.config.sync.tokenVulcanList.contains(data.profileId)
+        },
 
         Feature(LOGIN_TYPE_VULCAN, FEATURE_ALWAYS_NEEDED, listOf(
                 ENDPOINT_VULCAN_API_UPDATE_SEMESTER to LOGIN_METHOD_VULCAN_API,

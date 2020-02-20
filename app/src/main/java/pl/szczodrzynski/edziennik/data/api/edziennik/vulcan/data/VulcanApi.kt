@@ -68,6 +68,7 @@ open class VulcanApi(open val data: DataVulcan, open val lastSync: Long?) {
                 is Long -> finalPayload.addProperty(name, value)
                 is Float -> finalPayload.addProperty(name, value)
                 is Char -> finalPayload.addProperty(name, value)
+                is Boolean -> finalPayload.addProperty(name, value)
             }
         }
         finalPayload.addProperty("RemoteMobileTimeKey", System.currentTimeMillis() / 1000)

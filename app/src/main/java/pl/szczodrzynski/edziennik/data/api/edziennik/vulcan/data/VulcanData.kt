@@ -42,6 +42,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
                 VulcanApiUpdateSemester(data, lastSync, onSuccess)
             }
+            ENDPOINT_VULCAN_API_PUSH_CONFIG -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_push_config)
+                VulcanApiPushConfig(data, lastSync, onSuccess)
+            }
             ENDPOINT_VULCAN_API_DICTIONARIES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_dictionaries)
                 VulcanApiDictionaries(data, lastSync, onSuccess)
