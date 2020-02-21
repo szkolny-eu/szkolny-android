@@ -24,7 +24,7 @@ class ErrorSnackbar(val activity: AppCompatActivity) : CoroutineScope {
 
     private var snackbar: Snackbar? = null
     private lateinit var coordinator: CoordinatorLayout
-    private val errors = mutableListOf<ApiError>()
+    private var errors = mutableListOf<ApiError>()
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -35,7 +35,7 @@ class ErrorSnackbar(val activity: AppCompatActivity) : CoroutineScope {
         snackbar = Snackbar.make(coordinator, R.string.snackbar_error_text, Snackbar.LENGTH_INDEFINITE)
         snackbar?.setAction(R.string.more) {
             ErrorDetailsDialog(activity, errors)
-            errors.clear()
+            errors = mutableListOf()
         }
         val bgColor = ColorUtils.compositeColors(
                 getColorFromAttr(activity, R.attr.colorOnSurface) and 0xcfffffff.toInt(),
@@ -46,7 +46,7 @@ class ErrorSnackbar(val activity: AppCompatActivity) : CoroutineScope {
     }
 
     fun addError(apiError: ApiError): ErrorSnackbar {
-        errors += apiError
+        errors.add(apiError)
         snackbar?.setText(apiError.getStringReason(activity))
         return this
     }
