@@ -29,8 +29,8 @@ class ProfileConfig(val db: AppDb, val profileId: Int, rawEntries: List<ConfigEn
 
     val grades by lazy { ProfileConfigGrades(this) }
     val ui by lazy { ProfileConfigUI(this) }
+    val sync by lazy { ProfileConfigSync(this) }
     /*
-    val sync by lazy { ConfigSync(this) }
     val timetable by lazy { ConfigTimetable(this) }
     val grades by lazy { ConfigGrades(this) }*/
 

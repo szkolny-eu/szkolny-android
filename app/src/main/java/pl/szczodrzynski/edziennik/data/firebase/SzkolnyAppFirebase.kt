@@ -145,25 +145,31 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                     event.topic
             )*/
             val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_SHARED_HOMEWORK else Notification.TYPE_NEW_SHARED_EVENT
-            val notification = Notification(
-                    id = Notification.buildId(event.profileId, type, event.id),
-                    title = app.getNotificationTitle(type),
-                    text = message,
-                    type = type,
-                    profileId = profile?.id,
-                    profileName = profile?.name,
-                    viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
-                    addedDate = metadata.addedDate
-            ).addExtra("eventId", event.id).addExtra("eventDate", event.eventDate.value.toLong())
+            val notificationFilter = app.config.getFor(event.profileId).sync.notificationFilter
+
+            if (!notificationFilter.contains(type)) {
+                val notification = Notification(
+                        id = Notification.buildId(event.profileId, type, event.id),
+                        title = app.getNotificationTitle(type),
+                        text = message,
+                        type = type,
+                        profileId = profile?.id,
+                        profileName = profile?.name,
+                        viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                        addedDate = metadata.addedDate
+                ).addExtra("eventId", event.id).addExtra("eventDate", event.eventDate.value.toLong())
+                notificationList += notification
+            }
 
             events += event
             metadataList += metadata
-            notificationList += notification
         }
         app.db.eventDao().addAll(events)
         app.db.metadataDao().addAllReplace(metadataList)
-        app.db.notificationDao().addAll(notificationList)
-        PostNotifications(app, notificationList)
+        if (notificationList.isNotEmpty()) {
+            app.db.notificationDao().addAll(notificationList)
+            PostNotifications(app, notificationList)
+        }
     }
 
     private fun unsharedEvent(teamCode: String, eventId: Long, message: String) {
@@ -172,19 +178,26 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
 
         teams.filter { it.code == teamCode }.distinctBy { it.profileId }.forEach { team ->
             val profile = profiles.firstOrNull { it.id == team.profileId }
-            val notification = Notification(
-                    id = Notification.buildId(profile?.id ?: 0, Notification.TYPE_REMOVED_SHARED_EVENT, eventId),
-                    title = app.getNotificationTitle(Notification.TYPE_REMOVED_SHARED_EVENT),
-                    text = message,
-                    type = Notification.TYPE_REMOVED_SHARED_EVENT,
-                    profileId = profile?.id,
-                    profileName = profile?.name,
-                    viewId = MainActivity.DRAWER_ITEM_AGENDA
-            )
-            notificationList += notification
+            val notificationFilter = app.config.getFor(team.profileId).sync.notificationFilter
+
+            if (!notificationFilter.contains(Notification.TYPE_REMOVED_SHARED_EVENT)) {
+                val notification = Notification(
+                        id = Notification.buildId(profile?.id
+                                ?: 0, Notification.TYPE_REMOVED_SHARED_EVENT, eventId),
+                        title = app.getNotificationTitle(Notification.TYPE_REMOVED_SHARED_EVENT),
+                        text = message,
+                        type = Notification.TYPE_REMOVED_SHARED_EVENT,
+                        profileId = profile?.id,
+                        profileName = profile?.name,
+                        viewId = MainActivity.DRAWER_ITEM_AGENDA
+                )
+                notificationList += notification
+            }
             app.db.eventDao().remove(team.profileId, eventId)
         }
-        app.db.notificationDao().addAll(notificationList)
-        PostNotifications(app, notificationList)
+        if (notificationList.isNotEmpty()) {
+            app.db.notificationDao().addAll(notificationList)
+            PostNotifications(app, notificationList)
+        }
     }
 }

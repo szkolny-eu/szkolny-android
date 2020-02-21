@@ -54,6 +54,7 @@ import pl.szczodrzynski.edziennik.sync.UpdateWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.NotificationFilterDialog;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.edziennik.utils.models.Date;
@@ -218,6 +219,24 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             );*/
 
             items.add(
+                    new MaterialAboutActionItem(
+                            getString(R.string.settings_profile_notifications_text),
+                            getString(R.string.settings_profile_notifications_subtext),
+                            new IconicsDrawable(activity)
+                                    .icon(CommunityMaterial.Icon.cmd_filter_outline)
+                                    .size(IconicsSize.dp(iconSizeDp))
+                                    .color(IconicsColor.colorInt(iconColor))
+                    )
+                            .setOnClickAction(() -> {
+                                new NotificationFilterDialog(activity, null, null);
+                            })
+            );
+
+            items.add(getMoreItem(() -> addCardItems(CARD_PROFILE, getProfileCard(true))));
+        }
+        else {
+
+            items.add(
                     new MaterialAboutSwitchItem(
                             getString(R.string.settings_profile_sync_text),
                             getString(R.string.settings_profile_sync_subtext),
@@ -226,34 +245,13 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                    .setChecked(app.getProfile().getSyncEnabled())
-                    .setOnChangeAction(((isChecked, tag) -> {
-                        app.getProfile().setSyncEnabled(isChecked);
-                        app.profileSave();
-                        return true;
-                    }))
+                            .setChecked(app.getProfile().getSyncEnabled())
+                            .setOnChangeAction(((isChecked, tag) -> {
+                                app.getProfile().setSyncEnabled(isChecked);
+                                app.profileSave();
+                                return true;
+                            }))
             );
-
-            items.add(getMoreItem(() -> addCardItems(CARD_PROFILE, getProfileCard(true))));
-        }
-        else {
-
-            /*items.add(
-                    new MaterialAboutSwitchItem(
-                            getString(R.string.settings_profile_notify_text),
-                            getString(R.string.settings_profile_notify_subtext),
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_bell_ring)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
-                    )
-                    .setChecked(app.getProfile().getSyncNotifications())
-                    .setOnChangeAction(((isChecked, tag) -> {
-                        app.getProfile().setSyncNotifications(isChecked);
-                        app.profileSave();
-                        return true;
-                    }))
-            );*/
 
             items.add(
                     new MaterialAboutActionItem(
