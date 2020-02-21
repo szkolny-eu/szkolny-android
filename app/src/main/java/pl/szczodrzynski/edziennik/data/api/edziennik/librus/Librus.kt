@@ -180,6 +180,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                     }
                     ERROR_LOGIN_LIBRUS_PORTAL_NO_CODE,
                     ERROR_LOGIN_LIBRUS_PORTAL_CSRF_MISSING,
+                    ERROR_LOGIN_LIBRUS_PORTAL_CSRF_EXPIRED,
                     ERROR_LOGIN_LIBRUS_PORTAL_CODE_REVOKED,
                     ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED -> {
                         login()

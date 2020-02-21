@@ -94,8 +94,8 @@ fun JsonObject?.getInt(key: String): Int? = get(key)?.let { if (it.isJsonNull) n
 fun JsonObject?.getLong(key: String): Long? = get(key)?.let { if (it.isJsonNull) null else it.asLong }
 fun JsonObject?.getFloat(key: String): Float? = get(key)?.let { if(it.isJsonNull) null else it.asFloat }
 fun JsonObject?.getChar(key: String): Char? = get(key)?.let { if(it.isJsonNull) null else it.asCharacter }
-fun JsonObject?.getJsonObject(key: String): JsonObject? = get(key)?.let { if (it.isJsonNull) null else it.asJsonObject }
-fun JsonObject?.getJsonArray(key: String): JsonArray? = get(key)?.let { if (it.isJsonNull) null else it.asJsonArray }
+fun JsonObject?.getJsonObject(key: String): JsonObject? = get(key)?.let { if (it.isJsonObject) it.asJsonObject else null }
+fun JsonObject?.getJsonArray(key: String): JsonArray? = get(key)?.let { if (it.isJsonArray) it.asJsonArray else null }
 
 fun JsonObject?.getBoolean(key: String, defaultValue: Boolean): Boolean = get(key)?.let { if (it.isJsonNull) defaultValue else it.asBoolean } ?: defaultValue
 fun JsonObject?.getString(key: String, defaultValue: String): String = get(key)?.let { if (it.isJsonNull) defaultValue else it.asString } ?: defaultValue
@@ -103,8 +103,17 @@ fun JsonObject?.getInt(key: String, defaultValue: Int): Int = get(key)?.let { if
 fun JsonObject?.getLong(key: String, defaultValue: Long): Long = get(key)?.let { if (it.isJsonNull) defaultValue else it.asLong } ?: defaultValue
 fun JsonObject?.getFloat(key: String, defaultValue: Float): Float = get(key)?.let { if(it.isJsonNull) defaultValue else it.asFloat } ?: defaultValue
 fun JsonObject?.getChar(key: String, defaultValue: Char): Char = get(key)?.let { if(it.isJsonNull) defaultValue else it.asCharacter } ?: defaultValue
-fun JsonObject?.getJsonObject(key: String, defaultValue: JsonObject): JsonObject = get(key)?.let { if (it.isJsonNull) defaultValue else it.asJsonObject } ?: defaultValue
-fun JsonObject?.getJsonArray(key: String, defaultValue: JsonArray): JsonArray = get(key)?.let { if (it.isJsonNull) defaultValue else it.asJsonArray } ?: defaultValue
+fun JsonObject?.getJsonObject(key: String, defaultValue: JsonObject): JsonObject = get(key)?.let { if (it.isJsonObject) it.asJsonObject else defaultValue } ?: defaultValue
+fun JsonObject?.getJsonArray(key: String, defaultValue: JsonArray): JsonArray = get(key)?.let { if (it.isJsonArray) it.asJsonArray else defaultValue } ?: defaultValue
+
+fun JsonArray.getBoolean(key: Int): Boolean? = if (key >= size()) null else get(key)?.let { if (it.isJsonNull) null else it.asBoolean }
+fun JsonArray.getString(key: Int): String? = if (key >= size()) null else get(key)?.let { if (it.isJsonNull) null else it.asString }
+fun JsonArray.getInt(key: Int): Int? = if (key >= size()) null else get(key)?.let { if (it.isJsonNull) null else it.asInt }
+fun JsonArray.getLong(key: Int): Long? = if (key >= size()) null else get(key)?.let { if (it.isJsonNull) null else it.asLong }
+fun JsonArray.getFloat(key: Int): Float? = if (key >= size()) null else get(key)?.let { if(it.isJsonNull) null else it.asFloat }
+fun JsonArray.getChar(key: Int): Char? = if (key >= size()) null else get(key)?.let { if(it.isJsonNull) null else it.asCharacter }
+fun JsonArray.getJsonObject(key: Int): JsonObject? = if (key >= size()) null else get(key)?.let { if (it.isJsonObject) it.asJsonObject else null }
+fun JsonArray.getJsonArray(key: Int): JsonArray? = if (key >= size()) null else get(key)?.let { if (it.isJsonArray) it.asJsonArray else null }
 
 operator fun JsonObject.set(key: String, value: JsonElement) = this.add(key, value)
 operator fun JsonObject.set(key: String, value: Boolean) = this.addProperty(key, value)

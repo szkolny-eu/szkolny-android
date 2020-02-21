@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
+import java.net.HttpURLConnection.*
 import java.util.*
 import java.util.regex.Pattern
 
@@ -112,6 +112,8 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                         it.addParameter("g-recaptcha-response", recaptchaCode)
                 }
                 .addHeader("X-CSRF-TOKEN", csrfToken)
+                .allowErrorCode(HTTP_BAD_REQUEST)
+                .allowErrorCode(HTTP_FORBIDDEN)
                 .contentType(MediaTypeUtils.APPLICATION_JSON)
                 .post()
                 .callback(object : JsonCallbackHandler() {
@@ -140,22 +142,24 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                                     .withApiResponse(json))
                             return
                         }
-                        if (json.get("errors") != null) {
-                            data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR)
-                                    .withResponse(response)
-                                    .withApiResponse(json))
-                            return
+                        val error = if (response.code() == 200) null else
+                            json.getJsonArray("errors")?.getString(0)
+                        error?.let { code ->
+                            when {
+                                code.contains("Sesja logowania wygasła") -> ERROR_LOGIN_LIBRUS_PORTAL_CSRF_EXPIRED
+                                code.contains("Upewnij się, że nie") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
+                                else -> ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR
+                            }.let { errorCode ->
+                                data.error(ApiError(TAG, errorCode)
+                                        .withApiResponse(json)
+                                        .withResponse(response))
+                                return
+                            }
                         }
                         authorize(json.getString("redirect", LIBRUS_AUTHORIZE_URL))
                     }
 
                     override fun onFailure(response: Response, throwable: Throwable) {
-                        if (response.code() == 403 || response.code() == 401) {
-                            data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN)
-                                    .withResponse(response)
-                                    .withThrowable(throwable))
-                            return
-                        }
                         data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
                                 .withResponse(response)
                                 .withThrowable(throwable))
@@ -165,7 +169,6 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                 .enqueue()
     }
 
-    private var refreshTokenFailed = false
     private fun accessToken(code: String?, refreshToken: String?) {
         d(TAG, "Request: Librus/Login/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_TOKEN else LIBRUS_TOKEN_URL}")
 

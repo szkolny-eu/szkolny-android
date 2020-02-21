@@ -94,6 +94,7 @@
     <string name="error_181" translatable="false">ERROR_LIBRUS_API_MAINTENANCE</string>
     <string name="error_182" translatable="false">ERROR_LIBRUS_PORTAL_MAINTENANCE</string>
     <string name="error_183" translatable="false">ERROR_LIBRUS_API_NOTICEBOARD_PROBLEM</string>
+    <string name="error_184" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_CSRF_EXPIRED</string>
 
     <string name="error_201" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_202" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
@@ -264,6 +265,7 @@
     <string name="error_181_reason">Librus API: przerwa techniczna</string>
     <string name="error_182_reason">Librus Portal: przerwa techniczna</string>
     <string name="error_183_reason">Wystąpił problem z tablicą ogłoszeń</string>
+    <string name="error_184_reason">Librus: Sesja logowania wygasła. Zaloguj się ponownie.</string>
 
     <string name="error_201_reason">Nieprawidłowy login lub hasło</string>
     <string name="error_202_reason">Podano stare hasło</string>
@@ -335,7 +337,7 @@
     <string name="error_908_reason">EXCEPTION_MOBIDZIENNIK_WEB_FILE_REQUEST</string>
     <string name="error_909_reason">EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST</string>
     <string name="error_910_reason">EXCEPTION_NOTIFY</string>
-    <string name="error_911_reason">EXCEPTION_LIBRUS_MESSAGES_REQUEST</string>
+    <string name="error_911_reason">Zgłoś błąd: pobieranie wiadomości Librus</string>
     <string name="error_912_reason">EXCEPTION_IDZIENNIK_WEB_REQUEST</string>
     <string name="error_913_reason">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
     <string name="error_914_reason">EXCEPTION_IDZIENNIK_API_REQUEST</string>
