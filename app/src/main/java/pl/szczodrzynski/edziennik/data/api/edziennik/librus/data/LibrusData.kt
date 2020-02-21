@@ -32,15 +32,14 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             return
         }
         val id = data.targetEndpointIds.firstKey()
-        data.targetEndpointIds.remove(id)
-        useEndpoint(id) { endpointId ->
+        val lastSync = data.targetEndpointIds.remove(id)
+        useEndpoint(id, lastSync) { endpointId ->
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }
 
-    private fun useEndpoint(endpointId: Int, onSuccess: (endpointId: Int) -> Unit) {
-        val lastSync = data.targetEndpointIds[endpointId]
+    private fun useEndpoint(endpointId: Int, lastSync: Long?, onSuccess: (endpointId: Int) -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId. Last sync time = $lastSync")
         when (endpointId) {
             /**
@@ -82,7 +81,10 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_lessons)
                 LibrusApiLessons(data, lastSync, onSuccess)
             }
-            // TODO push config
+            ENDPOINT_LIBRUS_API_PUSH_CONFIG -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_push_config)
+                LibrusApiPushConfig(data, lastSync, onSuccess)
+            }
             ENDPOINT_LIBRUS_API_TIMETABLES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_timetable)
                 LibrusApiTimetables(data, lastSync, onSuccess)

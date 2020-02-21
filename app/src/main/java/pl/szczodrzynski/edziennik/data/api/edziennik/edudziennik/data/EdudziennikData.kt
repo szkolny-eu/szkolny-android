@@ -28,15 +28,14 @@ class EdudziennikData(val data: DataEdudziennik, val onSuccess: () -> Unit) {
             return
         }
         val id = data.targetEndpointIds.firstKey()
-        data.targetEndpointIds.remove(id)
-        useEndpoint(id) { endpointId ->
+        val lastSync = data.targetEndpointIds.remove(id)
+        useEndpoint(id, lastSync) { endpointId ->
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
     }
 
-    private fun useEndpoint(endpointId: Int, onSuccess: (endpointId: Int) -> Unit) {
-        val lastSync = data.targetEndpointIds[endpointId]
+    private fun useEndpoint(endpointId: Int, lastSync: Long?, onSuccess: (endpointId: Int) -> Unit) {
         Utils.d(TAG, "Using endpoint $endpointId. Last sync time = $lastSync")
         when (endpointId) {
             ENDPOINT_EDUDZIENNIK_WEB_START -> {

@@ -87,7 +87,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (remoteMessage.getData().get("id_wiadomosci") != null) {
 
                         d(TAG, "Syncing profile " + profile.getId());
-                        EdziennikTask.Companion.syncProfile(profile.getId(), null, null).enqueue(app);
+                        EdziennikTask.Companion.syncProfile(profile.getId(), null, null, null).enqueue(app);
                     } else {
                         /*app.notifier.add(new Notification(app.getContext(), remoteMessage.getData().get("message"))
                                 .withProfileData(profile.id, profile.name)
@@ -98,7 +98,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         app.notifier.postAll(profile);
                         app.saveConfig("notifications");*/
                         d(TAG, "Syncing profile " + profile.getId());
-                        EdziennikTask.Companion.syncProfile(profile.getId(), null, null).enqueue(app);
+                        EdziennikTask.Companion.syncProfile(profile.getId(), null, null, null).enqueue(app);
                     }
                 }
             });

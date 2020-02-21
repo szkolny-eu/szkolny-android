@@ -53,8 +53,6 @@ const val ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK                            = 2030
 const val ENDPOINT_LIBRUS_MESSAGES_RECEIVED                            = 3010
 const val ENDPOINT_LIBRUS_MESSAGES_SENT                                = 3020
 const val ENDPOINT_LIBRUS_MESSAGES_TRASH                               = 3030
-const val ENDPOINT_LIBRUS_MESSAGES_RECEIVERS                           = 3040
-const val ENDPOINT_LIBRUS_MESSAGES_GET                                 = 3040
 
 val LibrusFeatures = listOf(
 

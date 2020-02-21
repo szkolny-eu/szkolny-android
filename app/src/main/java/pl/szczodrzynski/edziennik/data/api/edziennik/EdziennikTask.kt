@@ -30,7 +30,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
         fun firstLogin(loginStore: LoginStore) = EdziennikTask(-1, FirstLoginRequest(loginStore))
         fun sync() = EdziennikTask(-1, SyncRequest())
-        fun syncProfile(profileId: Int, viewIds: List<Pair<Int, Int>>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(viewIds, arguments))
+        fun syncProfile(profileId: Int, viewIds: List<Pair<Int, Int>>? = null, onlyEndpoints: List<Int>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(viewIds, onlyEndpoints, arguments))
         fun syncProfileList(profileList: List<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
         fun messageGet(profileId: Int, message: MessageFull) = EdziennikTask(profileId, MessageGetRequest(message))
         fun messageSend(profileId: Int, recipients: List<Teacher>, subject: String, text: String) = EdziennikTask(profileId, MessageSendRequest(recipients, subject, text))
@@ -85,6 +85,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
                     featureIds = request.viewIds?.flatMap { Features.getIdsByView(it.first, it.second) }
                             ?: Features.getAllIds(),
                     viewId = request.viewIds?.get(0)?.first,
+                    onlyEndpoints = request.onlyEndpoints,
                     arguments = request.arguments)
             is MessageGetRequest -> edziennikInterface?.getMessage(request.message)
             is MessageSendRequest -> edziennikInterface?.sendMessage(request.recipients, request.subject, request.text)
@@ -106,7 +107,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
     data class FirstLoginRequest(val loginStore: LoginStore)
     class SyncRequest
-    data class SyncProfileRequest(val viewIds: List<Pair<Int, Int>>? = null, val arguments: JsonObject? = null)
+    data class SyncProfileRequest(val viewIds: List<Pair<Int, Int>>? = null, val onlyEndpoints: List<Int>? = null, val arguments: JsonObject? = null)
     data class SyncProfileListRequest(val profileList: List<Int>)
     data class MessageGetRequest(val message: MessageFull)
     data class MessageSendRequest(val recipients: List<Teacher>, val subject: String, val text: String)

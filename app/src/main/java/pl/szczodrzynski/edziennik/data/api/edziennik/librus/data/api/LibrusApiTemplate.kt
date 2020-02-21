@@ -8,8 +8,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 
 class LibrusApiTemplate(override val data: DataLibrus,
-                        val onSuccess: () -> Unit
-) : LibrusApi(data, null) {
+                        override val lastSync: Long?,
+                        val onSuccess: (endpointId: Int) -> Unit
+) : LibrusApi(data, lastSync) {
     companion object {
         const val TAG = "LibrusApi"
     }
@@ -18,7 +19,7 @@ class LibrusApiTemplate(override val data: DataLibrus,
         /*apiGet(TAG, "") { json ->
 
             data.setSyncNext(ENDPOINT_LIBRUS_API_, SYNC_ALWAYS)
-            onSuccess()
+            onSuccess(ENDPOINT_LIBRUS_API_)
         }*/
     }
 }

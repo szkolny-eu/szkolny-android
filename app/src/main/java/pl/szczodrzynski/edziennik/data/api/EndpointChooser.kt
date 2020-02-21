@@ -7,7 +7,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.EndpointTimer
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_NEVER
 
-fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featureIds: List<Int>, viewId: Int?) {
+fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featureIds: List<Int>, viewId: Int?, onlyEndpoints: List<Int>?) {
     val data = this
 
     val possibleLoginMethods = data.loginMethods.toMutableList()
@@ -46,13 +46,18 @@ fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featu
             // add all endpoint IDs and required login methods, filtering using timers
             .onEach { feature ->
                 feature.endpointIds.forEach { endpoint ->
+                    if (onlyEndpoints?.contains(endpoint.first) == false)
+                        return@forEach
                     (data.endpointTimers
                             .singleOrNull { it.endpointId == endpoint.first } ?: EndpointTimer(data.profile?.id
                             ?: -1, endpoint.first))
                             .let { timer ->
-                                if (timer.nextSync == SYNC_ALWAYS ||
-                                        (viewId != null && timer.viewId == viewId) ||
-                                        (timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp)) {
+                                if (
+                                        onlyEndpoints?.contains(endpoint.first) == true ||
+                                        timer.nextSync == SYNC_ALWAYS ||
+                                        viewId != null && timer.viewId == viewId ||
+                                        timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp
+                                ) {
                                     data.targetEndpointIds[endpoint.first] = timer.lastSync
                                     requiredLoginMethods.add(endpoint.second)
                                 }

@@ -567,7 +567,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         EdziennikTask.syncProfile(
                 App.profileId,
                 listOf(navTargetId to fragmentParam),
-                arguments
+                arguments = arguments
         ).enqueue(this)
     }
     @Subscribe(threadMode = ThreadMode.MAIN)

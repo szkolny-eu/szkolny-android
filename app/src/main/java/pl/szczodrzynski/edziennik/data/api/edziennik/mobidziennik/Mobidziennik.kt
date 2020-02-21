@@ -56,9 +56,9 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureIds: List<Int>, viewId: Int?, arguments: JsonObject?) {
+    override fun sync(featureIds: List<Int>, viewId: Int?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
-        data.prepare(mobidziennikLoginMethods, MobidziennikFeatures, featureIds, viewId)
+        data.prepare(mobidziennikLoginMethods, MobidziennikFeatures, featureIds, viewId, onlyEndpoints)
         login()
     }
 
