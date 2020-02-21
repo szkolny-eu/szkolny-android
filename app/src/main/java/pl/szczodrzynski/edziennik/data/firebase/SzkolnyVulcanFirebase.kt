@@ -26,7 +26,7 @@ class SzkolnyVulcanFirebase(val app: App, val profiles: List<Profile>, val messa
       "message: "Uczeń Janósz otrzymał nieobecność na 7 lekcji"
     }*/
     init { run {
-        val data = message.data.getJsonObject("data") ?: return@run
+        val data = message.data.getString("data")?.toJsonObject() ?: return@run
         val type = data.getString("table") ?: return@run
         val studentId = data.getInt("pupilid")
 

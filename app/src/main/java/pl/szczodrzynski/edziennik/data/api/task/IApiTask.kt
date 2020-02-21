@@ -42,6 +42,8 @@ abstract class IApiTask(open val profileId: Int) {
 
     companion object {
         fun enqueueAll(context: Context, tasks: List<IApiTask>) {
+            if (tasks.isEmpty())
+                return
             Intent(context, ApiService::class.java).let {
                 if (SDK_INT >= O)
                     context.startForegroundService(it)

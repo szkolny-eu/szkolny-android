@@ -40,6 +40,7 @@ import com.google.android.gms.security.ProviderInstaller
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import im.wangchao.mhttp.Response
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -114,6 +115,8 @@ fun JsonArray.getFloat(key: Int): Float? = if (key >= size()) null else get(key)
 fun JsonArray.getChar(key: Int): Char? = if (key >= size()) null else get(key)?.let { if(it.isJsonNull) null else it.asCharacter }
 fun JsonArray.getJsonObject(key: Int): JsonObject? = if (key >= size()) null else get(key)?.let { if (it.isJsonObject) it.asJsonObject else null }
 fun JsonArray.getJsonArray(key: Int): JsonArray? = if (key >= size()) null else get(key)?.let { if (it.isJsonArray) it.asJsonArray else null }
+
+fun String.toJsonObject(): JsonObject? = try { JsonParser().parse(this).asJsonObject } catch (ignore: Exception) { null }
 
 operator fun JsonObject.set(key: String, value: JsonElement) = this.add(key, value)
 operator fun JsonObject.set(key: String, value: Boolean) = this.addProperty(key, value)
