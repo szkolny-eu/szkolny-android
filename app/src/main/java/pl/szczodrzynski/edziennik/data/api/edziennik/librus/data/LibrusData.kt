@@ -31,8 +31,9 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        useEndpoint(data.targetEndpointIds.firstKey()) { endpointId ->
-            data.targetEndpointIds.remove(endpointId)
+        val id = data.targetEndpointIds.firstKey()
+        data.targetEndpointIds.remove(id)
+        useEndpoint(id) { endpointId ->
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
