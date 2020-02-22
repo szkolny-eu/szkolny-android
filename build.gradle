@@ -17,14 +17,14 @@ buildscript {
         ]
 
         versions = [
-                kotlin           : "1.3.61",
-                ktx              : "1.1.0",
+                kotlin           : ext.kotlin_version,
+                ktx              : "1.2.0",
 
                 androidX         : '1.0.0',
                 annotation       : '1.1.0',
                 recyclerView     : '1.2.0-alpha01',
-                material         : '1.2.0-alpha03',
-                appcompat        : '1.2.0-alpha01',
+                material         : '1.2.0-alpha05',
+                appcompat        : '1.2.0-alpha02',
                 constraintLayout : '2.0.0-beta4',
                 cardview         : '1.0.0',
                 gridLayout       : '1.0.0',
@@ -32,9 +32,9 @@ buildscript {
                 navigationFragment: "1.0.0",
                 legacy           : "1.0.0",
 
-                room             : "2.2.3",
-                lifecycle        : "2.2.0-rc03",
-                work             : "2.2.0",
+                room             : "2.2.4",
+                lifecycle        : "2.2.0",
+                work             : "2.3.2",
 
                 firebase         : '17.2.2',
                 firebasemessaging: "20.1.0",
@@ -61,7 +61,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:4.0.0-alpha09'
         classpath 'me.tatarka:gradle-retrolambda:3.7.0'
         classpath 'com.google.gms:google-services:4.3.3'
         classpath 'io.fabric.tools:gradle:1.28.1'
