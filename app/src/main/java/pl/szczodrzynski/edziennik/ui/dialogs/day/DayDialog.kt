@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.row_lesson_change_item.view.*
 import kotlinx.android.synthetic.main.row_teacher_absence_item.view.*
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.databinding.DialogDayBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
@@ -22,6 +23,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
 import kotlin.coroutines.CoroutineContext
 
@@ -82,6 +84,27 @@ class DayDialog(
                 Week.getFullDayName(date.weekDay),
                 date.formattedString
         )
+
+        val lessons = withContext(Dispatchers.Default) {
+            app.db.timetableDao().getForDateNow(profileId, date)
+        }.filter { it.type != Lesson.TYPE_NO_LESSONS }
+
+        if (lessons.isNotEmpty()) { run {
+            val startTime = lessons.first().startTime ?: return@run
+            val endTime = lessons.last().endTime ?: return@run
+            val diff = Time.diff(startTime, endTime)
+
+            b.lessonsInfo.setText(
+                    R.string.dialog_day_lessons_info,
+                    startTime.stringHM,
+                    endTime.stringHM,
+                    lessons.size.toString(),
+                    diff.hour.toString(),
+                    diff.minute.toString()
+            )
+
+            b.lessonsInfo.visibility = View.VISIBLE
+        }}
 
         val lessonChanges = withContext(Dispatchers.Default) {
             app.db.timetableDao().getChangesForDateNow(profileId, date)

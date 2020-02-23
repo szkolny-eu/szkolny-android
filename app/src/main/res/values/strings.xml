@@ -1181,4 +1181,5 @@
     <string name="notification_user_action_required_title">Wymagane działanie w aplikacji</string>
     <string name="notification_user_action_required_text">Problem, który uniemożliwia synchronizację musi być rozwiązany przez użytkownika. Kliknij, aby uzyskać więcej informacji.</string>
     <string name="notification_user_action_required_captcha_librus">Librus: wymagane rozwiązanie zadania Captcha. Kliknij, aby kontynuować logowanie do dziennika.</string>
+    <string name="dialog_day_lessons_info">%s - %s (%s lekcji - %s godzin %s minut)</string>
 </resources>

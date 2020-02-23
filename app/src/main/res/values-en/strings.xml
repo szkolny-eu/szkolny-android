@@ -959,4 +959,5 @@
     <string name="dialog_grades_config_color_by_value">By grade\'s value</string>
     <string name="other">Other</string>
     <string name="menu_grades_config">Grades settings</string>
+    <string name="dialog_day_lessons_info">%s - %s (%s lessons - %s hours %s minutes)</string>
 </resources>

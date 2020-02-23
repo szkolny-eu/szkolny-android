@@ -26,9 +26,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:textAppearance="@style/NavView.TextView.Title"
                 android:textIsSelectable="true"
                 tools:text="wtorek, 17 grudnia" />
+
+            <TextView
+                android:id="@+id/lessonsInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:textIsSelectable="true"
+                android:visibility="gone"
+                tools:text="8:00 - 14:20 (7 lekcji, 6 godzin, 20 minut)"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/lessonChangeLayout"
