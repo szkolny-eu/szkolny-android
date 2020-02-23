@@ -51,6 +51,8 @@ class NotificationChannelsManager(val c: Context) {
         }
 
         for (key in toDelete) {
+            if (key.contains("chucker"))
+                continue
             manager.deleteNotificationChannel(key)
         }
     }
