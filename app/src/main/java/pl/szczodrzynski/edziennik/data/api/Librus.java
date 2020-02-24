@@ -139,7 +139,7 @@ public class Librus implements EdziennikInterface {
     }
 
     private static final String TAG = "api.Librus";
-    private static final String CLIENT_ID = "wmSyUMo8llDAs4y9tJVYY92oyZ6h4lAt7KCuy0Gv";
+    private static final String CLIENT_ID = "6XPsKf10LPz1nxgHQLcvZ1KM48DYzlBAhxipaXY8";
     private static final String REDIRECT_URL = "http://localhost/bar";
     private static final String AUTHORIZE_URL = "https://portal.librus.pl/oauth2/authorize?client_id="+CLIENT_ID+"&redirect_uri="+REDIRECT_URL+"&response_type=code";
     private static final String LOGIN_URL = "https://portal.librus.pl/rodzina/login/action";
@@ -149,7 +149,7 @@ public class Librus implements EdziennikInterface {
     private static final String API_URL = "https://api.librus.pl/2.0/";
     private static final String SYNERGIA_URL = "https://wiadomosci.librus.pl/module/";
     private static final String SYNERGIA_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action=";
-    private static final String userAgent = "Dalvik/2.1.0 Android LibrusMobileApp";
+    private static final String userAgent = System.getProperty("http.agent")+"LibrusMobileApp";
     private static final String synergiaUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0";
 
     private App app;
