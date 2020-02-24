@@ -63,23 +63,31 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                 .userAgent(LIBRUS_USER_AGENT)
                 .withClient(data.app.httpLazy)
                 .callback(object : TextCallbackHandler() {
-                    override fun onSuccess(json: String, response: Response) {
+                    override fun onSuccess(text: String, response: Response) {
                         val location = response.headers().get("Location")
                         if (location != null) {
                             val authMatcher = Pattern.compile("http://localhost/bar\\?code=([A-z0-9]+?)$", Pattern.DOTALL or Pattern.MULTILINE).matcher(location)
-                            if (authMatcher.find()) {
-                                accessToken(authMatcher.group(1), null)
-                            } else {
-                                authorize(location)
+                            when {
+                                authMatcher.find() -> {
+                                    accessToken(authMatcher.group(1), null)
+                                }
+                                location.contains("rejected_client") -> {
+                                    data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_INVALID_CLIENT_ID)
+                                            .withResponse(response)
+                                            .withApiResponse("Location: $location\n$text"))
+                                }
+                                else -> {
+                                    authorize(location)
+                                }
                             }
                         } else {
-                            val csrfMatcher = Pattern.compile("name=\"csrf-token\" content=\"([A-z0-9=+/\\-_]+?)\"", Pattern.DOTALL).matcher(json)
+                            val csrfMatcher = Pattern.compile("name=\"csrf-token\" content=\"([A-z0-9=+/\\-_]+?)\"", Pattern.DOTALL).matcher(text)
                             if (csrfMatcher.find()) {
                                 login(csrfMatcher.group(1))
                             } else {
                                 data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_CSRF_MISSING)
                                         .withResponse(response)
-                                        .withApiResponse(json))
+                                        .withApiResponse(text))
                             }
                         }
                     }
@@ -186,7 +194,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                     return
                 }
                 val error = if (response?.code() == 200) null else
-                    json.getString("hint")
+                    json.getString("hint") ?: json.getString("error")
                 error?.let { code ->
                     when (code) {
                         "Authorization code has expired" -> ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED
@@ -197,11 +205,9 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                         "Check the `code` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_CODE
                         "Check the `refresh_token` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_REFRESH
                         "Check the `redirect_uri` parameter" -> ERROR_LOGIN_LIBRUS_PORTAL_NO_REDIRECT
-                        else -> when (json.getString("error")) {
-                            "unsupported_grant_type" -> ERROR_LOGIN_LIBRUS_PORTAL_UNSUPPORTED_GRANT
-                            "invalid_client" -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_CLIENT_ID
-                            else -> ERROR_LOGIN_LIBRUS_PORTAL_OTHER
-                        }
+                        "unsupported_grant_type" -> ERROR_LOGIN_LIBRUS_PORTAL_UNSUPPORTED_GRANT
+                        "invalid_client" -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_CLIENT_ID
+                        else -> ERROR_LOGIN_LIBRUS_PORTAL_OTHER
                     }.let { errorCode ->
                         data.error(ApiError(TAG, errorCode)
                                 .withApiResponse(json)

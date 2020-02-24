@@ -252,7 +252,7 @@
     <string name="error_168_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_REFRESH</string>
     <string name="error_169_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_REDIRECT</string>
     <string name="error_170_reason">ERROR_LOGIN_LIBRUS_PORTAL_UNSUPPORTED_GRANT</string>
-    <string name="error_171_reason">ERROR_LOGIN_LIBRUS_PORTAL_INVALID_CLIENT_ID</string>
+    <string name="error_171_reason">Błędne ID klienta. Zgłoś błąd programiście oraz zaktualizuj aplikację.</string>
     <string name="error_172_reason">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_INVALID</string>
     <string name="error_173_reason">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_REVOKED</string>
     <string name="error_174_reason">ERROR_LIBRUS_SYNERGIA_OTHER</string>
