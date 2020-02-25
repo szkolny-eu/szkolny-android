@@ -27,8 +27,15 @@ class EdudziennikWebAttendance(override val data: DataEdudziennik,
         private const val TAG = "EdudziennikWebAttendance"
     }
 
-    init { data.profile?.also { profile ->
-        webGet(TAG, data.studentEndpoint + "Presence", semester = -1) { text ->
+    private var requestSemester: Int? = null
+
+    init {
+        if (profile?.empty == true && data.currentSemester == 2) requestSemester = 1
+        getAttendances()
+    }
+
+    private fun getAttendances() { data.profile?.also { profile ->
+        webGet(TAG, data.studentEndpoint + "Presence", semester = requestSemester) { text ->
 
             val attendanceTypes = EDUDZIENNIK_ATTENDANCE_TYPES.find(text)?.get(1)?.split(',')?.map {
                 val type = EDUDZIENNIK_ATTENDANCE_TYPE.find(it.trim())
@@ -91,8 +98,13 @@ class EdudziennikWebAttendance(override val data: DataEdudziennik,
                 }
             }
 
-            data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE, SYNC_ALWAYS)
-            onSuccess(ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE)
+            if (profile.empty && requestSemester == 1 && data.currentSemester == 2) {
+                requestSemester = null
+                getAttendances()
+            } else {
+                data.setSyncNext(ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE, SYNC_ALWAYS)
+                onSuccess(ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE)
+            }
         }
     } ?: onSuccess(ENDPOINT_EDUDZIENNIK_WEB_ATTENDANCE) }
 }
