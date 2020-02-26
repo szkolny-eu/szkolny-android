@@ -23,6 +23,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         private const val TAG = "LoginActivity"
         @JvmField
         var navOptions: NavOptions? = null
+        var thisOneIsTricky = 0
     }
 
     private val app: App by lazy { applicationContext as App }
@@ -72,6 +73,8 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme_Light)
+
+        thisOneIsTricky = -1
 
         navOptions = NavOptions.Builder()
                 .setEnterAnim(R.anim.slide_in_right)

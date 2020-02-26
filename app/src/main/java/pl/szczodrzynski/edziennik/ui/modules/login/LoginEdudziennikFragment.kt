@@ -4,6 +4,9 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.login
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +22,7 @@ import pl.szczodrzynski.edziennik.databinding.FragmentLoginEdudziennikBinding
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
+
 class LoginEdudziennikFragment : Fragment(), CoroutineScope {
     companion object {
         private const val TAG = "LoginEdudziennikFragment"
@@ -28,6 +32,7 @@ class LoginEdudziennikFragment : Fragment(), CoroutineScope {
     private lateinit var activity: LoginActivity
     private lateinit var b: FragmentLoginEdudziennikBinding
     private val nav by lazy { activity.nav }
+    private var hehe = 0
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
@@ -49,6 +54,29 @@ class LoginEdudziennikFragment : Fragment(), CoroutineScope {
                     ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN ->
                         b.loginPasswordLayout.error = getString(R.string.login_error_incorrect_login_or_password)
                 }
+            }
+        }
+
+        b.topText.onClick {
+            if (LoginActivity.thisOneIsTricky != -1)
+                return@onClick
+            hehe++
+            if (hehe >= 5) {
+                LoginActivity.thisOneIsTricky = 3
+                val colorAnim = ObjectAnimator.ofInt(
+                        b.topText,
+                        "textColor",
+                        Color.BLACK,
+                        Color.RED,
+                        Color.BLACK,
+                        Color.RED,
+                        Color.BLACK,
+                        Color.RED,
+                        Color.BLACK
+                )
+                colorAnim.setEvaluator(ArgbEvaluator())
+                colorAnim.duration = 1500L
+                colorAnim.start()
             }
         }
 

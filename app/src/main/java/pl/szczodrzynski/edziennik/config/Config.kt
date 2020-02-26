@@ -75,6 +75,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mPrivacyPolicyAccepted = mPrivacyPolicyAccepted ?: values.get("privacyPolicyAccepted", false); return mPrivacyPolicyAccepted ?: false }
         set(value) { set("privacyPolicyAccepted", value); mPrivacyPolicyAccepted = value }
 
+    private var mDebugMode: Boolean? = null
+    var debugMode: Boolean
+        get() { mDebugMode = mDebugMode ?: values.get("debugMode", false); return mDebugMode ?: false }
+        set(value) { set("debugMode", value); mDebugMode = value }
+
     private var mDevModePassword: String? = null
     var devModePassword: String?
         get() { mDevModePassword = mDevModePassword ?: values.get("devModePassword", null as String?); return mDevModePassword }

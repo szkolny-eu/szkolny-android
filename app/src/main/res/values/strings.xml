@@ -1187,4 +1187,6 @@
     <string name="dialog_notification_filter_text"><![CDATA[Zaznacz, które powiadomienia mają być pokazywane w systemie oraz w aplikacji.]]></string>
     <string name="notification_filter_warning">Czy na pewno chcesz zastosować te ustawienia?\n\nNie będziesz widział informacji o niektórych danych, przez co możesz przeoczyć ważne komunikaty, wiadomości lub oceny.\n\nUstawienia zostaną zastosowane dla aktualnie otwartego profilu.</string>
     <string name="dialog_day_lessons_info">%s - %s (%s lekcji - %s godzin %s minut)</string>
+    <string name="developer_mode">Developer mode</string>
+    <string name="dev_mode_enable_warning">Te ustawienia nie są przeznaczone dla zwykłych użytkowników, wyłącznie dla twórcy tej aplikacji.\n\nNie są nawet w żaden sposób opisane, nie wiadomo co robią, więc możesz nawet nie wiedzieć kiedy coś zepsujesz.\n\nWłączenie tych opcji może spowodować utratę danych w aplikacji, uszkodzenie twojego systemu lub nawet uruchomienie wirusa na baterii.\n\nLepiej uważaj.</string>
 </resources>

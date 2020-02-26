@@ -44,6 +44,7 @@
                             tools:srcCompat="@tools:sample/avatars" />
 
                         <TextView
+                            android:id="@+id/topText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="24dp"

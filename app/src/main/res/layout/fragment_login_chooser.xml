@@ -24,6 +24,7 @@
                     android:orientation="vertical">
 
                     <com.mikepenz.iconics.view.IconicsImageView
+                        android:id="@+id/topLogo"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_marginStart="24dp"
@@ -57,6 +58,16 @@
                         android:layout_marginTop="2dp"
                         android:layout_marginRight="24dp"
                         android:text="@string/login_startpage_subtitle" />
+
+                    <CheckBox
+                        android:id="@+id/devMode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:visibility="gone"
+                        android:text="@string/developer_mode"
+                        tools:visibility="visible"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -206,7 +217,9 @@
                         android:layout_marginLeft="24dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginRight="24dp"
-                        android:text="Fake login" />
+                        android:text="Fake login"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
 
                 </LinearLayout>
 

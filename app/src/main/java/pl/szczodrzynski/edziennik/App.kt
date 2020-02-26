@@ -60,6 +60,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             get() = profile.id
 
         var devMode = false
+        var debugMode = false
     }
 
     val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
@@ -103,7 +104,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .readTimeout(10, TimeUnit.SECONDS)
         builder.installHttpsSupport(this)
 
-        if (devMode || BuildConfig.DEBUG) {
+        if (debugMode || BuildConfig.DEBUG) {
             HyperLog.initialize(this)
             HyperLog.setLogLevel(Log.VERBOSE)
             HyperLog.setLogFormat(DebugLogFormat(this))
@@ -158,6 +159,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         Iconics.registerFont(SzkolnyFont)
         App.db = AppDb(this)
         Themes.themeInt = config.ui.theme
+        debugMode = config.debugMode
         MHttp.instance().customOkHttpClient(http)
 
         if (!profileLoadById(config.lastProfileId)) {
@@ -174,6 +176,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
 
                 if (config.devModePassword != null)
                     checkDevModePassword()
+                debugMode = devMode || config.debugMode
 
                 if (config.sync.enabled)
                     SyncWorker.scheduleNext(this@App, false)

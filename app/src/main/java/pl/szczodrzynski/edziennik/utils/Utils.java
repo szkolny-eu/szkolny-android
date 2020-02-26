@@ -108,7 +108,7 @@ public class Utils {
     public static List<String> debugLog = new ArrayList<>();
 
     public static void d(String TAG, String message) {
-        if (App.Companion.getDevMode()) {
+        if (App.Companion.getDebugMode()) {
             HyperLog.d("Szkolny/"+TAG, message);
             //debugLog.add(TAG+": "+message);
         }

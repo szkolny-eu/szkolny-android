@@ -3,16 +3,25 @@ package pl.szczodrzynski.edziennik.ui.modules.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Process
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.CompoundButton
 import androidx.fragment.app.Fragment
+import com.afollestad.materialdialogs.DialogAction
+import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginChooserBinding
+import pl.szczodrzynski.edziennik.onChange
 import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity
+import pl.szczodrzynski.edziennik.utils.Anim
+import kotlin.system.exitProcess
+
 
 class LoginChooserFragment : Fragment() {
     companion object {
@@ -34,6 +43,20 @@ class LoginChooserFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        b.topLogo.onClick {
+            if (LoginActivity.thisOneIsTricky <= -1) {
+                LoginActivity.thisOneIsTricky = 999
+            }
+            if (LoginActivity.thisOneIsTricky in 0..7) {
+                LoginActivity.thisOneIsTricky++
+                if (LoginActivity.thisOneIsTricky == 7) {
+                    b.topLogo.startAnimation(AnimationUtils.loadAnimation(activity, R.anim.shake));
+                    if (b.devMode.visibility != View.VISIBLE)
+                        Anim.expand(b.devMode, 500, null);
+                    LoginActivity.thisOneIsTricky = 3
+                }
+            }
+        }
         b.loginMobidziennikLogo.onClick { nav.navigate(R.id.loginMobidziennikFragment, null, LoginActivity.navOptions) }
         b.loginLibrusLogo.onClick { nav.navigate(R.id.loginLibrusFragment, null, LoginActivity.navOptions) }
         b.loginVulcanLogo.onClick { nav.navigate(R.id.loginVulcanFragment, null, LoginActivity.navOptions) }
@@ -58,6 +81,46 @@ class LoginChooserFragment : Fragment() {
             else -> {
                 // there are no profiles
                 b.cancelButton.visibility = View.GONE
+            }
+        }
+
+        b.devMode.visibility = if (App.debugMode) View.VISIBLE else View.GONE
+        b.devMode.onChange { v, isChecked ->
+            if (isChecked) {
+                MaterialDialog.Builder(activity)
+                        .title(R.string.are_you_sure)
+                        .content(R.string.dev_mode_enable_warning)
+                        .positiveText(R.string.yes)
+                        .negativeText(R.string.no)
+                        .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                            app.config.debugMode = true
+                            MaterialAlertDialogBuilder(activity)
+                                    .setTitle("Restart")
+                                    .setMessage("Wymagany restart aplikacji")
+                                    .setPositiveButton("OK") { _, _ ->
+                                        Process.killProcess(Process.myPid())
+                                        Runtime.getRuntime().exit(0)
+                                        exitProcess(0)
+                                    }
+                                    .setCancelable(false)
+                                    .show()
+                            /*if (b.devModeLayout.getVisibility() !== View.VISIBLE) {
+                                Anim.expand(b.devModeTitle, 500, null)
+                                Anim.expand(b.devModeLayout, 500, null)
+                            }*/
+                        }
+                        .onNegative { _: MaterialDialog?, _: DialogAction? ->
+                            b.devMode.isChecked = app.config.debugMode
+                            b.devMode.jumpDrawablesToCurrentState()
+                            Anim.collapse(b.devMode, 1000, null)
+                        }
+                        .show()
+            } else {
+                app.config.debugMode = false
+                /*if (b.devModeLayout.getVisibility() === View.VISIBLE) {
+                    Anim.collapse(b.devModeTitle, 500, null)
+                    Anim.collapse(b.devModeLayout, 500, null)
+                }*/
             }
         }
 
