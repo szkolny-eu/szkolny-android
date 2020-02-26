@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:layout_width="386dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -39,30 +39,32 @@
         </LinearLayout>
 
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/payload"
-                android:layout_width="386dp"
-                android:layout_height="386dp"
-                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
                 tools:srcCompat="@tools:sample/backgrounds/scenic[1]" />
 
             <LinearLayout
-                android:layout_width="386dp"
-                android:layout_height="386dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <pl.szczodrzynski.edziennik.utils.CheckableImageView
                         android:id="@+id/image0"
                         android:layout_width="126dp"
-                        android:layout_height="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:clickable="true"
                         android:background="@drawable/recaptcha_image"
                         android:focusable="true" />
@@ -75,7 +77,8 @@
                     <pl.szczodrzynski.edziennik.utils.CheckableImageView
                         android:id="@+id/image1"
                         android:layout_width="126dp"
-                        android:layout_height="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:clickable="true"
                         android:background="@drawable/recaptcha_image"
                         android:focusable="true" />
@@ -88,7 +91,8 @@
                     <pl.szczodrzynski.edziennik.utils.CheckableImageView
                         android:id="@+id/image2"
                         android:layout_width="126dp"
-                        android:layout_height="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:clickable="true"
                         android:background="@drawable/recaptcha_image"
                         android:focusable="true" />
@@ -100,14 +104,15 @@
                     android:background="?colorSurface" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <pl.szczodrzynski.edziennik.utils.CheckableImageView
                         android:id="@+id/image3"
                         android:layout_width="126dp"
-                        android:layout_height="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:clickable="true"
                         android:background="@drawable/recaptcha_image"
                         android:focusable="true" />
@@ -120,7 +125,8 @@
                     <pl.szczodrzynski.edziennik.utils.CheckableImageView
                         android:id="@+id/image4"
                         android:layout_width="126dp"
-                        android:layout_height="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:clickable="true"
                         android:background="@drawable/recaptcha_image"
                         android:focusable="true" />
@@ -133,7 +139,8 @@
                     <pl.szczodrzynski.edziennik.utils.CheckableImageView
                         android:id="@+id/image5"
                         android:layout_width="126dp"
-                        android:layout_height="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:clickable="true"
                         android:background="@drawable/recaptcha_image"
                         android:focusable="true" />
@@ -145,14 +152,15 @@
                     android:background="?colorSurface" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <pl.szczodrzynski.edziennik.utils.CheckableImageView
                         android:id="@+id/image6"
                         android:layout_width="126dp"
-                        android:layout_height="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:clickable="true"
                         android:background="@drawable/recaptcha_image"
                         android:focusable="true" />
@@ -165,7 +173,8 @@
                     <pl.szczodrzynski.edziennik.utils.CheckableImageView
                         android:id="@+id/image7"
                         android:layout_width="126dp"
-                        android:layout_height="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:clickable="true"
                         android:background="@drawable/recaptcha_image"
                         android:focusable="true" />
@@ -178,7 +187,8 @@
                     <pl.szczodrzynski.edziennik.utils.CheckableImageView
                         android:id="@+id/image8"
                         android:layout_width="126dp"
-                        android:layout_height="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:clickable="true"
                         android:background="@drawable/recaptcha_image"
                         android:focusable="true" />

@@ -46,6 +46,12 @@ public class CheckableImageView extends AppCompatImageView implements Checkable 
         return drawableState;
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
+    }
+
     @Override public void toggle() {
         setChecked(!checked);
     }

@@ -144,18 +144,14 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                                     .withResponse(response))
                             return
                         }
-                        if (json.getBoolean("captchaRequired") == true) {
-                            data.error(ApiError(TAG, ERROR_CAPTCHA_LIBRUS_PORTAL)
-                                    .withResponse(response)
-                                    .withApiResponse(json))
-                            return
-                        }
                         val error = if (response.code() == 200) null else
                             json.getJsonArray("errors")?.getString(0)
                         error?.let { code ->
                             when {
                                 code.contains("Sesja logowania wygasła") -> ERROR_LOGIN_LIBRUS_PORTAL_CSRF_EXPIRED
                                 code.contains("Upewnij się, że nie") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
+                                // this doesn't work anyway: `errors` is an object with `g-recaptcha-response` set
+                                code.contains("robotem") -> ERROR_CAPTCHA_LIBRUS_PORTAL
                                 else -> ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR
                             }.let { errorCode ->
                                 data.error(ApiError(TAG, errorCode)
@@ -163,6 +159,12 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                                         .withResponse(response))
                                 return
                             }
+                        }
+                        if (json.getBoolean("captchaRequired") == true) {
+                            data.error(ApiError(TAG, ERROR_CAPTCHA_LIBRUS_PORTAL)
+                                    .withResponse(response)
+                                    .withApiResponse(json))
+                            return
                         }
                         authorize(json.getString("redirect", LIBRUS_AUTHORIZE_URL))
                     }
