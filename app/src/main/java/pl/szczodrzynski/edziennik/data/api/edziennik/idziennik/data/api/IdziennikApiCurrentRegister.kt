@@ -69,7 +69,7 @@ class IdziennikApiCurrentRegister(override val data: DataIdziennik,
 
                 val luckyNumberObject = LuckyNumber(
                         data.profileId,
-                        Date.getToday(),
+                        luckyNumberDate,
                         luckyNumber
                 )
 

@@ -109,6 +109,10 @@ object Regexes {
     val IDZIENNIK_MESSAGES_RECIPIENT_PARENT by lazy {
         """(.+?)\s\((.+)\)""".toRegex()
     }
+    /*<span id="ctl00_spanSzczesliwyLos">Szczęśliwy los na dzisiaj to <b>19</b>. Los na jutro to <b>22</b></span>*/
+    val IDZIENNIK_WEB_LUCKY_NUMBER by lazy {
+        """dzisiaj to <b>([0-9]+)</b>""".toRegex()
+    }
 
 
 
