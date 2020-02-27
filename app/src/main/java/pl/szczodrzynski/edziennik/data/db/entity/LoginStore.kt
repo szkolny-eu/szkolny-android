@@ -43,10 +43,12 @@ class LoginStore(
     fun getLoginData(key: String, defaultValue: Long) = data.getLong(key) ?: defaultValue
     fun getLoginData(key: String, defaultValue: Float) = data.getFloat(key) ?: defaultValue
     fun getLoginData(key: String, defaultValue: Char) = data.getChar(key) ?: defaultValue
+    fun getLoginData(key: String, defaultValue: JsonObject) = data.getJsonObject(key) ?: defaultValue
     fun putLoginData(key: String, value: Boolean) { data[key] = value }
     fun putLoginData(key: String, value: String?) { data[key] = value }
     fun putLoginData(key: String, value: Number) { data[key] = value }
     fun putLoginData(key: String, value: Char) { data[key] = value }
+    fun putLoginData(key: String, value: JsonObject) { data[key] = value }
     fun removeLoginData(key: String) { data.remove(key) }
 
     fun copyFrom(args: Bundle) {

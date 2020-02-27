@@ -81,6 +81,11 @@ class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(
         get() { mWebAuth = mWebAuth ?: loginStore.getLoginData("webAuth", null); return mWebAuth }
         set(value) { loginStore.putLoginData("webAuth", value); mWebAuth = value }
 
+    private var mWebSelectedRegister: Int? = null
+    var webSelectedRegister: Int
+        get() { mWebSelectedRegister = mWebSelectedRegister ?: loginStore.getLoginData("webSelectedRegister", 0); return mWebSelectedRegister ?: 0 }
+        set(value) { loginStore.putLoginData("webSelectedRegister", value); mWebSelectedRegister = value }
+
     /*                   _
              /\         (_)
             /  \   _ __  _

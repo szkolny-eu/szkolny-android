@@ -8,15 +8,12 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import okhttp3.Cookie
-import pl.szczodrzynski.edziennik.HOUR
-import pl.szczodrzynski.edziennik.MINUTE
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -72,6 +69,17 @@ class IdziennikLoginWeb(val data: DataIdziennik, val onSuccess: () -> Unit) {
                         data.apiBearer = cookies.singleOrNull { it.name() == "Bearer" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER
                         data.loginExpiryTime = response.getUnixDate() + 30 * MINUTE /* after about 40 minutes the login didn't work already */
                         data.apiExpiryTime = response.getUnixDate() + 12 * HOUR /* actually it expires after 24 hours but I'm not sure when does the token refresh. */
+
+                        val hiddenFields = JsonObject()
+                        Regexes.IDZIENNIK_LOGIN_HIDDEN_FIELDS.findAll(text).forEach {
+                            hiddenFields[it[1]] = it[2]
+                        }
+                        data.loginStore.putLoginData("hiddenFields", hiddenFields)
+
+                        Regexes.IDZIENNIK_WEB_SELECTED_REGISTER.find(text)?.let {
+                            val registerId = it[1].toIntOrNull() ?: return@let
+                            data.webSelectedRegister = registerId
+                        }
 
                         data.profile?.let { profile ->
                             Regexes.IDZIENNIK_WEB_LUCKY_NUMBER.find(text)?.also {

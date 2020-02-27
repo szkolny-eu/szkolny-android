@@ -113,6 +113,9 @@ object Regexes {
     val IDZIENNIK_WEB_LUCKY_NUMBER by lazy {
         """dzisiaj to <b>([0-9]+)</b>""".toRegex()
     }
+    val IDZIENNIK_WEB_SELECTED_REGISTER by lazy {
+        """selected="selected" value="([0-9]+)" data-id-ucznia""".toRegex()
+    }
 
 
 

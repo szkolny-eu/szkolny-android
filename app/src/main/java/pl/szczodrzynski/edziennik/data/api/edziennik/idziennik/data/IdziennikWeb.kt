@@ -13,6 +13,7 @@ import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
+import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebSwitchRegister
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.io.File
@@ -46,6 +47,17 @@ open class IdziennikWeb(open val data: DataIdziennik, open val lastSync: Long?) 
                             .withResponse(response)
                             .withApiResponse(json))
                     return
+                }
+
+                if (response?.code() == HTTP_INTERNAL_ERROR && endpoint == IDZIENNIK_WEB_GRADES) {
+                    // special override for accounts where displaying grades
+                    // for another student requires switching it manually
+                    if (data.registerId != data.webSelectedRegister) {
+                        IdziennikWebSwitchRegister(data, data.registerId) {
+                            webApiGet(tag, endpoint, parameters, onSuccess)
+                        }
+                        return
+                    }
                 }
 
                 when {
@@ -115,7 +127,7 @@ open class IdziennikWeb(open val data: DataIdziennik, open val lastSync: Long?) 
                 .enqueue()
     }
 
-    fun webGet(tag: String, endpoint: String, onSuccess: (text: String) -> Unit) {
+    fun webGet(tag: String, endpoint: String, parameters: Map<String, Any> = emptyMap(), onSuccess: (text: String) -> Unit) {
         d(tag, "Request: Idziennik/Web - $IDZIENNIK_WEB_URL/$endpoint")
 
         val callback = object : TextCallbackHandler() {
@@ -160,7 +172,14 @@ open class IdziennikWeb(open val data: DataIdziennik, open val lastSync: Long?) 
         Request.builder()
                 .url("$IDZIENNIK_WEB_URL/$endpoint")
                 .userAgent(IDZIENNIK_USER_AGENT)
-                .get()
+                .apply {
+                    if (parameters.isEmpty()) get()
+                    else post()
+
+                    parameters.map { (name, value) ->
+                        addParameter(name, value)
+                    }
+                }
                 .callback(callback)
                 .build()
                 .enqueue()

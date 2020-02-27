@@ -60,6 +60,7 @@ const val IDZIENNIK_USER_AGENT = SYNERGIA_USER_AGENT
 const val IDZIENNIK_WEB_URL = "https://iuczniowie.progman.pl/idziennik"
 const val IDZIENNIK_WEB_LOGIN = "login.aspx"
 const val IDZIENNIK_WEB_SETTINGS = "mod_panelRodzica/Ustawienia.aspx"
+const val IDZIENNIK_WEB_HOME = "mod_panelRodzica/StronaGlowna.aspx"
 const val IDZIENNIK_WEB_TIMETABLE = "mod_panelRodzica/plan/WS_Plan.asmx/pobierzPlanZajec"
 const val IDZIENNIK_WEB_GRADES = "mod_panelRodzica/oceny/WS_ocenyUcznia.asmx/pobierzOcenyUcznia"
 const val IDZIENNIK_WEB_MISSING_GRADES = "mod_panelRodzica/brak_ocen/WS_BrakOcenUcznia.asmx/pobierzBrakujaceOcenyUcznia"
