@@ -204,16 +204,6 @@ class WidgetTimetableProvider : AppWidgetProvider() {
 
         for (profile in profileList) {
 
-            // add a profile separator with its name
-            if (unified) {
-                val separator = ItemWidgetTimetableModel()
-                separator.profileId = profile.id
-                separator.bigStyle = widgetConfig.bigStyle
-                separator.darkTheme = widgetConfig.darkTheme
-                separator.separatorProfileName = profile.name
-                models.add(separator)
-            }
-
             // search for lessons to display
             val timetableDate = Date.getToday()
             var checkedDays = 0
@@ -242,6 +232,19 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                     break
 
                 checkedDays++
+            }
+
+            // add a profile separator with its name
+            if (unified) {
+                val separator = ItemWidgetTimetableModel()
+                separator.profileId = profile.id
+                separator.bigStyle = widgetConfig.bigStyle
+                separator.darkTheme = widgetConfig.darkTheme
+                separator.separatorProfileName = profile.name
+                if (lessons.isNotEmpty() && lessons[0].type != TYPE_NO_LESSONS) {
+                    separator.lessonDate = timetableDate
+                }
+                models.add(separator)
             }
 
             // set the displayingDate to show in the header

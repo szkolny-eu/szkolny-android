@@ -35,6 +35,7 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel;
 import pl.szczodrzynski.edziennik.utils.models.Time;
+import pl.szczodrzynski.edziennik.utils.models.Week;
 
 import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
@@ -153,7 +154,10 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
 
                 views.setViewVisibility(R.id.widgetTimetableProfileName, View.VISIBLE);
                 views.setViewVisibility(R.id.widgetTimetableContent, View.GONE);
-                views.setTextViewText(R.id.widgetTimetableProfileName, lesson.separatorProfileName);
+                if (lesson.lessonDate == null)
+                    views.setTextViewText(R.id.widgetTimetableProfileName, lesson.separatorProfileName);
+                else
+                    views.setTextViewText(R.id.widgetTimetableProfileName, lesson.separatorProfileName+"\n"+Week.getFullDayName(lesson.lessonDate.getWeekDay()));
                 views.setTextViewTextSize(R.id.widgetTimetableProfileName, COMPLEX_UNIT_SP, lesson.bigStyle ? 30 : 20);
                 views.setTextColor(R.id.widgetTimetableProfileName, lesson.darkTheme ? 0xffffffff : 0xff000000);
 
