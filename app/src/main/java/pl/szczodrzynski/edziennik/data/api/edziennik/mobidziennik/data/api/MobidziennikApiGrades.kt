@@ -74,6 +74,10 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
                     subjectId)
             gradeObject.type = type
 
+            if (data.profile?.empty == true) {
+                addedDate = data.profile.dateSemester1Start.inMillis
+            }
+
             data.gradeList.add(gradeObject)
             data.metadataList.add(
                     Metadata(

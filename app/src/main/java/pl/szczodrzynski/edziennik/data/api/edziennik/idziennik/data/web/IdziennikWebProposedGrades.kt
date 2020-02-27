@@ -97,6 +97,11 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                         type = TYPE_YEAR_PROPOSED
                     }
 
+                    val addedDate = if (data.profile.empty)
+                        data.profile.dateSemester1Start.inMillis
+                    else
+                        System.currentTimeMillis()
+
                     data.gradeList.add(gradeObject)
                     data.metadataList.add(Metadata(
                             profileId,
@@ -104,7 +109,7 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                             gradeObject.id,
                             profile.empty,
                             profile.empty,
-                            System.currentTimeMillis()
+                            addedDate
                     ))
                 }
             }
