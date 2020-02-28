@@ -16,6 +16,8 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EventListAdapter(
         val context: Context,
+        val simpleMode: Boolean = false,
+        val showDate: Boolean = false,
         val onItemClick: ((event: EventFull) -> Unit)? = null,
         val onEventEditClick: ((event: EventFull) -> Unit)? = null
 ) : RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
@@ -40,12 +42,15 @@ class EventListAdapter(
 
         val bullet = " • "
 
+        b.simpleMode = simpleMode
+
         b.topic.text = event.topic
 
         b.details.text = mutableListOf<CharSequence?>(
+                if (showDate) event.eventDate.getRelativeString(context, 7) ?: event.eventDate.formattedStringShort else null,
                 event.typeName,
-                event.startTime?.stringHM ?: app.getString(R.string.event_all_day),
-                event.subjectLongName
+                if (simpleMode) null else event.startTime?.stringHM ?: app.getString(R.string.event_all_day),
+                if (simpleMode) null else event.subjectLongName
         ).concat(bullet)
 
         b.addedBy.setText(

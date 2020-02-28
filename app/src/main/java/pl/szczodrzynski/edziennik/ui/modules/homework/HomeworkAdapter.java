@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.ExtensionsKt;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.full.EventFull;
@@ -45,28 +44,6 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
         return new ViewHolder(view);
     }
 
-    public static String dayDiffString(Context context, int dayDiff) {
-        if (dayDiff > 0) {
-            if (dayDiff == 1) {
-                return context.getString(R.string.tomorrow);
-            }
-            else if (dayDiff == 2) {
-                return context.getString(R.string.the_day_after);
-            }
-            return ExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff));
-        }
-        else if (dayDiff < 0) {
-            if (dayDiff == -1) {
-                return context.getString(R.string.yesterday);
-            }
-            else if (dayDiff == -2) {
-                return context.getString(R.string.the_day_before);
-            }
-            return context.getString(R.string.ago_format, ExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
-        }
-        return context.getString(R.string.today);
-    }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         App app = (App) context.getApplicationContext();
@@ -75,7 +52,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
 
         int diffDays = Date.diffDays(homework.eventDate, Date.getToday());
 
-        holder.homeworkItemHomeworkDate.setText(app.getString(R.string.date_relative_format, homework.eventDate.getFormattedString(), dayDiffString(context, diffDays)));
+        holder.homeworkItemHomeworkDate.setText(app.getString(R.string.date_relative_format, homework.eventDate.getFormattedString(), Date.dayDiffString(context, diffDays)));
         holder.homeworkItemTopic.setText(homework.topic);
         holder.homeworkItemSubjectTeacher.setText(context.getString(R.string.homework_subject_teacher_format, bs(homework.subjectLongName), bs(homework.teacherFullName)));
         holder.homeworkItemTeamDate.setText(context.getString(R.string.homework_team_date_format, bs(homework.teamName), Date.fromMillis(homework.addedDate).getFormattedStringShort()));

@@ -6,6 +6,13 @@
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="simpleMode"
+            type="Boolean" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,8 +56,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAppearance="@style/NavView.TextView.Medium"
-                android:maxLines="3"
+                android:maxLines="@{simpleMode ? 2 : 3}"
                 android:ellipsize="end"
+                tools:maxLines="3"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia. Nie wiem co się dzieje w tym roku nie będzie już religii w szkołach podstawowych w Polsce i Europie zachodniej Afryki" />
 
             <com.google.android.material.button.MaterialButton
@@ -61,7 +69,8 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="\uFC92"
                 android:textSize="20sp"
-                android:fontFamily="@font/community_material_font_v3_5_95_1"/>
+                android:fontFamily="@font/community_material_font_v3_5_95_1"
+                android:visibility="@{simpleMode ? View.GONE : View.VISIBLE}"/>
 
         </LinearLayout>
 
@@ -72,6 +81,7 @@
             android:textAppearance="@style/NavView.TextView.Helper"
             android:singleLine="true"
             android:ellipsize="middle"
+            android:visibility="@{simpleMode ? View.GONE : View.VISIBLE}"
             tools:text="Udostępniono 10 grudnia przez Ktoś Z Twojej Klasy • 2B3T" />
     </LinearLayout>
 </layout>

@@ -61,7 +61,7 @@ public abstract class EventDao {
 
     @RawQuery(observedEntities = {Event.class})
     abstract LiveData<List<EventFull>> getAll(SupportSQLiteQuery query);
-    public LiveData<List<EventFull>> getAll(int profileId, String filter) {
+    public LiveData<List<EventFull>> getAll(int profileId, String filter, String limit) {
         String query = "SELECT \n" +
                 "*, \n" +
                 "teachers.teacherName || ' ' || teachers.teacherSurname AS teacherFullName,\n" +
@@ -75,24 +75,24 @@ public abstract class EventDao {
                 "LEFT JOIN metadata ON eventId = thingId AND (thingType = " + TYPE_EVENT + " OR thingType = " + TYPE_HOMEWORK + ") AND metadata.profileId = "+profileId+"\n" +
                 "WHERE events.profileId = "+profileId+" AND events.eventBlacklisted = 0 AND "+filter+"\n" +
                 "GROUP BY eventId\n" +
-                "ORDER BY eventDate, eventStartTime ASC";
+                "ORDER BY eventDate, eventStartTime ASC "+limit;
         Log.d("DB", query);
         return getAll(new SimpleSQLiteQuery(query));
     }
     public LiveData<List<EventFull>> getAll(int profileId) {
-        return getAll(profileId, "1");
+        return getAll(profileId, "1", "");
     }
     public List<EventFull> getAllNow(int profileId) {
         return getAllNow(profileId, "1");
     }
     public LiveData<List<EventFull>> getAllWhere(int profileId, String filter) {
-        return getAll(profileId, filter);
+        return getAll(profileId, filter, "");
     }
     public LiveData<List<EventFull>> getAllByType(int profileId, long type, String filter) {
-        return getAll(profileId, "eventType = "+type+" AND "+filter);
+        return getAll(profileId, "eventType = "+type+" AND "+filter, "");
     }
     public LiveData<List<EventFull>> getAllByDate(int profileId, @NonNull Date date) {
-        return getAll(profileId, "eventDate = '"+date.getStringY_m_d()+"'");
+        return getAll(profileId, "eventDate = '"+date.getStringY_m_d()+"'", "");
     }
     public List<EventFull> getAllByDateNow(int profileId, @NonNull Date date) {
         return getAllNow(profileId, "eventDate = '"+date.getStringY_m_d()+"'");
@@ -100,7 +100,10 @@ public abstract class EventDao {
     public LiveData<List<EventFull>> getAllByDateTime(int profileId, @NonNull Date date, Time time) {
         if (time == null)
             return getAllByDate(profileId, date);
-        return getAll(profileId, "eventDate = '"+date.getStringY_m_d()+"' AND eventStartTime = '"+time.getStringValue()+"'");
+        return getAll(profileId, "eventDate = '"+date.getStringY_m_d()+"' AND eventStartTime = '"+time.getStringValue()+"'", "");
+    }
+    public LiveData<List<EventFull>> getAllNearest(int profileId, @NonNull Date today, int limit) {
+        return getAll(profileId, "eventDate >= '"+today.getStringY_m_d()+"'", "LIMIT "+limit);
     }
 
     @RawQuery

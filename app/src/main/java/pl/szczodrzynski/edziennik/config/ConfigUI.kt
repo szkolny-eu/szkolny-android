@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.config
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.getIntList
 import pl.szczodrzynski.edziennik.config.utils.set
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardModel
 
 class ConfigUI(private val config: Config) {
     private var mTheme: Int? = null
@@ -44,11 +43,6 @@ class ConfigUI(private val config: Config) {
     var openDrawerOnBackPressed: Boolean
         get() { mOpenDrawerOnBackPressed = mOpenDrawerOnBackPressed ?: config.values.get("openDrawerOnBackPressed", false); return mOpenDrawerOnBackPressed ?: false }
         set(value) { config.set("openDrawerOnBackPressed", value); mOpenDrawerOnBackPressed = value }
-
-    private var mHomeCards: List<HomeCardModel>? = null
-    var homeCards: List<HomeCardModel>
-        get() { mHomeCards = mHomeCards ?: config.values.get("homeCards", listOf(), HomeCardModel::class.java); return mHomeCards ?: listOf() }
-        set(value) { config.set("homeCards", value); mHomeCards = value }
 
     private var mSnowfall: Boolean? = null
     var snowfall: Boolean

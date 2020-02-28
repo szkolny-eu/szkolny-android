@@ -63,7 +63,6 @@ class ConfigMigration(app: App, config: Config) {
 
         if (dataVersion < 10) {
             ui.openDrawerOnBackPressed = false
-            ui.homeCards = listOf()
             ui.snowfall = false
             ui.bottomSheetOpened = false
             sync.dontShowAppManagerDialog = false

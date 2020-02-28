@@ -1189,4 +1189,7 @@
     <string name="dialog_day_lessons_info">%s - %s (%s lekcji - %s godzin %s minut)</string>
     <string name="developer_mode">Developer mode</string>
     <string name="dev_mode_enable_warning">Te ustawienia nie są przeznaczone dla zwykłych użytkowników, wyłącznie dla twórcy tej aplikacji.\n\nNie są nawet w żaden sposób opisane, nie wiadomo co robią, więc możesz nawet nie wiedzieć kiedy coś zepsujesz.\n\nWłączenie tych opcji może spowodować utratę danych w aplikacji, uszkodzenie twojego systemu lub nawet uruchomienie wirusa na baterii.\n\nLepiej uważaj.</string>
+    <string name="card_events_header_title">Najbliższe wydarzenia</string>
+    <string name="events_no_nearest">Nie ma więcej wydarzeń w kalendarzu.</string>
+    <string name="in_format">za %s</string>
 </resources>

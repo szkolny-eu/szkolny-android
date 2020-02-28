@@ -75,10 +75,6 @@ class ProfileRemoveDialog(
             app.db.teamDao().clear(profileId)
             app.db.timetableDao().clear(profileId)
 
-            val homeCards = app.config.ui.homeCards.toMutableList()
-            homeCards.removeAll { it.profileId == profileId }
-            app.config.ui.homeCards = homeCards
-
             val loginStoreId = profileObject.loginStoreId
             val profilesUsingLoginStore = app.db.profileDao().getIdsByLoginStoreIdNow(loginStoreId)
             if (profilesUsingLoginStore.size == 1) {

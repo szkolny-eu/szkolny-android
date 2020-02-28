@@ -26,10 +26,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
-import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeDebugCard
-import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeGradesCard
-import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeLuckyNumberCard
-import pl.szczodrzynski.edziennik.ui.modules.home.cards.HomeTimetableCard
+import pl.szczodrzynski.edziennik.ui.modules.home.cards.*
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
@@ -40,16 +37,21 @@ class HomeFragment : Fragment(), CoroutineScope {
         private const val TAG = "HomeFragment"
 
         fun swapCards(fromPosition: Int, toPosition: Int, cardAdapter: HomeCardAdapter) {
-            val homeCards = App.config.ui.homeCards.toMutableList()
-            val fromPair = homeCards[fromPosition]
-            homeCards[fromPosition] = homeCards[toPosition]
-            homeCards[toPosition] = fromPair
-            App.config.ui.homeCards = homeCards
-
             val fromCard = cardAdapter.items[fromPosition]
+            val toCard = cardAdapter.items[toPosition]
+            if (fromCard.id == 100 || toCard.id == 100) {
+                // debug card is not swappable
+                return
+            }
             cardAdapter.items[fromPosition] = cardAdapter.items[toPosition]
             cardAdapter.items[toPosition] = fromCard
             cardAdapter.notifyItemMoved(fromPosition, toPosition)
+
+            val homeCards = App.config.forProfile().ui.homeCards.toMutableList()
+            val fromPair = homeCards[fromPosition]
+            homeCards[fromPosition] = homeCards[toPosition]
+            homeCards[toPosition] = fromPair
+            App.config.forProfile().ui.homeCards = homeCards
         }
     }
 
@@ -107,15 +109,15 @@ class HomeFragment : Fragment(), CoroutineScope {
 
         val showUnified = false
 
-        val cards = app.config.ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
+        val cards = app.config.forProfile().ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
         if (cards.isEmpty()) {
             cards += listOf(
                     HomeCardModel(app.profile.id, HomeCard.CARD_LUCKY_NUMBER),
                     HomeCardModel(app.profile.id, HomeCard.CARD_TIMETABLE),
-                    /*HomeCardModel(app.profile.id, HomeCard.CARD_EVENTS),*/
+                    HomeCardModel(app.profile.id, HomeCard.CARD_EVENTS),
                     HomeCardModel(app.profile.id, HomeCard.CARD_GRADES)
             )
-            app.config.ui.homeCards = app.config.ui.homeCards.toMutableList().also { it.addAll(cards) }
+            app.config.forProfile().ui.homeCards = app.config.forProfile().ui.homeCards.toMutableList().also { it.addAll(cards) }
         }
 
         val items = mutableListOf<HomeCard>()
@@ -124,6 +126,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                 HomeCard.CARD_LUCKY_NUMBER -> HomeLuckyNumberCard(it.cardId, app, activity, this, app.profile)
                 HomeCard.CARD_TIMETABLE -> HomeTimetableCard(it.cardId, app, activity, this, app.profile)
                 HomeCard.CARD_GRADES -> HomeGradesCard(it.cardId, app, activity, this, app.profile)
+                HomeCard.CARD_EVENTS -> HomeEventsCard(it.cardId, app, activity, this, app.profile)
                 else -> null
             }
         }

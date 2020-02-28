@@ -1,11 +1,16 @@
 package pl.szczodrzynski.edziennik.utils.models;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import pl.szczodrzynski.edziennik.ExtensionsKt;
+import pl.szczodrzynski.edziennik.R;
 
 public class Date implements Comparable<Date> {
     public int year = 0;
@@ -281,6 +286,37 @@ public class Date implements Comparable<Date> {
         } else {
             return format.format(date);
         }
+    }
+
+    public static String dayDiffString(Context context, int dayDiff) {
+        if (dayDiff > 0) {
+            if (dayDiff == 1) {
+                return context.getString(R.string.tomorrow);
+            }
+            else if (dayDiff == 2) {
+                return context.getString(R.string.the_day_after);
+            }
+            return context.getString(R.string.in_format, ExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
+        }
+        else if (dayDiff < 0) {
+            if (dayDiff == -1) {
+                return context.getString(R.string.yesterday);
+            }
+            else if (dayDiff == -2) {
+                return context.getString(R.string.the_day_before);
+            }
+            return context.getString(R.string.ago_format, ExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
+        }
+        return context.getString(R.string.today);
+    }
+
+    @Nullable
+    public String getRelativeString(Context context, int maxDiff) {
+        int diffDays = Date.diffDays(this, Date.getToday());
+        if (maxDiff != 0 && diffDays > maxDiff) {
+            return null;
+        }
+        return dayDiffString(context, diffDays);
     }
 
     @Override
