@@ -1192,4 +1192,7 @@
     <string name="card_events_header_title">Najbliższe wydarzenia</string>
     <string name="events_no_nearest">Nie ma więcej wydarzeń w kalendarzu.</string>
     <string name="in_format">za %s</string>
+    <string name="hint_save_in_calendar">Zapisz do kalendarza</string>
+    <string name="hint_edit_event">Edytuj wydarzenie</string>
+    <string name="hint_go_to_timetable">Idź do planu lekcji</string>
 </resources>

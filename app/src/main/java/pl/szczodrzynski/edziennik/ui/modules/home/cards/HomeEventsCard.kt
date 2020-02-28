@@ -61,6 +61,7 @@ class HomeEventsCard(
                 activity,
                 simpleMode = true,
                 showDate = true,
+                showWeekDay = true,
                 onItemClick = {
                     EventDetailsDialog(
                             activity,

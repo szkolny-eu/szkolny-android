@@ -18,6 +18,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
+import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
@@ -118,8 +119,42 @@ class EventDetailsDialog(
             )
         }
 
+        b.goToTimetableButton.setOnClickListener {
+            dialog.dismiss()
+            val dateStr = event.eventDate?.stringY_m_d ?: return@setOnClickListener
+
+            val intent =
+                    if (activity is MainActivity && activity.navTargetId == MainActivity.DRAWER_ITEM_TIMETABLE)
+                        Intent(TimetableFragment.ACTION_SCROLL_TO_DATE)
+                    else if (activity is MainActivity)
+                        Intent("android.intent.action.MAIN")
+                    else
+                        Intent(activity, MainActivity::class.java)
+
+            intent.apply {
+                putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
+                putExtra("timetableDate", dateStr)
+            }
+            if (activity is MainActivity)
+                activity.sendBroadcast(intent)
+            else
+                activity.startActivity(intent)
+        }
         b.saveInCalendarButton.setOnClickListener {
             openInCalendar()
+        }
+
+        b.goToTimetableButton.setOnLongClickListener {
+            Toast.makeText(activity, R.string.hint_go_to_timetable, Toast.LENGTH_SHORT).show()
+            true
+        }
+        b.saveInCalendarButton.setOnLongClickListener {
+            Toast.makeText(activity, R.string.hint_save_in_calendar, Toast.LENGTH_SHORT).show()
+            true
+        }
+        b.editButton.setOnLongClickListener {
+            Toast.makeText(activity, R.string.hint_edit_event, Toast.LENGTH_SHORT).show()
+            true
         }
     }
 

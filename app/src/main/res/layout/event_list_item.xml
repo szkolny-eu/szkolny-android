@@ -69,8 +69,7 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="\uFC92"
                 android:textSize="20sp"
-                android:fontFamily="@font/community_material_font_v3_5_95_1"
-                android:visibility="@{simpleMode ? View.GONE : View.VISIBLE}"/>
+                android:fontFamily="@font/community_material_font_v3_5_95_1"/>
 
         </LinearLayout>
 

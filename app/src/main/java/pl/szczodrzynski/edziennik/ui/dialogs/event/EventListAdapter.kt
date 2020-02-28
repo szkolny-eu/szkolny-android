@@ -8,16 +8,19 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.EventListItemBinding
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Week
 
 class EventListAdapter(
         val context: Context,
         val simpleMode: Boolean = false,
         val showDate: Boolean = false,
+        val showWeekDay: Boolean = false,
         val onItemClick: ((event: EventFull) -> Unit)? = null,
         val onEventEditClick: ((event: EventFull) -> Unit)? = null
 ) : RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
@@ -47,6 +50,7 @@ class EventListAdapter(
         b.topic.text = event.topic
 
         b.details.text = mutableListOf<CharSequence?>(
+                if (showWeekDay) Week.getFullDayName(event.eventDate.weekDay) else null,
                 if (showDate) event.eventDate.getRelativeString(context, 7) ?: event.eventDate.formattedStringShort else null,
                 event.typeName,
                 if (simpleMode) null else event.startTime?.stringHM ?: app.getString(R.string.event_all_day),
@@ -70,9 +74,14 @@ class EventListAdapter(
 
         b.typeColor.background?.setTintColor(event.getColor())
 
-        b.editButton.visibility = if (event.addedManually) View.VISIBLE else View.GONE
+        b.editButton.visibility = if (event.addedManually && !simpleMode) View.VISIBLE else View.GONE
         b.editButton.onClick {
             onEventEditClick?.invoke(event)
+        }
+
+        b.editButton.setOnLongClickListener {
+            Toast.makeText(context, R.string.hint_edit_event, Toast.LENGTH_SHORT).show()
+            true
         }
 
         /*with(holder) {
