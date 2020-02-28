@@ -2,87 +2,57 @@
   ~ Copyright (c) Kacper Ziubryniewicz 2020-1-5
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
 
-        <LinearLayout
-            android:id="@+id/showProfileNameItem"
+        <RadioGroup
+            android:id="@+id/weekSelectionRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/withChangesCurrentWeekRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                tools:text="@string/timetable_generate_current_week_format" />
+
+            <RadioButton
+                android:id="@+id/withChangesNextWeekRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/timetable_generate_next_week_format" />
+
+            <RadioButton
+                android:id="@+id/forSelectedWeekRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/timetable_generate_selected_week" />
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/showProfileNameCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal">
+            android:text="@string/timetable_generate_show_profile_name" />
 
-            <CheckBox
-                android:id="@+id/showProfileNameCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/timetable_generate_show_profile_name" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/showTeachersNamesItem"
+        <CheckBox
+            android:id="@+id/showTeachersNamesCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal">
+            android:checked="true"
+            android:text="@string/timetable_generate_show_teachers_names" />
 
-            <CheckBox
-                android:id="@+id/showTeachersNamesCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:checked="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/timetable_generate_show_teachers_names" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/noColorsItem"
+        <CheckBox
+            android:id="@+id/noColorsCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/noColorsCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/timetable_generate_no_colors" />
-        </LinearLayout>
+            android:text="@string/timetable_generate_no_colors" />
     </LinearLayout>
 </layout>

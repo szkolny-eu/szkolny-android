@@ -77,34 +77,25 @@ class GenerateBlockTimetableDialog(
 
         b = DialogGenerateBlockTimetableBinding.inflate(activity.layoutInflater)
 
-        b.showProfileNameItem.onClick { b.showProfileNameCheckbox.trigger() }
+        b.withChangesCurrentWeekRadio.setText(R.string.timetable_generate_current_week_format, weekCurrentStart.formattedStringShort, weekCurrentEnd.formattedStringShort)
+        b.withChangesNextWeekRadio.setText(R.string.timetable_generate_next_week_format, weekNextStart.formattedStringShort, weekCurrentEnd.formattedStringShort)
+
         b.showProfileNameCheckbox.setOnCheckedChangeListener { _, isChecked -> showProfileName = isChecked }
-
-        b.showTeachersNamesItem.onClick { b.showTeachersNamesCheckbox.trigger() }
         b.showTeachersNamesCheckbox.setOnCheckedChangeListener { _, isChecked -> showTeachersNames = isChecked }
-
-        b.noColorsItem.onClick { b.noColorsCheckbox.trigger() }
         b.noColorsCheckbox.setOnCheckedChangeListener { _, isChecked -> noColors = isChecked }
 
         dialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.timetable_generate_range)
-                .setItems(arrayOf(
-                        activity.getString(R.string.timetable_generate_current_week_format, weekCurrentStart.formattedStringShort, weekCurrentEnd.formattedStringShort)
-                                .asColoredSpannable(android.R.attr.textColorPrimary.resolveAttr(activity)),
-                        activity.getString(R.string.timetable_generate_next_week_format, weekNextStart.formattedStringShort, weekNextEnd.formattedStringShort)
-                                .asColoredSpannable(android.R.attr.textColorPrimary.resolveAttr(activity)),
-                        activity.getString(R.string.timetable_generate_selected_week)
-                                .asColoredSpannable(android.R.attr.textColorPrimary.resolveAttr(activity))
-                )) { dialog, which ->
-                    dialog.dismiss()
-                    when (which) {
-                        0 -> generateBlockTimetable(weekCurrentStart, weekCurrentEnd)
-                        1 -> generateBlockTimetable(weekNextStart, weekNextEnd)
-                        2 -> selectDate()
-                    }
-                }
                 .setView(b.root)
                 .setNeutralButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(R.string.save) { dialog, _ ->
+                    dialog.dismiss()
+                    when (b.weekSelectionRadioGroup.checkedRadioButtonId) {
+                        R.id.withChangesCurrentWeekRadio -> generateBlockTimetable(weekCurrentStart, weekCurrentEnd)
+                        R.id.withChangesNextWeekRadio -> generateBlockTimetable(weekNextStart, weekNextEnd)
+                        R.id.forSelectedWeekRadio -> selectDate()
+                    }
+                }
                 .setOnDismissListener { onDismissListener?.invoke(TAG) }
                 .show()
     }}
