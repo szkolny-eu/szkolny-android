@@ -208,6 +208,8 @@ class HomeTimetableCard(
             return@launch
         }
 
+        lessons = lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }
+
         b.timetableLayout.visibility = View.VISIBLE
         b.noTimetableLayout.visibility = View.GONE
         b.noLessonsLayout.visibility = View.GONE
