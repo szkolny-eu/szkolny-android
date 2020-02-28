@@ -164,6 +164,8 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
                 Intent intent = new Intent();
                 intent.putExtra("profileId", lesson.profileId);
                 intent.putExtra("separatorItem", true);
+                if (lesson.lessonDate != null)
+                    intent.putExtra("timetableDate", lesson.lessonDate.getStringY_m_d());
                 views.setOnClickFillInIntent(R.id.widgetTimetableRoot, intent);
 
                 return views;
@@ -298,7 +300,12 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
             views.setViewVisibility(R.id.widgetTimetableOldSubjectName, View.GONE);
             if (lesson.lessonChange) {
                 views.setTextViewText(R.id.widgetTimetableSubjectName, Html.fromHtml("<i>"+lesson.subjectName+"</i>"));
-                views.setTextViewText(R.id.widgetTimetableClassroomName, Html.fromHtml("<i>"+lesson.classroomName+"</i>"));
+                if (lesson.lessonChangeNoClassroom) {
+                    views.setTextViewText(R.id.widgetTimetableClassroomName, Html.fromHtml("<del>"+lesson.classroomName+"</del>"));
+                }
+                else {
+                    views.setTextViewText(R.id.widgetTimetableClassroomName, Html.fromHtml("<i>" + lesson.classroomName + "</i>"));
+                }
             }
             else if (lesson.lessonCancelled) {
                 views.setTextViewText(R.id.widgetTimetableSubjectName, Html.fromHtml("<del>"+lesson.subjectName+"</del>"));

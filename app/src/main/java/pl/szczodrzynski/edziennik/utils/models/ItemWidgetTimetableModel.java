@@ -22,6 +22,7 @@ public class ItemWidgetTimetableModel {
     public String subjectName = "";
     public String classroomName = "";
     public boolean lessonChange = false;
+    public boolean lessonChangeNoClassroom = false;
     public String newSubjectName = null;
     public String newClassroomName = null;
     public boolean lessonCancelled = false;

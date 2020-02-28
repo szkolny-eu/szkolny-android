@@ -324,13 +324,14 @@ class WidgetTimetableProvider : AppWidgetProvider() {
 
                 // make the model aware of the lesson type
                 when (lesson.type) {
-                    Lesson.TYPE_CANCELLED -> {
+                    Lesson.TYPE_CANCELLED,
+                    Lesson.TYPE_SHIFTED_SOURCE -> {
                         model.lessonCancelled = true
                     }
                     Lesson.TYPE_CHANGE,
-                        Lesson.TYPE_SHIFTED_SOURCE,
-                        Lesson.TYPE_SHIFTED_TARGET -> {
+                    Lesson.TYPE_SHIFTED_TARGET -> {
                         model.lessonChange = true
+                        model.lessonChangeNoClassroom = lesson.classroom.isNullOrBlank()
                     }
                 }
 

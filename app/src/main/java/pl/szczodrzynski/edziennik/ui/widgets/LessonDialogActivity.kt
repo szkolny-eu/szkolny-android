@@ -47,6 +47,7 @@ class LessonDialogActivity : AppCompatActivity(), CoroutineScope {
                     val i = Intent(app, MainActivity::class.java)
                             .putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
                             .putExtra("profileId", profileId)
+                            .putExtra("timetableDate", extras.getString("timetableDate", null))
                             .addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT or FLAG_ACTIVITY_NEW_TASK)
                     app.startActivity(i)
                     finish()
