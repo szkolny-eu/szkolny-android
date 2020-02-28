@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message;
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull;
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull;
 import pl.szczodrzynski.edziennik.databinding.MessagesListBinding;
+import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
 import pl.szczodrzynski.edziennik.utils.Themes;
 
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
@@ -164,7 +164,7 @@ public class MessagesListFragment extends Fragment {
         viewParent = (ViewGroup) view.getParent();
 
         b.emailList.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        b.emailList.addItemDecoration(new DividerItemDecoration(view.getContext(), LinearLayoutManager.VERTICAL));
+        b.emailList.addItemDecoration(new SimpleDividerItemDecoration(view.getContext()));
         b.emailList.setAdapter(messagesAdapter);
 
         if (messageType == Message.TYPE_RECEIVED) {

@@ -45,14 +45,16 @@
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:background="@drawable/bg_rounded_16dp"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="serif-monospace"
                 android:gravity="center"
+                android:padding="8dp"
                 android:text="@{grade.name}"
                 android:textIsSelectable="true"
                 android:textSize="36sp"
-                app:autoSizeMaxTextSize="36sp"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="56sp"
                 app:autoSizeTextType="uniform"
-                tools:background="#ff0000"
+                tools:background="#ff4caf50"
                 tools:text="1-" />
 
             <LinearLayout

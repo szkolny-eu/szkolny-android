@@ -105,7 +105,7 @@ public class GradeDetailsDialog {
 
         b.setDevMode(App.Companion.getDevMode());
 
-        b.gradeName.setTextColor(ColorUtils.calculateLuminance(gradeColor) > 0.25 ? 0xff000000 : 0xffffffff);
+        b.gradeName.setTextColor(ColorUtils.calculateLuminance(gradeColor) > 0.3 ? 0xff000000 : 0xffffffff);
         b.gradeName.getBackground().setColorFilter(new PorterDuffColorFilter(gradeColor, PorterDuff.Mode.MULTIPLY));
 
         AsyncTask.execute(() -> {

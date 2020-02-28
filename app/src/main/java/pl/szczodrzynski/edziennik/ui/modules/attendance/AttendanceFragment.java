@@ -36,6 +36,7 @@ import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.entity.Subject;
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAttendanceBinding;
+import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
@@ -178,6 +179,7 @@ public class AttendanceFragment extends Fragment {
 
         b.attendanceView.setHasFixedSize(true);
         b.attendanceView.setLayoutManager(linearLayoutManager);
+        b.attendanceView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
 
         App.db.attendanceDao().getAll(App.Companion.getProfileId()).observe(this, attendance -> {
             if (app == null || activity == null || b == null || !isAdded())

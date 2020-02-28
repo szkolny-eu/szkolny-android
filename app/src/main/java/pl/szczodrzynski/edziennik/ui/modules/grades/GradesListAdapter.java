@@ -3,7 +3,6 @@ package pl.szczodrzynski.edziennik.ui.modules.grades;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +64,8 @@ public class GradesListAdapter extends RecyclerView.Adapter<GradesListAdapter.Vi
 
         holder.gradesListName.setText(grade.name);
         holder.gradesListName.setSelected(true);
-        holder.gradesListName.setTypeface(null, Typeface.BOLD);
-        holder.gradesListName.setTextColor(ColorUtils.calculateLuminance(gradeColor) > 0.25 ? 0xff000000 : 0xffffffff);
+        //holder.gradesListName.setTypeface(null, Typeface.BOLD);
+        holder.gradesListName.setTextColor(ColorUtils.calculateLuminance(gradeColor) > 0.3 ? 0xff000000 : 0xffffffff);
         holder.gradesListName.getBackground().setColorFilter(new PorterDuffColorFilter(gradeColor, PorterDuff.Mode.MULTIPLY));
 
         if (grade.description.trim().isEmpty()) {
