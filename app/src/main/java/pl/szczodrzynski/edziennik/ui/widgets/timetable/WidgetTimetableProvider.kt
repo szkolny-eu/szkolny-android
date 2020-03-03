@@ -219,6 +219,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                                 || (it.displayDate == today
                                 && it.displayEndTime != null
                                 && it.displayEndTime!! >= now))
+                                && !it.isCancelled
                     }) && checkedDays < 7) {
 
                 timetableDate.stepForward(0, 0, 1)
