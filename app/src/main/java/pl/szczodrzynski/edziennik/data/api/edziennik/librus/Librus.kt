@@ -199,13 +199,17 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                     ERROR_LOGIN_LIBRUS_MESSAGES_NO_SESSION_ID -> {
                         login()
                     }
-                    // TODO PORTAL CAPTCHA
                     ERROR_LIBRUS_API_TIMETABLE_NOT_PUBLIC -> {
                         data.timetableNotPublic = true
                         data()
                     }
                     ERROR_LIBRUS_API_LUCKY_NUMBER_NOT_ACTIVE,
                     ERROR_LIBRUS_API_NOTES_NOT_ACTIVE -> {
+                        data()
+                    }
+                    ERROR_LIBRUS_API_DEVICE_REGISTERED -> {
+                        data.app.config.sync.tokenLibrusList =
+                                data.app.config.sync.tokenLibrusList + data.profileId
                         data()
                     }
                     else -> callback.onError(apiError)
