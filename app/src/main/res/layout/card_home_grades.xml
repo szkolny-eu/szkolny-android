@@ -15,15 +15,15 @@
             android:textAppearance="@style/NavView.TextView.Title"
             android:text="@string/card_grades_header_title" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/noData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
+            android:fontFamily="sans-serif-light"
             android:text="@string/card_grades_no_data"
-            android:textStyle="italic"
-            android:visibility="gone" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/gradeList"

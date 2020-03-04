@@ -17,5 +17,15 @@
             android:layout_height="wrap_content"
             android:text="Hello world"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/noData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/card_grades_no_data"
+            android:textSize="16sp" />
+
     </LinearLayout>
 </layout>

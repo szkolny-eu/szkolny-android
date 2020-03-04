@@ -23,8 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
-            android:gravity="center"
-            android:drawablePadding="16dp"
             android:fontFamily="sans-serif-light"
             android:text="@string/events_no_nearest"
             android:textSize="16sp" />
