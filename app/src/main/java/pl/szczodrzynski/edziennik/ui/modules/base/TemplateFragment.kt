@@ -10,9 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.FragmentTemplateBinding
-import pl.szczodrzynski.edziennik.utils.Themes
 import kotlin.coroutines.CoroutineContext
 
 class TemplateFragment : Fragment(), CoroutineScope {
@@ -34,18 +32,13 @@ class TemplateFragment : Fragment(), CoroutineScope {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false)
-        // activity, context and profile is valid
         b = FragmentTemplateBinding.inflate(inflater)
         b.refreshLayout.setParent(activity.swipeRefreshLayout)
         return b.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (app.profile == null || !isAdded)
+        if (!isAdded)
             return
 
 
