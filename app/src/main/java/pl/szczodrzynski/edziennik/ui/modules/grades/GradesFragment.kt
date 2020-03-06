@@ -13,7 +13,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.Bundle
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_GRADES_EDITOR
 import pl.szczodrzynski.edziennik.averageOrNull
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
@@ -89,8 +91,25 @@ class GradesFragment : Fragment(), CoroutineScope {
             GradeDetailsDialog(activity, it)
         }
 
-        adapter.onGradesEditorClick = { subjectId, semesterNumber ->
+        adapter.onGradesEditorClick = { subject, semester ->
+            val otherSemester = subject.semesters.firstOrNull { it != semester }
+            var gradeSumOtherSemester = otherSemester?.averages?.normalWeightedSum
+            var gradeCountOtherSemester = otherSemester?.averages?.normalWeightedCount
+            if (gradeSumOtherSemester ?: 0f == 0f || gradeCountOtherSemester ?: 0f == 0f) {
+                gradeSumOtherSemester = otherSemester?.averages?.normalSum
+                gradeCountOtherSemester = otherSemester?.averages?.normalCount?.toFloat()
+            }
 
+            activity.loadTarget(TARGET_GRADES_EDITOR, Bundle(
+                    "subjectId" to subject.subjectId,
+                    "semester" to semester.number,
+                    "averageMode" to manager.yearAverageMode,
+                    "yearAverageBefore" to subject.averages.normalAvg,
+                    "gradeSumOtherSemester" to gradeSumOtherSemester,
+                    "gradeCountOtherSemester" to gradeCountOtherSemester,
+                    "averageOtherSemester" to otherSemester?.averages?.normalAvg,
+                    "finalOtherSemester" to otherSemester?.finalGrade?.value
+            ))
         }
     }
 

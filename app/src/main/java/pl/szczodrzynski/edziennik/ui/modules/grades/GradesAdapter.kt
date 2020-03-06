@@ -21,7 +21,7 @@ import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.*
 class GradesAdapter(
         val activity: AppCompatActivity,
         var onGradeClick: ((item: GradeFull) -> Unit)? = null,
-        var onGradesEditorClick: ((subjectId: Long, semesterNumber: Int) -> Unit)? = null
+        var onGradesEditorClick: ((subject: GradesSubject, semester: GradesSemester) -> Unit)? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val TAG = "GradesAdapter"
@@ -176,7 +176,8 @@ class GradesAdapter(
 
         if (holder is SemesterViewHolder && item is GradesSemester) {
             holder.b.editButton.onClick {
-                onGradesEditorClick?.invoke(item.subjectId, item.number)
+                val subject = items.firstOrNull { it is GradesSubject && it.subjectId == item.subjectId } as? GradesSubject ?: return@onClick
+                onGradesEditorClick?.invoke(subject, item)
             }
         }
 
