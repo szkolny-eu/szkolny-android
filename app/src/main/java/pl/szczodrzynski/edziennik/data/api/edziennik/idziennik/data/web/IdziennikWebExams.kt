@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
+import java.util.*
 
 class IdziennikWebExams(override val data: DataIdziennik,
                         override val lastSync: Long?,
@@ -70,9 +71,12 @@ class IdziennikWebExams(override val data: DataIdziennik,
                 val lessonList = data.db.timetableDao().getForDateNow(profileId, examDate)
                 val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.startTime
 
-                val eventType = when (exam.getString("rodzaj")) {
-                    "sprawdzian/praca klasowa" -> Event.TYPE_EXAM
-                    else -> Event.TYPE_SHORT_QUIZ
+                val eventType = when (exam.getString("rodzaj")?.toLowerCase(Locale.getDefault())) {
+                    "sprawdzian/praca klasowa",
+                    "sprawdzian",
+                    "praca klasowa" -> Event.TYPE_EXAM
+                    "kartkówka" -> Event.TYPE_SHORT_QUIZ
+                    else -> Event.TYPE_EXAM
                 }
 
                 val eventObject = Event(
