@@ -313,7 +313,7 @@ public class Date implements Comparable<Date> {
     @Nullable
     public String getRelativeString(Context context, int maxDiff) {
         int diffDays = Date.diffDays(this, Date.getToday());
-        if (maxDiff != 0 && diffDays > maxDiff) {
+        if (maxDiff != 0 && Math.abs(diffDays) > maxDiff) {
             return null;
         }
         return dayDiffString(context, diffDays);

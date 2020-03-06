@@ -117,17 +117,17 @@ public class Colors {
 
     public static int gradeToColor(Grade grade)
     {
-        if (grade.type == Grade.TYPE_POINT_SUM) {
-            return grade.value < 0 ? 0xfff44336 : grade.value > 0 ? 0xff4caf50 : 0xffbdbdbd;
+        if (grade.getType() == Grade.TYPE_POINT_SUM) {
+            return grade.getValue() < 0 ? 0xfff44336 : grade.getValue() > 0 ? 0xff4caf50 : 0xffbdbdbd;
         }
-        else if (grade.type == Grade.TYPE_POINT_AVG) {
-            return Color.parseColor("#"+gradeValueToColorStr(grade.value/grade.valueMax*100));
+        else if (grade.getType() == Grade.TYPE_POINT_AVG) {
+            return Color.parseColor("#"+gradeValueToColorStr(grade.getValue()/grade.getValueMax()*100));
         }
-        else if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_DESCRIPTIVE_TEXT || grade.type == Grade.TYPE_TEXT) {
-            return grade.color;
+        else if (grade.getType() == Grade.TYPE_DESCRIPTIVE || grade.getType() == Grade.TYPE_DESCRIPTIVE_TEXT || grade.getType() == Grade.TYPE_TEXT) {
+            return grade.getColor();
         }
         else {
-            return Color.parseColor("#"+gradeNameToColorStr(grade.name));
+            return Color.parseColor("#"+gradeNameToColorStr(grade.getName()));
         }
     }
 

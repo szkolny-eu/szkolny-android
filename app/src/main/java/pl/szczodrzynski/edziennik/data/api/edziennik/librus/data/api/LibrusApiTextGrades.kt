@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
-import pl.szczodrzynski.edziennik.data.db.entity.Grade.TYPE_DESCRIPTIVE
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_DESCRIPTIVE
 import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
@@ -48,20 +48,20 @@ class LibrusApiTextGrades(override val data: DataLibrus,
                 val addedDate = Date.fromIso(grade.getString("AddDate") ?: return@forEach)
 
                 val gradeObject = Grade(
-                        profileId,
-                        id,
-                        category?.text ?: "",
-                        category?.color ?: -1,
-                        description,
-                        name,
-                        0f,
-                        0f,
-                        semester,
-                        teacherId,
-                        subjectId
-                ).apply {
-                    type = TYPE_DESCRIPTIVE
-                }
+                        profileId = profileId,
+                        id = id,
+                        name = name,
+                        type = TYPE_DESCRIPTIVE,
+                        value = 0f,
+                        weight = 0f,
+                        color = category?.color ?: -1,
+                        category = category?.text ?: "",
+                        description = description,
+                        comment = null,
+                        semester = semester,
+                        teacherId = teacherId,
+                        subjectId = subjectId
+                )
 
                 data.gradeList.add(gradeObject)
                 data.metadataList.add(Metadata(

@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.HOUR
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.config.Config
-import pl.szczodrzynski.edziennik.config.ConfigGrades.Companion.ORDER_BY_DATE_DESC
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC
 
 class ConfigMigration(app: App, config: Config) {
     init { config.apply {

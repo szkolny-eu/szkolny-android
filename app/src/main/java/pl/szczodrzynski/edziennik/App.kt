@@ -45,6 +45,7 @@ import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity
 import pl.szczodrzynski.edziennik.utils.*
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager
 import pl.szczodrzynski.edziennik.utils.managers.NotificationChannelsManager
 import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
 import java.util.concurrent.TimeUnit
@@ -65,6 +66,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
 
     val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
     val userActionManager by lazy { UserActionManager(this) }
+    val gradesManager by lazy { GradesManager(this) }
 
     val db
         get() = App.db

@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
 import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
@@ -31,18 +32,20 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
 
             if (data.startPointsSemester1 > 0) {
                 val semester1StartGradeObject = Grade(
-                        profileId,
-                        -101,
-                        data.app.getString(R.string.grade_start_points),
-                        0xffbdbdbd.toInt(),
-                        data.app.getString(R.string.grade_start_points_format, 1),
-                        nameFormat.format(data.startPointsSemester1),
-                        data.startPointsSemester1.toFloat(),
-                        -1f,
-                        1,
-                        -1,
-                        1
-                ).apply { type = Grade.TYPE_POINT_SUM }
+                        profileId = profileId,
+                        id = -101,
+                        name = nameFormat.format(data.startPointsSemester1),
+                        type = TYPE_POINT_SUM,
+                        value = data.startPointsSemester1.toFloat(),
+                        weight = 0f,
+                        color = 0xffbdbdbd.toInt(),
+                        category = data.app.getString(R.string.grade_start_points),
+                        description = data.app.getString(R.string.grade_start_points_format, 1),
+                        comment = null,
+                        semester = 1,
+                        teacherId = -1,
+                        subjectId = 1
+                )
 
                 data.gradeList.add(semester1StartGradeObject)
                 data.metadataList.add(Metadata(
@@ -57,18 +60,20 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
 
             if (data.startPointsSemester2 > 0) {
                 val semester2StartGradeObject = Grade(
-                        profileId,
-                        -102,
-                        data.app.getString(R.string.grade_start_points),
-                        0xffbdbdbd.toInt(),
-                        data.app.getString(R.string.grade_start_points_format, 2),
-                        nameFormat.format(data.startPointsSemester2),
-                        data.startPointsSemester2.toFloat(),
-                        -1f,
-                        2,
-                        -1,
-                        1
-                ).apply { type = Grade.TYPE_POINT_SUM }
+                        profileId = profileId,
+                        id = -102,
+                        name = nameFormat.format(data.startPointsSemester2),
+                        type = TYPE_POINT_SUM,
+                        value = data.startPointsSemester2.toFloat(),
+                        weight = -1f,
+                        color = 0xffbdbdbd.toInt(),
+                        category = data.app.getString(R.string.grade_start_points),
+                        description = data.app.getString(R.string.grade_start_points_format, 2),
+                        comment = null,
+                        semester = 2,
+                        teacherId = -1,
+                        subjectId = 1
+                )
 
                 data.gradeList.add(semester2StartGradeObject)
                 data.metadataList.add(Metadata(
@@ -123,19 +128,20 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                 val valueTo = category?.valueTo ?: 0f
 
                 val gradeObject = Grade(
-                        profileId,
-                        id,
-                        categoryName,
-                        color,
-                        description,
-                        name,
-                        valueFrom,
-                        -1f,
-                        semester,
-                        teacherId,
-                        1
+                        profileId = profileId,
+                        id = id,
+                        name = name,
+                        type = TYPE_POINT_SUM,
+                        value = valueFrom,
+                        weight = -1f,
+                        color = color,
+                        category = categoryName,
+                        description = description,
+                        comment = null,
+                        semester = semester,
+                        teacherId = teacherId,
+                        subjectId = 1
                 ).apply {
-                    type = Grade.TYPE_POINT_SUM
                     valueMax = valueTo
                 }
 

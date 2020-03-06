@@ -94,6 +94,10 @@ fun HashMap<String, String?>.getLongList(key: String, default: List<Long>?): Lis
     return this[key]?.let { gson.fromJson<List<Long>>(it, object: TypeToken<List<Long>>(){}.type) } ?: default
 }
 
+fun HashMap<String, String?>.getFloat(key: String): Float? {
+    return this[key]?.toFloatOrNull()
+}
+
 fun List<ConfigEntry>.toHashMap(profileId: Int, map: HashMap<String, String?>) {
     map.clear()
     forEach {

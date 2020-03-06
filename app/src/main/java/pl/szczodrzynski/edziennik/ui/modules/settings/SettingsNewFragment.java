@@ -64,14 +64,14 @@ import static android.app.Activity.RESULT_OK;
 import static pl.szczodrzynski.edziennik.ExtensionsKt.initDefaultLocale;
 import static pl.szczodrzynski.edziennik.data.db.entity.Profile.REGISTRATION_DISABLED;
 import static pl.szczodrzynski.edziennik.data.db.entity.Profile.REGISTRATION_ENABLED;
-import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_1_AVG_2_AVG;
-import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_1_AVG_2_SEM;
-import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_1_SEM_2_AVG;
-import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_1_SEM_2_SEM;
-import static pl.szczodrzynski.edziennik.data.db.entity.Profile.YEAR_ALL_GRADES;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.getRealPathFromURI;
 import static pl.szczodrzynski.edziennik.utils.Utils.getResizedBitmap;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_1_AVG_2_AVG;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_1_AVG_2_SEM;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_1_SEM_2_AVG;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_1_SEM_2_SEM;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_ALL_GRADES;
 
 public class SettingsNewFragment extends MaterialAboutFragment {
 

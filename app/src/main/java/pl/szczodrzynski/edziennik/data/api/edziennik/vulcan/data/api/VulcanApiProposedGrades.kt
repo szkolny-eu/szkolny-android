@@ -8,6 +8,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_GRADES_SUMMARY
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getJsonObject
@@ -53,23 +57,25 @@ class VulcanApiProposedGrades(override val data: DataVulcan,
             val color = Utils.getVulcanGradeColor(name)
 
             val gradeObject = Grade(
-                    profileId,
-                    id,
-                    "",
-                    color,
-                    "",
-                    name,
-                    value,
-                    0f,
-                    data.studentSemesterNumber,
-                    -1,
-                    subjectId
+                    profileId = profileId,
+                    id = id,
+                    name = name,
+                    type = if (data.studentSemesterNumber == 1) {
+                        if (isFinal) TYPE_SEMESTER1_FINAL else TYPE_SEMESTER1_PROPOSED
+                    } else {
+                        if (isFinal) TYPE_SEMESTER2_FINAL else TYPE_SEMESTER2_PROPOSED
+                    },
+                    value = value,
+                    weight = 0f,
+                    color = color,
+                    category = "",
+                    description = null,
+                    comment = null,
+                    semester = data.studentSemesterNumber,
+                    teacherId = -1,
+                    subjectId = subjectId
             )
-            if (data.studentSemesterNumber == 1) {
-                gradeObject.type = if (isFinal) Grade.TYPE_SEMESTER1_FINAL else Grade.TYPE_SEMESTER1_PROPOSED
-            } else {
-                gradeObject.type = if (isFinal) Grade.TYPE_SEMESTER2_FINAL else Grade.TYPE_SEMESTER2_PROPOSED
-            }
+
             data.gradeList.add(gradeObject)
             data.metadataList.add(Metadata(
                     profileId,

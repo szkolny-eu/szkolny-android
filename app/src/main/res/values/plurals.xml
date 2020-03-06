@@ -153,4 +153,10 @@
         <item quantity="few">%d inne powiadomienia</item> <!-- 2, 3, 4, 32, 33, 34 -->
         <item quantity="other">%d innych powiadomień</item> <!-- 5, 10, 12, 13, 21, 25 -->
     </plurals>
+
+    <plurals name="grades_format">
+        <item quantity="one">%d ocena</item> <!-- 1 -->
+        <item quantity="few">%d oceny</item> <!-- 2, 3, 4, 32, 33, 34 -->
+        <item quantity="other">%d ocen</item> <!-- 5, 10, 12, 13, 21, 25 -->
+    </plurals>
 </resources>

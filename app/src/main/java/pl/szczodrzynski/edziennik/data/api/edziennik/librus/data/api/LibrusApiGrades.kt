@@ -6,7 +6,13 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
-import pl.szczodrzynski.edziennik.data.db.entity.Grade.*
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
@@ -54,31 +60,27 @@ class LibrusApiGrades(override val data: DataLibrus,
                 } ?: ""
 
                 val gradeObject = Grade(
-                        profileId,
-                        id,
-                        category?.text ?: "",
-                        category?.color ?: -1,
-                        description,
-                        name,
-                        value,
-                        weight,
-                        semester,
-                        teacherId,
-                        subjectId
+                        profileId = profileId,
+                        id = id,
+                        name = name,
+                        type = when {
+                            grade.getBoolean("IsConstituent") ?: false -> TYPE_NORMAL
+                            grade.getBoolean("IsSemester") ?: false -> if (semester == 1) TYPE_SEMESTER1_FINAL else TYPE_SEMESTER2_FINAL
+                            grade.getBoolean("IsSemesterProposition") ?: false -> if (semester == 1) TYPE_SEMESTER1_PROPOSED else TYPE_SEMESTER2_PROPOSED
+                            grade.getBoolean("IsFinal") ?: false -> TYPE_YEAR_FINAL
+                            grade.getBoolean("IsFinalProposition") ?: false -> TYPE_YEAR_PROPOSED
+                            else -> TYPE_NORMAL
+                        },
+                        value = value,
+                        weight = weight,
+                        color = category?.color ?: -1,
+                        category = category?.text ?: "",
+                        description = description,
+                        comment = null,
+                        semester = semester,
+                        teacherId = teacherId,
+                        subjectId = subjectId
                 )
-
-                when {
-                    grade.getBoolean("IsConstituent") ?: false ->
-                        gradeObject.type = TYPE_NORMAL
-                    grade.getBoolean("IsSemester") ?: false -> // semester final
-                        gradeObject.type = if (gradeObject.semester == 1) TYPE_SEMESTER1_FINAL else TYPE_SEMESTER2_FINAL
-                    grade.getBoolean("IsSemesterProposition") ?: false -> // semester proposed
-                        gradeObject.type = if (gradeObject.semester == 1) TYPE_SEMESTER1_PROPOSED else TYPE_SEMESTER2_PROPOSED
-                    grade.getBoolean("IsFinal") ?: false -> // year final
-                        gradeObject.type = TYPE_YEAR_FINAL
-                    grade.getBoolean("IsFinalProposition") ?: false -> // year final
-                        gradeObject.type = TYPE_YEAR_PROPOSED
-                }
 
                 grade.getJsonObject("Improvement")?.also {
                     val historicalId = it.getLong("Id")

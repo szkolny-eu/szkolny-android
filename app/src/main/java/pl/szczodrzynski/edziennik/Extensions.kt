@@ -1080,3 +1080,15 @@ fun Throwable.toErrorCode() = when (this) {
 private fun ApiResponse.Error.toErrorCode() = when (this.code) {
     else -> ERROR_API_EXCEPTION
 }
+
+inline fun <A, B, R> ifNotNull(a: A?, b: B?, code: (A, B) -> R): R? {
+    if (a != null && b != null) {
+        return code(a, b)
+    }
+    return null
+}
+
+@kotlin.jvm.JvmName("averageOrNullOfInt")
+fun Iterable<Int>.averageOrNull() = this.average().let { if (it.isNaN()) null else it }
+@kotlin.jvm.JvmName("averageOrNullOfFloat")
+fun Iterable<Float>.averageOrNull() = this.average().let { if (it.isNaN()) null else it }

@@ -28,7 +28,12 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.Grade.*
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
@@ -39,6 +44,7 @@ import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_MODE_DEFAULT
 import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel
 import kotlin.coroutines.CoroutineContext
 
@@ -122,7 +128,7 @@ class HomeGradesCard(
 
             subject.grades1.onEach { grade ->
                 val gradeColor = when (App.config.forProfile().grades.colorMode) {
-                    Profile.COLOR_MODE_DEFAULT -> grade.color
+                    COLOR_MODE_DEFAULT -> grade.color
                     else -> Colors.gradeToColor(grade)
                 }
 

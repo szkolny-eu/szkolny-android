@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidzienn
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.fixWhiteSpaces
@@ -112,17 +113,19 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                                 }
 
                                 val gradeObject = Grade(
-                                        profileId,
-                                        gradeId,
-                                        gradeCategory,
-                                        gradeColor,
-                                        "NLDŚR, $gradeDescription",
-                                        gradeName,
-                                        gradeValue,
-                                        0f,
-                                        gradeSemester,
-                                        teacherId,
-                                        subjectId
+                                        profileId = profileId,
+                                        id = gradeId,
+                                        name = gradeName,
+                                        type = TYPE_NORMAL,
+                                        value = gradeValue,
+                                        weight = 0f,
+                                        color = gradeColor,
+                                        category = gradeCategory,
+                                        description = "NLDŚR, $gradeDescription",
+                                        comment = null,
+                                        semester = gradeSemester,
+                                        teacherId = teacherId,
+                                        subjectId = subjectId
                                 )
 
                                 gradeObject.classAverage = gradeClassAverage

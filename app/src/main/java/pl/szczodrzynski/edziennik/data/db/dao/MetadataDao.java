@@ -63,8 +63,8 @@ public abstract class MetadataDao {
     @Transaction
     public void setSeen(int profileId, Object o, boolean seen) {
         if (o instanceof Grade) {
-            if (add(new Metadata(profileId, TYPE_GRADE, ((Grade) o).id, seen, false, 0)) == -1) {
-                updateSeen(profileId, TYPE_GRADE, ((Grade) o).id, seen);
+            if (add(new Metadata(profileId, TYPE_GRADE, ((Grade) o).getId(), seen, false, 0)) == -1) {
+                updateSeen(profileId, TYPE_GRADE, ((Grade) o).getId(), seen);
             }
         }
         if (o instanceof Attendance) {
@@ -102,8 +102,8 @@ public abstract class MetadataDao {
     @Transaction
     public void setNotified(int profileId, Object o, boolean notified) {
         if (o instanceof Grade) {
-            if (add(new Metadata(profileId, TYPE_GRADE, ((Grade) o).id, false, notified, 0)) == -1) {
-                updateNotified(profileId, TYPE_GRADE, ((Grade) o).id, notified);
+            if (add(new Metadata(profileId, TYPE_GRADE, ((Grade) o).getId(), false, notified, 0)) == -1) {
+                updateNotified(profileId, TYPE_GRADE, ((Grade) o).getId(), notified);
             }
         }
         if (o instanceof Attendance) {

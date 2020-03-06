@@ -208,7 +208,7 @@
     <string name="dialog_grade_details_description">Opis</string>
     <string name="dialog_grade_details_history">Historia oceny</string>
     <string name="dialog_grade_details_id">ID oceny</string>
-    <string name="dialog_grade_details_improved">Ocena jest ukryta - została poprawiona</string>
+    <string name="dialog_grade_details_improved">Ocena została poprawiona</string>
     <string name="dialog_grade_details_no_category">(brak kategorii)</string>
     <string name="dialog_grade_details_no_description">(brak opisu)</string>
     <string name="dialog_grade_details_semester_format">semestr %d</string>
@@ -311,7 +311,7 @@
     <string name="grades_editor_weight_other">inna waga</string>
     <string name="grades_improvement_category_format">(poprawa) %s</string>
     <string name="grades_max_points_format">max %s pkt</string>
-    <string name="grades_no_data">Brak przedmiotów do wyświetlenia</string>
+    <string name="grades_no_data">Brak ocen w dzienniku.</string>
     <string name="grades_semester1_header">Semestr 1</string>
     <string name="grades_semester2_header">Semestr 2</string>
     <string name="grades_semester_average_format">semestr %d: %s</string>
@@ -1195,4 +1195,42 @@
     <string name="hint_save_in_calendar">Zapisz do kalendarza</string>
     <string name="hint_edit_event">Edytuj wydarzenie</string>
     <string name="hint_go_to_timetable">Idź do planu lekcji</string>
+    <string name="today">dzisiaj</string>
+    <string name="tomorrow">jutro</string>
+    <string name="tag_key_model">model</string>
+    <string name="tag_key_view_type">viewType</string>
+    <string name="tag_key_position">position</string>
+    <string name="grades_semester_format">Semestr %d</string>
+    <string name="grades_preview_other_semester">Semestr %d</string>
+
+    <!--<string name="grades_average_value_point_format">%s/%s (%s%%)</string>-->
+    <string name="grades_average_value_point_format">%3$s%%</string>
+    <string name="grades_average_value_sum_format">%s pkt</string>
+
+    <string name="grades_average_normal_format">średnia: %s</string>
+    <string name="grades_average_sum_format">suma: %s</string>
+    <string name="grades_average_point_format">punkty: %s</string>
+
+    <string name="grades_average_semester_format">sem. %1$d: %2$s</string>
+    <string name="grades_average_year_format">roczna: %2$s</string>
+    <string name="grades_year_summary_format">Cały rok: %s • %s</string>
+    <string name="grades_average_no">brak średniej</string>
+    <string name="grades_stats_semester_1">semestr 1</string>
+    <string name="grades_stats_semester_2">semestr 2</string>
+    <string name="grades_stats_yearly">całoroczna</string>
+    <string name="grades_stats_disclaimer">* średnie ocen są poglądowe i mogą się różnić, w zależności od ustawień szkoły</string>
+    <string name="grades_stats_title">Statystyka ocen</string>
+    <string name="grades_stats_normal">Średnia zwykłych ocen</string>
+    <string name="grades_stats_point">Średnia przedmiotów punktowych</string>
+    <string name="grades_stats_no_data">Zbyt mało danych do wyliczenia średniej.</string>
+    <string name="grades_stats_expected">*przewidywana średnia</string>
+    <string name="grades_stats_from_proposed">*z ocen proponowanych\nPrzewidywana: %s</string>
+    <string name="grades_stats_from_proposed_no_expected">*z ocen proponowanych</string>
+    <string name="grades_stats_from_final">*z ocen końcowych\nPrzewidywana: %s</string>
+    <string name="grades_stats_from_final_no_expected">*z ocen końcowych</string>
+    <string name="grades_stats_proposed_avg">Śr. ocen proponowanych:\n%s</string>
+    <string name="grades_stats_help_title">Obliczanie średniej wszystkich przedmiotów</string>
+    <string name="grades_stats_help_text">Ocena przewidywana z danego przedmiotu jest obliczana na podstawie aktualnej średniej ważonej.\n\nOcena jest liczbą całkowitą, jaką wystawił by nauczyciel bazując na średniej. Liczba zaokrąglona jest w górę jeśli część po przecinku przekroczy ,75.\nPrzykładowo: średnie 3,75 jak również 4,74 dają w wyniku ocenę dobrą (4).\n\nŚrednia przewidywana ze wszystkich przedmiotów obejmuje obliczone w ten sposób oceny końcowe.</string>
+    <string name="grades_stats_custom_value_notice">Została ustawiona własna wartość plusa/minusa. Jeśli uważasz, że średnia się nie zgadza, kliknij Konfiguruj.</string>
+    <string name="configure">Konfiguruj</string>
 </resources>

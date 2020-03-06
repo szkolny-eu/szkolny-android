@@ -13,8 +13,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
-import pl.szczodrzynski.edziennik.data.db.entity.Grade.TYPE_SEMESTER1_PROPOSED
-import pl.szczodrzynski.edziennik.data.db.entity.Grade.TYPE_YEAR_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonArray
@@ -54,20 +54,20 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
 
                 if (semester1Proposed != "") {
                     val gradeObject = Grade(
-                            profileId,
-                            semester1Id,
-                            "",
-                            -1,
-                            "",
-                            semester1Value.toString(),
-                            semester1Value.toFloat(),
-                            0f,
-                            1,
-                            -1,
-                            subjectObject.id
-                    ).apply {
-                        type = TYPE_SEMESTER1_PROPOSED
-                    }
+                            profileId = profileId,
+                            id = semester1Id,
+                            name = semester1Value.toString(),
+                            type = TYPE_SEMESTER1_PROPOSED,
+                            value = semester1Value.toFloat(),
+                            weight = 0f,
+                            color = -1,
+                            category = null,
+                            description = null,
+                            comment = null,
+                            semester = 1,
+                            teacherId = -1,
+                            subjectId = subjectObject.id
+                    )
 
                     data.gradeList.add(gradeObject)
                     data.metadataList.add(Metadata(
@@ -82,20 +82,20 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
 
                 if (semester2Proposed != "") {
                     val gradeObject = Grade(
-                            profileId,
-                            semester2Id,
-                            "",
-                            -1,
-                            "",
-                            semester2Value.toString(),
-                            semester2Value.toFloat(),
-                            0f,
-                            2,
-                            -1,
-                            subjectObject.id
-                    ).apply {
-                        type = TYPE_YEAR_PROPOSED
-                    }
+                            profileId = profileId,
+                            id = semester2Id,
+                            name = semester2Value.toString(),
+                            type = TYPE_YEAR_PROPOSED,
+                            value = semester2Value.toFloat(),
+                            weight = 0f,
+                            color = -1,
+                            category = null,
+                            description = null,
+                            comment = null,
+                            semester = 2,
+                            teacherId = -1,
+                            subjectId = subjectObject.id
+                    )
 
                     val addedDate = if (data.profile.empty)
                         data.profile.dateSemester1Start.inMillis

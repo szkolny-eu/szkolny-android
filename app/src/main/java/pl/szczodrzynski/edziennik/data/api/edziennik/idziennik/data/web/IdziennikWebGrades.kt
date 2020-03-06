@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -63,17 +64,19 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                     }
 
                     val gradeObject = Grade(
-                            profileId,
-                            id,
-                            category,
-                            colorInt,
-                            "",
-                            name,
-                            value,
-                            weight,
-                            semester,
-                            teacher.id,
-                            subject.id)
+                            profileId = profileId,
+                            id = id,
+                            name = name,
+                            type = TYPE_NORMAL,
+                            value = value,
+                            weight = weight,
+                            color = colorInt,
+                            category = category,
+                            description = null,
+                            comment = null,
+                            semester = semester,
+                            teacherId = teacher.id,
+                            subjectId = subject.id)
 
                     when (grade.getInt("Typ")) {
                         0 -> {
@@ -98,17 +101,19 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                                     }
 
                                     val historyObject = Grade(
-                                            profileId,
-                                            gradeObject.id * -1,
-                                            historyItem.get("Kategoria").asString,
-                                            colorInt,
-                                            historyItem.get("Uzasadnienie").asString,
-                                            historyItem.get("Ocena").asString,
-                                            value,
-                                            if (value > 0f && countToTheAverage) weight * -1f else 0f,
-                                            historyItem.get("Semestr").asInt,
-                                            teacher.id,
-                                            subject.id)
+                                            profileId = profileId,
+                                            id = gradeObject.id * -1,
+                                            name = historyItem.getString("Ocena") ?: "",
+                                            type = TYPE_NORMAL,
+                                            value = value,
+                                            weight = if (value > 0f && countToTheAverage) weight * -1f else 0f,
+                                            color = colorInt,
+                                            category = historyItem.getString("Kategoria"),
+                                            description = historyItem.getString("Uzasadnienie"),
+                                            comment = null,
+                                            semester = historyItem.getInt("Semestr") ?: 1,
+                                            teacherId = teacher.id,
+                                            subjectId = subject.id)
                                     historyObject.parentId = gradeObject.id
 
                                     val addedDate = historyItem.getString("Data_wystaw")?.let { Date.fromY_m_d(it).inMillis } ?: System.currentTimeMillis()

@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import java.text.DecimalFormat
@@ -88,17 +89,19 @@ class VulcanApiGrades(override val data: DataVulcan,
                 }.toInt()
 
                 val gradeObject = Grade(
-                        profileId,
-                        id,
-                        category,
-                        color,
-                        finalDescription,
-                        name,
-                        value ?: 0.0f,
-                        weight,
-                        data.studentSemesterNumber,
-                        teacherId,
-                        subjectId
+                        profileId = profileId,
+                        id = id,
+                        name = name,
+                        type = TYPE_NORMAL,
+                        value = value ?: 0.0f,
+                        weight = weight,
+                        color = color,
+                        category = category,
+                        description = finalDescription,
+                        comment = null,
+                        semester = data.studentSemesterNumber,
+                        teacherId = teacherId,
+                        subjectId = subjectId
                 )
 
                 data.gradeList.add(gradeObject)

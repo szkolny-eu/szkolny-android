@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.YEAR_1_AVG_2_AVG
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.YEAR_1_AVG_2_SEM
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.YEAR_1_SEM_2_AVG
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.YEAR_ALL_GRADES
 import pl.szczodrzynski.edziennik.databinding.FragmentGradesEditorBinding
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_AVG
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_SEM
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_SEM_2_AVG
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_ALL_GRADES
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.math.floor

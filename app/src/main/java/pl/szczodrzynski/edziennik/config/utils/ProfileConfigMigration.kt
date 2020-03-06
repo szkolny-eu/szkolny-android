@@ -6,8 +6,8 @@ package pl.szczodrzynski.edziennik.config.utils
 
 import pl.szczodrzynski.edziennik.config.ProfileConfig
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.AGENDA_DEFAULT
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.COLOR_MODE_WEIGHTED
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.YEAR_ALL_GRADES
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_MODE_WEIGHTED
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_ALL_GRADES
 
 class ProfileConfigMigration(config: ProfileConfig) {
     init { config.apply {

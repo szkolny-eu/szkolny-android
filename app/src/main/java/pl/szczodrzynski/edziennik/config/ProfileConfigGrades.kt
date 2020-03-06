@@ -5,9 +5,10 @@
 package pl.szczodrzynski.edziennik.config
 
 import pl.szczodrzynski.edziennik.config.utils.get
+import pl.szczodrzynski.edziennik.config.utils.getFloat
 import pl.szczodrzynski.edziennik.config.utils.set
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.COLOR_MODE_WEIGHTED
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.YEAR_ALL_GRADES
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_MODE_WEIGHTED
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_ALL_GRADES
 
 class ProfileConfigGrades(private val config: ProfileConfig) {
     private var mColorMode: Int? = null
@@ -24,4 +25,18 @@ class ProfileConfigGrades(private val config: ProfileConfig) {
     var countZeroToAvg: Boolean
         get() { mCountZeroToAvg = mCountZeroToAvg ?: config.values.get("countZeroToAvg", true); return mCountZeroToAvg ?: true }
         set(value) { config.set("countZeroToAvg", value); mCountZeroToAvg = value }
+
+    private var mPlusValue: Float? = null
+    var plusValue: Float?
+        get() { mPlusValue = mPlusValue ?: config.values.getFloat("plusValue"); return mPlusValue }
+        set(value) { config.set("plusValue", value); mPlusValue = value }
+    private var mMinusValue: Float? = null
+    var minusValue: Float?
+        get() { mMinusValue = mMinusValue ?: config.values.getFloat("minusValue"); return mMinusValue }
+        set(value) { config.set("minusValue", value); mMinusValue = value }
+
+    private var mDontCountGrades: List<String>? = null
+    var dontCountGrades: List<String>
+        get() { mDontCountGrades = mDontCountGrades ?: config.values.get("dontCountGrades", listOf()); return mDontCountGrades ?: listOf() }
+        set(value) { config.set("dontCountGrades", value); mDontCountGrades = value }
 }

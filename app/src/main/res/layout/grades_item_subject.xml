@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-2-29.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="?selectableItemBackground">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/subjectName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="2"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="20sp"
+                tools:text="systemy operacyjne\n1234" />
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/dropdownIcon"
+                android:layout_width="24dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:scaleType="centerInside"
+                app:iiv_color="?android:textColorSecondary"
+                app:iiv_icon="cmd-chevron-down"
+                app:iiv_size="18dp"
+                tools:src="@android:drawable/ic_menu_more" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp">
+
+            <LinearLayout
+                android:id="@+id/previewContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:visibility="visible"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/gradesContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/yearSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:text1="Cały rok: 3 oceny • suma: 320 pkt"
+                tools:text2="Cały rok: 15 ocen • średnia: 2,62"
+                tools:text="Cały rok: 6 ocen • punkty: 34.20/40 (87.5%)"
+                tools:visibility="gone"/>
+        </FrameLayout>
+    </LinearLayout>
+</layout>

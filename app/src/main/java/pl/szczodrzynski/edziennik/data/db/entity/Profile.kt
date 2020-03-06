@@ -53,15 +53,8 @@ open class Profile(
         const val REGISTRATION_UNSPECIFIED = 0
         const val REGISTRATION_DISABLED = 1
         const val REGISTRATION_ENABLED = 2
-        const val COLOR_MODE_DEFAULT = 0
-        const val COLOR_MODE_WEIGHTED = 1
         const val AGENDA_DEFAULT = 0
         const val AGENDA_CALENDAR = 1
-        const val YEAR_1_AVG_2_AVG = 0
-        const val YEAR_1_SEM_2_AVG = 1
-        const val YEAR_1_AVG_2_SEM = 2
-        const val YEAR_1_SEM_2_SEM = 3
-        const val YEAR_ALL_GRADES = 4
     }
 
     override var image: String? = null

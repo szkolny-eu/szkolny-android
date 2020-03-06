@@ -14,7 +14,12 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZI
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
-import pl.szczodrzynski.edziennik.data.db.entity.Grade.*
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.get
@@ -90,7 +95,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                     val columnName = info.child(4).text().trim()
                     val comment = info.ownText()
 
-                    val description = columnName + if (comment.isNotBlank()) " - $comment" else ""
+                    val description = columnName + if (comment.isNotBlank()) " - $comment" else null
 
                     val teacherName = info.child(1).text()
                     val teacher = data.getTeacherByLastFirst(teacherName)
@@ -109,20 +114,20 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                     } ?: -1
 
                     val gradeObject = Grade(
-                            profileId,
-                            id,
-                            fullName,
-                            color,
-                            description,
-                            name,
-                            value,
-                            if (gradeCountToAverage) weight else 0f,
-                            semester,
-                            teacher.id,
-                            subject.id
-                    ).apply {
-                        type = gradeType
-                    }
+                            profileId = profileId,
+                            id = id,
+                            name = name,
+                            type = gradeType,
+                            value = value,
+                            weight = if (gradeCountToAverage) weight else 0f,
+                            color = color,
+                            category = fullName,
+                            description = description,
+                            comment = null,
+                            semester = semester,
+                            teacherId = teacher.id,
+                            subjectId = subject.id
+                    )
 
                     data.gradeList.add(gradeObject)
                     data.metadataList.add(Metadata(
@@ -139,23 +144,23 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
 
                 if (proposed != null && proposed.isNotBlank()) {
                     val proposedGradeObject = Grade(
-                            profileId,
-                            (-1 * subject.id) - 1,
-                            "",
-                            -1,
-                            "",
-                            proposed,
-                            proposed.toFloatOrNull() ?: 0f,
-                            0f,
-                            semester,
-                            -1,
-                            subject.id
-                    ).apply {
-                        type = when (semester) {
-                            1 -> TYPE_SEMESTER1_PROPOSED
-                            else -> TYPE_SEMESTER2_PROPOSED
-                        }
-                    }
+                            profileId = profileId,
+                            id = (-1 * subject.id) - 1,
+                            name = proposed,
+                            type = when (semester) {
+                                1 -> TYPE_SEMESTER1_PROPOSED
+                                else -> TYPE_SEMESTER2_PROPOSED
+                            },
+                            value = proposed.toFloatOrNull() ?: 0f,
+                            weight = 0f,
+                            color = -1,
+                            category = null,
+                            description = null,
+                            comment = null,
+                            semester = semester,
+                            teacherId = -1,
+                            subjectId = subject.id
+                    )
 
                     data.gradeList.add(proposedGradeObject)
                     data.metadataList.add(Metadata(
@@ -172,23 +177,23 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
 
                 if (final != null && final.isNotBlank()) {
                     val finalGradeObject = Grade(
-                            profileId,
-                            (-1 * subject.id) - 2,
-                            "",
-                            -1,
-                            "",
-                            final,
-                            final.toFloatOrNull() ?: 0f,
-                            0f,
-                            semester,
-                            -1,
-                            subject.id
-                    ).apply {
-                        type = when (semester) {
-                            1 -> TYPE_SEMESTER1_FINAL
-                            else -> TYPE_SEMESTER2_FINAL
-                        }
-                    }
+                            profileId = profileId,
+                            id = (-1 * subject.id) - 2,
+                            name = final,
+                            type = when (semester) {
+                                1 -> TYPE_SEMESTER1_FINAL
+                                else -> TYPE_SEMESTER2_FINAL
+                            },
+                            value = final.toFloatOrNull() ?: 0f,
+                            weight = 0f,
+                            color = -1,
+                            category = null,
+                            description = null,
+                            comment = null,
+                            semester = semester,
+                            teacherId = -1,
+                            subjectId = subject.id
+                    )
 
                     data.gradeList.add(finalGradeObject)
                     data.metadataList.add(Metadata(

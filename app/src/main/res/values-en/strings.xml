@@ -175,7 +175,7 @@
     <string name="dialog_grade_details_description">Description</string>
     <string name="dialog_grade_details_history">Grade history</string>
     <string name="dialog_grade_details_id">Grade ID</string>
-    <string name="dialog_grade_details_improved">Grade is hidden - it was improved</string>
+    <string name="dialog_grade_details_improved">The grade is improved by another one</string>
     <string name="dialog_grade_details_no_category">(no category)</string>
     <string name="dialog_grade_details_no_description">(no description)</string>
     <string name="dialog_grade_details_semester_format">semester %d</string>
@@ -273,7 +273,7 @@
     <string name="grades_editor_weight_other">other weight</string>
     <string name="grades_improvement_category_format">(resit) %s</string>
     <string name="grades_max_points_format">max %s pts</string>
-    <string name="grades_no_data">No subjects to show</string>
+    <string name="grades_no_data">No grades.</string>
     <string name="grades_semester1_header">Semester 1</string>
     <string name="grades_semester2_header">Semester 2</string>
     <string name="grades_semester_average_format">semester %d: %s</string>

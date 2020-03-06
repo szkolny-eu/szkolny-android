@@ -3,7 +3,8 @@
   ~ Copyright (c) Kacper Ziubryniewicz 2020-1-20
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -14,10 +15,62 @@
             android:orientation="vertical"
             android:padding="24dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/customPlusCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="0dp"
+                    android:text="Własna wartość plusa" />
+
+                <it.sephiroth.android.library.numberpicker.NumberPicker
+                    android:id="@+id/customPlusValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    app:picker_min="0.0"
+                    app:picker_max="1.0"
+                    app:picker_stepSize="0.01"
+                    app:picker_disableGestures="true"
+                    app:picker_orientation="horizontal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/customMinusCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="0dp"
+                    android:text="Własna wartość minusa" />
+
+                <it.sephiroth.android.library.numberpicker.NumberPicker
+                    android:id="@+id/customMinusValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    app:picker_min="0.0"
+                    app:picker_max="1.0"
+                    app:picker_stepSize="0.01"
+                    app:picker_disableGestures="true"
+                    app:picker_orientation="horizontal" />
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="4dp"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:text="@string/menu_grades_sort_mode"/>
 
@@ -29,20 +82,22 @@
                     android:id="@+id/sortGradesByDateRadio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/dialog_grades_config_sort_by_date"/>
+                    android:minHeight="0dp"
+                    android:text="@string/dialog_grades_config_sort_by_date" />
 
                 <RadioButton
                     android:id="@+id/sortGradesBySubjectRadio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:text="@string/dialog_grades_config_sort_by_subject"/>
             </RadioGroup>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:text="@string/menu_grades_color_mode"/>
 
@@ -54,20 +109,22 @@
                     android:id="@+id/gradeColorFromERegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:text="@string/dialog_grades_config_color_from_eregister"/>
 
                 <RadioButton
                     android:id="@+id/gradeColorByValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:text="@string/dialog_grades_config_color_by_value"/>
             </RadioGroup>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:text="@string/menu_grades_average_mode"/>
 
@@ -79,30 +136,35 @@
                     android:id="@+id/gradeAverageMode4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:text="@string/settings_register_avg_mode_4"/>
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:text="@string/settings_register_avg_mode_0"/>
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:text="@string/settings_register_avg_mode_1"/>
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:text="@string/settings_register_avg_mode_2"/>
 
                 <RadioButton
                     android:id="@+id/gradeAverageMode3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:text="@string/settings_register_avg_mode_3"/>
             </RadioGroup>
 
@@ -118,6 +180,7 @@
                 android:id="@+id/dontCountZeroToAverage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="0dp"
                 android:text="@string/settings_register_dont_count_zero_text"/>
         </LinearLayout>
     </ScrollView>

@@ -7,7 +7,13 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
-import pl.szczodrzynski.edziennik.data.db.entity.Grade.*
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_PROPOSED
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 
 class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
@@ -61,18 +67,19 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
             }
 
             val gradeObject = Grade(
-                    data.profileId,
-                    id,
-                    category,
-                    color,
-                    description,
-                    name,
-                    value,
-                    weight,
-                    semester,
-                    teacherId,
-                    subjectId)
-            gradeObject.type = type
+                    profileId = data.profileId,
+                    id = id,
+                    name = name,
+                    type = type,
+                    value = value,
+                    weight = weight,
+                    color = color,
+                    category = category,
+                    description = description,
+                    comment = null,
+                    semester = semester,
+                    teacherId = teacherId,
+                    subjectId = subjectId)
 
             if (data.profile?.empty == true) {
                 addedDate = data.profile.dateSemester1Start.inMillis
