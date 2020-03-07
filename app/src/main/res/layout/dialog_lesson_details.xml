@@ -294,6 +294,12 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/divider"/>
+
             <LinearLayout
                 android:id="@+id/eventsNoData"
                 android:layout_width="match_parent"
@@ -331,7 +337,6 @@
                 android:id="@+id/eventsView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:clipToPadding="false"
                 tools:visibility="visible"
                 tools:listitem="@layout/event_list_item" />

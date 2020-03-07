@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/dialog_event_manual_date">
-            <pl.szczodrzynski.edziennik.utils.TextInputDropDown
+            <pl.szczodrzynski.edziennik.ui.modules.views.DateDropdown
                 android:id="@+id/dateDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/dialog_event_manual_time">
-            <pl.szczodrzynski.edziennik.utils.TextInputDropDown
+            <pl.szczodrzynski.edziennik.ui.modules.views.TimeDropdown
                 android:id="@+id/timeDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             android:layout_marginTop="8dp"
             android:hint="@string/dialog_event_manual_team">
 
-            <pl.szczodrzynski.edziennik.utils.TextInputDropDown
+            <pl.szczodrzynski.edziennik.ui.modules.views.TeamDropdown
                 android:id="@+id/teamDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -158,7 +158,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/dialog_event_manual_subject">
 
-                <pl.szczodrzynski.edziennik.utils.TextInputDropDown
+                <pl.szczodrzynski.edziennik.ui.modules.views.SubjectDropdown
                     android:id="@+id/subjectDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -173,7 +173,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/dialog_event_manual_teacher">
 
-                <pl.szczodrzynski.edziennik.utils.TextInputDropDown
+                <pl.szczodrzynski.edziennik.ui.modules.views.TeacherDropdown
                     android:id="@+id/teacherDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

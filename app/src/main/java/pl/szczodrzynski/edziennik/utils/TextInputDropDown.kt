@@ -7,7 +7,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.textfield.TextInputEditText
 import pl.szczodrzynski.edziennik.R
 
-class TextInputDropDown : TextInputEditText {
+open class TextInputDropDown : TextInputEditText {
     constructor(context: Context) : super(context) {
         create(context)
     }
@@ -31,7 +31,7 @@ class TextInputDropDown : TextInputEditText {
         setText(selected?.displayText ?: selected?.text)
     }
 
-    fun create(context: Context) {
+    open fun create(context: Context) {
         val drawable = context.resources.getDrawable(R.drawable.dropdown_arrow)
         val wrappedDrawable = DrawableCompat.wrap(drawable)
         DrawableCompat.setTint(wrappedDrawable, Themes.getPrimaryTextColor(context))
