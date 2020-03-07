@@ -41,8 +41,9 @@ import pl.szczodrzynski.edziennik.data.db.migration.*
     Lesson::class,
     ConfigEntry::class,
     LibrusLesson::class,
+    TimetableManual::class,
     Metadata::class
-], version = 78)
+], version = 79)
 @TypeConverters(
         ConverterTime::class,
         ConverterDate::class,
@@ -80,6 +81,7 @@ abstract class AppDb : RoomDatabase() {
     abstract fun timetableDao(): TimetableDao
     abstract fun configDao(): ConfigDao
     abstract fun librusLessonDao(): LibrusLessonDao
+    abstract fun timetableManualDao(): TimetableManualDao
     abstract fun metadataDao(): MetadataDao
 
     companion object {
@@ -161,7 +163,8 @@ abstract class AppDb : RoomDatabase() {
                 Migration75(),
                 Migration76(),
                 Migration77(),
-                Migration78()
+                Migration78(),
+                Migration79()
         ).allowMainThreadQueries().build()
     }
 }
