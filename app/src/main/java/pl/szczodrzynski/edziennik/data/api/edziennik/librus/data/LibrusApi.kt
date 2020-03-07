@@ -49,6 +49,7 @@ open class LibrusApi(open val data: DataLibrus, open val lastSync: Long?) {
                 val error = if (response?.code() == 200) null else
                     json.getString("Code") ?:
                     json.getString("Message") ?:
+                    json.getString("Status") ?:
                     response?.parserErrorBody
                 error?.let { code ->
                     when (code) {
@@ -67,6 +68,7 @@ open class LibrusApi(open val data: DataLibrus, open val lastSync: Long?) {
                         "Nieprawidłowy węzeł." -> ERROR_LIBRUS_API_INCORRECT_ENDPOINT
                         "NoticeboardProblem" -> ERROR_LIBRUS_API_NOTICEBOARD_PROBLEM
                         "DeviceRegistered" -> ERROR_LIBRUS_API_DEVICE_REGISTERED
+                        "Maintenance" -> ERROR_LIBRUS_API_MAINTENANCE
                         else -> ERROR_LIBRUS_API_OTHER
                     }.let { errorCode ->
                         if (errorCode !in ignoreErrors) {
@@ -119,6 +121,7 @@ open class LibrusApi(open val data: DataLibrus, open val lastSync: Long?) {
                 .allowErrorCode(HTTP_UNAUTHORIZED)
                 .allowErrorCode(HTTP_UNAVAILABLE)
                 .allowErrorCode(HTTP_NOT_FOUND)
+                .allowErrorCode(503)
                 .callback(callback)
                 .build()
                 .enqueue()

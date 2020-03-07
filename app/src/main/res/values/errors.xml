@@ -188,7 +188,7 @@
     <string name="error_56_reason">Błąd serwera: odpowiedź niedostępna</string>
     <string name="error_57_reason">Błąd serwera: niespełnione zależności</string>
     <string name="error_58_reason">Wewnętrzny błąd serwera</string>
-    <string name="error_59_reason">Usługa tymczasowo niedostępna</string>
+    <string name="error_59_reason">Dziennik jest tymczasowo niedostępny</string>
     <string name="error_60_reason">Brak internetu: nie znaleziono adresu serwera</string>
     <string name="error_61_reason">Brak internetu: przekroczono czas oczekiwania</string>
     <string name="error_62_reason">Brak internetu</string>
