@@ -29,7 +29,7 @@
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="sans-serif"
                 android:maxLines="2"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="20sp"

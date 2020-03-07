@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.ui.modules.grades
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue.COMPLEX_UNIT_SP
@@ -83,7 +82,7 @@ class GradeView : AppCompatTextView {
                 0x99ffffff.toInt()
         })
 
-        typeface = Typeface.create("serif-monospace", Typeface.BOLD)
+        //typeface = Typeface.create("sans-serif-light", Typeface.NORMAL)
         setBackgroundResource(when (grade.type) {
             TYPE_SEMESTER1_PROPOSED,
             TYPE_SEMESTER2_PROPOSED,
@@ -104,7 +103,7 @@ class GradeView : AppCompatTextView {
             setPadding(2.dp, 2.dp, 2.dp, 2.dp)
         }
         else {
-            setTextSize(COMPLEX_UNIT_SP, 16f)
+            setTextSize(COMPLEX_UNIT_SP, 14f)
             setPadding(5.dp, 0, 5.dp, 0)
             layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {
                 setMargins(0, 0, 5.dp, 0)

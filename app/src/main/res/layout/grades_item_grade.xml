@@ -81,6 +81,7 @@
                     android:ellipsize="end"
                     android:maxWidth="200dp"
                     android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     tools:text="Kartkówki - K1 123456789 12345678" />
 
                 <TextView
