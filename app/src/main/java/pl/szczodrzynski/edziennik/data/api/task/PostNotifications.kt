@@ -10,6 +10,7 @@ import androidx.core.util.forEach
 import androidx.core.util.set
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_SERVER_MESSAGE
+import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.data.db.entity.Notification as AppNotification
 
 class PostNotifications(val app: App, nList: List<AppNotification>) {
@@ -17,22 +18,34 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
         private const val TAG = "PostNotifications"
     }
 
-    /*public boolean shouldBeQuiet() {
-        long now = Time.getNow().getInMillis();
-        long start = app.config.getSync().getQuietHoursStart();
-        long end = app.config.getSync().getQuietHoursEnd();
+    private val quiet by lazy { shouldBeQuiet() }
+    fun shouldBeQuiet(): Boolean {
+        if (!app.config.sync.quietHoursEnabled)
+            return false
+        val now = Time.getNow().value
+        val start = app.config.sync.quietHoursStart?.value ?: return false
+        var end = app.config.sync.quietHoursEnd?.value ?: return false
         if (start > end) {
-            end += 1000 * 60 * 60 * 24;
-            //Log.d(TAG, "Night passing");
+            // the range spans between two days
+            end += 240000
         }
-        if (start > now) {
-            now += 1000 * 60 * 60 * 24;
-            //Log.d(TAG, "Now is smaller");
-        }
-        //Log.d(TAG, "Start is "+start+", now is "+now+", end is "+end);
-        return start > 0 && now >= start && now <= end;
-    }*/
-    fun shouldBeQuiet() = false
+        return now in start..end || now+240000 in start..end
+    }
+
+    private fun NotificationCompat.Builder.addDefaults(): NotificationCompat.Builder {
+        return this.setColor(0xff2196f3.toInt())
+                .setLights(0xff2196f3.toInt(), 2000, 2000)
+                .setPriority(if (quiet) NotificationCompat.PRIORITY_LOW else NotificationCompat.PRIORITY_MAX)
+                .also {
+                    if (quiet) {
+                        it.setSound(null)
+                        it.setVibrate(longArrayOf())
+                    }
+                    else
+                        it.setDefaults(NotificationCompat.DEFAULT_ALL)
+                }
+                .setGroup(if (quiet) app.notificationChannelsManager.dataQuiet.key else app.notificationChannelsManager.data.key)
+    }
 
     private fun buildSummaryText(summaryCounts: SparseIntArray): CharSequence {
         val summaryTexts = mutableListOf<String>()
@@ -108,11 +121,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                                     it.addLine(line)
                                 }
                             })
-                    .setColor(0xff2196f3.toInt())
-                    .setLights(0xff2196f3.toInt(), 2000, 2000)
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-                    .setGroup(app.notificationChannelsManager.data.key)
+                    .addDefaults()
                     .setContentIntent(summaryIntent)
                     .setAutoCancel(true)
                     .build()
@@ -131,11 +140,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                         .setStyle(NotificationCompat.BigTextStyle()
                                 .bigText(it.text))
                         .setWhen(it.addedDate)
-                        .setColor(0xff2196f3.toInt())
-                        .setLights(0xff2196f3.toInt(), 2000, 2000)
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setDefaults(NotificationCompat.DEFAULT_ALL)
-                        .setGroup(app.notificationChannelsManager.data.key)
+                        .addDefaults()
                         .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
                         .setContentIntent(it.getPendingIntent(app))
                         .setAutoCancel(true)
@@ -155,11 +160,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                         .setContentText(buildSummaryText(summaryCounts))
                         .setTicker(newNotificationsText)
                         .setSmallIcon(R.drawable.ic_notification)
-                        .setColor(0xff2196f3.toInt())
-                        .setLights(0xff2196f3.toInt(), 2000, 2000)
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setDefaults(NotificationCompat.DEFAULT_ALL)
-                        .setGroup(app.notificationChannelsManager.data.key)
+                        .addDefaults()
                         .setGroupSummary(true)
                         .setContentIntent(summaryIntent)
                         .setAutoCancel(true)

@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_VULCAN
 import pl.szczodrzynski.edziennik.utils.models.Time
+import kotlin.math.abs
 
 class AppConfigMigrationV3(p: SharedPreferences, config: Config) {
     init { config.apply {
@@ -42,9 +43,7 @@ class AppConfigMigrationV3(p: SharedPreferences, config: Config) {
             devModePassword = p.getString("$s.devModePassword", null).fix()
             sync.tokenApp = p.getString("$s.fcmToken", null).fix()
             timetable.bellSyncMultiplier = p.getString("$s.bellSyncMultiplier", null)?.toIntOrNull() ?: 0
-            sync.quietHoursStart = p.getString("$s.quietHoursStart", null)?.toLongOrNull() ?: 0
             appRateSnackbarTime = p.getString("$s.appRateSnackbarTime", null)?.toLongOrNull() ?: 0
-            sync.quietHoursEnd = p.getString("$s.quietHoursEnd", null)?.toLongOrNull() ?: 0
             timetable.countInSeconds = p.getString("$s.countInSeconds", null)?.toBoolean() ?: false
             ui.headerBackground = p.getString("$s.headerBackground", null).fix()
             ui.appBackground = p.getString("$s.appBackground", null).fix()
@@ -58,6 +57,22 @@ class AppConfigMigrationV3(p: SharedPreferences, config: Config) {
             sync.onlyWifi = p.getString("$s.registerSyncOnlyWifi", null)?.toBoolean() ?: false
             sync.notifyAboutUpdates = p.getString("$s.notifyAboutUpdates", null)?.toBoolean() ?: true
             timetable.bellSyncDiff = p.getString("$s.bellSyncDiff", null)?.let { Gson().fromJson(it, Time::class.java) }
+
+            val startMillis = p.getString("$s.quietHoursStart", null)?.toLongOrNull() ?: 0
+            val endMillis = p.getString("$s.quietHoursEnd", null)?.toLongOrNull() ?: 0
+            if (startMillis > 0) {
+                try {
+                    sync.quietHoursStart = Time.fromMillis(abs(startMillis))
+                    sync.quietHoursEnd = Time.fromMillis(abs(endMillis))
+                    sync.quietHoursEnabled = true
+                }
+                catch (_: Exception) {}
+            }
+            else {
+                sync.quietHoursEnabled = false
+                sync.quietHoursStart = null
+                sync.quietHoursEnd = null
+            }
 
             sync.tokenMobidziennikList = listOf()
             sync.tokenVulcanList = listOf()

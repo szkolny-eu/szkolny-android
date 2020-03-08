@@ -22,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
 
 class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
     companion object {
-        const val DATA_VERSION = 10
+        const val DATA_VERSION = 11
     }
 
     private val job = Job()

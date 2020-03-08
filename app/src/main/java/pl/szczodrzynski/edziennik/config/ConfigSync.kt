@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.config
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.getIntList
 import pl.szczodrzynski.edziennik.config.utils.set
+import pl.szczodrzynski.edziennik.utils.models.Time
 
 class ConfigSync(private val config: Config) {
     private var mDontShowAppManagerDialog: Boolean? = null
@@ -40,14 +41,19 @@ class ConfigSync(private val config: Config) {
          | |  | | | | | |/ _ \ __| | '_ \ / _ \| | | | '__/ __|
          | |__| | |_| | |  __/ |_  | | | | (_) | |_| | |  \__ \
           \___\_\\__,_|_|\___|\__| |_| |_|\___/ \__,_|_|  |__*/
-    private var mQuietHoursStart: Long? = null
-    var quietHoursStart: Long
-        get() { mQuietHoursStart = mQuietHoursStart ?: config.values.get("quietHoursStart", 0L); return mQuietHoursStart ?: 0L }
+    private var mQuietHoursEnabled: Boolean? = null
+    var quietHoursEnabled: Boolean
+        get() { mQuietHoursEnabled = mQuietHoursEnabled ?: config.values.get("quietHoursEnabled", false); return mQuietHoursEnabled ?: false }
+        set(value) { config.set("quietHoursEnabled", value); mQuietHoursEnabled = value }
+
+    private var mQuietHoursStart: Time? = null
+    var quietHoursStart: Time?
+        get() { mQuietHoursStart = mQuietHoursStart ?: config.values.get("quietHoursStart", null as Time?); return mQuietHoursStart }
         set(value) { config.set("quietHoursStart", value); mQuietHoursStart = value }
 
-    private var mQuietHoursEnd: Long? = null
-    var quietHoursEnd: Long
-        get() { mQuietHoursEnd = mQuietHoursEnd ?: config.values.get("quietHoursEnd", 0L); return mQuietHoursEnd ?: 0L }
+    private var mQuietHoursEnd: Time? = null
+    var quietHoursEnd: Time?
+        get() { mQuietHoursEnd = mQuietHoursEnd ?: config.values.get("quietHoursEnd", null as Time?); return mQuietHoursEnd }
         set(value) { config.set("quietHoursEnd", value); mQuietHoursEnd = value }
 
     private var mQuietDuringLessons: Boolean? = null

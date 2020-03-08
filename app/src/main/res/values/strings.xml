@@ -1237,4 +1237,16 @@
     <string name="dropdown_subject_custom">Własny przedmiot</string>
     <string name="dialog_event_manual_date_choose">Wybierz datę</string>
     <string name="dropdown_date_no_more_lessons">Nie ma więcej lekcji tego przedmiotu. Pobierz plan lekcji i spróbuj ponownie.</string>
+    <string name="timetable_manual_dialog_date">Data</string>
+    <string name="timetable_manual_dialog_date_choose">Wybierz datę</string>
+    <string name="timetable_manual_dialog_subject_choose">Wybierz przedmiot</string>
+    <string name="timetable_manual_dialog_time">Godzina</string>
+    <string name="timetable_manual_dialog_time_choose">Wybierz godzinę</string>
+    <string name="timetable_manual_dialog_time_format" formatted="false">%s (lekcja %d)</string>
+    <string name="timetable_manual_item_empty">Nie dodano własnych lekcji na ten dzień.</string>
+    <string name="timetable_manual_repeat_by_subject_notice">Na każdej lekcji przedmiotu %s</string>
+    <string name="timetable_manual_repeating_notice">Obejmuje plan lekcji na każdy tydzień</string>
+    <string name="timetable_manual_type_by_subject">Wg. przedmiotu</string>
+    <string name="timetable_manual_type_one_time">Jednorazowo</string>
+    <string name="timetable_manual_type_repeating">Cyklicznie</string>
 </resources>

@@ -523,10 +523,12 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         );
     }
     private String getSyncCardQuietHoursSubText() {
+        if (app.getConfig().getSync().getQuietHoursStart() == null || app.getConfig().getSync().getQuietHoursEnd() == null)
+            return "";
         return getString(
-                app.getConfig().getSync().getQuietHoursStart() >= app.getConfig().getSync().getQuietHoursEnd() ? R.string.settings_sync_quiet_hours_subtext_next_day_format : R.string.settings_sync_quiet_hours_subtext_format,
-                Time.fromMillis(Math.abs(app.getConfig().getSync().getQuietHoursStart())).getStringHM(),
-                Time.fromMillis(app.getConfig().getSync().getQuietHoursEnd()).getStringHM()
+                app.getConfig().getSync().getQuietHoursStart().getValue() >= app.getConfig().getSync().getQuietHoursEnd().getValue() ? R.string.settings_sync_quiet_hours_subtext_next_day_format : R.string.settings_sync_quiet_hours_subtext_format,
+                app.getConfig().getSync().getQuietHoursStart().getStringHM(),
+                app.getConfig().getSync().getQuietHoursEnd().getStringHM()
         );
     }
     private MaterialAboutItem getSyncCardWifiItem() {
@@ -650,7 +652,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
-            syncCardQuietHoursItem.setChecked(app.getConfig().getSync().getQuietHoursStart() > 0);
+            syncCardQuietHoursItem.setChecked(app.getConfig().getSync().getQuietHoursEnabled());
             syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
             syncCardQuietHoursItem.setOnClickAction(() -> {
                 new MaterialDialog.Builder(activity)
@@ -662,10 +664,12 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .itemsCallback((dialog, itemView, position, text) -> {
                             if (position == 0) {
                                 // set beginning
-                                Time time = Time.fromMillis(Math.abs(app.getConfig().getSync().getQuietHoursStart()));
+                                Time time = app.getConfig().getSync().getQuietHoursStart();
+                                if (time == null)
+                                    time = new Time(22, 30, 0);
                                 TimePickerDialog.newInstance((v2, hourOfDay, minute, second) -> {
-                                    // if it's disabled, it'll be enabled automatically
-                                    app.getConfig().getSync().setQuietHoursStart(new Time(hourOfDay, minute, second).getInMillis());
+                                    app.getConfig().getSync().setQuietHoursEnabled(true);
+                                    app.getConfig().getSync().setQuietHoursStart(new Time(hourOfDay, minute, second));
                                     syncCardQuietHoursItem.setChecked(true);
                                     syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
                                     refreshMaterialAboutList();
@@ -673,13 +677,12 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             }
                             else {
                                 // set end
-                                Time time = Time.fromMillis(app.getConfig().getSync().getQuietHoursEnd());
+                                Time time = app.getConfig().getSync().getQuietHoursEnd();
+                                if (time == null)
+                                    time = new Time(5, 30, 0);
                                 TimePickerDialog.newInstance((v2, hourOfDay, minute, second) -> {
-                                    if (app.getConfig().getSync().getQuietHoursStart() < 0) {
-                                        // if it's disabled, enable
-                                        app.getConfig().getSync().setQuietHoursStart(-1 * app.getConfig().getSync().getQuietHoursStart());
-                                    }
-                                    app.getConfig().getSync().setQuietHoursEnd(new Time(hourOfDay, minute, second).getInMillis());
+                                    app.getConfig().getSync().setQuietHoursEnabled(true);
+                                    app.getConfig().getSync().setQuietHoursEnd(new Time(hourOfDay, minute, second));
                                     syncCardQuietHoursItem.setChecked(true);
                                     syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
                                     refreshMaterialAboutList();
@@ -689,15 +692,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .show();
             });
             syncCardQuietHoursItem.setOnChangeAction((isChecked, tag) -> {
-                if (isChecked && app.getConfig().getSync().getQuietHoursStart() < 0) {
-                    app.getConfig().getSync().setQuietHoursStart(app.getConfig().getSync().getQuietHoursStart() * -1);
-                }
-                else if (!isChecked && app.getConfig().getSync().getQuietHoursStart() > 0) {
-                    app.getConfig().getSync().setQuietHoursStart(app.getConfig().getSync().getQuietHoursStart() * -1);
-                }
-                else if (isChecked && app.getConfig().getSync().getQuietHoursStart() == 0) {
-                    app.getConfig().getSync().setQuietHoursStart(new Time(22, 30, 0).getInMillis());
-                    app.getConfig().getSync().setQuietHoursEnd(new Time(5, 30, 0).getInMillis());
+                app.getConfig().getSync().setQuietHoursEnabled(isChecked);
+                if (isChecked && app.getConfig().getSync().getQuietHoursStart() == null) {
+                    app.getConfig().getSync().setQuietHoursStart(new Time(22, 30, 0));
+                    app.getConfig().getSync().setQuietHoursEnd(new Time(5, 30, 0));
                     syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
                     refreshMaterialAboutList();
                 }

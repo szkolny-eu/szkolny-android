@@ -11,6 +11,8 @@ import pl.szczodrzynski.edziennik.HOUR
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC
+import pl.szczodrzynski.edziennik.utils.models.Time
+import kotlin.math.abs
 
 class ConfigMigration(app: App, config: Config) {
     init { config.apply {
@@ -43,8 +45,9 @@ class ConfigMigration(app: App, config: Config) {
             sync.interval = 1*HOUR.toInt()
             sync.notifyAboutUpdates = true
             sync.onlyWifi = false
-            sync.quietHoursStart = 0
-            sync.quietHoursEnd = 0
+            sync.quietHoursEnabled = false
+            sync.quietHoursStart = null
+            sync.quietHoursEnd = null
             sync.quietDuringLessons = false
             sync.tokenApp = null
             sync.tokenMobidziennik = null
@@ -68,6 +71,26 @@ class ConfigMigration(app: App, config: Config) {
             sync.dontShowAppManagerDialog = false
 
             dataVersion = 10
+        }
+
+        if (dataVersion < 11) {
+            val startMillis = config.values.get("quietHoursStart", 0L)
+            val endMillis = config.values.get("quietHoursEnd", 0L)
+            if (startMillis > 0) {
+                try {
+                    sync.quietHoursStart = Time.fromMillis(abs(startMillis))
+                    sync.quietHoursEnd = Time.fromMillis(abs(endMillis))
+                    sync.quietHoursEnabled = true
+                }
+                catch (_: Exception) {}
+            }
+            else {
+                sync.quietHoursEnabled = false
+                sync.quietHoursStart = null
+                sync.quietHoursEnd = null
+            }
+
+            dataVersion = 11
         }
     }}
 }
