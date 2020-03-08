@@ -9,9 +9,10 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_AVG
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
+import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSemester
-import pl.szczodrzynski.edziennik.utils.Colors
 import java.text.DecimalFormat
 import kotlin.math.floor
 
@@ -70,40 +71,6 @@ class GradesManager(val app: App) {
         else -> null
     }
 
-    private fun gradeNameToColorStr(grade: String): String? {
-        when (grade.toLowerCase()) {
-            "+", "++", "+++" ->
-                return "4caf50"
-            "-", "-,", "-,-,", "np", "np.", "npnp", "np,", "np,np,", "bs", "nk" ->
-                return "ff7043"
-            "1-", "1", "f" ->
-                return "ff0000"
-            "1+", "ef" ->
-                return "ff3d00"
-            "2-", "2", "e" ->
-                return "ff9100"
-            "2+", "de" ->
-                return "ffab00"
-            "3-", "3", "d" ->
-                return "ffff00"
-            "3+", "cd" ->
-                return "c6ff00"
-            "4-", "4", "c" ->
-                return "76ff03"
-            "4+", "bc" ->
-                return "64dd17"
-            "5-", "5", "b" ->
-                return "00c853"
-            "5+", "ab" ->
-                return "00bfa5"
-            "6-", "6", "a" ->
-                return "2196f3"
-            "6+", "a+" ->
-                return "0091ea"
-        }
-        return "bdbdbd"
-    }
-
     fun getRoundedGrade(value: Float): Int {
         return floor(value.toDouble()).toInt() + if (value % 1.0f >= 0.75) 1 else 0
     }
@@ -126,8 +93,55 @@ class GradesManager(val app: App) {
         return grade.weight
     }
 
-    fun getColor(grade: Grade): Int {
-        return Colors.gradeToColor(grade)
+    fun getGradeColor(grade: Grade): Int {
+        val type = grade.type
+        val defColor = colorMode == COLOR_MODE_DEFAULT
+        val valueMax = grade.valueMax ?: 0f
+
+        val color = when {
+            type == TYPE_POINT_SUM && !defColor -> {
+                when {
+                    grade.id < 0 -> grade.color and 0xffffff /* starting points */
+                    grade.value < 0 -> 0xf44336
+                    grade.value > 0 -> 0x4caf50
+                    else -> 0xbdbdbd
+                }
+            }
+            type == TYPE_POINT_AVG && !defColor ->
+                when (valueMax) {
+                    0f -> 0xbdbdbd
+                    else -> when (grade.value / valueMax * 100f) {
+                        in 0f..29f -> 0xf50000 // 1
+                        in 30f..49f -> 0xff5722 // 2
+                        in 50f..74f -> 0xff9100 // 3
+                        in 75f..89f -> 0xffd600 // 4
+                        in 90f..97f -> 0x00c853 // 5
+                        else -> 0x0091ea // 6
+                    }
+                }
+            type == TYPE_NORMAL && defColor -> grade.color and 0xffffff
+            type in TYPE_NORMAL..TYPE_YEAR_FINAL -> {
+                when (grade.name.toLowerCase()) {
+                    "+", "++", "+++" -> 0x4caf50
+                    "0", "-", "-,", "-,-,", "np", "np.", "npnp", "np,", "np,np,", "bs", "nk", "bz" -> 0xff7043
+                    "1-", "1", "f", "ng" -> 0xff0000
+                    "1+", "ef" -> 0xff3d00
+                    "2-", "2", "e", "ndp" -> 0xff9100
+                    "2+", "de" -> 0xffab00
+                    "3-", "3", "d", "popr" -> 0xffff00
+                    "3+", "cd" -> 0xc6ff00
+                    "4-", "4", "c", "db" -> 0x76ff03
+                    "4+", "bc" -> 0x64dd17
+                    "5-", "5", "b", "bdb" -> 0x00c853
+                    "5+", "ab" -> 0x00bfa5
+                    "6-", "6", "a", "wz" -> 0x2196f3
+                    "6+", "a+" -> 0x0091ea
+                    else -> grade.color and 0xffffff
+                }
+            }
+            else -> grade.color and 0xffffff
+        }
+        return color or 0xff000000.toInt()
     }
 
     fun calculateAverages(averages: GradesAverages, semesters: List<GradesSemester>? = null) {

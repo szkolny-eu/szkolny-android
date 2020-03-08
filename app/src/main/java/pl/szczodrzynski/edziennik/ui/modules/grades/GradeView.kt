@@ -47,7 +47,7 @@ class GradeView : AppCompatTextView {
 
         val gradeName = grade.name
 
-        val gradeColor = manager.getColor(grade)
+        val gradeColor = manager.getGradeColor(grade)
 
         text = if (periodGradesTextual)
             when (grade.type) {

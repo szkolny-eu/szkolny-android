@@ -50,7 +50,7 @@ class GradeDetailsDialog(
                 .show()
         val manager = app.gradesManager
 
-        val gradeColor = manager.getColor(grade)
+        val gradeColor = manager.getGradeColor(grade)
         b.grade = grade
         b.weightText = manager.getWeightString(app, grade)
         b.commentVisible = false
