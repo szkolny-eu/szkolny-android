@@ -57,7 +57,7 @@ class LibrusApiTextGrades(override val data: DataLibrus,
                         color = category?.color ?: -1,
                         category = category?.text ?: "",
                         description = description,
-                        comment = null,
+                        comment = grade.getString("Phrase") /* whatever it is */,
                         semester = semester,
                         teacherId = teacherId,
                         subjectId = subjectId

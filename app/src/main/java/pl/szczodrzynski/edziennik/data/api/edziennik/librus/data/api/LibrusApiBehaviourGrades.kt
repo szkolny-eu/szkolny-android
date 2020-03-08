@@ -27,6 +27,17 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
 
     private val nameFormat by lazy { DecimalFormat("#.##") }
 
+    private val types by lazy {
+        mapOf(
+                1 to ("wz" to "wzorowe"),
+                2 to ("bdb" to "bardzo dobre"),
+                3 to ("db" to "dobre"),
+                4 to ("popr" to "poprawne"),
+                5 to ("ndp" to "nieodpowiednie"),
+                6 to ("ng" to "naganne")
+        )
+    }
+
     init { data.profile?.also { profile ->
         apiGet(TAG, "BehaviourGrades/Points") { json ->
 
@@ -95,8 +106,12 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                 val addedDate = grade.getString("AddDate")?.let { Date.fromIso(it) }
                         ?: System.currentTimeMillis()
 
+                val text = grade.getString("Text")
+                val type = grade.getJsonObject("BehaviourGrade")?.getInt("Id")?.let { types[it] }
+
                 val name = when {
-                    value != null -> (if (value >= 0) "+" else "") + nameFormat.format(value)
+                    type != null -> type.first
+                    value != null -> (if (value > 0) "+" else "") + nameFormat.format(value)
                     shortName != null -> shortName
                     else -> return@forEach
                 }
@@ -115,14 +130,14 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
 
                 val categoryName = category?.text ?: ""
 
-                val description = grade.getJsonArray("Comments")?.asJsonObjectList()?.let { comments ->
-                    if (comments.isNotEmpty()) {
-                        data.gradeCategories.singleOrNull {
-                            it.type == GradeCategory.TYPE_BEHAVIOUR_COMMENT
-                                    && it.categoryId == comments[0].asJsonObject.getLong("Id")
-                        }?.text
-                    } else null
-                } ?: ""
+                val comments = grade.getJsonArray("Comments")
+                        ?.asJsonObjectList()
+                        ?.mapNotNull { comment ->
+                            val cId = comment.getLong("Id") ?: return@mapNotNull null
+                            data.gradeCategories[cId]?.text
+                        } ?: listOf()
+
+                val description = listOfNotNull(type?.second) + comments
 
                 val valueFrom = value ?: category?.valueFrom ?: 0f
                 val valueTo = category?.valueTo ?: 0f
@@ -136,8 +151,8 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         weight = -1f,
                         color = color,
                         category = categoryName,
-                        description = description,
-                        comment = null,
+                        description = text ?: description.join(" - "),
+                        comment = if (text != null) description.join(" - ") else null,
                         semester = semester,
                         teacherId = teacherId,
                         subjectId = 1
