@@ -45,6 +45,10 @@ class GradesManager(val app: App) {
         get() = app.config.forProfile().grades.minusValue
     val dontCountGrades
         get() = app.config.forProfile().grades.dontCountGrades
+    val hideImproved
+        get() = app.config.forProfile().grades.hideImproved
+    val averageWithoutWeight
+        get() = app.config.forProfile().grades.averageWithoutWeight
 
 
     fun getOrderByString() = when (orderBy) {
@@ -142,7 +146,7 @@ class GradesManager(val app: App) {
                 averages.normalWeightedCount > 0f -> {
                     averages.normalWeightedSum / averages.normalWeightedCount
                 }
-                averages.normalSum > 0f && averages.normalCount > 0f -> {
+                averageWithoutWeight && averages.normalSum > 0f && averages.normalCount > 0f -> {
                     averages.normalSum / averages.normalCount
                 }
                 else -> null

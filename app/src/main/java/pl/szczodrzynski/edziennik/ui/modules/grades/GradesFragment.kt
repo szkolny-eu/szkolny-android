@@ -121,6 +121,8 @@ class GradesFragment : Fragment(), CoroutineScope {
         var subject = GradesSubject(subjectId, "")
         var semester = GradesSemester(0, 1)
 
+        val hideImproved = manager.hideImproved
+
         // grades returned by the query are ordered
         // by the subject ID, so it's easier and probably
         // a bit faster to build all the models
@@ -152,7 +154,10 @@ class GradesFragment : Fragment(), CoroutineScope {
                 Grade.TYPE_YEAR_PROPOSED -> subject.proposedGrade = grade
                 Grade.TYPE_YEAR_FINAL -> subject.finalGrade = grade
                 else -> {
-                    semester.grades += grade
+                    if (!hideImproved || grade.parentId ?: -1L == -1L) {
+                        // hide improved grades if parent(new grade) ID is not set
+                        semester.grades += grade
+                    }
                     countGrade(grade, subject.averages)
                     countGrade(grade, semester.averages)
                 }
@@ -247,8 +252,13 @@ class GradesFragment : Fragment(), CoroutineScope {
         val weight = manager.getGradeWeight(dontCountGrades, grade)
         when (grade.type) {
             Grade.TYPE_NORMAL -> {
-                averages.normalSum += value
-                averages.normalCount ++
+                if (grade.value > 0f) {
+                    // count to the arithmetic average
+                    // only if value more than 0
+                    // to exclude "+", "-", "np" etc.
+                    averages.normalSum += value
+                    averages.normalCount++
+                }
                 averages.normalWeightedSum += value * weight
                 averages.normalWeightedCount += weight
             }

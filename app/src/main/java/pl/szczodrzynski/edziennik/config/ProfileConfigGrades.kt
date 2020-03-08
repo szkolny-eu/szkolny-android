@@ -26,6 +26,16 @@ class ProfileConfigGrades(private val config: ProfileConfig) {
         get() { mCountZeroToAvg = mCountZeroToAvg ?: config.values.get("countZeroToAvg", true); return mCountZeroToAvg ?: true }
         set(value) { config.set("countZeroToAvg", value); mCountZeroToAvg = value }
 
+    private var mHideImproved: Boolean? = null
+    var hideImproved: Boolean
+        get() { mHideImproved = mHideImproved ?: config.values.get("hideImproved", true); return mHideImproved ?: true }
+        set(value) { config.set("hideImproved", value); mHideImproved = value }
+
+    private var mAverageWithoutWeight: Boolean? = null
+    var averageWithoutWeight: Boolean
+        get() { mAverageWithoutWeight = mAverageWithoutWeight ?: config.values.get("averageWithoutWeight", true); return mAverageWithoutWeight ?: true }
+        set(value) { config.set("averageWithoutWeight", value); mAverageWithoutWeight = value }
+
     private var mPlusValue: Float? = null
     var plusValue: Float?
         get() { mPlusValue = mPlusValue ?: config.values.getFloat("plusValue"); return mPlusValue }

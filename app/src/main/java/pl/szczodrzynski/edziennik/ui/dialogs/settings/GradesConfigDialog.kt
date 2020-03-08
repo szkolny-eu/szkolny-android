@@ -89,6 +89,8 @@ class GradesConfigDialog(
         }?.isChecked = true
 
         b.dontCountZeroToAverage.isChecked = !profileConfig.countZeroToAvg
+        b.hideImproved.isChecked = profileConfig.hideImproved
+        b.averageWithoutWeight.isChecked = profileConfig.averageWithoutWeight
     }
 
     private fun saveConfig() {
@@ -125,6 +127,16 @@ class GradesConfigDialog(
         b.gradeAverageMode2.setOnSelectedListener { profileConfig.yearAverageMode = YEAR_1_AVG_2_SEM }
         b.gradeAverageMode3.setOnSelectedListener { profileConfig.yearAverageMode = YEAR_1_SEM_2_SEM }
 
-        b.dontCountZeroToAverage.setOnCheckedChangeListener { _, isChecked -> profileConfig.countZeroToAvg = !isChecked }
+        b.dontCountZeroToAverage.onChange { _, isChecked -> profileConfig.countZeroToAvg = !isChecked }
+        b.hideImproved.onChange { _, isChecked -> profileConfig.hideImproved = isChecked }
+        b.averageWithoutWeight.onChange { _, isChecked -> profileConfig.averageWithoutWeight = isChecked }
+
+        b.averageWithoutWeightHelp.onClick {
+            MaterialAlertDialogBuilder(activity)
+                    .setTitle(R.string.grades_config_average_without_weight)
+                    .setMessage(R.string.grades_config_average_without_weight_message)
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+        }
     }
 }

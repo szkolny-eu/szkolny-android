@@ -1249,4 +1249,10 @@
     <string name="timetable_manual_type_by_subject">Wg. przedmiotu</string>
     <string name="timetable_manual_type_one_time">Jednorazowo</string>
     <string name="timetable_manual_type_repeating">Cyklicznie</string>
+    <string name="grades_config_title">Konfiguracja ocen</string>
+    <string name="grades_config_dont_show_improved">Ukrywaj oceny poprawione z listy</string>
+    <string name="grades_config_average_without_weight">Licz średnią jeśli wszystkie wagi to 0</string>
+    <string name="grades_config_average_without_weight_message">Pozwala na liczenie średniej arytmetycznej z przedmiotów, w których wszystkie wystawione oceny mają wagę 0 (nie są liczone do średniej).\n\nJeśli taki przedmiot celowo nie powinien być liczony, odznacz okienko przy tym ustawieniu.</string>
+    <string name="grades_config_minus_value">Własna wartość minusa</string>
+    <string name="grades_config_plus_value">Własna wartość plusa</string>
 </resources>
