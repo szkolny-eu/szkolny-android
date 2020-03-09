@@ -55,13 +55,12 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:background="@drawable/bg_rounded_16dp"
-                    android:fontFamily="serif-monospace"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@{grade.name}"
                     android:textIsSelectable="true"
                     android:textSize="36sp"
-                    android:textStyle="bold"
+                    app:autoSizeMinTextSize="18sp"
                     app:autoSizeMaxTextSize="56sp"
                     app:autoSizeTextType="uniform"
                     tools:background="#ff4caf50"
@@ -270,7 +269,7 @@
                     android:id="@+id/gradeHistoryList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/row_grades_list_item" />
+                    tools:listitem="@layout/grades_item_grade" />
 
             </androidx.core.widget.NestedScrollView>
 
