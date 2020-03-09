@@ -48,6 +48,7 @@ class ErrorSnackbar(val activity: AppCompatActivity) : CoroutineScope {
     fun addError(apiError: ApiError): ErrorSnackbar {
         errors.add(apiError)
         snackbar?.setText(apiError.getStringReason(activity))
+        snackbar?.duration = 15000
         return this
     }
 

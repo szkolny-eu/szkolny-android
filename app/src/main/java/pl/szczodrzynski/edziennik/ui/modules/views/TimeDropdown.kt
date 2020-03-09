@@ -55,7 +55,8 @@ class TimeDropdown : TextInputDropDown {
         isEnabled = false
     }
 
-    suspend fun loadItems() {
+    suspend fun loadItems(): Boolean {
+        var noLessons = false
         val hours = withContext(Dispatchers.Default) {
             val hours = mutableListOf<Item>()
 
@@ -90,6 +91,7 @@ class TimeDropdown : TextInputDropDown {
                 hours += lessons.map { lesson ->
                     if (lesson.type == Lesson.TYPE_NO_LESSONS) {
                         // indicate there are no lessons this day
+                        noLessons = true
                         return@map Item(
                                 -2L,
                                 context.getString(R.string.dialog_event_manual_no_lessons),
@@ -158,6 +160,8 @@ class TimeDropdown : TextInputDropDown {
                 else -> false
             }
         }
+
+        return !noLessons
     }
 
     fun pickerDialog() {
