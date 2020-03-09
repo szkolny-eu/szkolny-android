@@ -39,7 +39,7 @@ class HomeDummyCard(override val id: Int) : HomeCard, CoroutineScope {
         }
         holder.root += text
 
-        timer = startCoroutineTimer(repeatMillis = 1000) {
+        timer = startCoroutineTimer(repeatMillis = 500) {
             time++
             text.text = "Coroutine timer at #$id! $time seconds"
         }

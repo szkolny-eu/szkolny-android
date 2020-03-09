@@ -71,7 +71,7 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
             bellSyncDiffMillis *= app.config.timetable.bellSyncMultiplier.toLong()
         }
 
-        counterJob = startCoroutineTimer(repeatMillis = 1000) {
+        counterJob = startCoroutineTimer(repeatMillis = 500) {
             update()
         }
     }}

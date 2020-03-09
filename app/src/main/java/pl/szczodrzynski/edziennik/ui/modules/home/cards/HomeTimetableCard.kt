@@ -249,7 +249,7 @@ class HomeTimetableCard(
 
             subjectSpannable = firstLesson.subjectSpannable
 
-            counterJob = startCoroutineTimer(repeatMillis = 1000) {
+            counterJob = startCoroutineTimer(repeatMillis = 500) {
                 count()
             }
         }

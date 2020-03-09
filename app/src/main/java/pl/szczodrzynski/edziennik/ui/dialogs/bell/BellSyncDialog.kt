@@ -90,7 +90,7 @@ class BellSyncDialog(
         }
 
         launch {
-            counterJob = startCoroutineTimer(repeatMillis = 1000) {
+            counterJob = startCoroutineTimer(repeatMillis = 500) {
                 val (bellDiff, multiplier) = actualBellDiff
                 val bellDiffText = (if (multiplier == -1) '-' else '+') + bellDiff.stringHMS
                 b.bellSyncHowto.text = app.getString(R.string.bell_sync_howto, bellTime.stringHM, bellDiffText)
