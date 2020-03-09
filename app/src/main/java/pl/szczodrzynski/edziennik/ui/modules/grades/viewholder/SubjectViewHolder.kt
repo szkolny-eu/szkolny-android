@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
@@ -21,6 +22,7 @@ import pl.szczodrzynski.edziennik.databinding.GradesItemSubjectBinding
 import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.setText
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradeView
+import pl.szczodrzynski.edziennik.ui.modules.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesAdapter.Companion.STATE_CLOSED
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSubject
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -34,7 +36,7 @@ class SubjectViewHolder(
         private const val TAG = "SubjectViewHolder"
     }
 
-    override fun onBind(activity: AppCompatActivity, app: App, item: GradesSubject, position: Int) {
+    override fun onBind(activity: AppCompatActivity, app: App, item: GradesSubject, position: Int, adapter: GradesAdapter) {
         val manager = app.gradesManager
         val contextWrapper = ContextThemeWrapper(activity, Themes.themeInt)
 
@@ -43,6 +45,8 @@ class SubjectViewHolder(
             STATE_CLOSED -> 0f
             else -> 180f
         }
+
+        b.unread.isVisible = item.hasUnseen
 
         b.previewContainer.visibility = if (item.state == STATE_CLOSED) View.VISIBLE else View.INVISIBLE
         b.yearSummary.visibility = if (item.state == STATE_CLOSED) View.INVISIBLE else View.VISIBLE
@@ -71,7 +75,10 @@ class SubjectViewHolder(
             })
         }*/
 
+        val hideImproved = manager.hideImproved
         for (grade in firstSemester.grades) {
+            if (hideImproved && grade.isImproved)
+                continue
             b.gradesContainer.addView(GradeView(
                 contextWrapper,
                 grade,

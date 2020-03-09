@@ -10,19 +10,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.*
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.*
+import kotlin.coroutines.CoroutineContext
 
 class GradesAdapter(
         val activity: AppCompatActivity,
         var onGradeClick: ((item: GradeFull) -> Unit)? = null,
         var onGradesEditorClick: ((subject: GradesSubject, semester: GradesSemester) -> Unit)? = null
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), CoroutineScope {
     companion object {
         private const val TAG = "GradesAdapter"
         private const val ITEM_TYPE_SUBJECT = 0
@@ -33,6 +38,13 @@ class GradesAdapter(
         const val STATE_CLOSED = 0
         const val STATE_OPENED = 1
     }
+
+    private val app = activity.applicationContext as App
+    private val manager = app.gradesManager
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     var items = mutableListOf<Any>()
 
@@ -67,56 +79,63 @@ class GradesAdapter(
         }
         if (model !is ExpandableItemModel<*>)
             return@OnClickListener
+        expandModel(model, view)
+    }
+
+    fun expandModel(model: ExpandableItemModel<*>?, view: View?, notifyAdapter: Boolean = true) {
+        model ?: return
         val position = items.indexOf(model)
         if (position == -1)
-            return@OnClickListener
-        //val position = it.getTag(R.string.tag_key_position) as? Int ?: return@OnClickListener
+            return
 
         if (model is GradesSubject || model is GradesSemester) {
-            view.findViewById<View>(R.id.dropdownIcon)?.let { dropdownIcon ->
+            view?.findViewById<View>(R.id.dropdownIcon)?.let { dropdownIcon ->
                 ObjectAnimator.ofFloat(
-                    dropdownIcon,
-                    View.ROTATION,
-                    if (model.state == STATE_CLOSED) 0f else 180f,
-                    if (model.state == STATE_CLOSED) 180f else 0f
+                        dropdownIcon,
+                        View.ROTATION,
+                        if (model.state == STATE_CLOSED) 0f else 180f,
+                        if (model.state == STATE_CLOSED) 180f else 0f
                 ).setDuration(200).start();
             }
         }
         if (model is GradesSubject) {
-            val preview = view.findViewById<View>(R.id.previewContainer)
-            val summary = view.findViewById<View>(R.id.yearSummary)
+            val preview = view?.findViewById<View>(R.id.previewContainer)
+            val summary = view?.findViewById<View>(R.id.yearSummary)
             preview?.visibility = if (model.state == STATE_CLOSED) View.INVISIBLE else View.VISIBLE
             summary?.visibility = if (model.state == STATE_CLOSED) View.VISIBLE else View.INVISIBLE
         }
 
         if (model.state == STATE_CLOSED) {
 
-            val subItems = if (model is GradesSemester && model.grades.isEmpty())
-                listOf(GradesEmpty())
-            else
-                model.items
+            val subItems = when {
+                model is GradesSemester && model.grades.isEmpty() ->
+                    listOf(GradesEmpty())
+                model is GradesSemester && manager.hideImproved ->
+                    model.items.filter { !it.seen || !it.isImproved }
+                else -> model.items
+            }
 
             model.state = STATE_OPENED
             items.addAll(position + 1, subItems.filterNotNull())
-            notifyItemRangeInserted(position + 1, subItems.size)
-            /*notifyItemRangeChanged(
-                position + subItems.size,
-                items.size - (position + subItems.size)
-            )*/
-            //notifyItemRangeChanged(position, items.size - position)
+            if (notifyAdapter) notifyItemRangeInserted(position + 1, subItems.size)
 
             if (model is GradesSubject) {
                 // auto expand first semester
                 if (model.semesters.isNotEmpty()) {
                     val semester = model.semesters.firstOrNull { it.grades.isNotEmpty() } ?: model.semesters.first()
                     val semesterIndex = model.semesters.indexOf(semester)
-                    val grades = if (semester.grades.isEmpty())
-                        listOf(GradesEmpty())
-                    else
-                        semester.grades
+
+                    val grades = when {
+                        semester.grades.isEmpty() ->
+                            listOf(GradesEmpty())
+                        manager.hideImproved ->
+                            semester.grades.filter { !it.seen || !it.isImproved }
+                        else -> semester.grades
+                    }
+
                     semester.state = STATE_OPENED
                     items.addAll(position + 2 + semesterIndex, grades)
-                    notifyItemRangeInserted(position + 2 + semesterIndex, grades.size)
+                    if (notifyAdapter) notifyItemRangeInserted(position + 2 + semesterIndex, grades.size)
                 }
             }
         }
@@ -138,9 +157,7 @@ class GradesAdapter(
 
             if (end != -1) {
                 items.subList(start, end).clear()
-                notifyItemRangeRemoved(start, end - start)
-                //notifyItemRangeChanged(start, end - start)
-                //notifyItemRangeChanged(position, items.size - position)
+                if (notifyAdapter) notifyItemRangeRemoved(start, end - start)
             }
 
             model.state = STATE_CLOSED
@@ -151,8 +168,6 @@ class GradesAdapter(
         val item = items[position]
         if (holder !is BindableViewHolder<*>)
             return
-
-        val app = activity.applicationContext as App
 
         val viewType = when (holder) {
             is SubjectViewHolder -> ITEM_TYPE_SUBJECT
@@ -167,11 +182,11 @@ class GradesAdapter(
         holder.itemView.setTag(R.string.tag_key_model, item)
 
         when {
-            holder is SubjectViewHolder && item is GradesSubject -> holder.onBind(activity, app, item, position)
-            holder is SemesterViewHolder && item is GradesSemester -> holder.onBind(activity, app, item, position)
-            holder is EmptyViewHolder && item is GradesEmpty -> holder.onBind(activity, app, item, position)
-            holder is GradeViewHolder && item is GradeFull -> holder.onBind(activity, app, item, position)
-            holder is StatsViewHolder && item is GradesStats -> holder.onBind(activity, app, item, position)
+            holder is SubjectViewHolder && item is GradesSubject -> holder.onBind(activity, app, item, position, this)
+            holder is SemesterViewHolder && item is GradesSemester -> holder.onBind(activity, app, item, position, this)
+            holder is EmptyViewHolder && item is GradesEmpty -> holder.onBind(activity, app, item, position, this)
+            holder is GradeViewHolder && item is GradeFull -> holder.onBind(activity, app, item, position, this)
+            holder is StatsViewHolder && item is GradesStats -> holder.onBind(activity, app, item, position, this)
         }
 
         if (holder is SemesterViewHolder && item is GradesSemester) {
@@ -182,6 +197,24 @@ class GradesAdapter(
         }
 
         holder.itemView.setOnClickListener(onClickListener)
+    }
+
+    fun notifyItemChanged(model: Any) {
+        startCoroutineTimer(1000L, 0L) {
+            val index = items.indexOf(model)
+            if (index != -1)
+                notifyItemChanged(index)
+        }
+    }
+
+    fun removeItem(model: Any) {
+        startCoroutineTimer(2000L, 0L) {
+            val index = items.indexOf(model)
+            if (index != -1) {
+                items.removeAt(index)
+                notifyItemRemoved(index)
+            }
+        }
     }
 
     override fun getItemCount() = items.size

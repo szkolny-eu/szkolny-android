@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.databinding.GradesItemEmptyBinding
+import pl.szczodrzynski.edziennik.ui.modules.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesEmpty
 
 class EmptyViewHolder(
@@ -21,7 +22,7 @@ class EmptyViewHolder(
         private const val TAG = "EmptyViewHolder"
     }
 
-    override fun onBind(activity: AppCompatActivity, app: App, item: GradesEmpty, position: Int) {
+    override fun onBind(activity: AppCompatActivity, app: App, item: GradesEmpty, position: Int, adapter: GradesAdapter) {
 
     }
 }

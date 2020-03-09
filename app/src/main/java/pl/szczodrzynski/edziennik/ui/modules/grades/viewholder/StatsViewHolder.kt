@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.GradesItemStatsBinding
 import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
+import pl.szczodrzynski.edziennik.ui.modules.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesStats
 import java.text.DecimalFormat
 
@@ -28,7 +29,7 @@ class StatsViewHolder(
         private const val TAG = "StatsViewHolder"
     }
 
-    override fun onBind(activity: AppCompatActivity, app: App, item: GradesStats, position: Int) {
+    override fun onBind(activity: AppCompatActivity, app: App, item: GradesStats, position: Int, adapter: GradesAdapter) {
         val manager = app.gradesManager
         val showAverages = mutableListOf<Int>()
         val showPoint = mutableListOf<Int>()
@@ -109,7 +110,7 @@ class StatsViewHolder(
     }
 
     private fun getSemesterString(context: Context, expected: Float, proposed: Float, final: Float, notAllFinal: Boolean) : Pair<String?, String?> {
-        val format = DecimalFormat("#.##")
+        val format = DecimalFormat("#.00")
 
         val average = when {
             final != 0f -> final

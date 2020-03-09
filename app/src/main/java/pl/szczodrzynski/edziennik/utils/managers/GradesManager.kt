@@ -5,18 +5,23 @@
 package pl.szczodrzynski.edziennik.utils.managers
 
 import android.content.Context
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_AVG
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
+import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSemester
 import java.text.DecimalFormat
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.floor
 
-class GradesManager(val app: App) {
+class GradesManager(val app: App) : CoroutineScope {
     companion object {
         const val ORDER_BY_DATE_DESC = 0
         const val ORDER_BY_SUBJECT_ASC = 1
@@ -30,6 +35,10 @@ class GradesManager(val app: App) {
         const val COLOR_MODE_DEFAULT = 0
         const val COLOR_MODE_WEIGHTED = 1
     }
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Default
 
     private val gradeRegex by lazy { """([0-6])([+-])?""".toRegex() }
     private val format = DecimalFormat("#.##")
@@ -142,6 +151,13 @@ class GradesManager(val app: App) {
             else -> grade.color and 0xffffff
         }
         return color or 0xff000000.toInt()
+    }
+
+    fun markAsSeen(grade: GradeFull) {
+        grade.seen = true
+        startCoroutineTimer(500L, 0L) {
+            app.db.metadataDao().setSeen(grade.profileId, grade, true)
+        }
     }
 
     fun calculateAverages(averages: GradesAverages, semesters: List<GradesSemester>? = null) {

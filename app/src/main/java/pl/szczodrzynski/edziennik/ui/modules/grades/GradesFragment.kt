@@ -12,11 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.Bundle
-import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_GRADES_EDITOR
-import pl.szczodrzynski.edziennik.averageOrNull
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.GradesFragmentBinding
@@ -48,6 +45,7 @@ class GradesFragment : Fragment(), CoroutineScope {
     }
     private val manager by lazy { app.gradesManager }
     private val dontCountGrades by lazy { manager.dontCountGrades }
+    private var expandSubjectId = 0L
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -61,6 +59,8 @@ class GradesFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded)
             return
+
+        expandSubjectId = arguments?.getLong("gradesSubjectId") ?: 0L
 
         app.db.gradeDao()
                 .getAllOrderBy(App.profileId, app.gradesManager.getOrderByString())
@@ -113,6 +113,7 @@ class GradesFragment : Fragment(), CoroutineScope {
         }
     }
 
+    @Suppress("SuspendFunctionOnCoroutineScope")
     private suspend fun processGrades(grades: List<GradeFull>) {
         val items = mutableListOf<GradesSubject>()
 
@@ -146,6 +147,11 @@ class GradesFragment : Fragment(), CoroutineScope {
                         ?: GradesSemester(subject.subjectId, grade.semester).also { subject.semesters += it }
             }
 
+            grade.showAsUnseen = !grade.seen
+            if (!grade.seen) {
+                semester.hasUnseen = true
+            }
+
             when (grade.type) {
                 Grade.TYPE_SEMESTER1_PROPOSED,
                 Grade.TYPE_SEMESTER2_PROPOSED -> semester.proposedGrade = grade
@@ -154,10 +160,7 @@ class GradesFragment : Fragment(), CoroutineScope {
                 Grade.TYPE_YEAR_PROPOSED -> subject.proposedGrade = grade
                 Grade.TYPE_YEAR_FINAL -> subject.finalGrade = grade
                 else -> {
-                    if (!hideImproved || grade.parentId ?: -1L == -1L) {
-                        // hide improved grades if parent(new grade) ID is not set
-                        semester.grades += grade
-                    }
+                    semester.grades += grade
                     countGrade(grade, subject.averages)
                     countGrade(grade, semester.averages)
                 }
@@ -242,8 +245,26 @@ class GradesFragment : Fragment(), CoroutineScope {
         adapter.items = items.toMutableList()
         adapter.items.add(stats)
 
+        var expandSubjectModel: GradesSubject? = null
+        if (expandSubjectId != 0L) {
+            expandSubjectModel = items.firstOrNull { it.subjectId == expandSubjectId }
+            adapter.expandModel(
+                    model = expandSubjectModel,
+                    view = null,
+                    notifyAdapter = false
+            )
+        }
+
         withContext(Dispatchers.Main) {
             adapter.notifyDataSetChanged()
+        }
+
+        startCoroutineTimer(500L, 0L) {
+            if (expandSubjectModel != null) {
+                b.gradesRecyclerView.smoothScrollToPosition(
+                        items.indexOf(expandSubjectModel) + expandSubjectModel.semesters.size + (expandSubjectModel.semesters.firstOrNull()?.grades?.size ?: 0)
+                )
+            }
         }
     }
 

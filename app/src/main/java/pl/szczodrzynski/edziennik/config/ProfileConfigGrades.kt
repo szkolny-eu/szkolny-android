@@ -28,7 +28,7 @@ class ProfileConfigGrades(private val config: ProfileConfig) {
 
     private var mHideImproved: Boolean? = null
     var hideImproved: Boolean
-        get() { mHideImproved = mHideImproved ?: config.values.get("hideImproved", true); return mHideImproved ?: true }
+        get() { mHideImproved = mHideImproved ?: config.values.get("hideImproved", false); return mHideImproved ?: false }
         set(value) { config.set("hideImproved", value); mHideImproved = value }
 
     private var mAverageWithoutWeight: Boolean? = null

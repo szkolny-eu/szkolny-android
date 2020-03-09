@@ -5,6 +5,7 @@ package pl.szczodrzynski.edziennik.data.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.Index
 
 /*public Grade(int profileId, long id, String category, int color, String description, String name, float value, float weight, int semester, long teacherId, long subjectId) {
@@ -81,5 +82,11 @@ open class Grade(
      */
     @ColumnInfo(name = "gradeIsImprovement")
     var isImprovement = false
+
+    @Ignore
+    var showAsUnseen = false
+
+    val isImproved
+        get() = parentId ?: -1L != -1L
 }
 
