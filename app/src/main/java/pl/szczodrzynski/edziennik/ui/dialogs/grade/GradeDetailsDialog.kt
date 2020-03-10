@@ -3,6 +3,7 @@ package pl.szczodrzynski.edziennik.ui.dialogs.grade
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
@@ -10,7 +11,9 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.DialogGradeDetailsBinding
+import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.setTintColor
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
@@ -59,6 +62,12 @@ class GradeDetailsDialog(
         b.gradeName.background.setTintColor(gradeColor)
 
         b.gradeValue = if (grade.weight == 0f || grade.value < 0f) -1f else manager.getGradeValue(grade)
+
+        b.customValueDivider.isVisible = manager.plusValue != null || manager.minusValue != null
+        b.customValueLayout.isVisible = b.customValueDivider.isVisible
+        b.customValueButton.onClick {
+            GradesConfigDialog(activity, reloadOnDismiss = true)
+        }
 
         launch {
             val historyList = withContext(Dispatchers.Default) {
