@@ -126,6 +126,8 @@ class AgendaFragment : Fragment(), CoroutineScope {
     }
 
     private fun createDefaultAgendaView() { (b as? FragmentAgendaDefaultBinding)?.let { b -> launch {
+        if (!isAdded)
+            return@launch
         delay(500)
 
         val eventList = mutableListOf<CalendarEvent>()
@@ -139,6 +141,8 @@ class AgendaFragment : Fragment(), CoroutineScope {
         /**
          * LESSON CHANGES
          */
+        if (!isAdded)
+            return@launch
 
         val lessons = withContext(Dispatchers.Default) { app.db.timetableDao().getAllChangesNow(app.profileId) }
         val lessonChangeCounters = mutableListOf<LessonChangeCounter>()
@@ -170,6 +174,8 @@ class AgendaFragment : Fragment(), CoroutineScope {
         /**
          * TEACHER ABSENCES
          */
+        if (!isAdded)
+            return@launch
 
         val showTeacherAbsences = app.profile.getStudentData("showTeacherAbsences", true)
 
@@ -208,6 +214,8 @@ class AgendaFragment : Fragment(), CoroutineScope {
         /**
          * EVENTS
          */
+        if (!isAdded)
+            return@launch
 
         val events = withContext(Dispatchers.Default) { app.db.eventDao().getAllNow(app.profileId) }
         val unreadEventDates = mutableSetOf<Int>()
