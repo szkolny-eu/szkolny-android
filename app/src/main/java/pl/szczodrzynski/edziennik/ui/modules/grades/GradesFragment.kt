@@ -4,27 +4,36 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.grades
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_GRADES_EDITOR
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_GRADE
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.GradesFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradeDetailsDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSemester
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesStats
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSubject
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
+
 
 class GradesFragment : Fragment(), CoroutineScope {
     companion object {
@@ -111,6 +120,26 @@ class GradesFragment : Fragment(), CoroutineScope {
                     "finalOtherSemester" to otherSemester?.finalGrade?.value
             ))
         }
+
+        activity.bottomSheet.prependItems(
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_grades_config)
+                        .withIcon(Icon2.cmd_settings_outline)
+                        .withOnClickListener(View.OnClickListener {
+                            activity.bottomSheet.close()
+                            GradesConfigDialog(activity, true, null, null)
+                        }),
+                BottomSheetSeparatorItem(true),
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_mark_as_read)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
+                        .withOnClickListener(View.OnClickListener {
+                            activity.bottomSheet.close()
+                            AsyncTask.execute { App.db.metadataDao().setAllSeen(App.profileId, TYPE_GRADE, true) }
+                            Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
+                        })
+        )
+        activity.gainAttention()
     }
 
     @Suppress("SuspendFunctionOnCoroutineScope")
