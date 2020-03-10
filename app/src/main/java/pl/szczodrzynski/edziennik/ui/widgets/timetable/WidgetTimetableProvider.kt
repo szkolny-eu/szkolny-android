@@ -229,8 +229,8 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                             && !(it.isCancelled && ignoreCancelled)
                 }
 
-                if (lessons.isEmpty() && timetableDate.weekDay <= 5)
-                    break
+                //if (lessons.isEmpty() && timetableDate.weekDay <= 5)
+                //    break
 
                 checkedDays++
             }

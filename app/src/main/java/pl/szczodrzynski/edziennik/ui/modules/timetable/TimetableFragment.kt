@@ -124,6 +124,8 @@ class TimetableFragment : Fragment(), CoroutineScope {
             endHour = lessonRanges.map { it.endTime.hour }.max()?.plus(1) ?: DEFAULT_END_HOUR
         }
         deferred.await()
+        if (!isAdded)
+            return@launch
 
         val pagerAdapter = TimetablePagerAdapter(
                 fragmentManager ?: return@launch,
