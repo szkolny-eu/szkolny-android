@@ -40,7 +40,7 @@ class GradesManager(val app: App) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Default
 
-    private val gradeRegex by lazy { """([0-6])([+-])?""".toRegex() }
+    private val gradeRegex by lazy { """([+-])?([0-6])([+-])?""".toRegex() }
     private val format = DecimalFormat("#.##")
 
     val orderBy
@@ -85,12 +85,16 @@ class GradesManager(val app: App) : CoroutineScope {
     }
 
     fun getGradeValue(grade: Grade): Float {
-        gradeRegex.find(grade.name)?.let {
-            var value = it[1].toFloatOrNull() ?: return grade.value
-            if (it[2] == "+")
-                value += plusValue ?: return grade.value
-            if (it[2] == "-")
-                value -= minusValue ?: return grade.value
+        if (plusValue == null && minusValue == null)
+            return grade.value
+
+        gradeRegex.find(grade.name)?.let { it ->
+            var value = it[2].toFloatOrNull() ?: return grade.value
+            when (it[1].notEmptyOrNull() ?: it[3]) {
+                "+" -> value += plusValue ?: return grade.value
+                "-" -> value -= minusValue ?: return grade.value
+                else -> return grade.value
+            }
             return value
         }
         return grade.value
