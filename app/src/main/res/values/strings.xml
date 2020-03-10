@@ -1043,7 +1043,7 @@
     <string name="dialog_event_manual_date_this_week" translatable="false">%s (%s)</string>
     <string name="dialog_event_manual_date_other">-- inna data --</string>
     <string name="dialog_event_manual_date_today">dzisiaj (%s)</string>
-    <string name="dialog_event_manual_date_next_week">następny %s (%s)</string>
+    <string name="dialog_event_manual_date_next_week">przyszły %s (%s)</string>
     <string name="dialog_event_manual_no_lessons">Nie ma lekcji tego dnia</string>
     <string name="dialog_profile_remove_success">Profil został usunięty.</string>
     <string name="snackbar_error_text">Wystąpił błąd</string>
