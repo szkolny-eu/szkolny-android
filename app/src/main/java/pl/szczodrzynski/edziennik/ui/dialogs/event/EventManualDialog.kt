@@ -16,8 +16,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
+import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
@@ -48,7 +55,7 @@ class EventManualDialog(
         private const val TAG = "EventManualDialog"
     }
 
-    private lateinit var job: Job
+    private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
@@ -66,11 +73,14 @@ class EventManualDialog(
         SzkolnyApi(app)
     }
 
+    private var enqueuedWeekDialog: AlertDialog? = null
+    private var enqueuedWeekStart = Date.getToday()
+
     init { run {
         if (activity.isFinishing)
             return@run
-        job = Job()
         onShowListener?.invoke(TAG)
+        EventBus.getDefault().register(this)
         b = DialogEventManualV2Binding.inflate(activity.layoutInflater)
         dialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.dialog_event_manual_title)
@@ -84,6 +94,7 @@ class EventManualDialog(
                 }
                 .setOnDismissListener {
                     onDismissListener?.invoke(TAG)
+                    EventBus.getDefault().unregister(this@EventManualDialog)
                 }
                 .setCancelable(false)
                 .create()
@@ -140,6 +151,57 @@ class EventManualDialog(
         b.shareDetails.setText(text, editingEvent?.sharedByName ?: "")
     }
 
+    private fun syncTimetable(date: Date) {
+        if (enqueuedWeekDialog != null) {
+            return
+        }
+        if (app.profile.getStudentData("timetableNotPublic", false)) {
+            return
+        }
+        val weekStart = date.weekStart
+        enqueuedWeekDialog = MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.please_wait)
+                .setMessage(R.string.timetable_syncing_text)
+                .setCancelable(false)
+                .show()
+
+        enqueuedWeekStart = weekStart
+
+        EdziennikTask.syncProfile(
+                profileId = App.profileId,
+                viewIds = listOf(
+                        MainActivity.DRAWER_ITEM_TIMETABLE to 0
+                ),
+                arguments = JsonObject(
+                        "weekStart" to weekStart.stringY_m_d
+                )
+        ).enqueue(activity)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onApiTaskFinishedEvent(event: ApiTaskFinishedEvent) {
+        if (event.profileId == App.profileId) {
+            enqueuedWeekDialog?.dismiss()
+            enqueuedWeekDialog = null
+            launch {
+                b.timeDropdown.loadItems()
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onApiTaskAllFinishedEvent(event: ApiTaskAllFinishedEvent) {
+        enqueuedWeekDialog?.dismiss()
+        enqueuedWeekDialog = null
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onApiTaskErrorEvent(event: ApiTaskErrorEvent) {
+        dialog.dismiss()
+        enqueuedWeekDialog?.dismiss()
+        enqueuedWeekDialog = null
+    }
+
     private fun loadLists() { launch {
         with (b.dateDropdown) {
             db = app.db
@@ -159,7 +221,8 @@ class EventManualDialog(
                 b.timeDropdown.deselect()
                 b.timeDropdown.lessonsDate = date
                 this@EventManualDialog.launch {
-                    b.timeDropdown.loadItems()
+                    if (!b.timeDropdown.loadItems())
+                        syncTimetable(date)
                     lesson?.displayStartTime?.let { b.timeDropdown.selectTime(it) }
                     lesson?.displaySubjectId?.let { b.subjectDropdown.selectSubject(it) } ?: b.subjectDropdown.deselect()
                     lesson?.displayTeacherId?.let { b.teacherDropdown.selectTeacher(it) } ?: b.teacherDropdown.deselect()
@@ -175,7 +238,8 @@ class EventManualDialog(
             showCustomTime = true
             lessonsDate = b.dateDropdown.getSelected() as? Date ?: Date.getToday()
             displayMode = DISPLAY_LESSONS
-            loadItems()
+            if (!loadItems())
+                syncTimetable(lessonsDate ?: Date.getToday())
             selectDefault(editingEvent?.startTime)
             selectDefault(defaultLesson?.displayStartTime ?: defaultTime)
             onLessonSelected = { lesson ->

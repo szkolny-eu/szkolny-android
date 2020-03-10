@@ -56,7 +56,7 @@ class TimeDropdown : TextInputDropDown {
     }
 
     suspend fun loadItems(): Boolean {
-        var noLessons = false
+        var noTimetable = false
         val hours = withContext(Dispatchers.Default) {
             val hours = mutableListOf<Item>()
 
@@ -88,10 +88,19 @@ class TimeDropdown : TextInputDropDown {
             else if (displayMode == DISPLAY_LESSONS && lessonsDate != null) {
                 val lessons = db.timetableDao().getForDateNow(profileId, lessonsDate!!)
 
+                if (lessons.isEmpty()) {
+                    hours += Item(
+                            -2L,
+                            context.getString(R.string.dialog_event_manual_no_timetable),
+                            tag = -2L
+                    )
+                    noTimetable = true
+                    return@withContext hours
+                }
+
                 hours += lessons.map { lesson ->
                     if (lesson.type == Lesson.TYPE_NO_LESSONS) {
                         // indicate there are no lessons this day
-                        noLessons = true
                         return@map Item(
                                 -2L,
                                 context.getString(R.string.dialog_event_manual_no_lessons),
@@ -161,7 +170,7 @@ class TimeDropdown : TextInputDropDown {
             }
         }
 
-        return !noLessons
+        return !noTimetable
     }
 
     fun pickerDialog() {

@@ -1255,5 +1255,6 @@
     <string name="grades_config_average_without_weight_message">Pozwala na liczenie średniej arytmetycznej z przedmiotów, w których wszystkie wystawione oceny mają wagę 0 (nie są liczone do średniej).\n\nJeśli taki przedmiot celowo nie powinien być liczony, odznacz okienko przy tym ustawieniu.</string>
     <string name="grades_config_minus_value">Własna wartość minusa</string>
     <string name="grades_config_plus_value">Własna wartość plusa</string>
-    <string name="timetable_generate_syncing_text">Pobieranie planu lekcji na wybrany tydzień...</string>
+    <string name="timetable_syncing_text">Pobieranie planu lekcji na wybrany tydzień...</string>
+    <string name="dialog_event_manual_no_timetable">Nie pobrano planu lekcji...</string>
 </resources>

@@ -60,7 +60,7 @@ class GenerateBlockTimetableDialog(
 
     private val app by lazy { activity.application as App }
 
-    private lateinit var job: Job
+    private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
@@ -78,7 +78,6 @@ class GenerateBlockTimetableDialog(
     init { run {
         if (activity.isFinishing)
             return@run
-        job = Job()
         onShowListener?.invoke(TAG)
         EventBus.getDefault().register(this)
 
@@ -193,7 +192,7 @@ class GenerateBlockTimetableDialog(
             }
             enqueuedWeekDialog = MaterialAlertDialogBuilder(activity)
                     .setTitle(R.string.please_wait)
-                    .setMessage(R.string.timetable_generate_syncing_text)
+                    .setMessage(R.string.timetable_syncing_text)
                     .setCancelable(false)
                     .show()
 

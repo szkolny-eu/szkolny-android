@@ -189,6 +189,7 @@ class DateDropdown : TextInputDropDown {
                     addOnPositiveButtonClickListener {
                         val dateSelected = Date.fromMillis(it)
                         selectDate(dateSelected)
+                        onDateSelected?.invoke(dateSelected, null)
                     }
                     this@DateDropdown.activity ?: return@apply
                     show(this@DateDropdown.activity!!.supportFragmentManager, "MaterialDatePicker")
