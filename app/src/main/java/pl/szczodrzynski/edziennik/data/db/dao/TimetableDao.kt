@@ -5,10 +5,9 @@
 package pl.szczodrzynski.edziennik.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
@@ -53,6 +52,9 @@ interface TimetableDao {
     @Query("DELETE FROM timetable WHERE profileId = :profileId AND type != -1 AND ((type != 3 AND date >= :dateFrom AND date <= :dateTo) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom AND oldDate <= :dateTo))")
     fun clearBetweenDates(profileId: Int, dateFrom: Date, dateTo: Date)
 
+    @RawQuery(observedEntities = [Lesson::class])
+    fun getRaw(query: SupportSQLiteQuery): LiveData<List<LessonFull>>
+
     @Query("""
         $QUERY
         WHERE timetable.profileId = :profileId AND type != -1 AND type != 0
@@ -67,12 +69,11 @@ interface TimetableDao {
     """)
     fun getChangesForDateNow(profileId: Int, date: Date): List<LessonFull>
 
-    @Query("""
+    fun getForDate(profileId: Int, date: Date) = getRaw(SimpleSQLiteQuery("""
         $QUERY
-        WHERE timetable.profileId = :profileId AND ((type != 3 AND date = :date) OR ((type = 3 OR type = 1) AND oldDate = :date))
+        WHERE timetable.profileId = $profileId AND ((type != 3 AND date = "${date.stringY_m_d}") OR ((type = 3 OR type = 1) AND oldDate = "${date.stringY_m_d}"))
         ORDER BY id, type
-    """)
-    fun getForDate(profileId: Int, date: Date): LiveData<List<LessonFull>>
+    """))
 
     @Query("""
         $QUERY

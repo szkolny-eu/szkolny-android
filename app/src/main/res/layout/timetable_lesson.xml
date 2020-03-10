@@ -74,8 +74,8 @@
                     tools:text="pracownia urządzeń techniki komputerowej" />
 
                 <View
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"

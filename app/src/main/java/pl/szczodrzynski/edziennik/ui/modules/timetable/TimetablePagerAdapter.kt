@@ -33,11 +33,6 @@ class TimetablePagerAdapter(
                 putInt("endHour", endHour)
             }
         }
-        /*return TimetableDayFragment().apply {
-            arguments = Bundle().also {
-                it.putLong("date", items[position].value.toLong())
-            }
-        }*/
     }
 
     override fun getCount(): Int {

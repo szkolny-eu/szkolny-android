@@ -1,22 +1,35 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2020-2-16.
+ * Copyright (c) Kuba Szczodrzyński 2020-3-10.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.timetable
+package pl.szczodrzynski.edziennik.utils.managers
 
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.widget.TextView
-import pl.szczodrzynski.edziennik.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
-import pl.szczodrzynski.edziennik.resolveAttr
-import pl.szczodrzynski.edziennik.setText
-import pl.szczodrzynski.edziennik.setTintColor
 import pl.szczodrzynski.navlib.getColorFromAttr
+import kotlin.coroutines.CoroutineContext
 
-class TimetableUtils {
+class TimetableManager(val app: App) : CoroutineScope {
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Default
+
+    fun markAsSeen(lesson: LessonFull) {
+        lesson.seen = true
+        startCoroutineTimer(500L, 0L) {
+            app.db.metadataDao().setSeen(lesson.profileId, lesson, true)
+        }
+    }
+
     fun getAnnotation(context: Context, lesson: LessonFull, annotation: TextView): Boolean {
         var annotationVisible = false
         when (lesson.type) {

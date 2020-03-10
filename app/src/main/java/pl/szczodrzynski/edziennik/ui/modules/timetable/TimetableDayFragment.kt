@@ -5,15 +5,15 @@
 package pl.szczodrzynski.edziennik.ui.modules.timetable
 
 import android.os.Bundle
-import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.core.view.setPadding
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
@@ -27,6 +27,7 @@ import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableNoTimetableBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.timetable.LessonDetailsDialog
+import pl.szczodrzynski.edziennik.ui.modules.base.PagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
 import pl.szczodrzynski.edziennik.utils.ListenerScrollView
@@ -35,7 +36,7 @@ import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
 
-class TimetableDayFragment : Fragment(), CoroutineScope {
+class TimetableDayFragment : PagerFragment(), CoroutineScope {
     companion object {
         private const val TAG = "TimetableDayFragment"
     }
@@ -44,7 +45,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
     private lateinit var activity: MainActivity
     private lateinit var inflater: AsyncLayoutInflater
 
-    private lateinit var job: Job
+    private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
@@ -53,7 +54,7 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
     private var endHour = DEFAULT_END_HOUR
     private var firstEventMinute = 24 * 60
 
-    private val utils by lazy { TimetableUtils() }
+    private val manager by lazy { app.timetableManager }
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
@@ -88,25 +89,23 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
-        if (context == null)
-            return null
+        context ?: return null
         app = activity.application as App
-        job = Job()
         this.inflater = AsyncLayoutInflater(context!!)
         date = arguments?.getInt("date")?.let { Date.fromValue(it) } ?: Date.getToday()
         startHour = arguments?.getInt("startHour") ?: DEFAULT_START_HOUR
         endHour = arguments?.getInt("endHour") ?: DEFAULT_END_HOUR
         return FrameLayout(activity).apply {
             layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            addView(ProgressBar(activity).apply {
+                layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER)
+            })
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (app.profile == null || !isAdded)
-            return
-
-        Log.d(TAG, "onViewCreated, date=$date")
+    override fun onPageCreated(): Boolean {
+        if (!isAdded)
+            return false
 
         // observe lesson database
         app.db.timetableDao().getForDate(App.profileId, date).observe(this, Observer { lessons ->
@@ -117,6 +116,8 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
                 processLessonList(lessons, events)
             }
         })
+
+        return true
     }
 
     private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>) {
@@ -174,6 +175,8 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
         }
         dayView.setHourLabelViews(hourLabelViews)
 
+        lessons.forEach { it.showAsUnseen = !it.seen }
+
         buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events)
     }
 
@@ -209,7 +212,6 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
             eventView.tag = lesson
 
             eventView.setOnClickListener {
-                Log.d(TAG, "Clicked ${it.tag}")
                 if (isAdded && it.tag is LessonFull)
                     LessonDetailsDialog(activity, it.tag as LessonFull)
             }
@@ -275,10 +277,13 @@ class TimetableDayFragment : Fragment(), CoroutineScope {
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
 
-            lb.unread = lesson.type != Lesson.TYPE_NORMAL && !lesson.seen
+            lb.unread = lesson.type != Lesson.TYPE_NORMAL && lesson.showAsUnseen
+            if (!lesson.seen) {
+                manager.markAsSeen(lesson)
+            }
 
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
-            lb.annotationVisible = utils.getAnnotation(activity, lesson, lb.annotation)
+            lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
 
             // The day view needs the event time ranges in the start minute/end minute format,
             // so calculate those here

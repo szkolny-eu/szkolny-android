@@ -25,7 +25,6 @@ import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
-import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableUtils
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -50,7 +49,7 @@ class LessonDetailsDialog(
         get() = job + Dispatchers.Main
 
     private lateinit var adapter: EventListAdapter
-    private val utils by lazy { TimetableUtils() }
+    private val manager by lazy { app.timetableManager }
 
     init { run {
         if (activity.isFinishing)
@@ -91,7 +90,7 @@ class LessonDetailsDialog(
         val lessonTime = lesson.displayStartTime ?: return
         b.lessonDate.text = Week.getFullDayName(lessonDate.weekDay) + ", " + lessonDate.formattedString
 
-        b.annotationVisible = utils.getAnnotation(activity, lesson, b.annotation)
+        b.annotationVisible = manager.getAnnotation(activity, lesson, b.annotation)
 
         if (lesson.type >= Lesson.TYPE_SHIFTED_SOURCE) {
             b.shiftedLayout.visibility = View.VISIBLE

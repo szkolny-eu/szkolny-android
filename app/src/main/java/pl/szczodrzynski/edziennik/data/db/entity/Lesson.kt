@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.db.entity
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.Index
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -65,6 +66,9 @@ open class Lesson(val profileId: Int, var id: Long) {
         get() = type == TYPE_CHANGE || type == TYPE_SHIFTED_TARGET
 
     fun buildId(): Long = (displayDate?.combineWith(displayStartTime) ?: 0L) / 6L * 10L + (hashCode() and 0xFFFF)
+
+    @Ignore
+    var showAsUnseen = false
 
     override fun toString(): String {
         return "Lesson(profileId=$profileId, " +

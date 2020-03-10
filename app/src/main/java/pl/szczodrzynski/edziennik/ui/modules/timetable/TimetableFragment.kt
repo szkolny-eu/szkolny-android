@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
@@ -26,12 +25,9 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
-import pl.szczodrzynski.edziennik.observeOnce
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.timetable.GenerateBlockTimetableDialog
-import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
@@ -50,7 +46,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
     private lateinit var activity: MainActivity
     private lateinit var b: FragmentTimetableV2Binding
 
-    private lateinit var job: Job
+    private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
@@ -61,11 +57,6 @@ class TimetableFragment : Fragment(), CoroutineScope {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        job = Job()
-        context!!.theme.applyStyle(Themes.appTheme, true)
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false)
-        // activity, context and profile is valid
         b = FragmentTimetableV2Binding.inflate(inflater)
         // TODO: 2020-01-05 resolve issues with page scrolling (and scrolling up) with viewpager and swipe to refresh
         //b.refreshLayout.setParent(activity.swipeRefreshLayout)
@@ -91,8 +82,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { launch {
-        // TODO check if app, activity, b can be null
-        if (app.profile == null || !isAdded)
+        if (!isAdded)
             return@launch
 
         if (app.profile.getStudentData("timetableNotPublic", false)) {
@@ -141,7 +131,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
                 startHour,
                 endHour
         )
-        b.viewPager.offscreenPageLimit = 2
+        b.viewPager.offscreenPageLimit = 1
         b.viewPager.adapter = pagerAdapter
         b.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -162,7 +152,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
                     activity.gainAttentionFAB()
                     fabShown = true
                 }
-                markLessonsAsSeen()
+                //markLessonsAsSeen()
             }
         })
 
@@ -224,7 +214,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
         })
     }}
 
-    private fun markLessonsAsSeen() = pageSelection?.let { date ->
+    /*private fun markLessonsAsSeen() = pageSelection?.let { date ->
         app.db.timetableDao().getForDate(App.profileId, date).observeOnce(this@TimetableFragment, Observer { lessons ->
             lessons.forEach { lesson ->
                 if (lesson.type != Lesson.TYPE_NORMAL && lesson.type != Lesson.TYPE_NO_LESSONS
@@ -233,5 +223,5 @@ class TimetableFragment : Fragment(), CoroutineScope {
                 }
             }
         })
-    }
+    }*/
 }
