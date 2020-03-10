@@ -25,6 +25,8 @@ class TimetableManager(val app: App) : CoroutineScope {
 
     fun markAsSeen(lesson: LessonFull) {
         lesson.seen = true
+        if (lesson.type <= Lesson.TYPE_NORMAL)
+            return
         startCoroutineTimer(500L, 0L) {
             app.db.metadataDao().setSeen(lesson.profileId, lesson, true)
         }
