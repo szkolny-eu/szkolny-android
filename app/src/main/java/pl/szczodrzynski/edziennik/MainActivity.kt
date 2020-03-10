@@ -12,7 +12,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -42,7 +41,6 @@ import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
@@ -285,8 +283,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         d(TAG, "Profile is valid, inflating views")
 
         setContentView(b.root)
-
-        Log.d(TAG, Signing.appPassword)
 
         mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
@@ -906,7 +902,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         bottomSheet.close()
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false
-        bottomSheet.onCloseListener = null
         drawer.close()
         drawer.setSelection(target.id, fireOnClick = false)
         navView.toolbar.setTitle(target.title ?: target.name)
