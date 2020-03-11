@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import coil.Coil
 import coil.api.load
@@ -22,15 +23,26 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.crc16
 import pl.szczodrzynski.edziennik.data.api.events.FeedbackMessageEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
 import pl.szczodrzynski.edziennik.databinding.FragmentFeedbackBinding
-import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.openUrl
 import java.util.*
+import kotlin.collections.List
+import kotlin.collections.any
+import kotlin.collections.filter
+import kotlin.collections.firstOrNull
+import kotlin.collections.forEach
+import kotlin.collections.forEachIndexed
+import kotlin.collections.isNotEmpty
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
 import kotlin.coroutines.CoroutineContext
 
 class FeedbackFragment : Fragment(), CoroutineScope {
@@ -39,7 +51,7 @@ class FeedbackFragment : Fragment(), CoroutineScope {
     }
 
     private lateinit var app: App
-    private lateinit var activity: MainActivity
+    private lateinit var activity: AppCompatActivity
     private lateinit var b: FragmentFeedbackBinding
 
     private val job: Job = Job()
@@ -54,11 +66,10 @@ class FeedbackFragment : Fragment(), CoroutineScope {
     private var receiver: BroadcastReceiver? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
+        activity = (getActivity() as AppCompatActivity?) ?: return null
         if (context == null)
             return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
         // activity, context and profile is valid
         b = FragmentFeedbackBinding.inflate(inflater)
         // prevent doubled received messages on enter
@@ -239,7 +250,7 @@ class FeedbackFragment : Fragment(), CoroutineScope {
         }
 
         launch {
-            val message = api.runCatching(activity.errorSnackbar) {
+            val message = api.runCatching(activity) {
                 val message = api.sendFeedbackMessage(
                         senderName = App.profile.accountName ?: App.profile.studentNameLong,
                         targetDeviceId = if (isDev) currentDeviceId else null,
