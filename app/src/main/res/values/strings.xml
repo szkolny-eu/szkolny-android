@@ -1267,4 +1267,5 @@
     <string name="card_type_timetable">Plan lekcji</string>
     <string name="card_type_grades">Ostatnie oceny</string>
     <string name="card_type_events">Najbliższe wydarzenia</string>
+    <string name="dialog_event_manual_time_choose">Wybierz godzinę</string>
 </resources>

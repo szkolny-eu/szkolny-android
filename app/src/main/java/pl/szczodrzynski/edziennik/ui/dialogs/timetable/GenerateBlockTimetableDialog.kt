@@ -18,8 +18,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.FileProvider
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -116,18 +116,16 @@ class GenerateBlockTimetableDialog(
     }}
 
     private fun selectDate() {
-        MaterialDatePicker.Builder
-                .datePicker()
-                .setSelection(Date.getToday().inMillis)
-                .build()
+        val date = Date.getToday()
+        DatePickerDialog
+                .newInstance({ _, year, monthOfYear, dayOfMonth ->
+                    val dateSelected = Date(year, monthOfYear, dayOfMonth)
+                    generateBlockTimetable(dateSelected.weekStart, dateSelected.weekEnd)
+                }, date.year, date.month, date.day)
                 .apply {
-                    addOnPositiveButtonClickListener { dateInMillis ->
-                        dismiss()
-                        val selectedDate = Date.fromMillis(dateInMillis)
-                        generateBlockTimetable(selectedDate.weekStart, selectedDate.weekEnd)
-                    }
+                    accentColor = R.attr.colorPrimary.resolveAttr(this@GenerateBlockTimetableDialog.activity)
+                    show(this@GenerateBlockTimetableDialog.activity.supportFragmentManager, "DatePickerDialog")
                 }
-                .show(activity.supportFragmentManager, "MaterialDatePicker")
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

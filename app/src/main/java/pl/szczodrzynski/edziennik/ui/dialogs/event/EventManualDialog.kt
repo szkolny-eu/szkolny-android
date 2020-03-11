@@ -365,13 +365,12 @@ class EventManualDialog(
 
     private fun saveEvent() {
         val date = b.dateDropdown.getSelected() as? Date
-        val startTimePair = b.timeDropdown.getSelected() as? Pair<*, *>
-        val startTime = startTimePair?.first as? Time
+        val timeSelected = b.timeDropdown.getSelected()
         val teamId = b.teamDropdown.getSelected() as? Long
         val type = b.typeDropdown.selected?.id
         val topic = b.topic.text?.toString()
         val subjectId = b.subjectDropdown.getSelected() as? Long
-        val teacherId = b.teacherDropdown.getSelected() as? Long
+        val teacherId = b.teacherDropdown.getSelected()
 
         val share = b.shareSwitch.isChecked
 
@@ -384,6 +383,11 @@ class EventManualDialog(
 
         if (date == null) {
             b.dateDropdown.error = app.getString(R.string.dialog_event_manual_date_choose)
+            isError = true
+        }
+
+        if (timeSelected == null || timeSelected !is Pair<*, *>) {
+            b.dateDropdown.error = app.getString(R.string.dialog_event_manual_time_choose)
             isError = true
         }
 
@@ -401,6 +405,11 @@ class EventManualDialog(
             b.topic.error = app.getString(R.string.dialog_event_manual_topic_choose)
             isError = true
         }
+
+        val startTime = if (timeSelected == 0L)
+            null
+        else
+            (timeSelected as? Pair<*, *>)?.first as? Time
 
         if (isError) return
 

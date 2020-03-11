@@ -13,6 +13,9 @@
 
     <color name="dividerColor">#3e7f7f7f</color>
 
+    <color name="mdtp_accent_color">#2196f3</color>
+    <color name="mdtp_accent_color_dark">#64b5f6</color>
+
 
     <!-- LIGHT THEME -->
     <color name="windowBackgroundLight">#ffffffff</color>

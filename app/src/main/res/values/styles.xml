@@ -88,6 +88,8 @@
 
     <style name="AppTheme" parent="NavView" />
 
+    <style name="mdtp_ActionButton.Text" parent="Widget.MaterialComponents.Button.TextButton.Dialog"/>
+
     <!-- Base application theme. -->
     <style name="AppTheme.Light" parent="NavView.Light">
         <item name="colorPrimary">#2196f3</item>
@@ -123,6 +125,7 @@
         <item name="halfHourDividerColor">#e0e0e0</item>
 
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
+        <item name="mdtp_theme_dark">false</item>
     </style>
     <style name="AppTheme.Dark" parent="NavView.Dark">
         <item name="colorPrimary">#64b5f6</item>
@@ -158,6 +161,7 @@
         <item name="halfHourDividerColor">#40ffffff</item>
 
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
+        <item name="mdtp_theme_dark">true</item>
     </style>
 
 

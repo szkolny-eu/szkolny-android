@@ -16,16 +16,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
 import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
+import pl.szczodrzynski.edziennik.resolveAttr
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.timetable.GenerateBlockTimetableDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -169,16 +170,15 @@ class TimetableFragment : Fragment(), CoroutineScope {
                         .withIcon(SzkolnyFont.Icon.szf_calendar_today_outline)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
-                            MaterialDatePicker.Builder
-                                    .datePicker()
-                                    .setSelection(Date.getToday().inMillis)
-                                    .build()
+                            val date = Date.getToday()
+                            DatePickerDialog
+                                    .newInstance({ _, year, monthOfYear, dayOfMonth ->
+                                        val dateSelected = Date(year, monthOfYear, dayOfMonth)
+                                        b.tabLayout.setCurrentItem(items.indexOfFirst { it == dateSelected }, true)
+                                    }, date.year, date.month, date.day)
                                     .apply {
-                                        addOnPositiveButtonClickListener { dateInMillis ->
-                                            val dateSelected = Date.fromMillis(dateInMillis)
-                                            b.tabLayout.setCurrentItem(items.indexOfFirst { it == dateSelected }, true)
-                                        }
-                                        show(this@TimetableFragment.activity.supportFragmentManager, "MaterialDatePicker")
+                                        accentColor = R.attr.colorPrimary.resolveAttr(this@TimetableFragment.activity)
+                                        show(this@TimetableFragment.activity.supportFragmentManager, "DatePickerDialog")
                                     }
                         }),
                 BottomSheetPrimaryItem(true)

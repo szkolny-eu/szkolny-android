@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.*
@@ -174,19 +175,19 @@ class TimeDropdown : TextInputDropDown {
     }
 
     fun pickerDialog() {
-        /*MaterialDatePicker.Builder
-                .datePicker()
-                .setSelection((selectedId?.let { Date.fromValue(it.toInt()) }
-                        ?: Date.getToday()).inMillis)
-                .build()
+        val time = (getSelected() as? Pair<*, *>)?.first as? Time ?: Time.getNow()
+
+        TimePickerDialog
+                .newInstance({ _, hourOfDay, minute, second ->
+                    val timeSelected = Time(hourOfDay, minute, second)
+                    selectTime(timeSelected)
+                    onTimeSelected?.invoke(timeSelected, null, null)
+                }, time.hour, time.minute, 0, true)
                 .apply {
-                    addOnPositiveButtonClickListener {
-                        val dateSelected = Date.fromMillis(it)
-                        selectDate(dateSelected)
-                    }
-                    this@DateDropdown.activity ?: return@apply
-                    show(this@DateDropdown.activity!!.supportFragmentManager, "MaterialDatePicker")
-                }*/
+                    this@TimeDropdown.activity ?: return@apply
+                    accentColor = R.attr.colorPrimary.resolveAttr(this@TimeDropdown.activity)
+                    show(this@TimeDropdown.activity!!.supportFragmentManager, "TimePickerDialog")
+                }
     }
 
     fun selectTime(time: Time) {
@@ -208,12 +209,13 @@ class TimeDropdown : TextInputDropDown {
      * Get the currently selected time.
      * ### Returns:
      * - null if no valid time is selected
+     * - 0L if 'all day' is selected
      * - a [Pair] of [Time] and [Time]? - the selected time object, if [displayMode] == [DISPLAY_LESSONS] or [showCustomTime]
      * - [LessonRange] - the selected lesson range object, if [displayMode] == [DISPLAY_LESSON_RANGES]
      */
     fun getSelected(): Any? {
         return when (val tag = selected?.tag) {
-            0L -> null
+            0L -> 0L
             is LessonFull ->
                 if (tag.displayStartTime != null)
                     tag.displayStartTime!! to tag.displayEndTime
