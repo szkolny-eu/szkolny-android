@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.modules.home
 
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment.Companion.removeCard
@@ -14,8 +15,8 @@ import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
 class CardItemTouchHelperCallback(private val cardAdapter: HomeCardAdapter, private val refreshLayout: SwipeRefreshLayoutNoIndicator?) : ItemTouchHelper.Callback() {
     companion object {
         private const val TAG = "CardItemTouchHelperCallback"
-        private const val DRAG_FLAGS = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-        private const val SWIPE_FLAGS = ItemTouchHelper.RIGHT
+        private const val DRAG_FLAGS = UP or DOWN
+        private const val SWIPE_FLAGS = RIGHT
     }
 
     private var dragCardView: MaterialCardView? = null
@@ -40,11 +41,12 @@ class CardItemTouchHelperCallback(private val cardAdapter: HomeCardAdapter, priv
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
 
-        if (actionState == ItemTouchHelper.ACTION_STATE_DRAG && viewHolder != null) {
+        if (viewHolder != null && (actionState == ACTION_STATE_DRAG || actionState == ACTION_STATE_SWIPE)) {
             dragCardView = viewHolder.itemView as MaterialCardView
             dragCardView?.isDragged = true
             refreshLayout?.isEnabled = false
-        } else if (actionState == ItemTouchHelper.ACTION_STATE_IDLE && dragCardView != null) {
+        }
+        else if (actionState == ACTION_STATE_IDLE && dragCardView != null) {
             refreshLayout?.isEnabled = true
             dragCardView?.isDragged = false
             dragCardView = null
