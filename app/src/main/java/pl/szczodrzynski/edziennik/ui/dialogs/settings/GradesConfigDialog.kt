@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_SEM_2_AVG
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_SEM_2_SEM
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_ALL_GRADES
+import java.util.*
 
 class GradesConfigDialog(
         val activity: AppCompatActivity,
@@ -88,14 +89,34 @@ class GradesConfigDialog(
             else -> null
         }?.isChecked = true
 
-        b.dontCountZeroToAverage.isChecked = !profileConfig.countZeroToAvg
+        b.dontCountGrades.isChecked = profileConfig.dontCountEnabled && profileConfig.dontCountGrades.isNotEmpty()
         b.hideImproved.isChecked = profileConfig.hideImproved
         b.averageWithoutWeight.isChecked = profileConfig.averageWithoutWeight
+
+        if (profileConfig.dontCountGrades.isEmpty()) {
+            b.dontCountGradesText.setText("nb, 0, bz, bd")
+        }
+        else {
+            b.dontCountGradesText.setText(profileConfig.dontCountGrades.join(", "))
+        }
     }
 
     private fun saveConfig() {
         profileConfig.plusValue = if (b.customPlusCheckBox.isChecked) b.customPlusValue.progress else null
         profileConfig.minusValue = if (b.customMinusCheckBox.isChecked) b.customMinusValue.progress else null
+
+        b.dontCountGradesText.setText(
+                b.dontCountGradesText
+                        .text
+                        ?.toString()
+                        ?.toLowerCase(Locale.getDefault())
+                        ?.replace(", ", ",")
+        )
+        profileConfig.dontCountEnabled = b.dontCountGrades.isChecked
+        profileConfig.dontCountGrades = b.dontCountGradesText.text
+                ?.split(",")
+                ?.map { it.trim() }
+                ?: listOf()
     }
 
     private fun initView() {
@@ -127,7 +148,6 @@ class GradesConfigDialog(
         b.gradeAverageMode2.setOnSelectedListener { profileConfig.yearAverageMode = YEAR_1_AVG_2_SEM }
         b.gradeAverageMode3.setOnSelectedListener { profileConfig.yearAverageMode = YEAR_1_SEM_2_SEM }
 
-        b.dontCountZeroToAverage.onChange { _, isChecked -> profileConfig.countZeroToAvg = !isChecked }
         b.hideImproved.onChange { _, isChecked -> profileConfig.hideImproved = isChecked }
         b.averageWithoutWeight.onChange { _, isChecked -> profileConfig.averageWithoutWeight = isChecked }
 

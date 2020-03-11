@@ -315,7 +315,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:text="@string/grades_stats_custom_value_notice"
+                android:text="@string/grades_stats_custom_config_notice"
                 android:textAppearance="@style/NavView.TextView.Helper"
                 android:textSize="12sp"
                 android:textStyle="italic" />

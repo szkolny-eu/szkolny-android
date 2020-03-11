@@ -53,6 +53,8 @@ class GradesManager(val app: App) : CoroutineScope {
         get() = app.config.forProfile().grades.plusValue
     val minusValue
         get() = app.config.forProfile().grades.minusValue
+    val dontCountEnabled
+        get() = app.config.forProfile().grades.dontCountEnabled
     val dontCountGrades
         get() = app.config.forProfile().grades.dontCountGrades
     val hideImproved
@@ -100,8 +102,10 @@ class GradesManager(val app: App) : CoroutineScope {
         return grade.value
     }
 
-    fun getGradeWeight(dontCountGrades: List<String>, grade: Grade): Float {
-        if (grade.name.toLowerCase() in dontCountGrades)
+    fun getGradeWeight(dontCountEnabled: Boolean, dontCountGrades: List<String>, grade: Grade): Float {
+        if (!dontCountEnabled)
+            return grade.weight
+        if (grade.name.toLowerCase().trim() in dontCountGrades)
             return 0f
         return grade.weight
     }

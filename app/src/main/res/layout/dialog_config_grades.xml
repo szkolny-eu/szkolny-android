@@ -84,16 +84,32 @@
                 android:background="@drawable/divider"/>
 
             <CheckBox
-                android:id="@+id/dontCountZeroToAverage"
+                android:id="@+id/dontCountGrades"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="0dp"
-                android:text="@string/settings_register_dont_count_zero_text"/>
+                android:text="@string/grades_config_dont_count_grades"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:hint="@string/grades_config_dont_count_hint"
+                app:placeholderText="@string/grades_config_dont_count_placeholder"
+                android:enabled="@{dontCountGrades.checked}">
+
+                <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
+                    android:id="@+id/dontCountGradesText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="nb, 0, +, -, bz"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
                 android:id="@+id/hideImproved"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:minHeight="32dp"
                 android:text="@string/grades_config_dont_show_improved"/>
 

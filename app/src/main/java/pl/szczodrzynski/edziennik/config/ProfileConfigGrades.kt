@@ -21,11 +21,6 @@ class ProfileConfigGrades(private val config: ProfileConfig) {
         get() { mYearAverageMode = mYearAverageMode ?: config.values.get("yearAverageMode", YEAR_ALL_GRADES); return mYearAverageMode ?: YEAR_ALL_GRADES }
         set(value) { config.set("yearAverageMode", value); mYearAverageMode = value }
 
-    private var mCountZeroToAvg: Boolean? = null
-    var countZeroToAvg: Boolean
-        get() { mCountZeroToAvg = mCountZeroToAvg ?: config.values.get("countZeroToAvg", true); return mCountZeroToAvg ?: true }
-        set(value) { config.set("countZeroToAvg", value); mCountZeroToAvg = value }
-
     private var mHideImproved: Boolean? = null
     var hideImproved: Boolean
         get() { mHideImproved = mHideImproved ?: config.values.get("hideImproved", false); return mHideImproved ?: false }
@@ -45,6 +40,11 @@ class ProfileConfigGrades(private val config: ProfileConfig) {
         get() { mMinusValue = mMinusValue ?: config.values.getFloat("minusValue"); return mMinusValue }
         set(value) { config.set("minusValue", value); mMinusValue = value }
 
+    private var mDontCountEnabled: Boolean? = null
+    var dontCountEnabled: Boolean
+        get() { mDontCountEnabled = mDontCountEnabled ?: config.values.get("dontCountEnabled", false); return mDontCountEnabled ?: false }
+        set(value) { config.set("dontCountEnabled", value); mDontCountEnabled = value }
+    
     private var mDontCountGrades: List<String>? = null
     var dontCountGrades: List<String>
         get() { mDontCountGrades = mDontCountGrades ?: config.values.get("dontCountGrades", listOf()); return mDontCountGrades ?: listOf() }

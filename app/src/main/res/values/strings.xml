@@ -1231,7 +1231,8 @@
     <string name="grades_stats_proposed_avg">Śr. ocen proponowanych:\n%s</string>
     <string name="grades_stats_help_title">Obliczanie średniej wszystkich przedmiotów</string>
     <string name="grades_stats_help_text">Ocena przewidywana z danego przedmiotu jest obliczana na podstawie aktualnej średniej ważonej.\n\nOcena jest liczbą całkowitą, jaką wystawił by nauczyciel bazując na średniej. Liczba zaokrąglona jest w górę jeśli część po przecinku przekroczy ,75.\nPrzykładowo: średnie 3,75 jak również 4,74 dają w wyniku ocenę dobrą (4).\n\nŚrednia przewidywana ze wszystkich przedmiotów obejmuje obliczone w ten sposób oceny końcowe.</string>
-    <string name="grades_stats_custom_value_notice">Została ustawiona własna wartość plusa/minusa. Jeśli uważasz, że średnia się nie zgadza, kliknij Konfiguruj.</string>
+    <string name="grades_stats_custom_value_notice">Została ustawiona własna wartość plusa/minusa. Jeśli uważasz, że się ona nie zgadza, kliknij Konfiguruj.</string>
+    <string name="grades_stats_custom_config_notice">Aktualne ustawienia ocen mogą wpływać na średnią. Jeśli uważasz, że się ona nie zgadza, kliknij Konfiguruj.</string>
     <string name="configure">Konfiguruj</string>
     <string name="menu_timetable_manual">Edytor planu lekcji</string>
     <string name="dropdown_subject_custom">Własny przedmiot</string>
@@ -1257,4 +1258,7 @@
     <string name="grades_config_plus_value">Własna wartość plusa</string>
     <string name="timetable_syncing_text">Pobieranie planu lekcji na wybrany tydzień...</string>
     <string name="dialog_event_manual_no_timetable">Nie pobrano planu lekcji...</string>
+    <string name="grades_config_dont_count_grades">Wyklucz wybrane oceny ze średniej</string>
+    <string name="grades_config_dont_count_hint">Oceny oddziel przecinkiem</string>
+    <string name="grades_config_dont_count_placeholder">Podaj oceny...</string>
 </resources>

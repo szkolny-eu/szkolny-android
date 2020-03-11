@@ -14,7 +14,7 @@ class ProfileConfigMigration(config: ProfileConfig) {
 
         if (dataVersion < 1) {
             grades.colorMode = COLOR_MODE_WEIGHTED
-            grades.countZeroToAvg = true
+            grades.dontCountEnabled = false
             grades.yearAverageMode = YEAR_ALL_GRADES
             ui.agendaViewType = AGENDA_DEFAULT
 

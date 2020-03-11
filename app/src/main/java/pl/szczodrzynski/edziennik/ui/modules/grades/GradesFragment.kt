@@ -53,6 +53,7 @@ class GradesFragment : Fragment(), CoroutineScope {
         GradesAdapter(activity)
     }
     private val manager by lazy { app.gradesManager }
+    private val dontCountEnabled by lazy { manager.dontCountEnabled }
     private val dontCountGrades by lazy { manager.dontCountGrades }
     private var expandSubjectId = 0L
 
@@ -299,7 +300,9 @@ class GradesFragment : Fragment(), CoroutineScope {
 
     private fun countGrade(grade: Grade, averages: GradesAverages) {
         val value = manager.getGradeValue(grade)
-        val weight = manager.getGradeWeight(dontCountGrades, grade)
+        val weight = manager.getGradeWeight(dontCountEnabled, dontCountGrades, grade)
+        if (weight == 0f)
+            return
         when (grade.type) {
             Grade.TYPE_NORMAL -> {
                 if (grade.value > 0f) {

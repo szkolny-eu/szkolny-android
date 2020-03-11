@@ -16,7 +16,6 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.databinding.FragmentGradesEditorBinding
 import pl.szczodrzynski.edziennik.utils.Colors
-import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_AVG
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_SEM
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_SEM_2_AVG
@@ -107,7 +106,7 @@ class GradesEditorFragment : Fragment() {
                         continue
                     }
                     var weight = editorGrade.weight
-                    if (!config.countZeroToAvg && editorGrade.name == "0") {
+                    if (config.dontCountEnabled && config.dontCountGrades.contains(editorGrade.name.toLowerCase().trim())) {
                         weight = 0f
                     }
                     val value = editorGrade.value * weight
@@ -172,7 +171,7 @@ class GradesEditorFragment : Fragment() {
         averageSemester = 0f
         for (editorGrade in editorGrades) {
             var weight = editorGrade.weight
-            if (!config.countZeroToAvg && editorGrade.name == "0") {
+            if (config.dontCountEnabled && config.dontCountGrades.contains(editorGrade.name.toLowerCase().trim())) {
                 weight = 0f
             }
             val value = editorGrade.value * weight
@@ -215,7 +214,7 @@ class GradesEditorFragment : Fragment() {
                             continue
                         }
                         var weight = grade.weight
-                        if (!config.countZeroToAvg && grade.name == "0") {
+                        if (config.dontCountEnabled && config.dontCountGrades.contains(grade.name.toLowerCase().trim())) {
                             weight = 0f
                         }
                         val value = grade.value * weight
