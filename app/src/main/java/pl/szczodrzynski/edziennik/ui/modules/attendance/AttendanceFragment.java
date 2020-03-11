@@ -21,6 +21,7 @@ import androidx.core.graphics.ColorUtils;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
@@ -40,6 +41,7 @@ import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_ABSENT;
 import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_ABSENT_EXCUSED;
 import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_BELATED;
@@ -180,6 +182,18 @@ public class AttendanceFragment extends Fragment {
         b.attendanceView.setHasFixedSize(true);
         b.attendanceView.setLayoutManager(linearLayoutManager);
         b.attendanceView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+
+        b.attendanceView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (recyclerView.canScrollVertically(-1)) {
+                    b.refreshLayout.setEnabled(false);
+                }
+                if (!recyclerView.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
+                    b.refreshLayout.setEnabled(true);
+                }
+            }
+        });
 
         App.db.attendanceDao().getAll(App.Companion.getProfileId()).observe(this, attendance -> {
             if (app == null || activity == null || b == null || !isAdded())

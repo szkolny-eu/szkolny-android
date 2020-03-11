@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
 import kotlinx.coroutines.*
@@ -81,6 +83,16 @@ class GradesFragment : Fragment(), CoroutineScope {
                             setHasFixedSize(true)
                             layoutManager = LinearLayoutManager(context)
                             //addItemDecoration(SimpleDividerItemDecoration(context))
+                            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                                    if (recyclerView.canScrollVertically(-1)) {
+                                        b.refreshLayout.isEnabled = false
+                                    }
+                                    if (!recyclerView.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
+                                        b.refreshLayout.isEnabled = true
+                                    }
+                                }
+                            })
                         }
                     }
 

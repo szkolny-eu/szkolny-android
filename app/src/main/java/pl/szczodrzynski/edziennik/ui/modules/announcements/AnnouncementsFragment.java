@@ -33,6 +33,7 @@ import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static pl.szczodrzynski.edziennik.data.db.entity.LoginStore.LOGIN_TYPE_LIBRUS;
 import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ANNOUNCEMENT;
 
@@ -89,6 +90,18 @@ public class AnnouncementsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(view.getContext()));
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (recyclerView.canScrollVertically(-1)) {
+                    b.refreshLayout.setEnabled(false);
+                }
+                if (!recyclerView.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
+                    b.refreshLayout.setEnabled(true);
+                }
+            }
+        });
 
         app.db.announcementDao().getAll(App.Companion.getProfileId()).observe(this, announcements -> {
             if (app == null || activity == null || b == null || !isAdded())

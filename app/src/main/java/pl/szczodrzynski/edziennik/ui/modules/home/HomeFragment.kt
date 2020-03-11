@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -121,6 +122,10 @@ class HomeFragment : Fragment(), CoroutineScope {
         )
         b.configureCards.onClick {
             HomeConfigDialog(activity, reloadOnDismiss = true)
+        }
+
+        b.scrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->
+            b.refreshLayout.isEnabled = scrollY == 0
         }
 
         val showUnified = false

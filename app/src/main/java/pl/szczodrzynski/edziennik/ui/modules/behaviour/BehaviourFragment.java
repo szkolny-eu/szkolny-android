@@ -15,6 +15,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
@@ -31,6 +32,7 @@ import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_NOTICE;
 
 public class BehaviourFragment extends Fragment {
@@ -96,6 +98,18 @@ public class BehaviourFragment extends Fragment {
 
         b.noticesView.setHasFixedSize(true);
         b.noticesView.setLayoutManager(linearLayoutManager);
+
+        b.noticesView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (recyclerView.canScrollVertically(-1)) {
+                    b.refreshLayout.setEnabled(false);
+                }
+                if (!recyclerView.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
+                    b.refreshLayout.setEnabled(true);
+                }
+            }
+        });
 
         app.db.noticeDao().getAll(App.Companion.getProfileId()).observe(this, notices -> {
             if (app == null || activity == null || b == null || !isAdded())
