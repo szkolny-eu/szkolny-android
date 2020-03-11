@@ -1261,4 +1261,10 @@
     <string name="grades_config_dont_count_grades">Wyklucz wybrane oceny ze średniej</string>
     <string name="grades_config_dont_count_hint">Oceny oddziel przecinkiem</string>
     <string name="grades_config_dont_count_placeholder">Podaj oceny...</string>
+    <string name="home_configure_notice">Możesz usunąć karty przesuwając w prawo lub zmienić ich kolejność, przytrzymując na kartę.</string>
+    <string name="home_configure_add_remove">Dodaj/usuń karty</string>
+    <string name="card_type_lucky_number">Szczęśliwy numerek</string>
+    <string name="card_type_timetable">Plan lekcji</string>
+    <string name="card_type_grades">Ostatnie oceny</string>
+    <string name="card_type_events">Najbliższe wydarzenia</string>
 </resources>

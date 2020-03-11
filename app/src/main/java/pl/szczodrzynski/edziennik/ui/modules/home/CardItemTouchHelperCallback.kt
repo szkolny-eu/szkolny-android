@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.ui.modules.home
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment.Companion.removeCard
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment.Companion.swapCards
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
 
@@ -14,7 +15,7 @@ class CardItemTouchHelperCallback(private val cardAdapter: HomeCardAdapter, priv
     companion object {
         private const val TAG = "CardItemTouchHelperCallback"
         private const val DRAG_FLAGS = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-        private const val SWIPE_FLAGS = 0
+        private const val SWIPE_FLAGS = ItemTouchHelper.RIGHT
     }
 
     private var dragCardView: MaterialCardView? = null
@@ -27,11 +28,14 @@ class CardItemTouchHelperCallback(private val cardAdapter: HomeCardAdapter, priv
         val fromPosition = viewHolder.adapterPosition
         val toPosition = target.adapterPosition
 
-        swapCards(fromPosition, toPosition, cardAdapter)
-        return true
+        return swapCards(fromPosition, toPosition, cardAdapter)
     }
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) = Unit
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        removeCard(viewHolder.adapterPosition)
+        cardAdapter.items.removeAt(viewHolder.adapterPosition)
+        cardAdapter.notifyItemRemoved(viewHolder.adapterPosition)
+    }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
