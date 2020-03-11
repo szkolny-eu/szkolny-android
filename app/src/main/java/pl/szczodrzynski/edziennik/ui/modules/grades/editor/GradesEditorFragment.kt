@@ -60,16 +60,13 @@ class GradesEditorFragment : Fragment() {
         if (context == null)
             return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false)
         // activity, context and profile is valid
         b = FragmentGradesEditorBinding.inflate(inflater)
         return b.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (app.profile == null || !isAdded)
+        if (!isAdded)
             return
 
         subjectId = arguments.getLong("subjectId", -1)

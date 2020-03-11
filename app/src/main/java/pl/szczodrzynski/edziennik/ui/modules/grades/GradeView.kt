@@ -77,9 +77,9 @@ class GradeView : AppCompatTextView {
             TYPE_SEMESTER2_PROPOSED,
             TYPE_YEAR_PROPOSED -> android.R.attr.textColorPrimary.resolveAttr(context)
             else -> if (ColorUtils.calculateLuminance(gradeColor) > 0.3)
-                0x99000000.toInt()
+                0xaa000000.toInt()
             else
-                0x99ffffff.toInt()
+                0xccffffff.toInt()
         })
 
         //typeface = Typeface.create("sans-serif-light", Typeface.NORMAL)

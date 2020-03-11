@@ -3,7 +3,6 @@ package pl.szczodrzynski.edziennik.ui.modules.grades.editor
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,8 +48,7 @@ class GradesEditorAdapter(
 
         holder.gradesListName.text = editorGrade.name
         holder.gradesListName.isSelected = true
-        holder.gradesListName.setTypeface(null, Typeface.BOLD)
-        holder.gradesListName.setTextColor(if (ColorUtils.calculateLuminance(gradeColor) > 0.25) -0x1000000 else -0x1)
+        holder.gradesListName.setTextColor(if (ColorUtils.calculateLuminance(gradeColor) > 0.25) 0xaa000000.toInt() else 0xccffffff.toInt())
         holder.gradesListName.background.colorFilter = PorterDuffColorFilter(gradeColor, PorterDuff.Mode.MULTIPLY)
         holder.gradesListCategory.text = editorGrade.category
         if (editorGrade.weight < 0) {

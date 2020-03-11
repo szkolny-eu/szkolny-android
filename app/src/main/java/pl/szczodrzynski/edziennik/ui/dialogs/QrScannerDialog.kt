@@ -40,7 +40,7 @@ class QrScannerDialog(
         onShowListener?.invoke(TAG)
         app = activity.applicationContext as App
         scannerView = ZXingScannerView(activity)
-        scannerView.setPadding(0, 16.dp, 0, 0)
+        scannerView.setPadding(0, 16.dp, 4.dp, 0)
         dialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.qr_scanner_dialog_title)
                 .setView(scannerView)

@@ -16,11 +16,8 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.GradesItemSubjectBinding
-import pl.szczodrzynski.edziennik.dp
-import pl.szczodrzynski.edziennik.setText
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradeView
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesAdapter.Companion.STATE_CLOSED
@@ -38,7 +35,7 @@ class SubjectViewHolder(
 
     override fun onBind(activity: AppCompatActivity, app: App, item: GradesSubject, position: Int, adapter: GradesAdapter) {
         val manager = app.gradesManager
-        val contextWrapper = ContextThemeWrapper(activity, Themes.themeInt)
+        val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
 
         b.subjectName.text = item.subjectName
         b.dropdownIcon.rotation = when (item.state) {
@@ -62,6 +59,7 @@ class SubjectViewHolder(
 
         if (firstSemester.number != item.semester) {
             b.gradesContainer.addView(TextView(contextWrapper).apply {
+                setTextColor(android.R.attr.textColorSecondary.resolveAttr(context))
                 setText(R.string.grades_preview_other_semester, firstSemester.number)
                 setPadding(0, 0, 5.dp, 0)
                 maxLines = 1
@@ -88,6 +86,7 @@ class SubjectViewHolder(
         }
 
         b.previewContainer.addView(TextView(contextWrapper).apply {
+            setTextColor(android.R.attr.textColorSecondary.resolveAttr(context))
             text = manager.getAverageString(app, firstSemester.averages, nameSemester = true, showSemester = firstSemester.number)
             //gravity = Gravity.END
             layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT).apply {

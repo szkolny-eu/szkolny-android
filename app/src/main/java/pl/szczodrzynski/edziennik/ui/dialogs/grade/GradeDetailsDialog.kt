@@ -58,7 +58,7 @@ class GradeDetailsDialog(
         b.weightText = manager.getWeightString(app, grade)
         b.commentVisible = false
         b.devMode = App.debugMode
-        b.gradeName.setTextColor(if (ColorUtils.calculateLuminance(gradeColor) > 0.3) 0x99000000.toInt() else 0x99ffffff.toInt())
+        b.gradeName.setTextColor(if (ColorUtils.calculateLuminance(gradeColor) > 0.3) 0xaa000000.toInt() else 0xccffffff.toInt())
         b.gradeName.background.setTintColor(gradeColor)
 
         b.gradeValue = if (grade.weight == 0f || grade.value < 0f) -1f else manager.getGradeValue(grade)
