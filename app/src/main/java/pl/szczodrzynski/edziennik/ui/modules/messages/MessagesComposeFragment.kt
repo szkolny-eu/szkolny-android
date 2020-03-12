@@ -380,7 +380,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                     span.replace(0, 0, "\n\n")
                     subject = "Fwd: ${msg.subject}"
                 }
-                body = MessagesUtils.htmlToSpannable(msg.body ?: "Nie udało się wczytać oryginalnej wiadomości.")//Html.fromHtml(msg.body?.replace("<br\\s?/?>".toRegex(), "\n") ?: "Nie udało się wczytać oryginalnej wiadomości.")
+                body = MessagesUtils.htmlToSpannable(activity,msg.body ?: "Nie udało się wczytać oryginalnej wiadomości.")//Html.fromHtml(msg.body?.replace("<br\\s?/?>".toRegex(), "\n") ?: "Nie udało się wczytać oryginalnej wiadomości.")
             }
 
             b.recipients.addTextWithChips(chipList)

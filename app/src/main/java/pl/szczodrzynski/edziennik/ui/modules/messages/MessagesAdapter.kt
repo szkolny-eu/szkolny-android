@@ -41,7 +41,7 @@ class MessagesAdapter(private val app: App, private val onItemClickListener: OnI
         b.messageAttachmentImage.visibility = if (message.hasAttachments()) View.VISIBLE else View.GONE
 
         val text = message.body?.substring(0, message.body!!.length.coerceAtMost(200)) ?: ""
-        b.messageBody.text = MessagesUtils.htmlToSpannable(text)
+        b.messageBody.text = MessagesUtils.htmlToSpannable(b.root.context, text)
 
         if (message.type == Message.TYPE_SENT || message.type == Message.TYPE_DRAFT || message.seen) {
             b.messageSender.setTextAppearance(b.messageSender.context, R.style.NavView_TextView_Small)

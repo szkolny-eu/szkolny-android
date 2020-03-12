@@ -198,7 +198,7 @@ class MessageFragment : Fragment(), CoroutineScope {
     }
 
     private fun showMessage() {
-        b.body.text = MessagesUtils.htmlToSpannable(message.body ?: "")
+        b.body.text = MessagesUtils.htmlToSpannable(activity, message.body ?: "")
         b.date.text = getString(R.string.messages_date_time_format, Date.fromMillis(message.addedDate).formattedStringShort, Time.fromMillis(message.addedDate).stringHM)
 
         val messageInfo = MessagesUtils.getMessageInfo(app, message, 40, 20, 14, 10)
