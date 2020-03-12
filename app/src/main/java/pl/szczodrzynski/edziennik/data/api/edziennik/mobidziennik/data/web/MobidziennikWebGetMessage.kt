@@ -118,7 +118,7 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
 
             // this needs to be at the end
             message.apply {
-                this.body = body.html().replace("\n", "<br>")
+                this.body = body.html()
 
                 clearAttachments()
                 content.select("ul li").map { it.select("a").first() }.forEach {
