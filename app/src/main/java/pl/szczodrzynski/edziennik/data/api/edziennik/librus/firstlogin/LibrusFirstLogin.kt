@@ -54,6 +54,8 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                             return@portalGet
                         }
 
+                        val isParent = account.getString("group") == "parent"
+
                         val id = account.getInt("id") ?: continue
                         val login = account.getString("login") ?: continue
                         val token = account.getString("accessToken") ?: continue
@@ -69,7 +71,7 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                                 data.portalEmail,
                                 studentNameLong,
                                 studentNameShort,
-                                null
+                                if (isParent) studentNameLong else null /* temporarily - there is no parent name provided, only the type */
                         ).apply {
                             studentData["accountId"] = id
                             studentData["accountLogin"] = login
