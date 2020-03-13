@@ -51,6 +51,7 @@ import okhttp3.RequestBody
 import okhttp3.TlsVersion
 import okio.Buffer
 import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApiException
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
@@ -1080,6 +1081,7 @@ fun Throwable.toErrorCode() = when (this) {
 private fun ApiResponse.Error.toErrorCode() = when (this.code) {
     else -> ERROR_API_EXCEPTION
 }
+fun Throwable.toApiError(tag: String) = ApiError.fromThrowable(tag, this)
 
 inline fun <A, B, R> ifNotNull(a: A?, b: B?, code: (A, B) -> R): R? {
     if (a != null && b != null) {

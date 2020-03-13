@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.api.task.ErrorReportTask
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.api.task.SzkolnyTask
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.toApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -181,7 +182,7 @@ class ApiService : Service() {
                 is SzkolnyTask -> task.run(taskCallback)
             }
         } catch (e: Exception) {
-            taskCallback.onError(ApiError(TAG, EXCEPTION_API_TASK).withThrowable(e))
+            taskCallback.onError(e.toApiError(TAG))
         }
     }
 

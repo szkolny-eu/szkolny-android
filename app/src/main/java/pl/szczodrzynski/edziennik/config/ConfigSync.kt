@@ -20,6 +20,11 @@ class ConfigSync(private val config: Config) {
         get() { mSyncEnabled = mSyncEnabled ?: config.values.get("syncEnabled", true); return mSyncEnabled ?: true }
         set(value) { config.set("syncEnabled", value); mSyncEnabled = value }
 
+    private var mWebPushEnabled: Boolean? = null
+    var webPushEnabled: Boolean
+        get() { mWebPushEnabled = mWebPushEnabled ?: config.values.get("webPushEnabled", true); return mWebPushEnabled ?: true }
+        set(value) { config.set("webPushEnabled", value); mWebPushEnabled = value }
+
     private var mSyncOnlyWifi: Boolean? = null
     var onlyWifi: Boolean
         get() { mSyncOnlyWifi = mSyncOnlyWifi ?: config.values.get("syncOnlyWifi", false); return mSyncOnlyWifi ?: notifyAboutUpdates }
@@ -34,6 +39,11 @@ class ConfigSync(private val config: Config) {
     var notifyAboutUpdates: Boolean
         get() { mNotifyAboutUpdates = mNotifyAboutUpdates ?: config.values.get("notifyAboutUpdates", true); return mNotifyAboutUpdates ?: true }
         set(value) { config.set("notifyAboutUpdates", value); mNotifyAboutUpdates = value }
+
+    private var mLastAppSync: Long? = null
+    var lastAppSync: Long
+        get() { mLastAppSync = mLastAppSync ?: config.values.get("lastAppSync", 0L); return mLastAppSync ?: 0L }
+        set(value) { config.set("lastAppSync", value); mLastAppSync = value }
 
     /*     ____        _      _     _
           / __ \      (_)    | |   | |

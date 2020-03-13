@@ -444,6 +444,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         // WHAT'S NEW DIALOG
         if (app.config.appVersion < BuildConfig.VERSION_CODE) {
+            // force an AppSync after update
+            app.config.sync.lastAppSync = 0L
             ChangelogDialog(this)
             if (app.config.appVersion < 170) {
                 //Intent intent = new Intent(this, ChangelogIntroActivity.class);

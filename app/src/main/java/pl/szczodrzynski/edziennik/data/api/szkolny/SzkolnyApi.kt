@@ -12,10 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.BuildConfig
-import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.DateAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.TimeAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
@@ -28,7 +25,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.md5
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -80,7 +76,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
             withContext(Dispatchers.Default) { block() }
         }
         catch (e: Exception) {
-            errorSnackbar.addError(ApiError.fromThrowable(TAG, e)).show()
+            errorSnackbar.addError(e.toApiError(TAG)).show()
             null
         }
     }
@@ -91,7 +87,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         catch (e: Exception) {
             ErrorDetailsDialog(
                     activity,
-                    listOf(ApiError.fromThrowable(TAG, e)),
+                    listOf(e.toApiError(TAG)),
                     R.string.error_occured
             )
             null
@@ -160,7 +156,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     }
 
     @Throws(Exception::class)
-    fun getEvents(profiles: List<Profile>, notifications: List<Notification>, blacklistedIds: List<Long>): List<EventFull> {
+    fun getEvents(profiles: List<Profile>, notifications: List<Notification>, blacklistedIds: List<Long>, lastSyncTime: Long): List<EventFull> {
         val teams = app.db.teamDao().allNow
 
         val response = api.serverSync(ServerSyncRequest(
@@ -185,19 +181,26 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                         }
                     }
                 },
+                lastSync = lastSyncTime,
                 notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type, it.text) }
         )).execute()
-        parseResponse(response)
+        val (events, hasBrowsers) = parseResponse(response)
 
-        val events = mutableListOf<EventFull>()
+        hasBrowsers?.let {
+            app.config.sync.webPushEnabled = it
+        }
 
-        response.body()?.data?.events?.forEach { event ->
+        val eventList = mutableListOf<EventFull>()
+
+        events.forEach { event ->
+            // skip blacklisted events
             if (event.id in blacklistedIds)
                 return@forEach
+            // create the event for every matching team and profile
             teams.filter { it.code == event.teamCode }.onEach { team ->
                 val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@onEach
 
-                events.add(EventFull(event).apply {
+                eventList += EventFull(event).apply {
                     profileId = team.profileId
                     teamId = team.id
                     addedManually = true
@@ -205,11 +208,11 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                     notified = profile.empty
 
                     if (profile.userCode == event.sharedBy) sharedBy = "self"
-                })
+                }
             }
         }
 
-        return events
+        return eventList
     }
 
     @Throws(Exception::class)
@@ -253,9 +256,8 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 browserId = browserId,
                 pairToken = pairToken
         )).execute()
-        parseResponse(response)
 
-        return response.body()?.data?.browsers ?: emptyList()
+        return parseResponse(response).browsers
     }
 
     @Throws(Exception::class)
@@ -265,9 +267,8 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 device = getDevice(),
                 action = "listBrowsers"
         )).execute()
-        parseResponse(response)
 
-        return response.body()?.data?.browsers ?: emptyList()
+        return parseResponse(response).browsers
     }
 
     @Throws(Exception::class)
@@ -278,9 +279,8 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 action = "unpairBrowser",
                 browserId = browserId
         )).execute()
-        parseResponse(response)
 
-        return response.body()?.data?.browsers ?: emptyList()
+        return parseResponse(response).browsers
     }
 
     @Throws(Exception::class)
@@ -307,9 +307,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     @Throws(Exception::class)
     fun getUpdate(channel: String): List<Update> {
         val response = api.updates(channel).execute()
-        parseResponse(response)
-
-        return response.body()?.data ?: emptyList()
+        return parseResponse(response)
     }
 
     @Throws(Exception::class)
@@ -321,8 +319,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 targetDeviceId = targetDeviceId,
                 text = text
         )).execute()
-        val data = parseResponse(response)
 
-        return data.message
+        return parseResponse(response).message
     }
 }

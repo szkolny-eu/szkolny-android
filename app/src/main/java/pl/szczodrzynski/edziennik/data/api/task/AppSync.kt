@@ -24,25 +24,24 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
      *
      * @return a number of events inserted to DB, possibly needing a notification
      */
-    fun run(): Int {
-        val profiles = profiles.filter { it.registration == Profile.REGISTRATION_ENABLED && !it.archived }
-        if (profiles.isNotEmpty()) {
-            val blacklistedIds = app.db.eventDao().blacklistedIds;
-            val events = api.getEvents(profiles, notifications, blacklistedIds)
+    fun run(lastSyncTime: Long, markAsSeen: Boolean = false): Int {
+        val blacklistedIds = app.db.eventDao().blacklistedIds
+        val events = api.getEvents(profiles, notifications, blacklistedIds, lastSyncTime)
 
-            if (events.isNotEmpty()) {
-                app.db.metadataDao().addAllIgnore(events.map { event ->
-                    Metadata(
-                            event.profileId,
-                            Metadata.TYPE_EVENT,
-                            event.id,
-                            event.seen,
-                            event.notified,
-                            event.addedDate
-                    )
-                })
-                return app.db.eventDao().addAll(events).size
-            }
+        app.config.sync.lastAppSync = System.currentTimeMillis()
+
+        if (events.isNotEmpty()) {
+            app.db.metadataDao().addAllIgnore(events.map { event ->
+                Metadata(
+                        event.profileId,
+                        Metadata.TYPE_EVENT,
+                        event.id,
+                        markAsSeen || event.seen,
+                        markAsSeen || event.notified,
+                        event.addedDate
+                )
+            })
+            return app.db.eventDao().addAll(events).size
         }
         return 0;
     }

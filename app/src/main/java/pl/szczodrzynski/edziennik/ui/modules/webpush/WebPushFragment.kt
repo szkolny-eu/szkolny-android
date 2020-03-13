@@ -116,6 +116,8 @@ class WebPushFragment : Fragment(), CoroutineScope {
         }
         adapter.notifyDataSetChanged()
 
+        app.config.sync.webPushEnabled = browsers.isNotEmpty()
+
         if (browsers.isNotEmpty()) {
             b.browsersView.visibility = View.VISIBLE
             b.browsersNoData.visibility = View.GONE

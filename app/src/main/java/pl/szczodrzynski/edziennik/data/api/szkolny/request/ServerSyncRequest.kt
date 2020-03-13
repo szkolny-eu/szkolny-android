@@ -11,6 +11,8 @@ data class ServerSyncRequest(
         val userCodes: List<String>,
         val users: List<User>? = null,
 
+        val lastSync: Long,
+
         val notifications: List<Notification>? = null
 ) {
     data class User(
