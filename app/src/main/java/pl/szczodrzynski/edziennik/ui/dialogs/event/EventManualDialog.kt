@@ -76,6 +76,8 @@ class EventManualDialog(
     private var enqueuedWeekDialog: AlertDialog? = null
     private var enqueuedWeekStart = Date.getToday()
 
+    private var enqueuedProcessDialog: AlertDialog? = null
+
     init { run {
         if (activity.isFinishing)
             return@run
@@ -95,6 +97,8 @@ class EventManualDialog(
                 .setOnDismissListener {
                     onDismissListener?.invoke(TAG)
                     EventBus.getDefault().unregister(this@EventManualDialog)
+                    enqueuedWeekDialog?.dismiss()
+                    enqueuedProcessDialog?.dismiss()
                 }
                 .setCancelable(false)
                 .create()
@@ -178,11 +182,36 @@ class EventManualDialog(
         ).enqueue(activity)
     }
 
+    private fun showSharingProcessDialog() {
+        if (enqueuedProcessDialog != null) {
+            return
+        }
+
+        enqueuedProcessDialog = MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.please_wait)
+                .setMessage(R.string.event_sharing_text)
+                .setCancelable(false)
+                .show()
+    }
+
+    private fun showRemovingProcessDialog() {
+        if (enqueuedProcessDialog != null) {
+            return
+        }
+
+        enqueuedProcessDialog = MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.please_wait)
+                .setMessage(R.string.event_removing_text)
+                .setCancelable(false)
+                .show()
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskFinishedEvent(event: ApiTaskFinishedEvent) {
         if (event.profileId == App.profileId) {
             enqueuedWeekDialog?.dismiss()
             enqueuedWeekDialog = null
+            enqueuedProcessDialog?.dismiss()
             launch {
                 b.timeDropdown.loadItems()
             }
@@ -193,6 +222,7 @@ class EventManualDialog(
     fun onApiTaskAllFinishedEvent(event: ApiTaskAllFinishedEvent) {
         enqueuedWeekDialog?.dismiss()
         enqueuedWeekDialog = null
+        enqueuedProcessDialog?.dismiss()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -200,6 +230,7 @@ class EventManualDialog(
         dialog.dismiss()
         enqueuedWeekDialog?.dismiss()
         enqueuedWeekDialog = null
+        enqueuedProcessDialog?.dismiss()
     }
 
     private fun loadLists() { launch {
@@ -241,6 +272,8 @@ class EventManualDialog(
             if (!loadItems())
                 syncTimetable(lessonsDate ?: Date.getToday())
             selectDefault(editingEvent?.startTime)
+            if (editingEvent != null && editingEvent.startTime == null)
+                select(0L)
             selectDefault(defaultLesson?.displayStartTime ?: defaultTime)
             onLessonSelected = { lesson ->
                 lesson.displaySubjectId?.let { b.subjectDropdown.selectSubject(it) } ?: b.subjectDropdown.deselect()
@@ -323,7 +356,7 @@ class EventManualDialog(
         }
 
         b.typeColor.onClick {
-            val currentColor = (b.typeDropdown?.selected?.tag as EventType?)?.color ?: Event.COLOR_DEFAULT
+            val currentColor = (b.typeDropdown.selected?.tag as EventType?)?.color ?: Event.COLOR_DEFAULT
             val colorPickerDialog = ColorPickerDialog.newBuilder()
                     .setColor(currentColor)
                     .create()
@@ -386,8 +419,8 @@ class EventManualDialog(
             isError = true
         }
 
-        if (timeSelected == null || timeSelected !is Pair<*, *>) {
-            b.dateDropdown.error = app.getString(R.string.dialog_event_manual_time_choose)
+        if (timeSelected !is Pair<*, *> && timeSelected != 0L) {
+            b.timeDropdown.error = app.getString(R.string.dialog_event_manual_time_choose)
             isError = true
         }
 
@@ -453,7 +486,7 @@ class EventManualDialog(
                 // TODO
             }
             else if (!share && editingShared) {
-                Toast.makeText(activity, R.string.event_manual_unshare, Toast.LENGTH_SHORT).show()
+                showSharingProcessDialog()
 
                 eventObject.apply {
                     sharedBy = null
@@ -468,7 +501,7 @@ class EventManualDialog(
                 finishAdding(eventObject, metadataObject)
             }
             else if (share) {
-                Toast.makeText(activity, R.string.event_manual_share, Toast.LENGTH_SHORT).show()
+                showSharingProcessDialog()
 
                 eventObject.apply {
                     sharedBy = profile?.userCode
@@ -488,13 +521,14 @@ class EventManualDialog(
                 Toast.makeText(activity, "Unknown action :(", Toast.LENGTH_SHORT).show()
             }
         }
+        enqueuedProcessDialog?.dismiss()
     }
 
     private fun removeEvent() {
         launch {
             if (editingShared && editingOwn) {
                 // unshare + remove own event
-                Toast.makeText(activity, R.string.event_manual_unshare_remove, Toast.LENGTH_SHORT).show()
+                showRemovingProcessDialog()
 
                 api.runCatching(activity) {
                     unshareEvent(editingEvent!!)
@@ -511,6 +545,7 @@ class EventManualDialog(
                 finishRemoving()
             }
         }
+        enqueuedProcessDialog?.dismiss()
     }
 
     private fun finishAdding(eventObject: Event, metadataObject: Metadata) {

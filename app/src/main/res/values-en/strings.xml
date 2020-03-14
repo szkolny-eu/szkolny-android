@@ -960,4 +960,6 @@
     <string name="other">Other</string>
     <string name="menu_grades_config">Grades settings</string>
     <string name="dialog_day_lessons_info">%s - %s (%s lessons - %s hours %s minutes)</string>
+    <string name="event_sharing_text">Sharing the event…</string>
+    <string name="event_removing_text">Removing shared event…</string>
 </resources>

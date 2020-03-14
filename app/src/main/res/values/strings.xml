@@ -1268,4 +1268,6 @@
     <string name="card_type_grades">Ostatnie oceny</string>
     <string name="card_type_events">Najbliższe wydarzenia</string>
     <string name="dialog_event_manual_time_choose">Wybierz godzinę</string>
+    <string name="event_sharing_text">Udostępnianie wydarzenia…</string>
+    <string name="event_removing_text">Usuwanie udostępnionego wydarzenia…</string>
 </resources>
