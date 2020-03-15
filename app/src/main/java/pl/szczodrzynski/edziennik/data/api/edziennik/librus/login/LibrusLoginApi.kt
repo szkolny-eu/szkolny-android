@@ -137,6 +137,7 @@ class LibrusLoginApi {
                     "librus_change_password_error" -> ERROR_LOGIN_LIBRUS_API_CHANGE_PASSWORD_ERROR
                     "librus_password_change_required" -> ERROR_LOGIN_LIBRUS_API_PASSWORD_CHANGE_REQUIRED
                     "invalid_grant" -> ERROR_LOGIN_LIBRUS_API_INVALID_LOGIN
+                    "invalid_request" -> ERROR_LOGIN_LIBRUS_API_INVALID_REQUEST
                     else -> ERROR_LOGIN_LIBRUS_API_OTHER
                 }.let { errorCode ->
                     data.error(ApiError(TAG, errorCode)

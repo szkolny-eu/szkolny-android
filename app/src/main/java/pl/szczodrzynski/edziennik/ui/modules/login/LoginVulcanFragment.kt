@@ -4,17 +4,25 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.login
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.databinding.FragmentLoginVulcanBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.QrScannerDialog
+import pl.szczodrzynski.edziennik.utils.Utils
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
@@ -55,6 +63,26 @@ class LoginVulcanFragment : Fragment(), CoroutineScope {
                         b.loginPinLayout.error = getString(R.string.login_error_incorrect_pin)
                 }
             }
+        }
+
+        b.loginQrScan.setImageDrawable(IconicsDrawable(activity)
+                .icon(CommunityMaterial.Icon2.cmd_qrcode_scan)
+                .colorInt(Color.BLACK)
+                .sizeDp(72))
+        b.loginQrScan.onClick {
+            QrScannerDialog(activity, { code ->
+                try {
+                    val data = Utils.VulcanQrEncryptionUtils.decode(code)
+                    "CERT#https?://.+?/([A-z]+)/mobile-api#([A-z0-9]+)#ENDCERT".toRegex().find(data)?.let {
+                        b.loginToken.setText(it[2])
+                        b.loginSymbol.setText(it[1])
+                        if (b.loginPin.requestFocus()) {
+                            activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                        }
+                    }
+                }
+                catch (_: Exception) {}
+            })
         }
 
         b.helpButton.onClick { nav.navigate(R.id.loginVulcanHelpFragment, null, LoginActivity.navOptions) }

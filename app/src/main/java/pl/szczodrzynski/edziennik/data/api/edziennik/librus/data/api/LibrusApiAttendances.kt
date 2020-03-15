@@ -42,7 +42,7 @@ class LibrusApiAttendances(override val data: DataLibrus,
                 val teacherId = attendance.getJsonObject("AddedBy")?.getLong("Id")
                 val semester = attendance.getInt("Semester") ?: return@forEach
                 val type = attendance.getJsonObject("Type")?.getLong("Id") ?: return@forEach
-                val typeObject = data.attendanceTypes.get(type)
+                val typeObject = data.attendanceTypes[type] ?: null
                 val topic = typeObject?.name ?: ""
 
                 val startTime = data.lessonRanges.get(lessonNo).startTime
@@ -60,13 +60,13 @@ class LibrusApiAttendances(override val data: DataLibrus,
                         topic,
                         lessonDate,
                         startTime,
-                        typeObject.type
+                        typeObject?.type ?: Attendance.TYPE_CUSTOM
                 )
 
                 val addedDate = Date.fromIso(attendance.getString("AddDate") ?: return@forEach)
 
                 data.attendanceList.add(attendanceObject)
-                if(typeObject.type != Attendance.TYPE_PRESENT) {
+                if(typeObject?.type != Attendance.TYPE_PRESENT) {
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_ATTENDANCE,

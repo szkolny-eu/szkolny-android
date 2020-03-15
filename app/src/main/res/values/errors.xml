@@ -97,6 +97,7 @@
     <string name="error_184" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_CSRF_EXPIRED</string>
     <string name="error_185" translatable="false">ERROR_LIBRUS_API_DEVICE_REGISTERED</string>
     <string name="error_186" translatable="false">ERROR_LIBRUS_MESSAGES_NOT_FOUND</string>
+    <string name="error_187" translatable="false">ERROR_LOGIN_LIBRUS_API_INVALID_REQUEST</string>
 
     <string name="error_201" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_202" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
@@ -245,7 +246,7 @@
     <string name="error_159_reason">API Portalu Librus wyłączone</string>
     <string name="error_160_reason">Konto Synergia zostało rozłączone</string>
     <string name="error_161_reason">Inny błąd Portalu Librus</string>
-    <string name="error_162_reason">Nie znaleziono konta Synergia</string>
+    <string name="error_162_reason">Nie znaleziono konta Synergia. Zaloguj się na stronie portal.librus.pl, a następnie powiąż swoje konto Synergia do konta Librus Portal.</string>
     <string name="error_163_reason">Inny błąd logowania do Portalu Librus</string>
     <string name="error_164_reason">ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED</string>
     <string name="error_165_reason">ERROR_LOGIN_LIBRUS_PORTAL_CODE_REVOKED</string>
@@ -260,8 +261,8 @@
     <string name="error_174_reason">ERROR_LIBRUS_SYNERGIA_OTHER</string>
     <string name="error_175_reason">Librus Synergia: przerwa techniczna</string>
     <string name="error_176_reason">Librus Wiadomości: przerwa techniczna</string>
-    <string name="error_177_reason">ERROR_LIBRUS_MESSAGES_ERROR</string>
-    <string name="error_178_reason">ERROR_LIBRUS_MESSAGES_OTHER</string>
+    <string name="error_177_reason">Librus Wiadomości: serwer zwrócił błąd. Prześlij zgłoszenie błędu.</string>
+    <string name="error_178_reason">Librus Wiadomości: serwer zwrócił nieznany błąd. Prześlij zgłoszenie błędu.</string>
     <string name="error_179_reason">Librus Wiadomości: nieprawidłowe dane logowania</string>
     <string name="error_180_reason">Librus Portal: nieprawidłowe dane logowania</string>
     <string name="error_181_reason">Librus API: przerwa techniczna</string>
@@ -270,6 +271,7 @@
     <string name="error_184_reason">Librus: Sesja logowania wygasła. Zaloguj się ponownie.</string>
     <string name="error_185_reason">Urządzenie jest już zarejestrowane</string>
     <string name="error_186_reason">Nie znaleziono wiadomości. Mogła zostać usunięta.</string>
+    <string name="error_187_reason">Nieprawidłowe dane dostępu. Sprawdź poprawność wprowadzonych danych.</string>
 
     <string name="error_201_reason">Nieprawidłowy login lub hasło</string>
     <string name="error_202_reason">Podano stare hasło</string>
@@ -334,7 +336,7 @@
     <string name="error_901_reason">EXCEPTION_LOGIN_LIBRUS_API_TOKEN</string>
     <string name="error_902_reason">EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN</string>
     <string name="error_903_reason">EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN</string>
-    <string name="error_904_reason">EXCEPTION_LIBRUS_API_REQUEST</string>
+    <string name="error_904_reason">Zgłoś błąd: wyjątek w API Librus</string>
     <string name="error_905_reason">EXCEPTION_LIBRUS_SYNERGIA_REQUEST</string>
     <string name="error_906_reason">EXCEPTION_MOBIDZIENNIK_WEB_REQUEST</string>
     <string name="error_907_reason">EXCEPTION_VULCAN_API_REQUEST</string>
