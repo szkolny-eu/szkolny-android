@@ -8,6 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -43,6 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 tools:text="8:10 - język polski"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,6 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 tools:text="2b3T" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,6 +99,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     tools:text="2b3T" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,6 +130,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="textLongMessage|textMultiLine|textImeMultiLine"
                 android:minLines="2"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 tools:text="2b3T" />
         </com.google.android.material.textfield.TextInputLayout>
 

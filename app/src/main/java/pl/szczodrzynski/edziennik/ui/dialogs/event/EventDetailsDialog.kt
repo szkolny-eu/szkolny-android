@@ -47,6 +47,8 @@ class EventDetailsDialog(
         SzkolnyApi(app)
     }
 
+    private var progressDialog: AlertDialog? = null
+
     init { run {
         if (activity.isFinishing)
             return@run
@@ -64,6 +66,7 @@ class EventDetailsDialog(
                 }
                 .setOnDismissListener {
                     onDismissListener?.invoke(TAG)
+                    progressDialog?.dismiss()
                 }
                 .show()
 
@@ -158,6 +161,18 @@ class EventDetailsDialog(
         }
     }
 
+    private fun showRemovingProgressDialog() {
+        if (progressDialog != null) {
+            return
+        }
+
+        progressDialog = MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.please_wait)
+                .setMessage(R.string.event_removing_text)
+                .setCancelable(false)
+                .show()
+    }
+
     private fun showRemoveEventDialog() {
         val shareNotice = when {
             eventShared && eventOwn -> "\n\n"+activity.getString(R.string.dialog_event_manual_remove_shared_self)
@@ -186,11 +201,14 @@ class EventDetailsDialog(
         launch {
             if (eventShared && eventOwn) {
                 // unshare + remove own event
-                Toast.makeText(activity, R.string.event_manual_unshare_remove, Toast.LENGTH_SHORT).show()
+                showRemovingProgressDialog()
 
                 api.runCatching(activity) {
                     unshareEvent(event)
-                } ?: return@launch
+                } ?: run {
+                    progressDialog?.dismiss()
+                    return@launch
+                }
 
                 finishRemoving()
             } else if (eventShared && !eventOwn) {
@@ -202,6 +220,7 @@ class EventDetailsDialog(
                 Toast.makeText(activity, R.string.event_manual_remove, Toast.LENGTH_SHORT).show()
                 finishRemoving()
             }
+            progressDialog?.dismiss()
         }
     }
 

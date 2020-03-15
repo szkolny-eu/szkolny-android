@@ -181,10 +181,10 @@ class DateDropdown : TextInputDropDown {
 
         DatePickerDialog
                 .newInstance({ _, year, monthOfYear, dayOfMonth ->
-                    val dateSelected = Date(year, monthOfYear, dayOfMonth)
+                    val dateSelected = Date(year, monthOfYear+1, dayOfMonth)
                     selectDate(dateSelected)
                     onDateSelected?.invoke(dateSelected, null)
-                }, date.year, date.month, date.day)
+                }, date.year, date.month-1, date.day)
                 .apply {
                     this@DateDropdown.activity ?: return@apply
                     accentColor = R.attr.colorPrimary.resolveAttr(this@DateDropdown.activity)

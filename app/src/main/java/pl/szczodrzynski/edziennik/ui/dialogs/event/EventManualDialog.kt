@@ -67,7 +67,6 @@ class EventManualDialog(
     private val editingShared = editingEvent?.sharedBy != null
     private val editingOwn = editingEvent?.sharedBy == "self"
     private var removeEventDialog: AlertDialog? = null
-    private var defaultLoaded = false
 
     private val api by lazy {
         SzkolnyApi(app)
@@ -76,7 +75,7 @@ class EventManualDialog(
     private var enqueuedWeekDialog: AlertDialog? = null
     private var enqueuedWeekStart = Date.getToday()
 
-    private var enqueuedProcessDialog: AlertDialog? = null
+    private var progressDialog: AlertDialog? = null
 
     init { run {
         if (activity.isFinishing)
@@ -98,7 +97,7 @@ class EventManualDialog(
                     onDismissListener?.invoke(TAG)
                     EventBus.getDefault().unregister(this@EventManualDialog)
                     enqueuedWeekDialog?.dismiss()
-                    enqueuedProcessDialog?.dismiss()
+                    progressDialog?.dismiss()
                 }
                 .setCancelable(false)
                 .create()
@@ -182,24 +181,24 @@ class EventManualDialog(
         ).enqueue(activity)
     }
 
-    private fun showSharingProcessDialog() {
-        if (enqueuedProcessDialog != null) {
+    private fun showSharingProgressDialog() {
+        if (progressDialog != null) {
             return
         }
 
-        enqueuedProcessDialog = MaterialAlertDialogBuilder(activity)
+        progressDialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.please_wait)
                 .setMessage(R.string.event_sharing_text)
                 .setCancelable(false)
                 .show()
     }
 
-    private fun showRemovingProcessDialog() {
-        if (enqueuedProcessDialog != null) {
+    private fun showRemovingProgressDialog() {
+        if (progressDialog != null) {
             return
         }
 
-        enqueuedProcessDialog = MaterialAlertDialogBuilder(activity)
+        progressDialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.please_wait)
                 .setMessage(R.string.event_removing_text)
                 .setCancelable(false)
@@ -211,9 +210,11 @@ class EventManualDialog(
         if (event.profileId == App.profileId) {
             enqueuedWeekDialog?.dismiss()
             enqueuedWeekDialog = null
-            enqueuedProcessDialog?.dismiss()
+            progressDialog?.dismiss()
             launch {
                 b.timeDropdown.loadItems()
+                b.timeDropdown.selectDefault(editingEvent?.startTime)
+                b.timeDropdown.selectDefault(defaultLesson?.displayStartTime ?: defaultTime)
             }
         }
     }
@@ -222,15 +223,14 @@ class EventManualDialog(
     fun onApiTaskAllFinishedEvent(event: ApiTaskAllFinishedEvent) {
         enqueuedWeekDialog?.dismiss()
         enqueuedWeekDialog = null
-        enqueuedProcessDialog?.dismiss()
+        progressDialog?.dismiss()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskErrorEvent(event: ApiTaskErrorEvent) {
-        dialog.dismiss()
         enqueuedWeekDialog?.dismiss()
         enqueuedWeekDialog = null
-        enqueuedProcessDialog?.dismiss()
+        progressDialog?.dismiss()
     }
 
     private fun loadLists() { launch {
@@ -416,26 +416,31 @@ class EventManualDialog(
 
         if (date == null) {
             b.dateDropdown.error = app.getString(R.string.dialog_event_manual_date_choose)
+            b.dateDropdown.requestFocus()
             isError = true
         }
 
         if (timeSelected !is Pair<*, *> && timeSelected != 0L) {
             b.timeDropdown.error = app.getString(R.string.dialog_event_manual_time_choose)
+            if (!isError) b.timeDropdown.parent.requestChildFocus(b.timeDropdown, b.timeDropdown)
             isError = true
         }
 
         if (share && teamId == null) {
             b.teamDropdown.error = app.getString(R.string.dialog_event_manual_team_choose)
+            if (!isError) b.teamDropdown.parent.requestChildFocus(b.teamDropdown, b.teamDropdown)
             isError = true
         }
 
         if (type == null) {
             b.typeDropdown.error = app.getString(R.string.dialog_event_manual_type_choose)
+            if (!isError) b.typeDropdown.requestFocus()
             isError = true
         }
 
         if (topic.isNullOrBlank()) {
             b.topic.error = app.getString(R.string.dialog_event_manual_topic_choose)
+            if (!isError) b.topic.requestFocus()
             isError = true
         }
 
@@ -486,7 +491,7 @@ class EventManualDialog(
                 // TODO
             }
             else if (!share && editingShared) {
-                showSharingProcessDialog()
+                showSharingProgressDialog()
 
                 eventObject.apply {
                     sharedBy = null
@@ -495,13 +500,16 @@ class EventManualDialog(
 
                 api.runCatching(activity) {
                     unshareEvent(eventObject)
-                } ?: return@launch
+                } ?: run {
+                    progressDialog?.dismiss()
+                    return@launch
+                }
 
                 eventObject.sharedByName = null
                 finishAdding(eventObject, metadataObject)
             }
             else if (share) {
-                showSharingProcessDialog()
+                showSharingProgressDialog()
 
                 eventObject.apply {
                     sharedBy = profile?.userCode
@@ -512,7 +520,10 @@ class EventManualDialog(
 
                 api.runCatching(activity) {
                     shareEvent(eventObject.withMetadata(metadataObject))
-                } ?: return@launch
+                } ?: run {
+                    progressDialog?.dismiss()
+                    return@launch
+                }
 
                 eventObject.sharedBy = "self"
                 finishAdding(eventObject, metadataObject)
@@ -520,19 +531,22 @@ class EventManualDialog(
             else {
                 Toast.makeText(activity, "Unknown action :(", Toast.LENGTH_SHORT).show()
             }
+            progressDialog?.dismiss()
         }
-        enqueuedProcessDialog?.dismiss()
     }
 
     private fun removeEvent() {
         launch {
             if (editingShared && editingOwn) {
                 // unshare + remove own event
-                showRemovingProcessDialog()
+                showRemovingProgressDialog()
 
                 api.runCatching(activity) {
                     unshareEvent(editingEvent!!)
-                } ?: return@launch
+                } ?: run {
+                    progressDialog?.dismiss()
+                    return@launch
+                }
 
                 finishRemoving()
             } else if (editingShared && !editingOwn) {
@@ -544,8 +558,8 @@ class EventManualDialog(
                 Toast.makeText(activity, R.string.event_manual_remove, Toast.LENGTH_SHORT).show()
                 finishRemoving()
             }
+            progressDialog?.dismiss()
         }
-        enqueuedProcessDialog?.dismiss()
     }
 
     private fun finishAdding(eventObject: Event, metadataObject: Metadata) {
