@@ -36,7 +36,7 @@ class MyFirebaseService : FirebaseService(), CoroutineScope {
                 putString(System.currentTimeMillis().toString(), message.toString())
                 apply()
             }
-            val profiles = app.db.profileDao().profilesForSyncNow
+            val profiles = app.db.profileDao().profilesForFirebaseNow
             when (message.from) {
                 "640759989760" -> SzkolnyAppFirebase(app, profiles, message)
                 "747285019373" -> SzkolnyMobidziennikFirebase(app, profiles, message)

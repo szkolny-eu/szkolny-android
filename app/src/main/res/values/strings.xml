@@ -1270,4 +1270,9 @@
     <string name="dialog_event_manual_time_choose">Wybierz godzinę</string>
     <string name="event_sharing_text">Udostępnianie wydarzenia…</string>
     <string name="event_removing_text">Usuwanie udostępnionego wydarzenia…</string>
+    <string name="event_manual_need_registration_title">Udostępnianie wydarzeń</string>
+    <string name="event_manual_need_registration_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nUpewnij się, że zapoznałeś się z warunkami <a href="http://szkolny.eu/privacy-policy">Polityki prywatności</a> i akceptujesz jej postanowienia.</string>
+    <string name="registration_enable_progress_text">Pobieranie udostępnionych wydarzeń...</string>
+    <string name="registration_enable_dialog_title">Rejestracja na serwerze</string>
+    <string name="registration_enable_dialog_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nUpewnij się, że zapoznałeś się z warunkami <a href="http://szkolny.eu/privacy-policy">Polityki prywatności</a> i akceptujesz jej postanowienia.</string>
 </resources>

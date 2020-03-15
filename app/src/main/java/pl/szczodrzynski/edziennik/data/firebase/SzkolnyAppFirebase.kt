@@ -101,7 +101,9 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
         val notificationList = mutableListOf<Notification>()
 
         teams.filter { it.code == teamCode }.distinctBy { it.profileId }.forEach { team ->
-            val profile = profiles.firstOrNull { it.id == team.profileId }
+            val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
+            if (profile.registration != Profile.REGISTRATION_ENABLED)
+                return@forEach
             val event = Event(
                     team.profileId,
                     json.getLong("id") ?: return,
@@ -116,12 +118,9 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                     team.id
             )
 
-            // TODO? i guess - this comment is here for like a year
-            //val oldEvent: Event? = app.db.eventDao().getByIdNow(profile?.id ?: -1, event.id)
-
             event.sharedBy = json.getString("sharedBy")
             event.sharedByName = json.getString("sharedByName")
-            if (profile?.userCode == event.sharedBy) event.sharedBy = "self"
+            if (profile.userCode == event.sharedBy) event.sharedBy = "self"
 
             val metadata = Metadata(
                     event.profileId,
@@ -132,18 +131,6 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                     json.getLong("addedDate") ?: System.currentTimeMillis()
             )
 
-            //val eventType = eventTypes.firstOrNull { it.profileId == profile?.id && it.id == event.type }
-
-            /*val text = app.getString(
-                    if (oldEvent == null)
-                        R.string.notification_shared_event_format
-                    else
-                        R.string.notification_shared_event_modified_format,
-                    event.sharedByName,
-                    eventType?.name ?: "wydarzenie",
-                    event.eventDate.formattedString,
-                    event.topic
-            )*/
             val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_SHARED_HOMEWORK else Notification.TYPE_NEW_SHARED_EVENT
             val notificationFilter = app.config.getFor(event.profileId).sync.notificationFilter
 
@@ -153,8 +140,8 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         title = app.getNotificationTitle(type),
                         text = message,
                         type = type,
-                        profileId = profile?.id,
-                        profileName = profile?.name,
+                        profileId = profile.id,
+                        profileName = profile.name,
                         viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
                         addedDate = metadata.addedDate
                 ).addExtra("eventId", event.id).addExtra("eventDate", event.eventDate.value.toLong())
@@ -177,18 +164,20 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
         val notificationList = mutableListOf<Notification>()
 
         teams.filter { it.code == teamCode }.distinctBy { it.profileId }.forEach { team ->
-            val profile = profiles.firstOrNull { it.id == team.profileId }
+            val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
+            if (profile.registration != Profile.REGISTRATION_ENABLED)
+                return@forEach
             val notificationFilter = app.config.getFor(team.profileId).sync.notificationFilter
 
             if (!notificationFilter.contains(Notification.TYPE_REMOVED_SHARED_EVENT)) {
                 val notification = Notification(
-                        id = Notification.buildId(profile?.id
+                        id = Notification.buildId(profile.id
                                 ?: 0, Notification.TYPE_REMOVED_SHARED_EVENT, eventId),
                         title = app.getNotificationTitle(Notification.TYPE_REMOVED_SHARED_EVENT),
                         text = message,
                         type = Notification.TYPE_REMOVED_SHARED_EVENT,
-                        profileId = profile?.id,
-                        profileName = profile?.name,
+                        profileId = profile.id,
+                        profileName = profile.name,
                         viewId = MainActivity.DRAWER_ITEM_AGENDA
                 )
                 notificationList += notification

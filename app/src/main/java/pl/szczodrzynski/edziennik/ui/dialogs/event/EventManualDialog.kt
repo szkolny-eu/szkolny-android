@@ -29,9 +29,11 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegistrationEnableDialog
 import pl.szczodrzynski.edziennik.ui.modules.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
@@ -62,6 +64,7 @@ class EventManualDialog(
     private val app by lazy { activity.application as App }
     private lateinit var b: DialogEventManualV2Binding
     private lateinit var dialog: AlertDialog
+    private var profile: Profile? = null
 
     private var customColor: Int? = null
     private val editingShared = editingEvent?.sharedBy != null
@@ -234,6 +237,8 @@ class EventManualDialog(
     }
 
     private fun loadLists() { launch {
+        profile = withContext(Dispatchers.Default) { app.db.profileDao().getByIdNow(profileId) }
+
         with (b.dateDropdown) {
             db = app.db
             profileId = App.profileId
@@ -406,6 +411,15 @@ class EventManualDialog(
         val teacherId = b.teacherDropdown.getSelected()
 
         val share = b.shareSwitch.isChecked
+
+        if (share && profile?.registration != Profile.REGISTRATION_ENABLED) {
+            RegistrationEnableDialog(activity, profileId).showEventShareDialog {
+                if (it != null)
+                    profile = it
+                saveEvent()
+            }
+            return
+        }
 
         b.dateDropdown.error = null
         b.teamDropdown.error = null
