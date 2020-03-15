@@ -55,13 +55,20 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
                 }
 
                 when {
-                    text.contains("<message>Niepoprawny login i/lub hasło.</message>") -> data.error(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_INVALID_LOGIN, response, text)
-                    text.contains("stop.png") -> data.error(TAG, ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED, response, text)
-                    text.contains("eAccessDeny") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
-                    text.contains("OffLine") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_MAINTENANCE, response, text)
-                    text.contains("<status>error</status>") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ERROR, response, text)
-                    text.contains("<type>eVarWhitThisNameNotExists</type>") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
-                    text.contains("<error>") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_OTHER, response, text)
+                    text.contains("<message>Niepoprawny login i/lub hasło.</message>") -> ERROR_LOGIN_LIBRUS_MESSAGES_INVALID_LOGIN
+                    text.contains("<message>Nie odnaleziono wiadomości.</message>") -> ERROR_LIBRUS_MESSAGES_NOT_FOUND
+                    text.contains("stop.png") -> ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED
+                    text.contains("eAccessDeny") -> ERROR_LIBRUS_MESSAGES_ACCESS_DENIED
+                    text.contains("OffLine") -> ERROR_LIBRUS_MESSAGES_MAINTENANCE
+                    text.contains("<status>error</status>") -> ERROR_LIBRUS_MESSAGES_ERROR
+                    text.contains("<type>eVarWhitThisNameNotExists</type>") -> ERROR_LIBRUS_MESSAGES_ACCESS_DENIED
+                    text.contains("<error>") -> ERROR_LIBRUS_MESSAGES_OTHER
+                    else -> null
+                }?.let { errorCode ->
+                    data.error(ApiError(tag, errorCode)
+                            .withApiResponse(text)
+                            .withResponse(response))
+                    return
                 }
 
                 try {
@@ -139,13 +146,20 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
                 }
 
                 when {
-                    text.contains("<message>Niepoprawny login i/lub hasło.</message>") -> data.error(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_INVALID_LOGIN, response, text)
-                    text.contains("stop.png") -> data.error(TAG, ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED, response, text)
-                    text.contains("eAccessDeny") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
-                    text.contains("OffLine") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_MAINTENANCE, response, text)
-                    text.contains("<status>error</status>") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ERROR, response, text)
-                    text.contains("<type>eVarWhitThisNameNotExists</type>") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
-                    text.contains("<error>") -> data.error(TAG, ERROR_LIBRUS_MESSAGES_OTHER, response, text)
+                    text.contains("<message>Niepoprawny login i/lub hasło.</message>") -> ERROR_LOGIN_LIBRUS_MESSAGES_INVALID_LOGIN
+                    text.contains("<message>Nie odnaleziono wiadomości.</message>") -> ERROR_LIBRUS_MESSAGES_NOT_FOUND
+                    text.contains("stop.png") -> ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED
+                    text.contains("eAccessDeny") -> ERROR_LIBRUS_MESSAGES_ACCESS_DENIED
+                    text.contains("OffLine") -> ERROR_LIBRUS_MESSAGES_MAINTENANCE
+                    text.contains("<status>error</status>") -> ERROR_LIBRUS_MESSAGES_ERROR
+                    text.contains("<type>eVarWhitThisNameNotExists</type>") -> ERROR_LIBRUS_MESSAGES_ACCESS_DENIED
+                    text.contains("<error>") -> ERROR_LIBRUS_MESSAGES_OTHER
+                    else -> null
+                }?.let { errorCode ->
+                    data.error(ApiError(tag, errorCode)
+                            .withApiResponse(text)
+                            .withResponse(response))
+                    return
                 }
 
                 try {
