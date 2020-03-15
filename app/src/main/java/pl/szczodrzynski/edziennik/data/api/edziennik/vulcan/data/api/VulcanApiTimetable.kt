@@ -86,31 +86,36 @@ class VulcanApiTimetable(override val data: DataVulcan,
                         data.teamList[id] = team
                     }
                     team.id
-                } ?: data.studentClassId.toLong()
+                } ?: data.teamClass?.id ?: -1
 
-                val subjectId = lesson.getLong("IdPrzedmiot")?.let {
-                    when (it) {
-                        0L -> {
-                            val subjectName = lesson.getString("PrzedmiotNazwa") ?: ""
+                val subjectId = lesson.getLong("IdPrzedmiot").let { id ->
+                    // get the specified subject name
+                    val subjectName = lesson.getString("PrzedmiotNazwa") ?: ""
 
-                            data.subjectList.singleOrNull { subject -> subject.longName == subjectName }?.id
-                                    ?: {
-                                        /**
-                                         * CREATE A NEW SUBJECT IF IT DOESN'T EXIST
-                                         */
-
-                                        val subjectObject = Subject(
-                                                profileId,
-                                                -1 * crc16(subjectName.toByteArray()).toLong(),
-                                                subjectName,
-                                                subjectName
-                                        )
-                                        data.subjectList.put(subjectObject.id, subjectObject)
-                                        subjectObject.id
-                                    }.invoke()
-                        }
-                        else -> it
+                    val condition = when (id) {
+                        // "special" subject - e.g. one time classes, a trip, etc.
+                        0L -> { subject: Subject -> subject.longName == subjectName }
+                        // normal subject, check if it exists
+                        else -> { subject: Subject -> subject.id == id }
                     }
+
+                    data.subjectList.singleOrNull(condition)?.id ?: {
+                        /**
+                         * CREATE A NEW SUBJECT IF IT DOESN'T EXIST
+                         */
+
+                        val subjectObject = Subject(
+                                profileId,
+                                if (id == null || id == 0L)
+                                    -1 * crc16(subjectName.toByteArray()).toLong()
+                                else
+                                    id,
+                                subjectName,
+                                subjectName
+                        )
+                        data.subjectList.put(subjectObject.id, subjectObject)
+                        subjectObject.id
+                    }()
                 }
 
                 val lessonObject = Lesson(profileId, -1).apply {

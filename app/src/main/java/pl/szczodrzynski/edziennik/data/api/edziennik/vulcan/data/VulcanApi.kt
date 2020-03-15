@@ -13,8 +13,6 @@ import io.github.wulkanowy.signer.android.signContent
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection
 import java.util.*
@@ -41,22 +39,6 @@ open class VulcanApi(open val data: DataVulcan, open val lastSync: Long?) {
         val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}/$endpoint"
 
         d(tag, "Request: Vulcan/Api - $url")
-
-        if (data.teamList.size() == 0) {
-            data.profile?.studentClassName?.also { name ->
-                val id = Utils.crc16(name.toByteArray()).toLong()
-
-                val teamObject = Team(
-                        profileId,
-                        id,
-                        name,
-                        Team.TYPE_CLASS,
-                        "${data.schoolName}:$name",
-                        -1
-                )
-                data.teamList.put(id, teamObject)
-            }
-        }
 
         val finalPayload = JsonObject()
         parameters.map { (name, value) ->

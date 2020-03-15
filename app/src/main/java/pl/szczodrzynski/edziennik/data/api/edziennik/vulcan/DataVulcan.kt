@@ -10,7 +10,10 @@ import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.Team
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.values
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
@@ -23,6 +26,25 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         loginMethods.clear()
         if (isApiLoginValid()) {
             loginMethods += LOGIN_METHOD_VULCAN_API
+        }
+    }
+
+    init {
+        // during the first sync `profile.studentClassName` is already set
+        if (teamList.values().none { it.type == Team.TYPE_CLASS }) {
+            profile?.studentClassName?.also { name ->
+                val id = Utils.crc16(name.toByteArray()).toLong()
+
+                val teamObject = Team(
+                        profileId,
+                        id,
+                        name,
+                        Team.TYPE_CLASS,
+                        "$schoolName:$name",
+                        -1
+                )
+                teamList.put(id, teamObject)
+            }
         }
     }
 
