@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.utils.models.Date
 
 class AppSync(val app: App, val notifications: MutableList<Notification>, val profiles: List<Profile>, val api: SzkolnyApi) {
     companion object {
@@ -31,13 +32,15 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
         app.config.sync.lastAppSync = System.currentTimeMillis()
 
         if (events.isNotEmpty()) {
+            val today = Date.getToday()
             app.db.metadataDao().addAllIgnore(events.map { event ->
+                val isPast = event.eventDate < today
                 Metadata(
                         event.profileId,
                         Metadata.TYPE_EVENT,
                         event.id,
-                        markAsSeen || event.seen,
-                        markAsSeen || event.notified,
+                        isPast || markAsSeen || event.seen,
+                        isPast || markAsSeen || event.notified,
                         event.addedDate
                 )
             })
