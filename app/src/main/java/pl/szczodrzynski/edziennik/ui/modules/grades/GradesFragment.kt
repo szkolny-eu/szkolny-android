@@ -313,8 +313,6 @@ class GradesFragment : Fragment(), CoroutineScope {
     private fun countGrade(grade: Grade, averages: GradesAverages) {
         val value = manager.getGradeValue(grade)
         val weight = manager.getGradeWeight(dontCountEnabled, dontCountGrades, grade)
-        if (weight == 0f)
-            return
         when (grade.type) {
             Grade.TYPE_NORMAL -> {
                 if (grade.value > 0f) {
