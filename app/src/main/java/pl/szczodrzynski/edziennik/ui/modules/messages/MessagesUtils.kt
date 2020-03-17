@@ -1,17 +1,21 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages
 
 import android.content.Context
-import android.graphics.*
-import android.os.Build
-import android.text.Html
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
 import android.text.Spanned
 import androidx.core.graphics.ColorUtils
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.fixName
+import pl.szczodrzynski.edziennik.getNameInitials
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Utils
-import pl.szczodrzynski.navlib.blendColors
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.math.roundToInt
 
 object MessagesUtils {
@@ -179,39 +183,6 @@ object MessagesUtils {
 
     @JvmStatic
     fun htmlToSpannable(context: Context, html: String): Spanned {
-        val hexPattern = "(#[a-fA-F0-9]{6})"
-        val colorRegex = "(?:color=\"$hexPattern\")|(?:style=\"color: ?${hexPattern})"
-                .toRegex(RegexOption.IGNORE_CASE)
-
-        var text = html
-                .replace("\\[META:[A-z0-9]+;[0-9-]+]".toRegex(), "")
-                .replace("background-color: ?$hexPattern;".toRegex(), "")
-
-        val colorBackground = android.R.attr.colorBackground.resolveAttr(context)
-        val textColorPrimary = android.R.attr.textColorPrimary.resolveAttr(context) and 0xffffff
-
-        colorRegex.findAll(text).forEach { result ->
-            val group = result.groups.drop(1).firstOrNull { it != null } ?: return@forEach
-
-            val color = Color.parseColor(group.value)
-            var newColor = 0xff000000.toInt() or color
-
-            var blendAmount = 1
-            var numIterations = 0
-
-            while (numIterations < 100 && ColorUtils.calculateContrast(colorBackground, newColor) < 4.5f) {
-                blendAmount += 2
-                newColor = blendColors(color, blendAmount shl 24 or textColorPrimary)
-                numIterations++
-            }
-
-            text = text.replaceRange(group.range, "#" + (newColor and 0xffffff).toString(16))
-        }
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            Html.fromHtml(text)
-        }
+        return BetterHtml.fromHtml(context, html)
     }
 }
