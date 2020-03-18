@@ -36,7 +36,7 @@ open class VulcanApi(open val data: DataVulcan, open val lastSync: Long?) {
             baseUrl: Boolean = false,
             onSuccess: (json: JsonObject, response: Response?) -> Unit
     ) {
-        val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}/$endpoint"
+        val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
 
         d(tag, "Request: Vulcan/Api - $url")
 

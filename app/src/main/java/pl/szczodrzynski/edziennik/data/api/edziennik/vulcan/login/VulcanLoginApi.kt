@@ -137,7 +137,7 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
         }
 
         Request.builder()
-                .url("${data.apiUrl}/$VULCAN_API_ENDPOINT_CERTIFICATE")
+                .url("${data.apiUrl}$VULCAN_API_ENDPOINT_CERTIFICATE")
                 .userAgent(VULCAN_API_USER_AGENT)
                 .addHeader("RequestMobileType", "RegisterDevice")
                 .addParameter("PIN", data.apiPin)
