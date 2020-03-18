@@ -137,13 +137,13 @@ class HomeTimetableCard(
     }
 
     private fun update() { launch {
+        var checkedDays = 0
         val deferred = async(Dispatchers.Default) {
             // get the current bell-synced time
             val now = syncedNow
 
             // search for lessons to display
             val timetableDate = Date.getToday()
-            var checkedDays = 0
             lessons = allLessons.filter {
                 it.profileId == profile.id
                         && it.displayDate == timetableDate
@@ -163,11 +163,14 @@ class HomeTimetableCard(
                 lessons = allLessons.filter {
                     it.profileId == profile.id
                             && it.displayDate == timetableDate
-                            && !(it.isCancelled && ignoreCancelled)
                 }
 
-                //if (lessons.isEmpty() && timetableDate.weekDay <= 5)
-                //    break
+                if (lessons.isEmpty())
+                    break
+
+                /*lessons = lessons.filterNot {
+                    it.isCancelled && ignoreCancelled
+                }*/
 
                 checkedDays++
             }
@@ -176,7 +179,7 @@ class HomeTimetableCard(
 
         timetableDate = deferred.await()
 
-        if (lessons.isEmpty()) {
+        if (lessons.isEmpty() && checkedDays < 7) {
             // timetable is not downloaded yet
             b.timetableLayout.visibility = View.GONE
             b.noTimetableLayout.visibility = View.VISIBLE
@@ -198,14 +201,18 @@ class HomeTimetableCard(
                         )
                 ).enqueue(activity)
             }
+
+            timetableDate = Date.getToday()
             return@launch
         }
-        if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
+        if (lessons.none { !it.isCancelled } || lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
             // in next 7 days only NO_LESSONS is found
             b.timetableLayout.visibility = View.GONE
             b.noTimetableLayout.visibility = View.GONE
             b.noLessonsLayout.visibility = View.VISIBLE
             timetableDate = timetableDate.weekStart
+
+            timetableDate = Date.getToday()
             return@launch
         }
 

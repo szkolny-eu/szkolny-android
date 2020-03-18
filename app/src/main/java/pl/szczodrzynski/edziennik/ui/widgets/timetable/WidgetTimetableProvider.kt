@@ -226,11 +226,14 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                 lessons = lessonList.filter {
                     it.profileId == profile.id
                             && it.displayDate == timetableDate
-                            && !(it.isCancelled && ignoreCancelled)
                 }
 
-                //if (lessons.isEmpty() && timetableDate.weekDay <= 5)
-                //    break
+                if (lessons.isEmpty())
+                    break
+
+                /*lessons = lessons.filterNot {
+                    it.isCancelled && ignoreCancelled
+                }*/
 
                 checkedDays++
             }
@@ -248,35 +251,39 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                 models.add(separator)
             }
 
+            views.setViewVisibility(R.id.widgetTimetableListView, View.VISIBLE)
+            views.setViewVisibility(R.id.widgetTimetableNoTimetable, View.GONE)
+            views.setViewVisibility(R.id.widgetTimetableNoLessons, View.GONE)
+
             // set the displayingDate to show in the header
             if (!unified) {
                 if (lessons.isNotEmpty())
                     displayingDate = timetableDate
                 profileId = profile.id
-                if (lessons.isEmpty()) {
+                if (lessons.isEmpty() && checkedDays < 7) {
                     views.setViewVisibility(R.id.widgetTimetableListView, View.GONE)
                     views.setViewVisibility(R.id.widgetTimetableNoTimetable, View.VISIBLE)
                 }
-                if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
+                if (lessons.none { !it.isCancelled } || lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
                     views.setViewVisibility(R.id.widgetTimetableListView, View.GONE)
                     views.setViewVisibility(R.id.widgetTimetableNoLessons, View.VISIBLE)
                 }
             }
             else {
-                if (lessons.isEmpty()) {
+                if (lessons.isEmpty() && checkedDays < 7) {
                     val separator = ItemWidgetTimetableModel()
                     separator.profileId = profile.id
                     separator.bigStyle = widgetConfig.bigStyle
                     separator.darkTheme = widgetConfig.darkTheme
-                    separator.isNoTimetableItem = true;
+                    separator.isNoTimetableItem = true
                     models.add(separator)
                 }
-                if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
+                if (lessons.none { !it.isCancelled } || lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
                     val separator = ItemWidgetTimetableModel()
                     separator.profileId = profile.id
                     separator.bigStyle = widgetConfig.bigStyle
                     separator.darkTheme = widgetConfig.darkTheme
-                    separator.isNoLessonsItem = true;
+                    separator.isNoLessonsItem = true
                     models.add(separator)
                 }
             }
