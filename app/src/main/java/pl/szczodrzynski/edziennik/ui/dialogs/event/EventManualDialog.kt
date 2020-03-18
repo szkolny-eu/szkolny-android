@@ -497,7 +497,7 @@ class EventManualDialog(
             val profile = app.db.profileDao().getByIdNow(profileId)
 
             if (!share && !editingShared) {
-                Toast.makeText(activity, R.string.event_manual_saving, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(activity, R.string.event_manual_saving, Toast.LENGTH_SHORT).show()
                 finishAdding(eventObject, metadataObject)
             }
             else if (editingShared && !editingOwn) {
@@ -569,7 +569,7 @@ class EventManualDialog(
                 // TODO
             } else {
                 // remove event
-                Toast.makeText(activity, R.string.event_manual_remove, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(activity, R.string.event_manual_remove, Toast.LENGTH_SHORT).show()
                 finishRemoving()
             }
             progressDialog?.dismiss()
