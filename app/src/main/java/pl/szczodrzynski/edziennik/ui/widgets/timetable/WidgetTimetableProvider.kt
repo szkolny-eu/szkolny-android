@@ -264,7 +264,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                     views.setViewVisibility(R.id.widgetTimetableListView, View.GONE)
                     views.setViewVisibility(R.id.widgetTimetableNoTimetable, View.VISIBLE)
                 }
-                if (lessons.none { !it.isCancelled } || lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
+                else if (lessons.none { !it.isCancelled } || lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
                     views.setViewVisibility(R.id.widgetTimetableListView, View.GONE)
                     views.setViewVisibility(R.id.widgetTimetableNoLessons, View.VISIBLE)
                 }
