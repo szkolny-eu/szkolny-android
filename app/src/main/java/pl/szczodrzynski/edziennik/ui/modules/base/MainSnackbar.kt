@@ -40,6 +40,7 @@ class MainSnackbar(val activity: AppCompatActivity) {
             setAction(actionText) {
                 onClick?.invoke()
             }
+            duration = 7000
             show()
         }
     }
