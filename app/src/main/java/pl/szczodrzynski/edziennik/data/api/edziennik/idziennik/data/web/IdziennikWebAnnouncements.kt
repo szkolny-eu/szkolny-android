@@ -16,6 +16,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.Announcement
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonObject
+import pl.szczodrzynski.edziennik.getLong
+import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikWebAnnouncements(override val data: DataIdziennik,
@@ -43,11 +45,11 @@ class IdziennikWebAnnouncements(override val data: DataIdziennik,
             for (jAnnouncementEl in json.getAsJsonArray("ListK")) {
                 val jAnnouncement = jAnnouncementEl.asJsonObject
                 // jAnnouncement
-                val announcementId = jAnnouncement.get("Id").asLong
+                val announcementId = jAnnouncement.getLong("Id") ?: -1
 
-                val rTeacher = data.getTeacherByFirstLast(jAnnouncement.get("Autor").asString)
-                val addedDate = java.lang.Long.parseLong(jAnnouncement.get("DataDodania").asString.replace("[^\\d]".toRegex(), ""))
-                val startDate = Date.fromMillis(java.lang.Long.parseLong(jAnnouncement.get("DataWydarzenia").asString.replace("[^\\d]".toRegex(), "")))
+                val rTeacher = data.getTeacherByFirstLast(jAnnouncement.getString("Autor") ?: "")
+                val addedDate = jAnnouncement.getString("DataDodania")?.replace("[^\\d]".toRegex(), "")?.toLongOrNull() ?: System.currentTimeMillis()
+                val startDate = jAnnouncement.getString("DataWydarzenia")?.replace("[^\\d]".toRegex(), "")?.toLongOrNull()?.let { Date.fromMillis(it) }
 
                 val announcementObject = Announcement(
                         profileId,
