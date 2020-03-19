@@ -16,7 +16,7 @@ class CardItemTouchHelperCallback(private val cardAdapter: HomeCardAdapter, priv
     companion object {
         private const val TAG = "CardItemTouchHelperCallback"
         private const val DRAG_FLAGS = UP or DOWN
-        private const val SWIPE_FLAGS = RIGHT
+        private const val SWIPE_FLAGS = LEFT
     }
 
     private var dragCardView: MaterialCardView? = null

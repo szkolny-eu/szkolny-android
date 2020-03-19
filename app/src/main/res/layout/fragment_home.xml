@@ -29,12 +29,14 @@
                     tools:listitem="@layout/card_home_timetable" />
 
                 <View
+                    android:id="@+id/configHintDivider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="8dp"
                     android:background="@drawable/divider" />
 
                 <LinearLayout
+                    android:id="@+id/configHint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"

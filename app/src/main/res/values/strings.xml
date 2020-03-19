@@ -1261,7 +1261,7 @@
     <string name="grades_config_dont_count_grades">Wyklucz wybrane oceny ze średniej</string>
     <string name="grades_config_dont_count_hint">Oceny oddziel przecinkiem</string>
     <string name="grades_config_dont_count_placeholder">Podaj oceny...</string>
-    <string name="home_configure_notice">Możesz usunąć karty przesuwając w prawo lub zmienić ich kolejność, przytrzymując na kartę.</string>
+    <string name="home_configure_notice">Możesz usunąć karty przesuwając w lewo lub zmienić ich kolejność, przytrzymując na kartę.</string>
     <string name="home_configure_add_remove">Dodaj/usuń karty</string>
     <string name="card_type_lucky_number">Szczęśliwy numerek</string>
     <string name="card_type_timetable">Plan lekcji</string>
@@ -1275,4 +1275,5 @@
     <string name="registration_enable_progress_text">Pobieranie udostępnionych wydarzeń...</string>
     <string name="registration_enable_dialog_title">Rejestracja na serwerze</string>
     <string name="registration_enable_dialog_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nUpewnij się, że zapoznałeś się z warunkami <a href="http://szkolny.eu/privacy-policy">Polityki prywatności</a> i akceptujesz jej postanowienia.</string>
+    <string name="menu_add_remove_cards">Dodaj lub usuń karty</string>
 </resources>

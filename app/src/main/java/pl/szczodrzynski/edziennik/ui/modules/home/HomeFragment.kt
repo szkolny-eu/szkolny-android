@@ -95,6 +95,13 @@ class HomeFragment : Fragment(), CoroutineScope {
 
         activity.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_add_remove_cards)
+                        .withIcon(Icon.cmd_card_bulleted_settings_outline)
+                        .withOnClickListener(OnClickListener {
+                            activity.bottomSheet.close()
+                            HomeConfigDialog(activity, reloadOnDismiss = true)
+                        }),
+                BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_set_student_number)
                         .withIcon(SzkolnyFont.Icon.szf_clipboard_list_outline)
                         .withOnClickListener(OnClickListener {
