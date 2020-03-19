@@ -182,20 +182,20 @@
     <string name="error_10_reason">Nie udało się wysłać wiadomości: nowa wiadomość nie została odnaleziona na liście wiadomości wysłanych</string>
 
     <string name="error_50_reason">Błąd odpowiedzi serwera</string>
-    <string name="error_51_reason">Błąd serwera: nieprawidłowe zapytanie</string>
+    <string name="error_51_reason">Błąd serwera: nieprawidłowe zapytanie. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
     <string name="error_52_reason">Błąd serwera: odmowa dostępu</string>
     <string name="error_53_reason">Błąd serwera: dostęp zabroniony</string>
     <string name="error_54_reason">Błąd serwera: plik nie znaleziony</string>
-    <string name="error_55_reason">Błąd serwera: nieprawidłowa metoda zapytania</string>
-    <string name="error_56_reason">Błąd serwera: odpowiedź niedostępna</string>
-    <string name="error_57_reason">Błąd serwera: niespełnione zależności</string>
-    <string name="error_58_reason">Wewnętrzny błąd serwera</string>
+    <string name="error_55_reason">Błąd serwera: nieprawidłowa metoda zapytania. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
+    <string name="error_56_reason">Błąd serwera: odpowiedź niedostępna. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
+    <string name="error_57_reason">Błąd serwera: niespełnione zależności. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
+    <string name="error_58_reason">Wewnętrzny błąd serwera. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
     <string name="error_59_reason">Dziennik jest tymczasowo niedostępny</string>
     <string name="error_60_reason">Brak internetu: nie znaleziono adresu serwera</string>
-    <string name="error_61_reason">Brak internetu: przekroczono czas oczekiwania</string>
+    <string name="error_61_reason">Brak internetu: przekroczono czas oczekiwania. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
     <string name="error_62_reason">Brak internetu</string>
     <string name="error_63_reason">Brak internetu: połączenie SSL nie powiodło się</string>
-    <string name="error_100_reason">Brak odpowiedzi serwera</string>
+    <string name="error_100_reason">Brak odpowiedzi serwera. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
     <string name="error_101_reason">Dane logowania niekompletne</string>
     <string name="error_102_reason">Nieprawidłowe dane logowania</string>
     <string name="error_105_reason">Profil nie został ustawiony</string>
