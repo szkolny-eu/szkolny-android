@@ -62,7 +62,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"
             android:noHistory="true"
-            android:theme="@style/AppTheme.NoDisplay">
+            android:theme="@style/AppTheme.Dark.NoDisplay">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -84,7 +84,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"
             android:noHistory="true"
-            android:theme="@style/AppTheme.NoDisplay" />
+            android:theme="@style/AppTheme.Dark.NoDisplay" />
         <!-- NOTIFICATIONS -->
         <receiver android:name=".ui.widgets.notifications.WidgetNotificationsProvider"
             android:label="@string/widget_notifications_title">
