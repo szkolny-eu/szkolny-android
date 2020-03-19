@@ -141,12 +141,14 @@
                 android:layout_marginTop="4dp"
                 android:textAppearance="@style/NavView.TextView.Helper"
                 android:text="@string/dialog_event_details_topic"/>
+
             <TextView
+                android:id="@+id/topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{event.topic}"
-                android:textIsSelectable="true"
                 android:textAppearance="@style/NavView.TextView.Medium"
+                android:textIsSelectable="true"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
 
             <View

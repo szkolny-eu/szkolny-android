@@ -6,4 +6,5 @@
 <resources>
     <item name="move_card_down_action" type="id"/>
     <item name="move_card_up_action" type="id"/>
+    <item name="bettermovementmethod_highlight_background_span" type="id" />
 </resources>

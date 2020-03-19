@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api
 
 import kotlin.text.RegexOption.DOT_MATCHES_ALL
+import kotlin.text.RegexOption.IGNORE_CASE
 
 object Regexes {
     val STYLE_CSS_COLOR by lazy {
@@ -198,5 +199,21 @@ object Regexes {
 
     val EDUDZIENNIK_TEACHERS by lazy {
         """<div class="teacher">.*?<p>(.+?) (.+?)</p>""".toRegex(DOT_MATCHES_ALL)
+    }
+
+
+
+
+    val LINKIFY_DATE_YMD by lazy {
+        """(1\d{3}|20\d{2})[\-./](1[0-2]|0?\d)[\-./]([1-2]\d|3[0-1]|0?\d)""".toRegex()
+    }
+    val LINKIFY_DATE_DMY by lazy {
+        """(?<![\d\-./])([1-2]\d|3[0-1]|0?\d)[\-./](1[0-2]|0?\d)(?:[\-./](1\d{3}|2?0?\d{2}))?(?![\d\-/])""".toRegex()
+    }
+    val LINKIFY_DATE_ABSOLUTE by lazy {
+        """([1-3][0-9]|[1-9])\s(sty|lut|mar|kwi|maj|cze|lip|sie|wrz|paź|lis|gru).*?\s(1[0-9]{3}|20[0-9]{2})?""".toRegex(IGNORE_CASE)
+    }
+    val LINKIFY_DATE_RELATIVE by lazy {
+        """za\s([0-9]+)?\s?(dni|dzień|tydzień|tygodnie)""".toRegex(IGNORE_CASE)
     }
 }

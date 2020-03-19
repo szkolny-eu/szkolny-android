@@ -41,6 +41,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
 import pl.szczodrzynski.edziennik.utils.Anim
+import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.getStringFromFile
@@ -250,6 +251,9 @@ class MessageFragment : Fragment(), CoroutineScope {
         b.recipients.text = Html.fromHtml(messageRecipients.toString())
 
         showAttachments()
+
+        BetterLink.attach(b.subject)
+        BetterLink.attach(b.body)
 
         b.progress.visibility = View.GONE
         Anim.fadeIn(b.content, 200, null)

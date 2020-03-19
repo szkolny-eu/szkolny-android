@@ -49,6 +49,7 @@ import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
@@ -720,6 +721,15 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                             this,
                             extras.getInt("profileId"),
                             extras.getInt("type")
+                    )
+                    true
+                }
+                "createManualEvent" -> {
+                    val date = extras.getString("eventDate")?.let { Date.fromY_m_d(it) } ?: Date.getToday()
+                    EventManualDialog(
+                            this,
+                            App.profileId,
+                            defaultDate = date
                     )
                     true
                 }

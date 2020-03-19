@@ -2,6 +2,8 @@ package pl.szczodrzynski.edziennik
 
 import android.Manifest
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,6 +12,7 @@ import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -23,6 +26,7 @@ import android.util.Base64
 import android.util.Base64.NO_WRAP
 import android.util.Base64.encodeToString
 import android.view.View
+import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.RadioButton
@@ -1094,3 +1098,71 @@ inline fun <A, B, R> ifNotNull(a: A?, b: B?, code: (A, B) -> R): R? {
 fun Iterable<Int>.averageOrNull() = this.average().let { if (it.isNaN()) null else it }
 @kotlin.jvm.JvmName("averageOrNullOfFloat")
 fun Iterable<Float>.averageOrNull() = this.average().let { if (it.isNaN()) null else it }
+
+fun String.copyToClipboard(context: Context) {
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clipData = ClipData.newPlainText("Tekst", this)
+    clipboard.primaryClip = clipData
+}
+
+fun TextView.getTextPosition(range: IntRange): Rect {
+    val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+    // Initialize global value
+    var parentTextViewRect = Rect()
+
+    // Initialize values for the computing of clickedText position
+    //val completeText = parentTextView.text as SpannableString
+    val textViewLayout = this.layout
+
+    val startOffsetOfClickedText = range.first//completeText.getSpanStart(clickedText)
+    val endOffsetOfClickedText = range.last//completeText.getSpanEnd(clickedText)
+    var startXCoordinatesOfClickedText = textViewLayout.getPrimaryHorizontal(startOffsetOfClickedText)
+    var endXCoordinatesOfClickedText = textViewLayout.getPrimaryHorizontal(endOffsetOfClickedText)
+
+    // Get the rectangle of the clicked text
+    val currentLineStartOffset = textViewLayout.getLineForOffset(startOffsetOfClickedText)
+    val currentLineEndOffset = textViewLayout.getLineForOffset(endOffsetOfClickedText)
+    val keywordIsInMultiLine = currentLineStartOffset != currentLineEndOffset
+    textViewLayout.getLineBounds(currentLineStartOffset, parentTextViewRect)
+
+    // Update the rectangle position to his real position on screen
+    val parentTextViewLocation = intArrayOf(0, 0)
+    this.getLocationOnScreen(parentTextViewLocation)
+
+    val parentTextViewTopAndBottomOffset = (parentTextViewLocation[1] - this.scrollY + this.compoundPaddingTop)
+    parentTextViewRect.top += parentTextViewTopAndBottomOffset
+    parentTextViewRect.bottom += parentTextViewTopAndBottomOffset
+
+    // In the case of multi line text, we have to choose what rectangle take
+    if (keywordIsInMultiLine) {
+        val screenHeight = windowManager.defaultDisplay.height
+        val dyTop = parentTextViewRect.top
+        val dyBottom = screenHeight - parentTextViewRect.bottom
+        val onTop = dyTop > dyBottom
+
+        if (onTop) {
+            endXCoordinatesOfClickedText = textViewLayout.getLineRight(currentLineStartOffset);
+        } else {
+            parentTextViewRect = Rect()
+            textViewLayout.getLineBounds(currentLineEndOffset, parentTextViewRect);
+            parentTextViewRect.top += parentTextViewTopAndBottomOffset;
+            parentTextViewRect.bottom += parentTextViewTopAndBottomOffset;
+            startXCoordinatesOfClickedText = textViewLayout.getLineLeft(currentLineEndOffset);
+        }
+    }
+
+    parentTextViewRect.left += (
+            parentTextViewLocation[0] +
+                    startXCoordinatesOfClickedText +
+                    this.compoundPaddingLeft -
+                    this.scrollX
+            ).toInt()
+    parentTextViewRect.right = (
+            parentTextViewRect.left +
+                    endXCoordinatesOfClickedText -
+                    startXCoordinatesOfClickedText
+            ).toInt()
+
+    return parentTextViewRect
+}

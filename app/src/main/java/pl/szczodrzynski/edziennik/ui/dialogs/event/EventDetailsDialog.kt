@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
+import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
@@ -158,6 +159,11 @@ class EventDetailsDialog(
         b.editButton.setOnLongClickListener {
             Toast.makeText(activity, R.string.hint_edit_event, Toast.LENGTH_SHORT).show()
             true
+        }
+
+        b.topic.text = event.topic
+        BetterLink.attach(b.topic) {
+            dialog.dismiss()
         }
     }
 

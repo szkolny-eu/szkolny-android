@@ -141,7 +141,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:autoLink="all"
                     android:minHeight="250dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
