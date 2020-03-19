@@ -32,15 +32,15 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
 
             val doc = Jsoup.parse(text)
 
-            val listElement = doc.getElementsByClass("spis").first()
+            val listElement = doc.getElementsByClass("spis")?.first()
             if (listElement == null) {
                 data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, 7*DAY)
                 onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL)
                 return@webGet
             }
             val list = listElement.getElementsByClass("podswietl")
-            for (item in list) {
-                val id = item.attr("rel").replace("[^\\d]".toRegex(), "").toLongOrNull() ?: continue
+            list?.forEach { item ->
+                val id = item.attr("rel").replace("[^\\d]".toRegex(), "").toLongOrNull() ?: return@forEach
 
                 val subjectEl = item.select("td:eq(0) div").first()
                 val subject = subjectEl.text()

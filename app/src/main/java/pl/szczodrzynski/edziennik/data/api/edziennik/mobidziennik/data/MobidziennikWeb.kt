@@ -26,6 +26,23 @@ open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: L
     val profile
         get() = data.profile
 
+    /* TODO
+    add error handling:
+
+    <!-- CONTENT -->
+    <div id="content">
+        <a name="tresc"></a>
+    <h1>Ważna informacja!</h1>
+
+<div class="okienko_informacyjne">
+    Korzystasz z hasła, które zostało wygenerowane automatycznie.<hr/>
+    Pamiętaj, aby je zmienić oraz uzupełnić dane w swoim profilu.<br/><br/>
+    Obie te operacje można wykonać uruchamiając opcję
+    <a href="https://poznan.mobidziennik.pl/dziennik/edytujprofil" title="Edycja profilu, możliwość zmiany hasła">Moje konto->Edycja profilu</a>.
+</div>    </div>
+
+     */
+
     fun webGet(
             tag: String,
             endpoint: String,
@@ -61,6 +78,12 @@ open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: L
                 if (text == "Nie jestes zalogowany"
                         || text.contains("przypomnij_haslo_email")) {
                     data.error(ApiError(TAG, ERROR_MOBIDZIENNIK_WEB_ACCESS_DENIED)
+                            .withResponse(response))
+                    return
+                }
+
+                if (text.contains("<h2>Problemy z wydajnością</h2>")) {
+                    data.error(ApiError(TAG, ERROR_MOBIDZIENNIK_WEB_SERVER_PROBLEM)
                             .withResponse(response))
                     return
                 }

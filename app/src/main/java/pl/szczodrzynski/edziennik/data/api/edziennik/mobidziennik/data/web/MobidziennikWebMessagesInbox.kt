@@ -36,9 +36,9 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
 
             val doc = Jsoup.parse(text)
 
-            val list = doc.getElementsByClass("spis").first().getElementsByClass("podswietl")
-            for (item in list) {
-                val id = item.attr("rel").toLongOrNull() ?: continue
+            val list = doc.getElementsByClass("spis")?.first()?.getElementsByClass("podswietl")
+            list?.forEach { item ->
+                val id = item.attr("rel").toLongOrNull() ?: return@forEach
 
                 val subjectEl = item.select("td:eq(0)").first()
                 var hasAttachments = false

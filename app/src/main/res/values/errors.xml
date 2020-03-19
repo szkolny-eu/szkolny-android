@@ -112,6 +112,7 @@
     <string name="error_213" translatable="false">ERROR_MOBIDZIENNIK_WEB_NO_SERVER_ID</string>
     <string name="error_214" translatable="false">ERROR_MOBIDZIENNIK_WEB_INVALID_RESPONSE</string>
     <string name="error_215" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_NO_SESSION_ID</string>
+    <string name="error_218" translatable="false">ERROR_MOBIDZIENNIK_WEB_SERVER_PROBLEM</string>
 
     <string name="error_301" translatable="false">ERROR_LOGIN_VULCAN_INVALID_SYMBOL</string>
     <string name="error_302" translatable="false">ERROR_LOGIN_VULCAN_INVALID_TOKEN</string>
@@ -286,6 +287,7 @@
     <string name="error_213_reason">MobiDziennik: brak identyfikatora serwera</string>
     <string name="error_214_reason">MobiDziennik: błąd odpowiedzi serwera</string>
     <string name="error_215_reason">Brak identyfikatora sesji przy logowaniu</string>
+    <string name="error_218_reason">MobiDziennik: problemy z wydajnością serwerów. Spróbuj ponownie później.</string>
 
     <string name="error_301_reason">Nieprawidłowy symbol</string>
     <string name="error_302_reason">Nieprawidłowy token</string>
