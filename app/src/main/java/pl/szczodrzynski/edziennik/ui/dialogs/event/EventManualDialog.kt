@@ -174,7 +174,7 @@ class EventManualDialog(
         enqueuedWeekStart = weekStart
 
         EdziennikTask.syncProfile(
-                profileId = App.profileId,
+                profileId = profileId,
                 viewIds = listOf(
                         MainActivity.DRAWER_ITEM_TIMETABLE to 0
                 ),
@@ -210,7 +210,7 @@ class EventManualDialog(
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskFinishedEvent(event: ApiTaskFinishedEvent) {
-        if (event.profileId == App.profileId) {
+        if (event.profileId == profileId) {
             enqueuedWeekDialog?.dismiss()
             enqueuedWeekDialog = null
             progressDialog?.dismiss()
@@ -241,7 +241,7 @@ class EventManualDialog(
 
         with (b.dateDropdown) {
             db = app.db
-            profileId = App.profileId
+            profileId = profileId
             showWeekDays = false
             showDays = true
             showOtherDate = true
@@ -269,7 +269,7 @@ class EventManualDialog(
 
         with (b.timeDropdown) {
             db = app.db
-            profileId = App.profileId
+            profileId = profileId
             showAllDay = true
             showCustomTime = true
             lessonsDate = b.dateDropdown.getSelected() as? Date ?: Date.getToday()
@@ -289,7 +289,7 @@ class EventManualDialog(
 
         with (b.teamDropdown) {
             db = app.db
-            profileId = App.profileId
+            profileId = profileId
             showNoTeam = true
             loadItems()
             selectTeamClass()
@@ -299,7 +299,7 @@ class EventManualDialog(
 
         with (b.subjectDropdown) {
             db = app.db
-            profileId = App.profileId
+            profileId = profileId
             showNoSubject = true
             showCustomSubject = false
             loadItems()
@@ -309,7 +309,7 @@ class EventManualDialog(
 
         with (b.teacherDropdown) {
             db = app.db
-            profileId = App.profileId
+            profileId = profileId
             showNoTeacher = true
             loadItems()
             selectDefault(editingEvent?.teacherId)

@@ -60,7 +60,7 @@ class HomeLuckyNumberCard(
             R.string.home_lucky_number_details
         b.subText.setText(subTextRes, profile.name ?: "", profile.studentNumber)
 
-        app.db.luckyNumberDao().getNearestFuture(App.profileId, todayValue).observe(fragment, Observer { luckyNumber ->
+        app.db.luckyNumberDao().getNearestFuture(profile.id, todayValue).observe(fragment, Observer { luckyNumber ->
             val isYours = luckyNumber?.number == profile.studentNumber
             val res: Pair<Int, Array<out Any>> = when {
                 luckyNumber == null -> R.string.home_lucky_number_no_info to emptyArray()

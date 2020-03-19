@@ -73,7 +73,7 @@ class HomeDebugCard(
         }
 
         b.syncReceivers.onClick {
-            EdziennikTask.recipientListGet(App.profileId).enqueue(activity)
+            EdziennikTask.recipientListGet(profile.id).enqueue(activity)
         }
 
 

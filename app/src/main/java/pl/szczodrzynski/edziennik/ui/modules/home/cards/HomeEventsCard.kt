@@ -77,7 +77,7 @@ class HomeEventsCard(
                 }
         )
 
-        app.db.eventDao().getAllNearest(App.profileId, Date.getToday(), 4).observe(activity, Observer { events ->
+        app.db.eventDao().getAllNearest(profile.id, Date.getToday(), 4).observe(activity, Observer { events ->
             adapter.items = events
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter

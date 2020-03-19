@@ -192,7 +192,7 @@ class HomeTimetableCard(
             b.noTimetableSync.onClick {
                 it.isEnabled = false
                 EdziennikTask.syncProfile(
-                        profileId = App.profileId,
+                        profileId = profile.id,
                         viewIds = listOf(
                                 MainActivity.DRAWER_ITEM_TIMETABLE to 0
                         ),
