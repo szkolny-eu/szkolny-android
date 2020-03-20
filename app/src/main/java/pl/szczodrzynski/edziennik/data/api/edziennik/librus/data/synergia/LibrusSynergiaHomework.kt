@@ -29,7 +29,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
     init { data.profile?.also { profile ->
         synergiaGet(TAG, "moje_zadania", method = POST, parameters = mapOf(
                 "dataOd" to
-                        if (!data.profile.empty)
+                        if (profile.empty)
                             profile.getSemesterStart(1).stringY_m_d
                         else
                             Date.getToday().stringY_m_d,
@@ -54,7 +54,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                     val teacherId = data.teacherList.singleOrNull { teacherName == it.fullName }?.id
                             ?: -1
                     val topic = elements[2].text().trim()
-                    val addedDate = Date.fromY_m_d(elements[4].text().trim()).inMillis
+                    val addedDate = Date.fromY_m_d(elements[4].text().trim())
                     val eventDate = Date.fromY_m_d(elements[6].text().trim())
                     val id = "/podglad/([0-9]+)'".toRegex().find(
                             elements[9].select("input").attr("onclick")
@@ -63,10 +63,25 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                     val lessons = data.db.timetableDao().getForDateNow(profileId, eventDate)
                     val startTime = lessons.firstOrNull { it.subjectId == subjectId }?.startTime
 
-                    val moreInfo = graphElements[2 * i + 1].select("td[title]")
-                            .attr("title").trim()
-                    val description = "Treść: (.*)".toRegex(RegexOption.DOT_MATCHES_ALL).find(moreInfo)
-                            ?.get(1)?.replace("<br.*/>".toRegex(), "\n")?.trim()
+                    /*val moreInfo = graphElements[2 * i + 1].select("td[title]")
+                            .attr("title").trim()*/
+
+                    var description = ""
+
+                    graphElements.forEach { graphEl ->
+                        graphEl.select("td[title]")?.also {
+                            val title = it.attr("title")
+                            val r = "Temat: (.*?)<br.?/>Data udostępnienia: (.*?)<br.?/>Termin wykonania: (.*?)<br.?/>Treść: (.*)"
+                                    .toRegex(RegexOption.DOT_MATCHES_ALL).find(title) ?: return@forEach
+                            val gTopic = r[1].trim()
+                            val gAddedDate = Date.fromY_m_d(r[2].trim())
+                            val gEventDate = Date.fromY_m_d(r[3].trim())
+                            if (gTopic == topic && gAddedDate == addedDate && gEventDate == eventDate) {
+                                description = r[4].replace("<br.?/>".toRegex(), "\n").trim()
+                                return@forEach
+                            }
+                        }
+                    }
 
                     val seen = when (profile.empty) {
                         true -> true
@@ -94,7 +109,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                             id,
                             seen,
                             seen,
-                            addedDate
+                            addedDate.inMillis
                     ))
                 }
             }
