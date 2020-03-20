@@ -1151,7 +1151,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private var targetHomeId: Int = -1
     override fun onBackPressed() {
         if (!b.navView.onBackPressed()) {
-            if (App.config.ui.openDrawerOnBackPressed) {
+            if (App.config.ui.openDrawerOnBackPressed && navTarget.popTo == null && navTarget.popToHome) {
                 b.navView.drawer.toggle()
             } else {
                 navigateUp()
