@@ -1104,7 +1104,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             .icon(SzkolnyFont.Icon.szf_discord_outline)
                             .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                             .size(IconicsSize.dp(iconSizeDp)))
-                    .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://discord.gg/n9e8pWr")))
+                    .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://szkolny.eu/discord")))
                     .build());
 
             items.add(new MaterialAboutActionItem.Builder()
