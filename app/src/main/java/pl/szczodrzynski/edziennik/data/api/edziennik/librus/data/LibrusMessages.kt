@@ -12,7 +12,6 @@ import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.FileCallbackHandler
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
-import okhttp3.Cookie
 import org.json.JSONObject
 import org.json.XML
 import org.jsoup.Jsoup
@@ -89,14 +88,7 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
             }
         }
 
-        data.app.cookieJar.saveFromResponse(null, listOf(
-                Cookie.Builder()
-                        .name("DZIENNIKSID")
-                        .value(data.messagesSessionId!!)
-                        .domain("wiadomosci.librus.pl")
-                        .secure().httpOnly().build()
-        ))
-
+        data.app.cookieJar.set("wiadomosci.librus.pl", "DZIENNIKSID", data.messagesSessionId)
 
         val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         val doc = docBuilder.newDocument()
@@ -180,14 +172,7 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
             }
         }
 
-        data.app.cookieJar.saveFromResponse(null, listOf(
-                Cookie.Builder()
-                        .name("DZIENNIKSID")
-                        .value(data.messagesSessionId!!)
-                        .domain("wiadomosci.librus.pl")
-                        .secure().httpOnly().build()
-        ))
-
+        data.app.cookieJar.set("wiadomosci.librus.pl", "DZIENNIKSID", data.messagesSessionId)
 
         val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         val doc = docBuilder.newDocument()

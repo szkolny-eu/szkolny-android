@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
-import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
@@ -24,22 +23,12 @@ class IdziennikLoginWeb(val data: DataIdziennik, val onSuccess: () -> Unit) {
 
     init { run {
         if (data.isWebLoginValid()) {
-            data.app.cookieJar.saveFromResponse(null, listOf(
-                    Cookie.Builder()
-                            .name("ASP.NET_SessionId_iDziennik")
-                            .value(data.webSessionId!!)
-                            .domain("iuczniowie.progman.pl")
-                            .secure().httpOnly().build(),
-                    Cookie.Builder()
-                            .name(".ASPXAUTH")
-                            .value(data.webAuth!!)
-                            .domain("iuczniowie.progman.pl")
-                            .secure().httpOnly().build()
-            ))
+            data.app.cookieJar.set("iuczniowie.progman.pl", "ASP.NET_SessionId_iDziennik", data.webSessionId)
+            data.app.cookieJar.set("iuczniowie.progman.pl", ".ASPXAUTH", data.webAuth)
             onSuccess()
         }
         else {
-            data.app.cookieJar.clearForDomain("iuczniowie.progman.pl")
+            data.app.cookieJar.clear("iuczniowie.progman.pl")
             if (data.webSchoolName != null && data.webUsername != null && data.webPassword != null) {
                 loginWithCredentials()
             }
@@ -62,11 +51,11 @@ class IdziennikLoginWeb(val data: DataIdziennik, val onSuccess: () -> Unit) {
 
                 // login succeeded: there is a start page
                 if (text.contains("czyWyswietlicDostepMobilny")) {
-                    val cookies = data.app.cookieJar.getForDomain("iuczniowie.progman.pl")
+                    val cookies = data.app.cookieJar.getAll("iuczniowie.progman.pl")
                     run {
-                        data.webSessionId = cookies.singleOrNull { it.name() == "ASP.NET_SessionId_iDziennik" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION
-                        data.webAuth = cookies.singleOrNull { it.name() == ".ASPXAUTH" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH
-                        data.apiBearer = cookies.singleOrNull { it.name() == "Bearer" }?.value() ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER
+                        data.webSessionId = cookies["ASP.NET_SessionId_iDziennik"] ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION
+                        data.webAuth = cookies[".ASPXAUTH"] ?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH
+                        data.apiBearer = cookies["Bearer"]?: return@run ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER
                         data.loginExpiryTime = response.getUnixDate() + 30 * MINUTE /* after about 40 minutes the login didn't work already */
                         data.apiExpiryTime = response.getUnixDate() + 12 * HOUR /* actually it expires after 24 hours but I'm not sure when does the token refresh. */
 

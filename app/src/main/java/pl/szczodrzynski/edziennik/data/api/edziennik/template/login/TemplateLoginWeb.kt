@@ -4,12 +4,11 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.template.login
 
-import okhttp3.Cookie
+import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.ERROR_LOGIN_DATA_MISSING
 import pl.szczodrzynski.edziennik.data.api.ERROR_PROFILE_MISSING
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.DataTemplate
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.currentTimeUnix
 
 class TemplateLoginWeb(val data: DataTemplate, val onSuccess: () -> Unit) {
     companion object {
@@ -23,17 +22,11 @@ class TemplateLoginWeb(val data: DataTemplate, val onSuccess: () -> Unit) {
         }
 
         if (data.isWebLoginValid()) {
-            data.app.cookieJar.saveFromResponse(null, listOf(
-                    Cookie.Builder()
-                            .name("AuthCookie")
-                            .value(data.webCookie!!)
-                            .domain("eregister.example.com")
-                            .secure().httpOnly().build()
-            ))
+            data.app.cookieJar.set("eregister.example.com", "AuthCookie", data.webCookie)
             onSuccess()
         }
         else {
-            data.app.cookieJar.clearForDomain("eregister.example.com")
+            data.app.cookieJar.clear("eregister.example.com")
             if (/*data.webLogin != null && data.webPassword != null && */true) {
                 loginWithCredentials()
             }

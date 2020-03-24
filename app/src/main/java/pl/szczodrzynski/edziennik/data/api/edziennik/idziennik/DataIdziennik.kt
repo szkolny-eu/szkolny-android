@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.idziennik
 
 import androidx.core.util.set
-import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_IDZIENNIK_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_IDZIENNIK_WEB
@@ -24,18 +23,8 @@ class DataIdziennik(app: App, profile: Profile?, loginStore: LoginStore) : Data(
         loginMethods.clear()
         if (isWebLoginValid()) {
             loginMethods += LOGIN_METHOD_IDZIENNIK_WEB
-            app.cookieJar.saveFromResponse(null, listOf(
-                    Cookie.Builder()
-                            .name("ASP.NET_SessionId_iDziennik")
-                            .value(webSessionId!!)
-                            .domain("iuczniowie.progman.pl")
-                            .secure().httpOnly().build(),
-                    Cookie.Builder()
-                            .name(".ASPXAUTH")
-                            .value(webAuth!!)
-                            .domain("iuczniowie.progman.pl")
-                            .secure().httpOnly().build()
-            ))
+            app.cookieJar.set("iuczniowie.progman.pl", "ASP.NET_SessionId_iDziennik", webSessionId)
+            app.cookieJar.set("iuczniowie.progman.pl", ".ASPXAUTH", webAuth)
         }
         if (isApiLoginValid())
             loginMethods += LOGIN_METHOD_IDZIENNIK_API

@@ -26,7 +26,7 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
         }
         else {
             if (data.loginServerName.isNotNullNorEmpty() && data.loginUsername.isNotNullNorEmpty() && data.loginPassword.isNotNullNorEmpty()) {
-                data.app.cookieJar.clearForDomain(data.loginServerName + ".mobidziennik.pl")
+                data.app.cookieJar.clear("${data.loginServerName}.mobidziennik.pl")
                 loginWithCredentials()
             }
             else {
@@ -58,10 +58,10 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
                     }
                 }
 
-                val cookies = data.app.cookieJar.getForDomain("${data.loginServerName}.mobidziennik.pl")
-                val cookie = cookies.singleOrNull { it.name().length > 32 }
-                val sessionKey = cookie?.name()
-                val sessionId = cookie?.value()
+                val cookies = data.app.cookieJar.getAll("${data.loginServerName}.mobidziennik.pl")
+                val cookie = cookies.entries.firstOrNull { it.key.length > 32 }
+                val sessionKey = cookie?.key
+                val sessionId = cookie?.value
                 if (sessionId == null) {
                     data.error(ApiError(TAG, ERROR_LOGIN_MOBIDZIENNIK_WEB_NO_SESSION_ID)
                             .withResponse(response)
@@ -71,7 +71,7 @@ class MobidziennikLoginWeb(val data: DataMobidziennik, val onSuccess: () -> Unit
 
                 data.webSessionKey = sessionKey
                 data.webSessionValue = sessionId
-                data.webServerId = data.app.cookieJar.getCookie("${data.loginServerName}.mobidziennik.pl", "SERVERID")
+                data.webServerId = data.app.cookieJar.get("${data.loginServerName}.mobidziennik.pl", "SERVERID")
                 data.webSessionIdExpiryTime = response.getUnixDate() + 45 * 60 /* 45min */
                 onSuccess()
             }

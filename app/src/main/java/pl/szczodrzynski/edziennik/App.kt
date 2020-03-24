@@ -28,9 +28,6 @@ import com.hypertrack.hyperlog.HyperLog
 import com.mikepenz.iconics.Iconics
 import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import im.wangchao.mhttp.MHttp
-import im.wangchao.mhttp.internal.cookie.PersistentCookieJar
-import im.wangchao.mhttp.internal.cookie.cache.SetCookieCache
-import im.wangchao.mhttp.internal.cookie.persistence.SharedPrefsCookiePersistor
 import kotlinx.coroutines.*
 import me.leolin.shortcutbadger.ShortcutBadger
 import okhttp3.OkHttpClient
@@ -41,6 +38,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.network.NetworkUtils
+import pl.szczodrzynski.edziennik.network.cookie.DumbCookieJar
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity
@@ -125,7 +123,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .followSslRedirects(false)
                 .build()
     }
-    val cookieJar by lazy { PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(this)) }
+    val cookieJar by lazy { DumbCookieJar(this) }
 
     /*     _____ _                   _
           / ____(_)                 | |

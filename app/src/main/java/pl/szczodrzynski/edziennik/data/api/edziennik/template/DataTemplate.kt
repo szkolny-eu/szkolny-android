@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.template
 
-import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_API
@@ -28,13 +27,7 @@ class DataTemplate(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
         loginMethods.clear()
         if (isWebLoginValid()) {
             loginMethods += LOGIN_METHOD_TEMPLATE_WEB
-            app.cookieJar.saveFromResponse(null, listOf(
-                    Cookie.Builder()
-                            .name("AuthCookie")
-                            .value(webCookie!!)
-                            .domain("eregister.example.com")
-                            .secure().httpOnly().build()
-            ))
+            app.cookieJar.set("eregister.example.com", "AuthCookie", webCookie)
         }
         if (isApiLoginValid())
             loginMethods += LOGIN_METHOD_TEMPLATE_API

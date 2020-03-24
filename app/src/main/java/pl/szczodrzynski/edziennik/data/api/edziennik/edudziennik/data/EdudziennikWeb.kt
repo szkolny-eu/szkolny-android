@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
-import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -43,8 +42,8 @@ open class EdudziennikWeb(open val data: DataEdudziennik, open val lastSync: Lon
 
                 if (semester == null && url.contains("start")) {
                     profile?.also { profile ->
-                        val cookies = data.app.cookieJar.getForDomain("dziennikel.appspot.com")
-                        val semesterCookie = cookies.firstOrNull { it.name() == "semester" }?.value()?.toIntOrNull()
+                        val cookies = data.app.cookieJar.getAll("dziennikel.appspot.com")
+                        val semesterCookie = cookies["semester"]?.toIntOrNull()
 
                         semesterCookie?.let { data.currentSemester = it }
 
@@ -75,13 +74,7 @@ open class EdudziennikWeb(open val data: DataEdudziennik, open val lastSync: Lon
             }
         }
 
-        data.app.cookieJar.saveFromResponse(null, listOf(
-                Cookie.Builder()
-                        .name("sessionid")
-                        .value(data.webSessionId!!)
-                        .domain("dziennikel.appspot.com")
-                        .secure().httpOnly().build()
-        ))
+        data.app.cookieJar.set("dziennikel.appspot.com", "sessionid", data.webSessionId)
 
         Request.builder()
                 .url(url)

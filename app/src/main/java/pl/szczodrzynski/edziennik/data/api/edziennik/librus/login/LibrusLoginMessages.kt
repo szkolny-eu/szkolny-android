@@ -8,7 +8,6 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.TextCallbackHandler
-import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -64,17 +63,11 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
 
         if (data.isMessagesLoginValid()) {
-            data.app.cookieJar.saveFromResponse(null, listOf(
-                    Cookie.Builder()
-                            .name("DZIENNIKSID")
-                            .value(data.messagesSessionId!!)
-                            .domain("wiadomosci.librus.pl")
-                            .secure().httpOnly().build()
-            ))
+            data.app.cookieJar.set("wiadomosci.librus.pl", "DZIENNIKSID", data.messagesSessionId)
             onSuccess()
         }
         else {
-            data.app.cookieJar.clearForDomain("wiadomosci.librus.pl")
+            data.app.cookieJar.clear("wiadomosci.librus.pl")
             if (data.loginMethods.contains(LOGIN_METHOD_LIBRUS_SYNERGIA)) {
                 loginWithSynergia()
             }
@@ -148,7 +141,7 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
     }
 
     private fun saveSessionId(response: Response?, text: String?) {
-        var sessionId = data.app.cookieJar.getCookie("wiadomosci.librus.pl", "DZIENNIKSID")
+        var sessionId = data.app.cookieJar.get("wiadomosci.librus.pl", "DZIENNIKSID")
         sessionId = sessionId?.replace("-MAINT", "") // dunno what's this
         sessionId = sessionId?.replace("MAINT", "") // dunno what's this
         if (sessionId == null) {

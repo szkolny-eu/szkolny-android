@@ -8,7 +8,6 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
-import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
@@ -30,17 +29,11 @@ class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Un
         }
 
         if (data.isSynergiaLoginValid()) {
-            data.app.cookieJar.saveFromResponse(null, listOf(
-                    Cookie.Builder()
-                            .name("DZIENNIKSID")
-                            .value(data.synergiaSessionId!!)
-                            .domain("synergia.librus.pl")
-                            .secure().httpOnly().build()
-            ))
+            data.app.cookieJar.set("synergia.librus.pl", "DZIENNIKSID", data.synergiaSessionId)
             onSuccess()
         }
         else {
-            data.app.cookieJar.clearForDomain("synergia.librus.pl")
+            data.app.cookieJar.clear("synergia.librus.pl")
             if (data.loginMethods.contains(LOGIN_METHOD_LIBRUS_API)) {
                 loginWithApi()
             }
@@ -92,7 +85,7 @@ class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Un
                 }
 
                 if (location?.endsWith("centrum_powiadomien") == true) {
-                    val sessionId = data.app.cookieJar.getCookie("synergia.librus.pl", "DZIENNIKSID")
+                    val sessionId = data.app.cookieJar.get("synergia.librus.pl", "DZIENNIKSID")
                     if (sessionId == null) {
                         data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_SYNERGIA_NO_SESSION_ID)
                                 .withResponse(response)
@@ -117,7 +110,7 @@ class LibrusLoginSynergia(override val data: DataLibrus, val onSuccess: () -> Un
             }
         }
 
-        data.app.cookieJar.clearForDomain("synergia.librus.pl")
+        data.app.cookieJar.clear("synergia.librus.pl")
         Request.builder()
                 .url(LIBRUS_SYNERGIA_TOKEN_LOGIN_URL.replace("TOKEN", token) + "/uczen/widok/centrum_powiadomien")
                 .userAgent(LIBRUS_USER_AGENT)

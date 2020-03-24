@@ -8,7 +8,6 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.FileCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
-import okhttp3.Cookie
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -105,18 +104,8 @@ open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: L
             }
         }
 
-        data.app.cookieJar.saveFromResponse(null, listOf(
-                Cookie.Builder()
-                        .name(data.webSessionKey!!)
-                        .value(data.webSessionValue!!)
-                        .domain("${data.loginServerName}.mobidziennik.pl")
-                        .secure().httpOnly().build(),
-                Cookie.Builder()
-                        .name("SERVERID")
-                        .value(data.webServerId!!)
-                        .domain("${data.loginServerName}.mobidziennik.pl")
-                        .secure().httpOnly().build()
-        ))
+        data.app.cookieJar.set("${data.loginServerName}.mobidziennik.pl", data.webSessionKey, data.webSessionValue)
+        data.app.cookieJar.set("${data.loginServerName}.mobidziennik.pl", "SERVERID", data.webServerId)
 
         Request.builder()
                 .url(url)
@@ -187,18 +176,8 @@ open class MobidziennikWeb(open val data: DataMobidziennik, open val lastSync: L
             }
         }
 
-        data.app.cookieJar.saveFromResponse(null, listOf(
-                Cookie.Builder()
-                        .name(data.webSessionKey!!)
-                        .value(data.webSessionValue!!)
-                        .domain("${data.loginServerName}.mobidziennik.pl")
-                        .secure().httpOnly().build(),
-                Cookie.Builder()
-                        .name("SERVERID")
-                        .value(data.webServerId!!)
-                        .domain("${data.loginServerName}.mobidziennik.pl")
-                        .secure().httpOnly().build()
-        ))
+        data.app.cookieJar.set("${data.loginServerName}.mobidziennik.pl", data.webSessionKey, data.webSessionValue)
+        data.app.cookieJar.set("${data.loginServerName}.mobidziennik.pl", "SERVERID", data.webServerId)
 
         Request.builder()
                 .url(url)

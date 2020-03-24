@@ -37,19 +37,19 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
         else if (data.portalRefreshToken != null) {
             if (data.fakeLogin) {
-                data.app.cookieJar.clearForDomain("librus.szkolny.eu")
+                data.app.cookieJar.clear("librus.szkolny.eu")
             }
             else {
-                data.app.cookieJar.clearForDomain("portal.librus.pl")
+                data.app.cookieJar.clear("portal.librus.pl")
             }
             accessToken(null, data.portalRefreshToken)
         }
         else {
             if (data.fakeLogin) {
-                data.app.cookieJar.clearForDomain("librus.szkolny.eu")
+                data.app.cookieJar.clear("librus.szkolny.eu")
             }
             else {
-                data.app.cookieJar.clearForDomain("portal.librus.pl")
+                data.app.cookieJar.clear("portal.librus.pl")
             }
             authorize(if (data.fakeLogin) FAKE_LIBRUS_AUTHORIZE else LIBRUS_AUTHORIZE_URL)
         }
