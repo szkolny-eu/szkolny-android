@@ -31,8 +31,8 @@ import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IProfile
+import com.mikepenz.materialdrawer.model.interfaces.*
+import com.mikepenz.materialdrawer.model.utils.withIsHiddenInMiniDrawer
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -90,7 +90,6 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
-import pl.szczodrzynski.navlib.drawer.items.withAppTitle
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -361,7 +360,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     false
                 }
                 drawerProfileLongClickListener = { _, profile, _, view ->
-                    if (profile is ProfileDrawerItem) {
+                    if (view != null && profile is ProfileDrawerItem) {
                         showProfileContextMenu(profile, view)
                         true
                     }
@@ -915,7 +914,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false
         drawer.close()
-        drawer.setSelection(target.id, fireOnClick = false)
+        if (drawer.getSelection() != target.id)
+            drawer.setSelection(target.id, fireOnClick = false)
         navView.toolbar.setTitle(target.title ?: target.name)
         navView.bottomBar.fabEnable = false
         navView.bottomBar.fabExtended = false
@@ -1063,7 +1063,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         val item = DrawerPrimaryItem()
                 .withIdentifier(target.id.toLong())
                 .withName(target.name)
-                .withHiddenInMiniDrawer(!app.config.ui.miniMenuButtons.contains(target.id))
+                .withIsHiddenInMiniDrawer(!app.config.ui.miniMenuButtons.contains(target.id))
                 .also { if (target.description != null) it.withDescription(target.description!!) }
                 .also { if (target.icon != null) it.withIcon(target.icon!!) }
                 .also { if (target.title != null) it.withAppTitle(getString(target.title!!)) }
@@ -1127,7 +1127,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         drawer.addProfileSettings(*drawerProfiles.toTypedArray())
     }
 
-    private fun showProfileContextMenu(profile: IProfile<*>, view: View) {
+    private fun showProfileContextMenu(profile: IProfile, view: View) {
         val profileId = profile.identifier.toInt()
         val popupMenu = PopupMenu(this, view)
         popupMenu.menu.add(0, 1, 1, R.string.profile_menu_open_settings)
@@ -1140,7 +1140,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
                 loadTarget(DRAWER_ITEM_SETTINGS, null)
             } else if (item.itemId == 2) {
-                ProfileRemoveDialog(this, profileId, profile.name?.getText(this)?.toString() ?: "?")
+                ProfileRemoveDialog(this, profileId, profile.name?.getText(this) ?: "?")
             }
             true
         }

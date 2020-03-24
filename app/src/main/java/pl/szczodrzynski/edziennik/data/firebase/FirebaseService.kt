@@ -9,8 +9,8 @@ import android.app.PendingIntent
 import android.app.PendingIntent.CanceledException
 import android.content.Intent
 import android.util.Log
-import com.google.firebase.iid.zzaq
-import com.google.firebase.iid.zzv
+import com.google.firebase.iid.zzad
+import com.google.firebase.iid.zzaz
 import com.google.firebase.messaging.zzc
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.*
@@ -36,7 +36,7 @@ open class FirebaseService : zzc() {
 
     // apparently this gets the correct intent from some
     // kind of queue inside Firebase's InstanceID Receiver
-    final override fun zza(intent: Intent?) = zzaq.zza()?.zzb()
+    final override fun zza(intent: Intent?) = zzaz.zza()?.zzb()
     final override fun zzb(intent: Intent?): Boolean {
         val action = intent?.action
         if (action == "com.google.firebase.messaging.NOTIFICATION_OPEN") {
@@ -80,7 +80,7 @@ open class FirebaseService : zzc() {
                     val ackBundle = Bundle(
                             "google.message_id" to messageId
                     )
-                    zzv.zza(this).zza(2, ackBundle)
+                    zzad.zza(this).zza(2, ackBundle)
                 }
                 // check for duplicate message
                 // and add it to queue
