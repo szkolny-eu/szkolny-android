@@ -31,6 +31,12 @@
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider
 
+-keepnames class androidx.appcompat.view.menu.MenuBuilder { setHeaderTitleInt(java.lang.CharSequence); }
+-keepclassmembernames class androidx.appcompat.view.menu.StandardMenuPopup { private *; }
+-keepnames class androidx.appcompat.view.menu.MenuPopupHelper { showPopup(int, int, boolean, boolean); }
+
+-keepclassmembernames class com.mikepenz.materialdrawer.widget.MiniDrawerSliderView { private *; }
+
 -keep class .R
 -keep class **.R$* {
     <fields>;
