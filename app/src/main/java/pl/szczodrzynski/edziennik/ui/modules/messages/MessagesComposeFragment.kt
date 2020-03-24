@@ -438,7 +438,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         if (b.textLayout.counterMaxLength != -1 && b.text.length() > b.textLayout.counterMaxLength)
             return
 
-        var textHtml = if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN && app.profile.loginStoreType != LoginStore.LOGIN_TYPE_IDZIENNIK) {
+        var textHtml = if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
             HtmlCompat.toHtml(SpannableString(text), HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
                     .replace("\n", "")
                     .replace(" dir=\"ltr\"", "")

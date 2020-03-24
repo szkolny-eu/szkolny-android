@@ -6,12 +6,11 @@ package pl.szczodrzynski.edziennik.utils.html
 
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
-import android.text.Html
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
 import androidx.core.graphics.ColorUtils
+import androidx.core.text.HtmlCompat
 import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.resolveAttr
 import pl.szczodrzynski.navlib.blendColors
@@ -59,16 +58,12 @@ object BetterHtml {
         }*/
 
         @Suppress("DEPRECATION")
-        val htmlSpannable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(
-                    text,
-                    Html.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM or Html.FROM_HTML_SEPARATOR_LINE_BREAK_LIST or Html.FROM_HTML_SEPARATOR_LINE_BREAK_DIV,
-                    null,
-                    LiTagHandler()
-            )
-        } else {
-            Html.fromHtml(text, null, LiTagHandler())
-        }
+        val htmlSpannable = HtmlCompat.fromHtml(
+                text,
+                HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_DIV,
+                null,
+                LiTagHandler()
+        )
 
         val spannableBuilder = SpannableStringBuilder(htmlSpannable)
         val bulletSpans = spannableBuilder.getSpans(0, spannableBuilder.length, BulletSpan::class.java)
