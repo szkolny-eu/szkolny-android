@@ -127,7 +127,7 @@ object Regexes {
 
 
     val LIBRUS_ATTACHMENT_KEY by lazy {
-        """singleUseKey=([0-9A-f_]+)""".toRegex()
+        """singleUseKey=([0-9A-z_]+)""".toRegex()
     }
 
 
