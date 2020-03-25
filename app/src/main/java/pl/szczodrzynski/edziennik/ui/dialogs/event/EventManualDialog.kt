@@ -241,7 +241,7 @@ class EventManualDialog(
 
         with (b.dateDropdown) {
             db = app.db
-            profileId = profileId
+            profileId = this@EventManualDialog.profileId
             showWeekDays = false
             showDays = true
             showOtherDate = true
@@ -269,7 +269,7 @@ class EventManualDialog(
 
         with (b.timeDropdown) {
             db = app.db
-            profileId = profileId
+            profileId = this@EventManualDialog.profileId
             showAllDay = true
             showCustomTime = true
             lessonsDate = b.dateDropdown.getSelected() as? Date ?: Date.getToday()
@@ -289,7 +289,7 @@ class EventManualDialog(
 
         with (b.teamDropdown) {
             db = app.db
-            profileId = profileId
+            profileId = this@EventManualDialog.profileId
             showNoTeam = true
             loadItems()
             selectTeamClass()
@@ -299,7 +299,7 @@ class EventManualDialog(
 
         with (b.subjectDropdown) {
             db = app.db
-            profileId = profileId
+            profileId = this@EventManualDialog.profileId
             showNoSubject = true
             showCustomSubject = false
             loadItems()
@@ -309,7 +309,7 @@ class EventManualDialog(
 
         with (b.teacherDropdown) {
             db = app.db
-            profileId = profileId
+            profileId = this@EventManualDialog.profileId
             showNoTeacher = true
             loadItems()
             selectDefault(editingEvent?.teacherId)
