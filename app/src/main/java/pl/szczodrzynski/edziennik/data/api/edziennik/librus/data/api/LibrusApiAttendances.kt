@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Time
 
 class LibrusApiAttendances(override val data: DataLibrus,
                            override val lastSync: Long?,
@@ -45,7 +46,7 @@ class LibrusApiAttendances(override val data: DataLibrus,
                 val typeObject = data.attendanceTypes[type] ?: null
                 val topic = typeObject?.name ?: ""
 
-                val startTime = data.lessonRanges.get(lessonNo).startTime
+                val startTime = data.lessonRanges.get(lessonNo)?.startTime
 
                 val lesson = if (lessonId != -1L)
                     data.librusLessons.singleOrNull { it.lessonId == lessonId }
@@ -59,7 +60,7 @@ class LibrusApiAttendances(override val data: DataLibrus,
                         semester,
                         topic,
                         lessonDate,
-                        startTime,
+                        startTime ?: Time(0, 0, 0),
                         typeObject?.type ?: Attendance.TYPE_CUSTOM
                 )
 
