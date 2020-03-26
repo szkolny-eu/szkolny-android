@@ -71,7 +71,7 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
             if (data.loginMethods.contains(LOGIN_METHOD_LIBRUS_SYNERGIA)) {
                 loginWithSynergia()
             }
-            else if (data.apiLogin != null && data.apiPassword != null) {
+            else if (data.apiLogin != null && data.apiPassword != null && false) {
                 loginWithCredentials()
             }
             else {
