@@ -70,13 +70,13 @@ val librusLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_SYNERGIA, LibrusLoginSynergia::class.java)
                 .withIsPossible { _, loginStore -> !loginStore.hasLoginData("fakeLogin") }
                 .withRequiredLoginMethod { profile, _ ->
-                    if (profile?.hasStudentData("accountPassword") == false) LOGIN_METHOD_LIBRUS_API else LOGIN_METHOD_NOT_NEEDED
+                    if (profile?.hasStudentData("accountPassword") == false || true) LOGIN_METHOD_LIBRUS_API else LOGIN_METHOD_NOT_NEEDED
                 },
 
         LoginMethod(LOGIN_TYPE_LIBRUS, LOGIN_METHOD_LIBRUS_MESSAGES, LibrusLoginMessages::class.java)
                 .withIsPossible { _, loginStore -> !loginStore.hasLoginData("fakeLogin") }
-                .withRequiredLoginMethod { profile, _ ->
-                    if (profile?.hasStudentData("accountPassword") == false) LOGIN_METHOD_LIBRUS_SYNERGIA else LOGIN_METHOD_NOT_NEEDED
+                .withRequiredLoginMethod { profile, _ ->li
+                    if (profile?.hasStudentData("accountPassword") == false || true) LOGIN_METHOD_LIBRUS_SYNERGIA else LOGIN_METHOD_NOT_NEEDED
                 }
 )
 
