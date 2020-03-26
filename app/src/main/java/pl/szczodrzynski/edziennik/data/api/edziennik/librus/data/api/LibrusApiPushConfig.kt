@@ -21,6 +21,14 @@ class LibrusApiPushConfig(override val data: DataLibrus,
     }
 
     init { data.app.config.sync.tokenLibrus?.also { tokenLibrus ->
+        if(tokenLibrus.isEmpty()) {
+            data.setSyncNext(ENDPOINT_LIBRUS_API_PUSH_CONFIG, SYNC_ALWAYS)
+            data.app.config.sync.tokenLibrusList =
+                    data.app.config.sync.tokenLibrusList + profileId
+            onSuccess(ENDPOINT_LIBRUS_API_PUSH_CONFIG)
+            return@also
+        }
+
         apiGet(TAG, "ChangeRegister", payload = JsonObject(
                 "provider" to "FCM",
                 "device" to tokenLibrus,
