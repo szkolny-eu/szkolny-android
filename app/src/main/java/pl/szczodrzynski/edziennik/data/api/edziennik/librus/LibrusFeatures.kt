@@ -64,7 +64,7 @@ val LibrusFeatures = listOf(
         Feature(LOGIN_TYPE_LIBRUS, FEATURE_PUSH_CONFIG, listOf(
                 ENDPOINT_LIBRUS_API_PUSH_CONFIG to LOGIN_METHOD_LIBRUS_API
         ), listOf(LOGIN_METHOD_LIBRUS_API)).withShouldSync { data ->
-                !data.app.config.sync.tokenLibrusList.contains(data.profileId)
+                (data as DataLibrus).isPremium && !data.app.config.sync.tokenLibrusList.contains(data.profileId)
         },
 
 
@@ -116,11 +116,11 @@ val LibrusFeatures = listOf(
          * Homework - using API.
          * Sync only if account has premium access.
          */
-        Feature(LOGIN_TYPE_LIBRUS, FEATURE_HOMEWORK, listOf(
+        /*Feature(LOGIN_TYPE_LIBRUS, FEATURE_HOMEWORK, listOf(
                 ENDPOINT_LIBRUS_API_HOMEWORK to LOGIN_METHOD_LIBRUS_API
         ), listOf(LOGIN_METHOD_LIBRUS_API)).withShouldSync { data ->
                 (data as DataLibrus).isPremium
-        },
+        },*/
         /**
          * Behaviour - using API.
          */
@@ -227,9 +227,9 @@ val LibrusFeatures = listOf(
          */
         Feature(LOGIN_TYPE_LIBRUS, FEATURE_HOMEWORK, listOf(
                 ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK to LOGIN_METHOD_LIBRUS_SYNERGIA
-        ), listOf(LOGIN_METHOD_LIBRUS_SYNERGIA)).withShouldSync { data ->
+        ), listOf(LOGIN_METHOD_LIBRUS_SYNERGIA))/*.withShouldSync { data ->
                 !(data as DataLibrus).isPremium
-        },
+        }*/,
 
         /**
          * Messages inbox - using messages website.
