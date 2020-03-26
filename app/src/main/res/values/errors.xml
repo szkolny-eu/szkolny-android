@@ -197,14 +197,14 @@
     <string name="error_62_reason">Brak internetu</string>
     <string name="error_63_reason">Brak internetu: połączenie SSL nie powiodło się</string>
     <string name="error_100_reason">Brak odpowiedzi serwera. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
-    <string name="error_101_reason">Dane logowania niekompletne</string>
+    <string name="error_101_reason">Dane logowania niekompletne. Skontaktuj się z twórcą aplikacji.</string>
     <string name="error_102_reason">Nieprawidłowe dane logowania</string>
     <string name="error_105_reason">Profil nie został ustawiony</string>
     <string name="error_106_reason">Profil jest archiwalny - synchronizacja profilu z poprzedniego roku szkolnego nie jest możliwa</string>
-    <string name="error_110_reason">Nieprawidłowy sposób logowania</string>
-    <string name="error_111_reason">Nie można wywołać metody logowania</string>
+    <string name="error_110_reason">Nieprawidłowy sposób logowania. Skontaktuj się z twórcą aplikacji.</string>
+    <string name="error_111_reason">Nie można wywołać metody logowania. Skontaktuj się z twórcą aplikacji.</string>
     <string name="error_112_reason">Nie zaimplementowano</string>
-    <string name="error_113_reason">Wystąpił błąd podczas pobierania pliku</string>
+    <string name="error_113_reason">Wystąpił błąd podczas pobierania pliku. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
 
     <string name="error_115_reason">Brak uczniów przypisanych do konta</string>
 
