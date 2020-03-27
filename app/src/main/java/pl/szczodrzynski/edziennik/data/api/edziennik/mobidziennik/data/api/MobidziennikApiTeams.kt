@@ -44,7 +44,7 @@ class MobidziennikApiTeams(val data: DataMobidziennik, tableTeams: List<String>?
 
                 val studentId = cols[1].toInt()
                 val teamId = cols[2].toLong()
-                val studentNumber = cols[4].toInt()
+                val studentNumber = cols[4].toIntOrNull() ?: -1
 
                 if (studentId != data.studentId)
                     continue
