@@ -39,17 +39,16 @@ class EdudziennikWebEvents(override val data: DataEdudziennik,
                         ?: return@forEach
 
                 val eventObject = Event(
-                        profileId,
-                        id,
-                        date,
-                        null,
-                        title,
-                        -1,
-                        Event.TYPE_CLASS_EVENT,
-                        false,
-                        -1,
-                        -1,
-                        data.teamClass?.id ?: -1
+                        profileId = profileId,
+                        id = id,
+                        date = date,
+                        time = null,
+                        topic = title,
+                        color = null,
+                        type = Event.TYPE_CLASS_EVENT,
+                        teacherId = -1,
+                        subjectId = -1,
+                        teamId = data.teamClass?.id ?: -1
                 )
 
                 data.eventList.add(eventObject)

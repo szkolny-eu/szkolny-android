@@ -80,17 +80,16 @@ class IdziennikWebExams(override val data: DataIdziennik,
                 }
 
                 val eventObject = Event(
-                        profileId,
-                        id,
-                        examDate,
-                        startTime,
-                        topic,
-                        -1,
-                        eventType,
-                        false,
-                        teacherId,
-                        subjectId,
-                        data.teamClass?.id ?: -1
+                        profileId = profileId,
+                        id = id,
+                        date = examDate,
+                        time = startTime,
+                        topic = topic,
+                        color = null,
+                        type = eventType,
+                        teacherId = teacherId,
+                        subjectId = subjectId,
+                        teamId = data.teamClass?.id ?: -1
                 )
 
                 data.eventList.add(eventObject)

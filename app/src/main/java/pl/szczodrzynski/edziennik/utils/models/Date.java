@@ -254,6 +254,7 @@ public class Date implements Comparable<Date> {
     /**
      * @return 2019-06-02
      */
+    @NonNull
     public String getStringY_m_d() {
         return year + (month < 10 ? "-0" : "-") + month + (day < 10 ? "-0" : "-") + day;
     }

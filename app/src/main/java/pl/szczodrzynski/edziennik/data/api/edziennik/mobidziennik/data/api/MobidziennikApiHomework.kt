@@ -31,17 +31,16 @@ class MobidziennikApiHomework(val data: DataMobidziennik, rows: List<String>) {
                 val startTime = Time.fromYmdHm(cols[3])
 
                 val eventObject = Event(
-                        data.profileId,
-                        id,
-                        eventDate,
-                        startTime,
-                        topic,
-                        -1,
-                        Event.TYPE_HOMEWORK,
-                        false,
-                        teacherId,
-                        subjectId,
-                        teamId)
+                        profileId = data.profileId,
+                        id = id,
+                        date = eventDate,
+                        time = startTime,
+                        topic = topic,
+                        color = null,
+                        type = Event.TYPE_HOMEWORK,
+                        teacherId = teacherId,
+                        subjectId = subjectId,
+                        teamId = teamId)
 
                 data.eventList.add(eventObject)
                 data.metadataList.add(

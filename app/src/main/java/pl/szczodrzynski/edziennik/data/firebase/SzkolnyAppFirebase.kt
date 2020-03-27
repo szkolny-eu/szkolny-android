@@ -105,18 +105,19 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             if (profile.registration != Profile.REGISTRATION_ENABLED)
                 return@forEach
             val event = Event(
-                    team.profileId,
-                    json.getLong("id") ?: return,
-                    json.getInt("eventDate")?.let { Date.fromValue(it) } ?: return,
-                    json.getInt("startTime")?.let { Time.fromValue(it) },
-                    json.getString("topic") ?: "",
-                    json.getInt("color") ?: -1,
-                    json.getLong("type") ?: 0,
-                    true,
-                    json.getLong("teacherId") ?: -1,
-                    json.getLong("subjectId") ?: -1,
-                    team.id
+                    profileId = team.profileId,
+                    id = json.getLong("id") ?: return,
+                    date = json.getInt("eventDate")?.let { Date.fromValue(it) } ?: return,
+                    time = json.getInt("startTime")?.let { Time.fromValue(it) },
+                    topic = json.getString("topic") ?: "",
+                    color = json.getInt("color"),
+                    type = json.getLong("type") ?: 0,
+                    teacherId = json.getLong("teacherId") ?: -1,
+                    subjectId = json.getLong("subjectId") ?: -1,
+                    teamId = team.id
             )
+            if (event.color == -1)
+                event.color = null
 
             event.sharedBy = json.getString("sharedBy")
             event.sharedByName = json.getString("sharedByName")
@@ -144,7 +145,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         profileName = profile.name,
                         viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
                         addedDate = metadata.addedDate
-                ).addExtra("eventId", event.id).addExtra("eventDate", event.eventDate.value.toLong())
+                ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
                 notificationList += notification
             }
 

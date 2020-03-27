@@ -216,7 +216,7 @@ class EventManualDialog(
             progressDialog?.dismiss()
             launch {
                 b.timeDropdown.loadItems()
-                b.timeDropdown.selectDefault(editingEvent?.startTime)
+                b.timeDropdown.selectDefault(editingEvent?.time)
                 b.timeDropdown.selectDefault(defaultLesson?.displayStartTime ?: defaultTime)
             }
         }
@@ -251,7 +251,7 @@ class EventManualDialog(
                 nextLessonTeamId = it.displayTeamId
             }
             loadItems()
-            selectDefault(editingEvent?.eventDate)
+            selectDefault(editingEvent?.date)
             selectDefault(defaultLesson?.displayDate ?: defaultDate)
             onDateSelected = { date, lesson ->
                 b.timeDropdown.deselect()
@@ -276,8 +276,8 @@ class EventManualDialog(
             displayMode = DISPLAY_LESSONS
             if (!loadItems())
                 syncTimetable(lessonsDate ?: Date.getToday())
-            selectDefault(editingEvent?.startTime)
-            if (editingEvent != null && editingEvent.startTime == null)
+            selectDefault(editingEvent?.time)
+            if (editingEvent != null && editingEvent.time == null)
                 select(0L)
             selectDefault(defaultLesson?.displayStartTime ?: defaultTime)
             onLessonSelected = { lesson ->
@@ -319,7 +319,12 @@ class EventManualDialog(
 
         val deferred = async(Dispatchers.Default) {
             // get the event type list
-            val eventTypes = app.db.eventTypeDao().getAllNow(profileId)
+            var eventTypes = app.db.eventTypeDao().getAllNow(profileId)
+
+            if (eventTypes.none { it.id in -1L..10L }) {
+                eventTypes = app.db.eventTypeDao().addDefaultTypes(activity, profileId)
+            }
+
             b.typeDropdown.clear()
             b.typeDropdown += eventTypes.map { TextInputDropDown.Item(it.id, it.name, tag = it) }
         }
@@ -338,10 +343,10 @@ class EventManualDialog(
         // copy IDs from event being edited
         editingEvent?.let {
             b.topic.setText(it.topic)
-            b.typeDropdown.select(it.type.toLong())?.let { item ->
+            b.typeDropdown.select(it.type)?.let { item ->
                 customColor = (item.tag as EventType).color
             }
-            if (it.color != -1)
+            if (it.color != null && it.color != -1)
                 customColor = it.color
         }
 
@@ -464,22 +469,25 @@ class EventManualDialog(
             (timeSelected as? Pair<*, *>)?.first as? Time
 
         if (isError) return
+        date ?: return
+        topic ?: return
 
         val id = System.currentTimeMillis()
 
         val eventObject = Event(
-                profileId,
-                editingEvent?.id ?: id,
-                date,
-                startTime,
-                topic,
-                customColor ?: -1,
-                type ?: Event.TYPE_DEFAULT,
-                true,
-                teacherId ?: -1,
-                subjectId ?: -1,
-                teamId ?: -1
-        )
+                profileId = profileId,
+                id = editingEvent?.id ?: id,
+                date = date,
+                time = startTime,
+                topic = topic,
+                color = customColor,
+                type = type ?: Event.TYPE_DEFAULT,
+                teacherId = teacherId ?: -1,
+                subjectId = subjectId ?: -1,
+                teamId = teamId ?: -1
+        ).also {
+            it.addedManually = true
+        }
 
         val metadataObject = Metadata(
                 profileId,
@@ -590,6 +598,7 @@ class EventManualDialog(
             activity.reloadTarget()
     }
     private fun finishRemoving() {
+        editingEvent ?: return
         launch {
             withContext(Dispatchers.Default) {
                 app.db.eventDao().remove(editingEvent)

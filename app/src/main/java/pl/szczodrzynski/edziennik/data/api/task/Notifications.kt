@@ -58,7 +58,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun eventNotifications() {
-        for (event in app.db.eventDao().notNotifiedNow.filter { it.eventDate >= today }) {
+        for (event in app.db.eventDao().notNotifiedNow.filter { it.date >= today }) {
             val text = if (event.type == Event.TYPE_HOMEWORK)
                 app.getString(
                         if (event.subjectLongName.isNullOrEmpty())
@@ -66,7 +66,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                         else
                             R.string.notification_homework_format,
                         event.subjectLongName,
-                        event.eventDate.formattedString
+                        event.date.formattedString
                 )
             else
                 app.getString(
@@ -74,8 +74,8 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                             R.string.notification_event_no_subject_format
                         else
                             R.string.notification_event_format,
-                        event.typeName,
-                        event.eventDate.formattedString,
+                        event.typeName ?: "wydarzenie",
+                        event.date.formattedString,
                         event.subjectLongName
                 )
             val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
@@ -88,17 +88,17 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
                     viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
                     addedDate = event.addedDate
-            ).addExtra("eventId", event.id).addExtra("eventDate", event.eventDate.value.toLong())
+            ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }
     }
 
     fun sharedEventNotifications() {
-        for (event in app.db.eventDao().notNotifiedNow.filter { it.eventDate >= today && it.sharedBy != null }) {
+        for (event in app.db.eventDao().notNotifiedNow.filter { it.date >= today && it.sharedBy != null }) {
             val text = app.getString(
                     R.string.notification_shared_event_format,
                     event.sharedByName,
                     event.typeName ?: "wydarzenie",
-                    event.eventDate.formattedString,
+                    event.date.formattedString,
                     event.topic
             )
             val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
@@ -111,7 +111,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
                     viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
                     addedDate = event.addedDate
-            ).addExtra("eventId", event.id).addExtra("eventDate", event.eventDate.value.toLong())
+            ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }
     }
 

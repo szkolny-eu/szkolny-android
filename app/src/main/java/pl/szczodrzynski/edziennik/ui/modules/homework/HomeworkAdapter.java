@@ -50,17 +50,17 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
 
         EventFull homework = homeworkList.get(position);
 
-        int diffDays = Date.diffDays(homework.eventDate, Date.getToday());
+        int diffDays = Date.diffDays(homework.getDate(), Date.getToday());
 
-        holder.homeworkItemHomeworkDate.setText(app.getString(R.string.date_relative_format, homework.eventDate.getFormattedString(), Date.dayDiffString(context, diffDays)));
-        holder.homeworkItemTopic.setText(homework.topic);
-        holder.homeworkItemSubjectTeacher.setText(context.getString(R.string.homework_subject_teacher_format, bs(homework.subjectLongName), bs(homework.teacherFullName)));
-        holder.homeworkItemTeamDate.setText(context.getString(R.string.homework_team_date_format, bs(homework.teamName), Date.fromMillis(homework.addedDate).getFormattedStringShort()));
+        holder.homeworkItemHomeworkDate.setText(app.getString(R.string.date_relative_format, homework.getDate().getFormattedString(), Date.dayDiffString(context, diffDays)));
+        holder.homeworkItemTopic.setText(homework.getTopic());
+        holder.homeworkItemSubjectTeacher.setText(context.getString(R.string.homework_subject_teacher_format, bs(homework.getSubjectLongName()), bs(homework.getTeacherFullName())));
+        holder.homeworkItemTeamDate.setText(context.getString(R.string.homework_team_date_format, bs(homework.getTeamName()), Date.fromMillis(homework.getAddedDate()).getFormattedStringShort()));
 
-        if (!homework.seen) {
+        if (!homework.getSeen()) {
             holder.homeworkItemTopic.setBackground(context.getResources().getDrawable(R.drawable.bg_rounded_8dp));
             holder.homeworkItemTopic.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));
-            homework.seen = true;
+            homework.setSeen(true);
             AsyncTask.execute(() -> {
                 App.db.metadataDao().setSeen(App.Companion.getProfileId(), homework, true);
             });
@@ -69,11 +69,11 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
             holder.homeworkItemTopic.setBackground(null);
         }
 
-        holder.homeworkItemEdit.setVisibility((homework.addedManually ? View.VISIBLE : View.GONE));
+        holder.homeworkItemEdit.setVisibility((homework.getAddedManually() ? View.VISIBLE : View.GONE));
         holder.homeworkItemEdit.setOnClickListener(v -> {
             new EventManualDialog(
                     (MainActivity) context,
-                    homework.profileId,
+                    homework.getProfileId(),
                     null,
                     null,
                     null,
@@ -83,11 +83,11 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
                     null);
         });
 
-        if (homework.sharedBy == null) {
+        if (homework.getSharedBy() == null) {
             holder.homeworkItemSharedBy.setVisibility(View.GONE);
         }
-        else if (homework.sharedByName != null) {
-            holder.homeworkItemSharedBy.setText(app.getString(R.string.event_shared_by_format, (homework.sharedBy.equals("self") ? app.getString(R.string.event_shared_by_self) : homework.sharedByName)));
+        else if (homework.getSharedByName() != null) {
+            holder.homeworkItemSharedBy.setText(app.getString(R.string.event_shared_by_format, (homework.getSharedBy().equals("self") ? app.getString(R.string.event_shared_by_self) : homework.getSharedByName())));
         }
     }
 

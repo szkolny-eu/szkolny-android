@@ -87,11 +87,11 @@ class EventDetailsDialog(
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
         try {
-            b.monthName = app.resources.getStringArray(R.array.months_day_of_array)[event.eventDate.month - 1]
+            b.monthName = app.resources.getStringArray(R.array.months_day_of_array)[event.date.month - 1]
         }
         catch (_: Exception) {}
 
-        b.typeColor.background?.setTintColor(event.getColor())
+        b.typeColor.background?.setTintColor(event.eventColor)
 
         b.details = mutableListOf(
                 event.subjectLongName,
@@ -125,7 +125,7 @@ class EventDetailsDialog(
 
         b.goToTimetableButton.setOnClickListener {
             dialog.dismiss()
-            val dateStr = event.eventDate?.stringY_m_d ?: return@setOnClickListener
+            val dateStr = event.date.stringY_m_d
 
             val intent =
                     if (activity is MainActivity && activity.navTargetId == MainActivity.DRAWER_ITEM_TIMETABLE)
@@ -245,7 +245,7 @@ class EventDetailsDialog(
     }
 
     private fun openInCalendar() { launch {
-        val title = (event.typeName ?: "") +
+        val title = event.typeName ?: "" +
                 (if (event.typeName.isNotNullNorBlank() && event.subjectLongName.isNotNullNorBlank()) " - " else " ") +
                 (event.subjectLongName ?: "")
 
@@ -254,12 +254,12 @@ class EventDetailsDialog(
             putExtra(Events.TITLE, title)
             putExtra(Events.DESCRIPTION, event.topic)
 
-            if (event.startTime == null) {
+            if (event.time == null) {
                 putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true)
-                putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.eventDate.inMillis)
-                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.eventDate.inMillis)
+                putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.date.inMillis)
+                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.date.inMillis)
             } else {
-                val startTime = event.eventDate.combineWith(event.startTime)
+                val startTime = event.date.combineWith(event.time)
                 val endTime = startTime + 45 * 60 * 1000 /* 45 min */
 
                 putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false)

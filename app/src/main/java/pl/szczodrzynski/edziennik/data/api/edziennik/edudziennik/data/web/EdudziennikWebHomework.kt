@@ -52,17 +52,16 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
                     val topic = homeworkElement.child(4).text()
 
                     val eventObject = Event(
-                            profileId,
-                            id,
-                            date,
-                            startTime,
-                            topic,
-                            -1,
-                            Event.TYPE_HOMEWORK,
-                            false,
-                            teacher.id,
-                            subject.id,
-                            data.teamClass?.id ?: -1
+                            profileId = profileId,
+                            id = id,
+                            date = date,
+                            time = startTime,
+                            topic = topic,
+                            color = null,
+                            type = Event.TYPE_HOMEWORK,
+                            teacherId = teacher.id,
+                            subjectId = subject.id,
+                            teamId = data.teamClass?.id ?: -1
                     )
 
                     data.eventList.add(eventObject)

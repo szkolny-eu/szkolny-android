@@ -78,8 +78,8 @@ public abstract class MetadataDao {
             }
         }
         if (o instanceof Event) {
-            if (add(new Metadata(profileId, ((Event) o).type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).id, seen, false, 0)) == -1) {
-                updateSeen(profileId, ((Event) o).type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).id, seen);
+            if (add(new Metadata(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), seen, false, 0)) == -1) {
+                updateSeen(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), seen);
             }
         }
         if (o instanceof LessonFull) {
@@ -117,8 +117,8 @@ public abstract class MetadataDao {
             }
         }
         if (o instanceof Event) {
-            if (add(new Metadata(profileId, ((Event) o).type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).id, false, notified, 0)) == -1) {
-                updateNotified(profileId, ((Event) o).type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).id, notified);
+            if (add(new Metadata(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), false, notified, 0)) == -1) {
+                updateNotified(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), notified);
             }
         }
         if (o instanceof LessonFull) {
@@ -141,9 +141,9 @@ public abstract class MetadataDao {
     @Transaction
     public void setBoth(int profileId, Event o, boolean seen, boolean notified, long addedDate) {
         if (o != null) {
-            if (add(new Metadata(profileId, o.type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.id, seen, notified, addedDate)) == -1) {
-                updateSeen(profileId, o.type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.id, seen);
-                updateNotified(profileId, o.type == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.id, notified);
+            if (add(new Metadata(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), seen, notified, addedDate)) == -1) {
+                updateSeen(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), seen);
+                updateNotified(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), notified);
             }
         }
     }

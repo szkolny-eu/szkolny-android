@@ -216,23 +216,23 @@ class TimetableDayFragment : PagerFragment(), CoroutineScope {
                     LessonDetailsDialog(activity, it.tag as LessonFull)
             }
 
-            val eventList = events.filter { it.startTime != null && it.startTime == lesson.displayStartTime }.take(3)
+            val eventList = events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
             eventList.getOrNull(0).let {
                 lb.event1.visibility = if (it == null) View.GONE else View.VISIBLE
                 lb.event1.background = it?.let {
-                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.getColor())
+                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
                 }
             }
             eventList.getOrNull(1).let {
                 lb.event2.visibility = if (it == null) View.GONE else View.VISIBLE
                 lb.event2.background = it?.let {
-                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.getColor())
+                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
                 }
             }
             eventList.getOrNull(2).let {
                 lb.event3.visibility = if (it == null) View.GONE else View.VISIBLE
                 lb.event3.background = it?.let {
-                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.getColor())
+                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
                 }
             }
 

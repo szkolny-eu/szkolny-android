@@ -34,17 +34,16 @@ class LibrusApiHomework(override val data: DataLibrus,
                 val addedDate = Date.fromY_m_d(homework.getString("Date"))
 
                 val eventObject = Event(
-                        profileId,
-                        id,
-                        eventDate,
-                        null,
-                        topic,
-                        -1,
-                        -1,
-                        false,
-                        teacherId,
-                        -1,
-                        -1
+                        profileId = profileId,
+                        id = id,
+                        date = eventDate,
+                        time = null,
+                        topic = topic,
+                        color = null,
+                        type = -1,
+                        teacherId = teacherId,
+                        subjectId = -1,
+                        teamId = -1
                 )
 
                 data.eventList.add(eventObject)

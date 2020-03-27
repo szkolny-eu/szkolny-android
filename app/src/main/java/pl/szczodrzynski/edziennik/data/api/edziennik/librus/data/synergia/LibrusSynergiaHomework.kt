@@ -89,17 +89,16 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                     }
 
                     val eventObject = Event(
-                            profileId,
-                            id,
-                            eventDate,
-                            startTime,
-                            "$topic\n$description",
-                            -1,
-                            Event.TYPE_HOMEWORK,
-                            false,
-                            teacherId,
-                            subjectId,
-                            data.teamClass?.id ?: -1
+                            profileId = profileId,
+                            id = id,
+                            date = eventDate,
+                            time = startTime,
+                            topic = "$topic\n$description",
+                            color = null,
+                            type = Event.TYPE_HOMEWORK,
+                            teacherId = teacherId,
+                            subjectId = subjectId,
+                            teamId = data.teamClass?.id ?: -1
                     )
 
                     data.eventList.add(eventObject)

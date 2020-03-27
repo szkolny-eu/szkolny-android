@@ -51,17 +51,16 @@ class MobidziennikApiEvents(val data: DataMobidziennik, rows: List<String>) {
 
 
                 val eventObject = Event(
-                        data.profileId,
-                        id,
-                        eventDate,
-                        startTime,
-                        topic,
-                        -1,
-                        type,
-                        false,
-                        teacherId,
-                        subjectId,
-                        teamId)
+                        profileId = data.profileId,
+                        id = id,
+                        date = eventDate,
+                        time = startTime,
+                        topic = topic,
+                        color = null,
+                        type = type,
+                        teacherId = teacherId,
+                        subjectId = subjectId,
+                        teamId = teamId)
 
                 data.eventList.add(eventObject)
                 data.metadataList.add(

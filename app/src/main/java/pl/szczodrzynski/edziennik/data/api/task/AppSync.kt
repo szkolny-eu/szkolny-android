@@ -34,7 +34,7 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
         if (events.isNotEmpty()) {
             val today = Date.getToday()
             app.db.metadataDao().addAllIgnore(events.map { event ->
-                val isPast = event.eventDate < today
+                val isPast = event.date < today
                 Metadata(
                         event.profileId,
                         Metadata.TYPE_EVENT,

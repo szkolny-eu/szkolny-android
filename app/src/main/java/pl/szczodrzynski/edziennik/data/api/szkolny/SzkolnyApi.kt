@@ -196,6 +196,11 @@ class SzkolnyApi(val app: App) : CoroutineScope {
             // skip blacklisted events
             if (event.id in blacklistedIds)
                 return@forEach
+
+            // force nullable non-negative colors
+            if (event.color == -1)
+                event.color = null
+
             // create the event for every matching team and profile
             teams.filter { it.code == event.teamCode }.onEach { team ->
                 val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@onEach

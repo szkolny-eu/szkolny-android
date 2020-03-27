@@ -27,7 +27,7 @@ import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
-import pl.szczodrzynski.edziennik.data.db.entity.Event.TYPE_HOMEWORK
+import pl.szczodrzynski.edziennik.data.db.entity.Event.Companion.TYPE_HOMEWORK
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_NO_LESSONS
 import pl.szczodrzynski.edziennik.ui.widgets.LessonDialogActivity
@@ -289,7 +289,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
             }
 
             // get all events for the current date
-            val events = app.db.eventDao().getAllByDateNow(profile.id, timetableDate)?.filterNotNull() ?: emptyList()
+            val events = app.db.eventDao().getAllByDateNow(profile.id, timetableDate)
 
             lessons.forEachIndexed { pos, lesson ->
                 if (lesson.type == TYPE_NO_LESSONS)
@@ -345,9 +345,9 @@ class WidgetTimetableProvider : AppWidgetProvider() {
 
                 // add every event on this lesson
                 for (event in events) {
-                    if (event.startTime == null || event.startTime != lesson.displayStartTime)
+                    if (event.time == null || event.time != lesson.displayStartTime)
                         continue
-                    model.eventColors.add(if (event.type == TYPE_HOMEWORK) ItemWidgetTimetableModel.EVENT_COLOR_HOMEWORK else event.getColor())
+                    model.eventColors.add(if (event.type == TYPE_HOMEWORK) ItemWidgetTimetableModel.EVENT_COLOR_HOMEWORK else event.eventColor)
                 }
 
                 models += model

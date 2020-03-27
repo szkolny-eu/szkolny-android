@@ -222,22 +222,22 @@ class AgendaFragment : Fragment(), CoroutineScope {
 
         events.forEach { event ->
             eventList.add(BaseCalendarEvent(
-                    "${event.typeName} - ${event.topic}",
+                    "${event.typeName ?: "wydarzenie"} - ${event.topic}",
                     "",
-                    (if (event.startTime == null) getString(R.string.agenda_event_all_day) else event.startTime!!.stringHM) +
+                    (if (event.time == null) getString(R.string.agenda_event_all_day) else event.time!!.stringHM) +
                             (event.subjectLongName?.let { ", $it" } ?: "") +
                             (event.teacherFullName?.let { ", $it" } ?: "") +
                             (event.teamName?.let { ", $it" } ?: ""),
-                    event.getColor(),
-                    Colors.legibleTextColor(event.getColor()),
+                    event.eventColor,
+                    Colors.legibleTextColor(event.eventColor),
                     event.startTimeCalendar,
                     event.endTimeCalendar,
-                    event.startTime == null,
+                    event.time == null,
                     event.id,
                     !event.seen
             ))
 
-            if (!event.seen) unreadEventDates.add(event.eventDate.value)
+            if (!event.seen) unreadEventDates.add(event.date.value)
         }
 
         b.agendaDefaultView.init(eventList, minDate, maxDate, Locale.getDefault(), object : CalendarPickerController {
@@ -281,11 +281,11 @@ class AgendaFragment : Fragment(), CoroutineScope {
             val eventIcon = IconicsDrawable(activity)
                     .icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle)
                     .size(IconicsSize.dp(10))
-                    .color(IconicsColor.colorInt(event.getColor()))
+                    .color(IconicsColor.colorInt(event.eventColor))
 
             dayList.add(EventDay(event.startTimeCalendar, eventIcon))
 
-            if (!event.seen) unreadEventDates.add(event.eventDate.value)
+            if (!event.seen) unreadEventDates.add(event.date.value)
         }
 
         b.agendaCalendarView.setEvents(dayList)

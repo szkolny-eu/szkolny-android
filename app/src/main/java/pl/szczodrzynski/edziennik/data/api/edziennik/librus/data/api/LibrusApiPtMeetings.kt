@@ -39,17 +39,16 @@ class LibrusApiPtMeetings(override val data: DataLibrus,
                 }
 
                 val eventObject = Event(
-                        profileId,
-                        id,
-                        eventDate,
-                        startTime,
-                        topic,
-                        -1,
-                        Event.TYPE_PT_MEETING,
-                        false,
-                        teacherId,
-                        -1,
-                        data.teamClass?.id ?: -1
+                        profileId = profileId,
+                        id = id,
+                        date = eventDate,
+                        time = startTime,
+                        topic = topic,
+                        color = null,
+                        type = Event.TYPE_PT_MEETING,
+                        teacherId = teacherId,
+                        subjectId = -1,
+                        teamId = data.teamClass?.id ?: -1
                 )
 
                 data.eventList.add(eventObject)

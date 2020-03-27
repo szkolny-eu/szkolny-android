@@ -72,17 +72,16 @@ class VulcanApiEvents(override val data: DataVulcan,
                 val teamId = event.getLong("IdOddzial") ?: data.teamClass?.id ?: -1
 
                 val eventObject = Event(
-                        profileId,
-                        id,
-                        eventDate,
-                        startTime,
-                        topic,
-                        -1,
-                        type,
-                        false,
-                        teacherId,
-                        subjectId,
-                        teamId
+                        profileId = profileId,
+                        id = id,
+                        date = eventDate,
+                        time = startTime,
+                        topic = topic,
+                        color = null,
+                        type = type,
+                        teacherId = teacherId,
+                        subjectId = subjectId,
+                        teamId = teamId
                 )
 
                 data.eventList.add(eventObject)

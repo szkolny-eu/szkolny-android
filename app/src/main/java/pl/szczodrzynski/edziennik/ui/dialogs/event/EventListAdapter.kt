@@ -50,10 +50,10 @@ class EventListAdapter(
         b.topic.text = event.topic
 
         b.details.text = mutableListOf<CharSequence?>(
-                if (showWeekDay) Week.getFullDayName(event.eventDate.weekDay) else null,
-                if (showDate) event.eventDate.getRelativeString(context, 7) ?: event.eventDate.formattedStringShort else null,
+                if (showWeekDay) Week.getFullDayName(event.date.weekDay) else null,
+                if (showDate) event.date.getRelativeString(context, 7) ?: event.date.formattedStringShort else null,
                 event.typeName,
-                if (simpleMode) null else event.startTime?.stringHM ?: app.getString(R.string.event_all_day),
+                if (simpleMode) null else event.time?.stringHM ?: app.getString(R.string.event_all_day),
                 if (simpleMode) null else event.subjectLongName
         ).concat(bullet)
 
@@ -72,7 +72,7 @@ class EventListAdapter(
                 event.teamName?.let { bullet+it } ?: ""
         )
 
-        b.typeColor.background?.setTintColor(event.getColor())
+        b.typeColor.background?.setTintColor(event.eventColor)
 
         b.editButton.visibility = if (event.addedManually && !simpleMode) View.VISIBLE else View.GONE
         b.editButton.onClick {

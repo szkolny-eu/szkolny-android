@@ -81,14 +81,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/NavView.TextView.Helper"
-                        android:text="@{event.startTime == null ? @string/event_all_day : event.startTime.stringHM}"
+                        android:text="@{event.time == null ? @string/event_all_day : event.time.stringHM}"
                         tools:text="14:50"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="@{Integer.toString(event.eventDate.day)}"
+                        android:text="@{Integer.toString(event.date.day)}"
                         android:textSize="36sp"
                         tools:text="14" />
 

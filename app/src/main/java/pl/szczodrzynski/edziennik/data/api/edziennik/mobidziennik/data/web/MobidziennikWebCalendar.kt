@@ -61,26 +61,25 @@ class MobidziennikWebCalendar(override val data: DataMobidziennik,
                     val title = event.getString("title")
                     val comment = event.getString("comment")
 
-                    var topic = title
+                    var topic = title ?: ""
                     if (title != comment) {
                         topic += "\n" + comment
                     }
 
                     if (id == -1L) {
-                        id = crc16(topic?.toByteArray()).toLong()
+                        id = crc16(topic.toByteArray()).toLong()
                     }
 
                     val eventObject = Event(
-                            profileId,
-                            id,
-                            eventDate, null,
-                            topic,
-                            -1,
-                            eventType,
-                            false,
-                            -1,
-                            -1,
-                            data.teamClass?.id ?: -1
+                            profileId = profileId,
+                            id = id,
+                            date = eventDate, time = null,
+                            topic = topic,
+                            color = null,
+                            type = eventType,
+                            teacherId = -1,
+                            subjectId = -1,
+                            teamId = data.teamClass?.id ?: -1
                     )
 
                     data.eventList.add(eventObject)
