@@ -59,7 +59,7 @@ class LibrusApiTeacherFreeDays(override val data: DataLibrus,
                         profileId,
                         Metadata.TYPE_TEACHER_ABSENCE,
                         id,
-                        profile?.empty ?: false,
+                        true,
                         profile?.empty ?: false,
                         System.currentTimeMillis()
                 ))

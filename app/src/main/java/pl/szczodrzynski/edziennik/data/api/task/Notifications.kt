@@ -34,6 +34,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
         announcementNotifications()
         messageNotifications()
         luckyNumberNotifications()
+        teacherAbsenceNotifications()
     }
 
     private fun timetableNotifications() {
@@ -272,6 +273,25 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     viewId = MainActivity.DRAWER_ITEM_HOME,
                     addedDate = luckyNumber.addedDate
             )
+        }
+    }
+
+    private fun teacherAbsenceNotifications() {
+        for (teacherAbsence in app.db.teacherAbsenceDao().getNotNotifiedNow()) {
+            val message = app.getString(
+                    R.string.notification_teacher_absence_new_format,
+                    teacherAbsence.teacherFullName
+            )
+            notifications += Notification(
+                    id = Notification.buildId(teacherAbsence.profileId, Notification.TYPE_TEACHER_ABSENCE, teacherAbsence.id),
+                    title = app.getNotificationTitle(Notification.TYPE_TEACHER_ABSENCE),
+                    text = message,
+                    type = Notification.TYPE_TEACHER_ABSENCE,
+                    profileId = teacherAbsence.profileId,
+                    profileName = profiles.singleOrNull { it.id == teacherAbsence.profileId }?.name,
+                    viewId = MainActivity.DRAWER_ITEM_AGENDA,
+                    addedDate = teacherAbsence.addedDate
+            ).addExtra("eventDate", teacherAbsence.dateFrom.value.toLong())
         }
     }
 }

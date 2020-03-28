@@ -37,7 +37,8 @@ class NotificationFilterDialog(
                 Notification.TYPE_NEW_ANNOUNCEMENT to R.string.notification_type_new_announcement,
                 Notification.TYPE_NEW_SHARED_EVENT to R.string.notification_type_new_shared_event,
                 Notification.TYPE_NEW_SHARED_HOMEWORK to R.string.notification_type_new_shared_homework,
-                Notification.TYPE_REMOVED_SHARED_EVENT to R.string.notification_type_removed_shared_event
+                Notification.TYPE_REMOVED_SHARED_EVENT to R.string.notification_type_removed_shared_event,
+                Notification.TYPE_TEACHER_ABSENCE to R.string.notification_type_new_teacher_absence
         )
     }
 

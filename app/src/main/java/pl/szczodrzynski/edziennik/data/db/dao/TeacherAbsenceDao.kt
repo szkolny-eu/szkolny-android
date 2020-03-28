@@ -49,6 +49,17 @@ interface TeacherAbsenceDao {
             "AND :date BETWEEN teacherAbsenceDateFrom AND teacherAbsenceDateTo")
     fun getAllByDateNow(profileId: Int, date: Date): List<TeacherAbsenceFull>
 
+    @Query("""
+        SELECT *,
+        teachers.teacherName || ' ' || teachers.teacherSurname as teacherFullName
+        FROM teacherAbsence
+        LEFT JOIN teachers USING (profileId, teacherId)
+        LEFT JOIN metadata ON teacherAbsenceId = thingId AND metadata.thingType = ${Metadata.TYPE_TEACHER_ABSENCE}
+        AND teachers.profileId = metadata.profileId WHERE metadata.notified = 0
+        ORDER BY addedDate DESC
+    """)
+    fun getNotNotifiedNow(): List<TeacherAbsenceFull>
+
     @Query("DELETE FROM teacherAbsence WHERE profileId = :profileId")
     fun clear(profileId: Int)
 }

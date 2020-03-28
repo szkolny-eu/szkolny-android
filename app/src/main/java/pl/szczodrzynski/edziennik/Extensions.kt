@@ -1008,6 +1008,7 @@ fun Context.getNotificationTitle(type: Int): String {
         Notification.TYPE_FEEDBACK_MESSAGE -> R.string.notification_type_feedback_message
         Notification.TYPE_NEW_ANNOUNCEMENT -> R.string.notification_type_new_announcement
         Notification.TYPE_AUTO_ARCHIVING -> R.string.notification_type_auto_archiving
+        Notification.TYPE_TEACHER_ABSENCE -> R.string.notification_type_new_teacher_absence
         Notification.TYPE_GENERAL -> R.string.notification_type_general
         else -> R.string.notification_type_general
     })

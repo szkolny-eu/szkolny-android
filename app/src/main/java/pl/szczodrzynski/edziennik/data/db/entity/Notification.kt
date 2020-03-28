@@ -52,6 +52,7 @@ data class Notification(
         const val TYPE_NEW_ANNOUNCEMENT = 15
         const val TYPE_FEEDBACK_MESSAGE = 16
         const val TYPE_AUTO_ARCHIVING = 17
+        const val TYPE_TEACHER_ABSENCE = 19
 
         fun buildId(profileId: Int, type: Int, itemId: Long): Long {
             return 1000000000000 + profileId*10000000000 + type*100000000 + itemId;

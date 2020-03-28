@@ -493,6 +493,7 @@
     <string name="notification_shared_event_format">%s shared %s on %s - %s</string>
     <string name="notification_shared_event_modified_format">%s changed %s na %s - %s</string>
     <string name="notification_shared_event_removed_format">%s removed %s na %s - %s</string>
+    <string name="notification_teacher_absence_new_format">New teacher absence for %s</string>
     <string name="notification_ticker_format">Szkolny.eu: %s</string>
     <string name="notification_type_attendance">Attendance</string>
     <string name="notification_type_auto_archiving">Profile archiving</string>
@@ -506,6 +507,7 @@
     <string name="notification_type_new_homework">New homework</string>
     <string name="notification_type_new_message">New message</string>
     <string name="notification_type_new_shared_event">New shared event</string>
+    <string name="notification_type_new_teacher_absence">New teacher absence</string>
     <string name="notification_type_notice">New notice</string>
     <string name="notification_type_server_message">Server message</string>
     <string name="notification_type_timetable_change">Timetable change</string>

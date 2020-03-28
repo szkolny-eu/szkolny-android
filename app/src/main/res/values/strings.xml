@@ -554,6 +554,7 @@
     <string name="notification_shared_event_format">%s udostępnił %s na %s: %s</string>
     <string name="notification_shared_event_modified_format">%s zmienił %s na %s: %s</string>
     <string name="notification_shared_event_removed_format">%s usunął %s na %s: %s</string>
+    <string name="notification_teacher_absence_new_format">Nowa nieobecność nauczyciela dla %s</string>
     <string name="notification_ticker_format">Szkolny.eu: %s</string>
     <string name="notification_type_attendance">Wpis frekwencji</string>
     <string name="notification_type_auto_archiving">Archiwizacja profilu</string>
@@ -567,6 +568,7 @@
     <string name="notification_type_new_homework">Nowe zadanie domowe</string>
     <string name="notification_type_new_message">Nowa wiadomość</string>
     <string name="notification_type_new_shared_event">Udostępniono wydarzenie</string>
+    <string name="notification_type_new_teacher_absence">Nowa nieobecność nauczyciela</string>
     <string name="notification_type_notice">Wpis zachowania</string>
     <string name="notification_type_server_message">Wiadomość z serwera</string>
     <string name="notification_type_timetable_change">Zmiana planu zajęć</string>
