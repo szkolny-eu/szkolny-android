@@ -58,7 +58,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun eventNotifications() {
-        for (event in app.db.eventDao().notNotifiedNow.filter { it.date >= today }) {
+        for (event in app.db.eventDao().getNotNotifiedNow().filter { it.date >= today }) {
             val text = if (event.type == Event.TYPE_HOMEWORK)
                 app.getString(
                         if (event.subjectLongName.isNullOrEmpty())
@@ -93,7 +93,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     fun sharedEventNotifications() {
-        for (event in app.db.eventDao().notNotifiedNow.filter { it.date >= today && it.sharedBy != null }) {
+        for (event in app.db.eventDao().getNotNotifiedNow().filter { it.date >= today && it.sharedBy != null }) {
             val text = app.getString(
                     R.string.notification_shared_event_format,
                     event.sharedByName,
