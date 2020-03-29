@@ -75,6 +75,8 @@ class MobidziennikApiEvents(val data: DataMobidziennik, rows: List<String>) {
             }
         }
 
-        data.toRemove.add(DataRemoveModel.Events.futureExceptType(Event.TYPE_HOMEWORK))
+        data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_DEFAULT))
+        data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_EXAM))
+        data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_SHORT_QUIZ))
     }
 }
