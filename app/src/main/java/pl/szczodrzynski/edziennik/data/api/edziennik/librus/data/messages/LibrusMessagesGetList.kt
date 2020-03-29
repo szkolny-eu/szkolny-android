@@ -109,6 +109,11 @@ class LibrusMessagesGetList(override val data: DataLibrus,
                             id
                     )
 
+                    element.select("isAnyFileAttached")?.text()?.let {
+                        if (it == "1")
+                            messageObject.overrideHasAttachments = true
+                    }
+
                     data.messageIgnoreList.add(messageObject)
                     data.messageRecipientList.add(messageRecipientObject)
                     data.setSeenMetadataList.add(Metadata(

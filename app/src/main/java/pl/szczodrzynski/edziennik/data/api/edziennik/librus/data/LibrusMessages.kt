@@ -252,10 +252,10 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
                 .enqueue()
     }
 
-    fun sandboxGetFile(tag: String, action: String, targetFile: File, onSuccess: (file: File) -> Unit,
+    fun sandboxGetFile(tag: String, url: String, targetFile: File, onSuccess: (file: File) -> Unit,
                        onProgress: (written: Long, total: Long) -> Unit) {
 
-        d(tag, "Request: Librus/Messages - $LIBRUS_SANDBOX_URL$action")
+        d(tag, "Request: Librus/Messages - $url")
 
         val callback = object : FileCallbackHandler(targetFile) {
             override fun onSuccess(file: File?, response: Response?) {
@@ -291,7 +291,7 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
         }
 
         Request.builder()
-                .url("$LIBRUS_SANDBOX_URL$action")
+                .url("$url")
                 .userAgent(SYNERGIA_USER_AGENT)
                 .post()
                 .callback(callback)
