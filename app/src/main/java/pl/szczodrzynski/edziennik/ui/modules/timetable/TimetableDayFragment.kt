@@ -27,7 +27,7 @@ import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableNoTimetableBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.timetable.LessonDetailsDialog
-import pl.szczodrzynski.edziennik.ui.modules.base.PagerFragment
+import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
 import pl.szczodrzynski.edziennik.utils.ListenerScrollView
@@ -36,7 +36,7 @@ import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
 
-class TimetableDayFragment : PagerFragment(), CoroutineScope {
+class TimetableDayFragment : LazyFragment(), CoroutineScope {
     companion object {
         private const val TAG = "TimetableDayFragment"
     }
@@ -104,9 +104,6 @@ class TimetableDayFragment : PagerFragment(), CoroutineScope {
     }
 
     override fun onPageCreated(): Boolean {
-        if (!isAdded)
-            return false
-
         // observe lesson database
         app.db.timetableDao().getForDate(App.profileId, date).observe(this, Observer { lessons ->
             launch {

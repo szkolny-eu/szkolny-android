@@ -28,7 +28,7 @@
                         android:id="@+id/tabLayout"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:background="@color/colorSurface_6dp"
+                        android:background="@color/colorSurface_1dp"
                         app:rtl_tabIndicatorColor="?colorPrimary"
                         app:rtl_tabMaxWidth="300dp"
                         app:rtl_tabMinWidth="90dp"
@@ -40,7 +40,7 @@
                         app:rtl_tabTextAppearance="@style/rtl_RecyclerTabLayout.Tab" />
                 </com.google.android.material.appbar.AppBarLayout>
 
-                <androidx.viewpager.widget.ViewPager
+                <pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyViewPager
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

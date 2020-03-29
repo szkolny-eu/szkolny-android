@@ -68,6 +68,10 @@ class HomeworkFragment : Fragment() {
                 }))
 
         b.viewPager.adapter = MessagesFragment.Adapter(childFragmentManager).also { adapter ->
+            adapter.swipeRefreshLayoutCallback = { isEnabled ->
+                b.refreshLayout.isEnabled = isEnabled
+            }
+
             adapter.addFragment(HomeworkListFragment().also { fragment ->
                 fragment.arguments = Bundle().also {  args ->
                     args.putInt("homeworkDate", HomeworkDate.CURRENT)

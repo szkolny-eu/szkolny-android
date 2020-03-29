@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.App
@@ -14,8 +13,9 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.databinding.FragmentMessagesBinding
+import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyPagerAdapter
 import pl.szczodrzynski.edziennik.utils.Themes
-import java.util.*
 
 class MessagesFragment : Fragment() {
     companion object {
@@ -55,6 +55,10 @@ class MessagesFragment : Fragment() {
         }
 
         b.viewPager.adapter = Adapter(childFragmentManager).also { adapter ->
+
+            adapter.swipeRefreshLayoutCallback = { isEnabled ->
+                b.refreshLayout.isEnabled = isEnabled
+            }
 
             adapter.addFragment(MessagesListFragment().also { fragment ->
                 fragment.arguments = Bundle().also { args ->
@@ -126,11 +130,11 @@ class MessagesFragment : Fragment() {
         }*/
     }
 
-    internal class Adapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
-        private val mFragmentList = ArrayList<Fragment>()
-        private val mFragmentTitleList = ArrayList<String>()
+    internal class Adapter(manager: FragmentManager) : LazyPagerAdapter(manager) {
+        private val mFragmentList = mutableListOf<LazyFragment>()
+        private val mFragmentTitleList = mutableListOf<String>()
 
-        override fun getItem(position: Int): Fragment {
+        override fun getItem(position: Int): LazyFragment {
             return mFragmentList[position]
         }
 
@@ -138,7 +142,8 @@ class MessagesFragment : Fragment() {
             return mFragmentList.size
         }
 
-        fun addFragment(fragment: Fragment, title: String) {
+        fun addFragment(fragment: LazyFragment, title: String) {
+            fragment.swipeRefreshLayoutCallback = this@Adapter.swipeRefreshLayoutCallback
             mFragmentList.add(fragment)
             mFragmentTitleList.add(title)
         }

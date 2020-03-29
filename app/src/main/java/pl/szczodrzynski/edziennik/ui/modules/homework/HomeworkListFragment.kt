@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.databinding.HomeworkListBinding
 import pl.szczodrzynski.edziennik.getInt
+import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class HomeworkListFragment : Fragment() {
+class HomeworkListFragment : LazyFragment() {
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
@@ -30,11 +31,7 @@ class HomeworkListFragment : Fragment() {
         return b.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (!isAdded)
-            return
-
+    override fun onPageCreated(): Boolean {
         if (arguments != null) {
             homeworkDate = arguments.getInt("homeworkDate", HomeworkDate.CURRENT)
         }
@@ -45,6 +42,16 @@ class HomeworkListFragment : Fragment() {
 
         b.homeworkView.setHasFixedSize(true)
         b.homeworkView.layoutManager = layoutManager
+        b.homeworkView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (recyclerView.canScrollVertically(-1)) {
+                    swipeRefreshLayoutCallback?.invoke(false)
+                }
+                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    swipeRefreshLayoutCallback?.invoke(true)
+                }
+            }
+        })
 
         val filter = when(homeworkDate) {
             HomeworkDate.CURRENT -> "eventDate >= '" + Date.getToday().stringY_m_d + "'"
@@ -66,5 +73,6 @@ class HomeworkListFragment : Fragment() {
                         b.homeworkNoData.visibility = View.VISIBLE
                     }
                 })
+        return true
     }
 }

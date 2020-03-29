@@ -10,11 +10,10 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +25,15 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message;
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull;
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull;
 import pl.szczodrzynski.edziennik.databinding.MessagesListBinding;
+import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment;
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
 import pl.szczodrzynski.edziennik.utils.Themes;
 
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 
-public class MessagesListFragment extends Fragment {
+public class MessagesListFragment extends LazyFragment {
 
     private App app = null;
     private MainActivity activity = null;
@@ -65,9 +66,9 @@ public class MessagesListFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public boolean onPageCreated() {
         if (app == null || activity == null || b == null || !isAdded())
-            return;
+            return false;
 
         long messageId = -1;
         if (getArguments() != null) {
@@ -78,7 +79,7 @@ public class MessagesListFragment extends Fragment {
             args.putLong("messageId", messageId);
             getArguments().remove("messageId");
             activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, args);
-            return;
+            return false;
         }
 
         if (getArguments() != null) {
@@ -161,11 +162,24 @@ public class MessagesListFragment extends Fragment {
          // TODO ANIMATION
         //postponeEnterTransition();
 
-        viewParent = (ViewGroup) view.getParent();
+        viewParent = (ViewGroup) getView().getParent();
 
-        b.emailList.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        b.emailList.addItemDecoration(new SimpleDividerItemDecoration(view.getContext()));
+        b.emailList.setLayoutManager(new LinearLayoutManager(getView().getContext()));
+        b.emailList.addItemDecoration(new SimpleDividerItemDecoration(getView().getContext()));
         b.emailList.setAdapter(messagesAdapter);
+        b.emailList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (b.emailList.canScrollVertically(-1)) {
+                    if (getSwipeRefreshLayoutCallback() != null)
+                        getSwipeRefreshLayoutCallback().invoke(false);
+                }
+                if (!b.emailList.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
+                    if (getSwipeRefreshLayoutCallback() != null)
+                        getSwipeRefreshLayoutCallback().invoke(true);
+                }
+            }
+        });
 
         if (messageType == Message.TYPE_RECEIVED) {
             App.db.messageDao().getReceived(App.Companion.getProfileId()).observe(this, messageFulls -> {
@@ -215,7 +229,7 @@ public class MessagesListFragment extends Fragment {
             });
         }
 
-
+        return true;
     }
 
     private void createMessageList(List<MessageFull> messageFulls) {

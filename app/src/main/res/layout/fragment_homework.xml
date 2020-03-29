@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator
         android:id="@+id/refreshLayout"
@@ -23,7 +22,7 @@
                 app:tabSelectedTextColor="?colorPrimary"
                 app:tabTextColor="?android:textColorPrimary" />
 
-            <androidx.viewpager.widget.ViewPager
+            <pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
