@@ -6,10 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages
 
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
-import pl.szczodrzynski.edziennik.data.api.ERROR_FILE_DOWNLOAD
-import pl.szczodrzynski.edziennik.data.api.EXCEPTION_LIBRUS_MESSAGES_REQUEST
-import pl.szczodrzynski.edziennik.data.api.LIBRUS_SANDBOX_URL
-import pl.szczodrzynski.edziennik.data.api.Regexes
+import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
@@ -54,10 +51,10 @@ class LibrusMessagesGetAttachment(override val data: DataLibrus,
 
                 val attachmentKey = keyMatcher[1]
                 getAttachmentCheckKey(attachmentKey) {
-                    downloadAttachment("${LIBRUS_SANDBOX_URL}CSDownload&singleUseKey=$attachmentKey")
+                    downloadAttachment("${LIBRUS_SANDBOX_URL}CSDownload&singleUseKey=$attachmentKey", method = POST)
                 }
             } else {
-                downloadAttachment(downloadLink)
+                downloadAttachment(downloadLink, method = GET)
             }
         }
     }
@@ -91,7 +88,7 @@ class LibrusMessagesGetAttachment(override val data: DataLibrus,
         }
     }
 
-    private fun downloadAttachment(url: String) {
+    private fun downloadAttachment(url: String, method: Int = GET) {
         val targetFile = File(Utils.getStorageDir(), attachmentName)
 
         sandboxGetFile(TAG, url, targetFile, { file ->

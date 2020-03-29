@@ -253,6 +253,7 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
     }
 
     fun sandboxGetFile(tag: String, url: String, targetFile: File, onSuccess: (file: File) -> Unit,
+                       method: Int = GET,
                        onProgress: (written: Long, total: Long) -> Unit) {
 
         d(tag, "Request: Librus/Messages - $url")
@@ -291,9 +292,14 @@ open class LibrusMessages(open val data: DataLibrus, open val lastSync: Long?) {
         }
 
         Request.builder()
-                .url("$url")
+                .url(url)
                 .userAgent(SYNERGIA_USER_AGENT)
-                .post()
+                .also {
+                    when (method) {
+                        POST -> it.post()
+                        else -> it.get()
+                    }
+                }
                 .callback(callback)
                 .build()
                 .enqueue()
