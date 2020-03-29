@@ -64,11 +64,25 @@ class ConfigMigration(app: App, config: Config) {
             dataVersion = 2
         }
 
+        if (dataVersion < 3) {
+            update = null
+            privacyPolicyAccepted = false
+            debugMode = false
+            devModePassword = null
+            appInstalledTime = 0L
+            appRateSnackbarTime = 0L
+
+            dataVersion = 3
+        }
+
         if (dataVersion < 10) {
             ui.openDrawerOnBackPressed = false
             ui.snowfall = false
             ui.bottomSheetOpened = false
             sync.dontShowAppManagerDialog = false
+            sync.webPushEnabled = true
+            sync.lastAppSync = 0L
+
 
             dataVersion = 10
         }

@@ -18,7 +18,7 @@ import kotlin.coroutines.CoroutineContext
 
 class ProfileConfig(val db: AppDb, val profileId: Int, rawEntries: List<ConfigEntry>) : CoroutineScope, AbstractConfig {
     companion object {
-        const val DATA_VERSION = 1
+        const val DATA_VERSION = 2
     }
 
     private val job = Job()
