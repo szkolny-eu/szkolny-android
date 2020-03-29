@@ -102,14 +102,14 @@ class EventDetailsDialog(
                 when (event.sharedBy) {
                     null -> when {
                         event.addedManually -> R.string.event_details_added_by_self_format
-                        event.teacherFullName == null -> R.string.event_details_added_by_unknown_format
+                        event.teacherName == null -> R.string.event_details_added_by_unknown_format
                         else -> R.string.event_details_added_by_format
                     }
                     "self" -> R.string.event_details_shared_by_self_format
                     else -> R.string.event_details_shared_by_format
                 },
                 Date.fromMillis(event.addedDate).formattedString,
-                event.sharedByName ?: event.teacherFullName ?: ""
+                event.sharedByName ?: event.teacherName ?: ""
         )
 
         b.editButton.visibility = if (event.addedManually) View.VISIBLE else View.GONE

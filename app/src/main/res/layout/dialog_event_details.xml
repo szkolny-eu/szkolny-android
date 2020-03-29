@@ -107,13 +107,13 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/NavView.TextView.Helper"
                 android:text="@string/dialog_event_details_teacher"
-                android:visibility="@{event.teacherFullName != null ? View.VISIBLE : View.GONE}"/>
+                android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{event.teacherFullName}"
+                android:text="@{event.teacherName}"
                 android:textIsSelectable="true"
-                android:visibility="@{event.teacherFullName != null ? View.VISIBLE : View.GONE}"
+                android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"
                 tools:text="Janósz Kowalski" />
 
             <TextView

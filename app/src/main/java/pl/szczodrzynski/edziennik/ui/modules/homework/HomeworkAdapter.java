@@ -54,7 +54,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.ViewHo
 
         holder.homeworkItemHomeworkDate.setText(app.getString(R.string.date_relative_format, homework.getDate().getFormattedString(), Date.dayDiffString(context, diffDays)));
         holder.homeworkItemTopic.setText(homework.getTopic());
-        holder.homeworkItemSubjectTeacher.setText(context.getString(R.string.homework_subject_teacher_format, bs(homework.getSubjectLongName()), bs(homework.getTeacherFullName())));
+        holder.homeworkItemSubjectTeacher.setText(context.getString(R.string.homework_subject_teacher_format, bs(homework.getSubjectLongName()), bs(homework.getTeacherName())));
         holder.homeworkItemTeamDate.setText(context.getString(R.string.homework_team_date_format, bs(homework.getTeamName()), Date.fromMillis(homework.getAddedDate()).getFormattedStringShort()));
 
         if (!homework.getSeen()) {

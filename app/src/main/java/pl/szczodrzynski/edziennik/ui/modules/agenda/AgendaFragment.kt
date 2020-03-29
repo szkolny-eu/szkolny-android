@@ -226,7 +226,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
                     "",
                     (if (event.time == null) getString(R.string.agenda_event_all_day) else event.time!!.stringHM) +
                             (event.subjectLongName?.let { ", $it" } ?: "") +
-                            (event.teacherFullName?.let { ", $it" } ?: "") +
+                            (event.teacherName?.let { ", $it" } ?: "") +
                             (event.teamName?.let { ", $it" } ?: ""),
                     event.eventColor,
                     Colors.legibleTextColor(event.eventColor),

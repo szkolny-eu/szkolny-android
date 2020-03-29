@@ -61,14 +61,14 @@ class EventListAdapter(
                 when (event.sharedBy) {
                     null -> when {
                         event.addedManually -> R.string.event_list_added_by_self_format
-                        event.teacherFullName == null -> R.string.event_list_added_by_unknown_format
+                        event.teacherName == null -> R.string.event_list_added_by_unknown_format
                         else -> R.string.event_list_added_by_format
                     }
                     "self" -> R.string.event_list_shared_by_self_format
                     else -> R.string.event_list_shared_by_format
                 },
                 Date.fromMillis(event.addedDate).formattedString,
-                event.sharedByName ?: event.teacherFullName ?: "",
+                event.sharedByName ?: event.teacherName ?: "",
                 event.teamName?.let { bullet+it } ?: ""
         )
 

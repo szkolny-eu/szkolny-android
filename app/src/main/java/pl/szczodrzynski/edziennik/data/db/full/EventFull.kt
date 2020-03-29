@@ -40,7 +40,7 @@ class EventFull(
     var typeName: String? = null
     var typeColor: Int? = null
 
-    var teacherFullName: String? = null
+    var teacherName: String? = null
     var subjectLongName: String? = null
     var subjectShortName: String? = null
     var teamName: String? = null

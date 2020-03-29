@@ -33,7 +33,7 @@ abstract class EventDao : BaseDao<Event, EventFull> {
             LEFT JOIN metadata ON eventId = thingId AND (thingType = ${Metadata.TYPE_EVENT} OR thingType = ${Metadata.TYPE_HOMEWORK}) AND metadata.profileId = events.profileId
         """
 
-        private const val ORDER_BY = """GROUP BY eventId ORDER BY addedDate ASC"""
+        private const val ORDER_BY = """GROUP BY eventId ORDER BY eventDate, eventTime, addedDate ASC"""
         private const val NOT_BLACKLISTED = """events.eventBlacklisted = 0"""
     }
 
