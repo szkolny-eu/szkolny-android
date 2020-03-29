@@ -152,7 +152,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             events += event
             metadataList += metadata
         }
-        app.db.eventDao().addAll(events)
+        app.db.eventDao().upsertAll(events)
         app.db.metadataDao().addAllReplace(metadataList)
         if (notificationList.isNotEmpty()) {
             app.db.notificationDao().addAll(notificationList)

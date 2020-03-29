@@ -284,7 +284,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             db.gradeDao().addAll(gradeList)
         }
         if (eventList.isNotEmpty()) {
-            db.eventDao().addAll(eventList)
+            db.eventDao().upsertAll(eventList)
         }
         if (noticeList.isNotEmpty()) {
             db.noticeDao().clear(profile.id)

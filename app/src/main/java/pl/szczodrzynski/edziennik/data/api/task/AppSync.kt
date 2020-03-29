@@ -44,7 +44,7 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
                         event.addedDate
                 )
             })
-            return app.db.eventDao().addAll(events).size
+            return app.db.eventDao().upsertAll(events).size
         }
         return 0;
     }

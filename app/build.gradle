@@ -193,6 +193,9 @@ dependencies {
     implementation "io.coil-kt:coil:0.9.2"
 
     implementation 'com.github.kuba2k2:NumberSlidingPicker:2921225f76'
+
+    implementation project(":annotation")
+    kapt project(":codegen")
 }
 repositories {
     mavenCentral()

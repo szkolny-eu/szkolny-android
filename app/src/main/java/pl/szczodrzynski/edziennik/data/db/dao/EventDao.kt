@@ -10,6 +10,10 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.annotation.SelectiveDao
+import pl.szczodrzynski.edziennik.annotation.UpdateSelective
+import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
@@ -17,6 +21,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 @Dao
+@SelectiveDao(db = AppDb::class)
 abstract class EventDao : BaseDao<Event, EventFull> {
     companion object {
         private const val QUERY = """
@@ -37,45 +42,21 @@ abstract class EventDao : BaseDao<Event, EventFull> {
         private const val NOT_BLACKLISTED = """events.eventBlacklisted = 0"""
     }
 
-    //abstract fun queryRaw(query: SupportSQLiteQuery)
-    //private fun queryRaw(query: String) = queryRaw(SimpleSQLiteQuery(query))
-
-    @Query("DELETE FROM events WHERE profileId = :profileId")
-    abstract override fun clear(profileId: Int)
-
-    /*fun update(event: Event) =
-            queryRaw("""UPDATE events SET 
-                eventDate = '${event.date.stringY_m_d}',
-                eventTime = ${event.time?.stringValue},
-                eventTopic = '${event.topic}'""")*/
-
-    @Query("DELETE FROM events WHERE profileId = :profileId AND eventId = :id")
-    abstract fun remove(profileId: Int, id: Long)
-
-    @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND thingId = :thingId")
-    abstract fun removeMetadata(profileId: Int, thingType: Int, thingId: Long)
-
-    @Transaction
-    open fun remove(profileId: Int, type: Long, id: Long) {
-        remove(profileId, id)
-        removeMetadata(profileId, if (type == Event.TYPE_HOMEWORK) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT, id)
-    }
-
-    @Transaction
-    open fun remove(event: Event) {
-        remove(event.profileId, event.type, event.id)
-    }
-
-    @Transaction
-    open fun remove(profileId: Int, event: Event) {
-        remove(profileId, event.type, event.id)
-    }
+    private val selective by lazy { EventDaoSelective(App.db) }
 
     @RawQuery(observedEntities = [Event::class])
     abstract override fun getRaw(query: SupportSQLiteQuery): LiveData<List<EventFull>>
 
+    // SELECTIVE UPDATE
+    @UpdateSelective(primaryKeys = ["profileId", "eventId"], skippedColumns = ["homeworkBody", "attachmentIds", "attachmentNames"])
+    override fun update(item: Event) = selective.update(item)
+    override fun updateAll(items: List<Event>) = selective.updateAll(items)
 
+    // CLEAR
+    @Query("DELETE FROM events WHERE profileId = :profileId")
+    abstract override fun clear(profileId: Int)
 
+    // GET ALL - LIVE DATA
     fun getAll(profileId: Int) =
             getRaw("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId $ORDER_BY")
     fun getAllByType(profileId: Int, type: Long, filter: String = "1") =
@@ -87,8 +68,7 @@ abstract class EventDao : BaseDao<Event, EventFull> {
     fun getAllNearest(profileId: Int, today: Date, limit: Int) =
             getRaw("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId AND eventDate >= '${today.stringY_m_d}' $ORDER_BY LIMIT $limit")
 
-
-
+    // GET ALL - NOW
     fun getAllNow(profileId: Int) =
             getRawNow("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId $ORDER_BY")
     fun getNotNotifiedNow() =
@@ -98,11 +78,9 @@ abstract class EventDao : BaseDao<Event, EventFull> {
     fun getAllByDateNow(profileId: Int, date: Date) =
             getRawNow("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId AND eventDate = '${date.stringY_m_d}' $ORDER_BY")
 
-
-
+    // GET ONE - NOW
     fun getByIdNow(profileId: Int, id: Long) =
             getOneNow("$QUERY WHERE events.profileId = $profileId AND eventId = $id")
-
 
 
     @Query("SELECT eventId FROM events WHERE profileId = :profileId AND eventBlacklisted = 1")
@@ -146,5 +124,27 @@ abstract class EventDao : BaseDao<Event, EventFull> {
 
     @Query("UPDATE events SET eventBlacklisted = :blacklisted WHERE profileId = :profileId AND eventId = :eventId")
     abstract fun setBlacklisted(profileId: Int, eventId: Long, blacklisted: Boolean)
+
+    @Query("DELETE FROM events WHERE profileId = :profileId AND eventId = :id")
+    abstract fun remove(profileId: Int, id: Long)
+
+    @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND thingId = :thingId")
+    abstract fun removeMetadata(profileId: Int, thingType: Int, thingId: Long)
+
+    @Transaction
+    open fun remove(profileId: Int, type: Long, id: Long) {
+        remove(profileId, id)
+        removeMetadata(profileId, if (type == Event.TYPE_HOMEWORK) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT, id)
+    }
+
+    @Transaction
+    open fun remove(event: Event) {
+        remove(event.profileId, event.type, event.id)
+    }
+
+    @Transaction
+    open fun remove(profileId: Int, event: Event) {
+        remove(profileId, event.type, event.id)
+    }
 
 }

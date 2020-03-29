@@ -587,7 +587,7 @@ class EventManualDialog(
     private fun finishAdding(eventObject: Event, metadataObject: Metadata) {
         launch {
             withContext(Dispatchers.Default) {
-                app.db.eventDao().add(eventObject)
+                app.db.eventDao().upsert(eventObject)
                 app.db.metadataDao().add(metadataObject)
             }
         }
