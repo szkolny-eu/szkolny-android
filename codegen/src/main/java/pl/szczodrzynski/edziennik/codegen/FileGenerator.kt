@@ -17,10 +17,7 @@ import java.io.File
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.*
-import javax.lang.model.type.MirroredTypeException
-import javax.lang.model.type.MirroredTypesException
-import javax.lang.model.type.TypeKind
-import javax.lang.model.type.TypeMirror
+import javax.lang.model.type.*
 import javax.lang.model.util.ElementFilter
 import javax.tools.Diagnostic
 import kotlin.reflect.KClass
@@ -146,14 +143,26 @@ class FileGenerator : AbstractProcessor() {
         val primaryKeys = annotation.primaryKeys
         val skippedColumns = annotation.skippedColumns
 
-        val members = processingEnv.elementUtils.getAllMembers(paramTypeElement)
+
+        var members = processingEnv.elementUtils.getAllMembers(paramTypeElement)
         val allFields = ElementFilter.fieldsIn(members)
-        allFields.removeAll { skippedColumns.contains(it.simpleName.toString()) }
+
+        // check all super classes
+        var superType = paramTypeElement.superclass
+        while (superType !is NoType) {
+            val superTypeElement = processingEnv.typeUtils.asElement(superType) as TypeElement
+            members = processingEnv.elementUtils.getAllMembers(superTypeElement)
+            allFields += ElementFilter.fieldsIn(members)
+            superType = superTypeElement.superclass
+        }
+
+        allFields.removeAll { skippedColumns.contains(it.name()) }
         allFields.removeAll { it.getAnnotation(Ignore::class.java) != null }
         allFields.removeAll { field -> field.modifiers.any { it == Modifier.STATIC || it == Modifier.FINAL } }
+        val allFieldsDistinct = allFields.distinct()
 
-        val fields = allFields.filterNot { primaryKeys.contains(it.name()) }
-        val primaryFields = allFields.filter { primaryKeys.contains(it.name()) }
+        val fields = allFieldsDistinct.filterNot { primaryKeys.contains(it.name()) }
+        val primaryFields = allFieldsDistinct.filter { primaryKeys.contains(it.name()) }
         val fieldNames = fields.map { it.name() }
         val primaryFieldNames = primaryFields.map { it.name() }
 

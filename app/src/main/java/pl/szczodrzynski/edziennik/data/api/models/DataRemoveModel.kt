@@ -56,9 +56,9 @@ open class DataRemoveModel {
         }
 
         fun commit(profileId: Int, dao: EventDao) {
-            type?.let { dao.removeFutureWithType(profileId, Date.getToday(), it) }
-            exceptType?.let { dao.removeFutureExceptType(profileId, Date.getToday(), it) }
-            exceptTypes?.let { dao.removeFutureExceptTypes(profileId, Date.getToday(), it) }
+            type?.let { dao.dontKeepFutureWithType(profileId, Date.getToday(), it) }
+            exceptType?.let { dao.dontKeepFutureExceptType(profileId, Date.getToday(), it) }
+            exceptTypes?.let { dao.dontKeepFutureExceptTypes(profileId, Date.getToday(), it) }
         }
     }
 

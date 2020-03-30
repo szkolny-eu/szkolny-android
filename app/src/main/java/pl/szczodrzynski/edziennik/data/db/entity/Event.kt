@@ -42,7 +42,7 @@ open class Event(
         var teacherId: Long,
         var subjectId: Long,
         var teamId: Long
-) {
+) : Keepable() {
     companion object {
         const val TYPE_UNDEFINED = -2L
         const val TYPE_HOMEWORK = -1L

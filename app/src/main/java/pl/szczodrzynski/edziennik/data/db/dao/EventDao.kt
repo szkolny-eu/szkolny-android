@@ -90,34 +90,34 @@ abstract class EventDao : BaseDao<Event, EventFull> {
     @get:Query("SELECT eventId FROM events WHERE eventBlacklisted = 1")
     abstract val blacklistedIds: List<Long>
 
-    @Query("UPDATE events SET eventAddedManually = 1 WHERE profileId = :profileId AND eventDate < :date")
+    /*@Query("UPDATE events SET eventAddedManually = 1 WHERE profileId = :profileId AND eventDate < :date")
     abstract fun convertOlderToManual(profileId: Int, date: Date?)
 
     @Query("DELETE FROM events WHERE teamId = :teamId AND eventId = :id")
     abstract fun removeByTeamId(teamId: Long, id: Long)
 
     @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0")
-    abstract fun removeNotManual(profileId: Int)
+    abstract fun removeNotManual(profileId: Int)*/
 
     @RawQuery
-    abstract fun removeFuture(query: SupportSQLiteQuery?): Long
+    abstract fun dontKeepFuture(query: SupportSQLiteQuery?): Long
 
     @Transaction
-    open fun removeFuture(profileId: Int, todayDate: Date, filter: String) {
-        removeFuture(SimpleSQLiteQuery("DELETE FROM events WHERE profileId = " + profileId
+    open fun dontKeepFuture(profileId: Int, todayDate: Date, filter: String) {
+        dontKeepFuture(SimpleSQLiteQuery("UPDATE events SET keep = 0 WHERE profileId = " + profileId
                 + " AND eventAddedManually = 0 AND eventDate >= '" + todayDate.stringY_m_d + "'" +
                 " AND " + filter))
     }
 
-    @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType = :type")
-    abstract fun removeFutureWithType(profileId: Int, todayDate: Date, type: Long)
+    @Query("UPDATE events SET keep = 0 WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType = :type")
+    abstract fun dontKeepFutureWithType(profileId: Int, todayDate: Date, type: Long)
 
-    @Query("DELETE FROM events WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType != :exceptType")
-    abstract fun removeFutureExceptType(profileId: Int, todayDate: Date, exceptType: Long)
+    @Query("UPDATE events SET keep = 0 WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType != :exceptType")
+    abstract fun dontKeepFutureExceptType(profileId: Int, todayDate: Date, exceptType: Long)
 
     @Transaction
-    open fun removeFutureExceptTypes(profileId: Int, todayDate: Date, exceptTypes: List<Long>) {
-        removeFuture(profileId, todayDate, "eventType NOT IN " + exceptTypes.toString().replace('[', '(').replace(']', ')'))
+    open fun dontKeepFutureExceptTypes(profileId: Int, todayDate: Date, exceptTypes: List<Long>) {
+        dontKeepFuture(profileId, todayDate, "eventType NOT IN " + exceptTypes.toString().replace('[', '(').replace(']', ')'))
     }
 
     @Query("UPDATE metadata SET seen = :seen WHERE profileId = :profileId AND (thingType = " + Metadata.TYPE_EVENT + " OR thingType = " + Metadata.TYPE_LESSON_CHANGE + " OR thingType = " + Metadata.TYPE_HOMEWORK + ") AND thingId IN (SELECT eventId FROM events WHERE profileId = :profileId AND eventDate = :date)")

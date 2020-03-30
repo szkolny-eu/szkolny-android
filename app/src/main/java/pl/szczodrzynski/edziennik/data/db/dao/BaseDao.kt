@@ -8,9 +8,10 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import pl.szczodrzynski.edziennik.data.db.entity.Keepable
 
 @Dao
-interface BaseDao<T, F> {
+interface BaseDao<T : Keepable, F : T> {
     @RawQuery
     fun getRaw(query: SupportSQLiteQuery): LiveData<List<F>>
     fun getRaw(query: String) = getRaw(SimpleSQLiteQuery(query))
@@ -20,6 +21,9 @@ interface BaseDao<T, F> {
     @RawQuery
     fun getOneNow(query: SupportSQLiteQuery): F?
     fun getOneNow(query: String) = getOneNow(SimpleSQLiteQuery(query))
+
+    @Query("DELETE FROM events WHERE keep = 0")
+    fun removeNotKept()
 
     /**
      * INSERT an [item] into the database,
@@ -81,7 +85,7 @@ interface BaseDao<T, F> {
      * @return a [LongArray] of IDs of newly inserted items or -1L if the item existed before
      */
     @Transaction
-    fun upsertAll(items: List<T>): LongArray {
+    fun upsertAll(items: List<T>, removeNotKept: Boolean = false): LongArray {
         val insertResult = addAll(items)
         val updateList = mutableListOf<T>()
 
@@ -90,6 +94,7 @@ interface BaseDao<T, F> {
         }
 
         if (updateList.isNotEmpty()) updateAll(items)
+        if (removeNotKept) removeNotKept()
         return insertResult
     }
 }
