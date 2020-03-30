@@ -79,6 +79,8 @@ open class Event(
     var sharedByName: String? = null
     @ColumnInfo(name = "eventBlacklisted")
     var blacklisted: Boolean = false
+    @ColumnInfo(name = "eventIsDone")
+    var isDone: Boolean = false
 
     var homeworkBody: String? = null
     var attachmentIds: List<Long>? = null

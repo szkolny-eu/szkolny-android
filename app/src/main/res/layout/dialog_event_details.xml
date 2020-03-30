@@ -195,6 +195,18 @@
                     android:text="\uFCDA"
                     android:textSize="20sp"
                     android:fontFamily="@font/community_material_font_v3_5_95_1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/checkDoneButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:minWidth="0dp"
+                    android:checkable="true"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:text="\uFCE1"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

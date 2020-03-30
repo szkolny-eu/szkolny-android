@@ -161,6 +161,14 @@ class EventDetailsDialog(
             true
         }
 
+        b.checkDoneButton.isChecked = event.isDone
+        b.checkDoneButton.addOnCheckedChangeListener { _, isChecked ->
+            event.isDone = isChecked
+            launch(Dispatchers.Default) {
+                app.db.eventDao().replace(event)
+            }
+        }
+
         b.topic.text = event.topic
         BetterLink.attach(b.topic) {
             dialog.dismiss()

@@ -40,6 +40,7 @@ abstract class EventDao : BaseDao<Event, EventFull> {
 
         private const val ORDER_BY = """GROUP BY eventId ORDER BY eventDate, eventTime, addedDate ASC"""
         private const val NOT_BLACKLISTED = """events.eventBlacklisted = 0"""
+        private const val NOT_DONE = """events.eventIsDone = 0"""
     }
 
     private val selective by lazy { EventDaoSelective(App.db) }
@@ -48,7 +49,7 @@ abstract class EventDao : BaseDao<Event, EventFull> {
     abstract override fun getRaw(query: SupportSQLiteQuery): LiveData<List<EventFull>>
 
     // SELECTIVE UPDATE
-    @UpdateSelective(primaryKeys = ["profileId", "eventId"], skippedColumns = ["homeworkBody", "attachmentIds", "attachmentNames"])
+    @UpdateSelective(primaryKeys = ["profileId", "eventId"], skippedColumns = ["eventIsDone", "eventBlacklisted", "homeworkBody", "attachmentIds", "attachmentNames"])
     override fun update(item: Event) = selective.update(item)
     override fun updateAll(items: List<Event>) = selective.updateAll(items)
 
@@ -65,8 +66,8 @@ abstract class EventDao : BaseDao<Event, EventFull> {
             getRaw("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId AND eventDate = '${date.stringY_m_d}' $ORDER_BY")
     fun getAllByDateTime(profileId: Int, date: Date, time: Time) =
             getRaw("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId AND eventDate = '${date.stringY_m_d}' AND eventTime = ${time.stringValue}")
-    fun getAllNearest(profileId: Int, today: Date, limit: Int) =
-            getRaw("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId AND eventDate >= '${today.stringY_m_d}' $ORDER_BY LIMIT $limit")
+    fun getNearestNotDone(profileId: Int, today: Date, limit: Int) =
+            getRaw("$QUERY WHERE $NOT_BLACKLISTED AND $NOT_DONE AND events.profileId = $profileId AND eventDate >= '${today.stringY_m_d}' $ORDER_BY LIMIT $limit")
 
     // GET ALL - NOW
     fun getAllNow(profileId: Int) =
