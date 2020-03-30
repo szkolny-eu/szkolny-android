@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.ui.dialogs.event
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -52,6 +51,7 @@ class EventListAdapter(
         b.simpleMode = simpleMode
 
         b.topic.text = event.topic
+        b.topic.maxLines = if (simpleMode) 2 else 3
 
         b.details.text = mutableListOf<CharSequence?>(
                 if (showWeekDay) Week.getFullDayName(event.date.weekDay) else null,
@@ -79,10 +79,12 @@ class EventListAdapter(
         b.typeColor.background?.setTintColor(event.eventColor)
         b.typeColor.isVisible = showType
 
-        b.editButton.visibility = if (event.addedManually && !simpleMode) View.VISIBLE else View.GONE
+        b.editButton.isVisible = !simpleMode && event.addedManually && !event.isDone
         b.editButton.onClick {
             onEventEditClick?.invoke(event)
         }
+
+        b.isDone.isVisible = event.isDone
 
         b.editButton.setOnLongClickListener {
             Toast.makeText(context, R.string.hint_edit_event, Toast.LENGTH_SHORT).show()
