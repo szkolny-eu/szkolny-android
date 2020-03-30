@@ -45,10 +45,10 @@ class HomeworkListFragment : LazyFragment() {
         b.homeworkView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (recyclerView.canScrollVertically(-1)) {
-                    swipeRefreshLayoutCallback?.invoke(false)
+                    setSwipeToRefresh(false)
                 }
                 if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    swipeRefreshLayoutCallback?.invoke(true)
+                    setSwipeToRefresh(true)
                 }
             }
         })

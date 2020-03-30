@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.App
@@ -54,11 +55,7 @@ class MessagesFragment : Fragment() {
             return
         }
 
-        b.viewPager.adapter = Adapter(childFragmentManager).also { adapter ->
-
-            adapter.swipeRefreshLayoutCallback = { isEnabled ->
-                b.refreshLayout.isEnabled = isEnabled
-            }
+        b.viewPager.adapter = Adapter(childFragmentManager, b.refreshLayout).also { adapter ->
 
             adapter.addFragment(MessagesListFragment().also { fragment ->
                 fragment.arguments = Bundle().also { args ->
@@ -75,13 +72,8 @@ class MessagesFragment : Fragment() {
         }
 
         b.viewPager.currentItem = pageSelection
-        b.viewPager.clearOnPageChangeListeners()
         b.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-                if (b.refreshLayout != null) {
-                    b.refreshLayout.isEnabled = state == ViewPager.SCROLL_STATE_IDLE
-                }
-            }
+            override fun onPageScrollStateChanged(state: Int) {}
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
                 pageSelection = position
@@ -130,11 +122,11 @@ class MessagesFragment : Fragment() {
         }*/
     }
 
-    internal class Adapter(manager: FragmentManager) : LazyPagerAdapter(manager) {
+    internal class Adapter(manager: FragmentManager, swipeRefreshLayout: SwipeRefreshLayout) : LazyPagerAdapter(manager, swipeRefreshLayout) {
         private val mFragmentList = mutableListOf<LazyFragment>()
         private val mFragmentTitleList = mutableListOf<String>()
 
-        override fun getItem(position: Int): LazyFragment {
+        override fun getPage(position: Int): LazyFragment {
             return mFragmentList[position]
         }
 
@@ -143,12 +135,11 @@ class MessagesFragment : Fragment() {
         }
 
         fun addFragment(fragment: LazyFragment, title: String) {
-            fragment.swipeRefreshLayoutCallback = this@Adapter.swipeRefreshLayoutCallback
             mFragmentList.add(fragment)
             mFragmentTitleList.add(title)
         }
 
-        override fun getPageTitle(position: Int): CharSequence? {
+        override fun getPageTitle(position: Int): CharSequence {
             return mFragmentTitleList[position]
         }
     }

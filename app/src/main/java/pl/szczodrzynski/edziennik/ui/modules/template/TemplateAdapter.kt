@@ -1,24 +1,33 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-12-19.
+ * Copyright (c) Kuba Szczodrzyński 2020-3-30.
  */
 
-package pl.szczodrzynski.edziennik.ui
+package pl.szczodrzynski.edziennik.ui.modules.template
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.databinding.TemplateListItemBinding
 import pl.szczodrzynski.edziennik.onClick
+import kotlin.coroutines.CoroutineContext
 
 class TemplateAdapter(
-        val context: Context,
+        val activity: AppCompatActivity,
         val onItemClick: ((item: TemplateItem) -> Unit)? = null,
         val onItemButtonClick: ((item: TemplateItem) -> Unit)? = null
-) : RecyclerView.Adapter<TemplateAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<TemplateAdapter.ViewHolder>(), CoroutineScope {
 
-    private val app by lazy { context.applicationContext as App }
+    private val app = activity.applicationContext as App
+    // optional: place the manager here
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     var items = listOf<TemplateItem>()
 

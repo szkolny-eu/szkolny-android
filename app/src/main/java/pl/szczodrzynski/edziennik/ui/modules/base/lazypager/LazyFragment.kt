@@ -8,7 +8,8 @@ import androidx.fragment.app.Fragment
 
 abstract class LazyFragment : Fragment() {
     private var isPageCreated = false
-    var swipeRefreshLayoutCallback: ((isEnabled: Boolean) -> Unit)? = null
+    internal var position = -1
+    internal var swipeRefreshLayoutCallback: ((position: Int, isEnabled: Boolean) -> Unit)? = null
 
     /**
      * Called when the page is first shown, or if previous
@@ -19,6 +20,10 @@ abstract class LazyFragment : Fragment() {
      * again, when page becomes visible.
      */
     abstract fun onPageCreated(): Boolean
+
+    fun enableSwipeToRefresh() = swipeRefreshLayoutCallback?.invoke(position, true)
+    fun disableSwipeToRefresh() = swipeRefreshLayoutCallback?.invoke(position, false)
+    fun setSwipeToRefresh(enabled: Boolean) = swipeRefreshLayoutCallback?.invoke(position, enabled)
 
     internal fun createPage() {
         if (!isPageCreated && isAdded) {

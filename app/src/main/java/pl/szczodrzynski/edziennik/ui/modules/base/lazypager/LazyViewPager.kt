@@ -11,10 +11,15 @@ import androidx.viewpager.widget.ViewPager
 class LazyViewPager @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
+
+    var pageSelection = -1
+
     init {
         addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-
+                (adapter as? LazyPagerAdapter)?.let {
+                    it.swipeRefreshLayout?.isEnabled = state == SCROLL_STATE_IDLE && it.enabledList[pageSelection, true]
+                }
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -22,6 +27,7 @@ class LazyViewPager @JvmOverloads constructor(
             }
 
             override fun onPageSelected(position: Int) {
+                pageSelection = position
                 if (adapter is LazyPagerAdapter) {
                     val fragment = adapter?.instantiateItem(this@LazyViewPager, position)
                     val lazyFragment = fragment as? LazyFragment

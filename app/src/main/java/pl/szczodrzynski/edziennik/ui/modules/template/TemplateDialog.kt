@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2020-1-8.
+ * Copyright (c) Kuba Szczodrzyński 2020-3-30.
  */
 
-package pl.szczodrzynski.edziennik.ui.dialogs
+package pl.szczodrzynski.edziennik.ui.modules.template
 
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity

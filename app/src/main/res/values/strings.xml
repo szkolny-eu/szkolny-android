@@ -1278,4 +1278,5 @@
     <string name="registration_enable_dialog_title">Rejestracja na serwerze</string>
     <string name="registration_enable_dialog_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nUpewnij się, że zapoznałeś się z warunkami <a href="http://szkolny.eu/privacy-policy">Polityki prywatności</a> i akceptujesz jej postanowienia.</string>
     <string name="menu_add_remove_cards">Dodaj lub usuń karty</string>
+    <string name="menu_template">Template</string>
 </resources>

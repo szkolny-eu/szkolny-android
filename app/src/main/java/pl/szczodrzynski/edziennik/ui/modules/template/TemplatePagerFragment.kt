@@ -1,26 +1,30 @@
-package pl.szczodrzynski.edziennik.ui.modules.base
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-3-30.
+ */
+
+package pl.szczodrzynski.edziennik.ui.modules.template
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.databinding.FragmentTemplateBinding
+import pl.szczodrzynski.edziennik.databinding.TemplatePagerFragmentBinding
+import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import kotlin.coroutines.CoroutineContext
 
-class TemplateFragment : Fragment(), CoroutineScope {
+class TemplatePagerFragment : LazyFragment(), CoroutineScope {
     companion object {
-        private const val TAG = "TemplateFragment"
+        private const val TAG = "TemplatePagerFragment"
     }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-    private lateinit var b: FragmentTemplateBinding
+    private lateinit var b: TemplatePagerFragmentBinding
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
@@ -32,15 +36,16 @@ class TemplateFragment : Fragment(), CoroutineScope {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        b = FragmentTemplateBinding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
+        b = TemplatePagerFragmentBinding.inflate(inflater)
         return b.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (!isAdded)
-            return
+    override fun onPageCreated(): Boolean {
+        b.text.text = "Fragment $position"
 
-
+        b.button.addOnCheckedChangeListener { button, isChecked ->
+            setSwipeToRefresh(isChecked)
+        }
+        return true
     }
 }

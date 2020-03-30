@@ -171,12 +171,10 @@ public class MessagesListFragment extends LazyFragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 if (b.emailList.canScrollVertically(-1)) {
-                    if (getSwipeRefreshLayoutCallback() != null)
-                        getSwipeRefreshLayoutCallback().invoke(false);
+                    setSwipeToRefresh(false);
                 }
                 if (!b.emailList.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
-                    if (getSwipeRefreshLayoutCallback() != null)
-                        getSwipeRefreshLayoutCallback().invoke(true);
+                    setSwipeToRefresh(true);
                 }
             }
         });

@@ -67,10 +67,7 @@ class HomeworkFragment : Fragment() {
                     Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
                 }))
 
-        b.viewPager.adapter = MessagesFragment.Adapter(childFragmentManager).also { adapter ->
-            adapter.swipeRefreshLayoutCallback = { isEnabled ->
-                b.refreshLayout.isEnabled = isEnabled
-            }
+        b.viewPager.adapter = MessagesFragment.Adapter(childFragmentManager, b.refreshLayout).also { adapter ->
 
             adapter.addFragment(HomeworkListFragment().also { fragment ->
                 fragment.arguments = Bundle().also {  args ->
@@ -86,11 +83,8 @@ class HomeworkFragment : Fragment() {
         }
 
         b.viewPager.currentItem = pageSelection
-        b.viewPager.clearOnPageChangeListeners()
         b.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-                b.refreshLayout.isEnabled = state == ViewPager.SCROLL_STATE_IDLE
-            }
+            override fun onPageScrollStateChanged(state: Int) {}
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
                 pageSelection = position

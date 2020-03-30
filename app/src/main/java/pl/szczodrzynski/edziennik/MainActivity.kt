@@ -73,6 +73,7 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesListFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
+import pl.szczodrzynski.edziennik.ui.modules.template.TemplateFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
@@ -129,6 +130,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         const val TARGET_MESSAGES_DETAILS = 503
         const val TARGET_MESSAGES_COMPOSE = 504
         const val TARGET_WEB_PUSH = 140
+        const val TARGET_TEMPLATE = 1000
 
         const val HOME_ID = DRAWER_ITEM_HOME
 
@@ -227,6 +229,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             list += NavTarget(TARGET_MESSAGES_COMPOSE, R.string.menu_message_compose, MessagesComposeFragment::class)
             list += NavTarget(TARGET_WEB_PUSH, R.string.menu_web_push, WebPushFragment::class)
             list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
+            if (App.devMode) {
+                list += NavTarget(TARGET_TEMPLATE, R.string.menu_template, TemplateFragment::class)
+                        .withIcon(CommunityMaterial.Icon2.cmd_test_tube_empty)
+                        .isInDrawer(true)
+                        .isBelowSeparator(true)
+                        .isStatic(true)
+            }
 
             list
         }
