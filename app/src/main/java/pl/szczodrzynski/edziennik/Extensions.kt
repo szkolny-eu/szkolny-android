@@ -730,6 +730,13 @@ inline fun <T : View> T.onClick(crossinline onClickListener: (v: T) -> Unit) {
 }
 
 @Suppress("UNCHECKED_CAST")
+inline fun <T : View> T.onLongClick(crossinline onLongClickListener: (v: T) -> Boolean) {
+    setOnLongClickListener { v: View ->
+        onLongClickListener(v as T)
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
 inline fun <T : CompoundButton> T.onChange(crossinline onChangeListener: (v: T, isChecked: Boolean) -> Unit) {
     setOnCheckedChangeListener { buttonView, isChecked ->
         onChangeListener(buttonView as T, isChecked)

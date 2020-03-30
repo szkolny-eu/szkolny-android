@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import com.mikepenz.iconics.IconicsColor
@@ -62,7 +63,7 @@ class MessageFragment : Fragment(), CoroutineScope {
     private lateinit var activity: MainActivity
     private lateinit var b: MessageFragmentBinding
 
-    private lateinit var job: Job
+    private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
@@ -73,16 +74,12 @@ class MessageFragment : Fragment(), CoroutineScope {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
         b = MessageFragmentBinding.inflate(inflater)
-        job = Job()
         return b.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (app.profile == null || !isAdded)
-            return
+        if (!isAdded) return
 
         b.closeButton.setImageDrawable(
                 IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_window_close)
@@ -260,16 +257,35 @@ class MessageFragment : Fragment(), CoroutineScope {
         MessagesFragment.pageSelection = min(message.type, 1)
     }
 
+    private val attachmentOnClick = { v: View ->
+        if (v.tag is Int) {
+            downloadAttachment(v.tag as Int)
+        }
+    }
+
+    private val attachmentOnLongClick = { v: View ->
+        (v.tag as? Int)?.let { tag ->
+            val popupMenu = PopupMenu(v.context, v)
+            popupMenu.menu.add(0, tag, 0, R.string.messages_attachment_download_again)
+            popupMenu.setOnMenuItemClickListener {
+                downloadAttachment(it.itemId, forceDownload = true)
+                true
+            }
+            popupMenu.show()
+        }
+        true
+    }
+
     private fun showAttachments() {
         if (message.attachmentIds != null) {
             val insertPoint = b.attachments
             insertPoint.removeAllViews()
 
             val chipLayoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            chipLayoutParams.setMargins(0, Utils.dpToPx(8), 0, Utils.dpToPx(8))
+            chipLayoutParams.setMargins(0, 8.dp, 0, 0)
 
-            val progressLayoutParams = FrameLayout.LayoutParams(Utils.dpToPx(18), Utils.dpToPx(18))
-            progressLayoutParams.setMargins(Utils.dpToPx(8), 0, Utils.dpToPx(8), 0)
+            val progressLayoutParams = FrameLayout.LayoutParams(18.dp, 18.dp)
+            progressLayoutParams.setMargins(8.dp, 0, 8.dp, 0)
             progressLayoutParams.gravity = END or CENTER_VERTICAL
 
             // CREATE VIEWS AND AN OBJECT FOR EVERY ATTACHMENT
@@ -280,12 +296,13 @@ class MessageFragment : Fragment(), CoroutineScope {
                 val size = message.attachmentSizes[index]
                 // create the parent
                 val attachmentLayout = FrameLayout(b.root.context)
-                attachmentLayout.setPadding(Utils.dpToPx(16), 0, Utils.dpToPx(16), 0)
+                attachmentLayout.setPadding(16.dp, 0, 16.dp, 0)
 
                 val attachmentChip = Chip(attachmentLayout.context)
                 //attachmentChip.setChipBackgroundColorResource(ThemeUtils.getChipColorRes());
                 attachmentChip.layoutParams = chipLayoutParams
-                attachmentChip.height = Utils.dpToPx(40)
+                attachmentChip.chipMinHeight = 40.dp.toFloat()
+                //attachmentChip.height = Utils.dpToPx(40)
 
                 // show the file size or not
                 if (size == -1L)
@@ -312,11 +329,8 @@ class MessageFragment : Fragment(), CoroutineScope {
                 attachmentChip.isCloseIconVisible = false
                 // set the object's index in the attachmentList as the tag
                 attachmentChip.tag = index
-                attachmentChip.setOnClickListener { v ->
-                    if (v.tag is Int) {
-                        downloadAttachment(v.tag as Int)
-                    }
-                }
+                attachmentChip.onClick(attachmentOnClick)
+                attachmentChip.onLongClick(attachmentOnLongClick)
                 attachmentLayout.addView(attachmentChip)
 
                 val attachmentProgress = ProgressBar(attachmentLayout.context)
@@ -338,10 +352,10 @@ class MessageFragment : Fragment(), CoroutineScope {
         }
     }
 
-    private fun downloadAttachment(index: Int) {
+    private fun downloadAttachment(index: Int, forceDownload: Boolean = false) {
         val attachment = attachmentList[index]
 
-        if (attachment.downloaded != null) {
+        if (!forceDownload && attachment.downloaded != null) {
             Utils.openFile(activity, File(attachment.downloaded))
             return
         }

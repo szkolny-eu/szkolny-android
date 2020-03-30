@@ -54,7 +54,7 @@ class LibrusMessagesGetAttachment(override val data: DataLibrus,
                     downloadAttachment("${LIBRUS_SANDBOX_URL}CSDownload&singleUseKey=$attachmentKey", method = POST)
                 }
             } else {
-                downloadAttachment(downloadLink, method = GET)
+                downloadAttachment("$downloadLink/get", method = GET)
             }
         }
     }

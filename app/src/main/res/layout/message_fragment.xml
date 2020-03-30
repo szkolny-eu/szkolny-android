@@ -231,8 +231,7 @@
                             android:ellipsize="middle"
                             android:text="Wyniki sprawdzianu z matematyki.pdf"
                             android:visibility="visible"
-                            app:chipIcon="@drawable/googleg_standard_color_18"
-                            app:chipMinHeight="36dp" />
+                            app:chipIcon="@drawable/googleg_standard_color_18" />
 
                         <ProgressBar
                             style="?android:attr/progressBarStyle"
