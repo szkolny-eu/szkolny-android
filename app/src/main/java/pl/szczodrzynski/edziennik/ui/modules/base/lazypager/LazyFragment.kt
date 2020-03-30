@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.modules.base.lazypager
 
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 
 abstract class LazyFragment : Fragment() {
     private var isPageCreated = false
@@ -25,10 +26,25 @@ abstract class LazyFragment : Fragment() {
     fun disableSwipeToRefresh() = swipeRefreshLayoutCallback?.invoke(position, false)
     fun setSwipeToRefresh(enabled: Boolean) = swipeRefreshLayoutCallback?.invoke(position, enabled)
 
+    val onScrollListener: RecyclerView.OnScrollListener
+        get() = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (recyclerView.canScrollVertically(-1))
+                    disableSwipeToRefresh()
+                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE)
+                    enableSwipeToRefresh()
+            }
+        }
+
     internal fun createPage() {
         if (!isPageCreated && isAdded) {
             isPageCreated = onPageCreated()
         }
+    }
+
+    override fun onDestroyView() {
+        isPageCreated = false
+        super.onDestroyView()
     }
 
     override fun onResume() {

@@ -61,7 +61,7 @@ import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
 import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
-import pl.szczodrzynski.edziennik.ui.modules.grades.GradesFragment
+import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
@@ -70,7 +70,7 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessageFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesListFragment
-import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsFragment
+import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
 import pl.szczodrzynski.edziennik.ui.modules.template.TemplateFragment
@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .withBadgeTypeId(TYPE_EVENT)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesFragment::class)
+            list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesListFragment::class)
                     .withIcon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline)
                     .withBadgeTypeId(TYPE_GRADE)
                     .isInDrawer(true)
@@ -187,7 +187,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
 
             // static drawer items
-            list += NavTarget(DRAWER_ITEM_NOTIFICATIONS, R.string.menu_notifications, NotificationsFragment::class)
+            list += NavTarget(DRAWER_ITEM_NOTIFICATIONS, R.string.menu_notifications, NotificationsListFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_bell_ring_outline)
                     .isInDrawer(true)
                     .isStatic(true)
@@ -1077,6 +1077,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 .also { if (target.icon != null) it.withIcon(target.icon!!) }
                 .also { if (target.title != null) it.withAppTitle(getString(target.title!!)) }
                 .also { if (target.badgeTypeId != null) it.withBadgeStyle(drawer.badgeStyle)}
+                .withSelectedBackgroundAnimated(false)
 
         if (target.badgeTypeId != null)
             drawer.addUnreadCounterType(target.badgeTypeId!!, target.id)

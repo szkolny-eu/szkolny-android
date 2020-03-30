@@ -12,7 +12,7 @@ class LazyViewPager @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
 
-    var pageSelection = -1
+    private var pageSelection = -1
 
     init {
         addOnPageChangeListener(object : OnPageChangeListener {

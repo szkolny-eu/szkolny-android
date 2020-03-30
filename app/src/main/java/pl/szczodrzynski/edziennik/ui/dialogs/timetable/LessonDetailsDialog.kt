@@ -170,6 +170,11 @@ class LessonDetailsDialog(
 
         adapter = EventListAdapter(
                 activity,
+                showWeekDay = false,
+                showDate = false,
+                showType = true,
+                showTime = true,
+                showSubject = true,
                 onItemClick = {
                     EventDetailsDialog(
                             activity,

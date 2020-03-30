@@ -13,18 +13,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.databinding.TemplatePagerFragmentBinding
+import pl.szczodrzynski.edziennik.databinding.TemplatePageFragmentBinding
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import kotlin.coroutines.CoroutineContext
 
-class TemplatePagerFragment : LazyFragment(), CoroutineScope {
+class TemplatePageFragment : LazyFragment(), CoroutineScope {
     companion object {
         private const val TAG = "TemplatePagerFragment"
     }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-    private lateinit var b: TemplatePagerFragmentBinding
+    private lateinit var b: TemplatePageFragmentBinding
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
@@ -36,7 +36,7 @@ class TemplatePagerFragment : LazyFragment(), CoroutineScope {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        b = TemplatePagerFragmentBinding.inflate(inflater)
+        b = TemplatePageFragmentBinding.inflate(inflater)
         return b.root
     }
 

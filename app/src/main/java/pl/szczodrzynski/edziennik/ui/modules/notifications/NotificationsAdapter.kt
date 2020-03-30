@@ -1,71 +1,62 @@
 package pl.szczodrzynski.edziennik.ui.modules.notifications
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
-import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.databinding.NotificationsListItemBinding
 import pl.szczodrzynski.edziennik.utils.models.Date
+import kotlin.coroutines.CoroutineContext
 
 class NotificationsAdapter(
-        private val context: Context
-) : RecyclerView.Adapter<NotificationsAdapter.ViewHolder>() {
+        private val activity: AppCompatActivity,
+        val onItemClick: ((item: Notification) -> Unit)? = null
+) : RecyclerView.Adapter<NotificationsAdapter.ViewHolder>(), CoroutineScope {
     companion object {
         private const val TAG = "NotificationsAdapter"
     }
 
+    private val app = activity.applicationContext as App
+    // optional: place the manager here
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
     var items = listOf<Notification>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.row_notifications_item, parent, false)
+        val inflater = LayoutInflater.from(activity)
+        val view = NotificationsListItemBinding.inflate(inflater, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val app = context.applicationContext as App
+        val item = items[position]
+        val b = holder.b
 
-        val notification = items[position]
+        val date = Date.fromMillis(item.addedDate).formattedString
+        val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
-        val date = Date.fromMillis(notification.addedDate).formattedString
-        val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(context)
-
-        holder.title.text = notification.text
-        holder.profileDate.text = listOf(
-                notification.profileName ?: "",
+        b.title.text = item.text
+        b.profileDate.text = listOf(
+                item.profileName ?: "",
                 " • ",
-                date.asColoredSpannable(colorSecondary)
-        ).concat()
-        holder.type.text = context.getNotificationTitle(notification.type)
+                date
+        ).concat().asColoredSpannable(colorSecondary)
+        b.type.text = activity.getNotificationTitle(item.type)
 
-        holder.root.onClick {
-            val intent = Intent("android.intent.action.MAIN")
-            notification.fillIntent(intent)
-
-            d(TAG, "notification with item " + notification.viewId + " extras " + if (intent.extras == null) "null" else intent.extras!!.toString())
-
-            //Log.d(TAG, "Got date "+intent.getLongExtra("timetableDate", 0));
-
-            if (notification.profileId != null && notification.profileId != -1 && notification.profileId != app.profile.id && context is Activity) {
-                Toast.makeText(app, app.getString(R.string.toast_changing_profile), Toast.LENGTH_LONG).show()
-            }
-            app.sendBroadcast(intent)
+        onItemClick?.let { listener ->
+            b.root.onClick { listener(item) }
         }
     }
 
     override fun getItemCount() = items.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var root = itemView
-        var title: TextView = itemView.findViewById(R.id.title)
-        var profileDate: TextView = itemView.findViewById(R.id.profileDate)
-        var type: TextView = itemView.findViewById(R.id.type)
-    }
+    class ViewHolder(val b: NotificationsListItemBinding) : RecyclerView.ViewHolder(b.root)
 }

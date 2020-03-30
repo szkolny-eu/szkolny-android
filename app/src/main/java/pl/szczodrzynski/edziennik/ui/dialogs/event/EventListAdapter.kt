@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
@@ -19,8 +20,11 @@ import pl.szczodrzynski.edziennik.utils.models.Week
 class EventListAdapter(
         val context: Context,
         val simpleMode: Boolean = false,
-        val showDate: Boolean = false,
         val showWeekDay: Boolean = false,
+        val showDate: Boolean = false,
+        val showType: Boolean = true,
+        val showTime: Boolean = true,
+        val showSubject: Boolean = true,
         val onItemClick: ((event: EventFull) -> Unit)? = null,
         val onEventEditClick: ((event: EventFull) -> Unit)? = null
 ) : RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
@@ -52,9 +56,9 @@ class EventListAdapter(
         b.details.text = mutableListOf<CharSequence?>(
                 if (showWeekDay) Week.getFullDayName(event.date.weekDay) else null,
                 if (showDate) event.date.getRelativeString(context, 7) ?: event.date.formattedStringShort else null,
-                event.typeName,
-                if (simpleMode) null else event.time?.stringHM ?: app.getString(R.string.event_all_day),
-                if (simpleMode) null else event.subjectLongName
+                if (showType) event.typeName else null,
+                if (showTime) event.time?.stringHM ?: app.getString(R.string.event_all_day) else null,
+                if (showSubject) event.subjectLongName else null
         ).concat(bullet)
 
         b.addedBy.setText(
@@ -73,6 +77,7 @@ class EventListAdapter(
         )
 
         b.typeColor.background?.setTintColor(event.eventColor)
+        b.typeColor.isVisible = showType
 
         b.editButton.visibility = if (event.addedManually && !simpleMode) View.VISIBLE else View.GONE
         b.editButton.onClick {

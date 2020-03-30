@@ -60,8 +60,11 @@ class HomeEventsCard(
         adapter = EventListAdapter(
                 activity,
                 simpleMode = true,
-                showDate = true,
                 showWeekDay = true,
+                showDate = true,
+                showType = true,
+                showTime = false,
+                showSubject = false,
                 onItemClick = {
                     EventDetailsDialog(
                             activity,

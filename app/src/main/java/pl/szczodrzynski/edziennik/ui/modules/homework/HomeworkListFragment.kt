@@ -4,75 +4,105 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Event
-import pl.szczodrzynski.edziennik.databinding.HomeworkListBinding
-import pl.szczodrzynski.edziennik.getInt
+import pl.szczodrzynski.edziennik.databinding.HomeworkListFragmentBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
+import kotlin.coroutines.CoroutineContext
 
-class HomeworkListFragment : LazyFragment() {
+class HomeworkListFragment : LazyFragment(), CoroutineScope {
+    companion object {
+        private const val TAG = "HomeworkListFragment"
+    }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-    private lateinit var b: HomeworkListBinding
+    private lateinit var b: HomeworkListFragmentBinding
 
-    private var homeworkDate = HomeworkDate.CURRENT
+    private val job: Job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    // local/private variables go here
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        b = HomeworkListBinding.inflate(inflater)
+        b = HomeworkListFragmentBinding.inflate(inflater)
         return b.root
     }
 
-    override fun onPageCreated(): Boolean {
-        if (arguments != null) {
-            homeworkDate = arguments.getInt("homeworkDate", HomeworkDate.CURRENT)
+    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
+        val homeworkDate = arguments.getInt("homeworkDate", HomeworkDate.CURRENT)
+
+        val today = Date.getToday()
+        val filter = when(homeworkDate) {
+            HomeworkDate.CURRENT -> "eventDate >= '${today.stringY_m_d}'"
+            else -> "eventDate < '${today.stringY_m_d}'"
         }
 
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.reverseLayout = homeworkDate == HomeworkDate.PAST
-        layoutManager.stackFromEnd = homeworkDate == HomeworkDate.PAST
-
-        b.homeworkView.setHasFixedSize(true)
-        b.homeworkView.layoutManager = layoutManager
-        b.homeworkView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (recyclerView.canScrollVertically(-1)) {
-                    setSwipeToRefresh(false)
+        val adapter = EventListAdapter(
+                activity,
+                showWeekDay = true,
+                showDate = true,
+                showType = false,
+                showTime = true,
+                showSubject = true,
+                onItemClick = {
+                    EventDetailsDialog(
+                            activity,
+                            it
+                    )
+                },
+                onEventEditClick = {
+                    EventManualDialog(
+                            activity,
+                            it.profileId,
+                            editingEvent = it
+                    )
                 }
-                if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    setSwipeToRefresh(true)
+        )
+
+        app.db.eventDao().getAllByType(App.profileId, Event.TYPE_HOMEWORK, filter).observe(this@HomeworkListFragment, Observer { items ->
+            if (!isAdded) return@Observer
+
+            // load & configure the adapter
+            adapter.items = items
+            if (items.isNotNullNorEmpty() && b.list.adapter == null) {
+                b.list.adapter = adapter
+                b.list.apply {
+                    setHasFixedSize(true)
+                    layoutManager = LinearLayoutManager(context).apply {
+                        reverseLayout = homeworkDate == HomeworkDate.PAST
+                        stackFromEnd = homeworkDate == HomeworkDate.PAST
+                    }
+                    addItemDecoration(SimpleDividerItemDecoration(context))
+                    addOnScrollListener(onScrollListener)
                 }
             }
+            adapter.notifyDataSetChanged()
+
+            // show/hide relevant views
+            b.progressBar.isVisible = false
+            if (items.isNullOrEmpty()) {
+                b.list.isVisible = false
+                b.noData.isVisible = true
+            } else {
+                b.list.isVisible = true
+                b.noData.isVisible = false
+            }
         })
-
-        val filter = when(homeworkDate) {
-            HomeworkDate.CURRENT -> "eventDate >= '" + Date.getToday().stringY_m_d + "'"
-            else -> "eventDate < '" + Date.getToday().stringY_m_d + "'"
-        }
-
-        app.db.eventDao()
-                .getAllByType(App.profileId, Event.TYPE_HOMEWORK, filter)
-                .observe(this, Observer { homeworkList ->
-                    if (!isAdded) return@Observer
-
-                    if (homeworkList != null && homeworkList.size > 0) {
-                        val adapter = HomeworkAdapter(context, homeworkList)
-                        b.homeworkView.adapter = adapter
-                        b.homeworkView.visibility = View.VISIBLE
-                        b.homeworkNoData.visibility = View.GONE
-                    } else {
-                        b.homeworkView.visibility = View.GONE
-                        b.homeworkNoData.visibility = View.VISIBLE
-                    }
-                })
-        return true
-    }
+    }; return true }
 }

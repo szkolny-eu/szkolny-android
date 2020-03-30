@@ -40,6 +40,9 @@ import androidx.core.util.forEach
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.security.ProviderInstaller
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
@@ -138,6 +141,10 @@ operator fun Profile.set(key: String, value: Char) = this.studentData.addPropert
 fun JsonArray.asJsonObjectList() = this.mapNotNull { it.asJsonObject }
 
 fun CharSequence?.isNotNullNorEmpty(): Boolean {
+    return this != null && this.isNotEmpty()
+}
+
+fun <T> Collection<T>?.isNotNullNorEmpty(): Boolean {
     return this != null && this.isNotEmpty()
 }
 
@@ -1167,3 +1174,19 @@ fun TextView.getTextPosition(range: IntRange): Rect {
 
     return parentTextViewRect
 }
+
+inline fun ViewPager.addOnPageSelectedListener(crossinline block: (position: Int) -> Unit) = addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+    override fun onPageScrollStateChanged(state: Int) {}
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+    override fun onPageSelected(position: Int) { block(position) }
+})
+
+val SwipeRefreshLayout.onScrollListener: RecyclerView.OnScrollListener
+    get() = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if (recyclerView.canScrollVertically(-1))
+                this@onScrollListener.isEnabled = false
+            if (!recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE)
+                this@onScrollListener.isEnabled = true
+        }
+    }

@@ -137,7 +137,7 @@ public class Date implements Comparable<Date> {
     }
 
     public static int diffDays(Date d1, Date d2) {
-        return (int) ((d1.getInMillis() - d2.getInMillis()) / (24 * 60 * 60 * 1000));
+        return Math.round((d1.getInMillis() - d2.getInMillis()) / (24 * 60 * 60 * 1000f));
     }
 
     public static boolean isToday(Date date) {

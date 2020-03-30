@@ -10,11 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
 import kotlinx.coroutines.*
@@ -23,7 +22,7 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_GRADES_EDITOR
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_GRADE
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
-import pl.szczodrzynski.edziennik.databinding.GradesFragmentBinding
+import pl.szczodrzynski.edziennik.databinding.GradesListFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradeDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesAverages
@@ -36,24 +35,20 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 
-
-class GradesFragment : Fragment(), CoroutineScope {
+class GradesListFragment : Fragment(), CoroutineScope {
     companion object {
         private const val TAG = "GradesFragment"
     }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-    private lateinit var b: GradesFragmentBinding
+    private lateinit var b: GradesListFragmentBinding
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
     // local/private variables go here
-    private val adapter by lazy {
-        GradesAdapter(activity)
-    }
     private val manager by lazy { app.gradesManager }
     private val dontCountEnabled by lazy { manager.dontCountEnabled }
     private val dontCountGrades by lazy { manager.dontCountGrades }
@@ -63,51 +58,49 @@ class GradesFragment : Fragment(), CoroutineScope {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        b = GradesFragmentBinding.inflate(inflater)
+        b = GradesListFragmentBinding.inflate(inflater)
         b.refreshLayout.setParent(activity.swipeRefreshLayout)
         return b.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if (!isAdded)
-            return
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { startCoroutineTimer(100L) {
+        if (!isAdded) return@startCoroutineTimer
 
         expandSubjectId = arguments?.getLong("gradesSubjectId") ?: 0L
 
-        app.db.gradeDao()
-                .getAllOrderBy(App.profileId, app.gradesManager.getOrderByString())
-                .observe(this, Observer { grades ->
-                    if (b.gradesRecyclerView.adapter == null) {
-                        b.gradesRecyclerView.adapter = adapter
-                        b.gradesRecyclerView.apply {
-                            setHasFixedSize(true)
-                            layoutManager = LinearLayoutManager(context)
-                            //addItemDecoration(SimpleDividerItemDecoration(context))
-                            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                                    if (recyclerView.canScrollVertically(-1)) {
-                                        b.refreshLayout.isEnabled = false
-                                    }
-                                    if (!recyclerView.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
-                                        b.refreshLayout.isEnabled = true
-                                    }
-                                }
-                            })
-                        }
-                    }
+        val adapter = GradesAdapter(activity)
+        var firstRun = true
 
-                    launch(Dispatchers.Default) {
-                        processGrades(grades)
-                    }
+        app.db.gradeDao().getAllOrderBy(App.profileId, app.gradesManager.getOrderByString()).observe(this, Observer { items -> launch {
+            if (!isAdded) return@launch
 
-                    if (grades != null && grades.isNotEmpty()) {
-                        b.gradesRecyclerView.visibility = View.VISIBLE
-                        b.gradesNoData.visibility = View.GONE
-                    } else {
-                        b.gradesRecyclerView.visibility = View.GONE
-                        b.gradesNoData.visibility = View.VISIBLE
-                    }
-                })
+            // load & configure the adapter
+            adapter.items = withContext(Dispatchers.Default) { processGrades(items) }
+            if (items.isNotNullNorEmpty() && b.list.adapter == null) {
+                b.list.adapter = adapter
+                b.list.apply {
+                    setHasFixedSize(true)
+                    layoutManager = LinearLayoutManager(context)
+                    addOnScrollListener(b.refreshLayout.onScrollListener)
+                }
+            }
+            adapter.notifyDataSetChanged()
+
+            if (firstRun) {
+                expandSubject(adapter)
+                firstRun = false
+            }
+
+            // show/hide relevant views
+            b.progressBar.isVisible = false
+            if (items.isNullOrEmpty()) {
+                b.list.isVisible = false
+                b.noData.isVisible = true
+            } else {
+                b.list.isVisible = true
+                b.noData.isVisible = false
+            }
+        }})
 
         adapter.onGradeClick = {
             GradeDetailsDialog(activity, it)
@@ -153,10 +146,30 @@ class GradesFragment : Fragment(), CoroutineScope {
                         })
         )
         activity.gainAttention()
+    }}
+
+    private fun expandSubject(adapter: GradesAdapter) {
+        var expandSubjectModel: GradesSubject? = null
+        if (expandSubjectId != 0L) {
+            expandSubjectModel = adapter.items.firstOrNull { it is GradesSubject && it.subjectId == expandSubjectId } as? GradesSubject
+            adapter.expandModel(
+                    model = expandSubjectModel,
+                    view = null,
+                    notifyAdapter = false
+            )
+        }
+
+        startCoroutineTimer(500L) {
+            if (expandSubjectModel != null) {
+                b.list.smoothScrollToPosition(
+                        adapter.items.indexOf(expandSubjectModel) + expandSubjectModel.semesters.size + (expandSubjectModel.semesters.firstOrNull()?.grades?.size ?: 0)
+                )
+            }
+        }
     }
 
     @Suppress("SuspendFunctionOnCoroutineScope")
-    private suspend fun processGrades(grades: List<GradeFull>) {
+    private fun processGrades(grades: List<GradeFull>): MutableList<Any> {
         val items = mutableListOf<GradesSubject>()
 
         var subjectId = -1L
@@ -284,30 +297,7 @@ class GradesFragment : Fragment(), CoroutineScope {
             GradesManager.ORDER_BY_DATE_ASC -> items.sortBy { it.lastAddedDate }
         }
 
-        adapter.items = items.toMutableList()
-        adapter.items.add(stats)
-
-        var expandSubjectModel: GradesSubject? = null
-        if (expandSubjectId != 0L) {
-            expandSubjectModel = items.firstOrNull { it.subjectId == expandSubjectId }
-            adapter.expandModel(
-                    model = expandSubjectModel,
-                    view = null,
-                    notifyAdapter = false
-            )
-        }
-
-        withContext(Dispatchers.Main) {
-            adapter.notifyDataSetChanged()
-        }
-
-        startCoroutineTimer(500L, 0L) {
-            if (expandSubjectModel != null) {
-                b.gradesRecyclerView.smoothScrollToPosition(
-                        items.indexOf(expandSubjectModel) + expandSubjectModel.semesters.size + (expandSubjectModel.semesters.firstOrNull()?.grades?.size ?: 0)
-                )
-            }
-        }
+        return (items + stats).toMutableList()
     }
 
     private fun countGrade(grade: Grade, averages: GradesAverages) {

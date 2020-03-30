@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Kuba Szczodrzyński 2020-3-4.
+  ~ Copyright (c) Kuba Szczodrzyński 2020-3-30.
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,8 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/gradesNoData"
+                android:id="@+id/noData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -25,13 +31,17 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/grades_no_data"
                 android:textSize="24sp"
-                app:drawableTopCompat="@drawable/ic_no_grades" />
+                android:visibility="gone"
+                app:drawableTopCompat="@drawable/ic_no_grades"
+                tools:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/gradesRecyclerView"
+                android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/grades_item_subject" />
+                android:visibility="gone"
+                tools:listitem="@layout/grades_item_subject"
+                tools:visibility="visible" />
         </FrameLayout>
     </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoIndicator>
 </layout>

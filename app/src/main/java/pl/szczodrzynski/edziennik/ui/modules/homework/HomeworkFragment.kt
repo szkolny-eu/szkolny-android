@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-3-30.
+ */
+
 package pl.szczodrzynski.edziennik.ui.modules.homework
 
 import android.os.AsyncTask
@@ -7,46 +11,48 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.databinding.FragmentHomeworkBinding
+import pl.szczodrzynski.edziennik.databinding.HomeworkFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
-import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.FragmentLazyPagerAdapter
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
+import kotlin.coroutines.CoroutineContext
 
-class HomeworkFragment : Fragment() {
+class HomeworkFragment : Fragment(), CoroutineScope {
     companion object {
+        private const val TAG = "HomeworkFragment"
         var pageSelection = 0
     }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-    private lateinit var b: FragmentHomeworkBinding
+    private lateinit var b: HomeworkFragmentBinding
+
+    private val job: Job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    // local/private variables go here
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
-        if (context == null)
-            return null
+        context ?: return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
-        // activity, context and profile is valid
-        b = FragmentHomeworkBinding.inflate(inflater)
+        b = HomeworkFragmentBinding.inflate(inflater)
         b.refreshLayout.setParent(activity.swipeRefreshLayout)
         return b.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (app.profile == null || !isAdded)
-            return
+        if (!isAdded) return
 
         activity.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)
@@ -67,31 +73,28 @@ class HomeworkFragment : Fragment() {
                     Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
                 }))
 
-        b.viewPager.adapter = MessagesFragment.Adapter(childFragmentManager, b.refreshLayout).also { adapter ->
+        val pagerAdapter = FragmentLazyPagerAdapter(
+                fragmentManager ?: return,
+                b.refreshLayout,
+                listOf(
+                        HomeworkListFragment().apply {
+                            arguments = Bundle("homeworkDate" to HomeworkDate.CURRENT)
+                        } to getString(R.string.homework_tab_current),
 
-            adapter.addFragment(HomeworkListFragment().also { fragment ->
-                fragment.arguments = Bundle().also {  args ->
-                    args.putInt("homeworkDate", HomeworkDate.CURRENT)
-                }
-            }, getString(R.string.homework_tab_current))
-
-            adapter.addFragment(HomeworkListFragment().also { fragment ->
-                fragment.arguments = Bundle().also {  args ->
-                    args.putInt("homeworkDate", HomeworkDate.PAST)
-                }
-            }, getString(R.string.homework_tab_past))
-        }
-
-        b.viewPager.currentItem = pageSelection
-        b.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {}
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-            override fun onPageSelected(position: Int) {
-                pageSelection = position
+                        HomeworkListFragment().apply {
+                            arguments = Bundle("homeworkDate" to HomeworkDate.PAST)
+                        } to getString(R.string.homework_tab_past)
+                )
+        )
+        b.viewPager.apply {
+            offscreenPageLimit = 1
+            adapter = pagerAdapter
+            currentItem = pageSelection
+            addOnPageSelectedListener {
+                pageSelection = it
             }
-        })
-
-        b.tabLayout.setupWithViewPager(b.viewPager)
+            b.tabLayout.setupWithViewPager(this)
+        }
 
         activity.navView.apply {
             bottomBar.apply {
