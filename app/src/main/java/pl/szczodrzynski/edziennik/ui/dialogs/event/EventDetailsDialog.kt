@@ -148,6 +148,10 @@ class EventDetailsDialog(
             openInCalendar()
         }
 
+        b.checkDoneButton.setOnLongClickListener {
+            Toast.makeText(activity, R.string.hint_mark_as_done, Toast.LENGTH_SHORT).show()
+            true
+        }
         b.goToTimetableButton.setOnLongClickListener {
             Toast.makeText(activity, R.string.hint_go_to_timetable, Toast.LENGTH_SHORT).show()
             true

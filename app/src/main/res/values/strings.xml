@@ -1280,4 +1280,5 @@
     <string name="menu_add_remove_cards">Dodaj lub usuń karty</string>
     <string name="menu_template">Template</string>
     <string name="messages_attachment_download_again">Pobierz ponownie</string>
+    <string name="hint_mark_as_done">Oznacz jako wykonane</string>
 </resources>
