@@ -64,6 +64,7 @@ class TemplateListPageFragment : LazyFragment(), CoroutineScope {
                 }
             }
             adapter.notifyDataSetChanged()
+            setSwipeToRefresh(false) // TODO
 
             // show/hide relevant views
             b.progressBar.isVisible = false

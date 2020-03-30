@@ -64,6 +64,7 @@ class TemplateListFragment : Fragment(), CoroutineScope {
                 }
             }
             adapter.notifyDataSetChanged()
+            b.refreshLayout.isEnabled = false // TODO
 
             // show/hide relevant views
             b.progressBar.isVisible = false
