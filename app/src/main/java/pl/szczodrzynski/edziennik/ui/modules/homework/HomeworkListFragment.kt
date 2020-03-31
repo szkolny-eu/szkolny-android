@@ -50,7 +50,7 @@ class HomeworkListFragment : LazyFragment(), CoroutineScope {
         val today = Date.getToday()
         val filter = when(homeworkDate) {
             HomeworkDate.CURRENT -> "eventDate >= '${today.stringY_m_d}' AND eventIsDone = 0"
-            else -> "eventDate < '${today.stringY_m_d}' OR eventIsDone = 1"
+            else -> "(eventDate < '${today.stringY_m_d}' OR eventIsDone = 1)"
         }
 
         val adapter = EventListAdapter(
