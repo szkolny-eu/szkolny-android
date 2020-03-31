@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.ui.dialogs.event
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.*
@@ -83,43 +82,9 @@ class EventListAdapter(
         b.editButton.onClick {
             onEventEditClick?.invoke(event)
         }
+        b.editButton.attachToastHint(R.string.hint_edit_event)
 
         b.isDone.isVisible = event.isDone
-
-        b.editButton.setOnLongClickListener {
-            Toast.makeText(context, R.string.hint_edit_event, Toast.LENGTH_SHORT).show()
-            true
-        }
-
-        /*with(holder) {
-            b.eventListItemRoot.background.colorFilter = when (event.type) {
-                Event.TYPE_HOMEWORK -> PorterDuffColorFilter(0xffffffff.toInt(), PorterDuff.Mode.CLEAR)
-                else -> PorterDuffColorFilter(event.color, PorterDuff.Mode.MULTIPLY)
-            }
-
-            b.eventListItemStartTime.text = if (event.startTime == null) app.getString(R.string.event_all_day) else event.startTime?.stringHM
-            b.eventListItemTeamName.text = bs(event.teamName)
-            b.eventListItemTeacherName.text = app.getString(R.string.concat_2_strings, bs(null, event.teacherFullName, "\n"), bs(event.subjectLongName))
-            b.eventListItemAddedDate.text = Date.fromMillis(event.addedDate).formattedStringShort
-            b.eventListItemType.text = event.typeName
-            b.eventListItemTopic.text = event.topic
-            b.eventListItemHomework.visibility = if (event.type == Event.TYPE_HOMEWORK) View.VISIBLE else View.GONE
-            b.eventListItemSharedBy.text = app.getString(R.string.event_shared_by_format, if (event.sharedBy == "self") app.getString(R.string.event_shared_by_self) else event.sharedByName)
-            b.eventListItemSharedBy.visibility = if (event.sharedByName.isNullOrBlank()) View.GONE else View.VISIBLE
-
-            b.eventListItemEdit.visibility = if (event.addedManually) View.VISIBLE else View.GONE
-            b.eventListItemEdit.setOnClickListener {
-                parentDialog.dismiss()
-
-                EventManualDialog(
-                        context as MainActivity,
-                        event.profileId,
-                        editingEvent = event,
-                        onShowListener = parentDialog.onShowListener,
-                        onDismissListener = parentDialog.onDismissListener
-                )
-            }
-        }*/
     }
 
     override fun getItemCount() = items.size

@@ -112,6 +112,35 @@ class EventDetailsDialog(
                 event.sharedByName ?: event.teacherName ?: ""
         )
 
+
+        // MARK AS DONE
+        b.checkDoneButton.isChecked = event.isDone
+        b.checkDoneButton.onChange { _, isChecked ->
+            if (isChecked && !event.isDone) {
+                b.checkDoneButton.isChecked = false
+                MaterialAlertDialogBuilder(activity)
+                        .setTitle(R.string.event_mark_as_done_title)
+                        .setMessage(R.string.event_mark_as_done_text)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            event.isDone = isChecked
+                            launch(Dispatchers.Default) {
+                                app.db.eventDao().replace(event)
+                            }
+                            b.checkDoneButton.isChecked = true
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
+            }
+            else if (!isChecked && event.isDone) {
+                event.isDone = isChecked
+                launch(Dispatchers.Default) {
+                    app.db.eventDao().replace(event)
+                }
+            }
+        }
+        b.checkDoneButton.attachToastHint(R.string.hint_mark_as_done)
+
+        // EDIT EVENT
         b.editButton.visibility = if (event.addedManually) View.VISIBLE else View.GONE
         b.editButton.setOnClickListener {
             EventManualDialog(
@@ -122,8 +151,16 @@ class EventDetailsDialog(
                     onDismissListener = onDismissListener
             )
         }
+        b.editButton.attachToastHint(R.string.hint_edit_event)
 
-        b.goToTimetableButton.setOnClickListener {
+        // SAVE IN CALENDAR
+        b.saveInCalendarButton.onClick {
+            openInCalendar()
+        }
+        b.saveInCalendarButton.attachToastHint(R.string.hint_save_in_calendar)
+
+        // GO TO TIMETABLE
+        b.goToTimetableButton.onClick {
             dialog.dismiss()
             val dateStr = event.date.stringY_m_d
 
@@ -144,34 +181,8 @@ class EventDetailsDialog(
             else
                 activity.startActivity(intent)
         }
-        b.saveInCalendarButton.setOnClickListener {
-            openInCalendar()
-        }
+        b.goToTimetableButton.attachToastHint(R.string.hint_go_to_timetable)
 
-        b.checkDoneButton.setOnLongClickListener {
-            Toast.makeText(activity, R.string.hint_mark_as_done, Toast.LENGTH_SHORT).show()
-            true
-        }
-        b.goToTimetableButton.setOnLongClickListener {
-            Toast.makeText(activity, R.string.hint_go_to_timetable, Toast.LENGTH_SHORT).show()
-            true
-        }
-        b.saveInCalendarButton.setOnLongClickListener {
-            Toast.makeText(activity, R.string.hint_save_in_calendar, Toast.LENGTH_SHORT).show()
-            true
-        }
-        b.editButton.setOnLongClickListener {
-            Toast.makeText(activity, R.string.hint_edit_event, Toast.LENGTH_SHORT).show()
-            true
-        }
-
-        b.checkDoneButton.isChecked = event.isDone
-        b.checkDoneButton.addOnCheckedChangeListener { _, isChecked ->
-            event.isDone = isChecked
-            launch(Dispatchers.Default) {
-                app.db.eventDao().replace(event)
-            }
-        }
 
         b.topic.text = event.topic
         BetterLink.attach(b.topic) {

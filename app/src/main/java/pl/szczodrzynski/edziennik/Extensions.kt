@@ -27,10 +27,7 @@ import android.util.Base64.NO_WRAP
 import android.util.Base64.encodeToString
 import android.view.View
 import android.view.WindowManager
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.RadioButton
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.*
 import androidx.core.app.ActivityCompat
 import androidx.core.database.getIntOrNull
@@ -44,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.security.ProviderInstaller
+import com.google.android.material.button.MaterialButton
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -741,6 +739,18 @@ inline fun <T : CompoundButton> T.onChange(crossinline onChangeListener: (v: T, 
     setOnCheckedChangeListener { buttonView, isChecked ->
         onChangeListener(buttonView as T, isChecked)
     }
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <T : MaterialButton> T.onChange(crossinline onChangeListener: (v: T, isChecked: Boolean) -> Unit) {
+    addOnCheckedChangeListener { buttonView, isChecked ->
+        onChangeListener(buttonView as T, isChecked)
+    }
+}
+
+fun View.attachToastHint(stringRes: Int) = onLongClick {
+    Toast.makeText(it.context, stringRes, Toast.LENGTH_SHORT).show()
+    true
 }
 
 fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
