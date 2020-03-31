@@ -86,6 +86,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     val gradeCategories = LongSparseArray<GradeCategory>()
 
     var teacherOnConflictStrategy = OnConflictStrategy.IGNORE
+    var eventListReplace = false
 
     val classrooms = LongSparseArray<Classroom>()
     val attendanceTypes = LongSparseArray<AttendanceType>()
@@ -284,7 +285,10 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             db.gradeDao().addAll(gradeList)
         }
         if (eventList.isNotEmpty()) {
-            db.eventDao().upsertAll(eventList, removeNotKept = true)
+            if (eventListReplace)
+                db.eventDao().replaceAll(eventList)
+            else
+                db.eventDao().upsertAll(eventList, removeNotKept = true)
         }
         if (noticeList.isNotEmpty()) {
             db.noticeDao().clear(profile.id)

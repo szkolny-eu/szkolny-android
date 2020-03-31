@@ -112,6 +112,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     override fun cancel() {
         d(TAG, "Cancelled")
         data.cancel()
+        callback.onCompleted()
     }
 
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {

@@ -38,6 +38,9 @@ class ApiService : Service() {
             context.startService(Intent(context, ApiService::class.java))
             EventBus.getDefault().postSticky(request)
         }
+
+        var lastEventTime = System.currentTimeMillis()
+        var taskCancelTries = 0
     }
 
     private val app by lazy { applicationContext as App }
@@ -63,9 +66,6 @@ class ApiService : Service() {
     private var taskProgressText: String? = null
 
     private val notification by lazy { EdziennikNotification(app) }
-
-    private var lastEventTime = System.currentTimeMillis()
-    private var taskCancelTries = 0
 
     /*    ______    _     _                  _ _       _____      _ _ _                _
          |  ____|  | |   (_)                (_) |     / ____|    | | | |              | |

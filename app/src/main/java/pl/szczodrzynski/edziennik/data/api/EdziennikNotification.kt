@@ -8,11 +8,12 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.Bundle
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.receivers.SzkolnyReceiver
 import kotlin.math.roundToInt
 
 
@@ -35,16 +36,18 @@ class EdziennikNotification(val app: App) {
     var serviceClosed = false
 
     private fun cancelPendingIntent(taskId: Int): PendingIntent {
-        val intent = Intent("pl.szczodrzynski.edziennik.SZKOLNY_MAIN")
-        intent.putExtra("task", "TaskCancelRequest")
-        intent.putExtra("taskId", taskId)
-        return PendingIntent.getBroadcast(app, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT) as PendingIntent
+        val intent = SzkolnyReceiver.getIntent(app, Bundle(
+                "task" to "TaskCancelRequest",
+                "taskId" to taskId
+        ))
+        return PendingIntent.getBroadcast(app, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT) as PendingIntent
     }
     private val closePendingIntent: PendingIntent
         get() {
-            val intent = Intent("pl.szczodrzynski.edziennik.SZKOLNY_MAIN")
-            intent.putExtra("task", "ServiceCloseRequest")
-            return PendingIntent.getBroadcast(app, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT) as PendingIntent
+            val intent = SzkolnyReceiver.getIntent(app, Bundle(
+                    "task" to "ServiceCloseRequest"
+            ))
+            return PendingIntent.getBroadcast(app, 0, intent, 0) as PendingIntent
         }
 
     private fun errorCountText(): String? {

@@ -743,6 +743,7 @@ inline fun <T : CompoundButton> T.onChange(crossinline onChangeListener: (v: T, 
 
 @Suppress("UNCHECKED_CAST")
 inline fun <T : MaterialButton> T.onChange(crossinline onChangeListener: (v: T, isChecked: Boolean) -> Unit) {
+    clearOnCheckedChangeListeners()
     addOnCheckedChangeListener { buttonView, isChecked ->
         onChangeListener(buttonView as T, isChecked)
     }

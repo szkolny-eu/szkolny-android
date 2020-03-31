@@ -151,6 +151,33 @@
                 android:textIsSelectable="true"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:text="@string/dialog_event_details_body"
+                android:visibility="@{event.homeworkBody != null ? View.VISIBLE : View.GONE}"/>
+
+            <ProgressBar
+                android:id="@+id/bodyProgressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{event.homeworkBody}"
+                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textIsSelectable="true"
+                android:visibility="@{event.homeworkBody != null ? View.VISIBLE : View.GONE}"
+                tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

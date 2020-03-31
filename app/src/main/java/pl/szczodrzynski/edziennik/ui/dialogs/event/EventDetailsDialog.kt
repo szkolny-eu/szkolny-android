@@ -12,10 +12,17 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
+import pl.szczodrzynski.edziennik.data.api.events.EventGetEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
@@ -188,6 +195,26 @@ class EventDetailsDialog(
         BetterLink.attach(b.topic) {
             dialog.dismiss()
         }
+
+        if (event.homeworkBody == null && !event.addedManually && event.type == Event.TYPE_HOMEWORK) {
+            b.bodyProgressBar.isVisible = true
+            b.body.isVisible = false
+            EdziennikTask.eventGet(event.profileId, event).enqueue(activity)
+        }
+        else {
+            b.bodyProgressBar.isVisible = false
+            b.body.isVisible = true
+            b.body.text = event.homeworkBody
+            BetterLink.attach(b.body) {
+                dialog.dismiss()
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onEventGetEvent(event: EventGetEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
+        update()
     }
 
     private fun showRemovingProgressDialog() {
