@@ -17,6 +17,7 @@ const val ENDPOINT_MOBIDZIENNIK_WEB_NOTICES             = 2040
 const val ENDPOINT_MOBIDZIENNIK_WEB_ATTENDANCE          = 2050
 const val ENDPOINT_MOBIDZIENNIK_WEB_MANUALS             = 2100
 const val ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL       = 2200
+const val ENDPOINT_MOBIDZIENNIK_WEB_HOMEWORK            = 2300 // not used as an endpoint
 const val ENDPOINT_MOBIDZIENNIK_API2_MAIN               = 3000
 
 val MobidziennikFeatures = listOf(

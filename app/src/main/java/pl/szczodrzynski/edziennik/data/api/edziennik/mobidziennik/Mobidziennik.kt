@@ -8,10 +8,7 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikData
-import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web.MobidziennikWebGetAttachment
-import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web.MobidziennikWebGetMessage
-import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web.MobidziennikWebGetRecipientList
-import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web.MobidziennikWebSendMessage
+import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.firstlogin.MobidziennikFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLogin
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
@@ -25,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.utils.models.Date
 
 class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
@@ -122,7 +120,18 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
         }
     }
 
-    override fun getEvent(eventFull: EventFull) {}
+    override fun getEvent(eventFull: EventFull) {
+        val type = if (eventFull.date >= Date.getToday())
+            MobidziennikWebHomework.TYPE_CURRENT
+        else
+            MobidziennikWebHomework.TYPE_PAST
+
+        login(LOGIN_METHOD_MOBIDZIENNIK_WEB) {
+            MobidziennikWebHomework(data, 0L, type, eventFull) {
+                completed()
+            }
+        }
+    }
 
     override fun firstLogin() { MobidziennikFirstLogin(data) { completed() } }
     override fun cancel() {

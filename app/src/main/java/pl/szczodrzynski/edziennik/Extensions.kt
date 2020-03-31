@@ -1208,3 +1208,7 @@ val SwipeRefreshLayout.onScrollListener: RecyclerView.OnScrollListener
                 this@onScrollListener.isEnabled = true
         }
     }
+
+operator fun <K, V> Iterable<Pair<K, V>>.get(key: K): V? {
+    return firstOrNull { it.first == key }?.second
+}

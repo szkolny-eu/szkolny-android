@@ -82,9 +82,15 @@ open class Event(
     @ColumnInfo(name = "eventIsDone")
     var isDone: Boolean = false
 
+    /**
+     * Body/text of the event, if this is a [TYPE_HOMEWORK].
+     * May be null if the body is not downloaded yet, or the type is not [TYPE_HOMEWORK].
+     * May be empty or blank if the homework has no specific body attached,
+     * or the topic contains the body already.
+     */
     var homeworkBody: String? = null
-    var attachmentIds: List<Long>? = null
-    var attachmentNames: List<String>? = null
+    var attachmentIds: MutableList<Long>? = null
+    var attachmentNames: MutableList<String>? = null
 
     @Ignore
     var showAsUnseen = false

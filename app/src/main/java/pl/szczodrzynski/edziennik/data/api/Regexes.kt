@@ -84,6 +84,22 @@ object Regexes {
         """<strong>(.+?) - (.*?)</strong>.+?<small>.+?\((.+?), .+?(.+?)\)""".toRegex(DOT_MATCHES_ALL)
     }
 
+    val MOBIDZIENNIK_HOMEWORK_ROW by lazy {
+        """class="rowRolling">(.+?</div>\s*</td>)""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_HOMEWORK_ITEM by lazy {
+        """<p><b>(.+?):</b>\s*(.+?)\s*</p>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_HOMEWORK_BODY by lazy {
+        """Treść:</b>(.+?)<p><b>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_HOMEWORK_ID by lazy {
+        """zadanieFormularz\(([0-9]+),""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_HOMEWORK_ATTACHMENT by lazy {
+        """zalacznik=([0-9]+)'.+?word-break">(.+?)</td>""".toRegex(DOT_MATCHES_ALL)
+    }
+
 
 
     val IDZIENNIK_LOGIN_HIDDEN_FIELDS by lazy {
