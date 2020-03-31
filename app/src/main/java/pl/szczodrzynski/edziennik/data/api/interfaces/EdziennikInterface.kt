@@ -8,6 +8,7 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 
 interface EdziennikInterface {
@@ -18,6 +19,7 @@ interface EdziennikInterface {
     fun getAnnouncement(announcement: AnnouncementFull)
     fun getAttachment(message: Message, attachmentId: Long, attachmentName: String)
     fun getRecipientList()
+    fun getEvent(eventFull: EventFull)
     fun firstLogin()
     fun cancel()
 }

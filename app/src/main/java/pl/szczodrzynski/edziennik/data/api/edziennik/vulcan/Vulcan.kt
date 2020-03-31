@@ -23,6 +23,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
@@ -101,21 +102,11 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
     }
 
-    override fun markAllAnnouncementsAsRead() {
-
-    }
-
-    override fun getAnnouncement(announcement: AnnouncementFull) {
-
-    }
-
-    override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {
-        
-    }
-
-    override fun getRecipientList() {
-
-    }
+    override fun markAllAnnouncementsAsRead() {}
+    override fun getAnnouncement(announcement: AnnouncementFull) {}
+    override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {}
+    override fun getRecipientList() {}
+    override fun getEvent(eventFull: EventFull) {}
 
     override fun firstLogin() { VulcanFirstLogin(data) { completed() } }
     override fun cancel() {

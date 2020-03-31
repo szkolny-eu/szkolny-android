@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
@@ -38,6 +39,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
         fun announcementGet(profileId: Int, announcement: AnnouncementFull) = EdziennikTask(profileId, AnnouncementGetRequest(announcement))
         fun attachmentGet(profileId: Int, message: Message, attachmentId: Long, attachmentName: String) = EdziennikTask(profileId, AttachmentGetRequest(message, attachmentId, attachmentName))
         fun recipientListGet(profileId: Int) = EdziennikTask(profileId, RecipientListGetRequest())
+        fun eventGet(profileId: Int, event: EventFull) = EdziennikTask(profileId, EventGetRequest(event))
     }
 
     private lateinit var loginStore: LoginStore
@@ -94,6 +96,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             is AnnouncementGetRequest -> edziennikInterface?.getAnnouncement(request.announcement)
             is AttachmentGetRequest -> edziennikInterface?.getAttachment(request.message, request.attachmentId, request.attachmentName)
             is RecipientListGetRequest -> edziennikInterface?.getRecipientList()
+            is EventGetRequest -> edziennikInterface?.getEvent(request.event)
         }
     }
 
@@ -115,4 +118,5 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     data class AnnouncementGetRequest(val announcement: AnnouncementFull)
     data class AttachmentGetRequest(val message: Message, val attachmentId: Long, val attachmentName: String)
     class RecipientListGetRequest
+    data class EventGetRequest(val event: EventFull)
 }

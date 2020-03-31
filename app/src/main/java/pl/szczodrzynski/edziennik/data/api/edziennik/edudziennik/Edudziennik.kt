@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
@@ -96,6 +97,7 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
 
     override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {}
     override fun getRecipientList() {}
+    override fun getEvent(eventFull: EventFull) {}
 
     override fun firstLogin() { EdudziennikFirstLogin(data) { completed() } }
     override fun cancel() {

@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
@@ -118,6 +119,8 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
             }
         }
     }
+
+    override fun getEvent(eventFull: EventFull) {}
 
     override fun firstLogin() { IdziennikFirstLogin(data) { completed() } }
     override fun cancel() {
