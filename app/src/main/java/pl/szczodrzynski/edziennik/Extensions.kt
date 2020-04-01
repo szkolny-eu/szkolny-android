@@ -165,6 +165,13 @@ fun Bundle?.getString(key: String, defaultValue: String): String {
     return this?.getString(key, defaultValue) ?: defaultValue
 }
 
+fun Bundle?.getIntOrNull(key: String): Int? {
+    return this?.get(key) as? Int
+}
+fun <T : Any> Bundle?.get(key: String): T? {
+    return this?.get(key) as? T?
+}
+
 /**
  * `   The quick BROWN_fox Jumps OveR THE       LAZy-DOG.   `
  *

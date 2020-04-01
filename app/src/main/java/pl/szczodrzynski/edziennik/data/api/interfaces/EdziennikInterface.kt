@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.interfaces
 
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
@@ -17,7 +16,7 @@ interface EdziennikInterface {
     fun sendMessage(recipients: List<Teacher>, subject: String, text: String)
     fun markAllAnnouncementsAsRead()
     fun getAnnouncement(announcement: AnnouncementFull)
-    fun getAttachment(message: Message, attachmentId: Long, attachmentName: String)
+    fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String)
     fun getRecipientList()
     fun getEvent(eventFull: EventFull)
     fun firstLogin()

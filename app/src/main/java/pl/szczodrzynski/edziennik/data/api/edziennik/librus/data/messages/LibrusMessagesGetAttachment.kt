@@ -21,7 +21,7 @@ import java.io.File
 import kotlin.coroutines.CoroutineContext
 
 class LibrusMessagesGetAttachment(override val data: DataLibrus,
-                                  val message: Message,
+                                  val owner: Any,
                                   val attachmentId: Long,
                                   val attachmentName: String,
                                   val onSuccess: () -> Unit
@@ -38,6 +38,8 @@ class LibrusMessagesGetAttachment(override val data: DataLibrus,
     private var getAttachmentCheckKeyTries = 0
 
     init {
+        val message = owner as Message
+
         messagesGet(TAG, "GetFileDownloadLink", parameters = mapOf(
                 "fileId" to attachmentId,
                 "msgId" to message.id,
@@ -95,13 +97,13 @@ class LibrusMessagesGetAttachment(override val data: DataLibrus,
 
             val event = AttachmentGetEvent(
                     profileId,
-                    message.id,
+                    owner,
                     attachmentId,
                     TYPE_FINISHED,
                     file.absolutePath
             )
 
-            val attachmentDataFile = File(Utils.getStorageDir(), ".${profileId}_${event.messageId}_${event.attachmentId}")
+            val attachmentDataFile = File(Utils.getStorageDir(), ".${profileId}_${event.ownerId}_${event.attachmentId}")
             Utils.writeStringToFile(attachmentDataFile, event.fileName)
 
             EventBus.getDefault().post(event)
@@ -111,7 +113,7 @@ class LibrusMessagesGetAttachment(override val data: DataLibrus,
         }) { written, _ ->
             val event = AttachmentGetEvent(
                     profileId,
-                    message.id,
+                    owner,
                     attachmentId,
                     TYPE_PROGRESS,
                     bytesWritten = written

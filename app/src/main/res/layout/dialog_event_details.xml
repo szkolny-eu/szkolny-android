@@ -152,12 +152,12 @@
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
 
             <TextView
+                android:id="@+id/bodyTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textAppearance="@style/NavView.TextView.Helper"
                 android:text="@string/dialog_event_details_body"
-                android:visibility="@{event.homeworkBody != null ? View.VISIBLE : View.GONE}"/>
+                android:textAppearance="@style/NavView.TextView.Helper" />
 
             <ProgressBar
                 android:id="@+id/bodyProgressBar"
@@ -175,8 +175,20 @@
                 android:text="@{event.homeworkBody}"
                 android:textAppearance="@style/NavView.TextView.Medium"
                 android:textIsSelectable="true"
-                android:visibility="@{event.homeworkBody != null ? View.VISIBLE : View.GONE}"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
+
+            <TextView
+                android:id="@+id/attachmentsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/dialog_event_details_attachments"
+                android:textAppearance="@style/NavView.TextView.Helper" />
+
+            <pl.szczodrzynski.edziennik.ui.modules.views.AttachmentsView
+                android:id="@+id/attachmentsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <View
                 android:layout_width="match_parent"

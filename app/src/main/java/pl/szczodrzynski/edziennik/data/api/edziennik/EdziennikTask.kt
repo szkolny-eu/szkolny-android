@@ -19,7 +19,6 @@ import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
@@ -37,7 +36,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
         fun messageSend(profileId: Int, recipients: List<Teacher>, subject: String, text: String) = EdziennikTask(profileId, MessageSendRequest(recipients, subject, text))
         fun announcementsRead(profileId: Int) = EdziennikTask(profileId, AnnouncementsReadRequest())
         fun announcementGet(profileId: Int, announcement: AnnouncementFull) = EdziennikTask(profileId, AnnouncementGetRequest(announcement))
-        fun attachmentGet(profileId: Int, message: Message, attachmentId: Long, attachmentName: String) = EdziennikTask(profileId, AttachmentGetRequest(message, attachmentId, attachmentName))
+        fun attachmentGet(profileId: Int, owner: Any, attachmentId: Long, attachmentName: String) = EdziennikTask(profileId, AttachmentGetRequest(owner, attachmentId, attachmentName))
         fun recipientListGet(profileId: Int) = EdziennikTask(profileId, RecipientListGetRequest())
         fun eventGet(profileId: Int, event: EventFull) = EdziennikTask(profileId, EventGetRequest(event))
     }
@@ -94,7 +93,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             is FirstLoginRequest -> edziennikInterface?.firstLogin()
             is AnnouncementsReadRequest -> edziennikInterface?.markAllAnnouncementsAsRead()
             is AnnouncementGetRequest -> edziennikInterface?.getAnnouncement(request.announcement)
-            is AttachmentGetRequest -> edziennikInterface?.getAttachment(request.message, request.attachmentId, request.attachmentName)
+            is AttachmentGetRequest -> edziennikInterface?.getAttachment(request.owner, request.attachmentId, request.attachmentName)
             is RecipientListGetRequest -> edziennikInterface?.getRecipientList()
             is EventGetRequest -> edziennikInterface?.getEvent(request.event)
         }
@@ -116,7 +115,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     data class MessageSendRequest(val recipients: List<Teacher>, val subject: String, val text: String)
     class AnnouncementsReadRequest
     data class AnnouncementGetRequest(val announcement: AnnouncementFull)
-    data class AttachmentGetRequest(val message: Message, val attachmentId: Long, val attachmentName: String)
+    data class AttachmentGetRequest(val owner: Any, val attachmentId: Long, val attachmentName: String)
     class RecipientListGetRequest
     data class EventGetRequest(val event: EventFull)
 }

@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.utils.Utils
 import java.io.File
 
 class IdziennikWebGetAttachment(override val data: DataIdziennik,
-                                val message: Message,
+                                val owner: Any,
                                 val attachmentId: Long,
                                 val attachmentName: String,
                                 val onSuccess: () -> Unit
@@ -25,6 +25,8 @@ class IdziennikWebGetAttachment(override val data: DataIdziennik,
     }
 
     init {
+        val message = owner as Message
+
         val messageId = "\\[META:([A-z0-9]+);([0-9-]+)]".toRegex().find(message.body ?: "")?.get(2) ?: -1
         val targetFile = File(Utils.getStorageDir(), attachmentName)
 
@@ -34,13 +36,13 @@ class IdziennikWebGetAttachment(override val data: DataIdziennik,
         ), { file ->
             val event = AttachmentGetEvent(
                     profileId,
-                    message.id,
+                    owner,
                     attachmentId,
                     AttachmentGetEvent.TYPE_FINISHED,
                     file.absolutePath
             )
 
-            val attachmentDataFile = File(Utils.getStorageDir(), ".${profileId}_${event.messageId}_${event.attachmentId}")
+            val attachmentDataFile = File(Utils.getStorageDir(), ".${profileId}_${event.ownerId}_${event.attachmentId}")
             Utils.writeStringToFile(attachmentDataFile, event.fileName)
 
             EventBus.getDefault().post(event)
@@ -50,7 +52,7 @@ class IdziennikWebGetAttachment(override val data: DataIdziennik,
         }) { written, _ ->
             val event = AttachmentGetEvent(
                     profileId,
-                    message.id,
+                    owner,
                     attachmentId,
                     AttachmentGetEvent.TYPE_PROGRESS,
                     bytesWritten = written

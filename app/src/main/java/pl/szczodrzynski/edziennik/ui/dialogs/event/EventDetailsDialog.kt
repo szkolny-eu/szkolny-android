@@ -61,6 +61,7 @@ class EventDetailsDialog(
         if (activity.isFinishing)
             return@run
         onShowListener?.invoke(TAG)
+        EventBus.getDefault().register(this)
         app = activity.applicationContext as App
         b = DialogEventDetailsBinding.inflate(activity.layoutInflater)
         dialog = MaterialAlertDialogBuilder(activity)
@@ -74,6 +75,7 @@ class EventDetailsDialog(
                 }
                 .setOnDismissListener {
                     onDismissListener?.invoke(TAG)
+                    EventBus.getDefault().unregister(this@EventDetailsDialog)
                     progressDialog?.dismiss()
                 }
                 .show()
@@ -197,17 +199,38 @@ class EventDetailsDialog(
         }
 
         if (event.homeworkBody == null && !event.addedManually && event.type == Event.TYPE_HOMEWORK) {
+            b.bodyTitle.isVisible = true
             b.bodyProgressBar.isVisible = true
             b.body.isVisible = false
             EdziennikTask.eventGet(event.profileId, event).enqueue(activity)
         }
+        else if (event.homeworkBody.isNullOrBlank()) {
+            b.bodyTitle.isVisible = false
+            b.bodyProgressBar.isVisible = false
+            b.body.isVisible = false
+        }
         else {
+            b.bodyTitle.isVisible = true
             b.bodyProgressBar.isVisible = false
             b.body.isVisible = true
             b.body.text = event.homeworkBody
             BetterLink.attach(b.body) {
                 dialog.dismiss()
             }
+        }
+
+        if (event.attachmentIds.isNullOrEmpty() || event.attachmentNames.isNullOrEmpty()) {
+            b.attachmentsTitle.isVisible = false
+            b.attachmentsFragment.isVisible = false
+        }
+        else {
+            b.attachmentsTitle.isVisible = true
+            b.attachmentsFragment.isVisible = true
+            b.attachmentsFragment.init(Bundle().also {
+                it.putInt("profileId", event.profileId)
+                it.putLongArray("attachmentIds", event.attachmentIds!!.toLongArray())
+                it.putStringArray("attachmentNames", event.attachmentNames!!.toTypedArray())
+            }, owner = event)
         }
     }
 

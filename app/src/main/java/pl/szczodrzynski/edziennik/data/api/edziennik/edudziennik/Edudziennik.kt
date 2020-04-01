@@ -16,7 +16,6 @@ import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
@@ -95,7 +94,7 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
         }
     }
 
-    override fun getAttachment(message: Message, attachmentId: Long, attachmentName: String) {}
+    override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {}
     override fun getRecipientList() {}
     override fun getEvent(eventFull: EventFull) {}
 

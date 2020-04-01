@@ -375,7 +375,7 @@ class MessageFragment : Fragment(), CoroutineScope {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onAttachmentGetEvent(event: AttachmentGetEvent) {
         attachmentList.firstOrNull { it.profileId == event.profileId
-                && it.messageId == event.messageId
+                && it.messageId == event.ownerId
                 && it.attachmentId == event.attachmentId }?.let { attachment ->
 
             when (event.eventType) {
