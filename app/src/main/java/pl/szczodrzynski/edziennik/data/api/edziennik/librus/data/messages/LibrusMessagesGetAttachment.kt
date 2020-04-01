@@ -106,7 +106,7 @@ class LibrusMessagesGetAttachment(override val data: DataLibrus,
             val attachmentDataFile = File(Utils.getStorageDir(), ".${profileId}_${event.ownerId}_${event.attachmentId}")
             Utils.writeStringToFile(attachmentDataFile, event.fileName)
 
-            EventBus.getDefault().post(event)
+            EventBus.getDefault().postSticky(event)
 
             onSuccess()
 
@@ -119,7 +119,7 @@ class LibrusMessagesGetAttachment(override val data: DataLibrus,
                     bytesWritten = written
             )
 
-            EventBus.getDefault().post(event)
+            EventBus.getDefault().postSticky(event)
         }
     }
 }

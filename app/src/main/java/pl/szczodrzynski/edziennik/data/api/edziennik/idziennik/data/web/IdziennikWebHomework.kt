@@ -52,6 +52,7 @@ class IdziennikWebHomework(override val data: DataIdziennik,
             json.getJsonArray("ListK")?.asJsonObjectList()?.forEach { homework ->
                 val id = homework.getLong("_recordId") ?: return@forEach
                 val eventDate = Date.fromY_m_d(homework.getString("dataO") ?: return@forEach)
+                val addedDate = Date.fromY_m_d(homework.getString("dataZ") ?: return@forEach)
                 val subjectName = homework.getString("przed") ?: return@forEach
                 val subjectId = data.getSubject(subjectName, null, subjectName).id
                 val teacherName = homework.getString("usr") ?: return@forEach
@@ -86,7 +87,7 @@ class IdziennikWebHomework(override val data: DataIdziennik,
                         eventObject.id,
                         seen,
                         seen,
-                        System.currentTimeMillis()
+                        addedDate.inMillis
                 ))
             }
 

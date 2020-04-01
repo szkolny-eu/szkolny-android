@@ -229,6 +229,7 @@ open class IdziennikWeb(open val data: DataIdziennik, open val lastSync: Long?) 
                 .apply {
                     parameters.forEach { (k, v) -> addParameter(k, v) }
                 }
+                .contentType("application/x-www-form-urlencoded")
                 .post()
                 .callback(callback)
                 .build()

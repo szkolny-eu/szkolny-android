@@ -45,7 +45,7 @@ class IdziennikWebGetAttachment(override val data: DataIdziennik,
             val attachmentDataFile = File(Utils.getStorageDir(), ".${profileId}_${event.ownerId}_${event.attachmentId}")
             Utils.writeStringToFile(attachmentDataFile, event.fileName)
 
-            EventBus.getDefault().post(event)
+            EventBus.getDefault().postSticky(event)
 
             onSuccess()
 
@@ -58,7 +58,7 @@ class IdziennikWebGetAttachment(override val data: DataIdziennik,
                     bytesWritten = written
             )
 
-            EventBus.getDefault().post(event)
+            EventBus.getDefault().postSticky(event)
         }
     }
 }

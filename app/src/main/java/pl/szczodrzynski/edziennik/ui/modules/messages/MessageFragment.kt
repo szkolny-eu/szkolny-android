@@ -372,8 +372,9 @@ class MessageFragment : Fragment(), CoroutineScope {
         ).enqueue(activity)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onAttachmentGetEvent(event: AttachmentGetEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         attachmentList.firstOrNull { it.profileId == event.profileId
                 && it.messageId == event.ownerId
                 && it.attachmentId == event.attachmentId }?.let { attachment ->

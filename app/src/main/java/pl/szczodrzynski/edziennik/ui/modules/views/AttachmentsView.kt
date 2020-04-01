@@ -97,7 +97,7 @@ class AttachmentsView @JvmOverloads constructor(
 
     private fun downloadAttachment(attachment: AttachmentAdapter.Item, forceDownload: Boolean = false) {
         if (!forceDownload && attachment.isDownloaded) {
-            Utils.openFile(context, File(attachment.downloadedName))
+            Utils.openFile(context, File(Utils.getStorageDir(), attachment.name))
             return
         }
 
@@ -115,8 +115,9 @@ class AttachmentsView @JvmOverloads constructor(
     }
 
     private val lastUpdate: Long = 0
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onAttachmentGetEvent(event: AttachmentGetEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         val attachment = (adapter as? AttachmentAdapter)?.items?.firstOrNull {
             it.profileId == event.profileId
                 && it.owner == event.owner
@@ -131,8 +132,13 @@ class AttachmentsView @JvmOverloads constructor(
                 attachment.isDownloading = false
                 attachment.isDownloaded = true
 
+                // update file name for iDziennik which
+                // does not provide the name before downloading
+                if (!attachment.name.contains("."))
+                    attachment.name = File(attachment.downloadedName).name
+
                 // open the file
-                Utils.openFile(context, File(attachment.downloadedName))
+                Utils.openFile(context, File(Utils.getStorageDir(), attachment.name))
             }
 
             AttachmentGetEvent.TYPE_PROGRESS -> {

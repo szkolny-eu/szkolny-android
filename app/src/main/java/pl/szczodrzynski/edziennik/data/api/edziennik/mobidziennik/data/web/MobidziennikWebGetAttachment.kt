@@ -60,7 +60,7 @@ class MobidziennikWebGetAttachment(override val data: DataMobidziennik,
             val attachmentDataFile = File(Utils.getStorageDir(), ".${profileId}_${event.ownerId}_${event.attachmentId}")
             Utils.writeStringToFile(attachmentDataFile, event.fileName)
 
-            EventBus.getDefault().post(event)
+            EventBus.getDefault().postSticky(event)
 
             onSuccess()
 
@@ -74,7 +74,7 @@ class MobidziennikWebGetAttachment(override val data: DataMobidziennik,
                     bytesWritten = written
             )
 
-            EventBus.getDefault().post(event)
+            EventBus.getDefault().postSticky(event)
         }
     }
 }

@@ -8,18 +8,13 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikData
-import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebGetAttachment
-import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebGetMessage
-import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebGetRecipientList
-import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.IdziennikWebSendMessage
+import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.web.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.firstlogin.IdziennikFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLogin
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -105,8 +100,15 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
 
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {
         login(LOGIN_METHOD_IDZIENNIK_WEB) {
-            IdziennikWebGetAttachment(data, owner, attachmentId, attachmentName) {
-                completed()
+            if (owner is Message) {
+                IdziennikWebGetAttachment(data, owner, attachmentId, attachmentName) {
+                    completed()
+                }
+            }
+            else if (owner is Event) {
+                IdziennikWebGetHomeworkAttachment(data, owner, attachmentId, attachmentName) {
+                    completed()
+                }
             }
         }
     }
@@ -119,7 +121,13 @@ class Idziennik(val app: App, val profile: Profile?, val loginStore: LoginStore,
         }
     }
 
-    override fun getEvent(eventFull: EventFull) {}
+    override fun getEvent(eventFull: EventFull) {
+        login(LOGIN_METHOD_IDZIENNIK_WEB) {
+            IdziennikWebGetHomework(data, eventFull) {
+                completed()
+            }
+        }
+    }
 
     override fun firstLogin() { IdziennikFirstLogin(data) { completed() } }
     override fun cancel() {

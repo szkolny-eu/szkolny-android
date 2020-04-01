@@ -14,6 +14,7 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
+import com.mikepenz.iconics.utils.paddingDp
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -84,6 +85,7 @@ class AttachmentAdapter(
                 .icon(icon)
                 .colorAttr(context, R.attr.colorOnSurface)
                 .sizeDp(24)
+                .paddingDp(2)
         b.chip.closeIcon = IconicsDrawable(context)
                 .icon(CommunityMaterial.Icon.cmd_check)
                 .colorAttr(context, R.attr.colorOnSurface)
@@ -106,7 +108,7 @@ class AttachmentAdapter(
             val profileId: Int,
             val owner: Any,
             val id: Long,
-            val name: String,
+            var name: String,
             var size: Long?
     ) {
         val ownerId

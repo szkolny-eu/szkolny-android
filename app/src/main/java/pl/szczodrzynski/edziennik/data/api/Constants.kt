@@ -74,6 +74,8 @@ const val IDZIENNIK_WEB_GET_MESSAGE = "mod_komunikator/WS_wiadomosci.asmx/Pobier
 const val IDZIENNIK_WEB_GET_RECIPIENT_LIST = "mod_komunikator/WS_wiadomosci.asmx/pobierzListeOdbiorcowPanelRodzic"
 const val IDZIENNIK_WEB_SEND_MESSAGE = "mod_komunikator/WS_wiadomosci.asmx/WyslijWiadomosc"
 const val IDZIENNIK_WEB_GET_ATTACHMENT = "mod_komunikator/Download.ashx"
+const val IDZIENNIK_WEB_GET_HOMEWORK = "mod_panelRodzica/pracaDomowa/WS_pracaDomowa.asmx/pobierzJednaPraceDomowa"
+const val IDZIENNIK_WEB_GET_HOMEWORK_ATTACHMENT = "mod_panelRodzica/pracaDomowa.aspx"
 
 val IDZIENNIK_API_USER_AGENT = SYSTEM_USER_AGENT
 const val IDZIENNIK_API_URL = "https://iuczniowie.progman.pl/idziennik/api"
