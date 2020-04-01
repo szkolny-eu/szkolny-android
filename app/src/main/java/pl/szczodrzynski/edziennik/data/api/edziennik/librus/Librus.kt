@@ -13,6 +13,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.Librus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetRecipientList
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesSendMessage
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaGetHomework
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaHomeworkGetAttachment
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaMarkAllAnnouncementsAsRead
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.firstlogin.LibrusFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLogin
@@ -20,6 +22,7 @@ import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
@@ -120,8 +123,18 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {
         login(LOGIN_METHOD_LIBRUS_MESSAGES) {
-            LibrusMessagesGetAttachment(data, owner, attachmentId, attachmentName) {
-                completed()
+            when (owner) {
+                is Message -> {
+                    LibrusMessagesGetAttachment(data, owner, attachmentId, attachmentName) {
+                        completed()
+                    }
+                }
+                is EventFull -> {
+                    LibrusSynergiaHomeworkGetAttachment(data, owner, attachmentId, attachmentName) {
+                        completed()
+                    }
+                }
+                else -> completed()
             }
         }
     }
@@ -134,7 +147,13 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
     }
 
-    override fun getEvent(eventFull: EventFull) {}
+    override fun getEvent(eventFull: EventFull) {
+        login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
+            LibrusSynergiaGetHomework(data, eventFull) {
+                completed()
+            }
+        }
+    }
 
     override fun firstLogin() { LibrusFirstLogin(data) { completed() } }
     override fun cancel() {

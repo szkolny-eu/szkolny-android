@@ -35,7 +35,7 @@ open class LibrusSynergia(open val data: DataLibrus, open val lastSync: Long?) {
                     return
                 }
 
-                if (!text.contains("jesteś zalogowany")) {
+                if (!text.contains("jesteś zalogowany") && !text.contains("Podgląd zadania")) {
                     when {
                         text.contains("stop.png") -> ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED
                         text.contains("Przerwa techniczna") -> ERROR_LIBRUS_SYNERGIA_MAINTENANCE
@@ -47,7 +47,6 @@ open class LibrusSynergia(open val data: DataLibrus, open val lastSync: Long?) {
                         return
                     }
                 }
-
 
                 try {
                     onSuccess(text)
@@ -86,6 +85,44 @@ open class LibrusSynergia(open val data: DataLibrus, open val lastSync: Long?) {
                         addParameter(name, value)
                     }
                 }
+                .callback(callback)
+                .build()
+                .enqueue()
+    }
+
+    fun redirectUrlGet(tag: String, url: String, onSuccess: (url: String) -> Unit) {
+        val callback = object : TextCallbackHandler() {
+            override fun onSuccess(text: String?, response: Response) {
+                val redirectUrl = response.headers().get("Location")
+
+                if (redirectUrl != null) {
+                    try {
+                        onSuccess(redirectUrl)
+                    } catch (e: Exception) {
+                        data.error(ApiError(tag, EXCEPTION_LIBRUS_SYNERGIA_REQUEST)
+                                .withResponse(response)
+                                .withThrowable(e)
+                                .withApiResponse(text))
+                    }
+                } else {
+                    data.error(ApiError(tag, ERROR_LIBRUS_SYNERGIA_OTHER)
+                            .withResponse(response)
+                            .withApiResponse(text))
+                }
+            }
+
+            override fun onFailure(response: Response?, throwable: Throwable?) {
+                data.error(ApiError(tag, ERROR_REQUEST_FAILURE)
+                        .withResponse(response)
+                        .withThrowable(throwable))
+            }
+        }
+
+        Request.builder()
+                .url(url)
+                .userAgent(LIBRUS_USER_AGENT)
+                .withClient(data.app.httpLazy)
+                .get()
                 .callback(callback)
                 .build()
                 .enqueue()

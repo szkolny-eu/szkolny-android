@@ -56,6 +56,8 @@ const val LIBRUS_SYNERGIA_TOKEN_LOGIN_URL = "https://synergia.librus.pl/loguj/to
 const val LIBRUS_MESSAGES_URL = "https://wiadomosci.librus.pl/module"
 const val LIBRUS_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action="
 
+const val LIBRUS_SYNERGIA_HOMEWORK_ATTACHMENT_URL = "https://synergia.librus.pl/homework/downloadFile"
+
 const val IDZIENNIK_USER_AGENT = SYNERGIA_USER_AGENT
 const val IDZIENNIK_WEB_URL = "https://iuczniowie.progman.pl/idziennik"
 const val IDZIENNIK_WEB_LOGIN = "login.aspx"

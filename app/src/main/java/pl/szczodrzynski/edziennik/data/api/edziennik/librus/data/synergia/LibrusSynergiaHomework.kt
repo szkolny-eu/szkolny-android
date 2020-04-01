@@ -42,8 +42,6 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
             doc.select("table.myHomeworkTable > tbody").firstOrNull()?.also { homeworkTable ->
                 val homeworkElements = homeworkTable.children()
 
-                val graphElements = doc.select("table[border].center td[align=left] tbody").first().children()
-
                 homeworkElements.forEachIndexed { i, el ->
                     val elements = el.children()
 
@@ -63,26 +61,6 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                     val lessons = data.db.timetableDao().getForDateNow(profileId, eventDate)
                     val startTime = lessons.firstOrNull { it.subjectId == subjectId }?.startTime
 
-                    /*val moreInfo = graphElements[2 * i + 1].select("td[title]")
-                            .attr("title").trim()*/
-
-                    var description = ""
-
-                    graphElements.forEach { graphEl ->
-                        graphEl.select("td[title]")?.also {
-                            val title = it.attr("title")
-                            val r = "Temat: (.*?)<br.?/>Data udostępnienia: (.*?)<br.?/>Termin wykonania: (.*?)<br.?/>Treść: (.*)"
-                                    .toRegex(RegexOption.DOT_MATCHES_ALL).find(title) ?: return@forEach
-                            val gTopic = r[1].trim()
-                            val gAddedDate = Date.fromY_m_d(r[2].trim())
-                            val gEventDate = Date.fromY_m_d(r[3].trim())
-                            if (gTopic == topic && gAddedDate == addedDate && gEventDate == eventDate) {
-                                description = r[4].replace("<br.?/>".toRegex(), "\n").trim()
-                                return@forEach
-                            }
-                        }
-                    }
-
                     val seen = when (profile.empty) {
                         true -> true
                         else -> eventDate < Date.getToday()
@@ -93,7 +71,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                             id = id,
                             date = eventDate,
                             time = startTime,
-                            topic = "$topic\n$description",
+                            topic = topic,
                             color = null,
                             type = Event.TYPE_HOMEWORK,
                             teacherId = teacherId,

@@ -6,4 +6,4 @@ package pl.szczodrzynski.edziennik.data.api.events
 
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 
-data class EventGetEvent(val message: EventFull)
+data class EventGetEvent(val event: EventFull)
