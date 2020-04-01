@@ -26,7 +26,7 @@ class MobidziennikApiHomework(val data: DataMobidziennik, rows: List<String>) {
                 val id = cols[0].toLong()
                 val teacherId = cols[7].toLong()
                 val subjectId = cols[6].toLong()
-                val topic = Html.fromHtml(cols[1])?.toString() ?: ""
+                val topic = Html.fromHtml(cols[1])?.toString()?.trim() ?: ""
                 val eventDate = Date.fromYmd(cols[2])
                 val startTime = Time.fromYmdHm(cols[3])
 

@@ -35,7 +35,7 @@ class LibrusApiEvents(override val data: DataLibrus,
             events?.forEach { event ->
                 val id = event.getLong("Id") ?: return@forEach
                 val eventDate = Date.fromY_m_d(event.getString("Date"))
-                val topic = event.getString("Content") ?: ""
+                val topic = event.getString("Content")?.trim() ?: ""
                 val type = event.getJsonObject("Category")?.getLong("Id") ?: -1
                 val teacherId = event.getJsonObject("CreatedBy")?.getLong("Id") ?: -1
                 val subjectId = event.getJsonObject("Subject")?.getLong("Id") ?: -1

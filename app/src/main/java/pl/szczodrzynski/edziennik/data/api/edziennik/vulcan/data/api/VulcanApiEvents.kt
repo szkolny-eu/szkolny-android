@@ -57,7 +57,7 @@ class VulcanApiEvents(override val data: DataVulcan,
                 val eventDate = Date.fromY_m_d(event.getString("DataTekst") ?: return@forEach)
                 val subjectId = event.getLong("IdPrzedmiot") ?: -1
                 val teacherId = event.getLong("IdPracownik") ?: -1
-                val topic = event.getString("Opis") ?: ""
+                val topic = event.getString("Opis")?.trim() ?: ""
 
                 val lessonList = data.db.timetableDao().getForDateNow(profileId, eventDate)
                 val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.startTime

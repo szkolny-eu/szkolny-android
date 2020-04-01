@@ -30,7 +30,7 @@ class MobidziennikApiEvents(val data: DataMobidziennik, rows: List<String>) {
                 val teacherId = cols[1].toLong()
                 val subjectId = cols[3].toLong()
                 var type = Event.TYPE_DEFAULT
-                var topic = cols[5]
+                var topic = cols[5].trim()
                 Regexes.MOBIDZIENNIK_EVENT_TYPE.find(topic)?.let {
                     val typeText = it.groupValues[1]
                     when (typeText) {

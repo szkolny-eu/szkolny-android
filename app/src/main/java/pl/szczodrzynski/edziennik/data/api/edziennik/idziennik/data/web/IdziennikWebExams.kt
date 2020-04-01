@@ -66,7 +66,7 @@ class IdziennikWebExams(override val data: DataIdziennik,
                 val subjectId = data.getSubject(subjectName, null, subjectName).id
                 val teacherName = exam.getString("wpisal") ?: return@forEach
                 val teacherId = data.getTeacherByLastFirst(teacherName).id
-                val topic = exam.getString("zakres") ?: ""
+                val topic = exam.getString("zakres")?.trim() ?: ""
 
                 val lessonList = data.db.timetableDao().getForDateNow(profileId, examDate)
                 val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.startTime

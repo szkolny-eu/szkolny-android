@@ -58,7 +58,7 @@ class IdziennikWebHomework(override val data: DataIdziennik,
                 val teacherId = data.getTeacherByLastFirst(teacherName).id
                 val lessonList = data.db.timetableDao().getForDateNow(profileId, eventDate)
                 val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.displayStartTime
-                val topic = homework.getString("tytul") ?: ""
+                val topic = homework.getString("tytul")?.trim() ?: ""
 
                 val seen = when (profile?.empty) {
                     true -> true

@@ -49,14 +49,14 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
                     val teacherName = homeworkElement.child(2).text()
                     val teacher = data.getTeacherByFirstLast(teacherName)
 
-                    val topic = homeworkElement.child(4).text()
+                    val topic = homeworkElement.child(4).text()?.trim()
 
                     val eventObject = Event(
                             profileId = profileId,
                             id = id,
                             date = date,
                             time = startTime,
-                            topic = topic,
+                            topic = topic ?: "",
                             color = null,
                             type = Event.TYPE_HOMEWORK,
                             teacherId = teacher.id,
