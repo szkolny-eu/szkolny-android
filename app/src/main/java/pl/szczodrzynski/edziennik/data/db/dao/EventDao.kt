@@ -65,7 +65,7 @@ abstract class EventDao : BaseDao<Event, EventFull> {
     fun getAllByDate(profileId: Int, date: Date) =
             getRaw("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId AND eventDate = '${date.stringY_m_d}' $ORDER_BY")
     fun getAllByDateTime(profileId: Int, date: Date, time: Time) =
-            getRaw("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId AND eventDate = '${date.stringY_m_d}' AND eventTime = '${time.stringValue}'")
+            getRaw("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId AND eventDate = '${date.stringY_m_d}' AND eventTime = '${time.stringValue}' $ORDER_BY")
     fun getNearestNotDone(profileId: Int, today: Date, limit: Int) =
             getRaw("$QUERY WHERE $NOT_BLACKLISTED AND $NOT_DONE AND events.profileId = $profileId AND eventDate >= '${today.stringY_m_d}' $ORDER_BY LIMIT $limit")
 
