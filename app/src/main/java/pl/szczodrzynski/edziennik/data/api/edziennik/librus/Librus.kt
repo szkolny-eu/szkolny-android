@@ -122,20 +122,22 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {
-        login(LOGIN_METHOD_LIBRUS_MESSAGES) {
-            when (owner) {
-                is Message -> {
+        when (owner) {
+            is Message -> {
+                login(LOGIN_METHOD_LIBRUS_MESSAGES) {
                     LibrusMessagesGetAttachment(data, owner, attachmentId, attachmentName) {
                         completed()
                     }
                 }
-                is EventFull -> {
+            }
+            is EventFull -> {
+                login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
                     LibrusSynergiaHomeworkGetAttachment(data, owner, attachmentId, attachmentName) {
                         completed()
                     }
                 }
-                else -> completed()
             }
+            else -> completed()
         }
     }
 
