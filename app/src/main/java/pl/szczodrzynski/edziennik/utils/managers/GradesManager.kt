@@ -82,10 +82,19 @@ class GradesManager(val app: App) : CoroutineScope {
         else -> null
     }
 
+    /**
+     * Returns the "rounded" grade value as an integer.
+     * The decimal value is rounded to ceil if >= 0.75.
+     */
     fun getRoundedGrade(value: Float): Int {
         return floor(value.toDouble()).toInt() + if (value % 1.0f >= 0.75) 1 else 0
     }
 
+    /**
+     * Get a grade value, either saved in the [grade]
+     * or calculated including the [plusValue] and
+     * [minusValue].
+     */
     fun getGradeValue(grade: Grade): Float {
         if (plusValue == null && minusValue == null)
             return grade.value
@@ -102,6 +111,10 @@ class GradesManager(val app: App) : CoroutineScope {
         return grade.value
     }
 
+    /**
+     * Returns a weight if the grade should be counted
+     * to the average, 0f otherwise.
+     */
     fun getGradeWeight(dontCountEnabled: Boolean, dontCountGrades: List<String>, grade: Grade): Float {
         if (!dontCountEnabled)
             return grade.weight
@@ -161,6 +174,48 @@ class GradesManager(val app: App) : CoroutineScope {
         return color or 0xff000000.toInt()
     }
 
+    /**
+     * Calculate the grade's value using
+     * the specified [name].
+     */
+    fun getGradeValue(name: String): Float {
+        return when (name.toLowerCase()) {
+            "1-" -> 0.75f
+            "1" -> 1.00f
+            "1+" -> 1.50f
+            "2-" -> 1.75f
+            "2" -> 2.00f
+            "2+" -> 2.50f
+            "3-" -> 2.75f
+            "3" -> 3.00f
+            "3+" -> 3.50f
+            "4-" -> 3.75f
+            "4" -> 4.00f
+            "4+" -> 4.50f
+            "5-" -> 4.75f
+            "5" -> 5.00f
+            "5+" -> 5.50f
+            "6-" -> 5.75f
+            "6" -> 6.00f
+            "6+" -> 6.50f
+            "niedostateczny", "f" -> 1f
+            "dopuszczający", "e" -> 2f
+            "dostateczny", "d" -> 3f
+            "dobry", "c" -> 4f
+            "bardzo dobry", "b" -> 5f
+            "celujący", "a" -> 6f
+            else -> 0f
+        }
+    }
+
+    /*    _    _ _____    _____                 _  __ _
+         | |  | |_   _|  / ____|               (_)/ _(_)
+         | |  | | | |   | (___  _ __   ___  ___ _| |_ _  ___
+         | |  | | | |    \___ \| '_ \ / _ \/ __| |  _| |/ __|
+         | |__| |_| |_   ____) | |_) |  __/ (__| | | | | (__
+          \____/|_____| |_____/| .__/ \___|\___|_|_| |_|\___|
+                               | |
+                               |*/
     fun markAsSeen(grade: GradeFull) {
         grade.seen = true
         startCoroutineTimer(500L, 0L) {
