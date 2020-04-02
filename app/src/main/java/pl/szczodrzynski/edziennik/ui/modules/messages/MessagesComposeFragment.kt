@@ -433,6 +433,15 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             return
         }
 
+        // do magic
+        // apparently this removes an underline
+        // span from the text where the caret is
+        b.subject.requestFocus()
+        b.subject.clearFocus()
+        activity.navView.bottomSheet.hideKeyboard()
+        b.text.clearFocus()
+        b.text.setSelection(0)
+
         if (b.subjectLayout.counterMaxLength != -1 && b.subject.length() > b.subjectLayout.counterMaxLength)
             return
         if (b.textLayout.counterMaxLength != -1 && b.text.length() > b.textLayout.counterMaxLength)
