@@ -45,7 +45,7 @@ class ErrorDetailsDialog(
                 listOf(
                         it.getStringReason(activity).asBoldSpannable().asColoredSpannable(R.attr.colorOnBackground.resolveAttr(activity)),
                         activity.getString(R.string.error_unknown_format, it.errorCode, it.tag),
-                        if (App.devMode)
+                        if (App.debugMode)
                             it.throwable?.stackTraceString ?: it.throwable?.localizedMessage
                         else
                             it.throwable?.localizedMessage

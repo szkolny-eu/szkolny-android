@@ -1285,4 +1285,5 @@
     <string name="event_mark_as_done_text">Czy chcesz oznaczyć to zadanie jako wykonane?\n\nNie będzie ono się wyświetlać na stronie głównej oraz w aktualnych zadaniach domowych. Będzie wciąż dostępne w Terminarzu.</string>
     <string name="dialog_event_details_body">Treść</string>
     <string name="dialog_event_details_attachments">Załączniki</string>
+    <string name="hint_download_again">Pobierz ponownie</string>
 </resources>

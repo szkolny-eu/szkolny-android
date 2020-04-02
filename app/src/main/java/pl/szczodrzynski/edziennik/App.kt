@@ -168,7 +168,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             db.profileDao().firstId?.let { profileLoadById(it) }
         }
 
-        devMode = "f054761fbdb6a238" == deviceId || BuildConfig.DEBUG
+        devMode = BuildConfig.DEBUG
 
         Signing.getCert(this)
 

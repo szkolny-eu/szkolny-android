@@ -1,5 +1,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia
 
+import android.text.Html
 import org.greenrobot.eventbus.EventBus
 import org.jsoup.Jsoup
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
@@ -22,7 +23,7 @@ class LibrusSynergiaGetHomework(override val data: DataLibrus,
             val table = doc.select("table.decorated tbody > tr")
 
             event.topic = table[1].select("td")[1].text()
-            event.homeworkBody = table[5].select("td")[1].text()
+            event.homeworkBody = Html.fromHtml(table[5].select("td")[1].html()).toString()
 
             event.attachmentIds = mutableListOf()
             event.attachmentNames = mutableListOf()

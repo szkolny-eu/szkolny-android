@@ -518,7 +518,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         .withIcon(CommunityMaterial.Icon2.cmd_help_circle_outline)
                         .withOnClickListener(View.OnClickListener { loadTarget(TARGET_FEEDBACK) })
         )
-        if (App.devMode) {
+        if (App.debugMode) {
             bottomSheet += BottomSheetPrimaryItem(false)
                     .withTitle(R.string.menu_debug)
                     .withIcon(CommunityMaterial.Icon.cmd_android_studio)

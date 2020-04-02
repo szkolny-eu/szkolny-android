@@ -49,28 +49,29 @@ class GradeView : AppCompatTextView {
 
         val gradeColor = manager.getGradeColor(grade)
 
-        text = if (periodGradesTextual)
-            when (grade.type) {
+        text = when {
+            periodGradesTextual -> when (grade.type) {
                 TYPE_SEMESTER1_PROPOSED, TYPE_SEMESTER2_PROPOSED -> context.getString(
-                    R.string.grade_semester_proposed_format,
-                    gradeName
+                        R.string.grade_semester_proposed_format,
+                        gradeName
                 )
                 TYPE_SEMESTER1_FINAL, TYPE_SEMESTER2_FINAL -> context.getString(
-                    R.string.grade_semester_final_format,
-                    gradeName
+                        R.string.grade_semester_final_format,
+                        gradeName
                 )
                 TYPE_YEAR_PROPOSED -> context.getString(
-                    R.string.grade_year_proposed_format,
-                    gradeName
+                        R.string.grade_year_proposed_format,
+                        gradeName
                 )
                 TYPE_YEAR_FINAL -> context.getString(
-                    R.string.grade_year_final_format,
-                    gradeName
+                        R.string.grade_year_final_format,
+                        gradeName
                 )
                 else -> gradeName
             }
-        else
-            gradeName
+            gradeName.isBlank() -> "  "
+            else -> gradeName
+        }
 
         setTextColor(when (grade.type) {
             TYPE_SEMESTER1_PROPOSED,

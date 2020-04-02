@@ -78,7 +78,7 @@ class LessonDetailsDialog(
             )
         }
 
-        if (App.devMode)
+        if (App.debugMode)
             b.lessonId.visibility = View.VISIBLE
 
         update()

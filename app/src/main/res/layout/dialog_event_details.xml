@@ -4,10 +4,14 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View"/>
         <import type="pl.szczodrzynski.edziennik.App"/>
+        <variable
+            name="appCompanion"
+            type="pl.szczodrzynski.edziennik.App.Companion" />
         <variable
             name="event"
             type="pl.szczodrzynski.edziennik.data.db.full.EventFull" />
@@ -196,57 +200,68 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/divider"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:orientation="horizontal">
+                app:flexWrap="wrap"
+                app:justifyContent="flex_end">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/checkDoneButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:minWidth="0dp"
                     android:checkable="true"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:minWidth="0dp"
                     android:text="\uFCE1"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/community_material_font_v3_5_95_1" />
+                    android:textSize="20sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/editButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
                     android:minWidth="0dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:text="\uFC92"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/community_material_font_v3_5_95_1" />
+                    android:textSize="20sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/saveInCalendarButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
                     android:minWidth="0dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:text="\uFB09"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/community_material_font_v3_5_95_1" />
+                    android:textSize="20sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/goToTimetableButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
                     android:minWidth="0dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:text="\uFCDA"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/community_material_font_v3_5_95_1" />
-            </LinearLayout>
+                    android:textSize="20sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/downloadButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:minWidth="0dp"
+                    android:text="\uFB6B"
+                    android:textSize="20sp" />
+            </com.google.android.flexbox.FlexboxLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

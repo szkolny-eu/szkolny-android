@@ -1217,7 +1217,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 })
                 .build());*/
 
-            if (App.Companion.getDevMode()) {
+            if (App.Companion.getDebugMode()) {
                 items.add(new MaterialAboutActionItem.Builder()
                         .text(R.string.settings_about_crash_text)
                         .subText(R.string.settings_about_crash_subtext)

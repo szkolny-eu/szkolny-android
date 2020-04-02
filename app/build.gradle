@@ -196,6 +196,8 @@ dependencies {
 
     implementation project(":annotation")
     kapt project(":codegen")
+
+    implementation 'com.google.android:flexbox:2.0.1'
 }
 repositories {
     mavenCentral()
