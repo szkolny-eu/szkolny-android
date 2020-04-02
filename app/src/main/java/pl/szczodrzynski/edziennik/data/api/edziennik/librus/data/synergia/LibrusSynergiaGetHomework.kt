@@ -26,12 +26,15 @@ class LibrusSynergiaGetHomework(override val data: DataLibrus,
 
             event.attachmentIds = mutableListOf()
             event.attachmentNames = mutableListOf()
-            table[6].select("a").forEach { a ->
-                val attachmentId = a.attr("href").split('/')
-                        .last().toLongOrNull() ?: return@forEach
-                val filename = a.text()
-                event.attachmentIds?.add(attachmentId)
-                event.attachmentNames?.add(filename)
+
+            if (table.size > 6) {
+                table[6].select("a").forEach { a ->
+                    val attachmentId = a.attr("href").split('/')
+                            .last().toLongOrNull() ?: return@forEach
+                    val filename = a.text()
+                    event.attachmentIds?.add(attachmentId)
+                    event.attachmentNames?.add(filename)
+                }
             }
 
             data.eventList.add(event)
