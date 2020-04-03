@@ -93,7 +93,7 @@ open class Event(
     var attachmentNames: MutableList<String>? = null
 
     @Ignore
-    var showAsUnseen = false
+    var showAsUnseen: Boolean? = null
 
     val startTimeCalendar: Calendar
         get() = Calendar.getInstance().also { it.set(

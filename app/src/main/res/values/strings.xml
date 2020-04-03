@@ -1286,4 +1286,5 @@
     <string name="dialog_event_details_body">Treść</string>
     <string name="dialog_event_details_attachments">Załączniki</string>
     <string name="hint_download_again">Pobierz ponownie</string>
+    <string name="menu_lab">Laboratorium</string>
 </resources>

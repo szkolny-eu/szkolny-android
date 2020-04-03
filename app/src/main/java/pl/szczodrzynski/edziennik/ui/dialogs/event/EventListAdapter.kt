@@ -9,11 +9,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.EventListItemBinding
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
+import kotlin.coroutines.CoroutineContext
 
 class EventListAdapter(
         val context: Context,
@@ -23,11 +27,17 @@ class EventListAdapter(
         val showType: Boolean = true,
         val showTime: Boolean = true,
         val showSubject: Boolean = true,
+        val markAsSeen: Boolean = true,
         val onItemClick: ((event: EventFull) -> Unit)? = null,
         val onEventEditClick: ((event: EventFull) -> Unit)? = null
-) : RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<EventListAdapter.ViewHolder>(), CoroutineScope {
 
-    private val app by lazy { context.applicationContext as App }
+    private val app = context.applicationContext as App
+    private val manager = app.eventManager
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     var items = listOf<EventFull>()
 
@@ -40,9 +50,17 @@ class EventListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val event = items[position]
         val b = holder.b
+        val manager = app.eventManager
 
         b.root.onClick {
             onItemClick?.invoke(event)
+            if (!event.seen) {
+                manager.markAsSeen(event)
+            }
+            if (event.showAsUnseen == true) {
+                event.showAsUnseen = false
+                notifyItemChanged(event)
+            }
         }
 
         val bullet = " • "
@@ -85,6 +103,22 @@ class EventListAdapter(
         b.editButton.attachToastHint(R.string.hint_edit_event)
 
         b.isDone.isVisible = event.isDone
+
+        if (event.showAsUnseen == null)
+            event.showAsUnseen = !event.seen
+
+        b.unread.isVisible = event.showAsUnseen == true
+        if (markAsSeen && !event.seen) {
+            manager.markAsSeen(event)
+        }
+    }
+
+    private fun notifyItemChanged(model: Any) {
+        startCoroutineTimer(1000L, 0L) {
+            val index = items.indexOf(model)
+            if (index != -1)
+                notifyItemChanged(index)
+        }
     }
 
     override fun getItemCount() = items.size

@@ -60,6 +60,7 @@ class HomeworkListFragment : LazyFragment(), CoroutineScope {
                 showType = false,
                 showTime = true,
                 showSubject = true,
+                markAsSeen = true,
                 onItemClick = {
                     EventDetailsDialog(
                             activity,

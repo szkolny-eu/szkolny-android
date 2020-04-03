@@ -55,9 +55,10 @@ import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
-import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment
 import pl.szczodrzynski.edziennik.ui.modules.base.MainSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
+import pl.szczodrzynski.edziennik.ui.modules.debug.DebugFragment
+import pl.szczodrzynski.edziennik.ui.modules.debug.LabFragment
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
 import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
@@ -73,7 +74,6 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesListFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
-import pl.szczodrzynski.edziennik.ui.modules.template.TemplateFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         const val TARGET_MESSAGES_DETAILS = 503
         const val TARGET_MESSAGES_COMPOSE = 504
         const val TARGET_WEB_PUSH = 140
-        const val TARGET_TEMPLATE = 1000
+        const val TARGET_LAB = 1000
 
         const val HOME_ID = DRAWER_ITEM_HOME
 
@@ -230,8 +230,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             list += NavTarget(TARGET_WEB_PUSH, R.string.menu_web_push, WebPushFragment::class)
             list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
             if (App.devMode) {
-                list += NavTarget(TARGET_TEMPLATE, R.string.menu_template, TemplateFragment::class)
-                        .withIcon(CommunityMaterial.Icon2.cmd_test_tube_empty)
+                list += NavTarget(TARGET_LAB, R.string.menu_lab, LabFragment::class)
+                        .withIcon(CommunityMaterial.Icon.cmd_flask_outline)
                         .isInDrawer(true)
                         .isBelowSeparator(true)
                         .isStatic(true)

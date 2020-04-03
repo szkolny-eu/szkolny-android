@@ -36,12 +36,22 @@
 
             <TextView
                 android:id="@+id/details"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textAppearance="@style/NavView.TextView.Helper"
                 android:textSize="16sp"
                 android:maxLines="2"
                 tools:text="sprawdzian • 9:05 • historia i społeczeństwo" />
+
+            <View
+                android:id="@+id/unread"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginHorizontal="4dp"
+                android:visibility="gone"
+                android:background="@drawable/unread_red_circle"
+                tools:visibility="visible"/>
 
         </LinearLayout>
 
@@ -81,6 +91,7 @@
                 android:layout_gravity="top"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
+                android:visibility="gone"
                 app:iiv_color="@color/md_green_500"
                 app:iiv_icon="cmd-check"
                 tools:background="@sample/check" />

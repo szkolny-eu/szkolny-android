@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik.ui.modules.base;
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-4-3.
+ */
+
+package pl.szczodrzynski.edziennik.ui.modules.debug;
 
 import android.os.Bundle;
 import android.util.Log;
