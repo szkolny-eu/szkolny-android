@@ -98,6 +98,7 @@
     <string name="error_185" translatable="false">ERROR_LIBRUS_API_DEVICE_REGISTERED</string>
     <string name="error_186" translatable="false">ERROR_LIBRUS_MESSAGES_NOT_FOUND</string>
     <string name="error_187" translatable="false">ERROR_LOGIN_LIBRUS_API_INVALID_REQUEST</string>
+    <string name="error_188" translatable="false">ERROR_LIBRUS_MESSAGES_ATTACHMENT_NOT_FOUND</string>
 
     <string name="error_201" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_202" translatable="false">ERROR_LOGIN_MOBIDZIENNIK_WEB_OLD_PASSWORD</string>
@@ -273,6 +274,7 @@
     <string name="error_185_reason">Urządzenie jest już zarejestrowane</string>
     <string name="error_186_reason">Nie znaleziono wiadomości. Mogła zostać usunięta.</string>
     <string name="error_187_reason">Nieprawidłowe dane dostępu. Sprawdź poprawność wprowadzonych danych.</string>
+    <string name="error_188_reason">Nie znaleziono załącznika. Mógł zostać usunięty.</string>
 
     <string name="error_201_reason">Nieprawidłowy login lub hasło</string>
     <string name="error_202_reason">Podano stare hasło</string>

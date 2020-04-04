@@ -34,15 +34,22 @@ class LibrusSandboxDownloadAttachment(override val data: DataLibrus,
     init {
         val keyMatcher = Regexes.LIBRUS_ATTACHMENT_KEY.find(downloadLink)
 
-        if (keyMatcher != null) {
-            getAttachmentCheckKeyTries = 0
-
-            val attachmentKey = keyMatcher[1]
-            getAttachmentCheckKey(attachmentKey) {
-                downloadAttachment("${LIBRUS_SANDBOX_URL}CSDownload&singleUseKey=$attachmentKey", method = POST)
+        when {
+            downloadLink.contains("CSDownloadFailed") -> {
+                data.error(ApiError(TAG, ERROR_LIBRUS_MESSAGES_ATTACHMENT_NOT_FOUND))
+                onSuccess()
             }
-        } else {
-            downloadAttachment("$downloadLink/get", method = GET)
+            keyMatcher != null -> {
+                getAttachmentCheckKeyTries = 0
+
+                val attachmentKey = keyMatcher[1]
+                getAttachmentCheckKey(attachmentKey) {
+                    downloadAttachment("${LIBRUS_SANDBOX_URL}CSDownload&singleUseKey=$attachmentKey", method = POST)
+                }
+            }
+            else -> {
+                downloadAttachment("$downloadLink/get", method = GET)
+            }
         }
     }
 
