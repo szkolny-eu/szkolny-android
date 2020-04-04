@@ -171,6 +171,9 @@ object Regexes {
     val EDUDZIENNIK_ANNOUNCEMENT_DESCRIPTION by lazy {
         """<div class="desc">.*?<p>(.*?)</p>""".toRegex(DOT_MATCHES_ALL)
     }
+    val EDUDZIENNIK_HOMEWORK_DESCRIPTION by lazy {
+        """<div class="desc">(.*?)</div>""".toRegex(DOT_MATCHES_ALL)
+    }
 
     val EDUDZIENNIK_SUBJECT_ID by lazy {
         """/Courses/([\w-_]+?)/""".toRegex()

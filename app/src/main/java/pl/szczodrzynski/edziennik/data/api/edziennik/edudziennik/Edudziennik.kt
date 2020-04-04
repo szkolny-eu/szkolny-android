@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikData
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web.EdudziennikWebGetAnnouncement
+import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web.EdudziennikWebGetHomework
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.firstlogin.EdudziennikFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLoginWeb
@@ -96,7 +97,14 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
 
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {}
     override fun getRecipientList() {}
-    override fun getEvent(eventFull: EventFull) {}
+
+    override fun getEvent(eventFull: EventFull) {
+        EdudziennikLoginWeb(data) {
+            EdudziennikWebGetHomework(data, eventFull) {
+                completed()
+            }
+        }
+    }
 
     override fun firstLogin() { EdudziennikFirstLogin(data) { completed() } }
     override fun cancel() {
