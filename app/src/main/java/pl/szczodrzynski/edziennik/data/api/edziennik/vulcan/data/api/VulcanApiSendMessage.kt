@@ -52,7 +52,7 @@ class VulcanApiSendMessage(override val data: DataVulcan,
             }
 
             VulcanApiMessagesSent(data, null) {
-                val message = data.messageIgnoreList.firstOrNull { it.type == Message.TYPE_SENT && it.subject == subject }
+                val message = data.messageList.firstOrNull { it.type == Message.TYPE_SENT && it.subject == subject }
                 val metadata = data.metadataList.firstOrNull { it.thingType == Metadata.TYPE_MESSAGE && it.thingId == messageId }
                 val event = MessageSentEvent(data.profileId, message, metadata?.addedDate)
 

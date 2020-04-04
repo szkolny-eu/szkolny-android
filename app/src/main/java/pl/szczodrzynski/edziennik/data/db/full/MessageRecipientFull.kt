@@ -2,17 +2,13 @@ package pl.szczodrzynski.edziennik.data.db.full
 
 import androidx.room.Ignore
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
-import pl.szczodrzynski.edziennik.fixName
 
-class MessageRecipientFull : MessageRecipient {
-    var fullName: String? = ""
-        get() {
-            return field?.fixName() ?: ""
-        }
-
+class MessageRecipientFull(
+        profileId: Int,
+        id: Long,
+        messageId: Long,
+        readDate: Long = -1L
+) : MessageRecipient(profileId, id, -1, readDate, messageId) {
     @Ignore
-    constructor(profileId: Int, id: Long, replyId: Long, readDate: Long, messageId: Long) : super(profileId, id, replyId, readDate, messageId) {}
-    @Ignore
-    constructor(profileId: Int, id: Long, messageId: Long) : super(profileId, id, messageId) {}
-    constructor() : super() {}
+    var fullName: String? = null
 }

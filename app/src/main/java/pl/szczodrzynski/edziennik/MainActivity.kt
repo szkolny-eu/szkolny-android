@@ -68,9 +68,9 @@ import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessageFragment
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesListFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesListFragmentOld
+import pl.szczodrzynski.edziennik.ui.modules.messages.compose.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
@@ -889,9 +889,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         app.profileLoad(id) {
             MessagesFragment.pageSelection = -1
-            MessagesListFragment.tapPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
-            MessagesListFragment.topPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
-            MessagesListFragment.bottomPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
+            MessagesListFragmentOld.tapPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
+            MessagesListFragmentOld.topPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
+            MessagesListFragmentOld.bottomPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
 
             setDrawerItems()
             // the drawer profile is updated automatically when the drawer item is clicked

@@ -87,6 +87,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
 
     var teacherOnConflictStrategy = OnConflictStrategy.IGNORE
     var eventListReplace = false
+    var messageListReplace = false
 
     val classrooms = LongSparseArray<Classroom>()
     val attendanceTypes = LongSparseArray<AttendanceType>()
@@ -126,7 +127,6 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     val teacherAbsenceList = mutableListOf<TeacherAbsence>()
 
     val messageList = mutableListOf<Message>()
-    val messageIgnoreList = mutableListOf<Message>()
     val messageRecipientList = mutableListOf<MessageRecipient>()
     val messageRecipientIgnoreList = mutableListOf<MessageRecipient>()
 
@@ -182,7 +182,6 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         luckyNumberList.clear()
         teacherAbsenceList.clear()
         messageList.clear()
-        messageIgnoreList.clear()
         messageRecipientList.clear()
         messageRecipientIgnoreList.clear()
         metadataList.clear()
@@ -305,10 +304,12 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         if (teacherAbsenceList.isNotEmpty())
             db.teacherAbsenceDao().addAll(teacherAbsenceList)
 
-        if (messageList.isNotEmpty())
-            db.messageDao().addAll(messageList)
-        if (messageIgnoreList.isNotEmpty())
-            db.messageDao().addAllIgnore(messageIgnoreList)
+        if (messageList.isNotEmpty()) {
+            if (messageListReplace)
+                db.messageDao().replaceAll(messageList)
+            else
+                db.messageDao().upsertAll(messageList, removeNotKept = false) // TODO dataRemoveModel for messages
+        }
         if (messageRecipientList.isNotEmpty())
             db.messageRecipientDao().addAll(messageRecipientList)
         if (messageRecipientIgnoreList.isNotEmpty())

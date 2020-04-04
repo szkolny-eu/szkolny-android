@@ -93,8 +93,8 @@ public abstract class MetadataDao {
             }
         }
         if (o instanceof Message) {
-            if (add(new Metadata(profileId, TYPE_MESSAGE, ((Message) o).id, seen, false, 0)) == -1) {
-                updateSeen(profileId, TYPE_MESSAGE, ((Message) o).id, seen);
+            if (add(new Metadata(profileId, TYPE_MESSAGE, ((Message) o).getId(), seen, false, 0)) == -1) {
+                updateSeen(profileId, TYPE_MESSAGE, ((Message) o).getId(), seen);
             }
         }
     }
@@ -132,8 +132,8 @@ public abstract class MetadataDao {
             }
         }
         if (o instanceof Message) {
-            if (add(new Metadata(profileId, TYPE_MESSAGE, ((Message) o).id, false, notified, 0)) == -1) {
-                updateNotified(profileId, TYPE_MESSAGE, ((Message) o).id, notified);
+            if (add(new Metadata(profileId, TYPE_MESSAGE, ((Message) o).getId(), false, notified, 0)) == -1) {
+                updateNotified(profileId, TYPE_MESSAGE, ((Message) o).getId(), notified);
             }
         }
     }

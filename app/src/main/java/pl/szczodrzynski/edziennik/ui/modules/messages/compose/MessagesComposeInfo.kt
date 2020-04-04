@@ -1,4 +1,8 @@
-package pl.szczodrzynski.edziennik.ui.modules.messages
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-4-4.
+ */
+
+package pl.szczodrzynski.edziennik.ui.modules.messages.compose
 
 class MessagesComposeInfo(
         /**

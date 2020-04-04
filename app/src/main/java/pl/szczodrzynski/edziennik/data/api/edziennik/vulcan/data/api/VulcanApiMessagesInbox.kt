@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.db.entity.*
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.text.replace
@@ -44,8 +44,7 @@ class VulcanApiMessagesInbox(override val data: DataVulcan,
                     val body = message.getString("Tresc") ?: ""
 
                     val senderLoginId = message.getString("NadawcaId") ?: return@forEach
-                    val senderId = data.teacherList
-                            .singleOrNull { it.loginId == senderLoginId }?.id ?: {
+                    val senderId = data.teacherList.singleOrNull { it.loginId == senderLoginId }?.id ?: {
 
                         val senderName = message.getString("Nadawca") ?: ""
 
@@ -60,7 +59,7 @@ class VulcanApiMessagesInbox(override val data: DataVulcan,
                             data.teacherList.put(teacherObject.id, teacherObject)
                             teacherObject.id
                         }
-                    }.invoke() ?: -1
+                    }.invoke()
 
                     val sentDate = message.getLong("DataWyslaniaUnixEpoch")?.let { it * 1000 }
                             ?: -1
@@ -68,13 +67,12 @@ class VulcanApiMessagesInbox(override val data: DataVulcan,
                             ?: -1
 
                     val messageObject = Message(
-                            profileId,
-                            id,
-                            subject,
-                            body.replace("\n", "<br>"),
-                            TYPE_RECEIVED,
-                            senderId,
-                            -1
+                            profileId = profileId,
+                            id = id,
+                            type = TYPE_RECEIVED,
+                            subject = subject,
+                            body = body.replace("\n", "<br>"),
+                            senderId = senderId
                     )
 
                     val messageRecipientObject = MessageRecipient(
@@ -85,7 +83,7 @@ class VulcanApiMessagesInbox(override val data: DataVulcan,
                             id
                     )
 
-                    data.messageIgnoreList.add(messageObject)
+                    data.messageList.add(messageObject)
                     data.messageRecipientList.add(messageRecipientObject)
                     data.setSeenMetadataList.add(Metadata(
                             profileId,

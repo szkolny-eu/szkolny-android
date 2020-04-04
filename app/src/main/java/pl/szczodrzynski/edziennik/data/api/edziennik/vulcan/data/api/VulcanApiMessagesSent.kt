@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
@@ -92,16 +92,15 @@ class VulcanApiMessagesSent(override val data: DataVulcan,
                             }
 
                     val messageObject = Message(
-                            profileId,
-                            id,
-                            subject,
-                            body.replace("\n", "<br>"),
-                            TYPE_SENT,
-                            -1,
-                            -1
+                            profileId = profileId,
+                            id = id,
+                            type = TYPE_SENT,
+                            subject = subject,
+                            body = body.replace("\n", "<br>"),
+                            senderId = null
                     )
 
-                    data.messageIgnoreList.add(messageObject)
+                    data.messageList.add(messageObject)
                     data.setSeenMetadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_MESSAGE,

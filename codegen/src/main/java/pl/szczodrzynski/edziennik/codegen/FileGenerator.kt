@@ -158,8 +158,11 @@ class FileGenerator : AbstractProcessor() {
 
         allFields.removeAll { skippedColumns.contains(it.name()) }
         allFields.removeAll { it.getAnnotation(Ignore::class.java) != null }
-        allFields.removeAll { field -> field.modifiers.any { it == Modifier.STATIC || it == Modifier.FINAL } }
+        allFields.removeAll { field -> field.modifiers.any { it == Modifier.STATIC } }
         val allFieldsDistinct = allFields.distinct()
+
+        // dump fields
+        //processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, allFieldsDistinct.joinToString())
 
         val fields = allFieldsDistinct.filterNot { primaryKeys.contains(it.name()) }
         val primaryFields = allFieldsDistinct.filter { primaryKeys.contains(it.name()) }

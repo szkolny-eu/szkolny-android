@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_API_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikApi
 import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.utils.Utils.crc32
@@ -46,13 +46,12 @@ class IdziennikApiMessagesSent(override val data: DataIdziennik,
                 val sentDate = Date.fromIso(jMessage.get("dataWyslania").asString)
 
                 val message = Message(
-                        profileId,
-                        messageId,
-                        subject,
-                        body,
-                        TYPE_SENT,
-                        -1,
-                        -1
+                        profileId = profileId,
+                        id = messageId,
+                        type = TYPE_SENT,
+                        subject = subject,
+                        body = body,
+                        senderId = null
                 )
 
                 for (recipientEl in jMessage.getAsJsonArray("odbiorcy")) {
@@ -76,7 +75,7 @@ class IdziennikApiMessagesSent(override val data: DataIdziennik,
                     data.messageRecipientIgnoreList.add(messageRecipient)
                 }
 
-                data.messageIgnoreList.add(message)
+                data.messageList.add(message)
                 data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true, sentDate))
             }
 

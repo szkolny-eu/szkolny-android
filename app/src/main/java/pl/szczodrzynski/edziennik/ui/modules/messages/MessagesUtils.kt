@@ -124,7 +124,7 @@ object MessagesUtils {
         var profileImage: Bitmap? = null
         var profileName: String? = null
         if (message.type == Message.TYPE_RECEIVED || message.type == Message.TYPE_DELETED) {
-            profileName = message.senderFullName?.fixName()
+            profileName = message.senderName?.fixName()
             profileImage = getProfileImage(diameterDp, textSizeBigDp, textSizeMediumDp, textSizeSmallDp, 1, profileName)
         } else if (message.type == Message.TYPE_SENT || message.type == Message.TYPE_DRAFT && message.recipients != null) {
             when (val count = message.recipients?.size ?: 0) {

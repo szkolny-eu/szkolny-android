@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.modules.messages
+package pl.szczodrzynski.edziennik.ui.modules.messages.compose
 
 import android.content.Context
 import android.graphics.Typeface.BOLD

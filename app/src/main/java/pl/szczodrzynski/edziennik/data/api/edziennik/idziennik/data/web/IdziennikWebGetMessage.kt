@@ -10,8 +10,8 @@ import pl.szczodrzynski.edziennik.data.api.IDZIENNIK_WEB_GET_MESSAGE
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
@@ -50,7 +50,11 @@ class IdziennikWebGetMessage(override val data: DataIdziennik,
                 message.recipients?.clear()
                 when (message.type) {
                     TYPE_RECEIVED -> {
-                        val recipientObject = MessageRecipientFull(profileId, -1, message.id)
+                        val recipientObject = MessageRecipientFull(
+                                profileId = profileId,
+                                id = -1,
+                                messageId = message.id
+                        )
 
                         val readDateString = it.getString("DataOdczytania")
                         recipientObject.readDate = if (readDateString.isNullOrBlank()) System.currentTimeMillis()
@@ -67,7 +71,11 @@ class IdziennikWebGetMessage(override val data: DataIdziennik,
                             val recipientName = recipient.getString("NazwaOdbiorcy") ?: return@forEach
                             val teacher = data.getTeacherByLastFirst(recipientName)
 
-                            val recipientObject = MessageRecipientFull(profileId, teacher.id, message.id)
+                            val recipientObject = MessageRecipientFull(
+                                    profileId = profileId,
+                                    id = teacher.id,
+                                    messageId = message.id
+                            )
 
                             recipientObject.readDate = recipient.getLong("Status") ?: return@forEach
                             recipientObject.fullName = teacher.fullName
@@ -91,9 +99,10 @@ class IdziennikWebGetMessage(override val data: DataIdziennik,
                     ))
                 }
 
-                EventBus.getDefault().postSticky(MessageGetEvent(message))
-
                 data.messageList.add(message)
+                data.messageListReplace = true
+
+                EventBus.getDefault().postSticky(MessageGetEvent(message))
                 onSuccess()
             }
         }

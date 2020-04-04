@@ -9,8 +9,8 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -102,11 +102,10 @@ class LibrusMessagesGetMessage(override val data: DataLibrus,
                     }
 
                     val messageRecipientObject = MessageRecipientFull(
-                            profileId,
-                            -1,
-                            -1,
-                            readDate,
-                            messageObject.id
+                            profileId = profileId,
+                            id = -1,
+                            messageId = messageObject.id,
+                            readDate = readDate
                     )
 
                     messageRecipientObject.fullName = profile.accountName ?: profile.studentNameLong ?: ""
@@ -132,11 +131,10 @@ class LibrusMessagesGetMessage(override val data: DataLibrus,
                         }
 
                         val messageRecipientObject = MessageRecipientFull(
-                                profileId,
-                                receiverId,
-                                -1,
-                                readDate,
-                                messageObject.id
+                                profileId = profileId,
+                                id = receiverId,
+                                messageId = messageObject.id,
+                                readDate = readDate
                         )
 
                         messageRecipientObject.fullName = "$receiverFirstName $receiverLastName"
@@ -159,7 +157,9 @@ class LibrusMessagesGetMessage(override val data: DataLibrus,
 
             messageObject.recipients = messageRecipientList
             data.messageRecipientList.addAll(messageRecipientList)
+
             data.messageList.add(messageObject)
+            data.messageListReplace = true
 
             EventBus.getDefault().postSticky(MessageGetEvent(messageObject))
             onSuccess()

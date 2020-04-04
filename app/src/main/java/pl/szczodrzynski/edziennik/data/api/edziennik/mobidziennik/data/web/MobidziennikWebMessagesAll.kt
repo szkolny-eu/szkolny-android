@@ -10,8 +10,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidzienn
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.fixName
@@ -54,12 +54,12 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
                     type = TYPE_SENT
 
                 val senderEl = item.select("td:eq(3) div").first()
-                var senderId: Long = -1
+                var senderId: Long? = null
 
                 if (type == TYPE_RECEIVED) {
                     // search sender teacher
                     val senderName = senderEl.text().fixName()
-                    senderId = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }?.id ?: -1
+                    senderId = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }?.id
                     data.messageRecipientList.add(MessageRecipient(profileId, -1, id))
                 } else {
                     // TYPE_SENT, so multiple recipients possible
@@ -72,16 +72,15 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
                 }
 
                 val message = Message(
-                        profileId,
-                        id,
-                        subject,
-                        null,
-                        type,
-                        senderId,
-                        -1
+                        profileId = profileId,
+                        id = id,
+                        type = type,
+                        subject = subject,
+                        body = null,
+                        senderId = senderId
                 )
 
-                data.messageIgnoreList.add(message)
+                data.messageList.add(message)
                 data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true, addedDate))
             }
 

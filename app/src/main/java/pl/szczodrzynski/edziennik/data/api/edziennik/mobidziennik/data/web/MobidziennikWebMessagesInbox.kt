@@ -52,25 +52,24 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
 
                 val senderEl = item.select("td:eq(2)").first()
                 val senderName = senderEl.ownText().fixName()
-                val senderId = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }?.id ?: -1
+                val senderId = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }?.id
                 data.messageRecipientIgnoreList.add(MessageRecipient(profileId, -1, id))
 
                 val isRead = item.select("td:eq(3) span").first().hasClass("wiadomosc_przeczytana")
 
                 val message = Message(
-                        profileId,
-                        id,
-                        subject,
-                        null,
-                        Message.TYPE_RECEIVED,
-                        senderId,
-                        -1
+                        profileId = profileId,
+                        id = id,
+                        type = Message.TYPE_RECEIVED,
+                        subject = subject,
+                        body = null,
+                        senderId = senderId
                 )
 
                 if (hasAttachments)
-                    message.setHasAttachments()
+                    message.hasAttachments = true
 
-                data.messageIgnoreList.add(message)
+                data.messageList.add(message)
                 data.setSeenMetadataList.add(
                         Metadata(
                                 profileId,

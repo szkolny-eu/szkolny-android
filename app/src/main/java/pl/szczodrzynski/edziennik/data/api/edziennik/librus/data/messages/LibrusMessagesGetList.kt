@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_MESS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.db.entity.*
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.Utils
@@ -78,7 +78,7 @@ class LibrusMessagesGetList(override val data: DataLibrus,
 
                     val senderId = when (type) {
                         TYPE_RECEIVED -> recipientId
-                        else -> -1
+                        else -> null
                     }
 
                     val receiverId = when (type) {
@@ -92,13 +92,12 @@ class LibrusMessagesGetList(override val data: DataLibrus,
                     }
 
                     val messageObject = Message(
-                            profileId,
-                            id,
-                            subject,
-                            null,
-                            type,
-                            senderId,
-                            -1
+                            profileId = profileId,
+                            id = id,
+                            type = type,
+                            subject = subject,
+                            body = null,
+                            senderId = senderId
                     )
 
                     val messageRecipientObject = MessageRecipient(
@@ -111,10 +110,10 @@ class LibrusMessagesGetList(override val data: DataLibrus,
 
                     element.select("isAnyFileAttached")?.text()?.let {
                         if (it == "1")
-                            messageObject.overrideHasAttachments = true
+                            messageObject.hasAttachments = true
                     }
 
-                    data.messageIgnoreList.add(messageObject)
+                    data.messageList.add(messageObject)
                     data.messageRecipientList.add(messageRecipientObject)
                     data.setSeenMetadataList.add(Metadata(
                             profileId,

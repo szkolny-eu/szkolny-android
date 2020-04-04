@@ -49,7 +49,7 @@ class TemplateListPageFragment : LazyFragment(), CoroutineScope {
     override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
         val adapter = TemplateAdapter(activity)
 
-        app.db.notificationDao().getAll().observe(this, Observer { items ->
+        app.db.notificationDao().getAll().observe(this@TemplateListPageFragment, Observer { items ->
             if (!isAdded) return@Observer
 
             // load & configure the adapter
@@ -64,7 +64,7 @@ class TemplateListPageFragment : LazyFragment(), CoroutineScope {
                 }
             }
             adapter.notifyDataSetChanged()
-            setSwipeToRefresh(false) // TODO
+            setSwipeToRefresh(items.isNullOrEmpty())
 
             // show/hide relevant views
             b.progressBar.isVisible = false

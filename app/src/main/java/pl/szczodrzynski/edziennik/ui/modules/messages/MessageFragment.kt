@@ -37,8 +37,8 @@ import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent.Companion.T
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore.Companion.LOGIN_TYPE_IDZIENNIK
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
 import pl.szczodrzynski.edziennik.utils.Anim
@@ -127,7 +127,7 @@ class MessageFragment : Fragment(), CoroutineScope {
                                 it.addedDate = arguments?.getLong("sentDate") ?: System.currentTimeMillis()
                             }
                         else
-                            app.db.messageDao().getById(App.profileId, messageId)
+                            app.db.messageDao().getByIdNow(App.profileId, messageId)
 
                 msg?.also {
                     it.recipients = app.db.messageRecipientDao().getAllByMessageId(it.profileId, it.id)
@@ -290,10 +290,10 @@ class MessageFragment : Fragment(), CoroutineScope {
 
             // CREATE VIEWS AND AN OBJECT FOR EVERY ATTACHMENT
 
-            message.attachmentNames.forEachIndexed { index, name ->
+            message.attachmentNames?.forEachIndexed { index, name ->
                 val messageId = message.id
-                val id = message.attachmentIds[index]
-                val size = message.attachmentSizes[index]
+                val id = message.attachmentIds?.getOrNull(index) ?: return@forEachIndexed
+                val size = message.attachmentSizes?.getOrNull(index) ?: return@forEachIndexed
                 // create the parent
                 val attachmentLayout = FrameLayout(b.root.context)
                 attachmentLayout.setPadding(16.dp, 0, 16.dp, 0)

@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidzienn
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
@@ -61,19 +61,17 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
                 }
 
                 val recipient = MessageRecipientFull(
-                        profileId,
-                        -1,
-                        -1,
-                        readDate,
-                        message.id
+                        profileId = profileId,
+                        id = -1,
+                        messageId = message.id,
+                        readDate = readDate
                 )
 
                 recipient.fullName = profile?.accountName ?: profile?.studentNameLong ?: ""
 
                 messageRecipientList.add(recipient)
             } else {
-                message.senderId = -1
-                message.senderReplyId = -1
+                message.senderId = null
 
                 content.select("table.spis tr:has(td)")?.forEach { recipientEl ->
                     val senderEl = recipientEl.select("td:eq(0)").first()
@@ -100,11 +98,10 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
                     }
 
                     val recipient = MessageRecipientFull(
-                            profileId,
-                            receiverId,
-                            -1,
-                            readDate,
-                            message.id
+                            profileId = profileId,
+                            id = receiverId,
+                            messageId = message.id,
+                            readDate = readDate
                     )
 
                     recipient.fullName = teacher?.fullName ?: "?"
@@ -149,7 +146,9 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
 
             message.recipients = messageRecipientList
             data.messageRecipientList.addAll(messageRecipientList)
+
             data.messageList.add(message)
+            data.messageListReplace = true
 
             EventBus.getDefault().postSticky(MessageGetEvent(message))
             onSuccess()

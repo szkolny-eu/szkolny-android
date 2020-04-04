@@ -71,7 +71,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
         val adapter = GradesAdapter(activity)
         var firstRun = true
 
-        app.db.gradeDao().getAllOrderBy(App.profileId, app.gradesManager.getOrderByString()).observe(this, Observer { items -> launch {
+        app.db.gradeDao().getAllOrderBy(App.profileId, app.gradesManager.getOrderByString()).observe(this@GradesListFragment, Observer { items -> launch {
             if (!isAdded) return@launch
 
             // load & configure the adapter

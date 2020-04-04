@@ -73,19 +73,18 @@ class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
                 val addedDate = Date.fromIsoHm(addedDateEl.text())
 
                 val message = Message(
-                        profileId,
-                        id,
-                        subject,
-                        null,
-                        Message.TYPE_SENT,
-                        -1,
-                        -1
+                        profileId = profileId,
+                        id = id,
+                        type = Message.TYPE_SENT,
+                        subject = subject,
+                        body = null,
+                        senderId = null
                 )
 
                 if (hasAttachments)
-                    message.setHasAttachments()
+                    message.hasAttachments = true
 
-                data.messageIgnoreList.add(message)
+                data.messageList.add(message)
                 data.setSeenMetadataList.add(
                         Metadata(
                                 profileId,

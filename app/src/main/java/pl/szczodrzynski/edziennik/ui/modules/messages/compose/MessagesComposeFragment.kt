@@ -1,8 +1,8 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-12-22.
+ * Copyright (c) Kuba Szczodrzyński 2020-4-4.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.messages
+package pl.szczodrzynski.edziennik.ui.modules.messages.compose
 
 import android.content.Context
 import android.graphics.Typeface
@@ -43,6 +43,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -361,7 +362,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 span.appendText("W dniu ")
                 span.appendSpan(dateString, StyleSpan(Typeface.ITALIC), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText(", ")
-                span.appendSpan(msg.senderFullName.fixName(), StyleSpan(Typeface.ITALIC), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.appendSpan(msg.senderName.fixName(), StyleSpan(Typeface.ITALIC), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText(" napisał(a):")
                 span.setSpan(StyleSpan(Typeface.BOLD), 0, span.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText("\n\n")
@@ -380,7 +381,8 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                     span.replace(0, 0, "\n\n")
                     subject = "Fwd: ${msg.subject}"
                 }
-                body = MessagesUtils.htmlToSpannable(activity,msg.body ?: "Nie udało się wczytać oryginalnej wiadomości.")//Html.fromHtml(msg.body?.replace("<br\\s?/?>".toRegex(), "\n") ?: "Nie udało się wczytać oryginalnej wiadomości.")
+                body = MessagesUtils.htmlToSpannable(activity, msg.body
+                        ?: "Nie udało się wczytać oryginalnej wiadomości.")//Html.fromHtml(msg.body?.replace("<br\\s?/?>".toRegex(), "\n") ?: "Nie udało się wczytać oryginalnej wiadomości.")
             }
 
             b.recipients.addTextWithChips(chipList)

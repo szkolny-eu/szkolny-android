@@ -72,7 +72,7 @@ class NotificationsListFragment : Fragment(), CoroutineScope {
             app.sendBroadcast(intent)
         }
 
-        app.db.notificationDao().getAll().observe(this, Observer { items ->
+        app.db.notificationDao().getAll().observe(this@NotificationsListFragment, Observer { items ->
             if (!isAdded) return@Observer
 
             // load & configure the adapter

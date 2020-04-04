@@ -227,10 +227,10 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun messageNotifications() {
-        for (message in app.db.messageDao().receivedNotNotifiedNow) {
+        for (message in app.db.messageDao().getNotNotifiedNow()) {
             val text = app.getString(
                     R.string.notification_message_format,
-                    message.senderFullName,
+                    message.senderName,
                     message.subject
             )
             notifications += Notification(

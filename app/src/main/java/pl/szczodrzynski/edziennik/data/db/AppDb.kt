@@ -43,7 +43,7 @@ import pl.szczodrzynski.edziennik.data.db.migration.*
     LibrusLesson::class,
     TimetableManual::class,
     Metadata::class
-], version = 83)
+], version = 84)
 @TypeConverters(
         ConverterTime::class,
         ConverterDate::class,
@@ -168,7 +168,8 @@ abstract class AppDb : RoomDatabase() {
                 Migration80(),
                 Migration81(),
                 Migration82(),
-                Migration83()
+                Migration83(),
+                Migration84()
         ).allowMainThreadQueries().build()
     }
 }

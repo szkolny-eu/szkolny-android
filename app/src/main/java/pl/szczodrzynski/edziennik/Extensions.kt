@@ -816,7 +816,7 @@ fun View.findParentById(targetId: Int): View? {
     return null
 }
 
-fun CoroutineScope.startCoroutineTimer(delayMillis: Long = 0, repeatMillis: Long = 0, action: () -> Unit) = launch {
+fun CoroutineScope.startCoroutineTimer(delayMillis: Long = 0, repeatMillis: Long = 0, action: suspend CoroutineScope.() -> Unit) = launch {
     delay(delayMillis)
     if (repeatMillis > 0) {
         while (true) {

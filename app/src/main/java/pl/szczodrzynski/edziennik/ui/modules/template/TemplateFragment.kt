@@ -12,12 +12,11 @@ import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.addOnPageSelectedListener
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.TemplateFragmentBinding
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.FragmentLazyPagerAdapter
-import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
+import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkDate
+import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkListFragment
 import kotlin.coroutines.CoroutineContext
 
 class TemplateFragment : Fragment(), CoroutineScope {
@@ -52,6 +51,14 @@ class TemplateFragment : Fragment(), CoroutineScope {
                 fragmentManager ?: return,
                 b.refreshLayout,
                 listOf(
+                        HomeworkListFragment().apply {
+                            arguments = Bundle("homeworkDate" to HomeworkDate.CURRENT)
+                        } to getString(R.string.homework_tab_current),
+
+                        HomeworkListFragment().apply {
+                            arguments = Bundle("homeworkDate" to HomeworkDate.PAST)
+                        } to getString(R.string.homework_tab_past),
+
                         TemplatePageFragment() to "Pager 0",
                         TemplatePageFragment() to "Pager 1",
                         TemplatePageFragment() to "Pager 2",
@@ -67,7 +74,7 @@ class TemplateFragment : Fragment(), CoroutineScope {
             adapter = pagerAdapter
             currentItem = pageSelection
             addOnPageSelectedListener {
-                HomeworkFragment.pageSelection = it
+                pageSelection = it
             }
             b.tabLayout.setupWithViewPager(this)
         }

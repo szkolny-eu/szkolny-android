@@ -11,8 +11,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.DataIdziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNIK_API_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikApi
 import pl.szczodrzynski.edziennik.data.db.entity.*
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_DELETED
-import pl.szczodrzynski.edziennik.data.db.entity.Message.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_DELETED
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.getBoolean
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.Utils.crc32
@@ -33,11 +33,11 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
                 return@apiGet
             }
 
-            json.asJsonObjectList()?.forEach { jMessage ->
-                val subject = jMessage.getString("tytul")
-                if (subject?.contains("(") == true && subject.startsWith("iDziennik - "))
+            json.asJsonObjectList().forEach { jMessage ->
+                val subject = jMessage.getString("tytul") ?: ""
+                if (subject.contains("(") && subject.startsWith("iDziennik - "))
                     return@forEach
-                if (subject?.startsWith("Uwaga dla ucznia (klasa:") == true)
+                if (subject.startsWith("Uwaga dla ucznia (klasa:"))
                     return@forEach
 
                 val messageIdStr = jMessage.getString("id")
@@ -64,13 +64,12 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
                 rTeacher.setTeacherType(Teacher.TYPE_OTHER)
 
                 val message = Message(
-                        profileId,
-                        messageId,
-                        subject,
-                        body,
-                        if (jMessage.getBoolean("rekordUsuniety") == true) TYPE_DELETED else TYPE_RECEIVED,
-                        rTeacher.id,
-                        -1
+                        profileId = profileId,
+                        id = messageId,
+                        type = if (jMessage.getBoolean("rekordUsuniety") == true) TYPE_DELETED else TYPE_RECEIVED,
+                        subject = subject,
+                        body = body,
+                        senderId = rTeacher.id
                 )
 
                 val messageRecipient = MessageRecipient(
@@ -81,7 +80,7 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
                         /*messageId*/ messageId
                 )
 
-                data.messageIgnoreList.add(message)
+                data.messageList.add(message)
                 data.messageRecipientList.add(messageRecipient)
                 data.setSeenMetadataList.add(Metadata(
                         profileId,

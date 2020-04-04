@@ -458,8 +458,8 @@
     <string name="menu_mark_as_read">Oznacz jako przeczytane</string>
     <string name="menu_mark_everything_as_read">Oznacz wszystko jako przeczytane</string>
     <string name="menu_messages">Wiadomości</string>
-    <string name="menu_messages_inbox">Odebrane</string>
-    <string name="menu_messages_sent">Wysłane</string>
+    <string name="messages_tab_received">Odebrane</string>
+    <string name="messages_tab_sent">Wysłane</string>
     <string name="menu_notices">Zachowanie</string>
     <string name="menu_notifications">Powiadomienia</string>
     <string name="menu_set_student_number">Ustaw numer w dzienniku</string>
@@ -1287,4 +1287,6 @@
     <string name="dialog_event_details_attachments">Załączniki</string>
     <string name="hint_download_again">Pobierz ponownie</string>
     <string name="menu_lab">Laboratorium</string>
+    <string name="messages_no_data">Nie masz żadnych wiadomości.</string>
+    <string name="messages_tab_deleted">Usunięte</string>
 </resources>

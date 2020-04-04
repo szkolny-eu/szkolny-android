@@ -414,8 +414,8 @@
     <string name="menu_manage_profiles">Manage profiles</string>
     <string name="menu_mark_as_read">Mark as read</string>
     <string name="menu_messages">Messages</string>
-    <string name="menu_messages_inbox">Inbox</string>
-    <string name="menu_messages_sent">Sent</string>
+    <string name="messages_tab_received">Inbox</string>
+    <string name="messages_tab_sent">Sent</string>
     <string name="menu_notices">Behaviour</string>
     <string name="menu_notifications">Notifications</string>
     <string name="menu_settings">Settings</string>

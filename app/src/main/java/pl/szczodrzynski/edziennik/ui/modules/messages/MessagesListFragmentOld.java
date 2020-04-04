@@ -33,7 +33,7 @@ import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 
-public class MessagesListFragment extends LazyFragment {
+public class MessagesListFragmentOld extends LazyFragment {
 
     private App app = null;
     private MainActivity activity = null;
@@ -90,19 +90,19 @@ public class MessagesListFragment extends LazyFragment {
             activity.syncCurrentFeature(messageType, b.refreshLayout);
         });*/
 
-        messagesAdapter = new MessagesAdapter(app, ((parent, view1, position, id) -> {
+        /*messagesAdapter = new MessagesAdapter(app, ((parent, view1, position, id) -> {
             // TODO ANIMATION
             tapPositions[messageType] = position;
             topPositions[messageType] = ((LinearLayoutManager) b.emailList.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
             bottomPositions[messageType] = ((LinearLayoutManager) b.emailList.getLayoutManager()).findLastCompletelyVisibleItemPosition();
 
-            /*view1.getGlobalVisibleRect(viewRect);
+            *//*view1.getGlobalVisibleRect(viewRect);
             ((Transition) MessagesListFragment.this.getExitTransition()).setEpicenterCallback(new Transition.EpicenterCallback() {
                 @Override
                 public Rect onGetEpicenter(@NonNull Transition transition) {
                     return viewRect;
                 }
-            });*/
+            });*//*
 
             Bundle args = new Bundle();
             args.putLong("messageId", messagesAdapter.getMessageList().get(position).id);
@@ -110,7 +110,7 @@ public class MessagesListFragment extends LazyFragment {
 
             // KOD W WERSJI 2.7
             // TODO ANIMATION
-            /*TransitionSet sharedElementTransition = new TransitionSet()
+            *//*TransitionSet sharedElementTransition = new TransitionSet()
                     .addTransition(new Fade())
                     .addTransition(new ChangeBounds())
                     .addTransition(new ChangeTransform())
@@ -123,10 +123,10 @@ public class MessagesListFragment extends LazyFragment {
             args.putLong("messageId", messagesAdapter.messageList.get(position).id);
             fragment.setArguments(args);
             fragment.setSharedElementEnterTransition(sharedElementTransition);
-            fragment.setSharedElementReturnTransition(sharedElementTransition);*/
+            fragment.setSharedElementReturnTransition(sharedElementTransition);*//*
 
             // JAKIS STARSZY KOD
-            /*Intent intent = new Intent(activity, MessagesDetailsActivity.class);
+            *//*Intent intent = new Intent(activity, MessagesDetailsActivity.class);
             intent.putExtra("item_id", 1);
             intent.putExtra("transition_name", ViewCompat.getTransitionName(view1));
 
@@ -143,17 +143,17 @@ public class MessagesListFragment extends LazyFragment {
             setExitTransition(sharedElementTransition);
             setSharedElementEnterTransition(sharedElementTransition);
             setSharedElementReturnTransition(sharedElementTransition);
-            startActivity(intent, options.toBundle());*/
+            startActivity(intent, options.toBundle());*//*
 
-            /*activity.getSupportFragmentManager()
+            *//*activity.getSupportFragmentManager()
                     .beginTransaction()
                     .setReorderingAllowed(true)
                     .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .addSharedElement(view1, getString(R.string.transition_name))
-                    .commit();*/
+                    .commit();*//*
 
-        }));
+        }));*/
 
 
         //tapPosition = savedInstanceState != null ? savedInstanceState.getInt(TAP_POSITION, tapPosition) : tapPosition;
@@ -195,7 +195,7 @@ public class MessagesListFragment extends LazyFragment {
                     List<MessageRecipientFull> messageRecipients = App.db.messageRecipientDao().getAll(App.Companion.getProfileId());
                     List<Long> messageIds = new ArrayList<>();
                     for (MessageFull messageFull: messageFulls) {
-                        messageIds.add(messageFull.id);
+                        messageIds.add(messageFull.getId());
                     }
                     for (MessageRecipientFull messageRecipientFull: messageRecipients) {
                         if (messageRecipientFull.id == -1)
@@ -233,7 +233,7 @@ public class MessagesListFragment extends LazyFragment {
     private void createMessageList(List<MessageFull> messageFulls) {
         b.progressBar.setVisibility(View.GONE);
         b.emailList.setVisibility(View.VISIBLE);
-        messagesAdapter.setData(messageFulls);
+        //messagesAdapter.setData(messageFulls);
 
         LinearLayoutManager layoutManager = (LinearLayoutManager) b.emailList.getLayoutManager();
         if (tapPositions[messageType] != NO_POSITION && layoutManager != null) {

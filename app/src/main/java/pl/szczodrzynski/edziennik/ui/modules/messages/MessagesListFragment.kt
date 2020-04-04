@@ -1,56 +1,69 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2020-3-30.
+ * Copyright (c) Kuba Szczodrzyński 2020-4-4.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.template
+package pl.szczodrzynski.edziennik.ui.modules.messages
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.databinding.TemplateListFragmentBinding
+import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.databinding.MessagesListFragmentBinding
+import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 
-class TemplateListFragment : Fragment(), CoroutineScope {
+class MessagesListFragment : LazyFragment(), CoroutineScope {
     companion object {
-        private const val TAG = "TemplateListFragment"
+        private const val TAG = "MessagesListFragment"
     }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-    private lateinit var b: TemplateListFragmentBinding
+    private lateinit var b: MessagesListFragmentBinding
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
     // local/private variables go here
+    var teachers = listOf<Teacher>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        b = TemplateListFragmentBinding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
+        b = MessagesListFragmentBinding.inflate(inflater)
         return b.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { startCoroutineTimer(100L) {
-        if (!isAdded) return@startCoroutineTimer
+    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
+        val messageType = arguments.getInt("messageType", Message.TYPE_RECEIVED)
 
-        val adapter = TemplateAdapter(activity)
+        teachers = withContext(Dispatchers.Default) {
+            app.db.teacherDao().getAllNow(App.profileId)
+        }
 
-        app.db.notificationDao().getAll().observe(this@TemplateListFragment, Observer { items ->
+        val adapter = MessagesAdapter(activity, teachers) {
+
+        }
+
+        app.db.messageDao().getAllByType(App.profileId, messageType).observe(this@MessagesListFragment, Observer { items ->
             if (!isAdded) return@Observer
+
+            items.forEach { message ->
+                message.recipients?.removeAll { it.profileId != message.profileId }
+            }
 
             // load & configure the adapter
             adapter.items = items
@@ -60,11 +73,12 @@ class TemplateListFragment : Fragment(), CoroutineScope {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
                     addItemDecoration(SimpleDividerItemDecoration(context))
-                    addOnScrollListener(b.refreshLayout.onScrollListener)
+                    if (messageType in Message.TYPE_RECEIVED..Message.TYPE_SENT)
+                        addOnScrollListener(onScrollListener)
                 }
             }
             adapter.notifyDataSetChanged()
-            b.refreshLayout.isEnabled = false // TODO
+            setSwipeToRefresh(messageType in Message.TYPE_RECEIVED..Message.TYPE_SENT && items.isNullOrEmpty())
 
             // show/hide relevant views
             b.progressBar.isVisible = false
@@ -76,5 +90,5 @@ class TemplateListFragment : Fragment(), CoroutineScope {
                 b.noData.isVisible = false
             }
         })
-    }}
+    }; return true }
 }
