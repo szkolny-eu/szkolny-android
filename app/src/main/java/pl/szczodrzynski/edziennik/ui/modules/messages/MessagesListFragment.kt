@@ -55,7 +55,9 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
         }
 
         val adapter = MessagesAdapter(activity, teachers) {
-
+            activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, Bundle(
+                    "messageId" to it.id
+            ))
         }
 
         app.db.messageDao().getAllByType(App.profileId, messageType).observe(this@MessagesListFragment, Observer { items ->

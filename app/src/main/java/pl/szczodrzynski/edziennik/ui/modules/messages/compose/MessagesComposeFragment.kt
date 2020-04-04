@@ -505,7 +505,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
         activity.snackbar(app.getString(R.string.messages_sent_success), app.getString(R.string.ok))
         activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, Bundle(
-                "messageId" to (event.message.id ?: -1),
+                "messageId" to event.message.id,
                 "message" to app.gson.toJson(event.message),
                 "sentDate" to event.sentDate
         ))

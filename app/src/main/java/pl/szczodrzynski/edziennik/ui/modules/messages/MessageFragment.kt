@@ -123,14 +123,26 @@ class MessageFragment : Fragment(), CoroutineScope {
                 val msg =
                         if (messageString != null)
                             app.gson.fromJson(messageString, MessageFull::class.java)?.also {
-                                //it.body = null
-                                it.addedDate = arguments?.getLong("sentDate") ?: System.currentTimeMillis()
+                                if (arguments?.getLong("sentDate") ?: 0L > 0L)
+                                    it.addedDate = arguments?.getLong("sentDate") ?: 0L
                             }
                         else
                             app.db.messageDao().getByIdNow(App.profileId, messageId)
 
+                // load recipients in sent messages
+                val teachers by lazy { app.db.teacherDao().getAllNow(App.profileId) }
+                msg?.recipients?.forEach { recipient ->
+                    if (recipient.fullName == null) {
+                        recipient.fullName = teachers.firstOrNull { it.id == recipient.id }?.fullName ?: ""
+                    }
+                }
+
+                if (msg?.type == TYPE_SENT && msg.senderName == null) {
+                    msg.senderName = app.profile.accountName ?: app.profile.studentNameLong
+                }
+
                 msg?.also {
-                    it.recipients = app.db.messageRecipientDao().getAllByMessageId(it.profileId, it.id)
+                    //it.recipients = app.db.messageRecipientDao().getAllByMessageId(it.profileId, it.id)
                     if (it.body != null && !it.seen) {
                         app.db.metadataDao().setSeen(it.profileId, it, true)
                     }
