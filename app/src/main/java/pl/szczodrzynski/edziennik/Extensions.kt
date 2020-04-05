@@ -572,7 +572,7 @@ fun CharSequence?.asBoldSpannable(): Spannable {
     spannable.setSpan(StyleSpan(Typeface.BOLD), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannable
 }
-fun CharSequence.asSpannable(vararg spans: Any, substring: String? = null, ignoreCase: Boolean = false): Spannable {
+fun CharSequence.asSpannable(vararg spans: Any, substring: String? = null, ignoreCase: Boolean = false, ignoreDiacritics: Boolean = false): Spannable {
     val spannable = SpannableString(this)
     if (substring == null) {
         spans.forEach {
@@ -580,15 +580,42 @@ fun CharSequence.asSpannable(vararg spans: Any, substring: String? = null, ignor
         }
     }
     else if (substring.isNotEmpty()) {
-        var index = indexOf(substring, ignoreCase = ignoreCase)
+        val string =
+                if (ignoreDiacritics)
+                    this.cleanDiacritics()
+                else this
+
+        var index = string.indexOf(substring, ignoreCase = ignoreCase)
+                .takeIf { it != -1 } ?: indexOf(substring, ignoreCase = ignoreCase)
         while (index >= 0) {
             spans.forEach {
                 spannable.setSpan(it, index, index + substring.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
-            index = indexOf(substring, startIndex = index + 1, ignoreCase = ignoreCase)
+            index = string.indexOf(substring, startIndex = index + 1, ignoreCase = ignoreCase)
+                    .takeIf { it != -1 } ?: indexOf(substring, startIndex = index + 1, ignoreCase = ignoreCase)
         }
     }
     return spannable
+}
+
+fun CharSequence.cleanDiacritics(): String {
+    val nameClean = StringBuilder()
+    forEach {
+        val ch = when (it) {
+            'ż' -> 'z'
+            'ó' -> 'o'
+            'ł' -> 'l'
+            'ć' -> 'c'
+            'ę' -> 'e'
+            'ś' -> 's'
+            'ą' -> 'a'
+            'ź' -> 'z'
+            'ń' -> 'n'
+            else -> it
+        }
+        nameClean.append(ch)
+    }
+    return nameClean.toString()
 }
 
 /**

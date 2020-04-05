@@ -47,7 +47,7 @@
                 app:counterEnabled="true"
                 tools:counterMaxLength="180">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                     android:id="@+id/subject"
                     style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                 app:boxBackgroundMode="filled"
                 app:counterEnabled="true"
                 tools:counterMaxLength="1983">
-                <androidx.appcompat.widget.AppCompatEditText
+                <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                     android:id="@+id/text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -10,9 +10,9 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_BACK
 import androidx.annotation.NonNull
-import com.google.android.material.textfield.TextInputEditText
+import androidx.appcompat.widget.AppCompatEditText
 
-class TextInputKeyboardEdit : TextInputEditText {
+class TextInputKeyboardEdit : AppCompatEditText {
 
     /**
      * Keyboard Listener

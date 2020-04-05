@@ -1289,4 +1289,6 @@
     <string name="menu_lab">Laboratorium</string>
     <string name="messages_no_data">Nie masz żadnych wiadomości.</string>
     <string name="messages_tab_deleted">Usunięte</string>
+    <string name="messages_search">Szukaj</string>
+    <string name="messages_search_results">Znaleziono %d wiadomości</string>
 </resources>

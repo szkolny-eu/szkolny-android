@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.asSpannable
+import pl.szczodrzynski.edziennik.cleanDiacritics
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.resolveAttr
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
@@ -85,36 +86,15 @@ class MessagesComposeSuggestionAdapter(
                 val list = mutableListOf<Teacher>()
 
                 originalList.forEach { teacher ->
-                    val teacherFullName = teacher.fullName
-                    teacher.recipientWeight = 0
+                    teacher.recipientWeight = getMatchWeight(teacher.fullName, prefixString)
 
-                    // First match against the whole, non-split value
-                    var found = false
-                    if (teacherFullName.startsWith(prefixString, ignoreCase = true)) {
-                        teacher.recipientWeight = 1
-                        found = true
-                    } else {
-                        // check if prefix matches any of the words
-                        val words = teacherFullName.split(" ").toTypedArray()
-                        for (word in words) {
-                            if (word.startsWith(prefixString, ignoreCase = true)) {
-                                teacher.recipientWeight = 2
-                                found = true
-                                break
-                            }
-                        }
-                    }
-                    // finally check if the prefix matches any part of the name
-                    if (!found && teacherFullName.contains(prefixString, ignoreCase = true)) {
-                        teacher.recipientWeight = 3
-                    }
-
-                    if (teacher.recipientWeight != 0) {
-                        teacher.recipientDisplayName = teacherFullName.asSpannable(
+                    if (teacher.recipientWeight != 100) {
+                        teacher.recipientDisplayName = teacher.fullName.asSpannable(
                                 StyleSpan(BOLD),
                                 BackgroundColorSpan(R.attr.colorControlHighlight.resolveAttr(context)),
                                 substring = prefixString,
-                                ignoreCase = true
+                                ignoreCase = true,
+                                ignoreDiacritics = true
                         )
                         list += teacher
                     }
@@ -137,4 +117,29 @@ class MessagesComposeSuggestionAdapter(
         }
     }
 
+    private fun getMatchWeight(name: CharSequence?, prefix: String): Int {
+        if (name == null)
+            return 100
+
+        val nameClean = name.cleanDiacritics()
+
+        // First match against the whole, non-split value
+        if (nameClean.startsWith(prefix, ignoreCase = true) || name.startsWith(prefix, ignoreCase = true)) {
+            return 1
+        } else {
+            // check if prefix matches any of the words
+            val words = nameClean.split(" ").toTypedArray() + name.split(" ").toTypedArray()
+            for (word in words) {
+                if (word.startsWith(prefix, ignoreCase = true)) {
+                    return 2
+                }
+            }
+        }
+        // finally check if the prefix matches any part of the name
+        if (nameClean.contains(prefix, ignoreCase = true) || name.contains(prefix, ignoreCase = true)) {
+            return 3
+        }
+
+        return 100
+    }
 }

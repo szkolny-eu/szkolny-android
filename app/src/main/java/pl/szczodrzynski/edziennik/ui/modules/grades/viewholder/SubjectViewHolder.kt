@@ -28,7 +28,7 @@ class SubjectViewHolder(
     inflater: LayoutInflater,
     parent: ViewGroup,
     val b: GradesItemSubjectBinding = GradesItemSubjectBinding.inflate(inflater, parent, false)
-) : RecyclerView.ViewHolder(b.root), BindableViewHolder<GradesSubject> {
+) : RecyclerView.ViewHolder(b.root), BindableViewHolder<GradesSubject, GradesAdapter> {
     companion object {
         private const val TAG = "SubjectViewHolder"
     }

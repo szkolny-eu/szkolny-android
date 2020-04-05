@@ -166,7 +166,7 @@ class GradesAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
-        if (holder !is BindableViewHolder<*>)
+        if (holder !is BindableViewHolder<*, *>)
             return
 
         val viewType = when (holder) {

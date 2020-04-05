@@ -21,7 +21,7 @@ class SemesterViewHolder(
     inflater: LayoutInflater,
     parent: ViewGroup,
     val b: GradesItemSemesterBinding = GradesItemSemesterBinding.inflate(inflater, parent, false)
-) : RecyclerView.ViewHolder(b.root), BindableViewHolder<GradesSemester> {
+) : RecyclerView.ViewHolder(b.root), BindableViewHolder<GradesSemester, GradesAdapter> {
     companion object {
         private const val TAG = "SemesterViewHolder"
     }

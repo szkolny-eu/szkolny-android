@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.MessagesListFragmentBinding
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.models.MessagesSearch
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 
@@ -68,7 +69,11 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             }
 
             // load & configure the adapter
-            adapter.items = items
+            adapter.items = items.toMutableList()
+            adapter.items.add(0, MessagesSearch().also {
+                it.count = items.size
+            })
+            adapter.allItems = adapter.items.toMutableList()
             if (items.isNotNullNorEmpty() && b.list.adapter == null) {
                 b.list.adapter = adapter
                 b.list.apply {

@@ -17,7 +17,7 @@ class EmptyViewHolder(
     inflater: LayoutInflater,
     parent: ViewGroup,
     val b: GradesItemEmptyBinding = GradesItemEmptyBinding.inflate(inflater, parent, false)
-) : RecyclerView.ViewHolder(b.root), BindableViewHolder<GradesEmpty> {
+) : RecyclerView.ViewHolder(b.root), BindableViewHolder<GradesEmpty, GradesAdapter> {
     companion object {
         private const val TAG = "EmptyViewHolder"
     }

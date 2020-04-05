@@ -3,6 +3,7 @@
  */
 package pl.szczodrzynski.edziennik.data.db.full
 
+import androidx.room.Ignore
 import androidx.room.Relation
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
@@ -23,6 +24,11 @@ class MessageFull(
         recipients?.add(recipient)
         return this
     }
+
+    @Ignore
+    var filterWeight = 0
+    @Ignore
+    var searchHighlightText: String? = null
 
     // metadata
     var seen = false

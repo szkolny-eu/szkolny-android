@@ -21,7 +21,7 @@ class GradeViewHolder(
     inflater: LayoutInflater,
     parent: ViewGroup,
     val b: GradesItemGradeBinding = GradesItemGradeBinding.inflate(inflater, parent, false)
-) : RecyclerView.ViewHolder(b.root), BindableViewHolder<GradeFull> {
+) : RecyclerView.ViewHolder(b.root), BindableViewHolder<GradeFull, GradesAdapter> {
     companion object {
         private const val TAG = "GradeViewHolder"
     }
