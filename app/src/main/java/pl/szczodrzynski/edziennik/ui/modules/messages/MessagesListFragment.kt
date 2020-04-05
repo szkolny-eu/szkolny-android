@@ -69,6 +69,11 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
 
             items.forEach { message ->
                 message.recipients?.removeAll { it.profileId != message.profileId }
+                message.recipients?.forEach { recipient ->
+                    if (recipient.fullName == null) {
+                        recipient.fullName = teachers.firstOrNull { it.id == recipient.id }?.fullName ?: ""
+                    }
+                }
             }
 
             // load & configure the adapter

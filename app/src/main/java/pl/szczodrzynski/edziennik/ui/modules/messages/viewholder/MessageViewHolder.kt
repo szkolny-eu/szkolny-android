@@ -33,12 +33,6 @@ class MessageViewHolder(
     override fun onBind(activity: AppCompatActivity, app: App, item: MessageFull, position: Int, adapter: MessagesAdapter) {
         val manager = app.gradesManager
 
-        item.recipients?.forEach { recipient ->
-            if (recipient.fullName == null) {
-                recipient.fullName = adapter.teachers.firstOrNull { it.id == recipient.id }?.fullName ?: ""
-            }
-        }
-
         b.messageSubject.text = item.subject
         b.messageDate.text = Date.fromMillis(item.addedDate).formattedStringShort
         b.messageAttachmentImage.isVisible = item.hasAttachments

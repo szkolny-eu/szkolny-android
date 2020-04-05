@@ -1291,4 +1291,6 @@
     <string name="messages_tab_deleted">Usunięte</string>
     <string name="messages_search">Szukaj</string>
     <string name="messages_search_results">Znaleziono %d wiadomości</string>
+    <string name="messages_delete_confirmation">Czy chcesz usunąć wiadomość?</string>
+    <string name="messages_delete_confirmation_text">Spowoduje to przeniesienie wiadomości do zakładki \"Usunięte\" w aplikacji. Zmiany nie wpłyną na wiadomość w e-dzienniku (nie zostanie ona tam usunięta).</string>
 </resources>

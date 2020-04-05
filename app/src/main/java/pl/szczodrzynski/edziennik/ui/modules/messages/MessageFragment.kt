@@ -15,9 +15,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.IconicsSize
@@ -37,6 +40,7 @@ import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent.Companion.T
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore.Companion.LOGIN_TYPE_IDZIENNIK
+import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_DELETED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -107,6 +111,23 @@ class MessageFragment : Fragment(), CoroutineScope {
                     "message" to app.gson.toJson(message),
                     "type" to "forward"
             ))
+        }
+        b.deleteButton.onClick {
+            MaterialAlertDialogBuilder(activity)
+                    .setTitle(R.string.messages_delete_confirmation)
+                    .setMessage(R.string.messages_delete_confirmation_text)
+                    .setPositiveButton(R.string.ok) { _, _ ->
+                        launch {
+                            message.type = TYPE_DELETED
+                            withContext(Dispatchers.Default) {
+                                app.db.messageDao().replace(message)
+                            }
+                            Toast.makeText(activity, "Wiadomość przeniesiona do usuniętych", Toast.LENGTH_SHORT).show()
+                            activity.navigateUp()
+                        }
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
         }
 
         launch {
@@ -217,7 +238,8 @@ class MessageFragment : Fragment(), CoroutineScope {
 
         b.subject.text = message.subject
 
-        b.replyButton.visibility = if (message.type == TYPE_RECEIVED) View.VISIBLE else View.INVISIBLE
+        b.replyButton.isVisible = message.type == TYPE_RECEIVED
+        b.deleteButton.isVisible = message.type == TYPE_RECEIVED
         if (message.type == TYPE_RECEIVED) {
             activity.navView.apply {
                 bottomBar.apply {

@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.cleanDiacritics
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
@@ -138,12 +139,26 @@ class MessagesAdapter(
                 it.filterWeight = 100
                 it.searchHighlightText = null
 
-                var weight = getMatchWeight(it.senderName, prefixString)
-                if (weight != 100) {
-                    if (weight == 3)
-                        weight = 31
-                    it.filterWeight = min(it.filterWeight, 10 + weight)
+                var weight: Int
+                if (it.type == Message.TYPE_SENT) {
+                    it.recipients?.forEach { recipient ->
+                        weight = getMatchWeight(recipient.fullName, prefixString)
+                        if (weight != 100) {
+                            if (weight == 3)
+                                weight = 31
+                            it.filterWeight = min(it.filterWeight, 10 + weight)
+                        }
+                    }
                 }
+                else {
+                    weight = getMatchWeight(it.senderName, prefixString)
+                    if (weight != 100) {
+                        if (weight == 3)
+                            weight = 31
+                        it.filterWeight = min(it.filterWeight, 10 + weight)
+                    }
+                }
+
 
                 weight = getMatchWeight(it.subject, prefixString)
                 if (weight != 100) {

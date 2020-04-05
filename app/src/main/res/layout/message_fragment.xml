@@ -309,7 +309,7 @@
                             android:layout_height="24dp"
                             android:padding="4dp"
                             app:iiv_color="?android:textColorSecondary"
-                            app:iiv_icon="cmd-arrow-right-thick"
+                            app:iiv_icon="cmd-arrow-right"
                             tools:srcCompat="@android:drawable/ic_media_ff" />
 
                         <TextView
@@ -323,6 +323,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/deleteButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="4dp"
@@ -335,14 +336,14 @@
                         android:paddingTop="8dp"
                         android:paddingRight="4dp"
                         android:paddingBottom="8dp"
-                        android:visibility="invisible">
+                        android:visibility="visible">
 
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:padding="4dp"
                             app:iiv_color="?android:textColorSecondary"
-                            app:iiv_icon="cmd-delete"
+                            app:iiv_icon="cmd-delete-outline"
                             tools:srcCompat="@android:drawable/ic_menu_delete" />
 
                         <TextView
