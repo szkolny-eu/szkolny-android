@@ -98,7 +98,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             (b.list.layoutManager as? LinearLayoutManager)?.let { layoutManager ->
                 if (topPosition != NO_POSITION && topPosition > layoutManager.findLastCompletelyVisibleItemPosition()) {
                     b.list.scrollToPosition(topPosition)
-                } else if (bottomPosition != NO_POSITION && bottomPosition < layoutManager.findFirstCompletelyVisibleItemPosition()) {
+                } else if (bottomPosition != NO_POSITION && bottomPosition < layoutManager.findFirstVisibleItemPosition()) {
                     b.list.scrollToPosition(bottomPosition)
                 }
                 topPosition = NO_POSITION
@@ -121,7 +121,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
         super.onDestroy()
         if (!isAdded) return
         onPageDestroy?.invoke(position, Bundle(
-                "topPosition" to (b.list.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition(),
+                "topPosition" to (b.list.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition(),
                 "bottomPosition" to (b.list.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition()
         ))
     }

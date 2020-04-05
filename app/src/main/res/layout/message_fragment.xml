@@ -179,71 +179,12 @@
                     android:text="Załączniki:"
                     android:textAppearance="@style/NavView.TextView.Subtitle" />
 
-                <LinearLayout
-                    android:id="@+id/attachments"
+                <pl.szczodrzynski.edziennik.ui.modules.views.AttachmentsView
+                    android:id="@+id/attachmentsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="8dp">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        tools:visibility="visible">
-
-                        <com.google.android.material.chip.Chip
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="middle"
-                            android:text="Testowy plik.pdf"
-                            android:visibility="visible"
-                            app:chipBackgroundColor="@color/mtrl_chip_background_color"
-                            app:chipIcon="@drawable/googleg_standard_color_18"
-                            app:chipMinHeight="36dp"
-                            app:chipSurfaceColor="@color/mtrl_chip_surface_color"
-                            app:closeIcon="@drawable/ic_error_outline"
-                            app:closeIconVisible="true" />
-
-                        <ProgressBar
-                            style="?android:attr/progressBarStyle"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical|end"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp" />
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="gone"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        tools:visibility="visible">
-
-                        <com.google.android.material.chip.Chip
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="middle"
-                            android:text="Wyniki sprawdzianu z matematyki.pdf"
-                            android:visibility="visible"
-                            app:chipIcon="@drawable/googleg_standard_color_18" />
-
-                        <ProgressBar
-                            style="?android:attr/progressBarStyle"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center_vertical|end"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp" />
-
-                    </FrameLayout>
-
-                </LinearLayout>
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginBottom="8dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
