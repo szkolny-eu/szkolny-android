@@ -99,10 +99,31 @@ class GradesAdapter(
             }
         }
         if (model is GradesSubject) {
+            // hide the preview, show summary
             val preview = view?.findViewById<View>(R.id.previewContainer)
             val summary = view?.findViewById<View>(R.id.yearSummary)
             preview?.visibility = if (model.state == STATE_CLOSED) View.INVISIBLE else View.VISIBLE
             summary?.visibility = if (model.state == STATE_CLOSED) View.VISIBLE else View.INVISIBLE
+
+            // expanding a subject - mark proposed & final grade as seen
+            var unseenChanged = false
+            if (model.proposedGrade?.seen == false) {
+                manager.markAsSeen(model.proposedGrade!!)
+                unseenChanged = true
+            }
+            if (model.finalGrade?.seen == false) {
+                manager.markAsSeen(model.finalGrade!!)
+                unseenChanged = true
+            }
+            // remove the override flag
+            model.hasUnseen = false
+
+            if (unseenChanged) {
+                // check if the unseen status has changed
+                if (!model.hasUnseen) {
+                    notifyItemChanged(model)
+                }
+            }
         }
 
         if (model.state == STATE_CLOSED) {

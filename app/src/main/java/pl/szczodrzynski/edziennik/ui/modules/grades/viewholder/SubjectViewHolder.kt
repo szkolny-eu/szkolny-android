@@ -96,6 +96,7 @@ class SubjectViewHolder(
             ellipsize = TextUtils.TruncateAt.END
         })
 
+        // add the topmost semester's grades to preview container (collapsed)
         firstSemester.proposedGrade?.let {
             b.previewContainer.addView(GradeView(
                 contextWrapper,
@@ -111,6 +112,23 @@ class SubjectViewHolder(
             ))
         }
 
+        // add the yearly grades to summary container (expanded)
+        item.proposedGrade?.let {
+            b.yearContainer.addView(GradeView(
+                    contextWrapper,
+                    it,
+                    manager
+            ))
+        }
+        item.finalGrade?.let {
+            b.yearContainer.addView(GradeView(
+                    contextWrapper,
+                    it,
+                    manager
+            ))
+        }
+
+        // if showing semester 2, add yearly grades to preview container (collapsed)
         if (firstSemester.number == item.semester) {
             b.previewContainer.addView(TextView(contextWrapper).apply {
                 text = manager.getAverageString(app, item.averages, nameSemester = true)

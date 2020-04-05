@@ -65,39 +65,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp">
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp">
 
             <LinearLayout
                 android:id="@+id/previewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:orientation="horizontal"
-                tools:visibility="visible"
-                android:baselineAligned="false">
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:id="@+id/gradesContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginRight="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
                     android:orientation="horizontal" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/yearSummary"
+            <LinearLayout
+                android:id="@+id/yearContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:textSize="14sp"
-                android:visibility="gone"
-                tools:text1="Cały rok: 3 oceny • suma: 320 pkt"
-                tools:text2="Cały rok: 15 ocen • średnia: 2,62"
-                tools:text="Cały rok: 6 ocen • punkty: 34.20/40 (87.5%)"
-                tools:visibility="visible"/>
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/yearSummary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    tools:text="Cały rok: 6 ocen • punkty: 34.20/40 (87.5%)"
+                    tools:text1="Cały rok: 3 oceny • suma: 320 pkt"
+                    tools:text2="Cały rok: 15 ocen • średnia: 2,62"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
         </FrameLayout>
     </LinearLayout>
 </layout>

@@ -16,8 +16,8 @@ data class GradesSubject(
     var lastAddedDate = 0L
     var semester: Int = 1
 
-    val hasUnseen
-        get() = semesters.any { it.hasUnseen }
+    var hasUnseen: Boolean = false
+        get() = field || semesters.any { it.hasUnseen }
 
     val averages = GradesAverages()
     var proposedGrade: GradeFull? = null

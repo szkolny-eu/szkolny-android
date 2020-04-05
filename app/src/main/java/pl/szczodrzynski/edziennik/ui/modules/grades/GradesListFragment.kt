@@ -204,7 +204,10 @@ class GradesListFragment : Fragment(), CoroutineScope {
 
             grade.showAsUnseen = !grade.seen
             if (!grade.seen) {
-                semester.hasUnseen = true
+                if (grade.type == Grade.TYPE_YEAR_PROPOSED || grade.type == Grade.TYPE_YEAR_FINAL)
+                    subject.hasUnseen = true // set an override flag
+                else
+                    semester.hasUnseen = true
             }
 
             when (grade.type) {
