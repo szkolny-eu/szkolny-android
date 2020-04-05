@@ -1,10 +1,8 @@
 package pl.szczodrzynski.edziennik.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
 @Dao
@@ -17,6 +15,9 @@ interface TeacherDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addAllIgnore(teacherList: List<Teacher>)
+
+    @RawQuery
+    fun query(query: SupportSQLiteQuery): Int
 
     @Query("DELETE FROM teachers WHERE profileId = :profileId")
     fun clear(profileId: Int)

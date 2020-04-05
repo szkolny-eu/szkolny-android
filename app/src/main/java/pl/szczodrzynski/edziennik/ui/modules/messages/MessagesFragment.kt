@@ -52,20 +52,34 @@ class MessagesFragment : Fragment(), CoroutineScope {
             return
         }
 
+        val args = arguments
+
         val pagerAdapter = FragmentLazyPagerAdapter(
                 fragmentManager ?: return,
                 b.refreshLayout,
                 listOf(
                         MessagesListFragment().apply {
+                            onPageDestroy = this@MessagesFragment.onPageDestroy
                             arguments = Bundle("messageType" to Message.TYPE_RECEIVED)
+                            args?.getBundle("page0")?.let {
+                                arguments?.putAll(it)
+                            }
                         } to getString(R.string.messages_tab_received),
 
                         MessagesListFragment().apply {
+                            onPageDestroy = this@MessagesFragment.onPageDestroy
                             arguments = Bundle("messageType" to Message.TYPE_SENT)
+                            args?.getBundle("page1")?.let {
+                                arguments?.putAll(it)
+                            }
                         } to getString(R.string.messages_tab_sent),
 
                         MessagesListFragment().apply {
+                            onPageDestroy = this@MessagesFragment.onPageDestroy
                             arguments = Bundle("messageType" to Message.TYPE_DELETED)
+                            args?.getBundle("page2")?.let {
+                                arguments?.putAll(it)
+                            }
                         } to getString(R.string.messages_tab_deleted)
                 )
         )
@@ -92,5 +106,16 @@ class MessagesFragment : Fragment(), CoroutineScope {
         }
 
         activity.gainAttentionFAB()
+    }
+
+    private val onPageDestroy = { position: Int, outState: Bundle? ->
+        arguments?.putBundle("page$position", outState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (b.viewPager.adapter as? FragmentLazyPagerAdapter)?.fragments?.forEach {
+            it.first.onDestroy()
+        }
     }
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -50,6 +51,8 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
 
     override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
         val messageType = arguments.getInt("messageType", Message.TYPE_RECEIVED)
+        var topPosition = arguments.getInt("topPosition", NO_POSITION)
+        var bottomPosition = arguments.getInt("bottomPosition", NO_POSITION)
 
         teachers = withContext(Dispatchers.Default) {
             app.db.teacherDao().getAllNow(App.profileId)
@@ -87,6 +90,16 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             adapter.notifyDataSetChanged()
             setSwipeToRefresh(messageType in Message.TYPE_RECEIVED..Message.TYPE_SENT && items.isNullOrEmpty())
 
+            (b.list.layoutManager as? LinearLayoutManager)?.let { layoutManager ->
+                if (topPosition != NO_POSITION && topPosition > layoutManager.findLastCompletelyVisibleItemPosition()) {
+                    b.list.scrollToPosition(topPosition)
+                } else if (bottomPosition != NO_POSITION && bottomPosition < layoutManager.findFirstCompletelyVisibleItemPosition()) {
+                    b.list.scrollToPosition(bottomPosition)
+                }
+                topPosition = NO_POSITION
+                bottomPosition = NO_POSITION
+            }
+
             // show/hide relevant views
             b.progressBar.isVisible = false
             if (items.isNullOrEmpty()) {
@@ -98,4 +111,13 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             }
         })
     }; return true }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!isAdded) return
+        onPageDestroy?.invoke(position, Bundle(
+                "topPosition" to (b.list.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition(),
+                "bottomPosition" to (b.list.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition()
+        ))
+    }
 }

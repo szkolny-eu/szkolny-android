@@ -20,7 +20,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
-import androidx.recyclerview.widget.RecyclerView
 import com.danimahardhika.cafebar.CafeBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.IconicsColor
@@ -69,7 +68,6 @@ import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessageFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesListFragmentOld
 import pl.szczodrzynski.edziennik.ui.modules.messages.compose.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
@@ -889,9 +887,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         app.profileLoad(id) {
             MessagesFragment.pageSelection = -1
-            MessagesListFragmentOld.tapPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
-            MessagesListFragmentOld.topPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
-            MessagesListFragmentOld.bottomPositions = intArrayOf(RecyclerView.NO_POSITION, RecyclerView.NO_POSITION)
 
             setDrawerItems()
             // the drawer profile is updated automatically when the drawer item is clicked
@@ -916,9 +911,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             loadTarget(target, arguments)
         }
     }
-    private fun loadTarget(target: NavTarget, arguments: Bundle? = null) {
-        d("NavDebug", "loadTarget(target = $target, arguments = $arguments)")
+    private fun loadTarget(target: NavTarget, args: Bundle? = null) {
+        d("NavDebug", "loadTarget(target = $target, args = $args)")
 
+        val arguments = args ?: navBackStack.firstOrNull { it.first.id == target.id }?.second ?: Bundle()
         bottomSheet.close()
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false
@@ -966,6 +962,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     navBackStack.removeAt(navBackStack.lastIndex)
                 }
                 navTarget = target
+                navArguments = arguments
 
                 return@let null
             }?.let {
@@ -975,7 +972,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         R.anim.task_open_enter,
                         R.anim.task_open_exit
                 )
-                navBackStack.add(navTarget to arguments)
+                navBackStack.add(navTarget to navArguments)
                 navTarget = target
                 navArguments = arguments
             }

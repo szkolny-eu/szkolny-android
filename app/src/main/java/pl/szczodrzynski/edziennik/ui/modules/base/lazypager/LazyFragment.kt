@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.base.lazypager
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
@@ -11,6 +12,7 @@ abstract class LazyFragment : Fragment() {
     private var isPageCreated = false
     internal var position = -1
     internal var swipeRefreshLayoutCallback: ((position: Int, isEnabled: Boolean) -> Unit)? = null
+    internal var onPageDestroy: ((position: Int, outState: Bundle?) -> Unit?)? = null
 
     /**
      * Called when the page is first shown, or if previous
