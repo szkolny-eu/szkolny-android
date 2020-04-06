@@ -97,7 +97,7 @@ object Regexes {
         """zadanieFormularz\(([0-9]+),""".toRegex(DOT_MATCHES_ALL)
     }
     val MOBIDZIENNIK_HOMEWORK_ATTACHMENT by lazy {
-        """zalacznik=([0-9]+)'.+?word-break">(.+?)</td>""".toRegex(DOT_MATCHES_ALL)
+        """zalacznik(_zadania)?=([0-9]+)'.+?word-break">(.+?)</td>""".toRegex(DOT_MATCHES_ALL)
     }
 
 

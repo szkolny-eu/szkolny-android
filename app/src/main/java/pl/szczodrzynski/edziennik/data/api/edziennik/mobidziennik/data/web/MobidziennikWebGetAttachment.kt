@@ -29,14 +29,14 @@ class MobidziennikWebGetAttachment(override val data: DataMobidziennik,
 
         val typeUrl = when (owner) {
             is Message -> if (owner.type == Message.TYPE_SENT)
-                "dziennik/wiadwyslana?id="
+                "dziennik/wiadwyslana/?id="
             else
-                "dziennik/wiadodebrana?id="
+                "dziennik/wiadodebrana/?id="
 
             is Event -> if (owner.date >= Date.getToday())
-                "mobile/zadaniadomowe?id_zadania="
+                "dziennik/zadaniedomowe/?id_zadania="
             else
-                "mobile/zadaniadomowearchiwalne?id_zadania="
+                "dziennik/zadaniedomowe/?id_zadania="
 
             else -> ""
         }
@@ -47,7 +47,7 @@ class MobidziennikWebGetAttachment(override val data: DataMobidziennik,
             else -> -1
         }
 
-        webGetFile(TAG, "/$typeUrl${ownerId}&zalacznik=$attachmentId", targetFile, { file ->
+        webGetFile(TAG, "/$typeUrl${ownerId}&uczen=${data.studentId}&zalacznik=$attachmentId", targetFile, { file ->
 
             val event = AttachmentGetEvent(
                     profileId,
