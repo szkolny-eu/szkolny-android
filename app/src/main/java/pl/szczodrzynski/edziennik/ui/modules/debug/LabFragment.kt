@@ -60,5 +60,9 @@ class LabFragment : Fragment(), CoroutineScope {
         b.rodo.onClick {
             app.db.teacherDao().query(SimpleSQLiteQuery("UPDATE teachers SET teacherSurname = \"\" WHERE profileId = ${App.profileId}"))
         }
+
+        b.removeHomework.onClick {
+            app.db.eventDao().getRawNow("UPDATE events SET homeworkBody = NULL WHERE profileId = ${App.profileId}")
+        }
     }
 }

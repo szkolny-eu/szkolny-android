@@ -5,13 +5,17 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 
 import com.google.gson.JsonObject
+import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanData
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiAttachments
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiMessagesChangeStatus
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiSendMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin.VulcanFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLogin
+import pl.szczodrzynski.edziennik.data.api.events.EventGetEvent
+import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -87,8 +91,29 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     override fun getMessage(message: MessageFull) {
         login(LOGIN_METHOD_VULCAN_API) {
-            VulcanApiMessagesChangeStatus(data, message) {
-                completed()
+            if (message.attachmentIds != null) {
+                VulcanApiMessagesChangeStatus(data, message) {
+                    completed()
+                }
+                return@login
+            }
+            val list = data.app.db.messageDao().getAllNow(data.profileId)
+            VulcanApiAttachments(data, list, message, MessageFull::class) { _ ->
+                list.forEach {
+                    if (it.attachmentIds == null)
+                        it.attachmentIds = mutableListOf()
+                    data.messageList.add(it)
+                }
+                data.messageListReplace = true
+
+                if (message.seen) {
+                    EventBus.getDefault().postSticky(MessageGetEvent(message))
+                    completed()
+                    return@VulcanApiAttachments
+                }
+                VulcanApiMessagesChangeStatus(data, message) {
+                    completed()
+                }
             }
         }
     }
@@ -105,7 +130,21 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     override fun getAnnouncement(announcement: AnnouncementFull) {}
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {}
     override fun getRecipientList() {}
-    override fun getEvent(eventFull: EventFull) {}
+    override fun getEvent(eventFull: EventFull) {
+        login(LOGIN_METHOD_VULCAN_API) {
+            val list = data.app.db.eventDao().getAllNow(data.profileId).filter { !it.addedManually }
+            VulcanApiAttachments(data, list, eventFull, EventFull::class) { _ ->
+                list.forEach {
+                    it.homeworkBody = ""
+                    data.eventList.add(it)
+                }
+                data.eventListReplace = true
+
+                EventBus.getDefault().postSticky(EventGetEvent(eventFull))
+                completed()
+            }
+        }
+    }
 
     override fun firstLogin() { VulcanFirstLogin(data) { completed() } }
     override fun cancel() {

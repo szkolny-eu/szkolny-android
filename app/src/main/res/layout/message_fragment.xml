@@ -295,6 +295,39 @@
                             android:textAppearance="@style/NavView.TextView.Small" />
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/downloadButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_rounded_ripple"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="4dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="8dp"
+                        android:visibility="visible">
+
+                        <com.mikepenz.iconics.view.IconicsImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:padding="4dp"
+                            app:iiv_color="?android:textColorSecondary"
+                            app:iiv_icon="cmd-download-outline"
+                            tools:srcCompat="@android:drawable/ic_menu_delete" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Pobierz ponownie"
+                            android:textAppearance="@style/NavView.TextView.Small" />
+
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

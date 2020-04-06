@@ -108,6 +108,10 @@ class MessageFragment : Fragment(), CoroutineScope {
                     .setNegativeButton(R.string.cancel, null)
                     .show()
         }
+        b.downloadButton.isVisible = App.debugMode
+        b.downloadButton.onClick {
+            EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
+        }
 
         launch {
 
@@ -182,14 +186,16 @@ class MessageFragment : Fragment(), CoroutineScope {
             }
         }
 
-
-        // if a sent msg is not read by everyone, download it again to check the read status
-        if (!checkRecipients() && app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
-            EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
-            return
+        val readByAll = checkRecipients()
+        if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_VULCAN) {
+            // vulcan: change message status or download attachments
+            if (message.type == TYPE_RECEIVED && !message.seen || message.attachmentIds == null) {
+                EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
+                return
+            }
         }
-
-        if(message.type == TYPE_RECEIVED && !message.seen && app.profile.loginStoreType == LoginStore.LOGIN_TYPE_VULCAN) {
+        else if (!readByAll) {
+            // if a sent msg is not read by everyone, download it again to check the read status
             EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
             return
         }

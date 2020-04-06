@@ -226,8 +226,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessageFragment::class).withPopTo(DRAWER_ITEM_MESSAGES)
             list += NavTarget(TARGET_MESSAGES_COMPOSE, R.string.menu_message_compose, MessagesComposeFragment::class)
             list += NavTarget(TARGET_WEB_PUSH, R.string.menu_web_push, WebPushFragment::class)
-            list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
-            if (App.devMode) {
+            if (App.debugMode) {
+                list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
                 list += NavTarget(TARGET_LAB, R.string.menu_lab, LabFragment::class)
                         .withIcon(CommunityMaterial.Icon.cmd_flask_outline)
                         .isInDrawer(true)

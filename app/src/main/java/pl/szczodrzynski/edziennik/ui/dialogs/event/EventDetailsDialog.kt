@@ -244,6 +244,8 @@ class EventDetailsDialog(
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onEventGetEvent(event: EventGetEvent) {
         EventBus.getDefault().removeStickyEvent(event)
+        if (event.event.homeworkBody == null)
+            event.event.homeworkBody = ""
         update()
     }
 
