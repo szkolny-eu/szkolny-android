@@ -14,6 +14,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!-- PowerPermission uses minSdk 21, it's safe to override as it is used only in >= 23 -->
+    <uses-sdk tools:overrideLibrary="com.qifan.powerpermission.coroutines, com.qifan.powerpermission.core" />
+
     <application
         android:name=".App"
         android:allowBackup="true"

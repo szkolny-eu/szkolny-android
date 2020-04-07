@@ -38,7 +38,7 @@
     <string name="messages_attachment_format" translatable="false">%s (%s)</string>
     <string name="messages_attachment_no_size_format" translatable="false">%s</string>
     <string name="messages_date_time_format" translatable="false">%s, %s</string>
-    <string name="messages_recipients_list_unknown_state_format" translatable="false"><![CDATA[<li>&amp;nbsp;%s</li>]]></string>
+    <string name="messages_recipients_list_unknown_state_format" translatable="false"><![CDATA[<li>&nbsp;%s</li>]]></string>
     <string name="notification_ticker_format" translatable="false">Szkolny.eu: %s</string>
     <string name="preference_file" translatable="false">pl.szczodrzynski.edziennik_preferences</string>
     <string name="preference_file_global" translatable="false">pl.szczodrzynski.edziennik_profiles</string>
@@ -736,9 +736,9 @@
     <string name="messages_draft_title">Wersja robocza</string>
     <string name="messages_no_data">Nie masz żadnych wiadomości.</string>
     <string name="messages_recipient_list_download_error">Błąd pobierania listy odbiorców</string>
-    <string name="messages_recipients_list_read_format"><![CDATA[<li>&amp;nbsp;%s, przeczytano: %s, %s</li>]]></string>
-    <string name="messages_recipients_list_read_unknown_date_format"><![CDATA[<li>&amp;nbsp;%s, przeczytano: tak</li>]]></string>
-    <string name="messages_recipients_list_unread_format"><![CDATA[<li>&amp;nbsp;%s, przeczytano: <font color=red>nie</font></li>]]></string>
+    <string name="messages_recipients_list_read_format"><![CDATA[<li>&nbsp;%s, przeczytano: %s, %s</li>]]></string>
+    <string name="messages_recipients_list_read_unknown_date_format"><![CDATA[<li>&nbsp;%s, przeczytano: tak</li>]]></string>
+    <string name="messages_recipients_list_unread_format"><![CDATA[<li>&nbsp;%s, przeczytano: <font color=red>nie</font></li>]]></string>
     <string name="messages_reply">Odpowiedz</string>
     <string name="messages_reply_date_time_format">%s o %s</string>
     <string name="messages_search">Szukaj</string>
@@ -1281,4 +1281,7 @@
     <string name="yesterday">wczoraj</string>
     <string name="you_are_offline_text">Jesteś offline. Spróbuj włączyć Wi-Fi lub dane komórkowe.</string>
     <string name="you_are_offline_title">Połączenie sieciowe</string>
+    <string name="permissions_required">Wymagane uprawnienia</string>
+    <string name="permissions_denied">Odmówiłeś aplikacji wymaganych uprawnień do wykonania tej czynności.\n\nAby przynać uprawnienia, otwórz sekcję Uprawnienia dla aplikacji Szkolny.eu w ustawieniach telefonu.\n\nKliknij OK, aby przejść do ustawień aplikacji.</string>
+    <string name="permissions_attachment">Musisz przyznać uprawnienia do zapisu plików w pamięci telefonu, aby móc pobrać załącznik.\n\nKliknij OK, aby przyznać uprawnienia.</string>
 </resources>

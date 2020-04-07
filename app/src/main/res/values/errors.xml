@@ -128,6 +128,7 @@
     <string name="error_340" translatable="false">ERROR_VULCAN_API_MAINTENANCE</string>
     <string name="error_341" translatable="false">ERROR_VULCAN_API_BAD_REQUEST</string>
     <string name="error_342" translatable="false">ERROR_VULCAN_API_OTHER</string>
+    <string name="error_343" translatable="false">ERROR_VULCAN_ATTACHMENT_DOWNLOAD</string>
 
     <string name="error_401" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_402" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME</string>
@@ -177,6 +178,7 @@
     <string name="error_914" translatable="false">EXCEPTION_IDZIENNIK_API_REQUEST</string>
     <string name="error_920" translatable="false">EXCEPTION_EDUDZIENNIK_WEB_REQUEST</string>
     <string name="error_921" translatable="false">EXCEPTION_EDUDZIENNIK_FILE_REQUEST</string>
+    <string name="error_930" translatable="false">ERROR_ONEDRIVE_DOWNLOAD</string>
 
     <string name="error_1201" translatable="false">LOGIN_NO_ARGUMENTS</string>
 
@@ -304,6 +306,7 @@
     <string name="error_340_reason">Vulcan: przerwa techniczna</string>
     <string name="error_341_reason">Vulcan: błąd żądania, zgłoś błąd</string>
     <string name="error_342_reason">Vulcan: inny błąd, wyślij zgłoszenie</string>
+    <string name="error_343_reason">Vulcan: nie znaleziono adresu załącznika</string>
 
     <string name="error_401_reason">Nieprawidłowe dane logowania</string>
     <string name="error_402_reason">Nieprawidłowa nazwa szkoły</string>
@@ -353,6 +356,7 @@
     <string name="error_914_reason">EXCEPTION_IDZIENNIK_API_REQUEST</string>
     <string name="error_920_reason">Wystąpił błąd</string>
     <string name="error_921_reason">Wystąpił błąd podczas pobierania pliku</string>
+    <string name="error_930_reason">Nie udało się pobrać pliku z OneDrive</string>
 
     <string name="error_1201_reason">Nie podano parametrów</string>
 </resources>

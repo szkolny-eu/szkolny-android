@@ -198,6 +198,9 @@ dependencies {
     kapt project(":codegen")
 
     implementation 'com.google.android:flexbox:2.0.1'
+
+    implementation 'com.qifan.powerpermission:powerpermission:1.0.0'
+    implementation 'com.qifan.powerpermission:powerpermission-coroutines:1.0.0'
 }
 repositories {
     mavenCentral()

@@ -87,6 +87,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url "https://kotlin.bintray.com/kotlinx/" }
         maven { url "https://dl.bintray.com/wulkanowy/wulkanowy" }
+        maven { url "https://dl.bintray.com/undervoid/PowerPermission" }
     }
 }
 

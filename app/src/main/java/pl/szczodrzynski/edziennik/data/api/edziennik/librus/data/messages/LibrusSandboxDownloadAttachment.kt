@@ -54,13 +54,13 @@ class LibrusSandboxDownloadAttachment(override val data: DataLibrus,
     }
 
     private fun getAttachmentCheckKey(attachmentKey: String, callback: () -> Unit) {
-        sandboxGet(LibrusMessagesGetAttachment.TAG, "CSCheckKey",
+        sandboxGet(TAG, "CSCheckKey",
                 parameters = mapOf("singleUseKey" to attachmentKey)) { json ->
 
             when (json.getString("status")) {
                 "not_downloaded_yet" -> {
                     if (getAttachmentCheckKeyTries++ > 5) {
-                        data.error(ApiError(LibrusMessagesGetAttachment.TAG, ERROR_FILE_DOWNLOAD)
+                        data.error(ApiError(TAG, ERROR_FILE_DOWNLOAD)
                                 .withApiResponse(json))
                         return@sandboxGet
                     }
@@ -75,7 +75,7 @@ class LibrusSandboxDownloadAttachment(override val data: DataLibrus,
                 }
 
                 else -> {
-                    data.error(ApiError(LibrusMessagesGetAttachment.TAG, EXCEPTION_LIBRUS_MESSAGES_REQUEST)
+                    data.error(ApiError(TAG, EXCEPTION_LIBRUS_MESSAGES_REQUEST)
                             .withApiResponse(json))
                 }
             }
@@ -85,7 +85,7 @@ class LibrusSandboxDownloadAttachment(override val data: DataLibrus,
     private fun downloadAttachment(url: String, method: Int = GET) {
         val targetFile = File(Utils.getStorageDir(), attachmentName)
 
-        sandboxGetFile(LibrusMessagesGetAttachment.TAG, url, targetFile, { file ->
+        sandboxGetFile(TAG, url, targetFile, { file ->
 
             val event = AttachmentGetEvent(
                     profileId,

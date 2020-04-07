@@ -85,6 +85,7 @@ class LoginChooserFragment : Fragment() {
         }
 
         b.devMode.visibility = if (App.debugMode) View.VISIBLE else View.GONE
+        b.devMode.isChecked = app.config.debugMode
         b.devMode.onChange { v, isChecked ->
             if (isChecked) {
                 MaterialDialog.Builder(activity)
@@ -94,6 +95,7 @@ class LoginChooserFragment : Fragment() {
                         .negativeText(R.string.no)
                         .onPositive { _: MaterialDialog?, _: DialogAction? ->
                             app.config.debugMode = true
+                            App.devMode = true
                             MaterialAlertDialogBuilder(activity)
                                     .setTitle("Restart")
                                     .setMessage("Wymagany restart aplikacji")
@@ -104,12 +106,10 @@ class LoginChooserFragment : Fragment() {
                                     }
                                     .setCancelable(false)
                                     .show()
-                            /*if (b.devModeLayout.getVisibility() !== View.VISIBLE) {
-                                Anim.expand(b.devModeTitle, 500, null)
-                                Anim.expand(b.devModeLayout, 500, null)
-                            }*/
                         }
                         .onNegative { _: MaterialDialog?, _: DialogAction? ->
+                            app.config.debugMode = false
+                            App.devMode = false
                             b.devMode.isChecked = app.config.debugMode
                             b.devMode.jumpDrawablesToCurrentState()
                             Anim.collapse(b.devMode, 1000, null)
@@ -117,6 +117,7 @@ class LoginChooserFragment : Fragment() {
                         .show()
             } else {
                 app.config.debugMode = false
+                App.devMode = false
                 /*if (b.devModeLayout.getVisibility() === View.VISIBLE) {
                     Anim.collapse(b.devModeTitle, 500, null)
                     Anim.collapse(b.devModeLayout, 500, null)

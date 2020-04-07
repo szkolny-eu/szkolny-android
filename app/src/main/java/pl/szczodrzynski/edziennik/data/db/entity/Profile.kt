@@ -17,6 +17,7 @@ import com.google.gson.JsonObject
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_EDUDZIENNIK
+import pl.szczodrzynski.edziennik.utils.ProfileImageHolder
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.ImageHolder
 import pl.szczodrzynski.navlib.R
@@ -128,7 +129,7 @@ open class Profile(
     override fun getImageHolder(context: Context): ImageHolder {
         return if (!image.isNullOrEmpty()) {
             try {
-                ImageHolder(image ?: "")
+                ProfileImageHolder(image ?: "")
             } catch (_: Exception) {
                 ImageHolder(R.drawable.profile, colorFromName(name))
             }

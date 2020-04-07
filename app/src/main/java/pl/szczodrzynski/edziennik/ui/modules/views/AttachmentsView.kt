@@ -8,12 +8,14 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.util.AttributeSet
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
@@ -41,6 +43,8 @@ class AttachmentsView @JvmOverloads constructor(
     }
 
     fun init(arguments: Bundle, owner: Any) {
+        val app = context.applicationContext as App
+        val activity = context as? AppCompatActivity ?: return
         val list = this as? RecyclerView ?: return
 
         val profileId = arguments.get<Int>("profileId") ?: return
@@ -49,12 +53,16 @@ class AttachmentsView @JvmOverloads constructor(
         val attachmentSizes = arguments.getLongArray("attachmentSizes")
 
         val adapter = AttachmentAdapter(context, onAttachmentClick = { item ->
-            downloadAttachment(item)
+            app.permissionManager.requestStoragePermission(activity, R.string.permissions_attachment) {
+                downloadAttachment(item)
+            }
         }, onAttachmentLongClick = { chip, item ->
             val popupMenu = PopupMenu(chip.context, chip)
             popupMenu.menu.add(0, 1, 0, R.string.messages_attachment_download_again)
             popupMenu.setOnMenuItemClickListener {
-                downloadAttachment(item, forceDownload = true)
+                app.permissionManager.requestStoragePermission(activity, R.string.permissions_attachment) {
+                    downloadAttachment(item, forceDownload = true)
+                }
                 true
             }
             popupMenu.show()
@@ -97,7 +105,8 @@ class AttachmentsView @JvmOverloads constructor(
 
     private fun downloadAttachment(attachment: AttachmentAdapter.Item, forceDownload: Boolean = false) {
         if (!forceDownload && attachment.isDownloaded) {
-            Utils.openFile(context, File(Utils.getStorageDir(), attachment.name))
+            // open file by name, or first part before ':' (Vulcan OneDrive)
+            Utils.openFile(context, File(Utils.getStorageDir(), attachment.name.substringBefore(":")))
             return
         }
 
@@ -128,17 +137,19 @@ class AttachmentsView @JvmOverloads constructor(
         when (event.eventType) {
             AttachmentGetEvent.TYPE_FINISHED -> {
                 // save the downloaded file name
-                attachment.downloadedName = event.fileName
                 attachment.isDownloading = false
                 attachment.isDownloaded = true
 
-                // update file name for iDziennik which
-                // does not provide the name before downloading
-                if (!attachment.name.contains("."))
-                    attachment.name = File(attachment.downloadedName).name
+                // get the download url before updating file name
+                val fileUrl = attachment.name.substringBefore(":", missingDelimiterValue = "")
+                // update file name with the downloaded one
+                attachment.name = File(event.fileName).name
+                // save the download url back
+                if (fileUrl != "")
+                    attachment.name += ":$fileUrl"
 
                 // open the file
-                Utils.openFile(context, File(Utils.getStorageDir(), attachment.name))
+                Utils.openFile(context, File(event.fileName))
             }
 
             AttachmentGetEvent.TYPE_PROGRESS -> {

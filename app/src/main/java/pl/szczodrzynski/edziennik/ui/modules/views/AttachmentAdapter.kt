@@ -58,8 +58,9 @@ class AttachmentAdapter(
         val item = items[position]
         val b = holder.b
 
+        val fileName = item.name.substringBefore(":http")
         // create an icon for the attachment
-        val icon: IIcon = when (Utils.getExtensionFromFileName(item.name)) {
+        val icon: IIcon = when (Utils.getExtensionFromFileName(fileName)) {
             "doc", "docx", "odt", "rtf" -> SzkolnyFont.Icon.szf_file_word_outline
             "xls", "xlsx", "ods" -> SzkolnyFont.Icon.szf_file_excel_outline
             "ppt", "pptx", "odp" -> SzkolnyFont.Icon.szf_file_powerpoint_outline
@@ -73,12 +74,12 @@ class AttachmentAdapter(
         }
 
         b.chip.text = if (item.isDownloading) {
-            app.getString(R.string.messages_attachment_downloading_format, item.name, item.downloadProgress)
+            app.getString(R.string.messages_attachment_downloading_format, fileName, item.downloadProgress)
         }
         else {
             item.size?.let {
-                app.getString(R.string.messages_attachment_format, item.name, Utils.readableFileSize(it))
-            } ?: item.name
+                app.getString(R.string.messages_attachment_format, fileName, Utils.readableFileSize(it))
+            } ?: fileName
         }
 
         b.chip.chipIcon = IconicsDrawable(context)

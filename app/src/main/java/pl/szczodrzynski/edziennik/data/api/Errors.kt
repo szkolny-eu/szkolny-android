@@ -158,6 +158,7 @@ const val ERROR_LOGIN_VULCAN_NO_PUPILS                      = 331
 const val ERROR_VULCAN_API_MAINTENANCE                      = 340
 const val ERROR_VULCAN_API_BAD_REQUEST                      = 341
 const val ERROR_VULCAN_API_OTHER                            = 342
+const val ERROR_VULCAN_ATTACHMENT_DOWNLOAD                  = 343
 
 const val ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN           = 401
 const val ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME     = 402
@@ -207,5 +208,6 @@ const val EXCEPTION_IDZIENNIK_WEB_API_REQUEST               = 913
 const val EXCEPTION_IDZIENNIK_API_REQUEST                   = 914
 const val EXCEPTION_EDUDZIENNIK_WEB_REQUEST                 = 920
 const val EXCEPTION_EDUDZIENNIK_FILE_REQUEST                = 921
+const val ERROR_ONEDRIVE_DOWNLOAD                           = 930
 
 const val LOGIN_NO_ARGUMENTS                                = 1201

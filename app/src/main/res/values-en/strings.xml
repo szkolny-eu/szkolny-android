@@ -88,7 +88,7 @@
     <string name="day_today_format">today (%s)</string>
     <string name="day_tomorrow_format">tomorrow (%s)</string>
     <string name="debug_notice">You shouldn\'t really care about what you see here.</string>
-    <string name="dev_mode_enable_warning">These settings are intended for this app\'s developers, not for normal users.\n\nThey are not described in any way, so using them may lead to breaking some functions in the app, damaging your system or losing data.\n\nBe careful and use them wisely.</string>
+    <string name="dev_mode_enable_warning">These settings are intended for this app\'s developers, not for normal users.\n\nThey are not described in any way, so using them may lead to breaking some functions in the app, damaging your system, losing data or even installing a virus on the battery.\n\nBe careful and use them wisely.</string>
     <string name="developer_mode">Developer mode</string>
     <string name="dialog_averages_expected_format">Predicted semester %d average:\n%#.2f\n</string>
     <string name="dialog_averages_expected_yearly_format">Predicted yearly average:\n%#.2f\n</string>
@@ -431,7 +431,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="help">Help</string>
     <string name="help_notification_web_push">Notification forwarding allows you to pair a PC web browser to receive notifications on your desktop. This includes new grades, events, homework etc.\n\nClick \"Notification forwarding\" to begin.</string>
-    <string name="help_register_agreement">Registraton will run automatically on the first login.\n\nThere will be some data sent to the app server:\n- your school and class ID\n- your e-register username\n- your first and last name\n\nThe only data visible to others is your name (when sharing events). Any private data (like password, grades etc.) won\'t be sent anywhere. Learn more in the Privacy policy.</string>
+    <string name="help_register_agreement">Registration will run automatically on the first login.\n\nThere will be some data sent to the app server:\n- your school and class ID\n- your e-register username\n- your first and last name\n\nThe only data visible to others is your name (when sharing events). Any private data (like password, grades etc.) won\'t be sent anywhere. Learn more in the Privacy policy.</string>
     <string name="hint_download_again">Download again</string>
     <string name="hint_edit_event">Edit event</string>
     <string name="hint_go_to_timetable">Go to timetable</string>
@@ -683,9 +683,9 @@
     <string name="messages_draft_title">Draft</string>
     <string name="messages_no_data">You don\'t have any messages</string>
     <string name="messages_recipient_list_download_error">Error getting the recipient list</string>
-    <string name="messages_recipients_list_read_format"><![CDATA[<li>&amp;nbsp;%s, read: %s, %s</li>]]></string>
-    <string name="messages_recipients_list_read_unknown_date_format"><![CDATA[<li>&amp;nbsp;%s, read: yes</li>]]></string>
-    <string name="messages_recipients_list_unread_format"><![CDATA[<li>&amp;nbsp;%s, read: <font color=red>no</font></li>]]></string>
+    <string name="messages_recipients_list_read_format"><![CDATA[<li>&nbsp;%s, read: %s, %s</li>]]></string>
+    <string name="messages_recipients_list_read_unknown_date_format"><![CDATA[<li>&nbsp;%s, read: yes</li>]]></string>
+    <string name="messages_recipients_list_unread_format"><![CDATA[<li>&nbsp;%s, read: <font color=red>no</font></li>]]></string>
     <string name="messages_reply">Reply</string>
     <string name="messages_reply_date_time_format">%s at %s</string>
     <string name="messages_search">Search</string>

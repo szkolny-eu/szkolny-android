@@ -414,8 +414,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 R.color.md_green_500
         )
 
-        isStoragePermissionGranted()
-
         SyncWorker.scheduleNext(app)
         UpdateWorker.scheduleNext(app)
 

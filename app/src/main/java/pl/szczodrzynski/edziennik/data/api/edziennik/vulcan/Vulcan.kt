@@ -7,28 +7,29 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 import com.google.gson.JsonObject
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
+import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.data.api.edziennik.helper.OneDriveDownloadAttachment
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanData
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiAttachments
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiMessagesChangeStatus
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiSendMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin.VulcanFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLogin
+import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
 import pl.szczodrzynski.edziennik.data.api.events.EventGetEvent
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.prepare
-import pl.szczodrzynski.edziennik.data.api.prepareFor
-import pl.szczodrzynski.edziennik.data.api.vulcanLoginMethods
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
+import java.io.File
 
 class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
@@ -128,8 +129,51 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     override fun markAllAnnouncementsAsRead() {}
     override fun getAnnouncement(announcement: AnnouncementFull) {}
-    override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {}
     override fun getRecipientList() {}
+
+    override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {
+        val fileUrl = attachmentName.substringAfter(":")
+        if (attachmentName == fileUrl) {
+            data.error(ApiError(TAG, ERROR_ONEDRIVE_DOWNLOAD))
+            return
+        }
+
+        OneDriveDownloadAttachment(
+                app,
+                fileUrl,
+                onSuccess = { file ->
+                    val event = AttachmentGetEvent(
+                            data.profileId,
+                            owner,
+                            attachmentId,
+                            AttachmentGetEvent.TYPE_FINISHED,
+                            file.absolutePath
+                    )
+
+                    val attachmentDataFile = File(Utils.getStorageDir(), ".${data.profileId}_${event.ownerId}_${event.attachmentId}")
+                    Utils.writeStringToFile(attachmentDataFile, event.fileName)
+
+                    EventBus.getDefault().postSticky(event)
+
+                    completed()
+                },
+                onProgress = { written, total ->
+                    val event = AttachmentGetEvent(
+                            data.profileId,
+                            owner,
+                            attachmentId,
+                            AttachmentGetEvent.TYPE_PROGRESS,
+                            bytesWritten = written
+                    )
+
+                    EventBus.getDefault().postSticky(event)
+                },
+                onError = { apiError ->
+                    data.error(apiError)
+                }
+        )
+    }
+
     override fun getEvent(eventFull: EventFull) {
         login(LOGIN_METHOD_VULCAN_API) {
             val list = data.app.db.eventDao().getAllNow(data.profileId).filter { !it.addedManually }
