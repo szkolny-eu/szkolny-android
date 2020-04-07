@@ -35,6 +35,7 @@ class OneDriveDownloadAttachment(
                 .callback(object : TextCallbackHandler() {
                     override fun onSuccess(text: String, response: Response) {
                         val location = response.headers().get("Location")
+                        // https://onedrive.live.com/redir?resid=D75496A2EB87531C!706&authkey=!ABjZeh3pHMqj11Q
                         if (location?.contains("onedrive.live.com/redir?resid=") != true) {
                             onError(ApiError(TAG, ERROR_ONEDRIVE_DOWNLOAD)
                                     .withApiResponse(text)
@@ -43,7 +44,8 @@ class OneDriveDownloadAttachment(
                         }
                         val url = location
                                 .replace("onedrive.live.com/redir?resid=", "storage.live.com/items/")
-                                .replace("&", "?")
+                                .replace("?", "&")
+                                .replaceFirst("&", "?")
                         downloadFile(url)
                     }
 

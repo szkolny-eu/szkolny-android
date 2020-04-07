@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 
 import im.wangchao.mhttp.AbsCallbackHandler;
 import im.wangchao.mhttp.Accept;
@@ -69,7 +70,11 @@ public class FileCallbackHandler extends AbsCallbackHandler<File> {
         if (this.file.isDirectory()) {
             String contentDisposition = response.header("content-disposition");
             if (contentDisposition != null) {
-                String filename = contentDisposition.substring(contentDisposition.indexOf("\"")+1, contentDisposition.lastIndexOf("\""));
+                if (contentDisposition.contains("*=UTF-8")) {
+                    contentDisposition = contentDisposition.replace("*=UTF-8''", "\"") + "\"";
+                    contentDisposition = URLDecoder.decode(contentDisposition, "UTF-8");
+                }
+                String filename = contentDisposition.substring(contentDisposition.indexOf("\"") + 1, contentDisposition.lastIndexOf("\""));
                 this.file = new File(file, filename);
                 file = this.file;
             }

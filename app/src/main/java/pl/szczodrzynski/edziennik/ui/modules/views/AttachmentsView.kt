@@ -94,7 +94,20 @@ class AttachmentsView @JvmOverloads constructor(
             try {
                 val attachmentFileName = Utils.getStringFromFile(attachmentDataFile)
                 val attachmentFile = File(attachmentFileName)
-                attachmentFile.exists()
+                // get the correct file name and update
+                if (attachmentFile.exists()) {
+
+                    // get the download url before updating file name
+                    val fileUrl = item.name.substringAfter(":", missingDelimiterValue = "")
+                    // update file name with the downloaded one
+                    item.name = attachmentFile.name
+                    // save the download url back
+                    if (fileUrl != "")
+                        item.name += ":$fileUrl"
+
+                    true
+                }
+                else false
             } catch (e: Exception) {
                 e.printStackTrace()
                 false
@@ -141,7 +154,7 @@ class AttachmentsView @JvmOverloads constructor(
                 attachment.isDownloaded = true
 
                 // get the download url before updating file name
-                val fileUrl = attachment.name.substringBefore(":", missingDelimiterValue = "")
+                val fileUrl = attachment.name.substringAfter(":", missingDelimiterValue = "")
                 // update file name with the downloaded one
                 attachment.name = File(event.fileName).name
                 // save the download url back
