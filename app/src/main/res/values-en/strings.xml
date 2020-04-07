@@ -1,66 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="dialog_change_semester_list">
-        <item>Semester 1</item>
-        <item>Semester 2</item>
-    </array>
-
-    <array name="dialog_grades_sort_modes">
-        <item>From newest</item>
-        <item>By subject name</item>
-    </array>
-
-    <array name="dialog_grades_color_modes">
-        <item>From e-register</item>
-        <item>By grade\'s value</item>
-    </array>
-
-    <array name="material_calendar_months_array">
-        <item>January</item>
-        <item>February</item>
-        <item>March</item>
-        <item>April</item>
-        <item>May</item>
-        <item>June</item>
-        <item>July</item>
-        <item>August</item>
-        <item>September</item>
-        <item>October</item>
-        <item>November</item>
-        <item>December</item>
-    </array>
-
-    <array name="main_menu_add_options">
-        <item>Event</item>
-        <item>Homework</item>
-    </array>
-
-    <string name="app_name">Szkolny.eu</string>
-
-    <string name="theme_light">Light</string>
-    <string name="theme_dark">Dark</string>
-    <string name="theme_black">Black / OLED</string>
-    <string name="theme_chocolate">Chocolate</string>
-    <string name="theme_indigo">Indigo</string>
-    <string name="theme_light_yellow">Light yellow</string>
-    <string name="theme_dark_blue">Dark blue</string>
-    <string name="theme_blue">Blue</string>
-    <string name="theme_light_blue">Light blue</string>
-    <string name="theme_dark_purple">Dark purple</string>
-    <string name="theme_purple">Purple</string>
-    <string name="theme_light_purple">Light purple</string>
-    <string name="theme_dark_red">Dark red</string>
-    <string name="theme_red">Red</string>
-    <string name="theme_light_red">Light red</string>
-    <string name="theme_dark_green">Dark green</string>
-    <string name="theme_amber">Amber</string>
-    <string name="theme_light_green">Light green</string>
-
     <string name="abort">Abort</string>
     <string name="add">Add</string>
     <string name="agenda_lesson_changes">Timetable changes</string>
+    <string name="agenda_teacher_absence">Absent teachers</string>
     <string name="ago_format">%s ago</string>
+    <string name="app_manager_dialog_text">There may be an app manager running on this device, which could cause issues with automatic synchronisation.\n\nIn order to prevent this issue, turn off battery optimization for Szkolny.eu.\n\nPress OK to go to system settings.</string>
+    <string name="app_manager_dialog_title">There was a problem with synchronization</string>
+    <string name="app_manager_open_failed">Couldn\'t open settings</string>
     <string name="are_you_sure">Are you sure?</string>
+    <string name="attendance_summary_title_semester_format">Summary - semester %d </string>
+    <string name="attendance_summary_title_year">Summary - all year </string>
     <string name="attendances_absent">Absences:</string>
     <string name="attendances_absent_unexcused">Of which unexcused:</string>
     <string name="attendances_belated">Late:</string>
@@ -69,21 +19,24 @@
     <string name="attendances_releases">Releases:</string>
     <string name="attendances_summary_subject_loading_format">All subjects</string>
     <string name="attendances_summary_title_loading_format">Summary - loading…</string>
-    <string name="attendance_summary_title_semester_format">Summary - semester %d&#160;</string>
-    <string name="attendance_summary_title_year">Summary - all year&#160;</string>
     <string name="back">Back</string>
     <string name="bell_sync_adjust_content">Adjust the bell sync time. Format: ±H:MM:SS</string>
     <string name="bell_sync_adjust_error">Incorrect format</string>
+    <string name="bell_sync_break_item">break (%s)</string>
     <string name="bell_sync_cannot_now">Calibration is impossible, because there are no lessons now. Try again, i.e. in the end of the lesson or break. Remember that you should run this even before planned bell time.</string>
+    <string name="bell_sync_choose_howto">Choose the nearest bell to synchronize.</string>
     <string name="bell_sync_current_dialog">\n\nCurrent calibration: %s</string>
     <string name="bell_sync_howto">Click the bell icon, when the bell rings. The counter\'s time will be calibrated to the bell time.\n\nPlanned bell time is %s\n\nThe bell time difference at the moment is %s</string>
+    <string name="bell_sync_lesson_item">lesson %s (%s)</string>
     <string name="bell_sync_reset_confirm">Do you want to reset the calibration?</string>
     <string name="bell_sync_results">The bell is inexact by %s</string>
-    <string name="bell_sync_title">Calibrate with the school bell</string>
     <string name="bell_sync_time_title">Time of the bell to synchronize</string>
-    <string name="bell_sync_lesson_item">lesson %s (%s)</string>
-    <string name="bell_sync_break_item">break (%s)</string>
+    <string name="bell_sync_title">Calibrate with the school bell</string>
+    <string name="calendar_app_not_found">Calendar app not found</string>
     <string name="cancel">Cancel</string>
+    <string name="card_action_move_down">Move up</string>
+    <string name="card_action_move_up">Move down</string>
+    <string name="card_events_header_title">Upcoming events</string>
     <string name="card_grades_button">Go to grades</string>
     <string name="card_grades_header_title">Grades - last 7 days</string>
     <string name="card_grades_no_data">No grades to show</string>
@@ -105,21 +58,29 @@
     <string name="card_timetable_title">Timetable for %s</string>
     <string name="card_timetable_wtf">The lessons are over! You should never see this!</string>
     <string name="card_timetable_wtf_report">Report an error!</string>
+    <string name="card_type_events">Upcoming events</string>
+    <string name="card_type_grades">Recent grades</string>
+    <string name="card_type_lucky_number">Lucky number</string>
+    <string name="card_type_timetable">Timetable</string>
     <string name="card_update_button">Download</string>
     <string name="card_update_text_format">You have version %s, while %s is available.</string>
     <string name="card_update_title">An update is available</string>
     <string name="choose_file">Choose a file</string>
     <string name="choose_profile">Choose a profile</string>
     <string name="close">Close</string>
+    <string name="compose">Compose</string>
+    <string name="compose_title">Compose</string>
+    <string name="configure">Configure</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="counter_activity_sync">Synchronize</string>
     <string name="crash_advice_info">If the app doesn\'t open at all, you can try to download the data again. Click the button, then Restart the app.</string>
     <string name="crash_details">Error details</string>
     <string name="crash_dev_message">Message from developer</string>
     <string name="crash_feature">It\'s not a bug. It\'s a feature!</string>
     <string name="crash_notice">Please, report this error.</string>
     <string name="crash_report">Report the error</string>
-    <string name="crash_report_cannot_send">"Couldn't send a report: "</string>
+    <string name="crash_report_cannot_send">"Couldn\'t send a report: "</string>
     <string name="crash_report_sent">Error report sent</string>
     <string name="crash_restart">Restart application</string>
     <string name="crash_sync_button">Synchronise</string>
@@ -127,8 +88,10 @@
     <string name="day_today_format">today (%s)</string>
     <string name="day_tomorrow_format">tomorrow (%s)</string>
     <string name="debug_notice">You shouldn\'t really care about what you see here.</string>
-    <string name="dialog_averages_expected_format">Expected semester %d average:\n%#.2f\n</string>
-    <string name="dialog_averages_expected_yearly_format">Expected yearly average:\n%#.2f\n</string>
+    <string name="dev_mode_enable_warning">These settings are intended for this app\'s developers, not for normal users.\n\nThey are not described in any way, so using them may lead to breaking some functions in the app, damaging your system or losing data.\n\nBe careful and use them wisely.</string>
+    <string name="developer_mode">Developer mode</string>
+    <string name="dialog_averages_expected_format">Predicted semester %d average:\n%#.2f\n</string>
+    <string name="dialog_averages_expected_yearly_format">Predicted yearly average:\n%#.2f\n</string>
     <string name="dialog_averages_final_format">Semester %d final grades average:\n%#.2f\n</string>
     <string name="dialog_averages_final_yearly_format">Yearly final grades average:\n%#.2f\n</string>
     <string name="dialog_averages_proposed_format">Semester %d proposed grades average:\n%#.2f\n</string>
@@ -136,6 +99,20 @@
     <string name="dialog_averages_title">Grade averages</string>
     <string name="dialog_averages_unavailable_format">Averages of semester %d are not available</string>
     <string name="dialog_averages_unavailable_yearly">Yearly average is not available</string>
+    <array name="dialog_change_semester_list">
+        <item>Semester 1</item>
+        <item>Semester 2</item>
+    </array>
+    <string name="dialog_day_lessons_info">%s - %s (%s lessons - %s hours %s minutes)</string>
+    <string name="dialog_day_no_events">No events this day</string>
+    <string name="dialog_error_details_title">Error details</string>
+    <string name="dialog_event_details_added_by">Added</string>
+    <string name="dialog_event_details_attachments">Attachments</string>
+    <string name="dialog_event_details_body">Content</string>
+    <string name="dialog_event_details_subject">Subject</string>
+    <string name="dialog_event_details_teacher">Teacher</string>
+    <string name="dialog_event_details_team">Team</string>
+    <string name="dialog_event_details_topic">Topic</string>
     <string name="dialog_event_list_no_data">No events in the selected period.</string>
     <string name="dialog_event_manual_all_day">All day</string>
     <string name="dialog_event_manual_cannot_share">You cannot share this event unless you choose a group (class) of recipients.</string>
@@ -143,14 +120,23 @@
     <string name="dialog_event_manual_choose_lesson">Select a lesson</string>
     <string name="dialog_event_manual_custom_time">-- custom time --</string>
     <string name="dialog_event_manual_date">Date</string>
+    <string name="dialog_event_manual_date_choose">Select the time</string>
     <string name="dialog_event_manual_date_header">Date</string>
+    <string name="dialog_event_manual_date_next_lesson">next lesson %s</string>
+    <string name="dialog_event_manual_date_next_week">next %s (%s)</string>
+    <string name="dialog_event_manual_date_other">-- other day --</string>
+    <string name="dialog_event_manual_date_today">today (%s)</string>
+    <string name="dialog_event_manual_date_tomorrow">tomorrow (%s)</string>
     <string name="dialog_event_manual_lesson">Lesson</string>
     <string name="dialog_event_manual_lesson_choose">Select a lesson</string>
+    <string name="dialog_event_manual_more_options">More options</string>
     <string name="dialog_event_manual_must_register_text">To be able to share anything, you have to agree to register.\nDon\'t worry, the registration is automatic, so you don\'t have to specify any data.\n\nClick More to learn more about the processed data.</string>
     <string name="dialog_event_manual_must_register_title">You are not registered</string>
+    <string name="dialog_event_manual_no_lessons">No lessons this day</string>
     <string name="dialog_event_manual_no_subject">No subject</string>
     <string name="dialog_event_manual_no_teacher">No teacher</string>
     <string name="dialog_event_manual_no_team">No team</string>
+    <string name="dialog_event_manual_no_timetable">No timetable is downloaded…</string>
     <string name="dialog_event_manual_remove_shared">This event was shared by someone else. You will remove it only on your device, but you\'ll never receive it again.</string>
     <string name="dialog_event_manual_remove_shared_self">This event was shared by you, so it\'ll be also removed on your classmates\' devices.</string>
     <string name="dialog_event_manual_share_enabled">Share to your class</string>
@@ -164,6 +150,9 @@
     <string name="dialog_event_manual_teacher">Teacher</string>
     <string name="dialog_event_manual_team">Team</string>
     <string name="dialog_event_manual_team_choose">Select a team</string>
+    <string name="dialog_event_manual_time">Lesson/time</string>
+    <string name="dialog_event_manual_time_choose">Select the time</string>
+    <string name="dialog_event_manual_title">Add an entry to the agenda</string>
     <string name="dialog_event_manual_topic">Topic</string>
     <string name="dialog_event_manual_topic_choose">Specify a topic</string>
     <string name="dialog_event_manual_type">Type</string>
@@ -183,17 +172,44 @@
     <string name="dialog_grade_details_value">Value to the average</string>
     <string name="dialog_grade_details_weight_format">weight %.2f</string>
     <string name="dialog_grades_color_mode_title">Grades color</string>
+    <array name="dialog_grades_color_modes">
+        <item>From e-register</item>
+        <item>By grade\'s value</item>
+    </array>
+    <string name="dialog_grades_config_color_by_value">By grade\'s value</string>
+    <string name="dialog_grades_config_color_from_eregister">From e-register</string>
+    <string name="dialog_grades_config_sort_by_date">From newest</string>
+    <string name="dialog_grades_config_sort_by_subject">By subject name</string>
+    <array name="dialog_grades_sort_modes">
+        <item>From newest</item>
+        <item>By subject name</item>
+    </array>
     <string name="dialog_grades_sort_title">Sort grades</string>
     <string name="dialog_homework_manual_details_header">Details</string>
+    <string name="dialog_lesson_details_classroom">Classroom</string>
+    <string name="dialog_lesson_details_id">Lesson ID</string>
+    <string name="dialog_lesson_details_number">Lesson number</string>
+    <string name="dialog_lesson_details_shifted_from">Lesson shifted from %s</string>
+    <string name="dialog_lesson_details_shifted_to">Lesson shifted to %s</string>
+    <string name="dialog_lesson_details_teacher">Teacher</string>
+    <string name="dialog_lesson_details_team">Team</string>
+    <string name="dialog_lesson_go_to_button">Show</string>
+    <string name="dialog_lesson_no_events">No events on this lesson.</string>
+    <string name="dialog_no_events_hint">You can add a new event manually, using Add button.</string>
+    <string name="dialog_notification_filter_text">Choose which notifications should appear in your system and the app.</string>
+    <string name="dialog_notification_filter_title">Show selected notifications</string>
+    <string name="dialog_profile_remove_success">Profile removed successfully.</string>
     <string name="dialog_register_event_manual_remove_confirmation">Do you want to remove the selected event?</string>
     <string name="dialog_register_event_manual_title">Manual event</string>
     <string name="dialog_register_homework_manual_title">Manual homework</string>
+    <string name="dialog_sync_view_list_title">Manual synchronization</string>
     <string name="dialog_widget_config_profile">Profile</string>
     <string name="dialog_widget_timetable_config_big_style">Big font</string>
     <string name="dialog_widget_timetable_config_opacity">Opacity</string>
     <string name="dialog_widget_timetable_config_theme">Theme</string>
     <string name="do_nothing">Do nothing</string>
     <string name="done">Done</string>
+    <string name="dont_ask_again">Don\'t ask again</string>
     <string name="download_file_question">Download %s (%s)?</string>
     <string name="downloading">Downloading…</string>
     <string name="downloading_file">Downloading file</string>
@@ -202,9 +218,78 @@
     <string name="downloading_file_exists_create_new">Create new</string>
     <string name="downloading_file_exists_open">Open existing</string>
     <string name="downloading_file_exists_overwrite">Overwrite</string>
+    <string name="drawer_add_new_profile_desc">Add a new profile</string>
     <string name="drawer_export_data">Export app data</string>
+    <string name="drawer_manage_profiles_desc">Add or remove students\' profiles</string>
+    <string name="dropdown_date_no_more_lessons">There are no more lessons for this subject. Download the timetable and try again.</string>
+    <string name="dropdown_subject_custom">Custom subject</string>
+    <string name="edziennik_notification_api_cancel">Cancel</string>
+    <string name="edziennik_notification_api_close">Close</string>
+    <string name="edziennik_notification_api_error_report_task">Reporting errors…</string>
+    <string name="edziennik_notification_api_error_report_title">Reporting errors</string>
+    <string name="edziennik_notification_api_error_title">Synchronization interrupted</string>
+    <string name="edziennik_notification_api_first_login_title">First login</string>
+    <string name="edziennik_notification_api_notify_title">Creating notifications</string>
+    <string name="edziennik_notification_api_sync_title_format">Synchronizing profile %s…</string>
+    <string name="edziennik_notification_api_text">Thanks to it, Szkolny.eu can synchronize data with an e-journal. You can close it because it isn\'t doing anything right now.</string>
+    <string name="edziennik_notification_api_title">Synchronization service</string>
+    <string name="edziennik_progress_endpoint_account_details">Syncing account details…</string>
+    <string name="edziennik_progress_endpoint_announcements">Syncing announcements…</string>
+    <string name="edziennik_progress_endpoint_attendance">Syncing attendance…</string>
+    <string name="edziennik_progress_endpoint_attendance_types">Syncing presence categories…</string>
+    <string name="edziennik_progress_endpoint_behaviour">Syncing student behaviour…</string>
+    <string name="edziennik_progress_endpoint_behaviour_grades">Syncing behaviour grades…</string>
+    <string name="edziennik_progress_endpoint_calendar">Syncing calendar…</string>
+    <string name="edziennik_progress_endpoint_classes">Syncing class information…</string>
+    <string name="edziennik_progress_endpoint_classrooms">Syncing classrooms…</string>
+    <string name="edziennik_progress_endpoint_data">Syncing data…</string>
+    <string name="edziennik_progress_endpoint_descriptive_grades">Syncing descriptive grades…</string>
+    <string name="edziennik_progress_endpoint_dictionaries">Syncing dictionaries…</string>
+    <string name="edziennik_progress_endpoint_event_types">Syncing event categories…</string>
+    <string name="edziennik_progress_endpoint_events">Syncing calendar events…</string>
+    <string name="edziennik_progress_endpoint_exams">Syncing exams</string>
+    <string name="edziennik_progress_endpoint_grade_categories">Syncing grade categories…</string>
+    <string name="edziennik_progress_endpoint_grade_comments">Syncing grade comments…</string>
+    <string name="edziennik_progress_endpoint_grades">Syncing grades…</string>
+    <string name="edziennik_progress_endpoint_homework">Syncing homework…</string>
+    <string name="edziennik_progress_endpoint_lessons">Syncing lessons…</string>
+    <string name="edziennik_progress_endpoint_lucky_number">Syncing the lucky number…</string>
+    <string name="edziennik_progress_endpoint_messages">Syncing messages…</string>
+    <string name="edziennik_progress_endpoint_messages_inbox">Syncing messages inbox…</string>
+    <string name="edziennik_progress_endpoint_messages_outbox">Syncing messages outbox…</string>
+    <string name="edziennik_progress_endpoint_notice_types">Syncing notice types…</string>
+    <string name="edziennik_progress_endpoint_notices">Syncing notices…</string>
+    <string name="edziennik_progress_endpoint_point_grades">Syncing point grades…</string>
+    <string name="edziennik_progress_endpoint_proposed_grades">Syncing proposed grades…</string>
+    <string name="edziennik_progress_endpoint_pt_meetings">Syncing parents\' meetings…</string>
+    <string name="edziennik_progress_endpoint_push_config">Setting up push notifications…</string>
+    <string name="edziennik_progress_endpoint_school_info">Syncing school info…</string>
+    <string name="edziennik_progress_endpoint_student_info">Syncing student info…</string>
+    <string name="edziennik_progress_endpoint_subjects">Syncing subjects…</string>
+    <string name="edziennik_progress_endpoint_teacher_free_day_types">Syncing teacher absence types…</string>
+    <string name="edziennik_progress_endpoint_teacher_free_days">Syncing teacher absences…</string>
+    <string name="edziennik_progress_endpoint_teachers">Syncing teachers…</string>
+    <string name="edziennik_progress_endpoint_teams">Syncing class groups…</string>
+    <string name="edziennik_progress_endpoint_timetable">Syncing timetable…</string>
+    <string name="edziennik_progress_endpoint_units">Syncing unit info…</string>
+    <string name="edziennik_progress_login_edudziennik_web">Logging in to Edudziennik…</string>
+    <string name="edziennik_progress_login_idziennik_api">Logging in to iDziennik…</string>
+    <string name="edziennik_progress_login_idziennik_web">Logging in to iDziennik…</string>
+    <string name="edziennik_progress_login_librus_api">Logging in to the API…</string>
+    <string name="edziennik_progress_login_librus_messages">Logging in to Librus Messages…</string>
+    <string name="edziennik_progress_login_librus_portal">Logging in to Librus Portal…</string>
+    <string name="edziennik_progress_login_librus_synergia">Logging in to Librus Synergia…</string>
+    <string name="edziennik_progress_login_mobidziennik_api">Logging in to MobiDziennik…</string>
+    <string name="edziennik_progress_login_mobidziennik_api2">Logging in to MobiDziennik…</string>
+    <string name="edziennik_progress_login_mobidziennik_web">Logging in to MobiDziennik…</string>
+    <string name="edziennik_progress_login_template_api">Logging in to Template API…</string>
+    <string name="edziennik_progress_login_template_web">Logging in to Template WEB…</string>
+    <string name="edziennik_progress_login_vulcan_api">Logging in to Vulcan</string>
+    <string name="edziennik_szkolny_api_sync_title">Syncing shared events…</string>
+    <string name="edziennik_szkolny_creating_notifications">Creating notifications…</string>
     <string name="error">Error</string>
     <string name="error_details">Error details</string>
+    <string name="error_invalid_fragment">Wrong module given: %d Report it to the application developer</string>
     <string name="error_must_change_password">Your iDziennik password has expired. You have to change it in the desktop version of the website.</string>
     <string name="error_no_subject_id">The subject ID wasn\'t specified.</string>
     <string name="error_occured">An error occurred!</string>
@@ -215,29 +300,51 @@
     <string name="error_school_year_not_found">School year was not found.</string>
     <string name="error_shared_edit_requests_not_implemented">Editing others\' events is not implemented yet.</string>
     <string name="error_student_id_not_found">Student ID was not found. Probably the app was updated.\n\nDo a sync again or try again in 5 minutes.</string>
+    <string name="error_unknown_format">Kod błędu: %d (on %s)</string>
     <string name="event_added_time">Added:</string>
     <string name="event_all_day">all day</string>
     <string name="event_class_event">class event</string>
+    <string name="event_details_added_by_format">%1$s by %2$s</string>
+    <string name="event_details_added_by_self_format">%1$s by you</string>
+    <string name="event_details_shared_by_format">{cmd-share-variant} %1$s by %2$s</string>
+    <string name="event_details_shared_by_self_format">{cmd-share-variant} %1$s by you</string>
     <string name="event_essay">essay</string>
     <string name="event_exam">exam</string>
     <string name="event_excursion">school trip</string>
     <string name="event_information">information</string>
+    <string name="event_list_added_by_format">Added %1$s by %2$s%3$s</string>
+    <string name="event_list_added_by_self_format">Added %1$s by you%3$s</string>
+    <string name="event_list_added_by_unknown_format">Adde %1$s%3$s</string>
+    <string name="event_list_shared_by_format">{cmd-share-variant} %1$s by %2$s%3$s</string>
+    <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s by you%3$s</string>
+    <string name="event_manual_need_registration_text">You need to turn on server registration, in order to share an event. This option lets you create and receive shared events in your class.\n\nIt will be turned on automatically by pressing OK.\n\nBefore turning it on, make sure you\'ve read the terms and accept them</string>
+    <string name="event_manual_need_registration_title">Sharing events</string>
+    <string name="event_manual_remove">Removing event…</string>
+    <string name="event_manual_saving">Saving event…</string>
+    <string name="event_manual_share">Sharing event…</string>
+    <string name="event_manual_unshare">Removing event from the rest of the class…</string>
+    <string name="event_manual_unshare_remove">Removing shared event…</string>
+    <string name="event_mark_as_done_text">Are you sure you want to mark this task as completed?\n\nIt won\'t show up on the main or homework pages, but will still be available in the timetable</string>
+    <string name="event_mark_as_done_title">Mark as done</string>
     <string name="event_other">other</string>
     <string name="event_project">project</string>
     <string name="event_pt_meeting">parent-teacher meeting</string>
     <string name="event_reading">reading</string>
+    <string name="event_removing_text">Removing shared event…</string>
     <string name="event_shared_by_format">{cmd-share-variant} by %s</string>
     <string name="event_shared_by_self">you</string>
     <string name="event_sharing">Event sharing</string>
+    <string name="event_sharing_text">Sharing the event…</string>
     <string name="event_short_quiz">short test</string>
     <string name="event_type_homework">homework</string>
+    <string name="events_no_nearest">There are no more events in the calendar.</string>
     <string name="exit">Exit</string>
     <string name="faq">Frequently asked questions</string>
     <string name="faq_back_text">Did you find an answer to your question? If not, you can ask me directly.</string>
     <string name="faq_back_title">Did you find an answer?</string>
     <string name="faq_text">If you have a question, you can open the FAQ database first. Do you want to check that website?</string>
     <string name="feedback_ask_a_question">Ask a question</string>
-    <string name="feedback_faq">Frequently asked questions - <a href="http://szkolny.eu/pomoc/">open</a></string>
+    <string name="feedback_faq">Frequently asked questions - </string>
     <string name="feedback_faq_button">Open FAQ database</string>
     <string name="feedback_history">Conversation history</string>
     <string name="feedback_send">Send</string>
@@ -249,14 +356,28 @@
     <string name="grade_semester_proposed_format_2">%s - proposed</string>
     <string name="grade_start_points">Starting points</string>
     <string name="grade_start_points_format">Starting points: semester %d</string>
+    <string name="grade_subject_format">from %s</string>
     <string name="grade_year_final_format">%s (yearly)</string>
     <string name="grade_year_final_format_2">%s - yearly final</string>
     <string name="grade_year_proposed_format">%s (prop. yearly)</string>
     <string name="grade_year_proposed_format_2">%s - yearly proposed</string>
     <string name="grades_average_double_point_format">%spts, %spts</string>
-    <string name="grades_average_single_format">%s</string>
-    <string name="grades_average_single_percent_format">%s%%</string>
+    <string name="grades_average_no">no average</string>
+    <string name="grades_average_normal_format">average: %s</string>
+    <string name="grades_average_point_format">points: %s</string>
     <string name="grades_average_single_point_format">%spts</string>
+    <string name="grades_average_sum_format">sum: %s</string>
+    <string name="grades_average_value_sum_format">%s pts</string>
+    <string name="grades_average_year_format">annual: %2$s</string>
+    <string name="grades_config_average_without_weight">Count the average if all weights are 0</string>
+    <string name="grades_config_average_without_weight_message">Allows to calculate the average of subjects in which all grades have a weight of 0 (are not counted to the average).\n\nIf such subjects shouldn\'t be counted to the average, uncheck the box next to this setting.</string>
+    <string name="grades_config_dont_count_grades">Exclude selected grades from the average</string>
+    <string name="grades_config_dont_count_hint">Separate the grades with a comma</string>
+    <string name="grades_config_dont_count_placeholder">Enter grades…</string>
+    <string name="grades_config_dont_show_improved">Hide corrected grades from the list</string>
+    <string name="grades_config_minus_value">Custom \"minus\" value</string>
+    <string name="grades_config_plus_value">Custom \"plus\" value</string>
+    <string name="grades_config_title">Grade configuration</string>
     <string name="grades_editor_add_grade">Add a grade</string>
     <string name="grades_editor_add_grade_title">Adding a grade</string>
     <string name="grades_editor_add_grade_weight">Choose the weight of the grade</string>
@@ -274,40 +395,106 @@
     <string name="grades_improvement_category_format">(resit) %s</string>
     <string name="grades_max_points_format">max %s pts</string>
     <string name="grades_no_data">No grades.</string>
+    <string name="grades_preview_other_semester">Semester %d</string>
     <string name="grades_semester1_header">Semester 1</string>
     <string name="grades_semester2_header">Semester 2</string>
     <string name="grades_semester_average_format">semester %d: %s</string>
     <string name="grades_semester_average_percent_format">semester %d: %s%%</string>
     <string name="grades_semester_average_point_format">semester %d: %spts</string>
+    <string name="grades_semester_format">Semester %d</string>
     <string name="grades_semester_header_format">Semester %d</string>
+    <string name="grades_stats_custom_config_notice">Current settings could be affecting the average. If you think that it\'s incorrect, click Configure.</string>
+    <string name="grades_stats_custom_value_notice">There is a custom \"minus\"/\"plus\" value set. If you think that it\'s incorrect, click Configure.</string>
+    <string name="grades_stats_disclaimer">*grade averages are only illustrative and may vary, depending on school settings</string>
+    <string name="grades_stats_expected">*predicted average</string>
+    <string name="grades_stats_from_final">*from final grades\nPredicted: %s</string>
+    <string name="grades_stats_from_final_no_expected">*from final grades</string>
+    <string name="grades_stats_from_proposed">*from proposed grades\nPredicted: %s</string>
+    <string name="grades_stats_from_proposed_no_expected">*from proposed grades</string>
+    <string name="grades_stats_help_text">The predicted grade for a given subject is calculated based on the current weighted average.\n\nThe grade is an integer that the teacher would have based on the average. The number is rounded up if the decimal part exceeds 75.\nFor example: 3.75 as well as 4.74 give a 4.\n\nThe predicted average of all subjects includes the final grades calculated in this way.</string>
+    <string name="grades_stats_help_title">Calculating the average of all subjects</string>
+    <string name="grades_stats_no_data">Too little data to calculate the average.</string>
+    <string name="grades_stats_normal">Average of regular grades</string>
+    <string name="grades_stats_point">Average of point grades</string>
+    <string name="grades_stats_proposed_avg">Proposed grades average:\n%s</string>
+    <string name="grades_stats_semester_1">semester 1</string>
+    <string name="grades_stats_semester_2">semester 2</string>
+    <string name="grades_stats_title">Grade stats</string>
+    <string name="grades_stats_yearly">yearly</string>
     <string name="grades_value_format">value: %s</string>
     <string name="grades_weight_format">weight %s</string>
     <string name="grades_weight_not_counted">not counted to avg</string>
     <string name="grades_year_average_format">end of year: %s</string>
     <string name="grades_year_average_percent_format">yearly: %s%%</string>
     <string name="grades_year_average_point_format">yearly: %spts</string>
+    <string name="grades_year_summary_format">Entire year: %s • %s</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="help">Help</string>
     <string name="help_notification_web_push">Notification forwarding allows you to pair a PC web browser to receive notifications on your desktop. This includes new grades, events, homework etc.\n\nClick \"Notification forwarding\" to begin.</string>
     <string name="help_register_agreement">Registraton will run automatically on the first login.\n\nThere will be some data sent to the app server:\n- your school and class ID\n- your e-register username\n- your first and last name\n\nThe only data visible to others is your name (when sharing events). Any private data (like password, grades etc.) won\'t be sent anywhere. Learn more in the Privacy policy.</string>
+    <string name="hint_download_again">Download again</string>
+    <string name="hint_edit_event">Edit event</string>
+    <string name="hint_go_to_timetable">Go to timetable</string>
+    <string name="hint_mark_as_done">Mark as done</string>
+    <string name="hint_save_in_calendar">Save to calendar</string>
+    <string name="home_configure_add_remove">Add/remove cards</string>
+    <string name="home_configure_notice">Swipe left to remove a card, hold to move.</string>
+    <string name="home_lucky_number_details">%s • Your e-register number is %d</string>
+    <string name="home_lucky_number_details_click_to_set">%s • Click to set your journal number.</string>
+    <string name="home_lucky_number_later">The lucky number on %s is %d.</string>
+    <string name="home_lucky_number_no_info">No info about the lucky number.</string>
+    <string name="home_lucky_number_no_number">There is no lucky number today.</string>
+    <string name="home_lucky_number_today">%d is today\'s lucky number.</string>
+    <string name="home_lucky_number_tomorrow">%d is the lucky number for tomorrow.</string>
+    <string name="home_lucky_number_yours_later">Your number will be lucky on %s.</string>
+    <string name="home_lucky_number_yours_today">Today is your lucky number!</string>
+    <string name="home_lucky_number_yours_tomorrow">Tomorrow will be your lucky number!</string>
+    <string name="home_timetable_later">Later:</string>
+    <string name="home_timetable_later_no_lessons">no lessons</string>
+    <string name="home_timetable_lesson_first">First: %s</string>
+    <string name="home_timetable_lesson_not_started">Coming up: %s</string>
+    <string name="home_timetable_lesson_ongoing">Now: %s</string>
+    <string name="home_timetable_lessons_info">%d lessons - %s to %s</string>
+    <string name="home_timetable_lessons_remaining">Remaining lessons: %d to %s</string>
+    <string name="home_timetable_no_lessons">There are no lessons</string>
+    <string name="home_timetable_no_lessons_text">There are no lessons in the coming week.</string>
+    <string name="home_timetable_no_timetable">The timetable was not downloaded</string>
+    <string name="home_timetable_no_timetable_sync">Sync</string>
+    <string name="home_timetable_no_timetable_text">The timetable for week %s hasn\'t yet been downloaded.</string>
+    <string name="home_timetable_not_public">There is no timetable</string>
+    <string name="home_timetable_not_public_text">The timetable hasn\'t yet been made public by your school.\n\n\Contact your tutor for more information.</string>
+    <string name="home_timetable_today">Today</string>
+    <string name="home_timetable_tomorrow">Tomorrow (%1$s)</string>
     <string name="homework_edit">Edit</string>
+    <string name="homework_no_data">There is no homework.</string>
+    <string name="homework_tab_current">Current</string>
+    <string name="homework_tab_past">Past</string>
     <string name="i_agree">I agree</string>
     <string name="i_disagree">I disagree</string>
+    <string name="in_format">in %s</string>
     <string name="incorrect_format">Incorrect format</string>
+    <string name="language_system">Use system language</string>
     <string name="lesson_added">New lesson</string>
     <string name="lesson_break">Break</string>
     <string name="lesson_cancelled">Lesson cancelled</string>
     <string name="lesson_change">Lesson change</string>
     <string name="lesson_shifted">Shifted lesson</string>
     <string name="lesson_timetable_change">Timetable change</string>
+    <string name="lessons_finished">There are no more lessons today!</string>
     <string name="loading">Loading…</string>
+    <string name="login_account_no_students">This account doesn\'t have any students</string>
+    <string name="login_account_no_students_text">You can\'t log in, because there is no student assigned to this account.\n\nAssing a student on e-journal page or login with an account with a student already assigned to it.</string>
     <string name="login_allow_registration">Allow registration</string>
     <string name="login_button">Log in</string>
     <string name="login_cancel_confirmation">Do you really want to cancel? Displayed profiles won\'t be saved.</string>
+    <string name="login_edudziennik_subtitle">Use the account details, which you use to login into the desktop version of Edudziennik.</string>
+    <string name="login_edudziennik_title">Log in - Edudziennik</string>
     <string name="login_error">Error: %s</string>
     <string name="login_error_account_not_activated">Account is not activated</string>
     <string name="login_error_expired_token">Token has expired. Generate a new token.</string>
     <string name="login_error_incorrect_address">Incorrect server name</string>
+    <string name="login_error_incorrect_code">Incorrect code</string>
+    <string name="login_error_incorrect_code_or_pin">Incorrect code or PIN</string>
     <string name="login_error_incorrect_email">Incorrect e-mail</string>
     <string name="login_error_incorrect_login">Incorrect login</string>
     <string name="login_error_incorrect_login_or_password">Incorrect login or password</string>
@@ -316,9 +503,11 @@
     <string name="login_error_incorrect_school_name">Incorrect school name</string>
     <string name="login_error_incorrect_symbol">Incorrect school symbol</string>
     <string name="login_error_incorrect_token">Incorrect token</string>
+    <string name="login_error_incorrect_token_or_pin">Incorrect token or PIN</string>
     <string name="login_error_incorrect_username">Incorrect username</string>
     <string name="login_error_no_address">Enter server address</string>
     <string name="login_error_no_arguments">no arguments specified</string>
+    <string name="login_error_no_code">Enter the code</string>
     <string name="login_error_no_email">Enter e-mail</string>
     <string name="login_error_no_login">Enter login</string>
     <string name="login_error_no_password">Enter password</string>
@@ -349,10 +538,13 @@
     <string name="login_iuczniowie_help_title">Help - iDziennik Progman</string>
     <string name="login_iuczniowie_subtitle">Use the data which you got from your school. In case of any problems, use the button below the form.</string>
     <string name="login_iuczniowie_title">Log in - iDziennik Progman</string>
+    <string name="login_librus_captcha_title">Librus - login</string>
     <string name="login_librus_help_subtitle">In order to use the app you need a Librus account. You can create it on portal.librus.pl. Use the data you normally enter in the fields marked on the image.</string>
     <string name="login_librus_help_title">Help - Librus</string>
-    <string name="login_librus_subtitle">Log in using your Librus account data (created before on your e-mail address). You can\'t login using the data provided by your school. In case of any problems, use the button below the form.</string>
+    <string name="login_librus_jst_subtitle">Log in with the token and PIN, which you can get from the "mobile apps" section of Librus Synergia.</string>
     <string name="login_librus_jst_title">Log in - Librus JST</string>
+    <string name="login_librus_subtitle">Log in using your Librus account data (created before on your e-mail address). You can\'t login using the data provided by your school. In case of any problems, use the button below the form.</string>
+    <string name="login_librus_title">Log in - Librus</string>
     <string name="login_migration_error_format">A migration error has occurred. It\'s already reported, which means I\'ll try to fix it.\n\nYou can continue using the app. In case of any problems try to remove the profile and create it again.</string>
     <string name="login_migration_subtitle">The app got a huge update. If you encounter any problems, feel free to contact me using the Feedback option in the menu.</string>
     <string name="login_migration_title">Szkolny.eu has been updated</string>
@@ -366,6 +558,8 @@
     <string name="login_progress_title">Logging in…</string>
     <string name="login_startpage_subtitle">Choose the e-register which your school uses. Later you\'ll be able to add more accounts using different e-registers.</string>
     <string name="login_startpage_title">Which e-register do you use?</string>
+    <string name="login_summary_account_child">(child)</string>
+    <string name="login_summary_account_parent">(parent)</string>
     <string name="login_summary_add_student">Add a student</string>
     <string name="login_summary_no_profiles_text">You have to select at least one profile to save in the app.</string>
     <string name="login_summary_no_profiles_title">No profile selected</string>
@@ -373,7 +567,7 @@
     <string name="login_summary_title">It\'s almost ready</string>
     <string name="login_summary_unregister_text">You won\'t be able to use Event sharing and Notification forwarding.</string>
     <string name="login_summary_unregister_title">Turn off registration?</string>
-    <string name="login_sync_error_subtitle">An error occurred during sync. Click the button on the bottom to report the error.\n\nProfiles were saved, so <b>the app should work correctly</b>. In case of any problems you can go to Feedback in the Drawer.\n</string>
+    <string name="login_sync_error_subtitle">An error occurred during sync. Click the button on the bottom to report the error.\n\nProfiles were saved, so . In case of any problems you can go to Feedback in the Drawer.\n</string>
     <string name="login_sync_error_title">Sync error</string>
     <string name="login_sync_subtitle_1_format">Syncing profile</string>
     <string name="login_sync_title">Syncing…</string>
@@ -385,6 +579,10 @@
     <string name="login_vulcan_subtitle">Choose \"Dostęp mobilny\" on e-register website, register a new device and enter the data. In case of any problems, use the button below the form.</string>
     <string name="login_vulcan_title">Log in - Vulcan UONET+</string>
     <string name="main_menu_add">Add…</string>
+    <array name="main_menu_add_options">
+        <item>Event</item>
+        <item>Homework</item>
+    </array>
     <string name="main_menu_agenda_view_type">Change view</string>
     <string name="main_menu_block_timetable">Generate a block timetable</string>
     <string name="main_menu_grades_average">Grade averages</string>
@@ -394,6 +592,20 @@
     <string name="main_menu_sort_by">Sort by</string>
     <string name="material_calendar_friday">F</string>
     <string name="material_calendar_monday">M</string>
+    <array name="material_calendar_months_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
     <string name="material_calendar_negative_button">Cancel</string>
     <string name="material_calendar_positive_button">OK</string>
     <string name="material_calendar_saturday">S</string>
@@ -402,39 +614,106 @@
     <string name="material_calendar_today_button">Today</string>
     <string name="material_calendar_tuesday">T</string>
     <string name="material_calendar_wednesday">W</string>
+    <string name="menu_add_event">Add event</string>
+    <string name="menu_add_event_desc">Save own event or homework in the agenda</string>
     <string name="menu_add_new_profile">Add a new student</string>
+    <string name="menu_add_remove_cards">Add or remove cards</string>
     <string name="menu_agenda">Agenda</string>
+    <string name="menu_agenda_change_view">Change Agenda view</string>
     <string name="menu_announcements">Notice board</string>
     <string name="menu_attendance">Attendance</string>
+    <string name="menu_debug">Debugging</string>
+    <string name="menu_feedback">Help and FAQ</string>
+    <string name="menu_generate_block_timetable">Save the timetable as an image</string>
+    <string name="menu_generate_block_timetable_desc">Generates timetable for the whole week</string>
     <string name="menu_grades">Grades</string>
+    <string name="menu_grades_average_mode">End-of-year average calculation method</string>
+    <string name="menu_grades_averages">Grade averages</string>
+    <string name="menu_grades_averages_desc">Show semester and end-of-year averages</string>
+    <string name="menu_grades_color_mode">Grades color</string>
+    <string name="menu_grades_config">Grades settings</string>
     <string name="menu_grades_editor">Grade editing simulator</string>
+    <string name="menu_grades_sort_mode">Sort grades</string>
     <string name="menu_help">Help</string>
     <string name="menu_home_page">Home page</string>
     <string name="menu_homework">Homework</string>
+    <string name="menu_lab">Lab</string>
     <string name="menu_manage_profiles">Manage profiles</string>
     <string name="menu_mark_as_read">Mark as read</string>
+    <string name="menu_mark_everything_as_read">Mark everything as read</string>
+    <string name="menu_message">Message</string>
+    <string name="menu_message_compose">Compose</string>
     <string name="menu_messages">Messages</string>
-    <string name="messages_tab_received">Inbox</string>
-    <string name="messages_tab_sent">Sent</string>
     <string name="menu_notices">Behaviour</string>
     <string name="menu_notifications">Notifications</string>
+    <string name="menu_remove_notifications">Clear</string>
+    <string name="menu_remove_notifications_success">Cleared notifications</string>
+    <string name="menu_set_student_number">Set your register number</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_sync">Synchronise</string>
     <string name="menu_sync_all">Synchronise all</string>
+    <string name="menu_template">Template</string>
     <string name="menu_timetable">Timetable</string>
+    <string name="menu_timetable_manual">Timetable editor</string>
+    <string name="menu_web_push">Forwarding notifications</string>
     <string name="messages_attachment_cannot_download">Cannot download attachment</string>
     <string name="messages_attachment_cannot_download_text">An internal error occurred while downloading the attachment. A weak internet connection may be the case.</string>
+    <string name="messages_attachment_download_again">Download again</string>
+    <string name="messages_compose_confirm_text">Are you sure you want to send the message to selected recipients?</string>
+    <string name="messages_compose_confirm_title">Confirm sending the message</string>
+    <string name="messages_compose_menu_attachment">Add an attachment</string>
+    <string name="messages_compose_menu_discard">Abort message</string>
+    <string name="messages_compose_menu_save_draft">Save draft</string>
+    <string name="messages_compose_menu_send">Send</string>
+    <string name="messages_compose_recipient_exists">This recipient has already been selected</string>
+    <string name="messages_compose_recipients_empty">Select recipients</string>
+    <string name="messages_compose_recipients_error">Check if the selected recipients are correct</string>
+    <string name="messages_compose_recipients_text_format">Select recipients from the category %s you want to add to the message.</string>
+    <string name="messages_compose_recipients_title">Add recipients</string>
+    <string name="messages_compose_send">Send</string>
+    <string name="messages_compose_subject_empty">Enter a subject with at least 3 characters</string>
+    <string name="messages_compose_subject_hint">Subject</string>
+    <string name="messages_compose_text_empty">Enter the message</string>
+    <string name="messages_compose_text_hint">Write a message…</string>
+    <string name="messages_compose_title">Write a message</string>
+    <string name="messages_compose_to_hint">To</string>
+    <string name="messages_delete_confirmation">Are you sure you want to delete the message?</string>
+    <string name="messages_delete_confirmation_text">This will move the message to the \"Deleted\" tab in the app. The changes will not affect the e-journal message (it will not be deleted ).</string>
     <string name="messages_download_error">Message downloading error</string>
     <string name="messages_draft_title">Draft</string>
-    <string name="messages_recipients_list_read_format"><![CDATA[<li>&nbsp;%s, read: %s, %s</li>]]></string>
-    <string name="messages_recipients_list_read_unknown_date_format"><![CDATA[<li>&nbsp;%s, read: yes</li>]]></string>
-    <string name="messages_recipients_list_unknown_state_format"><![CDATA[<li>&nbsp;%s</li>]]></string>
-    <string name="messages_recipients_list_unread_format"><![CDATA[<li>&nbsp;%s, read: <font color=red>no</font></li>]]></string>
+    <string name="messages_no_data">You don\'t have any messages</string>
+    <string name="messages_recipient_list_download_error">Error getting the recipient list</string>
+    <string name="messages_recipients_list_read_format"><![CDATA[<li>&amp;nbsp;%s, read: %s, %s</li>]]></string>
+    <string name="messages_recipients_list_read_unknown_date_format"><![CDATA[<li>&amp;nbsp;%s, read: yes</li>]]></string>
+    <string name="messages_recipients_list_unread_format"><![CDATA[<li>&amp;nbsp;%s, read: <font color=red>no</font></li>]]></string>
+    <string name="messages_reply">Reply</string>
+    <string name="messages_reply_date_time_format">%s at %s</string>
+    <string name="messages_search">Search</string>
+    <string name="messages_search_results">Found %d message</string>
+    <string name="messages_sent_success">Message was sent</string>
+    <string name="messages_tab_deleted">Deleted</string>
+    <string name="messages_tab_received">Inbox</string>
+    <string name="messages_tab_sent">Sent</string>
+    <array name="months_day_of_array">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
     <string name="more">More</string>
     <string name="network_you_are_offline_text">Try to turn on Wi-Fi or mobile data.</string>
     <string name="network_you_are_offline_title">You\'re offline</string>
     <string name="next">Next</string>
     <string name="no">No</string>
+    <string name="no_lessons_today">There are no lessons today!</string>
     <string name="no_permissions">No permissions</string>
     <string name="no_thanks">No, thanks</string>
     <string name="not_now">Not now</string>
@@ -443,8 +722,8 @@
     <string name="notices_points_format">%s, points: %s</string>
     <string name="notices_praises_title">Praises:</string>
     <string name="notices_summary_title_loading_format">Summary - loading…</string>
-    <string name="notices_summary_title_semester_format">Summary - semester %d&#160;</string>
-    <string name="notices_summary_title_year">Summary - all year&#160;</string>
+    <string name="notices_summary_title_semester_format">Summary - semester %d </string>
+    <string name="notices_summary_title_year">Summary - all year </string>
     <string name="notices_warnings_title">Warnings:</string>
     <string name="notification">Notification</string>
     <string name="notification_absence">Absence</string>
@@ -454,6 +733,7 @@
     <string name="notification_attendance_no_lesson_format">%1$s on day %3$s</string>
     <string name="notification_belated">Late</string>
     <string name="notification_belated_excused">Excused late</string>
+    <string name="notification_cant_check_update">Failed to check for updates</string>
     <string name="notification_channel_get_data_desc">Notification about data sync progress</string>
     <string name="notification_channel_get_data_name">Synchronisation</string>
     <string name="notification_channel_notifications_desc">Notifications about new data in the e-register</string>
@@ -462,10 +742,15 @@
     <string name="notification_channel_notifications_quiet_name">Notifications (quiet hours)</string>
     <string name="notification_channel_updates_desc">Notifications about new versions of the app</string>
     <string name="notification_channel_updates_name">App updates</string>
+    <string name="notification_channel_user_attention_desc">Notifications about a problem that requires user interaction (e.g. Captcha verification). It is recommended to leave this category on.</string>
+    <string name="notification_channel_user_attention_name">Action required</string>
+    <string name="notification_click_to_see_all">Click to see all notifications</string>
+    <string name="notification_day_free">Day off</string>
     <string name="notification_downloading_update">Downloading update…</string>
     <string name="notification_event_format">%1$s on %2$s from %3$s</string>
-    <string name="notification_event_no_subject_format">%1$s on %2$s</string>
     <string name="notification_event_no_subject">unknown subject</string>
+    <string name="notification_event_no_subject_format">%1$s on %2$s</string>
+    <string name="notification_filter_warning">Are you sure you want to apply these settings?\n\nYou won\'t see information about some data, so you may miss important messages or grades.\n\nThe settings will be applied to the currently selected profile.</string>
     <string name="notification_get_data_cancel">Cancel</string>
     <string name="notification_get_data_error_summary">Szkolny.eu: error</string>
     <string name="notification_get_data_error_title">Error while getting data for profile %s</string>
@@ -476,6 +761,7 @@
     <string name="notification_grade_format">New grade (%s) from %s</string>
     <string name="notification_homework_format">Homework from %s for %s</string>
     <string name="notification_homework_no_subject_format">Homework for %s</string>
+    <string name="notification_lesson_change_format">%s on %s - %s</string>
     <string name="notification_lucky_number_format">Today %2$d is the lucky number.</string>
     <string name="notification_lucky_number_later_format">The lucky number for %1$s is %2$d.</string>
     <string name="notification_lucky_number_tomorrow_format">The lucky number for tomorrow is %2$d.</string>
@@ -494,7 +780,6 @@
     <string name="notification_shared_event_modified_format">%s changed %s na %s - %s</string>
     <string name="notification_shared_event_removed_format">%s removed %s na %s - %s</string>
     <string name="notification_teacher_absence_new_format">New teacher absence for %s</string>
-    <string name="notification_ticker_format">Szkolny.eu: %s</string>
     <string name="notification_type_attendance">Attendance</string>
     <string name="notification_type_auto_archiving">Profile archiving</string>
     <string name="notification_type_error">Error</string>
@@ -507,8 +792,10 @@
     <string name="notification_type_new_homework">New homework</string>
     <string name="notification_type_new_message">New message</string>
     <string name="notification_type_new_shared_event">New shared event</string>
+    <string name="notification_type_new_shared_homework">Shared homework</string>
     <string name="notification_type_new_teacher_absence">New teacher absence</string>
     <string name="notification_type_notice">New notice</string>
+    <string name="notification_type_removed_shared_event">Removed shared event</string>
     <string name="notification_type_server_message">Server message</string>
     <string name="notification_type_timetable_change">Timetable change</string>
     <string name="notification_type_timetable_lesson_change">Lesson change</string>
@@ -516,11 +803,15 @@
     <string name="notification_updates_summary">Szkolny.eu: update</string>
     <string name="notification_updates_text">Click to download version %s</string>
     <string name="notification_updates_title">Update available</string>
+    <string name="notification_user_action_required_captcha_librus">Librus: Captcha verification required. Click to continue logging into the e-journal.</string>
+    <string name="notification_user_action_required_text">The problem that prevents synchronization must be solved by the user. Click for more information.</string>
+    <string name="notification_user_action_required_title">Action required in the application</string>
     <string name="notifications_no_data">No notifications.</string>
     <string name="ok">OK</string>
     <string name="open">Open</string>
     <string name="opening_file">Opening %s</string>
     <string name="opening_file_no_app">No application opening this file type</string>
+    <string name="other">Other</string>
     <string name="please_wait">Please wait</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="profile_archived_dialog_text_format">Profile %s has been archived. Sync was disabled, because of the possibility of data loss on next data download.\n\nYou can still browse this profile\'s saved data.\n\nKeep in mind that some messages might not download correctly.</string>
@@ -532,12 +823,16 @@
     <string name="profile_menu_open_settings">Settings</string>
     <string name="profile_menu_remove">Remove profile</string>
     <string name="profile_menu_remove_confirm">Are you sure?</string>
-    <string name="profile_menu_remove_confirm_text_format">You are trying to remove profile <b>%s</b>. This means removing this profile\'s data (grades, timetables, events…) from the app.\n\nYou\'ll be able to restore most of the data by logging in again.\n\nDo you really want to remove profile %s?</string>
+    <string name="profile_menu_remove_confirm_text_format">You are trying to remove profile . This means removing this profile\'s data (grades, timetables, events…) from the app.\n\nYou\'ll be able to restore most of the data by logging in again.\n\nDo you really want to remove profile %s?</string>
+    <string name="qr_scanner_dialog_title">Scan a QR code</string>
     <string name="rate_snackbar_negative">Never</string>
     <string name="rate_snackbar_neutral">Later</string>
     <string name="rate_snackbar_positive">Rate now</string>
     <string name="rate_snackbar_text">Show that you like Szkolny.eu - rate the app and make it even better!</string>
     <string name="refresh">Refresh</string>
+    <string name="registration_enable_dialog_text">Registration is automatic if this option is enabled. It allows you to create and receive events shared with other students in your class. Thanks to this, you can add items not saved by the teacher to the journal.\n\nMake sure you read the terms and accept them.</string>
+    <string name="registration_enable_dialog_title">Server registration</string>
+    <string name="registration_enable_progress_text">Syncing shared events…</string>
     <string name="remove">Remove</string>
     <string name="removed">Removed</string>
     <string name="report">Report</string>
@@ -550,6 +845,12 @@
     <string name="settings_about_changelog_text">Changelog</string>
     <string name="settings_about_crash_subtext">Or better do not click…</string>
     <string name="settings_about_crash_text">Click to throw an unexpected exception</string>
+    <string name="settings_about_discord_subtext">Join our Discord community!</string>
+    <string name="settings_about_discord_text">Discord server</string>
+    <string name="settings_about_language_dialog_text">Notice. This feature may not work on some devices or in some parts of the app.</string>
+    <string name="settings_about_language_dialog_title">Change app language</string>
+    <string name="settings_about_language_subtext">"English "</string>
+    <string name="settings_about_language_text">App language</string>
     <string name="settings_about_licenses_text">Open-source licenses</string>
     <string name="settings_about_privacy_policy_text">Privacy policy</string>
     <string name="settings_about_register_title_text">E-register</string>
@@ -564,6 +865,8 @@
     <string name="settings_profile_change_name_dialog_text">Enter the name</string>
     <string name="settings_profile_change_name_dialog_title">Change name</string>
     <string name="settings_profile_change_title">Profile</string>
+    <string name="settings_profile_notifications_subtext">Turn off certain types of notifications</string>
+    <string name="settings_profile_notifications_text">Filter notifications</string>
     <string name="settings_profile_notify_subtext">Show notifications about this profile</string>
     <string name="settings_profile_notify_text">Notify about new data</string>
     <string name="settings_profile_remove_image">Remove profile picture</string>
@@ -606,6 +909,7 @@
     <string name="settings_register_shared_events_dialog_enabled_text">You will receive shared events from other people in your class.</string>
     <string name="settings_register_shared_events_subtext">Share exams in your class</string>
     <string name="settings_register_shared_events_text">Enable Event sharing</string>
+    <string name="settings_register_show_teacher_absences_text">Show teacher absences in Agenda</string>
     <string name="settings_sync_customize_endpoint_announcements">Notice board</string>
     <string name="settings_sync_customize_endpoint_attendance">Attendances</string>
     <string name="settings_sync_customize_endpoint_class_free_days">Class free days</string>
@@ -658,6 +962,9 @@
     <string name="settings_theme_mini_drawer_buttons_text">Customize Mini menu buttons</string>
     <string name="settings_theme_mini_drawer_subtext">Show a menu on the left</string>
     <string name="settings_theme_mini_drawer_text">Show Mini menu</string>
+    <string name="settings_theme_open_drawer_on_back_pressed_text">Back button opens drawer</string>
+    <string name="settings_theme_snowfall_subtext">Jingle all the way</string>
+    <string name="settings_theme_snowfall_text">Jingle bells, Jingle bells</string>
     <string name="settings_theme_theme_pink">Pink</string>
     <string name="settings_theme_theme_system">System</string>
     <string name="settings_theme_theme_text">Theme</string>
@@ -670,6 +977,9 @@
     <string name="shortcut_homework">Homework</string>
     <string name="shortcut_messages">Messages</string>
     <string name="shortcut_timetable">Timetable</string>
+    <string name="snackbar_error_text">An error occurred</string>
+    <string name="sort_by_date">By date</string>
+    <string name="sort_by_subject">By subject</string>
     <string name="subject_filter_disabled">All subjects</string>
     <string name="summary_mode_semester_1">Semester 1</string>
     <string name="summary_mode_semester_2">Semester 2</string>
@@ -677,7 +987,6 @@
     <string name="sure">Sure!</string>
     <string name="sync_action_authorizing">Authorizing</string>
     <string name="sync_action_creating_notifications">Creating notifications</string>
-    <string name="sync_action_format">%s…</string>
     <string name="sync_action_getting_account">Getting account info</string>
     <string name="sync_action_getting_accounts">Getting account list</string>
     <string name="sync_action_getting_certificate">Getting certificate</string>
@@ -688,8 +997,8 @@
     <string name="sync_action_syncing">Syncing</string>
     <string name="sync_action_syncing_account_info">Getting account info</string>
     <string name="sync_action_syncing_announcements">Getting notice board</string>
-    <string name="sync_action_syncing_attendance_types">Getting attendance types</string>
     <string name="sync_action_syncing_attendance">Getting attendance</string>
+    <string name="sync_action_syncing_attendance_types">Getting attendance types</string>
     <string name="sync_action_syncing_behaviour_grade_categories">Getting behaviour grades categories</string>
     <string name="sync_action_syncing_behaviour_grades">Getting behaviour grades</string>
     <string name="sync_action_syncing_calendar">Getting agenda</string>
@@ -702,6 +1011,7 @@
     <string name="sync_action_syncing_events">Getting events</string>
     <string name="sync_action_syncing_exams">Getting exams</string>
     <string name="sync_action_syncing_grade_categories">Getting grade types</string>
+    <string name="sync_action_syncing_grade_comments">Getting grade comments</string>
     <string name="sync_action_syncing_grade_details">Getting grade details</string>
     <string name="sync_action_syncing_grades">Getting grades</string>
     <string name="sync_action_syncing_homework">Getting homework</string>
@@ -715,6 +1025,7 @@
     <string name="sync_action_syncing_point_grades">Getting point grades</string>
     <string name="sync_action_syncing_proposition_grades">Getting proposition grades</string>
     <string name="sync_action_syncing_pt_meetings">Getting parent-teacher meetings</string>
+    <string name="sync_action_syncing_school_free_days">Getting school free days</string>
     <string name="sync_action_syncing_school_info">Getting school info</string>
     <string name="sync_action_syncing_shared_events">Syncing shared events</string>
     <string name="sync_action_syncing_subjects">Getting subjects</string>
@@ -738,6 +1049,7 @@
     <string name="sync_error_invalid_school_name">Invalid school name or forbidden characters</string>
     <string name="sync_error_invalid_server_address">Server address is invalid. Make sure it\'s entered correctly and doesn\'t contain whitespaces.</string>
     <string name="sync_error_invalid_token">Invalid token specified.</string>
+    <string name="sync_error_librus_disconnected">LIBRUS account has lost connection with the Synergia account. Login on portal.librus.pl or in the Librus mobile app and follow the instructions to fix the problem.</string>
     <string name="sync_error_librus_not_activated">LIBRUS account is not activated. Activate it using a link in the received e-mail.</string>
     <string name="sync_error_login_error">Login error</string>
     <string name="sync_error_maintenance">Maintenance</string>
@@ -751,6 +1063,7 @@
     <string name="sync_error_register_student_not_associated_format">Student %s is not assigned to this register (login: %s).\n\nTry to log in again although this may also indicate a maintenance time.</string>
     <string name="sync_error_saving_data">Error while saving data. Report the error.</string>
     <string name="sync_error_ssl">Failed to establish a secure connection.</string>
+    <string name="sync_error_synergia_not_activated">The Synergia account hasn\'t been activated by a parent or legal guardian.\n\nLog into portal.librus.pl and follow the instructions in order to activate it.</string>
     <string name="sync_error_timeout">Timeout</string>
     <string name="sync_error_unknown">Unknown error</string>
     <string name="sync_feature_agenda">Syncing agenda…</string>
@@ -776,20 +1089,93 @@
     <string name="tap_target_set_as_read_title">Notifications</string>
     <string name="tap_target_switch_profile_text">Click on the menu header to change or add a student\'s profile. Here you\'ll also find a manual sync of all profiles.</string>
     <string name="tap_target_switch_profile_title">Modify profiles</string>
+    <string name="teacher_educator">Tutor</string>
+    <string name="teacher_librarian">Librarian</string>
+    <string name="teacher_other">Other</string>
+    <string name="teacher_parent">Parent</string>
+    <string name="teacher_parents_council">Parents\' council</string>
+    <string name="teacher_pedagogue">Pedagogue / Psychologist</string>
+    <string name="teacher_principal">Principal</string>
+    <string name="teacher_school_admin">School Administrator</string>
+    <string name="teacher_school_parents_council">School parents\' council</string>
+    <string name="teacher_secretariat">Secretariat</string>
+    <string name="teacher_specialist">Specialist</string>
+    <string name="teacher_student">Student</string>
+    <string name="teacher_super_admin">SuperAdmin</string>
+    <string name="teacher_teacher">Teacher</string>
+    <string name="teachers_browse_category">Browse category</string>
     <string name="the_day_after">overmorrow</string>
     <string name="the_day_before">the day before yesterday</string>
+    <string name="theme_amber">Amber</string>
+    <string name="theme_black">Black / OLED</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_chocolate">Chocolate</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_dark_blue">Dark blue</string>
+    <string name="theme_dark_green">Dark green</string>
+    <string name="theme_dark_purple">Dark purple</string>
+    <string name="theme_dark_red">Dark red</string>
+    <string name="theme_indigo">Indigo</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_light_blue">Light blue</string>
+    <string name="theme_light_green">Light green</string>
+    <string name="theme_light_purple">Light purple</string>
+    <string name="theme_light_red">Light red</string>
+    <string name="theme_light_yellow">Light yellow</string>
+    <string name="theme_purple">Purple</string>
+    <string name="theme_red">Red</string>
+    <string name="timetable_free_day_show">Show timetable</string>
+    <string name="timetable_free_day_text">No lessons this day:</string>
+    <string name="timetable_free_day_title">Free day</string>
     <string name="timetable_generate_current_week_format">With changes for this week (%s to %s)</string>
     <string name="timetable_generate_for_printout">Printable (no changes, less colors)</string>
     <string name="timetable_generate_include_profile_name">Display the student\'s profile name</string>
     <string name="timetable_generate_next_week_format">With changes for the next week (%s to %s)</string>
     <string name="timetable_generate_no_changes">No timetable changes</string>
+    <string name="timetable_generate_no_colors">Printable (less colors)</string>
     <string name="timetable_generate_progress_text">This may take few seconds…</string>
     <string name="timetable_generate_progress_title">Generating timetable</string>
     <string name="timetable_generate_range">Range of the timetable</string>
+    <string name="timetable_generate_selected_week">For selected week</string>
+    <string name="timetable_generate_show_profile_name">Show profile name</string>
+    <string name="timetable_generate_show_teachers_names">Show names of teachers</string>
     <string name="timetable_generate_success_text">The timetable was saved in Szkolny.eu directory as an image file.\n\nYou can open or share it right away.</string>
     <string name="timetable_generate_success_title">Done</string>
+    <string name="timetable_lesson_cancelled">Lesson cancelled</string>
+    <string name="timetable_lesson_change">Lesson change</string>
+    <string name="timetable_lesson_change_format">Lesson change: instead of %s</string>
+    <string name="timetable_lesson_shifted">Lesson shifted to other day</string>
+    <string name="timetable_lesson_shifted_from">Lesson shifted from other day</string>
+    <string name="timetable_lesson_shifted_from_other_day">Lesson shifted from %s %s</string>
+    <string name="timetable_lesson_shifted_from_same_day">Lesson shifted from %s</string>
+    <string name="timetable_lesson_shifted_other_day">"Lesson shifted to %s %s "</string>
+    <string name="timetable_lesson_shifted_same_day">Lesson shifted to %s</string>
+    <string name="timetable_manual_dialog_date">Date</string>
+    <string name="timetable_manual_dialog_date_choose">Select the date</string>
+    <string name="timetable_manual_dialog_subject_choose">Select the subject</string>
+    <string name="timetable_manual_dialog_time">Time</string>
+    <string name="timetable_manual_dialog_time_choose">Select the time</string>
+    <string name="timetable_manual_dialog_time_format">%s (lesson %d)</string>
+    <string name="timetable_manual_item_empty">No own lessons added for this day.</string>
+    <string name="timetable_manual_repeat_by_subject_notice">On each %s lesson</string>
+    <string name="timetable_manual_repeating_notice">Includes a timetable for each week</string>
+    <string name="timetable_manual_type_by_subject">By subject</string>
+    <string name="timetable_manual_type_one_time">Once</string>
+    <string name="timetable_manual_type_repeating">Repeating</string>
     <string name="timetable_no_classroom">(no classroom)</string>
     <string name="timetable_no_data">No lessons this day</string>
+    <string name="timetable_no_lessons_title">No lessons this day</string>
+    <string name="timetable_no_subject_name">(no name)</string>
+    <string name="timetable_no_timetable_sync">Synchronize</string>
+    <string name="timetable_no_timetable_text">Timetable for this week hasn\'t been synchronized yet</string>
+    <string name="timetable_no_timetable_title">No timetable</string>
+    <string name="timetable_no_timetable_week">for week %s</string>
+    <string name="timetable_not_public_hint">Contact your tutor in order to get the timetable.</string>
+    <string name="timetable_not_public_text">Timetable is not public</string>
+    <string name="timetable_not_public_title">No timetable</string>
+    <string name="timetable_select_day">Choose date</string>
+    <string name="timetable_syncing_text">Syncing timetable for the chosen week…</string>
+    <string name="timetable_today">Today</string>
     <string name="title_all">Sync all</string>
     <string name="title_debugging">Debugging</string>
     <string name="title_feedback">Feedback</string>
@@ -800,16 +1186,22 @@
     <string name="title_profile_manager">Profile manager</string>
     <string name="title_semester">Switch the semester</string>
     <string name="toast_changing_profile">Changing profile…</string>
+    <string name="today">today</string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="toolbar_subtitle_syncing">Syncing…</string>
     <string name="unknown">Unknown</string>
     <string name="update_needed">Update needed</string>
     <string name="update_needed_text">You have to update the app in order to use it. Click OK to download.</string>
     <string name="warning_older_version_running">You\'re trying to run an older version of the app which may break its data.</string>
     <string name="web_push_configured_browsers">Paired browsers</string>
     <string name="web_push_connection_error">No connection.</string>
+    <string name="web_push_date_paired_format">Paired %s</string>
     <string name="web_push_no_browsers">No paired browsers.</string>
     <string name="web_push_pair_browser">Pair a browser</string>
     <string name="web_push_really_remove">Do you want to remove this browser?</string>
+    <string name="web_push_token_invalid">Token is invalid</string>
     <string name="web_push_unavailable">You can\'t do this</string>
+    <string name="web_push_unpair_button">Unpair</string>
     <string name="web_push_you_need_to_register">You have to enable registration in order to use Notification forwarding.\n\nSelect \"Allow registration\" in E-register Settings.</string>
     <string name="what_do_you_want_to_do">What do you want to do?</string>
     <string name="what_is_this">What is this?</string>
@@ -825,143 +1217,15 @@
     <string name="widget_sync">Synchronise</string>
     <string name="widget_timetable_big_font">Use a bigger font</string>
     <string name="widget_timetable_no_lessons">No lessons on selected day.</string>
+    <string name="widget_timetable_no_lessons_found">No lessons for the next 7 days</string>
+    <string name="widget_timetable_no_timetable">Timetable isn\'t synchronized. Open the app and synchronize the timetable.</string>
     <string name="widget_timetable_profile_doesnt_exist">The profile does not exist.\nAdd the widget again.</string>
+    <string name="widget_timetable_short_no_lessons">No lessons for the next 7 days.</string>
+    <string name="widget_timetable_short_no_timetable">Timetable isn\'t synchronized.</string>
     <string name="widget_timetable_title">Timetable</string>
     <string name="widget_timetable_title_unified">Unified timetable</string>
     <string name="yes">Yes</string>
     <string name="yesterday">yesterday</string>
     <string name="you_are_offline_text">You\'re offline. Try enabling Wi-Fi or mobile data.</string>
     <string name="you_are_offline_title">Internet connection</string>
-    <string name="homework_tab_current">Current</string>
-    <string name="homework_tab_past">Past</string>
-    <string name="homework_no_data">There is no homework.</string>
-    <string name="sort_by_date">By date</string>
-    <string name="sort_by_subject">By subject</string>
-    <string name="sync_error_librus_disconnected">LIBRUS account has lost connection with the Synergia account. Login on portal.librus.pl or in the Librus mobile app and follow the instructions to fix the problem.</string>
-    <string name="compose_title">Compose</string>
-    <string name="drawer_add_new_profile_desc">Add a new profile</string>
-    <string name="drawer_manage_profiles_desc">Add or remove students\' profiles</string>
-    <string name="error_invalid_fragment">Wrong module given: %d Report it to the application developer</string>
-    <string name="menu_add_event">Add event</string>
-    <string name="menu_add_event_desc">Save own event or homework in the agenda</string>
-    <string name="menu_agenda_change_view">Change Agenda view</string>
-    <string name="menu_debug">Debugging</string>
-    <string name="menu_feedback">Help and FAQ</string>
-    <string name="menu_generate_block_timetable">Save the timetable as an image</string>
-    <string name="menu_generate_block_timetable_desc">Generates timetable for the whole week</string>
-    <string name="menu_grades_average_mode">End-of-year average calculation method</string>
-    <string name="menu_grades_averages">Grade averages</string>
-    <string name="menu_grades_averages_desc">Show semester and end-of-year averages</string>
-    <string name="menu_grades_color_mode">Grades color</string>
-    <string name="menu_grades_sort_mode">Sort grades</string>
-    <string name="menu_message">Message</string>
-    <string name="menu_set_student_number">Set your register number</string>
-    <string name="messages_compose_menu_attachment">Add an attachment</string>
-    <string name="messages_compose_menu_discard">Abort message</string>
-    <string name="messages_compose_menu_save_draft">Save draft</string>
-    <string name="messages_compose_menu_send">Send</string>
-    <string name="agenda_teacher_absence">Absent teachers</string>
-    <string name="sync_action_syncing_grade_comments">Getting grade comments</string>
-    <string name="sync_action_syncing_school_free_days">Getting school free days</string>
-    <string name="settings_register_show_teacher_absences_text">Show teacher absences in Agenda</string>
-    <string name="menu_mark_everything_as_read">Mark everything as read</string>
-    <string name="settings_about_language_text">App language</string>
-    <string name="settings_about_language_subtext">"English "</string>
-    <string name="settings_about_language_dialog_title">Change app language</string>
-    <string name="settings_about_language_dialog_text">Notice. This feature may not work on some devices or in some parts of the app.</string>
-    <string name="settings_about_discord_text">Discord server</string>
-    <string name="settings_about_discord_subtext">Join our Discord community!</string>
-    <string name="language_system">Use system language</string>
-    <string name="login_summary_account_child">(child)</string>
-    <string name="login_summary_account_parent">(parent)</string>
-    <string name="toolbar_subtitle_syncing">Syncing...</string>
-    <string name="bell_sync_choose_howto">Choose the nearest bell to synchronize.</string>
-    <string name="calendar_app_not_found">Calendar app not found</string>
-    <string name="card_action_move_down">Move up</string>
-    <string name="card_action_move_up">Move down</string>
-    <string name="compose">Compose</string>
-    <string name="counter_activity_sync">Synchronize</string>
-    <string name="dialog_day_no_events">No events this day</string>
-    <string name="dialog_error_details_title">Error details</string>
-    <string name="dialog_event_details_added_by">Added</string>
-    <string name="dialog_event_details_subject">Subject</string>
-    <string name="dialog_event_details_teacher">Teacher</string>
-    <string name="dialog_event_details_team">Team</string>
-    <string name="dialog_event_details_topic">Topic</string>
-    <string name="dialog_event_manual_date_next_lesson">next lesson %s</string>
-    <string name="dialog_event_manual_date_next_week">next %s (%s)</string>
-    <string name="dialog_event_manual_date_other">-- other day --</string>
-    <string name="dialog_event_manual_date_today">today (%s)</string>
-    <string name="dialog_event_manual_date_tomorrow">tomorrow (%s)</string>
-    <string name="dialog_event_manual_more_options">More options</string>
-    <string name="dialog_event_manual_no_lessons">No lessons this day</string>
-    <string name="dialog_event_manual_time">Lesson/time</string>
-    <string name="dialog_event_manual_title">Add an entry to the agenda</string>
-    <string name="dialog_lesson_details_classroom">Classroom</string>
-    <string name="dialog_lesson_details_id">Lesson ID</string>
-    <string name="dialog_lesson_details_number">Lesson number</string>
-    <string name="dialog_lesson_details_shifted_from">Lesson shifted from %s</string>
-    <string name="dialog_lesson_details_shifted_to">Lesson shifted to %s</string>
-    <string name="dialog_lesson_details_teacher">Teacher</string>
-    <string name="dialog_lesson_details_team">Team</string>
-    <string name="dialog_lesson_go_to_button">Show</string>
-    <string name="dialog_lesson_no_events">No events on this lesson.</string>
-    <string name="dialog_no_events_hint">You can add a new event manually, using Add button.</string>
-    <string name="dialog_profile_remove_success">Profile removed successfully.</string>
-    <string name="dialog_sync_view_list_title">Manual synchronization</string>
-    <string name="dont_ask_again">Don\'t ask again</string>
-    <string name="edziennik_notification_api_cancel">Cancel</string>
-    <string name="edziennik_notification_api_close">Close</string>
-    <string name="edziennik_notification_api_error_report_task">Reporting errors...</string>
-    <string name="edziennik_notification_api_error_report_title">Reporting errors</string>
-    <string name="edziennik_notification_api_error_title">Synchronization interrupted</string>
-    <string name="edziennik_notification_api_first_login_title">First login</string>
-    <string name="edziennik_notification_api_notify_title">Creating notifications</string>
-    <string name="edziennik_notification_api_sync_title_format">Synchronizing profile %s...</string>
-    <string name="edziennik_notification_api_title">Synchronization service</string>
-    <string name="settings_theme_open_drawer_on_back_pressed_text">Back button opens drawer</string>
-    <string name="settings_theme_snowfall_text">Jingle bells, Jingle bells</string>
-    <string name="settings_theme_snowfall_subtext">Jingle all the way</string>
-    <string name="snackbar_error_text">An error occurred</string>
-    <string name="timetable_free_day_show">Show timetable</string>
-    <string name="timetable_free_day_title">Free day</string>
-    <string name="timetable_free_day_text">No lessons this day:</string>
-    <string name="timetable_generate_no_colors">Printable (less colors)</string>
-    <string name="timetable_generate_selected_week">For selected week</string>
-    <string name="timetable_generate_show_profile_name">Show profile name</string>
-    <string name="timetable_lesson_cancelled">Lesson cancelled</string>
-    <string name="timetable_lesson_change">Lesson change</string>
-    <string name="timetable_lesson_change_format">Lesson change: instead of %s</string>
-    <string name="timetable_lesson_shifted">Lesson shifted to other day</string>
-    <string name="timetable_lesson_shifted_from">Lesson shifted from other day</string>
-    <string name="timetable_lesson_shifted_from_other_day">Lesson shifted from %s %s</string>
-    <string name="timetable_lesson_shifted_from_same_day">Lesson shifted from %s</string>
-    <string name="timetable_lesson_shifted_other_day">"Lesson shifted to %s %s "</string>
-    <string name="timetable_lesson_shifted_same_day">Lesson shifted to %s</string>
-    <string name="timetable_no_lessons_title">No lessons this day</string>
-    <string name="timetable_no_subject_name">(no name)</string>
-    <string name="timetable_no_timetable_sync">Synchronize</string>
-    <string name="timetable_no_timetable_text">Timetable for this week hasn\'t been synchronized yet</string>
-    <string name="timetable_no_timetable_title">No timetable</string>
-    <string name="timetable_no_timetable_week">for week %s</string>
-    <string name="timetable_not_public_text">Timetable is not public</string>
-    <string name="timetable_not_public_title">No timetable</string>
-    <string name="timetable_select_day">Choose date</string>
-    <string name="timetable_today">Today</string>
-    <string name="web_push_date_paired_format">Paired %s</string>
-    <string name="web_push_token_invalid">Token is invalid</string>
-    <string name="web_push_unpair_button">Unpair</string>
-    <string name="widget_timetable_no_lessons_found">No lessons for the next 7 days</string>
-    <string name="widget_timetable_no_timetable">Timetable isn\'t synchronized. Open the app and synchronize the timetable.</string>
-    <string name="widget_timetable_short_no_lessons">No lessons for the next 7 days.</string>
-    <string name="widget_timetable_short_no_timetable">Timetable isn\'t synchronized.</string>
-    <string name="dialog_grades_config_sort_by_date">From newest</string>
-    <string name="dialog_grades_config_sort_by_subject">By subject name</string>
-    <string name="dialog_grades_config_color_from_eregister">From e-register</string>
-    <string name="dialog_grades_config_color_by_value">By grade\'s value</string>
-    <string name="other">Other</string>
-    <string name="menu_grades_config">Grades settings</string>
-    <string name="dialog_day_lessons_info">%s - %s (%s lessons - %s hours %s minutes)</string>
-    <string name="event_sharing_text">Sharing the event…</string>
-    <string name="event_removing_text">Removing shared event…</string>
 </resources>

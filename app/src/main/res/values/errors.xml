@@ -246,7 +246,7 @@
     <string name="error_157_reason">Brak ID sesji Wiadomości</string>
     <string name="error_158_reason">Odmowa dostępu do Portalu Librus</string>
     <string name="error_159_reason">API Portalu Librus wyłączone</string>
-    <string name="error_160_reason">Konto Synergia zostało rozłączone</string>
+    <string name="error_160_reason">Konto LIBRUS utraciło połączenie z kontem Synergia. Zaloguj się na stronie portal.librus.pl lub w oficjalnej aplikacji Librus i postępuj zgodnie z instrukcją, aby naprawić konto.</string>
     <string name="error_161_reason">Inny błąd Portalu Librus</string>
     <string name="error_162_reason">Nie znaleziono konta Synergia. Zaloguj się na stronie portal.librus.pl, a następnie powiąż swoje konto Synergia do konta Librus Portal.</string>
     <string name="error_163_reason">Inny błąd logowania do Portalu Librus</string>

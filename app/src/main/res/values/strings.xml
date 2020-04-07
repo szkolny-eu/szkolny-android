@@ -1,89 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="dialog_change_semester_list">
-        <item>Semestr 1</item>
-        <item>Semestr 2</item>
-    </array>
-
-    <array name="dialog_grades_sort_modes">
-        <item>Od najnowszych</item>
-        <item>Wg nazwy przedmiotu</item>
-    </array>
-
-    <array name="dialog_grades_color_modes">
-        <item>Wg e-dziennika</item>
-        <item>Wg wartości oceny</item>
-    </array>
-
-    <array name="material_calendar_months_array">
-        <item>styczeń</item>
-        <item>luty</item>
-        <item>marzec</item>
-        <item>kwiecień</item>
-        <item>maj</item>
-        <item>czerwiec</item>
-        <item>lipiec</item>
-        <item>sierpień</item>
-        <item>wrzesień</item>
-        <item>październik</item>
-        <item>listopad</item>
-        <item>grudzień</item>
-    </array>
-
-    <array name="months_day_of_array">
-        <item>stycznia</item>
-        <item>lutego</item>
-        <item>marca</item>
-        <item>kwietnia</item>
-        <item>maja</item>
-        <item>czerwca</item>
-        <item>lipca</item>
-        <item>sierpnia</item>
-        <item>września</item>
-        <item>października</item>
-        <item>listopada</item>
-        <item>grudnia</item>
-    </array>
-
-    <array name="main_menu_add_options">
-        <item>Wydarzenie</item>
-        <item>Zadanie domowe</item>
-    </array>
-
-    <string name="app_name">Szkolny.eu</string>
+    <string name="app_name" translatable="false">Szkolny.eu</string>
     <string name="app_task_format" translatable="false">Szkolny.eu | %s</string>
-
-    <string name="theme_light">Jasny</string>
-    <string name="theme_dark">Ciemny</string>
-    <string name="theme_black">Czarny / OLED</string>
-    <string name="theme_chocolate">Czekoladowy</string>
-    <string name="theme_indigo">Indygo</string>
-    <string name="theme_light_yellow">Jasny żółty</string>
-    <string name="theme_dark_blue">Ciemny niebieski</string>
-    <string name="theme_blue">Niebieski</string>
-    <string name="theme_light_blue">Jasny niebieski</string>
-    <string name="theme_dark_purple">Ciemny fioletowy</string>
-    <string name="theme_purple">Fioletowy</string>
-    <string name="theme_light_purple">Jasny fioletowy</string>
-    <string name="theme_dark_red">Ciemny czerwony</string>
-    <string name="theme_red">Czerwony</string>
-    <string name="theme_light_red">Jasny czerwony</string>
-    <string name="theme_dark_green">Ciemny zielony</string>
-    <string name="theme_amber">Bursztynowy</string>
-    <string name="theme_light_green">Jasny zielony</string>
-
-    <string name="abort">Przerwij</string>
-    <string name="add">Dodaj</string>
-    <string name="agenda_lesson_changes">Zmiany planu lekcji</string>
-    <string name="ago_format">%s temu</string>
-    <string name="are_you_sure">Czy na pewno?</string>
     <string name="attendance_absent" translatable="false">nb</string>
     <string name="attendance_absent_excused" translatable="false">u</string>
     <string name="attendance_belated" translatable="false">sp</string>
     <string name="attendance_belated_excused" translatable="false">su</string>
+    <string name="attendance_free_day" translatable="false">w</string>
     <string name="attendance_present" translatable="false">ob</string>
     <string name="attendance_released" translatable="false">zw</string>
-    <string name="attendance_free_day" translatable="false">w</string>
+    <string name="card_timetable_event_overview_format" translatable="false">\n%s %s - %s</string>
+    <string name="card_timetable_lesson_duration_format" translatable="false">%s - %s</string>
+    <string name="concat_2_strings" translatable="false">%s%s</string>
+    <string name="date_relative_format" translatable="false">%s - %s</string>
+    <string name="date_time_format" translatable="false">%s, %s</string>
+    <string name="day_other_format" translatable="false">%s, %s</string>
+    <string name="dialog_averages_format" translatable="false">%s%s%s\n%s%s%s\n%s%s%s</string>
+    <string name="dialog_day_date_format" translatable="false">%s, %s</string>
+    <string name="dialog_event_manual_date_this_week" translatable="false">%s (%s)</string>
+    <string name="dialog_grade_details_class_average_format" translatable="false">%#.2f</string>
+    <string name="dialog_grade_details_date_format" translatable="false">%s, %s</string>
+    <string name="ellipsis" translatable="false">…</string>
+    <string name="event_details_added_by_unknown_format" translatable="false">%1$s</string>
+    <string name="grades_average_double_format" translatable="false">%s, %s</string>
+    <string name="grades_average_double_percent_format" translatable="false">%s%%, %s%%</string>
+    <string name="grades_average_semester_format" translatable="false">sem. %1$d: %2$s</string>
+    <string name="grades_average_single_format" translatable="false">%s</string>
+    <string name="grades_average_single_percent_format" translatable="false">%s%%</string>
+    <string name="grades_average_value_point_format" translatable="false">%3$s%%</string>
+    <string name="home_timetable_date_future" translatable="false">%1$s, %2$s</string>
+    <string name="home_timetable_date_this_week" translatable="false">%1$s, %2$s</string>
+    <string name="homework_subject_teacher_format" translatable="false">%s, %s</string>
+    <string name="homework_team_date_format" translatable="false">%s %s</string>
+    <string name="language_english" translatable="false">English</string>
+    <string name="language_polish" translatable="false">Polski</string>
+    <string name="messages_attachment_downloading_format" translatable="false">%s (%.2fMB)</string>
+    <string name="messages_attachment_format" translatable="false">%s (%s)</string>
+    <string name="messages_attachment_no_size_format" translatable="false">%s</string>
+    <string name="messages_date_time_format" translatable="false">%s, %s</string>
+    <string name="messages_recipients_list_unknown_state_format" translatable="false"><![CDATA[<li>&amp;nbsp;%s</li>]]></string>
+    <string name="notification_ticker_format" translatable="false">Szkolny.eu: %s</string>
+    <string name="preference_file" translatable="false">pl.szczodrzynski.edziennik_preferences</string>
+    <string name="preference_file_global" translatable="false">pl.szczodrzynski.edziennik_profiles</string>
+    <string name="preference_file_register" translatable="false">pl.szczodrzynski.edziennik_profile%d_register</string>
+    <string name="prefix" translatable="false">pl</string>
+    <string name="subject_filter_format" translatable="false">%s - %s%%</string>
+    <string name="sync_action_format" translatable="false">%s…</string>
+    <string name="tag_key_model" translatable="false">model</string>
+    <string name="tag_key_position" translatable="false">position</string>
+    <string name="tag_key_view_type" translatable="false">viewType</string>
+    <string name="toolbar_subtitle_syncing_format" translatable="false">[%d%%] %s</string>
+    <string name="transition_name" translatable="false">transition_name</string>
+    <string name="widget_config_activity_opacity_format" translatable="false">%d%%</string>
+    <string name="widget_notifications_title_format" translatable="false">%s - %s</string>
+    <string name="abort">Przerwij</string>
+    <string name="add">Dodaj</string>
+    <string name="agenda_lesson_changes">Zmiany planu lekcji</string>
+    <string name="agenda_teacher_absence">Nieobecni nauczyciele</string>
+    <string name="ago_format">%s temu</string>
+    <string name="app_manager_dialog_text">Na urządzeniu prawdopodobnie zainstalowany jest menedżer aplikacji, który może powodować problemy z synchronizacją automatyczną.\n\nNależy wyłączyć w ustawieniach telefonu optymalizację baterii dla aplikacji Szkolny.eu.\n\nKliknij OK, aby przejść do ustawień telefonu.</string>
+    <string name="app_manager_dialog_title">Wykryto problem z synchronizacją</string>
+    <string name="app_manager_open_failed">Nie udało się otworzyć ustawień</string>
+    <string name="are_you_sure">Czy na pewno?</string>
+    <string name="attendance_summary_title_semester_format">Podsumowanie - semestr %d </string>
+    <string name="attendance_summary_title_year">Podsumowanie - cały rok </string>
     <string name="attendances_absent">Nieobecności:</string>
     <string name="attendances_absent_unexcused">W tym nieusprawiedliwione:</string>
     <string name="attendances_belated">Spóźnienia:</string>
@@ -92,22 +72,24 @@
     <string name="attendances_releases">Zwolnienia:</string>
     <string name="attendances_summary_subject_loading_format">Wszystkie przedmioty</string>
     <string name="attendances_summary_title_loading_format">Podsumowanie - ładowanie…</string>
-    <string name="attendance_summary_title_semester_format">Podsumowanie - semestr %d&#160;</string>
-    <string name="attendance_summary_title_year">Podsumowanie - cały rok&#160;</string>
     <string name="back">Wróć</string>
     <string name="bell_sync_adjust_content">Dostosuj wartość przesunięcia dzwonka. Format: ±H:MM:SS</string>
     <string name="bell_sync_adjust_error">Nieprawidłowy format</string>
+    <string name="bell_sync_break_item">przerwa (%s)</string>
     <string name="bell_sync_cannot_now">Synchronizacja jest niemożliwa, ponieważ teraz nie ma żadnych lekcji. Spróbuj jeszcze raz np. pod koniec lekcji albo przerwy. Pamiętaj, że powinieneś to uruchomić jeszcze przed planowanym czasem dzwonka.</string>
+    <string name="bell_sync_choose_howto">Wybierz najbliższy dzwonek, abyś mógł go zsynchronizować z aplikacją.</string>
     <string name="bell_sync_current_dialog">"\n\nAktualna kalibracja to %s"</string>
     <string name="bell_sync_howto">Kliknij w ikonę dzwonka, kiedy dzwonek zadzwoni. Licznik czasu zostanie zsynchronizowany z czasem dzwonka.\n\nCzas według planu to %s\n\nAktualna różnica wynosi %s</string>
-    <string name="bell_sync_choose_howto">Wybierz najbliższy dzwonek, abyś mógł go zsynchronizować z aplikacją.</string>
+    <string name="bell_sync_lesson_item">lekcja %s (%s)</string>
     <string name="bell_sync_reset_confirm">Czy na pewno zresetować synchronizację?</string>
     <string name="bell_sync_results">Dzwonek jest niedokładny o %s</string>
-    <string name="bell_sync_title">Synchronizacja z dzwonkiem</string>
     <string name="bell_sync_time_title">Godzina dzwonka do synchronizacji</string>
-    <string name="bell_sync_lesson_item">lekcja %s (%s)</string>
-    <string name="bell_sync_break_item">przerwa (%s)</string>
+    <string name="bell_sync_title">Synchronizacja z dzwonkiem</string>
+    <string name="calendar_app_not_found">Nie znaleziono aplikacji kalendarza</string>
     <string name="cancel">Anuluj</string>
+    <string name="card_action_move_down">Przesuń w dół</string>
+    <string name="card_action_move_up">Przesuń w górę</string>
+    <string name="card_events_header_title">Najbliższe wydarzenia</string>
     <string name="card_grades_button">Przejdź do ocen</string>
     <string name="card_grades_header_title">Oceny - ostatnie 7 dni</string>
     <string name="card_grades_no_data">Brak ocen do wyświetlenia</string>
@@ -118,11 +100,9 @@
     <string name="card_lucky_number_title_format">%d to dzisiejszy Szczęśliwy numerek.</string>
     <string name="card_timetable_button">Przejdź do planu</string>
     <string name="card_timetable_event_overview">Wydarzenia:</string>
-    <string name="card_timetable_event_overview_format" translatable="false">\n%s %s - %s</string>
     <string name="card_timetable_following">Za chwilę:</string>
     <string name="card_timetable_header_title">Plan lekcji na dzisiaj</string>
     <string name="card_timetable_lesson_duration">Czas trwania lekcji</string>
-    <string name="card_timetable_lesson_duration_format" translatable="false">%s - %s</string>
     <string name="card_timetable_lesson_overview"><![CDATA[Pierwsze lekcje:<br>%s %s<br>%s %s]]></string>
     <string name="card_timetable_lesson_overview_ongoing"><![CDATA[Następne lekcje:<br>%s %s<br>%s %s]]></string>
     <string name="card_timetable_no_data">Brak lekcji tego dnia</string>
@@ -131,15 +111,22 @@
     <string name="card_timetable_title">Plan lekcji na %s</string>
     <string name="card_timetable_wtf">Koniec lekcji! To nie powinno się nigdy pokazać!</string>
     <string name="card_timetable_wtf_report">Zgłoś błąd!</string>
+    <string name="card_type_events">Najbliższe wydarzenia</string>
+    <string name="card_type_grades">Ostatnie oceny</string>
+    <string name="card_type_lucky_number">Szczęśliwy numerek</string>
+    <string name="card_type_timetable">Plan lekcji</string>
     <string name="card_update_button">Pobierz</string>
     <string name="card_update_text_format">Posiadasz wersję %s, dostępna jest %s.</string>
     <string name="card_update_title">Dostępna jest aktualizacja</string>
     <string name="choose_file">Wybierz plik</string>
     <string name="choose_profile">Wybierz profil</string>
     <string name="close">Zamknij</string>
+    <string name="compose">Napisz</string>
     <string name="compose_title">Napisz</string>
+    <string name="configure">Konfiguruj</string>
     <string name="copied_to_clipboard">Skopiowano do schowka</string>
     <string name="copy_to_clipboard">Skopiuj do schowka</string>
+    <string name="counter_activity_sync">Synchronizuj</string>
     <string name="crash_advice_info">Jeśli aplikacja nie chce się uruchomić, możesz spróbować ponownie pobrać dane. Kliknij na przycisk, a następnie Restartuj aplikację.</string>
     <string name="crash_details">Szczegóły błędu</string>
     <string name="crash_dev_message">Wiadomość od dewelopera</string>
@@ -151,22 +138,34 @@
     <string name="crash_restart">Restartuj aplikację</string>
     <string name="crash_sync_button">Synchronizuj</string>
     <string name="crash_title">E-dziennik:\nWystąpił nieoczekiwany błąd.\nPrzepraszamy za problem.</string>
-    <string name="date_relative_format" translatable="false">%s - %s</string>
-    <string name="date_time_format" translatable="false">%s, %s</string>
-    <string name="day_other_format" translatable="false">%s, %s</string>
     <string name="day_today_format">dzisiaj (%s)</string>
     <string name="day_tomorrow_format">jutro (%s)</string>
     <string name="debug_notice">Generalnie nie przejmuj się tym co tu widzisz.</string>
+    <string name="dev_mode_enable_warning">Te ustawienia nie są przeznaczone dla zwykłych użytkowników, wyłącznie dla twórcy tej aplikacji.\n\nNie są nawet w żaden sposób opisane, nie wiadomo co robią, więc możesz nawet nie wiedzieć kiedy coś zepsujesz.\n\nWłączenie tych opcji może spowodować utratę danych w aplikacji, uszkodzenie twojego systemu lub nawet uruchomienie wirusa na baterii.\n\nLepiej uważaj.</string>
+    <string name="developer_mode">Developer mode</string>
     <string name="dialog_averages_expected_format">Przewidywana średnia na semestr %d:\n%#.2f\n</string>
     <string name="dialog_averages_expected_yearly_format">Przewidywana średnia roczna:\n%#.2f\n</string>
     <string name="dialog_averages_final_format">Średnia ocen końcowych na semestr %d:\n%#.2f\n</string>
     <string name="dialog_averages_final_yearly_format">Średnia ocen rocznych końcowych:\n%#.2f\n</string>
-    <string name="dialog_averages_format" translatable="false">%s%s%s\n%s%s%s\n%s%s%s</string>
     <string name="dialog_averages_proposed_format">Średnia ocen proponowanych na semestr %d:\n%#.2f\n</string>
     <string name="dialog_averages_proposed_yearly_format">Średnia ocen rocznych proponowanych:\n%#.2f\n</string>
     <string name="dialog_averages_title">Średnie ocen</string>
     <string name="dialog_averages_unavailable_format">Średnie ocen na semestr %d nie są dostępne</string>
     <string name="dialog_averages_unavailable_yearly">Roczna średnia ocen nie jest dostępna</string>
+    <array name="dialog_change_semester_list">
+        <item>Semestr 1</item>
+        <item>Semestr 2</item>
+    </array>
+    <string name="dialog_day_lessons_info">%s - %s (%s lekcji - %s godzin %s minut)</string>
+    <string name="dialog_day_no_events">Brak wydarzeń tego dnia.</string>
+    <string name="dialog_error_details_title">Szczegóły błędu</string>
+    <string name="dialog_event_details_added_by">Dodano</string>
+    <string name="dialog_event_details_attachments">Załączniki</string>
+    <string name="dialog_event_details_body">Treść</string>
+    <string name="dialog_event_details_subject">Przedmiot</string>
+    <string name="dialog_event_details_teacher">Nauczyciel</string>
+    <string name="dialog_event_details_team">Grupa</string>
+    <string name="dialog_event_details_topic">Temat</string>
     <string name="dialog_event_list_no_data">Brak wydarzeń w wybranym okresie.</string>
     <string name="dialog_event_manual_all_day">Cały dzień</string>
     <string name="dialog_event_manual_cannot_share">Aby udostępnić wydarzenie, musisz wybrać grupę (klasę) odbiorców.</string>
@@ -174,14 +173,23 @@
     <string name="dialog_event_manual_choose_lesson">Wybierz lekcję</string>
     <string name="dialog_event_manual_custom_time">-- inna godzina --</string>
     <string name="dialog_event_manual_date">Data</string>
+    <string name="dialog_event_manual_date_choose">Wybierz datę</string>
     <string name="dialog_event_manual_date_header">Termin</string>
+    <string name="dialog_event_manual_date_next_lesson">nast. lekcja %s</string>
+    <string name="dialog_event_manual_date_next_week">przyszły %s (%s)</string>
+    <string name="dialog_event_manual_date_other">-- inna data --</string>
+    <string name="dialog_event_manual_date_today">dzisiaj (%s)</string>
+    <string name="dialog_event_manual_date_tomorrow">jutro (%s)</string>
     <string name="dialog_event_manual_lesson">Lekcja</string>
     <string name="dialog_event_manual_lesson_choose">Wybierz lekcję</string>
+    <string name="dialog_event_manual_more_options">Więcej opcji</string>
     <string name="dialog_event_manual_must_register_text">Aby móc coś udostępnić, musisz wyrazić zgodę na rejestrację.\nSpokojnie, rejestracja jest automatyczna, więc nie musisz podawać żadnych danych.\n\nKliknij Więcej, aby dowiedzieć się o rodzaju przetwarzanych danych.</string>
     <string name="dialog_event_manual_must_register_title">Nie jesteś zarejestrowany</string>
+    <string name="dialog_event_manual_no_lessons">Nie ma lekcji tego dnia</string>
     <string name="dialog_event_manual_no_subject">Bez przedmiotu</string>
     <string name="dialog_event_manual_no_teacher">Bez nauczyciela</string>
     <string name="dialog_event_manual_no_team">Brak grupy</string>
+    <string name="dialog_event_manual_no_timetable">Nie pobrano planu lekcji…</string>
     <string name="dialog_event_manual_remove_shared">To wydarzenie zostało udostępnione przez inną osobę. Usuniesz je tylko u siebie, ale już nigdy nie otrzymasz go ponownie.</string>
     <string name="dialog_event_manual_remove_shared_self">To wydarzenie zostało przez ciebie udostępnione, dlatego zostanie usunięte również u wszystkich osób z grupy.</string>
     <string name="dialog_event_manual_share_enabled">Udostępnij klasie</string>
@@ -195,6 +203,9 @@
     <string name="dialog_event_manual_teacher">Nauczyciel</string>
     <string name="dialog_event_manual_team">Grupa</string>
     <string name="dialog_event_manual_team_choose">Wybierz grupę</string>
+    <string name="dialog_event_manual_time">Lekcja/godzina</string>
+    <string name="dialog_event_manual_time_choose">Wybierz godzinę</string>
+    <string name="dialog_event_manual_title">Dodaj wpis do terminarza</string>
     <string name="dialog_event_manual_topic">Temat</string>
     <string name="dialog_event_manual_topic_choose">Podaj temat</string>
     <string name="dialog_event_manual_type">Rodzaj</string>
@@ -202,9 +213,7 @@
     <string name="dialog_grade_details_added_date">Data dodania</string>
     <string name="dialog_grade_details_category">Kategoria</string>
     <string name="dialog_grade_details_class_average">Średnia klasowa</string>
-    <string name="dialog_grade_details_class_average_format" translatable="false">%#.2f</string>
     <string name="dialog_grade_details_comment">Komentarz</string>
-    <string name="dialog_grade_details_date_format" translatable="false">%s, %s</string>
     <string name="dialog_grade_details_description">Opis</string>
     <string name="dialog_grade_details_history">Historia oceny</string>
     <string name="dialog_grade_details_id">ID oceny</string>
@@ -216,17 +225,44 @@
     <string name="dialog_grade_details_value">Wartość do średniej</string>
     <string name="dialog_grade_details_weight_format">waga %.2f</string>
     <string name="dialog_grades_color_mode_title">Kolor ocen</string>
+    <array name="dialog_grades_color_modes">
+        <item>Wg e-dziennika</item>
+        <item>Wg wartości oceny</item>
+    </array>
+    <string name="dialog_grades_config_color_by_value">Wg wartości oceny</string>
+    <string name="dialog_grades_config_color_from_eregister">Wg e-dziennika</string>
+    <string name="dialog_grades_config_sort_by_date">Od najnowszych</string>
+    <string name="dialog_grades_config_sort_by_subject">Wg nazwy przedmiotu</string>
+    <array name="dialog_grades_sort_modes">
+        <item>Od najnowszych</item>
+        <item>Wg nazwy przedmiotu</item>
+    </array>
     <string name="dialog_grades_sort_title">Sortuj oceny</string>
     <string name="dialog_homework_manual_details_header">Szczegóły</string>
+    <string name="dialog_lesson_details_classroom">Sala lekcyjna</string>
+    <string name="dialog_lesson_details_id">ID lekcji</string>
+    <string name="dialog_lesson_details_number">Nr lekcji</string>
+    <string name="dialog_lesson_details_shifted_from">Lekcja przeniesiona z %s</string>
+    <string name="dialog_lesson_details_shifted_to">Lekcja przeniesiona na %s</string>
+    <string name="dialog_lesson_details_teacher">Nauczyciel</string>
+    <string name="dialog_lesson_details_team">Grupa</string>
+    <string name="dialog_lesson_go_to_button">Przejdź</string>
+    <string name="dialog_lesson_no_events">Brak wydarzeń na tej lekcji.</string>
+    <string name="dialog_no_events_hint">Możesz wpisać wydarzenie ręcznie, używając przycisku Dodaj.</string>
+    <string name="dialog_notification_filter_text">Zaznacz, które powiadomienia mają być pokazywane w systemie oraz w aplikacji.</string>
+    <string name="dialog_notification_filter_title">Pokazuj wybrane powiadomienia</string>
+    <string name="dialog_profile_remove_success">Profil został usunięty.</string>
     <string name="dialog_register_event_manual_remove_confirmation">Na pewno usunąć wybrane wydarzenie?</string>
     <string name="dialog_register_event_manual_title">Własne wydarzenie</string>
     <string name="dialog_register_homework_manual_title">Własne zadanie domowe</string>
+    <string name="dialog_sync_view_list_title">Synchronizacja ręczna</string>
     <string name="dialog_widget_config_profile">Profil</string>
     <string name="dialog_widget_timetable_config_big_style">Duża czcionka</string>
     <string name="dialog_widget_timetable_config_opacity">Przezroczystość</string>
     <string name="dialog_widget_timetable_config_theme">Motyw</string>
     <string name="do_nothing">Nic nie rób</string>
     <string name="done">Gotowe</string>
+    <string name="dont_ask_again">Nie pytaj ponownie</string>
     <string name="download_file_question">Pobrać plik %s (%s)?</string>
     <string name="downloading">Pobieram…</string>
     <string name="downloading_file">Pobieranie pliku</string>
@@ -238,9 +274,75 @@
     <string name="drawer_add_new_profile_desc">Zaloguj się na nowy profil</string>
     <string name="drawer_export_data">Eksportuj dane aplikacji</string>
     <string name="drawer_manage_profiles_desc">Dodaj lub usuń profile uczniów</string>
-    <string name="ellipsis" translatable="false">…</string>
+    <string name="dropdown_date_no_more_lessons">Nie ma więcej lekcji tego przedmiotu. Pobierz plan lekcji i spróbuj ponownie.</string>
+    <string name="dropdown_subject_custom">Własny przedmiot</string>
+    <string name="edziennik_notification_api_cancel">Anuluj</string>
+    <string name="edziennik_notification_api_close">Zamknij</string>
+    <string name="edziennik_notification_api_error_report_task">Zgłaszanie błędów…</string>
+    <string name="edziennik_notification_api_error_report_title">Zgłaszanie błędów</string>
+    <string name="edziennik_notification_api_error_title">Synchronizacja przerwana</string>
+    <string name="edziennik_notification_api_first_login_title">Pierwsze logowanie</string>
+    <string name="edziennik_notification_api_notify_title">Tworzenie powiadomień</string>
+    <string name="edziennik_notification_api_sync_title_format">Trwa synchronizacja profilu %s…</string>
+    <string name="edziennik_notification_api_text">Dzięki niej, aplikacja Szkolny.eu może synchronizować dane z e-dziennikiem. Możesz ją zamknąć, ponieważ w tej chwili nic nie robi.</string>
+    <string name="edziennik_notification_api_title">Usługa synchronizacji</string>
+    <string name="edziennik_progress_endpoint_account_details">Pobieranie szczegółów konta…</string>
+    <string name="edziennik_progress_endpoint_announcements">Pobieranie ogłoszeń szkolnych…</string>
+    <string name="edziennik_progress_endpoint_attendance">Pobieranie frekwencji ucznia…</string>
+    <string name="edziennik_progress_endpoint_attendance_types">Pobieranie kategorii obecności…</string>
+    <string name="edziennik_progress_endpoint_behaviour">Pobieranie uwag ucznia…</string>
+    <string name="edziennik_progress_endpoint_behaviour_grades">Pobieranie ocen z zachowania…</string>
+    <string name="edziennik_progress_endpoint_calendar">Pobieranie kalendarza…</string>
+    <string name="edziennik_progress_endpoint_classes">Pobieranie informacji o klasie…</string>
+    <string name="edziennik_progress_endpoint_classrooms">Pobieranie listy sal lekcyjnych…</string>
+    <string name="edziennik_progress_endpoint_data">Pobieranie danych…</string>
+    <string name="edziennik_progress_endpoint_descriptive_grades">Pobieranie ocen opisowych…</string>
+    <string name="edziennik_progress_endpoint_dictionaries">Pobieranie słowników…</string>
+    <string name="edziennik_progress_endpoint_event_types">Pobieranie kategorii wydarzeń…</string>
+    <string name="edziennik_progress_endpoint_events">Pobieranie wydarzeń kalendarza…</string>
+    <string name="edziennik_progress_endpoint_exams">Pobieranie listy sprawdzianów…</string>
+    <string name="edziennik_progress_endpoint_grade_categories">Pobieranie kategorii ocen…</string>
+    <string name="edziennik_progress_endpoint_grade_comments">Pobieranie komentarzy ocen…</string>
+    <string name="edziennik_progress_endpoint_grades">Pobieranie ocen ucznia…</string>
+    <string name="edziennik_progress_endpoint_homework">Pobieranie zadań domowych…</string>
+    <string name="edziennik_progress_endpoint_lessons">Pobieranie listy lekcji…</string>
+    <string name="edziennik_progress_endpoint_lucky_number">Pobieranie szczęśliwego numerka…</string>
+    <string name="edziennik_progress_endpoint_messages">Pobieranie wiadomości…</string>
+    <string name="edziennik_progress_endpoint_messages_inbox">Pobieranie wiadomości odebranych…</string>
+    <string name="edziennik_progress_endpoint_messages_outbox">Pobieranie wiadomości wysłanych…</string>
+    <string name="edziennik_progress_endpoint_notice_types">Pobieranie kategorii uwag…</string>
+    <string name="edziennik_progress_endpoint_notices">Pobieranie uwag…</string>
+    <string name="edziennik_progress_endpoint_point_grades">Pobieranie ocen punktowych…</string>
+    <string name="edziennik_progress_endpoint_proposed_grades">Pobieranie ocen proponowanych…</string>
+    <string name="edziennik_progress_endpoint_pt_meetings">Pobieranie zebrań z rodzicami…</string>
+    <string name="edziennik_progress_endpoint_push_config">Konfigurowanie natychmiastowych powiadomień…</string>
+    <string name="edziennik_progress_endpoint_school_info">Pobieranie informacji o szkole…</string>
+    <string name="edziennik_progress_endpoint_student_info">Pobieranie informacji o uczniu…</string>
+    <string name="edziennik_progress_endpoint_subjects">Pobieranie listy przedmiotów…</string>
+    <string name="edziennik_progress_endpoint_teacher_free_day_types">Pobieranie rodzajów nieobecności nauczycieli…</string>
+    <string name="edziennik_progress_endpoint_teacher_free_days">Pobieranie nieobecności nauczycieli…</string>
+    <string name="edziennik_progress_endpoint_teachers">Pobieranie listy nauczycieli…</string>
+    <string name="edziennik_progress_endpoint_teams">Pobieranie grup klasowych…</string>
+    <string name="edziennik_progress_endpoint_timetable">Pobieranie planu lekcji…</string>
+    <string name="edziennik_progress_endpoint_units">Pobieranie informacji o jednostce…</string>
+    <string name="edziennik_progress_login_edudziennik_web">Logowanie do Edudziennika…</string>
+    <string name="edziennik_progress_login_idziennik_api">Logowanie do iDziennika…</string>
+    <string name="edziennik_progress_login_idziennik_web">Logowanie do iDziennika…</string>
+    <string name="edziennik_progress_login_librus_api">Logowanie do API</string>
+    <string name="edziennik_progress_login_librus_messages">Logowanie do wiadomości Librus</string>
+    <string name="edziennik_progress_login_librus_portal">Logowanie do Portalu Librus</string>
+    <string name="edziennik_progress_login_librus_synergia">Logowanie do Librus Synergia</string>
+    <string name="edziennik_progress_login_mobidziennik_api">Logowanie do API MobiDziennika…</string>
+    <string name="edziennik_progress_login_mobidziennik_api2">Logowanie do API MobiDziennika…</string>
+    <string name="edziennik_progress_login_mobidziennik_web">Logowanie do MobiDziennika…</string>
+    <string name="edziennik_progress_login_template_api">Logowanie do Template API…</string>
+    <string name="edziennik_progress_login_template_web">Logowanie do Template WEB…</string>
+    <string name="edziennik_progress_login_vulcan_api">Logowanie do Vulcan API…</string>
+    <string name="edziennik_szkolny_api_sync_title">Synchronizowanie udostępnionych wydarzeń…</string>
+    <string name="edziennik_szkolny_creating_notifications">Tworzenie powiadomień…</string>
     <string name="error">Błąd</string>
     <string name="error_details">Szczegóły błędu</string>
+    <string name="error_invalid_fragment">Podano nieprawidłowy moduł: %d Zgłoś błąd programiście</string>
     <string name="error_must_change_password">Twoje hasło do iDziennika wygasło, co oznacza że musisz je zmienić w wersji komputerowej serwisu.</string>
     <string name="error_no_subject_id">Identyfikator przedmiotu nie został podany.</string>
     <string name="error_occured">Wystąpił błąd!</string>
@@ -251,29 +353,51 @@
     <string name="error_school_year_not_found">Nie znaleziono roku szkolnego. Prawdopodobnie uczeń nie jest przypisany do dziennika w tym semestrze.</string>
     <string name="error_shared_edit_requests_not_implemented">Opcja edycji wydarzeń innych uczniów nie została jeszcze zaimplementowana.</string>
     <string name="error_student_id_not_found">Nie znaleziono ID ucznia. Prawdopodobnie aplikacja została zaktualizowana.\n\nWykonaj ponownie synchronizację lub spróbuj ponownie za 5 minut.</string>
+    <string name="error_unknown_format">Kod błędu: %d (w %s)</string>
     <string name="event_added_time">Dodano:</string>
     <string name="event_all_day">cały dzień</string>
     <string name="event_class_event">wydarzenie klasowe</string>
+    <string name="event_details_added_by_format">%1$s przez %2$s</string>
+    <string name="event_details_added_by_self_format">%1$s przez Ciebie</string>
+    <string name="event_details_shared_by_format">{cmd-share-variant} %1$s przez %2$s</string>
+    <string name="event_details_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie</string>
     <string name="event_essay">wypracowanie</string>
     <string name="event_exam">sprawdzian</string>
     <string name="event_excursion">wycieczka</string>
     <string name="event_information">informacja</string>
+    <string name="event_list_added_by_format">Dodano %1$s przez %2$s%3$s</string>
+    <string name="event_list_added_by_self_format">Dodano %1$s przez Ciebie%3$s</string>
+    <string name="event_list_added_by_unknown_format">Dodano %1$s%3$s</string>
+    <string name="event_list_shared_by_format">{cmd-share-variant} %1$s przez %2$s%3$s</string>
+    <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie%3$s</string>
+    <string name="event_manual_need_registration_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nUpewnij się, że zapoznałeś się z warunkami  i akceptujesz jej postanowienia.</string>
+    <string name="event_manual_need_registration_title">Udostępnianie wydarzeń</string>
+    <string name="event_manual_remove">Usuwam wydarzenie…</string>
+    <string name="event_manual_saving">Zapisuję wydarzenie…</string>
+    <string name="event_manual_share">Udostępniam wydarzenie…</string>
+    <string name="event_manual_unshare">Usuwam wydarzenie u reszty klasy…</string>
+    <string name="event_manual_unshare_remove">Usuwam udostępnione wydarzenie…</string>
+    <string name="event_mark_as_done_text">Czy chcesz oznaczyć to zadanie jako wykonane?\n\nNie będzie ono się wyświetlać na stronie głównej oraz w aktualnych zadaniach domowych. Będzie wciąż dostępne w Terminarzu.</string>
+    <string name="event_mark_as_done_title">Oznacz jako wykonane</string>
     <string name="event_other">inny</string>
     <string name="event_project">projekt</string>
     <string name="event_pt_meeting">zebranie z rodzicami</string>
     <string name="event_reading">lektura</string>
+    <string name="event_removing_text">Usuwanie udostępnionego wydarzenia…</string>
     <string name="event_shared_by_format">{cmd-share-variant} przez %s</string>
     <string name="event_shared_by_self">ciebie</string>
     <string name="event_sharing">Udostępnianie wydarzeń</string>
+    <string name="event_sharing_text">Udostępnianie wydarzenia…</string>
     <string name="event_short_quiz">kartkówka</string>
     <string name="event_type_homework">zadanie domowe</string>
+    <string name="events_no_nearest">Nie ma więcej wydarzeń w kalendarzu.</string>
     <string name="exit">Wyjdź</string>
     <string name="faq">Często zadawane pytania</string>
     <string name="faq_back_text">Czy znalazłeś odpowiedź na Twoje pytanie? Jeśli nie, możesz zadać pytanie bezpośrednio do mnie.</string>
     <string name="faq_back_title">Znalazłeś odpowiedź?</string>
     <string name="faq_text">Jeśli masz jakieś pytanie, warto najpierw zajrzeć do bazy FAQ w poszukiwaniu gotowej odpowiedzi. Chcesz teraz przejść do tej strony?</string>
     <string name="feedback_ask_a_question">Zadaj pytanie</string>
-    <string name="feedback_faq">Często zadawane pytania - <a href="http://szkolny.eu/pomoc/">otwórz</a></string>
+    <string name="feedback_faq">Często zadawane pytania - </string>
     <string name="feedback_faq_button">Otwórz bazę FAQ</string>
     <string name="feedback_history">Historia konwersacji</string>
     <string name="feedback_send">Wyślij</string>
@@ -285,16 +409,28 @@
     <string name="grade_semester_proposed_format_2">%s - proponowana</string>
     <string name="grade_start_points">Punkty startowe</string>
     <string name="grade_start_points_format">Punkty startowe: semestr %d</string>
+    <string name="grade_subject_format">z %s</string>
     <string name="grade_year_final_format">%s (roczna)</string>
     <string name="grade_year_final_format_2">%s - roczna</string>
     <string name="grade_year_proposed_format">%s (prop. roczna)</string>
     <string name="grade_year_proposed_format_2">%s - prop. roczna</string>
-    <string name="grades_average_double_format" translatable="false">%s, %s</string>
-    <string name="grades_average_double_percent_format" translatable="false">%s%%, %s%%</string>
     <string name="grades_average_double_point_format">%spkt, %spkt</string>
-    <string name="grades_average_single_format">%s</string>
-    <string name="grades_average_single_percent_format">%s%%</string>
+    <string name="grades_average_no">brak średniej</string>
+    <string name="grades_average_normal_format">średnia: %s</string>
+    <string name="grades_average_point_format">punkty: %s</string>
     <string name="grades_average_single_point_format">%spkt</string>
+    <string name="grades_average_sum_format">suma: %s</string>
+    <string name="grades_average_value_sum_format">%s pkt</string>
+    <string name="grades_average_year_format">roczna: %2$s</string>
+    <string name="grades_config_average_without_weight">Licz średnią jeśli wszystkie wagi to 0</string>
+    <string name="grades_config_average_without_weight_message">Pozwala na liczenie średniej arytmetycznej z przedmiotów, w których wszystkie wystawione oceny mają wagę 0 (nie są liczone do średniej).\n\nJeśli taki przedmiot celowo nie powinien być liczony, odznacz okienko przy tym ustawieniu.</string>
+    <string name="grades_config_dont_count_grades">Wyklucz wybrane oceny ze średniej</string>
+    <string name="grades_config_dont_count_hint">Oceny oddziel przecinkiem</string>
+    <string name="grades_config_dont_count_placeholder">Podaj oceny…</string>
+    <string name="grades_config_dont_show_improved">Ukrywaj oceny poprawione z listy</string>
+    <string name="grades_config_minus_value">Własna wartość minusa</string>
+    <string name="grades_config_plus_value">Własna wartość plusa</string>
+    <string name="grades_config_title">Konfiguracja ocen</string>
     <string name="grades_editor_add_grade">Dodaj ocenę</string>
     <string name="grades_editor_add_grade_title">Dodawanie oceny</string>
     <string name="grades_editor_add_grade_weight">Podaj wagę oceny</string>
@@ -312,42 +448,106 @@
     <string name="grades_improvement_category_format">(poprawa) %s</string>
     <string name="grades_max_points_format">max %s pkt</string>
     <string name="grades_no_data">Brak ocen w dzienniku.</string>
+    <string name="grades_preview_other_semester">Semestr %d</string>
     <string name="grades_semester1_header">Semestr 1</string>
     <string name="grades_semester2_header">Semestr 2</string>
     <string name="grades_semester_average_format">semestr %d: %s</string>
     <string name="grades_semester_average_percent_format">semestr %d: %s%%</string>
     <string name="grades_semester_average_point_format">semestr %d: %spkt</string>
+    <string name="grades_semester_format">Semestr %d</string>
     <string name="grades_semester_header_format">Semestr %d</string>
+    <string name="grades_stats_custom_config_notice">Aktualne ustawienia ocen mogą wpływać na średnią. Jeśli uważasz, że się ona nie zgadza, kliknij Konfiguruj.</string>
+    <string name="grades_stats_custom_value_notice">Została ustawiona własna wartość plusa/minusa. Jeśli uważasz, że się ona nie zgadza, kliknij Konfiguruj.</string>
+    <string name="grades_stats_disclaimer">*średnie ocen są poglądowe i mogą się różnić, w zależności od ustawień szkoły</string>
+    <string name="grades_stats_expected">*przewidywana średnia</string>
+    <string name="grades_stats_from_final">*z ocen końcowych\nPrzewidywana: %s</string>
+    <string name="grades_stats_from_final_no_expected">*z ocen końcowych</string>
+    <string name="grades_stats_from_proposed">*z ocen proponowanych\nPrzewidywana: %s</string>
+    <string name="grades_stats_from_proposed_no_expected">*z ocen proponowanych</string>
+    <string name="grades_stats_help_text">Ocena przewidywana z danego przedmiotu jest obliczana na podstawie aktualnej średniej ważonej.\n\nOcena jest liczbą całkowitą, jaką wystawiłby nauczyciel bazując na średniej. Liczba zaokrąglona jest w górę jeśli część po przecinku przekroczy ,75.\nPrzykładowo: średnie 3,75 jak również 4,74 dają w wyniku ocenę dobrą (4).\n\nŚrednia przewidywana ze wszystkich przedmiotów obejmuje obliczone w ten sposób oceny końcowe.</string>
+    <string name="grades_stats_help_title">Obliczanie średniej wszystkich przedmiotów</string>
+    <string name="grades_stats_no_data">Zbyt mało danych do wyliczenia średniej.</string>
+    <string name="grades_stats_normal">Średnia zwykłych ocen</string>
+    <string name="grades_stats_point">Średnia przedmiotów punktowych</string>
+    <string name="grades_stats_proposed_avg">Śr. ocen proponowanych:\n%s</string>
+    <string name="grades_stats_semester_1">semestr 1</string>
+    <string name="grades_stats_semester_2">semestr 2</string>
+    <string name="grades_stats_title">Statystyka ocen</string>
+    <string name="grades_stats_yearly">całoroczna</string>
     <string name="grades_value_format">wartość: %s</string>
     <string name="grades_weight_format">waga %s</string>
     <string name="grades_weight_not_counted">nie liczona do śr.</string>
     <string name="grades_year_average_format">koniec roku: %s</string>
     <string name="grades_year_average_percent_format">koniec roku: %s%%</string>
     <string name="grades_year_average_point_format">koniec roku: %spkt</string>
+    <string name="grades_year_summary_format">Cały rok: %s • %s</string>
     <string name="hello_blank_fragment">Witaj pusty fragmencie</string>
     <string name="help">Pomoc</string>
     <string name="help_notification_web_push">Przekazywanie powiadomień umożliwia sparowanie z przeglądarką internetową w celu wysyłania wszystkich powiadomień z aplikacji na komputer. Można do nich zaliczyć np. nowe oceny, wydarzenia, zadania domowe itp.\n\nKliknij \"Przekazywanie powiadomień\", aby rozpocząć.</string>
     <string name="help_register_agreement">Rejestracja odbędzie się automatycznie przy pierwszym logowaniu do e-dziennika.\n\nDo poprawnego działania funkcji zostaną przesłane:\n- Twój identyfikator szkoły i klasy\n- Twoja nazwa użytkownika do e-dziennika\n- Twoje imię i nazwisko\n\nJedyne dane widoczne dla innych osób z twojej klasy to Imię i Nazwisko podczas udostępniania wydarzeń. Nie zostaną wysłane żadne prywatne dane, takie jak hasła, oceny itp. Dowiedz się więcej w Polityce Prywatności.</string>
+    <string name="hint_download_again">Pobierz ponownie</string>
+    <string name="hint_edit_event">Edytuj wydarzenie</string>
+    <string name="hint_go_to_timetable">Idź do planu lekcji</string>
+    <string name="hint_mark_as_done">Oznacz jako wykonane</string>
+    <string name="hint_save_in_calendar">Zapisz do kalendarza</string>
+    <string name="home_configure_add_remove">Dodaj/usuń karty</string>
+    <string name="home_configure_notice">Możesz usunąć karty przesuwając w lewo lub zmienić ich kolejność, przytrzymując na kartę.</string>
+    <string name="home_lucky_number_details">%s • Numer w dzienniku to %d</string>
+    <string name="home_lucky_number_details_click_to_set">%s • Kliknij, aby ustawić swój numerek.</string>
+    <string name="home_lucky_number_later">Dnia %s szczęśliwy numerek to %d.</string>
+    <string name="home_lucky_number_no_info">Brak informacji o szczęśliwym numerku.</string>
+    <string name="home_lucky_number_no_number">Nie ma dzisiaj szczęśliwego numerka.</string>
+    <string name="home_lucky_number_today">%d to dzisiejszy szczęśliwy numerek.</string>
+    <string name="home_lucky_number_tomorrow">%d to szczęśliwy numerek na jutro.</string>
+    <string name="home_lucky_number_yours_later">Dnia %s Twój numerek jest szczęśliwy.</string>
+    <string name="home_lucky_number_yours_today">Dzisiaj to Ty masz szczęśliwy numerek!</string>
+    <string name="home_lucky_number_yours_tomorrow">Jutro to Ty masz szczęśliwy numerek!</string>
+    <string name="home_timetable_later">Później:</string>
+    <string name="home_timetable_later_no_lessons">brak lekcji</string>
+    <string name="home_timetable_lesson_first">Pierwsza: %s</string>
+    <string name="home_timetable_lesson_not_started">Za chwilę: %s</string>
+    <string name="home_timetable_lesson_ongoing">Teraz: %s</string>
+    <string name="home_timetable_lessons_info">%d lekcji - %s do %s</string>
+    <string name="home_timetable_lessons_remaining">Pozostało lekcji: %d do %s</string>
+    <string name="home_timetable_no_lessons">Nie ma żadnych lekcji</string>
+    <string name="home_timetable_no_lessons_text">Przez następne 7 dni nie ma żadnych lekcji.</string>
+    <string name="home_timetable_no_timetable">Nie pobrano planu lekcji</string>
+    <string name="home_timetable_no_timetable_sync">Pobierz</string>
+    <string name="home_timetable_no_timetable_text">Plan lekcji na tydzień %s nie został jeszcze pobrany.</string>
+    <string name="home_timetable_not_public">Brak planu lekcji</string>
+    <string name="home_timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę.\n\nSkontaktuj się z wychowawcą.</string>
+    <string name="home_timetable_today">Dzisiaj</string>
+    <string name="home_timetable_tomorrow">Jutro (%1$s)</string>
     <string name="homework_edit">Edytuj</string>
-    <string name="homework_subject_teacher_format" translatable="false">%s, %s</string>
-    <string name="homework_team_date_format" translatable="false">%s %s</string>
+    <string name="homework_no_data">Brak zadań domowych.</string>
+    <string name="homework_tab_current">Aktualne</string>
+    <string name="homework_tab_past">Minione</string>
     <string name="i_agree">Zgadzam się</string>
     <string name="i_disagree">Nie zgadzam się</string>
+    <string name="in_format">za %s</string>
     <string name="incorrect_format">Nieprawidłowy format</string>
+    <string name="language_system">Według systemu</string>
     <string name="lesson_added">Nowa lekcja</string>
     <string name="lesson_break">Przerwa</string>
     <string name="lesson_cancelled">Lekcja odwołana</string>
     <string name="lesson_change">Zastępstwo</string>
     <string name="lesson_shifted">Lekcja przeniesiona</string>
     <string name="lesson_timetable_change">Zmiana planu</string>
+    <string name="lessons_finished">Nie ma dzisiaj więcej lekcji!</string>
     <string name="loading">Ładowanie…</string>
+    <string name="login_account_no_students">To konto nie ma żadnych uczniów</string>
+    <string name="login_account_no_students_text">Do tego konta nie ma przypisanego żadnego ucznia, dlatego zalogowanie nie jest możliwe.\n\nPrzypisz ucznia na stronie swojego e-dziennika lub zaloguj się kontem, które ma przypisanego ucznia.</string>
     <string name="login_allow_registration">Zezwól na rejestrację</string>
     <string name="login_button">Zaloguj</string>
     <string name="login_cancel_confirmation">Czy na pewno chcesz anulować logowanie w aplikacji? Wyświetlane profile nie zostaną zapisane.</string>
+    <string name="login_edudziennik_subtitle">Użyj danych, którymi logujesz się do wersji komputerowej Edudziennika.</string>
+    <string name="login_edudziennik_title">Zaloguj się - Edudziennik</string>
     <string name="login_error">Błąd: %s</string>
     <string name="login_error_account_not_activated">Konto nie zostało aktywowane</string>
     <string name="login_error_expired_token">Token wygasł. Wygeneruj ponownie</string>
     <string name="login_error_incorrect_address">Nieprawidłowa nazwa serwera</string>
+    <string name="login_error_incorrect_code">Nieprawidłowy kod</string>
+    <string name="login_error_incorrect_code_or_pin">Nieprawidłowy kod lub PIN</string>
     <string name="login_error_incorrect_email">Nieprawidłowy e-mail</string>
     <string name="login_error_incorrect_login">Nieprawidłowy login</string>
     <string name="login_error_incorrect_login_or_password">Nieprawidłowy login lub hasło</string>
@@ -356,9 +556,11 @@
     <string name="login_error_incorrect_school_name">Nieprawidłowa nazwa szkoły</string>
     <string name="login_error_incorrect_symbol">Nieprawidłowy symbol szkoły</string>
     <string name="login_error_incorrect_token">Nieprawidłowy token</string>
+    <string name="login_error_incorrect_token_or_pin">Nieprawidłowy token lub PIN</string>
     <string name="login_error_incorrect_username">Nieprawidłowa nazwa użytkownika</string>
     <string name="login_error_no_address">Podaj adres serwera</string>
     <string name="login_error_no_arguments">nie podano argumentów</string>
+    <string name="login_error_no_code">Podaj kod</string>
     <string name="login_error_no_email">Podaj e-mail</string>
     <string name="login_error_no_login">Podaj login</string>
     <string name="login_error_no_password">Podaj hasło</string>
@@ -389,11 +591,13 @@
     <string name="login_iuczniowie_help_title">Pomoc - iDziennik Progman</string>
     <string name="login_iuczniowie_subtitle">Zaloguj się danymi, które otrzymałeś od swojej szkoły. W razie problemów skorzystaj z przycisku pod formularzem.</string>
     <string name="login_iuczniowie_title">Zaloguj się - iDziennik Progman</string>
+    <string name="login_librus_captcha_title">Librus - logowanie</string>
     <string name="login_librus_help_subtitle">Aby korzystać z aplikacji musisz posiadać konto Librus. Możesz je założyć na stronie portal.librus.pl. Użyj danych, które wpisujesz w miejsca zaznaczone na obrazku.</string>
     <string name="login_librus_help_title">Pomoc - Librus</string>
+    <string name="login_librus_jst_subtitle">Zaloguj się tokenem i kodem PIN, który można wygenerować po zalogowanu się do Synergii w zakładce Aplikacje mobilne.</string>
+    <string name="login_librus_jst_title">Zaloguj się - Librus JST</string>
     <string name="login_librus_subtitle">Zaloguj się danymi swojego konta Librus (założonego wcześniej na swój adres e-mail). Nie należy logować się danymi otrzymanymi ze swojej szkoły. W razie problemów skorzystaj z przycisku pod formularzem.</string>
     <string name="login_librus_title">Zaloguj się - Librus</string>
-    <string name="login_librus_jst_title">Zaloguj się - Librus JST</string>
     <string name="login_migration_error_format">Wystąpił błąd w migracji danych. Został on już zgłoszony, co oznacza, że postaram się go naprawić.\n\nMożesz zacząć korzystać z aplikacji, jednak w przypadku jakichś błędów spróbuj usunąć profil i zalogować się ponownie.</string>
     <string name="login_migration_subtitle">Aplikacja otrzymała dużą aktualizację. Jeżeli będą występować jakieś problemy w działaniu, możesz się ze mną skontaktować używając pozycji Pomoc i opinie w menu.</string>
     <string name="login_migration_title">Szkolny.eu został zaktualizowany</string>
@@ -407,6 +611,8 @@
     <string name="login_progress_title">Loguję…</string>
     <string name="login_startpage_subtitle">Wybierz z jakiego e-dziennika korzysta Twoja szkoła. W późniejszych etapach będziesz mógł dodać kilka kont z różnych e-dzienników.</string>
     <string name="login_startpage_title">Z jakiego e-dziennika korzystasz?</string>
+    <string name="login_summary_account_child">(uczeń)</string>
+    <string name="login_summary_account_parent">(rodzic)</string>
     <string name="login_summary_add_student">Dodaj ucznia</string>
     <string name="login_summary_no_profiles_text">Musisz wybrać przynajmniej jeden profil, który chcesz zapisać w aplikacji.</string>
     <string name="login_summary_no_profiles_title">Nie wybrałeś żadnego profilu</string>
@@ -414,7 +620,7 @@
     <string name="login_summary_title">Już prawie gotowe</string>
     <string name="login_summary_unregister_text">Stracisz możliwość korzystania z np. Udostępniania wydarzeń i Przekazywania powiadomień.</string>
     <string name="login_summary_unregister_title">Na pewno wyłączyć rejestrację?</string>
-    <string name="login_sync_error_subtitle">Podczas synchronizacji wystąpił błąd. Kliknij przycisk na dole strony, aby go zgłosić.\n\nProfile zostały zapisane, tak więc <b>aplikacja powinna działać poprawnie</b>. W razie co, możesz skorzystać z opcji Pomoc i opinie w menu.\n</string>
+    <string name="login_sync_error_subtitle">Podczas synchronizacji wystąpił błąd. Kliknij przycisk na dole strony, aby go zgłosić.\n\nProfile zostały zapisane, tak więc . W razie co, możesz skorzystać z opcji Pomoc i opinie w menu.\n</string>
     <string name="login_sync_error_title">Błąd synchronizacji</string>
     <string name="login_sync_subtitle_1_format">Synchronizuję profil</string>
     <string name="login_sync_title">Synchronizacja…</string>
@@ -426,6 +632,10 @@
     <string name="login_vulcan_subtitle">Wybierz opcję Dostęp mobilny na stronie e-dziennika, zarejestruj nowe urządzenie i wpisz otrzymane dane. W razie problemów skorzystaj z przycisku pod formularzem.</string>
     <string name="login_vulcan_title">Zaloguj się - Vulcan UONET+</string>
     <string name="main_menu_add">Dodaj…</string>
+    <array name="main_menu_add_options">
+        <item>Wydarzenie</item>
+        <item>Zadanie domowe</item>
+    </array>
     <string name="main_menu_agenda_view_type">Zmień widok</string>
     <string name="main_menu_block_timetable">Generuj blokowy plan lekcji</string>
     <string name="main_menu_grades_average">Średnia ocen</string>
@@ -435,6 +645,20 @@
     <string name="main_menu_sort_by">Sortuj</string>
     <string name="material_calendar_friday">P</string>
     <string name="material_calendar_monday">P</string>
+    <array name="material_calendar_months_array">
+        <item>styczeń</item>
+        <item>luty</item>
+        <item>marzec</item>
+        <item>kwiecień</item>
+        <item>maj</item>
+        <item>czerwiec</item>
+        <item>lipiec</item>
+        <item>sierpień</item>
+        <item>wrzesień</item>
+        <item>październik</item>
+        <item>listopad</item>
+        <item>grudzień</item>
+    </array>
     <string name="material_calendar_negative_button">Anuluj</string>
     <string name="material_calendar_positive_button">OK</string>
     <string name="material_calendar_saturday">S</string>
@@ -443,58 +667,106 @@
     <string name="material_calendar_today_button">Dzisiaj</string>
     <string name="material_calendar_tuesday">W</string>
     <string name="material_calendar_wednesday">Ś</string>
+    <string name="menu_add_event">Dodaj wydarzenie</string>
+    <string name="menu_add_event_desc">Zapisz własne wydarzenie lub zadanie domowe w Terminarzu</string>
     <string name="menu_add_new_profile">Dodaj nowego ucznia</string>
+    <string name="menu_add_remove_cards">Dodaj lub usuń karty</string>
     <string name="menu_agenda">Terminarz</string>
+    <string name="menu_agenda_change_view">Zmień widok Terminarza</string>
     <string name="menu_announcements">Tablica ogłoszeń</string>
     <string name="menu_attendance">Frekwencja</string>
+    <string name="menu_debug">Debugowanie</string>
+    <string name="menu_feedback">Pomoc i opinie</string>
     <string name="menu_generate_block_timetable">Zapisz plan lekcji jako obraz</string>
     <string name="menu_generate_block_timetable_desc">Generuje plan lekcji na cały tydzień</string>
     <string name="menu_grades">Oceny</string>
+    <string name="menu_grades_average_mode">Sposób obliczania średniej końcoworocznej</string>
+    <string name="menu_grades_averages">Średnie ocen</string>
+    <string name="menu_grades_averages_desc">Pokaż średnie semestralne i końcoworoczne</string>
+    <string name="menu_grades_color_mode">Kolor wyświetlanych ocen</string>
+    <string name="menu_grades_config">Ustawienia ocen</string>
     <string name="menu_grades_editor">Symulator edycji ocen</string>
+    <string name="menu_grades_sort_mode">Sortuj oceny</string>
     <string name="menu_help">Pomoc</string>
     <string name="menu_home_page">Strona główna</string>
     <string name="menu_homework">Zadania domowe</string>
+    <string name="menu_lab">Laboratorium</string>
     <string name="menu_manage_profiles">Zarządzaj profilami</string>
     <string name="menu_mark_as_read">Oznacz jako przeczytane</string>
     <string name="menu_mark_everything_as_read">Oznacz wszystko jako przeczytane</string>
+    <string name="menu_message">Wiadomość</string>
+    <string name="menu_message_compose">Napisz wiadomość</string>
     <string name="menu_messages">Wiadomości</string>
-    <string name="messages_tab_received">Odebrane</string>
-    <string name="messages_tab_sent">Wysłane</string>
     <string name="menu_notices">Zachowanie</string>
     <string name="menu_notifications">Powiadomienia</string>
+    <string name="menu_remove_notifications">Usuń wszystkie</string>
+    <string name="menu_remove_notifications_success">Wyczyszczono powiadomienia</string>
     <string name="menu_set_student_number">Ustaw numer w dzienniku</string>
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_sync">Synchronizuj</string>
     <string name="menu_sync_all">Synchronizuj wszystkie</string>
+    <string name="menu_template">Szablon</string>
     <string name="menu_timetable">Plan lekcji</string>
+    <string name="menu_timetable_manual">Edytor planu lekcji</string>
+    <string name="menu_web_push">Przekazywanie powiadomień</string>
     <string name="messages_attachment_cannot_download">Nie można pobrać załącznika</string>
     <string name="messages_attachment_cannot_download_text">Wystąpił błąd wewnętrzny pobierania załącznika. Może to być spowodowane słabym połączeniem internetowym.</string>
-    <string name="messages_attachment_downloading_format" translatable="false">%s (%.2fMB)</string>
-    <string name="messages_attachment_format" translatable="false">%s (%s)</string>
-    <string name="messages_attachment_no_size_format" translatable="false">%s</string>
+    <string name="messages_attachment_download_again">Pobierz ponownie</string>
+    <string name="messages_compose_confirm_text">Czy na pewno chcesz wysłać wiadomość do wybranych odbiorców?</string>
+    <string name="messages_compose_confirm_title">Potwierdź wysłanie wiadomości</string>
     <string name="messages_compose_menu_attachment">Dodaj załącznik</string>
     <string name="messages_compose_menu_discard">Odrzuć wiadomość</string>
     <string name="messages_compose_menu_save_draft">Zapisz wersję roboczą</string>
     <string name="messages_compose_menu_send">Wyślij</string>
+    <string name="messages_compose_recipient_exists">Ten odbiorca został już wybrany</string>
+    <string name="messages_compose_recipients_empty">Wybierz odbiorców</string>
+    <string name="messages_compose_recipients_error">Sprawdź poprawność wybranych odbiorców</string>
     <string name="messages_compose_recipients_text_format">Wybierz odbiorców z kategorii %s, których chcesz dodać do wiadomości.</string>
     <string name="messages_compose_recipients_title">Dodaj odbiorców</string>
+    <string name="messages_compose_send">Wyślij</string>
+    <string name="messages_compose_subject_empty">Wpisz temat o długości co najmniej 3 znaków</string>
     <string name="messages_compose_subject_hint">Temat</string>
+    <string name="messages_compose_text_empty">Wpisz treść wiadomości</string>
+    <string name="messages_compose_text_hint">Napisz wiadomość…</string>
     <string name="messages_compose_title">Napisz wiadomość</string>
     <string name="messages_compose_to_hint">Do</string>
-    <string name="messages_date_time_format" translatable="false">%s, %s</string>
-    <string name="messages_reply_date_time_format">%s o %s</string>
+    <string name="messages_delete_confirmation">Czy chcesz usunąć wiadomość?</string>
+    <string name="messages_delete_confirmation_text">Spowoduje to przeniesienie wiadomości do zakładki \"Usunięte\" w aplikacji. Zmiany nie wpłyną na wiadomość w e-dzienniku (nie zostanie ona tam usunięta).</string>
     <string name="messages_download_error">Błąd pobierania wiadomości</string>
     <string name="messages_draft_title">Wersja robocza</string>
+    <string name="messages_no_data">Nie masz żadnych wiadomości.</string>
     <string name="messages_recipient_list_download_error">Błąd pobierania listy odbiorców</string>
-    <string name="messages_recipients_list_read_format"><![CDATA[<li>&nbsp;%s, przeczytano: %s, %s</li>]]></string>
-    <string name="messages_recipients_list_read_unknown_date_format"><![CDATA[<li>&nbsp;%s, przeczytano: tak</li>]]></string>
-    <string name="messages_recipients_list_unknown_state_format"><![CDATA[<li>&nbsp;%s</li>]]></string>
-    <string name="messages_recipients_list_unread_format"><![CDATA[<li>&nbsp;%s, przeczytano: <font color=red>nie</font></li>]]></string>
+    <string name="messages_recipients_list_read_format"><![CDATA[<li>&amp;nbsp;%s, przeczytano: %s, %s</li>]]></string>
+    <string name="messages_recipients_list_read_unknown_date_format"><![CDATA[<li>&amp;nbsp;%s, przeczytano: tak</li>]]></string>
+    <string name="messages_recipients_list_unread_format"><![CDATA[<li>&amp;nbsp;%s, przeczytano: <font color=red>nie</font></li>]]></string>
+    <string name="messages_reply">Odpowiedz</string>
+    <string name="messages_reply_date_time_format">%s o %s</string>
+    <string name="messages_search">Szukaj</string>
+    <string name="messages_search_results">Znaleziono %d wiadomości</string>
+    <string name="messages_sent_success">Wiadomość została wysłana</string>
+    <string name="messages_tab_deleted">Usunięte</string>
+    <string name="messages_tab_received">Odebrane</string>
+    <string name="messages_tab_sent">Wysłane</string>
+    <array name="months_day_of_array">
+        <item>stycznia</item>
+        <item>lutego</item>
+        <item>marca</item>
+        <item>kwietnia</item>
+        <item>maja</item>
+        <item>czerwca</item>
+        <item>lipca</item>
+        <item>sierpnia</item>
+        <item>września</item>
+        <item>października</item>
+        <item>listopada</item>
+        <item>grudnia</item>
+    </array>
     <string name="more">Więcej</string>
     <string name="network_you_are_offline_text">Spróbuj włączyć Wi-Fi lub dane pakietowe.</string>
     <string name="network_you_are_offline_title">Jesteś offline</string>
     <string name="next">Dalej</string>
     <string name="no">Nie</string>
+    <string name="no_lessons_today">Nie ma dzisiaj żadnych lekcji!</string>
     <string name="no_permissions">Brak uprawnień</string>
     <string name="no_thanks">Nie, dzięki</string>
     <string name="not_now">Nie teraz</string>
@@ -503,8 +775,8 @@
     <string name="notices_points_format">%s, punktów: %s</string>
     <string name="notices_praises_title">Pochwały:</string>
     <string name="notices_summary_title_loading_format">Podsumowanie - ładowanie…</string>
-    <string name="notices_summary_title_semester_format">Podsumowanie - semestr %d&#160;</string>
-    <string name="notices_summary_title_year">Podsumowanie - cały rok&#160;</string>
+    <string name="notices_summary_title_semester_format">Podsumowanie - semestr %d </string>
+    <string name="notices_summary_title_year">Podsumowanie - cały rok </string>
     <string name="notices_warnings_title">Uwagi:</string>
     <string name="notification">Powiadomienie</string>
     <string name="notification_absence">Nieobecność</string>
@@ -514,6 +786,7 @@
     <string name="notification_attendance_no_lesson_format">%1$s z dnia %3$s</string>
     <string name="notification_belated">Spóźnienie</string>
     <string name="notification_belated_excused">Spóźnienie usprawiedliwione</string>
+    <string name="notification_cant_check_update">Nie udało się sprawdzić aktualizacji</string>
     <string name="notification_channel_get_data_desc">Powiadomienie o pobieraniu danych dla e-dziennika</string>
     <string name="notification_channel_get_data_name">Pobieranie danych</string>
     <string name="notification_channel_notifications_desc">Powiadomienie o nowej zawartości w e-dzienniku</string>
@@ -522,10 +795,15 @@
     <string name="notification_channel_notifications_quiet_name">Powiadomienia (cisza nocna)</string>
     <string name="notification_channel_updates_desc">Powiadomienia o nowych wersjach aplikacji</string>
     <string name="notification_channel_updates_name">Aktualizacje</string>
+    <string name="notification_channel_user_attention_desc">Powiadomienia o problemie, który wymaga działania użytkownika (np. weryfikacja Captcha). Zalecane jest pozostawienie tej kategorii włączonej.</string>
+    <string name="notification_channel_user_attention_name">Wymagane działanie</string>
+    <string name="notification_click_to_see_all">Kliknij, aby zobaczyć wszystkie powiadomienia</string>
+    <string name="notification_day_free">Dzień wolny</string>
     <string name="notification_downloading_update">Pobieranie aktualizacji…</string>
     <string name="notification_event_format">%1$s dnia %2$s z %3$s</string>
-    <string name="notification_event_no_subject_format">%1$s dnia %2$s</string>
     <string name="notification_event_no_subject">nieznanego przedmiotu</string>
+    <string name="notification_event_no_subject_format">%1$s dnia %2$s</string>
+    <string name="notification_filter_warning">Czy na pewno chcesz zastosować te ustawienia?\n\nNie będziesz widział informacji o niektórych danych, przez co możesz przeoczyć ważne komunikaty, wiadomości lub oceny.\n\nUstawienia zostaną zastosowane dla aktualnie otwartego profilu.</string>
     <string name="notification_get_data_cancel">Przerwij</string>
     <string name="notification_get_data_error_summary">Szkolny.eu: błąd</string>
     <string name="notification_get_data_error_title">Błąd podczas pobierania danych dla profilu %s</string>
@@ -555,7 +833,6 @@
     <string name="notification_shared_event_modified_format">%s zmienił %s na %s: %s</string>
     <string name="notification_shared_event_removed_format">%s usunął %s na %s: %s</string>
     <string name="notification_teacher_absence_new_format">Nowa nieobecność nauczyciela dla %s</string>
-    <string name="notification_ticker_format">Szkolny.eu: %s</string>
     <string name="notification_type_attendance">Wpis frekwencji</string>
     <string name="notification_type_auto_archiving">Archiwizacja profilu</string>
     <string name="notification_type_error">Błąd</string>
@@ -568,8 +845,10 @@
     <string name="notification_type_new_homework">Nowe zadanie domowe</string>
     <string name="notification_type_new_message">Nowa wiadomość</string>
     <string name="notification_type_new_shared_event">Udostępniono wydarzenie</string>
+    <string name="notification_type_new_shared_homework">Udostępniono zadanie domowe</string>
     <string name="notification_type_new_teacher_absence">Nowa nieobecność nauczyciela</string>
     <string name="notification_type_notice">Wpis zachowania</string>
+    <string name="notification_type_removed_shared_event">Usunięto wydarzenie</string>
     <string name="notification_type_server_message">Wiadomość z serwera</string>
     <string name="notification_type_timetable_change">Zmiana planu zajęć</string>
     <string name="notification_type_timetable_lesson_change">Zmiana lekcji</string>
@@ -577,16 +856,16 @@
     <string name="notification_updates_summary">Szkolny.eu: aktualizacja</string>
     <string name="notification_updates_text">Kliknij, aby pobrać wersję %s</string>
     <string name="notification_updates_title">Dostępna aktualizacja</string>
+    <string name="notification_user_action_required_captcha_librus">Librus: wymagane rozwiązanie zadania Captcha. Kliknij, aby kontynuować logowanie do dziennika.</string>
+    <string name="notification_user_action_required_text">Problem, który uniemożliwia synchronizację musi być rozwiązany przez użytkownika. Kliknij, aby uzyskać więcej informacji.</string>
+    <string name="notification_user_action_required_title">Wymagane działanie w aplikacji</string>
     <string name="notifications_no_data">Brak powiadomień.</string>
     <string name="ok">OK</string>
     <string name="open">Otwórz</string>
     <string name="opening_file">Otwieranie %s</string>
     <string name="opening_file_no_app">Brak aplikacji otwierającej ten typ pliku</string>
+    <string name="other">Inne</string>
     <string name="please_wait">Proszę czekać</string>
-    <string name="preference_file" translatable="false">pl.szczodrzynski.edziennik_preferences</string>
-    <string name="preference_file_global" translatable="false">pl.szczodrzynski.edziennik_profiles</string>
-    <string name="preference_file_register" translatable="false">pl.szczodrzynski.edziennik_profile%d_register</string>
-    <string name="prefix" translatable="false">pl</string>
     <string name="privacy_policy">Polityka prywatności</string>
     <string name="profile_archived_dialog_text_format">Profil %s został archiwizowany. Możliwość synchronizacji została wyłączona, z powodu prawdopodobnej utraty danych przy późniejszym pobieraniu.\n\nMożesz dalej przeglądać dane zapisane w aplikacji z tego profilu.\n\nMiej na uwadze, że niektóre wiadomości mogą nie pobierać się poprawnie.</string>
     <string name="profile_archived_dialog_title">Profil jest archiwalny</string>
@@ -597,12 +876,16 @@
     <string name="profile_menu_open_settings">Ustawienia</string>
     <string name="profile_menu_remove">Usuń profil</string>
     <string name="profile_menu_remove_confirm">Potwierdź usunięcie</string>
-    <string name="profile_menu_remove_confirm_text_format">Zamierzasz usunąć profil <b>%s</b>. Oznacza to usunięcie z aplikacji wszystkich danych powiązanych z tym profilem (ocen, planu lekcji, sprawdzianów…).\n\nWiększość danych będziesz mógł pobrać na nowo poprzez ponowne zalogowanie się.\n\nCzy rzeczywiście chcesz usunąć profil %s?</string>
+    <string name="profile_menu_remove_confirm_text_format">Zamierzasz usunąć profil . Oznacza to usunięcie z aplikacji wszystkich danych powiązanych z tym profilem (ocen, planu lekcji, sprawdzianów…).\n\nWiększość danych będziesz mógł pobrać na nowo poprzez ponowne zalogowanie się.\n\nCzy rzeczywiście chcesz usunąć profil %s?</string>
+    <string name="qr_scanner_dialog_title">Skanuj kod QR</string>
     <string name="rate_snackbar_negative">Nigdy</string>
     <string name="rate_snackbar_neutral">Później</string>
     <string name="rate_snackbar_positive">Oceń teraz</string>
     <string name="rate_snackbar_text">Pokaż, że podoba ci się Szkolny.eu - oceń aplikację i spraw, by była jeszcze lepsza!</string>
     <string name="refresh">Odśwież</string>
+    <string name="registration_enable_dialog_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nUpewnij się, że zapoznałeś się z warunkami  i akceptujesz jej postanowienia.</string>
+    <string name="registration_enable_dialog_title">Rejestracja na serwerze</string>
+    <string name="registration_enable_progress_text">Pobieranie udostępnionych wydarzeń…</string>
     <string name="remove">Usuń</string>
     <string name="removed">Usunięto</string>
     <string name="report">Zgłoś</string>
@@ -615,6 +898,12 @@
     <string name="settings_about_changelog_text">Dziennik zmian</string>
     <string name="settings_about_crash_subtext">Albo lepiej nie klikaj…</string>
     <string name="settings_about_crash_text">Kliknij, aby wywołać nieoczekiwany wyjątek</string>
+    <string name="settings_about_discord_subtext">Dołącz do naszego serwera Discord!</string>
+    <string name="settings_about_discord_text">Serwer Discord</string>
+    <string name="settings_about_language_dialog_text">Uwaga. Ta opcja może nie działać na niektórych urządzeniach oraz w niektórych fragmentach aplikacji.</string>
+    <string name="settings_about_language_dialog_title">Zmień język aplikacji</string>
+    <string name="settings_about_language_subtext">Polski</string>
+    <string name="settings_about_language_text">Język aplikacji</string>
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
     <string name="settings_about_register_title_text">E-dziennik</string>
@@ -629,6 +918,8 @@
     <string name="settings_profile_change_name_dialog_text">Podaj nazwę profilu</string>
     <string name="settings_profile_change_name_dialog_title">Zmień nazwę profilu</string>
     <string name="settings_profile_change_title">Profil</string>
+    <string name="settings_profile_notifications_subtext">Wyłącz określone rodzaje powiadomień</string>
+    <string name="settings_profile_notifications_text">Filtruj powiadomienia</string>
     <string name="settings_profile_notify_subtext">Pokazuj powiadomienia z tego profilu</string>
     <string name="settings_profile_notify_text">Powiadamiaj o nowych danych</string>
     <string name="settings_profile_remove_image">Usuń obrazek profilu</string>
@@ -671,6 +962,7 @@
     <string name="settings_register_shared_events_dialog_enabled_text">Będziesz otrzymywać udostępnione sprawdziany od innych osób z twojej klasy.</string>
     <string name="settings_register_shared_events_subtext">Udostępniaj sprawdziany w swojej klasie</string>
     <string name="settings_register_shared_events_text">Włącz Udostępnianie wydarzeń</string>
+    <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
     <string name="settings_sync_customize_endpoint_announcements">Tablica ogłoszeń</string>
     <string name="settings_sync_customize_endpoint_attendance">Obecności/nieobecności</string>
     <string name="settings_sync_customize_endpoint_class_free_days">Dni wolne klasy</string>
@@ -723,6 +1015,9 @@
     <string name="settings_theme_mini_drawer_buttons_text">Dostosuj przyciski menu bocznego</string>
     <string name="settings_theme_mini_drawer_subtext">Wyświetlaj menu po lewej stronie</string>
     <string name="settings_theme_mini_drawer_text">Pokaż menu boczne</string>
+    <string name="settings_theme_open_drawer_on_back_pressed_text">Otwieraj menu przyciskiem wstecz</string>
+    <string name="settings_theme_snowfall_subtext">Dzwonią dzwonki sań</string>
+    <string name="settings_theme_snowfall_text">Pada śnieg, pada śnieg</string>
     <string name="settings_theme_theme_pink">Różowy</string>
     <string name="settings_theme_theme_system">Systemowy</string>
     <string name="settings_theme_theme_text">Motyw</string>
@@ -735,15 +1030,16 @@
     <string name="shortcut_homework">Zadania domowe</string>
     <string name="shortcut_messages">Wiadomości</string>
     <string name="shortcut_timetable">Plan lekcji</string>
+    <string name="snackbar_error_text">Wystąpił błąd</string>
+    <string name="sort_by_date">Wg daty</string>
+    <string name="sort_by_subject">Wg przedmiotu</string>
     <string name="subject_filter_disabled">Wszystkie przedmioty</string>
-    <string name="subject_filter_format" translatable="false">%s - %s%%</string>
     <string name="summary_mode_semester_1">Semestr 1</string>
     <string name="summary_mode_semester_2">Semestr 2</string>
     <string name="summary_mode_year">Cały rok</string>
     <string name="sure">Jasne!</string>
     <string name="sync_action_authorizing">Autoryzacja</string>
     <string name="sync_action_creating_notifications">Tworzenie powiadomień</string>
-    <string name="sync_action_format">%s…</string>
     <string name="sync_action_getting_account">Pobieranie konta</string>
     <string name="sync_action_getting_accounts">Pobieranie listy kont</string>
     <string name="sync_action_getting_certificate">Pobieranie certyfikatu</string>
@@ -754,8 +1050,8 @@
     <string name="sync_action_syncing">Synchronizuję</string>
     <string name="sync_action_syncing_account_info">Pobieranie informacji o koncie</string>
     <string name="sync_action_syncing_announcements">Pobieranie ogłoszeń szkolnych</string>
-    <string name="sync_action_syncing_attendance_types">Pobieranie kategorii obecności</string>
     <string name="sync_action_syncing_attendance">Pobieranie obecności</string>
+    <string name="sync_action_syncing_attendance_types">Pobieranie kategorii obecności</string>
     <string name="sync_action_syncing_behaviour_grade_categories">Pobieranie kategorii ocen z zachowania</string>
     <string name="sync_action_syncing_behaviour_grades">Pobieranie ocen z zachowania</string>
     <string name="sync_action_syncing_calendar">Pobieranie kalendarza</string>
@@ -768,6 +1064,7 @@
     <string name="sync_action_syncing_events">Pobieranie wydarzeń</string>
     <string name="sync_action_syncing_exams">Pobieranie sprawdzianów</string>
     <string name="sync_action_syncing_grade_categories">Pobieranie kategorii ocen</string>
+    <string name="sync_action_syncing_grade_comments">Pobieranie komentarzy ocen</string>
     <string name="sync_action_syncing_grade_details">Pobieranie szczegółów ocen</string>
     <string name="sync_action_syncing_grades">Pobieranie ocen</string>
     <string name="sync_action_syncing_homework">Pobieranie zadań domowych</string>
@@ -781,6 +1078,7 @@
     <string name="sync_action_syncing_point_grades">Pobieranie ocen punktowych</string>
     <string name="sync_action_syncing_proposition_grades">Pobieranie proponowanych ocen</string>
     <string name="sync_action_syncing_pt_meetings">Pobieranie zebrań z rodzicami</string>
+    <string name="sync_action_syncing_school_free_days">Pobieranie dni wolnych szkoły</string>
     <string name="sync_action_syncing_school_info">Pobieranie informacji o szkole</string>
     <string name="sync_action_syncing_shared_events">Pobieranie udostępnionych wydarzeń</string>
     <string name="sync_action_syncing_subjects">Pobieranie przedmiotów</string>
@@ -818,6 +1116,7 @@
     <string name="sync_error_register_student_not_associated_format">Uczeń %s nie jest przypisany do tego konta w dzienniku (login: %s).\n\nSpróbuj zalogować się ponownie, aczkolwiek może to oznaczać przerwę techniczną e-dziennika.</string>
     <string name="sync_error_saving_data">Błąd podczas zapisywania danych. Zgłoś błąd deweloperowi.</string>
     <string name="sync_error_ssl">Nie można nawiązać bezpiecznego połączenia.</string>
+    <string name="sync_error_synergia_not_activated">Konto Synergia nie zostało potwierdzone przez rodzica/opiekuna prawnego.\n\nZaloguj się na stronie portal.librus.pl i postępuj zgodnie z instrukcjami.</string>
     <string name="sync_error_timeout">Przekroczono czas oczekiwania.\n\nNiewystarczająca jakość połączenia internetowego lub przerwa techniczna e-dziennika</string>
     <string name="sync_error_unknown">Nieznany błąd</string>
     <string name="sync_feature_agenda">Pobieram terminarz…</string>
@@ -848,29 +1147,88 @@
     <string name="teacher_other">Inni</string>
     <string name="teacher_parent">Rodzic</string>
     <string name="teacher_parents_council">Rada rodziców</string>
-    <string name="teacher_pedagogue">Pedagog / psycholog</string>
+    <string name="teacher_pedagogue">Pedagog / Psycholog</string>
     <string name="teacher_principal">Dyrektor</string>
-    <string name="teacher_school_admin">Szkolny administrator</string>
+    <string name="teacher_school_admin">Szkolny Administrator</string>
     <string name="teacher_school_parents_council">Szkolna rada rodziców</string>
     <string name="teacher_secretariat">Sekretariat</string>
+    <string name="teacher_specialist">Specjaliści</string>
     <string name="teacher_student">Uczeń</string>
     <string name="teacher_super_admin">Administrator / SuperAdministrator</string>
     <string name="teacher_teacher">Nauczyciel</string>
     <string name="teachers_browse_category">Przeglądaj kategorię</string>
     <string name="the_day_after">pojutrze</string>
     <string name="the_day_before">przedwczoraj</string>
+    <string name="theme_amber">Bursztynowy</string>
+    <string name="theme_black">Czarny / OLED</string>
+    <string name="theme_blue">Niebieski</string>
+    <string name="theme_chocolate">Czekoladowy</string>
+    <string name="theme_dark">Ciemny</string>
+    <string name="theme_dark_blue">Ciemny niebieski</string>
+    <string name="theme_dark_green">Ciemny zielony</string>
+    <string name="theme_dark_purple">Ciemny fioletowy</string>
+    <string name="theme_dark_red">Ciemny czerwony</string>
+    <string name="theme_indigo">Indygo</string>
+    <string name="theme_light">Jasny</string>
+    <string name="theme_light_blue">Jasny niebieski</string>
+    <string name="theme_light_green">Jasny zielony</string>
+    <string name="theme_light_purple">Jasny fioletowy</string>
+    <string name="theme_light_red">Jasny czerwony</string>
+    <string name="theme_light_yellow">Jasny żółty</string>
+    <string name="theme_purple">Fioletowy</string>
+    <string name="theme_red">Czerwony</string>
+    <string name="timetable_free_day_show">Pokaż plan lekcji</string>
+    <string name="timetable_free_day_text">W tym dniu nie ma lekcji:</string>
+    <string name="timetable_free_day_title">Dzień wolny</string>
     <string name="timetable_generate_current_week_format">Ze zmianami na ten tydzień (%s do %s)</string>
     <string name="timetable_generate_for_printout">Do wydruku (bez zmian, oszczędza kolory)</string>
     <string name="timetable_generate_include_profile_name">Wyświetl nazwę profilu ucznia</string>
     <string name="timetable_generate_next_week_format">Ze zmianami na następny tydzień (%s do %s)</string>
     <string name="timetable_generate_no_changes">Bez zmian lekcji</string>
+    <string name="timetable_generate_no_colors">Do wydruku (oszczędza kolory)</string>
     <string name="timetable_generate_progress_text">Może to potrwać kilkanaście sekund…</string>
     <string name="timetable_generate_progress_title">Generowanie planu lekcji</string>
     <string name="timetable_generate_range">Zakres generowanego planu</string>
+    <string name="timetable_generate_selected_week">Na wybrany tydzień</string>
+    <string name="timetable_generate_show_profile_name">Pokaż nazwę profilu</string>
+    <string name="timetable_generate_show_teachers_names">Pokaż imiona i nazwiska nauczycieli</string>
     <string name="timetable_generate_success_text">Plan lekcji w formie obrazka został zapisany w katalogu Szkolny.eu.\n\nMożesz go od razu otworzyć albo udostępnić.</string>
     <string name="timetable_generate_success_title">Gotowe</string>
+    <string name="timetable_lesson_cancelled">Lekcja odwołana</string>
+    <string name="timetable_lesson_change">Zastępstwo</string>
+    <string name="timetable_lesson_change_format">Zastępstwo: zamiast %s</string>
+    <string name="timetable_lesson_shifted">Lekcja przeniesiona na inny termin</string>
+    <string name="timetable_lesson_shifted_from">Lekcja przeniesiona z innego terminu</string>
+    <string name="timetable_lesson_shifted_from_other_day">Lekcja przeniesiona z dnia %s, godz. %s</string>
+    <string name="timetable_lesson_shifted_from_same_day">Lekcja przeniesiona z godz. %s</string>
+    <string name="timetable_lesson_shifted_other_day">Lekcja przeniesiona na %s, godz. %s</string>
+    <string name="timetable_lesson_shifted_same_day">Lekcja przeniesiona na godz. %s</string>
+    <string name="timetable_manual_dialog_date">Data</string>
+    <string name="timetable_manual_dialog_date_choose">Wybierz datę</string>
+    <string name="timetable_manual_dialog_subject_choose">Wybierz przedmiot</string>
+    <string name="timetable_manual_dialog_time">Godzina</string>
+    <string name="timetable_manual_dialog_time_choose">Wybierz godzinę</string>
+    <string name="timetable_manual_dialog_time_format">%s (lekcja %d)</string>
+    <string name="timetable_manual_item_empty">Nie dodano własnych lekcji na ten dzień.</string>
+    <string name="timetable_manual_repeat_by_subject_notice">Na każdej lekcji przedmiotu %s</string>
+    <string name="timetable_manual_repeating_notice">Obejmuje plan lekcji na każdy tydzień</string>
+    <string name="timetable_manual_type_by_subject">Wg. przedmiotu</string>
+    <string name="timetable_manual_type_one_time">Jednorazowo</string>
+    <string name="timetable_manual_type_repeating">Cyklicznie</string>
     <string name="timetable_no_classroom">(brak sali)</string>
     <string name="timetable_no_data">Brak lekcji tego dnia</string>
+    <string name="timetable_no_lessons_title">Brak lekcji tego dnia</string>
+    <string name="timetable_no_subject_name">(brak nazwy)</string>
+    <string name="timetable_no_timetable_sync">Pobierz plan lekcji</string>
+    <string name="timetable_no_timetable_text">Nie pobrano planu lekcji na ten tydzień.</string>
+    <string name="timetable_no_timetable_title">Brak planu lekcji</string>
+    <string name="timetable_no_timetable_week">na tydzień %s</string>
+    <string name="timetable_not_public_hint">Skontaktuj się z wychowawcą w celu udostępnienia planu lekcji.</string>
+    <string name="timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę.</string>
+    <string name="timetable_not_public_title">Brak planu lekcji</string>
+    <string name="timetable_select_day">Wybierz dzień</string>
+    <string name="timetable_syncing_text">Pobieranie planu lekcji na wybrany tydzień…</string>
+    <string name="timetable_today">Dzisiaj</string>
     <string name="title_all">Synchronizuj wszystko</string>
     <string name="title_debugging">Debugowanie</string>
     <string name="title_feedback">Pomoc i opinie</string>
@@ -881,416 +1239,46 @@
     <string name="title_profile_manager">Menadżer profili</string>
     <string name="title_semester">Zmień semestr</string>
     <string name="toast_changing_profile">Zmieniam profil ucznia</string>
-    <string name="transition_name" translatable="false">transition_name</string>
+    <string name="today">dzisiaj</string>
+    <string name="tomorrow">jutro</string>
+    <string name="toolbar_subtitle_syncing">Synchronizuję…</string>
     <string name="unknown">Nieznany</string>
     <string name="update_needed">Wymagana aktualizacja</string>
     <string name="update_needed_text">Musisz zaktualizować aplikację, by móc dalej z niej korzystać. Kliknij OK, aby pobrać.</string>
     <string name="warning_older_version_running">Próbujesz uruchomić starszą wersję aplikacji, co może uszkodzić jej dane.</string>
     <string name="web_push_configured_browsers">Sparowane przeglądarki</string>
     <string name="web_push_connection_error">Brak połączenia z serwerem.</string>
+    <string name="web_push_date_paired_format">Połączono %s</string>
     <string name="web_push_no_browsers">Brak sparowanych przeglądarek.</string>
     <string name="web_push_pair_browser">Sparuj przeglądarkę</string>
     <string name="web_push_really_remove">Czy na pewno chcesz usunąć tą przeglądarkę?</string>
+    <string name="web_push_token_invalid">Token nie wygląda na prawidłowy</string>
     <string name="web_push_unavailable">Nie możesz tego zrobić</string>
+    <string name="web_push_unpair_button">Odłącz</string>
     <string name="web_push_you_need_to_register">Musisz włączyć rejestrację automatyczną, by korzystać z przekazywania powiadomień.\n\nZaznacz \"Zezwól na rejestrację\" w ustawieniach logowania.</string>
     <string name="what_do_you_want_to_do">Co chcesz zrobić?</string>
     <string name="what_is_this">Co to jest?</string>
     <string name="whats_new">Co nowego?</string>
     <string name="widget_config_activity_customize">Dostosuj widget</string>
-    <string name="widget_config_activity_opacity_format" translatable="false">%d%%</string>
     <string name="widget_config_all_profiles">Łączony - wszystkie profile</string>
     <string name="widget_loading">Ładowanie…</string>
     <string name="widget_lucky_number_no_profile">Brak profilu</string>
     <string name="widget_lucky_number_title">Szczęśliwy numerek</string>
     <string name="widget_notifications_no_data">Brak powiadomień</string>
     <string name="widget_notifications_title">Powiadomienia</string>
-    <string name="widget_notifications_title_format" translatable="false">%s - %s</string>
     <string name="widget_refresh">Odśwież</string>
     <string name="widget_sync">Synchronizuj</string>
     <string name="widget_timetable_big_font">Użyj większej czcionki</string>
     <string name="widget_timetable_no_lessons">Brak lekcji tego dnia.</string>
+    <string name="widget_timetable_no_lessons_found">Brak lekcji przez następne 7 dni.</string>
+    <string name="widget_timetable_no_timetable">Plan lekcji nie został pobrany.\n\nOtwórz aplikację i wykonaj synchronizację, aby pobrać plan lekcji.</string>
     <string name="widget_timetable_profile_doesnt_exist">Wybrany profil nie istnieje.\nUsuń widget i spróbuj ponownie.</string>
+    <string name="widget_timetable_short_no_lessons">Brak lekcji przez nast. 7 dni.</string>
+    <string name="widget_timetable_short_no_timetable">Nie pobrano planu lekcji.</string>
     <string name="widget_timetable_title">Plan lekcji</string>
     <string name="widget_timetable_title_unified">Łączony plan lekcji</string>
     <string name="yes">Tak</string>
     <string name="yesterday">wczoraj</string>
     <string name="you_are_offline_text">Jesteś offline. Spróbuj włączyć Wi-Fi lub dane komórkowe.</string>
     <string name="you_are_offline_title">Połączenie sieciowe</string>
-    <string name="menu_message">Wiadomość</string>
-    <string name="menu_add_event">Dodaj wydarzenie</string>
-    <string name="menu_add_event_desc">Zapisz własne wydarzenie lub zadanie domowe w Terminarzu</string>
-    <string name="menu_agenda_change_view">Zmień widok Terminarza</string>
-    <string name="menu_grades_averages">Średnie ocen</string>
-    <string name="menu_grades_averages_desc">Pokaż średnie semestralne i końcoworoczne</string>
-    <string name="menu_grades_color_mode">Kolor wyświetlanych ocen</string>
-    <string name="sort_by_date">Wg daty</string>
-    <string name="sort_by_subject">Wg przedmiotu</string>
-    <string name="menu_grades_average_mode">Sposób obliczania średniej końcoworocznej</string>
-    <string name="menu_grades_sort_mode">Sortuj oceny</string>
-    <string name="sync_error_synergia_not_activated">Konto Synergia nie zostało potwierdzone przez rodzica/opiekuna prawnego.\n\nZaloguj się na stronie portal.librus.pl i postępuj zgodnie z instrukcjami.</string>
-    <string name="menu_feedback">Pomoc i opinie</string>
-    <string name="error_invalid_fragment">Podano nieprawidłowy moduł: %d Zgłoś błąd programiście</string>
-    <string name="settings_about_discord_text">Serwer Discord</string>
-    <string name="settings_about_discord_subtext">Dołącz do naszego serwera Discord!</string>
-    <string name="menu_debug">Debugowanie</string>
-    <string name="edziennik_progress_login_librus_portal">Logowanie do Portalu Librus</string>
-    <string name="edziennik_progress_login_librus_api">Logowanie do API</string>
-    <string name="edziennik_progress_login_librus_synergia">Logowanie do Librus Synergia</string>
-    <string name="edziennik_progress_login_librus_messages">Logowanie do wiadomości Librus</string>
-    <string name="edziennik_notification_api_title">Usługa synchronizacji</string>
-    <string name="edziennik_notification_api_text">Dzięki niej, aplikacja Szkolny.eu może synchronizować dane z e-dziennikiem. Możesz ją zamknąć, ponieważ w tej chwili nic nie robi.</string>
-    <string name="edziennik_notification_api_close">Zamknij</string>
-    <string name="edziennik_notification_api_cancel">Anuluj</string>
-    <string name="edziennik_notification_api_sync_title_format">Trwa synchronizacja profilu %s...</string>
-    <string name="edziennik_notification_api_error_title">Synchronizacja przerwana</string>
-    <string name="edziennik_notification_api_error_report_task">Zgłaszanie błędów...</string>
-    <string name="edziennik_notification_api_error_report_title">Zgłaszanie błędów</string>
-    <string name="edziennik_progress_endpoint_student_info">Pobieranie informacji o uczniu...</string>
-    <string name="sync_action_syncing_school_free_days">Pobieranie dni wolnych szkoły</string>
-    <string name="homework_tab_current">Aktualne</string>
-    <string name="homework_tab_past">Minione</string>
-    <string name="homework_no_data">Brak zadań domowych.</string>
-    <string name="agenda_teacher_absence">Nieobecni nauczyciele</string>
-    <string name="sync_action_syncing_grade_comments">Pobieranie komentarzy ocen</string>
-    <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
-    <string name="edziennik_progress_endpoint_school_info">Pobieranie informacji o szkole…</string>
-    <string name="edziennik_progress_endpoint_grades">Pobieranie ocen ucznia…</string>
-    <string name="edziennik_progress_endpoint_grade_categories">Pobieranie kategorii ocen…</string>
-    <string name="edziennik_progress_login_template_web">Logowanie do Template WEB…</string>
-    <string name="edziennik_progress_login_template_api">Logowanie do Template API…</string>
-    <string name="edziennik_progress_login_mobidziennik_web">Logowanie do MobiDziennika…</string>
-    <string name="edziennik_progress_login_mobidziennik_api">Logowanie do API MobiDziennika…</string>
-    <string name="edziennik_progress_endpoint_data">Pobieranie danych…</string>
-    <string name="edziennik_progress_endpoint_messages_inbox">Pobieranie wiadomości odebranych…</string>
-    <string name="edziennik_progress_endpoint_messages">Pobieranie wiadomości…</string>
-    <string name="edziennik_progress_endpoint_lucky_number">Pobieranie szczęśliwego numerka…</string>
-    <string name="edziennik_progress_endpoint_calendar">Pobieranie kalendarza…</string>
-    <string name="edziennik_progress_endpoint_behaviour">Pobieranie uwag ucznia…</string>
-    <string name="edziennik_progress_endpoint_attendance">Pobieranie frekwencji ucznia…</string>
-    <string name="edziennik_progress_login_vulcan_api">Logowanie do Vulcan API…</string>
-    <string name="edziennik_progress_login_mobidziennik_api2">Logowanie do API MobiDziennika…</string>
-    <string name="edziennik_progress_endpoint_events">Pobieranie wydarzeń kalendarza…</string>
-    <string name="edziennik_progress_endpoint_homework">Pobieranie zadań domowych…</string>
-    <string name="edziennik_progress_endpoint_attendance_types">Pobieranie kategorii obecności…</string>
-    <string name="edziennik_progress_endpoint_announcements">Pobieranie ogłoszeń szkolnych…</string>
-    <string name="edziennik_notification_api_first_login_title">Pierwsze logowanie</string>
-    <string name="edziennik_progress_endpoint_classes">Pobieranie informacji o klasie…</string>
-    <string name="edziennik_progress_endpoint_teacher_free_days">Pobieranie nieobecności nauczycieli…</string>
-    <string name="edziennik_progress_endpoint_teacher_free_day_types">Pobieranie rodzajów nieobecności nauczycieli…</string>
-    <string name="edziennik_progress_endpoint_dictionaries">Pobieranie słowników…</string>
-    <string name="toolbar_subtitle_syncing">Synchronizuję…</string>
-    <string name="toolbar_subtitle_syncing_format" translatable="false">[%d%%] %s</string>
-    <string name="edziennik_progress_endpoint_notices">Pobieranie uwag…</string>
-    <string name="edziennik_progress_endpoint_teams">Pobieranie grup klasowych…</string>
-    <string name="edziennik_progress_endpoint_units">Pobieranie informacji o jednostce…</string>
-    <string name="edziennik_progress_endpoint_teachers">Pobieranie listy nauczycieli…</string>
-    <string name="edziennik_progress_endpoint_subjects">Pobieranie listy przedmiotów…</string>
-    <string name="edziennik_progress_endpoint_classrooms">Pobieranie listy sal lekcyjnych…</string>
-    <string name="edziennik_progress_endpoint_event_types">Pobieranie kategorii wydarzeń…</string>
-    <string name="edziennik_progress_endpoint_notice_types">Pobieranie kategorii uwag…</string>
-    <string name="edziennik_progress_endpoint_pt_meetings">Pobieranie zebrań z rodzicami…</string>
-    <string name="edziennik_progress_login_idziennik_web">Logowanie do iDziennika…</string>
-    <string name="edziennik_progress_login_idziennik_api">Logowanie do iDziennika…</string>
-    <string name="edziennik_progress_endpoint_messages_outbox">Pobieranie wiadomości wysłanych…</string>
-    <string name="login_summary_account_parent">(rodzic)</string>
-    <string name="login_summary_account_child">(uczeń)</string>
-    <string name="settings_about_language_text">Język aplikacji</string>
-    <string name="settings_about_language_subtext">Polski</string>
-    <string name="settings_about_language_dialog_title">Zmień język aplikacji</string>
-    <string name="settings_about_language_dialog_text">Uwaga. Ta opcja może nie działać na niektórych urządzeniach oraz w niektórych fragmentach aplikacji.</string>
-    <string name="language_system">Według systemu</string>
-    <string name="language_polish" translatable="false">Polski</string>
-    <string name="language_english" translatable="false">English</string>
-    <string name="edziennik_progress_endpoint_timetable">Pobieranie planu lekcji…</string>
-    <string name="edziennik_progress_endpoint_proposed_grades">Pobieranie ocen proponowanych…</string>
-    <string name="edziennik_progress_endpoint_exams">Pobieranie listy sprawdzianów…</string>
-    <string name="app_manager_dialog_title">Wykryto problem z synchronizacją</string>
-    <string name="app_manager_dialog_text">Na urządzeniu prawdopodobnie zainstalowany jest menedżer aplikacji, który może powodować problemy z synchronizacją automatyczną.\n\nNależy wyłączyć w ustawieniach telefonu optymalizację baterii dla aplikacji Szkolny.eu.\n\nKliknij OK, aby przejść do ustawień telefonu.</string>
-    <string name="dont_ask_again">Nie pytaj ponownie</string>
-    <string name="app_manager_open_failed">Nie udało się otworzyć ustawień</string>
-    <string name="edziennik_notification_api_notify_title">Tworzenie powiadomień</string>
-    <string name="login_librus_captcha_title">Librus - logowanie</string>
-    <string name="timetable_today">Dzisiaj</string>
-    <string name="timetable_lesson_cancelled">Lekcja odwołana</string>
-    <string name="timetable_lesson_change">Zastępstwo</string>
-    <string name="timetable_lesson_change_format">Zastępstwo: zamiast %s</string>
-    <string name="timetable_lesson_shifted_same_day">Lekcja przeniesiona na godz. %s</string>
-    <string name="timetable_lesson_shifted_other_day">Lekcja przeniesiona na %s, godz. %s</string>
-    <string name="timetable_lesson_shifted_from_same_day">Lekcja przeniesiona z godz. %s</string>
-    <string name="timetable_lesson_shifted_from_other_day">Lekcja przeniesiona z dnia %s, godz. %s</string>
-    <string name="timetable_lesson_shifted">Lekcja przeniesiona na inny termin</string>
-    <string name="timetable_lesson_shifted_from">Lekcja przeniesiona z innego terminu</string>
-    <string name="timetable_not_public_title">Brak planu lekcji</string>
-    <string name="timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę.</string>
-    <string name="timetable_not_public_hint">Skontaktuj się z wychowawcą w celu udostępnienia planu lekcji.</string>
-    <string name="timetable_free_day_title">Dzień wolny</string>
-    <string name="timetable_free_day_text">W tym dniu nie ma lekcji:</string>
-    <string name="timetable_free_day_show">Pokaż plan lekcji</string>
-    <string name="timetable_no_lessons_title">Brak lekcji tego dnia</string>
-    <string name="timetable_no_timetable_title">Brak planu lekcji</string>
-    <string name="timetable_no_timetable_text">Nie pobrano planu lekcji na ten tydzień.</string>
-    <string name="timetable_no_timetable_sync">Pobierz plan lekcji</string>
-    <string name="timetable_no_timetable_week">na tydzień %s</string>
-    <string name="dialog_lesson_details_teacher">Nauczyciel</string>
-    <string name="dialog_lesson_details_classroom">Sala lekcyjna</string>
-    <string name="dialog_lesson_details_team">Grupa</string>
-    <string name="dialog_lesson_details_id">ID lekcji</string>
-    <string name="dialog_lesson_details_number">Nr lekcji</string>
-    <string name="dialog_lesson_details_shifted_to">Lekcja przeniesiona na %s</string>
-    <string name="dialog_lesson_details_shifted_from">Lekcja przeniesiona z %s</string>
-    <string name="dialog_event_manual_title">Dodaj wpis do terminarza</string>
-    <string name="dialog_event_manual_time">Lekcja/godzina</string>
-    <string name="dialog_event_manual_date_next_lesson">nast. lekcja %s</string>
-    <string name="dialog_event_manual_date_tomorrow">jutro (%s)</string>
-    <string name="dialog_event_manual_date_this_week" translatable="false">%s (%s)</string>
-    <string name="dialog_event_manual_date_other">-- inna data --</string>
-    <string name="dialog_event_manual_date_today">dzisiaj (%s)</string>
-    <string name="dialog_event_manual_date_next_week">przyszły %s (%s)</string>
-    <string name="dialog_event_manual_no_lessons">Nie ma lekcji tego dnia</string>
-    <string name="dialog_profile_remove_success">Profil został usunięty.</string>
-    <string name="snackbar_error_text">Wystąpił błąd</string>
-    <string name="dialog_sync_view_list_title">Synchronizacja ręczna</string>
-    <string name="timetable_no_subject_name">(brak nazwy)</string>
-    <string name="dialog_event_manual_more_options">Więcej opcji</string>
-    <string name="edziennik_progress_endpoint_grade_comments">Pobieranie komentarzy ocen…</string>
-    <string name="menu_remove_notifications">Usuń wszystkie</string>
-    <string name="menu_remove_notifications_success">Wyczyszczono powiadomienia</string>
-    <string name="timetable_select_day">Wybierz dzień</string>
-    <string name="card_action_move_up">Przesuń w górę</string>
-    <string name="card_action_move_down">Przesuń w dół</string>
-    <string name="home_lucky_number_details_click_to_set">%s • Kliknij, aby ustawić swój numerek.</string>
-    <string name="home_lucky_number_details">%s • Numer w dzienniku to %d</string>
-    <string name="home_lucky_number_no_info">Brak informacji o szczęśliwym numerku.</string>
-    <string name="home_lucky_number_yours_today">Dzisiaj to Ty masz szczęśliwy numerek!</string>
-    <string name="home_lucky_number_yours_tomorrow">Jutro to Ty masz szczęśliwy numerek!</string>
-    <string name="home_lucky_number_yours_later">Dnia %s Twój numerek jest szczęśliwy.</string>
-    <string name="home_lucky_number_later">Dnia %s szczęśliwy numerek to %d.</string>
-    <string name="home_lucky_number_today">%d to dzisiejszy szczęśliwy numerek.</string>
-    <string name="home_lucky_number_tomorrow">%d to szczęśliwy numerek na jutro.</string>
-    <string name="home_lucky_number_no_number">Nie ma dzisiaj szczęśliwego numerka.</string>
-    <string name="home_timetable_tomorrow">Jutro (%1$s)</string>
-    <string name="home_timetable_date_this_week">%1$s, %2$s</string>
-    <string name="home_timetable_date_future">%1$s, %2$s</string>
-    <string name="home_timetable_lessons_info">%d lekcji - %s do %s</string>
-    <string name="home_timetable_lesson_first">Pierwsza: %s</string>
-    <string name="home_timetable_later">Później:</string>
-    <string name="home_timetable_later_no_lessons">brak lekcji</string>
-    <string name="home_timetable_today">Dzisiaj</string>
-    <string name="home_timetable_lesson_ongoing">Teraz: %s</string>
-    <string name="home_timetable_lesson_not_started">Za chwilę: %s</string>
-    <string name="home_timetable_lessons_remaining">Pozostało lekcji: %d - do %s</string>
-    <string name="grade_subject_format">z %s</string>
-    <string name="concat_2_strings" translatable="false">%s%s</string>
-    <string name="edziennik_progress_endpoint_behaviour_grades">Pobieranie ocen z zachowania…</string>
-    <string name="edziennik_szkolny_api_sync_title">Synchronizowanie udostępnionych wydarzeń…</string>
-    <string name="settings_theme_open_drawer_on_back_pressed_text">Otwieraj menu przyciskiem wstecz</string>
-    <string name="login_librus_jst_subtitle">Zaloguj się tokenem i kodem PIN, który można wygenerować po zalogowanu się do Synergii w zakładce Aplikacje mobilne.</string>
-    <string name="login_error_incorrect_token_or_pin">Nieprawidłowy token lub PIN</string>
-    <string name="login_error_incorrect_code_or_pin">Nieprawidłowy kod lub PIN</string>
-    <string name="login_error_incorrect_code">Nieprawidłowy kod</string>
-    <string name="login_error_no_code">Podaj kod</string>
-    <string name="event_list_added_by_format">Dodano %1$s przez %2$s%3$s</string>
-    <string name="event_list_added_by_unknown_format">Dodano %1$s%3$s</string>
-    <string name="event_list_added_by_self_format">Dodano %1$s przez Ciebie%3$s</string>
-    <string name="event_list_shared_by_format">{cmd-share-variant} %1$s przez %2$s%3$s</string>
-    <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie%3$s</string>
-    <string name="settings_theme_snowfall_text">Pada śnieg, pada śnieg</string>
-    <string name="settings_theme_snowfall_subtext">Dzwonią dzwonki sań</string>
-    <string name="dialog_day_no_events">Brak wydarzeń tego dnia.</string>
-    <string name="dialog_day_date_format" translatable="false">%s, %s</string>
-    <string name="dialog_lesson_go_to_button">Przejdź</string>
-    <string name="dialog_no_events_hint">Możesz wpisać wydarzenie ręcznie, używając przycisku Dodaj.</string>
-    <string name="dialog_lesson_no_events">Brak wydarzeń na tej lekcji.</string>
-    <string name="dialog_event_details_teacher">Nauczyciel</string>
-    <string name="dialog_event_details_subject">Przedmiot</string>
-    <string name="dialog_event_details_team">Grupa</string>
-    <string name="dialog_event_details_added_by">Dodano</string>
-    <string name="dialog_event_details_topic">Temat</string>
-    <string name="event_details_added_by_format">%1$s przez %2$s</string>
-    <string name="event_details_added_by_unknown_format">%1$s</string>
-    <string name="event_details_added_by_self_format">%1$s przez Ciebie</string>
-    <string name="event_details_shared_by_format">{cmd-share-variant} %1$s przez %2$s</string>
-    <string name="event_details_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie</string>
-    <string name="web_push_token_invalid">Token nie wygląda na prawidłowy</string>
-    <string name="menu_web_push">Przekazywanie powiadomień</string>
-    <string name="qr_scanner_dialog_title">Skanuj kod QR</string>
-    <string name="web_push_unpair_button">Odłącz</string>
-    <string name="web_push_date_paired_format">Połączono %s</string>
-    <string name="home_timetable_no_timetable">Nie pobrano planu lekcji</string>
-    <string name="home_timetable_no_timetable_text">Plan lekcji na tydzień %s nie został jeszcze pobrany.</string>
-    <string name="home_timetable_no_timetable_sync">Pobierz</string>
-    <string name="home_timetable_no_lessons">Nie ma żadnych lekcji</string>
-    <string name="home_timetable_no_lessons_text">Przez następne 7 dni nie ma żadnych lekcji.</string>
-    <string name="home_timetable_not_public">Brak planu lekcji</string>
-    <string name="home_timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę.\n\nSkontaktuj się z wychowawcą.</string>
-    <string name="widget_timetable_no_timetable">Plan lekcji nie został pobrany.\n\nOtwórz aplikację i wykonaj synchronizację, aby pobrać plan lekcji.</string>
-    <string name="widget_timetable_no_lessons_found">Brak lekcji przez następne 7 dni.</string>
-    <string name="widget_timetable_short_no_timetable">Nie pobrano planu lekcji.</string>
-    <string name="widget_timetable_short_no_lessons">Brak lekcji przez nast. 7 dni.</string>
-    <string name="messages_compose_text_hint">Napisz wiadomość...</string>
-    <string name="menu_message_compose">Napisz wiadomość</string>
-    <string name="no_lessons_today">Nie ma dzisiaj żadnych lekcji!</string>
-    <string name="lessons_finished">Nie ma dzisiaj więcej lekcji!</string>
-    <string name="login_edudziennik_title">Zaloguj się - Edudziennik</string>
-    <string name="login_edudziennik_subtitle">Użyj danych, którymi logujesz się do wersji komputerowej Edudziennika.</string>
-    <string name="edziennik_progress_login_edudziennik_web">Logowanie do Edudziennika…</string>
-    <string name="dialog_error_details_title">Szczegóły błędu</string>
-    <string name="edziennik_progress_endpoint_descriptive_grades">Pobieranie ocen opisowych…</string>
-    <string name="edziennik_progress_endpoint_point_grades">Pobieranie ocen punktowych…</string>
-    <string name="teacher_specialist">Specjaliści</string>
-    <string name="messages_compose_send">Wyślij</string>
-    <string name="messages_compose_recipients_error">Sprawdź poprawność wybranych odbiorców</string>
-    <string name="messages_compose_recipients_empty">Wybierz odbiorców</string>
-    <string name="messages_compose_subject_empty">Wpisz temat o długości co najmniej 3 znaków</string>
-    <string name="messages_compose_text_empty">Wpisz treść wiadomości</string>
-    <string name="messages_sent_success">Wiadomość została wysłana</string>
-    <string name="compose">Napisz</string>
-    <string name="messages_reply">Odpowiedz</string>
-    <string name="error_unknown_format">Kod błędu: %d (w %s)</string>
-    <string name="messages_compose_recipient_exists">Ten odbiorca został już wybrany</string>
-    <string name="login_account_no_students">To konto nie ma żadnych uczniów</string>
-    <string name="login_account_no_students_text">Do tego konta nie ma przypisanego żadnego ucznia, dlatego zalogowanie nie jest możliwe.\n\nPrzypisz ucznia na stronie swojego e-dziennika lub zaloguj się kontem, które ma przypisanego ucznia.</string>
-    <string name="timetable_generate_show_profile_name">Pokaż nazwę profilu</string>
-    <string name="timetable_generate_no_colors">Do wydruku (oszczędza kolory)</string>
-    <string name="timetable_generate_selected_week">Na wybrany tydzień</string>
-    <string name="edziennik_progress_endpoint_lessons">Pobieranie listy lekcji…</string>
-    <string name="event_manual_saving">Zapisuję wydarzenie...</string>
-    <string name="event_manual_unshare">Usuwam wydarzenie u reszty klasy...</string>
-    <string name="event_manual_share">Udostępniam wydarzenie...</string>
-    <string name="event_manual_unshare_remove">Usuwam udostępnione wydarzenie...</string>
-    <string name="event_manual_remove">Usuwam wydarzenie...</string>
-    <string name="counter_activity_sync">Synchronizuj</string>
-    <string name="notification_day_free">Dzień wolny</string>
-    <string name="edziennik_progress_endpoint_push_config">Konfigurowanie natychmiastowych powiadomień...</string>
-    <string name="calendar_app_not_found">Nie znaleziono aplikacji kalendarza</string>
-    <string name="edziennik_szkolny_creating_notifications">Tworzenie powiadomień...</string>
-    <string name="notification_type_new_shared_homework">Udostępniono zadanie domowe</string>
-    <string name="notification_type_removed_shared_event">Usunięto wydarzenie</string>
-    <string name="notification_click_to_see_all">Kliknij, aby zobaczyć wszystkie powiadomienia</string>
-    <string name="notification_cant_check_update">Nie udało się sprawdzić aktualizacji</string>
-    <string name="edziennik_progress_endpoint_account_details">Pobieranie szczegółów konta...</string>
-    <string name="dialog_grades_config_sort_by_date">Od najnowszych</string>
-    <string name="dialog_grades_config_sort_by_subject">Wg nazwy przedmiotu</string>
-    <string name="dialog_grades_config_color_from_eregister">Wg e-dziennika</string>
-    <string name="dialog_grades_config_color_by_value">Wg wartości oceny</string>
-    <string name="other">Inne</string>
-    <string name="menu_grades_config">Ustawienia ocen</string>
-    <string name="timetable_generate_show_teachers_names">Pokaż imiona i nazwiska nauczycieli</string>
-    <string name="messages_compose_confirm_title">Potwierdź wysłanie wiadomości</string>
-    <string name="messages_compose_confirm_text">Czy na pewno chcesz wysłać wiadomość do wybranych odbiorców?</string>
-    <string name="notification_channel_user_attention_name">Wymagane działanie</string>
-    <string name="notification_channel_user_attention_desc">Powiadomienia o problemie, który wymaga działania użytkownika (np. weryfikacja Captcha). Zalecane jest pozostawienie tej kategorii włączonej.</string>
-    <string name="notification_user_action_required_title">Wymagane działanie w aplikacji</string>
-    <string name="notification_user_action_required_text">Problem, który uniemożliwia synchronizację musi być rozwiązany przez użytkownika. Kliknij, aby uzyskać więcej informacji.</string>
-    <string name="notification_user_action_required_captcha_librus">Librus: wymagane rozwiązanie zadania Captcha. Kliknij, aby kontynuować logowanie do dziennika.</string>
-    <string name="settings_profile_notifications_text">Filtruj powiadomienia</string>
-    <string name="settings_profile_notifications_subtext">Wyłącz określone rodzaje powiadomień</string>
-    <string name="dialog_notification_filter_title">Pokazuj wybrane powiadomienia</string>
-    <string name="dialog_notification_filter_text"><![CDATA[Zaznacz, które powiadomienia mają być pokazywane w systemie oraz w aplikacji.]]></string>
-    <string name="notification_filter_warning">Czy na pewno chcesz zastosować te ustawienia?\n\nNie będziesz widział informacji o niektórych danych, przez co możesz przeoczyć ważne komunikaty, wiadomości lub oceny.\n\nUstawienia zostaną zastosowane dla aktualnie otwartego profilu.</string>
-    <string name="dialog_day_lessons_info">%s - %s (%s lekcji - %s godzin %s minut)</string>
-    <string name="developer_mode">Developer mode</string>
-    <string name="dev_mode_enable_warning">Te ustawienia nie są przeznaczone dla zwykłych użytkowników, wyłącznie dla twórcy tej aplikacji.\n\nNie są nawet w żaden sposób opisane, nie wiadomo co robią, więc możesz nawet nie wiedzieć kiedy coś zepsujesz.\n\nWłączenie tych opcji może spowodować utratę danych w aplikacji, uszkodzenie twojego systemu lub nawet uruchomienie wirusa na baterii.\n\nLepiej uważaj.</string>
-    <string name="card_events_header_title">Najbliższe wydarzenia</string>
-    <string name="events_no_nearest">Nie ma więcej wydarzeń w kalendarzu.</string>
-    <string name="in_format">za %s</string>
-    <string name="hint_save_in_calendar">Zapisz do kalendarza</string>
-    <string name="hint_edit_event">Edytuj wydarzenie</string>
-    <string name="hint_go_to_timetable">Idź do planu lekcji</string>
-    <string name="today">dzisiaj</string>
-    <string name="tomorrow">jutro</string>
-    <string name="tag_key_model">model</string>
-    <string name="tag_key_view_type">viewType</string>
-    <string name="tag_key_position">position</string>
-    <string name="grades_semester_format">Semestr %d</string>
-    <string name="grades_preview_other_semester">Semestr %d</string>
-
-    <!--<string name="grades_average_value_point_format">%s/%s (%s%%)</string>-->
-    <string name="grades_average_value_point_format">%3$s%%</string>
-    <string name="grades_average_value_sum_format">%s pkt</string>
-
-    <string name="grades_average_normal_format">średnia: %s</string>
-    <string name="grades_average_sum_format">suma: %s</string>
-    <string name="grades_average_point_format">punkty: %s</string>
-
-    <string name="grades_average_semester_format">sem. %1$d: %2$s</string>
-    <string name="grades_average_year_format">roczna: %2$s</string>
-    <string name="grades_year_summary_format">Cały rok: %s • %s</string>
-    <string name="grades_average_no">brak średniej</string>
-    <string name="grades_stats_semester_1">semestr 1</string>
-    <string name="grades_stats_semester_2">semestr 2</string>
-    <string name="grades_stats_yearly">całoroczna</string>
-    <string name="grades_stats_disclaimer">* średnie ocen są poglądowe i mogą się różnić, w zależności od ustawień szkoły</string>
-    <string name="grades_stats_title">Statystyka ocen</string>
-    <string name="grades_stats_normal">Średnia zwykłych ocen</string>
-    <string name="grades_stats_point">Średnia przedmiotów punktowych</string>
-    <string name="grades_stats_no_data">Zbyt mało danych do wyliczenia średniej.</string>
-    <string name="grades_stats_expected">*przewidywana średnia</string>
-    <string name="grades_stats_from_proposed">*z ocen proponowanych\nPrzewidywana: %s</string>
-    <string name="grades_stats_from_proposed_no_expected">*z ocen proponowanych</string>
-    <string name="grades_stats_from_final">*z ocen końcowych\nPrzewidywana: %s</string>
-    <string name="grades_stats_from_final_no_expected">*z ocen końcowych</string>
-    <string name="grades_stats_proposed_avg">Śr. ocen proponowanych:\n%s</string>
-    <string name="grades_stats_help_title">Obliczanie średniej wszystkich przedmiotów</string>
-    <string name="grades_stats_help_text">Ocena przewidywana z danego przedmiotu jest obliczana na podstawie aktualnej średniej ważonej.\n\nOcena jest liczbą całkowitą, jaką wystawił by nauczyciel bazując na średniej. Liczba zaokrąglona jest w górę jeśli część po przecinku przekroczy ,75.\nPrzykładowo: średnie 3,75 jak również 4,74 dają w wyniku ocenę dobrą (4).\n\nŚrednia przewidywana ze wszystkich przedmiotów obejmuje obliczone w ten sposób oceny końcowe.</string>
-    <string name="grades_stats_custom_value_notice">Została ustawiona własna wartość plusa/minusa. Jeśli uważasz, że się ona nie zgadza, kliknij Konfiguruj.</string>
-    <string name="grades_stats_custom_config_notice">Aktualne ustawienia ocen mogą wpływać na średnią. Jeśli uważasz, że się ona nie zgadza, kliknij Konfiguruj.</string>
-    <string name="configure">Konfiguruj</string>
-    <string name="menu_timetable_manual">Edytor planu lekcji</string>
-    <string name="dropdown_subject_custom">Własny przedmiot</string>
-    <string name="dialog_event_manual_date_choose">Wybierz datę</string>
-    <string name="dropdown_date_no_more_lessons">Nie ma więcej lekcji tego przedmiotu. Pobierz plan lekcji i spróbuj ponownie.</string>
-    <string name="timetable_manual_dialog_date">Data</string>
-    <string name="timetable_manual_dialog_date_choose">Wybierz datę</string>
-    <string name="timetable_manual_dialog_subject_choose">Wybierz przedmiot</string>
-    <string name="timetable_manual_dialog_time">Godzina</string>
-    <string name="timetable_manual_dialog_time_choose">Wybierz godzinę</string>
-    <string name="timetable_manual_dialog_time_format" formatted="false">%s (lekcja %d)</string>
-    <string name="timetable_manual_item_empty">Nie dodano własnych lekcji na ten dzień.</string>
-    <string name="timetable_manual_repeat_by_subject_notice">Na każdej lekcji przedmiotu %s</string>
-    <string name="timetable_manual_repeating_notice">Obejmuje plan lekcji na każdy tydzień</string>
-    <string name="timetable_manual_type_by_subject">Wg. przedmiotu</string>
-    <string name="timetable_manual_type_one_time">Jednorazowo</string>
-    <string name="timetable_manual_type_repeating">Cyklicznie</string>
-    <string name="grades_config_title">Konfiguracja ocen</string>
-    <string name="grades_config_dont_show_improved">Ukrywaj oceny poprawione z listy</string>
-    <string name="grades_config_average_without_weight">Licz średnią jeśli wszystkie wagi to 0</string>
-    <string name="grades_config_average_without_weight_message">Pozwala na liczenie średniej arytmetycznej z przedmiotów, w których wszystkie wystawione oceny mają wagę 0 (nie są liczone do średniej).\n\nJeśli taki przedmiot celowo nie powinien być liczony, odznacz okienko przy tym ustawieniu.</string>
-    <string name="grades_config_minus_value">Własna wartość minusa</string>
-    <string name="grades_config_plus_value">Własna wartość plusa</string>
-    <string name="timetable_syncing_text">Pobieranie planu lekcji na wybrany tydzień...</string>
-    <string name="dialog_event_manual_no_timetable">Nie pobrano planu lekcji...</string>
-    <string name="grades_config_dont_count_grades">Wyklucz wybrane oceny ze średniej</string>
-    <string name="grades_config_dont_count_hint">Oceny oddziel przecinkiem</string>
-    <string name="grades_config_dont_count_placeholder">Podaj oceny...</string>
-    <string name="home_configure_notice">Możesz usunąć karty przesuwając w lewo lub zmienić ich kolejność, przytrzymując na kartę.</string>
-    <string name="home_configure_add_remove">Dodaj/usuń karty</string>
-    <string name="card_type_lucky_number">Szczęśliwy numerek</string>
-    <string name="card_type_timetable">Plan lekcji</string>
-    <string name="card_type_grades">Ostatnie oceny</string>
-    <string name="card_type_events">Najbliższe wydarzenia</string>
-    <string name="dialog_event_manual_time_choose">Wybierz godzinę</string>
-    <string name="event_sharing_text">Udostępnianie wydarzenia…</string>
-    <string name="event_removing_text">Usuwanie udostępnionego wydarzenia…</string>
-    <string name="event_manual_need_registration_title">Udostępnianie wydarzeń</string>
-    <string name="event_manual_need_registration_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nUpewnij się, że zapoznałeś się z warunkami <a href="http://szkolny.eu/privacy-policy">Polityki prywatności</a> i akceptujesz jej postanowienia.</string>
-    <string name="registration_enable_progress_text">Pobieranie udostępnionych wydarzeń...</string>
-    <string name="registration_enable_dialog_title">Rejestracja na serwerze</string>
-    <string name="registration_enable_dialog_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nUpewnij się, że zapoznałeś się z warunkami <a href="http://szkolny.eu/privacy-policy">Polityki prywatności</a> i akceptujesz jej postanowienia.</string>
-    <string name="menu_add_remove_cards">Dodaj lub usuń karty</string>
-    <string name="menu_template">Template</string>
-    <string name="messages_attachment_download_again">Pobierz ponownie</string>
-    <string name="hint_mark_as_done">Oznacz jako wykonane</string>
-    <string name="event_mark_as_done_title">Oznacz jako wykonane</string>
-    <string name="event_mark_as_done_text">Czy chcesz oznaczyć to zadanie jako wykonane?\n\nNie będzie ono się wyświetlać na stronie głównej oraz w aktualnych zadaniach domowych. Będzie wciąż dostępne w Terminarzu.</string>
-    <string name="dialog_event_details_body">Treść</string>
-    <string name="dialog_event_details_attachments">Załączniki</string>
-    <string name="hint_download_again">Pobierz ponownie</string>
-    <string name="menu_lab">Laboratorium</string>
-    <string name="messages_no_data">Nie masz żadnych wiadomości.</string>
-    <string name="messages_tab_deleted">Usunięte</string>
-    <string name="messages_search">Szukaj</string>
-    <string name="messages_search_results">Znaleziono %d wiadomości</string>
-    <string name="messages_delete_confirmation">Czy chcesz usunąć wiadomość?</string>
-    <string name="messages_delete_confirmation_text">Spowoduje to przeniesienie wiadomości do zakładki \"Usunięte\" w aplikacji. Zmiany nie wpłyną na wiadomość w e-dzienniku (nie zostanie ona tam usunięta).</string>
 </resources>
