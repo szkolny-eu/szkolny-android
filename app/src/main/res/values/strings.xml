@@ -1,58 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Szkolny.eu</string>
-    <string name="app_task_format" translatable="false">Szkolny.eu | %s</string>
-    <string name="attendance_absent" translatable="false">nb</string>
-    <string name="attendance_absent_excused" translatable="false">u</string>
-    <string name="attendance_belated" translatable="false">sp</string>
-    <string name="attendance_belated_excused" translatable="false">su</string>
-    <string name="attendance_free_day" translatable="false">w</string>
-    <string name="attendance_present" translatable="false">ob</string>
-    <string name="attendance_released" translatable="false">zw</string>
-    <string name="card_timetable_event_overview_format" translatable="false">\n%s %s - %s</string>
-    <string name="card_timetable_lesson_duration_format" translatable="false">%s - %s</string>
-    <string name="concat_2_strings" translatable="false">%s%s</string>
-    <string name="date_relative_format" translatable="false">%s - %s</string>
-    <string name="date_time_format" translatable="false">%s, %s</string>
-    <string name="day_other_format" translatable="false">%s, %s</string>
-    <string name="dialog_averages_format" translatable="false">%s%s%s\n%s%s%s\n%s%s%s</string>
-    <string name="dialog_day_date_format" translatable="false">%s, %s</string>
-    <string name="dialog_event_manual_date_this_week" translatable="false">%s (%s)</string>
-    <string name="dialog_grade_details_class_average_format" translatable="false">%#.2f</string>
-    <string name="dialog_grade_details_date_format" translatable="false">%s, %s</string>
-    <string name="ellipsis" translatable="false">…</string>
-    <string name="event_details_added_by_unknown_format" translatable="false">%1$s</string>
-    <string name="grades_average_double_format" translatable="false">%s, %s</string>
-    <string name="grades_average_double_percent_format" translatable="false">%s%%, %s%%</string>
-    <string name="grades_average_semester_format" translatable="false">sem. %1$d: %2$s</string>
-    <string name="grades_average_single_format" translatable="false">%s</string>
-    <string name="grades_average_single_percent_format" translatable="false">%s%%</string>
-    <string name="grades_average_value_point_format" translatable="false">%3$s%%</string>
-    <string name="home_timetable_date_future" translatable="false">%1$s, %2$s</string>
-    <string name="home_timetable_date_this_week" translatable="false">%1$s, %2$s</string>
-    <string name="homework_subject_teacher_format" translatable="false">%s, %s</string>
-    <string name="homework_team_date_format" translatable="false">%s %s</string>
-    <string name="language_english" translatable="false">English</string>
-    <string name="language_polish" translatable="false">Polski</string>
-    <string name="messages_attachment_downloading_format" translatable="false">%s (%.2fMB)</string>
-    <string name="messages_attachment_format" translatable="false">%s (%s)</string>
-    <string name="messages_attachment_no_size_format" translatable="false">%s</string>
-    <string name="messages_date_time_format" translatable="false">%s, %s</string>
-    <string name="messages_recipients_list_unknown_state_format" translatable="false"><![CDATA[<li>&nbsp;%s</li>]]></string>
-    <string name="notification_ticker_format" translatable="false">Szkolny.eu: %s</string>
-    <string name="preference_file" translatable="false">pl.szczodrzynski.edziennik_preferences</string>
-    <string name="preference_file_global" translatable="false">pl.szczodrzynski.edziennik_profiles</string>
-    <string name="preference_file_register" translatable="false">pl.szczodrzynski.edziennik_profile%d_register</string>
-    <string name="prefix" translatable="false">pl</string>
-    <string name="subject_filter_format" translatable="false">%s - %s%%</string>
-    <string name="sync_action_format" translatable="false">%s…</string>
-    <string name="tag_key_model" translatable="false">model</string>
-    <string name="tag_key_position" translatable="false">position</string>
-    <string name="tag_key_view_type" translatable="false">viewType</string>
-    <string name="toolbar_subtitle_syncing_format" translatable="false">[%d%%] %s</string>
-    <string name="transition_name" translatable="false">transition_name</string>
-    <string name="widget_config_activity_opacity_format" translatable="false">%d%%</string>
-    <string name="widget_notifications_title_format" translatable="false">%s - %s</string>
+
+    <array name="dialog_change_semester_list">
+        <item>Semestr 1</item>
+        <item>Semestr 2</item>
+    </array>
+    <array name="dialog_grades_color_modes">
+        <item>Wg e-dziennika</item>
+        <item>Wg wartości oceny</item>
+    </array>
+    <array name="dialog_grades_sort_modes">
+        <item>Od najnowszych</item>
+        <item>Wg nazwy przedmiotu</item>
+    </array>
+    <array name="main_menu_add_options">
+        <item>Wydarzenie</item>
+        <item>Zadanie domowe</item>
+    </array>
+    <array name="material_calendar_months_array">
+        <item>styczeń</item>
+        <item>luty</item>
+        <item>marzec</item>
+        <item>kwiecień</item>
+        <item>maj</item>
+        <item>czerwiec</item>
+        <item>lipiec</item>
+        <item>sierpień</item>
+        <item>wrzesień</item>
+        <item>październik</item>
+        <item>listopad</item>
+        <item>grudzień</item>
+    </array>
+    <array name="months_day_of_array">
+        <item>stycznia</item>
+        <item>lutego</item>
+        <item>marca</item>
+        <item>kwietnia</item>
+        <item>maja</item>
+        <item>czerwca</item>
+        <item>lipca</item>
+        <item>sierpnia</item>
+        <item>września</item>
+        <item>października</item>
+        <item>listopada</item>
+        <item>grudnia</item>
+    </array>
+
     <string name="abort">Przerwij</string>
     <string name="add">Dodaj</string>
     <string name="agenda_lesson_changes">Zmiany planu lekcji</string>
@@ -61,7 +54,16 @@
     <string name="app_manager_dialog_text">Na urządzeniu prawdopodobnie zainstalowany jest menedżer aplikacji, który może powodować problemy z synchronizacją automatyczną.\n\nNależy wyłączyć w ustawieniach telefonu optymalizację baterii dla aplikacji Szkolny.eu.\n\nKliknij OK, aby przejść do ustawień telefonu.</string>
     <string name="app_manager_dialog_title">Wykryto problem z synchronizacją</string>
     <string name="app_manager_open_failed">Nie udało się otworzyć ustawień</string>
+    <string name="app_name" translatable="false">Szkolny.eu</string>
+    <string name="app_task_format" translatable="false">Szkolny.eu | %s</string>
     <string name="are_you_sure">Czy na pewno?</string>
+    <string name="attendance_absent" translatable="false">nb</string>
+    <string name="attendance_absent_excused" translatable="false">u</string>
+    <string name="attendance_belated" translatable="false">sp</string>
+    <string name="attendance_belated_excused" translatable="false">su</string>
+    <string name="attendance_free_day" translatable="false">w</string>
+    <string name="attendance_present" translatable="false">ob</string>
+    <string name="attendance_released" translatable="false">zw</string>
     <string name="attendance_summary_title_semester_format">Podsumowanie - semestr %d </string>
     <string name="attendance_summary_title_year">Podsumowanie - cały rok </string>
     <string name="attendances_absent">Nieobecności:</string>
@@ -100,9 +102,11 @@
     <string name="card_lucky_number_title_format">%d to dzisiejszy Szczęśliwy numerek.</string>
     <string name="card_timetable_button">Przejdź do planu</string>
     <string name="card_timetable_event_overview">Wydarzenia:</string>
+    <string name="card_timetable_event_overview_format" translatable="false">\n%s %s - %s</string>
     <string name="card_timetable_following">Za chwilę:</string>
     <string name="card_timetable_header_title">Plan lekcji na dzisiaj</string>
     <string name="card_timetable_lesson_duration">Czas trwania lekcji</string>
+    <string name="card_timetable_lesson_duration_format" translatable="false">%s - %s</string>
     <string name="card_timetable_lesson_overview"><![CDATA[Pierwsze lekcje:<br>%s %s<br>%s %s]]></string>
     <string name="card_timetable_lesson_overview_ongoing"><![CDATA[Następne lekcje:<br>%s %s<br>%s %s]]></string>
     <string name="card_timetable_no_data">Brak lekcji tego dnia</string>
@@ -123,6 +127,7 @@
     <string name="close">Zamknij</string>
     <string name="compose">Napisz</string>
     <string name="compose_title">Napisz</string>
+    <string name="concat_2_strings" translatable="false">%s%s</string>
     <string name="configure">Konfiguruj</string>
     <string name="copied_to_clipboard">Skopiowano do schowka</string>
     <string name="copy_to_clipboard">Skopiuj do schowka</string>
@@ -138,6 +143,9 @@
     <string name="crash_restart">Restartuj aplikację</string>
     <string name="crash_sync_button">Synchronizuj</string>
     <string name="crash_title">E-dziennik:\nWystąpił nieoczekiwany błąd.\nPrzepraszamy za problem.</string>
+    <string name="date_relative_format" translatable="false">%s - %s</string>
+    <string name="date_time_format" translatable="false">%s, %s</string>
+    <string name="day_other_format" translatable="false">%s, %s</string>
     <string name="day_today_format">dzisiaj (%s)</string>
     <string name="day_tomorrow_format">jutro (%s)</string>
     <string name="debug_notice">Generalnie nie przejmuj się tym co tu widzisz.</string>
@@ -147,15 +155,13 @@
     <string name="dialog_averages_expected_yearly_format">Przewidywana średnia roczna:\n%#.2f\n</string>
     <string name="dialog_averages_final_format">Średnia ocen końcowych na semestr %d:\n%#.2f\n</string>
     <string name="dialog_averages_final_yearly_format">Średnia ocen rocznych końcowych:\n%#.2f\n</string>
+    <string name="dialog_averages_format" translatable="false">%s%s%s\n%s%s%s\n%s%s%s</string>
     <string name="dialog_averages_proposed_format">Średnia ocen proponowanych na semestr %d:\n%#.2f\n</string>
     <string name="dialog_averages_proposed_yearly_format">Średnia ocen rocznych proponowanych:\n%#.2f\n</string>
     <string name="dialog_averages_title">Średnie ocen</string>
     <string name="dialog_averages_unavailable_format">Średnie ocen na semestr %d nie są dostępne</string>
     <string name="dialog_averages_unavailable_yearly">Roczna średnia ocen nie jest dostępna</string>
-    <array name="dialog_change_semester_list">
-        <item>Semestr 1</item>
-        <item>Semestr 2</item>
-    </array>
+    <string name="dialog_day_date_format" translatable="false">%s, %s</string>
     <string name="dialog_day_lessons_info">%s - %s (%s lekcji - %s godzin %s minut)</string>
     <string name="dialog_day_no_events">Brak wydarzeń tego dnia.</string>
     <string name="dialog_error_details_title">Szczegóły błędu</string>
@@ -178,6 +184,7 @@
     <string name="dialog_event_manual_date_next_lesson">nast. lekcja %s</string>
     <string name="dialog_event_manual_date_next_week">przyszły %s (%s)</string>
     <string name="dialog_event_manual_date_other">-- inna data --</string>
+    <string name="dialog_event_manual_date_this_week" translatable="false">%s (%s)</string>
     <string name="dialog_event_manual_date_today">dzisiaj (%s)</string>
     <string name="dialog_event_manual_date_tomorrow">jutro (%s)</string>
     <string name="dialog_event_manual_lesson">Lekcja</string>
@@ -213,7 +220,9 @@
     <string name="dialog_grade_details_added_date">Data dodania</string>
     <string name="dialog_grade_details_category">Kategoria</string>
     <string name="dialog_grade_details_class_average">Średnia klasowa</string>
+    <string name="dialog_grade_details_class_average_format" translatable="false">%#.2f</string>
     <string name="dialog_grade_details_comment">Komentarz</string>
+    <string name="dialog_grade_details_date_format" translatable="false">%s, %s</string>
     <string name="dialog_grade_details_description">Opis</string>
     <string name="dialog_grade_details_history">Historia oceny</string>
     <string name="dialog_grade_details_id">ID oceny</string>
@@ -225,18 +234,10 @@
     <string name="dialog_grade_details_value">Wartość do średniej</string>
     <string name="dialog_grade_details_weight_format">waga %.2f</string>
     <string name="dialog_grades_color_mode_title">Kolor ocen</string>
-    <array name="dialog_grades_color_modes">
-        <item>Wg e-dziennika</item>
-        <item>Wg wartości oceny</item>
-    </array>
     <string name="dialog_grades_config_color_by_value">Wg wartości oceny</string>
     <string name="dialog_grades_config_color_from_eregister">Wg e-dziennika</string>
     <string name="dialog_grades_config_sort_by_date">Od najnowszych</string>
     <string name="dialog_grades_config_sort_by_subject">Wg nazwy przedmiotu</string>
-    <array name="dialog_grades_sort_modes">
-        <item>Od najnowszych</item>
-        <item>Wg nazwy przedmiotu</item>
-    </array>
     <string name="dialog_grades_sort_title">Sortuj oceny</string>
     <string name="dialog_homework_manual_details_header">Szczegóły</string>
     <string name="dialog_lesson_details_classroom">Sala lekcyjna</string>
@@ -340,6 +341,7 @@
     <string name="edziennik_progress_login_vulcan_api">Logowanie do Vulcan API…</string>
     <string name="edziennik_szkolny_api_sync_title">Synchronizowanie udostępnionych wydarzeń…</string>
     <string name="edziennik_szkolny_creating_notifications">Tworzenie powiadomień…</string>
+    <string name="ellipsis" translatable="false">…</string>
     <string name="error">Błąd</string>
     <string name="error_details">Szczegóły błędu</string>
     <string name="error_invalid_fragment">Podano nieprawidłowy moduł: %d Zgłoś błąd programiście</string>
@@ -359,6 +361,7 @@
     <string name="event_class_event">wydarzenie klasowe</string>
     <string name="event_details_added_by_format">%1$s przez %2$s</string>
     <string name="event_details_added_by_self_format">%1$s przez Ciebie</string>
+    <string name="event_details_added_by_unknown_format" translatable="false">%1$s</string>
     <string name="event_details_shared_by_format">{cmd-share-variant} %1$s przez %2$s</string>
     <string name="event_details_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie</string>
     <string name="event_essay">wypracowanie</string>
@@ -397,7 +400,7 @@
     <string name="faq_back_title">Znalazłeś odpowiedź?</string>
     <string name="faq_text">Jeśli masz jakieś pytanie, warto najpierw zajrzeć do bazy FAQ w poszukiwaniu gotowej odpowiedzi. Chcesz teraz przejść do tej strony?</string>
     <string name="feedback_ask_a_question">Zadaj pytanie</string>
-    <string name="feedback_faq">Często zadawane pytania - </string>
+    <string name="feedback_faq">Często zadawane pytania - <a href="http://szkolny.eu/pomoc/">otwórz</a></string>
     <string name="feedback_faq_button">Otwórz bazę FAQ</string>
     <string name="feedback_history">Historia konwersacji</string>
     <string name="feedback_send">Wyślij</string>
@@ -414,12 +417,18 @@
     <string name="grade_year_final_format_2">%s - roczna</string>
     <string name="grade_year_proposed_format">%s (prop. roczna)</string>
     <string name="grade_year_proposed_format_2">%s - prop. roczna</string>
+    <string name="grades_average_double_format" translatable="false">%s, %s</string>
+    <string name="grades_average_double_percent_format" translatable="false">%s%%, %s%%</string>
     <string name="grades_average_double_point_format">%spkt, %spkt</string>
     <string name="grades_average_no">brak średniej</string>
     <string name="grades_average_normal_format">średnia: %s</string>
     <string name="grades_average_point_format">punkty: %s</string>
+    <string name="grades_average_semester_format" translatable="false">sem. %1$d: %2$s</string>
+    <string name="grades_average_single_format" translatable="false">%s</string>
+    <string name="grades_average_single_percent_format" translatable="false">%s%%</string>
     <string name="grades_average_single_point_format">%spkt</string>
     <string name="grades_average_sum_format">suma: %s</string>
+    <string name="grades_average_value_point_format" translatable="false">%3$s%%</string>
     <string name="grades_average_value_sum_format">%s pkt</string>
     <string name="grades_average_year_format">roczna: %2$s</string>
     <string name="grades_config_average_without_weight">Licz średnią jeśli wszystkie wagi to 0</string>
@@ -502,13 +511,15 @@
     <string name="home_lucky_number_yours_later">Dnia %s Twój numerek jest szczęśliwy.</string>
     <string name="home_lucky_number_yours_today">Dzisiaj to Ty masz szczęśliwy numerek!</string>
     <string name="home_lucky_number_yours_tomorrow">Jutro to Ty masz szczęśliwy numerek!</string>
+    <string name="home_timetable_date_future" translatable="false">%1$s, %2$s</string>
+    <string name="home_timetable_date_this_week" translatable="false">%1$s, %2$s</string>
     <string name="home_timetable_later">Później:</string>
     <string name="home_timetable_later_no_lessons">brak lekcji</string>
     <string name="home_timetable_lesson_first">Pierwsza: %s</string>
     <string name="home_timetable_lesson_not_started">Za chwilę: %s</string>
     <string name="home_timetable_lesson_ongoing">Teraz: %s</string>
     <string name="home_timetable_lessons_info">%d lekcji - %s do %s</string>
-    <string name="home_timetable_lessons_remaining">Pozostało lekcji: %d do %s</string>
+    <string name="home_timetable_lessons_remaining">Pozostało lekcji: %d - do %s</string>
     <string name="home_timetable_no_lessons">Nie ma żadnych lekcji</string>
     <string name="home_timetable_no_lessons_text">Przez następne 7 dni nie ma żadnych lekcji.</string>
     <string name="home_timetable_no_timetable">Nie pobrano planu lekcji</string>
@@ -520,12 +531,16 @@
     <string name="home_timetable_tomorrow">Jutro (%1$s)</string>
     <string name="homework_edit">Edytuj</string>
     <string name="homework_no_data">Brak zadań domowych.</string>
+    <string name="homework_subject_teacher_format" translatable="false">%s, %s</string>
     <string name="homework_tab_current">Aktualne</string>
     <string name="homework_tab_past">Minione</string>
+    <string name="homework_team_date_format" translatable="false">%s %s</string>
     <string name="i_agree">Zgadzam się</string>
     <string name="i_disagree">Nie zgadzam się</string>
     <string name="in_format">za %s</string>
     <string name="incorrect_format">Nieprawidłowy format</string>
+    <string name="language_english" translatable="false">English</string>
+    <string name="language_polish" translatable="false">Polski</string>
     <string name="language_system">Według systemu</string>
     <string name="lesson_added">Nowa lekcja</string>
     <string name="lesson_break">Przerwa</string>
@@ -620,7 +635,7 @@
     <string name="login_summary_title">Już prawie gotowe</string>
     <string name="login_summary_unregister_text">Stracisz możliwość korzystania z np. Udostępniania wydarzeń i Przekazywania powiadomień.</string>
     <string name="login_summary_unregister_title">Na pewno wyłączyć rejestrację?</string>
-    <string name="login_sync_error_subtitle">Podczas synchronizacji wystąpił błąd. Kliknij przycisk na dole strony, aby go zgłosić.\n\nProfile zostały zapisane, tak więc . W razie co, możesz skorzystać z opcji Pomoc i opinie w menu.\n</string>
+    <string name="login_sync_error_subtitle">Podczas synchronizacji wystąpił błąd. Kliknij przycisk na dole strony, aby go zgłosić.\n\nProfile zostały zapisane, tak więc <b>aplikacja powinna działać poprawnie</b>. W razie co, możesz skorzystać z opcji Pomoc i opinie w menu.\n</string>
     <string name="login_sync_error_title">Błąd synchronizacji</string>
     <string name="login_sync_subtitle_1_format">Synchronizuję profil</string>
     <string name="login_sync_title">Synchronizacja…</string>
@@ -632,10 +647,6 @@
     <string name="login_vulcan_subtitle">Wybierz opcję Dostęp mobilny na stronie e-dziennika, zarejestruj nowe urządzenie i wpisz otrzymane dane. W razie problemów skorzystaj z przycisku pod formularzem.</string>
     <string name="login_vulcan_title">Zaloguj się - Vulcan UONET+</string>
     <string name="main_menu_add">Dodaj…</string>
-    <array name="main_menu_add_options">
-        <item>Wydarzenie</item>
-        <item>Zadanie domowe</item>
-    </array>
     <string name="main_menu_agenda_view_type">Zmień widok</string>
     <string name="main_menu_block_timetable">Generuj blokowy plan lekcji</string>
     <string name="main_menu_grades_average">Średnia ocen</string>
@@ -645,20 +656,6 @@
     <string name="main_menu_sort_by">Sortuj</string>
     <string name="material_calendar_friday">P</string>
     <string name="material_calendar_monday">P</string>
-    <array name="material_calendar_months_array">
-        <item>styczeń</item>
-        <item>luty</item>
-        <item>marzec</item>
-        <item>kwiecień</item>
-        <item>maj</item>
-        <item>czerwiec</item>
-        <item>lipiec</item>
-        <item>sierpień</item>
-        <item>wrzesień</item>
-        <item>październik</item>
-        <item>listopad</item>
-        <item>grudzień</item>
-    </array>
     <string name="material_calendar_negative_button">Anuluj</string>
     <string name="material_calendar_positive_button">OK</string>
     <string name="material_calendar_saturday">S</string>
@@ -712,6 +709,9 @@
     <string name="messages_attachment_cannot_download">Nie można pobrać załącznika</string>
     <string name="messages_attachment_cannot_download_text">Wystąpił błąd wewnętrzny pobierania załącznika. Może to być spowodowane słabym połączeniem internetowym.</string>
     <string name="messages_attachment_download_again">Pobierz ponownie</string>
+    <string name="messages_attachment_downloading_format" translatable="false">%s (%.2fMB)</string>
+    <string name="messages_attachment_format" translatable="false">%s (%s)</string>
+    <string name="messages_attachment_no_size_format" translatable="false">%s</string>
     <string name="messages_compose_confirm_text">Czy na pewno chcesz wysłać wiadomość do wybranych odbiorców?</string>
     <string name="messages_compose_confirm_title">Potwierdź wysłanie wiadomości</string>
     <string name="messages_compose_menu_attachment">Dodaj załącznik</string>
@@ -730,6 +730,7 @@
     <string name="messages_compose_text_hint">Napisz wiadomość…</string>
     <string name="messages_compose_title">Napisz wiadomość</string>
     <string name="messages_compose_to_hint">Do</string>
+    <string name="messages_date_time_format" translatable="false">%s, %s</string>
     <string name="messages_delete_confirmation">Czy chcesz usunąć wiadomość?</string>
     <string name="messages_delete_confirmation_text">Spowoduje to przeniesienie wiadomości do zakładki \"Usunięte\" w aplikacji. Zmiany nie wpłyną na wiadomość w e-dzienniku (nie zostanie ona tam usunięta).</string>
     <string name="messages_download_error">Błąd pobierania wiadomości</string>
@@ -738,6 +739,7 @@
     <string name="messages_recipient_list_download_error">Błąd pobierania listy odbiorców</string>
     <string name="messages_recipients_list_read_format"><![CDATA[<li>&nbsp;%s, przeczytano: %s, %s</li>]]></string>
     <string name="messages_recipients_list_read_unknown_date_format"><![CDATA[<li>&nbsp;%s, przeczytano: tak</li>]]></string>
+    <string name="messages_recipients_list_unknown_state_format" translatable="false"><![CDATA[<li>&nbsp;%s</li>]]></string>
     <string name="messages_recipients_list_unread_format"><![CDATA[<li>&nbsp;%s, przeczytano: <font color=red>nie</font></li>]]></string>
     <string name="messages_reply">Odpowiedz</string>
     <string name="messages_reply_date_time_format">%s o %s</string>
@@ -747,20 +749,6 @@
     <string name="messages_tab_deleted">Usunięte</string>
     <string name="messages_tab_received">Odebrane</string>
     <string name="messages_tab_sent">Wysłane</string>
-    <array name="months_day_of_array">
-        <item>stycznia</item>
-        <item>lutego</item>
-        <item>marca</item>
-        <item>kwietnia</item>
-        <item>maja</item>
-        <item>czerwca</item>
-        <item>lipca</item>
-        <item>sierpnia</item>
-        <item>września</item>
-        <item>października</item>
-        <item>listopada</item>
-        <item>grudnia</item>
-    </array>
     <string name="more">Więcej</string>
     <string name="network_you_are_offline_text">Spróbuj włączyć Wi-Fi lub dane pakietowe.</string>
     <string name="network_you_are_offline_title">Jesteś offline</string>
@@ -833,6 +821,7 @@
     <string name="notification_shared_event_modified_format">%s zmienił %s na %s: %s</string>
     <string name="notification_shared_event_removed_format">%s usunął %s na %s: %s</string>
     <string name="notification_teacher_absence_new_format">Nowa nieobecność nauczyciela dla %s</string>
+    <string name="notification_ticker_format" translatable="false">Szkolny.eu: %s</string>
     <string name="notification_type_attendance">Wpis frekwencji</string>
     <string name="notification_type_auto_archiving">Archiwizacja profilu</string>
     <string name="notification_type_error">Błąd</string>
@@ -865,7 +854,14 @@
     <string name="opening_file">Otwieranie %s</string>
     <string name="opening_file_no_app">Brak aplikacji otwierającej ten typ pliku</string>
     <string name="other">Inne</string>
+    <string name="permissions_attachment">Musisz przyznać uprawnienia do zapisu plików w pamięci telefonu, aby móc pobrać załącznik.\n\nKliknij OK, aby przyznać uprawnienia.</string>
+    <string name="permissions_denied">Odmówiłeś aplikacji wymaganych uprawnień do wykonania tej czynności.\n\nAby przynać uprawnienia, otwórz sekcję Uprawnienia dla aplikacji Szkolny.eu w ustawieniach telefonu.\n\nKliknij OK, aby przejść do ustawień aplikacji.</string>
+    <string name="permissions_required">Wymagane uprawnienia</string>
     <string name="please_wait">Proszę czekać</string>
+    <string name="preference_file" translatable="false">pl.szczodrzynski.edziennik_preferences</string>
+    <string name="preference_file_global" translatable="false">pl.szczodrzynski.edziennik_profiles</string>
+    <string name="preference_file_register" translatable="false">pl.szczodrzynski.edziennik_profile%d_register</string>
+    <string name="prefix" translatable="false">pl</string>
     <string name="privacy_policy">Polityka prywatności</string>
     <string name="profile_archived_dialog_text_format">Profil %s został archiwizowany. Możliwość synchronizacji została wyłączona, z powodu prawdopodobnej utraty danych przy późniejszym pobieraniu.\n\nMożesz dalej przeglądać dane zapisane w aplikacji z tego profilu.\n\nMiej na uwadze, że niektóre wiadomości mogą nie pobierać się poprawnie.</string>
     <string name="profile_archived_dialog_title">Profil jest archiwalny</string>
@@ -876,14 +872,14 @@
     <string name="profile_menu_open_settings">Ustawienia</string>
     <string name="profile_menu_remove">Usuń profil</string>
     <string name="profile_menu_remove_confirm">Potwierdź usunięcie</string>
-    <string name="profile_menu_remove_confirm_text_format">Zamierzasz usunąć profil . Oznacza to usunięcie z aplikacji wszystkich danych powiązanych z tym profilem (ocen, planu lekcji, sprawdzianów…).\n\nWiększość danych będziesz mógł pobrać na nowo poprzez ponowne zalogowanie się.\n\nCzy rzeczywiście chcesz usunąć profil %s?</string>
+    <string name="profile_menu_remove_confirm_text_format">Zamierzasz usunąć profil <b>%s</b>. Oznacza to usunięcie z aplikacji wszystkich danych powiązanych z tym profilem (ocen, planu lekcji, sprawdzianów…).\n\nWiększość danych będziesz mógł pobrać na nowo poprzez ponowne zalogowanie się.\n\nCzy rzeczywiście chcesz usunąć profil %s?</string>
     <string name="qr_scanner_dialog_title">Skanuj kod QR</string>
     <string name="rate_snackbar_negative">Nigdy</string>
     <string name="rate_snackbar_neutral">Później</string>
     <string name="rate_snackbar_positive">Oceń teraz</string>
     <string name="rate_snackbar_text">Pokaż, że podoba ci się Szkolny.eu - oceń aplikację i spraw, by była jeszcze lepsza!</string>
     <string name="refresh">Odśwież</string>
-    <string name="registration_enable_dialog_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nUpewnij się, że zapoznałeś się z warunkami  i akceptujesz jej postanowienia.</string>
+    <string name="registration_enable_dialog_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nUpewnij się, że zapoznałeś się z warunkami <a href="http://szkolny.eu/privacy-policy">Polityki prywatności</a> i akceptujesz jej postanowienia.</string>
     <string name="registration_enable_dialog_title">Rejestracja na serwerze</string>
     <string name="registration_enable_progress_text">Pobieranie udostępnionych wydarzeń…</string>
     <string name="remove">Usuń</string>
@@ -1034,12 +1030,14 @@
     <string name="sort_by_date">Wg daty</string>
     <string name="sort_by_subject">Wg przedmiotu</string>
     <string name="subject_filter_disabled">Wszystkie przedmioty</string>
+    <string name="subject_filter_format" translatable="false">%s - %s%%</string>
     <string name="summary_mode_semester_1">Semestr 1</string>
     <string name="summary_mode_semester_2">Semestr 2</string>
     <string name="summary_mode_year">Cały rok</string>
     <string name="sure">Jasne!</string>
     <string name="sync_action_authorizing">Autoryzacja</string>
     <string name="sync_action_creating_notifications">Tworzenie powiadomień</string>
+    <string name="sync_action_format" translatable="false">%s…</string>
     <string name="sync_action_getting_account">Pobieranie konta</string>
     <string name="sync_action_getting_accounts">Pobieranie listy kont</string>
     <string name="sync_action_getting_certificate">Pobieranie certyfikatu</string>
@@ -1138,6 +1136,9 @@
     <string name="sync_report_dialog_include_api_response">Dołącz odpowiedź API (zalecane)</string>
     <string name="sync_report_dialog_title">Zgłaszanie błędu</string>
     <string name="sync_service">Usługa synchronizacji</string>
+    <string name="tag_key_model" translatable="false">model</string>
+    <string name="tag_key_position" translatable="false">position</string>
+    <string name="tag_key_view_type" translatable="false">viewType</string>
     <string name="tap_target_set_as_read_text">Kliknij na ikonę, aby oznaczyć wszystkie dane jako przeczytane.</string>
     <string name="tap_target_set_as_read_title">Powiadomienia</string>
     <string name="tap_target_switch_profile_text">Kliknij na nagłówek menu, aby zmienić lub dodać profil ucznia. Znajdziesz tam też ręczną synchronizację wszystkich profili.</string>
@@ -1242,6 +1243,8 @@
     <string name="today">dzisiaj</string>
     <string name="tomorrow">jutro</string>
     <string name="toolbar_subtitle_syncing">Synchronizuję…</string>
+    <string name="toolbar_subtitle_syncing_format" translatable="false">[%d%%] %s</string>
+    <string name="transition_name" translatable="false">transition_name</string>
     <string name="unknown">Nieznany</string>
     <string name="update_needed">Wymagana aktualizacja</string>
     <string name="update_needed_text">Musisz zaktualizować aplikację, by móc dalej z niej korzystać. Kliknij OK, aby pobrać.</string>
@@ -1260,12 +1263,14 @@
     <string name="what_is_this">Co to jest?</string>
     <string name="whats_new">Co nowego?</string>
     <string name="widget_config_activity_customize">Dostosuj widget</string>
+    <string name="widget_config_activity_opacity_format" translatable="false">%d%%</string>
     <string name="widget_config_all_profiles">Łączony - wszystkie profile</string>
     <string name="widget_loading">Ładowanie…</string>
     <string name="widget_lucky_number_no_profile">Brak profilu</string>
     <string name="widget_lucky_number_title">Szczęśliwy numerek</string>
     <string name="widget_notifications_no_data">Brak powiadomień</string>
     <string name="widget_notifications_title">Powiadomienia</string>
+    <string name="widget_notifications_title_format" translatable="false">%s - %s</string>
     <string name="widget_refresh">Odśwież</string>
     <string name="widget_sync">Synchronizuj</string>
     <string name="widget_timetable_big_font">Użyj większej czcionki</string>
@@ -1281,7 +1286,4 @@
     <string name="yesterday">wczoraj</string>
     <string name="you_are_offline_text">Jesteś offline. Spróbuj włączyć Wi-Fi lub dane komórkowe.</string>
     <string name="you_are_offline_title">Połączenie sieciowe</string>
-    <string name="permissions_required">Wymagane uprawnienia</string>
-    <string name="permissions_denied">Odmówiłeś aplikacji wymaganych uprawnień do wykonania tej czynności.\n\nAby przynać uprawnienia, otwórz sekcję Uprawnienia dla aplikacji Szkolny.eu w ustawieniach telefonu.\n\nKliknij OK, aby przejść do ustawień aplikacji.</string>
-    <string name="permissions_attachment">Musisz przyznać uprawnienia do zapisu plików w pamięci telefonu, aby móc pobrać załącznik.\n\nKliknij OK, aby przyznać uprawnienia.</string>
 </resources>
