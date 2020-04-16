@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-4-13.
+  -->
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:clickable="true"
         android:gravity="center_vertical"
-        android:focusable="true">
+        android:orientation="horizontal"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="8dp">
 
         <CheckBox
             android:id="@+id/checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:minWidth="0dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -32,13 +35,16 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/profileName"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginLeft="24dp"
+                    android:layout_weight="1"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
                     android:textSize="16sp"
-                    tools:text="Jan Kowalski" />
+                    tools:text="Jan Kowalski Bardzo długi" />
 
                 <TextView
                     android:id="@+id/accountType"
@@ -51,7 +57,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textDetails"
+                android:id="@+id/profileDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -61,12 +67,12 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/registerIcon"
+            android:id="@+id/modeIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             tools:srcCompat="@drawable/login_mode_mobidziennik_web" />
-
     </LinearLayout>
 </layout>
+

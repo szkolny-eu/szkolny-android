@@ -592,8 +592,8 @@
     <string name="login_progress_title">Logging in…</string>
     <string name="login_startpage_subtitle">Choose the e-register which your school uses. Later you\'ll be able to add more accounts using different e-registers.</string>
     <string name="login_startpage_title">Which e-register do you use?</string>
-    <string name="login_summary_account_child">(child)</string>
-    <string name="login_summary_account_parent">(parent)</string>
+    <string name="account_type_child">(child)</string>
+    <string name="account_type_parent">(parent)</string>
     <string name="login_summary_add_student">Add a student</string>
     <string name="login_summary_no_profiles_text">You have to select at least one profile to save in the app.</string>
     <string name="login_summary_no_profiles_title">No profile selected</string>

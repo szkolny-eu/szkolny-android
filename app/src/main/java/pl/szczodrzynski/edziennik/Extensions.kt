@@ -454,7 +454,7 @@ operator fun MatchResult.get(group: Int): String {
     return groupValues[group]
 }
 
-fun Activity.setLanguage(language: String) {
+fun Context.setLanguage(language: String) {
     val locale = Locale(language.toLowerCase(Locale.ROOT))
     val configuration = resources.configuration
     Locale.setDefault(locale)
@@ -463,7 +463,6 @@ fun Activity.setLanguage(language: String) {
     }
     configuration.locale = locale
     resources.updateConfiguration(configuration, resources.displayMetrics)
-    baseContext.resources.updateConfiguration(configuration, baseContext.resources.displayMetrics)
 }
 
 /*

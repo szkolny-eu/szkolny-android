@@ -120,7 +120,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mApiLogin: String? = null
     var apiLogin: String?
         get() { mApiLogin = mApiLogin ?: profile?.getStudentData("accountLogin", null); return mApiLogin }
-        set(value) { profile?.putStudentData("accountLogin", value) ?: return; mApiLogin = value }
+        set(value) { profile?.putStudentData("accountLogin", value); mApiLogin = value }
     /**
      * A Synergia password.
      * Used: for login (API Login Method) in Synergia mode.
@@ -129,7 +129,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mApiPassword: String? = null
     var apiPassword: String?
         get() { mApiPassword = mApiPassword ?: profile?.getStudentData("accountPassword", null); return mApiPassword }
-        set(value) { profile?.putStudentData("accountPassword", value) ?: return; mApiPassword = value }
+        set(value) { profile?.putStudentData("accountPassword", value); mApiPassword = value }
 
     /**
      * A JST login Code.
@@ -138,8 +138,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mApiCode: String? = null
     var apiCode: String?
         get() { mApiCode = mApiCode ?: loginStore.getLoginData("accountCode", null); return mApiCode }
-        set(value) {
-            loginStore.putLoginData("accountCode", value); mApiCode = value }
+        set(value) { profile?.putStudentData("accountCode", value); mApiCode = value }
     /**
      * A JST login PIN.
      * Used only during first login in JST mode.
@@ -147,8 +146,7 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mApiPin: String? = null
     var apiPin: String?
         get() { mApiPin = mApiPin ?: loginStore.getLoginData("accountPin", null); return mApiPin }
-        set(value) {
-            loginStore.putLoginData("accountPin", value); mApiPin = value }
+        set(value) { profile?.putStudentData("accountPin", value); mApiPin = value }
 
     /**
      * A Synergia API access token.

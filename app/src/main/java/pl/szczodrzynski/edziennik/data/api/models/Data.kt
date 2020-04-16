@@ -197,6 +197,13 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
 
         profile.userCode = generateUserCode()
 
+        // update profile subname with class name, school year and account type
+        profile.subname = joinNotNullStrings(
+                " - ",
+                profile.studentClassName,
+                "${profile.studentSchoolYearStart}/${profile.studentSchoolYearStart + 1}"
+        ) + " " + app.getString(if (profile.isParent) R.string.account_type_parent else R.string.account_type_child)
+
         db.profileDao().add(profile)
         db.loginStoreDao().add(loginStore)
 

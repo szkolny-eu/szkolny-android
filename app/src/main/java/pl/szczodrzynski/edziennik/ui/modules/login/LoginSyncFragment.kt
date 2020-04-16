@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-4-16.
+ */
+
 package pl.szczodrzynski.edziennik.ui.modules.login
 
 import android.os.Bundle
@@ -19,9 +23,8 @@ import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskProgressEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskStartedEvent
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_DISABLED
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_ENABLED
-import pl.szczodrzynski.edziennik.databinding.FragmentLoginSyncBinding
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.databinding.LoginSyncFragmentBinding
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -32,7 +35,7 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
 
     private lateinit var app: App
     private lateinit var activity: LoginActivity
-    private lateinit var b: FragmentLoginSyncBinding
+    private lateinit var b: LoginSyncFragmentBinding
     private val nav: NavController by lazy { Navigation.findNavController(activity, R.id.nav_host_fragment) }
 
     private val job: Job = Job()
@@ -45,7 +48,7 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
         activity = (getActivity() as LoginActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        b = FragmentLoginSyncBinding.inflate(inflater)
+        b = LoginSyncFragmentBinding.inflate(inflater)
         return b.root
     }
 
@@ -56,9 +59,9 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
         val registrationAllowed = arguments?.getBoolean("registrationAllowed") ?: false
         profiles.forEach {
             it.registration = if (registrationAllowed)
-                REGISTRATION_ENABLED
+                Profile.REGISTRATION_ENABLED
             else
-                REGISTRATION_DISABLED
+                Profile.REGISTRATION_DISABLED
 
             app.db.eventTypeDao().addDefaultTypes(activity, it.id)
         }
@@ -84,13 +87,13 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSyncFinishedEvent(event: ApiTaskAllFinishedEvent) {
-        nav.navigate(R.id.loginFinishFragment, finishArguments, LoginActivity.navOptions)
+        nav.navigate(R.id.loginFinishFragment, finishArguments, activity.navOptions)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSyncProgressEvent(event: ApiTaskProgressEvent) {
         b.loginSyncProgressBar.progress = event.progress.roundToInt()
-        b.loginSyncProgressBar.isIndeterminate = event.progress < 0f
+        b.loginSyncProgressBar.isIndeterminate = event.progress <= 0f
         b.loginSyncSubtitle2.text = event.progressText
     }
 
@@ -98,7 +101,7 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
     fun onSyncErrorEvent(event: ApiTaskErrorEvent) {
         EventBus.getDefault().removeStickyEvent(event)
         activity.error(event.error)
-        nav.navigate(R.id.loginSyncErrorFragment, finishArguments, LoginActivity.navOptions)
+        nav.navigate(R.id.loginSyncErrorFragment, finishArguments, activity.navOptions)
     }
 
     override fun onStart() {

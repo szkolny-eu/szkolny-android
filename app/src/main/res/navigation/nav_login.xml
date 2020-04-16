@@ -1,164 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-4-9.
+  -->
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_login_new"
     app:startDestination="@id/loginChooserFragment">
 
     <fragment
         android:id="@+id/loginChooserFragment"
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginChooserFragment"
-        android:label="fragment_login_type"
-        tools:layout="@layout/fragment_login_chooser" >
+        android:label="LoginChooserFragment">
         <action
-            android:id="@+id/action_loginTypeFragment_to_loginMobidziennikFragment"
-            app:destination="@id/loginMobidziennikFragment" />
+            android:id="@+id/action_loginChooserFragment_to_loginPlatformListFragment"
+            app:destination="@id/loginPlatformListFragment" />
         <action
-            android:id="@+id/action_loginTypeFragment_to_loginLibrusFragment"
-            app:destination="@id/loginLibrusFragment" />
-        <action
-            android:id="@+id/action_loginTypeFragment_to_loginLibrusJstFragment"
-            app:destination="@id/loginLibrusJstFragment" />
-        <action
-            android:id="@+id/action_loginTypeFragment_to_loginVulcanFragment"
-            app:destination="@id/loginVulcanFragment" />
-        <action
-            android:id="@+id/action_loginTypeFragment_to_loginIuczniowieFragment"
-            app:destination="@id/loginIuczniowieFragment" />
+            android:id="@+id/action_loginChooserFragment_to_loginFormFragment"
+            app:destination="@id/loginFormFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginMobidziennikFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginMobidziennikFragment"
-        android:label="fragment_login_mobidziennik"
-        tools:layout="@layout/fragment_login_mobidziennik" >
+        android:id="@+id/loginPlatformListFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginPlatformListFragment"
+        android:label="LoginPlatformListFragment">
         <action
-            android:id="@+id/action_loginMobidziennikFragment_to_loginMobidziennikHelpFragment"
-            app:destination="@id/loginMobidziennikHelpFragment" />
-        <action
-            android:id="@+id/action_loginMobidziennikFragment_to_loginProgressFragment"
-            app:destination="@id/loginProgressFragment" />
+            android:id="@+id/action_loginPlatformListFragment_to_loginFormFragment"
+            app:destination="@id/loginFormFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginLibrusFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusFragment"
-        android:label="fragment_login_librus"
-        tools:layout="@layout/fragment_login_librus" >
+        android:id="@+id/loginFormFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginFormFragment"
+        android:label="LoginFormFragment">
         <action
-            android:id="@+id/action_loginLibrusFragment_to_loginLibrusHelpFragment"
-            app:destination="@id/loginLibrusHelpFragment" />
-        <action
-            android:id="@+id/action_loginLibrusFragment_to_loginProgressFragment"
-            app:destination="@id/loginProgressFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginLibrusJstFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusJstFragment"
-        android:label="fragment_login_librus_jst"
-        tools:layout="@layout/fragment_login_librus_jst" >
-        <action
-            android:id="@+id/action_loginLibrusJstFragment_to_loginProgressFragment"
+            android:id="@+id/action_loginFormFragment_to_loginProgressFragment"
             app:destination="@id/loginProgressFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginProgressFragment"
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginProgressFragment"
-        android:label="fragment_login_progress"
-        tools:layout="@layout/fragment_login_progress" >
+        android:label="LoginProgressFragment">
         <action
-            android:id="@+id/action_loginProgressFragment_to_loginSummaryFragment"
+            android:id="@+id/action_loginProgressFragment_to_loginSummaryFragment2"
             app:destination="@id/loginSummaryFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginMobidziennikHelpFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginMobidziennikHelpFragment"
-        android:label="fragment_login_mobidziennik_help"
-        tools:layout="@layout/fragment_login_mobidziennik_help" />
-    <fragment
-        android:id="@+id/loginLibrusHelpFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusHelpFragment"
-        android:label="fragment_login_librus_help"
-        tools:layout="@layout/fragment_login_librus_help" />
-    <fragment
         android:id="@+id/loginSummaryFragment"
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginSummaryFragment"
-        android:label="fragment_login_summary"
-        tools:layout="@layout/fragment_login_summary" >
+        android:label="LoginSummaryFragment">
         <action
-            android:id="@+id/action_loginSummaryFragment_to_loginTypeFragment"
+            android:id="@+id/action_loginSummaryFragment_to_loginChooserFragment"
             app:destination="@id/loginChooserFragment" />
         <action
-            android:id="@+id/action_loginSummaryFragment_to_loginSyncFragment"
+            android:id="@+id/action_loginSummaryFragment_to_loginSyncFragment2"
             app:destination="@id/loginSyncFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginSyncFragment"
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginSyncFragment"
-        android:label="fragment_login_sync"
-        tools:layout="@layout/fragment_login_sync" >
+        android:label="LoginSyncFragment">
         <action
-            android:id="@+id/action_loginSyncFragment_to_loginFinishFragment"
-            app:destination="@id/loginFinishFragment" />
-        <action
-            android:id="@+id/action_loginSyncFragment_to_loginSyncErrorFragment"
+            android:id="@+id/action_loginSyncFragment_to_loginSyncErrorFragment2"
             app:destination="@id/loginSyncErrorFragment" />
+        <action
+            android:id="@+id/action_loginSyncFragment_to_loginFinishFragment2"
+            app:destination="@id/loginFinishFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/loginIuczniowieFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginIuczniowieFragment"
-        android:label="fragment_login_iuczniowie"
-        tools:layout="@layout/fragment_login_iuczniowie" >
-        <action
-            android:id="@+id/action_loginIuczniowieFragment_to_loginIuczniowieHelpFragment"
-            app:destination="@id/loginIuczniowieHelpFragment" />
-        <action
-            android:id="@+id/action_loginIuczniowieFragment_to_loginProgressFragment"
-            app:destination="@id/loginProgressFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginVulcanFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginVulcanFragment"
-        android:label="fragment_login_vulcan"
-        tools:layout="@layout/fragment_login_vulcan" >
-        <action
-            android:id="@+id/action_loginVulcanFragment_to_loginVulcanHelpFragment"
-            app:destination="@id/loginVulcanHelpFragment" />
-        <action
-            android:id="@+id/action_loginVulcanFragment_to_loginProgressFragment"
-            app:destination="@id/loginProgressFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginEdudziennikFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginEdudziennikFragment"
-        android:label="fragment_login_edudziennik"
-        tools:layout="@layout/fragment_login_edudziennik" >
-        <!--<action
-            android:id="@+id/action_loginLibrusFragment_to_loginLibrusHelpFragment"
-            app:destination="@id/loginLibrusHelpFragment" />-->
-        <action
-            android:id="@+id/action_loginEdudziennikFragment_to_loginProgressFragment"
-            app:destination="@id/loginProgressFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginVulcanHelpFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginVulcanHelpFragment"
-        android:label="fragment_login_vulcan_help"
-        tools:layout="@layout/fragment_login_vulcan_help" />
-    <fragment
-        android:id="@+id/loginIuczniowieHelpFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginIuczniowieHelpFragment"
-        android:label="fragment_login_iuczniowie_help"
-        tools:layout="@layout/fragment_login_iuczniowie_help" />
-    <fragment
-        android:id="@+id/loginFinishFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginFinishFragment"
-        android:label="fragment_login_finish"
-        tools:layout="@layout/fragment_login_finish" />
     <fragment
         android:id="@+id/loginSyncErrorFragment"
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginSyncErrorFragment"
-        android:label="fragment_login_sync_error"
-        tools:layout="@layout/fragment_login_sync_error" >
+        android:label="LoginSyncErrorFragment">
         <action
-            android:id="@+id/action_loginSyncErrorFragment_to_loginFinishFragment"
+            android:id="@+id/action_loginSyncErrorFragment_to_loginFinishFragment2"
             app:destination="@id/loginFinishFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/loginFinishFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginFinishFragment"
+        android:label="LoginFinishFragment" />
 </navigation>

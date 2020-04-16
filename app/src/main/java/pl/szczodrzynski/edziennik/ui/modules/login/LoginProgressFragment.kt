@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2020-1-3.
+ * Copyright (c) Kuba Szczodrzyński 2020-4-16.
  */
 
 package pl.szczodrzynski.edziennik.ui.modules.login
@@ -27,8 +27,10 @@ import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.databinding.FragmentLoginProgressBinding
+import pl.szczodrzynski.edziennik.databinding.LoginProgressFragmentBinding
+import pl.szczodrzynski.edziennik.joinNotNullStrings
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.max
 
 class LoginProgressFragment : Fragment(), CoroutineScope {
     companion object {
@@ -37,22 +39,26 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
 
     private lateinit var app: App
     private lateinit var activity: LoginActivity
-    private lateinit var b: FragmentLoginProgressBinding
+    private lateinit var b: LoginProgressFragmentBinding
     private val nav by lazy { activity.nav }
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    // local/private variables go here
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as LoginActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        b = FragmentLoginProgressBinding.inflate(inflater)
+        b = LoginProgressFragmentBinding.inflate(inflater)
         return b.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (!isAdded) return
+
         val args = arguments ?: run {
             activity.error(ApiError(TAG, LOGIN_NO_ARGUMENTS))
             nav.navigateUp()
@@ -66,19 +72,21 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
         launch {
             activity.errorSnackbar.dismiss()
 
-            val firstProfileId = (app.db.profileDao().lastId ?: 0) + 1
+            val maxProfileId = max(
+                    app.db.profileDao().lastId ?: 0,
+                    activity.profiles.maxBy { it.profile.id }?.profile?.id ?: 0
+            )
             val loginType = args.getInt("loginType", -1)
             val loginMode = args.getInt("loginMode", 0)
 
             val loginStore = LoginStore(
-                    id = firstProfileId,
+                    id = maxProfileId + 1,
                     type = loginType,
                     mode = loginMode
             )
             loginStore.copyFrom(args)
-            if (App.devMode && LoginChooserFragment.fakeLogin) {
-                loginStore.putLoginData("fakeLogin", true)
-            }
+            loginStore.removeLoginData("loginType")
+            loginStore.removeLoginData("loginMode")
             EdziennikTask.firstLogin(loginStore).enqueue(activity)
         }
     }
@@ -94,10 +102,21 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
                     .show()
             return
         }
+
+        // update subnames with school years and class name
+        for (profile in event.profileList) {
+            val schoolYearName = "${profile.studentSchoolYearStart}/${profile.studentSchoolYearStart + 1}"
+            profile.subname = joinNotNullStrings(
+                    " - ",
+                    profile.studentClassName,
+                    schoolYearName
+            )
+        }
+
         activity.loginStores += event.loginStore
-        activity.profiles += event.profileList.map { LoginSummaryProfileAdapter.Item(it) }
+        activity.profiles += event.profileList.map { LoginSummaryAdapter.Item(it) }
         activity.errorSnackbar.dismiss()
-        nav.navigate(R.id.loginSummaryFragment, null, LoginActivity.navOptions)
+        nav.navigate(R.id.loginSummaryFragment, null, activity.navOptions)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
