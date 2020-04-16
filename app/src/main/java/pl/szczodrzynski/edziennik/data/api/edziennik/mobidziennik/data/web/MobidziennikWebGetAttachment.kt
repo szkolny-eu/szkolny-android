@@ -34,9 +34,9 @@ class MobidziennikWebGetAttachment(override val data: DataMobidziennik,
                 "dziennik/wiadodebrana/?id="
 
             is Event -> if (owner.date >= Date.getToday())
-                "dziennik/zadaniedomowe/?id_zadania="
+                "dziennik/wyslijzadanie/?id_zadania="
             else
-                "dziennik/zadaniedomowe/?id_zadania="
+                "dziennik/wyslijzadanie/?id_zadania="
 
             else -> ""
         }
