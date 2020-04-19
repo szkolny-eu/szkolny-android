@@ -85,7 +85,7 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
         ).concat(" ")
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onSyncFinishedEvent(event: ApiTaskAllFinishedEvent) {
         nav.navigate(R.id.loginFinishFragment, finishArguments, activity.navOptions)
     }

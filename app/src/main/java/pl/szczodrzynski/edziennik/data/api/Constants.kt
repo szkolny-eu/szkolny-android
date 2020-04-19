@@ -113,5 +113,7 @@ const val VULCAN_API_ENDPOINT_MESSAGES_ADD = "mobile-api/Uczen.v3.Uczen/DodajWia
 const val VULCAN_API_ENDPOINT_PUSH = "mobile-api/Uczen.v3.Uczen/UstawPushToken"
 const val VULCAN_API_ENDPOINT_MESSAGES_ATTACHMENTS = "mobile-api/Uczen.v3.Uczen/WiadomosciZalacznik"
 const val VULCAN_API_ENDPOINT_HOMEWORK_ATTACHMENTS = "mobile-api/Uczen.v3.Uczen/ZadaniaDomoweZalacznik"
+const val VULCAN_WEB_ENDPOINT_LUCKY_NUMBER = "Start.mvc/GetKidsLuckyNumbers"
+const val VULCAN_WEB_ENDPOINT_REGISTER_DEVICE = "RejestracjaUrzadzeniaToken.mvc/Get"
 
 const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"

@@ -139,6 +139,9 @@ object Regexes {
     val VULCAN_SHIFT_ANNOTATION by lazy {
         """\(przeniesiona (z|na) lekcj[ię] ([0-9]+), (.+)\)""".toRegex()
     }
+    val VULCAN_WEB_PERMISSIONS by lazy {
+        """permissions: '([A-z0-9\/=+\-_]+?)'""".toRegex()
+    }
 
 
 

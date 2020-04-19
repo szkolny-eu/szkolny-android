@@ -33,7 +33,7 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                     val accounts = json.getJsonArray("accounts")
 
                     if (accounts == null || accounts.size() < 1) {
-                        EventBus.getDefault().post(FirstLoginFinishedEvent(listOf(), data.loginStore))
+                        EventBus.getDefault().postSticky(FirstLoginFinishedEvent(listOf(), data.loginStore))
                         onSuccess()
                         return@portalGet
                     }
@@ -81,7 +81,7 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                         profileList.add(profile)
                     }
 
-                    EventBus.getDefault().post(FirstLoginFinishedEvent(profileList, data.loginStore))
+                    EventBus.getDefault().postSticky(FirstLoginFinishedEvent(profileList, data.loginStore))
                     onSuccess()
                 }
             }
@@ -124,7 +124,7 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
                     }
                     profileList.add(profile)
 
-                    EventBus.getDefault().post(FirstLoginFinishedEvent(profileList, data.loginStore))
+                    EventBus.getDefault().postSticky(FirstLoginFinishedEvent(profileList, data.loginStore))
                     onSuccess()
                 }
             }

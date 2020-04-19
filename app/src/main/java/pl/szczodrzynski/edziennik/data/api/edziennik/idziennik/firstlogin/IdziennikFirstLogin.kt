@@ -89,7 +89,7 @@ class IdziennikFirstLogin(val data: DataIdziennik, val onSuccess: () -> Unit) {
                             profileList.add(profile)
                         }
 
-                EventBus.getDefault().post(FirstLoginFinishedEvent(profileList, data.loginStore))
+                EventBus.getDefault().postSticky(FirstLoginFinishedEvent(profileList, data.loginStore))
                 onSuccess()
             }
         }

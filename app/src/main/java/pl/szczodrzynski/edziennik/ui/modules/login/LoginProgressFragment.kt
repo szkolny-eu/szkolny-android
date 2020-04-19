@@ -91,7 +91,7 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onFirstLoginFinishedEvent(event: FirstLoginFinishedEvent) {
         if (event.profileList.isEmpty()) {
             MaterialAlertDialogBuilder(activity)

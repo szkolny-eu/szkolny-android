@@ -1288,19 +1288,19 @@
     <string name="you_are_offline_title">Połączenie sieciowe</string>
     <string name="login_chooser_title">Jaki masz e-dziennik w szkole?</string>
     <string name="login_chooser_subtitle">Wybierz z jakiego e-dziennika korzysta Twoja szkoła. Jeśli masz kilka kont w różnych dziennikach, będziesz mógł je dodać później.</string>
-    <string name="login_register_librus">Librus/Synergia</string>
+    <string name="login_register_librus" translatable="false">Librus/Synergia</string>
     <string name="login_mode_librus_email">Zaloguj używając e-maila</string>
     <string name="login_mode_librus_email_hint">Musisz posiadać konto Librus Rodzina</string>
     <string name="login_mode_librus_synergia">Zaloguj używając loginu i hasła</string>
     <string name="login_mode_librus_synergia_hint">Użyj loginu w postaci \"9874123u\"</string>
     <string name="login_mode_librus_jst">Logowanie przez platformę VULCAN</string>
     <string name="login_mode_librus_jst_hint">Oświata w Radomiu oraz Innowacyjny Tarnobrzeg</string>
-    <string name="login_type_vulcan">Vulcan UONET+</string>
+    <string name="login_type_vulcan" translatable="false">Vulcan UONET+</string>
     <string name="login_mode_vulcan_api">Użyj tokenu, symbolu i kodu PIN</string>
     <string name="login_mode_vulcan_api_hint">Zarejestruj urządzenie na stronie dziennika Vulcan</string>
     <string name="login_mode_vulcan_web">Użyj e-maila/nazwy użytkownika i hasła</string>
     <string name="login_mode_vulcan_web_hint">Zaloguj danymi, które podajesz na stronie e-dziennika VULCAN</string>
-    <string name="login_type_mobidziennik">MobiDziennik</string>
+    <string name="login_type_mobidziennik" translatable="false">MobiDziennik</string>
     <string name="login_mode_mobidziennik_web">Zaloguj nazwą serwera, loginem i hasłem</string>
     <string name="login_mode_mobidziennik_web_hint">Podaj dane, których używasz na stronie e-dziennika</string>
     <string name="login_platform_list_title">W jaki sposób się logujesz do dziennika?</string>
@@ -1316,4 +1316,5 @@
     <string name="login_mode_mobidziennik_web_guide">Podaj dane, których używasz do logowania na stronie MobiDziennika. Jako adres serwera możesz wpisać adres strony internetowej, na której masz MobiDziennik.</string>
     <string name="settings_add_student_text">Dodaj nowego ucznia</string>
     <string name="settings_add_student_subtext">Zaloguj konto ucznia/rodzica w aplikacji</string>
+    <string name="edziennik_progress_login_vulcan_web_main">Logowanie do dziennika Vulcan...</string>
 </resources>

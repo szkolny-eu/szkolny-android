@@ -152,7 +152,7 @@ object LoginInfo {
                                                     caseMode = Credential.CaseMode.UPPER_CASE
                                             ),
                                             Credential(
-                                                    keyName = "deviceSymbol",
+                                                    keyName = "symbol",
                                                     name = R.string.login_hint_symbol,
                                                     icon = CommunityMaterial.Icon2.cmd_school,
                                                     emptyText = R.string.login_error_no_symbol,
