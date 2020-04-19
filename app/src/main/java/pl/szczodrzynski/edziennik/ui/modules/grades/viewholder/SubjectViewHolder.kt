@@ -112,6 +112,9 @@ class SubjectViewHolder(
             ))
         }
 
+        // remove previously added grades from year preview
+        if (b.yearContainer.childCount > 1)
+            b.yearContainer.removeViews(1, b.yearContainer.childCount - 1)
         // add the yearly grades to summary container (expanded)
         item.proposedGrade?.let {
             b.yearContainer.addView(GradeView(

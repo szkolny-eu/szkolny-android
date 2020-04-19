@@ -87,3 +87,4 @@ app/schemas/
 signatures/
 
 app/.cxx
+/i18n/
