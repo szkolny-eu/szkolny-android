@@ -55,6 +55,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.NotificationFilterDialog;
+import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
 import pl.szczodrzynski.edziennik.utils.models.Date;
@@ -161,7 +162,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
             profileCardTitleItem = new MaterialAboutProfileItem(
                     app.getProfile().getName(),
-                    getString(R.string.settings_profile_subtitle_format, app.getProfile().getSubname()),
+                    app.getProfile().getSubname(),
                     getProfileDrawable()
             );
             profileCardTitleItem.setOnClickAction(() -> {
@@ -220,6 +221,20 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
             items.add(
                     new MaterialAboutActionItem(
+                            getString(R.string.settings_add_student_text),
+                            getString(R.string.settings_add_student_subtext),
+                            new IconicsDrawable(activity)
+                                    .icon(CommunityMaterial.Icon.cmd_account_plus_outline)
+                                    .size(IconicsSize.dp(iconSizeDp))
+                                    .color(IconicsColor.colorInt(iconColor))
+                    )
+                            .setOnClickAction(() -> {
+                                startActivity(new Intent(activity, LoginActivity.class));
+                            })
+            );
+
+            items.add(
+                    new MaterialAboutActionItem(
                             getString(R.string.settings_profile_notifications_text),
                             getString(R.string.settings_profile_notifications_subtext),
                             new IconicsDrawable(activity)
@@ -229,6 +244,20 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     )
                             .setOnClickAction(() -> {
                                 new NotificationFilterDialog(activity, null, null);
+                            })
+            );
+
+            items.add(
+                    new MaterialAboutActionItem(
+                            getString(R.string.settings_profile_remove_text),
+                            getString(R.string.settings_profile_remove_subtext),
+                            new IconicsDrawable(activity)
+                                    .icon(SzkolnyFont.Icon.szf_delete_empty_outline)
+                                    .size(IconicsSize.dp(iconSizeDp))
+                                    .color(IconicsColor.colorInt(iconColor))
+                    )
+                            .setOnClickAction(() -> {
+                                new ProfileRemoveDialog(activity, app.getProfile().getId(), app.getProfile().getName());
                             })
             );
 
@@ -251,20 +280,6 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 app.profileSave();
                                 return true;
                             }))
-            );
-
-            items.add(
-                    new MaterialAboutActionItem(
-                            getString(R.string.settings_profile_remove_text),
-                            getString(R.string.settings_profile_remove_subtext),
-                            new IconicsDrawable(activity)
-                                    .icon(SzkolnyFont.Icon.szf_delete_empty_outline)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
-                    )
-                    .setOnClickAction(() -> {
-                        new ProfileRemoveDialog(activity, app.getProfile().getId(), app.getProfile().getName());
-                    })
             );
 
         }

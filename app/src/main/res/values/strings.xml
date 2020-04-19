@@ -1286,4 +1286,6 @@
     <string name="yesterday">wczoraj</string>
     <string name="you_are_offline_text">Jesteś offline. Spróbuj włączyć Wi-Fi lub dane komórkowe.</string>
     <string name="you_are_offline_title">Połączenie sieciowe</string>
+    <string name="settings_add_student_text">Dodaj nowego ucznia</string>
+    <string name="settings_add_student_subtext">Zaloguj konto ucznia/rodzica w aplikacji</string>
 </resources>

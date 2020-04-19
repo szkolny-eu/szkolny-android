@@ -167,6 +167,10 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             db.profileDao().firstId?.let { profileLoadById(it) }
         }
 
+        config.ui.language?.let {
+            setLanguage(it)
+        }
+
         devMode = BuildConfig.DEBUG
 
         Signing.getCert(this)
