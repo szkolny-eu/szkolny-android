@@ -17,6 +17,7 @@ data class NavTarget(
     var isStatic: Boolean = false
     var isBelowSeparator: Boolean = false
     var popToHome: Boolean = false
+    var popTo: Int? = null
     var badgeTypeId: Int? = null
     var canHideInDrawer: Boolean = true
     var canHideInMiniDrawer: Boolean = true
@@ -61,6 +62,11 @@ data class NavTarget(
 
     fun withPopToHome(popToHome: Boolean): NavTarget {
         this.popToHome = popToHome
+        return this
+    }
+
+    fun withPopTo(popTo: Int): NavTarget {
+        this.popTo = popTo
         return this
     }
 

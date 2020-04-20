@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2019-12-19.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+  <path
+      android:pathData="M56,46.668L8,46.668L8,9.332C8,8.5938 8.5977,8 9.332,8L54.668,8C55.4063,8 56,8.5938 56,9.332Z"
+      android:fillColor="#455A64"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M10.668,10.668L53.332,10.668L53.332,37.332L10.668,37.332Z"
+      android:fillColor="#BBDEFB"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M0,53.332L64,53.332L64,56L0,56Z"
+      android:fillColor="#B0BEC5"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M56,40L8,40L0,53.332L64,53.332Z"
+      android:fillColor="#CFD8DC"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M10.668,42.668L53.332,42.668L57.332,50.668L6.668,50.668Z"
+      android:fillColor="#546E7A"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M22.0586,50.668L21.332,53.332L42.668,53.332L41.9414,50.668Z"
+      android:fillColor="#90A4AE"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M37.332,24C37.332,21.668 38.668,21.332 38.668,21.332L45.332,21.332C44.3047,18.9805 41.3984,17.332 38.668,17.332C35.9336,17.332 33.5938,18.9805 32.5625,21.332L21.332,21.332C19.8594,21.332 18.668,22.5273 18.668,24C18.668,25.4727 19.8594,26.668 21.332,26.668L32.5625,26.668C33.5938,29.0195 35.9336,30.668 38.668,30.668C41.3984,30.668 44.3047,29.0195 45.332,26.668L38.668,26.668C38.668,26.668 37.332,26.332 37.332,24Z"
+      android:fillColor="#1976D2"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+</vector>

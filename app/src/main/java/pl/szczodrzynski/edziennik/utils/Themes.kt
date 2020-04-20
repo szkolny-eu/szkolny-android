@@ -1,14 +1,9 @@
 package pl.szczodrzynski.edziennik.utils
 
 import android.content.Context
-import android.graphics.Color
-
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
-import androidx.core.graphics.ColorUtils
-
 import pl.szczodrzynski.edziennik.R
-
 import pl.szczodrzynski.navlib.getColorFromAttr
 
 object Themes {
@@ -49,7 +44,7 @@ object Themes {
 
 
     val appThemeNoDisplay: Int
-        get() = if (theme.isDark) R.style.AppThemeDark_NoDisplay else R.style.AppTheme_NoDisplay
+        get() = if (theme.isDark) R.style.AppTheme_Dark_NoDisplay else R.style.AppTheme_Light_NoDisplay
 
 
     val appTheme: Int

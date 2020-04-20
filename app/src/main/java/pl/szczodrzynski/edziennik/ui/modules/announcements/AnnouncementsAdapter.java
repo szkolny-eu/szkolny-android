@@ -1,6 +1,7 @@
 package pl.szczodrzynski.edziennik.ui.modules.announcements;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
@@ -8,14 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull;
 import pl.szczodrzynski.edziennik.databinding.RowAnnouncementsItemBinding;
-import pl.szczodrzynski.edziennik.data.db.modules.announcements.AnnouncementFull;
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils;
 
 public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdapter.ViewHolder> {
 
@@ -51,7 +54,7 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdap
         AnnouncementFull item = announcementList.get(groupPosition);
         RowAnnouncementsItemBinding b = holder.b;
 
-        b.announcementsItemCard.setOnClickListener((v -> {
+        b.announcementsItem.setOnClickListener((v -> {
             if (onClick != null) {
                 onClick.onClick(v, item);
             }
@@ -59,7 +62,13 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdap
         b.announcementsItemSender.setText(item.teacherFullName);
         b.announcementsItemTitle.setText(item.subject);
         b.announcementsItemText.setText(item.text);
-        b.announcementsItemDate.setText(item.startDate.getFormattedString()+(item.endDate == null ? "" : " - "+item.endDate.getFormattedString()));
+
+        if (item.endDate == null) {
+            b.announcementsItemDate.setText(item.startDate.getFormattedString());
+        } else {
+            b.announcementsItemDate.setText(context.getString(R.string.date_relative_format, item.startDate.getFormattedStringShort(), item.endDate.getFormattedStringShort()));
+        }
+
         if (!item.seen) {
             b.announcementsItemTitle.setBackground(context.getResources().getDrawable(R.drawable.bg_rounded_8dp));
             b.announcementsItemTitle.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));
@@ -70,6 +79,9 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdap
             b.announcementsItemTitle.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
             b.announcementsItemTitle.setBackground(null);
         }
+
+        Bitmap profileImage = MessagesUtils.getProfileImage(48, 24, 18, 12, 1, item.teacherFullName);
+        b.announcementsItemImage.setImageBitmap(profileImage);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

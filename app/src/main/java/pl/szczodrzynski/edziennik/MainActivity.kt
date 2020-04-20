@@ -1,15 +1,17 @@
 package pl.szczodrzynski.edziennik
 
-import android.app.Activity
 import android.app.ActivityManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.os.*
-import android.util.Log
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -19,6 +21,7 @@ import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.IconicsSize
@@ -27,43 +30,57 @@ import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IProfile
+import com.mikepenz.materialdrawer.model.interfaces.*
+import com.mikepenz.materialdrawer.model.utils.withIsHiddenInMiniDrawer
+import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
-import pl.szczodrzynski.edziennik.App.APP_URL
-import pl.szczodrzynski.edziennik.data.api.AppError
-import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface.*
-import pl.szczodrzynski.edziennik.data.api.interfaces.SyncCallback
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore
-import pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.*
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.ProfileFull
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
+import pl.szczodrzynski.edziennik.data.api.events.*
+import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
-import pl.szczodrzynski.edziennik.network.ServerRequest
-import pl.szczodrzynski.edziennik.sync.SyncJob
+import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
+import pl.szczodrzynski.edziennik.sync.SyncWorker
+import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
-import pl.szczodrzynski.edziennik.ui.modules.base.DebugFragment
+import pl.szczodrzynski.edziennik.ui.modules.base.MainSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
+import pl.szczodrzynski.edziennik.ui.modules.debug.DebugFragment
+import pl.szczodrzynski.edziennik.ui.modules.debug.LabFragment
+import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
 import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
-import pl.szczodrzynski.edziennik.ui.modules.grades.GradesFragment
+import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesDetailsFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessageFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
-import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.compose.MessagesComposeFragment
+import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
+import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
+import pl.szczodrzynski.edziennik.utils.appManagerIntentList
+import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.navlib.*
 import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
@@ -72,13 +89,13 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
-import pl.szczodrzynski.navlib.drawer.items.withAppTitle
 import java.io.File
 import java.io.IOException
 import java.util.*
+import kotlin.coroutines.CoroutineContext
+import kotlin.math.roundToInt
 
-
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope {
     companion object {
 
         var useOldMessages = false
@@ -91,6 +108,7 @@ class MainActivity : AppCompatActivity() {
         const val DRAWER_PROFILE_SYNC_ALL = 201
         const val DRAWER_PROFILE_EXPORT_DATA = 202
         const val DRAWER_PROFILE_MANAGE = 203
+        const val DRAWER_PROFILE_MARK_ALL_AS_READ = 204
         const val DRAWER_ITEM_HOME = 1
         const val DRAWER_ITEM_TIMETABLE = 11
         const val DRAWER_ITEM_AGENDA = 12
@@ -108,6 +126,9 @@ class MainActivity : AppCompatActivity() {
         const val TARGET_HELP = 502
         const val TARGET_FEEDBACK = 120
         const val TARGET_MESSAGES_DETAILS = 503
+        const val TARGET_MESSAGES_COMPOSE = 504
+        const val TARGET_WEB_PUSH = 140
+        const val TARGET_LAB = 1000
 
         const val HOME_ID = DRAWER_ITEM_HOME
 
@@ -117,7 +138,7 @@ class MainActivity : AppCompatActivity() {
             // home item
             list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragment::class)
                     .withTitle(R.string.app_name)
-                    .withIcon(CommunityMaterial.Icon2.cmd_home)
+                    .withIcon(CommunityMaterial.Icon2.cmd_home_outline)
                     .isInDrawer(true)
                     .isStatic(true)
                     .withPopToHome(false)
@@ -128,50 +149,50 @@ class MainActivity : AppCompatActivity() {
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_AGENDA, R.string.menu_agenda, AgendaFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_calendar)
+                    .withIcon(CommunityMaterial.Icon.cmd_calendar_outline)
                     .withBadgeTypeId(TYPE_EVENT)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_numeric_5_box)
+            list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesListFragment::class)
+                    .withIcon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline)
                     .withBadgeTypeId(TYPE_GRADE)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_MESSAGES, R.string.menu_messages, MessagesFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_email)
+                    .withIcon(CommunityMaterial.Icon.cmd_email_outline)
                     .withBadgeTypeId(TYPE_MESSAGE)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_HOMEWORK, R.string.menu_homework, HomeworkFragment::class)
-                    .withIcon(SzkolnyFont.Icon.szf_file_document_edit)
+                    .withIcon(SzkolnyFont.Icon.szf_notebook_outline)
                     .withBadgeTypeId(TYPE_HOMEWORK)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_BEHAVIOUR, R.string.menu_notices, BehaviourFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_message_alert)
+                    .withIcon(CommunityMaterial.Icon.cmd_emoticon_outline)
                     .withBadgeTypeId(TYPE_NOTICE)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_ATTENDANCE, R.string.menu_attendance, AttendanceFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_calendar_remove)
+                    .withIcon(CommunityMaterial.Icon.cmd_calendar_remove_outline)
                     .withBadgeTypeId(TYPE_ATTENDANCE)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS, R.string.menu_announcements, AnnouncementsFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_bulletin_board)
+                    .withIcon(CommunityMaterial.Icon.cmd_bullhorn_outline)
                     .withBadgeTypeId(TYPE_ANNOUNCEMENT)
                     .isInDrawer(true)
 
 
             // static drawer items
-            list += NavTarget(DRAWER_ITEM_NOTIFICATIONS, R.string.menu_notifications, NotificationsFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_bell_ring)
+            list += NavTarget(DRAWER_ITEM_NOTIFICATIONS, R.string.menu_notifications, NotificationsListFragment::class)
+                    .withIcon(CommunityMaterial.Icon.cmd_bell_ring_outline)
                     .isInDrawer(true)
                     .isStatic(true)
                     .isBelowSeparator(true)
 
             list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsNewFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_settings)
+                    .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
                     .isInDrawer(true)
                     .isStatic(true)
                     .isBelowSeparator(true)
@@ -189,8 +210,12 @@ class MainActivity : AppCompatActivity() {
                     .withDescription(R.string.drawer_manage_profiles_desc)
                     .isInProfileList(false)
 
+            list += NavTarget(DRAWER_PROFILE_MARK_ALL_AS_READ, R.string.menu_mark_everything_as_read, null)
+                    .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
+                    .isInProfileList(true)
+
             list += NavTarget(DRAWER_PROFILE_SYNC_ALL, R.string.menu_sync_all, null)
-                    .withIcon(CommunityMaterial.Icon2.cmd_sync)
+                    .withIcon(CommunityMaterial.Icon.cmd_download_outline)
                     .isInProfileList(true)
 
 
@@ -198,17 +223,32 @@ class MainActivity : AppCompatActivity() {
             list += NavTarget(TARGET_GRADES_EDITOR, R.string.menu_grades_editor, GradesEditorFragment::class)
             list += NavTarget(TARGET_HELP, R.string.menu_help, HelpFragment::class)
             list += NavTarget(TARGET_FEEDBACK, R.string.menu_feedback, FeedbackFragment::class)
-            list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessagesDetailsFragment::class)
-            list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
+            list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessageFragment::class).withPopTo(DRAWER_ITEM_MESSAGES)
+            list += NavTarget(TARGET_MESSAGES_COMPOSE, R.string.menu_message_compose, MessagesComposeFragment::class)
+            list += NavTarget(TARGET_WEB_PUSH, R.string.menu_web_push, WebPushFragment::class)
+            if (App.debugMode) {
+                list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
+                list += NavTarget(TARGET_LAB, R.string.menu_lab, LabFragment::class)
+                        .withIcon(CommunityMaterial.Icon.cmd_flask_outline)
+                        .isInDrawer(true)
+                        .isBelowSeparator(true)
+                        .isStatic(true)
+            }
 
             list
         }
     }
 
+    private var job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
     val b: ActivitySzkolnyBinding by lazy { ActivitySzkolnyBinding.inflate(layoutInflater) }
     val navView: NavView by lazy { b.navView }
     val drawer: NavDrawer by lazy { navView.drawer }
     val bottomSheet: NavBottomSheet by lazy { navView.bottomSheet }
+    val mainSnackbar: MainSnackbar by lazy { MainSnackbar(this) }
+    val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
 
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
 
@@ -218,10 +258,11 @@ class MainActivity : AppCompatActivity() {
 
     private val fragmentManager by lazy { supportFragmentManager }
     private lateinit var navTarget: NavTarget
-    private val navTargetId
+    private var navArguments: Bundle? = null
+    val navTargetId
         get() = navTarget.id
 
-    private val navBackStack = mutableListOf<NavTarget>()
+    private val navBackStack = mutableListOf<Pair<NavTarget, Bundle?>>()
     private var navLoading = true
 
     /*     ____           _____                _
@@ -233,13 +274,25 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        d(TAG, "Activity created")
+
         setTheme(Themes.appTheme)
 
-        app.appConfig.language?.let {
+        app.config.ui.language?.let {
             setLanguage(it)
         }
 
+        if (App.profileId == 0) {
+            onProfileListEmptyEvent(ProfileListEmptyEvent())
+            return
+        }
+
+        d(TAG, "Profile is valid, inflating views")
+
         setContentView(b.root)
+
+        mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
+        errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
         navLoading = true
 
@@ -293,15 +346,17 @@ class MainActivity : AppCompatActivity() {
                 removeAllItems()
                 toggleGroupEnabled = false
                 textInputEnabled = false
+                onCloseListener = {
+                    if (!app.config.ui.bottomSheetOpened)
+                        app.config.ui.bottomSheetOpened = true
+                }
             }
 
             drawer.apply {
-                setAccountHeaderBackground(app.appConfig.headerBackground)
+                setAccountHeaderBackground(app.config.ui.headerBackground)
 
                 drawerProfileListEmptyListener = {
-                    app.appConfig.loginFinished = false
-                    app.saveConfig("loginFinished")
-                    profileListEmptyListener()
+                    onProfileListEmptyEvent(ProfileListEmptyEvent())
                 }
                 drawerItemSelectedListener = { id, position, drawerItem ->
                     loadTarget(id)
@@ -312,7 +367,7 @@ class MainActivity : AppCompatActivity() {
                     false
                 }
                 drawerProfileLongClickListener = { _, profile, _, view ->
-                    if (profile is ProfileDrawerItem) {
+                    if (view != null && profile is ProfileDrawerItem) {
                         showProfileContextMenu(profile, view)
                         true
                     }
@@ -324,40 +379,27 @@ class MainActivity : AppCompatActivity() {
                 drawerProfileSettingClickListener = this@MainActivity.profileSettingClickListener
 
                 miniDrawerVisibleLandscape = null
-                miniDrawerVisiblePortrait = app.appConfig.miniDrawerVisible
+                miniDrawerVisiblePortrait = app.config.ui.miniMenuVisible
             }
         }
 
         navTarget = navTargetList[0]
-
-        var profileListEmpty = drawer.profileListEmpty
 
         if (savedInstanceState != null) {
             intent?.putExtras(savedInstanceState)
             savedInstanceState.clear()
         }
 
-        if (!profileListEmpty) {
-            handleIntent(intent?.extras)
-        }
-        app.db.profileDao().getAllFull().observe(this, Observer { profiles ->
-            // TODO fix weird -1 profiles ???
-            profiles.removeAll { it.id < 0 }
-            drawer.setProfileList(profiles)
-            if (profileListEmpty) {
-                profileListEmpty = false
-                handleIntent(intent?.extras)
-            }
-            else if (app.profile != null) {
-                drawer.currentProfile = app.profile.id
-            }
+        app.db.profileDao().all.observe(this, Observer { profiles ->
+            drawer.setProfileList(profiles.filter { it.id >= 0 }.toMutableList())
+            drawer.currentProfile = App.profileId
         })
 
-        // if null, getAllFull will load a profile and update drawerItems
-        if (app.profile != null)
-            setDrawerItems()
+        setDrawerItems()
 
-        app.db.metadataDao().getUnreadCounts().observe(this, Observer { unreadCounters ->
+        handleIntent(intent?.extras)
+
+        app.db.metadataDao().unreadCounts.observe(this, Observer { unreadCounters ->
             unreadCounters.map {
                 it.type = it.thingType
             }
@@ -366,60 +408,64 @@ class MainActivity : AppCompatActivity() {
 
         b.swipeRefreshLayout.isEnabled = true
         b.swipeRefreshLayout.setOnRefreshListener { this.syncCurrentFeature() }
+        b.swipeRefreshLayout.setColorSchemeResources(
+                R.color.md_blue_500,
+                R.color.md_amber_500,
+                R.color.md_green_500
+        )
 
-        isStoragePermissionGranted()
-
-        SyncJob.schedule(app)
+        SyncWorker.scheduleNext(app)
+        UpdateWorker.scheduleNext(app)
 
         // APP BACKGROUND
-        if (app.appConfig.appBackground != null) {
+        if (app.config.ui.appBackground != null) {
             try {
-                var bg = app.appConfig.appBackground
-                val bgDir = File(Environment.getExternalStoragePublicDirectory("Szkolny.eu"), "bg")
-                if (bgDir.exists()) {
-                    val files = bgDir.listFiles()
-                    val r = Random()
-                    val i = r.nextInt(files.size)
-                    bg = files[i].toString()
-                }
-                val linearLayout = b.root
-                if (bg.endsWith(".gif")) {
-                    linearLayout.background = GifDrawable(bg)
-                } else {
-                    linearLayout.background = BitmapDrawable.createFromPath(bg)
+                app.config.ui.appBackground?.let {
+                    var bg = it
+                    val bgDir = File(Environment.getExternalStoragePublicDirectory("Szkolny.eu"), "bg")
+                    if (bgDir.exists()) {
+                        val files = bgDir.listFiles()
+                        val r = Random()
+                        val i = r.nextInt(files.size)
+                        bg = files[i].toString()
+                    }
+                    val linearLayout = b.root
+                    if (bg.endsWith(".gif")) {
+                        linearLayout.background = GifDrawable(bg)
+                    } else {
+                        linearLayout.background = BitmapDrawable.createFromPath(bg)
+                    }
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
 
+        // IT'S WINTER MY DUDES
+        val today = Date.getToday()
+        if ((today.month == 12 || today.month == 1) && app.config.ui.snowfall) {
+            b.rootFrame.addView(layoutInflater.inflate(R.layout.snowfall, b.rootFrame, false))
+        }
+
         // WHAT'S NEW DIALOG
-        if (app.appConfig.lastAppVersion != BuildConfig.VERSION_CODE) {
-            ServerRequest(app, app.requestScheme + APP_URL + "main.php?just_updated", "MainActivity/JU")
-                    .run { e, result ->
-                        Handler(Looper.getMainLooper()).post {
-                            try {
-                                ChangelogDialog().show(supportFragmentManager, "whats_new")
-                            } catch (e2: Exception) {
-                                e2.printStackTrace()
-                            }
-                        }
-                    }
-            if (app.appConfig.lastAppVersion < 170) {
+        if (app.config.appVersion < BuildConfig.VERSION_CODE) {
+            // force an AppSync after update
+            app.config.sync.lastAppSync = 0L
+            ChangelogDialog(this)
+            if (app.config.appVersion < 170) {
                 //Intent intent = new Intent(this, ChangelogIntroActivity.class);
                 //startActivity(intent);
             } else {
-                app.appConfig.lastAppVersion = BuildConfig.VERSION_CODE
-                app.saveConfig("lastAppVersion")
+                app.config.appVersion = BuildConfig.VERSION_CODE
             }
         }
 
         // RATE SNACKBAR
-        if (app.appConfig.appRateSnackbarTime != 0L && app.appConfig.appRateSnackbarTime <= System.currentTimeMillis()) {
+        if (app.config.appRateSnackbarTime != 0L && app.config.appRateSnackbarTime <= System.currentTimeMillis()) {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
                         .content(R.string.rate_snackbar_text)
-                        .icon(IconicsDrawable(this).icon(CommunityMaterial.Icon2.cmd_star).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.getPrimaryTextColor(this))))
+                        .icon(IconicsDrawable(this).icon(CommunityMaterial.Icon2.cmd_star_outline).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.getPrimaryTextColor(this))))
                         .positiveText(R.string.rate_snackbar_positive)
                         .positiveColor(-0xb350b0)
                         .negativeText(R.string.rate_snackbar_negative)
@@ -429,20 +475,17 @@ class MainActivity : AppCompatActivity() {
                         .onPositive { cafeBar ->
                             Utils.openGooglePlay(this)
                             cafeBar.dismiss()
-                            app.appConfig.appRateSnackbarTime = 0
-                            app.saveConfig("appRateSnackbarTime")
+                            app.config.appRateSnackbarTime = 0
                         }
                         .onNegative { cafeBar ->
                             Toast.makeText(this, "Szkoda, opinie innych pomagają mi rozwijać aplikację.", Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
-                            app.appConfig.appRateSnackbarTime = 0
-                            app.saveConfig("appRateSnackbarTime")
+                            app.config.appRateSnackbarTime = 0
                         }
                         .onNeutral { cafeBar ->
                             Toast.makeText(this, "OK", Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
-                            app.appConfig.appRateSnackbarTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
-                            app.saveConfig("appRateSnackbarTime")
+                            app.config.appRateSnackbarTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
                         }
                         .autoDismiss(false)
                         .swipeToDismiss(true)
@@ -456,43 +499,48 @@ class MainActivity : AppCompatActivity() {
         bottomSheet.appendItems(
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_sync)
-                        .withIcon(CommunityMaterial.Icon2.cmd_sync)
+                        .withIcon(CommunityMaterial.Icon.cmd_download_outline)
                         .withOnClickListener(View.OnClickListener {
                             bottomSheet.close()
-                            app.apiEdziennik.guiSyncFeature(app, this, App.profileId, R.string.sync_dialog_title, R.string.sync_dialog_text, R.string.sync_done, fragmentToFeature(navTargetId))
+                            SyncViewListDialog(this, navTargetId)
                         }),
                 BottomSheetSeparatorItem(false),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_settings)
-                        .withIcon(CommunityMaterial.Icon2.cmd_settings)
+                        .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
                         .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) }),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_feedback)
-                        .withIcon(CommunityMaterial.Icon2.cmd_help_circle)
+                        .withIcon(CommunityMaterial.Icon2.cmd_help_circle_outline)
                         .withOnClickListener(View.OnClickListener { loadTarget(TARGET_FEEDBACK) })
         )
-        if (App.devMode) {
+        if (App.debugMode) {
             bottomSheet += BottomSheetPrimaryItem(false)
                     .withTitle(R.string.menu_debug)
-                    .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
+                    .withIcon(CommunityMaterial.Icon.cmd_android_studio)
                     .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_DEBUG) })
         }
     }
 
-    var profileListEmptyListener = {
-        startActivityForResult(Intent(this, LoginActivity::class.java), REQUEST_LOGIN_ACTIVITY)
-    }
     private var profileSettingClickListener = { id: Int, view: View? ->
         when (id) {
             DRAWER_PROFILE_ADD_NEW -> {
-                LoginActivity.privacyPolicyAccepted = true
-                // else it would try to navigateUp onBackPressed, which it can't do. There is no parent fragment
-                LoginActivity.firstCompleted = false
-                profileListEmptyListener()
+                startActivityForResult(Intent(this, LoginActivity::class.java), REQUEST_LOGIN_ACTIVITY)
             }
             DRAWER_PROFILE_SYNC_ALL -> {
-                SyncJob.run(app)
+                EdziennikTask.sync().enqueue(this)
             }
+            DRAWER_PROFILE_MARK_ALL_AS_READ -> { launch {
+                withContext(Dispatchers.Default) {
+                    app.db.profileDao().allNow.forEach { profile ->
+                        if (profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS)
+                            app.db.metadataDao().setAllSeenExceptMessagesAndAnnouncements(profile.id, true)
+                        else
+                            app.db.metadataDao().setAllSeenExceptMessages(profile.id, true)
+                    }
+                }
+                Toast.makeText(this@MainActivity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
+            }}
             else -> {
                 loadTarget(id)
             }
@@ -511,52 +559,114 @@ class MainActivity : AppCompatActivity() {
     fun syncCurrentFeature() {
         swipeRefreshLayout.isRefreshing = true
         Toast.makeText(this, fragmentToSyncName(navTargetId), Toast.LENGTH_SHORT).show()
-        val callback = object : SyncCallback {
-            override fun onLoginFirst(profileList: List<Profile>, loginStore: LoginStore) {
-
-            }
-
-            override fun onSuccess(activityContext: Context, profileFull: ProfileFull) {
-                swipeRefreshLayout.isRefreshing = false
-            }
-
-            override fun onError(activityContext: Context, error: AppError) {
-                swipeRefreshLayout.isRefreshing = false
-                app.apiEdziennik.guiShowErrorSnackbar(this@MainActivity, error)
-            }
-
-            override fun onProgress(progressStep: Int) {
-
-            }
-
-            override fun onActionStarted(stringResId: Int) {
-
-            }
+        val fragmentParam = when (navTargetId) {
+            DRAWER_ITEM_MESSAGES -> MessagesFragment.pageSelection
+            else -> 0
         }
-        val feature = fragmentToFeature(navTargetId)
-        if (feature == FEATURE_ALL) {
-            swipeRefreshLayout.isRefreshing = false
-            app.apiEdziennik.guiSync(app, this, App.profileId, R.string.sync_dialog_title, R.string.sync_dialog_text, R.string.sync_done)
-        } else {
-            app.apiEdziennik.guiSyncSilent(app, this, App.profileId, callback, feature)
+        val arguments = when (navTargetId) {
+            DRAWER_ITEM_TIMETABLE -> JsonObject("weekStart" to TimetableFragment.pageSelection?.weekStart?.stringY_m_d)
+            else -> null
+        }
+        EdziennikTask.syncProfile(
+                App.profileId,
+                listOf(navTargetId to fragmentParam),
+                arguments = arguments
+        ).enqueue(this)
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onApiTaskStartedEvent(event: ApiTaskStartedEvent) {
+        swipeRefreshLayout.isRefreshing = true
+        if (event.profileId == App.profileId) {
+            navView.toolbar.apply {
+                subtitleFormat = null
+                subtitleFormatWithUnread = null
+                subtitle = getString(R.string.toolbar_subtitle_syncing)
+            }
         }
     }
-    private fun fragmentToFeature(currentFragment: Int): Int {
-        return when (currentFragment) {
-            DRAWER_ITEM_TIMETABLE -> FEATURE_TIMETABLE
-            DRAWER_ITEM_AGENDA -> FEATURE_AGENDA
-            DRAWER_ITEM_GRADES -> FEATURE_GRADES
-            DRAWER_ITEM_HOMEWORK -> FEATURE_HOMEWORK
-            DRAWER_ITEM_BEHAVIOUR -> FEATURE_NOTICES
-            DRAWER_ITEM_ATTENDANCE -> FEATURE_ATTENDANCE
-            DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
-                1 -> FEATURE_MESSAGES_OUTBOX
-                else -> FEATURE_MESSAGES_INBOX
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onProfileListEmptyEvent(event: ProfileListEmptyEvent) {
+        d(TAG, "Profile list is empty. Launch LoginActivity.")
+        app.config.loginFinished = false
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onApiTaskProgressEvent(event: ApiTaskProgressEvent) {
+        if (event.profileId == App.profileId) {
+            navView.toolbar.apply {
+                subtitleFormat = null
+                subtitleFormatWithUnread = null
+                subtitle = if (event.progress < 0f)
+                    event.progressText ?: ""
+                else
+                    getString(R.string.toolbar_subtitle_syncing_format, event.progress.roundToInt(), event.progressText ?: "")
+
             }
-            DRAWER_ITEM_ANNOUNCEMENTS -> FEATURE_ANNOUNCEMENTS
-            else -> FEATURE_ALL
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onApiTaskFinishedEvent(event: ApiTaskFinishedEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
+        if (event.profileId == App.profileId) {
+            navView.toolbar.apply {
+                subtitleFormat = R.string.toolbar_subtitle
+                subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
+                subtitle = "Gotowe"
+            }
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onApiTaskAllFinishedEvent(event: ApiTaskAllFinishedEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
+        swipeRefreshLayout.isRefreshing = false
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onApiTaskErrorEvent(event: ApiTaskErrorEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
+        navView.toolbar.apply {
+            subtitleFormat = R.string.toolbar_subtitle
+            subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
+            subtitle = "Gotowe"
+        }
+        mainSnackbar.dismiss()
+        errorSnackbar.addError(event.error).show()
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onAppManagerDetectedEvent(event: AppManagerDetectedEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
+        if (app.config.sync.dontShowAppManagerDialog)
+            return
+        MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.app_manager_dialog_title)
+                .setMessage(R.string.app_manager_dialog_text)
+                .setPositiveButton(R.string.ok) { dialog, which ->
+                    try {
+                        for (intent in appManagerIntentList) {
+                            if (packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+                                startActivity(intent)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        try {
+                            startActivity(Intent(Settings.ACTION_SETTINGS))
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Toast.makeText(this, R.string.app_manager_open_failed, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                .setNeutralButton(R.string.dont_ask_again) { dialog, which ->
+                    app.config.sync.dontShowAppManagerDialog = true
+                }
+                .setCancelable(false)
+                .show()
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onUserActionRequiredEvent(event: UserActionRequiredEvent) {
+        app.userActionManager.execute(this, event.profileId, event.type)
+    }
+
     private fun fragmentToSyncName(currentFragment: Int): Int {
         return when (currentFragment) {
             DRAWER_ITEM_TIMETABLE -> R.string.sync_feature_timetable
@@ -587,32 +697,70 @@ class MainActivity : AppCompatActivity() {
     }
     private fun handleIntent(extras: Bundle?) {
 
-        Log.d(TAG, "handleIntent() {")
+        d(TAG, "handleIntent() {")
         extras?.keySet()?.forEach { key ->
-            Log.d(TAG, "    \"$key\": "+extras.get(key))
+            d(TAG, "    \"$key\": "+extras.get(key))
         }
-        Log.d(TAG, "}")
+        d(TAG, "}")
+
+        var intentProfileId = -1
+        var intentTargetId = -1
+
+        if (extras?.containsKey("action") == true) {
+            val handled = when (extras.getString("action")) {
+                "serverMessage" -> {
+                    ServerMessageDialog(
+                            this,
+                            extras.getString("serverMessageTitle") ?: getString(R.string.app_name),
+                            extras.getString("serverMessageText") ?: ""
+                    )
+                    true
+                }
+                "feedbackMessage" -> {
+                    intentTargetId = TARGET_FEEDBACK
+                    false
+                }
+                "userActionRequired" -> {
+                    app.userActionManager.execute(
+                            this,
+                            extras.getInt("profileId"),
+                            extras.getInt("type")
+                    )
+                    true
+                }
+                "createManualEvent" -> {
+                    val date = extras.getString("eventDate")?.let { Date.fromY_m_d(it) } ?: Date.getToday()
+                    EventManualDialog(
+                            this,
+                            App.profileId,
+                            defaultDate = date
+                    )
+                    true
+                }
+                else -> false
+            }
+            if (handled && !navLoading) {
+                return
+            }
+        }
 
         if (extras?.containsKey("reloadProfileId") == true) {
             val reloadProfileId = extras.getInt("reloadProfileId", -1)
             extras.remove("reloadProfileId")
-            if (reloadProfileId == -1 || (app.profile != null && app.profile.id == reloadProfileId)) {
+            if (reloadProfileId == -1 || app.profile.id == reloadProfileId) {
                 reloadTarget()
                 return
             }
         }
 
-        var intentProfileId = -1
-        var intentTargetId = -1
-
-        if (extras?.containsKey("profileId") == true) {
+        if (extras?.getInt("profileId", -1) != -1) {
             intentProfileId = extras.getInt("profileId", -1)
-            extras.remove("profileId")
+            extras?.remove("profileId")
         }
 
-        if (extras?.containsKey("fragmentId") == true) {
+        if (extras?.getInt("fragmentId", -1) != -1) {
             intentTargetId = extras.getInt("fragmentId", -1)
-            extras.remove("fragmentId")
+            extras?.remove("fragmentId")
         }
 
         /*if (intentTargetId == -1 && navController.currentDestination?.id == R.id.loadingFragment) {
@@ -620,29 +768,33 @@ class MainActivity : AppCompatActivity() {
         }*/
 
         if (navLoading) {
-            navLoading = false
             b.fragment.removeAllViews()
             if (intentTargetId == -1)
                 intentTargetId = HOME_ID
         }
 
         when {
-            app.profile == null -> {
+            app.profile.id == 0 -> {
                 if (intentProfileId == -1)
-                    intentProfileId = app.appSharedPrefs.getInt("current_profile_id", 1)
-                loadProfile(intentProfileId, intentTargetId)
+                    intentProfileId = app.config.lastProfileId
+                loadProfile(intentProfileId, intentTargetId, extras)
             }
             intentProfileId != -1 -> {
-                loadProfile(intentProfileId, intentTargetId)
+                if (app.profile.id != intentProfileId)
+                    loadProfile(intentProfileId, intentTargetId, extras)
+                else
+                    loadTarget(intentTargetId, extras)
             }
             intentTargetId != -1 -> {
                 drawer.currentProfile = app.profile.id
-                loadTarget(intentTargetId, extras)
+                if (navTargetId != intentTargetId || navLoading)
+                    loadTarget(intentTargetId, extras)
             }
             else -> {
                 drawer.currentProfile = app.profile.id
             }
         }
+        navLoading = false
     }
 
     override fun recreate() {
@@ -663,15 +815,31 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    override fun onStart() {
+        d(TAG, "Activity started")
+        super.onStart()
+    }
+    override fun onStop() {
+        d(TAG, "Activity stopped")
+        super.onStop()
+    }
     override fun onResume() {
+        d(TAG, "Activity resumed")
         val filter = IntentFilter()
         filter.addAction(Intent.ACTION_MAIN)
         registerReceiver(intentReceiver, filter)
+        EventBus.getDefault().register(this)
         super.onResume()
     }
     override fun onPause() {
+        d(TAG, "Activity paused")
         unregisterReceiver(intentReceiver)
+        EventBus.getDefault().unregister(this)
         super.onPause()
+    }
+    override fun onDestroy() {
+        d(TAG, "Activity destroyed")
+        super.onDestroy()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -686,15 +854,10 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_LOGIN_ACTIVITY) {
-            if (resultCode == Activity.RESULT_CANCELED && false) {
+            if (!app.config.loginFinished)
                 finish()
-            }
             else {
-                if (!app.appConfig.loginFinished)
-                    finish()
-                else {
-                    handleIntent(data?.extras)
-                }
+                handleIntent(data?.extras)
             }
         }
     }
@@ -715,28 +878,20 @@ class MainActivity : AppCompatActivity() {
     fun loadProfile(id: Int) = loadProfile(id, navTargetId)
     fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
     fun loadProfile(id: Int, drawerSelection: Int, arguments: Bundle? = null) {
-        Log.d("NavDebug", "loadProfile(id = $id, drawerSelection = $drawerSelection)")
-        if (app.profile != null && App.profileId == id) {
+        if (App.profileId == id) {
             drawer.currentProfile = app.profile.id
             loadTarget(drawerSelection, arguments)
             return
         }
-        AsyncTask.execute {
-            app.profileLoadById(id)
+        app.profileLoad(id) {
+            MessagesFragment.pageSelection = -1
 
-            this.runOnUiThread {
-                if (app.profile == null) {
-                    LoginActivity.firstCompleted = false
-                    if (app.appConfig.loginFinished) {
-                        // this shouldn't run
-                        profileListEmptyListener()
-                    }
-                } else {
-                    setDrawerItems()
-                    drawer.currentProfile = app.profile.id
-                    loadTarget(drawerSelection, arguments)
-                }
-            }
+            setDrawerItems()
+            // the drawer profile is updated automatically when the drawer item is clicked
+            // update it manually when switching profiles from other source
+            //if (drawer.currentProfile != app.profile.id)
+            drawer.currentProfile = app.profileId
+            loadTarget(drawerSelection, arguments)
         }
     }
     fun loadTarget(id: Int, arguments: Bundle? = null) {
@@ -745,7 +900,7 @@ class MainActivity : AppCompatActivity() {
             loadId = DRAWER_ITEM_HOME
         }
         val target = navTargetList
-                .singleOrNull { it.id == loadId }
+                .firstOrNull { it.id == loadId }
         if (target == null) {
             Toast.makeText(this, getString(R.string.error_invalid_fragment, id), Toast.LENGTH_LONG).show()
             loadTarget(navTargetList.first(), arguments)
@@ -754,21 +909,22 @@ class MainActivity : AppCompatActivity() {
             loadTarget(target, arguments)
         }
     }
-    private fun loadTarget(target: NavTarget, arguments: Bundle? = null) {
-        Log.d("NavDebug", "loadItem(id = ${target.id})")
+    private fun loadTarget(target: NavTarget, args: Bundle? = null) {
+        d("NavDebug", "loadTarget(target = $target, args = $args)")
 
+        val arguments = args ?: navBackStack.firstOrNull { it.first.id == target.id }?.second ?: Bundle()
         bottomSheet.close()
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false
-        bottomSheet.onCloseListener = null
         drawer.close()
-        drawer.setSelection(target.id, fireOnClick = false)
+        if (drawer.getSelection() != target.id)
+            drawer.setSelection(target.id, fireOnClick = false)
         navView.toolbar.setTitle(target.title ?: target.name)
         navView.bottomBar.fabEnable = false
         navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
 
-        Log.d("NavDebug", "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
+        d("NavDebug", "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
 
         val fragment = target.fragmentClass?.java?.newInstance() ?: return
         fragment.arguments = arguments
@@ -782,7 +938,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
         else {
-            navBackStack.lastIndexOf(target).let {
+            navBackStack.keys().lastIndexOf(target).let {
                 if (it == -1)
                     return@let target
                 // pop the back stack up until that target
@@ -804,6 +960,7 @@ class MainActivity : AppCompatActivity() {
                     navBackStack.removeAt(navBackStack.lastIndex)
                 }
                 navTarget = target
+                navArguments = arguments
 
                 return@let null
             }?.let {
@@ -813,8 +970,9 @@ class MainActivity : AppCompatActivity() {
                         R.anim.task_open_enter,
                         R.anim.task_open_exit
                 )
-                navBackStack.add(navTarget)
+                navBackStack.add(navTarget to navArguments)
                 navTarget = target
+                navArguments = arguments
             }
         }
 
@@ -827,9 +985,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Log.d("NavDebug", "Current fragment ${navTarget.fragmentClass?.java?.simpleName}, pop to home ${navTarget.popToHome}, back stack:")
+        d("NavDebug", "Current fragment ${navTarget.fragmentClass?.java?.simpleName}, pop to home ${navTarget.popToHome}, back stack:")
         navBackStack.forEachIndexed { index, target2 ->
-            Log.d("NavDebug", " - $index: ${target2.fragmentClass?.java?.simpleName}")
+            d("NavDebug", " - $index: ${target2.first.fragmentClass?.java?.simpleName}")
         }
 
         transaction.replace(R.id.fragment, fragment)
@@ -854,11 +1012,18 @@ class MainActivity : AppCompatActivity() {
             return false
         }
         // TODO back stack argument support
-        if (navTarget.popToHome) {
-            loadTarget(HOME_ID)
-        }
-        else {
-            loadTarget(navBackStack.last())
+        when {
+            navTarget.popToHome -> {
+                loadTarget(HOME_ID)
+            }
+            navTarget.popTo != null -> {
+                loadTarget(navTarget.popTo ?: HOME_ID)
+            }
+            else -> {
+                navBackStack.last().let {
+                    loadTarget(it.first, it.second)
+                }
+            }
         }
         return true
     }
@@ -873,9 +1038,11 @@ class MainActivity : AppCompatActivity() {
      * that something has changed in the bottom sheet.
      */
     fun gainAttention() {
-        /*b.navView.postDelayed({
+        if (app.config.ui.bottomSheetOpened)
+            return
+        b.navView.postDelayed({
             navView.gainAttentionOnBottomBar()
-        }, 2000)*/
+        }, 2000)
     }
 
     fun gainAttentionFAB() {
@@ -900,11 +1067,12 @@ class MainActivity : AppCompatActivity() {
         val item = DrawerPrimaryItem()
                 .withIdentifier(target.id.toLong())
                 .withName(target.name)
-                .withHiddenInMiniDrawer(!app.appConfig.miniDrawerButtonIds.contains(target.id))
+                .withIsHiddenInMiniDrawer(!app.config.ui.miniMenuButtons.contains(target.id))
                 .also { if (target.description != null) it.withDescription(target.description!!) }
                 .also { if (target.icon != null) it.withIcon(target.icon!!) }
                 .also { if (target.title != null) it.withAppTitle(getString(target.title!!)) }
                 .also { if (target.badgeTypeId != null) it.withBadgeStyle(drawer.badgeStyle)}
+                .withSelectedBackgroundAnimated(false)
 
         if (target.badgeTypeId != null)
             drawer.addUnreadCounterType(target.badgeTypeId!!, target.id)
@@ -920,12 +1088,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setDrawerItems() {
-        Log.d("NavDebug", "setDrawerItems() app.profile = ${app.profile ?: "null"}")
+        d("NavDebug", "setDrawerItems() app.profile = ${app.profile}")
         val drawerItems = arrayListOf<IDrawerItem<*>>()
         val drawerProfiles = arrayListOf<ProfileSettingDrawerItem>()
 
-        val supportedFragments = if (app.profile == null) arrayListOf<Int>()
-        else app.profile.supportedFragments
+        val supportedFragments = app.profile.supportedFragments
 
         targetPopToHomeList.clear()
 
@@ -965,7 +1132,7 @@ class MainActivity : AppCompatActivity() {
         drawer.addProfileSettings(*drawerProfiles.toTypedArray())
     }
 
-    private fun showProfileContextMenu(profile: IProfile<*>, view: View) {
+    private fun showProfileContextMenu(profile: IProfile, view: View) {
         val profileId = profile.identifier.toInt()
         val popupMenu = PopupMenu(this, view)
         popupMenu.menu.add(0, 1, 1, R.string.profile_menu_open_settings)
@@ -978,7 +1145,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 loadTarget(DRAWER_ITEM_SETTINGS, null)
             } else if (item.itemId == 2) {
-                app.apiEdziennik.guiRemoveProfile(this@MainActivity, profileId, profile.name?.getText(this).toString())
+                ProfileRemoveDialog(this, profileId, profile.name?.getText(this) ?: "?")
             }
             true
         }
@@ -989,30 +1156,16 @@ class MainActivity : AppCompatActivity() {
     private var targetHomeId: Int = -1
     override fun onBackPressed() {
         if (!b.navView.onBackPressed()) {
-
-            navigateUp()
-
-            /*val currentDestinationId = navController.currentDestination?.id
-
-            if (if (targetHomeId != -1 && targetPopToHomeList.contains(navController.currentDestination?.id)) {
-                        if (!navController.popBackStack(targetHomeId, false)) {
-                            navController.navigateUp()
-                        }
-                        true
-                    } else {
-                        navController.navigateUp()
-                    }) {
-                val currentId = navController.currentDestination?.id ?: -1
-                val drawerSelection = navTargetList
-                        .singleOrNull {
-                            it.navGraphId == currentId
-                        }?.also {
-                            navView.toolbar.setTitle(it.title ?: it.name)
-                        }?.id ?: -1
-                drawer.setSelection(drawerSelection, false)
+            if (App.config.ui.openDrawerOnBackPressed && ((navTarget.popTo == null && navTarget.popToHome)
+                    || navTarget.id == DRAWER_ITEM_HOME)) {
+                b.navView.drawer.toggle()
             } else {
-                super.onBackPressed()
-            }*/
+                navigateUp()
+            }
         }
     }
+
+    fun error(error: ApiError) = errorSnackbar.addError(error).show()
+    fun snackbar(text: String, actionText: String? = null, onClick: (() -> Unit)? = null) = mainSnackbar.snackbar(text, actionText, onClick)
+    fun snackbarDismiss() = mainSnackbar.dismiss()
 }

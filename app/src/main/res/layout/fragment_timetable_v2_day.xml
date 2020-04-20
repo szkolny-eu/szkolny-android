@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/dayScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.linkedin.android.tachyon.DayView
+                android:id="@+id/day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:dividerHeight="1dp"
+                app:endHour="18"
+                app:eventMargin="2dp"
+                app:halfHourDividerColor="#e0e0e0"
+                app:halfHourHeight="60dp"
+                app:hourDividerColor="#b0b0b0"
+                app:hourLabelMarginEnd="10dp"
+                app:hourLabelWidth="40dp"
+                app:startHour="5"
+                tools:visibility="gone"/>
+        </ScrollView>
+
+    </FrameLayout>
+</layout>

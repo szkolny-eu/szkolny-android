@@ -9,12 +9,14 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
+
 import androidx.core.graphics.ColorUtils;
-import pl.szczodrzynski.edziennik.data.db.modules.grades.Grade;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Random;
+
+import pl.szczodrzynski.edziennik.data.db.entity.Grade;
 
 public class Colors {
 
@@ -82,6 +84,11 @@ public class Colors {
             0xFF6D4C41
     };
 
+    /**
+     * Used for teacher's images (e.g. in messages or announcements).
+     * @param s teacher's fullName
+     * @return a material color based on the fullName hash
+     */
     public static int stringToMaterialColor(String s) {
         long seed = 1;
         try {
@@ -110,17 +117,17 @@ public class Colors {
 
     public static int gradeToColor(Grade grade)
     {
-        if (grade.type == Grade.TYPE_BEHAVIOUR) {
-            return grade.value < 0 ? 0xfff44336 : grade.value > 0 ? 0xff4caf50 : 0xffbdbdbd;
+        if (grade.getType() == Grade.TYPE_POINT_SUM) {
+            return grade.getValue() < 0 ? 0xfff44336 : grade.getValue() > 0 ? 0xff4caf50 : 0xffbdbdbd;
         }
-        else if (grade.type == Grade.TYPE_POINT) {
-            return Color.parseColor("#"+gradeValueToColorStr(grade.value/grade.valueMax*100));
+        else if (grade.getType() == Grade.TYPE_POINT_AVG) {
+            return Color.parseColor("#"+gradeValueToColorStr(grade.getValue()/grade.getValueMax()*100));
         }
-        else if (grade.type == Grade.TYPE_DESCRIPTIVE || grade.type == Grade.TYPE_TEXT) {
-            return grade.color;
+        else if (grade.getType() == Grade.TYPE_DESCRIPTIVE || grade.getType() == Grade.TYPE_DESCRIPTIVE_TEXT || grade.getType() == Grade.TYPE_TEXT) {
+            return grade.getColor();
         }
         else {
-            return Color.parseColor("#"+gradeNameToColorStr(grade.name));
+            return Color.parseColor("#"+gradeNameToColorStr(grade.getName()));
         }
     }
 

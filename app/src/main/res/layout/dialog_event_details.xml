@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2019-12-18.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <import type="pl.szczodrzynski.edziennik.App"/>
+        <variable
+            name="appCompanion"
+            type="pl.szczodrzynski.edziennik.App.Companion" />
+        <variable
+            name="event"
+            type="pl.szczodrzynski.edziennik.data.db.full.EventFull" />
+        <variable name="eventShared" type="boolean" />
+        <variable name="eventOwn" type="boolean" />
+        <variable name="details" type="java.lang.CharSequence" />
+        <variable name="monthName" type="String" />
+    </data>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingRight="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/typeColor"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/unread_red_circle" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{event.typeName}"
+                        android:textIsSelectable="true"
+                        android:textAppearance="@style/NavView.TextView.Title"
+                        android:visibility="@{event.typeName == null ? View.GONE : View.VISIBLE}"
+                        tools:text="sprawdzian" />
+
+                    <TextView
+                        android:id="@+id/lessonDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"
+                        android:textAppearance="@style/NavView.TextView.Subtitle"
+                        android:text="@{details}"
+                        android:visibility="@{details == null ? View.GONE : View.VISIBLE}"
+                        tools:text="język angielski • 2B3T a2"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.Helper"
+                        android:text="@{event.time == null ? @string/event_all_day : event.time.stringHM}"
+                        tools:text="14:50"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@{Integer.toString(event.date.day)}"
+                        android:textSize="36sp"
+                        tools:text="14" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{monthName}"
+                        tools:text="listopada" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:text="@string/dialog_event_details_teacher"
+                android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{event.teacherName}"
+                android:textIsSelectable="true"
+                android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"
+                tools:text="Janósz Kowalski" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:text="@string/dialog_event_details_added_by"/>
+            <com.mikepenz.iconics.view.IconicsTextView
+                android:id="@+id/addedBy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textIsSelectable="true"
+                tools:text="18 grudnia, 23:17 przez Janósz Kowalski" />
+
+            <!--<View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/dividerColor"/>-->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:text="@string/dialog_event_details_topic"/>
+
+            <TextView
+                android:id="@+id/topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{event.topic}"
+                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textIsSelectable="true"
+                tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
+
+            <TextView
+                android:id="@+id/bodyTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/dialog_event_details_body"
+                android:textAppearance="@style/NavView.TextView.Helper" />
+
+            <ProgressBar
+                android:id="@+id/bodyProgressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{event.homeworkBody}"
+                android:textAppearance="@style/NavView.TextView.Medium"
+                android:textIsSelectable="true"
+                tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
+
+            <TextView
+                android:id="@+id/attachmentsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/dialog_event_details_attachments"
+                android:textAppearance="@style/NavView.TextView.Helper" />
+
+            <pl.szczodrzynski.edziennik.ui.modules.views.AttachmentsView
+                android:id="@+id/attachmentsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/divider"/>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_end">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/checkDoneButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:checkable="true"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:minWidth="0dp"
+                    android:text="\uFCE1"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/editButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:minWidth="0dp"
+                    android:text="\uFC92"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/saveInCalendarButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:minWidth="0dp"
+                    android:text="\uFB09"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/goToTimetableButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:minWidth="0dp"
+                    android:text="\uFCDA"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/downloadButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:minWidth="0dp"
+                    android:text="\uFB6B"
+                    android:textSize="20sp" />
+            </com.google.android.flexbox.FlexboxLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -157,8 +157,10 @@ public class PermissionChecker {
 
     public Intent intentApkInstall() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return new Intent("android.settings.MANAGE_UNKNOWN_APP_SOURCES",
+            Intent intent = new Intent("android.settings.MANAGE_UNKNOWN_APP_SOURCES",
                     Uri.parse("package:" + mContext.getPackageName()));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            return intent;
         }
         return null;
     }

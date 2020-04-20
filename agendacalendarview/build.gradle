@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 //apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion setup.compileSdk
 
     android {
         lintOptions {
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion setup.targetSdk
         versionCode 1
         versionName "1.0"
     }
@@ -43,9 +43,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Google libraries
-    implementation "androidx.appcompat:appcompat:${androidXAppCompat}"
-    implementation "androidx.recyclerview:recyclerview:${androidXRecyclerView}"
-    implementation "com.google.android.material:material:${googleMaterial}"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.recyclerview:recyclerview:${versions.recyclerView}"
+    implementation "com.google.android.material:material:${versions.material}"
 
     // other libraries
     //implementation 'se.emilsjolander:stickylistheaders:2.7.0'

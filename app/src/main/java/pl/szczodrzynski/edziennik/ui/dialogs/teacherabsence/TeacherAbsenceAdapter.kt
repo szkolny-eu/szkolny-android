@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.modules.teachers.TeacherAbsenceFull
+import pl.szczodrzynski.edziennik.data.db.full.TeacherAbsenceFull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class TeacherAbsenceAdapter(
@@ -47,10 +47,19 @@ class TeacherAbsenceAdapter(
         }
 
         holder.teacherAbsenceTime.text = time
+
+        if (teacherAbsence.name != null) {
+            holder.teacherAbsenceName.visibility = View.VISIBLE
+            holder.teacherAbsenceName.text = teacherAbsence.name
+        } else {
+            holder.teacherAbsenceName.visibility = View.GONE
+        }
+
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var teacherAbsenceTeacher: TextView = itemView.findViewById(R.id.teacherAbsenceTeacher)
         var teacherAbsenceTime: TextView = itemView.findViewById(R.id.teacherAbsenceTime)
+        var teacherAbsenceName: TextView = itemView.findViewById(R.id.teacherAbsenceName)
     }
 }

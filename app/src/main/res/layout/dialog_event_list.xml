@@ -1,99 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <LinearLayout
-        android:id="@+id/detailsLayout"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include
-            android:id="@+id/lessonChangeContainer"
-            layout="@layout/row_lesson_change_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <include
-            android:id="@+id/teacherAbsenceContainer"
-            layout="@layout/row_teacher_absence_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/eventListLessonDetails"
+            android:id="@+id/detailsLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/eventListLessonDate"
+            <include
+                android:id="@+id/lessonChangeContainer"
+                layout="@layout/row_lesson_change_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="21 października 2018, 9:05" />
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/teacherAbsenceContainer"
+                layout="@layout/row_teacher_absence_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/eventListLessonDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/eventListLessonDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="21 października 2018, 9:05" />
+
+                <TextView
+                    android:id="@+id/eventListLessonChange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    tools:text="Lekcja odwołana" />
+
+                <TextView
+                    android:id="@+id/eventListTeacher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    tools:text="Jan Kowalski -> John Doe" />
+
+                <TextView
+                    android:id="@+id/eventListClassroom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    tools:text="029 informatyczna -> 016 językowa" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/eventListLessonChange"
-                android:layout_width="match_parent"
+                android:id="@+id/textNoEvents"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="32dp"
+                android:text="@string/dialog_event_list_no_data"
                 android:textStyle="italic"
-                tools:text="Lekcja odwołana" />
+                android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/eventListTeacher"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/eventListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="italic"
-                tools:text="Jan Kowalski -> John Doe" />
-
-            <TextView
-                android:id="@+id/eventListClassroom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="italic"
-                tools:text="029 informatyczna -> 016 językowa" />
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
+                tools:listitem="@layout/row_dialog_event_list_item" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/textNoEvents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="32dp"
-            android:text="@string/dialog_event_list_no_data"
-            android:textStyle="italic"
-            android:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/eventListView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:clipToPadding="false"
-            android:paddingLeft="24dp"
-            android:paddingTop="8dp"
-            android:paddingRight="24dp"
-            android:paddingBottom="8dp"
-            tools:listitem="@layout/row_dialog_event_list_item" />
-
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+</layout>

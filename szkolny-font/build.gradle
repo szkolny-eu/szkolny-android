@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Mike Penz
+ * Copyright 2019 Mike Penz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion setup.compileSdk
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion setup.minSdk
+        targetSdkVersion setup.targetSdk
         consumerProguardFiles 'consumer-proguard-rules.pro'
-        versionCode 1
-        versionName "1.0"
+        versionCode 11
+        versionName "1.1"
     }
     buildTypes {
         release {
@@ -46,6 +45,6 @@ if (project.hasProperty('pushall') || project.hasProperty('SzkolnyFontonly')) {
 }
 
 dependencies {
-    implementation "com.mikepenz:iconics-core:${iconics}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.mikepenz:iconics-core:${versions.iconics}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
 }

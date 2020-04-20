@@ -6,7 +6,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:keepScreenOn="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/counter_activity_sync"
+                android:textSize="12sp"
+                android:textColor="#ff606060" />
+            <ImageView
+                android:id="@+id/bellSync"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="10dp"
+                tools:tint="#ff404040"
+                tools:src="@sample/settings" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/lessonName"

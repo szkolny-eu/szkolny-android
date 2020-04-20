@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-4-1.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:ellipsize="middle"
+            app:chipIconSize="24dp"
+            app:chipIconVisible="true"
+            app:closeIconSize="18dp"
+            app:closeIconVisible="false"
+            tools:chipIcon="@android:drawable/ic_menu_delete"
+            tools:closeIcon="@drawable/ic_account_circle"
+            tools:closeIconVisible="true"
+            tools:text="Zadanie z matematyki.pdf" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginHorizontal="8dp" />
+    </FrameLayout>
+</layout>

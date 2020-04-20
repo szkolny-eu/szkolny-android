@@ -8,11 +8,11 @@ def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion setup.compileSdk
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion setup.targetSdk
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}" + (versionPatch == 0 ? "" : ".${versionPatch}")
     }
@@ -32,7 +32,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:${androidXAppCompat}"
-    implementation "androidx.cardview:cardview:${androidXCardView}"
-    implementation "com.google.android.material:material:${googleMaterial}"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.cardview:cardview:${versions.cardview}"
+    implementation "com.google.android.material:material:${versions.material}"
 }

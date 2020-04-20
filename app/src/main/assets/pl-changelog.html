@@ -1,109 +1,32 @@
-<html>
-<head>
-	<style type="text/css">
-		* {
-			word-wrap: break-word;
-		}
-
-		body {
-			background-color: #{bg-color}; color: #{text-color};
-		}
-
-		a {
-			color: #{link-color};
-		}
-
-		a:active {
-			color: #{link-color-active};
-		}
-
-		ol {
-			list-style-position: inside;
-			padding-left: 0;
-			padding-right: 0;
-		}
-
-		li:not(:first-child) {
-			padding-top: 8px;
-		}
-	</style>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-</head>
-<body>
-
-<h3>Wersja 3.2, 2019-10-31</h3>
+<h3>Wersja 4.0, 2020-04-19</h3>
 <ul>
-    <li>Możliwość zmiany języka aplikacji.</li>
-    <li>Vulcan: obsługa dziennika edu.lublin.eu.</li>
-    <li>Opcja oznaczenia wszystkich powiadomień jako nieprzeczytane (na stronie głównej).</li>
-    <li>Librus: pokazywanie sali podczas zastępstwa.</li>
-
-    <li><i>Możliwość wysyłania wiadomości jest przewidywana na połowę listopada.</i></li>
-</ul>
-
-<h3>Wersja 3.1.1, 2019-10-09</h3>
-<ul>
-    <li>Librus: poprawiona synchronizacja kategorii i kolorów ocen.</li>
-    <li>Zmieniony kolor dolnego paska w ciemnym motywie.</li>
-    <li>Zaktualizowany licznik czasu lekcji.</li>
-</ul>
-
-<h3>Wersja 3.1, 2019-09-29</h3>
-<ul>
-    <li>Poprawiony interfejs zadań domowych.</li>
-    <li>Librus: wyświetlanie komentarzy ocen.</li>
-    <li>Librus: wyświetlanie nieobecności nauczycieli w Terminarzu.</li>
-    <li>Librus: usprawniona synchronizacja ocen.</li>
-    <li>Poprawki angielskiego tłumaczenia.</li>
-</ul>
-
-<h3>Wersja 3.0.3, 2019-09-26</h3>
-<ul>
-    <li>Librus: poprawka kilku błędów synchronizacji.</li>
-    <li>Vulcan: prawidłowe oznaczanie wiadomości jako przeczytana.</li>
-    <li>Vulcan: poprawiona synchronizacja wiadomości i frekwencji.</li>
-    <li>Vulcan: poprawka błędów logowania.</li>
-</ul>
-
-<h3>Wersja 3.0.2, 2019-09-24</h3>
-<ul>
-    <li>Librus: pobieranie Bieżących ocen opisowych.</li>
-    <li>Poprawki UI: kolor ikon paska statusu w jasnym motywie.</li>
-    <li>Poprawka braku skanera QR do przekazywania powiadomień.</li>
-    <li>Poprawka wyboru koloru i daty własnego wydarzenia, które crashowały aplikację.</li>
-</ul>
-
-<h3>Wersja 3.0.1, 2019-09-19</h3>
-<ul>
-    <li>Librus: Poprawa błędu synchronizacji.</li>
-    <li>Poprawki UI związane z paskiem nawigacji.</li>
-    <li>Mobidziennik: Pobieranie ocen w niektórych przedmiotach.</li>
-</ul>
-
-<h3>Wersja 3.0, 2019-09-13</h3>
-<ul>
-    <li><b>Nowy wygląd i sposób nawigacji</b> w całej aplikacji.</li>
-    <li>Menu nawigacji można teraz otworzyć przyciskiem na <b>dolnym pasku</b>. Pociągnięcie w górę tego paska wyświetla <b>menu kontekstowe</b> dotyczące danego widoku.</li>
-    <li>Założyliśmy serwer Discord! <a href="https://discord.gg/n9e8pWr">https://discord.gg/n9e8pWr</a></li>
+    <li><b><u>Wysyłanie wiadomości</u></b> - funkcja, na którą czekał każdy. Od teraz w Szkolnym można wysyłać oraz odpowiadać na wiadomości do nauczycieli &#x1F44F;</li>
+    <li><b>Przebudowaliśmy cały moduł synchronizacji</b>, co oznacza większą stabilność aplikacji, szybkość oraz poprawność pobieranych danych</li>
+    <li>Udoskonalony wygląd Szkolnego - sprawi, że korzystanie z aplikacji będzie jeszcze przyjemniejsze</li>
+    <li>Wyszukiwarka wiadomości, pozwalająca na łatwe znalezienie potrzebnej konwersacji.</li>
+    <li>Możliwość pobierania załączników do zadań domowych oraz wiadomości w każdym dzienniku.</li>
+    <li>Nowa <b>Strona główna</b> - ładniejszy wygląd oraz możliwość przestawiania kart na każdym profilu</li>
+    <li>Nowy <b>Plan lekcji</b> - z doskonałą obsługą lekcji przesuniętych oraz dwóch lekcji o tej samej godzinie</li>
+    <li>Nowe <b>Oceny</b> - z możliwością zmiany wartości plusów oraz minusów oraz wyłączenia niektórych ocen ze średniej</li>
+    <li>Opcja wyłączenia wybranych powiadomień z aplikacji</li>
+    <li>Znaczki nieprzeczytanych informacji na obrazkach profili.</li>
     <br>
-    <li>Librus: poprawka powielonych ogłoszeń szkolnych.</li>
-    <li>Naprawiłem błąd nieskończonej synchronizacji w Vulcanie.</li>
-    <li>Naprawiłem crash launchera przy dodaniu widgetu.</li>
-    <li>Naprawiłem częste crashe związane z widokiem kalendarza.</li>
-    <li>Nowe, ładniejsze (choć trochę) motywy kolorów.</li>
-    <li>Dużo drobnych poprawek UI i działania aplikacji.</li>
+    <br>
+    <li>Udoskonalone tłumaczenie na j.angielski (dzięki @Predator)</li>
+    <li>Nowe okienka informacji o wydarzeniach oraz lekcjach</li>
+    <li>Nowe, przyjemniejsze powiadomienia</li>
+    <li>Dużo poprawek w widoku <b>Wiadomości</b> oraz <b>Ogłoszeń</b></li>
+    <li>Częściowa <b>Obsługa dziennika EduDziennik</b></li>
+    <li>Librus: opcja logowania w dziennikach <b>Jednostek Samorządu Terytorialnego</b> oraz <b>Oświata w Radomiu</b></li>
+    <li>Librus: <b>poprawione obliczanie frekwencji</b></li>
+    <li>Librus: obsługa Zadań domowych bez posiadania Mobilnych dodatków (przez system Synergia)</li>
+    <li>Lepsze <b>przekazywanie powiadomień na komputer</b> oraz łatwiejsze parowanie</li>
+    <li>Łatwiejsze dodawanie własnych wydarzeń</li>
+    <li>Poprawiliśmy synchronizację w tle na niektórych telefonach</li>
+    <li>Usunąłem denerwujący brak zaznaczenia w lewym menu</li>
+    <li>Znaczna ilość błędów z poprzednich wersji już nie występuje</li>
 </ul>
-
-<!--<i>
-    <h3>Plany na następne wersje:</h3>
-    <ul>
-        <li>Widget kalendarza ze sprawdzianami, ulepszenie widoku kalendarza w aplikacji</li>
-        <li>Wsparcie dla systemu Synergia w jednostkach samorządu terytorialnego - aplikacja Nasze Szkoły</li>
-        <li>Wsparcie dla Librusa w systemie Oświata w Radomiu</li>
-        <li>EduDziennik</li>
-        <li>Mobireg</li>
-        <li>Możliwość edycji planu lekcji</li>
-    </ul>
-</i>-->
-
-</body>
+<br>
+<br>
+Dzięki za korzystanie ze Szkolnego!<br>
+<i>&copy; Kuba Szczodrzyński, Kacper Ziubryniewicz 2020</i>

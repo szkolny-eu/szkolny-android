@@ -1,23 +1,27 @@
 package pl.szczodrzynski.edziennik.utils.models;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import pl.szczodrzynski.edziennik.ExtensionsKt;
+import pl.szczodrzynski.edziennik.R;
 
 public class Date implements Comparable<Date> {
     public int year = 0;
     public int month = 0;
     public int day = 0;
 
-    public Date()
-    {
+    public Date() {
         this(2000, 0, 0);
     }
 
-    public Date(int year, int month, int day)
-    {
+    public Date(int year, int month, int day) {
         this.year = year;
         this.month = month;
         this.day = day;
@@ -42,14 +46,21 @@ public class Date implements Comparable<Date> {
         return new Date(this.year, this.month, this.day);
     }
 
-    public long combineWith(Time time) {
-        if (time == null) {
-            return getInMillis();
+    public Date getWeekStart() {
+        return clone().stepForward(0, 0, -getWeekDay());
+    }
+
+    public Date getWeekEnd() {
+        return clone().stepForward(0, 0, 6-getWeekDay());
+    }
+
+    public static Date fromYmd(String dateTime) {
+        try {
+            return new Date(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(4, 6)), Integer.parseInt(dateTime.substring(6, 8)));
         }
-        Calendar c = Calendar.getInstance();
-        c.set(this.year, this.month-1, this.day, time.hour, time.minute, time.second);
-        c.set(Calendar.MILLISECOND, 0);
-        return c.getTimeInMillis();
+        catch (Exception e) {
+            return new Date(2019, 1, 1);
+        }
     }
 
     public static Date fromMillis(long millis) {
@@ -66,9 +77,13 @@ public class Date implements Comparable<Date> {
         return Calendar.getInstance().getTimeInMillis();
     }
 
-    public int getWeekDay()
-    {
-        return Week.getWeekDayFromDate(this);
+    public static Date fromY_m_d(String dateTime) {
+        try {
+            return new Date(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(5, 7)), Integer.parseInt(dateTime.substring(8, 10)));
+        }
+        catch (Exception e) {
+            return new Date(2019, 1, 1);
+        }
     }
 
     public long getInMillis() {
@@ -82,136 +97,237 @@ public class Date implements Comparable<Date> {
         return getInMillis() / 1000;
     }
 
-    public Date stepForward(int years, int months, int days)
-    {
+    public static Date fromd_m_Y(String dateTime) {
+        try {
+            return new Date(Integer.parseInt(dateTime.substring(6, 10)), Integer.parseInt(dateTime.substring(3, 5)), Integer.parseInt(dateTime.substring(0, 2)));
+        }
+        catch (Exception e) {
+            return new Date(2019, 1, 1);
+        }
+    }
+
+    public static long fromIso(String dateTime) {
+        try {
+            return Date.fromY_m_d(dateTime).combineWith(new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), Integer.parseInt(dateTime.substring(17, 19))));
+        }
+        catch (Exception e) {
+            return System.currentTimeMillis();
+        }
+    }
+
+    public static long fromIsoHm(String dateTime) {
+        try {
+            return Date.fromY_m_d(dateTime).combineWith(new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), 0));
+        }
+        catch (Exception e) {
+            return System.currentTimeMillis();
+        }
+    }
+
+    public static Date fromValue(int value) {
+        int year = value / 10000;
+        int month = (value - year * 10000) / 100;
+        int day = (value - year * 10000 - month * 100);
+        return new Date(year, month, day);
+    }
+
+    public static Date getToday() {
+        Calendar cal = Calendar.getInstance();
+        return new Date(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public static int diffDays(Date d1, Date d2) {
+        return Math.round((d1.getInMillis() - d2.getInMillis()) / (24 * 60 * 60 * 1000f));
+    }
+
+    public static boolean isToday(Date date) {
+        return equals(date, getToday());
+    }
+
+    public static boolean isToday(String dateStr) {
+        return equals(dateStr, getToday());
+    }
+
+    public static boolean equals(Date first, Date second) {
+        return (first.getValue() == second.getValue());
+    }
+
+    public static boolean equals(String first, Date second) {
+        return equals(new Date().parseFromYmd(first), second);
+    }
+
+    public long combineWith(Time time) {
+        if (time == null) {
+            return getInMillis();
+        }
         Calendar c = Calendar.getInstance();
+        c.set(this.year, this.month - 1, this.day, time.hour, time.minute, time.second);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
+
+    public int getWeekDay() {
+        return Week.getWeekDayFromDate(this);
+    }
+
+    public Date stepForward(int years, int months, int days) {
+        this.day += days;
+        if (day <= 0) {
+            month--;
+            if(month <= 0) {
+                month += 12;
+                year--;
+            }
+            day += daysInMonth();
+        }
+        if (day > daysInMonth()) {
+            day -= daysInMonth();
+            month++;
+        }
+        this.month += months;
+        if(month <= 0) {
+            month += 12;
+            year--;
+        }
+        if (month > 12) {
+            month -= 12;
+            year++;
+        }
+        this.year += years;
+        /*Calendar c = Calendar.getInstance();
         int newMonth = month + months;
         if (newMonth > 12) {
             newMonth = 1;
             years++;
         }
-        c.set(year+years, newMonth - 1, day);
-        c.setTimeInMillis(c.getTimeInMillis() + days*24*60*60*1000);
+        c.set(year + years, newMonth - 1, day);
+        c.setTimeInMillis(c.getTimeInMillis() + days * 24 * 60 * 60 * 1000);
         this.year = c.get(Calendar.YEAR);
         this.month = c.get(Calendar.MONTH) + 1;
-        this.day = c.get(Calendar.DAY_OF_MONTH);
+        this.day = c.get(Calendar.DAY_OF_MONTH);*/
         return this;
     }
 
-    public Date parseFromYmd(String dateTime)
-    {
+    public Date parseFromYmd(String dateTime) {
         this.year = Integer.parseInt(dateTime.substring(0, 4));
         this.month = Integer.parseInt(dateTime.substring(4, 6));
         this.day = Integer.parseInt(dateTime.substring(6, 8));
         return this;
     }
 
-    public static Date fromYmd(String dateTime)
-    {
-        return new Date(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(4, 6)), Integer.parseInt(dateTime.substring(6, 8)));
-    }
-
-    public static Date fromY_m_d(String dateTime)
-    {
-        return new Date(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(5, 7)), Integer.parseInt(dateTime.substring(8, 10)));
-    }
-
-    public static long fromIso(String dateTime)
-    {
-        return Date.fromY_m_d(dateTime).combineWith(new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), Integer.parseInt(dateTime.substring(17, 19))));
-    }
-
-    public static long fromIsoHm(String dateTime)
-    {
-        return Date.fromY_m_d(dateTime).combineWith(new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), 0));
-    }
-
-    public int getValue()
-    {
+    public int getValue() {
         return year * 10000 + month * 100 + day;
     }
 
-    public String getStringValue()
-    {
+    public String getStringValue() {
         return Integer.toString(getValue());
     }
 
-    public String getStringYmd()
-    {
-        return year +(month < 10 ? "0" : "")+ month +(day < 10 ? "0" : "")+ day;
+    public boolean isLeap() {
+        return ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
+    }
+
+    public int daysInMonth() {
+        switch (month) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                return 31;
+            case 2: return isLeap() ? 29 : 28;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return 30;
+        }
+        return 31;
+    }
+
+    public String getStringYmd() {
+        return year + (month < 10 ? "0" : "") + month + (day < 10 ? "0" : "") + day;
     }
 
     /**
      * @return 2019-06-02
      */
-    public String getStringY_m_d()
-    {
-        return year +(month < 10 ? "-0" : "-")+ month +(day < 10 ? "-0" : "-")+ day;
-    }
-    public String getStringDm()
-    {
-        return day +"."+(month < 10 ? "0" : "")+ month;
-    }
-    public String getStringDmy()
-    {
-        return day +"."+(month < 10 ? "0" : "")+ month +"."+ year;
+    @NonNull
+    public String getStringY_m_d() {
+        return year + (month < 10 ? "-0" : "-") + month + (day < 10 ? "-0" : "-") + day;
     }
 
-    public String getFormattedString()
-    {
+    public String getStringDm() {
+        return day + "." + (month < 10 ? "0" : "") + month;
+    }
+
+    public String getStringDmy() {
+        return day + "." + (month < 10 ? "0" : "") + month + "." + year;
+    }
+
+    public String getFormattedString() {
         java.util.Date date = new java.util.Date();
         date.setTime(getInMillis());
         DateFormat format = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
         if (year == Date.getToday().year) {
-            return format.format(date).replace(", "+year, "").replace(" "+year, "");
-        }
-        else {
+            return format.format(date).replace(", " + year, "").replace(" " + year, "");
+        } else {
             return format.format(date);
         }
     }
-    public String getFormattedStringShort()
-    {
+
+    public String getFormattedStringShort() {
         java.util.Date date = new java.util.Date();
         date.setTime(getInMillis());
         DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
         if (year == Date.getToday().year) {
-            return format.format(date).replace(", "+year, "").replace(" "+year, "");
-        }
-        else {
+            return format.format(date).replace(", " + year, "").replace(" " + year, "");
+        } else {
             return format.format(date);
         }
     }
 
-    public static Date getToday()
-    {
-        Calendar cal = Calendar.getInstance();
-        return new Date(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH));
+    public static String dayDiffString(Context context, int dayDiff) {
+        if (dayDiff > 0) {
+            if (dayDiff == 1) {
+                return context.getString(R.string.tomorrow);
+            }
+            else if (dayDiff == 2) {
+                return context.getString(R.string.the_day_after);
+            }
+            return context.getString(R.string.in_format, ExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
+        }
+        else if (dayDiff < 0) {
+            if (dayDiff == -1) {
+                return context.getString(R.string.yesterday);
+            }
+            else if (dayDiff == -2) {
+                return context.getString(R.string.the_day_before);
+            }
+            return context.getString(R.string.ago_format, ExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
+        }
+        return context.getString(R.string.today);
     }
 
-    public static int diffDays(Date d1, Date d2) {
-        return (int)((d1.getInMillis() - d2.getInMillis()) / (24*60*60*1000));
-    }
-
-    public static boolean isToday(Date date)
-    {
-        return equals(date, getToday());
-    }
-    public static boolean isToday(String dateStr)
-    {
-        return equals(dateStr, getToday());
-    }
-    public static boolean equals(Date first, Date second)
-    {
-        return (first.getValue() == second.getValue());
-    }
-    public static boolean equals(String first, Date second)
-    {
-        return equals(new Date().parseFromYmd(first), second);
+    @Nullable
+    public String getRelativeString(Context context, int maxDiff) {
+        int diffDays = Date.diffDays(this, Date.getToday());
+        if (maxDiff != 0 && Math.abs(diffDays) > maxDiff) {
+            return null;
+        }
+        return dayDiffString(context, diffDays);
     }
 
     @Override
     public int compareTo(@NonNull Date o) {
         return this.getValue() - o.getValue();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return obj instanceof Date && this.getValue() == ((Date) obj).getValue();
     }
 
     @Override
@@ -221,5 +337,13 @@ public class Date implements Comparable<Date> {
                 ", month=" + month +
                 ", day=" + day +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int result = year;
+        result = 31 * result + month;
+        result = 31 * result + day;
+        return result;
     }
 }

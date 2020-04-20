@@ -4,25 +4,27 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceFull;
+import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT_EXCUSED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED_EXCUSED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_PRESENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_RELEASED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_ABSENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_ABSENT_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_BELATED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_BELATED_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_DAY_FREE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_PRESENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_RELEASED;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
     private Context context;
@@ -56,6 +58,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         holder.attendanceTime.setText(attendance.startTime.getStringHM());
 
         switch (attendance.type) {
+            case TYPE_DAY_FREE:
+                holder.attendanceType.getBackground().setColorFilter(new PorterDuffColorFilter(0xff166ee0, PorterDuff.Mode.MULTIPLY));
+                holder.attendanceType.setText(R.string.attendance_free_day);
+                break;
             case TYPE_ABSENT:
                 holder.attendanceType.getBackground().setColorFilter(new PorterDuffColorFilter(0xfff44336, PorterDuff.Mode.MULTIPLY));
                 holder.attendanceType.setText(R.string.attendance_absent);
@@ -91,7 +97,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
             holder.attendanceLessonTopic.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));
             attendance.seen = true;
             AsyncTask.execute(() -> {
-                app.db.metadataDao().setSeen(App.profileId, attendance, true);
+                App.db.metadataDao().setSeen(App.Companion.getProfileId(), attendance, true);
                 //Intent i = new Intent("android.intent.action.MAIN").putExtra(MainActivity.ACTION_UPDATE_BADGES, "yes, sure");
                 //context.sendBroadcast(i);
             });

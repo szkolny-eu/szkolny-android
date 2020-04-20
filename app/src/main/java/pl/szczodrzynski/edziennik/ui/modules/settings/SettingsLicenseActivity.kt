@@ -39,7 +39,7 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
             libraryUrl: String): MaterialAboutCard {
         val licenseItem = MaterialAboutActionItem.Builder()
                 .icon(IconicsDrawable(this)
-                        .icon(CommunityMaterial.Icon.cmd_book)
+                        .icon(CommunityMaterial.Icon.cmd_book_outline)
                         .colorInt(foregroundColor)
                         .sizeDp(18))
                 .setIconGravity(MaterialAboutActionItem.GRAVITY_TOP)

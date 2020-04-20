@@ -1,6 +1,5 @@
 /*
- * Copyright 2014 Mike Penz
- * Copyright 2015 Haruki Hasegawa
+ * Copyright 2019 Mike Penz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,21 +18,18 @@ package com.mikepenz.iconics.typeface.library.szkolny.font
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.ITypeface
 import com.mikepenz.iconics.typeface.library.szkolny.R
-import java.util.LinkedList
+import java.util.*
 
 @Suppress("EnumEntryName")
 object SzkolnyFont : ITypeface {
 
     override val fontRes: Int
-        get() = R.font.szkolny_font_font_v1_0
+        get() = R.font.szkolny_font_font_v1_1
 
     override val characters: Map<String, Char> by lazy {
-        mutableMapOf<String, Char>().apply {
-            SzkolnyFont.Icon.values().associateTo(this) { it.name to it.character }
-            //Icon2.values().associateTo(this) { it.name to it.character }
-        }
+        Icon.values().associate { it.name to it.character }
     }
-
+    
     override val mappingPrefix: String
         get() = "szf"
 
@@ -41,7 +37,7 @@ object SzkolnyFont : ITypeface {
         get() = "Szkolny Font"
 
     override val version: String
-        get() = "1.0"
+        get() = "1.1"
 
     override val iconCount: Int
         get() = characters.size
@@ -64,16 +60,27 @@ object SzkolnyFont : ITypeface {
     override val licenseUrl: String
         get() = ""
 
-    override fun getIcon(key: String): IIcon {
-        return SzkolnyFont.Icon.valueOf(key)
-    }
+    override fun getIcon(key: String): IIcon = Icon.valueOf(key)
 
     enum class Icon constructor(override val character: Char) : IIcon {
-        szf_eye_check('\ue800'),
-        szf_calendar_off('\ue801'),
-        szf_file_document_edit('\ue802'),
-        szf_message_off('\ue803'),
-        szf_numeric_0_box_multiple_outline_off('\ue804');
+        szf_alarm_bell_outline('\ue800'),
+		szf_calendar_plus_outline('\ue801'),
+		szf_calendar_today_outline('\ue802'),
+		szf_clipboard_list_outline('\ue803'),
+		szf_delete_empty_outline('\ue804'),
+		szf_discord_outline('\ue805'),
+		szf_file_code_outline('\ue806'),
+		szf_file_excel_outline('\ue807'),
+		szf_file_image_outline('\ue808'),
+		szf_file_music_outline('\ue809'),
+		szf_file_pdf_outline('\ue80a'),
+		szf_file_percent_outline('\ue80b'),
+		szf_file_powerpoint_outline('\ue80c'),
+		szf_file_video_outline('\ue80d'),
+		szf_file_word_outline('\ue80e'),
+		szf_message_processing_outline('\ue80f'),
+		szf_notebook_outline('\ue810'),
+		szf_zip_box_outline('\ue811');
 
         override val typeface: ITypeface by lazy { SzkolnyFont }
     }

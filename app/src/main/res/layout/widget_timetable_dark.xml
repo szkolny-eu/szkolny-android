@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
@@ -65,17 +64,18 @@
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/widgetTimetableBackground"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/widget_background_dark_bottom">
 
         <ListView
             android:id="@+id/widgetTimetableListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@color/secondaryTextDark"
-            android:background="@drawable/widget_background_dark_bottom"
-            android:dividerHeight="1.0dip" ><!--#b5ffffff-->
-        </ListView>
+            android:dividerHeight="1.0dip"
+            tools:listitem="@layout/row_widget_timetable_dark_item"/><!--#b5ffffff-->
 
         <TextView
             android:id="@+id/widgetTimetableLoading"
@@ -84,7 +84,34 @@
             android:textColor="@color/primaryTextDark"
             android:layout_gravity="center"
             android:textStyle="italic"
-            android:text="@string/widget_loading" />
+            android:text="@string/widget_loading"
+            tools:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/widgetTimetableNoTimetable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:textColor="@color/primaryTextDark"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="@string/widget_timetable_no_timetable"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/widgetTimetableNoLessons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:textColor="@color/primaryTextDark"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="@string/widget_timetable_no_lessons_found"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
     </FrameLayout>
 

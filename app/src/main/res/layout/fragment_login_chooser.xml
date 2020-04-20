@@ -24,6 +24,7 @@
                     android:orientation="vertical">
 
                     <com.mikepenz.iconics.view.IconicsImageView
+                        android:id="@+id/topLogo"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_marginStart="24dp"
@@ -57,6 +58,16 @@
                         android:layout_marginTop="2dp"
                         android:layout_marginRight="24dp"
                         android:text="@string/login_startpage_subtitle" />
+
+                    <CheckBox
+                        android:id="@+id/devMode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:visibility="gone"
+                        android:text="@string/developer_mode"
+                        tools:visibility="visible"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -151,6 +162,65 @@
                         </FrameLayout>
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="24dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/loginLibrusJstLogo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/bg_rounded_ripple"
+                                android:padding="16dp"
+                                android:scaleType="fitCenter"
+                                app:srcCompat="@drawable/login_logo_oswiata" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/loginEdudziennikLogo"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/bg_rounded_ripple"
+                                android:padding="16dp"
+                                android:scaleType="fitCenter"
+                                app:srcCompat="@drawable/login_logo_edudziennik" />
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <Switch
+                        android:id="@+id/fakeLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="24dp"
+                        android:text="Fake login"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
                 </LinearLayout>
 
             </LinearLayout>

@@ -11,5 +11,5 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:clipToPadding="false"
-        tools:listitem="@layout/row_timetable_item" />
+        tools:listitem="@layout/timetable_lesson" />
 </layout>

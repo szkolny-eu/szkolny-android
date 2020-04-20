@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity"
     tools:theme="@style/AppTheme.Black">
 
-    <pl.szczodrzynski.navlib.NavView
-        android:id="@+id/navView"
+    <FrameLayout
+        android:id="@+id/rootFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
+        android:layout_height="match_parent">
 
-        <pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
-            android:id="@+id/swipeRefreshLayout"
+        <pl.szczodrzynski.navlib.NavView
+            android:id="@+id/navView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true">
 
-            <FrameLayout
-                android:id="@+id/fragment"
+            <pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <include layout="@layout/fragment_loading" />
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch>
+                    <include layout="@layout/fragment_loading" />
+                </FrameLayout>
 
-    </pl.szczodrzynski.navlib.NavView>
+            </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch>
+
+        </pl.szczodrzynski.navlib.NavView>
+
+    </FrameLayout>
 
 </layout>

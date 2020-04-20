@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorAccent">@color/colorAccent</item>
@@ -10,78 +10,100 @@
         <item name="android:windowBackground">@drawable/dead_background</item>
     </style>
 
-    <style name="AppTheme.NoDisplay" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSection">@color/colorSection</item>
+    <style name="AppTheme.Light.NoDisplay" parent="AppTheme.Light">
+        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
 
-        <item name="android:textColor">@color/primaryTextLight</item>
-        <item name="android:textColorPrimary">@color/primaryTextLight</item>
-        <item name="material_drawer_primary_text">@color/primaryTextLight</item>
-        <item name="android:textColorSecondary">@color/secondaryTextLight</item>
-        <item name="material_drawer_secondary_text">@color/secondaryTextLight</item>
-        <item name="android:textColorTertiary">@color/secondaryTextLight</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowTitleStyle">@style/RtlOverlay.DialogWindowTitle.AppCompat</item>
+        <item name="android:windowTitleBackgroundStyle">@style/Base.DialogWindowTitleBackground.AppCompat</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowNoTitle">true</item>
 
-        <item name="md_dark_theme">false</item>
-        <item name="md_title_color">?android:textColorPrimary</item>
-        <item name="md_content_color">?android:textColorPrimary</item>
-        <item name="md_link_color">?colorAccent</item>
-        <item name="md_item_color">?android:textColorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
 
+        <item name="listPreferredItemPaddingLeft">24dip</item>
+        <item name="listPreferredItemPaddingRight">24dip</item>
+
+        <item name="android:listDivider">@null</item>
+
+        <item name="android:buttonBarStyle">@style/Widget.AppCompat.ButtonBar.AlertDialog</item>
+        <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:popupBackground">@color/windowBackgroundLight</item>
-
-
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation</item>
-        <item name="android:windowDisablePreview">true</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
-    <style name="AppThemeDark.NoDisplay" parent="Theme.MaterialComponents.Dialog">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSection">@color/colorSection</item>
+    <style name="AppTheme.Dark.NoDisplay" parent="AppTheme.Dark">
+        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
 
-
-        <item name="android:textColor">@color/primaryTextDark</item>
-        <item name="android:textColorPrimary">@color/primaryTextDark</item>
-        <item name="material_drawer_primary_text">@color/primaryTextDark</item>
-        <item name="android:textColorSecondary">@color/secondaryTextDark</item>
-        <item name="material_drawer_secondary_text">@color/secondaryTextDark</item>
-        <item name="android:textColorTertiary">@color/secondaryTextDark</item>
-
-        <item name="md_dark_theme">true</item>
-        <item name="md_title_color">?android:textColorPrimary</item>
-        <item name="md_content_color">?android:textColorPrimary</item>
-        <item name="md_link_color">?colorAccent</item>
-        <item name="md_item_color">?android:textColorPrimary</item>
-
-        <item name="android:popupBackground">@color/windowBackgroundDark</item>
-
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowTitleStyle">@style/RtlOverlay.DialogWindowTitle.AppCompat</item>
+        <item name="android:windowTitleBackgroundStyle">@style/Base.DialogWindowTitleBackground.AppCompat</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowNoTitle">true</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+
+        <item name="listPreferredItemPaddingLeft">24dip</item>
+        <item name="listPreferredItemPaddingRight">24dip</item>
+
+        <item name="android:listDivider">@null</item>
+
+        <item name="android:buttonBarStyle">@style/Widget.AppCompat.ButtonBar.AlertDialog</item>
+        <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:popupBackground">@color/windowBackgroundDark</item>
+    </style>
+
+    <style name="AppTheme.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/AppTheme.MaterialAlertDialog.TitleText</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/AppTheme.MaterialAlertDialog.BodyText</item>
+    </style>
+    <style name="AppTheme.MaterialAlertDialog.TitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="textSize">20sp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="textColor">?android:textColorPrimary</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+    <style name="AppTheme.MaterialAlertDialog.BodyText">
+        <item name="textSize">16sp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="textColor">?android:textColorSecondary</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
     <style name="AppTheme" parent="NavView" />
+
+    <style name="mdtp_ActionButton.Text" parent="Widget.MaterialComponents.Button.TextButton.Dialog"/>
 
     <!-- Base application theme. -->
     <style name="AppTheme.Light" parent="NavView.Light">
         <item name="colorPrimary">#2196f3</item>
         <item name="colorPrimaryDark">#1976d2</item>
         <item name="colorPrimaryVariant">#2196f3</item>
-        <item name="colorAccent">#2962ff</item>
+        <item name="colorAccent">#ff3d00</item>
         <item name="colorSection">@color/colorSection</item>
 
         <item name="colorFab">#4CAF50</item>
         <item name="colorFabIcon">#c8e6c9</item>
         <item name="colorOnFab">#ffffff</item>
+        <item name="colorIcon">#8a000000</item>
 
         <item name="md_dark_theme">false</item>
         <item name="md_title_color">?android:textColorPrimary</item>
@@ -95,17 +117,29 @@
         <item name="mal_color_secondary">?android:textColorSecondary</item>
         <item name="mal_card_background">?colorSurface</item>
         <item name="mal_divider_color">@color/dividerColor</item>
+
+        <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_light</item>
+        <item name="timetable_lesson_cancelled_color">#9f9f9f</item>
+        <item name="timetable_lesson_change_color">#ffb300</item>
+        <item name="timetable_lesson_shifted_source_color">#A1887F</item>
+        <item name="timetable_lesson_shifted_target_color">#4caf50</item>
+        <item name="hourDividerColor">#b0b0b0</item>
+        <item name="halfHourDividerColor">#e0e0e0</item>
+
+        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
+        <item name="mdtp_theme_dark">false</item>
     </style>
     <style name="AppTheme.Dark" parent="NavView.Dark">
         <item name="colorPrimary">#64b5f6</item>
         <item name="colorPrimaryDark">#1976d2</item>
         <item name="colorPrimaryVariant">#2196f3</item>
-        <item name="colorAccent">#2962ff</item>
+        <item name="colorAccent">#ffb300</item>
         <item name="colorSection">@color/colorSection</item>
 
         <item name="colorFab">#4CAF50</item>
         <item name="colorFabIcon">#c8e6c9</item>
         <item name="colorOnFab">#ffffff</item>
+        <item name="colorIcon">#b4ffffff</item>
 
         <item name="md_dark_theme">true</item>
         <item name="md_title_color">?android:textColorPrimary</item>
@@ -119,6 +153,17 @@
         <item name="mal_color_secondary">@color/secondaryTextDark</item>
         <item name="mal_card_background">?colorSurface</item>
         <item name="mal_divider_color">@color/dividerColor</item>
+
+        <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_dark</item>
+        <item name="timetable_lesson_cancelled_color">#838383</item>
+        <item name="timetable_lesson_change_color">#ffb300</item>
+        <item name="timetable_lesson_shifted_source_color">#A1887F</item>
+        <item name="timetable_lesson_shifted_target_color">#4caf50</item>
+        <item name="hourDividerColor">#7fffffff</item>
+        <item name="halfHourDividerColor">#40ffffff</item>
+
+        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
+        <item name="mdtp_theme_dark">true</item>
     </style>
 
 

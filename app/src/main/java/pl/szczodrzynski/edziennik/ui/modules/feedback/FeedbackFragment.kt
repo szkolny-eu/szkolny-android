@@ -1,334 +1,288 @@
 package pl.szczodrzynski.edziennik.ui.modules.feedback
 
 import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
-import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.afollestad.materialdialogs.MaterialDialog
+import coil.Coil
+import coil.api.load
 import com.github.bassaer.chatmessageview.model.IChatUser
 import com.github.bassaer.chatmessageview.model.Message
 import com.github.bassaer.chatmessageview.view.ChatView
+import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.App.APP_URL
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.crc16
+import pl.szczodrzynski.edziennik.data.api.events.FeedbackMessageEvent
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
 import pl.szczodrzynski.edziennik.databinding.FragmentFeedbackBinding
-import pl.szczodrzynski.edziennik.data.db.modules.feedback.FeedbackMessage
-import pl.szczodrzynski.edziennik.network.ServerRequest
-import pl.szczodrzynski.edziennik.utils.Anim
-import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.utils.Utils
-import pl.szczodrzynski.edziennik.utils.Utils.crc16
 import pl.szczodrzynski.edziennik.utils.Utils.openUrl
 import java.util.*
+import kotlin.collections.List
+import kotlin.collections.any
+import kotlin.collections.filter
+import kotlin.collections.firstOrNull
+import kotlin.collections.forEach
+import kotlin.collections.forEachIndexed
+import kotlin.collections.isNotEmpty
+import kotlin.collections.mutableMapOf
+import kotlin.collections.set
+import kotlin.coroutines.CoroutineContext
 
-class FeedbackFragment : Fragment() {
+class FeedbackFragment : Fragment(), CoroutineScope {
+    companion object {
+        private const val TAG = "FeedbackFragment"
+    }
 
     private lateinit var app: App
-    private lateinit var activity: MainActivity
+    private lateinit var activity: AppCompatActivity
     private lateinit var b: FragmentFeedbackBinding
 
+    private val job: Job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    private val chatView: ChatView by lazy { b.chatView }
+    private val api by lazy { SzkolnyApi(app) }
+    private var isDev = false
+    private var currentDeviceId: String? = null
+
+    private var receiver: BroadcastReceiver? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
+        activity = (getActivity() as AppCompatActivity?) ?: return null
         if (context == null)
             return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false)
         // activity, context and profile is valid
         b = FragmentFeedbackBinding.inflate(inflater)
+        // prevent doubled received messages on enter
+        EventBus.getDefault().removeStickyEvent(FeedbackMessageEvent::class.java)
         return b.root
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onFeedbackMessageEvent(event: FeedbackMessageEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
+        val message = event.message
+        if (currentDeviceId == null || message.deviceId == currentDeviceId) {
+            val chatMessage = getChatMessage(message)
+            if (message.received) chatView.receive(chatMessage)
+            else chatView.send(chatMessage)
+        }
+        else {
+            Toast.makeText(context, "${message.senderName}: Nowa wiadomość w innym wątku.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private val users = mutableMapOf(
+            0 to User(0, "Ja", null)
+    )
+    private fun getUser(message: FeedbackMessage): User {
+        val userId = message.devId ?: if (message.received) -message.senderName.crc16() else 0
+        return users[userId] ?: run {
+            User(userId, message.senderName, message.devImage).also { users[userId] = it }
+        }
+    }
+
+    private fun getChatMessage(message: FeedbackMessage): Message = Message.Builder()
+            .setUser(getUser(message))
+            .setRight(!message.received)
+            .setText(message.text)
+            .setSendTime(Calendar.getInstance().apply { timeInMillis = message.sentTime })
+            .hideIcon(!message.received)
+            .build()
+
+    private fun launchDeviceSelection() {
+        if (!isDev)
+            return
+        launch {
+            val messages = withContext(Dispatchers.Default) { app.db.feedbackMessageDao().allWithCountNow }
+            val popupMenu = PopupMenu(activity, b.targetDeviceDropDown)
+            messages.forEachIndexed { index, m ->
+                popupMenu.menu.add(0, index, index, "${m.senderName} (${m.deviceId}) - ${m.deviceName}")
+            }
+            popupMenu.setOnMenuItemClickListener { item ->
+                b.targetDeviceDropDown.setText(item.title)
+                chatView.getMessageView().removeAll()
+                val message = messages[item.itemId]
+                currentDeviceId = message.deviceId
+                this@FeedbackFragment.launch { loadMessages() }
+                false
+            }
+            popupMenu.show()
+        }
+    }
+
+    private suspend fun loadMessages(messageList: List<FeedbackMessage>? = null) {
+        val messages = withContext(Dispatchers.Default) {
+            if (currentDeviceId == null)
+                messageList ?: app.db.feedbackMessageDao().allNow
+            else
+                messageList?.filter { it.deviceId == currentDeviceId } ?: app.db.feedbackMessageDao().getByDeviceIdNow(currentDeviceId!!)
+        }
+
+        if (messages.isNotEmpty()) {
+            b.chatLayout.visibility = View.VISIBLE
+            b.inputLayout.visibility = View.GONE
+        }
+
+        messages.forEach {
+            val chatMessage = getChatMessage(it)
+            if (it.received) chatView.receive(chatMessage)
+            else chatView.send(chatMessage)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // TODO check if app, activity, b can be null
-        if (app.profile == null || !isAdded)
+        if (!isAdded)
             return
 
-        b.faqText.setOnClickListener { v -> openFaq() }
-        b.faqButton.setOnClickListener { v -> openFaq() }
+        b.faqText.setOnClickListener { openFaq() }
+        b.faqButton.setOnClickListener { openFaq() }
 
-        receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val message = app.gson.fromJson(intent.getStringExtra("message"), FeedbackMessage::class.java)
-                val c = Calendar.getInstance()
-                c.timeInMillis = message.sentTime
-                val chatMessage = Message.Builder()
-                        .setUser(
-                                if (intent.getStringExtra("type") == "dev_chat")
-                                    User(crc16(message.fromUser.toByteArray()), message.fromUserName, BitmapFactory.decodeResource(resources, R.drawable.ic_account_circle))
-                                else
-                                    dev)
-                        .setRight(!message.received)
-                        .setText(message.text)
-                        .setSendTime(c)
-                        .hideIcon(!message.received)
-                        .build()
-                if (message.received)
-                    mChatView.receive(chatMessage)
-                else
-                    mChatView.send(chatMessage)
-            }
+        with(chatView) {
+            setLeftBubbleColor(Utils.getAttr(activity, R.attr.colorSurface))
+            setLeftMessageTextColor(Utils.getAttr(activity, android.R.attr.textColorPrimary))
+            setRightBubbleColor(Utils.getAttr(activity, R.attr.colorPrimary))
+            setRightMessageTextColor(Color.WHITE)
+            setSendButtonColor(Utils.getAttr(activity, R.attr.colorAccent))
+            setSendIcon(R.drawable.ic_action_send)
+            setInputTextHint("Napisz...")
+            setMessageMarginTop(5)
+            setMessageMarginBottom(5)
         }
 
-        //Set UI parameters if you need
-        mChatView.setLeftBubbleColor(Utils.getAttr(activity, R.attr.colorSurface))
-        mChatView.setLeftMessageTextColor(Utils.getAttr(activity, android.R.attr.textColorPrimary))
-        mChatView.setRightBubbleColor(Utils.getAttr(activity, R.attr.colorPrimary))
-        mChatView.setRightMessageTextColor(Color.WHITE)
+        launch {
+            val messages = withContext(Dispatchers.Default) {
+                val messages = app.db.feedbackMessageDao().allNow
+                isDev = App.devMode && messages.any { it.deviceId != null }
+                messages
+            }
 
-        //mChatView.setBackgroundColor(ContextCompat.getColor(this, R.color.blueGray500));
-        mChatView.setSendButtonColor(Utils.getAttr(activity, R.attr.colorAccent))
-        mChatView.setSendIcon(R.drawable.ic_action_send)
-        //mChatView.setUsernameTextColor(Color.WHITE);
-        //mChatView.setSendTimeTextColor(Color.WHITE);
-        //mChatView.setDateSeparatorColor(Color.WHITE);
-        mChatView.setInputTextHint("Napisz...")
-        //mChatView.setInputTextColor(Color.BLACK);
-        mChatView.setMessageMarginTop(5)
-        mChatView.setMessageMarginBottom(5)
+            b.targetDeviceLayout.visibility = if (isDev) View.VISIBLE else View.GONE
+            b.targetDeviceDropDown.onClick {
+                launchDeviceSelection()
+            }
 
-        if (App.devMode && app.deviceId == "f054761fbdb6a238") {
-            b.targetDeviceLayout.visibility = View.VISIBLE
-            b.targetDeviceDropDown.setOnClickListener { v ->
-                AsyncTask.execute {
-                    val messageList = app.db.feedbackMessageDao().allWithCountNow
-                    activity.runOnUiThread {
-                        val popupMenu = PopupMenu(activity, b.targetDeviceDropDown)
-                        var index = 0
-                        for (message in messageList) {
-                            popupMenu.menu.add(0, index, index, message.fromUserName + " - " + message.fromUser + " (" + message.messageCount + ")")
-                            index++
-                        }
-                        popupMenu.setOnMenuItemClickListener { item ->
-                            b.targetDeviceDropDown.setText(item.title)
-                            mChatView.getMessageView().removeAll()
-                            val message = messageList[item.itemId]
-                            deviceToSend = message.fromUser
-                            nameToSend = message.fromUserName
-                            AsyncTask.execute {
-                                val messageList2 = app.db.feedbackMessageDao().getAllByUserNow(deviceToSend)
-                                activity.runOnUiThread {
-                                    b.chatLayout.visibility = View.VISIBLE
-                                    b.inputLayout.visibility = View.GONE
-                                    for (message2 in messageList2) {
-                                        val c = Calendar.getInstance()
-                                        c.timeInMillis = message2.sentTime
-                                        val chatMessage = Message.Builder()
-                                                .setUser(if (message2.received) User(crc16(message2.fromUser.toByteArray()), message2.fromUserName, BitmapFactory.decodeResource(resources, R.drawable.ic_account_circle)) else user)
-                                                .setRight(!message2.received)
-                                                .setText(message2.text)
-                                                .setSendTime(c)
-                                                .hideIcon(!message2.received)
-                                                .build()
-                                        if (message2.received)
-                                            mChatView.receive(chatMessage)
-                                        else
-                                            mChatView.send(chatMessage)
-                                    }
-                                }
-                            }
-                            false
-                        }
-                        popupMenu.show()
+            if (isDev) {
+                messages.firstOrNull { it.received && it.devId == null }?.let {
+                    currentDeviceId = it.deviceId
+                    b.targetDeviceDropDown.setText("${it.senderName} (${it.deviceId}) - ${it.deviceName}")
+                }
+                // handle notification intent
+                arguments?.getString("feedbackMessageDeviceId")?.let { deviceId ->
+                    messages.firstOrNull { it.received && it.deviceId == deviceId && it.devId == null }?.let {
+                        currentDeviceId = deviceId
+                        b.targetDeviceDropDown.setText("${it.senderName} (${it.deviceId}) - ${it.deviceName}")
                     }
                 }
+                b.chatLayout.visibility = View.VISIBLE
+                b.inputLayout.visibility = View.GONE
             }
-        } else {
-            AsyncTask.execute {
-                val messageList = app.db.feedbackMessageDao().allNow
-                firstSend = messageList.size == 0
-                activity.runOnUiThread {
-                    if (firstSend) {
-                        openFaq()
-                        b.chatLayout.visibility = View.GONE
-                        b.inputLayout.visibility = View.VISIBLE
-                        b.sendButton.setOnClickListener { v ->
-                            if (b.textInput.text == null || b.textInput.text!!.length == 0) {
-                                Toast.makeText(app, "Podaj treść wiadomości.", Toast.LENGTH_SHORT).show()
-                            } else {
-                                send(b.textInput.text!!.toString())
+            else if (messages.isEmpty()) {
+                b.chatLayout.visibility = View.GONE
+                b.inputLayout.visibility = View.VISIBLE
+            }
+
+            loadMessages(messages)
+
+            b.sendButton.onClick {
+                send(b.textInput.text.toString())
+            }
+            chatView.setOnClickSendButtonListener(View.OnClickListener {
+                send(chatView.inputText)
+            })
+        }
+    }
+
+    inner class User(val id: Int, val userName: String, val image: String?) : IChatUser {
+        private val bitmap by lazy {
+            if (image == null)
+                BitmapFactory.decodeResource(activity.resources, R.drawable.profile_)
+            else
+                Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888).also { bmp ->
+                    launch {
+                        Log.d(TAG, "Created image for $userName")
+                        Coil.load(activity, image) {
+                            target {
+                                val canvas = Canvas(bmp)
+                                it.setBounds(0, 0, bmp.width, bmp.height)
+                                it.draw(canvas)
                             }
                         }
-                    } else {
-                        /*new MaterialDialog.Builder(this)
-                .title(R.string.faq)
-                .content(R.string.faq_text)
-                .positiveText(R.string.yes)
-                .negativeText(R.string.no)
-                .onPositive(((dialog, which) -> {
-                    openFaq();
-                }))
-                .show();*/
-                        b.chatLayout.visibility = View.VISIBLE
-                        b.inputLayout.visibility = View.GONE
-                    }
-                    for (message in messageList) {
-                        val c = Calendar.getInstance()
-                        c.timeInMillis = message.sentTime
-                        val chatMessage = Message.Builder()
-                                .setUser(if (message.fromUser != null) User(crc16(message.fromUser.toByteArray()), message.fromUserName, BitmapFactory.decodeResource(resources, R.drawable.ic_account_circle)) else if (message.received) dev else user)
-                                .setRight(!message.received)
-                                .setText(message.text)
-                                .setSendTime(c)
-                                .hideIcon(!message.received)
-                                .build()
-                        if (message.received)
-                            mChatView.receive(chatMessage)
-                        else
-                            mChatView.send(chatMessage)
                     }
                 }
-            }
         }
+        override fun getIcon() = bitmap
 
-        //Click Send Button
-        mChatView.setOnClickSendButtonListener(View.OnClickListener { send(mChatView.inputText) })
+        override fun getId() = id.toString()
+        override fun getName() = userName
+        override fun setIcon(bmp: Bitmap) {}
     }
 
-    private var firstSend = true
-    private var deviceToSend: String? = null
-    private var nameToSend: String? = null
-
-    private var receiver: BroadcastReceiver? = null
-
-    class User(internal var id: Int?, internal var name: String, internal var icon: Bitmap) : IChatUser {
-
-        override fun getId(): String {
-            return this.id!!.toString()
+    private fun send(text: String?) {
+        if (text?.isEmpty() != false) {
+            Toast.makeText(activity, "Podaj treść wiadomości.", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        override fun getName(): String? {
-            return this.name
+        if (isDev && currentDeviceId == null || currentDeviceId == "szkolny.eu") {
+            Toast.makeText(activity, "Wybierz urządzenie docelowe.", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        override fun getIcon(): Bitmap? {
-            return this.icon
+        launch {
+            val message = api.runCatching(activity) {
+                val message = api.sendFeedbackMessage(
+                        senderName = App.profile.accountName ?: App.profile.studentNameLong,
+                        targetDeviceId = if (isDev) currentDeviceId else null,
+                        text = text
+                )
+                app.db.feedbackMessageDao().add(message)
+                message
+            } ?: return@launch
+
+            b.chatLayout.visibility = View.VISIBLE
+            b.inputLayout.visibility = View.GONE
+
+            b.textInput.text = null
+            b.chatView.inputText = ""
+
+            val chatMessage = getChatMessage(message)
+            if (message.received) chatView.receive(chatMessage)
+            else chatView.send(chatMessage)
         }
-
-        override fun setIcon(icon: Bitmap) {
-            this.icon = icon
-        }
-    }
-
-    private val dev: User by lazy {
-        User(0, "Szkolny.eu", BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_splash))
-    }
-    private val user: User by lazy {
-        User(1, "Ja", BitmapFactory.decodeResource(activity.resources, R.drawable.profile_))
-    }
-    private val mChatView: ChatView by lazy {
-        b.chatView
-    }
-
-    private fun send(text: String) {
-        /*if ("enable dev mode pls".equals(text)) {
-            try {
-                Log.d(TAG, Utils.AESCrypt.encrypt("ok here you go it's enabled now", "8iryqZUfIUiLmJGi"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return;
-        }*/
-        val progressDialog = MaterialDialog.Builder(activity)
-                .title(R.string.loading)
-                .content(R.string.sending_message)
-                .negativeText(R.string.cancel)
-                .show()
-        ServerRequest(app, app.requestScheme + APP_URL + "main.php?feedback_message", "FeedbackSend")
-                .setBodyParameter("message_text", text)
-                .setBodyParameter("target_device", if (deviceToSend == null) "null" else deviceToSend)
-                .run { e, result ->
-                    progressDialog.dismiss()
-                    if (result != null && result.get("success") != null && result.get("success").asBoolean) {
-                        val feedbackMessage = FeedbackMessage(false, text)
-                        if (deviceToSend != null) {
-                            feedbackMessage.fromUser = deviceToSend
-                            feedbackMessage.fromUserName = nameToSend
-                        }
-                        AsyncTask.execute { app.db.feedbackMessageDao().add(feedbackMessage) }
-                        var message = Message.Builder()
-                                .setUser(user!!)
-                                .setRight(true)
-                                .setText(feedbackMessage.text)
-                                .hideIcon(true)
-                                .build()
-                        mChatView!!.send(message)
-                        mChatView!!.inputText = ""
-                        b.textInput.setText("")
-                        if (firstSend) {
-                            Anim.fadeOut(b.inputLayout, 500, object : Animation.AnimationListener {
-                                override fun onAnimationStart(animation: Animation) {
-
-                                }
-
-                                override fun onAnimationEnd(animation: Animation) {
-                                    b.inputLayout.visibility = View.GONE
-                                    Anim.fadeIn(b.chatLayout, 500, null)
-                                }
-
-                                override fun onAnimationRepeat(animation: Animation) {
-
-                                }
-                            })
-                            if (deviceToSend == null) {
-                                // we are not the developer
-                                val feedbackMessage2 = FeedbackMessage(true, "Postaram się jak najszybciej Tobie odpowiedzieć. Dostaniesz powiadomienie o odpowiedzi, która pokaże się w tym miejscu.")
-                                AsyncTask.execute { app.db.feedbackMessageDao().add(feedbackMessage2) }
-                                message = Message.Builder()
-                                        .setUser(dev!!)
-                                        .setRight(false)
-                                        .setText(feedbackMessage2.text)
-                                        .hideIcon(false)
-                                        .build()
-                                mChatView!!.receive(message)
-                            }
-                            firstSend = false
-                        }
-                    } else {
-                        Toast.makeText(app, "Nie udało się wysłać wiadomości.", Toast.LENGTH_SHORT).show()
-                    }
-                }
     }
 
     private fun openFaq() {
         openUrl(activity, "http://szkolny.eu/pomoc/")
-        MaterialDialog.Builder(activity)
-                .title(R.string.faq_back_title)
-                .content(R.string.faq_back_text)
-                .positiveText(R.string.yes)
-                .negativeText(R.string.no)
-                .onPositive { dialog, which ->
-
-                }
-                .onNegative { dialog, which ->
-
-                }
-                .show()
     }
 
     override fun onResume() {
         super.onResume()
-        if (receiver != null)
-            activity.registerReceiver(receiver, IntentFilter("pl.szczodrzynski.edziennik.ui.modules.base.FeedbackActivity"))
+        EventBus.getDefault().register(this)
     }
 
     override fun onPause() {
         super.onPause()
-        if (receiver != null)
-            activity.unregisterReceiver(receiver)
+        EventBus.getDefault().unregister(this)
     }
 }

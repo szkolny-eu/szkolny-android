@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 
 import im.wangchao.mhttp.AbsCallbackHandler;
 import im.wangchao.mhttp.Accept;
@@ -19,7 +20,7 @@ import okhttp3.internal.Util;
  * <p>Time         : 下午2:39.</p>
  */
 public class FileCallbackHandler extends AbsCallbackHandler<File> {
-    final private File file;
+    private File file;
     final private static int BUFFER_SIZE = 4096;
 
     public FileCallbackHandler(Context context){
@@ -65,6 +66,18 @@ public class FileCallbackHandler extends AbsCallbackHandler<File> {
     protected void writeFile(okhttp3.Response response, File file) throws IOException {
         if (file == null){
             throw new IllegalArgumentException("File == null");
+        }
+        if (this.file.isDirectory()) {
+            String contentDisposition = response.header("content-disposition");
+            if (contentDisposition != null) {
+                if (contentDisposition.contains("*=UTF-8")) {
+                    contentDisposition = contentDisposition.replace("*=UTF-8''", "\"") + "\"";
+                    contentDisposition = URLDecoder.decode(contentDisposition, "UTF-8");
+                }
+                String filename = contentDisposition.substring(contentDisposition.indexOf("\"") + 1, contentDisposition.lastIndexOf("\""));
+                this.file = new File(file, filename);
+                file = this.file;
+            }
         }
         InputStream instream = response.body().byteStream();
         long contentLength = response.body().contentLength();

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-1-7.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="113dp"
+            android:layout_marginBottom="4dp"
+            android:background="#4a90e2"
+            android:padding="24dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/descTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Wybierz wszystkie zdjęcia, na których jest"
+                android:textSize="12sp"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/descText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="pan fotograf"
+                android:textSize="28sp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/payload"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                tools:srcCompat="@tools:sample/backgrounds/scenic[1]" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <pl.szczodrzynski.edziennik.utils.CheckableImageView
+                        android:id="@+id/image0"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:background="@drawable/recaptcha_image"
+                        android:focusable="true" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="?colorSurface" />
+
+                    <pl.szczodrzynski.edziennik.utils.CheckableImageView
+                        android:id="@+id/image1"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:background="@drawable/recaptcha_image"
+                        android:focusable="true" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="?colorSurface" />
+
+                    <pl.szczodrzynski.edziennik.utils.CheckableImageView
+                        android:id="@+id/image2"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:background="@drawable/recaptcha_image"
+                        android:focusable="true" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="?colorSurface" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <pl.szczodrzynski.edziennik.utils.CheckableImageView
+                        android:id="@+id/image3"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:background="@drawable/recaptcha_image"
+                        android:focusable="true" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="?colorSurface" />
+
+                    <pl.szczodrzynski.edziennik.utils.CheckableImageView
+                        android:id="@+id/image4"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:background="@drawable/recaptcha_image"
+                        android:focusable="true" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="?colorSurface" />
+
+                    <pl.szczodrzynski.edziennik.utils.CheckableImageView
+                        android:id="@+id/image5"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:background="@drawable/recaptcha_image"
+                        android:focusable="true" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="?colorSurface" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <pl.szczodrzynski.edziennik.utils.CheckableImageView
+                        android:id="@+id/image6"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:background="@drawable/recaptcha_image"
+                        android:focusable="true" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="?colorSurface" />
+
+                    <pl.szczodrzynski.edziennik.utils.CheckableImageView
+                        android:id="@+id/image7"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:background="@drawable/recaptcha_image"
+                        android:focusable="true" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="?colorSurface" />
+
+                    <pl.szczodrzynski.edziennik.utils.CheckableImageView
+                        android:id="@+id/image8"
+                        android:layout_width="126dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:background="@drawable/recaptcha_image"
+                        android:focusable="true" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+</layout>

@@ -1078,6 +1078,22 @@ public class NachoTextView extends MultiAutoCompleteTextView implements TextWatc
         return chipAndTokenValues;
     }
 
+    public boolean ignoreThreshold = false;
+
+    @Override
+    public boolean enoughToFilter() {
+        return ignoreThreshold || super.enoughToFilter();
+    }
+
+    public OnDismissListener onDismissListener = null;
+
+    @Override
+    public void dismissDropDown() {
+        if (onDismissListener != null)
+            onDismissListener.onDismiss();
+        super.dismissDropDown();
+    }
+
     @Override
     public String toString() {
         try {

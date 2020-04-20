@@ -21,7 +21,7 @@
                 app:tabSelectedTextColor="?colorPrimary"
                 app:tabTextColor="?android:textColorPrimary"/>
 
-            <androidx.viewpager.widget.ViewPager
+            <pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -15,6 +15,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
@@ -25,13 +26,14 @@ import java.util.Locale;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice;
-import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeFull;
+import pl.szczodrzynski.edziennik.data.db.entity.Notice;
+import pl.szczodrzynski.edziennik.data.db.full.NoticeFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_NOTICE;
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_NOTICE;
 
 public class BehaviourFragment extends Fragment {
 
@@ -53,8 +55,6 @@ public class BehaviourFragment extends Fragment {
             return null;
         app = (App) activity.getApplication();
         getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_behaviour, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
@@ -63,16 +63,16 @@ public class BehaviourFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        if (app == null || activity == null || b == null || !isAdded())
             return;
 
         activity.getBottomSheet().prependItems(
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_NOTICE, true));
+                            AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), TYPE_NOTICE, true));
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                         })
         );
@@ -99,8 +99,20 @@ public class BehaviourFragment extends Fragment {
         b.noticesView.setHasFixedSize(true);
         b.noticesView.setLayoutManager(linearLayoutManager);
 
-        app.db.noticeDao().getAll(App.profileId).observe(this, notices -> {
-            if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        b.noticesView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (recyclerView.canScrollVertically(-1)) {
+                    b.refreshLayout.setEnabled(false);
+                }
+                if (!recyclerView.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
+                    b.refreshLayout.setEnabled(true);
+                }
+            }
+        });
+
+        app.db.noticeDao().getAll(App.Companion.getProfileId()).observe(this, notices -> {
+            if (app == null || activity == null || b == null || !isAdded())
                 return;
 
             if (notices == null) {
