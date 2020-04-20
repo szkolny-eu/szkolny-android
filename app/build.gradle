@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 
 android {
     signingConfigs {
     }
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion setup.compileSdk
     defaultConfig {
         applicationId 'pl.szczodrzynski.edziennik'
         minSdkVersion setup.minSdk
@@ -15,6 +16,12 @@ android {
         versionCode release.versionCode
         versionName release.versionName
         multiDexEnabled true
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+            }
+        }
     }
     buildTypes {
         applicationVariants.all { variant ->
@@ -62,6 +69,12 @@ android {
     packagingOptions {
         exclude 'META-INF/library-core_release.kotlin_module'
     }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.10.2"
+        }
+    }
 }
 
 /*task finalizeBundleDebug(type: Copy) {
@@ -91,7 +104,7 @@ tasks.whenTaskAdded { task ->
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    annotationProcessor "androidx.room:room-compiler:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
     debugImplementation "com.amitshekhar.android:debug-db:1.0.5"
 
     implementation "android.arch.navigation:navigation-fragment-ktx:${versions.navigationFragment}"
@@ -115,6 +128,7 @@ dependencies {
     implementation "com.mikepenz:iconics-core:${versions.iconics}"
     implementation "com.mikepenz:iconics-views:${versions.iconics}"
     implementation "com.mikepenz:community-material-typeface:${versions.font_cmd}@aar"
+    implementation "com.mikepenz:materialize:1.2.1"
 
     implementation "com.github.kuba2k2:NavLib:${versions.navlib}"
 
@@ -131,7 +145,7 @@ dependencies {
     implementation("com.github.ozodrukh:CircularReveal:2.0.1@aar") {transitive = true}
     implementation "com.heinrichreimersoftware:material-intro:1.5.8" // do not update
     implementation "com.jaredrummler:colorpicker:1.0.2"
-    implementation "com.squareup.okhttp3:okhttp:3.12.0"
+    implementation "com.squareup.okhttp3:okhttp:3.12.2"
     implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0" // do not update
     implementation "com.wdullaer:materialdatetimepicker:4.1.2"
     implementation "com.yuyh.json:jsonviewer:1.0.6"
@@ -153,8 +167,40 @@ dependencies {
     //implementation project(":Navigation")
     implementation project(":szkolny-font")
 
-    debugImplementation "com.github.ChuckerTeam.Chucker:library:3.0.1"
-    releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.0.1"
+    implementation "com.github.ChuckerTeam.Chucker:library:3.0.1"
+    //releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.0.1"
+
+    //implementation 'com.github.wulkanowy:uonet-request-signer:master-SNAPSHOT'
+    //implementation 'com.github.kuba2k2.uonet-request-signer:android:master-63f094b14a-1'
+
+    //implementation "org.redundent:kotlin-xml-builder:1.5.3"
+
+    implementation "io.github.wulkanowy:signer-android:0.1.1"
+
+    implementation "androidx.work:work-runtime-ktx:${versions.work}"
+
+    implementation 'com.hypertrack:hyperlog:0.0.10'
+
+    implementation 'com.github.kuba2k2:RecyclerTabLayout:700f980584'
+
+    implementation 'com.github.kuba2k2:Tachyon:551943a6b5'
+
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+
+    implementation 'com.github.jetradarmobile:android-snowfall:1.2.0'
+
+    implementation "io.coil-kt:coil:0.9.2"
+
+    implementation 'com.github.kuba2k2:NumberSlidingPicker:2921225f76'
+
+    implementation project(":annotation")
+    kapt project(":codegen")
+
+    implementation 'com.google.android:flexbox:2.0.1'
+
+    implementation 'com.qifan.powerpermission:powerpermission:1.0.0'
+    implementation 'com.qifan.powerpermission:powerpermission-coroutines:1.0.0'
 }
 repositories {
     mavenCentral()

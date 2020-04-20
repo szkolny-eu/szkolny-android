@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-1-7.
+  -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="#7fffffff"/>
+        </shape>
+    </item>
+    <item>
+        <inset android:drawable="@drawable/recaptcha_check"
+            android:insetLeft="45dp"
+            android:insetBottom="45dp"
+            android:insetRight="45dp"
+            android:insetTop="45dp"/>
+    </item>
+</layer-list>

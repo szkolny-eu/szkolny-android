@@ -1,42 +1,57 @@
 package pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence
 
-import android.content.Context
 import android.view.View
-import androidx.databinding.DataBindingUtil
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogTeacherAbsenceListBinding
 import pl.szczodrzynski.edziennik.utils.models.Date
 
-class TeacherAbsenceDialog(val context: Context) {
+class TeacherAbsenceDialog(
+        val activity: AppCompatActivity,
+        val profileId: Int,
+        val date: Date,
+        val onShowListener: ((tag: String) -> Unit)? = null,
+        val onDismissListener: ((tag: String) -> Unit)? = null
+) {
+    companion object {
+        private const val TAG = "TeacherAbsenceDialog"
+    }
 
-    val profileId: Int = App.profileId
+    private val app by lazy { activity.application as App }
+
     private lateinit var b: DialogTeacherAbsenceListBinding
+    private lateinit var dialog: AlertDialog
 
-    fun show(app: App, date: Date) {
-        val dialog = MaterialDialog.Builder(context)
-                .title(date.formattedString)
-                .customView(R.layout.dialog_teacher_absence_list, false)
-                .positiveText(R.string.close)
-                .autoDismiss(false)
-                .onPositive { dialog, _ -> dialog.dismiss()}
-                .show()
+    init { run {
+        if (activity.isFinishing)
+            return@run
 
-        val customView: View = dialog.customView ?: return
-        b = DataBindingUtil.bind(customView) ?: return
+        b = DialogTeacherAbsenceListBinding.inflate(activity.layoutInflater)
+
+        dialog = MaterialAlertDialogBuilder(activity)
+                .setTitle(date.formattedString)
+                .setView(b.root)
+                .setPositiveButton(R.string.close) { dialog, _ -> dialog.dismiss() }
+                .setOnDismissListener {
+                    onDismissListener?.invoke(TAG)
+                }
+                .create()
 
         b.teacherAbsenceView.setHasFixedSize(true)
-        b.teacherAbsenceView.layoutManager = LinearLayoutManager(context)
+        b.teacherAbsenceView.layoutManager = LinearLayoutManager(activity)
 
-        app.db.teacherAbsenceDao().getAllByDateFull(profileId, date).observe(context as LifecycleOwner, Observer { absenceList ->
-            val adapter = TeacherAbsenceAdapter(context, date, absenceList)
+        app.db.teacherAbsenceDao().getAllByDateFull(profileId, date).observe(activity as LifecycleOwner, Observer { absenceList ->
+            val adapter = TeacherAbsenceAdapter(activity, date, absenceList)
             b.teacherAbsenceView.adapter = adapter
             b.teacherAbsenceView.visibility = View.VISIBLE
         })
-    }
 
+        dialog.show()
+    }}
 }

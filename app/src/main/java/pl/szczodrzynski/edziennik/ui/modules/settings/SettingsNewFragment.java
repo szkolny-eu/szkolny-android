@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.Settings;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -41,34 +43,36 @@ import java.util.List;
 
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
+import pl.szczodrzynski.edziennik.ExtensionsKt;
 import pl.szczodrzynski.edziennik.MainActivity;
-import pl.szczodrzynski.edziennik.Notifier;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore;
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi;
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore;
 import pl.szczodrzynski.edziennik.network.NetworkUtils;
-import pl.szczodrzynski.edziennik.network.ServerRequest;
-import pl.szczodrzynski.edziennik.receivers.BootReceiver;
-import pl.szczodrzynski.edziennik.sync.SyncJob;
+import pl.szczodrzynski.edziennik.sync.SyncWorker;
+import pl.szczodrzynski.edziennik.sync.UpdateWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment;
-import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushConfigActivity;
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.NotificationFilterDialog;
+import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity;
 import pl.szczodrzynski.edziennik.utils.Themes;
 import pl.szczodrzynski.edziennik.utils.Utils;
+import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 
 import static android.app.Activity.RESULT_OK;
-import static pl.szczodrzynski.edziennik.App.APP_URL;
 import static pl.szczodrzynski.edziennik.ExtensionsKt.initDefaultLocale;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_DISABLED;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.REGISTRATION_ENABLED;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_AVG_2_AVG;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_AVG_2_SEM;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_SEM_2_AVG;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_1_SEM_2_SEM;
-import static pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile.YEAR_ALL_GRADES;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.REGISTRATION_DISABLED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Profile.REGISTRATION_ENABLED;
 import static pl.szczodrzynski.edziennik.utils.Utils.d;
 import static pl.szczodrzynski.edziennik.utils.Utils.getRealPathFromURI;
 import static pl.szczodrzynski.edziennik.utils.Utils.getResizedBitmap;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_1_AVG_2_AVG;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_1_AVG_2_SEM;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_1_SEM_2_AVG;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_1_SEM_2_SEM;
+import static pl.szczodrzynski.edziennik.utils.managers.GradesManager.YEAR_ALL_GRADES;
 
 public class SettingsNewFragment extends MaterialAboutFragment {
 
@@ -132,11 +136,11 @@ public class SettingsNewFragment extends MaterialAboutFragment {
          | |   | | | (_) | | | | |  __/
          |_|   |_|  \___/|_| |_|_|\__*/
     private Drawable getProfileDrawable() {
-        return app.profile.getImageDrawable(activity);
+        return app.getProfile().getImageDrawable(activity);
 
         /*Bitmap profileImage = null;
-        if (app.profile.getImage() != null && !app.profile.getImage().equals("")) {
-            profileImage = BitmapFactory.decodeFile(app.profile.getImage());
+        if (app.getProfile().getImage() != null && !app.getProfile().getImage().equals("")) {
+            profileImage = BitmapFactory.decodeFile(app.getProfile().getImage());
             RoundedBitmapDrawable roundDrawable = RoundedBitmapDrawableFactory.create(getResources(), profileImage);
             roundDrawable.setCircular(true);
             return roundDrawable;
@@ -157,8 +161,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         if (!expandedOnly) {
 
             profileCardTitleItem = new MaterialAboutProfileItem(
-                    app.profile.getName(),
-                    getString(R.string.settings_profile_subtitle_format, app.profile.getSubname()),
+                    app.getProfile().getName(),
+                    app.getProfile().getSubname(),
                     getProfileDrawable()
             );
             profileCardTitleItem.setOnClickAction(() -> {
@@ -167,19 +171,19 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .items(
                                 getString(R.string.settings_profile_change_name),
                                 getString(R.string.settings_profile_change_image),
-                                app.profile.getImage() == null ? null : getString(R.string.settings_profile_remove_image)
+                                app.getProfile().getImage() == null ? null : getString(R.string.settings_profile_remove_image)
                         )
                         .itemsCallback((dialog, itemView, position, text) -> {
                             switch (position) {
                                 case 0:
                                     new MaterialDialog.Builder(activity)
                                             .title(getString(R.string.settings_profile_change_name_dialog_title))
-                                            .input(getString(R.string.settings_profile_change_name_dialog_text), app.profile.getName(), (dialog1, input) -> {
-                                                app.profile.setName(input.toString());
+                                            .input(getString(R.string.settings_profile_change_name_dialog_text), app.getProfile().getName(), (dialog1, input) -> {
+                                                app.getProfile().setName(input.toString());
                                                 profileCardTitleItem.setText(input);
                                                 profileCardTitleItem.setIcon(getProfileDrawable());
                                                 refreshMaterialAboutList();
-                                                app.profileSaveAsync();
+                                                app.profileSave();
                                             })
                                             .positiveText(R.string.ok)
                                             .negativeText(R.string.cancel)
@@ -189,10 +193,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     startActivityForResult(CropImage.getPickImageChooserIntent(activity), 21);
                                     break;
                                 case 2:
-                                    app.profile.setImage(null);
+                                    app.getProfile().setImage(null);
                                     profileCardTitleItem.setIcon(getProfileDrawable());
                                     refreshMaterialAboutList();
-                                    app.profileSaveAsync();
+                                    app.profileSave();
                                     break;
                             }
                         })
@@ -216,20 +220,45 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             );*/
 
             items.add(
-                    new MaterialAboutSwitchItem(
-                            getString(R.string.settings_profile_sync_text),
-                            getString(R.string.settings_profile_sync_subtext),
+                    new MaterialAboutActionItem(
+                            getString(R.string.settings_add_student_text),
+                            getString(R.string.settings_add_student_subtext),
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_account_convert)
+                                    .icon(CommunityMaterial.Icon.cmd_account_plus_outline)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                    .setChecked(app.profile.getSyncEnabled())
-                    .setOnChangeAction(((isChecked, tag) -> {
-                        app.profile.setSyncEnabled(isChecked);
-                        app.profileSaveAsync();
-                        return true;
-                    }))
+                            .setOnClickAction(() -> {
+                                startActivity(new Intent(activity, LoginActivity.class));
+                            })
+            );
+
+            items.add(
+                    new MaterialAboutActionItem(
+                            getString(R.string.settings_profile_notifications_text),
+                            getString(R.string.settings_profile_notifications_subtext),
+                            new IconicsDrawable(activity)
+                                    .icon(CommunityMaterial.Icon.cmd_filter_outline)
+                                    .size(IconicsSize.dp(iconSizeDp))
+                                    .color(IconicsColor.colorInt(iconColor))
+                    )
+                            .setOnClickAction(() -> {
+                                new NotificationFilterDialog(activity, null, null);
+                            })
+            );
+
+            items.add(
+                    new MaterialAboutActionItem(
+                            getString(R.string.settings_profile_remove_text),
+                            getString(R.string.settings_profile_remove_subtext),
+                            new IconicsDrawable(activity)
+                                    .icon(SzkolnyFont.Icon.szf_delete_empty_outline)
+                                    .size(IconicsSize.dp(iconSizeDp))
+                                    .color(IconicsColor.colorInt(iconColor))
+                    )
+                            .setOnClickAction(() -> {
+                                new ProfileRemoveDialog(activity, app.getProfile().getId(), app.getProfile().getName());
+                            })
             );
 
             items.add(getMoreItem(() -> addCardItems(CARD_PROFILE, getProfileCard(true))));
@@ -238,33 +267,19 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
             items.add(
                     new MaterialAboutSwitchItem(
-                            getString(R.string.settings_profile_notify_text),
-                            getString(R.string.settings_profile_notify_subtext),
+                            getString(R.string.settings_profile_sync_text),
+                            getString(R.string.settings_profile_sync_subtext),
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_bell_ring)
+                                    .icon(CommunityMaterial.Icon.cmd_account_convert)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                    .setChecked(app.profile.getSyncNotifications())
-                    .setOnChangeAction(((isChecked, tag) -> {
-                        app.profile.setSyncNotifications(isChecked);
-                        app.profileSaveAsync();
-                        return true;
-                    }))
-            );
-
-            items.add(
-                    new MaterialAboutActionItem(
-                            getString(R.string.settings_profile_remove_text),
-                            getString(R.string.settings_profile_remove_subtext),
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_delete_empty)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
-                    )
-                    .setOnClickAction(() -> {
-                        app.apiEdziennik.guiRemoveProfile(activity, app.profile.getId(), app.profile.getName());
-                    })
+                            .setChecked(app.getProfile().getSyncEnabled())
+                            .setOnChangeAction(((isChecked, tag) -> {
+                                app.getProfile().setSyncEnabled(isChecked);
+                                app.profileSave();
+                                return true;
+                            }))
             );
 
         }
@@ -281,12 +296,32 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         ArrayList<MaterialAboutItem> items = new ArrayList<>();
         if (!expandedOnly) {
 
+            Date today = Date.getToday();
+            if (today.month == 12 || today.month == 1) {
+                items.add(
+                        new MaterialAboutSwitchItem(
+                                getString(R.string.settings_theme_snowfall_text),
+                                getString(R.string.settings_theme_snowfall_subtext),
+                                new IconicsDrawable(activity)
+                                        .icon(CommunityMaterial.Icon2.cmd_snowflake)
+                                        .size(IconicsSize.dp(iconSizeDp))
+                                        .color(IconicsColor.colorInt(iconColor))
+                        )
+                        .setChecked(app.getConfig().getUi().getSnowfall())
+                        .setOnChangeAction((isChecked, tag) -> {
+                            app.getConfig().getUi().setSnowfall(isChecked);
+                            activity.recreate();
+                            return true;
+                        })
+                );
+            }
+
             items.add(
                     new MaterialAboutActionItem(
                             getString(R.string.settings_theme_theme_text),
                             Themes.INSTANCE.getThemeName(activity),
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_palette)
+                                    .icon(CommunityMaterial.Icon2.cmd_palette_outline)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
@@ -294,12 +329,11 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         new MaterialDialog.Builder(activity)
                                 .title(R.string.settings_theme_theme_text)
                                 .items(Themes.INSTANCE.getThemeNames(activity))
-                                .itemsCallbackSingleChoice(app.appConfig.appTheme, (dialog, itemView, which, text) -> {
-                                    if (app.appConfig.appTheme == which)
+                                .itemsCallbackSingleChoice(app.getConfig().getUi().getTheme(), (dialog, itemView, which, text) -> {
+                                    if (app.getConfig().getUi().getTheme() == which)
                                         return true;
-                                    app.appConfig.appTheme = which;
-                                    Themes.INSTANCE.setThemeInt(app.appConfig.appTheme);
-                                    app.saveConfig("appTheme");
+                                    app.getConfig().getUi().setTheme(which);
+                                    Themes.INSTANCE.setThemeInt(app.getConfig().getUi().getTheme());
                                     activity.recreate();
                                     return true;
                                 })
@@ -312,18 +346,17 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             getString(R.string.settings_theme_mini_drawer_text),
                             getString(R.string.settings_theme_mini_drawer_subtext),
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_chevron_left)
+                                    .icon(CommunityMaterial.Icon.cmd_dots_vertical)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                    .setChecked(app.appConfig.miniDrawerVisible)
+                    .setChecked(app.getConfig().getUi().getMiniMenuVisible())
                     .setOnChangeAction((isChecked, tag) -> {
                         // 0,1  1
                         // 0,0  0
                         // 1,1  0
                         // 1,0  1
-                        app.appConfig.miniDrawerVisible = isChecked;
-                        app.saveConfig("miniDrawerVisible");
+                        app.getConfig().getUi().setMiniMenuVisible(isChecked);
                         activity.getNavView().drawer.setMiniDrawerVisiblePortrait(isChecked);
                         return true;
                     })
@@ -338,7 +371,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             getString(R.string.settings_theme_mini_drawer_buttons_text),
                             null,
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_menu)
+                                    .icon(CommunityMaterial.Icon.cmd_format_list_checks)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
@@ -370,7 +403,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         buttonCaptions.add(getString(R.string.menu_settings));
                         //buttonCaptions.add(getString(R.string.title_debugging));
                         List<Integer> selectedIds = new ArrayList<>();
-                        for (int id: app.appConfig.miniDrawerButtonIds) {
+                        for (int id: app.getConfig().getUi().getMiniMenuButtons()) {
                             selectedIds.add(buttonIds.indexOf(id));
                         }
                         new MaterialDialog.Builder(activity)
@@ -378,16 +411,16 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 .content(getString(R.string.settings_theme_mini_drawer_buttons_dialog_text))
                                 .items(buttonCaptions)
                                 .itemsCallbackMultiChoice(selectedIds.toArray(new Integer[0]), (dialog, which, text) -> {
-                                    app.appConfig.miniDrawerButtonIds.clear();
+                                    List<Integer> list = new ArrayList<>();
                                     for (int index: which) {
                                         if (index == -1)
                                             continue;
                                         // wtf
 
                                         int id = buttonIds.get(index);
-                                        app.appConfig.miniDrawerButtonIds.add(id);
+                                        list.add(id);
                                     }
-                                    app.saveConfig("miniDrawerButtonIds");
+                                    app.getConfig().getUi().setMiniMenuButtons(list);
                                     activity.setDrawerItems();
                                     activity.getDrawer().updateBadges();
                                     return true;
@@ -402,12 +435,12 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             getString(R.string.settings_theme_drawer_header_text),
                             null,
                             new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_image)
+                                    .icon(CommunityMaterial.Icon2.cmd_image_outline)
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
                     .setOnClickAction(() -> {
-                        if (app.appConfig.headerBackground != null) {
+                        if (app.getConfig().getUi().getHeaderBackground() != null) {
                             new MaterialDialog.Builder(activity)
                                     .title(R.string.what_do_you_want_to_do)
                                     .items(getString(R.string.settings_theme_drawer_header_dialog_set), getString(R.string.settings_theme_drawer_header_dialog_restore))
@@ -416,12 +449,11 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                             startActivityForResult(CropImage.getPickImageChooserIntent(activity), 22);
                                         } else {
                                             MainActivity ac = (MainActivity) getActivity();
-                                            app.appConfig.headerBackground = null;
+                                            app.getConfig().getUi().setHeaderBackground(null);
                                             if (ac != null) {
                                                 ac.getDrawer().setAccountHeaderBackground(null);
                                                 ac.getDrawer().open();
                                             }
-                                            app.saveConfig("headerBackground");
                                         }
                                     })
                                     .show();
@@ -442,7 +474,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .color(IconicsColor.colorInt(iconColor))
                     )
                     .setOnClickAction(() -> {
-                        if (app.appConfig.appBackground != null) {
+                        if (app.getConfig().getUi().getAppBackground() != null) {
                             new MaterialDialog.Builder(activity)
                                     .title(R.string.what_do_you_want_to_do)
                                     .items(getString(R.string.settings_theme_app_background_dialog_set), getString(R.string.settings_theme_app_background_dialog_restore))
@@ -450,8 +482,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         if (position == 0) {
                                             startActivityForResult(CropImage.getPickImageChooserIntent(activity), 23);
                                         } else {
-                                            app.appConfig.appBackground = null;
-                                            app.saveConfig("appBackground");
+                                            app.getConfig().getUi().setAppBackground(null);
                                             activity.recreate();
                                         }
                                     })
@@ -463,6 +494,21 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     })
             );
 
+            items.add(
+                    new MaterialAboutSwitchItem(
+                            getString(R.string.settings_theme_open_drawer_on_back_pressed_text),
+                            null,
+                            new IconicsDrawable(activity)
+                                    .icon(CommunityMaterial.Icon2.cmd_menu_open)
+                                    .size(IconicsSize.dp(iconSizeDp))
+                                    .color(IconicsColor.colorInt(iconColor))
+                    )
+                            .setChecked(app.getConfig().getUi().getOpenDrawerOnBackPressed())
+                            .setOnChangeAction((isChecked, tag) -> {
+                                app.getConfig().getUi().setOpenDrawerOnBackPressed(isChecked);
+                                return true;
+                            })
+            );
         }
         return items;
     }
@@ -477,25 +523,27 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                  |__*/
     private String getSyncCardIntervalSubText() {
 
-        if (app.appConfig.registerSyncInterval < 60 * 60)
+        if (app.getConfig().getSync().getInterval() < 60 * 60)
             return getString(
                     R.string.settings_sync_sync_interval_subtext_format,
-                    HomeFragment.plural(activity, R.plurals.time_till_minutes, app.appConfig.registerSyncInterval / 60)
+                    ExtensionsKt.plural(activity, R.plurals.time_till_minutes, app.getConfig().getSync().getInterval() / 60)
             );
         return getString(
                 R.string.settings_sync_sync_interval_subtext_format,
-                HomeFragment.plural(activity, R.plurals.time_till_hours, app.appConfig.registerSyncInterval / 60 / 60) +
-                (app.appConfig.registerSyncInterval / 60 % 60 == 0 ?
+                ExtensionsKt.plural(activity, R.plurals.time_till_hours, app.getConfig().getSync().getInterval() / 60 / 60) +
+                (app.getConfig().getSync().getInterval() / 60 % 60 == 0 ?
                         "" :
-                        " " + HomeFragment.plural(activity, R.plurals.time_till_minutes, app.appConfig.registerSyncInterval / 60 % 60)
+                        " " + ExtensionsKt.plural(activity, R.plurals.time_till_minutes, app.getConfig().getSync().getInterval() / 60 % 60)
                 )
         );
     }
     private String getSyncCardQuietHoursSubText() {
+        if (app.getConfig().getSync().getQuietHoursStart() == null || app.getConfig().getSync().getQuietHoursEnd() == null)
+            return "";
         return getString(
-                app.appConfig.quietHoursStart >= app.appConfig.quietHoursEnd ? R.string.settings_sync_quiet_hours_subtext_next_day_format : R.string.settings_sync_quiet_hours_subtext_format,
-                Time.fromMillis(Math.abs(app.appConfig.quietHoursStart)).getStringHM(),
-                Time.fromMillis(app.appConfig.quietHoursEnd).getStringHM()
+                app.getConfig().getSync().getQuietHoursStart().getValue() >= app.getConfig().getSync().getQuietHoursEnd().getValue() ? R.string.settings_sync_quiet_hours_subtext_next_day_format : R.string.settings_sync_quiet_hours_subtext_format,
+                app.getConfig().getSync().getQuietHoursStart().getStringHM(),
+                app.getConfig().getSync().getQuietHoursEnd().getStringHM()
         );
     }
     private MaterialAboutItem getSyncCardWifiItem() {
@@ -503,14 +551,14 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 getString(R.string.settings_sync_wifi_text),
                 getString(R.string.settings_sync_wifi_subtext),
                 new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_wifi_strength_4)
+                        .icon(CommunityMaterial.Icon2.cmd_wifi_strength_2)
                         .size(IconicsSize.dp(iconSizeDp))
                         .color(IconicsColor.colorInt(iconColor))
         )
-        .setChecked(app.appConfig.registerSyncOnlyWifi)
+        .setChecked(app.getConfig().getSync().getOnlyWifi())
         .setOnChangeAction((isChecked, tag) -> {
-            app.appConfig.registerSyncOnlyWifi = isChecked;
-            app.saveConfig("registerSyncOnlyWifi");
+            app.getConfig().getSync().setOnlyWifi(isChecked);
+            SyncWorker.Companion.rescheduleNext(app);
             return true;
         });
     }
@@ -524,22 +572,30 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     getString(R.string.settings_sync_sync_interval_text),
                     getString(R.string.settings_sync_sync_interval_subtext_disabled),
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_sync)
+                            .icon(CommunityMaterial.Icon.cmd_download_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
             syncCardIntervalItem.setSubTextChecked(getSyncCardIntervalSubText());
-            syncCardIntervalItem.setChecked(app.appConfig.registerSyncEnabled);
+            syncCardIntervalItem.setChecked(app.getConfig().getSync().getEnabled());
             syncCardIntervalItem.setOnClickAction(() -> {
                 List<CharSequence> intervalNames = new ArrayList<>();
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 30));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_minutes, 45));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 1));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 1)+" "+HomeFragment.plural(activity, R.plurals.time_till_minutes, 30));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 2));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 3));
-                intervalNames.add(HomeFragment.plural(activity, R.plurals.time_till_hours, 4));
+                if (App.Companion.getDevMode() && false) {
+                    intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_seconds, 30));
+                    intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_minutes, 2));
+                }
+                intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_minutes, 30));
+                intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_minutes, 45));
+                intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_hours, 1));
+                intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_hours, 1)+" "+ ExtensionsKt.plural(activity, R.plurals.time_till_minutes, 30));
+                intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_hours, 2));
+                intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_hours, 3));
+                intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_hours, 4));
                 List<Integer> intervals = new ArrayList<>();
+                if (App.Companion.getDevMode() && false) {
+                    intervals.add(30);
+                    intervals.add(2 * 60);
+                }
                 intervals.add(30 * 60);
                 intervals.add(45 * 60);
                 intervals.add(60 * 60);
@@ -551,46 +607,37 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .title(getString(R.string.settings_sync_sync_interval_dialog_title))
                         .content(getString(R.string.settings_sync_sync_interval_dialog_text))
                         .items(intervalNames)
-                        .itemsCallbackSingleChoice(intervals.indexOf(app.appConfig.registerSyncInterval), (dialog, itemView, which, text) -> {
-                            app.appConfig.registerSyncInterval = intervals.get(which);
+                        .itemsCallbackSingleChoice(intervals.indexOf(app.getConfig().getSync().getInterval()), (dialog, itemView, which, text) -> {
+                            app.getConfig().getSync().setInterval(intervals.get(which));
                             syncCardIntervalItem.setSubTextChecked(getSyncCardIntervalSubText());
                             syncCardIntervalItem.setChecked(true);
-                            if (!app.appConfig.registerSyncEnabled) {
+                            if (!app.getConfig().getSync().getEnabled()) {
                                 addCardItem(CARD_SYNC, 1, getSyncCardWifiItem());
                             }
                             else {
                                 refreshMaterialAboutList();
                             }
-                            app.appConfig.registerSyncEnabled = true;
+                            app.getConfig().getSync().setEnabled(true);
                             // app.appConfig modifications have to surround syncCardIntervalItem and those ifs
-                            app.saveConfig("registerSyncInterval", "registerSyncEnabled");
-                            SyncJob.clear();
-                            SyncJob.schedule(app);
+                            SyncWorker.Companion.rescheduleNext(app);
                             return true;
                         })
                         .show();
             });
             syncCardIntervalItem.setOnChangeAction((isChecked, tag) -> {
-                if (isChecked) {
-                    SyncJob.update(app);
-                }
-                else {
-                    SyncJob.clear();
-                }
-
-                if (isChecked && !app.appConfig.registerSyncEnabled) {
+                if (isChecked && !app.getConfig().getSync().getEnabled()) {
                     addCardItem(CARD_SYNC, 1, getSyncCardWifiItem());
                 }
                 else if (!isChecked) {
                     removeCardItem(CARD_SYNC, 1);
                 }
-                app.appConfig.registerSyncEnabled = isChecked;
-                app.saveConfig("registerSyncEnabled");
+                app.getConfig().getSync().setEnabled(isChecked);
+                SyncWorker.Companion.rescheduleNext(app);
                 return true;
             });
             items.add(syncCardIntervalItem);
 
-            if (app.appConfig.registerSyncEnabled) {
+            if (app.getConfig().getSync().getEnabled()) {
                 items.add(getSyncCardWifiItem());
             }
 
@@ -616,11 +663,11 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     getString(R.string.settings_sync_quiet_hours_text),
                     getString(R.string.settings_sync_quiet_hours_subtext_disabled),
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_bell_sleep)
+                            .icon(CommunityMaterial.Icon.cmd_bell_sleep_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
-            syncCardQuietHoursItem.setChecked(app.appConfig.quietHoursStart > 0);
+            syncCardQuietHoursItem.setChecked(app.getConfig().getSync().getQuietHoursEnabled());
             syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
             syncCardQuietHoursItem.setOnClickAction(() -> {
                 new MaterialDialog.Builder(activity)
@@ -632,11 +679,12 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .itemsCallback((dialog, itemView, position, text) -> {
                             if (position == 0) {
                                 // set beginning
-                                Time time = Time.fromMillis(Math.abs(app.appConfig.quietHoursStart));
+                                Time time = app.getConfig().getSync().getQuietHoursStart();
+                                if (time == null)
+                                    time = new Time(22, 30, 0);
                                 TimePickerDialog.newInstance((v2, hourOfDay, minute, second) -> {
-                                    // if it's disabled, it'll be enabled automatically
-                                    app.appConfig.quietHoursStart = new Time(hourOfDay, minute, second).getInMillis();
-                                    app.saveConfig("quietHoursStart");
+                                    app.getConfig().getSync().setQuietHoursEnabled(true);
+                                    app.getConfig().getSync().setQuietHoursStart(new Time(hourOfDay, minute, second));
                                     syncCardQuietHoursItem.setChecked(true);
                                     syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
                                     refreshMaterialAboutList();
@@ -644,15 +692,12 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             }
                             else {
                                 // set end
-                                Time time = Time.fromMillis(app.appConfig.quietHoursEnd);
+                                Time time = app.getConfig().getSync().getQuietHoursEnd();
+                                if (time == null)
+                                    time = new Time(5, 30, 0);
                                 TimePickerDialog.newInstance((v2, hourOfDay, minute, second) -> {
-                                    if (app.appConfig.quietHoursStart < 0) {
-                                        // if it's disabled, enable
-                                        app.appConfig.quietHoursStart *= -1;
-                                        app.saveConfig("quietHoursStart");
-                                    }
-                                    app.appConfig.quietHoursEnd = new Time(hourOfDay, minute, second).getInMillis();
-                                    app.saveConfig("quietHoursEnd");
+                                    app.getConfig().getSync().setQuietHoursEnabled(true);
+                                    app.getConfig().getSync().setQuietHoursEnd(new Time(hourOfDay, minute, second));
                                     syncCardQuietHoursItem.setChecked(true);
                                     syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
                                     refreshMaterialAboutList();
@@ -662,20 +707,12 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .show();
             });
             syncCardQuietHoursItem.setOnChangeAction((isChecked, tag) -> {
-                if (isChecked && app.appConfig.quietHoursStart < 0) {
-                    app.appConfig.quietHoursStart *= -1;
-                    app.saveConfig("quietHoursStart");
-                }
-                else if (!isChecked && app.appConfig.quietHoursStart > 0) {
-                    app.appConfig.quietHoursStart *= -1;
-                    app.saveConfig("quietHoursStart");
-                }
-                else if (isChecked && app.appConfig.quietHoursStart == 0) {
-                    app.appConfig.quietHoursStart = new Time(22, 30, 0).getInMillis();
-                    app.appConfig.quietHoursEnd = new Time(5, 30, 0).getInMillis();
+                app.getConfig().getSync().setQuietHoursEnabled(isChecked);
+                if (isChecked && app.getConfig().getSync().getQuietHoursStart() == null) {
+                    app.getConfig().getSync().setQuietHoursStart(new Time(22, 30, 0));
+                    app.getConfig().getSync().setQuietHoursEnd(new Time(5, 30, 0));
                     syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
                     refreshMaterialAboutList();
-                    app.saveConfig("quietHoursStart", "quietHoursEnd");
                 }
                 return true;
             });
@@ -691,8 +728,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .color(IconicsColor.colorInt(iconColor))
                     )
                     .setOnClickAction(() -> {
-                        Intent i = new Intent(activity, WebPushConfigActivity.class);
-                        startActivity(i);
+                        activity.loadTarget(MainActivity.TARGET_WEB_PUSH, null);
                     })
             );
 
@@ -723,10 +759,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                    .setChecked(app.appConfig.notifyAboutUpdates)
+                    .setChecked(app.getConfig().getSync().getNotifyAboutUpdates())
                     .setOnChangeAction((isChecked, tag) -> {
-                        app.appConfig.notifyAboutUpdates = isChecked;
-                        app.saveConfig("notifyAboutUpdates");
+                        app.getConfig().getSync().setNotifyAboutUpdates(isChecked);
+                        UpdateWorker.Companion.rescheduleNext(app);
                         return true;
                     })
             );
@@ -737,21 +773,17 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 getString(R.string.settings_sync_notifications_settings_text),
                                 getString(R.string.settings_sync_notifications_settings_subtext),
                                 new IconicsDrawable(activity)
-                                        .icon(CommunityMaterial.Icon2.cmd_settings)
+                                        .icon(CommunityMaterial.Icon2.cmd_settings_outline)
                                         .size(IconicsSize.dp(iconSizeDp))
                                         .color(IconicsColor.colorInt(iconColor))
                         )
                         .setOnClickAction(() -> {
-                            String channel = Notifier.GROUP_KEY_NOTIFICATIONS;
+                            String channel = app.getNotificationChannelsManager().getData().getKey();
                             Intent intent = new Intent();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                                 intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
-                                if (channel != null) {
-                                    intent.setAction(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-                                    intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel);
-                                } else {
-                                    intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                                }
+                                intent.setAction(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                                intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel);
                                 intent.putExtra(Settings.EXTRA_APP_PACKAGE, activity.getPackageName());
                             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 if (channel != null) {
@@ -790,7 +822,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                       __/ |
                      |__*/
     private String getRegisterCardAverageModeSubText() {
-        switch (app.profile.getYearAverageMode()) {
+        switch (app.getConfig().forProfile().getGrades().getYearAverageMode()) {
             default:
             case YEAR_1_AVG_2_AVG:
                 return getString(R.string.settings_register_avg_mode_0_short);
@@ -805,11 +837,11 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         }
     }
     private String getRegisterCardBellSyncSubText() {
-        if (app.appConfig.bellSyncDiff == null)
+        if (app.getConfig().getTimetable().getBellSyncDiff() == null)
             return getString(R.string.settings_register_bell_sync_subtext_disabled);
         return getString(
                 R.string.settings_register_bell_sync_subtext_format,
-                (app.appConfig.bellSyncMultiplier == -1 ? "-" : "+") + app.appConfig.bellSyncDiff.getStringHMS()
+                (app.getConfig().getTimetable().getBellSyncMultiplier() == -1 ? "-" : "+") + app.getConfig().getTimetable().getBellSyncDiff().getStringHMS()
         );
     }
     private MaterialAboutItem getRegisterCardSharedEventsItem() {
@@ -817,14 +849,14 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 getString(R.string.settings_register_shared_events_text),
                 getString(R.string.settings_register_shared_events_subtext),
                 new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_share_variant)
+                        .icon(CommunityMaterial.Icon2.cmd_share_outline)
                         .size(IconicsSize.dp(iconSizeDp))
                         .color(IconicsColor.colorInt(iconColor))
         )
-        .setChecked(app.profile.getEnableSharedEvents())
+        .setChecked(app.getProfile().getEnableSharedEvents())
         .setOnChangeAction((isChecked, tag) -> {
-            app.profile.setEnableSharedEvents(isChecked);
-            app.profileSaveAsync();
+            app.getProfile().setEnableSharedEvents(isChecked);
+            app.profileSave();
             if (isChecked) new MaterialDialog.Builder(activity)
                     .title(R.string.event_sharing)
                     .content(getString(R.string.settings_register_shared_events_dialog_enabled_text))
@@ -838,58 +870,30 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             return true;
         });
     }
-    private MaterialAboutActionItem registerCardAverageModeItem;
+
     private MaterialAboutSwitchItem registerCardAllowRegistrationItem;
     private MaterialAboutActionItem registerCardBellSyncItem;
     private ArrayList<MaterialAboutItem> getRegisterCard(boolean expandedOnly) {
         ArrayList<MaterialAboutItem> items = new ArrayList<>();
         if (!expandedOnly) {
-
-            registerCardAverageModeItem = new MaterialAboutActionItem(
-                    getString(R.string.settings_register_avg_mode_text),
-                    getRegisterCardAverageModeSubText(),
+            items.add(new MaterialAboutActionItem(
+                    getString(R.string.menu_grades_config),
+                    null,
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_scale_balance)
+                            .icon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
-            );
-            registerCardAverageModeItem.setOnClickAction(() -> {
-                List<CharSequence> modeNames = new ArrayList<>();
-                modeNames.add(getString(R.string.settings_register_avg_mode_4));
-                modeNames.add(getString(R.string.settings_register_avg_mode_0));
-                modeNames.add(getString(R.string.settings_register_avg_mode_1));
-                modeNames.add(getString(R.string.settings_register_avg_mode_2));
-                modeNames.add(getString(R.string.settings_register_avg_mode_3));
-                List<Integer> modeIds = new ArrayList<>();
-                modeIds.add(YEAR_ALL_GRADES);
-                modeIds.add(YEAR_1_AVG_2_AVG);
-                modeIds.add(YEAR_1_SEM_2_AVG);
-                modeIds.add(YEAR_1_AVG_2_SEM);
-                modeIds.add(YEAR_1_SEM_2_SEM);
-                new MaterialDialog.Builder(activity)
-                        .title(getString(R.string.settings_register_avg_mode_dialog_title))
-                        .content(getString(R.string.settings_register_avg_mode_dialog_text))
-                        .items(modeNames)
-                        .itemsCallbackSingleChoice(modeIds.indexOf(app.profile.getYearAverageMode()), (dialog, itemView, which, text) -> {
-                            app.profile.setYearAverageMode(modeIds.get(which));
-                            app.profileSaveAsync();
-                            registerCardAverageModeItem.setSubText(getRegisterCardAverageModeSubText());
-                            refreshMaterialAboutList();
-                            return true;
-                        })
-                        .show();
-            });
-            items.add(registerCardAverageModeItem);
+            ).setOnClickAction(() -> new GradesConfigDialog(activity, false, null, null)));
 
             registerCardAllowRegistrationItem = new MaterialAboutSwitchItem(
                     getString(R.string.settings_register_allow_registration_text),
                     getString(R.string.settings_register_allow_registration_subtext),
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_account_circle)
+                            .icon(CommunityMaterial.Icon.cmd_account_circle_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
-            registerCardAllowRegistrationItem.setChecked(app.profile.getRegistration() == REGISTRATION_ENABLED);
+            registerCardAllowRegistrationItem.setChecked(app.getProfile().getRegistration() == REGISTRATION_ENABLED);
             registerCardAllowRegistrationItem.setOnChangeAction((isChecked, tag) -> {
                 if (isChecked) new MaterialDialog.Builder(activity)
                             .title(getString(R.string.settings_register_allow_registration_dialog_enabled_title))
@@ -898,8 +902,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             .negativeText(R.string.not_now)
                             .onPositive(((dialog, which) -> {
                                 registerCardAllowRegistrationItem.setChecked(true);
-                                app.profile.setRegistration(REGISTRATION_ENABLED);
-                                app.profileSaveAsync();
+                                app.getProfile().setRegistration(REGISTRATION_ENABLED);
+                                app.profileSave();
                                 addCardItem(CARD_REGISTER, 2, getRegisterCardSharedEventsItem());
                                 refreshMaterialAboutList();
                             }))
@@ -911,8 +915,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             .negativeText(R.string.cancel)
                             .onPositive(((dialog, which) -> {
                                 registerCardAllowRegistrationItem.setChecked(false);
-                                app.profile.setRegistration(REGISTRATION_DISABLED);
-                                app.profileSaveAsync();
+                                app.getProfile().setRegistration(REGISTRATION_DISABLED);
+                                app.profileSave();
                                 removeCardItem(CARD_REGISTER, 2);
                                 refreshMaterialAboutList();
                                 MaterialDialog progressDialog = new MaterialDialog.Builder(activity)
@@ -921,41 +925,31 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         .positiveText(R.string.ok)
                                         .negativeText(R.string.abort)
                                         .show();
-                                new ServerRequest(app, app.requestScheme + APP_URL + "main.php?unregister", "Edziennik/UREG", app.profile)
-                                        .withUsername(app.profile.getUsernameId())
-                                        .run((e, result) -> {
-                                            progressDialog.dismiss();
-                                            if (result == null || !result.get("success").getAsString().equals("true")) {
-                                                new MaterialDialog.Builder(activity)
-                                                        .title(R.string.error)
-                                                        .content(getString(R.string.settings_register_allow_registration_dialog_disabling_error_text))
-                                                        .positiveText(R.string.ok)
-                                                        .show();
-                                            }
-                                            else {
-                                                Toast.makeText(activity, getString(R.string.settings_register_allow_registration_dialog_disabling_finished), Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-
+                                AsyncTask.execute(() -> {
+                                    new SzkolnyApi(app).runCatching(szkolnyApi -> null, szkolnyApi -> null);
+                                    activity.runOnUiThread(() -> {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(activity, getString(R.string.settings_register_allow_registration_dialog_disabling_finished), Toast.LENGTH_SHORT).show();
+                                    });
+                                });
                             }))
                             .show();
                 return false;
             });
             items.add(registerCardAllowRegistrationItem);
 
-            if (app.profile.getRegistration() == REGISTRATION_ENABLED) {
+            if (app.getProfile().getRegistration() == REGISTRATION_ENABLED) {
                 items.add(getRegisterCardSharedEventsItem());
             }
 
             items.add(getMoreItem(() -> addCardItems(CARD_REGISTER, getRegisterCard(true))));
         }
         else {
-
             registerCardBellSyncItem = new MaterialAboutActionItem(
                     getString(R.string.settings_register_bell_sync_text),
                     getRegisterCardBellSyncSubText(),
                     new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_alarm_bell)
+                            .icon(SzkolnyFont.Icon.szf_alarm_bell_outline)
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             );
@@ -968,8 +962,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         .neutralText(R.string.reset)
                         .inputRangeRes(8, 8, R.color.md_red_500)
                         .input("±H:MM:SS",
-                                (app.appConfig.bellSyncDiff != null
-                                        ? (app.appConfig.bellSyncMultiplier == -1 ? "-" : "+") + app.appConfig.bellSyncDiff.getStringHMS()
+                                (app.getConfig().getTimetable().getBellSyncDiff() != null
+                                        ? (app.getConfig().getTimetable().getBellSyncMultiplier() == -1 ? "-" : "+") + app.getConfig().getTimetable().getBellSyncDiff().getStringHMS()
                                         : ""), (dialog, input) -> {
                                     if (input == null)
                                         return;
@@ -982,10 +976,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         return;
                                     }
                                     if (input.charAt(0) == '+') {
-                                        app.appConfig.bellSyncMultiplier = 1;
+                                        app.getConfig().getTimetable().setBellSyncMultiplier(1);
                                     }
                                     else if (input.charAt(0) == '-') {
-                                        app.appConfig.bellSyncMultiplier = -1;
+                                        app.getConfig().getTimetable().setBellSyncMultiplier(-1);
                                     }
                                     else {
                                         Toast.makeText(activity, R.string.bell_sync_adjust_error, Toast.LENGTH_SHORT).show();
@@ -1006,38 +1000,19 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                         return;
                                     }
 
-                                    app.appConfig.bellSyncDiff = new Time(hour, minute, second);
-                                    app.saveConfig("bellSyncDiff", "bellSyncMultiplier");
+                                    app.getConfig().getTimetable().setBellSyncDiff(new Time(hour, minute, second));
                                     registerCardBellSyncItem.setSubText(getRegisterCardBellSyncSubText());
                                     refreshMaterialAboutList();
                                 })
                         .onNeutral(((dialog, which) -> {
-                            app.appConfig.bellSyncDiff = null;
-                            app.appConfig.bellSyncMultiplier = 0;
-                            app.saveConfig("bellSyncDiff", "bellSyncMultiplier");
+                            app.getConfig().getTimetable().setBellSyncDiff(null);
+                            app.getConfig().getTimetable().setBellSyncMultiplier(0);
                             registerCardBellSyncItem.setSubText(getRegisterCardBellSyncSubText());
                             refreshMaterialAboutList();
                         }))
                         .show();
             });
             items.add(registerCardBellSyncItem);
-
-            items.add(
-                    new MaterialAboutSwitchItem(
-                            getString(R.string.settings_register_dont_count_zero_text),
-                            null,
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_numeric_0_box)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
-                    )
-                            .setChecked(app.appConfig.dontCountZeroToAverage)
-                            .setOnChangeAction((isChecked, tag) -> {
-                                app.appConfig.dontCountZeroToAverage = isChecked;
-                                app.saveConfig("dontCountZeroToAverage");
-                                return true;
-                            })
-            );
 
             items.add(
                     new MaterialAboutSwitchItem(
@@ -1048,28 +1023,27 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .size(IconicsSize.dp(iconSizeDp))
                                     .color(IconicsColor.colorInt(iconColor))
                     )
-                    .setChecked(app.appConfig.countInSeconds)
+                    .setChecked(app.getConfig().getTimetable().getCountInSeconds())
                     .setOnChangeAction((isChecked, tag) -> {
-                        app.appConfig.countInSeconds = isChecked;
-                        app.saveConfig("countInSeconds");
+                        app.getConfig().getTimetable().setCountInSeconds(isChecked);
                         return true;
                     })
             );
 
-            if (app.profile.getLoginStoreType() == LoginStore.LOGIN_TYPE_LIBRUS) {
+            if (app.getProfile().getLoginStoreType() == LoginStore.LOGIN_TYPE_LIBRUS) {
                 items.add(
                         new MaterialAboutSwitchItem(
                                 getString(R.string.settings_register_show_teacher_absences_text),
                                 null,
                                 new IconicsDrawable(activity)
-                                        .icon(CommunityMaterial.Icon.cmd_account_arrow_right)
+                                        .icon(CommunityMaterial.Icon.cmd_account_arrow_right_outline)
                                         .size(IconicsSize.dp(iconSizeDp))
                                         .color(IconicsColor.colorInt(iconColor))
                         )
-                        .setChecked(app.profile.getStudentData("showTeacherAbsences", true))
+                        .setChecked(app.getProfile().getStudentData("showTeacherAbsences", true))
                         .setOnChangeAction((isChecked, tag) -> {
-                            app.profile.putStudentData("showTeacherAbsences", isChecked);
-                            app.profileSaveAsync();
+                            app.getProfile().putStudentData("showTeacherAbsences", isChecked);
+                            app.profileSave();
                             return true;
                         })
                 );
@@ -1106,7 +1080,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     .subTextColor(secondaryTextOnPrimaryBg)
                     .subText(BuildConfig.VERSION_NAME + ", " + BuildConfig.BUILD_TYPE)
                     .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_information)
+                            .icon(CommunityMaterial.Icon2.cmd_information_outline)
                             .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                             .size(IconicsSize.dp(iconSizeDp)))
                     .build();
@@ -1130,7 +1104,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     .textColor(primaryTextOnPrimaryBg)
                     .subTextColor(secondaryTextOnPrimaryBg)
                     .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_shield_half_full)
+                            .icon(CommunityMaterial.Icon2.cmd_shield_outline)
                             .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                             .size(IconicsSize.dp(iconSizeDp)))
                     .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://szkolny.eu/privacy-policy")))
@@ -1142,10 +1116,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     .subTextColor(secondaryTextOnPrimaryBg)
                     .subText(R.string.settings_about_discord_subtext)
                     .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_discord)
+                            .icon(SzkolnyFont.Icon.szf_discord_outline)
                             .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                             .size(IconicsSize.dp(iconSizeDp)))
-                    .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://discord.gg/n9e8pWr")))
+                    .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://szkolny.eu/discord")))
                     .build());
 
             items.add(new MaterialAboutActionItem.Builder()
@@ -1162,20 +1136,19 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 .title(getString(R.string.settings_about_language_dialog_title))
                                 .content(getString(R.string.settings_about_language_dialog_text))
                                 .items(getString(R.string.language_system), getString(R.string.language_polish), getString(R.string.language_english))
-                                .itemsCallbackSingleChoice(app.appConfig.language == null ? 0 : app.appConfig.language.equals("pl") ? 1 : 2, (dialog, itemView, which, text) -> {
+                                .itemsCallbackSingleChoice(app.getConfig().getUi().getLanguage() == null ? 0 : app.getConfig().getUi().getLanguage().equals("pl") ? 1 : 2, (dialog, itemView, which, text) -> {
                                     switch (which) {
                                         case 0:
-                                            app.appConfig.language = null;
+                                            app.getConfig().getUi().setLanguage(null);
                                             initDefaultLocale();
                                             break;
                                         case 1:
-                                            app.appConfig.language = "pl";
+                                            app.getConfig().getUi().setLanguage("pl");
                                             break;
                                         case 2:
-                                            app.appConfig.language = "en";
+                                            app.getConfig().getUi().setLanguage("en");
                                             break;
                                     }
-                                    app.saveConfig("language");
                                     activity.recreate(MainActivity.DRAWER_ITEM_SETTINGS);
                                     return true;
                                 })
@@ -1205,10 +1178,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .positiveText(R.string.ok)
                                     .show();
                         } else {
-                            BootReceiver br = new BootReceiver();
-                            Intent i = new Intent();
-                            i.putExtra("UserChecked", true);
-                            br.onReceive(getContext(), i);
+                            AsyncTask.execute(() -> {
+                                new UpdateWorker.JavaWrapper(app);
+                            });
                         }
                     })
                     .build());
@@ -1221,7 +1193,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             .icon(CommunityMaterial.Icon2.cmd_radar)
                             .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                             .size(IconicsSize.dp(iconSizeDp)))
-                    .setOnClickAction(() -> new ChangelogDialog().show(getActivity().getSupportFragmentManager(), "whats_new"))
+                    .setOnClickAction(() -> new ChangelogDialog(activity, null, null))
                     .build());
 
             items.add(new MaterialAboutActionItem.Builder()
@@ -1260,14 +1232,14 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 })
                 .build());*/
 
-            if (App.devMode) {
+            if (App.Companion.getDebugMode()) {
                 items.add(new MaterialAboutActionItem.Builder()
                         .text(R.string.settings_about_crash_text)
                         .subText(R.string.settings_about_crash_subtext)
                         .textColor(primaryTextOnPrimaryBg)
                         .subTextColor(secondaryTextOnPrimaryBg)
                         .icon(new IconicsDrawable(activity)
-                                .icon(CommunityMaterial.Icon.cmd_bug)
+                                .icon(CommunityMaterial.Icon.cmd_bug_outline)
                                 .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
                                 .size(IconicsSize.dp(iconSizeDp)))
                         .setOnClickAction(() -> {
@@ -1286,10 +1258,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         this.activity = (MainActivity) activityContext;
         this.app = (App) activity.getApplication();
         iconColor = Themes.INSTANCE.getPrimaryTextColor(activityContext);
-        if (app.profile == null)
+        if (app.getProfile() == null)
             return new MaterialAboutList.Builder().build();
-
-        //configurableEndpoints = Edziennik.getApi(app, app.profile.loginStoreType).getConfigurableEndpoints(app.profile);
 
         MaterialAboutList materialAboutList = new MaterialAboutList();
         materialAboutList.addCard(getCardWithItems(null, getProfileCard(false)));
@@ -1329,10 +1299,10 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             Uri uri = result.getUri();
 
             File photoFile = new File(uri.getPath());
-            File destFile = new File(getContext().getFilesDir(),"profile"+ app.profile.getId() +".jpg");
+            File destFile = new File(getContext().getFilesDir(),"profile"+ app.getProfile().getId() +".jpg");
             if (destFile.exists()) {
                 destFile.delete();
-                destFile = new File(getContext().getFilesDir(),"profile"+ app.profile.getId() +".jpg");
+                destFile = new File(getContext().getFilesDir(),"profile"+ app.getProfile().getId() +".jpg");
             }
 
             d(TAG, "Source file: "+photoFile.getAbsolutePath());
@@ -1344,8 +1314,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 try (FileOutputStream out = new FileOutputStream(destFile)) {
                     smallImage.compress(Bitmap.CompressFormat.JPEG, 80, out); // bmp is your Bitmap instance
                     // PNG is a lossless format, the compression factor (100) is ignored
-                    app.profile.setImage(destFile.getAbsolutePath());
-                    app.profileSaveAsync();
+                    app.getProfile().setImage(destFile.getAbsolutePath());
+                    app.profileSave();
                     profileCardTitleItem.setIcon(getProfileDrawable());
                     refreshMaterialAboutList();
                     if (photoFile.exists()) {
@@ -1359,8 +1329,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             else {
                 if (photoFile.renameTo(destFile)) {
                     // success
-                    app.profile.setImage(destFile.getAbsolutePath());
-                    app.profileSaveAsync();
+                    app.getProfile().setImage(destFile.getAbsolutePath());
+                    app.profileSave();
                     profileCardTitleItem.setIcon(getProfileDrawable());
                     refreshMaterialAboutList();
                     //((MainActivity)getActivity()).recreateWithTransition(); // TODO somehow update miniDrawer profile picture
@@ -1376,8 +1346,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             if (uri != null) {
                 String path = getRealPathFromURI(activity, uri);
                 if (path.toLowerCase().endsWith(".gif")) {
-                    app.profile.setImage(path);
-                    app.profileSaveAsync();
+                    app.getProfile().setImage(path);
+                    app.profileSave();
                     profileCardTitleItem.setIcon(getProfileDrawable());
                     refreshMaterialAboutList();
                 }
@@ -1395,10 +1365,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         else if (requestCode == 22 && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             if (uri != null) {
-                app.appConfig.headerBackground = getRealPathFromURI(getContext(), uri);
-                app.saveConfig("headerBackground");
+                app.getConfig().getUi().setHeaderBackground(getRealPathFromURI(getContext(), uri));
                 if (activity != null) {
-                    activity.getDrawer().setAccountHeaderBackground(app.appConfig.headerBackground);
+                    activity.getDrawer().setAccountHeaderBackground(app.getConfig().getUi().getHeaderBackground());
                     activity.getDrawer().open();
                 }
             }
@@ -1406,8 +1375,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         else if (requestCode == 23 && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             if (uri != null) {
-                app.appConfig.appBackground = getRealPathFromURI(getContext(), uri);
-                app.saveConfig("appBackground");
+                app.getConfig().getUi().setAppBackground(getRealPathFromURI(getContext(), uri));
                 if (activity != null) {
                     activity.recreate();
                 }

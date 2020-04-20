@@ -1,8 +1,13 @@
 package pl.szczodrzynski.edziennik.utils.models;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Calendar;
 
-public class Time {
+public class Time implements Comparable<Time> {
     public int hour = 0;
     public int minute = 0;
     public int second = 0;
@@ -25,15 +30,23 @@ public class Time {
 
     public Time parseFromYmdHm(String dateTime)
     {
-        this.hour = Integer.parseInt(dateTime.substring(8, 10));
-        this.minute = Integer.parseInt(dateTime.substring(10, 12));
-        this.second = 0;
+        try {
+            this.hour = Integer.parseInt(dateTime.substring(8, 10));
+            this.minute = Integer.parseInt(dateTime.substring(10, 12));
+            this.second = 0;
+        }
+        catch (Exception ignore) {}
         return this;
     }
 
     public static Time fromYmdHm(String dateTime)
     {
-        return new Time(Integer.parseInt(dateTime.substring(8, 10)), Integer.parseInt(dateTime.substring(10, 12)), 0);
+        try {
+            return new Time(Integer.parseInt(dateTime.substring(8, 10)), Integer.parseInt(dateTime.substring(10, 12)), 0);
+        }
+        catch (Exception e) {
+            return new Time(0, 0, 0);
+        }
     }
 
     public long combineWith(Date date) {
@@ -98,6 +111,13 @@ public class Time {
         }
     }
 
+    public static Time fromValue(int value) {
+        int hours = value / 10000;
+        int minutes = (value - hours * 10000) / 100;
+        int seconds = (value - hours * 10000 - minutes * 100);
+        return new Time(hours, minutes, seconds);
+    }
+
     public long getInMillis() {
         Calendar c = Calendar.getInstance();
         c.set(2000, 0, 1, hour, minute, second);
@@ -105,10 +125,33 @@ public class Time {
         c.set(Calendar.MILLISECOND, 0);
         return c.getTimeInMillis();
     }
+
+    public long getInSeconds() {
+        return hour * 3600 + minute * 60 + second;
+    }
+
+    public int getInMinutes() {
+        return hour * 60 + minute;
+    }
+
+    public static Time fromSeconds(long inSeconds) {
+        int hours = (int) inSeconds / 3600;
+        int minutes = (int) (inSeconds - hours * 3600) / 60;
+        int seconds = (int) (inSeconds - hours * 3600 - minutes * 60);
+        Time time = new Time(hours, minutes, seconds);
+        while (time.hour < 0) time.hour += 24;
+        while (time.hour >= 24) time.hour -= 24;
+        return time;
+    }
+
     public static Time fromMillis(long millis) {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(millis);
         return new Time(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND));
+    }
+
+    public long getInUnix() {
+        return getInMillis() / 1000;
     }
 
     public int getValue()
@@ -118,7 +161,7 @@ public class Time {
 
     public String getStringValue()
     {
-        return (hour < 10 ? "0" : "")+Integer.toString(hour)+(minute < 10 ? "0" : "")+Integer.toString(minute)+(second < 10 ? "0" : "")+Integer.toString(second);
+        return (hour < 10 ? "0" : "")+ hour +(minute < 10 ? "0" : "")+ minute +(second < 10 ? "0" : "")+ second;
     }
 
     public String getStringHM()
@@ -126,18 +169,23 @@ public class Time {
         if (hour < 0) {
             return "";
         }
-        return Integer.toString(hour)+":"+(minute < 10 ? "0" : "")+Integer.toString(minute);
+        return hour +":"+(minute < 10 ? "0" : "")+ minute;
     }
     public String getStringH_M()
     {
         if (hour < 0) {
             return "";
         }
-        return Integer.toString(hour)+"-"+(minute < 10 ? "0" : "")+Integer.toString(minute);
+        return hour +"-"+(minute < 10 ? "0" : "")+ minute;
     }
     public String getStringHMS()
     {
-        return Integer.toString(hour)+":"+(minute < 10 ? "0" : "")+Integer.toString(minute)+":"+(second < 10 ? "0" : "")+Integer.toString(second);
+        return hour +":"+(minute < 10 ? "0" : "")+ minute +":"+(second < 10 ? "0" : "")+ second;
+    }
+
+    public String getStringH_M_S()
+    {
+        return hour +"-"+(minute < 10 ? "0" : "")+ minute +"-"+(second < 10 ? "0" : "")+ second;
     }
 
     public static Time getNow()
@@ -147,20 +195,27 @@ public class Time {
     }
 
     public static Time diff(Time t1, Time t2) {
-        long t1millis = t1.getInMillis();
+        /*long t1millis = t1.getInMillis();
         long t2millis = t2.getInMillis();
         int multiplier = (t1millis > t2millis ? 1 : -1);
         Time diff = Time.fromMillis((t1millis - t2millis)*multiplier);
         diff.hour -= 1;
-        return diff;
+        return diff;*/
+        long t1seconds = t1.getInSeconds();
+        long t2seconds = t2.getInSeconds();
+        int multiplier = (t1seconds > t2seconds ? 1 : -1);
+        return Time.fromSeconds((t1seconds - t2seconds) * multiplier);
     }
 
     public static Time sum(Time t1, Time t2) {
-        long t1millis = t1.getInMillis();
+        /*long t1millis = t1.getInMillis();
         long t2millis = t2.getInMillis();
         Time sum = Time.fromMillis((t1millis + t2millis));
         sum.hour += 1;
-        return sum;
+        return sum;*/
+        long t1seconds = t1.getInSeconds();
+        long t2seconds = t2.getInSeconds();
+        return Time.fromSeconds(t1seconds + t2seconds);
     }
 
     public static boolean inRange(Time startTime, Time endTime)
@@ -174,11 +229,33 @@ public class Time {
     }
 
     @Override
+    public int compareTo(@NonNull Time o) {
+        return this.getValue() - o.getValue();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return obj instanceof Time && this.getValue() == ((Time) obj).getValue();
+    }
+
+    @Override
     public String toString() {
         return "Time{" +
                 "hour=" + hour +
                 ", minute=" + minute +
                 ", second=" + second +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int result = hour;
+        result = 31 * result + minute;
+        result = 31 * result + second;
+        return result;
+    }
+
+    public long minus(@NotNull Time other) {
+        return getInUnix() - other.getInUnix();
     }
 }

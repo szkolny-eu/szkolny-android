@@ -1,10 +1,12 @@
 package pl.szczodrzynski.edziennik.utils.models;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.data.db.modules.grades.GradeFull;
-import pl.szczodrzynski.edziennik.data.db.modules.profiles.Profile;
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
+import pl.szczodrzynski.edziennik.data.db.full.GradeFull;
+import pl.szczodrzynski.edziennik.data.db.entity.Profile;
+import pl.szczodrzynski.edziennik.data.db.entity.Subject;
 
 public class ItemGradesSubjectModel {
     public Profile profile;
@@ -12,18 +14,21 @@ public class ItemGradesSubjectModel {
     public List<GradeFull> grades1;
     public List<GradeFull> grades2;
 
+    public int colorMode;
+    public int yearAverageMode;
+
     public int semester1Unread = 0;
     public int semester2Unread = 0;
 
-    public float semester1Average = -1;
+    public float semester1Average = 0;
     public GradeFull semester1Proposed = null;
     public GradeFull semester1Final = null;
 
-    public float semester2Average = -1;
+    public float semester2Average = 0;
     public GradeFull semester2Proposed = null;
     public GradeFull semester2Final = null;
 
-    public float yearAverage = -1;
+    public float yearAverage = 0;
     public GradeFull yearProposed = null;
     public GradeFull yearFinal = null;
 
@@ -43,8 +48,9 @@ public class ItemGradesSubjectModel {
 
     public boolean expandView = false;
 
-    public static ItemGradesSubjectModel searchModelBySubjectId(List<ItemGradesSubjectModel> subjectList, long id) {
-        for (ItemGradesSubjectModel subjectModel: subjectList) {
+    public static @Nullable
+    ItemGradesSubjectModel searchModelBySubjectId(List<ItemGradesSubjectModel> subjectList, long id) {
+        for (ItemGradesSubjectModel subjectModel : subjectList) {
             if (subjectModel.subject != null && subjectModel.subject.id == id) {
                 return subjectModel;
             }

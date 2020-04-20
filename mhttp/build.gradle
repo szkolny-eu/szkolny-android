@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion setup.compileSdk
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion setup.targetSdk
         consumerProguardFiles 'proguard-rules.pro'
         versionCode 1
         versionName PROJ_VERSION
@@ -40,7 +40,7 @@ android {
 }
 
 dependencies {
-    compileOnly "androidx.appcompat:appcompat:${androidXAppCompat}"
+    compileOnly "androidx.appcompat:appcompat:${versions.appcompat}"
     compileOnly 'io.reactivex.rxjava2:rxjava:2.1.3'
     api 'com.squareup.okhttp3:okhttp:3.12.0'
     api 'com.google.code.gson:gson:2.8.5'

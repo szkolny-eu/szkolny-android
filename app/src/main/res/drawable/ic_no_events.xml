@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2019-12-16.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+  <path
+      android:pathData="M6.668,52L6.668,20L57.332,20L57.332,52C57.332,54.9453 54.9453,57.332 52,57.332L12,57.332C9.0547,57.332 6.668,54.9453 6.668,52"
+      android:fillColor="#DCEDC8"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M57.332,14.668L57.332,22.668L6.668,22.668L6.668,14.668C6.668,11.7227 9.0547,9.332 12,9.332L52,9.332C54.9453,9.332 57.332,11.7227 57.332,14.668"
+      android:fillColor="#4CAF50"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M48,14.668C48,16.875 46.2109,18.668 44,18.668C41.7891,18.668 40,16.875 40,14.668C40,12.457 41.7891,10.668 44,10.668C46.2109,10.668 48,12.457 48,14.668"
+      android:fillColor="#2E7D32"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M24,14.668C24,16.875 22.2109,18.668 20,18.668C17.7891,18.668 16,16.875 16,14.668C16,12.457 17.7891,10.668 20,10.668C22.2109,10.668 24,12.457 24,14.668"
+      android:fillColor="#2E7D32"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M44,5.332C42.5273,5.332 41.332,6.5273 41.332,8L41.332,14.668C41.332,16.1367 42.5273,17.332 44,17.332C45.4727,17.332 46.668,16.1367 46.668,14.668L46.668,8C46.668,6.5273 45.4727,5.332 44,5.332"
+      android:fillColor="#B0BEC5"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M20,5.332C18.5273,5.332 17.332,6.5273 17.332,8L17.332,14.668C17.332,16.1367 18.5273,17.332 20,17.332C21.4727,17.332 22.668,16.1367 22.668,14.668L22.668,8C22.668,6.5273 21.4727,5.332 20,5.332"
+      android:fillColor="#B0BEC5"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M42.3203,29.4102L30.3398,41.4063L24.6289,35.707L21.332,39.0078L30.3477,48L45.6211,32.707Z"
+      android:fillColor="#4CAF50"
+      android:fillAlpha="1"
+      android:fillType="nonZero"
+      android:strokeColor="#00000000"/>
+</vector>

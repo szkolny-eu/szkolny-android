@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2019-11-15.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/freeDayLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:drawableTopCompat="@drawable/ic_sunbed"
+        android:drawablePadding="16dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/timetable_free_day_title"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/timetable_free_day_text"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/freeDayText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        tools:text="Dzień wolny dla szkoły z puli dyrektorskiej z okazji obchodów Światowego Dnia Wtorku w mieście Poznań i na przedmieśiach" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/freeDayShowTimetable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/timetable_free_day_show" />
+
+</LinearLayout>

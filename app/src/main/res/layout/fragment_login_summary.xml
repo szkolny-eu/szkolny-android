@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -61,37 +61,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="16dp" />
 
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/profileListView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginRight="24dp"
+                        android:clipToPadding="false"
+                        tools:listitem="@layout/row_login_profile_list_item"
+                        tools:itemCount="10">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/profileListView"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginLeft="24dp"
-                            android:layout_marginRight="24dp"
-                            android:layout_weight="1">
-
-                        </androidx.recyclerview.widget.RecyclerView>
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/registerMeSwitch"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="24dp"
-                            android:layout_marginRight="24dp"
-                            android:checked="true"
-                            android:paddingTop="16dp"
-                            android:paddingBottom="16dp"
-                            android:text="@string/login_allow_registration" />
-
-                    </LinearLayout>
+                    </androidx.recyclerview.widget.RecyclerView>
 
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/registerMeSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:checked="true"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/login_allow_registration" />
 
         <LinearLayout
             android:layout_width="match_parent"

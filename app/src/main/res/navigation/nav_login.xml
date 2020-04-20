@@ -16,14 +16,14 @@
             android:id="@+id/action_loginTypeFragment_to_loginLibrusFragment"
             app:destination="@id/loginLibrusFragment" />
         <action
+            android:id="@+id/action_loginTypeFragment_to_loginLibrusJstFragment"
+            app:destination="@id/loginLibrusJstFragment" />
+        <action
             android:id="@+id/action_loginTypeFragment_to_loginVulcanFragment"
             app:destination="@id/loginVulcanFragment" />
         <action
             android:id="@+id/action_loginTypeFragment_to_loginIuczniowieFragment"
             app:destination="@id/loginIuczniowieFragment" />
-        <action
-            android:id="@+id/action_loginTypeFragment_to_loginMigrationFragment"
-            app:destination="@id/loginMigrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginMobidziennikFragment"
@@ -47,6 +47,15 @@
             app:destination="@id/loginLibrusHelpFragment" />
         <action
             android:id="@+id/action_loginLibrusFragment_to_loginProgressFragment"
+            app:destination="@id/loginProgressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginLibrusJstFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusJstFragment"
+        android:label="fragment_login_librus_jst"
+        tools:layout="@layout/fragment_login_librus_jst" >
+        <action
+            android:id="@+id/action_loginLibrusJstFragment_to_loginProgressFragment"
             app:destination="@id/loginProgressFragment" />
     </fragment>
     <fragment
@@ -117,6 +126,18 @@
             app:destination="@id/loginProgressFragment" />
     </fragment>
     <fragment
+        android:id="@+id/loginEdudziennikFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginEdudziennikFragment"
+        android:label="fragment_login_edudziennik"
+        tools:layout="@layout/fragment_login_edudziennik" >
+        <!--<action
+            android:id="@+id/action_loginLibrusFragment_to_loginLibrusHelpFragment"
+            app:destination="@id/loginLibrusHelpFragment" />-->
+        <action
+            android:id="@+id/action_loginEdudziennikFragment_to_loginProgressFragment"
+            app:destination="@id/loginProgressFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/loginVulcanHelpFragment"
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginVulcanHelpFragment"
         android:label="fragment_login_vulcan_help"
@@ -131,20 +152,6 @@
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginFinishFragment"
         android:label="fragment_login_finish"
         tools:layout="@layout/fragment_login_finish" />
-    <fragment
-        android:id="@+id/loginMigrationFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginMigrationFragment"
-        android:label="fragment_login_migration"
-        tools:layout="@layout/fragment_login_migration" >
-        <action
-            android:id="@+id/action_loginMigrationFragment_to_loginMigrationSyncFragment"
-            app:destination="@id/loginMigrationSyncFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginMigrationSyncFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginMigrationSyncFragment"
-        android:label="fragment_login_migration_sync"
-        tools:layout="@layout/fragment_login_migration_sync" />
     <fragment
         android:id="@+id/loginSyncErrorFragment"
         android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginSyncErrorFragment"

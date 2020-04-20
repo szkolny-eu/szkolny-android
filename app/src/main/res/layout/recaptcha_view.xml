@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-1-7.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingTop="24dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="#f9f9f9"
+            app:cardForegroundColor="@android:color/transparent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/checkbox"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/recaptcha_checkbox_border"
+                    android:foreground="?selectableItemBackgroundBorderless">
+
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="152dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Nie jestem robotem"
+                    android:textColor="@android:color/black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="13dp"
+                    android:paddingRight="13dp"
+                    android:orientation="vertical"
+                    android:gravity="end">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="26dp"
+                        android:layout_marginStart="26dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginLeft="13dp"
+                            android:layout_marginRight="13dp"
+                            app:srcCompat="@drawable/recaptcha"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="reCAPTCHA"
+                            android:textColor="#555"
+                            android:textSize="10sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prywatność - Warunki"
+                        android:textColor="#555"
+                        android:textSize="8dp"
+                        android:singleLine="true"
+                        android:visibility="invisible"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/recaptcha_card_border"/>
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
+</layout>

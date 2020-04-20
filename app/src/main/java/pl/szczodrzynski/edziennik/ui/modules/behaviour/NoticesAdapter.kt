@@ -9,21 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
-import com.mikepenz.iconics.IconicsDrawable
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.iconics.utils.colorRes
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.modules.notices.Notice
-import pl.szczodrzynski.edziennik.data.db.modules.notices.NoticeFull
-import pl.szczodrzynski.edziennik.utils.models.Date
-
-import pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
+import pl.szczodrzynski.edziennik.data.db.entity.Notice
+import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
 import pl.szczodrzynski.edziennik.utils.Utils.bs
+import pl.szczodrzynski.edziennik.utils.models.Date
 
 class NoticesAdapter//getting the context and product list with constructor
 (private val context: Context, var noticeList: List<NoticeFull>) : RecyclerView.Adapter<NoticesAdapter.ViewHolder>() {
@@ -40,7 +39,7 @@ class NoticesAdapter//getting the context and product list with constructor
 
         val notice = noticeList[position]
 
-        if (app.profile.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK) {
+        if (app.profile.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK && false) {
             holder.noticesItemReason.text = bs(null, notice.category, "\n") + notice.text
             holder.noticesItemTeacherName.text = app.getString(R.string.notices_points_format, notice.teacherFullName, if (notice.points > 0) "+" + notice.points else notice.points)
         } else {
@@ -50,15 +49,15 @@ class NoticesAdapter//getting the context and product list with constructor
         holder.noticesItemAddedDate.text = Date.fromMillis(notice.addedDate).formattedString
 
         if (notice.type == Notice.TYPE_POSITIVE) {
-            holder.noticesItemType.setImageDrawable(IconicsDrawable(context, CommunityMaterial.Icon2.cmd_plus_circle)
+            holder.noticesItemType.setImageDrawable(IconicsDrawable(context, CommunityMaterial.Icon2.cmd_plus_circle_outline)
                     .colorRes(R.color.md_green_600)
                     .sizeDp(36))
         } else if (notice.type == Notice.TYPE_NEGATIVE) {
-            holder.noticesItemType.setImageDrawable(IconicsDrawable(context, CommunityMaterial.Icon.cmd_alert_decagram)
+            holder.noticesItemType.setImageDrawable(IconicsDrawable(context, CommunityMaterial.Icon.cmd_alert_decagram_outline)
                     .colorRes(R.color.md_red_600)
                     .sizeDp(36))
         } else {
-            holder.noticesItemType.setImageDrawable(IconicsDrawable(context, CommunityMaterial.Icon2.cmd_message_outline)
+            holder.noticesItemType.setImageDrawable(IconicsDrawable(context, SzkolnyFont.Icon.szf_message_processing_outline)
                     .colorRes(R.color.md_blue_500)
                     .sizeDp(36))
         }

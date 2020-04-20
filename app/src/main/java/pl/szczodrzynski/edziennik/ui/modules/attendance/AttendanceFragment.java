@@ -21,11 +21,8 @@ import androidx.core.graphics.ColorUtils;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.danimahardhika.cafebar.CafeBar;
-import com.mikepenz.iconics.IconicsColor;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
 import java.text.DecimalFormat;
@@ -37,23 +34,22 @@ import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
-import pl.szczodrzynski.edziennik.data.db.modules.attendance.AttendanceFull;
-import pl.szczodrzynski.edziennik.data.db.modules.subjects.Subject;
+import pl.szczodrzynski.edziennik.data.db.entity.Subject;
+import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentAttendanceBinding;
+import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration;
 import pl.szczodrzynski.edziennik.utils.Themes;
-import pl.szczodrzynski.edziennik.utils.models.Date;
-import pl.szczodrzynski.edziennik.utils.models.Week;
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem;
 
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_ABSENT_EXCUSED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_BELATED_EXCUSED;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_PRESENT;
-import static pl.szczodrzynski.edziennik.data.db.modules.attendance.Attendance.TYPE_RELEASED;
-import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_MOBIDZIENNIK;
-import static pl.szczodrzynski.edziennik.data.db.modules.login.LoginStore.LOGIN_TYPE_VULCAN;
-import static pl.szczodrzynski.edziennik.data.db.modules.metadata.Metadata.TYPE_ATTENDANCE;
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_ABSENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_ABSENT_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_BELATED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_BELATED_EXCUSED;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_PRESENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_RELEASED;
+import static pl.szczodrzynski.edziennik.data.db.entity.LoginStore.LOGIN_TYPE_VULCAN;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ATTENDANCE;
 
 public class AttendanceFragment extends Fragment {
 
@@ -79,8 +75,6 @@ public class AttendanceFragment extends Fragment {
             return null;
         app = (App) activity.getApplication();
         getContext().getTheme().applyStyle(Themes.INSTANCE.getAppTheme(), true);
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false);
         // activity, context and profile is valid
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_attendance, container, false);
         b.refreshLayout.setParent(activity.getSwipeRefreshLayout());
@@ -89,16 +83,16 @@ public class AttendanceFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        if (app == null || activity == null || b == null || !isAdded())
             return;
 
         activity.getBottomSheet().prependItems(
                 new BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_as_read)
-                        .withIcon(CommunityMaterial.Icon.cmd_eye_check)
+                        .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            AsyncTask.execute(() -> app.db.metadataDao().setAllSeen(App.profileId, TYPE_ATTENDANCE, true));
+                            AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), TYPE_ATTENDANCE, true));
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                         })
         );
@@ -123,7 +117,7 @@ public class AttendanceFragment extends Fragment {
             popupMenu.show();
         }));
 
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK) {
+        /*if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK) {
             long attendanceLastSync = app.profile.getStudentData("attendanceLastSync", (long)0);
             if (attendanceLastSync == 0) {
                 attendanceLastSync = app.profile.getSemesterStart(1).getInMillis();
@@ -133,7 +127,7 @@ public class AttendanceFragment extends Fragment {
                 CafeBar.builder(activity)
                         .to(activity.getNavView().getCoordinator())
                         .content(R.string.sync_old_data_info)
-                        .icon(new IconicsDrawable(activity).icon(CommunityMaterial.Icon2.cmd_sync).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.INSTANCE.getPrimaryTextColor(activity))))
+                        .icon(new IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_download_outline).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.INSTANCE.getPrimaryTextColor(activity))))
                         .positiveText(R.string.refresh)
                         .positiveColor(0xff4caf50)
                         .negativeText(R.string.ok)
@@ -153,48 +147,56 @@ public class AttendanceFragment extends Fragment {
                         .floating(true)
                         .show();
             }
-        }
+        }*/
 
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK && false) {
-            b.attendanceSummarySubject.setVisibility(View.GONE);
-        }
-        else {
-            b.attendanceSummarySubject.setOnClickListener((v -> {
-                AsyncTask.execute(() -> {
-                    List<Subject> subjectList = app.db.subjectDao().getAllNow(App.profileId);
-                    PopupMenu popupMenu = new PopupMenu(activity, b.attendanceSummarySubject, Gravity.END);
-                    popupMenu.getMenu().add(0, -1, 0, R.string.subject_filter_disabled);
-                    int index = 0;
-                    DecimalFormat format = new DecimalFormat("0.00");
-                    for (Subject subject: subjectList) {
-                        int total = subjectTotalCount.get(subject.id, new int[3])[displayMode];
-                        int absent = subjectAbsentCount.get(subject.id, new int[3])[displayMode];
-                        if (total == 0)
-                            continue;
-                        int present = total - absent;
-                        float percentage = (float)present / (float)total * 100.0f;
-                        String percentageStr = format.format(percentage);
-                        popupMenu.getMenu().add(0, (int)subject.id, index++, getString(R.string.subject_filter_format, subject.longName, percentageStr));
-                    }
-                    popupMenu.setOnMenuItemClickListener((item -> {
-                        subjectIdFilter = item.getItemId();
-                        b.attendanceSummarySubject.setText(item.getTitle().toString().replaceAll("\\s-\\s[0-9]{1,2}\\.[0-9]{1,2}%", ""));
-                        updateList();
-                        return true;
-                    }));
-                    new Handler(activity.getMainLooper()).post(popupMenu::show);
-                });
+        b.attendanceSummarySubject.setOnClickListener((v -> {
+            AsyncTask.execute(() -> {
+                List<Subject> subjectList = App.db.subjectDao().getAllNow(App.Companion.getProfileId());
+                PopupMenu popupMenu = new PopupMenu(activity, b.attendanceSummarySubject, Gravity.END);
+                popupMenu.getMenu().add(0, -1, 0, R.string.subject_filter_disabled);
+                int index = 0;
+                DecimalFormat format = new DecimalFormat("0.00");
+                for (Subject subject: subjectList) {
+                    int total = subjectTotalCount.get(subject.id, new int[3])[displayMode];
+                    int absent = subjectAbsentCount.get(subject.id, new int[3])[displayMode];
+                    if (total == 0)
+                        continue;
+                    int present = total - absent;
+                    float percentage = (float)present / (float)total * 100.0f;
+                    String percentageStr = format.format(percentage);
+                    popupMenu.getMenu().add(0, (int)subject.id, index++, getString(R.string.subject_filter_format, subject.longName, percentageStr));
+                }
+                popupMenu.setOnMenuItemClickListener((item -> {
+                    subjectIdFilter = item.getItemId();
+                    b.attendanceSummarySubject.setText(item.getTitle().toString().replaceAll("\\s-\\s[0-9]{1,2}\\.[0-9]{1,2}%", ""));
+                    updateList();
+                    return true;
+                }));
+                new Handler(activity.getMainLooper()).post(popupMenu::show);
+            });
 
-            }));
-        }
+        }));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         b.attendanceView.setHasFixedSize(true);
         b.attendanceView.setLayoutManager(linearLayoutManager);
+        b.attendanceView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
 
-        app.db.attendanceDao().getAll(App.profileId).observe(this, attendance -> {
-            if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        b.attendanceView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (recyclerView.canScrollVertically(-1)) {
+                    b.refreshLayout.setEnabled(false);
+                }
+                if (!recyclerView.canScrollVertically(-1) && newState == SCROLL_STATE_IDLE) {
+                    b.refreshLayout.setEnabled(true);
+                }
+            }
+        });
+
+        App.db.attendanceDao().getAll(App.Companion.getProfileId()).observe(this, attendance -> {
+            if (app == null || activity == null || b == null || !isAdded())
                 return;
 
             if (attendance == null) {
@@ -215,7 +217,7 @@ public class AttendanceFragment extends Fragment {
         subjectTotalCount = new LongSparseArray<>();
         subjectAbsentCount = new LongSparseArray<>();
         for (AttendanceFull attendance: attendanceList) {
-            if (app.profile.getLoginStoreType() == LOGIN_TYPE_VULCAN && attendance.type == TYPE_RELEASED)
+            if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_VULCAN && attendance.type == TYPE_RELEASED)
                 continue;
             int[] subjectTotal = subjectTotalCount.get(attendance.subjectId, new int[3]);
             int[] subjectAbsent = subjectAbsentCount.get(attendance.subjectId, new int[3]);
@@ -234,7 +236,7 @@ public class AttendanceFragment extends Fragment {
     }
 
     private void updateList() {
-        if (app == null || app.profile == null || activity == null || b == null || !isAdded())
+        if (app == null || activity == null || b == null || !isAdded())
             return;
 
         int presentCount = 0;
@@ -312,10 +314,7 @@ public class AttendanceFragment extends Fragment {
         float attendancePercentage;
 
         // in Mobidziennik there are no TYPE_PRESENT records so we cannot calculate the percentage
-        if (app.profile.getLoginStoreType() == LOGIN_TYPE_MOBIDZIENNIK && false) {
-            attendancePercentage = app.profile.getAttendancePercentage();
-        }
-        else if (app.profile.getLoginStoreType() == LOGIN_TYPE_VULCAN) {
+        if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_VULCAN) {
             float allCount = presentCount + absentCount + belatedCount; // do not count releases
             float present = allCount - absentCount;
             attendancePercentage = present / allCount * 100.0f;

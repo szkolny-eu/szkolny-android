@@ -97,7 +97,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/dialog_event_manual_share_first_notice"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"

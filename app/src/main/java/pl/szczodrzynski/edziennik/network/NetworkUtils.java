@@ -22,7 +22,7 @@ public class NetworkUtils {
     public boolean isOnline() {
         assert app != null;
         ConnectivityManager cm =
-                (ConnectivityManager) app.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
         assert cm != null;
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
@@ -30,7 +30,7 @@ public class NetworkUtils {
 
     public int checkBackgroundDataRestricted() {
 
-        ConnectivityManager connMgr = (ConnectivityManager) app.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             assert connMgr != null;

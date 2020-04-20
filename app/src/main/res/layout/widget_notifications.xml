@@ -1,6 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,14 +33,6 @@
                 android:text="@string/widget_notifications_title" />
 
         </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/widgetNotificationsRefresh"
-            android:layout_width="45.0dip"
-            android:layout_height="45.0dip"
-            android:layout_gravity="end|center"
-            android:background="?android:selectableItemBackground"
-            android:contentDescription="@string/widget_refresh" />
 
         <ImageButton
             android:id="@+id/widgetNotificationsSync"

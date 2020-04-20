@@ -4,74 +4,107 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.databinding.HomeworkListBinding
-import pl.szczodrzynski.edziennik.data.db.modules.events.Event
-import pl.szczodrzynski.edziennik.getInt
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.databinding.HomeworkListFragmentBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.edziennik.utils.Themes
+import kotlin.coroutines.CoroutineContext
 
-class HomeworkListFragment : Fragment() {
+class HomeworkListFragment : LazyFragment(), CoroutineScope {
+    companion object {
+        private const val TAG = "HomeworkListFragment"
+    }
 
     private lateinit var app: App
     private lateinit var activity: MainActivity
-    private lateinit var b: HomeworkListBinding
+    private lateinit var b: HomeworkListFragmentBinding
 
-    private var homeworkDate = HomeworkDate.CURRENT
+    private val job: Job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    // local/private variables go here
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
-        if (context == null)
-            return null
+        context ?: return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false)
-        // activity, context and profile is valid
-        b = HomeworkListBinding.inflate(inflater)
+        b = HomeworkListFragmentBinding.inflate(inflater)
         return b.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (app.profile == null || !isAdded)
-            return
+    override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
+        val homeworkDate = arguments.getInt("homeworkDate", HomeworkDate.CURRENT)
 
-        if (arguments != null) {
-            homeworkDate = arguments.getInt("homeworkDate", HomeworkDate.CURRENT)
-        }
-
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.reverseLayout = true
-        layoutManager.stackFromEnd = true
-
-        b.homeworkView.setHasFixedSize(true)
-        b.homeworkView.layoutManager = layoutManager
-
+        val today = Date.getToday()
         val filter = when(homeworkDate) {
-            HomeworkDate.CURRENT -> "eventDate > '" + Date.getToday().stringY_m_d + "'"
-            else -> "eventDate <= '" + Date.getToday().stringY_m_d + "'"
+            HomeworkDate.CURRENT -> "eventDate >= '${today.stringY_m_d}' AND eventIsDone = 0"
+            else -> "(eventDate < '${today.stringY_m_d}' OR eventIsDone = 1)"
         }
 
-        app.db.eventDao()
-                .getAllByType(App.profileId, Event.TYPE_HOMEWORK, filter)
-                .observe(this, Observer { homeworkList ->
-                    if (app.profile == null || !isAdded) return@Observer
+        val adapter = EventListAdapter(
+                activity,
+                showWeekDay = true,
+                showDate = true,
+                showType = false,
+                showTime = true,
+                showSubject = true,
+                markAsSeen = true,
+                onItemClick = {
+                    EventDetailsDialog(
+                            activity,
+                            it
+                    )
+                },
+                onEventEditClick = {
+                    EventManualDialog(
+                            activity,
+                            it.profileId,
+                            editingEvent = it
+                    )
+                }
+        )
 
-                    if (homeworkList != null && homeworkList.size > 0) {
-                        val adapter = HomeworkAdapter(context, homeworkList)
-                        b.homeworkView.adapter = adapter
-                        b.homeworkView.visibility = View.VISIBLE
-                        b.homeworkNoData.visibility = View.GONE
-                    } else {
-                        b.homeworkView.visibility = View.GONE
-                        b.homeworkNoData.visibility = View.VISIBLE
+        app.db.eventDao().getAllByType(App.profileId, Event.TYPE_HOMEWORK, filter).observe(this@HomeworkListFragment, Observer { items ->
+            if (!isAdded) return@Observer
+
+            // load & configure the adapter
+            adapter.items = items
+            if (items.isNotNullNorEmpty() && b.list.adapter == null) {
+                b.list.adapter = adapter
+                b.list.apply {
+                    setHasFixedSize(true)
+                    layoutManager = LinearLayoutManager(context).apply {
+                        reverseLayout = homeworkDate == HomeworkDate.PAST
+                        stackFromEnd = homeworkDate == HomeworkDate.PAST
                     }
-                })
-    }
+                    addItemDecoration(SimpleDividerItemDecoration(context))
+                    addOnScrollListener(onScrollListener)
+                }
+            }
+            adapter.notifyDataSetChanged()
+            setSwipeToRefresh(items.isNullOrEmpty())
+
+            // show/hide relevant views
+            b.progressBar.isVisible = false
+            if (items.isNullOrEmpty()) {
+                b.list.isVisible = false
+                b.noData.isVisible = true
+            } else {
+                b.list.isVisible = true
+                b.noData.isVisible = false
+            }
+        })
+    }; return true }
 }
