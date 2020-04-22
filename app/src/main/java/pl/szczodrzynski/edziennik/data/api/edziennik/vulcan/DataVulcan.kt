@@ -17,9 +17,10 @@ import pl.szczodrzynski.edziennik.values
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
-    fun isWebMainLoginValid() = currentSemesterEndDate-30 > currentTimeUnix()
-            && apiFingerprint[symbol].isNotNullNorEmpty()
-            && apiPrivateKey[symbol].isNotNullNorEmpty()
+    fun isWebMainLoginValid() = webExpiryTime-30 > currentTimeUnix()
+            && webAuthCookie.isNotNullNorEmpty()
+            && webHost.isNotNullNorEmpty()
+            && webType.isNotNullNorEmpty()
             && symbol.isNotNullNorEmpty()
     fun isApiLoginValid() = currentSemesterEndDate-30 > currentTimeUnix()
             && apiFingerprint[symbol].isNotNullNorEmpty()

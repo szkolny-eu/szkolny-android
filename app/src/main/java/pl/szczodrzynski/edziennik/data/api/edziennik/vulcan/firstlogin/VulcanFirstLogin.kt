@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanWebMain
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.CufsCertificate
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginWebMain
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
@@ -32,17 +33,18 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
     init {
         if (data.loginStore.mode == LOGIN_MODE_VULCAN_WEB) {
             VulcanLoginWebMain(data) {
-                val certificate = web.readCertificate() ?: run {
+                val xml = web.readCertificate() ?: run {
                     data.error(ApiError(TAG, ERROR_VULCAN_WEB_NO_CERTIFICATE))
                     return@VulcanLoginWebMain
                 }
+                val certificate = web.parseCertificate(xml)
 
                 if (data.symbol != null && data.symbol != "default") {
                     tryingSymbols += data.symbol ?: "default"
                 }
                 else {
-                    val cufsCertificate = web.parseCertificate(certificate)
-                    tryingSymbols += cufsCertificate.userInstances
+
+                    tryingSymbols += certificate.userInstances
                 }
 
                 checkSymbol(certificate)
@@ -56,7 +58,7 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
         }
     }
 
-    private fun checkSymbol(certificate: String) {
+    private fun checkSymbol(certificate: CufsCertificate) {
         if (tryingSymbols.isEmpty()) {
             EventBus.getDefault().postSticky(FirstLoginFinishedEvent(profileList, data.loginStore))
             onSuccess()
@@ -80,12 +82,16 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
         // postCertificate returns false if the cert is not valid anymore
         if (!result) {
             data.error(ApiError(TAG, ERROR_VULCAN_WEB_CERTIFICATE_EXPIRED)
-                    .withApiResponse(certificate))
+                    .withApiResponse(certificate.xml))
         }
     }
 
     private fun webRegisterDevice(symbol: String, onSuccess: () -> Unit) {
         web.getStartPage(symbol, postErrors = false) { _, schoolSymbols ->
+            if (schoolSymbols.isEmpty()) {
+                onSuccess()
+                return@getStartPage
+            }
             data.symbol = symbol
             val schoolSymbol = data.schoolSymbol ?: schoolSymbols.firstOrNull()
             web.webGetJson(TAG, VulcanWebMain.WEB_NEW, "$schoolSymbol/$VULCAN_WEB_ENDPOINT_REGISTER_DEVICE") { result, _ ->

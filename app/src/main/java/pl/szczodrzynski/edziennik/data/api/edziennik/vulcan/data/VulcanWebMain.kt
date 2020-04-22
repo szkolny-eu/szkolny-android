@@ -44,9 +44,9 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
         Jspoon.create().adapter(CufsCertificate::class.java)
     }
 
-    fun saveCertificate(certificate: String) {
+    fun saveCertificate(xml: String) {
         val file = File(data.app.filesDir, "cert_"+(data.webUsername ?: data.webEmail)+".xml")
-        file.writeText(certificate)
+        file.writeText(xml)
     }
 
     fun readCertificate(): String? {
@@ -56,20 +56,20 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
         return null
     }
 
-    fun parseCertificate(certificate: String): CufsCertificate {
-        val xml = certificate
+    fun parseCertificate(xml: String): CufsCertificate {
+        val xmlParsed = xml
                 .replace("<[a-z]+?:".toRegex(), "<")
                 .replace("</[a-z]+?:".toRegex(), "</")
                 .replace("\\sxmlns.*?=\".+?\"".toRegex(), "")
 
-        return certificateAdapter.fromHtml(xml)
+        return certificateAdapter.fromHtml(xmlParsed).also {
+            it.xml = xml
+        }
     }
 
-    fun postCertificate(certificate: String, symbol: String, onResult: (symbol: String, state: Int) -> Unit): Boolean {
-        val cufsCertificate = parseCertificate(certificate)
-
+    fun postCertificate(certificate: CufsCertificate, symbol: String, onResult: (symbol: String, state: Int) -> Unit): Boolean {
         // check if the certificate is valid
-        if (Date.fromIso(cufsCertificate.expiryDate) < System.currentTimeMillis())
+        if (Date.fromIso(certificate.expiryDate) < System.currentTimeMillis())
             return false
 
         val callback = object : TextCallbackHandler() {
@@ -86,6 +86,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                 if (!validateCallback(text, response, jsonResponse = false)) {
                     return
                 }
+                data.webExpiryTime = Date.fromIso(certificate.expiryDate) / 1000L
                 onResult(symbol, STATE_SUCCESS)
             }
 
@@ -102,8 +103,8 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                 .userAgent(SYSTEM_USER_AGENT)
                 .post()
                 .addParameter("wa", "wsignin1.0")
-                .addParameter("wctx", cufsCertificate.targetUrl)
-                .addParameter("wresult", certificate)
+                .addParameter("wctx", certificate.targetUrl)
+                .addParameter("wresult", certificate.xml)
                 .allowErrorCode(HttpURLConnection.HTTP_BAD_REQUEST)
                 .allowErrorCode(HttpURLConnection.HTTP_FORBIDDEN)
                 .allowErrorCode(HttpURLConnection.HTTP_UNAUTHORIZED)
@@ -138,7 +139,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                 data.webPermissions = Regexes.VULCAN_WEB_PERMISSIONS.find(text)?.let { it[1] }
 
                 val schoolSymbols = mutableListOf<String>()
-                val clientUrl = "https://uonetplus-uczen.${data.webHost}/$symbol/"
+                val clientUrl = "://uonetplus-uczen.${data.webHost}/$symbol/"
                 var clientIndex = text.indexOf(clientUrl)
                 var count = 0
                 while (clientIndex != -1 && count < 100) {
@@ -148,6 +149,17 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     schoolSymbols += schoolSymbol
                     clientIndex = text.indexOf(clientUrl, startIndex = endIndex)
                     count++
+                }
+                schoolSymbols.removeAll {
+                    it.toLowerCase() == "default"
+                            || !it.matches(Regexes.VULCAN_WEB_SYMBOL_VALIDATE)
+                }
+                
+                if (postErrors && schoolSymbols.isEmpty()) {
+                    data.error(ApiError(TAG, ERROR_VULCAN_WEB_NO_SCHOOLS)
+                            .withResponse(response)
+                            .withApiResponse(text))
+                    return
                 }
 
                 onSuccess(text, schoolSymbols)
@@ -209,7 +221,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
             webType: Int,
             endpoint: String,
             method: Int = POST,
-            parameters: Map<String, Any> = emptyMap(),
+            parameters: Map<String, Any?> = emptyMap(),
             onSuccess: (json: JsonObject, response: Response?) -> Unit
     ) {
         val url = "https://" + when (webType) {

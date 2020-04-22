@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanWebMain
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.fslogin.FSLogin
 import pl.szczodrzynski.fslogin.realm.CufsRealm
 
@@ -82,35 +83,20 @@ class VulcanLoginWebMain(val data: DataVulcan, val onSuccess: () -> Unit) {
             else -> return false
         }
 
+        val certificate = web.readCertificate()?.let { web.parseCertificate(it) }
+        if (certificate != null && Date.fromIso(certificate.expiryDate) > System.currentTimeMillis()) {
+            useCertificate(certificate)
+            return true
+        }
+
         val fsLogin = FSLogin(data.app.http, debug = App.debugMode)
         fsLogin.performLogin(
                 realm = realm,
                 username = data.webUsername ?: data.webEmail ?: return false,
                 password = data.webPassword ?: return false,
-                onSuccess = { certificate ->
-                    web.saveCertificate(certificate.wresult)
-
-                    // auto-post certificate when not first login
-                    if (data.profile != null && data.symbol != null && data.symbol != "default") {
-                        val result = web.postCertificate(certificate.wresult, data.symbol ?: "default") { _, state ->
-                            when (state) {
-                                VulcanWebMain.STATE_SUCCESS -> {
-                                    web.getStartPage { _, _ -> onSuccess() }
-                                }
-                                VulcanWebMain.STATE_NO_REGISTER -> data.error(ApiError(TAG, ERROR_VULCAN_WEB_NO_REGISTER))
-                                VulcanWebMain.STATE_LOGGED_OUT -> data.error(ApiError(TAG, ERROR_VULCAN_WEB_LOGGED_OUT))
-                            }
-                        }
-                        // postCertificate returns false if the cert is not valid anymore
-                        if (!result) {
-                            data.error(ApiError(TAG, ERROR_VULCAN_WEB_CERTIFICATE_EXPIRED)
-                                    .withApiResponse(certificate.wresult))
-                        }
-                    }
-                    else {
-                        // first login - succeed immediately
-                        onSuccess()
-                    }
+                onSuccess = { fsCertificate ->
+                    web.saveCertificate(fsCertificate.wresult)
+                    useCertificate(web.parseCertificate(fsCertificate.wresult))
                 },
                 onFailure = { errorText ->
                     // TODO
@@ -119,5 +105,29 @@ class VulcanLoginWebMain(val data: DataVulcan, val onSuccess: () -> Unit) {
         )
 
         return true
+    }
+
+    private fun useCertificate(certificate: CufsCertificate) {
+        // auto-post certificate when not first login
+        if (data.profile != null && data.symbol != null && data.symbol != "default") {
+            val result = web.postCertificate(certificate, data.symbol ?: "default") { _, state ->
+                when (state) {
+                    VulcanWebMain.STATE_SUCCESS -> {
+                        web.getStartPage { _, _ -> onSuccess() }
+                    }
+                    VulcanWebMain.STATE_NO_REGISTER -> data.error(ApiError(TAG, ERROR_VULCAN_WEB_NO_REGISTER))
+                    VulcanWebMain.STATE_LOGGED_OUT -> data.error(ApiError(TAG, ERROR_VULCAN_WEB_LOGGED_OUT))
+                }
+            }
+            // postCertificate returns false if the cert is not valid anymore
+            if (!result) {
+                data.error(ApiError(TAG, ERROR_VULCAN_WEB_CERTIFICATE_EXPIRED)
+                        .withApiResponse(certificate.xml))
+            }
+        }
+        else {
+            // first login - succeed immediately
+            onSuccess()
+        }
     }
 }

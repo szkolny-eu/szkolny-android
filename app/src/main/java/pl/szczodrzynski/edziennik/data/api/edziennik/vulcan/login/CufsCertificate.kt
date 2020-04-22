@@ -18,4 +18,6 @@ class CufsCertificate {
 
         @Selector(value = "Attribute[AttributeName=UserInstance] AttributeValue")
         var userInstances: List<String> = listOf()
+
+        var xml = ""
 }
