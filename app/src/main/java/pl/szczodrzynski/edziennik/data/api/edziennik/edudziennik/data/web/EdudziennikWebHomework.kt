@@ -43,7 +43,7 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
                     val subjectName = subjectElement.text()
                     val subject = data.getSubject(subjectId, subjectName)
 
-                    val lessons = data.app.db.timetableDao().getForDateNow(profileId, date)
+                    val lessons = data.app.db.timetableDao().getAllForDateNow(profileId, date)
                     val startTime = lessons.firstOrNull { it.subjectId == subject.id }?.displayStartTime
 
                     val teacherName = homeworkElement.child(2).text()
@@ -72,8 +72,7 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
                             Metadata.TYPE_HOMEWORK,
                             id,
                             profile.empty,
-                            profile.empty,
-                            System.currentTimeMillis()
+                            profile.empty
                     ))
                 }
             }

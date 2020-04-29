@@ -68,6 +68,9 @@ object Regexes {
     }
 
 
+    val MOBIDZIENNIK_ATTENDANCE_TYPES by lazy {
+        """Legenda:.+?normal;">(.+?)</span>""".toRegex(DOT_MATCHES_ALL)
+    }
     val MOBIDZIENNIK_ATTENDANCE_TABLE by lazy {
         """<table .+?id="obecnosci_tabela">(.+?)</table>""".toRegex(DOT_MATCHES_ALL)
     }

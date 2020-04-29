@@ -11,7 +11,12 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBID
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.data.db.entity.Attendance.*
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_ABSENT
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_ABSENT_EXCUSED
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_BELATED
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_PRESENT
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEASED
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_UNKNOWN
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.fixName
@@ -71,6 +76,18 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
 
             val start = System.currentTimeMillis()
 
+            val types = Regexes.MOBIDZIENNIK_ATTENDANCE_TYPES
+                    .find(text)
+                    ?.get(1)
+                    ?.split("<br/>")
+                    ?.map {
+                        it.trimEnd(',')
+                                .split(" ", limit = 2)
+                                .let { it.getOrNull(0) to it.getOrNull(1) }
+                    }
+                    ?.toMap()
+            val typeSymbols = types?.keys?.filterNotNull() ?: listOf()
+
             Regexes.MOBIDZIENNIK_ATTENDANCE_TABLE.findAll(text).forEach { tableResult ->
                 val table = tableResult[1]
                 val lessonDates = mutableListOf<Date>()
@@ -92,14 +109,14 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                         return@forEach
                     ranges.forEach { range ->
                         val lessonDate = dateIterator.next()
-                        val entry = entriesIterator.next()
+                        var entry = entriesIterator.next()
                         if (entry.isBlank())
                             return@forEach
                         val startTime = Time.fromH_m(range[1])
-                        val entryIterator = entry.iterator()
+
                         range[2].split(" / ").mapNotNull { Regexes.MOBIDZIENNIK_ATTENDANCE_LESSON.find(it) }.forEachIndexed { index, lesson ->
                             val topic = lesson[2]
-                            if (topic.startsWith("Lekcja odwołana: ") || !entryIterator.hasNext())
+                            if (topic.startsWith("Lekcja odwołana: ") || entry.isEmpty())
                                 return@forEachIndexed
                             val subjectName = lesson[1]
                             //val team = lesson[3]
@@ -108,39 +125,58 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                             val teacherId = data.teacherList.singleOrNull { it.fullNameLastFirst == teacherName }?.id ?: -1
                             val subjectId = data.subjectList.singleOrNull { it.longName == subjectName }?.id ?: -1
 
-                            val type = when (entryIterator.nextChar()) {
-                                '.' -> TYPE_PRESENT
-                                '|' -> TYPE_ABSENT
-                                '+' -> TYPE_ABSENT_EXCUSED
-                                's' -> TYPE_BELATED
-                                'z' -> TYPE_RELEASED
-                                else -> TYPE_PRESENT
+                            var typeSymbol = ""
+                            for (symbol in typeSymbols) {
+                                if (entry.startsWith(symbol) && symbol.length > typeSymbol.length)
+                                    typeSymbol = symbol
                             }
+                            entry = entry.removePrefix(typeSymbol)
+
+                            val baseType = when (typeSymbol) {
+                                "." -> TYPE_PRESENT
+                                "|" -> TYPE_ABSENT
+                                "+" -> TYPE_ABSENT_EXCUSED
+                                "s" -> TYPE_BELATED
+                                "z" -> TYPE_RELEASED
+                                else -> TYPE_UNKNOWN
+                            }
+                            val typeName = types?.get(typeSymbol) ?: ""
+
+                            val typeShort = when (baseType) {
+                                TYPE_UNKNOWN -> typeSymbol
+                                else -> data.app.attendanceManager.getTypeShort(baseType)
+                            }
+
                             val semester = data.profile?.dateToSemester(lessonDate) ?: 1
 
                             val id = lessonDate.combineWith(startTime) / 6L * 10L + (lesson[0].hashCode() and 0xFFFF) + index
 
                             val attendanceObject = Attendance(
-                                    data.profileId,
-                                    id,
-                                    teacherId,
-                                    subjectId,
-                                    semester,
-                                    topic,
-                                    lessonDate,
-                                    startTime,
-                                    type)
+                                    profileId = profileId,
+                                    id = id,
+                                    baseType = baseType,
+                                    typeName = typeName,
+                                    typeShort = typeShort,
+                                    typeSymbol = typeSymbol,
+                                    typeColor = null,
+                                    date = lessonDate,
+                                    startTime = startTime,
+                                    semester = semester,
+                                    teacherId = teacherId,
+                                    subjectId = subjectId
+                            ).also {
+                                it.lessonTopic = topic
+                            }
 
                             data.attendanceList.add(attendanceObject)
-                            if (type != TYPE_PRESENT) {
+                            if (baseType != TYPE_PRESENT) {
                                 data.metadataList.add(
                                         Metadata(
                                                 data.profileId,
                                                 Metadata.TYPE_ATTENDANCE,
                                                 id,
                                                 data.profile?.empty ?: false,
-                                                data.profile?.empty ?: false,
-                                                System.currentTimeMillis()
+                                                data.profile?.empty ?: false
                                         ))
                             }
                         }

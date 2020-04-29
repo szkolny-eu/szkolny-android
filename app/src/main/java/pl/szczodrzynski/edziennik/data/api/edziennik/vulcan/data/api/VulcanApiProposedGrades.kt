@@ -82,8 +82,7 @@ class VulcanApiProposedGrades(override val data: DataVulcan,
                     Metadata.TYPE_GRADE,
                     gradeObject.id,
                     data.profile?.empty ?: false,
-                    data.profile?.empty ?: false,
-                    System.currentTimeMillis()
+                    data.profile?.empty ?: false
             ))
         }
     }

@@ -36,7 +36,6 @@ public class Metadata {
 
     public boolean seen;
     public boolean notified;
-    public long addedDate;
 
     @Ignore
     public Metadata() {
@@ -45,13 +44,12 @@ public class Metadata {
         this.notified = false;
     }
 
-    public Metadata(int profileId, int thingType, long thingId, boolean seen, boolean notified, long addedDate) {
+    public Metadata(int profileId, int thingType, long thingId, boolean seen, boolean notified) {
         this.profileId = profileId;
         this.thingType = thingType;
         this.thingId = thingId;
         this.seen = seen;
         this.notified = notified;
-        this.addedDate = addedDate;
     }
 
     public String thingType() {
@@ -86,7 +84,6 @@ public class Metadata {
                 ", thingId=" + thingId +
                 ", seen=" + seen +
                 ", notified=" + notified +
-                ", addedDate=" + addedDate +
                 '}';
     }
 }

@@ -51,7 +51,7 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
         withContext(Dispatchers.Default) {
             lessonList.apply {
                 clear()
-                addAll(app.db.timetableDao().getForDateNow(App.profileId, Date.getToday())
+                addAll(app.db.timetableDao().getAllForDateNow(App.profileId, Date.getToday())
                         .filter {
                             it.type != Lesson.TYPE_NO_LESSONS && it.type != Lesson.TYPE_CANCELLED &&
                                     it.type != Lesson.TYPE_SHIFTED_SOURCE

@@ -16,7 +16,6 @@ import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getLong
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.toSparseArray
-import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanApiNotices(override val data: DataVulcan,
                        override val lastSync: Long?,
@@ -41,15 +40,21 @@ class VulcanApiNotices(override val data: DataVulcan,
                 val id = notice.getLong("Id") ?: return@forEach
                 val text = notice.getString("TrescUwagi") ?: return@forEach
                 val teacherId = notice.getLong("IdPracownik") ?: -1
-                val addedDate = Date.fromY_m_d(notice.getString("DataWpisuTekst")).inMillis
+                val addedDate = notice.getLong("DataModyfikacji")?.times(1000) ?: System.currentTimeMillis()
+
+                val categoryId = notice.getLong("IdKategoriaUwag") ?: -1
+                val categoryText = data.noticeTypes[categoryId]?.name ?: ""
 
                 val noticeObject = Notice(
-                        profileId,
-                        id,
-                        text,
-                        profile.currentSemester,
-                        Notice.TYPE_NEUTRAL,
-                        teacherId
+                        profileId = profileId,
+                        id = id,
+                        type = Notice.TYPE_NEUTRAL,
+                        semester = profile.currentSemester,
+                        text = text,
+                        category = categoryText,
+                        points = null,
+                        teacherId = teacherId,
+                        addedDate = addedDate
                 )
 
                 data.noticeList.add(noticeObject)
@@ -58,8 +63,7 @@ class VulcanApiNotices(override val data: DataVulcan,
                         Metadata.TYPE_NOTICE,
                         id,
                         profile.empty,
-                        profile.empty,
-                        addedDate
+                        profile.empty
                 ))
             }
 

@@ -217,21 +217,21 @@ public class AttendanceFragment extends Fragment {
         subjectTotalCount = new LongSparseArray<>();
         subjectAbsentCount = new LongSparseArray<>();
         for (AttendanceFull attendance: attendanceList) {
-            if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_VULCAN && attendance.type == TYPE_RELEASED)
+            if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_VULCAN && attendance.getBaseType() == TYPE_RELEASED)
                 continue;
-            int[] subjectTotal = subjectTotalCount.get(attendance.subjectId, new int[3]);
-            int[] subjectAbsent = subjectAbsentCount.get(attendance.subjectId, new int[3]);
+            int[] subjectTotal = subjectTotalCount.get(attendance.getSubjectId(), new int[3]);
+            int[] subjectAbsent = subjectAbsentCount.get(attendance.getSubjectId(), new int[3]);
 
             subjectTotal[0]++;
-            subjectTotal[attendance.semester]++;
+            subjectTotal[attendance.getSemester()]++;
 
-            if (attendance.type == TYPE_ABSENT || attendance.type == TYPE_ABSENT_EXCUSED) {
+            if (attendance.getBaseType() == TYPE_ABSENT || attendance.getBaseType() == TYPE_ABSENT_EXCUSED) {
                 subjectAbsent[0]++;
-                subjectAbsent[attendance.semester]++;
+                subjectAbsent[attendance.getSemester()]++;
             }
 
-            subjectTotalCount.put(attendance.subjectId, subjectTotal);
-            subjectAbsentCount.put(attendance.subjectId, subjectAbsent);
+            subjectTotalCount.put(attendance.getSubjectId(), subjectTotal);
+            subjectAbsentCount.put(attendance.getSubjectId(), subjectAbsent);
         }
     }
 
@@ -247,13 +247,13 @@ public class AttendanceFragment extends Fragment {
 
         List<AttendanceFull> filteredList = new ArrayList<>();
         for (AttendanceFull attendance: attendanceList) {
-            if (displayMode != MODE_YEAR && attendance.semester != displayMode)
+            if (displayMode != MODE_YEAR && attendance.getSemester() != displayMode)
                 continue;
-            if (subjectIdFilter != -1 && attendance.subjectId != subjectIdFilter)
+            if (subjectIdFilter != -1 && attendance.getSubjectId() != subjectIdFilter)
                 continue;
-            if (attendance.type != TYPE_PRESENT)
+            if (attendance.getBaseType() != TYPE_PRESENT)
                 filteredList.add(attendance);
-            switch (attendance.type) {
+            switch (attendance.getBaseType()) {
                 case TYPE_PRESENT:
                     presentCount++;
                     break;

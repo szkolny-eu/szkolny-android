@@ -76,6 +76,11 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                         else -1
 
                 if (semester1Proposed != "") {
+                    val addedDate = if (data.profile.empty)
+                        data.profile.dateSemester1Start.inMillis
+                    else
+                        System.currentTimeMillis()
+
                     val gradeObject = Grade(
                             profileId = profileId,
                             id = semester1Id,
@@ -89,13 +94,9 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                             comment = null,
                             semester = 1,
                             teacherId = -1,
-                            subjectId = subjectObject.id
+                            subjectId = subjectObject.id,
+                            addedDate = addedDate
                     )
-
-                    val addedDate = if (data.profile.empty)
-                        data.profile.dateSemester1Start.inMillis
-                    else
-                        System.currentTimeMillis()
 
                     data.gradeList.add(gradeObject)
                     data.metadataList.add(Metadata(
@@ -103,12 +104,16 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                             Metadata.TYPE_GRADE,
                             gradeObject.id,
                             profile.empty,
-                            profile.empty,
-                            addedDate
+                            profile.empty
                     ))
                 }
 
                 if (semester2Proposed != "") {
+                    val addedDate = if (data.profile.empty)
+                        data.profile.dateSemester2Start.inMillis
+                    else
+                        System.currentTimeMillis()
+
                     val gradeObject = Grade(
                             profileId = profileId,
                             id = semester2Id,
@@ -122,13 +127,9 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                             comment = null,
                             semester = 2,
                             teacherId = -1,
-                            subjectId = subjectObject.id
+                            subjectId = subjectObject.id,
+                            addedDate = addedDate
                     )
-
-                    val addedDate = if (data.profile.empty)
-                        data.profile.dateSemester2Start.inMillis
-                    else
-                        System.currentTimeMillis()
 
                     data.gradeList.add(gradeObject)
                     data.metadataList.add(Metadata(
@@ -136,8 +137,7 @@ class IdziennikWebProposedGrades(override val data: DataIdziennik,
                             Metadata.TYPE_GRADE,
                             gradeObject.id,
                             profile.empty,
-                            profile.empty,
-                            addedDate
+                            profile.empty
                     ))
                 }
             }

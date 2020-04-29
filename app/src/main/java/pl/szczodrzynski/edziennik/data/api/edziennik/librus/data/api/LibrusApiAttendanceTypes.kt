@@ -26,25 +26,39 @@ class LibrusApiAttendanceTypes(override val data: DataLibrus,
 
             attendanceTypes?.forEach { attendanceType ->
                 val id = attendanceType.getLong("Id") ?: return@forEach
-                val name = attendanceType.getString("Name") ?: ""
-                val color = attendanceType.getString("ColorRGB")?.let { Color.parseColor("#$it") } ?: -1
 
-                val standardId = when (attendanceType.getBoolean("Standard") ?: false) {
-                    true -> id
-                    false -> attendanceType.getJsonObject("StandardType")?.getLong("Id") ?: id
-                }
-                val type = when (standardId) {
+                val typeName = attendanceType.getString("Name") ?: ""
+                val typeSymbol = attendanceType.getString("Short") ?: ""
+                val typeColor = attendanceType.getString("ColorRGB")?.let { Color.parseColor("#$it") }
+
+                val isStandard = attendanceType.getBoolean("Standard") ?: false
+                val baseType = when (attendanceType.getJsonObject("StandardType")?.getLong("Id") ?: id) {
                     1L -> Attendance.TYPE_ABSENT
                     2L -> Attendance.TYPE_BELATED
                     3L -> Attendance.TYPE_ABSENT_EXCUSED
                     4L -> Attendance.TYPE_RELEASED
-                    /*100*/else -> Attendance.TYPE_PRESENT
+                    /*100*/else -> when (isStandard) {
+                        true -> Attendance.TYPE_PRESENT
+                        false -> Attendance.TYPE_PRESENT_CUSTOM
+                    }
+                }
+                val typeShort = when (isStandard) {
+                    true -> data.app.attendanceManager.getTypeShort(baseType)
+                    false -> typeSymbol
                 }
 
-                data.attendanceTypes.put(id, AttendanceType(profileId, id, name, type, color))
+                data.attendanceTypes.put(id, AttendanceType(
+                        profileId,
+                        id,
+                        baseType,
+                        typeName,
+                        typeShort,
+                        typeSymbol,
+                        typeColor
+                ))
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES, 4*DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES, 2*DAY)
             onSuccess(ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES)
         }
     }

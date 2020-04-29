@@ -56,7 +56,8 @@ class LibrusApiPointGrades(override val data: DataLibrus,
                         comment = null,
                         semester = semester,
                         teacherId = teacherId,
-                        subjectId = subjectId
+                        subjectId = subjectId,
+                        addedDate = addedDate
                 ).apply {
                     valueMax = category?.valueTo ?: 0f
                 }
@@ -67,8 +68,7 @@ class LibrusApiPointGrades(override val data: DataLibrus,
                         Metadata.TYPE_GRADE,
                         id,
                         profile.empty,
-                        profile.empty,
-                        addedDate
+                        profile.empty
                 ))
             }
 

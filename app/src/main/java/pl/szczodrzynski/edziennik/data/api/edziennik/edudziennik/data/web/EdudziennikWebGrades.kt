@@ -126,7 +126,8 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             comment = null,
                             semester = semester,
                             teacherId = teacher.id,
-                            subjectId = subject.id
+                            subjectId = subject.id,
+                            addedDate = addedDate
                     )
 
                     data.gradeList.add(gradeObject)
@@ -135,8 +136,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             Metadata.TYPE_GRADE,
                             id,
                             profile.empty,
-                            profile.empty,
-                            addedDate
+                            profile.empty
                     ))
                 }
 
@@ -168,8 +168,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             Metadata.TYPE_GRADE,
                             proposedGradeObject.id,
                             profile.empty,
-                            profile.empty,
-                            System.currentTimeMillis()
+                            profile.empty
                     ))
                 }
 
@@ -201,8 +200,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
                             Metadata.TYPE_GRADE,
                             finalGradeObject.id,
                             profile.empty,
-                            profile.empty,
-                            System.currentTimeMillis()
+                            profile.empty
                     ))
                 }
             }

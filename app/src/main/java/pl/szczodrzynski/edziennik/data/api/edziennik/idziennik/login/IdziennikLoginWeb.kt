@@ -74,9 +74,9 @@ class IdziennikLoginWeb(val data: DataIdziennik, val onSuccess: () -> Unit) {
                             Regexes.IDZIENNIK_WEB_LUCKY_NUMBER.find(text)?.also {
                                 val number = it[1].toIntOrNull() ?: return@also
                                 val luckyNumberObject = LuckyNumber(
-                                        data.profileId,
-                                        Date.getToday(),
-                                        number
+                                        profileId = data.profileId,
+                                        date = Date.getToday(),
+                                        number = number
                                 )
 
                                 data.luckyNumberList.add(luckyNumberObject)
@@ -86,8 +86,7 @@ class IdziennikLoginWeb(val data: DataIdziennik, val onSuccess: () -> Unit) {
                                                 Metadata.TYPE_LUCKY_NUMBER,
                                                 luckyNumberObject.date.value.toLong(),
                                                 true,
-                                                profile.empty,
-                                                System.currentTimeMillis()
+                                                profile.empty
                                         ))
                             }
                         }

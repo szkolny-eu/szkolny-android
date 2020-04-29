@@ -56,7 +56,8 @@ class LibrusApiEvents(override val data: DataLibrus,
                         type = type,
                         teacherId = teacherId,
                         subjectId = subjectId,
-                        teamId = teamId
+                        teamId = teamId,
+                        addedDate = addedDate
                 )
 
                 data.eventList.add(eventObject)
@@ -66,8 +67,7 @@ class LibrusApiEvents(override val data: DataLibrus,
                                 Metadata.TYPE_EVENT,
                                 id,
                                 profile?.empty ?: false,
-                                profile?.empty ?: false,
-                                addedDate
+                                profile?.empty ?: false
                         ))
             }
 

@@ -51,13 +51,13 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
         AttendanceFull attendance = attendanceList.get(position);
 
-        holder.attendanceLessonTopic.setText(attendance.lessonTopic);
-        holder.attendanceTeacher.setText(attendance.teacherFullName);
-        holder.attendanceSubject.setText(attendance.subjectLongName);
-        holder.attendanceDate.setText(attendance.lessonDate.getStringDmy());
-        holder.attendanceTime.setText(attendance.startTime.getStringHM());
+        holder.attendanceLessonTopic.setText(attendance.getLessonTopic());
+        holder.attendanceTeacher.setText(attendance.getTeacherName());
+        holder.attendanceSubject.setText(attendance.getSubjectLongName());
+        holder.attendanceDate.setText(attendance.getDate().getStringDmy());
+        holder.attendanceTime.setText(attendance.getStartTime().getStringHM());
 
-        switch (attendance.type) {
+        switch (attendance.getBaseType()) {
             case TYPE_DAY_FREE:
                 holder.attendanceType.getBackground().setColorFilter(new PorterDuffColorFilter(0xff166ee0, PorterDuff.Mode.MULTIPLY));
                 holder.attendanceType.setText(R.string.attendance_free_day);
@@ -91,11 +91,12 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
                 holder.attendanceType.setText("?");
                 break;
         }
+        holder.attendanceType.setText(attendance.getTypeShort());
 
-        if (!attendance.seen) {
+        if (!attendance.getSeen()) {
             holder.attendanceLessonTopic.setBackground(context.getResources().getDrawable(R.drawable.bg_rounded_8dp));
             holder.attendanceLessonTopic.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));
-            attendance.seen = true;
+            attendance.setSeen(true);
             AsyncTask.execute(() -> {
                 App.db.metadataDao().setSeen(App.Companion.getProfileId(), attendance, true);
                 //Intent i = new Intent("android.intent.action.MAIN").putExtra(MainActivity.ACTION_UPDATE_BADGES, "yes, sure");

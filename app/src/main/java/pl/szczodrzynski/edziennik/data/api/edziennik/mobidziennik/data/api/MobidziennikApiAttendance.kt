@@ -6,7 +6,10 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.data.db.entity.Attendance.*
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_ABSENT
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_ABSENT_EXCUSED
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_PRESENT
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEASED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 
 class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) {
@@ -23,7 +26,7 @@ class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) 
             val id = cols[0].toLong()
             val lessonId = cols[1].toLong()
             data.mobiLessons.singleOrNull { it.id == lessonId }?.let { lesson ->
-                val type = when (cols[4]) {
+                val baseType = when (cols[4]) {
                     "2" -> TYPE_ABSENT
                     "5" -> TYPE_ABSENT_EXCUSED
                     "4" -> TYPE_RELEASED
@@ -31,16 +34,37 @@ class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) 
                 }
                 val semester = data.profile?.dateToSemester(lesson.date) ?: 1
 
+                val typeName = when (baseType) {
+                    TYPE_ABSENT -> "nieobecność"
+                    TYPE_ABSENT_EXCUSED -> "nieobecność usprawiedliwiona"
+                    TYPE_RELEASED -> "zwolnienie"
+                    TYPE_PRESENT -> "obecność"
+                    else -> "nieznany rodzaj"
+                }
+                val typeSymbol = when (baseType) {
+                    TYPE_ABSENT -> "|"
+                    TYPE_ABSENT_EXCUSED -> "+"
+                    TYPE_RELEASED -> "z"
+                    TYPE_PRESENT -> "."
+                    else -> "?"
+                }
+
                 val attendanceObject = Attendance(
-                        data.profileId,
-                        id,
-                        lesson.teacherId,
-                        lesson.subjectId,
-                        semester,
-                        lesson.topic,
-                        lesson.date,
-                        lesson.startTime,
-                        type)
+                        profileId = data.profileId,
+                        id = id,
+                        baseType = baseType,
+                        typeName = typeName,
+                        typeShort = data.app.attendanceManager.getTypeShort(baseType),
+                        typeSymbol = typeSymbol,
+                        typeColor = null,
+                        date = lesson.date,
+                        startTime = lesson.startTime,
+                        semester = semester,
+                        teacherId = lesson.teacherId,
+                        subjectId = lesson.subjectId
+                ).also {
+                    it.lessonTopic = lesson.topic
+                }
 
                 data.attendanceList.add(attendanceObject)
                 data.metadataList.add(
@@ -49,8 +73,7 @@ class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) 
                                 Metadata.TYPE_ATTENDANCE,
                                 id,
                                 data.profile?.empty ?: false,
-                                data.profile?.empty ?: false,
-                                System.currentTimeMillis()
+                                data.profile?.empty ?: false
                         ))
             }
         }

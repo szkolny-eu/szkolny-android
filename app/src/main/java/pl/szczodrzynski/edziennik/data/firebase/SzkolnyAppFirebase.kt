@@ -114,7 +114,8 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                     type = json.getLong("type") ?: 0,
                     teacherId = json.getLong("teacherId") ?: -1,
                     subjectId = json.getLong("subjectId") ?: -1,
-                    teamId = team.id
+                    teamId = team.id,
+                    addedDate = json.getLong("addedDate") ?: System.currentTimeMillis()
             )
             if (event.color == -1)
                 event.color = null
@@ -128,8 +129,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                     if (event.type == Event.TYPE_HOMEWORK) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT,
                     event.id,
                     false,
-                    true,
-                    json.getLong("addedDate") ?: System.currentTimeMillis()
+                    true
             )
 
             val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_SHARED_HOMEWORK else Notification.TYPE_NEW_SHARED_EVENT
@@ -144,7 +144,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         profileId = profile.id,
                         profileName = profile.name,
                         viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
-                        addedDate = metadata.addedDate
+                        addedDate = event.addedDate
                 ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
                 notificationList += notification
             }

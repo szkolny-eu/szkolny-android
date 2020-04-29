@@ -33,12 +33,16 @@ class MobidziennikApiNotices(val data: DataMobidziennik, rows: List<String>) {
             val addedDate = Date.fromYmd(cols[7]).inMillis
 
             val noticeObject = Notice(
-                    data.profileId,
-                    id,
-                    text,
-                    semester,
-                    type,
-                    teacherId)
+                    profileId = data.profileId,
+                    id = id,
+                    type = type,
+                    semester = semester,
+                    text = text,
+                    category = null,
+                    points = null,
+                    teacherId = teacherId,
+                    addedDate = addedDate
+            )
 
             data.noticeList.add(noticeObject)
             data.metadataList.add(
@@ -47,8 +51,7 @@ class MobidziennikApiNotices(val data: DataMobidziennik, rows: List<String>) {
                             Metadata.TYPE_NOTICE,
                             id,
                             data.profile?.empty ?: false,
-                            data.profile?.empty ?: false,
-                            addedDate
+                            data.profile?.empty ?: false
                     ))
         }
     }}

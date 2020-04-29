@@ -144,7 +144,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
         if (!isAdded)
             return@launch
 
-        val lessons = withContext(Dispatchers.Default) { app.db.timetableDao().getAllChangesNow(app.profileId) }
+        val lessons = withContext(Dispatchers.Default) { app.db.timetableDao().getChangesNow(app.profileId) }
         val lessonChangeCounters = mutableListOf<LessonChangeCounter>()
 
         lessons.forEach { lesson ->
@@ -180,7 +180,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
         val showTeacherAbsences = app.profile.getStudentData("showTeacherAbsences", true)
 
         if (showTeacherAbsences) {
-            val teacherAbsenceList = withContext(Dispatchers.Default) { app.db.teacherAbsenceDao().getAllFullNow(app.profileId) }
+            val teacherAbsenceList = withContext(Dispatchers.Default) { app.db.teacherAbsenceDao().getAllNow(app.profileId) }
             val teacherAbsenceCounters = mutableListOf<TeacherAbsenceCounter>()
 
             teacherAbsenceList.forEach { absence ->

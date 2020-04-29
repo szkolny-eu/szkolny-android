@@ -77,11 +77,12 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
                         type = type,
                         subject = subject,
                         body = null,
-                        senderId = senderId
+                        senderId = senderId,
+                        addedDate = addedDate
                 )
 
                 data.messageList.add(message)
-                data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true, addedDate))
+                data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true))
             }
 
             // sync every 7 days as we probably don't expect more than

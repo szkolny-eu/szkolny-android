@@ -40,8 +40,7 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
                         Metadata.TYPE_EVENT,
                         event.id,
                         isPast || markAsSeen || event.seen,
-                        isPast || markAsSeen || event.notified,
-                        event.addedDate
+                        isPast || markAsSeen || event.notified
                 )
             })
             return app.db.eventDao().upsertAll(events).size

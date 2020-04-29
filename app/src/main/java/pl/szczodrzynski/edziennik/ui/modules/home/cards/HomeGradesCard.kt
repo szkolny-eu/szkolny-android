@@ -35,6 +35,7 @@ import pl.szczodrzynski.edziennik.ui.modules.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.ItemGradesSubjectModel
 import kotlin.coroutines.CoroutineContext
 
@@ -63,7 +64,7 @@ class HomeGradesCard(
         }
         holder.root += b.root
 
-        val sevenDaysAgo = System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000
+        val sevenDaysAgo = Date.getToday().stepForward(0, 0, -7)
 
         app.db.gradeDao().getAllFromDate(profile.id, sevenDaysAgo).observe(fragment, Observer {
             grades.apply {

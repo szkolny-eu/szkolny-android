@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ * Copyright (c) Kuba Szczodrzyński 2020-4-25.
  */
 package pl.szczodrzynski.edziennik.data.db.dao
 
@@ -36,7 +36,10 @@ abstract class MessageDao : BaseDao<Message, MessageFull> {
 
     @RawQuery(observedEntities = [Message::class])
     abstract override fun getRaw(query: SupportSQLiteQuery): LiveData<List<MessageFull>>
+    @RawQuery(observedEntities = [Message::class])
+    abstract override fun getOne(query: SupportSQLiteQuery): LiveData<MessageFull?>
 
+    // SELECTIVE UPDATE
     @UpdateSelective(primaryKeys = ["profileId", "messageId"], skippedColumns = ["messageType", "messageBody", "messageIsPinned", "attachmentIds", "attachmentNames", "attachmentSizes"])
     override fun update(item: Message) = selective.update(item)
     override fun updateAll(items: List<Message>) = selective.updateAll(items)
@@ -44,6 +47,9 @@ abstract class MessageDao : BaseDao<Message, MessageFull> {
     // CLEAR
     @Query("DELETE FROM messages WHERE profileId = :profileId")
     abstract override fun clear(profileId: Int)
+    // REMOVE NOT KEPT
+    @Query("DELETE FROM messages WHERE keep = 0")
+    abstract override fun removeNotKept()
 
     // GET ALL - LIVE DATA
     fun getAll(profileId: Int) =
@@ -64,4 +70,6 @@ abstract class MessageDao : BaseDao<Message, MessageFull> {
     // GET ONE - NOW
     fun getByIdNow(profileId: Int, id: Long) =
             getOneNow("$QUERY WHERE messages.profileId = $profileId AND messageId = $id")
+
+
 }

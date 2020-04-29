@@ -88,6 +88,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     var teacherOnConflictStrategy = OnConflictStrategy.IGNORE
     var eventListReplace = false
     var messageListReplace = false
+    var announcementListReplace = false
 
     val classrooms = LongSparseArray<Classroom>()
     val attendanceTypes = LongSparseArray<AttendanceType>()
@@ -120,7 +121,6 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     val attendanceList = mutableListOf<Attendance>()
 
     val announcementList = mutableListOf<Announcement>()
-    val announcementIgnoreList = mutableListOf<Announcement>()
 
     val luckyNumberList = mutableListOf<LuckyNumber>()
 
@@ -178,7 +178,6 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         noticeList.clear()
         attendanceList.clear()
         announcementList.clear()
-        announcementIgnoreList.clear()
         luckyNumberList.clear()
         teacherAbsenceList.clear()
         messageList.clear()
@@ -284,39 +283,19 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         d("Metadata saved in ${System.currentTimeMillis()-startTime} ms")
         startTime = System.currentTimeMillis()
 
-        if (lessonList.isNotEmpty()) {
-            db.timetableDao() += lessonList
-        }
-        if (gradeList.isNotEmpty()) {
-            db.gradeDao().addAll(gradeList)
-        }
-        if (eventList.isNotEmpty()) {
-            if (eventListReplace)
-                db.eventDao().replaceAll(eventList)
-            else
-                db.eventDao().upsertAll(eventList, removeNotKept = true)
-        }
+        db.timetableDao().putAll(lessonList, removeNotKept = true)
+        db.gradeDao().putAll(gradeList, removeNotKept = true)
+        db.eventDao().putAll(eventList, forceReplace = eventListReplace, removeNotKept = true)
         if (noticeList.isNotEmpty()) {
             db.noticeDao().clear(profile.id)
-            db.noticeDao().addAll(noticeList)
+            db.noticeDao().putAll(noticeList)
         }
-        if (attendanceList.isNotEmpty())
-            db.attendanceDao().addAll(attendanceList)
-        if (announcementList.isNotEmpty())
-            db.announcementDao().addAll(announcementList)
-        if (announcementIgnoreList.isNotEmpty())
-            db.announcementDao().addAllIgnore(announcementIgnoreList)
-        if (luckyNumberList.isNotEmpty())
-            db.luckyNumberDao().addAll(luckyNumberList)
-        if (teacherAbsenceList.isNotEmpty())
-            db.teacherAbsenceDao().addAll(teacherAbsenceList)
+        db.attendanceDao().putAll(attendanceList, removeNotKept = true)
+        db.announcementDao().putAll(announcementList, forceReplace = announcementListReplace, removeNotKept = false)
+        db.luckyNumberDao().putAll(luckyNumberList)
+        db.teacherAbsenceDao().putAll(teacherAbsenceList)
 
-        if (messageList.isNotEmpty()) {
-            if (messageListReplace)
-                db.messageDao().replaceAll(messageList)
-            else
-                db.messageDao().upsertAll(messageList, removeNotKept = false) // TODO dataRemoveModel for messages
-        }
+        db.messageDao().putAll(messageList, forceReplace = messageListReplace, removeNotKept = false)
         if (messageRecipientList.isNotEmpty())
             db.messageRecipientDao().addAll(messageRecipientList)
         if (messageRecipientIgnoreList.isNotEmpty())
@@ -357,7 +336,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     }
 
     fun shouldSyncLuckyNumber(): Boolean {
-        return (db.luckyNumberDao().getNearestFutureNow(profileId, Date.getToday().value) ?: -1) == -1
+        return db.luckyNumberDao().getNearestFutureNow(profileId, Date.getToday()) == null
     }
 
     /*fun error(tag: String, errorCode: Int, response: Response? = null, throwable: Throwable? = null, apiResponse: JsonObject? = null) {

@@ -17,9 +17,9 @@ class MobidziennikLuckyNumberExtractor(val data: DataMobidziennik, text: String)
                 val luckyNumber = it.groupValues[1].toInt()
 
                 val luckyNumberObject = LuckyNumber(
-                        data.profileId,
-                        Date.getToday(),
-                        luckyNumber
+                        profileId = data.profileId,
+                        date = Date.getToday(),
+                        number = luckyNumber
                 )
 
                 data.luckyNumberList.add(luckyNumberObject)
@@ -29,8 +29,7 @@ class MobidziennikLuckyNumberExtractor(val data: DataMobidziennik, text: String)
                                 Metadata.TYPE_LUCKY_NUMBER,
                                 luckyNumberObject.date.value.toLong(),
                                 true,
-                                data.profile?.empty ?: false,
-                                System.currentTimeMillis()
+                                data.profile?.empty ?: false
                         ))
             } catch (_: Exception){}
         }

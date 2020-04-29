@@ -33,9 +33,9 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
                     val luckyNumberDate = Date.fromY_m_d(luckyNumberEl.getString("LuckyNumberDay")) ?: Date.getToday()
                     val luckyNumber = luckyNumberEl.getInt("LuckyNumber") ?: -1
                     val luckyNumberObject = LuckyNumber(
-                            profileId,
-                            luckyNumberDate,
-                            luckyNumber
+                            profileId = profileId,
+                            date = luckyNumberDate,
+                            number = luckyNumber
                     )
 
                     if (luckyNumberDate >= Date.getToday())
@@ -50,8 +50,7 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
                                     Metadata.TYPE_LUCKY_NUMBER,
                                     luckyNumberObject.date.value.toLong(),
                                     true,
-                                    profile?.empty ?: false,
-                                    System.currentTimeMillis()
+                                    profile?.empty ?: false
                             ))
                 }
             }

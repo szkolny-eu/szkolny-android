@@ -105,7 +105,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
     override fun onPageCreated(): Boolean {
         // observe lesson database
-        app.db.timetableDao().getForDate(App.profileId, date).observe(this, Observer { lessons ->
+        app.db.timetableDao().getAllForDate(App.profileId, date).observe(this, Observer { lessons ->
             launch {
                 val events = withContext(Dispatchers.Default) {
                     app.db.eventDao().getAllByDateNow(App.profileId, date)

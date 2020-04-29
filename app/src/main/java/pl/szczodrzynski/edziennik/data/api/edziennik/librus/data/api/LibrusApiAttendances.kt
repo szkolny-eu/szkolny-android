@@ -13,7 +13,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.edziennik.utils.models.Time
 
 class LibrusApiAttendances(override val data: DataLibrus,
                            override val lastSync: Long?,
@@ -42,9 +41,9 @@ class LibrusApiAttendances(override val data: DataLibrus,
                 val lessonDate = Date.fromY_m_d(attendance.getString("Date"))
                 val teacherId = attendance.getJsonObject("AddedBy")?.getLong("Id")
                 val semester = attendance.getInt("Semester") ?: return@forEach
-                val type = attendance.getJsonObject("Type")?.getLong("Id") ?: return@forEach
-                val typeObject = data.attendanceTypes[type] ?: null
-                val topic = typeObject?.name ?: ""
+
+                val typeId = attendance.getJsonObject("Type")?.getLong("Id") ?: return@forEach
+                val type = data.attendanceTypes[typeId] ?: null
 
                 val startTime = data.lessonRanges.get(lessonNo)?.startTime
 
@@ -52,29 +51,34 @@ class LibrusApiAttendances(override val data: DataLibrus,
                     data.librusLessons.singleOrNull { it.lessonId == lessonId }
                 else null
 
-                val attendanceObject = Attendance(
-                        profileId,
-                        id,
-                        teacherId ?: lesson?.teacherId ?: -1,
-                        lesson?.subjectId ?: -1,
-                        semester,
-                        topic,
-                        lessonDate,
-                        startTime ?: Time(0, 0, 0),
-                        typeObject?.type ?: Attendance.TYPE_CUSTOM
-                )
-
                 val addedDate = Date.fromIso(attendance.getString("AddDate") ?: return@forEach)
 
+                val attendanceObject = Attendance(
+                        profileId = profileId,
+                        id = id,
+                        baseType = type?.baseType ?: Attendance.TYPE_UNKNOWN,
+                        typeName = type?.typeName ?: "nieznany rodzaj",
+                        typeShort = type?.typeShort ?: "?",
+                        typeSymbol = type?.typeSymbol ?: "?",
+                        typeColor = type?.typeColor,
+                        date = lessonDate,
+                        startTime = startTime,
+                        semester = semester,
+                        teacherId = teacherId ?: lesson?.teacherId ?: -1,
+                        subjectId = lesson?.subjectId ?: -1,
+                        addedDate = addedDate
+                ).also {
+                    it.lessonNumber = lessonNo
+                }
+
                 data.attendanceList.add(attendanceObject)
-                if(typeObject?.type != Attendance.TYPE_PRESENT) {
+                if(type?.baseType != Attendance.TYPE_PRESENT) {
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_ATTENDANCE,
                             id,
                             profile?.empty ?: false,
-                            profile?.empty ?: false,
-                            addedDate
+                            profile?.empty ?: false
                     ))
                 }
             }

@@ -46,12 +46,15 @@ class LibrusApiNotices(override val data: DataLibrus,
                 val semester = profile?.dateToSemester(addedDate) ?: 1
 
                 val noticeObject = Notice(
-                        profileId,
-                        id,
-                        categoryText + "\n" + text,
-                        semester,
-                        type,
-                        teacherId
+                        profileId = profileId,
+                        id = id,
+                        type = type,
+                        semester = semester,
+                        text = text,
+                        category = categoryText,
+                        points = null,
+                        teacherId = teacherId,
+                        addedDate = addedDate.inMillis
                 )
 
                 data.noticeList.add(noticeObject)
@@ -61,8 +64,7 @@ class LibrusApiNotices(override val data: DataLibrus,
                                 Metadata.TYPE_NOTICE,
                                 id,
                                 profile?.empty ?: false,
-                                profile?.empty ?: false,
-                                addedDate.inMillis
+                                profile?.empty ?: false
                         ))
             }
 
