@@ -121,7 +121,8 @@ class HomeGradesCard(
                 val gradeName = GradeView(
                         gradeItem.context,
                         grade,
-                        app.gradesManager
+                        app.gradesManager,
+                        periodGradesTextual = true
                 )
 
                 totalWidth += gradeName.measuredWidth + 5.dp
