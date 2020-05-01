@@ -161,7 +161,7 @@ class Migration86 : Migration(85, 86) {
         database.execSQL("""UPDATE grades SET addedDate = IFNULL((SELECT metadata.addedDate FROM metadata WHERE metadata.profileId = grades.profileId AND metadata.thingId = grades.gradeId AND metadata.thingType = 1), 0)""")
         database.execSQL("""UPDATE notices SET addedDate = IFNULL((SELECT metadata.addedDate FROM metadata WHERE metadata.profileId = notices.profileId AND metadata.thingId = notices.noticeId AND metadata.thingType = 2), 0)""")
         database.execSQL("""UPDATE attendances SET addedDate = IFNULL((SELECT metadata.addedDate FROM metadata WHERE metadata.profileId = attendances.profileId AND metadata.thingId = attendances.attendanceId AND metadata.thingType = 3), 0)""")
-        database.execSQL("""UPDATE events SET addedDate = IFNULL((SELECT metadata.addedDate FROM metadata WHERE metadata.profileId = events.profileId AND metadata.thingId = events.eventId AND metadata.thingType = 4), 0)""")
+        database.execSQL("""UPDATE events SET addedDate = IFNULL((SELECT metadata.addedDate FROM metadata WHERE metadata.profileId = events.profileId AND metadata.thingId = events.eventId AND (metadata.thingType = 4 OR metadata.thingType = 5)), 0)""")
         database.execSQL("""UPDATE announcements SET addedDate = IFNULL((SELECT metadata.addedDate FROM metadata WHERE metadata.profileId = announcements.profileId AND metadata.thingId = announcements.announcementId AND metadata.thingType = 7), 0)""")
         database.execSQL("""UPDATE messages SET addedDate = IFNULL((SELECT metadata.addedDate FROM metadata WHERE metadata.profileId = messages.profileId AND metadata.thingId = messages.messageId AND metadata.thingType = 8), 0)""")
 
