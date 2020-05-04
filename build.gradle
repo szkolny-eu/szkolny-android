@@ -17,7 +17,7 @@ buildscript {
         ]
 
         versions = [
-                gradleAndroid    : "4.0.0-beta03",
+                gradleAndroid    : '4.0.0-beta05',
 
                 kotlin           : ext.kotlin_version,
                 ktx              : "1.2.0",

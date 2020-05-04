@@ -19,10 +19,13 @@ class AttendanceManager(val app: App) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Default
 
+    val useSymbols
+        get() = app.config.forProfile().attendance.useSymbols
+
     fun getTypeShort(baseType: Int): String {
         return when (baseType) {
             Attendance.TYPE_PRESENT -> "ob"
-            Attendance.TYPE_PRESENT_CUSTOM -> "ob?"
+            Attendance.TYPE_PRESENT_CUSTOM -> "   "
             Attendance.TYPE_ABSENT -> "nb"
             Attendance.TYPE_ABSENT_EXCUSED -> "u"
             Attendance.TYPE_RELEASED -> "zw"
@@ -30,6 +33,26 @@ class AttendanceManager(val app: App) : CoroutineScope {
             Attendance.TYPE_BELATED_EXCUSED -> "su"
             Attendance.TYPE_DAY_FREE -> "w"
             else -> "?"
+        }
+    }
+
+    fun getAttendanceColor(baseType: Int): Int {
+        return when (baseType) {
+            Attendance.TYPE_PRESENT -> 0xff009688.toInt()
+            Attendance.TYPE_PRESENT_CUSTOM -> 0xff64b5f6.toInt()
+            Attendance.TYPE_ABSENT -> 0xffff3d00.toInt()
+            Attendance.TYPE_ABSENT_EXCUSED -> 0xff76ff03.toInt()
+            Attendance.TYPE_RELEASED -> 0xff9e9e9e.toInt()
+            Attendance.TYPE_BELATED -> 0xffffc107.toInt()
+            Attendance.TYPE_BELATED_EXCUSED -> 0xffffc107.toInt()
+            Attendance.TYPE_DAY_FREE -> 0xff43a047.toInt()
+            else -> 0xff64b5f6.toInt()
+        }
+    }
+    fun getAttendanceColor(attendance: Attendance): Int {
+        return (if (useSymbols) attendance.typeColor else null) ?: when (attendance.baseType) {
+            Attendance.TYPE_PRESENT_CUSTOM -> attendance.typeColor ?: 0xff64b5f6.toInt()
+            else -> getAttendanceColor(attendance.baseType)
         }
     }
 

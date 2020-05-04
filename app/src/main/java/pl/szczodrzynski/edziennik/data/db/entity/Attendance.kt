@@ -47,15 +47,18 @@ open class Attendance(
         var addedDate: Long = System.currentTimeMillis()
 ) : Keepable() {
     companion object {
-        const val TYPE_UNKNOWN = -1
-        const val TYPE_PRESENT = 0
-        const val TYPE_PRESENT_CUSTOM = 10 // count as presence AND show in the list
-        const val TYPE_ABSENT = 1
-        const val TYPE_ABSENT_EXCUSED = 2
-        const val TYPE_RELEASED = 3
-        const val TYPE_BELATED = 4
-        const val TYPE_BELATED_EXCUSED = 5
-        const val TYPE_DAY_FREE = 6
+        const val TYPE_UNKNOWN = -1         // #3f51b5
+        const val TYPE_PRESENT = 0          // #009688
+        const val TYPE_PRESENT_CUSTOM = 10  // count as presence AND show in the list + custom color, fallback: #3f51b5
+        const val TYPE_ABSENT = 1           // #ff3d00
+        const val TYPE_ABSENT_EXCUSED = 2   // #76ff03
+        const val TYPE_RELEASED = 3         // #9e9e9e
+        const val TYPE_BELATED = 4          // #ffc107
+        const val TYPE_BELATED_EXCUSED = 5  // #ffc107
+        const val TYPE_DAY_FREE = 6         // #43a047
+
+        // attendance bar order:
+        // day_free, present, present_custom, unknown, belated_excused, belated, released, absent_excused, absent,
     }
 
     @ColumnInfo(name = "attendanceLessonTopic")
@@ -64,5 +67,5 @@ open class Attendance(
     var lessonNumber: Int? = null
 
     @Ignore
-    var showAsUnseen = false
+    var showAsUnseen: Boolean? = null
 }

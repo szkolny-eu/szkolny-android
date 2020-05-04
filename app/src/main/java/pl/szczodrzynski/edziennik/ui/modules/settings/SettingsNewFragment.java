@@ -52,6 +52,7 @@ import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.sync.UpdateWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.AttendanceConfigDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.NotificationFilterDialog;
@@ -884,6 +885,15 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             .size(IconicsSize.dp(iconSizeDp))
                             .color(IconicsColor.colorInt(iconColor))
             ).setOnClickAction(() -> new GradesConfigDialog(activity, false, null, null)));
+
+            items.add(new MaterialAboutActionItem(
+                    getString(R.string.menu_attendance_config),
+                    null,
+                    new IconicsDrawable(activity)
+                            .icon(CommunityMaterial.Icon.cmd_calendar_remove_outline)
+                            .size(IconicsSize.dp(iconSizeDp))
+                            .color(IconicsColor.colorInt(iconColor))
+            ).setOnClickAction(() -> new AttendanceConfigDialog(activity, false, null, null)));
 
             registerCardAllowRegistrationItem = new MaterialAboutSwitchItem(
                     getString(R.string.settings_register_allow_registration_text),

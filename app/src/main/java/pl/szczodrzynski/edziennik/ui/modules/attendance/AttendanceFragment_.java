@@ -51,7 +51,7 @@ import static pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_RELEASED
 import static pl.szczodrzynski.edziennik.data.db.entity.LoginStore.LOGIN_TYPE_VULCAN;
 import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ATTENDANCE;
 
-public class AttendanceFragment extends Fragment {
+public class AttendanceFragment_ extends Fragment {
 
     private App app = null;
     private MainActivity activity = null;
@@ -278,11 +278,12 @@ public class AttendanceFragment extends Fragment {
             b.attendanceView.setVisibility(View.VISIBLE);
             b.attendanceNoData.setVisibility(View.GONE);
             if ((adapter = (AttendanceAdapter) b.attendanceView.getAdapter()) != null) {
-                adapter.attendanceList = filteredList;
+                //adapter.setItems(filteredList);
                 adapter.notifyDataSetChanged();
             }
             else {
-                adapter = new AttendanceAdapter(getContext(), filteredList);
+                //adapter = new AttendanceAdapter(activity, true, null);
+                //adapter.setItems(filteredList);
                 b.attendanceView.setAdapter(adapter);
             }
         }

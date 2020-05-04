@@ -69,7 +69,7 @@
     <string name="attendances_absent">Nieobecności:</string>
     <string name="attendances_absent_unexcused">W tym nieusprawiedliwione:</string>
     <string name="attendances_belated">Spóźnienia:</string>
-    <string name="attendances_no_data">Brak nieobecności.</string>
+    <string name="attendances_no_data">Nie masz żadnych nieobecności.</string>
     <string name="attendances_present">Obecności:</string>
     <string name="attendances_releases">Zwolnienia:</string>
     <string name="attendances_summary_subject_loading_format">Wszystkie przedmioty</string>
@@ -1288,4 +1288,19 @@
     <string name="you_are_offline_title">Połączenie sieciowe</string>
     <string name="settings_add_student_text">Dodaj nowego ucznia</string>
     <string name="settings_add_student_subtext">Zaloguj konto ucznia/rodzica w aplikacji</string>
+    <string name="attendance_lesson_number_format">lekcja %d</string>
+    <string name="menu_attendance_config">Ustawienia frekwencji</string>
+    <string name="attendance_tab_days">Dni</string>
+    <string name="attendance_tab_months">Miesiące</string>
+    <string name="attendance_tab_summary">Podsumowanie</string>
+    <string name="attendance_tab_list">Lista</string>
+    <string name="attendance_period_summary_format">Obecność w tym okresie: %.2f%%</string>
+    <string name="attendance_percentage_format">%.2f%%</string>
+    <string name="grades_empty_text">Nie ma ocen w tym semestrze.</string>
+    <string name="attendance_empty_text">Nie ma tutaj żadnych nieobecności.</string>
+    <string name="attendance_config_title">Konfiguracja frekwencji</string>
+    <string name="attendance_config_use_symbols">Używaj symboli i kolorów wg dziennika</string>
+    <string name="attendance_config_group_consecutive_days">Grupuj kolejne dni na liście</string>
+    <string name="attendance_config_show_presence_in_month">Wyświetlaj obecność w widoku miesięcy</string>
+    <string name="attendance_config_use_symbols_hint">Widoczne po rozwinięciu listy</string>
 </resources>

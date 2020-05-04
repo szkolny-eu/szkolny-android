@@ -116,6 +116,8 @@ interface BaseDao<T : Keepable, F : T> {
         if (forceReplace)
             replaceAll(items)
         else
-            upsertAll(items)
+            upsertAll(items, removeNotKept = false)
+
+        if (removeNotKept) removeNotKept()
     }
 }

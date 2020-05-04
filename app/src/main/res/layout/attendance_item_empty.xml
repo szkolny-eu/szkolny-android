@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Kuba Szczodrzyński 2020-3-1.
+  ~ Copyright (c) Kuba Szczodrzyński 2020-5-4.
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
@@ -16,6 +16,6 @@
             android:textSize="18sp"
             android:textColor="?android:textColorSecondary"
             android:textStyle="italic"
-            android:text="@string/grades_empty_text"/>
+            android:text="@string/attendance_empty_text"/>
     </LinearLayout>
 </layout>

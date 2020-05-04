@@ -69,6 +69,6 @@ abstract class AttendanceDao : BaseDao<Attendance, AttendanceFull> {
     fun getByIdNow(profileId: Int, id: Long) =
             getOneNow("$QUERY WHERE attendances.profileId = $profileId AND attendanceId = $id")
 
-    @Query("UPDATE attendances SET keep = 0 WHERE profileId = :profileId AND attendanceDate > :date")
+    @Query("UPDATE attendances SET keep = 0 WHERE profileId = :profileId AND attendanceDate >= :date")
     abstract fun dontKeepAfterDate(profileId: Int, date: Date?)
 }
