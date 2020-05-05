@@ -73,8 +73,8 @@ class VulcanApiAttendance(override val data: DataVulcan,
                             profileId,
                             Metadata.TYPE_ATTENDANCE,
                             attendanceObject.id,
-                            profile.empty,
-                            profile.empty
+                            profile.empty || type.baseType == Attendance.TYPE_PRESENT_CUSTOM || type.baseType == Attendance.TYPE_UNKNOWN,
+                            profile.empty || type.baseType == Attendance.TYPE_PRESENT_CUSTOM || type.baseType == Attendance.TYPE_UNKNOWN
                     ))
                 }
             }

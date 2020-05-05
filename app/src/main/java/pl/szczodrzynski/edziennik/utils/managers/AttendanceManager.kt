@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
+import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.startCoroutineTimer
 import kotlin.coroutines.CoroutineContext
@@ -47,6 +48,12 @@ class AttendanceManager(val app: App) : CoroutineScope {
             Attendance.TYPE_BELATED_EXCUSED -> 0xffffc107.toInt()
             Attendance.TYPE_DAY_FREE -> 0xff43a047.toInt()
             else -> 0xff64b5f6.toInt()
+        }
+    }
+    fun getAttendanceColor(typeObject: AttendanceType): Int {
+        return (if (useSymbols) typeObject.typeColor else null) ?: when (typeObject.baseType) {
+            Attendance.TYPE_PRESENT_CUSTOM -> typeObject.typeColor ?: 0xff64b5f6.toInt()
+            else -> getAttendanceColor(typeObject.baseType)
         }
     }
     fun getAttendanceColor(attendance: Attendance): Int {

@@ -93,7 +93,7 @@ class AttendanceBar : View {
 
             val textBounds = Rect()
             textPaint.getTextBounds(e.count.toString(), 0, e.count.toString().length, textBounds)
-            if (width > textBounds.width() + 8.dp) {
+            if (width > textBounds.width() + 8.dp && height > textBounds.height() + 2.dp) {
                 textPaint.color = Colors.legibleTextColor(e.color)
                 canvas.drawText(e.count.toString(), left + width / 2, bottom - height / 2 + textBounds.height()/2, textPaint)
             }

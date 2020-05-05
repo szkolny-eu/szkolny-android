@@ -63,11 +63,11 @@ class MonthViewHolder(
             val attendance = Attendance(
                     profileId = 0,
                     id = 0,
-                    baseType = type,
+                    baseType = type.baseType,
                     typeName = "",
-                    typeShort = manager.getTypeShort(type),
-                    typeSymbol = manager.getTypeShort(type),
-                    typeColor = manager.getAttendanceColor(type),
+                    typeShort = type.typeShort,
+                    typeSymbol = type.typeSymbol,
+                    typeColor = type.typeColor,
                     date = Date(0, 0, 0),
                     startTime = null,
                     semester = 0,
@@ -80,7 +80,7 @@ class MonthViewHolder(
                 it.setText(R.string.attendance_percentage_format, count/sum*100f)
                 it.setPadding(0, 0, 5.dp, 0)
             })
-            layout.setPadding(0, 8.dp, 0, 0)
+            layout.setPadding(0, 8.dp, 0, 8.dp)
             b.previewContainer.addView(layout)
         }
 

@@ -148,8 +148,8 @@ class IdziennikWebAttendance(override val data: DataIdziennik,
                             profileId,
                             Metadata.TYPE_ATTENDANCE,
                             attendanceObject.id,
-                            profile?.empty ?: false,
-                            profile?.empty ?: false
+                            profile?.empty ?: false || baseType == TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN,
+                            profile?.empty ?: false || baseType == TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN
                     ))
                 }
             }

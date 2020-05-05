@@ -175,8 +175,8 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                                                 data.profileId,
                                                 Metadata.TYPE_ATTENDANCE,
                                                 id,
-                                                data.profile?.empty ?: false,
-                                                data.profile?.empty ?: false
+                                                data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN,
+                                                data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN
                                         ))
                             }
                         }

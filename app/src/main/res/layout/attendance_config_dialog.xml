@@ -52,8 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="32dp"
-                android:text="@string/attendance_config_show_presence_in_month"
-                android:visibility="gone" />
+                android:text="@string/attendance_config_show_presence_in_month" />
         </LinearLayout>
     </ScrollView>
 </layout>

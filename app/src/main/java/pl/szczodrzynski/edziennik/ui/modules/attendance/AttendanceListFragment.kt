@@ -49,7 +49,6 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
         context ?: return null
         app = activity.application as App
         b = AttendanceListFragmentBinding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
         return b.root
     }
 
@@ -67,7 +66,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
 
             // load & configure the adapter
             adapter.items = withContext(Dispatchers.Default) { processAttendance(items) }
-            if (items.isNotNullNorEmpty() && b.list.adapter == null) {
+            if (adapter.items.isNotNullNorEmpty() && b.list.adapter == null) {
                 b.list.adapter = adapter
                 b.list.apply {
                     setHasFixedSize(true)
@@ -76,6 +75,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
                 }
             }
             adapter.notifyDataSetChanged()
+            setSwipeToRefresh(adapter.items.isNullOrEmpty())
 
             if (firstRun) {
                 expandSubject(adapter)
@@ -84,7 +84,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
 
             // show/hide relevant views
             b.progressBar.isVisible = false
-            if (items.isNullOrEmpty()) {
+            if (adapter.items.isNullOrEmpty()) {
                 b.list.isVisible = false
                 b.noData.isVisible = true
             } else {
@@ -141,6 +141,8 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
                 items.sortByDescending { it.rangeStart }
                 val iterator = items.listIterator()
 
+                if (!iterator.hasNext())
+                    return items.toMutableList()
                 var element = iterator.next()
                 while (iterator.hasNext()) {
                     var nextElement = iterator.next()
@@ -170,14 +172,19 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
 
             items.forEach { month ->
                 month.typeCountMap = month.items
-                        .groupBy { it.baseType }
+                        .groupBy { it.typeObject }
                         .map { it.key to it.value.size }
                         .sortedBy { it.first }
                         .toMap()
 
-                val totalCount = month.typeCountMap.entries.sumBy { it.value }
+                val totalCount = month.typeCountMap.entries.sumBy {
+                    when (it.key.baseType) {
+                        Attendance.TYPE_UNKNOWN -> 0
+                        else -> it.value
+                    }
+                }
                 val presenceCount = month.typeCountMap.entries.sumBy {
-                    when (it.key) {
+                    when (it.key.baseType) {
                         Attendance.TYPE_PRESENT,
                             Attendance.TYPE_PRESENT_CUSTOM,
                             Attendance.TYPE_BELATED,

@@ -6,31 +6,24 @@ package pl.szczodrzynski.edziennik.ui.modules.attendance.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.databinding.AttendanceItemContainerBarBinding
-import pl.szczodrzynski.edziennik.dp
+import pl.szczodrzynski.edziennik.databinding.AttendanceItemContainerSubjectBinding
 import pl.szczodrzynski.edziennik.setText
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceAdapter.Companion.STATE_CLOSED
-import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceView
 import pl.szczodrzynski.edziennik.ui.modules.attendance.models.AttendanceSubject
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
 import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.edziennik.utils.models.Date
 
 class SubjectViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
-        val b: AttendanceItemContainerBarBinding = AttendanceItemContainerBarBinding.inflate(inflater, parent, false)
+        val b: AttendanceItemContainerSubjectBinding = AttendanceItemContainerSubjectBinding.inflate(inflater, parent, false)
 ) : RecyclerView.ViewHolder(b.root), BindableViewHolder<AttendanceSubject, AttendanceAdapter> {
     companion object {
         private const val TAG = "SubjectViewHolder"
@@ -51,48 +44,14 @@ class SubjectViewHolder(
 
         b.attendanceBar.setAttendanceData(item.typeCountMap.mapKeys { manager.getAttendanceColor(it.key) })
 
-        b.previewContainer.isInvisible = item.state != STATE_CLOSED
-        b.summaryContainer.isInvisible = item.state == STATE_CLOSED
-        b.percentage.isVisible = item.state == STATE_CLOSED
-
-        b.previewContainer.removeAllViews()
-
-        val sum = item.typeCountMap.entries.sumBy { it.value }.toFloat()
-        item.typeCountMap.forEach { (type, count) ->
-            val layout = LinearLayout(contextWrapper)
-            val attendance = Attendance(
-                    profileId = 0,
-                    id = 0,
-                    baseType = type,
-                    typeName = "",
-                    typeShort = manager.getTypeShort(type),
-                    typeSymbol = manager.getTypeShort(type),
-                    typeColor = manager.getAttendanceColor(type),
-                    date = Date(0, 0, 0),
-                    startTime = null,
-                    semester = 0,
-                    teacherId = 0,
-                    subjectId = 0,
-                    addedDate = 0
-            )
-            layout.addView(AttendanceView(contextWrapper, attendance, manager))
-            layout.addView(TextView(contextWrapper).also {
-                it.setText(R.string.attendance_percentage_format, count/sum*100f)
-                it.setPadding(0, 0, 5.dp, 0)
-            })
-            layout.setPadding(0, 8.dp, 0, 0)
-            b.previewContainer.addView(layout)
-        }
+        b.percentage.isVisible = true
 
         if (item.percentage == 0f) {
             b.percentage.isVisible = false
             b.percentage.text = null
-            b.summaryContainer.isVisible = false
-            b.summaryContainer.text = null
         }
         else {
             b.percentage.setText(R.string.attendance_percentage_format, item.percentage)
-            b.summaryContainer.setText(R.string.attendance_period_summary_format, item.percentage)
         }
     }
 }

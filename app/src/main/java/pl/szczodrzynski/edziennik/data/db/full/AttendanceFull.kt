@@ -24,5 +24,6 @@ class AttendanceFull(
 
     // metadata
     var seen = false
+        get() = field || baseType == TYPE_PRESENT
     var notified = false
 }

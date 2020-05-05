@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.modules.attendance.models
 
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
+import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.ExpandableItemModel
 
@@ -20,6 +21,6 @@ data class AttendanceMonth(
     var hasUnseen: Boolean = false
         get() = field || items.any { it.baseType != Attendance.TYPE_PRESENT && !it.seen }
 
-    var typeCountMap: Map<Int, Int> = mapOf()
+    var typeCountMap: Map<AttendanceType, Int> = mapOf()
     var percentage: Float = 0f
 }

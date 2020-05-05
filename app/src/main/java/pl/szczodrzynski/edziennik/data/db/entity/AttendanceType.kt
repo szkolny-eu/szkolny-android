@@ -21,4 +21,35 @@ data class AttendanceType (
         val typeSymbol: String,
         /** A color that the e-register would display, null falls back to app's default */
         val typeColor: Int?
-)
+) : Comparable<AttendanceType> {
+
+        // attendance bar order:
+        // day_free, present, present_custom, unknown, belated_excused, belated, released, absent_excused, absent,
+        override fun compareTo(other: AttendanceType): Int {
+                val type1 = when (baseType) {
+                        Attendance.TYPE_DAY_FREE -> 0
+                        Attendance.TYPE_PRESENT -> 1
+                        Attendance.TYPE_PRESENT_CUSTOM -> 2
+                        Attendance.TYPE_UNKNOWN -> 3
+                        Attendance.TYPE_BELATED_EXCUSED -> 4
+                        Attendance.TYPE_BELATED -> 5
+                        Attendance.TYPE_RELEASED -> 6
+                        Attendance.TYPE_ABSENT_EXCUSED -> 7
+                        Attendance.TYPE_ABSENT -> 8
+                        else -> 9
+                }
+                val type2 = when (other.baseType) {
+                        Attendance.TYPE_DAY_FREE -> 0
+                        Attendance.TYPE_PRESENT -> 1
+                        Attendance.TYPE_PRESENT_CUSTOM -> 2
+                        Attendance.TYPE_UNKNOWN -> 3
+                        Attendance.TYPE_BELATED_EXCUSED -> 4
+                        Attendance.TYPE_BELATED -> 5
+                        Attendance.TYPE_RELEASED -> 6
+                        Attendance.TYPE_ABSENT_EXCUSED -> 7
+                        Attendance.TYPE_ABSENT -> 8
+                        else -> 9
+                }
+                return type1 - type2
+        }
+}

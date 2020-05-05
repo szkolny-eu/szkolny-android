@@ -96,8 +96,8 @@ class EdudziennikWebAttendance(override val data: DataEdudziennik,
                             profileId,
                             Metadata.TYPE_ATTENDANCE,
                             id,
-                            profile.empty,
-                            profile.empty
+                            profile.empty || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == Attendance.TYPE_UNKNOWN,
+                            profile.empty || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == Attendance.TYPE_UNKNOWN
                     ))
                 }
             }

@@ -77,8 +77,8 @@ class LibrusApiAttendances(override val data: DataLibrus,
                             profileId,
                             Metadata.TYPE_ATTENDANCE,
                             id,
-                            profile?.empty ?: false,
-                            profile?.empty ?: false
+                            profile?.empty ?: false || type?.baseType == Attendance.TYPE_PRESENT_CUSTOM || type?.baseType == Attendance.TYPE_UNKNOWN,
+                            profile?.empty ?: false || type?.baseType == Attendance.TYPE_PRESENT_CUSTOM || type?.baseType == Attendance.TYPE_UNKNOWN
                     ))
                 }
             }
