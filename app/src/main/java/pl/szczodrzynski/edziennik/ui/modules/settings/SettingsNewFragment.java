@@ -1145,8 +1145,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         new MaterialDialog.Builder(activity)
                                 .title(getString(R.string.settings_about_language_dialog_title))
                                 .content(getString(R.string.settings_about_language_dialog_text))
-                                .items(getString(R.string.language_system), getString(R.string.language_polish), getString(R.string.language_english))
-                                .itemsCallbackSingleChoice(app.getConfig().getUi().getLanguage() == null ? 0 : app.getConfig().getUi().getLanguage().equals("pl") ? 1 : 2, (dialog, itemView, which, text) -> {
+                                .items(getString(R.string.language_system), getString(R.string.language_polish), getString(R.string.language_english), getString(R.string.language_german))
+                                .itemsCallbackSingleChoice(app.getConfig().getUi().getLanguage() == null ? 0 : app.getConfig().getUi().getLanguage().equals("pl") ? 1 : app.getConfig().getUi().getLanguage().equals("en") ? 2 : 3, (dialog, itemView, which, text) -> {
                                     switch (which) {
                                         case 0:
                                             app.getConfig().getUi().setLanguage(null);
@@ -1157,6 +1157,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                             break;
                                         case 2:
                                             app.getConfig().getUi().setLanguage("en");
+                                            break;
+                                        case 3:
+                                            app.getConfig().getUi().setLanguage("de");
                                             break;
                                     }
                                     activity.recreate(MainActivity.DRAWER_ITEM_SETTINGS);
