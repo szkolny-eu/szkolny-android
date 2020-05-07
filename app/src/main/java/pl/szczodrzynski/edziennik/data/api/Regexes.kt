@@ -84,7 +84,7 @@ object Regexes {
         """<span>([0-9:]+) - .+? (.+?)</span></a>""".toRegex(DOT_MATCHES_ALL)
     }
     val MOBIDZIENNIK_ATTENDANCE_LESSON by lazy {
-        """<strong>(.+?) - (.*?)</strong>.+?<small>.+?\((.+?), .+?(.+?)\)""".toRegex(DOT_MATCHES_ALL)
+        """<strong>(.+?)</strong>\s*<small>\s*\((.+?),\s*(.+?)\)""".toRegex(DOT_MATCHES_ALL)
     }
 
     val MOBIDZIENNIK_HOMEWORK_ROW by lazy {

@@ -115,12 +115,12 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                         val startTime = Time.fromH_m(range[1])
 
                         range[2].split(" / ").mapNotNull { Regexes.MOBIDZIENNIK_ATTENDANCE_LESSON.find(it) }.forEachIndexed { index, lesson ->
-                            val topic = lesson[2]
-                            if (topic.startsWith("Lekcja odwołana: ") || entry.isEmpty())
+                            val topic = lesson[1].substringAfter(" - ", missingDelimiterValue = "").takeIf { it.isNotBlank() }
+                            if (topic?.startsWith("Lekcja odwołana: ") == true || entry.isEmpty())
                                 return@forEachIndexed
-                            val subjectName = lesson[1]
+                            val subjectName = lesson[1].substringBefore(" - ")
                             //val team = lesson[3]
-                            val teacherName = lesson[4].fixName()
+                            val teacherName = lesson[3].fixName()
 
                             val teacherId = data.teacherList.singleOrNull { it.fullNameLastFirst == teacherName }?.id ?: -1
                             val subjectId = data.subjectList.singleOrNull { it.longName == subjectName }?.id ?: -1
