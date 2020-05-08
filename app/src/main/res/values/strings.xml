@@ -1304,4 +1304,5 @@
     <string name="yesterday">wczoraj</string>
     <string name="you_are_offline_text">Jesteś offline. Spróbuj włączyć Wi-Fi lub dane komórkowe.</string>
     <string name="you_are_offline_title">Połączenie sieciowe</string>
+    <string name="attendance_tab_types">Wg typu</string>
 </resources>

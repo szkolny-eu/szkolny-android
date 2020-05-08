@@ -27,10 +27,11 @@ import kotlin.coroutines.CoroutineContext
 class AttendanceFragment : Fragment(), CoroutineScope {
     companion object {
         private const val TAG = "AttendanceFragment"
-        const val VIEW_DAYS = 0
-        const val VIEW_MONTHS = 1
-        const val VIEW_SUMMARY = 2
-        const val VIEW_LIST = 3
+        const val VIEW_SUMMARY = 0
+        const val VIEW_DAYS = 1
+        const val VIEW_MONTHS = 2
+        const val VIEW_TYPES = 3
+        const val VIEW_LIST = 4
         var pageSelection = 1
     }
 
@@ -92,6 +93,10 @@ class AttendanceFragment : Fragment(), CoroutineScope {
                         AttendanceListFragment().apply {
                             arguments = Bundle("viewType" to VIEW_MONTHS)
                         } to getString(R.string.attendance_tab_months),
+
+                        AttendanceListFragment().apply {
+                            arguments = Bundle("viewType" to VIEW_TYPES)
+                        } to getString(R.string.attendance_tab_types),
 
                         AttendanceListFragment().apply {
                             arguments = Bundle("viewType" to VIEW_LIST)

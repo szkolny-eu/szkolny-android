@@ -15,7 +15,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.databinding.AttendanceItemContainerBarBinding
+import pl.szczodrzynski.edziennik.databinding.AttendanceItemMonthBinding
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceAdapter.Companion.STATE_CLOSED
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceView
@@ -27,7 +27,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 class MonthViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
-        val b: AttendanceItemContainerBarBinding = AttendanceItemContainerBarBinding.inflate(inflater, parent, false)
+        val b: AttendanceItemMonthBinding = AttendanceItemMonthBinding.inflate(inflater, parent, false)
 ) : RecyclerView.ViewHolder(b.root), BindableViewHolder<AttendanceMonth, AttendanceAdapter> {
     companion object {
         private const val TAG = "MonthViewHolder"
@@ -80,7 +80,7 @@ class MonthViewHolder(
                 it.setText(R.string.attendance_percentage_format, count/sum*100f)
                 it.setPadding(0, 0, 5.dp, 0)
             })
-            layout.setPadding(0, 8.dp, 0, 8.dp)
+            layout.setPadding(0, 8.dp, 0, 0)
             b.previewContainer.addView(layout)
         }
 

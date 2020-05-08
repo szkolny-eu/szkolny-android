@@ -65,6 +65,8 @@ open class Attendance(
     var lessonTopic: String? = null
     @ColumnInfo(name = "attendanceLessonNumber")
     var lessonNumber: Int? = null
+    @ColumnInfo(name = "attendanceIsCounted")
+    var isCounted: Boolean = true
 
     @Ignore
     var showAsUnseen: Boolean? = null

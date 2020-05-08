@@ -78,6 +78,7 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
                 b.list.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
+                    isNestedScrollingEnabled = false
                 }
             }
             adapter.notifyDataSetChanged()
@@ -183,7 +184,7 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
         items.forEach { subject ->
             subject.typeCountMap = subject.items
                     .groupBy { it.typeObject }
-                    .map { it.key to it.value.size }
+                    .map { it.key to it.value.count { a -> a.isCounted } }
                     .sortedBy { it.first }
                     .toMap()
 
@@ -217,7 +218,7 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
 
         val typeCountMap = attendance
                 .groupBy { it.typeObject }
-                .map { it.key to it.value.size }
+                .map { it.key to it.value.count { a -> a.isCounted } }
                 .sortedBy { it.first }
                 .toMap()
 

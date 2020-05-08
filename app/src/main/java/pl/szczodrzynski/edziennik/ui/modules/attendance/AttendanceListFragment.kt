@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.modules.attendance.models.AttendanceDayRange
 import pl.szczodrzynski.edziennik.ui.modules.attendance.models.AttendanceMonth
+import pl.szczodrzynski.edziennik.ui.modules.attendance.models.AttendanceTypeGroup
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSubject
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -146,7 +147,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
                 var element = iterator.next()
                 while (iterator.hasNext()) {
                     var nextElement = iterator.next()
-                    while (Date.diffDays(element.rangeStart, nextElement.rangeStart) <= 1) {
+                    while (Date.diffDays(element.rangeStart, nextElement.rangeStart) <= 1 && iterator.hasNext()) {
                         if (element.rangeEnd == null)
                             element.rangeEnd = element.rangeStart
 
@@ -173,7 +174,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
             items.forEach { month ->
                 month.typeCountMap = month.items
                         .groupBy { it.typeObject }
-                        .map { it.key to it.value.size }
+                        .map { it.key to it.value.count { a -> a.isCounted } }
                         .sortedBy { it.first }
                         .toMap()
 
@@ -201,6 +202,25 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
 
                 if (!showPresenceInMonth)
                     month.items.removeAll { it.baseType == Attendance.TYPE_PRESENT }
+            }
+
+            return items.toMutableList()
+        }
+        else if (viewType == AttendanceFragment.VIEW_TYPES) {
+            val items = attendance
+                    .groupBy { it.typeObject }
+                    .map { AttendanceTypeGroup(
+                            type = it.key,
+                            items = it.value.toMutableList()
+                    ) }
+
+            items.forEach { type ->
+                type.percentage = if (attendance.isEmpty())
+                    0f
+                else
+                    type.items.size.toFloat() / attendance.size.toFloat() * 100f
+
+                type.semesterCount = type.items.count { it.semester == app.profile.currentSemester }
             }
 
             return items.toMutableList()

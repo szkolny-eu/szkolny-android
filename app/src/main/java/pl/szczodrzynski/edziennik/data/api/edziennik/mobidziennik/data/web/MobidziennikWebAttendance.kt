@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_ABSEN
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_ABSENT_EXCUSED
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_BELATED
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_PRESENT
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_PRESENT_CUSTOM
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEASED
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_UNKNOWN
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
@@ -132,13 +133,22 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                             }
                             entry = entry.removePrefix(typeSymbol)
 
+                            var isCounted = true
                             val baseType = when (typeSymbol) {
                                 "." -> TYPE_PRESENT
                                 "|" -> TYPE_ABSENT
                                 "+" -> TYPE_ABSENT_EXCUSED
                                 "s" -> TYPE_BELATED
                                 "z" -> TYPE_RELEASED
-                                else -> TYPE_UNKNOWN
+                                else -> {
+                                    isCounted = false
+                                    when (typeSymbol) {
+                                        "e" -> TYPE_PRESENT_CUSTOM
+                                        "en" -> TYPE_ABSENT
+                                        "ep" -> TYPE_PRESENT_CUSTOM
+                                        else -> TYPE_UNKNOWN
+                                    }
+                                }
                             }
                             val typeName = types?.get(typeSymbol) ?: ""
 
@@ -166,6 +176,7 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                                     subjectId = subjectId
                             ).also {
                                 it.lessonTopic = topic
+                                it.isCounted = isCounted
                             }
 
                             data.attendanceList.add(attendanceObject)

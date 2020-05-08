@@ -16,7 +16,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.concat
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.databinding.AttendanceItemContainerBinding
+import pl.szczodrzynski.edziennik.databinding.AttendanceItemDayRangeBinding
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceAdapter.Companion.STATE_CLOSED
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceView
@@ -27,7 +27,7 @@ import pl.szczodrzynski.edziennik.utils.Themes
 class DayRangeViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
-        val b: AttendanceItemContainerBinding = AttendanceItemContainerBinding.inflate(inflater, parent, false)
+        val b: AttendanceItemDayRangeBinding = AttendanceItemDayRangeBinding.inflate(inflater, parent, false)
 ) : RecyclerView.ViewHolder(b.root), BindableViewHolder<AttendanceDayRange, AttendanceAdapter> {
     companion object {
         private const val TAG = "DayRangeViewHolder"

@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.ui.modules.attendance.models.AttendanceMonth
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.ExpandableItemModel
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
 import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.utils.models.Week
 
 class AttendanceViewHolder(
         inflater: LayoutInflater,
@@ -42,6 +43,7 @@ class AttendanceViewHolder(
         b.type.text = item.typeName
         b.subjectName.text = item.subjectLongName ?: item.lessonTopic
         b.dateTime.text = listOf(
+                Week.getFullDayName(item.date.weekDay),
                 item.date.formattedStringShort,
                 item.startTime?.stringHM,
                 item.lessonNumber?.let { app.getString(R.string.attendance_lesson_number_format, it) }

@@ -19,10 +19,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.startCoroutineTimer
-import pl.szczodrzynski.edziennik.ui.modules.attendance.models.AttendanceDayRange
-import pl.szczodrzynski.edziennik.ui.modules.attendance.models.AttendanceEmpty
-import pl.szczodrzynski.edziennik.ui.modules.attendance.models.AttendanceMonth
-import pl.szczodrzynski.edziennik.ui.modules.attendance.models.AttendanceSubject
+import pl.szczodrzynski.edziennik.ui.modules.attendance.models.*
 import pl.szczodrzynski.edziennik.ui.modules.attendance.viewholder.*
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.ExpandableItemModel
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
@@ -39,7 +36,8 @@ class AttendanceAdapter(
         private const val ITEM_TYPE_DAY_RANGE = 1
         private const val ITEM_TYPE_MONTH = 2
         private const val ITEM_TYPE_SUBJECT = 3
-        private const val ITEM_TYPE_EMPTY = 4
+        private const val ITEM_TYPE_TYPE = 4
+        private const val ITEM_TYPE_EMPTY = 5
         const val STATE_CLOSED = 0
         const val STATE_OPENED = 1
     }
@@ -60,6 +58,7 @@ class AttendanceAdapter(
             ITEM_TYPE_DAY_RANGE -> DayRangeViewHolder(inflater, parent)
             ITEM_TYPE_MONTH -> MonthViewHolder(inflater, parent)
             ITEM_TYPE_SUBJECT -> SubjectViewHolder(inflater, parent)
+            ITEM_TYPE_TYPE -> TypeViewHolder(inflater, parent)
             ITEM_TYPE_EMPTY -> EmptyViewHolder(inflater, parent)
             else -> throw IllegalArgumentException("Incorrect viewType")
         }
@@ -71,6 +70,7 @@ class AttendanceAdapter(
             is AttendanceDayRange -> ITEM_TYPE_DAY_RANGE
             is AttendanceMonth -> ITEM_TYPE_MONTH
             is AttendanceSubject -> ITEM_TYPE_SUBJECT
+            is AttendanceTypeGroup -> ITEM_TYPE_TYPE
             is AttendanceEmpty -> ITEM_TYPE_EMPTY
             else -> throw IllegalArgumentException("Incorrect viewType")
         }
@@ -102,7 +102,7 @@ class AttendanceAdapter(
             ).setDuration(200).start();
         }
 
-        if (model is AttendanceDayRange || model is AttendanceMonth) {
+        if (model is AttendanceDayRange || model is AttendanceMonth || model is AttendanceTypeGroup) {
             // hide the preview, show summary
             val preview = view?.findViewById<View>(R.id.previewContainer)
             val summary = view?.findViewById<View>(R.id.summaryContainer)
@@ -158,6 +158,7 @@ class AttendanceAdapter(
             is DayRangeViewHolder -> ITEM_TYPE_DAY_RANGE
             is MonthViewHolder -> ITEM_TYPE_MONTH
             is SubjectViewHolder -> ITEM_TYPE_SUBJECT
+            is TypeViewHolder -> ITEM_TYPE_TYPE
             is EmptyViewHolder -> ITEM_TYPE_EMPTY
             else -> throw IllegalArgumentException("Incorrect viewType")
         }
@@ -170,6 +171,7 @@ class AttendanceAdapter(
             holder is DayRangeViewHolder && item is AttendanceDayRange -> holder.onBind(activity, app, item, position, this)
             holder is MonthViewHolder && item is AttendanceMonth -> holder.onBind(activity, app, item, position, this)
             holder is SubjectViewHolder && item is AttendanceSubject -> holder.onBind(activity, app, item, position, this)
+            holder is TypeViewHolder && item is AttendanceTypeGroup -> holder.onBind(activity, app, item, position, this)
             holder is EmptyViewHolder && item is AttendanceEmpty -> holder.onBind(activity, app, item, position, this)
         }
 
