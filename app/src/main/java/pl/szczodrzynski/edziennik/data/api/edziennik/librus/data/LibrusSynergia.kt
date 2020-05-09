@@ -91,6 +91,8 @@ open class LibrusSynergia(open val data: DataLibrus, open val lastSync: Long?) {
     }
 
     fun redirectUrlGet(tag: String, url: String, onSuccess: (url: String) -> Unit) {
+        d(tag, "Request: Librus/Synergia - $url")
+
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response) {
                 val redirectUrl = response.headers().get("Location")
