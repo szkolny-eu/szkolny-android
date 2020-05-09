@@ -86,8 +86,8 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getMessage(message: MessageFull) {
-        login(LOGIN_METHOD_LIBRUS_MESSAGES) {
-            LibrusMessagesGetMessage(data, message) {
+        login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
+            LibrusSynergiaGetMessage(data, message) {
                 completed()
             }
         }

@@ -148,6 +148,9 @@ object Regexes {
     val LIBRUS_ATTACHMENT_KEY by lazy {
         """singleUseKey=([0-9A-z_]+)""".toRegex()
     }
+    val LIBRUS_MESSAGE_ID by lazy {
+        """/wiadomosci/[0-9]+/[0-9]+/([0-9]+?)/""".toRegex()
+    }
 
 
 
