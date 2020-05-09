@@ -42,7 +42,7 @@ class SubjectViewHolder(
 
         b.unread.isVisible = item.hasUnseen
 
-        b.attendanceBar.setAttendanceData(item.typeCountMap.mapKeys { manager.getAttendanceColor(it.key) })
+        b.attendanceBar.setAttendanceData(item.typeCountMap.map { manager.getAttendanceColor(it.key) to it.value })
 
         b.percentage.isVisible = true
 

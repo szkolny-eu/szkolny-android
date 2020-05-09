@@ -76,7 +76,7 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
             if (adapter.items.isNotNullNorEmpty() && b.list.adapter == null) {
                 b.list.adapter = adapter
                 b.list.apply {
-                    setHasFixedSize(true)
+                    setHasFixedSize(false)
                     layoutManager = LinearLayoutManager(context)
                     isNestedScrollingEnabled = false
                 }
@@ -103,7 +103,7 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
         }})
 
         adapter.onAttendanceClick = {
-            //GradeDetailsDialog(activity, it)
+            AttendanceDetailsDialog(activity, it)
         }
 
         b.toggleGroup.check(when (periodSelection) {
@@ -184,15 +184,14 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
         items.forEach { subject ->
             subject.typeCountMap = subject.items
                     .groupBy { it.typeObject }
-                    .map { it.key to it.value.count { a -> a.isCounted } }
+                    .map { it.key to it.value.size }
                     .sortedBy { it.first }
                     .toMap()
 
             val totalCount = subject.typeCountMap.entries.sumBy {
-                when (it.key.baseType) {
-                    Attendance.TYPE_UNKNOWN -> 0
-                    else -> it.value
-                }
+                if (!it.key.isCounted || it.key.baseType == Attendance.TYPE_UNKNOWN)
+                    0
+                else it.value
             }
             val presenceCount = subject.typeCountMap.entries.sumBy {
                 when (it.key.baseType) {
@@ -200,7 +199,7 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
                     Attendance.TYPE_PRESENT_CUSTOM,
                     Attendance.TYPE_BELATED,
                     Attendance.TYPE_BELATED_EXCUSED,
-                    Attendance.TYPE_RELEASED -> it.value
+                    Attendance.TYPE_RELEASED -> if (it.key.isCounted) it.value else 0
                     else -> 0
                 }
             }
@@ -218,7 +217,7 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
 
         val typeCountMap = attendance
                 .groupBy { it.typeObject }
-                .map { it.key to it.value.count { a -> a.isCounted } }
+                .map { it.key to it.value.size }
                 .sortedBy { it.first }
                 .toMap()
 
@@ -228,11 +227,11 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
             presenceCountSum.toFloat() / totalCountSum.toFloat() * 100f
 
         launch {
-            b.attendanceBar.setAttendanceData(typeCountMap.mapKeys { manager.getAttendanceColor(it.key) })
+            b.attendanceBar.setAttendanceData(typeCountMap.map { manager.getAttendanceColor(it.key) to it.value })
             b.attendanceBar.isInvisible = typeCountMap.isEmpty()
 
             b.previewContainer.removeAllViews()
-            val sum = typeCountMap.entries.sumBy { it.value }.toFloat()
+            //val sum = typeCountMap.entries.sumBy { it.value }.toFloat()
             typeCountMap.forEach { (type, count) ->
                 val layout = LinearLayout(activity)
                 val attendanceObject = Attendance(
@@ -252,7 +251,8 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
                 )
                 layout.addView(AttendanceView(activity, attendanceObject, manager))
                 layout.addView(TextView(activity).also {
-                    it.setText(R.string.attendance_percentage_format, count/sum*100f)
+                    //it.setText(R.string.attendance_percentage_format, count/sum*100f)
+                    it.text = count.toString()
                     it.setPadding(0, 0, 5.dp, 0)
                 })
                 layout.setPadding(0, 8.dp, 0, 8.dp)

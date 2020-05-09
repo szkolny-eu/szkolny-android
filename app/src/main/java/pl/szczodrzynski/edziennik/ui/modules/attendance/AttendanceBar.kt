@@ -12,6 +12,7 @@ import android.util.AttributeSet
 import android.view.View
 import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.utils.Colors
+import kotlin.math.roundToInt
 
 /* https://github.com/JakubekWeg/Mobishit/blob/master/app/src/main/java/jakubweg/mobishit/view/AttendanceBarView.kt */
 class AttendanceBar : View {
@@ -34,7 +35,7 @@ class AttendanceBar : View {
         mCornerRadius = 4.dp.toFloat()
 
         if (isInEditMode)
-            setAttendanceData(mapOf(
+            setAttendanceData(listOf(
                     0xff43a047.toInt() to 23,
                     0xff009688.toInt() to 187,
                     0xff3f51b5.toInt() to 46,
@@ -49,8 +50,8 @@ class AttendanceBar : View {
     // color, count
     private class AttendanceItem(var color: Int, var count: Int)
 
-    fun setAttendanceData(list: Map<Int, Int>) {
-        attendancesList = list.map { AttendanceItem(it.key, it.value) }
+    fun setAttendanceData(list: List<Pair<Int, Int>>) {
+        attendancesList = list.map { AttendanceItem(it.first, it.second) }
         setWillNotDraw(false)
         invalidate()
     }
@@ -91,11 +92,12 @@ class AttendanceBar : View {
             mainPaint.color = e.color
             canvas.drawRect(left, top, left + width, bottom, mainPaint)
 
+            val percentage = (100f * e.count / sum).roundToInt().toString() + "%"
             val textBounds = Rect()
-            textPaint.getTextBounds(e.count.toString(), 0, e.count.toString().length, textBounds)
+            textPaint.getTextBounds(percentage, 0, percentage.length, textBounds)
             if (width > textBounds.width() + 8.dp && height > textBounds.height() + 2.dp) {
                 textPaint.color = Colors.legibleTextColor(e.color)
-                canvas.drawText(e.count.toString(), left + width / 2, bottom - height / 2 + textBounds.height()/2, textPaint)
+                canvas.drawText(percentage, left + width / 2, bottom - height / 2 + textBounds.height()/2, textPaint)
             }
 
             left += width

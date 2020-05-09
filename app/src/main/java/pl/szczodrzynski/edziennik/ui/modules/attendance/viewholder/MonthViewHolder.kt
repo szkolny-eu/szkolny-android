@@ -49,7 +49,7 @@ class MonthViewHolder(
 
         b.unread.isVisible = item.hasUnseen
 
-        b.attendanceBar.setAttendanceData(item.typeCountMap.mapKeys { manager.getAttendanceColor(it.key) })
+        b.attendanceBar.setAttendanceData(item.typeCountMap.map { manager.getAttendanceColor(it.key) to it.value })
 
         b.previewContainer.isInvisible = item.state != STATE_CLOSED
         b.summaryContainer.isInvisible = item.state == STATE_CLOSED
@@ -77,7 +77,8 @@ class MonthViewHolder(
             )
             layout.addView(AttendanceView(contextWrapper, attendance, manager))
             layout.addView(TextView(contextWrapper).also {
-                it.setText(R.string.attendance_percentage_format, count/sum*100f)
+                //it.setText(R.string.attendance_percentage_format, count/sum*100f)
+                it.text = count.toString()
                 it.setPadding(0, 0, 5.dp, 0)
             })
             layout.setPadding(0, 8.dp, 0, 0)

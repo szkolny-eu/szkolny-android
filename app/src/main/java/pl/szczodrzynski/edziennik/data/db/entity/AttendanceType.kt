@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.db.entity
 
 import androidx.room.Entity
+import androidx.room.Ignore
 
 @Entity(tableName = "attendanceTypes",
         primaryKeys = ["profileId", "id"])
@@ -22,6 +23,9 @@ data class AttendanceType (
         /** A color that the e-register would display, null falls back to app's default */
         val typeColor: Int?
 ) : Comparable<AttendanceType> {
+
+        @Ignore
+        var isCounted: Boolean = true
 
         // attendance bar order:
         // day_free, present, present_custom, unknown, belated_excused, belated, released, absent_excused, absent,

@@ -27,7 +27,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="32dp"
+                android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
 
@@ -81,26 +81,17 @@
                 tools:background="@android:drawable/ic_menu_more" />
         </LinearLayout>
 
-        <FrameLayout
+        <TextView
+            android:id="@+id/details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp">
-
-            <TextView
-                android:id="@+id/previewContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:textSize="14sp"
-                android:visibility="gone"
-                tools:text="57,67% • 521 przez cały rok • 134 w tym semestrze"
-                tools:text1="Cały rok: 3 oceny • suma: 320 pkt"
-                tools:text2="Cały rok: 15 ocen • średnia: 2,62"
-                tools:visibility="visible" />
-        </FrameLayout>
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/NavView.TextView.Helper"
+            android:textSize="14sp"
+            tools:text="57,67% • 521 przez cały rok • 134 w tym semestrze"
+            tools:text1="Cały rok: 3 oceny • suma: 320 pkt"
+            tools:text2="Cały rok: 15 ocen • średnia: 2,62" />
     </LinearLayout>
 </layout>

@@ -73,6 +73,6 @@ open class Attendance(
 
     @delegate:Ignore
     val typeObject by lazy {
-        AttendanceType(profileId, baseType.toLong(),  baseType, typeName, typeShort, typeSymbol, typeColor)
+        AttendanceType(profileId, baseType.toLong(),  baseType, typeName, typeShort, typeSymbol, typeColor).also { it.isCounted = isCounted }
     }
 }

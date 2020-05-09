@@ -1305,4 +1305,14 @@
     <string name="you_are_offline_text">Jesteś offline. Spróbuj włączyć Wi-Fi lub dane komórkowe.</string>
     <string name="you_are_offline_title">Połączenie sieciowe</string>
     <string name="attendance_tab_types">Wg typu</string>
+    <string name="attendance_type_yearly_format">%d przez cały rok</string>
+    <string name="attendance_type_semester_format">%d w tym semestrze</string>
+    <string name="attendance_details_teacher">Nauczyciel</string>
+    <string name="attendance_details_type">Rodzaj</string>
+    <string name="attendance_details_date">Data</string>
+    <string name="attendance_details_time">Godzina</string>
+    <string name="attendance_details_lesson_topic">Temat lekcji</string>
+    <string name="attendance_details_is_counted">Liczona do puli?</string>
+    <string name="attendance_details_id">ID frekwencji</string>
+    <string name="attendance_details_type_id">ID rodzaju podstawowego</string>
 </resources>

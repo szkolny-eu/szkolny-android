@@ -51,16 +51,16 @@ class AttendanceManager(val app: App) : CoroutineScope {
         }
     }
     fun getAttendanceColor(typeObject: AttendanceType): Int {
-        return (if (useSymbols) typeObject.typeColor else null) ?: when (typeObject.baseType) {
-            Attendance.TYPE_PRESENT_CUSTOM -> typeObject.typeColor ?: 0xff64b5f6.toInt()
-            else -> getAttendanceColor(typeObject.baseType)
-        }
+        return (if (useSymbols) typeObject.typeColor else null)
+                ?: if (typeObject.baseType == Attendance.TYPE_PRESENT_CUSTOM || !typeObject.isCounted)
+                    typeObject.typeColor ?: 0xff64b5f6.toInt()
+                else getAttendanceColor(typeObject.baseType)
     }
     fun getAttendanceColor(attendance: Attendance): Int {
-        return (if (useSymbols) attendance.typeColor else null) ?: when (attendance.baseType) {
-            Attendance.TYPE_PRESENT_CUSTOM -> attendance.typeColor ?: 0xff64b5f6.toInt()
-            else -> getAttendanceColor(attendance.baseType)
-        }
+        return (if (useSymbols) attendance.typeColor else null)
+                ?: if (attendance.baseType == Attendance.TYPE_PRESENT_CUSTOM || !attendance.isCounted)
+                    attendance.typeColor ?: 0xff64b5f6.toInt()
+                else getAttendanceColor(attendance.baseType)
     }
 
     /*    _    _ _____    _____                 _  __ _

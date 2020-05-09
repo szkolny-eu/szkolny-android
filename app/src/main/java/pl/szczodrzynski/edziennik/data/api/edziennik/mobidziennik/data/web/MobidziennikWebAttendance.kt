@@ -151,11 +151,17 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                                 }
                             }
                             val typeName = types?.get(typeSymbol) ?: ""
+                            val typeColor = when (typeSymbol) {
+                                "e" -> 0xff673ab7
+                                "en" -> 0xffec407a
+                                "ep" -> 0xff4caf50
+                                else -> null
+                            }?.toInt()
 
-                            val typeShort = when (baseType) {
-                                TYPE_UNKNOWN -> typeSymbol
-                                else -> data.app.attendanceManager.getTypeShort(baseType)
-                            }
+                            val typeShort = if (isCounted)
+                                data.app.attendanceManager.getTypeShort(baseType)
+                            else
+                                typeSymbol
 
                             val semester = data.profile?.dateToSemester(lessonDate) ?: 1
 
@@ -168,7 +174,7 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                                     typeName = typeName,
                                     typeShort = typeShort,
                                     typeSymbol = typeSymbol,
-                                    typeColor = null,
+                                    typeColor = typeColor,
                                     date = lessonDate,
                                     startTime = startTime,
                                     semester = semester,

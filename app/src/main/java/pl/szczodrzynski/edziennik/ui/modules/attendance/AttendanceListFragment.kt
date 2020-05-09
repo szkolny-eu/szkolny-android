@@ -95,7 +95,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
         }})
 
         adapter.onAttendanceClick = {
-            //GradeDetailsDialog(activity, it)
+            AttendanceDetailsDialog(activity, it)
         }
     }; return true}
 
@@ -174,15 +174,14 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
             items.forEach { month ->
                 month.typeCountMap = month.items
                         .groupBy { it.typeObject }
-                        .map { it.key to it.value.count { a -> a.isCounted } }
+                        .map { it.key to it.value.size }
                         .sortedBy { it.first }
                         .toMap()
 
                 val totalCount = month.typeCountMap.entries.sumBy {
-                    when (it.key.baseType) {
-                        Attendance.TYPE_UNKNOWN -> 0
-                        else -> it.value
-                    }
+                    if (!it.key.isCounted || it.key.baseType == Attendance.TYPE_UNKNOWN)
+                        0
+                    else it.value
                 }
                 val presenceCount = month.typeCountMap.entries.sumBy {
                     when (it.key.baseType) {
@@ -190,7 +189,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
                             Attendance.TYPE_PRESENT_CUSTOM,
                             Attendance.TYPE_BELATED,
                             Attendance.TYPE_BELATED_EXCUSED,
-                            Attendance.TYPE_RELEASED -> it.value
+                            Attendance.TYPE_RELEASED -> if (it.key.isCounted) it.value else 0
                         else -> 0
                     }
                 }
@@ -213,6 +212,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
                             type = it.key,
                             items = it.value.toMutableList()
                     ) }
+                    .sortedBy { it.items.size }
 
             items.forEach { type ->
                 type.percentage = if (attendance.isEmpty())

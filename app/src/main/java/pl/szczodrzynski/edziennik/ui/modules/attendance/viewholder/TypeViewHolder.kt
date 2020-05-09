@@ -5,13 +5,14 @@
 package pl.szczodrzynski.edziennik.ui.modules.attendance.viewholder
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.concat
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.databinding.AttendanceItemTypeBinding
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceAdapter
@@ -43,7 +44,11 @@ class TypeViewHolder(
 
         b.unread.isVisible = item.hasUnseen
 
-        b.previewContainer.visibility = if (item.state == AttendanceAdapter.STATE_CLOSED) View.VISIBLE else View.INVISIBLE
+        b.details.text = listOf(
+                app.getString(R.string.attendance_percentage_format, item.percentage),
+                app.getString(R.string.attendance_type_yearly_format, item.items.size),
+                app.getString(R.string.attendance_type_semester_format, item.semesterCount)
+        ).concat(" • ")
 
         b.type.setAttendance(Attendance(
                 profileId = 0,
