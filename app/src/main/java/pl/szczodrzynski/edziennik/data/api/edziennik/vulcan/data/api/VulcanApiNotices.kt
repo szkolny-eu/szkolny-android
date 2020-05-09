@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getLong
@@ -30,6 +31,29 @@ class VulcanApiNotices(override val data: DataVulcan,
             data.db.noticeTypeDao().getAllNow(profileId).toSparseArray(data.noticeTypes) { it.id }
         }
 
+        val semesterId = data.studentSemesterId
+        val semesterNumber = data.studentSemesterNumber
+        if (semesterNumber == 2 && lastSync ?: 0 < profile.dateSemester1Start.inMillis) {
+            getNotices(profile, semesterId - 1, semesterNumber - 1) {
+                getNotices(profile, semesterId, semesterNumber) {
+                    finish()
+                }
+            }
+        }
+        else {
+            getNotices(profile, semesterId, semesterNumber) {
+                finish()
+            }
+        }
+
+    } ?: onSuccess(ENDPOINT_VULCAN_API_NOTICES) }
+
+    private fun finish() {
+        data.setSyncNext(ENDPOINT_VULCAN_API_NOTICES, SYNC_ALWAYS)
+        onSuccess(ENDPOINT_VULCAN_API_NOTICES)
+    }
+
+    private fun getNotices(profile: Profile, semesterId: Int, semesterNumber: Int, onSuccess: () -> Unit) {
         apiGet(TAG, VULCAN_API_ENDPOINT_NOTICES, parameters = mapOf(
                 "IdUczen" to data.studentId,
                 "IdOkresKlasyfikacyjny" to data.studentSemesterId
@@ -67,8 +91,7 @@ class VulcanApiNotices(override val data: DataVulcan,
                 ))
             }
 
-            data.setSyncNext(ENDPOINT_VULCAN_API_NOTICES, SYNC_ALWAYS)
-            onSuccess(ENDPOINT_VULCAN_API_NOTICES)
+            onSuccess()
         }
-    } ?: onSuccess(ENDPOINT_VULCAN_API_NOTICES) }
+    }
 }

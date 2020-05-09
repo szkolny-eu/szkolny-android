@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getBoolean
 import pl.szczodrzynski.edziennik.getJsonArray
@@ -31,11 +32,43 @@ class VulcanApiEvents(override val data: DataVulcan,
 
     init { data.profile?.also { profile ->
 
-        val startDate: String = when (profile.empty) {
-            true -> profile.getSemesterStart(profile.currentSemester).stringY_m_d
+        val semesterId = data.studentSemesterId
+        val semesterNumber = data.studentSemesterNumber
+        if (semesterNumber == 2 && lastSync ?: 0 < profile.dateSemester1Start.inMillis) {
+            getEvents(profile, semesterId - 1, semesterNumber - 1) {
+                getEvents(profile, semesterId, semesterNumber) {
+                    finish()
+                }
+            }
+        }
+        else {
+            getEvents(profile, semesterId, semesterNumber) {
+                finish()
+            }
+        }
+
+    } ?: onSuccess(if (isHomework) ENDPOINT_VULCAN_API_HOMEWORK else ENDPOINT_VULCAN_API_EVENTS) }
+
+    private fun finish() {
+        when (isHomework) {
+            true -> {
+                data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
+                data.setSyncNext(ENDPOINT_VULCAN_API_HOMEWORK, SYNC_ALWAYS)
+            }
+            false -> {
+                data.toRemove.add(DataRemoveModel.Events.futureExceptType(Event.TYPE_HOMEWORK))
+                data.setSyncNext(ENDPOINT_VULCAN_API_EVENTS, SYNC_ALWAYS)
+            }
+        }
+        onSuccess(if (isHomework) ENDPOINT_VULCAN_API_HOMEWORK else ENDPOINT_VULCAN_API_EVENTS)
+    }
+
+    private fun getEvents(profile: Profile, semesterId: Int, semesterNumber: Int, onSuccess: () -> Unit) {
+        val startDate = when (profile.empty) {
+            true -> profile.getSemesterStart(semesterNumber).stringY_m_d
             else -> Date.getToday().stepForward(0, -1, 0).stringY_m_d
         }
-        val endDate: String = profile.getSemesterEnd(profile.currentSemester).stringY_m_d
+        val endDate = profile.getSemesterEnd(semesterNumber).stringY_m_d
 
         val endpoint = when (isHomework) {
             true -> VULCAN_API_ENDPOINT_HOMEWORK
@@ -46,7 +79,7 @@ class VulcanApiEvents(override val data: DataVulcan,
                 "DataKoncowa" to endDate,
                 "IdOddzial" to data.studentClassId,
                 "IdUczen" to data.studentId,
-                "IdOkresKlasyfikacyjny" to data.studentSemesterId
+                "IdOkresKlasyfikacyjny" to semesterId
         )) { json, _ ->
             val events = json.getJsonArray("Data")
 
@@ -94,17 +127,7 @@ class VulcanApiEvents(override val data: DataVulcan,
                 ))
             }
 
-            when (isHomework) {
-                true -> {
-                    data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
-                    data.setSyncNext(ENDPOINT_VULCAN_API_HOMEWORK, SYNC_ALWAYS)
-                }
-                false -> {
-                    data.toRemove.add(DataRemoveModel.Events.futureExceptType(Event.TYPE_HOMEWORK))
-                    data.setSyncNext(ENDPOINT_VULCAN_API_EVENTS, SYNC_ALWAYS)
-                }
-            }
-            onSuccess(if (isHomework) ENDPOINT_VULCAN_API_HOMEWORK else ENDPOINT_VULCAN_API_EVENTS)
+            onSuccess()
         }
-    } ?: onSuccess(if (isHomework) ENDPOINT_VULCAN_API_HOMEWORK else ENDPOINT_VULCAN_API_EVENTS) }
+    }
 }

@@ -29,6 +29,11 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
     }
 
     init { run {
+        if (data.studentSemesterNumber == 1 && data.semester1Id == 0)
+            data.semester1Id = data.studentSemesterNumber
+        if (data.studentSemesterNumber == 2 && data.semester2Id == 0)
+            data.semester2Id = data.studentSemesterNumber
+
         if (data.profile != null && data.isApiLoginValid()) {
             onSuccess()
         }

@@ -124,6 +124,15 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mStudentSemesterId = mStudentSemesterId ?: profile?.getStudentData("studentSemesterId", 0); return mStudentSemesterId ?: 0 }
         set(value) { profile?.putStudentData("studentSemesterId", value) ?: return; mStudentSemesterId = value }
 
+    private var mSemester1Id: Int? = null
+    var semester1Id: Int
+        get() { mSemester1Id = mSemester1Id ?: profile?.getStudentData("semester1Id", 0); return mSemester1Id ?: 0 }
+        set(value) { profile?.putStudentData("semester1Id", value) ?: return; mSemester1Id = value }
+    private var mSemester2Id: Int? = null
+    var semester2Id: Int
+        get() { mSemester2Id = mSemester2Id ?: profile?.getStudentData("semester2Id", 0); return mSemester2Id ?: 0 }
+        set(value) { profile?.putStudentData("semester2Id", value) ?: return; mSemester2Id = value }
+
     /**
      * ListaUczniow/OkresNumer, e.g. 1 or 2
      */

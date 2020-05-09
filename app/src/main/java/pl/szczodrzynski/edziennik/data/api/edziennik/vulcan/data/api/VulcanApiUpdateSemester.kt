@@ -60,6 +60,7 @@ class VulcanApiUpdateSemester(override val data: DataVulcan,
                 data.studentClassId = studentClassId
                 data.studentSemesterId = studentSemesterId
                 data.studentSemesterNumber = studentSemesterNumber
+                data.profile.studentData["semester${studentSemesterNumber}Id"] = studentSemesterId
                 data.currentSemesterEndDate = currentSemesterEndDate
                 profile.studentClassName = studentClassName
                 dateSemester1Start?.let {

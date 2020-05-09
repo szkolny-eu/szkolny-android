@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
@@ -27,9 +28,33 @@ class VulcanApiGrades(override val data: DataVulcan,
 
     init { data.profile?.also { profile ->
 
+        val semesterId = data.studentSemesterId
+        val semesterNumber = data.studentSemesterNumber
+        if (semesterNumber == 2 && lastSync ?: 0 < profile.dateSemester1Start.inMillis) {
+            getGrades(profile, semesterId - 1, semesterNumber - 1) {
+                getGrades(profile, semesterId, semesterNumber) {
+                    finish()
+                }
+            }
+        }
+        else {
+            getGrades(profile, semesterId, semesterNumber) {
+                finish()
+            }
+        }
+
+    } ?: onSuccess(ENDPOINT_VULCAN_API_GRADES) }
+
+    private fun finish() {
+        data.toRemove.add(DataRemoveModel.Grades.semesterWithType(data.studentSemesterNumber, TYPE_NORMAL))
+        data.setSyncNext(ENDPOINT_VULCAN_API_GRADES, SYNC_ALWAYS)
+        onSuccess(ENDPOINT_VULCAN_API_GRADES)
+    }
+
+    private fun getGrades(profile: Profile, semesterId: Int, semesterNumber: Int, onSuccess: () -> Unit) {
         apiGet(TAG, VULCAN_API_ENDPOINT_GRADES, parameters = mapOf(
                 "IdUczen" to data.studentId,
-                "IdOkresKlasyfikacyjny" to data.studentSemesterId
+                "IdOkresKlasyfikacyjny" to semesterId
         )) { json, _ ->
             val grades = json.getJsonArray("Data")
 
@@ -99,7 +124,7 @@ class VulcanApiGrades(override val data: DataVulcan,
                         category = category,
                         description = finalDescription,
                         comment = null,
-                        semester = data.studentSemesterNumber,
+                        semester = semesterNumber,
                         teacherId = teacherId,
                         subjectId = subjectId,
                         addedDate = addedDate
@@ -115,9 +140,7 @@ class VulcanApiGrades(override val data: DataVulcan,
                 ))
             }
 
-            data.toRemove.add(DataRemoveModel.Grades.semesterWithType(data.studentSemesterNumber, Grade.TYPE_NORMAL))
-            data.setSyncNext(ENDPOINT_VULCAN_API_GRADES, SYNC_ALWAYS)
-            onSuccess(ENDPOINT_VULCAN_API_GRADES)
+            onSuccess()
         }
-    } ?: onSuccess(ENDPOINT_VULCAN_API_GRADES) }
+    }
 }
