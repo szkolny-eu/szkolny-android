@@ -172,5 +172,7 @@ class Migration86 : Migration(85, 86) {
         database.execSQL("""CREATE UNIQUE INDEX index_metadata_profileId_thingType_thingId ON "metadata" (profileId, thingType, thingId)""")
         database.execSQL("""INSERT INTO metadata (profileId, metadataId, thingType, thingId, seen, notified) SELECT profileId, metadataId, thingType, thingId, seen, notified FROM _metadata""")
         database.execSQL("""DROP TABLE _metadata""")
+
+        database.execSQL("""DELETE FROM endpointTimers WHERE endpointId IN (1080, 1081, 2050, 1090, 1010, 1014);""")
     }
 }
