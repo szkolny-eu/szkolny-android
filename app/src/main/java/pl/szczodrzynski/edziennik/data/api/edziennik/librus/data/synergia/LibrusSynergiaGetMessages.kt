@@ -54,7 +54,7 @@ class LibrusSynergiaGetMessages(override val data: DataLibrus,
                     val sentDate = Date.fromIso(messageElement.child(4).text())
                     val recipientName = messageElement.child(2).text().split('(')[0].fixName()
                     val recipientId = getRecipientId(recipientName)
-                    val read = messageElement.child(2).attr("style").isNotEmpty()
+                    val read = messageElement.child(2).attr("style").isNullOrBlank()
 
                     val senderId = when (type) {
                         Message.TYPE_RECEIVED -> recipientId
@@ -68,7 +68,7 @@ class LibrusSynergiaGetMessages(override val data: DataLibrus,
 
                     val notified = when (type) {
                         Message.TYPE_SENT -> true
-                        else -> profile?.empty ?: false
+                        else -> read || profile?.empty ?: false
                     }
 
                     val messageObject = Message(

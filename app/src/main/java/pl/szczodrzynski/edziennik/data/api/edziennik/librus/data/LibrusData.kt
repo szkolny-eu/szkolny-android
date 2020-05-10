@@ -216,11 +216,13 @@ class LibrusData(val data: DataLibrus, val onSuccess: () -> Unit) {
              */
             ENDPOINT_LIBRUS_MESSAGES_RECEIVED -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
-                LibrusMessagesGetList(data, type = Message.TYPE_RECEIVED, lastSync = lastSync, onSuccess = onSuccess)
+                if (data.messagesLoginSuccessful) LibrusMessagesGetList(data, type = Message.TYPE_RECEIVED, lastSync = lastSync, onSuccess = onSuccess)
+                else LibrusSynergiaGetMessages(data, type = Message.TYPE_RECEIVED, lastSync = lastSync, onSuccess = onSuccess)
             }
             ENDPOINT_LIBRUS_MESSAGES_SENT -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
-                LibrusMessagesGetList(data, type = Message.TYPE_SENT, lastSync = lastSync, onSuccess = onSuccess)
+                if (data.messagesLoginSuccessful) LibrusMessagesGetList(data, type = Message.TYPE_SENT, lastSync = lastSync, onSuccess = onSuccess)
+                else LibrusSynergiaGetMessages(data, type = Message.TYPE_SENT, lastSync = lastSync, onSuccess = onSuccess)
             }
 
             else -> onSuccess(endpointId)

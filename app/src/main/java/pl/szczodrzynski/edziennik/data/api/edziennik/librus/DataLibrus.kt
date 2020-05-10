@@ -277,4 +277,10 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     var timetableNotPublic: Boolean
         get() { mTimetableNotPublic = mTimetableNotPublic ?: profile?.getStudentData("timetableNotPublic", false); return mTimetableNotPublic ?: false }
         set(value) { profile?.putStudentData("timetableNotPublic", value) ?: return; mTimetableNotPublic = value }
+
+    /**
+     * Set to false when Recaptcha helper doesn't provide a working token.
+     * When it's set to false uses Synergia for messages.
+     */
+    var messagesLoginSuccessful: Boolean = true
 }

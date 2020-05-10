@@ -9,6 +9,8 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusData
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.api.LibrusApiAnnouncementMarkAsRead
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetAttachment
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetRecipientList
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesSendMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.*
@@ -86,10 +88,9 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getMessage(message: MessageFull) {
-        login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
-            LibrusSynergiaGetMessage(data, message) {
-                completed()
-            }
+        login(LOGIN_METHOD_LIBRUS_MESSAGES) {
+            if (data.messagesLoginSuccessful) LibrusMessagesGetMessage(data, message) { completed() }
+            else LibrusSynergiaGetMessage(data, message) { completed() }
         }
     }
 
@@ -121,9 +122,8 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         when (owner) {
             is Message -> {
                 login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
-                    LibrusSynergiaGetAttachment(data, owner, attachmentId, attachmentName) {
-                        completed()
-                    }
+                    if (data.messagesLoginSuccessful) LibrusMessagesGetAttachment(data, owner, attachmentId, attachmentName) { completed() }
+                    LibrusSynergiaGetAttachment(data, owner, attachmentId, attachmentName) { completed() }
                 }
             }
             is EventFull -> {

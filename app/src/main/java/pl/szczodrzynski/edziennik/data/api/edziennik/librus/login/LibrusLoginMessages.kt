@@ -55,7 +55,11 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
                 }
                 text?.contains("<message>Niepoprawny login i/lub hasło.</message>") == true -> data.error(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_INVALID_LOGIN, response, text)
                 text?.contains("stop.png") == true -> data.error(TAG, ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED, response, text)
-                text?.contains("eAccessDeny") == true -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
+                text?.contains("eAccessDeny") == true -> {
+                    // data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
+                    data.messagesLoginSuccessful = false
+                    onSuccess()
+                }
                 text?.contains("OffLine") == true -> data.error(TAG, ERROR_LIBRUS_MESSAGES_MAINTENANCE, response, text)
                 text?.contains("<status>error</status>") == true -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ERROR, response, text)
                 text?.contains("<type>eVarWhitThisNameNotExists</type>") == true -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
