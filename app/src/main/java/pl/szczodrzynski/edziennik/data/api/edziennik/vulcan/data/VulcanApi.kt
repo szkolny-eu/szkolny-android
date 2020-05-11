@@ -106,11 +106,11 @@ open class VulcanApi(open val data: DataVulcan, open val lastSync: Long?) {
         Request.builder()
                 .url(url)
                 .userAgent(VULCAN_API_USER_AGENT)
-                .addHeader("RequestCertificateKey", data.apiCertificateKey)
+                .addHeader("RequestCertificateKey", data.apiFingerprint[data.symbol])
                 .addHeader("RequestSignatureValue",
                         try {
                             signContent(
-                                    data.apiCertificatePrivate ?: "",
+                                    data.apiPrivateKey[data.symbol] ?: "",
                                     finalPayload.toString()
                             )
                         } catch (e: Exception) {e.printStackTrace();""})

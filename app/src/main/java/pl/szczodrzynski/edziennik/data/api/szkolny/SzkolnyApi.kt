@@ -27,6 +27,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import retrofit2.Response
@@ -73,7 +74,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
 
     suspend inline fun <T> runCatching(errorSnackbar: ErrorSnackbar, crossinline block: SzkolnyApi.() -> T?): T? {
         return try {
-            withContext(Dispatchers.Default) { block() }
+            withContext(Dispatchers.Default) { block.invoke(this@SzkolnyApi) }
         }
         catch (e: Exception) {
             errorSnackbar.addError(e.toApiError(TAG)).show()
@@ -82,7 +83,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     }
     suspend inline fun <T> runCatching(activity: AppCompatActivity, crossinline block: SzkolnyApi.() -> T?): T? {
         return try {
-            withContext(Dispatchers.Default) { block() }
+            withContext(Dispatchers.Default) { block.invoke(this@SzkolnyApi) }
         }
         catch (e: Exception) {
             ErrorDetailsDialog(
@@ -95,7 +96,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     }
     inline fun <T> runCatching(block: SzkolnyApi.() -> T, onError: (e: Throwable) -> Unit): T? {
         return try {
-            block()
+            block.invoke(this@SzkolnyApi)
         }
         catch (e: Exception) {
             onError(e)
@@ -326,5 +327,12 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         )).execute()
 
         return parseResponse(response).message
+    }
+
+    @Throws(Exception::class)
+    fun getPlatforms(registerName: String): List<LoginInfo.Platform> {
+        val response = api.appLoginPlatforms(registerName).execute()
+
+        return parseResponse(response)
     }
 }

@@ -85,7 +85,7 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
                     profileList.add(profile)
                 }
 
-                EventBus.getDefault().post(FirstLoginFinishedEvent(profileList, data.loginStore))
+                EventBus.getDefault().postSticky(FirstLoginFinishedEvent(profileList, data.loginStore))
                 onSuccess()
             }
         }

@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login
 
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
+import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_WEB_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.utils.Utils
 
@@ -45,6 +46,10 @@ class VulcanLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
         }
         Utils.d(TAG, "Using login method $loginMethodId")
         when (loginMethodId) {
+            LOGIN_METHOD_VULCAN_WEB_MAIN -> {
+                data.startProgress(R.string.edziennik_progress_login_vulcan_web_main)
+                VulcanLoginWebMain(data) { onSuccess(loginMethodId) }
+            }
             LOGIN_METHOD_VULCAN_API -> {
                 data.startProgress(R.string.edziennik_progress_login_vulcan_api)
                 VulcanLoginApi(data) { onSuccess(loginMethodId) }

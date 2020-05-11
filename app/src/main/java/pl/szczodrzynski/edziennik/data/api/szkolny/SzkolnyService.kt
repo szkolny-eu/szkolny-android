@@ -6,11 +6,9 @@ package pl.szczodrzynski.edziennik.data.api.szkolny
 
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.*
+import pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface SzkolnyService {
 
@@ -34,4 +32,7 @@ interface SzkolnyService {
 
     @POST("feedbackMessage")
     fun feedbackMessage(@Body request: FeedbackMessageRequest): Call<ApiResponse<FeedbackMessageResponse>>
+
+    @GET("appLogin/platforms/{registerName}")
+    fun appLoginPlatforms(@Path("registerName") registerName: String): Call<ApiResponse<List<LoginInfo.Platform>>>
 }

@@ -80,7 +80,7 @@ open class Profile(
     var dateYearEnd = Date(studentSchoolYearStart + 1, 6, 30)
     fun getSemesterStart(semester: Int) = if (semester == 1) dateSemester1Start else dateSemester2Start
     fun getSemesterEnd(semester: Int) = if (semester == 1) dateSemester2Start.clone().stepForward(0, 0, -1) else dateYearEnd
-    fun dateToSemester(date: Date) = if (date.value >= getSemesterStart(2).value) 2 else 1
+    fun dateToSemester(date: Date) = if (date >= dateSemester2Start) 2 else 1
     @delegate:Ignore
     val currentSemester by lazy { dateToSemester(Date.getToday()) }
 

@@ -66,7 +66,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            tools:srcCompat="@drawable/logo_mobidziennik" />
+            tools:srcCompat="@drawable/login_mode_mobidziennik_web" />
 
     </LinearLayout>
 </layout>
