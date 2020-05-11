@@ -146,12 +146,14 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                         }
                         val error = if (response.code() == 200) null else
                             json.getJsonArray("errors")?.getString(0)
+                                    ?: json.getJsonObject("errors")?.entrySet()?.firstOrNull()?.value?.asString
                         error?.let { code ->
                             when {
                                 code.contains("Sesja logowania wygasła") -> ERROR_LOGIN_LIBRUS_PORTAL_CSRF_EXPIRED
                                 code.contains("Upewnij się, że nie") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
                                 // this doesn't work anyway: `errors` is an object with `g-recaptcha-response` set
                                 code.contains("robotem") -> ERROR_CAPTCHA_LIBRUS_PORTAL
+                                code.contains("Podany adres e-mail jest nieprawidłowy.") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
                                 else -> ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR
                             }.let { errorCode ->
                                 data.error(ApiError(TAG, errorCode)

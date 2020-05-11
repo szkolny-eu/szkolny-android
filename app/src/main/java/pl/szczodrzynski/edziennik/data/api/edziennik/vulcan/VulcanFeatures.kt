@@ -19,6 +19,7 @@ const val ENDPOINT_VULCAN_API_NOTICES             = 1070
 const val ENDPOINT_VULCAN_API_ATTENDANCE          = 1080
 const val ENDPOINT_VULCAN_API_MESSAGES_INBOX      = 1090
 const val ENDPOINT_VULCAN_API_MESSAGES_SENT       = 1100
+const val ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS       = 2010
 
 val VulcanFeatures = listOf(
         // timetable
@@ -60,6 +61,13 @@ val VulcanFeatures = listOf(
         ), listOf(LOGIN_METHOD_VULCAN_API)).withShouldSync { data ->
                 !data.app.config.sync.tokenVulcanList.contains(data.profileId)
         },
+
+        /**
+         * Lucky number - using WEB Main.
+         */
+        Feature(LOGIN_TYPE_VULCAN, FEATURE_LUCKY_NUMBER, listOf(
+                ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS to LOGIN_METHOD_VULCAN_WEB_MAIN
+        ), listOf(LOGIN_METHOD_VULCAN_WEB_MAIN)).withShouldSync { data -> data.shouldSyncLuckyNumber() },
 
         Feature(LOGIN_TYPE_VULCAN, FEATURE_ALWAYS_NEEDED, listOf(
                 ENDPOINT_VULCAN_API_UPDATE_SEMESTER to LOGIN_METHOD_VULCAN_API,

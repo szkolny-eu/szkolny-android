@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.login.PodlasieLogi
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.login.TemplateLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.login.TemplateLoginWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginApi
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginWebMain
 import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
 
 // librus
@@ -103,11 +104,11 @@ const val LOGIN_METHOD_VULCAN_WEB_OLD = 300
 const val LOGIN_METHOD_VULCAN_WEB_MESSAGES = 400
 const val LOGIN_METHOD_VULCAN_API = 500
 val vulcanLoginMethods = listOf(
-        /*LoginMethod(LOGIN_TYPE_VULCAN, LOGIN_METHOD_VULCAN_WEB_MAIN, VulcanLoginWebMain::class.java)
-                .withIsPossible { _, _ -> false }
+        LoginMethod(LOGIN_TYPE_VULCAN, LOGIN_METHOD_VULCAN_WEB_MAIN, VulcanLoginWebMain::class.java)
+                .withIsPossible { _, loginStore -> loginStore.hasLoginData("webHost") }
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED },
 
-        LoginMethod(LOGIN_TYPE_VULCAN, LOGIN_METHOD_VULCAN_WEB_NEW, VulcanLoginWebNew::class.java)
+        /*LoginMethod(LOGIN_TYPE_VULCAN, LOGIN_METHOD_VULCAN_WEB_NEW, VulcanLoginWebNew::class.java)
                 .withIsPossible { _, _ -> false }
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_VULCAN_WEB_MAIN },
 
@@ -118,7 +119,7 @@ val vulcanLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_VULCAN, LOGIN_METHOD_VULCAN_API, VulcanLoginApi::class.java)
                 .withIsPossible { _, _ -> true }
                 .withRequiredLoginMethod { _, loginStore ->
-                    if (loginStore.mode == LOGIN_MODE_VULCAN_WEB) LOGIN_METHOD_VULCAN_WEB_NEW else LOGIN_METHOD_NOT_NEEDED
+                    if (loginStore.mode == LOGIN_MODE_VULCAN_WEB) LOGIN_METHOD_VULCAN_WEB_MAIN else LOGIN_METHOD_NOT_NEEDED
                 }
 )
 
@@ -133,6 +134,7 @@ val idziennikLoginMethods = listOf(
 )
 
 const val LOGIN_TYPE_EDUDZIENNIK = 5
+const val LOGIN_MODE_EDUDZIENNIK_WEB = 0
 const val LOGIN_METHOD_EDUDZIENNIK_WEB = 100
 val edudziennikLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_EDUDZIENNIK, LOGIN_METHOD_EDUDZIENNIK_WEB, EdudziennikLoginWeb::class.java)

@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import pl.szczodrzynski.edziennik.ExtensionsKt;
 import pl.szczodrzynski.edziennik.R;
@@ -108,7 +109,11 @@ public class Date implements Comparable<Date> {
 
     public static long fromIso(String dateTime) {
         try {
-            return Date.fromY_m_d(dateTime).combineWith(new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), Integer.parseInt(dateTime.substring(17, 19))));
+            Calendar c = Calendar.getInstance();
+            c.set(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(5, 7)) - 1, Integer.parseInt(dateTime.substring(8, 10)), Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), Integer.parseInt(dateTime.substring(17, 19)));
+            c.set(Calendar.MILLISECOND, 0);
+            c.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return c.getTimeInMillis();
         }
         catch (Exception e) {
             return System.currentTimeMillis();

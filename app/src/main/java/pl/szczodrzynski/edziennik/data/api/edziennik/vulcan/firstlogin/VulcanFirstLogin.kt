@@ -6,12 +6,15 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin
 
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_VULCAN
-import pl.szczodrzynski.edziennik.data.api.VULCAN_API_ENDPOINT_STUDENT_LIST
+import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanWebMain
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.CufsCertificate
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginApi
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginWebMain
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
+import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -21,19 +24,97 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
     }
 
     private val api = VulcanApi(data, null)
+    private val web = VulcanWebMain(data, null)
     private val profileList = mutableListOf<Profile>()
+    private val loginStoreId = data.loginStore.id
+    private var firstProfileId = loginStoreId
+    private val tryingSymbols = mutableListOf<String>()
 
     init {
-        val loginStoreId = data.loginStore.id
-        val loginStoreType = LOGIN_TYPE_VULCAN
-        var firstProfileId = loginStoreId
+        if (data.loginStore.mode == LOGIN_MODE_VULCAN_WEB) {
+            VulcanLoginWebMain(data) {
+                val xml = web.readCertificate() ?: run {
+                    data.error(ApiError(TAG, ERROR_VULCAN_WEB_NO_CERTIFICATE))
+                    return@VulcanLoginWebMain
+                }
+                val certificate = web.parseCertificate(xml)
 
+                if (data.symbol != null && data.symbol != "default") {
+                    tryingSymbols += data.symbol ?: "default"
+                }
+                else {
+
+                    tryingSymbols += certificate.userInstances
+                }
+
+                checkSymbol(certificate)
+            }
+        }
+        else {
+            registerDevice {
+                EventBus.getDefault().postSticky(FirstLoginFinishedEvent(profileList, data.loginStore))
+                onSuccess()
+            }
+        }
+    }
+
+    private fun checkSymbol(certificate: CufsCertificate) {
+        if (tryingSymbols.isEmpty()) {
+            EventBus.getDefault().postSticky(FirstLoginFinishedEvent(profileList, data.loginStore))
+            onSuccess()
+            return
+        }
+
+        val result = web.postCertificate(certificate, tryingSymbols.removeAt(0)) { symbol, state ->
+            when (state) {
+                VulcanWebMain.STATE_NO_REGISTER -> {
+                    checkSymbol(certificate)
+                }
+                VulcanWebMain.STATE_LOGGED_OUT -> data.error(ApiError(TAG, ERROR_VULCAN_WEB_LOGGED_OUT))
+                VulcanWebMain.STATE_SUCCESS -> {
+                    webRegisterDevice(symbol) {
+                        checkSymbol(certificate)
+                    }
+                }
+            }
+        }
+
+        // postCertificate returns false if the cert is not valid anymore
+        if (!result) {
+            data.error(ApiError(TAG, ERROR_VULCAN_WEB_CERTIFICATE_EXPIRED)
+                    .withApiResponse(certificate.xml))
+        }
+    }
+
+    private fun webRegisterDevice(symbol: String, onSuccess: () -> Unit) {
+        web.getStartPage(symbol, postErrors = false) { _, schoolSymbols ->
+            if (schoolSymbols.isEmpty()) {
+                onSuccess()
+                return@getStartPage
+            }
+            data.symbol = symbol
+            val schoolSymbol = data.schoolSymbol ?: schoolSymbols.firstOrNull()
+            web.webGetJson(TAG, VulcanWebMain.WEB_NEW, "$schoolSymbol/$VULCAN_WEB_ENDPOINT_REGISTER_DEVICE") { result, _ ->
+                val json = result.getJsonObject("data")
+                data.symbol = symbol
+                data.apiToken = data.apiToken.toMutableMap().also {
+                    it[symbol] = json.getString("TokenKey")
+                }
+                data.apiPin = data.apiPin.toMutableMap().also {
+                    it[symbol] = json.getString("PIN")
+                }
+                registerDevice(onSuccess)
+            }
+        }
+    }
+
+    private fun registerDevice(onSuccess: () -> Unit) {
         VulcanLoginApi(data) {
-            api.apiGet(TAG, VULCAN_API_ENDPOINT_STUDENT_LIST, baseUrl = true) { json, response ->
+            api.apiGet(TAG, VULCAN_API_ENDPOINT_STUDENT_LIST, baseUrl = true) { json, _ ->
                 val students = json.getJsonArray("Data")
 
                 if (students == null || students.isEmpty()) {
-                    EventBus.getDefault().post(FirstLoginFinishedEvent(listOf(), data.loginStore))
+                    EventBus.getDefault().postSticky(FirstLoginFinishedEvent(listOf(), data.loginStore))
                     onSuccess()
                     return@apiGet
                 }
@@ -42,7 +123,8 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                     val student = studentEl.asJsonObject
 
                     val schoolSymbol = student.getString("JednostkaSprawozdawczaSymbol") ?: return@forEach
-                    val schoolName = "${data.symbol}_$schoolSymbol"
+                    val schoolShort = student.getString("JednostkaSprawozdawczaSkrot") ?: return@forEach
+                    val schoolCode = "${data.symbol}_$schoolSymbol"
                     val studentId = student.getInt("Id") ?: return@forEach
                     val studentLoginId = student.getInt("UzytkownikLoginId") ?: return@forEach
                     val studentClassId = student.getInt("IdOddzial") ?: return@forEach
@@ -80,7 +162,7 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                     val profile = Profile(
                             firstProfileId++,
                             loginStoreId,
-                            loginStoreType,
+                            LOGIN_TYPE_VULCAN,
                             studentNameLong,
                             userLogin,
                             studentNameLong,
@@ -88,6 +170,8 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                             accountName
                     ).apply {
                         this.studentClassName = studentClassName
+                        studentData["symbol"] = data.symbol
+
                         studentData["studentId"] = studentId
                         studentData["studentLoginId"] = studentLoginId
                         studentData["studentClassId"] = studentClassId
@@ -95,7 +179,8 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                         studentData["studentSemesterNumber"] = studentSemesterNumber
                         studentData["semester${studentSemesterNumber}Id"] = studentSemesterId
                         studentData["schoolSymbol"] = schoolSymbol
-                        studentData["schoolName"] = schoolName
+                        studentData["schoolShort"] = schoolShort
+                        studentData["schoolName"] = schoolCode
                         studentData["currentSemesterEndDate"] = currentSemesterEndDate
                     }
                     dateSemester1Start?.let {
@@ -108,7 +193,6 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                     profileList.add(profile)
                 }
 
-                EventBus.getDefault().post(FirstLoginFinishedEvent(profileList, data.loginStore))
                 onSuccess()
             }
         }

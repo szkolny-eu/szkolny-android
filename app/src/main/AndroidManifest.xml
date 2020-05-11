@@ -134,9 +134,6 @@
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.Light" />
-        <activity android:name=".ui.modules.login.LoginLibrusCaptchaActivity"
-            android:theme="@android:style/Theme.Dialog"
-            android:excludeFromRecents="true"/>
         <activity android:name=".ui.modules.home.CounterActivity"
             android:theme="@style/AppTheme.Black" />
         <activity android:name=".ui.modules.feedback.FeedbackActivity"
