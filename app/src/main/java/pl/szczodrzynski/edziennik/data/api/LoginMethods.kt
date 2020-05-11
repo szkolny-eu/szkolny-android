@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginPor
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginSynergia
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLoginApi2
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLoginWeb
+import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.login.PodlasieLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.login.TemplateLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.login.TemplateLoginWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginApi
@@ -25,7 +26,6 @@ import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
 // mobireg
 
 const val SYNERGIA_API_ENABLED = false
-
 
 
 const val LOGIN_TYPE_IDZIENNIK = 3
@@ -136,6 +136,14 @@ const val LOGIN_TYPE_EDUDZIENNIK = 5
 const val LOGIN_METHOD_EDUDZIENNIK_WEB = 100
 val edudziennikLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_EDUDZIENNIK, LOGIN_METHOD_EDUDZIENNIK_WEB, EdudziennikLoginWeb::class.java)
+                .withIsPossible { _, _ -> true }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
+)
+
+const val LOGIN_TYPE_PODLASIE = 6
+const val LOGIN_METHOD_PODLASIE_API = 100
+val podlasieLoginMethods = listOf(
+        LoginMethod(LOGIN_TYPE_PODLASIE, LOGIN_METHOD_PODLASIE_API, PodlasieLoginApi::class.java)
                 .withIsPossible { _, _ -> true }
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
 )
