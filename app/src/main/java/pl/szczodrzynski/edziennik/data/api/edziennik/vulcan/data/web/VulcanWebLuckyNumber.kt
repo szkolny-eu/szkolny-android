@@ -59,8 +59,7 @@ class VulcanWebLuckyNumber(override val data: DataVulcan,
                                     Metadata.TYPE_LUCKY_NUMBER,
                                     luckyNumberObject.date.value.toLong(),
                                     true,
-                                    profile?.empty ?: false,
-                                    System.currentTimeMillis()
+                                    profile?.empty ?: false
                             ))
                 }
             } ?: {

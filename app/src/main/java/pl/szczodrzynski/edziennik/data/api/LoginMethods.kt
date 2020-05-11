@@ -134,6 +134,7 @@ val idziennikLoginMethods = listOf(
 )
 
 const val LOGIN_TYPE_EDUDZIENNIK = 5
+const val LOGIN_MODE_EDUDZIENNIK_WEB = 0
 const val LOGIN_METHOD_EDUDZIENNIK_WEB = 100
 val edudziennikLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_EDUDZIENNIK, LOGIN_METHOD_EDUDZIENNIK_WEB, EdudziennikLoginWeb::class.java)
