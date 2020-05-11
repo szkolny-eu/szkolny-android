@@ -59,17 +59,20 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdap
                 onClick.onClick(v, item);
             }
         }));
-        b.announcementsItemSender.setText(item.teacherFullName);
-        b.announcementsItemTitle.setText(item.subject);
-        b.announcementsItemText.setText(item.text);
+        b.announcementsItemSender.setText(item.getTeacherName());
+        b.announcementsItemTitle.setText(item.getSubject());
+        b.announcementsItemText.setText(item.getText());
 
-        if (item.endDate == null) {
-            b.announcementsItemDate.setText(item.startDate.getFormattedString());
-        } else {
-            b.announcementsItemDate.setText(context.getString(R.string.date_relative_format, item.startDate.getFormattedStringShort(), item.endDate.getFormattedStringShort()));
+        if (item.getEndDate() == null && item.getStartDate() != null) {
+            b.announcementsItemDate.setText(item.getStartDate().getFormattedString());
+        } else if (item.getStartDate() != null) {
+            b.announcementsItemDate.setText(context.getString(R.string.date_relative_format, item.getStartDate().getFormattedStringShort(), item.getEndDate().getFormattedStringShort()));
+        }
+        else {
+            b.announcementsItemDate.setText("");
         }
 
-        if (!item.seen) {
+        if (!item.getSeen()) {
             b.announcementsItemTitle.setBackground(context.getResources().getDrawable(R.drawable.bg_rounded_8dp));
             b.announcementsItemTitle.getBackground().setColorFilter(new PorterDuffColorFilter(0x692196f3, PorterDuff.Mode.MULTIPLY));
             b.announcementsItemSender.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -80,7 +83,7 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdap
             b.announcementsItemTitle.setBackground(null);
         }
 
-        Bitmap profileImage = MessagesUtils.getProfileImage(48, 24, 18, 12, 1, item.teacherFullName);
+        Bitmap profileImage = MessagesUtils.getProfileImage(48, 24, 18, 12, 1, item.getTeacherName());
         b.announcementsItemImage.setImageBitmap(profileImage);
     }
 

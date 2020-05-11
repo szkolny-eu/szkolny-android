@@ -13,9 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.Librus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesGetRecipientList
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.LibrusMessagesSendMessage
-import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaGetHomework
-import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaHomeworkGetAttachment
-import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.LibrusSynergiaMarkAllAnnouncementsAsRead
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.firstlogin.LibrusFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLogin
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
@@ -91,9 +89,8 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     override fun getMessage(message: MessageFull) {
         login(LOGIN_METHOD_LIBRUS_MESSAGES) {
-            LibrusMessagesGetMessage(data, message) {
-                completed()
-            }
+            if (data.messagesLoginSuccessful) LibrusMessagesGetMessage(data, message) { completed() }
+            else LibrusSynergiaGetMessage(data, message) { completed() }
         }
     }
 
@@ -124,10 +121,9 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {
         when (owner) {
             is Message -> {
-                login(LOGIN_METHOD_LIBRUS_MESSAGES) {
-                    LibrusMessagesGetAttachment(data, owner, attachmentId, attachmentName) {
-                        completed()
-                    }
+                login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
+                    if (data.messagesLoginSuccessful) LibrusMessagesGetAttachment(data, owner, attachmentId, attachmentName) { completed() }
+                    LibrusSynergiaGetAttachment(data, owner, attachmentId, attachmentName) { completed() }
                 }
             }
             is EventFull -> {

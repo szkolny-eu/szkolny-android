@@ -184,8 +184,7 @@ class VulcanApiTimetable(override val data: DataVulcan,
                             Metadata.TYPE_LESSON_CHANGE,
                             lessonObject.id,
                             seen,
-                            seen,
-                            System.currentTimeMillis()
+                            seen
                     ))
                 }
 

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-5-9.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <import type="pl.szczodrzynski.edziennik.utils.Utils"/>
+        <import type="pl.szczodrzynski.edziennik.utils.models.Date"/>
+        <import type="pl.szczodrzynski.edziennik.utils.models.Time"/>
+        <variable
+            name="attendance"
+            type="pl.szczodrzynski.edziennik.data.db.full.AttendanceFull" />
+        <variable
+            name="devMode"
+            type="boolean" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingRight="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/attendanceName"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:background="@drawable/bg_rounded_16dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@{attendance.typeShort}"
+                    android:textIsSelectable="true"
+                    android:textSize="36sp"
+                    app:autoSizeMinTextSize="18sp"
+                    app:autoSizeMaxTextSize="56sp"
+                    app:autoSizeTextType="uniform"
+                    tools:background="#ff673ab7"
+                    tools:text="e" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{@string/dialog_grade_details_semester_format(attendance.semester)}"
+                            android:textAppearance="@style/NavView.TextView.Helper"
+                            android:textIsSelectable="true"
+                            tools:text="semestr 1" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{attendance.subjectLongName}"
+                        android:textAppearance="@style/NavView.TextView.Title"
+                        android:textIsSelectable="true"
+                        tools:text="matematyka" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/attendance_details_teacher"
+                android:textAppearance="@style/NavView.TextView.Helper" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="@{attendance.teacherName}"
+                android:textIsSelectable="true"
+                tools:text="Andrzej Religijny" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/attendance_details_type"
+                android:textAppearance="@style/NavView.TextView.Helper" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="@{attendance.typeName}"
+                android:textIsSelectable="true"
+                tools:text="nieobecność nieusprawiedliwiona" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/attendance_details_date"
+                android:textAppearance="@style/NavView.TextView.Helper" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="@{attendance.date.formattedString}"
+                android:textIsSelectable="true"
+                tools:text="30 lutego 2002" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/attendance_details_time"
+                android:textAppearance="@style/NavView.TextView.Helper" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="@{attendance.startTime.stringHM}"
+                android:textIsSelectable="true"
+                tools:text="10:60" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/attendance_details_lesson_topic"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                android:visibility="@{attendance.lessonTopic == null ? View.GONE : View.VISIBLE}" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="@{attendance.lessonTopic}"
+                android:textIsSelectable="true"
+                android:visibility="@{attendance.lessonTopic == null ? View.GONE : View.VISIBLE}"
+                tools:text="Malowanie autoportretu na ścianie sali gimnastycznej. Modlitwa w terenie." />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/attendance_details_is_counted"
+                android:textAppearance="@style/NavView.TextView.Helper" />
+
+            <TextView
+                android:id="@+id/attendanceIsCounted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:textIsSelectable="true"
+                tools:text="Tak" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:visibility="@{devMode ? View.VISIBLE : View.GONE}">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/attendance_details_id"
+                        android:textAppearance="@style/NavView.TextView.Helper" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:text="@{Long.toString(attendance.id)}"
+                        android:textIsSelectable="true"
+                        tools:text="12345" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/attendance_details_type_id"
+                        android:textAppearance="@style/NavView.TextView.Helper" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:text="@{Long.toString(attendance.baseType)}"
+                        android:textIsSelectable="true"
+                        tools:text="12345" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

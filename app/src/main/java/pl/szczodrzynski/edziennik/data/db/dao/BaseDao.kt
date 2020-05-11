@@ -16,13 +16,15 @@ interface BaseDao<T : Keepable, F : T> {
     fun getRaw(query: SupportSQLiteQuery): LiveData<List<F>>
     fun getRaw(query: String) = getRaw(SimpleSQLiteQuery(query))
     @RawQuery
+    fun getOne(query: SupportSQLiteQuery): LiveData<F?>
+    fun getOne(query: String) = getOne(SimpleSQLiteQuery(query))
+    @RawQuery
     fun getRawNow(query: SupportSQLiteQuery): List<F>
     fun getRawNow(query: String) = getRawNow(SimpleSQLiteQuery(query))
     @RawQuery
     fun getOneNow(query: SupportSQLiteQuery): F?
     fun getOneNow(query: String) = getOneNow(SimpleSQLiteQuery(query))
 
-    @Query("DELETE FROM events WHERE keep = 0")
     fun removeNotKept()
 
     /**
@@ -41,12 +43,14 @@ interface BaseDao<T : Keepable, F : T> {
     /**
      * REPLACE an [item] in the database,
      * removing any conflicting rows.
+     * Creates the item if it does not exist yet.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun replace(item: T)
     /**
      * REPLACE [items] in the database,
      * removing any conflicting rows.
+     * Creates items if it does not exist yet.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun replaceAll(items: List<T>)
@@ -96,5 +100,24 @@ interface BaseDao<T : Keepable, F : T> {
         if (updateList.isNotEmpty()) updateAll(items)
         if (removeNotKept) removeNotKept()
         return insertResult
+    }
+
+    /**
+     * Make sure that [items] are in the database.
+     * When [forceReplace] == false, do a selective update (UPSERT).
+     * When [forceReplace] == true, add all items replacing any conflicting ones (REPLACE).
+     *
+     * @param forceReplace whether to replace all items instead of selectively updating
+     * @param removeNotKept whether to remove all items whose [keep] parameter is false
+     */
+    fun putAll(items: List<T>, forceReplace: Boolean = false, removeNotKept: Boolean = false) {
+        if (items.isEmpty())
+            return
+        if (forceReplace)
+            replaceAll(items)
+        else
+            upsertAll(items, removeNotKept = false)
+
+        if (removeNotKept) removeNotKept()
     }
 }

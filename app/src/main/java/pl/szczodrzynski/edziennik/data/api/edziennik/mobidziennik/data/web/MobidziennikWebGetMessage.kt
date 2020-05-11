@@ -139,8 +139,7 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
                         Metadata.TYPE_MESSAGE,
                         message.id,
                         true,
-                        true,
-                        message.addedDate
+                        true
                 ))
             }
 

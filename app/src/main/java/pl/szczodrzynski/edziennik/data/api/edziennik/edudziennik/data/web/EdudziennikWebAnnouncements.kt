@@ -45,24 +45,25 @@ class EdudziennikWebAnnouncements(override val data: DataEdudziennik,
                     val addedDate = Date.fromIsoHm(dateString)
 
                     val announcementObject = Announcement(
-                            profileId,
-                            id,
-                            subject,
-                            null,
-                            startDate,
-                            null,
-                            teacher.id,
-                            longId
-                    )
+                            profileId = profileId,
+                            id = id,
+                            subject = subject,
+                            text = null,
+                            startDate = startDate,
+                            endDate = null,
+                            teacherId = teacher.id,
+                            addedDate = addedDate
+                    ).also {
+                        it.idString = longId
+                    }
 
-                    data.announcementIgnoreList.add(announcementObject)
+                    data.announcementList.add(announcementObject)
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_ANNOUNCEMENT,
                             id,
                             profile.empty,
-                            profile.empty,
-                            addedDate
+                            profile.empty
                     ))
                 }
             }

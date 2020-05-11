@@ -150,8 +150,7 @@ class LibrusMessagesGetMessage(override val data: DataLibrus,
                         Metadata.TYPE_MESSAGE,
                         messageObject.id,
                         true,
-                        true,
-                        messageObject.addedDate
+                        true
                 ))
             }
 

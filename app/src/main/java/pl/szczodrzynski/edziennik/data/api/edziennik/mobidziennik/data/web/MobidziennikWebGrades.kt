@@ -125,7 +125,8 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                                         comment = null,
                                         semester = gradeSemester,
                                         teacherId = teacherId,
-                                        subjectId = subjectId
+                                        subjectId = subjectId,
+                                        addedDate = gradeAddedDateMillis
                                 )
 
                                 gradeObject.classAverage = gradeClassAverage
@@ -137,8 +138,7 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                                                 Metadata.TYPE_GRADE,
                                                 gradeObject.id,
                                                 profile.empty,
-                                                profile.empty,
-                                                gradeAddedDateMillis
+                                                profile.empty
                                         ))
                             }
                         }

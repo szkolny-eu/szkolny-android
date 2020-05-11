@@ -68,7 +68,7 @@ class IdziennikWebExams(override val data: DataIdziennik,
                 val teacherId = data.getTeacherByLastFirst(teacherName).id
                 val topic = exam.getString("zakres")?.trim() ?: ""
 
-                val lessonList = data.db.timetableDao().getForDateNow(profileId, examDate)
+                val lessonList = data.db.timetableDao().getAllForDateNow(profileId, examDate)
                 val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.startTime
 
                 val eventType = when (exam.getString("rodzaj")?.toLowerCase(Locale.getDefault())) {
@@ -98,8 +98,7 @@ class IdziennikWebExams(override val data: DataIdziennik,
                         Metadata.TYPE_EVENT,
                         eventObject.id,
                         profile?.empty ?: false,
-                        profile?.empty ?: false,
-                        System.currentTimeMillis()
+                        profile?.empty ?: false
                 ))
             }
 

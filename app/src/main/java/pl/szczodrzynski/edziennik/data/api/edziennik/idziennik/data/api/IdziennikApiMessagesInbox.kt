@@ -69,7 +69,8 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
                         type = if (jMessage.getBoolean("rekordUsuniety") == true) TYPE_DELETED else TYPE_RECEIVED,
                         subject = subject,
                         body = body,
-                        senderId = rTeacher.id
+                        senderId = rTeacher.id,
+                        addedDate = sentDate
                 )
 
                 val messageRecipient = MessageRecipient(
@@ -87,8 +88,7 @@ class IdziennikApiMessagesInbox(override val data: DataIdziennik,
                         Metadata.TYPE_MESSAGE,
                         message.id,
                         readDate > 0,
-                        readDate > 0 || profile?.empty ?: false,
-                        sentDate
+                        readDate > 0 || profile?.empty ?: false
                 ))
             }
 

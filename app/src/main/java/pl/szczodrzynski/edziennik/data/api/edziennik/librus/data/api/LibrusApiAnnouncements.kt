@@ -38,15 +38,17 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
                 val read = announcement.getBoolean("WasRead") ?: false
 
                 val announcementObject = Announcement(
-                        profileId,
-                        id,
-                        subject,
-                        text,
-                        startDate,
-                        endDate,
-                        teacherId,
-                        longId
-                )
+                        profileId = profileId,
+                        id = id,
+                        subject = subject,
+                        text = text,
+                        startDate = startDate,
+                        endDate = endDate,
+                        teacherId = teacherId,
+                        addedDate = addedDate
+                ).also {
+                    it.idString = longId
+                }
 
                 data.announcementList.add(announcementObject)
                 data.setSeenMetadataList.add(Metadata(
@@ -54,8 +56,7 @@ class LibrusApiAnnouncements(override val data: DataLibrus,
                         Metadata.TYPE_ANNOUNCEMENT,
                         id,
                         read,
-                        profile.empty || read,
-                        addedDate
+                        profile.empty || read
                 ))
             }
 

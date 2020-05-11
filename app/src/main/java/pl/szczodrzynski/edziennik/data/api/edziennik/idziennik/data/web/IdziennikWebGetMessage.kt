@@ -94,8 +94,7 @@ class IdziennikWebGetMessage(override val data: DataIdziennik,
                             Metadata.TYPE_MESSAGE,
                             message.id,
                             message.seen,
-                            message.notified,
-                            message.addedDate
+                            message.notified
                     ))
                 }
 

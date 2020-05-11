@@ -35,7 +35,7 @@ class LibrusApiEvents(override val data: DataLibrus,
             events?.forEach { event ->
                 val id = event.getLong("Id") ?: return@forEach
                 val eventDate = Date.fromY_m_d(event.getString("Date"))
-                val topic = event.getString("Content")?.trim() ?: ""
+                var topic = event.getString("Content")?.trim() ?: ""
                 val type = event.getJsonObject("Category")?.getLong("Id") ?: -1
                 val teacherId = event.getJsonObject("CreatedBy")?.getLong("Id") ?: -1
                 val subjectId = event.getJsonObject("Subject")?.getLong("Id") ?: -1
@@ -45,6 +45,12 @@ class LibrusApiEvents(override val data: DataLibrus,
                 val lessonRange = data.lessonRanges.singleOrNull { it.lessonNumber == lessonNo }
                 val startTime = lessonRange?.startTime ?: Time.fromH_m(event.getString("TimeFrom"))
                 val addedDate = Date.fromIso(event.getString("AddDate"))
+
+                event.getJsonObject("onlineLessonUrl")?.let { onlineLesson ->
+                    val text = onlineLesson.getString("text")?.let { "$it - " } ?: ""
+                    val url = onlineLesson.getString("url")
+                    topic += "\n\n$text$url"
+                }
 
                 val eventObject = Event(
                         profileId = profileId,
@@ -56,7 +62,8 @@ class LibrusApiEvents(override val data: DataLibrus,
                         type = type,
                         teacherId = teacherId,
                         subjectId = subjectId,
-                        teamId = teamId
+                        teamId = teamId,
+                        addedDate = addedDate
                 )
 
                 data.eventList.add(eventObject)
@@ -66,8 +73,7 @@ class LibrusApiEvents(override val data: DataLibrus,
                                 Metadata.TYPE_EVENT,
                                 id,
                                 profile?.empty ?: false,
-                                profile?.empty ?: false,
-                                addedDate
+                                profile?.empty ?: false
                         ))
             }
 

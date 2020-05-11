@@ -484,7 +484,8 @@ class EventManualDialog(
                 type = type ?: Event.TYPE_DEFAULT,
                 teacherId = teacherId ?: -1,
                 subjectId = subjectId ?: -1,
-                teamId = teamId ?: -1
+                teamId = teamId ?: -1,
+                addedDate = editingEvent?.addedDate ?: System.currentTimeMillis()
         ).also {
             it.addedManually = true
         }
@@ -497,8 +498,7 @@ class EventManualDialog(
                 },
                 eventObject.id,
                 true,
-                true,
-                editingEvent?.addedDate ?: System.currentTimeMillis()
+                true
         )
 
         launch {
@@ -536,9 +536,8 @@ class EventManualDialog(
                 eventObject.apply {
                     sharedBy = profile?.userCode
                     sharedByName = profile?.studentNameLong
+                    addedDate = System.currentTimeMillis()
                 }
-
-                metadataObject.addedDate = System.currentTimeMillis()
 
                 api.runCatching(activity) {
                     shareEvent(eventObject.withMetadata(metadataObject))

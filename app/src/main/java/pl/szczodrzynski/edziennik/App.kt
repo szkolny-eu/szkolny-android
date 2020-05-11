@@ -66,6 +66,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     val timetableManager by lazy { TimetableManager(this) }
     val eventManager by lazy { EventManager(this) }
     val permissionManager by lazy { PermissionManager(this) }
+    val attendanceManager by lazy { AttendanceManager(this) }
 
     val db
         get() = App.db
@@ -100,9 +101,9 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .followSslRedirects(true)
                 .retryOnConnectionFailure(true)
                 .cookieJar(cookieJar)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
         builder.installHttpsSupport(this)
 
         if (debugMode || BuildConfig.DEBUG) {

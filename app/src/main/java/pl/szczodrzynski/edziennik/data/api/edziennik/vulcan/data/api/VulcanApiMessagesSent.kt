@@ -97,7 +97,8 @@ class VulcanApiMessagesSent(override val data: DataVulcan,
                             type = TYPE_SENT,
                             subject = subject,
                             body = body.replace("\n", "<br>"),
-                            senderId = null
+                            senderId = null,
+                            addedDate = sentDate
                     )
 
                     data.messageList.add(messageObject)
@@ -106,8 +107,7 @@ class VulcanApiMessagesSent(override val data: DataVulcan,
                             Metadata.TYPE_MESSAGE,
                             id,
                             true,
-                            true,
-                            sentDate
+                            true
                     ))
                 }
 

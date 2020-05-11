@@ -63,6 +63,8 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                         colorInt = Color.parseColor("#$gradeColor")
                     }
 
+                    val addedDate = grade.getString("Data_wystaw")?.let { Date.fromY_m_d(it).inMillis } ?: System.currentTimeMillis()
+
                     val gradeObject = Grade(
                             profileId = profileId,
                             id = id,
@@ -76,7 +78,9 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                             comment = null,
                             semester = semester,
                             teacherId = teacher.id,
-                            subjectId = subject.id)
+                            subjectId = subject.id,
+                            addedDate = addedDate
+                    )
 
                     when (grade.getInt("Typ")) {
                         0 -> {
@@ -100,6 +104,8 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                                         colorInt = Color.parseColor("#$historyColor")
                                     }
 
+                                    val addedDate = historyItem.getString("Data_wystaw")?.let { Date.fromY_m_d(it).inMillis } ?: System.currentTimeMillis()
+
                                     val historyObject = Grade(
                                             profileId = profileId,
                                             id = gradeObject.id * -1,
@@ -113,10 +119,10 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                                             comment = null,
                                             semester = historyItem.getInt("Semestr") ?: 1,
                                             teacherId = teacher.id,
-                                            subjectId = subject.id)
+                                            subjectId = subject.id,
+                                            addedDate = addedDate
+                                    )
                                     historyObject.parentId = gradeObject.id
-
-                                    val addedDate = historyItem.getString("Data_wystaw")?.let { Date.fromY_m_d(it).inMillis } ?: System.currentTimeMillis()
 
                                     data.gradeList.add(historyObject)
                                     data.metadataList.add(Metadata(
@@ -124,8 +130,7 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                                             Metadata.TYPE_GRADE,
                                             historyObject.id,
                                             true,
-                                            true,
-                                            addedDate
+                                            true
                                     ))
                                 }
                                 // update the current grade's value with an average of all historical grades and itself
@@ -147,8 +152,6 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                         }
                     }
 
-                    val addedDate = grade.getString("Data_wystaw")?.let { Date.fromY_m_d(it).inMillis } ?: System.currentTimeMillis()
-
                     data.gradeList.add(gradeObject)
                     data.metadataList.add(
                             Metadata(
@@ -156,8 +159,7 @@ class IdziennikWebGrades(override val data: DataIdziennik,
                                     Metadata.TYPE_GRADE,
                                     id,
                                     data.profile.empty,
-                                    data.profile.empty,
-                                    addedDate
+                                    data.profile.empty
                             ))
                 }
             }

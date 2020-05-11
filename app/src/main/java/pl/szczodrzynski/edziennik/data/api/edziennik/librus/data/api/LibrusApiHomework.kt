@@ -43,7 +43,8 @@ class LibrusApiHomework(override val data: DataLibrus,
                         type = -1,
                         teacherId = teacherId,
                         subjectId = -1,
-                        teamId = -1
+                        teamId = -1,
+                        addedDate = addedDate.inMillis
                 )
 
                 data.eventList.add(eventObject)
@@ -52,8 +53,7 @@ class LibrusApiHomework(override val data: DataLibrus,
                         Metadata.TYPE_HOMEWORK,
                         id,
                         profile?.empty ?: false,
-                        profile?.empty ?: false,
-                        addedDate.inMillis
+                        profile?.empty ?: false
                 ))
             }
 

@@ -165,8 +165,7 @@ class IdziennikWebTimetable(override val data: DataIdziennik,
                             Metadata.TYPE_LESSON_CHANGE,
                             lessonObject.id,
                             seen,
-                            seen,
-                            System.currentTimeMillis()
+                            seen
                     ))
                 }
             }

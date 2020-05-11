@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
@@ -293,6 +294,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
+
+        if (BuildConfig.VERSION_NAME.contains("nightly")) {
+            b.nightlyText.isVisible = true
+            b.nightlyText.text = "Nightly\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
+        }
+        else
+            b.nightlyText.isVisible = false
 
         navLoading = true
 

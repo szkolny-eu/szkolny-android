@@ -68,9 +68,9 @@ class IdziennikApiCurrentRegister(override val data: DataIdziennik,
 
 
                 val luckyNumberObject = LuckyNumber(
-                        data.profileId,
-                        luckyNumberDate,
-                        luckyNumber
+                        profileId = data.profileId,
+                        date = luckyNumberDate,
+                        number = luckyNumber
                 )
 
                 data.luckyNumberList.add(luckyNumberObject)
@@ -80,8 +80,7 @@ class IdziennikApiCurrentRegister(override val data: DataIdziennik,
                                 Metadata.TYPE_LUCKY_NUMBER,
                                 luckyNumberObject.date.value.toLong(),
                                 true,
-                                data.profile?.empty ?: false,
-                                System.currentTimeMillis()
+                                data.profile?.empty ?: false
                         ))
             }
 

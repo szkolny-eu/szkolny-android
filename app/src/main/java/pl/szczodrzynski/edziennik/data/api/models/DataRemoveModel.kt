@@ -20,10 +20,10 @@ open class DataRemoveModel {
 
         fun commit(profileId: Int, dao: TimetableDao) {
             if (dateFrom != null && dateTo != null) {
-                dao.clearBetweenDates(profileId, dateFrom, dateTo)
+                dao.dontKeepBetweenDates(profileId, dateFrom, dateTo)
             } else {
-                dateFrom?.let { dateFrom -> dao.clearFromDate(profileId, dateFrom) }
-                dateTo?.let { dateTo -> dao.clearToDate(profileId, dateTo) }
+                dateFrom?.let { dateFrom -> dao.dontKeepFromDate(profileId, dateFrom) }
+                dateTo?.let { dateTo -> dao.dontKeepToDate(profileId, dateTo) }
             }
         }
     }
@@ -69,7 +69,7 @@ open class DataRemoveModel {
 
         fun commit(profileId: Int, dao: AttendanceDao) {
             if (dateFrom != null) {
-                dao.clearAfterDate(profileId, dateFrom)
+                dao.dontKeepAfterDate(profileId, dateFrom)
             }
         }
     }

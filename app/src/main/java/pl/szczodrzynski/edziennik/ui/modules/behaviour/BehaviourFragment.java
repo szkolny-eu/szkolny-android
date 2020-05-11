@@ -134,10 +134,10 @@ public class BehaviourFragment extends Fragment {
 
         List<NoticeFull> filteredList = new ArrayList<>();
         for (NoticeFull notice: noticeList) {
-            if (displayMode != MODE_YEAR && notice.semester != displayMode)
+            if (displayMode != MODE_YEAR && notice.getSemester() != displayMode)
                 continue;
             filteredList.add(notice);
-            switch (notice.type) {
+            switch (notice.getType()) {
                 case Notice.TYPE_POSITIVE:
                     praisesCount++;
                     break;

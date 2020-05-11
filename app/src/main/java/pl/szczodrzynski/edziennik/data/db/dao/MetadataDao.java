@@ -63,37 +63,37 @@ public abstract class MetadataDao {
     @Transaction
     public void setSeen(int profileId, Object o, boolean seen) {
         if (o instanceof Grade) {
-            if (add(new Metadata(profileId, TYPE_GRADE, ((Grade) o).getId(), seen, false, 0)) == -1) {
+            if (add(new Metadata(profileId, TYPE_GRADE, ((Grade) o).getId(), seen, false)) == -1) {
                 updateSeen(profileId, TYPE_GRADE, ((Grade) o).getId(), seen);
             }
         }
         if (o instanceof Attendance) {
-            if (add(new Metadata(profileId, TYPE_ATTENDANCE, ((Attendance) o).id, seen, false, 0)) == -1) {
-                updateSeen(profileId, TYPE_ATTENDANCE, ((Attendance) o).id, seen);
+            if (add(new Metadata(profileId, TYPE_ATTENDANCE, ((Attendance) o).getId(), seen, false)) == -1) {
+                updateSeen(profileId, TYPE_ATTENDANCE, ((Attendance) o).getId(), seen);
             }
         }
         if (o instanceof Notice) {
-            if (add(new Metadata(profileId, TYPE_NOTICE, ((Notice) o).id, seen, false, 0)) == -1) {
-                updateSeen(profileId, TYPE_NOTICE, ((Notice) o).id, seen);
+            if (add(new Metadata(profileId, TYPE_NOTICE, ((Notice) o).getId(), seen, false)) == -1) {
+                updateSeen(profileId, TYPE_NOTICE, ((Notice) o).getId(), seen);
             }
         }
         if (o instanceof Event) {
-            if (add(new Metadata(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), seen, false, 0)) == -1) {
+            if (add(new Metadata(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), seen, false)) == -1) {
                 updateSeen(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), seen);
             }
         }
         if (o instanceof LessonFull) {
-            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), seen, false, 0)) == -1) {
+            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), seen, false)) == -1) {
                 updateSeen(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), seen);
             }
         }
         if (o instanceof Announcement) {
-            if (add(new Metadata(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).id, seen, false, 0)) == -1) {
-                updateSeen(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).id, seen);
+            if (add(new Metadata(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).getId(), seen, false)) == -1) {
+                updateSeen(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).getId(), seen);
             }
         }
         if (o instanceof Message) {
-            if (add(new Metadata(profileId, TYPE_MESSAGE, ((Message) o).getId(), seen, false, 0)) == -1) {
+            if (add(new Metadata(profileId, TYPE_MESSAGE, ((Message) o).getId(), seen, false)) == -1) {
                 updateSeen(profileId, TYPE_MESSAGE, ((Message) o).getId(), seen);
             }
         }
@@ -102,37 +102,37 @@ public abstract class MetadataDao {
     @Transaction
     public void setNotified(int profileId, Object o, boolean notified) {
         if (o instanceof Grade) {
-            if (add(new Metadata(profileId, TYPE_GRADE, ((Grade) o).getId(), false, notified, 0)) == -1) {
+            if (add(new Metadata(profileId, TYPE_GRADE, ((Grade) o).getId(), false, notified)) == -1) {
                 updateNotified(profileId, TYPE_GRADE, ((Grade) o).getId(), notified);
             }
         }
         if (o instanceof Attendance) {
-            if (add(new Metadata(profileId, TYPE_ATTENDANCE, ((Attendance) o).id, false, notified, 0)) == -1) {
-                updateNotified(profileId, TYPE_ATTENDANCE, ((Attendance) o).id, notified);
+            if (add(new Metadata(profileId, TYPE_ATTENDANCE, ((Attendance) o).getId(), false, notified)) == -1) {
+                updateNotified(profileId, TYPE_ATTENDANCE, ((Attendance) o).getId(), notified);
             }
         }
         if (o instanceof Notice) {
-            if (add(new Metadata(profileId, TYPE_NOTICE, ((Notice) o).id, false, notified, 0)) == -1) {
-                updateNotified(profileId, TYPE_NOTICE, ((Notice) o).id, notified);
+            if (add(new Metadata(profileId, TYPE_NOTICE, ((Notice) o).getId(), false, notified)) == -1) {
+                updateNotified(profileId, TYPE_NOTICE, ((Notice) o).getId(), notified);
             }
         }
         if (o instanceof Event) {
-            if (add(new Metadata(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), false, notified, 0)) == -1) {
+            if (add(new Metadata(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), false, notified)) == -1) {
                 updateNotified(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), notified);
             }
         }
         if (o instanceof LessonFull) {
-            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), false, notified, 0)) == -1) {
+            if (add(new Metadata(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), false, notified)) == -1) {
                 updateNotified(profileId, TYPE_LESSON_CHANGE, ((LessonFull) o).getId(), notified);
             }
         }
         if (o instanceof Announcement) {
-            if (add(new Metadata(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).id, false, notified, 0)) == -1) {
-                updateNotified(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).id, notified);
+            if (add(new Metadata(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).getId(), false, notified)) == -1) {
+                updateNotified(profileId, TYPE_ANNOUNCEMENT, ((Announcement) o).getId(), notified);
             }
         }
         if (o instanceof Message) {
-            if (add(new Metadata(profileId, TYPE_MESSAGE, ((Message) o).getId(), false, notified, 0)) == -1) {
+            if (add(new Metadata(profileId, TYPE_MESSAGE, ((Message) o).getId(), false, notified)) == -1) {
                 updateNotified(profileId, TYPE_MESSAGE, ((Message) o).getId(), notified);
             }
         }
@@ -141,7 +141,7 @@ public abstract class MetadataDao {
     @Transaction
     public void setBoth(int profileId, Event o, boolean seen, boolean notified, long addedDate) {
         if (o != null) {
-            if (add(new Metadata(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), seen, notified, addedDate)) == -1) {
+            if (add(new Metadata(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), seen, notified)) == -1) {
                 updateSeen(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), seen);
                 updateNotified(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), notified);
             }

@@ -177,6 +177,7 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                         studentData["studentClassId"] = studentClassId
                         studentData["studentSemesterId"] = studentSemesterId
                         studentData["studentSemesterNumber"] = studentSemesterNumber
+                        studentData["semester${studentSemesterNumber}Id"] = studentSemesterId
                         studentData["schoolSymbol"] = schoolSymbol
                         studentData["schoolShort"] = schoolShort
                         studentData["schoolName"] = schoolCode

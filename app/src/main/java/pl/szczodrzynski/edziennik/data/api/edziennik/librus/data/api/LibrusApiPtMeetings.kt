@@ -58,8 +58,7 @@ class LibrusApiPtMeetings(override val data: DataLibrus,
                                 Metadata.TYPE_EVENT,
                                 id,
                                 profile?.empty ?: false,
-                                profile?.empty ?: false,
-                                System.currentTimeMillis()
+                                profile?.empty ?: false
                         ))
             }
 

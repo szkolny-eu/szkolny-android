@@ -50,7 +50,7 @@ class LibrusMessagesSendMessage(override val data: DataLibrus,
             LibrusMessagesGetList(data, type = Message.TYPE_SENT, lastSync = null) {
                 val message = data.messageList.firstOrNull { it.type == Message.TYPE_SENT && it.id == id }
                 val metadata = data.metadataList.firstOrNull { it.thingType == Metadata.TYPE_MESSAGE && it.thingId == message?.id }
-                val event = MessageSentEvent(data.profileId, message, metadata?.addedDate)
+                val event = MessageSentEvent(data.profileId, message, message?.addedDate)
 
                 EventBus.getDefault().postSticky(event)
                 onSuccess()

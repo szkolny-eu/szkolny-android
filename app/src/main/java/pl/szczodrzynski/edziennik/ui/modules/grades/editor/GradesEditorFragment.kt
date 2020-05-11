@@ -206,7 +206,7 @@ class GradesEditorFragment : Fragment() {
             gradeCountSemester = 0f
             averageSemester = 0f
 
-            app.db.gradeDao().getAllWhere(App.profileId, "subjectId = " + subject.id).observe(this, Observer { grades ->
+            app.db.gradeDao().getAllBySubject(App.profileId, subject.id).observe(this, Observer { grades ->
                 for (grade in grades) {
                     if (grade.type == Grade.TYPE_NORMAL) {
                         if (grade.weight < 0) {

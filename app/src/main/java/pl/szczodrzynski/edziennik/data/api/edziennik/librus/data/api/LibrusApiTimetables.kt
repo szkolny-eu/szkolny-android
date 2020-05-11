@@ -198,8 +198,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
                             Metadata.TYPE_LESSON_CHANGE,
                             lessonObject.id,
                             seen,
-                            seen,
-                            System.currentTimeMillis()
+                            seen
                     ))
         }
         data.lessonList.add(lessonObject)

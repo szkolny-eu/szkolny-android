@@ -41,7 +41,8 @@ open class Event(
 
         var teacherId: Long,
         var subjectId: Long,
-        var teamId: Long
+        var teamId: Long,
+        var addedDate: Long = System.currentTimeMillis()
 ) : Keepable() {
     companion object {
         const val TYPE_UNDEFINED = -2L

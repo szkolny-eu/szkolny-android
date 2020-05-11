@@ -7,8 +7,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_ATTENDANCE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.data.db.entity.Attendance.TYPE_PRESENT
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_PRESENT
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -25,57 +26,85 @@ class VulcanApiAttendance(override val data: DataVulcan,
             data.db.attendanceTypeDao().getAllNow(profileId).toSparseArray(data.attendanceTypes) { it.id }
         }
 
-        val startDate: String = profile.getSemesterStart(profile.currentSemester).stringY_m_d
-        val endDate: String = profile.getSemesterEnd(profile.currentSemester).stringY_m_d
+        val semesterId = data.studentSemesterId
+        val semesterNumber = data.studentSemesterNumber
+        if (semesterNumber == 2 && lastSync ?: 0 < profile.dateSemester1Start.inMillis) {
+            getAttendance(profile, semesterId - 1, semesterNumber - 1) {
+                getAttendance(profile, semesterId, semesterNumber) {
+                    finish()
+                }
+            }
+        }
+        else {
+            getAttendance(profile, semesterId, semesterNumber) {
+                finish()
+            }
+        }
+
+    } ?: onSuccess(ENDPOINT_VULCAN_API_ATTENDANCE) }
+
+    private fun finish() {
+        data.setSyncNext(ENDPOINT_VULCAN_API_ATTENDANCE, SYNC_ALWAYS)
+        onSuccess(ENDPOINT_VULCAN_API_ATTENDANCE)
+    }
+
+    private fun getAttendance(profile: Profile, semesterId: Int, semesterNumber: Int, onSuccess: () -> Unit) {
+        val startDate = profile.getSemesterStart(semesterNumber).stringY_m_d
+        val endDate = profile.getSemesterEnd(semesterNumber).stringY_m_d
 
         apiGet(TAG, VULCAN_API_ENDPOINT_ATTENDANCE, parameters = mapOf(
                 "DataPoczatkowa" to startDate,
                 "DataKoncowa" to endDate,
                 "IdOddzial" to data.studentClassId,
                 "IdUczen" to data.studentId,
-                "IdOkresKlasyfikacyjny" to data.studentSemesterId
+                "IdOkresKlasyfikacyjny" to semesterId
         )) { json, _ ->
             json.getJsonObject("Data")?.getJsonArray("Frekwencje")?.forEach { attendanceEl ->
                 val attendance = attendanceEl.asJsonObject
 
-                val attendanceCategory = data.attendanceTypes.get(attendance.getLong("IdKategoria") ?: return@forEach)
+                val type = data.attendanceTypes.get(attendance.getLong("IdKategoria") ?: return@forEach)
                         ?: return@forEach
-
-                val type = attendanceCategory.type
 
                 val id = (attendance.getInt("Dzien") ?: 0) + (attendance.getInt("Numer") ?: 0)
 
                 val lessonDateMillis = Date.fromY_m_d(attendance.getString("DzienTekst")).inMillis
                 val lessonDate = Date.fromMillis(lessonDateMillis)
+                val startTime = data.lessonRanges.get(attendance.getInt("Numer") ?: 0)?.startTime
 
-                val lessonSemester = profile.dateToSemester(lessonDate)
+                val lessonSemester = semesterNumber
 
                 val attendanceObject = Attendance(
-                        profileId,
-                        id.toLong(),
-                        -1,
-                        attendance.getLong("IdPrzedmiot") ?: -1,
-                        lessonSemester,
-                        attendance.getString("PrzedmiotNazwa") + attendanceCategory.name.let { " - $it" },
-                        lessonDate,
-                        data.lessonRanges.get(attendance.getInt("Numer") ?: 0)?.startTime,
-                        type)
+                        profileId = profileId,
+                        id = id.toLong(),
+                        baseType = type.baseType,
+                        typeName = type.typeName,
+                        typeShort = type.typeShort,
+                        typeSymbol = type.typeSymbol,
+                        typeColor = type.typeColor,
+                        date = lessonDate,
+                        startTime = startTime,
+                        semester = lessonSemester,
+                        teacherId = -1,
+                        subjectId = attendance.getLong("IdPrzedmiot") ?: -1,
+                        addedDate = lessonDate.combineWith(startTime)
+                ).also {
+                    it.lessonNumber = attendance.getInt("Numer")
+                    it.isCounted = it.baseType != Attendance.TYPE_RELEASED
+                }
 
                 data.attendanceList.add(attendanceObject)
-                if (attendanceObject.type != TYPE_PRESENT) {
+                if (type.baseType != TYPE_PRESENT) {
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_ATTENDANCE,
                             attendanceObject.id,
-                            profile.empty,
-                            profile.empty,
-                            attendanceObject.lessonDate.combineWith(attendanceObject.startTime)
+                            profile.empty || type.baseType == Attendance.TYPE_PRESENT_CUSTOM || type.baseType == Attendance.TYPE_UNKNOWN,
+                            profile.empty || type.baseType == Attendance.TYPE_PRESENT_CUSTOM || type.baseType == Attendance.TYPE_UNKNOWN
                     ))
                 }
             }
 
-            data.setSyncNext(ENDPOINT_VULCAN_API_ATTENDANCE, SYNC_ALWAYS)
-            onSuccess(ENDPOINT_VULCAN_API_ATTENDANCE)
+            onSuccess()
         }
-    } ?: onSuccess(ENDPOINT_VULCAN_API_ATTENDANCE) }
+    }
 }

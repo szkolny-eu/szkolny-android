@@ -16,6 +16,6 @@
             android:textSize="18sp"
             android:textColor="?android:textColorSecondary"
             android:textStyle="italic"
-            android:text="Nie ma ocen w tym semestrze."/>
+            android:text="@string/grades_empty_text"/>
     </LinearLayout>
 </layout>

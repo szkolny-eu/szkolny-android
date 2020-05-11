@@ -120,7 +120,7 @@ public class AnnouncementsFragment extends Fragment {
                     return;
                 }*/
                 AnnouncementsAdapter announcementsAdapter = new AnnouncementsAdapter(activity, announcements, (v, announcement) -> {
-                    if (announcement.text == null || (app.getProfile().getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.seen && app.getNetworkUtils().isOnline())) {
+                    if (announcement.getText() == null || (app.getProfile().getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.getSeen() && app.getNetworkUtils().isOnline())) {
                         EdziennikTask.Companion.announcementGet(App.Companion.getProfileId(), announcement).enqueue(requireContext());
                     } else {
                         showAnnouncementDetailsDialog(announcement);
@@ -162,14 +162,14 @@ public class AnnouncementsFragment extends Fragment {
 
     private void showAnnouncementDetailsDialog(AnnouncementFull announcement) {
         MaterialDialog dialog = new MaterialDialog.Builder(activity)
-                .title(announcement.subject)
+                .title(announcement.getSubject())
                 .customView(R.layout.dialog_announcement, true)
                 .positiveText(R.string.ok)
                 .show();
         DialogAnnouncementBinding b = DialogAnnouncementBinding.bind(dialog.getCustomView());
-        b.text.setText(announcement.teacherFullName+"\n\n"+ (announcement.startDate != null ? announcement.startDate.getFormattedString() : "-") + (announcement.endDate != null ? " do " + announcement.endDate.getFormattedString() : "")+"\n\n" +announcement.text);
-        if (!announcement.seen && app.getProfile().getLoginStoreType() != LOGIN_TYPE_LIBRUS) {
-            announcement.seen = true;
+        b.text.setText(announcement.getTeacherName() +"\n\n"+ (announcement.getStartDate() != null ? announcement.getStartDate().getFormattedString() : "-") + (announcement.getEndDate() != null ? " do " + announcement.getEndDate().getFormattedString() : "")+"\n\n" +announcement.getText());
+        if (!announcement.getSeen() && app.getProfile().getLoginStoreType() != LOGIN_TYPE_LIBRUS) {
+            announcement.setSeen(true);
             AsyncTask.execute(() -> App.db.metadataDao().setSeen(App.Companion.getProfileId(), announcement, true));
             if (recyclerView.getAdapter() != null)
                 recyclerView.getAdapter().notifyDataSetChanged();

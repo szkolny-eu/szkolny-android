@@ -53,7 +53,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     profileId = lesson.profileId,
                     profileName = profiles.singleOrNull { it.id == lesson.profileId }?.name,
                     viewId = MainActivity.DRAWER_ITEM_TIMETABLE,
-                    addedDate = lesson.addedDate
+                    addedDate = System.currentTimeMillis()
             ).addExtra("timetableDate", lesson.displayDate?.stringY_m_d ?: "")
         }
     }
@@ -117,7 +117,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun gradeNotifications() {
-        for (grade in app.db.gradeDao().notNotifiedNow) {
+        for (grade in app.db.gradeDao().getNotNotifiedNow()) {
             val gradeName = when (grade.type) {
                 Grade.TYPE_SEMESTER1_PROPOSED, Grade.TYPE_SEMESTER2_PROPOSED -> app.getString(R.string.grade_semester_proposed_format_2, grade.name)
                 Grade.TYPE_SEMESTER1_FINAL, Grade.TYPE_SEMESTER2_FINAL -> app.getString(R.string.grade_semester_final_format_2, grade.name)
@@ -144,7 +144,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun behaviourNotifications() {
-        for (notice in app.db.noticeDao().notNotifiedNow) {
+        for (notice in app.db.noticeDao().getNotNotifiedNow()) {
 
             val noticeTypeStr = when (notice.type) {
                 Notice.TYPE_POSITIVE -> app.getString(R.string.notification_notice_praise)
@@ -155,7 +155,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
             val text = app.getString(
                     R.string.notification_notice_format,
                     noticeTypeStr,
-                    notice.teacherFullName,
+                    notice.teacherName,
                     Date.fromMillis(notice.addedDate).formattedString
             )
             notifications += Notification(
@@ -172,9 +172,9 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun attendanceNotifications() {
-        for (attendance in app.db.attendanceDao().notNotifiedNow) {
+        for (attendance in app.db.attendanceDao().getNotNotifiedNow()) {
 
-            val attendanceTypeStr = when (attendance.type) {
+            val attendanceTypeStr = when (attendance.baseType) {
                 Attendance.TYPE_ABSENT -> app.getString(R.string.notification_absence)
                 Attendance.TYPE_ABSENT_EXCUSED -> app.getString(R.string.notification_absence_excused)
                 Attendance.TYPE_BELATED -> app.getString(R.string.notification_belated)
@@ -191,7 +191,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                         R.string.notification_attendance_format,
                     attendanceTypeStr,
                     attendance.subjectLongName,
-                    attendance.lessonDate.formattedString
+                    attendance.date.formattedString
             )
             notifications += Notification(
                     id = Notification.buildId(attendance.profileId, Notification.TYPE_NEW_ATTENDANCE, attendance.id),
@@ -207,10 +207,10 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun announcementNotifications() {
-        for (announcement in app.db.announcementDao().notNotifiedNow) {
+        for (announcement in app.db.announcementDao().getNotNotifiedNow()) {
             val text = app.getString(
                     R.string.notification_announcement_format,
-                    announcement.teacherFullName,
+                    announcement.teacherName,
                     announcement.subject
             )
             notifications += Notification(
@@ -247,9 +247,9 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun luckyNumberNotifications() {
-        val luckyNumbers = app.db.luckyNumberDao().notNotifiedNow
-        luckyNumbers?.removeAll { it.date < today }
-        luckyNumbers?.forEach { luckyNumber ->
+        val luckyNumbers = app.db.luckyNumberDao().getNotNotifiedNow().toMutableList()
+        luckyNumbers.removeAll { it.date < today }
+        luckyNumbers.forEach { luckyNumber ->
             val profile = profiles.singleOrNull { it.id == luckyNumber.profileId } ?: return@forEach
             val text = when (profile.studentNumber != -1 && profile.studentNumber == luckyNumber.number) {
                 true -> when (luckyNumber.date.value) {
@@ -271,7 +271,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     profileId = luckyNumber.profileId,
                     profileName = profile.name,
                     viewId = MainActivity.DRAWER_ITEM_HOME,
-                    addedDate = luckyNumber.addedDate
+                    addedDate = System.currentTimeMillis()
             )
         }
     }
@@ -280,7 +280,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
         for (teacherAbsence in app.db.teacherAbsenceDao().getNotNotifiedNow()) {
             val message = app.getString(
                     R.string.notification_teacher_absence_new_format,
-                    teacherAbsence.teacherFullName
+                    teacherAbsence.teacherName
             )
             notifications += Notification(
                     id = Notification.buildId(teacherAbsence.profileId, Notification.TYPE_TEACHER_ABSENCE, teacherAbsence.id),

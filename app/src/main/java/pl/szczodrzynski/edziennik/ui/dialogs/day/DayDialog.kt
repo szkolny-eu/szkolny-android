@@ -86,7 +86,7 @@ class DayDialog(
         )
 
         val lessons = withContext(Dispatchers.Default) {
-            app.db.timetableDao().getForDateNow(profileId, date)
+            app.db.timetableDao().getAllForDateNow(profileId, date)
         }.filter { it.type != Lesson.TYPE_NO_LESSONS }
 
         if (lessons.isNotEmpty()) { run {

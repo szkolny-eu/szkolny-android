@@ -40,7 +40,8 @@ class MobidziennikApiHomework(val data: DataMobidziennik, rows: List<String>) {
                         type = Event.TYPE_HOMEWORK,
                         teacherId = teacherId,
                         subjectId = subjectId,
-                        teamId = teamId)
+                        teamId = teamId
+                )
 
                 data.eventList.add(eventObject)
                 data.metadataList.add(
@@ -49,8 +50,7 @@ class MobidziennikApiHomework(val data: DataMobidziennik, rows: List<String>) {
                                 Metadata.TYPE_HOMEWORK,
                                 id,
                                 data.profile?.empty ?: false,
-                                data.profile?.empty ?: false,
-                                System.currentTimeMillis()
+                                data.profile?.empty ?: false
                         ))
             }
         }

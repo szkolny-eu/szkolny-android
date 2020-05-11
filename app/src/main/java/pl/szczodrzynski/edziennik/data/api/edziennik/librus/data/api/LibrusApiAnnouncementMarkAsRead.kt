@@ -37,8 +37,7 @@ class LibrusApiAnnouncementMarkAsRead(override val data: DataLibrus,
                     Metadata.TYPE_ANNOUNCEMENT,
                     announcement.id,
                     announcement.seen,
-                    announcement.notified,
-                    announcement.addedDate
+                    announcement.notified
             ))
             onSuccess()
         }

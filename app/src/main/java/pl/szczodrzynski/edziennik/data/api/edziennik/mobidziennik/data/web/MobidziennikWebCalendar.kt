@@ -89,8 +89,8 @@ class MobidziennikWebCalendar(override val data: DataMobidziennik,
                                     Metadata.TYPE_EVENT,
                                     eventObject.id,
                                     profile?.empty ?: false,
-                                    profile?.empty ?: false,
-                                    System.currentTimeMillis() /* no addedDate here though */
+                                    profile?.empty ?: false
+                                    /* no addedDate here though */
                             ))
                 }
             }

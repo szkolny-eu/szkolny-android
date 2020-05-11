@@ -29,7 +29,7 @@ class TeacherAbsenceAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val teacherAbsence: TeacherAbsenceFull = teacherAbsenceList[position]
 
-        holder.teacherAbsenceTeacher.text = teacherAbsence.teacherFullName
+        holder.teacherAbsenceTeacher.text = teacherAbsence.teacherName
 
         val time = when (teacherAbsence.timeFrom != null && teacherAbsence.timeTo != null) {
             true -> when (teacherAbsence.dateFrom.compareTo(teacherAbsence.dateTo)) {

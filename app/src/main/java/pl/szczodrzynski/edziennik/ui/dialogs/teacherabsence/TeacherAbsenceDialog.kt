@@ -46,7 +46,7 @@ class TeacherAbsenceDialog(
         b.teacherAbsenceView.setHasFixedSize(true)
         b.teacherAbsenceView.layoutManager = LinearLayoutManager(activity)
 
-        app.db.teacherAbsenceDao().getAllByDateFull(profileId, date).observe(activity as LifecycleOwner, Observer { absenceList ->
+        app.db.teacherAbsenceDao().getAllByDate(profileId, date).observe(activity as LifecycleOwner, Observer { absenceList ->
             val adapter = TeacherAbsenceAdapter(activity, date, absenceList)
             b.teacherAbsenceView.adapter = adapter
             b.teacherAbsenceView.visibility = View.VISIBLE

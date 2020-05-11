@@ -100,7 +100,7 @@ class BellSyncTimeChooseDialog(
 
     private fun loadTimeList() { launch {
         val timeItems = withContext(Dispatchers.Default) {
-            val lessons = app.db.timetableDao().getForDateNow(App.profileId, today)
+            val lessons = app.db.timetableDao().getAllForDateNow(App.profileId, today)
             val items = mutableListOf<TextInputDropDown.Item>()
 
             lessons.forEach {
