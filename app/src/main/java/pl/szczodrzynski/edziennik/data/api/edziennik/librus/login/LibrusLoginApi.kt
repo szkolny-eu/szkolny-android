@@ -18,6 +18,7 @@ import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.*
 
+@Suppress("ConvertSecondaryConstructorToPrimary")
 class LibrusLoginApi {
     companion object {
         private const val TAG = "LoginLibrusApi"
