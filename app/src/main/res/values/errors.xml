@@ -160,6 +160,12 @@
     <string name="error_522" translatable="false">ERROR_EDUDZIENNIK_WEB_SESSION_EXPIRED</string>
     <string name="error_530" translatable="false">ERROR_EDUDZIENNIK_WEB_TEAM_MISSING</string>
 
+    <string name="error_601" translatable="false">ERROR_LOGIN_PODLASIE_API_INVALID_TOKEN</string>
+    <string name="error_602" translatable="false">ERROR_LOGIN_PODLASIE_API_DEVICE_LIMIT</string>
+    <string name="error_630" translatable="false">ERROR_PODLASIE_API_NO_TOKEN</string>
+    <string name="error_631" translatable="false">ERROR_PODLASIE_API_OTHER</string>
+    <string name="error_632" translatable="false">ERROR_PODLASIE_API_DATA_MISSING</string>
+
     <string name="error_801" translatable="false">ERROR_TEMPLATE_WEB_OTHER</string>
 
     <string name="error_900" translatable="false">EXCEPTION_API_TASK</string>
@@ -180,6 +186,9 @@
     <string name="error_920" translatable="false">EXCEPTION_EDUDZIENNIK_WEB_REQUEST</string>
     <string name="error_921" translatable="false">EXCEPTION_EDUDZIENNIK_FILE_REQUEST</string>
     <string name="error_930" translatable="false">ERROR_ONEDRIVE_DOWNLOAD</string>
+    <string name="error_931" translatable="false">EXCEPTION_VULCAN_WEB_LOGIN</string>
+    <string name="error_932" translatable="false">EXCEPTION_VULCAN_WEB_REQUEST</string>
+    <string name="error_940" translatable="false">EXCEPTION_PODLASIE_API_REQUEST</string>
 
     <string name="error_1201" translatable="false">LOGIN_NO_ARGUMENTS</string>
 
@@ -339,6 +348,12 @@
     <string name="error_522_reason">Sesja wygasła</string>
     <string name="error_530_reason">Nie można pobrać informacji o klasie i szkole</string>
 
+    <string name="error_601_reason">Nieprawidłowy token</string>
+    <string name="error_602_reason">Przekroczono maksymalną liczbę urządzeń (5)</string>
+    <string name="error_630_reason">ERROR_PODLASIE_API_NO_TOKEN</string>
+    <string name="error_631_reason">ERROR_PODLASIE_API_OTHER</string>
+    <string name="error_632_reason">Brak danych. Zgłoś błąd programiście.</string>
+
     <string name="error_801_reason">ERROR_TEMPLATE_WEB_OTHER</string>
 
     <string name="error_900_reason">Błąd synchronizacji. Upewnij się, że masz połączenie z internetem, a następnie zgłoś błąd.</string>
@@ -359,6 +374,9 @@
     <string name="error_920_reason">Wystąpił błąd</string>
     <string name="error_921_reason">Wystąpił błąd podczas pobierania pliku</string>
     <string name="error_930_reason">Nie udało się pobrać pliku z OneDrive</string>
+    <string name="error_931_reason">EXCEPTION_VULCAN_WEB_LOGIN</string>
+    <string name="error_932_reason">EXCEPTION_VULCAN_WEB_REQUEST</string>
+    <string name="error_940_reason">Zgłoś błąd: wyjątek w API PPE</string>
 
     <string name="error_1201_reason">Nie podano parametrów</string>
 </resources>

@@ -143,6 +143,7 @@ val edudziennikLoginMethods = listOf(
 )
 
 const val LOGIN_TYPE_PODLASIE = 6
+const val LOGIN_MODE_PODLASIE_API = 0
 const val LOGIN_METHOD_PODLASIE_API = 100
 val podlasieLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_PODLASIE, LOGIN_METHOD_PODLASIE_API, PodlasieLoginApi::class.java)
