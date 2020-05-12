@@ -26,7 +26,7 @@ class DumbCookieJar(
 ) : CookieJar {
 
     private val prefs = context.getSharedPreferences("cookies", Context.MODE_PRIVATE)
-    private val sessionCookies = mutableSetOf<DumbCookie>()
+    val sessionCookies = mutableSetOf<DumbCookie>()
     private val savedCookies = mutableSetOf<DumbCookie>()
     private fun save(dc: DumbCookie) {
         sessionCookies.remove(dc)

@@ -145,7 +145,11 @@ dependencies {
     implementation("com.github.ozodrukh:CircularReveal:2.0.1@aar") {transitive = true}
     implementation "com.heinrichreimersoftware:material-intro:1.5.8" // do not update
     implementation "com.jaredrummler:colorpicker:1.0.2"
-    implementation "com.squareup.okhttp3:okhttp:3.12.2"
+    implementation("com.squareup.okhttp3:okhttp") {
+        version {
+            strictly "3.12.2"
+        }
+    }
     implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0" // do not update
     implementation "com.wdullaer:materialdatetimepicker:4.1.2"
     implementation "com.yuyh.json:jsonviewer:1.0.6"

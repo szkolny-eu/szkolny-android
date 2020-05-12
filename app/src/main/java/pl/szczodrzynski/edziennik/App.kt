@@ -173,6 +173,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         }
 
         devMode = BuildConfig.DEBUG
+        if (BuildConfig.DEBUG)
+            debugMode = true
 
         Signing.getCert(this)
 
