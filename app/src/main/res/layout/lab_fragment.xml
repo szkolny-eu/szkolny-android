@@ -54,6 +54,13 @@
                 android:layout_height="wrap_content"
                 android:text="Remove all homework body (null)"
                 android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/cookies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                tools:text="Cookies:\n\nsynergia.librus.pl\n    DZIENNIKSID=L01~1234567890abcdef"/>
         </LinearLayout>
     </ScrollView>
 </layout>

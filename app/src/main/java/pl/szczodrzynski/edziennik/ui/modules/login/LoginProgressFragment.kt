@@ -59,6 +59,8 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded) return
 
+        EventBus.getDefault().removeStickyEvent(FirstLoginFinishedEvent::class.java)
+
         val args = arguments ?: run {
             activity.error(ApiError(TAG, LOGIN_NO_ARGUMENTS))
             nav.navigateUp()
@@ -93,6 +95,7 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onFirstLoginFinishedEvent(event: FirstLoginFinishedEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         if (event.profileList.isEmpty()) {
             MaterialAlertDialogBuilder(activity)
                     .setTitle(R.string.login_account_no_students)
