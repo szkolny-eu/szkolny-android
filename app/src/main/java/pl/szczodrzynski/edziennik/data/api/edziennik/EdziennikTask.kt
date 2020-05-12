@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
@@ -27,6 +28,9 @@ import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {
         private const val TAG = "EdziennikTask"
+
+        var profile: Profile? = null
+        var loginStore: LoginStore? = null
 
         fun firstLogin(loginStore: LoginStore) = EdziennikTask(-1, FirstLoginRequest(loginStore))
         fun sync() = EdziennikTask(-1, SyncRequest())
@@ -59,6 +63,8 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             // save the profile ID and name as the current task's
             taskName = app.getString(R.string.edziennik_notification_api_sync_title_format, profile.name)
         }
+        EdziennikTask.profile = this.profile
+        EdziennikTask.loginStore = this.loginStore
     }
 
     private var edziennikInterface: EdziennikInterface? = null
