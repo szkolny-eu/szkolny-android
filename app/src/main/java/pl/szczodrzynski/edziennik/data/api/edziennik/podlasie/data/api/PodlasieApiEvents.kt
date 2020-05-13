@@ -23,9 +23,8 @@ class PodlasieApiEvents(val data: DataPodlasie, val rows: List<JsonObject>) {
             val time = event.getString("DateFrom")?.let { Time.fromY_m_d_H_m_s(it) }
                     ?: return@forEach
 
-            val name = event.getString("Name") ?: ""
-            val description = event.getString("Description") ?: ""
-            val topic = "$name\n\n$description".replace("&#34;", "\"")
+            val name = event.getString("Name")?.replace("&#34;", "\"") ?: ""
+            val description = event.getString("Description")?.replace("&#34;", "\"") ?: ""
 
             val type = when (event.getString("Category")?.toLowerCase(Locale.getDefault())) {
                 "klasówka" -> Event.TYPE_EXAM
@@ -49,14 +48,16 @@ class PodlasieApiEvents(val data: DataPodlasie, val rows: List<JsonObject>) {
                     id = id,
                     date = date,
                     time = time,
-                    topic = topic,
+                    topic = name,
                     color = null,
                     type = type,
                     teacherId = teacher.id,
                     subjectId = lesson?.subjectId ?: -1,
                     teamId = data.teamClass?.id ?: -1,
                     addedDate = addedDate
-            )
+            ).apply {
+                homeworkBody = description
+            }
 
             data.eventList.add(eventObject)
             data.metadataList.add(
