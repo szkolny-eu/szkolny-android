@@ -60,6 +60,7 @@ class PodlasieFirstLogin(val data: DataPodlasie, val onSuccess: () -> Unit) {
                     schoolYear?.split('/')?.get(0)?.toInt()?.let {
                         studentSchoolYearStart = it
                     }
+                    studentClassName = className
                 }
 
                 EventBus.getDefault().postSticky(FirstLoginFinishedEvent(listOf(profile), data.loginStore))

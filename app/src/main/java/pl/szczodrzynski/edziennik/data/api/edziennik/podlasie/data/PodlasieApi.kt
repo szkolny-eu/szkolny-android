@@ -98,7 +98,8 @@ open class PodlasieApi(open val data: DataPodlasie, open val lastSync: Long?) {
     }
 
     private fun getSecurityToken(): String {
-        val format = SimpleDateFormat("yyyy-MM-dd HH", Locale.ENGLISH).format(Calendar.getInstance().time.time)
+        val format = SimpleDateFormat("yyyy-MM-dd HH", Locale.ENGLISH)
+                .also { it.timeZone = TimeZone.getTimeZone("Europe/Warsaw") }.format(System.currentTimeMillis())
         val instance = MessageDigest.getInstance("SHA-256")
         val digest = instance.digest("-EYlwYu8u16miVd8tT?oO7cvoUVQrQN0vr!$format".toByteArray()).toHexString()
         val digest2 = instance.digest(data.apiToken!!.toByteArray()).toHexString()

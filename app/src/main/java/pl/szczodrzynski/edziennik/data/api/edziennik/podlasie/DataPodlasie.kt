@@ -4,13 +4,11 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie
 
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.crc32
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_PODLASIE_API
 import pl.szczodrzynski.edziennik.data.api.models.Data
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.data.db.entity.*
+import kotlin.text.replace
 
 class DataPodlasie(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
@@ -83,4 +81,39 @@ class DataPodlasie(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
 
     val loginShort: String?
         get() = studentLogin?.split('@')?.get(0)
+
+    fun getSubject(name: String): Subject {
+        val id = name.crc32()
+        return subjectList.singleOrNull { it.id == id } ?: run {
+            val subject = Subject(profileId, id, name, name)
+            subjectList.put(id, subject)
+            subject
+        }
+    }
+
+    fun getTeacher(firstName: String, lastName: String): Teacher {
+        val name = "$firstName $lastName".fixName()
+        val id = name.crc32()
+        return teacherList.singleOrNull { it.id == id } ?: run {
+            val teacher = Teacher(profileId, id, firstName, lastName)
+            teacherList.put(id, teacher)
+            teacher
+        }
+    }
+
+    fun getTeam(name: String? = null): Team {
+        if (name == "cała klasa" || name == null) return teamClass ?: run {
+            val id = className!!.crc32()
+            val teamCode = "$schoolShortName:$className"
+            val team = Team(profileId, id, className, Team.TYPE_CLASS, teamCode, -1)
+            teamList.put(id, team)
+            return team
+        } else {
+            val id = name.crc32()
+            val teamCode = "$schoolShortName:$name"
+            val team = Team(profileId, id, name, Team.TYPE_VIRTUAL, teamCode, -1)
+            teamList.put(id, team)
+            return team
+        }
+    }
 }
