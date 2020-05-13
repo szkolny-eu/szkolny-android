@@ -77,7 +77,7 @@ class DataPodlasie(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
         set(value) { profile?.putStudentData("currentSemester", value) ?: return; mCurrentSemester = value }
 
     val schoolShortName: String?
-        get() = studentLogin?.replace(".podlaskie.pl", "")
+        get() = studentLogin?.split('@')?.get(1)?.replace(".podlaskie.pl", "")
 
     val loginShort: String?
         get() = studentLogin?.split('@')?.get(0)
@@ -93,8 +93,8 @@ class DataPodlasie(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
 
     fun getTeacher(firstName: String, lastName: String): Teacher {
         val name = "$firstName $lastName".fixName()
-        val id = name.crc32()
-        return teacherList.singleOrNull { it.id == id } ?: run {
+        return teacherList.singleOrNull { it.fullName == name } ?: run {
+            val id = name.crc32()
             val teacher = Teacher(profileId, id, firstName, lastName)
             teacherList.put(id, teacher)
             teacher

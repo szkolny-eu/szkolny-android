@@ -25,6 +25,7 @@ class PodlasieApiMain(override val data: DataPodlasie,
             data.getTeam() // Save the class team when it doesn't exist.
 
             json.getInt("LuckyNumber")?.let { PodlasieApiLuckyNumber(data, it) }
+            json.getJsonArray("Teacher")?.asJsonObjectList()?.let { PodlasieApiTeachers(data, it) }
             json.getJsonArray("Timetable")?.asJsonObjectList()?.let { PodlasieApiTimetable(data, it) }
             json.getJsonArray("Marks")?.asJsonObjectList()?.let { PodlasieApiGrades(data, it) }
             json.getJsonArray("MarkFinal")?.asJsonObjectList()?.let { PodlasieApiFinalGrades(data, it) }
