@@ -1352,4 +1352,8 @@
     <string name="login_mode_edudziennik_web">Zaloguj używając e-maila i hasła</string>
     <string name="login_mode_edudziennik_web_hint">Użyj danych, które podajesz na stronie internetowej e-dziennika</string>
     <string name="login_mode_edudziennik_web_guide">Podaj adres e-mail i hasło, których używasz do logowania w przeglądarce na stronie EduDziennika.</string>
+    <string name="login_type_podlasie">Podlaska Platforma Edukacyjna</string>
+    <string name="login_mode_podlasie_api">Zaloguj używając tokenu</string>
+    <string name="login_mode_podlasie_api_guide">Podaj token aplikacji mobilnej.</string>
+    <string name="edziennik_progress_login_podlasie_api">Logowanie do PPE…</string>
 </resources>

@@ -333,6 +333,34 @@ object LoginInfo {
                                     )
                             )
                     )
+            ),
+            Register(
+                    loginType = LOGIN_TYPE_PODLASIE,
+                    internalName = "podlasie",
+                    registerName = R.string.login_type_podlasie,
+                    registerLogo = R.drawable.login_logo_podlasie,
+                    loginModes = listOf(
+                            Mode(
+                                    loginMode = LOGIN_MODE_PODLASIE_API,
+                                    name = R.string.login_mode_podlasie_api,
+                                    icon = R.drawable.login_mode_podlasie_api,
+                                    guideText = R.string.login_mode_podlasie_api_guide,
+                                    credentials = listOf(
+                                            Credential(
+                                                    keyName = "apiToken",
+                                                    name = R.string.login_hint_token,
+                                                    icon = CommunityMaterial.Icon2.cmd_lock_outline,
+                                                    emptyText = R.string.login_error_no_token,
+                                                    invalidText = R.string.login_error_incorrect_token,
+                                                    errorCodes = mapOf(),
+                                                    isRequired = true,
+                                                    validationRegex = "[a-zA-Z0-9]{10}",
+                                                    caseMode = Credential.CaseMode.UNCHANGED
+                                            )
+                                    ),
+                                    errorCodes = mapOf()
+                            )
+                    )
             )
     ) }
 

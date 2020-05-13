@@ -114,6 +114,9 @@ abstract class EventDao : BaseDao<Event, EventFull> {
                 " AND " + filter))
     }
 
+    @Query("UPDATE events SET keep = 0 WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate")
+    abstract fun dontKeepFuture(profileId: Int, todayDate: Date)
+
     @Query("UPDATE events SET keep = 0 WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType = :type")
     abstract fun dontKeepFutureWithType(profileId: Int, todayDate: Date, type: Long)
 

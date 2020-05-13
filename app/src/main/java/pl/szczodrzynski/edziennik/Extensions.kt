@@ -1245,3 +1245,5 @@ val SwipeRefreshLayout.onScrollListener: RecyclerView.OnScrollListener
 operator fun <K, V> Iterable<Pair<K, V>>.get(key: K): V? {
     return firstOrNull { it.first == key }?.second
 }
+
+fun ByteArray.toHexString() = joinToString("") { "%02x".format(it) }

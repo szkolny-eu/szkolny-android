@@ -200,6 +200,12 @@ const val ERROR_EDUDZIENNIK_WEB_LIMITED_ACCESS              = 521
 const val ERROR_EDUDZIENNIK_WEB_SESSION_EXPIRED             = 522
 const val ERROR_EDUDZIENNIK_WEB_TEAM_MISSING                = 530
 
+const val ERROR_LOGIN_PODLASIE_API_INVALID_TOKEN            = 601
+const val ERROR_LOGIN_PODLASIE_API_DEVICE_LIMIT             = 602
+const val ERROR_PODLASIE_API_NO_TOKEN                       = 630
+const val ERROR_PODLASIE_API_OTHER                          = 631
+const val ERROR_PODLASIE_API_DATA_MISSING                   = 632
+
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 
 const val EXCEPTION_API_TASK                                = 900
@@ -222,5 +228,6 @@ const val EXCEPTION_EDUDZIENNIK_FILE_REQUEST                = 921
 const val ERROR_ONEDRIVE_DOWNLOAD                           = 930
 const val EXCEPTION_VULCAN_WEB_LOGIN                        = 931
 const val EXCEPTION_VULCAN_WEB_REQUEST                      = 932
+const val EXCEPTION_PODLASIE_API_REQUEST                    = 940
 
 const val LOGIN_NO_ARGUMENTS                                = 1201

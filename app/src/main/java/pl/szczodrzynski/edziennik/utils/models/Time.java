@@ -49,6 +49,16 @@ public class Time implements Comparable<Time> {
         }
     }
 
+    public static Time fromY_m_d_H_m_s(String dateTime)
+    {
+        try {
+            return new Time(Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), Integer.parseInt(dateTime.substring(17, 19)));
+        }
+        catch (Exception e) {
+            return new Time(0, 0, 0);
+        }
+    }
+
     public long combineWith(Date date) {
         if (date == null) {
             return getInMillis();
