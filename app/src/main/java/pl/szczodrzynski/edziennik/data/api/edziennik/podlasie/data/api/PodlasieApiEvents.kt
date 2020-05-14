@@ -63,7 +63,7 @@ class PodlasieApiEvents(val data: DataPodlasie, val rows: List<JsonObject>) {
             data.metadataList.add(
                     Metadata(
                             data.profileId,
-                            Metadata.TYPE_EVENT,
+                            if (type == Event.TYPE_HOMEWORK) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT,
                             id,
                             data.profile?.empty ?: false,
                             data.profile?.empty ?: false

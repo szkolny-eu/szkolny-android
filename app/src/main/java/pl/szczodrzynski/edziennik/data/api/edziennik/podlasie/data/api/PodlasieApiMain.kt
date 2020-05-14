@@ -30,6 +30,7 @@ class PodlasieApiMain(override val data: DataPodlasie,
             json.getJsonArray("Marks")?.asJsonObjectList()?.let { PodlasieApiGrades(data, it) }
             json.getJsonArray("MarkFinal")?.asJsonObjectList()?.let { PodlasieApiFinalGrades(data, it) }
             json.getJsonArray("News")?.asJsonObjectList()?.let { PodlasieApiEvents(data, it) }
+            json.getJsonArray("Tasks")?.asJsonObjectList()?.let { PodlasieApiHomework(data, it) }
 
             data.setSyncNext(ENDPOINT_PODLASIE_API_MAIN, SYNC_ALWAYS)
             onSuccess(ENDPOINT_PODLASIE_API_MAIN)
