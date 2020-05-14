@@ -82,14 +82,14 @@ abstract class GradeDao : BaseDao<Grade, GradeFull> {
     fun getByIdNow(profileId: Int, id: Long) =
             getOneNow("$QUERY WHERE grades.profileId = $profileId AND gradeId = $id")
 
-    @Query("DELETE FROM grades WHERE profileId = :profileId AND gradeType = :type")
-    abstract fun clearWithType(profileId: Int, type: Int)
+    @Query("UPDATE grades SET keep = 0 WHERE profileId = :profileId AND gradeType = :type")
+    abstract fun dontKeepWithType(profileId: Int, type: Int)
 
-    @Query("DELETE FROM grades WHERE profileId = :profileId AND gradeSemester = :semester")
-    abstract fun clearForSemester(profileId: Int, semester: Int)
+    @Query("UPDATE grades SET keep = 0 WHERE profileId = :profileId AND gradeSemester = :semester")
+    abstract fun dontKeepForSemester(profileId: Int, semester: Int)
 
-    @Query("DELETE FROM grades WHERE profileId = :profileId AND gradeSemester = :semester AND gradeType = :type")
-    abstract fun clearForSemesterWithType(profileId: Int, semester: Int, type: Int)
+    @Query("UPDATE grades SET keep = 0 WHERE profileId = :profileId AND gradeSemester = :semester AND gradeType = :type")
+    abstract fun dontKeepForSemesterWithType(profileId: Int, semester: Int, type: Int)
 
 
 

@@ -38,12 +38,12 @@ open class DataRemoveModel {
 
         fun commit(profileId: Int, dao: GradeDao) {
             if (all) {
-                if (type != null) dao.clearWithType(profileId, type)
+                if (type != null) dao.dontKeepWithType(profileId, type)
                 else dao.clear(profileId)
             }
             semester?.let {
-                if (type != null) dao.clearForSemesterWithType(profileId, it, type)
-                else dao.clearForSemester(profileId, it)
+                if (type != null) dao.dontKeepForSemesterWithType(profileId, it, type)
+                else dao.dontKeepForSemester(profileId, it)
             }
         }
     }
