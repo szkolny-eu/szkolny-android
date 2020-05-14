@@ -5,10 +5,13 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie
 
 import com.google.gson.JsonObject
+import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.data.api.edziennik.helper.DownloadAttachment
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.PodlasieData
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.firstlogin.PodlasieFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.login.PodlasieLogin
+import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -21,6 +24,7 @@ import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils
+import java.io.File
 
 class Podlasie(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
@@ -79,7 +83,38 @@ class Podlasie(val app: App, val profile: Profile?, val loginStore: LoginStore, 
     }
 
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {
+        val fileUrl = attachmentName.substringAfter(":")
+        DownloadAttachment(fileUrl,
+                onSuccess = { file ->
+                    val event = AttachmentGetEvent(
+                            data.profileId,
+                            owner,
+                            attachmentId,
+                            AttachmentGetEvent.TYPE_FINISHED,
+                            file.absolutePath
+                    )
 
+                    val attachmentDataFile = File(Utils.getStorageDir(), ".${data.profileId}_${event.ownerId}_${event.attachmentId}")
+                    Utils.writeStringToFile(attachmentDataFile, event.fileName)
+
+                    EventBus.getDefault().postSticky(event)
+
+                    completed()
+                },
+                onProgress = { written, _ ->
+                    val event = AttachmentGetEvent(
+                            data.profileId,
+                            owner,
+                            attachmentId,
+                            AttachmentGetEvent.TYPE_PROGRESS,
+                            bytesWritten = written
+                    )
+
+                    EventBus.getDefault().postSticky(event)
+                },
+                onError = { apiError ->
+                    data.error(apiError)
+                })
     }
 
     override fun getRecipientList() {

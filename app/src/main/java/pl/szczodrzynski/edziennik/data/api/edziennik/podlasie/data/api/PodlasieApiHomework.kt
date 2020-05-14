@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.get
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -36,6 +37,15 @@ class PodlasieApiHomework(val data: DataPodlasie, val rows: List<JsonObject>) {
                     addedDate = addedDate
             ).apply {
                 homeworkBody = description
+            }
+
+            eventObject.attachmentIds = mutableListOf()
+            eventObject.attachmentNames = mutableListOf()
+            homework.getString("Attachments")?.split(',')?.onEach { url ->
+                val filename = "&filename=(.*?)&".toRegex().find(url)?.get(1) ?: return@onEach
+                val ext = "&ext=(.*?)&".toRegex().find(url)?.get(1) ?: return@onEach
+                eventObject.attachmentIds?.add(url.crc32())
+                eventObject.attachmentNames?.add("$filename.$ext:$url")
             }
 
             data.eventList.add(eventObject)

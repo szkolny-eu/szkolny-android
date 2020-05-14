@@ -157,7 +157,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
                     completed()
                 },
-                onProgress = { written, total ->
+                onProgress = { written, _ ->
                     val event = AttachmentGetEvent(
                             data.profileId,
                             owner,
