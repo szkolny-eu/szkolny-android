@@ -38,14 +38,18 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
 
                 text?.contains("grecaptcha.ready") == true -> {
                     val url = response?.request()?.url()?.toString() ?: run {
-                        data.error(TAG, ERROR_LIBRUS_MESSAGES_OTHER, response, text)
+                        //data.error(TAG, ERROR_LIBRUS_MESSAGES_OTHER, response, text)
+                        data.messagesLoginSuccessful = false
+                        onSuccess()
                         return
                     }
 
                     LibrusRecaptchaHelper(data.app, url, text, onSuccess = { newUrl ->
                         loginWithSynergia(newUrl)
                     }, onTimeout = {
-                        data.error(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_TIMEOUT, response, text)
+                        //data.error(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_TIMEOUT, response, text)
+                        data.messagesLoginSuccessful = false
+                        onSuccess()
                     })
                 }
 
