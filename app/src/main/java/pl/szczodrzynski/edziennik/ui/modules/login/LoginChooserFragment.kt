@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.modules.login
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import pl.szczodrzynski.edziennik.Bundle
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
 import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 
@@ -74,6 +76,10 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(SimpleDividerItemDecoration(context))
+        }
+
+        b.helpButton.onClick {
+            startActivity(Intent(activity, FeedbackActivity::class.java))
         }
 
         when {

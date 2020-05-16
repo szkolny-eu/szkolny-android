@@ -73,6 +73,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="?selectableItemBackgroundBorderless"
+                        android:visibility="gone"
                         app:iiv_color="?colorOnBackground"
                         app:iiv_icon="cmd-help-circle-outline"
                         app:iiv_size="24dp"
@@ -83,7 +84,8 @@
                     android:id="@+id/fakeLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Fake login" />
+                    android:text="Fake login"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/errorLayout"
