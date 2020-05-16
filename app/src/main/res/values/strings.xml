@@ -1323,7 +1323,7 @@
     <string name="login_mode_librus_synergia">Zaloguj używając loginu i hasła</string>
     <string name="login_mode_librus_synergia_hint">Użyj loginu w postaci \"9874123u\"</string>
     <string name="login_mode_librus_jst">Logowanie przez platformę VULCAN</string>
-    <string name="login_mode_librus_jst_hint">Oświata w Radomiu oraz Innowacyjny Tarnobrzeg</string>
+    <string name="login_mode_librus_jst_hint">Tylko Oświata w Radomiu oraz Innowacyjny Tarnobrzeg</string>
     <string name="login_type_vulcan" translatable="false">Vulcan UONET+</string>
     <string name="login_mode_vulcan_api">Użyj tokenu, symbolu i kodu PIN</string>
     <string name="login_mode_vulcan_api_hint">Zarejestruj urządzenie na stronie dziennika Vulcan</string>

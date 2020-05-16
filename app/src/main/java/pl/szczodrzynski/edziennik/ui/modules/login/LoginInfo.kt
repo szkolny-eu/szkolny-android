@@ -62,7 +62,7 @@ object LoginInfo {
                                             ERROR_CAPTCHA_LIBRUS_PORTAL to R.string.error_3001_reason
                                     )
                             ),
-                            Mode(
+                            /*Mode(
                                     loginMode = LOGIN_MODE_LIBRUS_SYNERGIA,
                                     name = R.string.login_mode_librus_synergia,
                                     icon = R.drawable.login_mode_librus_synergia,
@@ -86,7 +86,7 @@ object LoginInfo {
                                             ERROR_LOGIN_LIBRUS_API_INVALID_LOGIN to R.string.login_error_incorrect_login_or_password,
                                             ERROR_LOGIN_LIBRUS_API_INVALID_REQUEST to R.string.login_error_incorrect_login_or_password
                                     )
-                            ),
+                            ),*/
                             Mode(
                                     loginMode = LOGIN_MODE_LIBRUS_JST,
                                     name = R.string.login_mode_librus_jst,
@@ -181,7 +181,7 @@ object LoginInfo {
                                     errorCodes = mapOf(
                                             ERROR_LOGIN_VULCAN_EXPIRED_TOKEN to R.string.login_error_expired_token
                                     )
-                            ),
+                            )/*,
                             Mode(
                                     loginMode = LOGIN_MODE_VULCAN_WEB,
                                     name = R.string.login_mode_vulcan_web,
@@ -206,7 +206,7 @@ object LoginInfo {
                                             getPasswordCredential("webPassword")
                                     ),
                                     errorCodes = mapOf()
-                            )
+                            )*/
                     )
             ),
             Register(
