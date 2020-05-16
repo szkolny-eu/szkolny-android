@@ -53,6 +53,10 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        EventBus.getDefault().removeStickyEvent(ApiTaskAllFinishedEvent::class.java)
+        EventBus.getDefault().removeStickyEvent(ApiTaskErrorEvent::class.java)
+
         val profiles = activity.profiles.filter { it.isSelected }.map { it.profile }
         val loginStores = activity.loginStores.filter { store -> profiles.any { it.loginStoreId == store.id } }
 
@@ -87,6 +91,7 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onSyncFinishedEvent(event: ApiTaskAllFinishedEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
         nav.navigate(R.id.loginFinishFragment, finishArguments, activity.navOptions)
     }
 
