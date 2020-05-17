@@ -79,7 +79,8 @@ class LibrusApiGrades(override val data: DataLibrus,
                         comment = null,
                         semester = semester,
                         teacherId = teacherId,
-                        subjectId = subjectId
+                        subjectId = subjectId,
+                        addedDate = addedDate
                 )
 
                 grade.getJsonObject("Improvement")?.also {
@@ -98,8 +99,7 @@ class LibrusApiGrades(override val data: DataLibrus,
                                 Metadata.TYPE_GRADE,
                                 id,
                                 profile.empty,
-                                profile.empty,
-                                addedDate
+                                profile.empty
                         ))
             }
 

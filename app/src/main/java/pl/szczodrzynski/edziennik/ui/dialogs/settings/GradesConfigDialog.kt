@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -59,6 +60,7 @@ class GradesConfigDialog(
         dialog.show()
     }}
 
+    @SuppressLint("SetTextI18n")
     private fun loadConfig() {
         b.customPlusCheckBox.isChecked = profileConfig.plusValue != null
         b.customPlusValue.isVisible = b.customPlusCheckBox.isChecked

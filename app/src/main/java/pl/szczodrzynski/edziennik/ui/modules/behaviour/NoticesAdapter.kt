@@ -41,10 +41,10 @@ class NoticesAdapter//getting the context and product list with constructor
 
         if (app.profile.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK && false) {
             holder.noticesItemReason.text = bs(null, notice.category, "\n") + notice.text
-            holder.noticesItemTeacherName.text = app.getString(R.string.notices_points_format, notice.teacherFullName, if (notice.points > 0) "+" + notice.points else notice.points)
+            holder.noticesItemTeacherName.text = app.getString(R.string.notices_points_format, notice.teacherName, if (notice.points ?: 0f > 0) "+" + notice.points else notice.points)
         } else {
             holder.noticesItemReason.text = notice.text
-            holder.noticesItemTeacherName.text = notice.teacherFullName
+            holder.noticesItemTeacherName.text = notice.teacherName
         }
         holder.noticesItemAddedDate.text = Date.fromMillis(notice.addedDate).formattedString
 

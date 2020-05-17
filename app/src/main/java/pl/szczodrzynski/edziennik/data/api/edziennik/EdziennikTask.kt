@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.Edudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.Idziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.Librus
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.Mobidziennik
+import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.Podlasie
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.Template
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.Vulcan
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
@@ -19,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
@@ -27,6 +29,9 @@ import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {
         private const val TAG = "EdziennikTask"
+
+        var profile: Profile? = null
+        var loginStore: LoginStore? = null
 
         fun firstLogin(loginStore: LoginStore) = EdziennikTask(-1, FirstLoginRequest(loginStore))
         fun sync() = EdziennikTask(-1, SyncRequest())
@@ -59,6 +64,8 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             // save the profile ID and name as the current task's
             taskName = app.getString(R.string.edziennik_notification_api_sync_title_format, profile.name)
         }
+        EdziennikTask.profile = this.profile
+        EdziennikTask.loginStore = this.loginStore
     }
 
     private var edziennikInterface: EdziennikInterface? = null
@@ -74,6 +81,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
             LOGIN_TYPE_VULCAN -> Vulcan(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_IDZIENNIK -> Idziennik(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_EDUDZIENNIK -> Edudziennik(app, profile, loginStore, taskCallback)
+            LOGIN_TYPE_PODLASIE -> Podlasie(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_TEMPLATE -> Template(app, profile, loginStore, taskCallback)
             else -> null
         }

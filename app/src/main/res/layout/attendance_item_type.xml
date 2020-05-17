@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-5-8.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="?selectableItemBackground">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/divider"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceView
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:background="@drawable/bg_rounded_4dp"
+                    tools:backgroundTint="#43a047"
+                    tools:paddingHorizontal="5dp"
+                    tools:singleLine="true"
+                    tools:text="ob"
+                    tools:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="20sp"
+                tools:text="obecność" />
+
+            <View
+                android:id="@+id/unread"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:visibility="gone"
+                android:background="@drawable/unread_red_circle"
+                tools:visibility="visible"/>
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/dropdownIcon"
+                android:layout_width="24dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:scaleType="centerInside"
+                app:iiv_color="?android:textColorSecondary"
+                app:iiv_icon="cmd-chevron-down"
+                app:iiv_size="18dp"
+                tools:background="@android:drawable/ic_menu_more" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/NavView.TextView.Helper"
+            android:textSize="14sp"
+            tools:text="57,67% • 521 przez cały rok • 134 w tym semestrze"
+            tools:text1="Cały rok: 3 oceny • suma: 320 pkt"
+            tools:text2="Cały rok: 15 ocen • średnia: 2,62" />
+    </LinearLayout>
+</layout>

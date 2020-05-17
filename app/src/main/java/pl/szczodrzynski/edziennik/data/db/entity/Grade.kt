@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ * Copyright (c) Kuba Szczodrzyński 2020-4-24.
  */
 package pl.szczodrzynski.edziennik.data.db.entity
 
@@ -8,23 +8,11 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index
 
-/*public Grade(int profileId, long id, String category, int color, String description, String name, float value, float weight, int semester, long teacherId, long subjectId) {
-        this.profileId = profileId;
-        this.id = id;
-        this.category = category;
-        this.color = color;
-        this.description = description;
-        this.name = name;
-        this.value = value;
-        this.weight = weight;
-        this.semester = semester;
-        this.teacherId = teacherId;
-        this.subjectId = subjectId;
-    }*/
-
 @Entity(tableName = "grades",
         primaryKeys = ["profileId", "gradeId"],
-        indices = [Index(value = ["profileId"])])
+        indices = [
+            Index(value = ["profileId"])
+        ])
 open class Grade(
         val profileId: Int,
         @ColumnInfo(name = "gradeId")
@@ -40,6 +28,7 @@ open class Grade(
         var weight: Float,
         @ColumnInfo(name = "gradeColor")
         var color: Int,
+
         @ColumnInfo(name = "gradeCategory")
         var category: String?,
         @ColumnInfo(name = "gradeDescription")
@@ -50,8 +39,9 @@ open class Grade(
         @ColumnInfo(name = "gradeSemester")
         val semester: Int,
         val teacherId: Long,
-        val subjectId: Long
-) {
+        val subjectId: Long,
+        var addedDate: Long = System.currentTimeMillis()
+) : Keepable() {
     companion object {
         const val TYPE_NORMAL = 0
         const val TYPE_SEMESTER1_PROPOSED = 1

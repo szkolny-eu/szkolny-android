@@ -208,6 +208,30 @@ class GradesManager(val app: App) : CoroutineScope {
         }
     }
 
+    fun getGradeNumberName(name: String): String {
+        return when(name.toLowerCase()){
+            "niedostateczny", "f" -> "1"
+            "niedostateczny plus", "f+" -> "1+"
+            "niedostateczny minus", "f-" -> "1-"
+            "dopuszczający", "e" -> "2"
+            "dopuszczający plus", "e+" -> "2+"
+            "dopuszczający minus", "e-" -> "2-"
+            "dostateczny", "d" -> "3"
+            "dostateczny plus", "d+" -> "3+"
+            "dostateczny minus", "d-" -> "3-"
+            "dobry", "c" -> "4"
+            "dobry plus", "c+" -> "4+"
+            "dobry minus", "c-" -> "4-"
+            "bardzo dobry", "b" -> "5"
+            "bardzo dobry plus", "b+" -> "5+"
+            "bardzo dobry minus", "b-" -> "5-"
+            "celujący", "a" -> "6"
+            "celujący plus", "a+" -> "6+"
+            "celujący minus", "a-" -> "6-"
+            else -> name
+        }
+    }
+
     /*    _    _ _____    _____                 _  __ _
          | |  | |_   _|  / ____|               (_)/ _(_)
          | |  | | | |   | (___  _ __   ___  ___ _| |_ _  ___

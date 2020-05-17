@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-4-25.
+ */
 package pl.szczodrzynski.edziennik.data.db.full
 
 import android.content.Context
@@ -5,7 +8,11 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.utils.models.Time
 
-class LessonFull(profileId: Int, id: Long) : Lesson(profileId, id) {
+class LessonFull(
+        profileId: Int, id: Long
+) : Lesson(
+        profileId, id
+) {
     var subjectName: String? = null
     var teacherName: String? = null
     var teamName: String? = null
@@ -126,5 +133,4 @@ class LessonFull(profileId: Int, id: Long) : Lesson(profileId, id) {
     // metadata
     var seen: Boolean = false
     var notified: Boolean = false
-    var addedDate: Long = 0
 }

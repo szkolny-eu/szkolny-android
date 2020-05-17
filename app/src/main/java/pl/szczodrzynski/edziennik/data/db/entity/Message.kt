@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ * Copyright (c) Kuba Szczodrzyński 2020-4-25.
  */
 package pl.szczodrzynski.edziennik.data.db.entity
 
@@ -30,7 +30,8 @@ open class Message(
          * Keep in mind that this being null does NOT
          * necessarily mean the message is sent.
          */
-        var senderId: Long?
+        var senderId: Long?,
+        var addedDate: Long = System.currentTimeMillis()
 ) : Keepable() {
     companion object {
         const val TYPE_RECEIVED = 0

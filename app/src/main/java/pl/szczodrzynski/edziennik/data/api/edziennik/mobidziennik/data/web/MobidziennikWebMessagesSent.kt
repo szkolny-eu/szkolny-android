@@ -78,7 +78,8 @@ class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
                         type = Message.TYPE_SENT,
                         subject = subject,
                         body = null,
-                        senderId = null
+                        senderId = null,
+                        addedDate = addedDate
                 )
 
                 if (hasAttachments)
@@ -91,8 +92,7 @@ class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
                                 Metadata.TYPE_MESSAGE,
                                 message.id,
                                 true,
-                                true,
-                                addedDate
+                                true
                         ))
             }
 

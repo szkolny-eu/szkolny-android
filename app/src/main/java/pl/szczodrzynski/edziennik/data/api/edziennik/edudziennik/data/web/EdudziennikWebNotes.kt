@@ -41,12 +41,15 @@ class EdudziennikWebNotes(override val data: DataEdudziennik,
                 val description = noteElement.child(3).text()
 
                 val noticeObject = Notice(
-                        profileId,
-                        id,
-                        description,
-                        profile.currentSemester,
-                        Notice.TYPE_NEUTRAL,
-                        teacher.id
+                        profileId = profileId,
+                        id = id,
+                        type = Notice.TYPE_NEUTRAL,
+                        semester = profile.currentSemester,
+                        text = description,
+                        category = null,
+                        points = null,
+                        teacherId = teacher.id,
+                        addedDate = addedDate
                 )
 
                 data.noticeList.add(noticeObject)
@@ -55,8 +58,7 @@ class EdudziennikWebNotes(override val data: DataEdudziennik,
                         Metadata.TYPE_NOTICE,
                         id,
                         profile.empty,
-                        profile.empty,
-                        addedDate
+                        profile.empty
                 ))
             }
 

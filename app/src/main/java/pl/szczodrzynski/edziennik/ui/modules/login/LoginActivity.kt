@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-4-16.
+ */
+
 package pl.szczodrzynski.edziennik.ui.modules.login
 
 import android.app.Activity
@@ -14,20 +18,19 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.databinding.ActivityLoginBinding
+import pl.szczodrzynski.edziennik.databinding.LoginActivityBinding
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), CoroutineScope {
     companion object {
         private const val TAG = "LoginActivity"
-        @JvmField
-        var navOptions: NavOptions? = null
         var thisOneIsTricky = 0
     }
 
     private val app: App by lazy { applicationContext as App }
-    private lateinit var b: ActivityLoginBinding
+    private lateinit var b: LoginActivityBinding
+    lateinit var navOptions: NavOptions
     val nav by lazy { Navigation.findNavController(this, R.id.nav_host_fragment) }
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
 
@@ -36,7 +39,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         get() = job + Dispatchers.Main
 
     var lastError: ApiError? = null
-    val profiles = mutableListOf<LoginSummaryProfileAdapter.Item>()
+    val profiles = mutableListOf<LoginSummaryAdapter.Item>()
     val loginStores = mutableListOf<LoginStore>()
 
     override fun onBackPressed() {
@@ -50,7 +53,9 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
             return
         if (destination.id == R.id.loginSyncFragment)
             return
-        if (destination.id == R.id.loginChooserFragment) {
+        if (destination.id == R.id.loginFinishFragment)
+            return
+        if (destination.id == R.id.loginChooserFragment && loginStores.isEmpty()) {
             setResult(Activity.RESULT_CANCELED)
             finish()
             return
@@ -83,7 +88,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
                 .setPopExitAnim(R.anim.slide_out_right)
                 .build()
 
-        b = ActivityLoginBinding.inflate(layoutInflater)
+        b = LoginActivityBinding.inflate(layoutInflater)
         setContentView(b.root)
         errorSnackbar.setCoordinator(b.coordinator, b.snackbarAnchor)
 

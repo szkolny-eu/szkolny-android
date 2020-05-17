@@ -114,11 +114,11 @@ class VulcanApiDictionaries(override val data: DataVulcan,
 
     private fun saveAttendanceType(attendanceType: JsonObject) {
         val id = attendanceType.getLong("Id") ?: return
-        val name = attendanceType.getString("Nazwa") ?: ""
+        val typeName = attendanceType.getString("Nazwa") ?: ""
 
         val absent = attendanceType.getBoolean("Nieobecnosc") ?: false
         val excused = attendanceType.getBoolean("Usprawiedliwione") ?: false
-        val type = if (absent) {
+        val baseType = if (absent) {
             if (excused)
                 Attendance.TYPE_ABSENT_EXCUSED
             else
@@ -137,15 +137,35 @@ class VulcanApiDictionaries(override val data: DataVulcan,
             else if (present)
                 Attendance.TYPE_PRESENT
             else
-                Attendance.TYPE_CUSTOM
+                Attendance.TYPE_UNKNOWN
+        }
+
+        val (typeColor, typeSymbol) = when (id.toInt()) {
+            1 -> 0xffffffff to "●"  // obecność
+            2 -> 0xffffa687 to "—"  // nieobecność
+            3 -> 0xfffcc150 to "u"  // nieobecność usprawiedliwiona
+            4 -> 0xffede049 to "s"  // spóźnienie
+            5 -> 0xffbbdd5f to "su" // spóźnienie usprawiedliwione
+            6 -> 0xffa9c9fd to "ns" // nieobecny z przyczyn szkolnych
+            7 -> 0xffddbbe5 to "z"  // zwolniony
+            8 -> 0xffffffff to ""   // usunięty wpis
+            else -> null to "?"
+        }
+
+        val typeShort = when (id.toInt()) {
+            6 -> "ns" // nieobecny z przyczyn szkolnych
+            8 -> ""   // usunięty wpis
+            else -> data.app.attendanceManager.getTypeShort(baseType)
         }
 
         val attendanceTypeObject = AttendanceType(
                 profileId,
                 id,
-                name,
-                type,
-                -1
+                baseType,
+                typeName,
+                typeShort,
+                typeSymbol,
+                typeColor?.toInt()
         )
 
         data.attendanceTypes.put(id, attendanceTypeObject)

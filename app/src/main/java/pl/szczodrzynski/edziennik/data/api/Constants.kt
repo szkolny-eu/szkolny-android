@@ -57,6 +57,7 @@ const val LIBRUS_MESSAGES_URL = "https://wiadomosci.librus.pl/module"
 const val LIBRUS_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action="
 
 const val LIBRUS_SYNERGIA_HOMEWORK_ATTACHMENT_URL = "https://synergia.librus.pl/homework/downloadFile"
+const val LIBRUS_SYNERGIA_MESSAGES_ATTACHMENT_URL = "https://synergia.librus.pl/wiadomosci/pobierz_zalacznik"
 
 const val IDZIENNIK_USER_AGENT = SYNERGIA_USER_AGENT
 const val IDZIENNIK_WEB_URL = "https://iuczniowie.progman.pl/idziennik"
@@ -113,5 +114,11 @@ const val VULCAN_API_ENDPOINT_MESSAGES_ADD = "mobile-api/Uczen.v3.Uczen/DodajWia
 const val VULCAN_API_ENDPOINT_PUSH = "mobile-api/Uczen.v3.Uczen/UstawPushToken"
 const val VULCAN_API_ENDPOINT_MESSAGES_ATTACHMENTS = "mobile-api/Uczen.v3.Uczen/WiadomosciZalacznik"
 const val VULCAN_API_ENDPOINT_HOMEWORK_ATTACHMENTS = "mobile-api/Uczen.v3.Uczen/ZadaniaDomoweZalacznik"
+const val VULCAN_WEB_ENDPOINT_LUCKY_NUMBER = "Start.mvc/GetKidsLuckyNumbers"
+const val VULCAN_WEB_ENDPOINT_REGISTER_DEVICE = "RejestracjaUrzadzeniaToken.mvc/Get"
 
 const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"
+
+const val PODLASIE_API_VERSION = "1.0.31"
+const val PODLASIE_API_URL = "https://cpdklaser.zeto.bialystok.pl/api"
+const val PODLASIE_API_USER_ENDPOINT = "/pobierzDaneUcznia"

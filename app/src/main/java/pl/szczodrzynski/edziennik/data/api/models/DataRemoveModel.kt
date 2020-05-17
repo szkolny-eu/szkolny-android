@@ -20,10 +20,10 @@ open class DataRemoveModel {
 
         fun commit(profileId: Int, dao: TimetableDao) {
             if (dateFrom != null && dateTo != null) {
-                dao.clearBetweenDates(profileId, dateFrom, dateTo)
+                dao.dontKeepBetweenDates(profileId, dateFrom, dateTo)
             } else {
-                dateFrom?.let { dateFrom -> dao.clearFromDate(profileId, dateFrom) }
-                dateTo?.let { dateTo -> dao.clearToDate(profileId, dateTo) }
+                dateFrom?.let { dateFrom -> dao.dontKeepFromDate(profileId, dateFrom) }
+                dateTo?.let { dateTo -> dao.dontKeepToDate(profileId, dateTo) }
             }
         }
     }
@@ -38,12 +38,12 @@ open class DataRemoveModel {
 
         fun commit(profileId: Int, dao: GradeDao) {
             if (all) {
-                if (type != null) dao.clearWithType(profileId, type)
+                if (type != null) dao.dontKeepWithType(profileId, type)
                 else dao.clear(profileId)
             }
             semester?.let {
-                if (type != null) dao.clearForSemesterWithType(profileId, it, type)
-                else dao.clearForSemester(profileId, it)
+                if (type != null) dao.dontKeepForSemesterWithType(profileId, it, type)
+                else dao.dontKeepForSemester(profileId, it)
             }
         }
     }
@@ -53,12 +53,15 @@ open class DataRemoveModel {
             fun futureExceptType(exceptType: Long) = Events(null, exceptType, null)
             fun futureExceptTypes(exceptTypes: List<Long>) = Events(null, null, exceptTypes)
             fun futureWithType(type: Long) = Events(type, null, null)
+            fun future() = Events(null, null, null)
         }
 
         fun commit(profileId: Int, dao: EventDao) {
             type?.let { dao.dontKeepFutureWithType(profileId, Date.getToday(), it) }
             exceptType?.let { dao.dontKeepFutureExceptType(profileId, Date.getToday(), it) }
             exceptTypes?.let { dao.dontKeepFutureExceptTypes(profileId, Date.getToday(), it) }
+            if (type == null && exceptType == null && exceptTypes == null)
+                dao.dontKeepFuture(profileId, Date.getToday())
         }
     }
 
@@ -69,7 +72,7 @@ open class DataRemoveModel {
 
         fun commit(profileId: Int, dao: AttendanceDao) {
             if (dateFrom != null) {
-                dao.clearAfterDate(profileId, dateFrom)
+                dao.dontKeepAfterDate(profileId, dateFrom)
             }
         }
     }

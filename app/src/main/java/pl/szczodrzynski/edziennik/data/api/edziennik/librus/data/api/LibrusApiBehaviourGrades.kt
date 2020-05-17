@@ -55,7 +55,8 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         comment = null,
                         semester = 1,
                         teacherId = -1,
-                        subjectId = 1
+                        subjectId = 1,
+                        addedDate = profile.getSemesterStart(1).inMillis
                 )
 
                 data.gradeList.add(semester1StartGradeObject)
@@ -64,8 +65,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         Metadata.TYPE_GRADE,
                         semester1StartGradeObject.id,
                         true,
-                        true,
-                        profile.getSemesterStart(1).inMillis
+                        true
                 ))
             }
 
@@ -83,7 +83,8 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         comment = null,
                         semester = 2,
                         teacherId = -1,
-                        subjectId = 1
+                        subjectId = 1,
+                        addedDate = profile.getSemesterStart(2).inMillis
                 )
 
                 data.gradeList.add(semester2StartGradeObject)
@@ -92,8 +93,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         Metadata.TYPE_GRADE,
                         semester2StartGradeObject.id,
                         true,
-                        true,
-                        profile.getSemesterStart(2).inMillis
+                        true
                 ))
             }
 
@@ -155,7 +155,8 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         comment = if (text != null) description.join(" - ") else null,
                         semester = semester,
                         teacherId = teacherId,
-                        subjectId = 1
+                        subjectId = 1,
+                        addedDate = addedDate
                 ).apply {
                     valueMax = valueTo
                 }
@@ -166,8 +167,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                         Metadata.TYPE_GRADE,
                         id,
                         profile.empty,
-                        profile.empty,
-                        addedDate
+                        profile.empty
                 ))
             }
 

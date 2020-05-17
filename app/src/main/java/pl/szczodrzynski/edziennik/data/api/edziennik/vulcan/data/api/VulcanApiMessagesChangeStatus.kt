@@ -37,8 +37,7 @@ class VulcanApiMessagesChangeStatus(override val data: DataVulcan,
                         Metadata.TYPE_MESSAGE,
                         messageObject.id,
                         true,
-                        true,
-                        messageObject.addedDate
+                        true
                 ))
 
                 messageObject.seen = true

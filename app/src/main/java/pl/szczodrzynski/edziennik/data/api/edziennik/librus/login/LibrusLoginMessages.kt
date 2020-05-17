@@ -10,6 +10,7 @@ import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.LibrusRecaptchaHelper
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.getUnixDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -35,17 +36,39 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
                     onSuccess()
                 }
 
+                text?.contains("grecaptcha.ready") == true -> {
+                    val url = response?.request()?.url()?.toString() ?: run {
+                        //data.error(TAG, ERROR_LIBRUS_MESSAGES_OTHER, response, text)
+                        data.messagesLoginSuccessful = false
+                        onSuccess()
+                        return
+                    }
+
+                    LibrusRecaptchaHelper(data.app, url, text, onSuccess = { newUrl ->
+                        loginWithSynergia(newUrl)
+                    }, onTimeout = {
+                        //data.error(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_TIMEOUT, response, text)
+                        data.messagesLoginSuccessful = false
+                        onSuccess()
+                    })
+                }
+
                 text?.contains("<status>ok</status>") == true -> {
                     saveSessionId(response, text)
                     onSuccess()
                 }
                 text?.contains("<message>Niepoprawny login i/lub hasło.</message>") == true -> data.error(TAG, ERROR_LOGIN_LIBRUS_MESSAGES_INVALID_LOGIN, response, text)
                 text?.contains("stop.png") == true -> data.error(TAG, ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED, response, text)
-                text?.contains("eAccessDeny") == true -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
+                text?.contains("eAccessDeny") == true -> {
+                    // data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
+                    data.messagesLoginSuccessful = false
+                    onSuccess()
+                }
                 text?.contains("OffLine") == true -> data.error(TAG, ERROR_LIBRUS_MESSAGES_MAINTENANCE, response, text)
                 text?.contains("<status>error</status>") == true -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ERROR, response, text)
                 text?.contains("<type>eVarWhitThisNameNotExists</type>") == true -> data.error(TAG, ERROR_LIBRUS_MESSAGES_ACCESS_DENIED, response, text)
                 text?.contains("<error>") == true -> data.error(TAG, ERROR_LIBRUS_MESSAGES_OTHER, response, text)
+                else -> data.error(TAG, ERROR_LIBRUS_MESSAGES_OTHER, response, text)
             }
         }
 

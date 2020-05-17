@@ -1,7 +1,6 @@
 /*
- * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ * Copyright (c) Kuba Szczodrzyński 2020-4-25.
  */
-
 package pl.szczodrzynski.edziennik.data.db.entity
 
 import androidx.room.Entity
@@ -11,12 +10,15 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 @Entity(tableName = "timetable",
+        primaryKeys = ["profileId", "id"],
         indices = [
             Index(value = ["profileId", "type", "date"]),
             Index(value = ["profileId", "type", "oldDate"])
-        ],
-        primaryKeys = ["profileId", "id"])
-open class Lesson(val profileId: Int, var id: Long) {
+        ])
+open class Lesson(
+        val profileId: Int,
+        var id: Long
+) : Keepable() {
     companion object {
         const val TYPE_NO_LESSONS = -1
         const val TYPE_NORMAL = 0

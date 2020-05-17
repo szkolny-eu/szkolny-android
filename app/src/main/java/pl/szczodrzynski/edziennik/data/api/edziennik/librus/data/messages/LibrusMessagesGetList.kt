@@ -97,7 +97,8 @@ class LibrusMessagesGetList(override val data: DataLibrus,
                             type = type,
                             subject = subject,
                             body = null,
-                            senderId = senderId
+                            senderId = senderId,
+                            addedDate = sentDate
                     )
 
                     val messageRecipientObject = MessageRecipient(
@@ -120,8 +121,7 @@ class LibrusMessagesGetList(override val data: DataLibrus,
                             Metadata.TYPE_MESSAGE,
                             id,
                             notified,
-                            notified,
-                            sentDate
+                            notified
                     ))
                 }
 

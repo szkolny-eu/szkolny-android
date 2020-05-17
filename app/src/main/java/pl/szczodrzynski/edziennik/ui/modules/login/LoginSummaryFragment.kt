@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2020-1-3.
+ * Copyright (c) Kuba Szczodrzyński 2020-4-16.
  */
 
 package pl.szczodrzynski.edziennik.ui.modules.login
@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.databinding.FragmentLoginSummaryBinding
+import pl.szczodrzynski.edziennik.databinding.LoginSummaryFragmentBinding
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 
@@ -27,27 +27,32 @@ class LoginSummaryFragment : Fragment(), CoroutineScope {
 
     private lateinit var app: App
     private lateinit var activity: LoginActivity
-    private lateinit var b: FragmentLoginSummaryBinding
+    private lateinit var b: LoginSummaryFragmentBinding
     private val nav by lazy { activity.nav }
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    // local/private variables go here
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as LoginActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        b = FragmentLoginSummaryBinding.inflate(inflater)
+        b = LoginSummaryFragmentBinding.inflate(inflater)
         return b.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        b.profileListView.apply {
-            adapter = LoginSummaryProfileAdapter(activity, activity.profiles) { item ->
-                b.finishButton.isEnabled = activity.profiles.any { it.isSelected }
-            }
+        val adapter = LoginSummaryAdapter(activity) { _ ->
+            b.finishButton.isEnabled = activity.profiles.any { it.isSelected }
+        }
+
+        adapter.items = activity.profiles
+        b.list.adapter = adapter
+        b.list.apply {
             isNestedScrollingEnabled = false
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
@@ -66,7 +71,7 @@ class LoginSummaryFragment : Fragment(), CoroutineScope {
         }
 
         b.anotherButton.onClick {
-            nav.navigate(R.id.loginChooserFragment, null, LoginActivity.navOptions)
+            nav.navigate(R.id.loginChooserFragment, null, activity.navOptions)
         }
 
         b.finishButton.onClick {
@@ -86,7 +91,7 @@ class LoginSummaryFragment : Fragment(), CoroutineScope {
             val args = Bundle(
                     "registrationAllowed" to b.registerMeSwitch.isChecked
             )
-            nav.navigate(R.id.loginSyncFragment, args, LoginActivity.navOptions)
+            nav.navigate(R.id.loginSyncFragment, args, activity.navOptions)
         }
     }
 }

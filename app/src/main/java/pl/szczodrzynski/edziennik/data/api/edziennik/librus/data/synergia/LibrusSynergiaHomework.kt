@@ -58,7 +58,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                             elements[9].select("input").attr("onclick")
                     )?.get(1)?.toLong() ?: return@forEachIndexed
 
-                    val lessons = data.db.timetableDao().getForDateNow(profileId, eventDate)
+                    val lessons = data.db.timetableDao().getAllForDateNow(profileId, eventDate)
                     val startTime = lessons.firstOrNull { it.subjectId == subjectId }?.startTime
 
                     val seen = when (profile.empty) {
@@ -76,7 +76,8 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                             type = Event.TYPE_HOMEWORK,
                             teacherId = teacherId,
                             subjectId = subjectId,
-                            teamId = data.teamClass?.id ?: -1
+                            teamId = data.teamClass?.id ?: -1,
+                            addedDate = addedDate.inMillis
                     )
 
                     data.eventList.add(eventObject)
@@ -85,8 +86,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                             Metadata.TYPE_HOMEWORK,
                             id,
                             seen,
-                            seen,
-                            addedDate.inMillis
+                            seen
                     ))
                 }
             }

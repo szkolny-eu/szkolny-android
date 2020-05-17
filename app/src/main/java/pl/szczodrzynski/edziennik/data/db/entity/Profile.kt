@@ -17,6 +17,7 @@ import com.google.gson.JsonObject
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_EDUDZIENNIK
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_PODLASIE
 import pl.szczodrzynski.edziennik.utils.ProfileImageHolder
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.ImageHolder
@@ -80,7 +81,7 @@ open class Profile(
     var dateYearEnd = Date(studentSchoolYearStart + 1, 6, 30)
     fun getSemesterStart(semester: Int) = if (semester == 1) dateSemester1Start else dateSemester2Start
     fun getSemesterEnd(semester: Int) = if (semester == 1) dateSemester2Start.clone().stepForward(0, 0, -1) else dateYearEnd
-    fun dateToSemester(date: Date) = if (date.value >= getSemesterStart(2).value) 2 else 1
+    fun dateToSemester(date: Date) = if (date >= dateSemester2Start) 2 else 1
     @delegate:Ignore
     val currentSemester by lazy { dateToSemester(Date.getToday()) }
 
@@ -174,6 +175,12 @@ open class Profile(
                     MainActivity.DRAWER_ITEM_BEHAVIOUR,
                     MainActivity.DRAWER_ITEM_ATTENDANCE,
                     MainActivity.DRAWER_ITEM_ANNOUNCEMENTS
+            )
+            LOGIN_TYPE_PODLASIE -> listOf(
+                    MainActivity.DRAWER_ITEM_TIMETABLE,
+                    MainActivity.DRAWER_ITEM_AGENDA,
+                    MainActivity.DRAWER_ITEM_GRADES,
+                    MainActivity.DRAWER_ITEM_HOMEWORK
             )
             else -> listOf(
                     MainActivity.DRAWER_ITEM_TIMETABLE,

@@ -8,9 +8,9 @@ import android.util.SparseArray
 import androidx.core.util.set
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
+import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.keys
 import pl.szczodrzynski.edziennik.singleOrNull
@@ -97,8 +97,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                                     Metadata.TYPE_LESSON_CHANGE,
                                     it.id,
                                     seen,
-                                    seen,
-                                    System.currentTimeMillis()
+                                    seen
                             ))
                 }
                 data.lessonList += it

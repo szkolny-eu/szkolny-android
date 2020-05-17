@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ * Copyright (c) Kuba Szczodrzyński 2020-4-24.
  */
 package pl.szczodrzynski.edziennik.data.db.full
 
@@ -9,18 +9,18 @@ class GradeFull(
         profileId: Int, id: Long, name: String, type: Int,
         value: Float, weight: Float, color: Int,
         category: String?, description: String?, comment: String?,
-        semester: Int, teacherId: Long, subjectId: Long
+        semester: Int, teacherId: Long, subjectId: Long, addedDate: Long = System.currentTimeMillis()
 ) : Grade(
         profileId, id, name, type,
         value, weight, color,
         category, description, comment,
-        semester, teacherId, subjectId
+        semester, teacherId, subjectId, addedDate
 ) {
+    var teacherName: String? = null
     var subjectLongName: String? = null
     var subjectShortName: String? = null
-    var teacherFullName: String? = null
+
     // metadata
     var seen = false
     var notified = false
-    var addedDate: Long = 0
 }

@@ -13,9 +13,12 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
-import pl.szczodrzynski.edziennik.data.db.entity.Notice.*
+import pl.szczodrzynski.edziennik.data.db.entity.Notice.Companion.TYPE_NEGATIVE
+import pl.szczodrzynski.edziennik.data.db.entity.Notice.Companion.TYPE_NEUTRAL
+import pl.szczodrzynski.edziennik.data.db.entity.Notice.Companion.TYPE_POSITIVE
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonObject
+import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class IdziennikWebNotices(override val data: DataIdziennik,
@@ -53,20 +56,24 @@ class IdziennikWebNotices(override val data: DataIdziennik,
                 }
 
                 val noticeObject = Notice(
-                        profileId,
-                        noticeId,
-                        jNotice.get("Tresc").asString,
-                        jNotice.get("Semestr").asInt,
-                        nType,
-                        rTeacher.id)
+                        profileId = profileId,
+                        id = noticeId,
+                        type = nType,
+                        semester = jNotice.get("Semestr").asInt,
+                        text = jNotice.getString("Tresc") ?: "",
+                        category = null,
+                        points = null,
+                        teacherId = rTeacher.id,
+                        addedDate = addedDate.inMillis
+                )
+
                 data.noticeList.add(noticeObject)
                 data.metadataList.add(Metadata(
                         profileId,
                         Metadata.TYPE_NOTICE,
                         noticeObject.id,
                         profile?.empty ?: false,
-                        profile?.empty ?: false,
-                        addedDate.inMillis
+                        profile?.empty ?: false
                 ))
             }
 

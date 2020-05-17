@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_FINAL
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getJsonObject
 import pl.szczodrzynski.edziennik.utils.Utils
@@ -27,32 +28,54 @@ class VulcanApiProposedGrades(override val data: DataVulcan,
 
     init { data.profile?.also { profile ->
 
+        val semesterId = data.studentSemesterId
+        val semesterNumber = data.studentSemesterNumber
+        if (semesterNumber == 2 && lastSync ?: 0 < profile.dateSemester1Start.inMillis) {
+            getProposedGrades(profile, semesterId - 1, semesterNumber - 1) {
+                getProposedGrades(profile, semesterId, semesterNumber) {
+                    finish()
+                }
+            }
+        }
+        else {
+            getProposedGrades(profile, semesterId, semesterNumber) {
+                finish()
+            }
+        }
+
+    } ?: onSuccess(ENDPOINT_VULCAN_API_GRADES_SUMMARY) }
+
+    private fun finish() {
+        data.setSyncNext(ENDPOINT_VULCAN_API_GRADES_SUMMARY, 6*HOUR)
+        onSuccess(ENDPOINT_VULCAN_API_GRADES_SUMMARY)
+    }
+
+    private fun getProposedGrades(profile: Profile, semesterId: Int, semesterNumber: Int, onSuccess: () -> Unit) {
         apiGet(TAG, VULCAN_API_ENDPOINT_GRADES_PROPOSITIONS, parameters = mapOf(
                 "IdUczen" to data.studentId,
-                "IdOkresKlasyfikacyjny" to data.studentSemesterId
+                "IdOkresKlasyfikacyjny" to semesterId
         )) { json, _ ->
             val grades = json.getJsonObject("Data")
 
             grades.getJsonArray("OcenyPrzewidywane")?.let {
-                processGradeList(it, isFinal = false)
+                processGradeList(it, semesterNumber, isFinal = false)
             }
 
             grades.getJsonArray("OcenyKlasyfikacyjne")?.let {
-                processGradeList(it, isFinal = true)
+                processGradeList(it, semesterNumber, isFinal = true)
             }
 
-            data.setSyncNext(ENDPOINT_VULCAN_API_GRADES_SUMMARY, 6*HOUR)
-            onSuccess(ENDPOINT_VULCAN_API_GRADES_SUMMARY)
+            onSuccess()
         }
-    } ?: onSuccess(ENDPOINT_VULCAN_API_GRADES_SUMMARY) }
+    }
 
-    private fun processGradeList(grades: JsonArray, isFinal: Boolean) {
-        grades.asJsonObjectList()?.forEach { grade ->
+    private fun processGradeList(grades: JsonArray, semesterNumber: Int, isFinal: Boolean) {
+        grades.asJsonObjectList().forEach { grade ->
             val name = grade.get("Wpis").asString
             val value = Utils.getGradeValue(name)
             val subjectId = grade.get("IdPrzedmiot").asLong
 
-            val id = subjectId * -100 - data.studentSemesterNumber
+            val id = subjectId * -100 - semesterNumber
 
             val color = Utils.getVulcanGradeColor(name)
 
@@ -60,7 +83,7 @@ class VulcanApiProposedGrades(override val data: DataVulcan,
                     profileId = profileId,
                     id = id,
                     name = name,
-                    type = if (data.studentSemesterNumber == 1) {
+                    type = if (semesterNumber == 1) {
                         if (isFinal) TYPE_SEMESTER1_FINAL else TYPE_SEMESTER1_PROPOSED
                     } else {
                         if (isFinal) TYPE_SEMESTER2_FINAL else TYPE_SEMESTER2_PROPOSED
@@ -71,7 +94,7 @@ class VulcanApiProposedGrades(override val data: DataVulcan,
                     category = "",
                     description = null,
                     comment = null,
-                    semester = data.studentSemesterNumber,
+                    semester = semesterNumber,
                     teacherId = -1,
                     subjectId = subjectId
             )
@@ -82,8 +105,7 @@ class VulcanApiProposedGrades(override val data: DataVulcan,
                     Metadata.TYPE_GRADE,
                     gradeObject.id,
                     data.profile?.empty ?: false,
-                    data.profile?.empty ?: false,
-                    System.currentTimeMillis()
+                    data.profile?.empty ?: false
             ))
         }
     }

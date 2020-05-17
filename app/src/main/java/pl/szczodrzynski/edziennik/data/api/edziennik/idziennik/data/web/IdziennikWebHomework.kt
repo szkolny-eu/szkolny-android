@@ -57,7 +57,7 @@ class IdziennikWebHomework(override val data: DataIdziennik,
                 val subjectId = data.getSubject(subjectName, null, subjectName).id
                 val teacherName = homework.getString("usr") ?: return@forEach
                 val teacherId = data.getTeacherByLastFirst(teacherName).id
-                val lessonList = data.db.timetableDao().getForDateNow(profileId, eventDate)
+                val lessonList = data.db.timetableDao().getAllForDateNow(profileId, eventDate)
                 val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.displayStartTime
                 val topic = homework.getString("tytul")?.trim() ?: ""
 
@@ -77,7 +77,8 @@ class IdziennikWebHomework(override val data: DataIdziennik,
                         type = Event.TYPE_HOMEWORK,
                         teacherId = teacherId,
                         subjectId = subjectId,
-                        teamId = data.teamClass?.id ?: -1
+                        teamId = data.teamClass?.id ?: -1,
+                        addedDate = addedDate.inMillis
                 )
 
                 data.eventList.add(eventObject)
@@ -86,8 +87,7 @@ class IdziennikWebHomework(override val data: DataIdziennik,
                         Metadata.TYPE_HOMEWORK,
                         eventObject.id,
                         seen,
-                        seen,
-                        addedDate.inMillis
+                        seen
                 ))
             }
 

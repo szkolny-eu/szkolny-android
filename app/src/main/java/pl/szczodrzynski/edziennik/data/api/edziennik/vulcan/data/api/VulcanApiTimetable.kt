@@ -80,7 +80,7 @@ class VulcanApiTimetable(override val data: DataVulcan,
                                 id,
                                 name,
                                 Team.TYPE_VIRTUAL,
-                                "${data.schoolName}:$name",
+                                "${data.schoolCode}:$name",
                                 teacherId ?: oldTeacherId ?: -1
                         )
                         data.teamList[id] = team
@@ -184,8 +184,7 @@ class VulcanApiTimetable(override val data: DataVulcan,
                             Metadata.TYPE_LESSON_CHANGE,
                             lessonObject.id,
                             seen,
-                            seen,
-                            System.currentTimeMillis()
+                            seen
                     ))
                 }
 

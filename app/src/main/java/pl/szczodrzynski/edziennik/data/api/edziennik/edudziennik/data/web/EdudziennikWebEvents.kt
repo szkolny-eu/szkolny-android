@@ -57,8 +57,7 @@ class EdudziennikWebEvents(override val data: DataEdudziennik,
                         Metadata.TYPE_EVENT,
                         id,
                         profile.empty,
-                        profile.empty,
-                        System.currentTimeMillis()
+                        profile.empty
                 ))
             }
 

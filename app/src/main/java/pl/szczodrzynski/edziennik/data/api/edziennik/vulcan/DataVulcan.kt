@@ -17,9 +17,14 @@ import pl.szczodrzynski.edziennik.values
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
+    fun isWebMainLoginValid() = webExpiryTime-30 > currentTimeUnix()
+            && webAuthCookie.isNotNullNorEmpty()
+            && webHost.isNotNullNorEmpty()
+            && webType.isNotNullNorEmpty()
+            && symbol.isNotNullNorEmpty()
     fun isApiLoginValid() = currentSemesterEndDate-30 > currentTimeUnix()
-            && apiCertificateKey.isNotNullNorEmpty()
-            && apiCertificatePrivate.isNotNullNorEmpty()
+            && apiFingerprint[symbol].isNotNullNorEmpty()
+            && apiPrivateKey[symbol].isNotNullNorEmpty()
             && symbol.isNotNullNorEmpty()
 
     override fun satisfyLoginMethods() {
@@ -40,7 +45,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
                         id,
                         name,
                         Team.TYPE_CLASS,
-                        "$schoolName:$name",
+                        "$schoolCode:$name",
                         -1
                 )
                 teamList.put(id, teamObject)
@@ -48,7 +53,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         }
     }
 
-    override fun generateUserCode() = "$schoolName:$studentId"
+    override fun generateUserCode() = "$schoolCode:$studentId"
 
     /**
      * A UONET+ client symbol.
@@ -59,8 +64,8 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
      */
     private var mSymbol: String? = null
     var symbol: String?
-        get() { mSymbol = mSymbol ?: loginStore.getLoginData("deviceSymbol", null); return mSymbol }
-        set(value) { loginStore.putLoginData("deviceSymbol", value); mSymbol = value }
+        get() { mSymbol = mSymbol ?: profile?.getStudentData("symbol", null); return mSymbol }
+        set(value) { profile?.putStudentData("symbol", value); mSymbol = value }
 
     /**
      * Group symbol/number of the student's school.
@@ -75,16 +80,26 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         set(value) { profile?.putStudentData("schoolSymbol", value) ?: return; mSchoolSymbol = value }
 
     /**
-     * A school ID consisting of the [symbol] and [schoolSymbol].
+     * Short name of the school, used in some places.
+     *
+     * ListaUczniow/JednostkaSprawozdawczaSkrot, e.g. "SP Wilkow"
+     */
+    private var mSchoolShort: String? = null
+    var schoolShort: String?
+        get() { mSchoolShort = mSchoolShort ?: profile?.getStudentData("schoolShort", null); return mSchoolShort }
+        set(value) { profile?.putStudentData("schoolShort", value) ?: return; mSchoolShort = value }
+
+    /**
+     * A school code consisting of the [symbol] and [schoolSymbol].
      *
      * [symbol]_[schoolSymbol]
      *
      * e.g. "poznan_000088"
      */
-    private var mSchoolName: String? = null
-    var schoolName: String?
-        get() { mSchoolName = mSchoolName ?: profile?.getStudentData("schoolName", null); return mSchoolName }
-        set(value) { profile?.putStudentData("schoolName", value) ?: return; mSchoolName = value }
+    private var mSchoolCode: String? = null
+    var schoolCode: String?
+        get() { mSchoolCode = mSchoolCode ?: profile?.getStudentData("schoolName", null); return mSchoolCode }
+        set(value) { profile?.putStudentData("schoolName", value) ?: return; mSchoolCode = value }
 
     /**
      * ID of the student.
@@ -124,6 +139,15 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mStudentSemesterId = mStudentSemesterId ?: profile?.getStudentData("studentSemesterId", 0); return mStudentSemesterId ?: 0 }
         set(value) { profile?.putStudentData("studentSemesterId", value) ?: return; mStudentSemesterId = value }
 
+    private var mSemester1Id: Int? = null
+    var semester1Id: Int
+        get() { mSemester1Id = mSemester1Id ?: profile?.getStudentData("semester1Id", 0); return mSemester1Id ?: 0 }
+        set(value) { profile?.putStudentData("semester1Id", value) ?: return; mSemester1Id = value }
+    private var mSemester2Id: Int? = null
+    var semester2Id: Int
+        get() { mSemester2Id = mSemester2Id ?: profile?.getStudentData("semester2Id", 0); return mSemester2Id ?: 0 }
+        set(value) { profile?.putStudentData("semester2Id", value) ?: return; mSemester2Id = value }
+
     /**
      * ListaUczniow/OkresNumer, e.g. 1 or 2
      */
@@ -154,45 +178,34 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
      * After first login only 3 first characters are stored here.
      * This is later used to determine the API URL address.
      */
-    private var mApiToken: String? = null
-    var apiToken: String?
-        get() { mApiToken = mApiToken ?: loginStore.getLoginData("deviceToken", null); return mApiToken }
-        set(value) { loginStore.putLoginData("deviceToken", value); mApiToken = value }
+    private var mApiToken: Map<String?, String?>? = null
+    var apiToken: Map<String?, String?> = mapOf()
+        get() { mApiToken = mApiToken ?: loginStore.getLoginData("apiToken", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiToken ?: mapOf() }
+        set(value) { loginStore.putLoginData("apiToken", app.gson.toJson(value)); mApiToken = value }
 
     /**
      * A mobile API registration PIN.
      *
      * After first login, this is removed and/or set to null.
      */
-    private var mApiPin: String? = null
-    var apiPin: String?
-        get() { mApiPin = mApiPin ?: loginStore.getLoginData("devicePin", null); return mApiPin }
-        set(value) { loginStore.putLoginData("devicePin", value); mApiPin = value }
+    private var mApiPin: Map<String?, String?>? = null
+    var apiPin: Map<String?, String?> = mapOf()
+        get() { mApiPin = mApiPin ?: loginStore.getLoginData("apiPin", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiPin ?: mapOf() }
+        set(value) { loginStore.putLoginData("apiPin", app.gson.toJson(value)); mApiPin = value }
 
-    private var mApiCertificateKey: String? = null
-    var apiCertificateKey: String?
-        get() { mApiCertificateKey = mApiCertificateKey ?: loginStore.getLoginData("certificateKey", null); return mApiCertificateKey }
-        set(value) { loginStore.putLoginData("certificateKey", value); mApiCertificateKey = value }
+    private var mApiFingerprint: Map<String?, String?>? = null
+    var apiFingerprint: Map<String?, String?> = mapOf()
+        get() { mApiFingerprint = mApiFingerprint ?: loginStore.getLoginData("apiFingerprint", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiFingerprint ?: mapOf() }
+        set(value) { loginStore.putLoginData("apiFingerprint", app.gson.toJson(value)); mApiFingerprint = value }
 
-    /**
-     * This is not meant for normal usage.
-     *
-     * It provides a backward compatibility (<4.0) in order
-     * to migrate and use private keys instead of PFX.
-     */
-    private var mApiCertificatePfx: String? = null
-    var apiCertificatePfx: String?
-        get() { mApiCertificatePfx = mApiCertificatePfx ?: loginStore.getLoginData("certificatePfx", null); return mApiCertificatePfx }
-        set(value) { loginStore.putLoginData("certificatePfx", value); mApiCertificatePfx = value }
-
-    private var mApiCertificatePrivate: String? = null
-    var apiCertificatePrivate: String?
-        get() { mApiCertificatePrivate = mApiCertificatePrivate ?: loginStore.getLoginData("certificatePrivate", null); return mApiCertificatePrivate }
-        set(value) { loginStore.putLoginData("certificatePrivate", value); mApiCertificatePrivate = value }
+    private var mApiPrivateKey: Map<String?, String?>? = null
+    var apiPrivateKey: Map<String?, String?> = mapOf()
+        get() { mApiPrivateKey = mApiPrivateKey ?: loginStore.getLoginData("apiPrivateKey", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiPrivateKey ?: mapOf() }
+        set(value) { loginStore.putLoginData("apiPrivateKey", app.gson.toJson(value)); mApiPrivateKey = value }
 
     val apiUrl: String?
         get() {
-            val url = when (apiToken?.substring(0, 3)) {
+            val url = when (apiToken[symbol]?.substring(0, 3)) {
                 "3S1" -> "https://lekcjaplus.vulcan.net.pl"
                 "TA1" -> "https://uonetplus-komunikacja.umt.tarnow.pl"
                 "OP1" -> "https://uonetplus-komunikacja.eszkola.opolskie.pl"
@@ -217,4 +230,95 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() {
             return "$apiUrl$schoolSymbol/"
         }
+
+    /*   __          __  _       ______ _____   _                 _
+         \ \        / / | |     |  ____/ ____| | |               (_)
+          \ \  /\  / /__| |__   | |__ | (___   | |     ___   __ _ _ _ __
+           \ \/  \/ / _ \ '_ \  |  __| \___ \  | |    / _ \ / _` | | '_ \
+            \  /\  /  __/ |_) | | |    ____) | | |___| (_) | (_| | | | | |
+             \/  \/ \___|_.__/  |_|   |_____/  |______\___/ \__, |_|_| |_|
+                                                             __/ |
+                                                            |__*/
+    /**
+     * Federation Services login type.
+     * This might be one of: cufs, adfs, adfslight.
+     */
+    var webType: String?
+        get() { mWebType = mWebType ?: loginStore.getLoginData("webType", null); return mWebType }
+        set(value) { loginStore.putLoginData("webType", value); mWebType = value }
+    private var mWebType: String? = null
+
+    /**
+     * Web server providing the federation services login.
+     * If this is present, WEB_MAIN login is considered as available.
+     */
+    var webHost: String?
+        get() { mWebHost = mWebHost ?: loginStore.getLoginData("webHost", null); return mWebHost }
+        set(value) { loginStore.putLoginData("webHost", value); mWebHost = value }
+    private var mWebHost: String? = null
+
+    /**
+     * An ID used in ADFS & ADFSLight login types.
+     */
+    var webAdfsId: String?
+        get() { mWebAdfsId = mWebAdfsId ?: loginStore.getLoginData("webAdfsId", null); return mWebAdfsId }
+        set(value) { loginStore.putLoginData("webAdfsId", value); mWebAdfsId = value }
+    private var mWebAdfsId: String? = null
+
+    /**
+     * A domain override for ADFS Light.
+     */
+    var webAdfsDomain: String?
+        get() { mWebAdfsDomain = mWebAdfsDomain ?: loginStore.getLoginData("webAdfsDomain", null); return mWebAdfsDomain }
+        set(value) { loginStore.putLoginData("webAdfsDomain", value); mWebAdfsDomain = value }
+    private var mWebAdfsDomain: String? = null
+
+    var webIsHttpCufs: Boolean
+        get() { mWebIsHttpCufs = mWebIsHttpCufs ?: loginStore.getLoginData("webIsHttpCufs", false); return mWebIsHttpCufs ?: false }
+        set(value) { loginStore.putLoginData("webIsHttpCufs", value); mWebIsHttpCufs = value }
+    private var mWebIsHttpCufs: Boolean? = null
+
+    var webIsScopedAdfs: Boolean
+        get() { mWebIsScopedAdfs = mWebIsScopedAdfs ?: loginStore.getLoginData("webIsScopedAdfs", false); return mWebIsScopedAdfs ?: false }
+        set(value) { loginStore.putLoginData("webIsScopedAdfs", value); mWebIsScopedAdfs = value }
+    private var mWebIsScopedAdfs: Boolean? = null
+
+    var webEmail: String?
+        get() { mWebEmail = mWebEmail ?: loginStore.getLoginData("webEmail", null); return mWebEmail }
+        set(value) { loginStore.putLoginData("webEmail", value); mWebEmail = value }
+    private var mWebEmail: String? = null
+    var webUsername: String?
+        get() { mWebUsername = mWebUsername ?: loginStore.getLoginData("webUsername", null); return mWebUsername }
+        set(value) { loginStore.putLoginData("webUsername", value); mWebUsername = value }
+    private var mWebUsername: String? = null
+    var webPassword: String?
+        get() { mWebPassword = mWebPassword ?: loginStore.getLoginData("webPassword", null); return mWebPassword }
+        set(value) { loginStore.putLoginData("webPassword", value); mWebPassword = value }
+    private var mWebPassword: String? = null
+
+    /**
+     * Expiry time of a certificate POSTed to a LoginEndpoint of the specific symbol.
+     * If the time passes, the certificate needs to be POSTed again (if valid)
+     * or re-generated.
+     */
+    var webExpiryTime: Long
+        get() { mWebExpiryTime = mWebExpiryTime ?: profile?.getStudentData("webExpiryTime", 0L); return mWebExpiryTime ?: 0L }
+        set(value) { profile?.putStudentData("webExpiryTime", value); mWebExpiryTime = value }
+    private var mWebExpiryTime: Long? = null
+
+    /**
+     * EfebSsoAuthCookie retrieved after posting a certificate
+     */
+    var webAuthCookie: String?
+        get() { mWebAuthCookie = mWebAuthCookie ?: profile?.getStudentData("webAuthCookie", null); return mWebAuthCookie }
+        set(value) { profile?.putStudentData("webAuthCookie", value); mWebAuthCookie = value }
+    private var mWebAuthCookie: String? = null
+
+    /**
+     * Permissions needed to get JSONs from home page
+     */
+    var webPermissions: String?
+        get() { mWebPermissions = mWebPermissions ?: profile?.getStudentData("webPermissions", null); return mWebPermissions }
+        set(value) { profile?.putStudentData("webPermissions", value); mWebPermissions = value }
+    private var mWebPermissions: String? = null
 }

@@ -68,6 +68,9 @@ object Regexes {
     }
 
 
+    val MOBIDZIENNIK_ATTENDANCE_TYPES by lazy {
+        """Legenda:.+?normal;">(.+?)</span>""".toRegex(DOT_MATCHES_ALL)
+    }
     val MOBIDZIENNIK_ATTENDANCE_TABLE by lazy {
         """<table .+?id="obecnosci_tabela">(.+?)</table>""".toRegex(DOT_MATCHES_ALL)
     }
@@ -81,7 +84,7 @@ object Regexes {
         """<span>([0-9:]+) - .+? (.+?)</span></a>""".toRegex(DOT_MATCHES_ALL)
     }
     val MOBIDZIENNIK_ATTENDANCE_LESSON by lazy {
-        """<strong>(.+?) - (.*?)</strong>.+?<small>.+?\((.+?), .+?(.+?)\)""".toRegex(DOT_MATCHES_ALL)
+        """<strong>(.+?)</strong>\s*<small>\s*\((.+?),\s*(.+?)\)""".toRegex(DOT_MATCHES_ALL)
     }
 
     val MOBIDZIENNIK_HOMEWORK_ROW by lazy {
@@ -139,11 +142,20 @@ object Regexes {
     val VULCAN_SHIFT_ANNOTATION by lazy {
         """\(przeniesiona (z|na) lekcj[ię] ([0-9]+), (.+)\)""".toRegex()
     }
+    val VULCAN_WEB_PERMISSIONS by lazy {
+        """permissions: '([A-z0-9/=+\-_]+?)'""".toRegex()
+    }
+    val VULCAN_WEB_SYMBOL_VALIDATE by lazy {
+        """[A-z0-9]+""".toRegex(IGNORE_CASE)
+    }
 
 
 
     val LIBRUS_ATTACHMENT_KEY by lazy {
         """singleUseKey=([0-9A-z_]+)""".toRegex()
+    }
+    val LIBRUS_MESSAGE_ID by lazy {
+        """/wiadomosci/[0-9]+/[0-9]+/([0-9]+?)/""".toRegex()
     }
 
 

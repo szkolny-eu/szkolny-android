@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2020-1-3.
+ * Copyright (c) Kuba Szczodrzyński 2020-4-14.
  */
 
 package pl.szczodrzynski.edziennik.ui.modules.login
@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.databinding.FragmentLoginSyncErrorBinding
+import pl.szczodrzynski.edziennik.databinding.LoginSyncErrorFragmentBinding
 import pl.szczodrzynski.edziennik.onClick
 import kotlin.coroutines.CoroutineContext
 
@@ -25,18 +25,20 @@ class LoginSyncErrorFragment : Fragment(), CoroutineScope {
 
     private lateinit var app: App
     private lateinit var activity: LoginActivity
-    private lateinit var b: FragmentLoginSyncErrorBinding
+    private lateinit var b: LoginSyncErrorFragmentBinding
     private val nav by lazy { activity.nav }
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    // local/private variables go here
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as LoginActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        b = FragmentLoginSyncErrorBinding.inflate(inflater)
+        b = LoginSyncErrorFragmentBinding.inflate(inflater)
         return b.root
     }
 
@@ -44,7 +46,7 @@ class LoginSyncErrorFragment : Fragment(), CoroutineScope {
         b.errorDetails.text = activity.lastError?.getStringReason(activity)
         activity.lastError = null
         b.nextButton.onClick {
-            nav.navigate(R.id.loginFinishFragment, arguments, LoginActivity.navOptions)
+            nav.navigate(R.id.loginFinishFragment, arguments, activity.navOptions)
         }
     }
 }

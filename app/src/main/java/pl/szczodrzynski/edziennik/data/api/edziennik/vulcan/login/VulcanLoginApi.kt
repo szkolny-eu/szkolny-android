@@ -10,14 +10,11 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import io.github.wulkanowy.signer.android.getPrivateKeyFromCert
-import pl.szczodrzynski.edziennik.currentTimeUnix
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiUpdateSemester
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.getJsonObject
-import pl.szczodrzynski.edziennik.getString
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.HTTP_BAD_REQUEST
 import java.util.*
@@ -29,28 +26,19 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
     }
 
     init { run {
+        if (data.studentSemesterNumber == 1 && data.semester1Id == 0)
+            data.semester1Id = data.studentSemesterNumber
+        if (data.studentSemesterNumber == 2 && data.semester2Id == 0)
+            data.semester2Id = data.studentSemesterNumber
+
+        copyFromLoginStore()
+
         if (data.profile != null && data.isApiLoginValid()) {
             onSuccess()
         }
         else {
-            // < v4.0 - PFX to Private Key migration
-            if (data.apiCertificatePfx.isNotNullNorEmpty()) {
-                try {
-                    data.apiCertificatePrivate = getPrivateKeyFromCert(
-                            if (data.apiToken?.get(0) == 'F') VULCAN_API_PASSWORD_FAKELOG else VULCAN_API_PASSWORD,
-                            data.apiCertificatePfx ?: ""
-                    )
-                    data.loginStore.removeLoginData("certificatePfx")
-                } catch (e: Throwable) {
-                    e.printStackTrace()
-                } finally {
-                    onSuccess()
-                    return@run
-                }
-            }
-
-            if (data.apiCertificateKey.isNotNullNorEmpty()
-                    && data.apiCertificatePrivate.isNotNullNorEmpty()
+            if (data.apiFingerprint[data.symbol].isNotNullNorEmpty()
+                    && data.apiPrivateKey[data.symbol].isNotNullNorEmpty()
                     && data.symbol.isNotNullNorEmpty()) {
                 // (see data.isApiLoginValid())
                 // the semester end date is over
@@ -58,7 +46,7 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                 return@run
             }
 
-            if (data.symbol.isNotNullNorEmpty() && data.apiToken.isNotNullNorEmpty() && data.apiPin.isNotNullNorEmpty()) {
+            if (data.symbol.isNotNullNorEmpty() && data.apiToken[data.symbol].isNotNullNorEmpty() && data.apiPin[data.symbol].isNotNullNorEmpty()) {
                 loginWithToken()
             }
             else {
@@ -66,6 +54,64 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
             }
         }
     }}
+
+    private fun copyFromLoginStore() {
+        data.loginStore.data.apply {
+            // < v4.0 - PFX to Private Key migration
+            if (has("certificatePfx")) {
+                try {
+                    val privateKey = getPrivateKeyFromCert(
+                            if (data.apiToken[data.symbol]?.get(0) == 'F') VULCAN_API_PASSWORD_FAKELOG else VULCAN_API_PASSWORD,
+                            getString("certificatePfx") ?: ""
+                    )
+                    data.apiPrivateKey = mapOf(
+                            data.symbol to privateKey
+                    )
+                    remove("certificatePfx")
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                }
+            }
+
+            // 4.0 - new login form - copy user input to profile
+            if (has("symbol")) {
+                data.symbol = getString("symbol")
+                remove("symbol")
+            }
+
+            // 4.0 - before Vulcan Web impl - migrate from strings to Map of Symbol to String
+            if (has("deviceSymbol")) {
+                data.symbol = getString("deviceSymbol")
+                remove("deviceSymbol")
+            }
+            if (has("certificateKey")) {
+                data.apiFingerprint = data.apiFingerprint.toMutableMap().also {
+                    it[data.symbol] = getString("certificateKey")
+                }
+                remove("certificateKey")
+            }
+            if (has("certificatePrivate")) {
+                data.apiPrivateKey = data.apiPrivateKey.toMutableMap().also {
+                    it[data.symbol] = getString("certificatePrivate")
+                }
+                remove("certificatePrivate")
+            }
+
+            // map form inputs to the symbol
+            if (has("deviceToken")) {
+                data.apiToken = data.apiToken.toMutableMap().also {
+                    it[data.symbol] = getString("deviceToken")
+                }
+                remove("deviceToken")
+            }
+            if (has("devicePin")) {
+                data.apiPin = data.apiPin.toMutableMap().also {
+                    it[data.symbol] = getString("devicePin")
+                }
+                remove("devicePin")
+            }
+        }
+    }
 
     private fun loginWithToken() {
         d(TAG, "Request: Vulcan/Login/Api - ${data.apiUrl}/$VULCAN_API_ENDPOINT_CERTIFICATE")
@@ -118,14 +164,22 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                     return
                 }
 
-                data.apiCertificateKey = cert.getString("CertyfikatKlucz")
-                data.apiToken = data.apiToken?.substring(0, 3)
-                data.apiCertificatePrivate = getPrivateKeyFromCert(
-                        if (data.apiToken?.get(0) == 'F') VULCAN_API_PASSWORD_FAKELOG else VULCAN_API_PASSWORD,
+                val privateKey = getPrivateKeyFromCert(
+                        if (data.apiToken[data.symbol]?.get(0) == 'F') VULCAN_API_PASSWORD_FAKELOG else VULCAN_API_PASSWORD,
                         cert.getString("CertyfikatPfx") ?: ""
                 )
+
+                data.apiFingerprint = data.apiFingerprint.toMutableMap().also {
+                    it[data.symbol] = cert.getString("CertyfikatKlucz")
+                }
+                data.apiToken = data.apiToken.toMutableMap().also {
+                    it[data.symbol] = it[data.symbol]?.substring(0, 3)
+                }
+                data.apiPrivateKey = data.apiPrivateKey.toMutableMap().also {
+                    it[data.symbol] = privateKey
+                }
                 data.loginStore.removeLoginData("certificatePfx")
-                data.loginStore.removeLoginData("devicePin")
+                data.loginStore.removeLoginData("apiPin")
                 onSuccess()
             }
 
@@ -136,14 +190,26 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
             }
         }
 
+        val deviceId = data.app.deviceId.padStart(16, '0')
+        val loginStoreId = data.loginStore.id.toString(16).padStart(4, '0')
+        val symbol = data.symbol?.crc16()?.toString(16)?.take(2) ?: "00"
+        val uuid =
+                deviceId.substring(0..7) +
+                        "-" + deviceId.substring(8..11) +
+                        "-" + deviceId.substring(12..15) +
+                        "-" + loginStoreId +
+                        "-" + symbol + "6f72616e7a"
+
+        val deviceNameSuffix = " - nie usuwać"
+
         Request.builder()
                 .url("${data.apiUrl}$VULCAN_API_ENDPOINT_CERTIFICATE")
                 .userAgent(VULCAN_API_USER_AGENT)
                 .addHeader("RequestMobileType", "RegisterDevice")
-                .addParameter("PIN", data.apiPin)
-                .addParameter("TokenKey", data.apiToken)
-                .addParameter("DeviceId", UUID.randomUUID().toString())
-                .addParameter("DeviceName", VULCAN_API_DEVICE_NAME)
+                .addParameter("PIN", data.apiPin[data.symbol])
+                .addParameter("TokenKey", data.apiToken[data.symbol])
+                .addParameter("DeviceId", uuid)
+                .addParameter("DeviceName", VULCAN_API_DEVICE_NAME.take(50 - deviceNameSuffix.length) + deviceNameSuffix)
                 .addParameter("DeviceNameUser", "")
                 .addParameter("DeviceDescription", "")
                 .addParameter("DeviceSystemType", "Android")

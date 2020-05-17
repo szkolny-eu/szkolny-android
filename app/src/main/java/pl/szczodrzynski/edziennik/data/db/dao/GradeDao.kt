@@ -1,102 +1,103 @@
 /*
- * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ * Copyright (c) Kuba Szczodrzyński 2020-4-24.
  */
 package pl.szczodrzynski.edziennik.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
-import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.annotation.SelectiveDao
+import pl.szczodrzynski.edziennik.annotation.UpdateSelective
+import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
+import pl.szczodrzynski.edziennik.utils.models.Date
 import java.util.*
-import kotlin.collections.List
 import kotlin.collections.component1
 import kotlin.collections.component2
-import kotlin.collections.iterator
 import kotlin.collections.set
 
 @Dao
-abstract class GradeDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun add(grade: Grade): Long
+@SelectiveDao(db = AppDb::class)
+abstract class GradeDao : BaseDao<Grade, GradeFull> {
+    companion object {
+        private const val QUERY = """
+            SELECT 
+            *, 
+            teachers.teacherName ||" "|| teachers.teacherSurname AS teacherName
+            FROM grades
+            LEFT JOIN teachers USING(profileId, teacherId)
+            LEFT JOIN subjects USING(profileId, subjectId)
+            LEFT JOIN metadata ON gradeId = thingId AND thingType = ${Metadata.TYPE_GRADE} AND metadata.profileId = grades.profileId
+        """
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun addAll(gradeList: List<Grade>)
+        private const val ORDER_BY = """ORDER BY addedDate DESC"""
+    }
 
-    @Query("DELETE FROM grades WHERE profileId = :profileId")
-    abstract fun clear(profileId: Int)
-
-    @Query("DELETE FROM grades WHERE profileId = :profileId AND gradeType = :type")
-    abstract fun clearWithType(profileId: Int, type: Int)
-
-    @Query("DELETE FROM grades WHERE profileId = :profileId AND gradeSemester = :semester")
-    abstract fun clearForSemester(profileId: Int, semester: Int)
-
-    @Query("DELETE FROM grades WHERE profileId = :profileId AND gradeSemester = :semester AND gradeType = :type")
-    abstract fun clearForSemesterWithType(profileId: Int, semester: Int, type: Int)
+    private val selective by lazy { GradeDaoSelective(App.db) }
 
     @RawQuery(observedEntities = [Grade::class])
-    abstract fun getAll(query: SupportSQLiteQuery?): LiveData<List<GradeFull>>
+    abstract override fun getRaw(query: SupportSQLiteQuery): LiveData<List<GradeFull>>
+    @RawQuery(observedEntities = [Grade::class])
+    abstract override fun getOne(query: SupportSQLiteQuery): LiveData<GradeFull?>
 
-    fun getAll(profileId: Int, filter: String, orderBy: String): LiveData<List<GradeFull>> {
-        return getAll(SimpleSQLiteQuery("SELECT \n" +
-                "*, \n" +
-                "teachers.teacherName || ' ' || teachers.teacherSurname AS teacherFullName\n" +
-                "FROM grades \n" +
-                "LEFT JOIN subjects USING(profileId, subjectId)\n" +
-                "LEFT JOIN teachers USING(profileId, teacherId)\n" +
-                "LEFT JOIN metadata ON gradeId = thingId AND thingType = " + Metadata.TYPE_GRADE + " AND metadata.profileId = " + profileId + "\n" +
-                "WHERE grades.profileId = " + profileId + " AND " + filter + "\n" +
-                "ORDER BY " + orderBy)) // TODO: 2019-04-30 why did I add sorting by gradeType???
-    }
+    // SELECTIVE UPDATE
+    @UpdateSelective(primaryKeys = ["profileId", "gradeId"], skippedColumns = ["addedDate", "gradeClassAverage"])
+    override fun update(item: Grade) = selective.update(item)
+    override fun updateAll(items: List<Grade>) = selective.updateAll(items)
 
-    fun getAllOrderBy(profileId: Int, orderBy: String): LiveData<List<GradeFull>> {
-        return getAll(profileId, "1", orderBy)
-    }
+    // CLEAR
+    @Query("DELETE FROM grades WHERE profileId = :profileId")
+    abstract override fun clear(profileId: Int)
+    // REMOVE NOT KEPT
+    @Query("DELETE FROM grades WHERE keep = 0")
+    abstract override fun removeNotKept()
 
-    fun getAllWhere(profileId: Int, filter: String): LiveData<List<GradeFull>> {
-        return getAll(profileId, filter, "addedDate DESC")
-    }
+    // GET ALL - LIVE DATA
+    fun getAll(profileId: Int) =
+            getRaw("$QUERY WHERE grades.profileId = $profileId $ORDER_BY")
+    fun getAllFromDate(profileId: Int, date: Date) =
+            getRaw("$QUERY WHERE grades.profileId = $profileId AND addedDate > ${date.inMillis} $ORDER_BY")
+    fun getAllBySubject(profileId: Int, subjectId: Long) =
+            getRaw("$QUERY WHERE grades.profileId = $profileId AND subjectId = $subjectId $ORDER_BY")
+    fun getAllOrderBy(profileId: Int, orderBy: String) =
+            getRaw("$QUERY WHERE grades.profileId = $profileId ORDER BY $orderBy")
 
-    @RawQuery
-    abstract fun getAllNow(query: SupportSQLiteQuery?): List<GradeFull>
+    // GET ALL - NOW
+    fun getAllNow(profileId: Int) =
+            getRawNow("$QUERY WHERE grades.profileId = $profileId $ORDER_BY")
+    fun getNotNotifiedNow() =
+            getRawNow("$QUERY WHERE notified = 0 $ORDER_BY")
+    fun getNotNotifiedNow(profileId: Int) =
+            getRawNow("$QUERY WHERE grades.profileId = $profileId AND notified = 0 $ORDER_BY")
+    fun getByParentIdNow(profileId: Int, parentId: Long) =
+            getRawNow("$QUERY WHERE grades.profileId = $profileId AND gradeParentId = $parentId $ORDER_BY")
 
-    fun getAllNow(profileId: Int, filter: String): List<GradeFull> {
-        return getAllNow(SimpleSQLiteQuery("SELECT \n" +
-                "*, \n" +
-                "teachers.teacherName || ' ' || teachers.teacherSurname AS teacherFullName\n" +
-                "FROM grades \n" +
-                "LEFT JOIN subjects USING(profileId, subjectId)\n" +
-                "LEFT JOIN teachers USING(profileId, teacherId)\n" +
-                "LEFT JOIN metadata ON gradeId = thingId AND thingType = " + Metadata.TYPE_GRADE + " AND metadata.profileId = " + profileId + "\n" +
-                "WHERE grades.profileId = " + profileId + " AND " + filter + "\n" +
-                "ORDER BY addedDate DESC"))
-    }
+    // GET ONE - NOW
+    fun getByIdNow(profileId: Int, id: Long) =
+            getOneNow("$QUERY WHERE grades.profileId = $profileId AND gradeId = $id")
 
-    fun getNotNotifiedNow(profileId: Int): List<GradeFull> {
-        return getAllNow(profileId, "notified = 0")
-    }
+    @Query("UPDATE grades SET keep = 0 WHERE profileId = :profileId AND gradeType = :type")
+    abstract fun dontKeepWithType(profileId: Int, type: Int)
 
-    fun getAllWithParentIdNow(profileId: Int, parentId: Long): List<GradeFull> {
-        return getAllNow(profileId, "gradeParentId = $parentId")
-    }
+    @Query("UPDATE grades SET keep = 0 WHERE profileId = :profileId AND gradeSemester = :semester")
+    abstract fun dontKeepForSemester(profileId: Int, semester: Int)
 
-    @get:Query("SELECT * FROM grades " +
-            "LEFT JOIN subjects USING(profileId, subjectId) " +
-            "LEFT JOIN metadata ON gradeId = thingId AND thingType = " + Metadata.TYPE_GRADE + " AND metadata.profileId = grades.profileId " +
-            "WHERE notified = 0 " +
-            "ORDER BY addedDate DESC")
-    abstract val notNotifiedNow: List<GradeFull>
+    @Query("UPDATE grades SET keep = 0 WHERE profileId = :profileId AND gradeSemester = :semester AND gradeType = :type")
+    abstract fun dontKeepForSemesterWithType(profileId: Int, semester: Int, type: Int)
 
-    @RawQuery
-    abstract fun getNow(query: SupportSQLiteQuery): GradeFull?
 
+
+    // GRADE DETAILS - MOBIDZIENNIK
     @Query("UPDATE grades SET gradeClassAverage = :classAverage, gradeColor = :color WHERE profileId = :profileId AND gradeId = :gradeId")
     abstract fun updateDetailsById(profileId: Int, gradeId: Long, classAverage: Float, color: Int)
 
-    @Query("UPDATE metadata SET addedDate = :addedDate WHERE profileId = :profileId AND thingType = " + Metadata.TYPE_GRADE + " AND thingId = :gradeId")
+    @Query("UPDATE grades SET addedDate = :addedDate WHERE profileId = :profileId AND gradeId = :gradeId")
     abstract fun updateAddedDateById(profileId: Int, gradeId: Long, addedDate: Long)
 
     @Transaction
@@ -118,7 +119,7 @@ abstract class GradeDao {
     @Query("SELECT gradeColor FROM grades WHERE profileId = :profileId ORDER BY gradeId")
     abstract fun getColors(profileId: Int): List<Int>
 
-    @Query("SELECT addedDate FROM metadata WHERE profileId = :profileId AND thingType = " + Metadata.TYPE_GRADE + " ORDER BY thingId")
+    @Query("SELECT addedDate FROM grades WHERE profileId = :profileId ORDER BY gradeId")
     abstract fun getAddedDates(profileId: Int): List<Long>
 
     @Transaction
@@ -133,9 +134,5 @@ abstract class GradeDao {
             gradeColors[gradeId] = colors.next()
             gradeAddedDates[gradeId] = addedDates.next()
         }
-    }
-
-    fun getAllFromDate(profileId: Int, date: Long): LiveData<List<GradeFull>> {
-        return getAllWhere(profileId, "addedDate > $date")
     }
 }

@@ -60,7 +60,9 @@ class MobidziennikApiEvents(val data: DataMobidziennik, rows: List<String>) {
                         type = type,
                         teacherId = teacherId,
                         subjectId = subjectId,
-                        teamId = teamId)
+                        teamId = teamId,
+                        addedDate = addedDate
+                )
 
                 data.eventList.add(eventObject)
                 data.metadataList.add(
@@ -69,8 +71,7 @@ class MobidziennikApiEvents(val data: DataMobidziennik, rows: List<String>) {
                                 Metadata.TYPE_EVENT,
                                 id,
                                 data.profile?.empty ?: false,
-                                data.profile?.empty ?: false,
-                                addedDate
+                                data.profile?.empty ?: false
                         ))
             }
         }

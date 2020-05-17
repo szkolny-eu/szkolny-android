@@ -46,7 +46,7 @@ class EdudziennikWebExams(override val data: DataEdudziennik,
                 if (dateString.isBlank()) return@forEach
                 val date = Date.fromY_m_d(dateString)
 
-                val lessons = data.app.db.timetableDao().getForDateNow(profileId, date)
+                val lessons = data.app.db.timetableDao().getAllForDateNow(profileId, date)
                 val startTime = lessons.firstOrNull { it.displaySubjectId == subject.id }?.displayStartTime
 
                 val eventTypeElement = examElement.child(3).child(0)
@@ -74,8 +74,7 @@ class EdudziennikWebExams(override val data: DataEdudziennik,
                         Metadata.TYPE_EVENT,
                         id,
                         profile.empty,
-                        profile.empty,
-                        System.currentTimeMillis()
+                        profile.empty
                 ))
             }
 

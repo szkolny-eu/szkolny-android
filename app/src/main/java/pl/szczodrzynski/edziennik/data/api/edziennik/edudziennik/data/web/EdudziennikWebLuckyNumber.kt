@@ -24,9 +24,9 @@ class EdudziennikWebLuckyNumber(override val data: DataEdudziennik,
         webGet(TAG, data.schoolEndpoint + "Lucky", xhr = true) { text ->
             text.toIntOrNull()?.also { luckyNumber ->
                 val luckyNumberObject = LuckyNumber(
-                        profileId,
-                        Date.getToday(),
-                        luckyNumber
+                        profileId = profileId,
+                        date = Date.getToday(),
+                        number = luckyNumber
                 )
 
                 data.luckyNumberList.add(luckyNumberObject)
@@ -35,8 +35,7 @@ class EdudziennikWebLuckyNumber(override val data: DataEdudziennik,
                         Metadata.TYPE_LUCKY_NUMBER,
                         luckyNumberObject.date.value.toLong(),
                         true,
-                        profile.empty,
-                        System.currentTimeMillis()
+                        profile.empty
                 ))
             }
 

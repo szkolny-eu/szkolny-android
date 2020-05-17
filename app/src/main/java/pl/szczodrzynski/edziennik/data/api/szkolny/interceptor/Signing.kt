@@ -39,13 +39,13 @@ object Signing {
     val appPassword by lazy {
         iLoveApple(
                 "ThisIsOurHardWorkPleaseDoNotCopyOrSteal(c)2019.KubaSz".sha256(),
-                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_NAME.substringBeforeLast('+'),
                 BuildConfig.VERSION_CODE.toLong()
         )
     }
 
     /*fun provideKey(param1: String, param2: Long): ByteArray {*/
     fun pleaseStopRightNow(param1: String, param2: Long): ByteArray {
-        return "$param1.MTIzNDU2Nzg5MDP/4SAI6B===.$param2".sha256()
+        return "$param1.MTIzNDU2Nzg5MDCEfzNqNH===.$param2".sha256()
     }
 }

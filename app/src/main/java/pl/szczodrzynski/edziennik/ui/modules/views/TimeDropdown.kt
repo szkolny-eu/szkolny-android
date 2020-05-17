@@ -87,7 +87,7 @@ class TimeDropdown : TextInputDropDown {
                 ) }
             }
             else if (displayMode == DISPLAY_LESSONS && lessonsDate != null) {
-                val lessons = db.timetableDao().getForDateNow(profileId, lessonsDate!!)
+                val lessons = db.timetableDao().getAllForDateNow(profileId, lessonsDate!!)
 
                 if (lessons.isEmpty()) {
                     hours += Item(

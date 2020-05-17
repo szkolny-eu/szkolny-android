@@ -51,7 +51,8 @@ class IdziennikApiMessagesSent(override val data: DataIdziennik,
                         type = TYPE_SENT,
                         subject = subject,
                         body = body,
-                        senderId = null
+                        senderId = null,
+                        addedDate = sentDate
                 )
 
                 for (recipientEl in jMessage.getAsJsonArray("odbiorcy")) {
@@ -76,7 +77,7 @@ class IdziennikApiMessagesSent(override val data: DataIdziennik,
                 }
 
                 data.messageList.add(message)
-                data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true, sentDate))
+                data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true))
             }
 
             data.setSyncNext(ENDPOINT_IDZIENNIK_API_MESSAGES_SENT, DAY, DRAWER_ITEM_MESSAGES)

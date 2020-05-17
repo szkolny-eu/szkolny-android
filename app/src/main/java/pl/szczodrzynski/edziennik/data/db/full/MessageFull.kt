@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kacper Ziubryniewicz 2020-1-6
+ * Copyright (c) Kuba Szczodrzyński 2020-4-25.
  */
 package pl.szczodrzynski.edziennik.data.db.full
 
@@ -10,10 +10,12 @@ import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 
 class MessageFull(
         profileId: Int, id: Long, type: Int,
-        subject: String, body: String?, senderId: Long?
+        subject: String, body: String?, senderId: Long?,
+        addedDate: Long = System.currentTimeMillis()
 ) : Message(
         profileId, id, type,
-        subject, body, senderId
+        subject, body, senderId,
+        addedDate
 ) {
     var senderName: String? = null
     @Relation(parentColumn = "messageId", entityColumn = "messageId", entity = MessageRecipient::class)
@@ -33,5 +35,4 @@ class MessageFull(
     // metadata
     var seen = false
     var notified = false
-    var addedDate: Long = 0
 }

@@ -11,12 +11,12 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getLong
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.toSparseArray
-import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanApiNotices(override val data: DataVulcan,
                        override val lastSync: Long?,
@@ -31,6 +31,29 @@ class VulcanApiNotices(override val data: DataVulcan,
             data.db.noticeTypeDao().getAllNow(profileId).toSparseArray(data.noticeTypes) { it.id }
         }
 
+        val semesterId = data.studentSemesterId
+        val semesterNumber = data.studentSemesterNumber
+        if (semesterNumber == 2 && lastSync ?: 0 < profile.dateSemester1Start.inMillis) {
+            getNotices(profile, semesterId - 1, semesterNumber - 1) {
+                getNotices(profile, semesterId, semesterNumber) {
+                    finish()
+                }
+            }
+        }
+        else {
+            getNotices(profile, semesterId, semesterNumber) {
+                finish()
+            }
+        }
+
+    } ?: onSuccess(ENDPOINT_VULCAN_API_NOTICES) }
+
+    private fun finish() {
+        data.setSyncNext(ENDPOINT_VULCAN_API_NOTICES, SYNC_ALWAYS)
+        onSuccess(ENDPOINT_VULCAN_API_NOTICES)
+    }
+
+    private fun getNotices(profile: Profile, semesterId: Int, semesterNumber: Int, onSuccess: () -> Unit) {
         apiGet(TAG, VULCAN_API_ENDPOINT_NOTICES, parameters = mapOf(
                 "IdUczen" to data.studentId,
                 "IdOkresKlasyfikacyjny" to data.studentSemesterId
@@ -41,15 +64,21 @@ class VulcanApiNotices(override val data: DataVulcan,
                 val id = notice.getLong("Id") ?: return@forEach
                 val text = notice.getString("TrescUwagi") ?: return@forEach
                 val teacherId = notice.getLong("IdPracownik") ?: -1
-                val addedDate = Date.fromY_m_d(notice.getString("DataWpisuTekst")).inMillis
+                val addedDate = notice.getLong("DataModyfikacji")?.times(1000) ?: System.currentTimeMillis()
+
+                val categoryId = notice.getLong("IdKategoriaUwag") ?: -1
+                val categoryText = data.noticeTypes[categoryId]?.name ?: ""
 
                 val noticeObject = Notice(
-                        profileId,
-                        id,
-                        text,
-                        profile.currentSemester,
-                        Notice.TYPE_NEUTRAL,
-                        teacherId
+                        profileId = profileId,
+                        id = id,
+                        type = Notice.TYPE_NEUTRAL,
+                        semester = profile.currentSemester,
+                        text = text,
+                        category = categoryText,
+                        points = null,
+                        teacherId = teacherId,
+                        addedDate = addedDate
                 )
 
                 data.noticeList.add(noticeObject)
@@ -58,13 +87,11 @@ class VulcanApiNotices(override val data: DataVulcan,
                         Metadata.TYPE_NOTICE,
                         id,
                         profile.empty,
-                        profile.empty,
-                        addedDate
+                        profile.empty
                 ))
             }
 
-            data.setSyncNext(ENDPOINT_VULCAN_API_NOTICES, SYNC_ALWAYS)
-            onSuccess(ENDPOINT_VULCAN_API_NOTICES)
+            onSuccess()
         }
-    } ?: onSuccess(ENDPOINT_VULCAN_API_NOTICES) }
+    }
 }

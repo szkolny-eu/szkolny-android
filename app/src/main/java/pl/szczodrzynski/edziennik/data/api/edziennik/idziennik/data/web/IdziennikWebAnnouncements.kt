@@ -52,14 +52,14 @@ class IdziennikWebAnnouncements(override val data: DataIdziennik,
                 val startDate = jAnnouncement.getString("DataWydarzenia")?.replace("[^\\d]".toRegex(), "")?.toLongOrNull()?.let { Date.fromMillis(it) }
 
                 val announcementObject = Announcement(
-                        profileId,
-                        announcementId,
-                        jAnnouncement.get("Temat").asString,
-                        jAnnouncement.get("Tresc").asString,
-                        startDate,
-                        null,
-                        rTeacher.id,
-                        null
+                        profileId = profileId,
+                        id = announcementId,
+                        subject = jAnnouncement.get("Temat").asString,
+                        text = jAnnouncement.get("Tresc").asString,
+                        startDate = startDate,
+                        endDate = null,
+                        teacherId = rTeacher.id,
+                        addedDate = addedDate
                 )
                 data.announcementList.add(announcementObject)
                 data.metadataList.add(Metadata(
@@ -67,8 +67,7 @@ class IdziennikWebAnnouncements(override val data: DataIdziennik,
                         Metadata.TYPE_ANNOUNCEMENT,
                         announcementObject.id,
                         profile?.empty ?: false,
-                        profile?.empty ?: false,
-                        addedDate
+                        profile?.empty ?: false
                 ))
             }
 

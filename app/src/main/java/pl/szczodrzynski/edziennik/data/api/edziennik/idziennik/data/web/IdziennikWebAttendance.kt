@@ -12,10 +12,18 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.ENDPOINT_IDZIENNI
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.data.IdziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
-import pl.szczodrzynski.edziennik.data.db.entity.Attendance.*
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_ABSENT
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_ABSENT_EXCUSED
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_BELATED
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_PRESENT
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_PRESENT_CUSTOM
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEASED
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_UNKNOWN
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.getInt
 import pl.szczodrzynski.edziennik.getJsonObject
+import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -51,71 +59,97 @@ class IdziennikWebAttendance(override val data: DataIdziennik,
             for (jAttendanceEl in json.getAsJsonArray("Obecnosci")) {
                 val jAttendance = jAttendanceEl.asJsonObject
                 // jAttendance
-                val attendanceTypeIdziennik = jAttendance.get("TypObecnosci").asInt
-                if (attendanceTypeIdziennik == 5 || attendanceTypeIdziennik == 7)
-                    continue
-                val attendanceDate = Date.fromY_m_d(jAttendance.get("Data").asString)
-                val attendanceTime = Time.fromH_m(jAttendance.get("OdDoGodziny").asString)
-                if (attendanceDate.combineWith(attendanceTime) > System.currentTimeMillis())
+                val type = jAttendance.get("TypObecnosci").asInt
+
+                // skip "zajęcia nie odbyły się" and "Ferie"
+                if (type == 5 || type == 7)
                     continue
 
-                val attendanceId = jAttendance.get("IdLesson").asString.crc16().toLong()
+                val date = Date.fromY_m_d(jAttendance.get("Data").asString)
+                val time = Time.fromH_m(jAttendance.get("OdDoGodziny").asString)
+                if (date.combineWith(time) > System.currentTimeMillis())
+                    continue
+
+                val id = jAttendance.get("IdLesson").asString.crc16().toLong()
                 val rSubject = data.getSubject(jAttendance.get("Przedmiot").asString, jAttendance.get("IdPrzedmiot").asLong, "")
                 val rTeacher = data.getTeacherByFDotSpaceLast(jAttendance.get("PrzedmiotNauczyciel").asString)
 
-                var attendanceName = "obecność"
-                var attendanceType = Attendance.TYPE_CUSTOM
+                var baseType = TYPE_UNKNOWN
+                var typeName = "nieznany rodzaj"
+                var typeSymbol: String? = null
+                var typeColor: Long? = null
 
-                when (attendanceTypeIdziennik) {
-                    1 /* nieobecność usprawiedliwiona */ -> {
-                        attendanceName = "nieobecność usprawiedliwiona"
-                        attendanceType = TYPE_ABSENT_EXCUSED
+                /* https://iuczniowie.progman.pl/idziennik/mod_panelRodzica/obecnosci/obecnosciUcznia_lmt637231494660000000.js */
+                /* https://iuczniowie.progman.pl/idziennik/mod_panelRodzica/obecnosci/obecnosci_lmt637231494660000000.css */
+                when (type) {
+                    1 -> {
+                        baseType = TYPE_ABSENT_EXCUSED
+                        typeName = "nieobecność usprawiedliwiona"
+                        typeColor = 0xffffe099
                     }
-                    2 /* spóźnienie */ -> {
-                        attendanceName = "spóźnienie"
-                        attendanceType = TYPE_BELATED
+                    2 -> {
+                        baseType = TYPE_BELATED
+                        typeName = "spóźnienie"
+                        typeColor = 0xffffffaa
                     }
-                    3 /* nieobecność nieusprawiedliwiona */ -> {
-                        attendanceName = "nieobecność nieusprawiedliwiona"
-                        attendanceType = TYPE_ABSENT
+                    3 -> {
+                        baseType = TYPE_ABSENT
+                        typeName = "nieobecność nieusprawiedliwiona"
+                        typeColor = 0xffffad99
                     }
-                    4 /* zwolnienie */, 9 /* zwolniony / obecny */ -> {
-                        attendanceType = TYPE_RELEASED
-                        if (attendanceTypeIdziennik == 4)
-                            attendanceName = "zwolnienie"
-                        if (attendanceTypeIdziennik == 9)
-                            attendanceName = "zwolnienie / obecność"
+                    4, 9 -> {
+                        baseType = TYPE_RELEASED
+                        if (type == 4) {
+                            typeName = "zwolnienie"
+                            typeColor = 0xffa8beff
+                        }
+                        if (type == 9) {
+                            typeName = "zwolniony / obecny"
+                            typeSymbol = "zb"
+                            typeColor = 0xffff69b4
+                        }
                     }
-                    0 /* obecny */, 8 /* Wycieczka */ -> {
-                        attendanceType = TYPE_PRESENT
-                        if (attendanceTypeIdziennik == 8)
-                            attendanceName = "wycieczka"
+                    8 -> {
+                        baseType = TYPE_PRESENT_CUSTOM
+                        typeName = "wycieczka"
+                        typeSymbol = "w"
+                        typeColor = null
+                    }
+                    0 -> {
+                        baseType = TYPE_PRESENT
+                        typeName = "obecny"
+                        typeColor = 0xffccffcc
                     }
                 }
 
-                val semester = profile?.dateToSemester(attendanceDate) ?: 1
+                val semester = profile?.dateToSemester(date) ?: 1
 
                 val attendanceObject = Attendance(
-                        profileId,
-                        attendanceId,
-                        rTeacher.id,
-                        rSubject.id,
-                        semester,
-                        attendanceName,
-                        attendanceDate,
-                        attendanceTime,
-                        attendanceType
-                )
+                        profileId = profileId,
+                        id = id,
+                        baseType = baseType,
+                        typeName = typeName,
+                        typeShort = typeSymbol ?: data.app.attendanceManager.getTypeShort(baseType),
+                        typeSymbol = typeSymbol ?: data.app.attendanceManager.getTypeShort(baseType),
+                        typeColor = typeColor?.toInt(),
+                        date = date,
+                        startTime = time,
+                        semester = semester,
+                        teacherId = rTeacher.id,
+                        subjectId = rSubject.id
+                ).also {
+                    it.lessonTopic = jAttendance.getString("PrzedmiotTemat")
+                    it.lessonNumber = jAttendance.getInt("Godzina")
+                }
 
                 data.attendanceList.add(attendanceObject)
-                if (attendanceObject.type != TYPE_PRESENT) {
+                if (attendanceObject.baseType != TYPE_PRESENT) {
                     data.metadataList.add(Metadata(
                             profileId,
                             Metadata.TYPE_ATTENDANCE,
                             attendanceObject.id,
-                            profile?.empty ?: false,
-                            profile?.empty ?: false,
-                            System.currentTimeMillis()
+                            profile?.empty ?: false || baseType == TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN,
+                            profile?.empty ?: false || baseType == TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN
                     ))
                 }
             }

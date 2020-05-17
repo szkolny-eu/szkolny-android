@@ -72,7 +72,8 @@ class VulcanApiMessagesInbox(override val data: DataVulcan,
                             type = TYPE_RECEIVED,
                             subject = subject,
                             body = body.replace("\n", "<br>"),
-                            senderId = senderId
+                            senderId = senderId,
+                            addedDate = sentDate
                     )
 
                     val messageRecipientObject = MessageRecipient(
@@ -90,8 +91,7 @@ class VulcanApiMessagesInbox(override val data: DataVulcan,
                             Metadata.TYPE_MESSAGE,
                             id,
                             readDate > 0,
-                            readDate > 0,
-                            sentDate
+                            readDate > 0
                     ))
                 }
 

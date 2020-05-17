@@ -31,8 +31,8 @@ abstract class EventDao : BaseDao<Event, EventFull> {
             eventTypes.eventTypeName AS typeName,
             eventTypes.eventTypeColor AS typeColor
             FROM events
-            LEFT JOIN subjects USING(profileId, subjectId)
             LEFT JOIN teachers USING(profileId, teacherId)
+            LEFT JOIN subjects USING(profileId, subjectId)
             LEFT JOIN teams USING(profileId, teamId)
             LEFT JOIN eventTypes USING(profileId, eventType)
             LEFT JOIN metadata ON eventId = thingId AND (thingType = ${Metadata.TYPE_EVENT} OR thingType = ${Metadata.TYPE_HOMEWORK}) AND metadata.profileId = events.profileId
@@ -47,6 +47,8 @@ abstract class EventDao : BaseDao<Event, EventFull> {
 
     @RawQuery(observedEntities = [Event::class])
     abstract override fun getRaw(query: SupportSQLiteQuery): LiveData<List<EventFull>>
+    @RawQuery(observedEntities = [Event::class])
+    abstract override fun getOne(query: SupportSQLiteQuery): LiveData<EventFull?>
 
     // SELECTIVE UPDATE
     @UpdateSelective(primaryKeys = ["profileId", "eventId"], skippedColumns = ["eventIsDone", "eventBlacklisted", "homeworkBody", "attachmentIds", "attachmentNames"])
@@ -56,6 +58,9 @@ abstract class EventDao : BaseDao<Event, EventFull> {
     // CLEAR
     @Query("DELETE FROM events WHERE profileId = :profileId")
     abstract override fun clear(profileId: Int)
+    // REMOVE NOT KEPT
+    @Query("DELETE FROM events WHERE keep = 0")
+    abstract override fun removeNotKept()
 
     // GET ALL - LIVE DATA
     fun getAll(profileId: Int) =
@@ -108,6 +113,9 @@ abstract class EventDao : BaseDao<Event, EventFull> {
                 + " AND eventAddedManually = 0 AND eventDate >= '" + todayDate.stringY_m_d + "'" +
                 " AND " + filter))
     }
+
+    @Query("UPDATE events SET keep = 0 WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate")
+    abstract fun dontKeepFuture(profileId: Int, todayDate: Date)
 
     @Query("UPDATE events SET keep = 0 WHERE profileId = :profileId AND eventAddedManually = 0 AND eventDate >= :todayDate AND eventType = :type")
     abstract fun dontKeepFutureWithType(profileId: Int, todayDate: Date, type: Long)

@@ -61,15 +61,28 @@
     <string name="attendance_absent_excused" translatable="false">u</string>
     <string name="attendance_belated" translatable="false">sp</string>
     <string name="attendance_belated_excused" translatable="false">su</string>
+    <string name="attendance_config_group_consecutive_days">Grupuj kolejne dni na liście</string>
+    <string name="attendance_config_show_presence_in_month">Wyświetlaj obecność w widoku miesięcy</string>
+    <string name="attendance_config_title">Konfiguracja frekwencji</string>
+    <string name="attendance_config_use_symbols">Używaj symboli i kolorów wg dziennika</string>
+    <string name="attendance_config_use_symbols_hint">Widoczne po rozwinięciu listy</string>
+    <string name="attendance_empty_text">Nie ma tutaj żadnych nieobecności.</string>
     <string name="attendance_free_day" translatable="false">w</string>
+    <string name="attendance_lesson_number_format">lekcja %d</string>
+    <string name="attendance_percentage_format">%.2f%%</string>
+    <string name="attendance_period_summary_format">Obecność w tym okresie: %.2f%%</string>
     <string name="attendance_present" translatable="false">ob</string>
     <string name="attendance_released" translatable="false">zw</string>
     <string name="attendance_summary_title_semester_format">Podsumowanie - semestr %d </string>
     <string name="attendance_summary_title_year">Podsumowanie - cały rok </string>
+    <string name="attendance_tab_days">Dni</string>
+    <string name="attendance_tab_list">Lista</string>
+    <string name="attendance_tab_months">Miesiące</string>
+    <string name="attendance_tab_summary">Podsumowanie</string>
     <string name="attendances_absent">Nieobecności:</string>
     <string name="attendances_absent_unexcused">W tym nieusprawiedliwione:</string>
     <string name="attendances_belated">Spóźnienia:</string>
-    <string name="attendances_no_data">Brak nieobecności.</string>
+    <string name="attendances_no_data">Nie masz żadnych nieobecności.</string>
     <string name="attendances_present">Obecności:</string>
     <string name="attendances_releases">Zwolnienia:</string>
     <string name="attendances_summary_subject_loading_format">Wszystkie przedmioty</string>
@@ -454,6 +467,7 @@
     <string name="grades_editor_semester_year_average_before">Twoja średnia na koniec roku:</string>
     <string name="grades_editor_weight_format">waga %s</string>
     <string name="grades_editor_weight_other">inna waga</string>
+    <string name="grades_empty_text">Nie ma ocen w tym semestrze.</string>
     <string name="grades_improvement_category_format">(poprawa) %s</string>
     <string name="grades_max_points_format">max %s pkt</string>
     <string name="grades_no_data">Brak ocen w dzienniku.</string>
@@ -540,6 +554,7 @@
     <string name="in_format">za %s</string>
     <string name="incorrect_format">Nieprawidłowy format</string>
     <string name="language_english" translatable="false">English</string>
+    <string name="language_german" translatable="false">Deutsch</string>
     <string name="language_polish" translatable="false">Polski</string>
     <string name="language_system">Według systemu</string>
     <string name="lesson_added">Nowa lekcja</string>
@@ -626,8 +641,8 @@
     <string name="login_progress_title">Loguję…</string>
     <string name="login_startpage_subtitle">Wybierz z jakiego e-dziennika korzysta Twoja szkoła. W późniejszych etapach będziesz mógł dodać kilka kont z różnych e-dzienników.</string>
     <string name="login_startpage_title">Z jakiego e-dziennika korzystasz?</string>
-    <string name="login_summary_account_child">(uczeń)</string>
-    <string name="login_summary_account_parent">(rodzic)</string>
+    <string name="account_type_child">(uczeń)</string>
+    <string name="account_type_parent">(rodzic)</string>
     <string name="login_summary_add_student">Dodaj ucznia</string>
     <string name="login_summary_no_profiles_text">Musisz wybrać przynajmniej jeden profil, który chcesz zapisać w aplikacji.</string>
     <string name="login_summary_no_profiles_title">Nie wybrałeś żadnego profilu</string>
@@ -672,6 +687,7 @@
     <string name="menu_agenda_change_view">Zmień widok Terminarza</string>
     <string name="menu_announcements">Tablica ogłoszeń</string>
     <string name="menu_attendance">Frekwencja</string>
+    <string name="menu_attendance_config">Ustawienia frekwencji</string>
     <string name="menu_debug">Debugowanie</string>
     <string name="menu_feedback">Pomoc i opinie</string>
     <string name="menu_generate_block_timetable">Zapisz plan lekcji jako obraz</string>
@@ -907,6 +923,8 @@
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
     <string name="settings_about_version_text">Wersja</string>
+    <string name="settings_add_student_subtext">Zaloguj konto ucznia/rodzica w aplikacji</string>
+    <string name="settings_add_student_text">Dodaj nowego ucznia</string>
     <string name="settings_more_text">Więcej</string>
     <string name="settings_notification_web_push">Przekazywanie powiadomień</string>
     <string name="settings_profile_change_image">Zmień obrazek</string>
@@ -1286,6 +1304,56 @@
     <string name="yesterday">wczoraj</string>
     <string name="you_are_offline_text">Jesteś offline. Spróbuj włączyć Wi-Fi lub dane komórkowe.</string>
     <string name="you_are_offline_title">Połączenie sieciowe</string>
-    <string name="settings_add_student_text">Dodaj nowego ucznia</string>
-    <string name="settings_add_student_subtext">Zaloguj konto ucznia/rodzica w aplikacji</string>
+    <string name="attendance_tab_types">Wg typu</string>
+    <string name="attendance_type_yearly_format">%d przez cały rok</string>
+    <string name="attendance_type_semester_format">%d w tym semestrze</string>
+    <string name="attendance_details_teacher">Nauczyciel</string>
+    <string name="attendance_details_type">Rodzaj</string>
+    <string name="attendance_details_date">Data</string>
+    <string name="attendance_details_time">Godzina</string>
+    <string name="attendance_details_lesson_topic">Temat lekcji</string>
+    <string name="attendance_details_is_counted">Liczona do puli?</string>
+    <string name="attendance_details_id">ID frekwencji</string>
+    <string name="attendance_details_type_id">ID rodzaju podstawowego</string>
+    <string name="login_chooser_title">Jaki masz e-dziennik w szkole?</string>
+    <string name="login_chooser_subtitle">Wybierz z jakiego e-dziennika korzysta Twoja szkoła. Jeśli masz kilka kont w różnych dziennikach, będziesz mógł je dodać później.</string>
+    <string name="login_register_librus" translatable="false">Librus/Synergia</string>
+    <string name="login_mode_librus_email">Zaloguj używając e-maila</string>
+    <string name="login_mode_librus_email_hint">Musisz posiadać konto Librus Rodzina</string>
+    <string name="login_mode_librus_synergia">Zaloguj używając loginu i hasła</string>
+    <string name="login_mode_librus_synergia_hint">Użyj loginu w postaci \"9874123u\"</string>
+    <string name="login_mode_librus_jst">Logowanie przez platformę VULCAN</string>
+    <string name="login_mode_librus_jst_hint">Tylko Oświata w Radomiu oraz Innowacyjny Tarnobrzeg</string>
+    <string name="login_type_vulcan" translatable="false">Vulcan UONET+</string>
+    <string name="login_mode_vulcan_api">Użyj tokenu, symbolu i kodu PIN</string>
+    <string name="login_mode_vulcan_api_hint">Zarejestruj urządzenie na stronie dziennika Vulcan</string>
+    <string name="login_mode_vulcan_web">Użyj e-maila/nazwy użytkownika i hasła</string>
+    <string name="login_mode_vulcan_web_hint">Zaloguj danymi, które podajesz na stronie e-dziennika VULCAN</string>
+    <string name="login_type_mobidziennik" translatable="false">MobiDziennik</string>
+    <string name="login_mode_mobidziennik_web">Zaloguj nazwą serwera, loginem i hasłem</string>
+    <string name="login_mode_mobidziennik_web_hint">Podaj dane, których używasz na stronie e-dziennika</string>
+    <string name="login_platform_list_title">W jaki sposób się logujesz do dziennika?</string>
+    <string name="login_platform_list_subtitle">Wybierz, który obrazek odpowiada temu, który widzisz podczas logowania na stronie internetowej swojego dziennika.\n\nJeżeli Twoja szkoła nie korzysta z żadnej z tych platform miejskich, wybierz pierwszą opcję.</string>
+    <string name="login_platform_list_loading">Ładowanie listy e-dzienników…</string>
+    <string name="login_platform_list_loading_timeout">Jeśli trwa to za długo, sprawdź swoje połączenie internetowe i zrestartuj aplikację.</string>
+    <string name="login_form_title_format">Zaloguj się - %s</string>
+    <string name="login_mode_librus_email_guide">Zaloguj się swoim kontem Librus, które działa w oficjalnej aplikacji Librus oraz na stronie portal.librus.pl, w niebieskim formularzu.\n\nJeśli nie masz konta Librus, możesz je założyć na stronie https://portal.librus.pl/rodzina/register.</string>
+    <string name="login_mode_librus_synergia_guide">Podaj login otrzymany od szkoły, którym logujesz się do Synergii (fioletowy formularz).\n\nZalecane jest logowanie kontem Portal Librus (używając e-maila) w poprzednim kroku.</string>
+    <string name="login_mode_librus_jst_guide">Zaloguj się do Librusa na komputerze, wybierz zakładkę Aplikacje Mobilne, następnie wpisz otrzymany Token i PIN poniżej.</string>
+    <string name="login_mode_vulcan_api_guide">Zaloguj się do dziennika Vulcan na komputerze, wybierz zakładkę Dostęp Mobilny, kliknij przycisk Zarejestruj urządzenie mobilne. Podaj otrzymany Token, Symbol i PIN w polach poniżej.</string>
+    <string name="login_mode_vulcan_web_guide">Podaj dane, którymi logujesz się na stronie internetowej dziennika VULCAN lub na miejskiej platformie.</string>
+    <string name="login_mode_mobidziennik_web_guide">Podaj dane, których używasz do logowania na stronie MobiDziennika. Jako adres serwera możesz wpisać adres strony internetowej, na której masz MobiDziennik.</string>
+    <string name="edziennik_progress_login_vulcan_web_main">Logowanie do dziennika Vulcan...</string>
+    <string name="login_type_idziennik">iDziennik Progman / iUczniowie</string>
+    <string name="login_mode_idziennik_web">Zaloguj używając nazwy użytkownika i hasła</string>
+    <string name="login_mode_idziennik_web_hint">Podaj dane, których używasz na stronie internetowej e-dziennika</string>
+    <string name="login_mode_idziennik_web_guide">Użyj danych, które wpisujesz w formularz na stronie iDziennika. Jeśli nie pamiętasz hasła, wejdź na http://iuczniowie.progman.pl/ i kliknij przycisk \"Zapomniałem hasła\".</string>
+    <string name="login_type_edudziennik">EduDziennik</string>
+    <string name="login_mode_edudziennik_web">Zaloguj używając e-maila i hasła</string>
+    <string name="login_mode_edudziennik_web_hint">Użyj danych, które podajesz na stronie internetowej e-dziennika</string>
+    <string name="login_mode_edudziennik_web_guide">Podaj adres e-mail i hasło, których używasz do logowania w przeglądarce na stronie EduDziennika.</string>
+    <string name="login_type_podlasie">Podlaska Platforma Edukacyjna</string>
+    <string name="login_mode_podlasie_api">Zaloguj używając tokenu</string>
+    <string name="login_mode_podlasie_api_guide">Podaj token aplikacji mobilnej.</string>
+    <string name="edziennik_progress_login_podlasie_api">Logowanie do PPE…</string>
 </resources>

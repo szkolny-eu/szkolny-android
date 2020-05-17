@@ -52,7 +52,7 @@ class GradeViewHolder(
         b.gradeWeight.text = weightText
         b.gradeWeight.isVisible = weightText != null
 
-        b.gradeTeacherName.text = grade.teacherFullName
+        b.gradeTeacherName.text = grade.teacherName
         b.gradeAddedDate.text = Date.fromMillis(grade.addedDate).let {
             it.getRelativeString(app, 5) ?: it.formattedStringShort
         }

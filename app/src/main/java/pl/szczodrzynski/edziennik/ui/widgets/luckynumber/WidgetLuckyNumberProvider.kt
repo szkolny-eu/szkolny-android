@@ -48,7 +48,7 @@ class WidgetLuckyNumberProvider : AppWidgetProvider() {
             val tomorrowValue = tomorrow.value
 
             val profile = app.db.profileDao().getByIdNow(config.profileId)
-            val luckyNumber = app.db.luckyNumberDao().getNearestFutureNow(config.profileId, todayValue)
+            val luckyNumber = app.db.luckyNumberDao().getNearestFutureNow(config.profileId, today)
             val isYours = luckyNumber?.number == profile?.studentNumber
 
             var noNumberText = false
