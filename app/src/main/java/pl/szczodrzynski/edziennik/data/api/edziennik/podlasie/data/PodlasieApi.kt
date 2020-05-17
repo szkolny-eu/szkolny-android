@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data
 
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
-import im.wangchao.mhttp.RequestParams
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
@@ -86,12 +85,11 @@ open class PodlasieApi(open val data: DataPodlasie, open val lastSync: Long?) {
         Request.builder()
                 .url(url)
                 .userAgent(SYSTEM_USER_AGENT)
-                .requestParams(RequestParams(mapOf(
-                        "token" to data.apiToken,
-                        "securityToken" to getSecurityToken(),
-                        "mobileId" to data.app.deviceId,
-                        "ver" to PODLASIE_API_VERSION
-                )))
+                .addParameter("token", data.apiToken)
+                .addParameter("securityToken", getSecurityToken())
+                .addParameter("mobileId", data.app.deviceId)
+                .addParameter("ver", PODLASIE_API_VERSION)
+                .get()
                 .callback(callback)
                 .build()
                 .enqueue()

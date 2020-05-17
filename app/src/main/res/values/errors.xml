@@ -166,6 +166,10 @@
     <string name="error_631" translatable="false">ERROR_PODLASIE_API_OTHER</string>
     <string name="error_632" translatable="false">ERROR_PODLASIE_API_DATA_MISSING</string>
 
+    <string name="error_701" translatable="false">ERROR_LOGIN_GDYNIA_WEB_INVALID_CREDENTIALS</string>
+    <string name="error_709" translatable="false">ERROR_LOGIN_GDYNIA_WEB_MISSING_SESSION_ID</string>
+    <string name="error_710" translatable="false">ERROR_LOGIN_GDYNIA_WEB_OTHER</string>
+
     <string name="error_801" translatable="false">ERROR_TEMPLATE_WEB_OTHER</string>
 
     <string name="error_900" translatable="false">EXCEPTION_API_TASK</string>
@@ -353,6 +357,10 @@
     <string name="error_630_reason">ERROR_PODLASIE_API_NO_TOKEN</string>
     <string name="error_631_reason">ERROR_PODLASIE_API_OTHER</string>
     <string name="error_632_reason">Brak danych. Zgłoś błąd programiście.</string>
+
+    <string name="error_701_reason">Niepoprawna nazwa użytkownika lub hasło</string>
+    <string name="error_709_reason">Brakujące ID sesji. Zgłoś błąd programiście.</string>
+    <string name="error_710_reason">Wystąpił błąd podczas logowania</string>
 
     <string name="error_801_reason">ERROR_TEMPLATE_WEB_OTHER</string>
 

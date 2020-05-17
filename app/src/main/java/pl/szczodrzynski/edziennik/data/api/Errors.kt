@@ -206,6 +206,10 @@ const val ERROR_PODLASIE_API_NO_TOKEN                       = 630
 const val ERROR_PODLASIE_API_OTHER                          = 631
 const val ERROR_PODLASIE_API_DATA_MISSING                   = 632
 
+const val ERROR_LOGIN_GDYNIA_WEB_INVALID_CREDENTIALS        = 701
+const val ERROR_LOGIN_GDYNIA_WEB_MISSING_SESSION_ID         = 709
+const val ERROR_LOGIN_GDYNIA_WEB_OTHER                      = 710
+
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 
 const val EXCEPTION_API_TASK                                = 900

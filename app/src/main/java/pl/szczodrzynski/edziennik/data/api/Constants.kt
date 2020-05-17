@@ -122,3 +122,7 @@ const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"
 const val PODLASIE_API_VERSION = "1.0.31"
 const val PODLASIE_API_URL = "https://cpdklaser.zeto.bialystok.pl/api"
 const val PODLASIE_API_USER_ENDPOINT = "/pobierzDaneUcznia"
+
+const val GDYNIA_WEB_URL = "https://nasze.miasto.gdynia.pl/ed_miej"
+const val GDYNIA_WEB_LOGIN = "login.pl"
+const val GDYNIA_WEB_LOGIN_CHECK = "login_check.pl"

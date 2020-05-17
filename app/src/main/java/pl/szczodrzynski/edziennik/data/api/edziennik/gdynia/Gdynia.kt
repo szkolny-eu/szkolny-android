@@ -19,7 +19,7 @@ import pl.szczodrzynski.edziennik.utils.Utils
 
 class Gdynia(val app: App, val profile: Profile?, val loginStore: LoginStore, val callback: EdziennikCallback) : EdziennikInterface {
     companion object {
-        const val TAG = "Gdynia"
+private const val TAG = "Gdynia"
     }
 
     val internalErrorList = mutableListOf<Int>()

@@ -33,4 +33,43 @@ class DataGdynia(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     var loginPassword: String?
         get() { mLoginPassword = mLoginPassword ?: loginStore.getLoginData("password", null); return mLoginPassword }
         set(value) { loginStore.putLoginData("password", value); mLoginPassword = value }
+
+    /*   __          __  _
+         \ \        / / | |
+          \ \  /\  / /__| |__
+           \ \/  \/ / _ \ '_ \
+            \  /\  /  __/ |_) |
+             \/  \/ \___|_._*/
+
+    /*
+                        .-.
+                _.--"""".o/         .-.-._
+             __'   ."""; {        _J ,__  `.
+            ; o\.-.`._.'J;       ; /  `- /  ;
+            `--i`". `" .';       `._ __.'   |
+                \  `"""   \         `;      :
+                 `."-.     ;     ____/     /
+                   `-.`     `-.-'    `"-..'
+     ___              `;__.-'"           `.
+  .-{_  `--._         /.-"                 `-.
+ /    ""T    ""---...'  _.-""   """-.         `.
+;       /                 __.-"".    `.         `,             _..
+ \     /            __.-""       '.    \          `.,__      .'L' }
+  `---"`-.__    __."    .-.       j     `.         :   `.  .' ,' /
+            """"       /   \     :        `.       |     F' \   ;
+                      ;     `-._,L_,-""-.   `-,    ;     `   ; /
+                       `.       7        `-._  `.__/_        \/
+                         \     _;            \  _.'  `-.     /
+                          `---" `.___,,      ;""        \  .'
+                                    _/       ;           `"
+                                 .-"     _,-'
+                                {       "";
+                                 ;-.____.'`.
+                                  `.  \ '.  :
+                                    \  : : /
+                                     `':*/
+    private var mWebSid: String? = null
+    var webSid: String?
+        get() { mWebSid = mWebSid ?: loginStore.getLoginData("webSid", null); return mWebSid }
+        set(value) { loginStore.putLoginData("webSid", value); mWebSid = value }
 }
