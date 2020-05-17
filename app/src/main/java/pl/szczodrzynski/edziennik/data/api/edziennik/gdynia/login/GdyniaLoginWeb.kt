@@ -36,24 +36,7 @@ class GdyniaLoginWeb(val data: DataGdynia, val onSuccess: () -> Unit) {
     }
 
     private fun loginWithCredentials() {
-        val checkCallback = object : TextCallbackHandler() {
-            override fun onSuccess(text: String?, response: Response?) {
-                val cookies = data.app.cookieJar.getAll("nasze.miasto.gdynia.pl")
-
-                data.webSid = cookies["sid"]
-
-                onSuccess()
-                return
-            }
-
-            override fun onFailure(response: Response?, throwable: Throwable?) {
-                data.error(ApiError(TAG, ERROR_REQUEST_FAILURE)
-                        .withResponse(response)
-                        .withThrowable(throwable))
-            }
-        }
-
-        val loginCallback = object : TextCallbackHandler() {
+        val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
                 if (text == null || response == null) {
                     data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
@@ -75,7 +58,8 @@ class GdyniaLoginWeb(val data: DataGdynia, val onSuccess: () -> Unit) {
                     }
                 }
 
-                val sid = "sid=(.*?)&".toRegex().find(text)?.get(1)
+                val cookies = data.app.cookieJar.getAll("nasze.miasto.gdynia.pl")
+                val sid = cookies["sid"]
 
                 if (sid == null) {
                     data.error(ApiError(TAG, ERROR_LOGIN_GDYNIA_WEB_MISSING_SESSION_ID)
@@ -84,15 +68,10 @@ class GdyniaLoginWeb(val data: DataGdynia, val onSuccess: () -> Unit) {
                     return
                 }
 
-                Request.builder()
-                        .url("$GDYNIA_WEB_URL/$GDYNIA_WEB_LOGIN_CHECK")
-                        .userAgent(SYSTEM_USER_AGENT)
-                        .addParameter("sid", sid)
-                        .addParameter("url_back", "")
-                        .get()
-                        .callback(checkCallback)
-                        .build()
-                        .enqueue()
+                data.webSid = sid
+
+                onSuccess()
+                return
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
@@ -111,7 +90,7 @@ class GdyniaLoginWeb(val data: DataGdynia, val onSuccess: () -> Unit) {
                 .addParameter("pass_md5", data.loginPassword?.md5())
                 .addParameter("url_back", "")
                 .post()
-                .callback(loginCallback)
+                .callback(callback)
                 .build()
                 .enqueue()
     }
