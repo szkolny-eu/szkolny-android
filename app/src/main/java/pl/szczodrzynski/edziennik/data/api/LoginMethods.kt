@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLoginWeb
+import pl.szczodrzynski.edziennik.data.api.edziennik.gdynia.login.GdyniaLoginWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginApi
@@ -154,6 +155,11 @@ val podlasieLoginMethods = listOf(
 const val LOGIN_TYPE_GDYNIA = 7
 const val LOGIN_MODE_GDYNIA_WEB = 0
 const val LOGIN_METHOD_GDYNIA_WEB = 100
+val gdyniaLoginMethods = listOf(
+        LoginMethod(LOGIN_TYPE_GDYNIA, LOGIN_METHOD_GDYNIA_WEB, GdyniaLoginWeb::class.java)
+                .withIsPossible { _, _ -> true }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
+)
 
 val templateLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_TEMPLATE, LOGIN_METHOD_TEMPLATE_WEB, TemplateLoginWeb::class.java)

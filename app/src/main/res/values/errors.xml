@@ -193,6 +193,7 @@
     <string name="error_931" translatable="false">EXCEPTION_VULCAN_WEB_LOGIN</string>
     <string name="error_932" translatable="false">EXCEPTION_VULCAN_WEB_REQUEST</string>
     <string name="error_940" translatable="false">EXCEPTION_PODLASIE_API_REQUEST</string>
+    <string name="error_950" translatable="false">EXCEPTION_GDYNIA_WEB_REQUEST</string>
 
     <string name="error_1201" translatable="false">LOGIN_NO_ARGUMENTS</string>
 
@@ -385,6 +386,7 @@
     <string name="error_931_reason">EXCEPTION_VULCAN_WEB_LOGIN</string>
     <string name="error_932_reason">EXCEPTION_VULCAN_WEB_REQUEST</string>
     <string name="error_940_reason">Zgłoś błąd: wyjątek w API PPE</string>
+    <string name="error_950_reason">Zgłoś błąd: wyjątek w dzienniku Platformy Miejskiej Gdyni</string>
 
     <string name="error_1201_reason">Nie podano parametrów</string>
 </resources>

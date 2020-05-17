@@ -34,6 +34,21 @@ class DataGdynia(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mLoginPassword = mLoginPassword ?: loginStore.getLoginData("password", null); return mLoginPassword }
         set(value) { loginStore.putLoginData("password", value); mLoginPassword = value }
 
+    private var mStudentLogin: String? = null
+    var studentLogin: String?
+        get() { mStudentLogin = mStudentLogin ?: profile?.getStudentData("studentLogin", null); return mStudentLogin }
+        set(value) { profile?.putStudentData("studentLogin", value) ?: return; mStudentLogin = value }
+
+    private var mStudentAlias: String? = null
+    var studentAlias: String?
+        get() { mStudentAlias = mStudentAlias ?: profile?.getStudentData("studentAlias", null); return mStudentAlias }
+        set(value) { profile?.putStudentData("studentAlias", value) ?: return; mStudentAlias = value }
+
+    private var mStudentEmail: String? = null
+    var studentEmail: String?
+        get() { mStudentEmail = mStudentEmail ?: profile?.getStudentData("studentEmail", null); return mStudentEmail }
+        set(value) { profile?.putStudentData("studentEmail", value) ?: return; mStudentEmail = value }
+
     /*   __          __  _
          \ \        / / | |
           \ \  /\  / /__| |__

@@ -361,6 +361,37 @@ object LoginInfo {
                                     errorCodes = mapOf()
                             )
                     )
+            ),
+            Register(
+                    loginType = LOGIN_TYPE_GDYNIA,
+                    internalName = "gdynia",
+                    registerName = R.string.login_type_gdynia,
+                    registerLogo = R.drawable.login_logo_gdynia,
+                    loginModes = listOf(
+                            Mode(
+                                    loginMode = LOGIN_MODE_GDYNIA_WEB,
+                                    name = R.string.login_mode_gdynia_web,
+                                    icon = R.drawable.login_mode_gdynia_web,
+                                    guideText = R.string.login_mode_gdynia_web_guide,
+                                    credentials = listOf(
+                                            Credential(
+                                                    keyName = "username",
+                                                    name = R.string.login_hint_username,
+                                                    icon = CommunityMaterial.Icon.cmd_account_outline,
+                                                    emptyText = R.string.login_error_no_username,
+                                                    invalidText = R.string.login_error_incorrect_username,
+                                                    errorCodes = mapOf(),
+                                                    isRequired = true,
+                                                    validationRegex = "^[a-zA-Z0-9_\\-.]+$",
+                                                    caseMode = Credential.CaseMode.UNCHANGED
+                                            ),
+                                            getPasswordCredential("password")
+                                    ),
+                                    errorCodes = mapOf(
+                                            ERROR_LOGIN_GDYNIA_WEB_INVALID_CREDENTIALS to R.string.login_error_incorrect_login_or_password
+                                    )
+                            )
+                    )
             )
     ) }
 

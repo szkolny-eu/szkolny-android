@@ -34,7 +34,7 @@ class TemplateData(val data: DataTemplate, val onSuccess: () -> Unit) {
         }
         val id = data.targetEndpointIds.firstKey()
         val lastSync = data.targetEndpointIds.remove(id)
-        useEndpoint(id, lastSync) { endpointId ->
+        useEndpoint(id, lastSync) {
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }

@@ -1357,4 +1357,7 @@
     <string name="login_mode_podlasie_api_guide">Podaj token aplikacji mobilnej.</string>
     <string name="edziennik_progress_login_podlasie_api">Logowanie do PPE…</string>
     <string name="edziennik_progress_login_gdynia_web">Logowanie do dziennika gdyńskiego…</string>
+    <string name="login_type_gdynia">Platforma Miejska Gdyni</string>
+    <string name="login_mode_gdynia_web">Zaloguj używając nazwy użytkownika i hasła</string>
+    <string name="login_mode_gdynia_web_guide">Podaj nazwę użytkownika oraz hasło, za pomocą których logujesz się na stronie internetowej dziennika.</string>
 </resources>

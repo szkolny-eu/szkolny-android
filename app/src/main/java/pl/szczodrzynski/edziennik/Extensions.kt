@@ -1247,3 +1247,13 @@ operator fun <K, V> Iterable<Pair<K, V>>.get(key: K): V? {
 }
 
 fun ByteArray.toHexString() = joinToString("") { "%02x".format(it) }
+
+fun String?.nullIfEmpty() = when {
+    this.isNullOrEmpty() -> null
+    else -> this
+}
+
+fun String?.nullIfBlank() = when {
+    this.isNullOrBlank() -> null
+    else -> this
+}

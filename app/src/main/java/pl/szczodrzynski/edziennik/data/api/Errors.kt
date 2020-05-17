@@ -233,5 +233,6 @@ const val ERROR_ONEDRIVE_DOWNLOAD                           = 930
 const val EXCEPTION_VULCAN_WEB_LOGIN                        = 931
 const val EXCEPTION_VULCAN_WEB_REQUEST                      = 932
 const val EXCEPTION_PODLASIE_API_REQUEST                    = 940
+const val EXCEPTION_GDYNIA_WEB_REQUEST                      = 950
 
 const val LOGIN_NO_ARGUMENTS                                = 1201
