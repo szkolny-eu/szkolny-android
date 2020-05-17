@@ -151,6 +151,10 @@ val podlasieLoginMethods = listOf(
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
 )
 
+const val LOGIN_TYPE_GDYNIA = 7
+const val LOGIN_MODE_GDYNIA_WEB = 0
+const val LOGIN_METHOD_GDYNIA_WEB = 100
+
 val templateLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_TEMPLATE, LOGIN_METHOD_TEMPLATE_WEB, TemplateLoginWeb::class.java)
                 .withIsPossible { _, _ -> true }
