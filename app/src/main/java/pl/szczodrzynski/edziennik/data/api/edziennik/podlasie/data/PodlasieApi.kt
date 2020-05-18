@@ -102,7 +102,7 @@ open class PodlasieApi(open val data: DataPodlasie, open val lastSync: Long?) {
                 .also { it.timeZone = TimeZone.getTimeZone("Europe/Warsaw") }.format(System.currentTimeMillis())
         val instance = MessageDigest.getInstance("SHA-256")
         val digest = instance.digest("-EYlwYu8u16miVd8tT?oO7cvoUVQrQN0vr!$format".toByteArray()).toHexString()
-        val digest2 = instance.digest(data.apiToken!!.toByteArray()).toHexString()
+        val digest2 = instance.digest((data.apiToken ?: "").toByteArray()).toHexString()
         return instance.digest("$digest$digest2".toByteArray()).toHexString()
     }
 }
