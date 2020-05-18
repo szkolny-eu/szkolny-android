@@ -112,7 +112,9 @@ public class Date implements Comparable<Date> {
             Calendar c = Calendar.getInstance();
             c.set(Integer.parseInt(dateTime.substring(0, 4)), Integer.parseInt(dateTime.substring(5, 7)) - 1, Integer.parseInt(dateTime.substring(8, 10)), Integer.parseInt(dateTime.substring(11, 13)), Integer.parseInt(dateTime.substring(14, 16)), Integer.parseInt(dateTime.substring(17, 19)));
             c.set(Calendar.MILLISECOND, 0);
-            c.setTimeZone(TimeZone.getTimeZone("UTC"));
+            if (dateTime.endsWith("Z")) {
+                c.setTimeZone(TimeZone.getTimeZone("UTC"));
+            }
             return c.getTimeInMillis();
         }
         catch (Exception e) {
