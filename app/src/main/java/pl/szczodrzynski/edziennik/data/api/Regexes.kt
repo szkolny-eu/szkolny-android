@@ -40,7 +40,7 @@ object Regexes {
         """\(([0-9A-ząęóżźńśłć]*?)\)$""".toRegex(DOT_MATCHES_ALL)
     }
     val MOBIDZIENNIK_LUCKY_NUMBER by lazy {
-        """class="szczesliwy_numerek".*>0*([0-9]+)(?:/0*[0-9]+)*</a>""".toRegex(DOT_MATCHES_ALL)
+        """class="szczesliwy_numerek".*?>0?([0-9]+)/?0?([0-9]+)?</a>""".toRegex(DOT_MATCHES_ALL)
     }
     val MOBIDZIENNIK_CLASS_CALENDAR by lazy {
         """events: (.+),$""".toRegex(RegexOption.MULTILINE)
