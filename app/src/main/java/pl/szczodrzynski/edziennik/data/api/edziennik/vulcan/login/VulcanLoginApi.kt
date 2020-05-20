@@ -220,6 +220,7 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                 .addParameter("AppVersion", VULCAN_API_APP_VERSION)
                 .addParameter("RemoteMobileAppVersion", VULCAN_API_APP_VERSION)
                 .addParameter("RemoteMobileAppName", VULCAN_API_APP_NAME)
+                .addParameter("FirebaseTokenKey", data.app.config.sync.tokenVulcan)
                 .postJson()
                 .allowErrorCode(HTTP_BAD_REQUEST)
                 .callback(callback)

@@ -43,6 +43,7 @@ import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity
 import pl.szczodrzynski.edziennik.utils.*
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
@@ -257,6 +258,10 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 val pushMobidziennikApp = FirebaseApp.initializeApp(
                         this@App,
                         FirebaseOptions.Builder()
+                                .setProjectId("mobidziennik")
+                                .setStorageBucket("mobidziennik.appspot.com")
+                                .setDatabaseUrl("https://mobidziennik.firebaseio.com")
+                                .setGcmSenderId("747285019373")
                                 .setApiKey("AIzaSyCi5LmsZ5BBCQnGtrdvWnp1bWLCNP8OWQE")
                                 .setApplicationId("1:747285019373:android:f6341bf7b158621d")
                                 .build(),
@@ -266,6 +271,10 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 val pushLibrusApp = FirebaseApp.initializeApp(
                         this@App,
                         FirebaseOptions.Builder()
+                                .setProjectId("synergiadru")
+                                .setStorageBucket("synergiadru.appspot.com")
+                                .setDatabaseUrl("https://synergiadru.firebaseio.com")
+                                .setGcmSenderId("513056078587")
                                 .setApiKey("AIzaSyDfTuEoYPKdv4aceEws1CO3n0-HvTndz-o")
                                 .setApplicationId("1:513056078587:android:1e29083b760af544")
                                 .build(),
@@ -275,6 +284,10 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 val pushVulcanApp = FirebaseApp.initializeApp(
                         this@App,
                         FirebaseOptions.Builder()
+                                .setProjectId("dzienniczekplus")
+                                .setStorageBucket("dzienniczekplus.appspot.com")
+                                .setDatabaseUrl("https://dzienniczekplus.firebaseio.com")
+                                .setGcmSenderId("987828170337")
                                 .setApiKey("AIzaSyDW8MUtanHy64_I0oCpY6cOxB3jrvJd_iA")
                                 .setApplicationId("1:987828170337:android:ac97431a0a4578c3")
                                 .build(),
@@ -284,10 +297,12 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 try {
                     FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
+                        d("Firebase", "Got App token: $token")
                         config.sync.tokenApp = token
                     }
                     FirebaseInstanceId.getInstance(pushMobidziennikApp).instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
+                        d("Firebase", "Got Mobidziennik2 token: $token")
                         if (token != config.sync.tokenMobidziennik) {
                             config.sync.tokenMobidziennik = token
                             config.sync.tokenMobidziennikList = listOf()
@@ -295,6 +310,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                     }
                     FirebaseInstanceId.getInstance(pushLibrusApp).instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
+                        d("Firebase", "Got Librus token: $token")
                         if (token != config.sync.tokenLibrus) {
                             config.sync.tokenLibrus = token
                             config.sync.tokenLibrusList = listOf()
@@ -302,6 +318,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                     }
                     FirebaseInstanceId.getInstance(pushVulcanApp).instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
+                        d("Firebase", "Got Vulcan token: $token")
                         if (token != config.sync.tokenVulcan) {
                             config.sync.tokenVulcan = token
                             config.sync.tokenVulcanList = listOf()
