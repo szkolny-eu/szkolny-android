@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiUpdateSemester
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.HTTP_BAD_REQUEST
 import java.util.*
@@ -202,6 +203,13 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
 
         val deviceNameSuffix = " - nie usuwać"
 
+        val szkolnyApi = SzkolnyApi(data.app)
+        val firebaseToken = szkolnyApi.runCatching({
+            getFirebaseToken("vulcan")
+        }, onError = {
+            // screw errors
+        }) ?: data.app.config.sync.tokenVulcan
+
         Request.builder()
                 .url("${data.apiUrl}$VULCAN_API_ENDPOINT_CERTIFICATE")
                 .userAgent(VULCAN_API_USER_AGENT)
@@ -220,7 +228,7 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                 .addParameter("AppVersion", VULCAN_API_APP_VERSION)
                 .addParameter("RemoteMobileAppVersion", VULCAN_API_APP_VERSION)
                 .addParameter("RemoteMobileAppName", VULCAN_API_APP_NAME)
-                .addParameter("FirebaseTokenKey", data.app.config.sync.tokenVulcan)
+                .addParameter("FirebaseTokenKey", firebaseToken ?: "")
                 .postJson()
                 .allowErrorCode(HTTP_BAD_REQUEST)
                 .callback(callback)

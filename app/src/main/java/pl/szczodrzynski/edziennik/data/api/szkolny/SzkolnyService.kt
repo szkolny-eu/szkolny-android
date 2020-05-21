@@ -35,4 +35,7 @@ interface SzkolnyService {
 
     @GET("appLogin/platforms/{registerName}")
     fun appLoginPlatforms(@Path("registerName") registerName: String): Call<ApiResponse<List<LoginInfo.Platform>>>
+
+    @GET("firebase/token/{registerName}")
+    fun firebaseToken(@Path("registerName") registerName: String): Call<ApiResponse<String>>
 }
