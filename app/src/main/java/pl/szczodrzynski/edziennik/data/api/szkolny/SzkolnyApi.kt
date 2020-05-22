@@ -335,4 +335,10 @@ class SzkolnyApi(val app: App) : CoroutineScope {
 
         return parseResponse(response)
     }
+
+    @Throws(Exception::class)
+    fun getFirebaseToken(registerName: String): String {
+        val response = api.firebaseToken(registerName).execute()
+        return parseResponse(response)
+    }
 }
