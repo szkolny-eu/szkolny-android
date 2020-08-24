@@ -25,6 +25,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.utils.Utils.d
 
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {
@@ -108,6 +109,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     }
 
     override fun cancel() {
+        d(TAG, "Task ${toString()} cancelling...")
         edziennikInterface?.cancel()
     }
 

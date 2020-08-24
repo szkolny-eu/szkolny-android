@@ -110,7 +110,6 @@ class Edudziennik(val app: App, val profile: Profile?, val loginStore: LoginStor
     override fun cancel() {
         d(TAG, "Cancelled")
         data.cancel()
-        callback.onCompleted()
     }
 
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {
