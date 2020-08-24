@@ -36,11 +36,14 @@ class LibrusRecaptchaHelper(
     }
 
     private var timeout: Job? = null
+    private var timedOut = false
 
     inner class WebViewClient : android.webkit.WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             timeout?.cancel()
-            onSuccess(url)
+            if (!timedOut) {
+                onSuccess(url)
+            }
             return true
         }
     }
@@ -50,6 +53,7 @@ class LibrusRecaptchaHelper(
             webView.loadDataWithBaseURL(url, html, "text/html", "UTF-8", null)
         }
         timeout = startCoroutineTimer(delayMillis = 10000L) {
+            timedOut = true
             onTimeout()
         }
     }
