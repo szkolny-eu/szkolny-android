@@ -343,9 +343,9 @@
     <string name="edziennik_progress_login_idziennik_api">Logowanie do iDziennika…</string>
     <string name="edziennik_progress_login_idziennik_web">Logowanie do iDziennika…</string>
     <string name="edziennik_progress_login_librus_api">Logowanie do API</string>
-    <string name="edziennik_progress_login_librus_messages">Logowanie do wiadomości Librus</string>
-    <string name="edziennik_progress_login_librus_portal">Logowanie do Portalu Librus</string>
-    <string name="edziennik_progress_login_librus_synergia">Logowanie do Librus Synergia</string>
+    <string name="edziennik_progress_login_librus_messages">Logowanie do wiadomości LIBRUS®</string>
+    <string name="edziennik_progress_login_librus_portal">Logowanie do Portalu LIBRUS® Rodzina</string>
+    <string name="edziennik_progress_login_librus_synergia">Logowanie do LIBRUS® Synergia</string>
     <string name="edziennik_progress_login_mobidziennik_api">Logowanie do API MobiDziennika…</string>
     <string name="edziennik_progress_login_mobidziennik_api2">Logowanie do API MobiDziennika…</string>
     <string name="edziennik_progress_login_mobidziennik_web">Logowanie do MobiDziennika…</string>
@@ -621,13 +621,13 @@
     <string name="login_iuczniowie_help_title">Pomoc - iDziennik Progman</string>
     <string name="login_iuczniowie_subtitle">Zaloguj się danymi, które otrzymałeś od swojej szkoły. W razie problemów skorzystaj z przycisku pod formularzem.</string>
     <string name="login_iuczniowie_title">Zaloguj się - iDziennik Progman</string>
-    <string name="login_librus_captcha_title">Librus - logowanie</string>
-    <string name="login_librus_help_subtitle">Aby korzystać z aplikacji musisz posiadać konto Librus. Możesz je założyć na stronie portal.librus.pl. Użyj danych, które wpisujesz w miejsca zaznaczone na obrazku.</string>
-    <string name="login_librus_help_title">Pomoc - Librus</string>
-    <string name="login_librus_jst_subtitle">Zaloguj się tokenem i kodem PIN, który można wygenerować po zalogowanu się do Synergii w zakładce Aplikacje mobilne.</string>
-    <string name="login_librus_jst_title">Zaloguj się - Librus JST</string>
-    <string name="login_librus_subtitle">Zaloguj się danymi swojego konta Librus (założonego wcześniej na swój adres e-mail). Nie należy logować się danymi otrzymanymi ze swojej szkoły. W razie problemów skorzystaj z przycisku pod formularzem.</string>
-    <string name="login_librus_title">Zaloguj się - Librus</string>
+    <string name="login_librus_captcha_title">LIBRUS® - logowanie</string>
+    <string name="login_librus_help_subtitle">Aby korzystać z aplikacji musisz posiadać konto LIBRUS® Rodzina. Możesz je założyć na stronie portal.librus.pl. Użyj danych, które wpisujesz w miejsca zaznaczone na obrazku.</string>
+    <string name="login_librus_help_title">Pomoc do logowania LIBRUS®</string>
+    <string name="login_librus_jst_subtitle">Zaloguj się tokenem i kodem PIN, który można wygenerować po zalogowanu się do LIBRUS® Synergia w zakładce Aplikacje mobilne.</string>
+    <string name="login_librus_jst_title">Zaloguj się do LIBRUS® JST</string>
+    <string name="login_librus_subtitle">Zaloguj się danymi swojego konta LIBRUS® Rodzina (założonego wcześniej na swój adres e-mail). Nie należy logować się danymi otrzymanymi ze swojej szkoły. W razie problemów skorzystaj z przycisku pod formularzem.</string>
+    <string name="login_librus_title">Zaloguj się do LIBRUS® Synergia</string>
     <string name="login_migration_error_format">Wystąpił błąd w migracji danych. Został on już zgłoszony, co oznacza, że postaram się go naprawić.\n\nMożesz zacząć korzystać z aplikacji, jednak w przypadku jakichś błędów spróbuj usunąć profil i zalogować się ponownie.</string>
     <string name="login_migration_subtitle">Aplikacja otrzymała dużą aktualizację. Jeżeli będą występować jakieś problemy w działaniu, możesz się ze mną skontaktować używając pozycji Pomoc i opinie w menu.</string>
     <string name="login_migration_title">Szkolny.eu został zaktualizowany</string>
@@ -861,7 +861,7 @@
     <string name="notification_updates_summary">Szkolny.eu: aktualizacja</string>
     <string name="notification_updates_text">Kliknij, aby pobrać wersję %s</string>
     <string name="notification_updates_title">Dostępna aktualizacja</string>
-    <string name="notification_user_action_required_captcha_librus">Librus: wymagane rozwiązanie zadania Captcha. Kliknij, aby kontynuować logowanie do dziennika.</string>
+    <string name="notification_user_action_required_captcha_librus">Logowanie do LIBRUS® Rodzina: wymagane rozwiązanie zadania Captcha. Kliknij, aby kontynuować logowanie do dziennika.</string>
     <string name="notification_user_action_required_text">Problem, który uniemożliwia synchronizację musi być rozwiązany przez użytkownika. Kliknij, aby uzyskać więcej informacji.</string>
     <string name="notification_user_action_required_title">Wymagane działanie w aplikacji</string>
     <string name="notifications_no_data">Brak powiadomień.</string>
@@ -1118,8 +1118,8 @@
     <string name="sync_error_invalid_school_name">Podano nieprawidłową nazwę szkoły lub zawiera niedozwolone znaki.</string>
     <string name="sync_error_invalid_server_address">Podany adres serwera jest nieprawidłowy. Upewnij się, że jest wpisany poprawnie oraz nie zawiera żadnych spacji.\n\nWpisywany adres nie powinien zawierać części http://…mobidziennik.pl.</string>
     <string name="sync_error_invalid_token">Podano nieprawidłowy token.</string>
-    <string name="sync_error_librus_disconnected">Konto LIBRUS utraciło połączenie z kontem Synergia. Zaloguj się na stronie portal.librus.pl lub w oficjalnej aplikacji Librus i postępuj zgodnie z instrukcją, aby naprawić konto.</string>
-    <string name="sync_error_librus_not_activated">Konto LIBRUS nie zostało aktywowane. Aktywuj konto korzystając z otrzymanego e-maila.</string>
+    <string name="sync_error_librus_disconnected">Konto LIBRUS® Rodzina utraciło połączenie z kontem LIBRUS® Synergia. Zaloguj się na stronie portal.librus.pl lub w oficjalnej aplikacji "Librus" i postępuj zgodnie z instrukcją, aby naprawić konto.</string>
+    <string name="sync_error_librus_not_activated">Konto LIBRUS® Rodzina nie zostało aktywowane. Aktywuj konto korzystając z otrzymanego e-maila.</string>
     <string name="sync_error_login_error">Bład logowania</string>
     <string name="sync_error_maintenance">Chwilowa przerwa techniczna\n\nSpróbuj ponownie później</string>
     <string name="sync_error_no_api_url">Nie znaleziono adresu API. Spróbuj zalogować urządzenie ponownie.</string>
@@ -1132,7 +1132,7 @@
     <string name="sync_error_register_student_not_associated_format">Uczeń %s nie jest przypisany do tego konta w dzienniku (login: %s).\n\nSpróbuj zalogować się ponownie, aczkolwiek może to oznaczać przerwę techniczną e-dziennika.</string>
     <string name="sync_error_saving_data">Błąd podczas zapisywania danych. Zgłoś błąd deweloperowi.</string>
     <string name="sync_error_ssl">Nie można nawiązać bezpiecznego połączenia.</string>
-    <string name="sync_error_synergia_not_activated">Konto Synergia nie zostało potwierdzone przez rodzica/opiekuna prawnego.\n\nZaloguj się na stronie portal.librus.pl i postępuj zgodnie z instrukcjami.</string>
+    <string name="sync_error_synergia_not_activated">Konto LIBRUS® Synergia nie zostało potwierdzone przez rodzica/opiekuna prawnego.\n\nZaloguj się na stronie portal.librus.pl i postępuj zgodnie z instrukcjami.</string>
     <string name="sync_error_timeout">Przekroczono czas oczekiwania.\n\nNiewystarczająca jakość połączenia internetowego lub przerwa techniczna e-dziennika</string>
     <string name="sync_error_unknown">Nieznany błąd</string>
     <string name="sync_feature_agenda">Pobieram terminarz…</string>
@@ -1317,9 +1317,9 @@
     <string name="attendance_details_type_id">ID rodzaju podstawowego</string>
     <string name="login_chooser_title">Jaki masz e-dziennik w szkole?</string>
     <string name="login_chooser_subtitle">Wybierz z jakiego e-dziennika korzysta Twoja szkoła. Jeśli masz kilka kont w różnych dziennikach, będziesz mógł je dodać później.</string>
-    <string name="login_register_librus" translatable="false">Librus/Synergia</string>
+    <string name="login_register_librus" translatable="false">LIBRUS® Rodzina / Synergia</string>
     <string name="login_mode_librus_email">Zaloguj używając e-maila</string>
-    <string name="login_mode_librus_email_hint">Musisz posiadać konto Librus Rodzina</string>
+    <string name="login_mode_librus_email_hint">Musisz posiadać konto LIBRUS® Rodzina</string>
     <string name="login_mode_librus_synergia">Zaloguj używając loginu i hasła</string>
     <string name="login_mode_librus_synergia_hint">Użyj loginu w postaci \"9874123u\"</string>
     <string name="login_mode_librus_jst">Logowanie przez platformę VULCAN</string>
@@ -1337,9 +1337,9 @@
     <string name="login_platform_list_loading">Ładowanie listy e-dzienników…</string>
     <string name="login_platform_list_loading_timeout">Jeśli trwa to za długo, sprawdź swoje połączenie internetowe i zrestartuj aplikację.</string>
     <string name="login_form_title_format">Zaloguj się - %s</string>
-    <string name="login_mode_librus_email_guide">Zaloguj się swoim kontem Librus, które działa w oficjalnej aplikacji Librus oraz na stronie portal.librus.pl, w niebieskim formularzu.\n\nJeśli nie masz konta Librus, możesz je założyć na stronie https://portal.librus.pl/rodzina/register.</string>
-    <string name="login_mode_librus_synergia_guide">Podaj login otrzymany od szkoły, którym logujesz się do Synergii (fioletowy formularz).\n\nZalecane jest logowanie kontem Portal Librus (używając e-maila) w poprzednim kroku.</string>
-    <string name="login_mode_librus_jst_guide">Zaloguj się do Librusa na komputerze, wybierz zakładkę Aplikacje Mobilne, następnie wpisz otrzymany Token i PIN poniżej.</string>
+    <string name="login_mode_librus_email_guide">Zaloguj się swoim kontem LIBRUS® Rodzina, które działa w oficjalnej aplikacji "Librus" oraz na stronie portal.librus.pl, w niebieskim formularzu.\n\nJeśli nie masz konta LIBRUS® Rodzina, możesz je założyć na stronie https://portal.librus.pl/rodzina/register.</string>
+    <string name="login_mode_librus_synergia_guide">Podaj login otrzymany od szkoły, którym logujesz się do LIBRUS® Synergia (fioletowy formularz).\n\nZalecane jest logowanie kontem LIBRUS® Rodzina (używając e-maila) w poprzednim kroku.</string>
+    <string name="login_mode_librus_jst_guide">Zaloguj się do LIBRUS® Synergia na komputerze, wybierz zakładkę Aplikacje Mobilne, następnie wpisz otrzymany Token i PIN poniżej.</string>
     <string name="login_mode_vulcan_api_guide">Zaloguj się do dziennika Vulcan na komputerze, wybierz zakładkę Dostęp Mobilny, kliknij przycisk Zarejestruj urządzenie mobilne. Podaj otrzymany Token, Symbol i PIN w polach poniżej.</string>
     <string name="login_mode_vulcan_web_guide">Podaj dane, którymi logujesz się na stronie internetowej dziennika VULCAN lub na miejskiej platformie.</string>
     <string name="login_mode_mobidziennik_web_guide">Podaj dane, których używasz do logowania na stronie MobiDziennika. Jako adres serwera możesz wpisać adres strony internetowej, na której masz MobiDziennik.</string>
