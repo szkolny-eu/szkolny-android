@@ -617,6 +617,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             swipeRefreshLayout.isRefreshing = false
             return
         }
+        if (app.profile.shouldArchive()) {
+            MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.profile_archiving_title)
+                    .setMessage(
+                            R.string.profile_archiving_format,
+                            app.profile.dateYearEnd.formattedString
+                    )
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+        }
         if (app.profile.isBeforeYear()) {
             MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.profile_year_not_started_title)
@@ -628,21 +638,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .show()
             swipeRefreshLayout.isRefreshing = false
             return
-        }
-        // vulcan hotfix
-        if (app.profile.dateYearEnd.month > 6) {
-            app.profile.dateYearEnd.month = 6
-            app.profile.dateYearEnd.day = 30
-        }
-        if (app.profile.shouldArchive()) {
-            MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.profile_archiving_title)
-                    .setMessage(
-                            R.string.profile_archiving_format,
-                            app.profile.dateYearEnd.formattedString
-                    )
-                    .setPositiveButton(R.string.ok, null)
-                    .show()
         }
         swipeRefreshLayout.isRefreshing = true
         Toast.makeText(this, fragmentToSyncName(navTargetId), Toast.LENGTH_SHORT).show()

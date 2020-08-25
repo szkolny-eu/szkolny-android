@@ -73,11 +73,6 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
     internal fun run(app: App, taskCallback: EdziennikCallback) {
         profile?.let { profile ->
-            // vulcan hotfix
-            if (profile.dateYearEnd.month > 6) {
-                profile.dateYearEnd.month = 6
-                profile.dateYearEnd.day = 30
-            }
             if (profile.archived) {
                 d(TAG, "The profile $profileId is archived")
                 taskCallback.onError(ApiError(TAG, ERROR_PROFILE_ARCHIVED))

@@ -91,7 +91,21 @@ open class Profile(
     @delegate:Ignore
     val currentSemester by lazy { dateToSemester(Date.getToday()) }
 
-    fun shouldArchive() = Date.getToday() >= dateYearEnd && Date.getToday().year > studentSchoolYearStart
+    fun shouldArchive(): Boolean {
+        // vulcan hotfix
+        if (dateYearEnd.month > 6) {
+            dateYearEnd.month = 6
+            dateYearEnd.day = 30
+        }
+        // fix for when versions <4.3 synced 2020/2021 year dates to older profiles during 2020 Jun-Aug
+        if (dateSemester1Start.year > studentSchoolYearStart) {
+            val diff = dateSemester1Start.year - studentSchoolYearStart
+            dateSemester1Start.year -= diff
+            dateSemester2Start.year -= diff
+            dateYearEnd.year -= diff
+        }
+        return Date.getToday() >= dateYearEnd && Date.getToday().year > studentSchoolYearStart
+    }
     fun isBeforeYear() = Date.getToday() < dateSemester1Start
 
     var disabledNotifications: List<Long>? = null
