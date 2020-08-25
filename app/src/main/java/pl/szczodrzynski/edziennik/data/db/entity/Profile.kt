@@ -112,14 +112,18 @@ open class Profile(
         get() = accountName != null
 
     override fun getImageDrawable(context: Context): Drawable {
+        if (archived) {
+            return context.getDrawableFromRes(pl.szczodrzynski.edziennik.R.drawable.profile_archived).also {
+                it.colorFilter = PorterDuffColorFilter(colorFromName(name), PorterDuff.Mode.DST_OVER)
+            }
+        }
 
         if (!image.isNullOrEmpty()) {
             try {
-                if (image?.endsWith(".gif", true) == true) {
-                    return GifDrawable(image ?: "")
-                }
-                else {
-                    return RoundedBitmapDrawableFactory.create(context.resources, image ?: "")
+                return if (image?.endsWith(".gif", true) == true) {
+                    GifDrawable(image ?: "")
+                } else {
+                    RoundedBitmapDrawableFactory.create(context.resources, image ?: "")
                     //return Drawable.createFromPath(image ?: "") ?: throw Exception()
                 }
             }
@@ -131,9 +135,13 @@ open class Profile(
         return context.getDrawableFromRes(R.drawable.profile).also {
             it.colorFilter = PorterDuffColorFilter(colorFromName(name), PorterDuff.Mode.DST_OVER)
         }
-
     }
+
     override fun getImageHolder(context: Context): ImageHolder {
+        if (archived) {
+            return ImageHolder(pl.szczodrzynski.edziennik.R.drawable.profile_archived, colorFromName(name))
+        }
+
         return if (!image.isNullOrEmpty()) {
             try {
                 ProfileImageHolder(image ?: "")

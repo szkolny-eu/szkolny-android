@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.databinding.LabFragmentBinding
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.fslogin.decode
 import kotlin.coroutines.CoroutineContext
 
@@ -66,6 +67,15 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             app.profile.archived = false
             app.profile.archiveId = null
             app.profileSave()
+        }
+
+        val profiles = app.db.profileDao().allNow
+        b.profile.clear()
+        b.profile += profiles.map { TextInputDropDown.Item(it.id.toLong(), "${it.id} ${it.name} archived ${it.archived}", tag = it) }
+        b.profile.select(app.profileId.toLong())
+        b.profile.setOnChangeListener {
+            activity.loadProfile(it.id.toInt())
+            return@setOnChangeListener true
         }
 
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
