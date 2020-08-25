@@ -28,7 +28,7 @@ import pl.szczodrzynski.navlib.getDrawableFromRes
 @Entity(tableName = "profiles", primaryKeys = ["profileId"])
 open class Profile(
         @ColumnInfo(name = "profileId")
-        override val id: Int,
+        override var id: Int, /* needs to be var for ProfileArchiver */
         val loginStoreId: Int,
         val loginStoreType: Int,
 
@@ -63,6 +63,12 @@ open class Profile(
 
     var empty = true
     var archived = false
+
+    /**
+     * A unique ID matching [archived] profiles with current ones
+     * and vice-versa.
+     */
+    var archiveId: Int? = null
 
     var syncEnabled = true
     var enableSharedEvents = true

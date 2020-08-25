@@ -62,6 +62,12 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             app.db.eventDao().getRawNow("UPDATE events SET homeworkBody = NULL WHERE profileId = ${App.profileId}")
         }
 
+        b.unarchive.onClick {
+            app.profile.archived = false
+            app.profile.archiveId = null
+            app.profileSave()
+        }
+
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
         startCoroutineTimer(500L, 300L) {
             val text = app.cookieJar.sessionCookies

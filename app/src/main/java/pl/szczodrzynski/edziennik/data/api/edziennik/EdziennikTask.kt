@@ -26,6 +26,7 @@ import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.utils.models.Date
 
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {
@@ -72,10 +73,28 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
     private var edziennikInterface: EdziennikInterface? = null
 
     internal fun run(app: App, taskCallback: EdziennikCallback) {
-        if (profile?.archived == true) {
-            taskCallback.onError(ApiError(TAG, ERROR_PROFILE_ARCHIVED))
-            return
+        profile?.let { profile ->
+            if (profile.dateYearEnd.month > 6) {
+                profile.dateYearEnd.month = 6
+                profile.dateYearEnd.day = 30
+            }
+            if (profile.archived) {
+                d(TAG, "The profile $profileId is archived")
+                taskCallback.onError(ApiError(TAG, ERROR_PROFILE_ARCHIVED))
+                return
+            }
+            else if (Date.getToday() >= profile.dateYearEnd) {
+                d(TAG, "The profile $profileId's year ended on ${profile.dateYearEnd}, archiving")
+                ProfileArchiver(app, profile)
+            }
+            if (Date.getToday() < profile.dateSemester1Start) {
+                d(TAG, "The profile $profileId's school year has not started yet; aborting sync")
+                cancel()
+                taskCallback.onCompleted()
+                return
+            }
         }
+
         edziennikInterface = when (loginStore.type) {
             LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
             LOGIN_TYPE_MOBIDZIENNIK -> Mobidziennik(app, profile, loginStore, taskCallback)

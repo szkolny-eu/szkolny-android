@@ -299,6 +299,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             b.nightlyText.isVisible = true
             b.nightlyText.text = "Nightly\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
         }
+        else if (BuildConfig.VERSION_NAME.contains("daily")) {
+            b.nightlyText.isVisible = true
+            b.nightlyText.text = "Daily\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
+        }
         else
             b.nightlyText.isVisible = false
 
@@ -399,7 +403,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         app.db.profileDao().all.observe(this, Observer { profiles ->
-            drawer.setProfileList(profiles.filter { it.id >= 0 }.toMutableList())
+            drawer.setProfileList(profiles.filter { it.id >= 0 && !it.archived }.toMutableList())
             drawer.currentProfile = App.profileId
         })
 

@@ -61,6 +61,13 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
                 tools:text="Cookies:\n\nsynergia.librus.pl\n    DZIENNIKSID=L01~1234567890abcdef"/>
+
+            <Button
+                android:id="@+id/unarchive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unarchive this profile"
+                android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>
 </layout>
