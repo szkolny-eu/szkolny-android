@@ -295,16 +295,21 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
-        if (BuildConfig.VERSION_NAME.contains("nightly")) {
-            b.nightlyText.isVisible = true
-            b.nightlyText.text = "Nightly\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
+        when {
+            BuildConfig.VERSION_NAME.contains("nightly") -> {
+                b.nightlyText.isVisible = true
+                b.nightlyText.text = "Nightly\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
+            }
+            BuildConfig.VERSION_NAME.contains("daily") -> {
+                b.nightlyText.isVisible = true
+                b.nightlyText.text = "Daily\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
+            }
+            BuildConfig.DEBUG -> {
+                b.nightlyText.isVisible = true
+                b.nightlyText.text = "Debug\n"+BuildConfig.VERSION_NAME
+            }
+            else -> b.nightlyText.isVisible = false
         }
-        else if (BuildConfig.VERSION_NAME.contains("daily")) {
-            b.nightlyText.isVisible = true
-            b.nightlyText.text = "Daily\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
-        }
-        else
-            b.nightlyText.isVisible = false
 
         navLoading = true
 
