@@ -1356,4 +1356,15 @@
     <string name="login_mode_podlasie_api">Zaloguj używając tokenu</string>
     <string name="login_mode_podlasie_api_guide">Podaj token aplikacji mobilnej.</string>
     <string name="edziennik_progress_login_podlasie_api">Logowanie do PPE…</string>
+    <string name="profile_archived_title">Profil jest archiwalny</string>
+    <string name="profile_archived_text">Przeglądasz dane ucznia z poprzedniego roku szkolnego (%d/%d). Synchronizacja oraz pobieranie wiadomości i niektórych zadań domowych zostały wyłączone.\n\nAby otworzyć profil ucznia z aktualnego roku, wybierz "Zamknij archiwum" na stronie głównej.</string>
+    <string name="profile_year_not_started_title">Wakacje ;)</string>
+    <string name="profile_year_not_started_format">Prawdopodobnie rok szkolny dla tego ucznia jeszcze się nie zaczął (zacznie się %s). Spróbuj wykonać synchronizację później.</string>
+    <string name="profile_archiving_title">Koniec roku szkolnego</string>
+    <string name="profile_archiving_format">Rok szkolny zakończył się %s. Dane ucznia z poprzedniego roku zostaną przeniesione do archiwum, aby można było je później przeglądać.</string>
+    <string name="home_archive_title">Profil archiwalny</string>
+    <string name="home_archive_text">Przeglądasz dane ucznia z roku szkolnego %d/%d.</string>
+    <string name="home_archive_close">Zamknij archiwum</string>
+    <string name="home_archive_close_no_target_title">Brak aktualnego profilu</string>
+    <string name="home_archive_close_no_target_text">Uczeń %s nie posiada profilu na tym koncie w aktualnym roku szkolnym. Prawdopodobnie ten profil został usunięty lub uczeń nie uczęszcza już do tej klasy.\n\nAby przejść do aktualnego profilu, wybierz ucznia z listy lub zaloguj się na jego konto przyciskiem Dodaj ucznia.</string>
 </resources>

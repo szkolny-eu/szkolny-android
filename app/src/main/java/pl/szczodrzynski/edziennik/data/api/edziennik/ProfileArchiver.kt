@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2020-8-25.
+ */
+
 package pl.szczodrzynski.edziennik.data.api.edziennik
 
 import android.content.Intent

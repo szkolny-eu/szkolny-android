@@ -33,7 +33,7 @@ class CardItemTouchHelperCallback(private val cardAdapter: HomeCardAdapter, priv
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        removeCard(viewHolder.adapterPosition)
+        removeCard(viewHolder.adapterPosition, cardAdapter)
         cardAdapter.items.removeAt(viewHolder.adapterPosition)
         cardAdapter.notifyItemRemoved(viewHolder.adapterPosition)
     }

@@ -604,6 +604,46 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                   __/ |
                  |__*/
     fun syncCurrentFeature() {
+        if (app.profile.archived) {
+            MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.profile_archived_title)
+                    .setMessage(
+                            R.string.profile_archived_text,
+                            app.profile.studentSchoolYearStart,
+                            app.profile.studentSchoolYearStart + 1
+                    )
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+            swipeRefreshLayout.isRefreshing = false
+            return
+        }
+        if (app.profile.isBeforeYear()) {
+            MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.profile_year_not_started_title)
+                    .setMessage(
+                            R.string.profile_year_not_started_format,
+                            app.profile.dateSemester1Start.formattedString
+                    )
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+            swipeRefreshLayout.isRefreshing = false
+            return
+        }
+        // vulcan hotfix
+        if (app.profile.dateYearEnd.month > 6) {
+            app.profile.dateYearEnd.month = 6
+            app.profile.dateYearEnd.day = 30
+        }
+        if (app.profile.shouldArchive()) {
+            MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.profile_archiving_title)
+                    .setMessage(
+                            R.string.profile_archiving_format,
+                            app.profile.dateYearEnd.formattedString
+                    )
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+        }
         swipeRefreshLayout.isRefreshing = true
         Toast.makeText(this, fragmentToSyncName(navTargetId), Toast.LENGTH_SHORT).show()
         val fragmentParam = when (navTargetId) {

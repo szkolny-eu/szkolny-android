@@ -91,6 +91,9 @@ open class Profile(
     @delegate:Ignore
     val currentSemester by lazy { dateToSemester(Date.getToday()) }
 
+    fun shouldArchive() = Date.getToday() >= dateYearEnd && Date.getToday().year > studentSchoolYearStart
+    fun isBeforeYear() = Date.getToday() < dateSemester1Start
+
     var disabledNotifications: List<Long>? = null
 
     var lastReceiversSync: Long = 0

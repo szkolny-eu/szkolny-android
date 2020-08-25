@@ -26,7 +26,6 @@ import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.models.Date
 
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {
@@ -74,6 +73,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
     internal fun run(app: App, taskCallback: EdziennikCallback) {
         profile?.let { profile ->
+            // vulcan hotfix
             if (profile.dateYearEnd.month > 6) {
                 profile.dateYearEnd.month = 6
                 profile.dateYearEnd.day = 30
@@ -83,11 +83,11 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
                 taskCallback.onError(ApiError(TAG, ERROR_PROFILE_ARCHIVED))
                 return
             }
-            else if (Date.getToday() >= profile.dateYearEnd) {
+            else if (profile.shouldArchive()) {
                 d(TAG, "The profile $profileId's year ended on ${profile.dateYearEnd}, archiving")
                 ProfileArchiver(app, profile)
             }
-            if (Date.getToday() < profile.dateSemester1Start) {
+            if (profile.isBeforeYear()) {
                 d(TAG, "The profile $profileId's school year has not started yet; aborting sync")
                 cancel()
                 taskCallback.onCompleted()
