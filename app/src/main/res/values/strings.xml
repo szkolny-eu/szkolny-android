@@ -351,7 +351,7 @@
     <string name="edziennik_progress_login_mobidziennik_web">Logowanie do MobiDziennika…</string>
     <string name="edziennik_progress_login_template_api">Logowanie do Template API…</string>
     <string name="edziennik_progress_login_template_web">Logowanie do Template WEB…</string>
-    <string name="edziennik_progress_login_vulcan_api">Logowanie do Vulcan API…</string>
+    <string name="edziennik_progress_login_vulcan_api">Logowanie do VULCAN® API…</string>
     <string name="edziennik_szkolny_api_sync_title">Synchronizowanie udostępnionych wydarzeń…</string>
     <string name="edziennik_szkolny_creating_notifications">Tworzenie powiadomień…</string>
     <string name="ellipsis" translatable="false">…</string>
@@ -655,12 +655,12 @@
     <string name="login_sync_subtitle_1_format">Synchronizuję profil</string>
     <string name="login_sync_title">Synchronizacja…</string>
     <string name="login_vulcan_help_register">Rejestracja urządzenia:</string>
-    <string name="login_vulcan_help_subtitle">Zaloguj się w wersji komputerowej dziennika Vulcan, a następnie wybierz opcję Dostęp mobilny. Kliknij Zarejestruj urządzenie mobilne. Możesz wpisać otrzymane dane lub zeskanować kod QR i wpisać sam kod PIN.</string>
-    <string name="login_vulcan_help_title">Pomoc - Vulcan UONET+</string>
+    <string name="login_vulcan_help_subtitle">Zaloguj się w wersji komputerowej dziennika VULCAN®, a następnie wybierz opcję Dostęp mobilny. Kliknij Zarejestruj urządzenie mobilne. Możesz wpisać otrzymane dane lub zeskanować kod QR i wpisać sam kod PIN.</string>
+    <string name="login_vulcan_help_title">Pomoc - VULCAN® UONET+</string>
     <string name="login_vulcan_help_token">Otrzymane dane:</string>
     <string name="login_vulcan_qr">Skanuj kod QR</string>
     <string name="login_vulcan_subtitle">Wybierz opcję Dostęp mobilny na stronie e-dziennika, zarejestruj nowe urządzenie i wpisz otrzymane dane. W razie problemów skorzystaj z przycisku pod formularzem.</string>
-    <string name="login_vulcan_title">Zaloguj się - Vulcan UONET+</string>
+    <string name="login_vulcan_title">Zaloguj się - VULCAN® UONET+</string>
     <string name="main_menu_add">Dodaj…</string>
     <string name="main_menu_agenda_view_type">Zmień widok</string>
     <string name="main_menu_block_timetable">Generuj blokowy plan lekcji</string>
@@ -1322,13 +1322,13 @@
     <string name="login_mode_librus_email_hint">Musisz posiadać konto LIBRUS® Rodzina</string>
     <string name="login_mode_librus_synergia">Zaloguj używając loginu i hasła</string>
     <string name="login_mode_librus_synergia_hint">Użyj loginu w postaci \"9874123u\"</string>
-    <string name="login_mode_librus_jst">Logowanie przez platformę VULCAN</string>
+    <string name="login_mode_librus_jst">Logowanie przez platformę VULCAN®</string>
     <string name="login_mode_librus_jst_hint">Tylko Oświata w Radomiu oraz Innowacyjny Tarnobrzeg</string>
-    <string name="login_type_vulcan" translatable="false">Vulcan UONET+</string>
+    <string name="login_type_vulcan" translatable="false">VULCAN® UONET+</string>
     <string name="login_mode_vulcan_api">Użyj tokenu, symbolu i kodu PIN</string>
-    <string name="login_mode_vulcan_api_hint">Zarejestruj urządzenie na stronie dziennika Vulcan</string>
+    <string name="login_mode_vulcan_api_hint">Zarejestruj urządzenie na stronie dziennika VULCAN®</string>
     <string name="login_mode_vulcan_web">Użyj e-maila/nazwy użytkownika i hasła</string>
-    <string name="login_mode_vulcan_web_hint">Zaloguj danymi, które podajesz na stronie e-dziennika VULCAN</string>
+    <string name="login_mode_vulcan_web_hint">Zaloguj danymi, które podajesz na stronie e-dziennika VULCAN®</string>
     <string name="login_type_mobidziennik" translatable="false">MobiDziennik</string>
     <string name="login_mode_mobidziennik_web">Zaloguj nazwą serwera, loginem i hasłem</string>
     <string name="login_mode_mobidziennik_web_hint">Podaj dane, których używasz na stronie e-dziennika</string>
@@ -1340,10 +1340,10 @@
     <string name="login_mode_librus_email_guide">Zaloguj się swoim kontem LIBRUS® Rodzina, które działa w oficjalnej aplikacji "Librus" oraz na stronie portal.librus.pl, w niebieskim formularzu.\n\nJeśli nie masz konta LIBRUS® Rodzina, możesz je założyć na stronie https://portal.librus.pl/rodzina/register.</string>
     <string name="login_mode_librus_synergia_guide">Podaj login otrzymany od szkoły, którym logujesz się do LIBRUS® Synergia (fioletowy formularz).\n\nZalecane jest logowanie kontem LIBRUS® Rodzina (używając e-maila) w poprzednim kroku.</string>
     <string name="login_mode_librus_jst_guide">Zaloguj się do LIBRUS® Synergia na komputerze, wybierz zakładkę Aplikacje Mobilne, następnie wpisz otrzymany Token i PIN poniżej.</string>
-    <string name="login_mode_vulcan_api_guide">Zaloguj się do dziennika Vulcan na komputerze, wybierz zakładkę Dostęp Mobilny, kliknij przycisk Zarejestruj urządzenie mobilne. Podaj otrzymany Token, Symbol i PIN w polach poniżej.</string>
-    <string name="login_mode_vulcan_web_guide">Podaj dane, którymi logujesz się na stronie internetowej dziennika VULCAN lub na miejskiej platformie.</string>
+    <string name="login_mode_vulcan_api_guide">Zaloguj się do dziennika VULCAN® na komputerze, wybierz zakładkę Dostęp Mobilny, kliknij przycisk Zarejestruj urządzenie mobilne. Podaj otrzymany Token, Symbol i PIN w polach poniżej.</string>
+    <string name="login_mode_vulcan_web_guide">Podaj dane, którymi logujesz się na stronie internetowej dziennika VULCAN® lub na miejskiej platformie.</string>
     <string name="login_mode_mobidziennik_web_guide">Podaj dane, których używasz do logowania na stronie MobiDziennika. Jako adres serwera możesz wpisać adres strony internetowej, na której masz MobiDziennik.</string>
-    <string name="edziennik_progress_login_vulcan_web_main">Logowanie do dziennika Vulcan...</string>
+    <string name="edziennik_progress_login_vulcan_web_main">Logowanie do dziennika VULCAN®...</string>
     <string name="login_type_idziennik">iDziennik Progman / iUczniowie</string>
     <string name="login_mode_idziennik_web">Zaloguj używając nazwy użytkownika i hasła</string>
     <string name="login_mode_idziennik_web_hint">Podaj dane, których używasz na stronie internetowej e-dziennika</string>
@@ -1367,4 +1367,5 @@
     <string name="home_archive_close">Zamknij archiwum</string>
     <string name="home_archive_close_no_target_title">Brak aktualnego profilu</string>
     <string name="home_archive_close_no_target_text">Uczeń %s nie posiada profilu na tym koncie w aktualnym roku szkolnym. Prawdopodobnie ten profil został usunięty lub uczeń nie uczęszcza już do tej klasy.\n\nAby przejść do aktualnego profilu, wybierz ucznia z listy lub zaloguj się na jego konto przyciskiem Dodaj ucznia.</string>
+    <string name="login_copyright_notice">Znaki towarowe zamieszczone w tej aplikacji należą do ich prawowitych właścicieli i są używane wyłącznie w celach informacyjnych.</string>
 </resources>

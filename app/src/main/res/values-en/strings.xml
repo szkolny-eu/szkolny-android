@@ -318,7 +318,7 @@
     <string name="edziennik_progress_login_mobidziennik_web">Logging in to MobiDziennik…</string>
     <string name="edziennik_progress_login_template_api">Logging in to Template API…</string>
     <string name="edziennik_progress_login_template_web">Logging in to Template WEB…</string>
-    <string name="edziennik_progress_login_vulcan_api">Logging in to Vulcan</string>
+    <string name="edziennik_progress_login_vulcan_api">Logging in to VULCAN®</string>
     <string name="edziennik_szkolny_api_sync_title">Syncing shared events…</string>
     <string name="edziennik_szkolny_creating_notifications">Creating notifications…</string>
     <string name="error">Error</string>
@@ -606,12 +606,12 @@
     <string name="login_sync_subtitle_1_format">Syncing profile</string>
     <string name="login_sync_title">Syncing…</string>
     <string name="login_vulcan_help_register">Registering the device:</string>
-    <string name="login_vulcan_help_subtitle">Login into desktop version of Vulcan e-register and select \"Dostęp mobilny\" option. Click \"Zarejestruj urządzenie mobilne\". You can type in the data or scan the QR code and type only the PIN.</string>
-    <string name="login_vulcan_help_title">Help - Vulcan UONET+</string>
+    <string name="login_vulcan_help_subtitle">Login into desktop version of VULCAN® e-register and select \"Dostęp mobilny\" option. Click \"Zarejestruj urządzenie mobilne\". You can type in the data or scan the QR code and type only the PIN.</string>
+    <string name="login_vulcan_help_title">Help - VULCAN® UONET+</string>
     <string name="login_vulcan_help_token">Obtained data:</string>
     <string name="login_vulcan_qr">Scan QR code</string>
     <string name="login_vulcan_subtitle">Choose \"Dostęp mobilny\" on e-register website, register a new device and enter the data. In case of any problems, use the button below the form.</string>
-    <string name="login_vulcan_title">Log in - Vulcan UONET+</string>
+    <string name="login_vulcan_title">Log in - VULCAN® UONET+</string>
     <string name="main_menu_add">Add…</string>
     <string name="main_menu_agenda_view_type">Change view</string>
     <string name="main_menu_block_timetable">Generate a block timetable</string>

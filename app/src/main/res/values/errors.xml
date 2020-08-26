@@ -311,13 +311,13 @@
     <string name="error_311_reason">Nieprawidłowy PIN: pozostała 1 próba</string>
     <string name="error_312_reason">Nieprawidłowy PIN: pozostały 2 próby</string>
     <string name="error_321_reason">Token wygasły, wygeneruj ponownie</string>
-    <string name="error_322_reason">Inny błąd logowania do Vulcana</string>
+    <string name="error_322_reason">Inny błąd logowania do dziennika VULCAN®</string>
     <string name="error_330_reason">Dziennik przedszkolny - logowanie niemożliwe</string>
     <string name="error_331_reason">Brak uczniów przypisanych do konta, bądź ukończyli oni już szkołę</string>
-    <string name="error_340_reason">Vulcan: przerwa techniczna</string>
-    <string name="error_341_reason">Vulcan: błąd żądania, zgłoś błąd</string>
-    <string name="error_342_reason">Vulcan: inny błąd, wyślij zgłoszenie</string>
-    <string name="error_343_reason">Vulcan: nie znaleziono adresu załącznika</string>
+    <string name="error_340_reason">VULCAN®: przerwa techniczna</string>
+    <string name="error_341_reason">VULCAN®: błąd żądania, zgłoś błąd</string>
+    <string name="error_342_reason">VULCAN®: inny błąd, wyślij zgłoszenie</string>
+    <string name="error_343_reason">VULCAN®: nie znaleziono adresu załącznika</string>
 
     <string name="error_401_reason">Nieprawidłowe dane logowania</string>
     <string name="error_402_reason">Nieprawidłowa nazwa szkoły</string>

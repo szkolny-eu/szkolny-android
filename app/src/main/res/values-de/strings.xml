@@ -318,7 +318,7 @@
     <string name="edziennik_progress_login_mobidziennik_web">Einloggen bei MobiDziennik API…</string>
     <string name="edziennik_progress_login_template_api">Einloggen bei Template API…</string>
     <string name="edziennik_progress_login_template_web">Einloggen bei Template WEB…</string>
-    <string name="edziennik_progress_login_vulcan_api">Einloggen bei Vulcan</string>
+    <string name="edziennik_progress_login_vulcan_api">Einloggen bei VULCAN®</string>
     <string name="edziennik_szkolny_api_sync_title">Gemeinsame Ereignisse synchronisieren…</string>
     <string name="edziennik_szkolny_creating_notifications">Erstellen von Benachrichtigungen…</string>
     <string name="error">Fehler</string>
@@ -604,12 +604,12 @@
     <string name="login_sync_subtitle_1_format">Profil synchronisieren</string>
     <string name="login_sync_title">Synchronisation…</string>
     <string name="login_vulcan_help_register">Geräteregistrierung:</string>
-    <string name="login_vulcan_help_subtitle">Melden Sie sich bei der Desktop-Version von Vulcan E-Klassenbuch an und wählen Sie die Option \"Dostęp mobilny\". Klicken Sie \"Zarejestruj urządzenie mobilne\". Sie können die Daten eingeben oder den QR-Code scannen und nur die PIN eingeben</string>
-    <string name="login_vulcan_help_title">Hilfe - Vulkan UONET+</string>
+    <string name="login_vulcan_help_subtitle">Melden Sie sich bei der Desktop-Version von VULCAN® E-Klassenbuch an und wählen Sie die Option \"Dostęp mobilny\". Klicken Sie \"Zarejestruj urządzenie mobilne\". Sie können die Daten eingeben oder den QR-Code scannen und nur die PIN eingeben</string>
+    <string name="login_vulcan_help_title">Hilfe - VULCAN® UONET+</string>
     <string name="login_vulcan_help_token">Erhaltene Daten:</string>
     <string name="login_vulcan_qr">QR-Code scannen</string>
     <string name="login_vulcan_subtitle">Wählen Sie \"Dostęp mobilny\" auf der E-Klassenbuch-Website, registrieren Sie ein neues Gerät und geben Sie die Daten ein.  Bei Problemen verwenden Sie die Schaltfläche unter dem Formular.</string>
-    <string name="login_vulcan_title">Einloggen - Vulkan UONET+</string>
+    <string name="login_vulcan_title">Einloggen - VULCAN® UONET+</string>
     <string name="main_menu_add">Hinzufügen…</string>
     <string name="main_menu_agenda_view_type">Ansicht ändern</string>
     <string name="main_menu_block_timetable">Generieren Sie einen Blockzeitplan</string>
