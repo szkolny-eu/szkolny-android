@@ -65,6 +65,11 @@ class ProfileArchiver(val app: App, val profile: Profile) {
             LOGIN_TYPE_VULCAN -> {
                 // DataVulcan.isApiLoginValid() returns false so it will update the semester
                 profile.removeStudentData("currentSemesterEndDate")
+                profile.removeStudentData("studentSemesterId")
+                profile.removeStudentData("studentSemesterNumber")
+                profile.removeStudentData("semester1Id")
+                profile.removeStudentData("semester2Id")
+                profile.removeStudentData("studentClassId")
             }
             LOGIN_TYPE_IDZIENNIK -> {
                 profile.removeStudentData("schoolYearId")

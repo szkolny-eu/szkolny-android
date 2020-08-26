@@ -70,6 +70,14 @@ class IdziennikLoginWeb(val data: DataIdziennik, val onSuccess: () -> Unit) {
                             data.webSelectedRegister = registerId
                         }
 
+                        // for profiles created after archiving
+                        data.schoolYearId = Regexes.IDZIENNIK_LOGIN_FIRST_SCHOOL_YEAR.find(text)?.let {
+                            it[1].toIntOrNull()
+                        } ?: data.schoolYearId
+                        data.profile?.studentClassName = Regexes.IDZIENNIK_LOGIN_FIRST_STUDENT.findAll(text)
+                                .firstOrNull { it[1].toIntOrNull() == data.registerId }
+                                ?.let { "${it[5]} ${it[6]}" } ?: data.profile?.studentClassName
+
                         data.profile?.let { profile ->
                             Regexes.IDZIENNIK_WEB_LUCKY_NUMBER.find(text)?.also {
                                 val number = it[1].toIntOrNull() ?: return@also
