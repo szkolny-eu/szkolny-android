@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/NavView.TextView.Helper"
-                tools:text="Musisz posiadać konto Librus Rodzina" />
+                tools:text="Musisz posiadać konto LIBRUS® Rodzina" />
         </LinearLayout>
     </LinearLayout>
 </layout>

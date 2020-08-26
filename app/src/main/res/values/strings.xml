@@ -1118,7 +1118,7 @@
     <string name="sync_error_invalid_school_name">Podano nieprawidłową nazwę szkoły lub zawiera niedozwolone znaki.</string>
     <string name="sync_error_invalid_server_address">Podany adres serwera jest nieprawidłowy. Upewnij się, że jest wpisany poprawnie oraz nie zawiera żadnych spacji.\n\nWpisywany adres nie powinien zawierać części http://…mobidziennik.pl.</string>
     <string name="sync_error_invalid_token">Podano nieprawidłowy token.</string>
-    <string name="sync_error_librus_disconnected">Konto LIBRUS® Rodzina utraciło połączenie z kontem LIBRUS® Synergia. Zaloguj się na stronie portal.librus.pl lub w oficjalnej aplikacji "Librus" i postępuj zgodnie z instrukcją, aby naprawić konto.</string>
+    <string name="sync_error_librus_disconnected">Konto LIBRUS® Rodzina utraciło połączenie z kontem LIBRUS® Synergia. Zaloguj się na stronie portal.librus.pl lub w oficjalnej aplikacji "LIBRUS®" i postępuj zgodnie z instrukcją, aby naprawić konto.</string>
     <string name="sync_error_librus_not_activated">Konto LIBRUS® Rodzina nie zostało aktywowane. Aktywuj konto korzystając z otrzymanego e-maila.</string>
     <string name="sync_error_login_error">Bład logowania</string>
     <string name="sync_error_maintenance">Chwilowa przerwa techniczna\n\nSpróbuj ponownie później</string>
@@ -1337,7 +1337,7 @@
     <string name="login_platform_list_loading">Ładowanie listy e-dzienników…</string>
     <string name="login_platform_list_loading_timeout">Jeśli trwa to za długo, sprawdź swoje połączenie internetowe i zrestartuj aplikację.</string>
     <string name="login_form_title_format">Zaloguj się - %s</string>
-    <string name="login_mode_librus_email_guide">Zaloguj się swoim kontem LIBRUS® Rodzina, które działa w oficjalnej aplikacji "Librus" oraz na stronie portal.librus.pl, w niebieskim formularzu.\n\nJeśli nie masz konta LIBRUS® Rodzina, możesz je założyć na stronie https://portal.librus.pl/rodzina/register.</string>
+    <string name="login_mode_librus_email_guide">Zaloguj się swoim kontem LIBRUS® Rodzina, które działa w oficjalnej aplikacji "LIBRUS®" oraz na stronie portal.librus.pl, w niebieskim formularzu.\n\nJeśli nie masz konta LIBRUS® Rodzina, możesz je założyć na stronie https://portal.librus.pl/rodzina/register.</string>
     <string name="login_mode_librus_synergia_guide">Podaj login otrzymany od szkoły, którym logujesz się do LIBRUS® Synergia (fioletowy formularz).\n\nZalecane jest logowanie kontem LIBRUS® Rodzina (używając e-maila) w poprzednim kroku.</string>
     <string name="login_mode_librus_jst_guide">Zaloguj się do LIBRUS® Synergia na komputerze, wybierz zakładkę Aplikacje Mobilne, następnie wpisz otrzymany Token i PIN poniżej.</string>
     <string name="login_mode_vulcan_api_guide">Zaloguj się do dziennika VULCAN® na komputerze, wybierz zakładkę Dostęp Mobilny, kliknij przycisk Zarejestruj urządzenie mobilne. Podaj otrzymany Token, Symbol i PIN w polach poniżej.</string>

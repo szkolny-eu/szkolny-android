@@ -1049,7 +1049,7 @@
     <string name="sync_error_invalid_school_name">Ungültiger Schulname oder verbotene Zeichen</string>
     <string name="sync_error_invalid_server_address">Die Serveradresse ist ungültig. Stellen Sie sicher, dass es korrekt eingegeben wurde und keine Leerzeichen enthält.</string>
     <string name="sync_error_invalid_token">Ungültiges Token angegeben.</string>
-    <string name="sync_error_librus_disconnected">Das LIBRUS® Rodzina-Konto hat die Verbindung zum LIBRUS® Synergia-Konto verloren. Melden Sie sich bei portal.librus.pl oder der offiziellen "Librus" App an und befolgen Sie die Anweisungen zur Reparatur Ihres Kontos.</string>
+    <string name="sync_error_librus_disconnected">Das LIBRUS® Rodzina-Konto hat die Verbindung zum LIBRUS® Synergia-Konto verloren. Melden Sie sich bei portal.librus.pl oder der offiziellen "LIBRUS®" App an und befolgen Sie die Anweisungen zur Reparatur Ihres Kontos.</string>
     <string name="sync_error_librus_not_activated">Das LIBRUS® Rodzina-Konto wurde nicht aktiviert. Aktivieren Sie das Konto mit der E-Mail, die Sie erhalten haben.</string>
     <string name="sync_error_login_error">Anmeldefehler</string>
     <string name="sync_error_maintenance">Technische Pause\n\nVersuchen Sie es später erneut</string>

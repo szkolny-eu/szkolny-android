@@ -1051,7 +1051,7 @@
     <string name="sync_error_invalid_school_name">Invalid school name or forbidden characters</string>
     <string name="sync_error_invalid_server_address">Server address is invalid. Make sure it\'s entered correctly and doesn\'t contain whitespaces.</string>
     <string name="sync_error_invalid_token">Invalid token specified.</string>
-    <string name="sync_error_librus_disconnected">LIBRUS® Rodzina account has lost connection with the LIBRUS® Synergia account. Login on portal.librus.pl or in the "Librus" mobile app and follow the instructions to fix the problem.</string>
+    <string name="sync_error_librus_disconnected">LIBRUS® Rodzina account has lost connection with the LIBRUS® Synergia account. Login on portal.librus.pl or in the "LIBRUS®" mobile app and follow the instructions to fix the problem.</string>
     <string name="sync_error_librus_not_activated">LIBRUS® account is not activated. Activate it using a link in the received e-mail.</string>
     <string name="sync_error_login_error">Login error</string>
     <string name="sync_error_maintenance">Maintenance</string>
