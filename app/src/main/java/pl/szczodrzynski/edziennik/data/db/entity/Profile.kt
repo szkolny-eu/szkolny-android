@@ -106,7 +106,7 @@ open class Profile(
         }
         return Date.getToday() >= dateYearEnd && Date.getToday().year > studentSchoolYearStart
     }
-    fun isBeforeYear() = Date.getToday() < dateSemester1Start
+    fun isBeforeYear() = false && Date.getToday() < dateSemester1Start
 
     var disabledNotifications: List<Long>? = null
 

@@ -66,7 +66,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                     override fun onSuccess(text: String, response: Response) {
                         val location = response.headers().get("Location")
                         if (location != null) {
-                            val authMatcher = Pattern.compile("http://localhost/bar\\?code=([A-z0-9]+?)$", Pattern.DOTALL or Pattern.MULTILINE).matcher(location)
+                            val authMatcher = Pattern.compile("$LIBRUS_REDIRECT_URL\\?code=([A-z0-9]+?)$", Pattern.DOTALL or Pattern.MULTILINE).matcher(location)
                             when {
                                 authMatcher.find() -> {
                                     accessToken(authMatcher.group(1), null)
@@ -127,7 +127,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                 .callback(object : JsonCallbackHandler() {
                     override fun onSuccess(json: JsonObject?, response: Response) {
                         val location = response.headers()?.get("Location")
-                        if (location == "http://localhost/bar?command=close") {
+                        if (location == "$LIBRUS_REDIRECT_URL?command=close") {
                             data.error(ApiError(TAG, ERROR_LIBRUS_PORTAL_MAINTENANCE)
                                     .withApiResponse(json)
                                     .withResponse(response))
