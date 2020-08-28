@@ -24,14 +24,14 @@ const val FAKE_LIBRUS_ACCOUNTS = "/synergia_accounts.php"
 
 val LIBRUS_USER_AGENT = "${SYSTEM_USER_AGENT}LibrusMobileApp"
 const val SYNERGIA_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0"
-const val LIBRUS_CLIENT_ID = "6XPsKf10LPz1nxgHQLcvZ1KM48DYzlBAhxipaXY8"
-const val LIBRUS_REDIRECT_URL = "http://localhost/bar"
+const val LIBRUS_CLIENT_ID = "0RbsDOkV9tyKEQYzlLv5hs3DM1ukrynFI4p6C1Yc"
+const val LIBRUS_REDIRECT_URL = "app://librus"
 const val LIBRUS_AUTHORIZE_URL = "https://portal.librus.pl/oauth2/authorize?client_id=$LIBRUS_CLIENT_ID&redirect_uri=$LIBRUS_REDIRECT_URL&response_type=code"
 const val LIBRUS_LOGIN_URL = "https://portal.librus.pl/rodzina/login/action"
 const val LIBRUS_TOKEN_URL = "https://portal.librus.pl/oauth2/access_token"
 
-const val LIBRUS_ACCOUNT_URL = "/v2/SynergiaAccounts/fresh/" // + login
-const val LIBRUS_ACCOUNTS_URL = "/v2/SynergiaAccounts"
+const val LIBRUS_ACCOUNT_URL = "/v3/SynergiaAccounts/fresh/" // + login
+const val LIBRUS_ACCOUNTS_URL = "/v3/SynergiaAccounts"
 
 /** https://api.librus.pl/2.0 */
 const val LIBRUS_API_URL = "https://api.librus.pl/2.0"
