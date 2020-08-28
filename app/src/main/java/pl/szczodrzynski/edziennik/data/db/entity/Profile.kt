@@ -28,7 +28,7 @@ import pl.szczodrzynski.navlib.getDrawableFromRes
 @Entity(tableName = "profiles", primaryKeys = ["profileId"])
 open class Profile(
         @ColumnInfo(name = "profileId")
-        override val id: Int,
+        override var id: Int, /* needs to be var for ProfileArchiver */
         val loginStoreId: Int,
         val loginStoreType: Int,
 
@@ -64,6 +64,12 @@ open class Profile(
     var empty = true
     var archived = false
 
+    /**
+     * A unique ID matching [archived] profiles with current ones
+     * and vice-versa.
+     */
+    var archiveId: Int? = null
+
     var syncEnabled = true
     var enableSharedEvents = true
     var registration = REGISTRATION_UNSPECIFIED
@@ -84,6 +90,23 @@ open class Profile(
     fun dateToSemester(date: Date) = if (date >= dateSemester2Start) 2 else 1
     @delegate:Ignore
     val currentSemester by lazy { dateToSemester(Date.getToday()) }
+
+    fun shouldArchive(): Boolean {
+        // vulcan hotfix
+        if (dateYearEnd.month > 6) {
+            dateYearEnd.month = 6
+            dateYearEnd.day = 30
+        }
+        // fix for when versions <4.3 synced 2020/2021 year dates to older profiles during 2020 Jun-Aug
+        if (dateSemester1Start.year > studentSchoolYearStart) {
+            val diff = dateSemester1Start.year - studentSchoolYearStart
+            dateSemester1Start.year -= diff
+            dateSemester2Start.year -= diff
+            dateYearEnd.year -= diff
+        }
+        return Date.getToday() >= dateYearEnd && Date.getToday().year > studentSchoolYearStart
+    }
+    fun isBeforeYear() = Date.getToday() < dateSemester1Start
 
     var disabledNotifications: List<Long>? = null
 
@@ -106,14 +129,18 @@ open class Profile(
         get() = accountName != null
 
     override fun getImageDrawable(context: Context): Drawable {
+        if (archived) {
+            return context.getDrawableFromRes(pl.szczodrzynski.edziennik.R.drawable.profile_archived).also {
+                it.colorFilter = PorterDuffColorFilter(colorFromName(name), PorterDuff.Mode.DST_OVER)
+            }
+        }
 
         if (!image.isNullOrEmpty()) {
             try {
-                if (image?.endsWith(".gif", true) == true) {
-                    return GifDrawable(image ?: "")
-                }
-                else {
-                    return RoundedBitmapDrawableFactory.create(context.resources, image ?: "")
+                return if (image?.endsWith(".gif", true) == true) {
+                    GifDrawable(image ?: "")
+                } else {
+                    RoundedBitmapDrawableFactory.create(context.resources, image ?: "")
                     //return Drawable.createFromPath(image ?: "") ?: throw Exception()
                 }
             }
@@ -125,9 +152,13 @@ open class Profile(
         return context.getDrawableFromRes(R.drawable.profile).also {
             it.colorFilter = PorterDuffColorFilter(colorFromName(name), PorterDuff.Mode.DST_OVER)
         }
-
     }
+
     override fun getImageHolder(context: Context): ImageHolder {
+        if (archived) {
+            return ImageHolder(pl.szczodrzynski.edziennik.R.drawable.profile_archived, colorFromName(name))
+        }
+
         return if (!image.isNullOrEmpty()) {
             try {
                 ProfileImageHolder(image ?: "")

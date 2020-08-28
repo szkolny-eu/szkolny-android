@@ -1,7 +1,5 @@
 package im.wangchao.mhttp.internal;
 
-import im.wangchao.mhttp.BuildConfig;
-
 /**
  * <p>Description  : Version.</p>
  * <p>Author       : wangchao.</p>
@@ -14,7 +12,7 @@ public class Version {
     }
 
     public static String userAgent() {
-        return moduleName().concat(BuildConfig.VERSION_NAME);
+        return moduleName().concat("1.10.1");
     }
 
     public static String moduleName() {

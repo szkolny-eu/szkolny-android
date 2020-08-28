@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:textSize="24sp"
-                    tools:text="Zaloguj się - Vulcan UONET+" />
+                    tools:text="Zaloguj się - VULCAN® UONET+" />
 
                 <TextView
                     android:id="@+id/subTitle"

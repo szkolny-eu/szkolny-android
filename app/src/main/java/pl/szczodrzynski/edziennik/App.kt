@@ -364,6 +364,9 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             if (!success) {
                 EventBus.getDefault().post(ProfileListEmptyEvent())
             }
+            else {
+                onSuccess(profile)
+            }
         }
     }
     fun profileSave() = profileSave(profile)

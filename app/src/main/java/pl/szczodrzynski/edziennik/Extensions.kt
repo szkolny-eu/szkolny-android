@@ -42,6 +42,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.security.ProviderInstaller
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -670,6 +671,16 @@ fun List<CharSequence?>.concat(delimiter: CharSequence? = null): CharSequence {
 
 fun TextView.setText(@StringRes resid: Int, vararg formatArgs: Any) {
     text = context.getString(resid, *formatArgs)
+}
+
+fun MaterialAlertDialogBuilder.setTitle(@StringRes resid: Int, vararg formatArgs: Any): MaterialAlertDialogBuilder {
+    setTitle(context.getString(resid, *formatArgs))
+    return this
+}
+
+fun MaterialAlertDialogBuilder.setMessage(@StringRes resid: Int, vararg formatArgs: Any): MaterialAlertDialogBuilder {
+    setMessage(context.getString(resid, *formatArgs))
+    return this
 }
 
 fun JsonObject(vararg properties: Pair<String, Any?>): JsonObject {

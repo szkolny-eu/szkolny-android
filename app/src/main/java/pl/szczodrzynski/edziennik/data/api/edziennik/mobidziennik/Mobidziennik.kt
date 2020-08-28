@@ -130,7 +130,6 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     override fun cancel() {
         d(TAG, "Cancelled")
         data.cancel()
-        callback.onCompleted()
     }
 
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {

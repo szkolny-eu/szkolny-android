@@ -43,6 +43,7 @@ import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
@@ -295,12 +296,21 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
-        if (BuildConfig.VERSION_NAME.contains("nightly")) {
-            b.nightlyText.isVisible = true
-            b.nightlyText.text = "Nightly\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
+        when {
+            BuildConfig.VERSION_NAME.contains("nightly") -> {
+                b.nightlyText.isVisible = true
+                b.nightlyText.text = "Nightly\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
+            }
+            BuildConfig.VERSION_NAME.contains("daily") -> {
+                b.nightlyText.isVisible = true
+                b.nightlyText.text = "Daily\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
+            }
+            BuildConfig.DEBUG -> {
+                b.nightlyText.isVisible = true
+                b.nightlyText.text = "Debug\n"+BuildConfig.VERSION_NAME
+            }
+            else -> b.nightlyText.isVisible = false
         }
-        else
-            b.nightlyText.isVisible = false
 
         navLoading = true
 
@@ -399,7 +409,20 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         app.db.profileDao().all.observe(this, Observer { profiles ->
-            drawer.setProfileList(profiles.filter { it.id >= 0 }.toMutableList())
+            val allArchived = profiles.all { it.archived }
+            drawer.setProfileList(profiles.filter { it.id >= 0 && (!it.archived || allArchived) }.toMutableList())
+            //prepend the archived profile if loaded
+            if (app.profile.archived && !allArchived) {
+                drawer.prependProfile(Profile(
+                        id = app.profile.id,
+                        loginStoreId = app.profile.loginStoreId,
+                        loginStoreType = app.profile.loginStoreType,
+                        name = app.profile.name,
+                        subname = "Archiwum - ${app.profile.subname}"
+                ).also {
+                    it.archived = true
+                })
+            }
             drawer.currentProfile = App.profileId
         })
 
@@ -424,6 +447,23 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         SyncWorker.scheduleNext(app)
         UpdateWorker.scheduleNext(app)
+
+        // if loaded profile is archived, switch to the up-to-date version of it
+        if (app.profile.archived) {
+            launch {
+                if (app.profile.archiveId != null) {
+                    val profile = withContext(Dispatchers.IO) {
+                        app.db.profileDao().getNotArchivedOf(app.profile.archiveId!!)
+                    }
+                    if (profile != null)
+                        loadProfile(profile)
+                    else
+                        loadProfile(0)
+                } else {
+                    loadProfile(0)
+                }
+            }
+        }
 
         // APP BACKGROUND
         if (app.config.ui.appBackground != null) {
@@ -565,6 +605,41 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                   __/ |
                  |__*/
     fun syncCurrentFeature() {
+        if (app.profile.archived) {
+            MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.profile_archived_title)
+                    .setMessage(
+                            R.string.profile_archived_text,
+                            app.profile.studentSchoolYearStart,
+                            app.profile.studentSchoolYearStart + 1
+                    )
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+            swipeRefreshLayout.isRefreshing = false
+            return
+        }
+        if (app.profile.shouldArchive()) {
+            MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.profile_archiving_title)
+                    .setMessage(
+                            R.string.profile_archiving_format,
+                            app.profile.dateYearEnd.formattedString
+                    )
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+        }
+        if (app.profile.isBeforeYear()) {
+            MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.profile_year_not_started_title)
+                    .setMessage(
+                            R.string.profile_year_not_started_format,
+                            app.profile.dateSemester1Start.formattedString
+                    )
+                    .setPositiveButton(R.string.ok, null)
+                    .show()
+            swipeRefreshLayout.isRefreshing = false
+            return
+        }
         swipeRefreshLayout.isRefreshing = true
         Toast.makeText(this, fragmentToSyncName(navTargetId), Toast.LENGTH_SHORT).show()
         val fragmentParam = when (navTargetId) {
@@ -885,22 +960,50 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     fun loadProfile(id: Int) = loadProfile(id, navTargetId)
     fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
-    fun loadProfile(id: Int, drawerSelection: Int, arguments: Bundle? = null) {
+    fun loadProfile(profile: Profile) = loadProfile(
+            profile,
+            navTargetId,
+            null,
+            if (app.profile.archived) app.profile.id else null
+    )
+    private fun loadProfile(id: Int, drawerSelection: Int, arguments: Bundle? = null) {
         if (App.profileId == id) {
             drawer.currentProfile = app.profile.id
             loadTarget(drawerSelection, arguments)
             return
         }
+        val previousArchivedId = if (app.profile.archived) app.profile.id else null
         app.profileLoad(id) {
-            MessagesFragment.pageSelection = -1
-
-            setDrawerItems()
-            // the drawer profile is updated automatically when the drawer item is clicked
-            // update it manually when switching profiles from other source
-            //if (drawer.currentProfile != app.profile.id)
-            drawer.currentProfile = app.profileId
-            loadTarget(drawerSelection, arguments)
+            loadProfile(it, drawerSelection, arguments, previousArchivedId)
         }
+    }
+    private fun loadProfile(profile: Profile, drawerSelection: Int, arguments: Bundle?, previousArchivedId: Int?) {
+        App.profile = profile
+        MessagesFragment.pageSelection = -1
+
+        setDrawerItems()
+
+        if (previousArchivedId != null) {
+            // prevents accidentally removing the first item if the archived profile is not shown
+            drawer.removeProfileById(previousArchivedId)
+        }
+        if (profile.archived) {
+            drawer.prependProfile(Profile(
+                    id = profile.id,
+                    loginStoreId = profile.loginStoreId,
+                    loginStoreType = profile.loginStoreType,
+                    name = profile.name,
+                    subname = "Archiwum - ${profile.subname}"
+            ).also {
+                it.archived = true
+            })
+        }
+
+        // the drawer profile is updated automatically when the drawer item is clicked
+        // update it manually when switching profiles from other source
+        //if (drawer.currentProfile != app.profile.id)
+        drawer.currentProfile = app.profileId
+        loadTarget(drawerSelection, arguments)
     }
     fun loadTarget(id: Int, arguments: Bundle? = null) {
         var loadId = id

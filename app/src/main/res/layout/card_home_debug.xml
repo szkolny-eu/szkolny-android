@@ -30,7 +30,7 @@
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Librus Captcha" />
+            android:text="LIBRUS® Captcha" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/refreshWidget"

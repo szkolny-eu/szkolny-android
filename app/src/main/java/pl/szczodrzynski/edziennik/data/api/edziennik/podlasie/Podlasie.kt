@@ -134,7 +134,6 @@ class Podlasie(val app: App, val profile: Profile?, val loginStore: LoginStore, 
     override fun cancel() {
         Utils.d(TAG, "Cancelled")
         data.cancel()
-        callback.onCompleted()
     }
 
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {

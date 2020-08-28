@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/NavView.TextView.Medium"
-                tools:text="Vulcan UONET+" />
+                tools:text="VULCAN® UONET+" />
 
             <TextView
                 android:id="@+id/description"

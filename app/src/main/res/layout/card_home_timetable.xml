@@ -17,121 +17,130 @@
             android:id="@+id/noTimetableLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:visibility="gone"
             tools:visibility="visible">
 
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_sync"/>
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.Title"
-                    android:text="@string/home_timetable_no_timetable" />
+                    android:text="@string/home_timetable_no_timetable"
+                    android:textAppearance="@style/NavView.TextView.Title" />
 
                 <TextView
                     android:id="@+id/noTimetableText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="@string/home_timetable_no_timetable_text"/>
-
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:text="@string/home_timetable_no_timetable_text"
+                    android:textSize="16sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/noTimetableSync"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:text="@string/home_timetable_no_timetable_sync" />
-
             </LinearLayout>
 
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                app:srcCompat="@drawable/ic_sync" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/noLessonsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:visibility="gone"
-            tools:layout_marginTop="150dp"
+            tools:layout_marginTop="170dp"
             tools:visibility="visible">
 
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_timetable"/>
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.Title"
-                    android:text="@string/home_timetable_no_lessons" />
+                    android:text="@string/home_timetable_no_lessons"
+                    android:textAppearance="@style/NavView.TextView.Title" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="@string/home_timetable_no_lessons_text"/>
-
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:text="@string/home_timetable_no_lessons_text"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                app:srcCompat="@drawable/ic_timetable" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/notPublicLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:visibility="gone"
-            tools:layout_marginTop="220dp"
+            tools:layout_marginTop="270dp"
             tools:visibility="visible">
 
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                app:srcCompat="@drawable/ic_no_timetable"/>
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/NavView.TextView.Title"
-                    android:text="@string/home_timetable_not_public" />
+                    android:text="@string/home_timetable_not_public"
+                    android:textAppearance="@style/NavView.TextView.Title" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="@string/home_timetable_not_public_text"/>
-
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:text="@string/home_timetable_not_public_text"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                app:srcCompat="@drawable/ic_no_timetable" />
         </LinearLayout>
 
         <LinearLayout
@@ -139,7 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:layout_marginTop="350dp">
+            tools:layout_marginTop="410dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -165,15 +174,14 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/NavView.TextView.Helper"
                         tools:text="7 lekcji - 8:10 do 14:45" />
-
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/settings"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="10dp"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:padding="10dp"
                     android:visibility="gone"
                     tools:src="@sample/settings" />
 
@@ -181,16 +189,16 @@
                     android:id="@+id/bellSync"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="10dp"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:padding="10dp"
                     tools:src="@sample/settings" />
 
                 <ImageView
                     android:id="@+id/showCounter"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="10dp"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:padding="10dp"
                     tools:src="@sample/settings" />
             </LinearLayout>
 
@@ -234,10 +242,9 @@
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
                         android:visibility="gone"
-                        tools:visibility="visible"
                         tools:max="2700"
-                        tools:progress="780" />
-
+                        tools:progress="780"
+                        tools:visibility="visible" />
                 </LinearLayout>
 
                 <TextView
@@ -247,7 +254,6 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
                     tools:text="zostały\n2 minuty\n35 sekund" />
-
             </LinearLayout>
 
             <View
@@ -263,8 +269,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/NavView.TextView.Helper"
                 tools:text="Póżniej:\n9:05 informatyka\n10:00 urządzenia techniki komputerowej\n11:00 projektowanie lokalnych sieci komputerowych\n11:55 zajęcia z wychowawcą\n13:00 język polski\n14:05 język niemiecki" />
-
         </LinearLayout>
-
     </FrameLayout>
 </layout>
