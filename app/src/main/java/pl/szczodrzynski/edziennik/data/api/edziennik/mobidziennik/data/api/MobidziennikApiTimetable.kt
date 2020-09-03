@@ -44,7 +44,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
 
             dataDays.remove(date.value)
 
-            val subjectId = data.subjectList.singleOrNull { it.longName == lesson[5] }?.id ?: -1
+            val subjectId = data.subjectList.singleOrNull { it.longName == lesson[5].trim() }?.id ?: -1
             val teacherId = data.teacherList.singleOrNull { it.fullNameLastFirst == (lesson[7]+" "+lesson[6]).fixName() }?.id ?: -1
             val teamId = data.teamList.singleOrNull { it.name == lesson[8]+lesson[9] }?.id ?: -1
             val classroom = lesson[11]
