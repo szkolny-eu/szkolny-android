@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs
 
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -56,6 +57,7 @@ class RegisterUnavailableDialog(
                     Utils.openUrl(activity, status.message.url)
                 }
             }
+            b.text.movementMethod = LinkMovementMethod.getInstance()
             dialog = MaterialAlertDialogBuilder(activity)
                     .setView(b.root)
                     .setPositiveButton(R.string.close) { dialog, _ ->
