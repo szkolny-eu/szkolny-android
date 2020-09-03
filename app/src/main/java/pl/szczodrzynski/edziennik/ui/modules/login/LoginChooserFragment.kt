@@ -13,14 +13,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.Bundle
-import pl.szczodrzynski.edziennik.R
+import kotlinx.coroutines.*
+import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
-import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.ui.dialogs.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
@@ -53,18 +51,23 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         if (!isAdded) return
 
         val adapter = LoginChooserAdapter(activity) { loginType, loginMode ->
-            if (loginMode.isPlatformSelection) {
-                nav.navigate(R.id.loginPlatformListFragment, Bundle(
+            launch {
+                if (!checkAvailability(loginType.loginType))
+                    return@launch
+
+                if (loginMode.isPlatformSelection) {
+                    nav.navigate(R.id.loginPlatformListFragment, Bundle(
+                            "loginType" to loginType.loginType,
+                            "loginMode" to loginMode.loginMode
+                    ), activity.navOptions)
+                    return@launch
+                }
+
+                nav.navigate(R.id.loginFormFragment, Bundle(
                         "loginType" to loginType.loginType,
                         "loginMode" to loginMode.loginMode
                 ), activity.navOptions)
-                return@LoginChooserAdapter
             }
-
-            nav.navigate(R.id.loginFormFragment, Bundle(
-                    "loginType" to loginType.loginType,
-                    "loginMode" to loginMode.loginMode
-            ), activity.navOptions)
         }
 
         LoginInfo.chooserList = LoginInfo.chooserList
@@ -101,5 +104,36 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
                 b.cancelButton.isVisible = false
             }
         }
+    }
+
+    private suspend fun checkAvailability(loginType: Int): Boolean {
+        when (loginType) {
+            LOGIN_TYPE_LIBRUS -> "librus"
+            LOGIN_TYPE_VULCAN -> "vulcan"
+            LOGIN_TYPE_IDZIENNIK -> "idziennik"
+            LOGIN_TYPE_MOBIDZIENNIK -> "mobidziennik"
+            LOGIN_TYPE_PODLASIE -> "podlasie"
+            LOGIN_TYPE_EDUDZIENNIK -> "edudziennik"
+            else -> null
+        }?.let { registerName ->
+            var status = app.config.sync.registerAvailability[registerName]
+            if (status == null || status.nextCheck < currentTimeUnix()) {
+                withContext(Dispatchers.IO) {
+                    val api = SzkolnyApi(app)
+                    api.runCatching(activity) {
+                        val availability = getRegisterAvailability()
+                        app.config.sync.registerAvailability = availability
+                        status = availability[registerName]
+                    }
+                }
+            }
+
+            if (status?.available != true) {
+                if (status != null)
+                    RegisterUnavailableDialog(activity, status!!)
+                return false
+            }
+        }
+        return true
     }
 }

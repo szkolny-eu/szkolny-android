@@ -12,12 +12,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
+import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.DateAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.TimeAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.data.db.entity.Event
@@ -112,6 +114,22 @@ class SzkolnyApi(val app: App) : CoroutineScope {
      */
     @Throws(Exception::class)
     private inline fun <reified T> parseResponse(response: Response<ApiResponse<T>>): T {
+        app.config.update = response.body()?.update?.let { update ->
+            if (update.versionCode > BuildConfig.VERSION_CODE) {
+                if (update.updateMandatory
+                        && EventBus.getDefault().hasSubscriberForEvent(update::class.java)) {
+                    EventBus.getDefault().postSticky(update)
+                }
+                update
+            }
+            else
+                null
+        }
+
+        response.body()?.registerAvailability?.let { registerAvailability ->
+            app.config.sync.registerAvailability = registerAvailability
+        }
+
         if (response.isSuccessful && response.body()?.success == true) {
             if (Unit is T) {
                 return Unit
@@ -339,6 +357,12 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     @Throws(Exception::class)
     fun getFirebaseToken(registerName: String): String {
         val response = api.firebaseToken(registerName).execute()
+        return parseResponse(response)
+    }
+
+    @Throws(Exception::class)
+    fun getRegisterAvailability(): Map<String, RegisterAvailabilityStatus> {
+        val response = api.registerAvailability().execute()
         return parseResponse(response)
     }
 }

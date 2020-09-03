@@ -16,8 +16,7 @@ import androidx.room.Ignore
 import com.google.gson.JsonObject
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_EDUDZIENNIK
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_PODLASIE
+import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.utils.ProfileImageHolder
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.ImageHolder
@@ -127,6 +126,17 @@ open class Profile(
 
     val isParent
         get() = accountName != null
+
+    val registerName
+        get() = when (loginStoreType) {
+            LOGIN_TYPE_LIBRUS -> "librus"
+            LOGIN_TYPE_VULCAN -> "vulcan"
+            LOGIN_TYPE_IDZIENNIK -> "idziennik"
+            LOGIN_TYPE_MOBIDZIENNIK -> "mobidziennik"
+            LOGIN_TYPE_PODLASIE -> "podlasie"
+            LOGIN_TYPE_EDUDZIENNIK -> "edudziennik"
+            else -> null
+        }
 
     override fun getImageDrawable(context: Context): Drawable {
         if (archived) {

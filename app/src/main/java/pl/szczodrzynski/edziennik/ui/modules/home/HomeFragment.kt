@@ -21,12 +21,9 @@ import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon
 import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
-import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.*
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -50,9 +47,11 @@ class HomeFragment : Fragment(), CoroutineScope {
             cardAdapter.notifyItemMoved(fromPosition, toPosition)
 
             val homeCards = App.config.forProfile().ui.homeCards.toMutableList()
-            val fromPair = homeCards[fromPosition]
-            homeCards[fromPosition] = homeCards[toPosition]
-            homeCards[toPosition] = fromPair
+            val fromIndex = homeCards.indexOfFirst { it.cardId == fromCard.id }
+            val toIndex = homeCards.indexOfFirst { it.cardId == toCard.id }
+            val fromPair = homeCards[fromIndex]
+            homeCards[fromIndex] = homeCards[toIndex]
+            homeCards[toIndex] = fromPair
             App.config.forProfile().ui.homeCards = homeCards
             return true
         }
@@ -64,10 +63,10 @@ class HomeFragment : Fragment(), CoroutineScope {
             val card = cardAdapter.items[position]
             if (card.id >= 100) {
                 // debug & archive cards are not removable
-                cardAdapter.notifyDataSetChanged()
+                //cardAdapter.notifyDataSetChanged()
                 return
             }
-            homeCards.removeAt(position)
+            homeCards.removeAll { it.cardId == card.id }
             App.config.forProfile().ui.homeCards = homeCards
         }
     }
@@ -165,6 +164,13 @@ class HomeFragment : Fragment(), CoroutineScope {
         //    items += HomeDebugCard(100, app, activity, this, app.profile)
         if (app.profile.archived)
             items.add(0, HomeArchiveCard(101, app, activity, this, app.profile))
+
+        val status = app.config.sync.registerAvailability[app.profile.registerName]
+        val update = app.config.update
+        if (update != null && update.versionCode > BuildConfig.VERSION_CODE
+                || status != null && (!status.available || status.minVersionCode > BuildConfig.VERSION_CODE)) {
+            items.add(0, HomeAvailabilityCard(102, app, activity, this, app.profile))
+        }
 
         val adapter = HomeCardAdapter(items)
         val itemTouchHelper = ItemTouchHelper(CardItemTouchHelperCallback(adapter, b.refreshLayout))

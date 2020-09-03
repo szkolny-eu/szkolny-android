@@ -1368,4 +1368,14 @@
     <string name="home_archive_close_no_target_title">Brak aktualnego profilu</string>
     <string name="home_archive_close_no_target_text">Uczeń %s nie posiada profilu na tym koncie w aktualnym roku szkolnym. Prawdopodobnie ten profil został usunięty lub uczeń nie uczęszcza już do tej klasy.\n\nAby przejść do aktualnego profilu, wybierz ucznia z listy lub zaloguj się na jego konto przyciskiem Dodaj ucznia.</string>
     <string name="login_copyright_notice">Znaki towarowe zamieszczone w tej aplikacji należą do ich prawowitych właścicieli i są używane wyłącznie w celach informacyjnych.</string>
+    <string name="update_available_title">Dostępna aktualiacja aplikacji</string>
+    <string name="update_available_format">Używasz starej wersji aplikacji Szkolny.eu (%s). Aby móc korzystać z aplikacji oraz zapewnić najlepsze działanie, zaktualizuj aplikację do wersji %s.\n\nDziennik zmian:\n%s</string>
+    <string name="update_available_fallback">Posiadasz nieaktualną wersję aplikacji Szkolny.eu. Aby móc dalej synchronizować dane, musisz zaktualizować aplikację.</string>
+    <string name="update_available_button">Aktualizuj</string>
+    <string name="update_available_later">Nie teraz</string>
+    <string name="home_availability_title">Dostępna aktualizacja</string>
+    <string name="home_availability_text">Zaktualizuj aplikację do najnowszej wersji %s.</string>
+    <string name="home_availability_info">Zobacz więcej</string>
+    <string name="home_availability_update">Aktualizuj</string>
+    <string name="register_unavailable_read_more">Dowiedz się więcej</string>
 </resources>

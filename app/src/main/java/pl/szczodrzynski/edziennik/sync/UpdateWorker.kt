@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.work.*
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
@@ -76,7 +77,7 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
             try {
                 val update = overrideUpdate
                         ?: run {
-                            val updates = withContext(Dispatchers.Default) {
+                            withContext(Dispatchers.Default) {
                                 SzkolnyApi(app).runCatching({
                                     getUpdate("beta")
                                 }, {
@@ -84,15 +85,25 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
                                 })
                             } ?: return@run null
 
-                            if (updates.isEmpty()) {
+                            if (app.config.update == null
+                                    || app.config.update?.versionCode ?: BuildConfig.VERSION_CODE <= BuildConfig.VERSION_CODE) {
                                 app.config.update = null
                                 Toast.makeText(app, app.getString(R.string.notification_no_update), Toast.LENGTH_SHORT).show()
                                 return@run null
                             }
-                            updates[0]
+                            app.config.update
                         } ?: return
 
-                app.config.update = update
+                if (update.versionCode <= BuildConfig.VERSION_CODE) {
+                    app.config.update = null
+                    return
+                }
+
+                if (EventBus.getDefault().hasSubscriberForEvent(update::class.java)) {
+                    if (!update.updateMandatory) // mandatory updates are posted by the SzkolnyApi
+                        EventBus.getDefault().postSticky(update)
+                    return
+                }
 
                 val notificationIntent = Intent(app, UpdateDownloaderService::class.java)
                 val pendingIntent = PendingIntent.getService(app, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)

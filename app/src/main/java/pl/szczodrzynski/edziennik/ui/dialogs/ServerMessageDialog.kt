@@ -17,7 +17,7 @@ import kotlin.coroutines.CoroutineContext
 class ServerMessageDialog(
         val activity: AppCompatActivity,
         val title: String,
-        val message: String,
+        val message: CharSequence,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
