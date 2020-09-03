@@ -5,10 +5,13 @@
 package pl.szczodrzynski.edziennik.data.firebase
 
 import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.events.FeedbackMessageEvent
+import pl.szczodrzynski.edziennik.data.api.events.RegisterAvailabilityEvent
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.task.PostNotifications
 import pl.szczodrzynski.edziennik.data.db.entity.*
@@ -49,6 +52,16 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                 "feedbackMessage" -> launch {
                     val message = app.gson.fromJson(message.data.getString("message"), FeedbackMessage::class.java) ?: return@launch
                     feedbackMessage(message)
+                }
+                "registerAvailability" -> launch {
+                    val data = app.gson.fromJson<Map<String, RegisterAvailabilityStatus>>(
+                            message.data.getString("registerAvailability"),
+                            object: TypeToken<Map<String, RegisterAvailabilityStatus>>(){}.type
+                    ) ?: return@launch
+                    app.config.sync.registerAvailability = data
+                    if (EventBus.getDefault().hasSubscriberForEvent(RegisterAvailabilityEvent::class.java)) {
+                        EventBus.getDefault().postSticky(RegisterAvailabilityEvent(data))
+                    }
                 }
             }
         }

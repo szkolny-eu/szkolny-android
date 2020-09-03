@@ -1,0 +1,11 @@
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2020-9-3.
+  -->
+
+<vector android:height="128dp" android:viewportHeight="64"
+    android:viewportWidth="64" android:width="128dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#1a6ee2" android:pathData="m29.583,48.966c1.329,1.347 3.505,1.347 4.834,0l10.917,-11.06c1.466,-1.484 0.353,-3.906 -1.795,-3.906h-5.539v-8.5c0,-1.375 -1.125,-2.5 -2.5,-2.5h-7c-1.375,0 -2.5,1.125 -2.5,2.5v8.5h-5.539c-2.147,0 -3.26,2.422 -1.795,3.906z"/>
+    <path android:fillColor="#2aa7ed" android:pathData="m28.5,12h7c1.375,0 2.5,-1.125 2.5,-2.5s-1.125,-2.5 -2.5,-2.5h-7c-1.375,0 -2.5,1.125 -2.5,2.5s1.125,2.5 2.5,2.5z"/>
+    <path android:fillColor="#2082e6" android:pathData="m28.5,20h7c1.375,0 2.5,-1.125 2.5,-2.5s-1.125,-2.5 -2.5,-2.5h-7c-1.375,0 -2.5,1.125 -2.5,2.5s1.125,2.5 2.5,2.5z"/>
+    <path android:fillColor="#1762df" android:pathData="m54,55.5c0,1.375 -1.125,2.5 -2.5,2.5h-39c-1.375,0 -2.5,-1.125 -2.5,-2.5s1.125,-2.5 2.5,-2.5h39c1.375,0 2.5,1.125 2.5,2.5z"/>
+</vector>

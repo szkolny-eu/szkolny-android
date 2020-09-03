@@ -11,5 +11,6 @@ data class Update(
         val releaseNotes: String?,
         val releaseType: String,
         val isOnGooglePlay: Boolean,
-        val downloadUrl: String?
+        val downloadUrl: String?,
+        val updateMandatory: Boolean
 )

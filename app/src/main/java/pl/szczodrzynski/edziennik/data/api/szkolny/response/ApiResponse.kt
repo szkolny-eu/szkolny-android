@@ -10,7 +10,10 @@ data class ApiResponse<T> (
 
     val errors: List<Error>? = null,
 
-    val data: T? = null
+    val data: T? = null,
+
+    val update: Update? = null,
+    val registerAvailability: Map<String, RegisterAvailabilityStatus>? = null
 ) {
     data class Error (val code: String, val reason: String)
 }

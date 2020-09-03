@@ -4,12 +4,18 @@
 
 package pl.szczodrzynski.edziennik.config
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.getIntList
 import pl.szczodrzynski.edziennik.config.utils.set
+import pl.szczodrzynski.edziennik.config.utils.setMap
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class ConfigSync(private val config: Config) {
+    private val gson = Gson()
+
     private var mDontShowAppManagerDialog: Boolean? = null
     var dontShowAppManagerDialog: Boolean
         get() { mDontShowAppManagerDialog = mDontShowAppManagerDialog ?: config.values.get("dontShowAppManagerDialog", false); return mDontShowAppManagerDialog ?: false }
@@ -106,4 +112,9 @@ class ConfigSync(private val config: Config) {
     var tokenVulcanList: List<Int>
         get() { mTokenVulcanList = mTokenVulcanList ?: config.values.getIntList("tokenVulcanList", listOf()); return mTokenVulcanList ?: listOf() }
         set(value) { config.set("tokenVulcanList", value); mTokenVulcanList = value }
+
+    private var mRegisterAvailability: Map<String, RegisterAvailabilityStatus>? = null
+    var registerAvailability: Map<String, RegisterAvailabilityStatus>
+        get() { mRegisterAvailability = mRegisterAvailability ?: config.values.get("registerAvailability", null as String?)?.let { it -> gson.fromJson<Map<String, RegisterAvailabilityStatus>>(it, object: TypeToken<Map<String, RegisterAvailabilityStatus>>(){}.type) }; return mRegisterAvailability ?: mapOf() }
+        set(value) { config.setMap("registerAvailability", value); mRegisterAvailability = value }
 }

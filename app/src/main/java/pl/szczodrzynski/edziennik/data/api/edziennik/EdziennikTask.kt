@@ -5,8 +5,8 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik
 
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.R
+import org.greenrobot.eventbus.EventBus
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.Edudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.Idziennik
@@ -15,9 +15,11 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.Mobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.Podlasie
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.Template
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.Vulcan
+import pl.szczodrzynski.edziennik.data.api.events.RegisterAvailabilityEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
@@ -87,6 +89,33 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
                 cancel()
                 taskCallback.onCompleted()
                 return
+            }
+
+            profile.registerName?.let { registerName ->
+                var status = app.config.sync.registerAvailability[registerName]
+                if (status == null || status.nextCheck < currentTimeUnix()) {
+                    val api = SzkolnyApi(app)
+                    api.runCatching({
+                        val availability = getRegisterAvailability()
+                        app.config.sync.registerAvailability = availability
+                        status = availability[registerName]
+                    }, onError = {
+                        taskCallback.onError(it.toApiError(TAG))
+                        return
+                    })
+                }
+
+                if (status?.available != true
+                        || status?.minVersionCode ?: BuildConfig.VERSION_CODE > BuildConfig.VERSION_CODE) {
+                    if (EventBus.getDefault().hasSubscriberForEvent(RegisterAvailabilityEvent::class.java)) {
+                        EventBus.getDefault().postSticky(
+                                RegisterAvailabilityEvent(app.config.sync.registerAvailability)
+                        )
+                    }
+                    cancel()
+                    taskCallback.onCompleted()
+                    return
+                }
             }
         }
 

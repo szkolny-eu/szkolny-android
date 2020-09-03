@@ -38,4 +38,7 @@ interface SzkolnyService {
 
     @GET("firebase/token/{registerName}")
     fun firebaseToken(@Path("registerName") registerName: String): Call<ApiResponse<String>>
+
+    @GET("registerAvailability")
+    fun registerAvailability(): Call<ApiResponse<Map<String, RegisterAvailabilityStatus>>>
 }

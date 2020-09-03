@@ -41,6 +41,8 @@ import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
@@ -48,7 +50,9 @@ import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.ui.dialogs.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
@@ -438,7 +442,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         })
 
         b.swipeRefreshLayout.isEnabled = true
-        b.swipeRefreshLayout.setOnRefreshListener { this.syncCurrentFeature() }
+        b.swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
         b.swipeRefreshLayout.setColorSchemeResources(
                 R.color.md_blue_500,
                 R.color.md_amber_500,
@@ -604,7 +608,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
          |_____/ \__, |_| |_|\___|
                   __/ |
                  |__*/
-    fun syncCurrentFeature() {
+    suspend fun syncCurrentFeature() {
         if (app.profile.archived) {
             MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.profile_archived_title)
@@ -640,6 +644,30 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             swipeRefreshLayout.isRefreshing = false
             return
         }
+
+        app.profile.registerName?.let { registerName ->
+            var status = app.config.sync.registerAvailability[registerName]
+            if (status == null || status.nextCheck < currentTimeUnix()) {
+                withContext(Dispatchers.IO) {
+                    val api = SzkolnyApi(app)
+                    api.runCatching(this@MainActivity) {
+                        val availability = getRegisterAvailability()
+                        app.config.sync.registerAvailability = availability
+                        status = availability[registerName]
+                    }
+                }
+            }
+
+            if (status?.available != true
+                    || status?.minVersionCode ?: BuildConfig.VERSION_CODE > BuildConfig.VERSION_CODE) {
+                swipeRefreshLayout.isRefreshing = false
+                loadTarget(DRAWER_ITEM_HOME)
+                if (status != null)
+                    RegisterUnavailableDialog(this, status!!)
+                return
+            }
+        }
+
         swipeRefreshLayout.isRefreshing = true
         Toast.makeText(this, fragmentToSyncName(navTargetId), Toast.LENGTH_SHORT).show()
         val fragmentParam = when (navTargetId) {
@@ -655,6 +683,20 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 listOf(navTargetId to fragmentParam),
                 arguments = arguments
         ).enqueue(this)
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onUpdateEvent(event: Update) {
+        EventBus.getDefault().removeStickyEvent(event)
+        UpdateAvailableDialog(this, event)
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onRegisterAvailabilityEvent(event: RegisterAvailabilityEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
+        app.profile.registerName?.let { registerName ->
+            event.data[registerName]?.let {
+                RegisterUnavailableDialog(this, it)
+            }
+        }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskStartedEvent(event: ApiTaskStartedEvent) {

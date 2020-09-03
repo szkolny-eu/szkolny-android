@@ -49,6 +49,9 @@ fun AbstractConfig.setIntList(key: String, value: List<Int>?) {
 fun AbstractConfig.setLongList(key: String, value: List<Long>?) {
     set(key, value?.let { gson.toJson(it) })
 }
+fun <K, V> AbstractConfig.setMap(key: String, value: Map<K, V>?) {
+    set(key, value?.let { gson.toJson(it) })
+}
 
 fun HashMap<String, String?>.get(key: String, default: String?): String? {
     return this[key] ?: default
