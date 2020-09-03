@@ -80,6 +80,15 @@ object Regexes {
     val MOBIDZIENNIK_ATTENDANCE_ENTRIES by lazy {
         """font-size:.+?class=".*?">(.*?)</td>""".toRegex(DOT_MATCHES_ALL)
     }
+    val MOBIDZIENNIK_ATTENDANCE_COLUMNS by lazy {
+        """<tr><td class="border-right1".+?/td>(.+?)</tr>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_ATTENDANCE_COLUMN by lazy {
+        """(<td.+?>)(.*?)</td>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_ATTENDANCE_COLUMN_SPAN by lazy {
+        """colspan="(\d+)"""".toRegex()
+    }
     val MOBIDZIENNIK_ATTENDANCE_RANGE by lazy {
         """<span>([0-9:]+) - .+? (.+?)</span></a>""".toRegex(DOT_MATCHES_ALL)
     }
