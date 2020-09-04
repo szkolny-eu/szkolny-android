@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.home.cards
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,8 +59,8 @@ class HomeAvailabilityCard(
         var onInfoClick = { _: View -> }
 
         if (status != null && !status.available && status.message != null) {
-            b.homeAvailabilityTitle.text = status.message.title
-            b.homeAvailabilityText.text = status.message.contentShort
+            b.homeAvailabilityTitle.text = Html.fromHtml(status.message.title)
+            b.homeAvailabilityText.text = Html.fromHtml(status.message.contentShort)
             b.homeAvailabilityUpdate.isVisible = false
             b.homeAvailabilityIcon.setImageResource(R.drawable.ic_sync)
             if (status.message.icon != null)

@@ -45,7 +45,7 @@
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{message.title}"
+                    android:text="@{Html.fromHtml(message.title)}"
                     android:textAppearance="@style/NavView.TextView.Title"
                     tools:text="Dziennik nie działa" />
 

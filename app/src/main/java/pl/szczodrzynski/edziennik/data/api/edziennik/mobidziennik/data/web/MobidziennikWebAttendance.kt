@@ -91,8 +91,11 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
 
             Regexes.MOBIDZIENNIK_ATTENDANCE_TABLE.findAll(text).forEach { tableResult ->
                 val table = tableResult[1]
+
                 val lessonDates = mutableListOf<Date>()
                 val entries = mutableListOf<String>()
+                val ranges = mutableListOf<MatchResult?>()
+
                 Regexes.MOBIDZIENNIK_ATTENDANCE_LESSON_COUNT.findAll(table).forEach {
                     val date = Date.fromY_m_d(it[1])
                     for (i in 0 until (it[2].toIntOrNull() ?: 0)) {
@@ -101,102 +104,52 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                 }
                 Regexes.MOBIDZIENNIK_ATTENDANCE_ENTRIES.findAll(table).mapTo(entries) { it[1] }
 
+                Regexes.MOBIDZIENNIK_ATTENDANCE_COLUMNS.findAll(table).forEach { columns ->
+                    var index = 0
+                    Regexes.MOBIDZIENNIK_ATTENDANCE_COLUMN.findAll(columns[1]).forEach { column ->
+                        if (column[1].contains("colspan")) {
+                            val colspan =
+                                    Regexes.MOBIDZIENNIK_ATTENDANCE_COLUMN_SPAN.find(column[1])
+                                            ?.get(1)
+                                            ?.toIntOrNull() ?: 0
+                            entries.addAll(index, List(colspan) { "" })
+                            ranges.addAll(List(colspan) { null })
+                            index += colspan
+                        }
+                        else {
+                            val range = Regexes.MOBIDZIENNIK_ATTENDANCE_RANGE.find(column[2])
+                            ranges.add(range)
+                            index++
+                        }
+                    }
+                }
+
                 val dateIterator = lessonDates.iterator()
                 val entriesIterator = entries.iterator()
-                Regexes.MOBIDZIENNIK_ATTENDANCE_RANGE.findAll(table).let { ranges ->
-                    val count = ranges.count()
-                    // verify the lesson count is the same as dates & entries
-                    if (count != lessonDates.count() || count != entries.count())
+
+                val count = ranges.count()
+                // verify the lesson count is the same as dates & entries
+                if (count != lessonDates.count() || count != entries.count())
+                    return@forEach
+                ranges.forEach { range ->
+                    val lessonDate = dateIterator.next()
+                    val entry = entriesIterator.next()
+                    if (range == null || entry.isBlank())
                         return@forEach
-                    ranges.forEach { range ->
-                        val lessonDate = dateIterator.next()
-                        var entry = entriesIterator.next()
-                        if (entry.isBlank())
-                            return@forEach
-                        val startTime = Time.fromH_m(range[1])
+                    val startTime = Time.fromH_m(range[1])
 
-                        range[2].split(" / ").mapNotNull { Regexes.MOBIDZIENNIK_ATTENDANCE_LESSON.find(it) }.forEachIndexed { index, lesson ->
-                            val topic = lesson[1].substringAfter(" - ", missingDelimiterValue = "").takeIf { it.isNotBlank() }
-                            if (topic?.startsWith("Lekcja odwołana: ") == true || entry.isEmpty())
-                                return@forEachIndexed
-                            val subjectName = lesson[1].substringBefore(" - ")
-                            //val team = lesson[3]
-                            val teacherName = lesson[3].fixName()
-
-                            val teacherId = data.teacherList.singleOrNull { it.fullNameLastFirst == teacherName }?.id ?: -1
-                            val subjectId = data.subjectList.singleOrNull { it.longName == subjectName }?.id ?: -1
-
-                            var typeSymbol = ""
-                            for (symbol in typeSymbols) {
-                                if (entry.startsWith(symbol) && symbol.length > typeSymbol.length)
-                                    typeSymbol = symbol
-                            }
-                            entry = entry.removePrefix(typeSymbol)
-
-                            var isCounted = true
-                            val baseType = when (typeSymbol) {
-                                "." -> TYPE_PRESENT
-                                "|" -> TYPE_ABSENT
-                                "+" -> TYPE_ABSENT_EXCUSED
-                                "s" -> TYPE_BELATED
-                                "z" -> TYPE_RELEASED
-                                else -> {
-                                    isCounted = false
-                                    when (typeSymbol) {
-                                        "e" -> TYPE_PRESENT_CUSTOM
-                                        "en" -> TYPE_ABSENT
-                                        "ep" -> TYPE_PRESENT_CUSTOM
-                                        else -> TYPE_UNKNOWN
-                                    }
-                                }
-                            }
-                            val typeName = types?.get(typeSymbol) ?: ""
-                            val typeColor = when (typeSymbol) {
-                                "e" -> 0xff673ab7
-                                "en" -> 0xffec407a
-                                "ep" -> 0xff4caf50
-                                else -> null
-                            }?.toInt()
-
-                            val typeShort = if (isCounted)
-                                data.app.attendanceManager.getTypeShort(baseType)
-                            else
-                                typeSymbol
-
-                            val semester = data.profile?.dateToSemester(lessonDate) ?: 1
-
-                            val id = lessonDate.combineWith(startTime) / 6L * 10L + (lesson[0].hashCode() and 0xFFFF) + index
-
-                            val attendanceObject = Attendance(
-                                    profileId = profileId,
-                                    id = id,
-                                    baseType = baseType,
-                                    typeName = typeName,
-                                    typeShort = typeShort,
-                                    typeSymbol = typeSymbol,
-                                    typeColor = typeColor,
-                                    date = lessonDate,
-                                    startTime = startTime,
-                                    semester = semester,
-                                    teacherId = teacherId,
-                                    subjectId = subjectId
-                            ).also {
-                                it.lessonTopic = topic
-                                it.isCounted = isCounted
-                            }
-
-                            data.attendanceList.add(attendanceObject)
-                            if (baseType != TYPE_PRESENT) {
-                                data.metadataList.add(
-                                        Metadata(
-                                                data.profileId,
-                                                Metadata.TYPE_ATTENDANCE,
-                                                id,
-                                                data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN,
-                                                data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN
-                                        ))
-                            }
-                        }
+                    range[2].split(" / ").mapNotNull {
+                        Regexes.MOBIDZIENNIK_ATTENDANCE_LESSON.find(it)
+                    }.forEachIndexed { index, lesson ->
+                        processEntry(
+                                index,
+                                lesson,
+                                lessonDate,
+                                startTime,
+                                entry,
+                                types,
+                                typeSymbols
+                        )
                     }
                 }
             }
@@ -204,6 +157,99 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
             d(TAG, "Done in ${System.currentTimeMillis()-start} ms (request ${start-requestTime} ms)")
 
             onSuccess()
+        }
+    }
+
+    private fun processEntry(
+            index: Int,
+            lesson: MatchResult,
+            lessonDate: Date,
+            startTime: Time,
+            entry: String,
+            types: Map<String?, String?>?,
+            typeSymbols: List<String>
+    ) {
+        var entry = entry
+
+        val topic = lesson[1].substringAfter(" - ", missingDelimiterValue = "").takeIf { it.isNotBlank() }
+        if (topic?.startsWith("Lekcja odwołana: ") == true || entry.isEmpty())
+            return
+        val subjectName = lesson[1].substringBefore(" - ")
+        //val team = lesson[3]
+        val teacherName = lesson[3].fixName()
+
+        val teacherId = data.teacherList.singleOrNull { it.fullNameLastFirst == teacherName }?.id ?: -1
+        val subjectId = data.subjectList.singleOrNull { it.longName == subjectName }?.id ?: -1
+
+        var typeSymbol = ""
+        for (symbol in typeSymbols) {
+            if (entry.startsWith(symbol) && symbol.length > typeSymbol.length)
+                typeSymbol = symbol
+        }
+        entry = entry.removePrefix(typeSymbol)
+
+        var isCounted = true
+        val baseType = when (typeSymbol) {
+            "." -> TYPE_PRESENT
+            "|" -> TYPE_ABSENT
+            "+" -> TYPE_ABSENT_EXCUSED
+            "s" -> TYPE_BELATED
+            "z" -> TYPE_RELEASED
+            else -> {
+                isCounted = false
+                when (typeSymbol) {
+                    "e" -> TYPE_PRESENT_CUSTOM
+                    "en" -> TYPE_ABSENT
+                    "ep" -> TYPE_PRESENT_CUSTOM
+                    else -> TYPE_UNKNOWN
+                }
+            }
+        }
+        val typeName = types?.get(typeSymbol) ?: ""
+        val typeColor = when (typeSymbol) {
+            "e" -> 0xff673ab7
+            "en" -> 0xffec407a
+            "ep" -> 0xff4caf50
+            else -> null
+        }?.toInt()
+
+        val typeShort = if (isCounted)
+            data.app.attendanceManager.getTypeShort(baseType)
+        else
+            typeSymbol
+
+        val semester = data.profile?.dateToSemester(lessonDate) ?: 1
+
+        val id = lessonDate.combineWith(startTime) / 6L * 10L + (lesson[0].hashCode() and 0xFFFF) + index
+
+        val attendanceObject = Attendance(
+                profileId = profileId,
+                id = id,
+                baseType = baseType,
+                typeName = typeName,
+                typeShort = typeShort,
+                typeSymbol = typeSymbol,
+                typeColor = typeColor,
+                date = lessonDate,
+                startTime = startTime,
+                semester = semester,
+                teacherId = teacherId,
+                subjectId = subjectId
+        ).also {
+            it.lessonTopic = topic
+            it.isCounted = isCounted
+        }
+
+        data.attendanceList.add(attendanceObject)
+        if (baseType != TYPE_PRESENT) {
+            data.metadataList.add(
+                    Metadata(
+                            data.profileId,
+                            Metadata.TYPE_ATTENDANCE,
+                            id,
+                            data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN,
+                            data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN
+                    ))
         }
     }
 }
