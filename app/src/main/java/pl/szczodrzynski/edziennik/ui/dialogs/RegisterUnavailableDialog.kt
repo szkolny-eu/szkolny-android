@@ -47,14 +47,14 @@ class RegisterUnavailableDialog(
         onShowListener?.invoke(TAG)
         app = activity.applicationContext as App
 
-        if (!status.available && status.message != null) {
+        if (!status.available && status.userMessage != null) {
             val b = DialogRegisterUnavailableBinding.inflate(LayoutInflater.from(activity), null, false)
-            b.message = status.message
-            if (status.message.image != null)
-                b.image.load(status.message.image)
-            if (status.message.url != null) {
+            b.message = status.userMessage
+            if (status.userMessage.image != null)
+                b.image.load(status.userMessage.image)
+            if (status.userMessage.url != null) {
                 b.readMore.onClick {
-                    Utils.openUrl(activity, status.message.url)
+                    Utils.openUrl(activity, status.userMessage.url)
                 }
             }
             b.text.movementMethod = LinkMovementMethod.getInstance()
@@ -67,6 +67,7 @@ class RegisterUnavailableDialog(
                         onDismissListener?.invoke(TAG)
                     }
                     .show()
+            return@run
         }
 
         val update = app.config.update

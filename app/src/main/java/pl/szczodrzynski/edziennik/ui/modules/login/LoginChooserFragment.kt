@@ -117,7 +117,7 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             else -> null
         }?.let { registerName ->
             var status = app.config.sync.registerAvailability[registerName]
-            if (status == null || status.nextCheck < currentTimeUnix()) {
+            if (status == null || status.nextCheckAt < currentTimeUnix()) {
                 withContext(Dispatchers.IO) {
                     val api = SzkolnyApi(app)
                     api.runCatching(activity) {

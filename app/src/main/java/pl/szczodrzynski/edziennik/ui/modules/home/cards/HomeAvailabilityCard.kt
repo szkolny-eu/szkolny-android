@@ -4,11 +4,11 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.home.cards
 
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
@@ -58,13 +58,13 @@ class HomeAvailabilityCard(
 
         var onInfoClick = { _: View -> }
 
-        if (status != null && !status.available && status.message != null) {
-            b.homeAvailabilityTitle.text = Html.fromHtml(status.message.title)
-            b.homeAvailabilityText.text = Html.fromHtml(status.message.contentShort)
+        if (status != null && !status.available && status.userMessage != null) {
+            b.homeAvailabilityTitle.text = HtmlCompat.fromHtml(status.userMessage.title, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            b.homeAvailabilityText.text = HtmlCompat.fromHtml(status.userMessage.contentShort, HtmlCompat.FROM_HTML_MODE_LEGACY)
             b.homeAvailabilityUpdate.isVisible = false
             b.homeAvailabilityIcon.setImageResource(R.drawable.ic_sync)
-            if (status.message.icon != null)
-                b.homeAvailabilityIcon.load(status.message.icon)
+            if (status.userMessage.icon != null)
+                b.homeAvailabilityIcon.load(status.userMessage.icon)
             onInfoClick = {
                 RegisterUnavailableDialog(activity, status)
             }

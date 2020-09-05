@@ -11,8 +11,8 @@ import pl.szczodrzynski.edziennik.currentTimeUnix
 data class RegisterAvailabilityStatus(
         val available: Boolean,
         val name: String?,
-        val message: Message?,
-        val nextCheck: Long = currentTimeUnix() + 7 * DAY,
+        val userMessage: Message?,
+        val nextCheckAt: Long = currentTimeUnix() + 7 * DAY,
         val minVersionCode: Int = BuildConfig.VERSION_CODE
 ) {
     data class Message(
