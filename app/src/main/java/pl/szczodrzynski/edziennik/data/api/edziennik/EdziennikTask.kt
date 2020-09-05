@@ -93,7 +93,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
             profile.registerName?.let { registerName ->
                 var status = app.config.sync.registerAvailability[registerName]
-                if (status == null || status.nextCheck < currentTimeUnix()) {
+                if (status == null || status.nextCheckAt < currentTimeUnix()) {
                     val api = SzkolnyApi(app)
                     api.runCatching({
                         val availability = getRegisterAvailability()
