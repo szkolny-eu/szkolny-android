@@ -67,6 +67,7 @@ class RegisterUnavailableDialog(
                         onDismissListener?.invoke(TAG)
                     }
                     .show()
+            return@run
         }
 
         val update = app.config.update

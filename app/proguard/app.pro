@@ -64,6 +64,6 @@
 
 -keep class pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing { public final byte[] pleaseStopRightNow(java.lang.String, long); }
 
--keepclassmembernames class pl.szczodrzynski.edziennik.data.api.szkolny.request.** { *; }
--keepclassmembernames class pl.szczodrzynski.edziennik.data.api.szkolny.response.** { *; }
+-keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.request.** { *; }
+-keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.response.** { *; }
 -keepclassmembernames class pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo.Platform { *; }
