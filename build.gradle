@@ -53,6 +53,8 @@ buildscript {
 
                 retrofit         : "2.6.4"
         ]
+        versions.kotlin = '1.4.0'
+        versions.kotlin = '1.4.0'
     }
 
     repositories {
