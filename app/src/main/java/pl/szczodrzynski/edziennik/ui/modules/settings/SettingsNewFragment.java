@@ -1059,6 +1059,24 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 );
             }
 
+            if (App.Companion.getDevMode()) {
+                items.add(
+                        new MaterialAboutSwitchItem(
+                                getString(R.string.settings_register_hide_sticks_from_old),
+                                null,
+                                new IconicsDrawable(activity)
+                                    .icon(CommunityMaterial.Icon2.cmd_numeric_1_box_outline)
+                                    .size(IconicsSize.dp(iconSizeDp))
+                                    .color(IconicsColor.colorInt(iconColor))
+                        )
+                        .setChecked(app.getConfig().forProfile().getGrades().getHideSticksFromOld())
+                        .setOnChangeAction((isChecked, tag) -> {
+                            app.getConfig().forProfile().getGrades().setHideSticksFromOld(isChecked);
+                            return true;
+                        })
+                );
+            }
+
         }
         return items;
     }
