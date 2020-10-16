@@ -55,7 +55,7 @@ class AttendanceDetailsDialog(
 
         val attendanceColor = manager.getAttendanceColor(attendance)
         b.attendance = attendance
-        b.devMode = App.debugMode
+        b.devMode = App.devMode
         b.attendanceName.setTextColor(if (ColorUtils.calculateLuminance(attendanceColor) > 0.3) 0xaa000000.toInt() else 0xccffffff.toInt())
         b.attendanceName.background.setTintColor(attendanceColor)
 

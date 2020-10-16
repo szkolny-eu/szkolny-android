@@ -108,7 +108,7 @@ class MessageFragment : Fragment(), CoroutineScope {
                     .setNegativeButton(R.string.cancel, null)
                     .show()
         }
-        b.downloadButton.isVisible = App.debugMode
+        b.downloadButton.isVisible = App.devMode
         b.downloadButton.onClick {
             EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
         }

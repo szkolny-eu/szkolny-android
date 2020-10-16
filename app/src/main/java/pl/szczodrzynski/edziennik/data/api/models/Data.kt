@@ -136,7 +136,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     val db: AppDb by lazy { app.db }
 
     init {
-        if (App.devMode) {
+        if (App.debugMode) {
             fakeLogin = loginStore.hasLoginData("fakeLogin")
         }
         clear()

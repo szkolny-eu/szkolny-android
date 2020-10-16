@@ -127,7 +127,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                     "loginMode" to loginMode
             )
 
-            if (App.devMode && b.fakeLogin.isChecked) {
+            if (App.debugMode && b.fakeLogin.isChecked) {
                 payload.putBoolean("fakeLogin", true)
             }
 
