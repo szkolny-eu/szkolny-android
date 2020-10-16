@@ -219,6 +219,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
                 "P01" -> "http://efeb-komunikacja.pro-hudson.win.vulcan.pl"
                 "P02" -> "http://efeb-komunikacja.pro-hudsonrc.win.vulcan.pl"
                 "P90" -> "http://efeb-komunikacja-pro-mwujakowska.neo.win.vulcan.pl"
+                "KO1" -> "https://uonetplus-komunikacja.eduportal.koszalin.pl"
                 "FK1", "FS1" -> "http://api.fakelog.cf"
                 "SZ9" -> "http://hack.szkolny.eu"
                 else -> null
