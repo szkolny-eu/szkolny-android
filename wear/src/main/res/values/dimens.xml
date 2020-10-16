@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kacper Ziubryniewicz 2020-9-17
+  -->
+
 <resources>
     <!--
     Because the window insets on round devices are larger than 15dp, this padding only applies

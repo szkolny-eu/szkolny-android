@@ -89,7 +89,7 @@ class VulcanLoginWebMain(val data: DataVulcan, val onSuccess: () -> Unit) {
             return true
         }
 
-        val fsLogin = FSLogin(data.app.http, debug = App.debugMode)
+        val fsLogin = FSLogin(data.app.http, debug = App.devMode)
         fsLogin.performLogin(
                 realm = realm,
                 username = data.webUsername ?: data.webEmail ?: return false,

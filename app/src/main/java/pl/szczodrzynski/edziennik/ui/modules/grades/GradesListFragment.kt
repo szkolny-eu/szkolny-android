@@ -71,8 +71,13 @@ class GradesListFragment : Fragment(), CoroutineScope {
         val adapter = GradesAdapter(activity)
         var firstRun = true
 
-        app.db.gradeDao().getAllOrderBy(App.profileId, app.gradesManager.getOrderByString()).observe(this@GradesListFragment, Observer { items -> this@GradesListFragment.launch {
+        app.db.gradeDao().getAllOrderBy(App.profileId, app.gradesManager.getOrderByString()).observe(this@GradesListFragment, Observer { grades -> this@GradesListFragment.launch {
             if (!isAdded) return@launch
+
+            val items = when {
+                app.config.forProfile().grades.hideSticksFromOld && App.devMode -> grades.filter { it.value != 1.0f }
+                else -> grades
+            }
 
             // load & configure the adapter
             adapter.items = withContext(Dispatchers.Default) { processGrades(items) }

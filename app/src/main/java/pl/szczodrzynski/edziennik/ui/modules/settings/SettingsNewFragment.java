@@ -581,7 +581,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             syncCardIntervalItem.setChecked(app.getConfig().getSync().getEnabled());
             syncCardIntervalItem.setOnClickAction(() -> {
                 List<CharSequence> intervalNames = new ArrayList<>();
-                if (App.Companion.getDevMode() && false) {
+                if (App.Companion.getDebugMode() && false) {
                     intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_seconds, 30));
                     intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_minutes, 2));
                 }
@@ -593,7 +593,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_hours, 3));
                 intervalNames.add(ExtensionsKt.plural(activity, R.plurals.time_till_hours, 4));
                 List<Integer> intervals = new ArrayList<>();
-                if (App.Companion.getDevMode() && false) {
+                if (App.Companion.getDebugMode() && false) {
                     intervals.add(30);
                     intervals.add(2 * 60);
                 }
@@ -1059,6 +1059,24 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 );
             }
 
+            if (App.Companion.getDevMode()) {
+                items.add(
+                        new MaterialAboutSwitchItem(
+                                getString(R.string.settings_register_hide_sticks_from_old),
+                                null,
+                                new IconicsDrawable(activity)
+                                    .icon(CommunityMaterial.Icon2.cmd_numeric_1_box_outline)
+                                    .size(IconicsSize.dp(iconSizeDp))
+                                    .color(IconicsColor.colorInt(iconColor))
+                        )
+                        .setChecked(app.getConfig().forProfile().getGrades().getHideSticksFromOld())
+                        .setOnChangeAction((isChecked, tag) -> {
+                            app.getConfig().forProfile().getGrades().setHideSticksFromOld(isChecked);
+                            return true;
+                        })
+                );
+            }
+
         }
         return items;
     }
@@ -1245,7 +1263,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 })
                 .build());*/
 
-            if (App.Companion.getDebugMode()) {
+            if (App.Companion.getDevMode()) {
                 items.add(new MaterialAboutActionItem.Builder()
                         .text(R.string.settings_about_crash_text)
                         .subText(R.string.settings_about_crash_subtext)

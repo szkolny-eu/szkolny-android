@@ -49,4 +49,9 @@ class ProfileConfigGrades(private val config: ProfileConfig) {
     var dontCountGrades: List<String>
         get() { mDontCountGrades = mDontCountGrades ?: config.values.get("dontCountGrades", listOf()); return mDontCountGrades ?: listOf() }
         set(value) { config.set("dontCountGrades", value); mDontCountGrades = value }
+
+    private var mHideSticksFromOld: Boolean? = null
+    var hideSticksFromOld: Boolean
+        get() { mHideSticksFromOld = mHideSticksFromOld ?: config.values.get("hideSticksFromOld", false); return mHideSticksFromOld ?: false }
+        set(value) { config.set("hideSticksFromOld", value); mHideSticksFromOld = value }
 }

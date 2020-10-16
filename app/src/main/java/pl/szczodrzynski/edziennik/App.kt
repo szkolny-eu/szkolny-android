@@ -57,8 +57,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         val profileId
             get() = profile.id
 
-        var devMode = false
         var debugMode = false
+        var devMode = false
     }
 
     val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
@@ -107,7 +107,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .readTimeout(30, TimeUnit.SECONDS)
         builder.installHttpsSupport(this)
 
-        if (debugMode || BuildConfig.DEBUG) {
+        if (devMode || BuildConfig.DEBUG) {
             HyperLog.initialize(this)
             HyperLog.setLogLevel(Log.VERBOSE)
             HyperLog.setLogFormat(DebugLogFormat(this))
@@ -162,7 +162,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         Iconics.registerFont(SzkolnyFont)
         App.db = AppDb(this)
         Themes.themeInt = config.ui.theme
-        debugMode = config.debugMode
+        devMode = config.debugMode
         MHttp.instance().customOkHttpClient(http)
 
         if (!profileLoadById(config.lastProfileId)) {
@@ -173,9 +173,9 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             setLanguage(it)
         }
 
-        devMode = BuildConfig.DEBUG
+        debugMode = BuildConfig.DEBUG
         if (BuildConfig.DEBUG)
-            debugMode = true
+            devMode = true
 
         Signing.getCert(this)
 
@@ -185,7 +185,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
 
                 if (config.devModePassword != null)
                     checkDevModePassword()
-                debugMode = devMode || config.debugMode
+                devMode = debugMode || config.debugMode
 
                 if (config.sync.enabled)
                     SyncWorker.scheduleNext(this@App, false)

@@ -22,8 +22,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.databinding.LoginFormCheckboxItemBinding
+import pl.szczodrzynski.edziennik.databinding.LoginFormFieldItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFragmentBinding
-import pl.szczodrzynski.edziennik.databinding.LoginFormItemBinding
 import pl.szczodrzynski.navlib.colorAttr
 import java.util.*
 import kotlin.coroutines.CoroutineContext
@@ -75,33 +76,48 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         b.subTitle.text = platformName ?: app.getString(mode.name)
         b.text.text = platformGuideText ?: app.getString(mode.guideText)
 
-        val credentials = mutableMapOf<LoginInfo.Credential, LoginFormItemBinding>()
+        val credentials = mutableMapOf<LoginInfo.BaseCredential, Any>()
 
         for (credential in mode.credentials) {
             if (platformFormFields?.contains(credential.keyName) == false)
                 continue
 
-            val b = LoginFormItemBinding.inflate(layoutInflater)
-            b.textLayout.hint = app.getString(credential.name)
-            if (credential.hideText) {
-                b.textEdit.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
-                b.textLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+            if (credential is LoginInfo.FormField) {
+                val b = LoginFormFieldItemBinding.inflate(layoutInflater)
+                b.textLayout.hint = app.getString(credential.name)
+                if (credential.hideText) {
+                    b.textEdit.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    b.textLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+                }
+                b.textEdit.addTextChangedListener {
+                    b.textLayout.error = null
+                }
+
+                b.textEdit.id = credential.name
+
+                b.textEdit.setText(arguments?.getString(credential.keyName) ?: "")
+                b.textLayout.startIconDrawable = IconicsDrawable(activity)
+                        .icon(credential.icon)
+                        .sizeDp(24)
+                        .paddingDp(2)
+                        .colorAttr(activity, R.attr.colorOnBackground)
+
+                this.b.formContainer.addView(b.root)
+                credentials[credential] = b
             }
-            b.textEdit.addTextChangedListener {
-                b.textLayout.error = null
+            if (credential is LoginInfo.FormCheckbox) {
+                val b = LoginFormCheckboxItemBinding.inflate(layoutInflater)
+                b.checkbox.text = app.getString(credential.name)
+                b.checkbox.onChange { _, _ ->
+                    b.errorText.text = null
+                }
+                if (arguments?.containsKey(credential.keyName) == true) {
+                    b.checkbox.isChecked = arguments?.getBoolean(credential.keyName) == true
+                }
+
+                this.b.formContainer.addView(b.root)
+                credentials[credential] = b
             }
-
-            b.textEdit.id = credential.name
-
-            b.textEdit.setText(arguments?.getString(credential.keyName) ?: "")
-            b.textLayout.startIconDrawable = IconicsDrawable(activity)
-                    .icon(credential.icon)
-                    .sizeDp(24)
-                    .paddingDp(2)
-                    .colorAttr(activity, R.attr.colorOnBackground)
-
-            this.b.formContainer.addView(b.root)
-            credentials[credential] = b
         }
 
         activity.lastError?.let { error ->
@@ -109,7 +125,12 @@ class LoginFormFragment : Fragment(), CoroutineScope {
             startCoroutineTimer(delayMillis = 200L) {
                 for (credential in credentials) {
                     credential.key.errorCodes[error.errorCode]?.let {
-                        credential.value.textLayout.error = app.getString(it)
+                        (credential.value as? LoginFormFieldItemBinding)?.let { b ->
+                            b.textLayout.error = app.getString(it)
+                        }
+                        (credential.value as? LoginFormCheckboxItemBinding)?.let { b ->
+                            b.errorText.text = app.getString(it)
+                        }
                         return@startCoroutineTimer
                     }
                 }
@@ -127,7 +148,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                     "loginMode" to loginMode
             )
 
-            if (App.devMode && b.fakeLogin.isChecked) {
+            if (App.debugMode && b.fakeLogin.isChecked) {
                 payload.putBoolean("fakeLogin", true)
             }
 
@@ -137,35 +158,42 @@ class LoginFormFragment : Fragment(), CoroutineScope {
 
             var hasErrors = false
             credentials.forEach { (credential, b) ->
-                var text = b.textEdit.text?.toString() ?: return@forEach
-                if (!credential.hideText)
-                    text = text.trim()
+                if (credential is LoginInfo.FormField && b is LoginFormFieldItemBinding) {
+                    var text = b.textEdit.text?.toString() ?: return@forEach
+                    if (!credential.hideText)
+                        text = text.trim()
 
-                if (credential.caseMode == LoginInfo.Credential.CaseMode.UPPER_CASE)
-                    text = text.toUpperCase(Locale.getDefault())
-                if (credential.caseMode == LoginInfo.Credential.CaseMode.LOWER_CASE)
-                    text = text.toLowerCase(Locale.getDefault())
+                    if (credential.caseMode == LoginInfo.FormField.CaseMode.UPPER_CASE)
+                        text = text.toUpperCase(Locale.getDefault())
+                    if (credential.caseMode == LoginInfo.FormField.CaseMode.LOWER_CASE)
+                        text = text.toLowerCase(Locale.getDefault())
 
-                credential.stripTextRegex?.let {
-                    text = text.replace(it.toRegex(), "")
+                    credential.stripTextRegex?.let {
+                        text = text.replace(it.toRegex(), "")
+                    }
+
+                    b.textEdit.setText(text)
+
+                    if (credential.isRequired && text.isBlank()) {
+                        b.textLayout.error = app.getString(credential.emptyText)
+                        hasErrors = true
+                        return@forEach
+                    }
+
+                    if (!text.matches(credential.validationRegex.toRegex())) {
+                        b.textLayout.error = app.getString(credential.invalidText)
+                        hasErrors = true
+                        return@forEach
+                    }
+
+                    payload.putString(credential.keyName, text)
+                    arguments?.putString(credential.keyName, text)
                 }
-
-                b.textEdit.setText(text)
-
-                if (credential.isRequired && text.isBlank()) {
-                    b.textLayout.error = app.getString(credential.emptyText)
-                    hasErrors = true
-                    return@forEach
+                if (credential is LoginInfo.FormCheckbox && b is LoginFormCheckboxItemBinding) {
+                    val checked = b.checkbox.isChecked
+                    payload.putBoolean(credential.keyName, checked)
+                    arguments?.putBoolean(credential.keyName, checked)
                 }
-
-                if (!text.matches(credential.validationRegex.toRegex())) {
-                    b.textLayout.error = app.getString(credential.invalidText)
-                    hasErrors = true
-                    return@forEach
-                }
-
-                payload.putString(credential.keyName, text)
-                arguments?.putString(credential.keyName, text)
             }
 
             if (hasErrors)

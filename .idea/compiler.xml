@@ -11,6 +11,7 @@
       <module name="Szkolny.eu.mhttp" target="1.8" />
       <module name="Szkolny.eu.nachos" target="1.8" />
       <module name="Szkolny.eu.szkolny-font" target="1.8" />
+      <module name="Szkolny.eu.wear" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

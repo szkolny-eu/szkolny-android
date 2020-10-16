@@ -152,13 +152,14 @@ class HomeFragment : Fragment(), CoroutineScope {
 
         val items = mutableListOf<HomeCard>()
         cards.mapNotNullTo(items) {
+            @Suppress("USELESS_CAST")
             when (it.cardId) {
                 HomeCard.CARD_LUCKY_NUMBER -> HomeLuckyNumberCard(it.cardId, app, activity, this, app.profile)
                 HomeCard.CARD_TIMETABLE -> HomeTimetableCard(it.cardId, app, activity, this, app.profile)
                 HomeCard.CARD_GRADES -> HomeGradesCard(it.cardId, app, activity, this, app.profile)
                 HomeCard.CARD_EVENTS -> HomeEventsCard(it.cardId, app, activity, this, app.profile)
                 else -> null
-            }
+            } as HomeCard?
         }
         //if (App.devMode)
         //    items += HomeDebugCard(100, app, activity, this, app.profile)

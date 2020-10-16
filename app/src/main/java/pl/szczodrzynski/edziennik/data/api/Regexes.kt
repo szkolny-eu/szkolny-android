@@ -12,6 +12,10 @@ object Regexes {
         """color: (\w+);?""".toRegex()
     }
 
+    val NOT_DIGITS by lazy {
+        """[^0-9]""".toRegex()
+    }
+
 
 
     val MOBIDZIENNIK_GRADES_SUBJECT_NAME by lazy {

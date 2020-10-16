@@ -299,7 +299,7 @@ fun colorFromCssName(name: String): Int {
         "orange" -> 0xffffa500
         "black" -> 0xff000000
         "white" -> 0xffffffff
-        else -> -1
+        else -> -1L
     }.toInt()
 }
 

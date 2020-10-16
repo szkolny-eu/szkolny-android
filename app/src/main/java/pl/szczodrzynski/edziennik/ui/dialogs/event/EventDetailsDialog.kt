@@ -193,7 +193,7 @@ class EventDetailsDialog(
         b.goToTimetableButton.attachToastHint(R.string.hint_go_to_timetable)
 
         // RE-DOWNLOAD
-        b.downloadButton.isVisible = App.debugMode
+        b.downloadButton.isVisible = App.devMode
         b.downloadButton.onClick {
             EdziennikTask.eventGet(event.profileId, event).enqueue(activity)
         }
