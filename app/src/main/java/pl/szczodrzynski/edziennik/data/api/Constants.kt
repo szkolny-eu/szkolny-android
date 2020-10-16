@@ -119,6 +119,7 @@ const val VULCAN_WEB_ENDPOINT_REGISTER_DEVICE = "RejestracjaUrzadzeniaToken.mvc/
 
 const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"
 
-const val PODLASIE_API_VERSION = "1.0.31"
+const val PODLASIE_API_VERSION = "1.0.62"
 const val PODLASIE_API_URL = "https://cpdklaser.zeto.bialystok.pl/api"
 const val PODLASIE_API_USER_ENDPOINT = "/pobierzDaneUcznia"
+const val PODLASIE_API_LOGOUT_DEVICES_ENDPOINT = "/wyczyscUrzadzenia"

@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.ui.modules.grades.models.ExpandableItemModel
 
 object LoginInfo {
 
-    private fun getEmailCredential(keyName: String) = Credential(
+    private fun getEmailCredential(keyName: String) = FormField(
             keyName = keyName,
             name = R.string.login_hint_email,
             icon = CommunityMaterial.Icon.cmd_at,
@@ -24,9 +24,9 @@ object LoginInfo {
             errorCodes = mapOf(),
             isRequired = true,
             validationRegex = "([\\w.\\-_+]+)?\\w+@[\\w-_]+(\\.\\w+)+",
-            caseMode = Credential.CaseMode.LOWER_CASE
+            caseMode = FormField.CaseMode.LOWER_CASE
     )
-    private fun getPasswordCredential(keyName: String) = Credential(
+    private fun getPasswordCredential(keyName: String) = FormField(
             keyName = keyName,
             name = R.string.login_hint_password,
             icon = CommunityMaterial.Icon2.cmd_lock_outline,
@@ -94,7 +94,7 @@ object LoginInfo {
                                     hintText = R.string.login_mode_librus_jst_hint,
                                     guideText = R.string.login_mode_librus_jst_guide,
                                     credentials = listOf(
-                                            Credential(
+                                            FormField(
                                                     keyName = "accountCode",
                                                     name = R.string.login_hint_token,
                                                     icon = CommunityMaterial.Icon.cmd_code_braces,
@@ -103,9 +103,9 @@ object LoginInfo {
                                                     errorCodes = mapOf(),
                                                     isRequired = true,
                                                     validationRegex = "[A-Z0-9_]+",
-                                                    caseMode = Credential.CaseMode.UPPER_CASE
+                                                    caseMode = FormField.CaseMode.UPPER_CASE
                                             ),
-                                            Credential(
+                                            FormField(
                                                     keyName = "accountPin",
                                                     name = R.string.login_hint_pin,
                                                     icon = CommunityMaterial.Icon2.cmd_lock,
@@ -114,7 +114,7 @@ object LoginInfo {
                                                     errorCodes = mapOf(),
                                                     isRequired = true,
                                                     validationRegex = "[a-z0-9_]+",
-                                                    caseMode = Credential.CaseMode.LOWER_CASE
+                                                    caseMode = FormField.CaseMode.LOWER_CASE
                                             )
                                     ),
                                     errorCodes = mapOf(
@@ -138,7 +138,7 @@ object LoginInfo {
                                     guideText = R.string.login_mode_vulcan_api_guide,
                                     isRecommended = true,
                                     credentials = listOf(
-                                            Credential(
+                                            FormField(
                                                     keyName = "deviceToken",
                                                     name = R.string.login_hint_token,
                                                     icon = CommunityMaterial.Icon.cmd_code_braces,
@@ -149,9 +149,9 @@ object LoginInfo {
                                                     ),
                                                     isRequired = true,
                                                     validationRegex = "[A-Z0-9]{5,12}",
-                                                    caseMode = Credential.CaseMode.UPPER_CASE
+                                                    caseMode = FormField.CaseMode.UPPER_CASE
                                             ),
-                                            Credential(
+                                            FormField(
                                                     keyName = "symbol",
                                                     name = R.string.login_hint_symbol,
                                                     icon = CommunityMaterial.Icon2.cmd_school,
@@ -162,9 +162,9 @@ object LoginInfo {
                                                     ),
                                                     isRequired = true,
                                                     validationRegex = "[a-z0-9_-]+",
-                                                    caseMode = Credential.CaseMode.LOWER_CASE
+                                                    caseMode = FormField.CaseMode.LOWER_CASE
                                             ),
-                                            Credential(
+                                            FormField(
                                                     keyName = "devicePin",
                                                     name = R.string.login_hint_pin,
                                                     icon = CommunityMaterial.Icon2.cmd_lock,
@@ -175,7 +175,7 @@ object LoginInfo {
                                                     ),
                                                     isRequired = true,
                                                     validationRegex = "[0-9]+",
-                                                    caseMode = Credential.CaseMode.LOWER_CASE
+                                                    caseMode = FormField.CaseMode.LOWER_CASE
                                             )
                                     ),
                                     errorCodes = mapOf(
@@ -222,7 +222,7 @@ object LoginInfo {
                                     hintText = R.string.login_mode_mobidziennik_web_hint,
                                     guideText = R.string.login_mode_mobidziennik_web_guide,
                                     credentials = listOf(
-                                            Credential(
+                                            FormField(
                                                     keyName = "username",
                                                     name = R.string.login_hint_login_email,
                                                     icon = CommunityMaterial.Icon.cmd_account_outline,
@@ -231,9 +231,9 @@ object LoginInfo {
                                                     errorCodes = mapOf(),
                                                     isRequired = true,
                                                     validationRegex = "^[a-z0-9_\\-@+.]+$",
-                                                    caseMode = Credential.CaseMode.LOWER_CASE
+                                                    caseMode = FormField.CaseMode.LOWER_CASE
                                             ),
-                                            Credential(
+                                            FormField(
                                                     keyName = "password",
                                                     name = R.string.login_hint_password,
                                                     icon = CommunityMaterial.Icon2.cmd_lock_outline,
@@ -246,7 +246,7 @@ object LoginInfo {
                                                     validationRegex = ".*",
                                                     hideText = true
                                             ),
-                                            Credential(
+                                            FormField(
                                                     keyName = "serverName",
                                                     name = R.string.login_hint_address,
                                                     icon = CommunityMaterial.Icon2.cmd_web,
@@ -257,7 +257,7 @@ object LoginInfo {
                                                     ),
                                                     isRequired = true,
                                                     validationRegex = "^[a-z0-9_\\-]+\$",
-                                                    caseMode = Credential.CaseMode.LOWER_CASE
+                                                    caseMode = FormField.CaseMode.LOWER_CASE
                                             )
                                     ),
                                     errorCodes = mapOf(
@@ -280,7 +280,7 @@ object LoginInfo {
                                     hintText = R.string.login_mode_idziennik_web_hint,
                                     guideText = R.string.login_mode_idziennik_web_guide,
                                     credentials = listOf(
-                                            Credential(
+                                            FormField(
                                                     keyName = "schoolName",
                                                     name = R.string.login_hint_school_name,
                                                     icon = CommunityMaterial.Icon2.cmd_school,
@@ -291,9 +291,9 @@ object LoginInfo {
                                                     ),
                                                     isRequired = true,
                                                     validationRegex = "^[a-z0-9_\\-.]+$",
-                                                    caseMode = Credential.CaseMode.LOWER_CASE
+                                                    caseMode = FormField.CaseMode.LOWER_CASE
                                             ),
-                                            Credential(
+                                            FormField(
                                                     keyName = "username",
                                                     name = R.string.login_hint_username,
                                                     icon = CommunityMaterial.Icon.cmd_account_outline,
@@ -302,7 +302,7 @@ object LoginInfo {
                                                     errorCodes = mapOf(),
                                                     isRequired = true,
                                                     validationRegex = "^[a-z0-9_\\-.]+$",
-                                                    caseMode = Credential.CaseMode.LOWER_CASE
+                                                    caseMode = FormField.CaseMode.LOWER_CASE
                                             ),
                                             getPasswordCredential("password")
                                     ),
@@ -346,7 +346,7 @@ object LoginInfo {
                                     icon = R.drawable.login_mode_podlasie_api,
                                     guideText = R.string.login_mode_podlasie_api_guide,
                                     credentials = listOf(
-                                            Credential(
+                                            FormField(
                                                     keyName = "apiToken",
                                                     name = R.string.login_hint_token,
                                                     icon = CommunityMaterial.Icon2.cmd_lock_outline,
@@ -355,7 +355,15 @@ object LoginInfo {
                                                     errorCodes = mapOf(),
                                                     isRequired = true,
                                                     validationRegex = "[a-zA-Z0-9]{10}",
-                                                    caseMode = Credential.CaseMode.UNCHANGED
+                                                    caseMode = FormField.CaseMode.UNCHANGED
+                                            ),
+                                            FormCheckbox(
+                                                    keyName = "logoutDevices",
+                                                    name = R.string.login_podlasie_logout_devices,
+                                                    checked = false,
+                                                    errorCodes = mapOf(
+                                                            ERROR_LOGIN_PODLASIE_API_DEVICE_LIMIT to R.string.error_602_reason
+                                                    )
                                             )
                                     ),
                                     errorCodes = mapOf()
@@ -392,7 +400,7 @@ object LoginInfo {
             val isTesting: Boolean = false,
             val isPlatformSelection: Boolean = false,
 
-            val credentials: List<Credential>,
+            val credentials: List<BaseCredential>,
             val errorCodes: Map<Int, Int>
     )
 
@@ -409,11 +417,18 @@ object LoginInfo {
             val apiData: JsonObject
     )
 
-    data class Credential(
-            val keyName: String,
+    open class BaseCredential(
+            open val keyName: String,
+            @StringRes
+            open val name: Int,
+            open val errorCodes: Map<Int, Int>
+    )
+
+    data class FormField(
+            override val keyName: String,
 
             @StringRes
-            val name: Int,
+            override val name: Int,
             val icon: IIcon,
             @StringRes
             val placeholder: Int? = null,
@@ -421,7 +436,7 @@ object LoginInfo {
             val emptyText: Int,
             @StringRes
             val invalidText: Int,
-            val errorCodes: Map<Int, Int>,
+            override val errorCodes: Map<Int, Int>,
             @StringRes
             val hintText: Int? = null,
 
@@ -430,9 +445,17 @@ object LoginInfo {
             val caseMode: CaseMode = CaseMode.UNCHANGED,
             val hideText: Boolean = false,
             val stripTextRegex: String? = null
-    ) {
+    ) : BaseCredential(keyName, name, errorCodes) {
         enum class CaseMode { UNCHANGED, UPPER_CASE, LOWER_CASE }
     }
+
+    data class FormCheckbox(
+            override val keyName: String,
+            @StringRes
+            override val name: Int,
+            val checked: Boolean = false,
+            override val errorCodes: Map<Int, Int> = mapOf()
+    ) : BaseCredential(keyName, name, errorCodes)
 
     var chooserList: MutableList<Any>? = null
     var platformList: MutableMap<Int, List<Platform>> = mutableMapOf()

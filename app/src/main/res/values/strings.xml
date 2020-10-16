@@ -1379,4 +1379,5 @@
     <string name="home_availability_update">Aktualizuj</string>
     <string name="register_unavailable_read_more">Dowiedz się więcej</string>
     <string name="settings_register_hide_sticks_from_old">Stara nie zobaczy pał</string>
+    <string name="login_podlasie_logout_devices">Wyloguj z pozostałych urządzeń</string>
 </resources>
