@@ -56,20 +56,21 @@ class MobidziennikWebGetRecipientList(override val data: DataMobidziennik,
     }
 
     private fun processRecipient(listType: Int, listName: String, recipient: JsonObject) {
-        val id = recipient.getLong("id") ?: -1
+        val id = recipient.getString("id") ?: return
+        val idLong = id.replace(Regexes.NOT_DIGITS, "").toLongOrNull() ?: return
         // get teacher by ID or create it
-        val teacher = data.teacherList[id] ?: Teacher(data.profileId, id).apply {
+        val teacher = data.teacherList[idLong] ?: Teacher(data.profileId, idLong).apply {
             val fullName = recipient.getString("nazwa")?.fixName()
             name = fullName ?: ""
             fullName?.splitName()?.let {
                 name = it.second
                 surname = it.first
             }
-            data.teacherList[id] = this
+            data.teacherList[idLong] = this
         }
 
         teacher.apply {
-            loginId = id.toString()
+            loginId = id
             when (listType) {
                 1 -> setTeacherType(Teacher.TYPE_PRINCIPAL)
                 2 -> setTeacherType(Teacher.TYPE_TEACHER)
