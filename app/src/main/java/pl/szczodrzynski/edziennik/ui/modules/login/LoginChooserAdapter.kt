@@ -60,7 +60,8 @@ class LoginChooserAdapter(
 
     private val onClickListener = View.OnClickListener { view ->
         val model = view.getTag(R.string.tag_key_model)
-        if (model is LoginInfo.Register && model.loginModes.size == 1) {
+        if (model is LoginInfo.Register
+                && model.loginModes.count { App.devMode || !it.isDevOnly } == 1) {
             onModeClick?.invoke(model, model.loginModes.first())
             return@OnClickListener
         }
@@ -85,7 +86,9 @@ class LoginChooserAdapter(
 
         if (model.state == STATE_CLOSED) {
 
-            val subItems = model.items
+            val subItems = model.items.filter {
+                App.devMode || !it.isDevOnly
+            }
 
             model.state = STATE_OPENED
             items.addAll(position + 1, subItems)

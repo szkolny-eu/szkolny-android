@@ -181,18 +181,18 @@ object LoginInfo {
                                     errorCodes = mapOf(
                                             ERROR_LOGIN_VULCAN_EXPIRED_TOKEN to R.string.login_error_expired_token
                                     )
-                            )/*,
+                            ),
                             Mode(
                                     loginMode = LOGIN_MODE_VULCAN_WEB,
                                     name = R.string.login_mode_vulcan_web,
                                     icon = R.drawable.login_mode_vulcan_web,
                                     hintText = R.string.login_mode_vulcan_web_hint,
                                     guideText = R.string.login_mode_vulcan_web_guide,
-                                    isTesting = true,
+                                    isDevOnly = true,
                                     isPlatformSelection = true,
                                     credentials = listOf(
                                             getEmailCredential("webEmail"),
-                                            Credential(
+                                            FormField(
                                                     keyName = "webUsername",
                                                     name = R.string.login_hint_username,
                                                     icon = CommunityMaterial.Icon.cmd_account_outline,
@@ -201,12 +201,12 @@ object LoginInfo {
                                                     errorCodes = mapOf(),
                                                     isRequired = true,
                                                     validationRegex = "[A-Z]{7}[0-9]+",
-                                                    caseMode = Credential.CaseMode.UPPER_CASE
+                                                    caseMode = FormField.CaseMode.UPPER_CASE
                                             ),
                                             getPasswordCredential("webPassword")
                                     ),
                                     errorCodes = mapOf()
-                            )*/
+                            )
                     )
             ),
             Register(
@@ -398,6 +398,7 @@ object LoginInfo {
 
             val isRecommended: Boolean = false,
             val isTesting: Boolean = false,
+            val isDevOnly: Boolean = false,
             val isPlatformSelection: Boolean = false,
 
             val credentials: List<BaseCredential>,

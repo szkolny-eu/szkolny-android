@@ -1380,4 +1380,9 @@
     <string name="register_unavailable_read_more">Dowiedz się więcej</string>
     <string name="settings_register_hide_sticks_from_old">Stara nie zobaczy pał</string>
     <string name="login_podlasie_logout_devices">Wyloguj z pozostałych urządzeń</string>
+    <string name="login_chooser_testing_title">Wersja testowa</string>
+    <string name="login_chooser_testing_text">Wybrany sposób logowania jest jeszcze w fazie testów i może nie działać poprawnie.\n\nJeśli masz problemy z aplikacją, wybierz zalecany sposób logowania.</string>
+    <string name="login_chooser_mode_recommended">{cmd-information-outline} Zalecane</string>
+    <string name="login_chooser_mode_testing">{cmd-alert-circle-outline} Wersja testowa</string>
+    <string name="login_chooser_mode_dev_only">{cmd-android-studio} Wersja deweloperska</string>
 </resources>

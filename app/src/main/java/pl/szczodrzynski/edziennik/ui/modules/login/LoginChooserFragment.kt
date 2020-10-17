@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
@@ -50,25 +51,7 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded) return
 
-        val adapter = LoginChooserAdapter(activity) { loginType, loginMode ->
-            launch {
-                if (!checkAvailability(loginType.loginType))
-                    return@launch
-
-                if (loginMode.isPlatformSelection) {
-                    nav.navigate(R.id.loginPlatformListFragment, Bundle(
-                            "loginType" to loginType.loginType,
-                            "loginMode" to loginMode.loginMode
-                    ), activity.navOptions)
-                    return@launch
-                }
-
-                nav.navigate(R.id.loginFormFragment, Bundle(
-                        "loginType" to loginType.loginType,
-                        "loginMode" to loginMode.loginMode
-                ), activity.navOptions)
-            }
-        }
+        val adapter = LoginChooserAdapter(activity, this::onLoginModeClicked)
 
         LoginInfo.chooserList = LoginInfo.chooserList
                 ?: LoginInfo.list.toMutableList<Any>()
@@ -104,6 +87,45 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
                 b.cancelButton.isVisible = false
             }
         }
+    }
+
+    private fun onLoginModeClicked(
+            loginType: LoginInfo.Register,
+            loginMode: LoginInfo.Mode
+    ) {
+        launch {
+            if (!checkAvailability(loginType.loginType))
+                return@launch
+
+            if (loginMode.isTesting || loginMode.isDevOnly) {
+                MaterialAlertDialogBuilder(activity)
+                        .setTitle(R.string.login_chooser_testing_title)
+                        .setMessage(R.string.login_chooser_testing_text)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            navigateToLoginMode(loginType, loginMode)
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
+                return@launch
+            }
+
+            navigateToLoginMode(loginType, loginMode)
+        }
+    }
+
+    private fun navigateToLoginMode(loginType: LoginInfo.Register, loginMode: LoginInfo.Mode) {
+        if (loginMode.isPlatformSelection) {
+            nav.navigate(R.id.loginPlatformListFragment, Bundle(
+                    "loginType" to loginType.loginType,
+                    "loginMode" to loginMode.loginMode
+            ), activity.navOptions)
+            return
+        }
+
+        nav.navigate(R.id.loginFormFragment, Bundle(
+                "loginType" to loginType.loginType,
+                "loginMode" to loginMode.loginMode
+        ), activity.navOptions)
     }
 
     private suspend fun checkAvailability(loginType: Int): Boolean {
