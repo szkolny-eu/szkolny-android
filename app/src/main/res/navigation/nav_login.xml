@@ -18,6 +18,24 @@
         <action
             android:id="@+id/action_loginChooserFragment_to_loginFormFragment"
             app:destination="@id/loginFormFragment" />
+        <!-- eggs -->
+        <action
+            android:id="@+id/action_loginChooserFragment_to_loginEggsFragment"
+            app:destination="@id/loginEggsFragment" />
+    </fragment>
+    <!-- eggs -->
+    <fragment
+        android:id="@+id/loginEggsFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginEggsFragment"
+        android:label="LoginEggsFragment">
+        <action
+            android:id="@+id/action_loginEggsFragment_to_loginPrizeFragment"
+            app:destination="@id/loginPrizeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginPrizeFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginPrizeFragment"
+        android:label="LoginPrizeFragment">
     </fragment>
     <fragment
         android:id="@+id/loginPlatformListFragment"

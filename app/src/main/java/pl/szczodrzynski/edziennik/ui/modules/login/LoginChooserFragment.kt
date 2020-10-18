@@ -4,12 +4,18 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.login
 
+import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +33,8 @@ import kotlin.coroutines.CoroutineContext
 class LoginChooserFragment : Fragment(), CoroutineScope {
     companion object {
         private const val TAG = "LoginChooserFragment"
+        // eggs
+        var isRotated = false
     }
 
     private lateinit var app: App
@@ -48,13 +56,33 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         return b.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded) return
 
         val adapter = LoginChooserAdapter(activity, this::onLoginModeClicked)
 
         LoginInfo.chooserList = LoginInfo.chooserList
-                ?: LoginInfo.list.toMutableList<Any>()
+                ?: LoginInfo.list.toMutableList()
+
+        // eggs
+        if (isRotated) {
+            isRotated = false
+            LoginFormFragment.wantEggs = false
+            LoginInfo.chooserList = LoginInfo.list.toMutableList()
+            val anim = RotateAnimation(
+                    180f,
+                    0f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f
+            )
+            anim.interpolator = AccelerateDecelerateInterpolator()
+            anim.duration = 500
+            anim.fillAfter = true
+            activity.getRootView().startAnimation(anim)
+        }
 
         adapter.items = LoginInfo.chooserList!!
         b.list.adapter = adapter
@@ -66,6 +94,81 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
 
         b.helpButton.onClick {
             startActivity(Intent(activity, FeedbackActivity::class.java))
+        }
+
+        // eggs
+        b.footnoteText.onClick {
+            if (!LoginFormFragment.wantEggs || isRotated)
+                return@onClick
+
+            val text = b.subtitleText.text.toString()
+            if (text.endsWith(".."))
+                b.subtitleText.text = text.substring(0, text.length - 2)
+            else
+                b.subtitleText.text = "$text..."
+        }
+        var clickCount = 0
+        val color = R.color.md_blue_500.resolveColor(app)
+        val hsv = FloatArray(3)
+        Color.colorToHSV(color, hsv)
+        val hueOriginal = hsv[0]
+        b.subtitleText.onClick {
+            if (isRotated)
+                return@onClick
+            val text = b.subtitleText.text.toString()
+            if (text.endsWith("..") && !text.endsWith("...")) {
+                clickCount++
+            }
+            if (clickCount == 5) {
+                val anim = ValueAnimator.ofFloat(0f, 1f)
+                anim.duration = 5000
+                anim.addUpdateListener {
+                    hsv[0] = hueOriginal + it.animatedFraction * 3f * 360f
+                    hsv[0] = hsv[0] % 360f
+                    b.topLogo.drawable.setTintColor(Color.HSVToColor(Color.alpha(color), hsv))
+                }
+                anim.start()
+            }
+        }
+        b.topLogo.onClick {
+            if (clickCount != 5 || isRotated) {
+                clickCount = 0
+                return@onClick
+            }
+            isRotated = true
+            val anim = RotateAnimation(
+                    0f,
+                    180f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f
+            )
+            anim.interpolator = AccelerateDecelerateInterpolator()
+            anim.duration = 2000
+            anim.fillAfter = true
+            activity.getRootView().startAnimation(anim)
+
+            b.list.smoothScrollToPosition(0)
+            adapter.items.add(
+                    LoginInfo.Register(
+                            loginType = 74,
+                            internalName = "eggs",
+                            registerName = R.string.eggs,
+                            registerLogo = R.drawable.face_1,
+                            loginModes = listOf(
+                                    LoginInfo.Mode(
+                                            loginMode = 0,
+                                            name = 0,
+                                            icon = 0,
+                                            guideText = 0,
+                                            credentials = listOf(),
+                                            errorCodes = mapOf()
+                                    )
+                            )
+                    )
+            )
+            adapter.notifyItemInserted(adapter.items.size - 1)
         }
 
         when {
@@ -93,6 +196,11 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             loginType: LoginInfo.Register,
             loginMode: LoginInfo.Mode
     ) {
+        if (loginType.internalName == "eggs") {
+            nav.navigate(R.id.loginEggsFragment, null, activity.navOptions)
+            return
+        }
+
         launch {
             if (!checkAvailability(loginType.loginType))
                 return@launch

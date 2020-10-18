@@ -25,7 +25,6 @@ import kotlin.coroutines.CoroutineContext
 class LoginActivity : AppCompatActivity(), CoroutineScope {
     companion object {
         private const val TAG = "LoginActivity"
-        var thisOneIsTricky = 0
     }
 
     private val app: App by lazy { applicationContext as App }
@@ -42,6 +41,8 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     val profiles = mutableListOf<LoginSummaryAdapter.Item>()
     val loginStores = mutableListOf<LoginStore>()
 
+    fun getRootView() = b.root
+
     override fun onBackPressed() {
         val destination = nav.currentDestination ?: run {
             nav.navigateUp()
@@ -55,6 +56,11 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
             return
         if (destination.id == R.id.loginFinishFragment)
             return
+        // eggs
+        if (destination.id == R.id.loginPrizeFragment) {
+            finish()
+            return
+        }
         if (destination.id == R.id.loginChooserFragment && loginStores.isEmpty()) {
             setResult(Activity.RESULT_CANCELED)
             finish()
@@ -78,8 +84,6 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme_Light)
-
-        thisOneIsTricky = -1
 
         navOptions = NavOptions.Builder()
                 .setEnterAnim(R.anim.slide_in_right)

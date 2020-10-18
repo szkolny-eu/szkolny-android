@@ -32,6 +32,8 @@ import kotlin.coroutines.CoroutineContext
 class LoginFormFragment : Fragment(), CoroutineScope {
     companion object {
         private const val TAG = "LoginFormFragment"
+        // eggs
+        var wantEggs = false
     }
 
     private lateinit var app: App
@@ -108,8 +110,13 @@ class LoginFormFragment : Fragment(), CoroutineScope {
             if (credential is LoginInfo.FormCheckbox) {
                 val b = LoginFormCheckboxItemBinding.inflate(layoutInflater)
                 b.checkbox.text = app.getString(credential.name)
-                b.checkbox.onChange { _, _ ->
+                b.checkbox.onChange { _, isChecked ->
                     b.errorText.text = null
+
+                    // eggs
+                    if (register.internalName == "podlasie") {
+                        wantEggs = !isChecked
+                    }
                 }
                 if (arguments?.containsKey(credential.keyName) == true) {
                     b.checkbox.isChecked = arguments?.getBoolean(credential.keyName) == true
