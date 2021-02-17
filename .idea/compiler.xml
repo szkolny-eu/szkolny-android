@@ -4,14 +4,14 @@
     <bytecodeTargetLevel target="1.7">
       <module name="annotation" target="1.7" />
       <module name="codegen" target="1.7" />
-      <module name="Szkolny.eu.agendacalendarview" target="1.8" />
-      <module name="Szkolny.eu.app" target="1.8" />
-      <module name="Szkolny.eu.cafebar" target="1.8" />
-      <module name="Szkolny.eu.material-about-library" target="1.8" />
-      <module name="Szkolny.eu.mhttp" target="1.8" />
-      <module name="Szkolny.eu.nachos" target="1.8" />
-      <module name="Szkolny.eu.szkolny-font" target="1.8" />
-      <module name="Szkolny.eu.wear" target="1.8" />
+      <module name="Szkolny.eu.agendacalendarview" target="11" />
+      <module name="Szkolny.eu.app" target="11" />
+      <module name="Szkolny.eu.cafebar" target="11" />
+      <module name="Szkolny.eu.material-about-library" target="11" />
+      <module name="Szkolny.eu.mhttp" target="11" />
+      <module name="Szkolny.eu.nachos" target="11" />
+      <module name="Szkolny.eu.szkolny-font" target="11" />
+      <module name="Szkolny.eu.wear" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
