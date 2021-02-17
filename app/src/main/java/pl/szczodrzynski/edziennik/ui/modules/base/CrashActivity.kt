@@ -167,7 +167,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
         clipboard?.apply {
             val clip = ClipData.newPlainText(getString(R.string.customactivityoncrash_error_activity_error_details_clipboard_label), errorInformation)
-            primaryClip = clip
+            setPrimaryClip(clip)
             Toast.makeText(this@CrashActivity, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show()
         }
     }

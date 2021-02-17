@@ -1172,7 +1172,7 @@ fun Iterable<Float>.averageOrNull() = this.average().let { if (it.isNaN()) null 
 fun String.copyToClipboard(context: Context) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clipData = ClipData.newPlainText("Tekst", this)
-    clipboard.primaryClip = clipData
+    clipboard.setPrimaryClip(clipData)
 }
 
 fun TextView.getTextPosition(range: IntRange): Rect {
