@@ -95,7 +95,16 @@ const val VULCAN_API_APP_NAME = "VULCAN-Android-ModulUcznia"
 const val VULCAN_API_APP_VERSION = "20.5.1.470"
 const val VULCAN_API_PASSWORD = "CE75EA598C7743AD9B0B7328DED85B06"
 const val VULCAN_API_PASSWORD_FAKELOG = "012345678901234567890123456789AB"
-val VULCAN_API_DEVICE_NAME = "Szkolny.eu ${Build.MODEL}"
+const val VULCAN_HEBE_USER_AGENT = "Dart/2.10 (dart:io)"
+const val VULCAN_HEBE_APP_NAME = "DzienniczekPlus 2.0"
+const val VULCAN_HEBE_APP_VERSION = "21.02.09 (G)"
+private const val VULCAN_API_DEVICE_NAME_PREFIX = "Szkolny.eu "
+private const val VULCAN_API_DEVICE_NAME_SUFFIX = " - nie usuwać"
+val VULCAN_API_DEVICE_NAME by lazy {
+    val base = "$VULCAN_API_DEVICE_NAME_PREFIX${Build.MODEL}"
+    val baseMaxLength = 50 - VULCAN_API_DEVICE_NAME_SUFFIX.length
+    base.take(baseMaxLength) + VULCAN_API_DEVICE_NAME_SUFFIX
+}
 
 const val VULCAN_API_ENDPOINT_CERTIFICATE = "mobile-api/Uczen.v3.UczenStart/Certyfikat"
 const val VULCAN_API_ENDPOINT_STUDENT_LIST = "mobile-api/Uczen.v3.UczenStart/ListaUczniow"
@@ -116,6 +125,8 @@ const val VULCAN_API_ENDPOINT_MESSAGES_ATTACHMENTS = "mobile-api/Uczen.v3.Uczen/
 const val VULCAN_API_ENDPOINT_HOMEWORK_ATTACHMENTS = "mobile-api/Uczen.v3.Uczen/ZadaniaDomoweZalacznik"
 const val VULCAN_WEB_ENDPOINT_LUCKY_NUMBER = "Start.mvc/GetKidsLuckyNumbers"
 const val VULCAN_WEB_ENDPOINT_REGISTER_DEVICE = "RejestracjaUrzadzeniaToken.mvc/Get"
+const val VULCAN_HEBE_ENDPOINT_REGISTER_NEW = "api/mobile/register/new"
+const val VULCAN_HEBE_ENDPOINT_MAIN = "api/mobile/register/hebe"
 
 const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"
 
