@@ -148,7 +148,7 @@ dependencies {
     implementation "com.jaredrummler:colorpicker:1.0.2"
     implementation("com.squareup.okhttp3:okhttp") {
         version {
-            strictly "3.12.2"
+            strictly "3.12.13"
         }
     }
     implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0" // do not update
