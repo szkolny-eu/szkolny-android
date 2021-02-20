@@ -2,6 +2,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data
 
 import android.os.Build
 import com.google.gson.JsonArray
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
@@ -11,10 +12,14 @@ import io.github.wulkanowy.signer.hebe.getSignatureHeaders
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.HebeFilterType
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.utils.models.Date
 import java.net.HttpURLConnection
 import java.net.URLEncoder
+import java.time.Instant
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -35,7 +40,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         tag: String,
         endpoint: String,
         method: Int = GET,
-        payload: JsonObject? = null,
+        payload: JsonElement? = null,
         baseUrl: Boolean = false,
         crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
@@ -132,6 +137,8 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             .addHeader("vDeviceModel", Build.MODEL)
             .addHeader("vAPI", "1")
             .apply {
+                if (data.hebeContext != null)
+                    addHeader("vContext", data.hebeContext)
                 headers.forEach {
                     addHeader(it.key, it.value)
                 }
@@ -171,7 +178,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
     inline fun <reified T> apiPost(
         tag: String,
         endpoint: String,
-        payload: JsonObject,
+        payload: JsonElement,
         baseUrl: Boolean = false,
         crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
@@ -183,5 +190,57 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             baseUrl = baseUrl,
             onSuccess = onSuccess
         )
+    }
+
+    fun apiGetList(
+        tag: String,
+        endpoint: String,
+        filterType: HebeFilterType? = null,
+        dateFrom: Date? = null,
+        dateTo: Date? = null,
+        lastSync: Long? = null,
+        folder: Int? = null,
+        params: Map<String, String> = mapOf(),
+        includeFilterType: Boolean = true,
+        onSuccess: (data: List<JsonObject>, response: Response?) -> Unit
+    ) {
+        val url = if (includeFilterType && filterType != null)
+            "$endpoint/${filterType.endpoint}"
+        else endpoint
+
+        val query = params.toMutableMap()
+
+        when (filterType) {
+            HebeFilterType.BY_PUPIL -> {
+                // query["unitId"] = data.studentUnitId
+                query["pupilId"] = data.studentId.toString()
+                query["periodId"] = data.studentSemesterId.toString()
+            }
+            HebeFilterType.BY_PERSON -> {
+                query["loginId"] = data.studentLoginId.toString()
+            }
+            HebeFilterType.BY_PERIOD -> {
+                query["periodId"] = data.studentSemesterId.toString()
+                query["pupilId"] = data.studentId.toString()
+            }
+        }
+
+        if (dateFrom != null)
+            query["dateFrom"] = dateFrom.stringY_m_d
+        if (dateTo != null)
+            query["dateTo"] = dateTo.stringY_m_d
+
+        if (folder != null)
+            query["folder"] = folder.toString()
+
+        query["lastId"] = "-2147483648" // don't ask, it's just Vulcan
+        query["pageSize"] = "500"
+        query["lastSyncDate"] = LocalDateTime
+            .ofInstant(Instant.ofEpochMilli(lastSync ?: 0), ZoneId.systemDefault())
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+
+        apiGet(tag, url, query) { json: JsonArray, response ->
+            onSuccess(json.map { it.asJsonObject }, response)
+        }
     }
 }

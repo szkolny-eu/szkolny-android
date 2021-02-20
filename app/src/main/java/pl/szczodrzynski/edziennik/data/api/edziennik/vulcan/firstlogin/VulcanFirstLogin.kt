@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin
 
-import com.google.gson.JsonArray
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
@@ -12,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanWebMain
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeMain
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.CufsCertificate
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginHebe
@@ -210,110 +210,18 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
 
     private fun registerDeviceHebe(onSuccess: () -> Unit) {
         VulcanLoginHebe(data) {
-            hebe.apiGet(
-                TAG,
-                VULCAN_HEBE_ENDPOINT_MAIN,
-                query = mapOf("lastSyncDate" to "null"),
-                baseUrl = true
-            ) { students: JsonArray, _ ->
-                if (students.isEmpty()) {
-                    EventBus.getDefault().postSticky(FirstLoginFinishedEvent(listOf(), data.loginStore))
+            VulcanHebeMain(data).getStudents(
+                profile = null,
+                profileList,
+                loginStoreId,
+                firstProfileId,
+                onEmpty = {
+                    EventBus.getDefault()
+                        .postSticky(FirstLoginFinishedEvent(listOf(), data.loginStore))
                     onSuccess()
-                    return@apiGet
-                }
-
-                students.forEach { studentEl ->
-                    val student = studentEl.asJsonObject
-
-                    val unit = student.getJsonObject("Unit")
-                    //val constituentUnit = student.getJsonObject("ConstituentUnit")
-                    val pupil = student.getJsonObject("Pupil")
-                    val login = student.getJsonObject("Login")
-                    val periods = student.getJsonArray("Periods")?.map {
-                        it.asJsonObject
-                    } ?: listOf()
-
-                    val period = periods.firstOrNull {
-                        it.getBoolean("Current", false)
-                    } ?: return@forEach
-
-                    val periodLevel = period.getInt("Level") ?: return@forEach
-                    val semester1 = periods.firstOrNull {
-                        it.getInt("Level") == periodLevel && it.getInt("Number") == 1
-                    }
-                    val semester2 = periods.firstOrNull {
-                        it.getInt("Level") == periodLevel && it.getInt("Number") == 2
-                    }
-
-                    val schoolSymbol = unit.getString("Symbol") ?: return@forEach
-                    val schoolShort = unit.getString("Short") ?: return@forEach
-                    val schoolCode = "${data.symbol}_$schoolSymbol"
-                    val studentId = pupil.getInt("Id") ?: return@forEach
-                    val studentLoginId = login.getInt("Id") ?: return@forEach
-                    //val studentClassId = student.getInt("IdOddzial") ?: return@forEach
-                    val studentClassName = student.getString("ClassDisplay") ?: return@forEach
-                    val studentFirstName = pupil.getString("FirstName") ?: ""
-                    val studentLastName = pupil.getString("Surname") ?: ""
-                    val studentNameLong = "$studentFirstName $studentLastName".fixName()
-                    val studentNameShort = "$studentFirstName ${studentLastName[0]}.".fixName()
-                    val userLogin = login.getString("Value") ?: ""
-
-                    val studentSemesterId = period.getInt("Id") ?: return@forEach
-                    val studentSemesterNumber = period.getInt("Number") ?: return@forEach
-
-                    val isParent = login.getString("LoginRole").equals("opiekun", ignoreCase = true)
-                    val accountName = if (isParent)
-                        login.getString("DisplayName")?.fixName()
-                    else null
-
-                    val dateSemester1Start = semester1
-                        ?.getJsonObject("Start")
-                        ?.getString("Date")
-                        ?.let { Date.fromY_m_d(it) }
-                    val dateSemester2Start = semester2
-                        ?.getJsonObject("Start")
-                        ?.getString("Date")
-                        ?.let { Date.fromY_m_d(it) }
-                    val dateYearEnd = semester2
-                        ?.getJsonObject("End")
-                        ?.getString("Date")
-                        ?.let { Date.fromY_m_d(it) }
-
-                    val profile = Profile(
-                        firstProfileId++,
-                        loginStoreId,
-                        LOGIN_TYPE_VULCAN,
-                        studentNameLong,
-                        userLogin,
-                        studentNameLong,
-                        studentNameShort,
-                        accountName
-                    ).apply {
-                        this.studentClassName = studentClassName
-                        studentData["symbol"] = data.symbol
-
-                        studentData["studentId"] = studentId
-                        studentData["studentLoginId"] = studentLoginId
-                        studentData["studentSemesterId"] = studentSemesterId
-                        studentData["studentSemesterNumber"] = studentSemesterNumber
-                        studentData["semester1Id"] = semester1?.getInt("Id") ?: 0
-                        studentData["semester2Id"] = semester2?.getInt("Id") ?: 0
-                        studentData["schoolSymbol"] = schoolSymbol
-                        studentData["schoolShort"] = schoolShort
-                        studentData["schoolName"] = schoolCode
-                    }
-                    dateSemester1Start?.let {
-                        profile.dateSemester1Start = it
-                        profile.studentSchoolYearStart = it.year
-                    }
-                    dateSemester2Start?.let { profile.dateSemester2Start = it }
-                    dateYearEnd?.let { profile.dateYearEnd = it }
-
-                    profileList.add(profile)
-                }
-
-                onSuccess()
-            }
+                },
+                onSuccess = onSuccess
+            )
         }
     }
 }

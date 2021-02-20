@@ -243,6 +243,11 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mHebePublicHash = mHebePublicHash ?: loginStore.getLoginData("hebePublicHash", null); return mHebePublicHash }
         set(value) { loginStore.putLoginData("hebePublicHash", value); mHebePublicHash = value }
 
+    private var mHebeContext: String? = null
+    var hebeContext: String?
+        get() { mHebeContext = mHebeContext ?: profile?.getStudentData("hebeContext", null); return mHebeContext }
+        set(value) { profile?.putStudentData("hebeContext", value) ?: return; mHebeContext = value }
+
     val apiUrl: String?
         get() {
             val url = when (apiToken[symbol]?.substring(0, 3)) {
