@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.HebeFilter
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.entity.Team
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.net.HttpURLConnection
@@ -39,9 +40,14 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
     val profile
         get() = data.profile
 
-    fun getDate(json: JsonObject?, key: String): Long {
+    fun getDateTime(json: JsonObject?, key: String): Long {
         val date = json.getJsonObject(key)
         return date.getLong("Timestamp") ?: return System.currentTimeMillis()
+    }
+
+    fun getDate(json: JsonObject?, key: String): Date? {
+        val date = json.getJsonObject(key)
+        return date.getString("Date")?.let { Date.fromY_m_d(it) }
     }
 
     fun getTeacherId(json: JsonObject?, key: String): Long {
@@ -70,6 +76,41 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             )
         }
         return subjectId
+    }
+
+    fun getTeamId(json: JsonObject?, key: String): Long? {
+        val team = json.getJsonObject(key)
+        val teamId = team.getLong("Id") ?: return null
+        if (data.teamList[teamId] == null) {
+            data.teamList[teamId] = Team(
+                data.profileId,
+                teamId,
+                team.getString("Name") ?: "",
+                Team.TYPE_VIRTUAL,
+                team.getString("Shortcut") ?: "",
+                -1
+            )
+        }
+        return teamId
+    }
+
+    fun getClassId(json: JsonObject?, key: String): Long? {
+        val team = json.getJsonObject(key)
+        val teamId = team.getLong("Id") ?: return null
+        if (data.teamList[teamId] == null) {
+            val name = data.profile?.studentClassName
+                ?: team.getString("Name")
+                ?: ""
+            data.teamList[teamId] = Team(
+                data.profileId,
+                teamId,
+                name,
+                Team.TYPE_CLASS,
+                name,
+                -1
+            )
+        }
+        return teamId
     }
 
     fun getSemester(json: JsonObject?): Int {

@@ -21,6 +21,7 @@ const val ENDPOINT_VULCAN_API_MESSAGES_INBOX      = 1090
 const val ENDPOINT_VULCAN_API_MESSAGES_SENT       = 1100
 const val ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS       = 2010
 const val ENDPOINT_VULCAN_HEBE_MAIN               = 3000
+const val ENDPOINT_VULCAN_HEBE_EXAMS              = 3030
 const val ENDPOINT_VULCAN_HEBE_GRADES             = 3040
 
 val VulcanFeatures = listOf(
@@ -32,6 +33,9 @@ val VulcanFeatures = listOf(
         Feature(LOGIN_TYPE_VULCAN, FEATURE_AGENDA, listOf(
                 ENDPOINT_VULCAN_API_EVENTS to LOGIN_METHOD_VULCAN_API
         ), listOf(LOGIN_METHOD_VULCAN_API)),
+        Feature(LOGIN_TYPE_VULCAN, FEATURE_AGENDA, listOf(
+                ENDPOINT_VULCAN_HEBE_EXAMS to LOGIN_METHOD_VULCAN_HEBE
+        ), listOf(LOGIN_METHOD_VULCAN_HEBE)),
         // grades
         Feature(LOGIN_TYPE_VULCAN, FEATURE_GRADES, listOf(
                 ENDPOINT_VULCAN_API_GRADES to LOGIN_METHOD_VULCAN_API,

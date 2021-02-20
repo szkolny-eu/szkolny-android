@@ -18,7 +18,7 @@ class VulcanHebeGrades(
     val onSuccess: (endpointId: Int) -> Unit
 ) : VulcanHebe(data, lastSync) {
     companion object {
-        const val TAG = "VulcanApiGrades"
+        const val TAG = "VulcanHebeGrades"
     }
 
     init {
@@ -44,7 +44,7 @@ class VulcanHebeGrades(
                 var weight = column.getFloat("Weight") ?: 0.0f
                 val numerator = grade.getFloat("Numerator ")
                 val denominator = grade.getFloat("Denominator")
-                val addedDate = getDate(grade, "DateModify")
+                val addedDate = getDateTime(grade, "DateModify")
 
                 var finalDescription = ""
 
@@ -115,12 +115,12 @@ class VulcanHebeGrades(
                 )
             }
 
-            onSuccess(ENDPOINT_VULCAN_HEBE_GRADES)
             data.toRemove.add(
                 DataRemoveModel.Grades.semesterWithType(data.studentSemesterNumber,
                     Grade.TYPE_NORMAL
                 ))
             data.setSyncNext(ENDPOINT_VULCAN_HEBE_GRADES, SYNC_ALWAYS)
+            onSuccess(ENDPOINT_VULCAN_HEBE_GRADES)
         }
     }
 }
