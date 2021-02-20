@@ -1,6 +1,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data
 
 import android.os.Build
+import androidx.core.util.set
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -14,6 +15,8 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.HebeFilterType
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.net.HttpURLConnection
@@ -35,6 +38,47 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
 
     val profile
         get() = data.profile
+
+    fun getDate(json: JsonObject?, key: String): Long {
+        val date = json.getJsonObject(key)
+        return date.getLong("Timestamp") ?: return System.currentTimeMillis()
+    }
+
+    fun getTeacherId(json: JsonObject?, key: String): Long {
+        val teacher = json.getJsonObject(key)
+        val teacherId = teacher.getLong("Id") ?: return -1
+        if (data.teacherList[teacherId] == null) {
+            data.teacherList[teacherId] = Teacher(
+                data.profileId,
+                teacherId,
+                teacher.getString("Name") ?: "",
+                teacher.getString("Surname") ?: ""
+            )
+        }
+        return teacherId
+    }
+
+    fun getSubjectId(json: JsonObject?, key: String): Long {
+        val subject = json.getJsonObject(key)
+        val subjectId = subject.getLong("Id") ?: return -1
+        if (data.subjectList[subjectId] == null) {
+            data.subjectList[subjectId] = Subject(
+                data.profileId,
+                subjectId,
+                subject.getString("Name") ?: "",
+                subject.getString("Kod") ?: ""
+            )
+        }
+        return subjectId
+    }
+
+    fun getSemester(json: JsonObject?): Int {
+        val periodId = json.getInt("PeriodId") ?: return 1
+        return if (periodId == data.semester1Id)
+            1
+        else
+            2
+    }
 
     inline fun <reified T> apiRequest(
         tag: String,
@@ -168,7 +212,9 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         firebaseToken: String? = null,
         crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
-        val queryPath = query.map { it.key + "=" + URLEncoder.encode(it.value, "UTF-8") }.join("&")
+        val queryPath = query.map {
+            it.key + "=" + URLEncoder.encode(it.value, "UTF-8").replace("+", "%20")
+        }.join("&")
         apiRequest(
             tag,
             if (query.isNotEmpty()) "$endpoint?$queryPath" else endpoint,

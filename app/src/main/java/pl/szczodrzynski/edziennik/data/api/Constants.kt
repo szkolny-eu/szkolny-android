@@ -127,6 +127,7 @@ const val VULCAN_WEB_ENDPOINT_LUCKY_NUMBER = "Start.mvc/GetKidsLuckyNumbers"
 const val VULCAN_WEB_ENDPOINT_REGISTER_DEVICE = "RejestracjaUrzadzeniaToken.mvc/Get"
 const val VULCAN_HEBE_ENDPOINT_REGISTER_NEW = "api/mobile/register/new"
 const val VULCAN_HEBE_ENDPOINT_MAIN = "api/mobile/register/hebe"
+const val VULCAN_HEBE_ENDPOINT_GRADES = "api/mobile/grade"
 
 const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"
 

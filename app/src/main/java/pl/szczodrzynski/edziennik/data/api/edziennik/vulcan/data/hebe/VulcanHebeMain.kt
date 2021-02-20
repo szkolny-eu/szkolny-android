@@ -5,10 +5,9 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_VULCAN
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
-import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_API_PUSH_CONFIG
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanHebeMain(
@@ -146,7 +145,7 @@ class VulcanHebeMain(
                 dateYearEnd?.let { newProfile.dateYearEnd = it }
 
                 if (profile != null)
-                    data.setSyncNext(ENDPOINT_VULCAN_API_PUSH_CONFIG, SYNC_ALWAYS)
+                    data.setSyncNext(ENDPOINT_VULCAN_HEBE_MAIN, 1 * DAY)
 
                 profileList?.add(newProfile)
             }
