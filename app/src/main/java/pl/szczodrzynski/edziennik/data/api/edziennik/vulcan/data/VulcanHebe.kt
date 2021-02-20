@@ -263,7 +263,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
 
         when (filterType) {
             HebeFilterType.BY_PUPIL -> {
-                // query["unitId"] = data.studentUnitId
+                query["unitId"] = data.studentUnitId.toString()
                 query["pupilId"] = data.studentId.toString()
                 query["periodId"] = data.studentSemesterId.toString()
             }

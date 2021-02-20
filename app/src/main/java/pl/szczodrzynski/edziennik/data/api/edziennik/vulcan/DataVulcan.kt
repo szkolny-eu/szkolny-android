@@ -158,6 +158,16 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mStudentSemesterId = mStudentSemesterId ?: profile?.getStudentData("studentSemesterId", 0); return mStudentSemesterId ?: 0 }
         set(value) { profile?.putStudentData("studentSemesterId", value) ?: return; mStudentSemesterId = value }
 
+    private var mStudentUnitId: Int? = null
+    var studentUnitId: Int
+        get() { mStudentUnitId = mStudentUnitId ?: profile?.getStudentData("studentUnitId", 0); return mStudentUnitId ?: 0 }
+        set(value) { profile?.putStudentData("studentUnitId", value) ?: return; mStudentUnitId = value }
+
+    private var mStudentConstituentId: Int? = null
+    var studentConstituentId: Int
+        get() { mStudentConstituentId = mStudentConstituentId ?: profile?.getStudentData("studentConstituentId", 0); return mStudentConstituentId ?: 0 }
+        set(value) { profile?.putStudentData("studentConstituentId", value) ?: return; mStudentConstituentId = value }
+
     private var mSemester1Id: Int? = null
     var semester1Id: Int
         get() { mSemester1Id = mSemester1Id ?: profile?.getStudentData("semester1Id", 0); return mSemester1Id ?: 0 }

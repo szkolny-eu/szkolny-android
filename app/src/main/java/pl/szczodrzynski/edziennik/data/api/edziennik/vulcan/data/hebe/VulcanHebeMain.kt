@@ -57,7 +57,7 @@ class VulcanHebeMain(
                     return@forEach
 
                 val unit = student.getJsonObject("Unit")
-                //val constituentUnit = student.getJsonObject("ConstituentUnit")
+                val constituentUnit = student.getJsonObject("ConstituentUnit")
                 val login = student.getJsonObject("Login")
                 val periods = student.getJsonArray("Periods")?.map {
                     it.asJsonObject
@@ -79,6 +79,8 @@ class VulcanHebeMain(
                 val schoolShort = unit.getString("Short") ?: return@forEach
                 val schoolCode = "${data.symbol}_$schoolSymbol"
 
+                val studentUnitId = unit.getInt("Id") ?: return@forEach
+                val studentConstituentId = constituentUnit.getInt("Id") ?: return@forEach
                 val studentLoginId = login.getInt("Id") ?: return@forEach
                 //val studentClassId = student.getInt("IdOddzial") ?: return@forEach
                 val studentClassName = student.getString("ClassDisplay") ?: return@forEach
@@ -127,6 +129,8 @@ class VulcanHebeMain(
                     studentData["symbol"] = data.symbol
 
                     studentData["studentId"] = studentId
+                    studentData["studentUnitId"] = studentUnitId
+                    studentData["studentConstituentId"] = studentConstituentId
                     studentData["studentLoginId"] = studentLoginId
                     studentData["studentSemesterId"] = studentSemesterId
                     studentData["studentSemesterNumber"] = studentSemesterNumber
