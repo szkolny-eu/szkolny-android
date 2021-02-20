@@ -5,8 +5,10 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
@@ -114,6 +116,11 @@ class VulcanHebeGrades(
             }
 
             onSuccess(ENDPOINT_VULCAN_HEBE_GRADES)
+            data.toRemove.add(
+                DataRemoveModel.Grades.semesterWithType(data.studentSemesterNumber,
+                    Grade.TYPE_NORMAL
+                ))
+            data.setSyncNext(ENDPOINT_VULCAN_HEBE_GRADES, SYNC_ALWAYS)
         }
     }
 }
