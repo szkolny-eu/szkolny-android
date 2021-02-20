@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_REGISTER_NEW
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 
@@ -63,7 +64,7 @@ class VulcanLoginHebe(val data: DataVulcan, val onSuccess: () -> Unit) {
     }
 
     private fun loginWithToken() {
-        //val szkolnyApi = SzkolnyApi(data.app)
+        val szkolnyApi = SzkolnyApi(data.app)
         val hebe = VulcanHebe(data, null)
 
         if (data.hebePublicKey == null || data.hebePrivateKey == null || data.hebePublicHash == null) {
@@ -73,11 +74,11 @@ class VulcanLoginHebe(val data: DataVulcan, val onSuccess: () -> Unit) {
             data.hebePublicHash = publicHash
         }
 
-        /*szkolnyApi.runCatching({
-            data.app.config.sync.tokenVulcanHebe = getFirebaseToken("vulcan")
+        val firebaseToken = szkolnyApi.runCatching({
+            getFirebaseToken("vulcan")
         }, onError = {
             // screw errors
-        })*/
+        }) ?: data.app.config.sync.tokenVulcan
 
         hebe.apiPost(
             TAG,
@@ -92,7 +93,8 @@ class VulcanLoginHebe(val data: DataVulcan, val onSuccess: () -> Unit) {
                 "SelfIdentifier" to data.buildDeviceId(),
                 "CertificateThumbprint" to data.hebePublicHash
             ),
-            baseUrl = true
+            baseUrl = true,
+            firebaseToken = firebaseToken
         ) { _: JsonObject, _ ->
             data.apiToken = data.apiToken.toMutableMap().also {
                 it[data.symbol] = it[data.symbol]?.substring(0, 3)

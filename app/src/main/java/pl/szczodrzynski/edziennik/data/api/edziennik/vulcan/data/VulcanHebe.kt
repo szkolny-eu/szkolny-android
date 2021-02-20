@@ -42,6 +42,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         method: Int = GET,
         payload: JsonElement? = null,
         baseUrl: Boolean = false,
+        firebaseToken: String? = null,
         crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
         val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
@@ -66,7 +67,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                 "AppVersion" to VULCAN_HEBE_APP_VERSION,
                 "CertificateId" to publicHash,
                 "Envelope" to payload,
-                "FirebaseToken" to data.app.config.sync.tokenVulcanHebe,
+                "FirebaseToken" to (firebaseToken ?: data.app.config.sync.tokenVulcanHebe),
                 "API" to 1,
                 "RequestId" to UUID.randomUUID().toString(),
                 "Timestamp" to timestampMillis,
@@ -164,6 +165,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         endpoint: String,
         query: Map<String, String> = mapOf(),
         baseUrl: Boolean = false,
+        firebaseToken: String? = null,
         crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
         val queryPath = query.map { it.key + "=" + URLEncoder.encode(it.value, "UTF-8") }.join("&")
@@ -171,6 +173,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             tag,
             if (query.isNotEmpty()) "$endpoint?$queryPath" else endpoint,
             baseUrl = baseUrl,
+            firebaseToken = firebaseToken,
             onSuccess = onSuccess
         )
     }
@@ -180,6 +183,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         endpoint: String,
         payload: JsonElement,
         baseUrl: Boolean = false,
+        firebaseToken: String? = null,
         crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
         apiRequest(
@@ -188,6 +192,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             method = POST,
             payload,
             baseUrl = baseUrl,
+            firebaseToken = firebaseToken,
             onSuccess = onSuccess
         )
     }
