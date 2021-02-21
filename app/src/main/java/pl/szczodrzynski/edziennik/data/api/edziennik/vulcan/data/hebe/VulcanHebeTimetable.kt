@@ -119,7 +119,7 @@ class VulcanHebeTimetable(
         val startTime = lessonRange?.startTime
         val endTime = lessonRange?.endTime
         val teacherId = getTeacherId(json, "TeacherPrimary")
-        val classroom = json.getString("Room")
+        val classroom = json.getJsonObject("Room").getString("Code")
         val subjectId = getSubjectId(json, "Subject")
 
         val teamId = getTeamId(json, "Distribution")
@@ -168,7 +168,7 @@ class VulcanHebeTimetable(
             val changeStartTime = changeLessonRange?.startTime
             val changeEndTime = changeLessonRange?.endTime
             val changeTeacherId = getTeacherId(changeJson, "TeacherPrimary") ?: teacherId
-            val changeClassroom = changeJson.getString("Room") ?: classroom
+            val changeClassroom = changeJson.getJsonObject("Room").getString("Code") ?: classroom
             val changeSubjectId = getSubjectId(changeJson, "Subject") ?: subjectId
 
             val changeTeamId = getTeamId(json, "Distribution")
