@@ -66,4 +66,4 @@
 
 -keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.request.** { *; }
 -keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.response.** { *; }
--keepclassmembernames class pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo.Platform { *; }
+-keepclassmembernames class pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo$Platform { *; }
