@@ -4,7 +4,6 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_HOMEWORK
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_HOMEWORK
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
-import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
@@ -30,8 +29,8 @@ class VulcanHebeHomework(
             list.forEach { exam ->
                 val id = exam.getLong("IdHomework") ?: return@forEach
                 val eventDate = getDate(exam, "Deadline") ?: return@forEach
-                val subjectId = getSubjectId(exam, "Subject")
-                val teacherId = getTeacherId(exam, "Creator")
+                val subjectId = getSubjectId(exam, "Subject") ?: -1
+                val teacherId = getTeacherId(exam, "Creator") ?: -1
                 val teamId = data.teamClass?.id ?: -1
                 val topic = exam.getString("Content")?.trim() ?: ""
 
@@ -63,7 +62,6 @@ class VulcanHebeHomework(
                 )
             }
 
-            data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
             data.setSyncNext(ENDPOINT_VULCAN_HEBE_HOMEWORK, SYNC_ALWAYS)
             onSuccess(ENDPOINT_VULCAN_HEBE_HOMEWORK)
         }

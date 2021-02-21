@@ -15,11 +15,13 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.HebeFilterType
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.entity.Team
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Time
 import java.net.HttpURLConnection
 import java.net.URLEncoder
 import java.time.Instant
@@ -50,9 +52,9 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         return date.getString("Date")?.let { Date.fromY_m_d(it) }
     }
 
-    fun getTeacherId(json: JsonObject?, key: String): Long {
+    fun getTeacherId(json: JsonObject?, key: String): Long? {
         val teacher = json.getJsonObject(key)
-        val teacherId = teacher.getLong("Id") ?: return -1
+        val teacherId = teacher.getLong("Id") ?: return null
         if (data.teacherList[teacherId] == null) {
             data.teacherList[teacherId] = Teacher(
                 data.profileId,
@@ -64,9 +66,9 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         return teacherId
     }
 
-    fun getSubjectId(json: JsonObject?, key: String): Long {
+    fun getSubjectId(json: JsonObject?, key: String): Long? {
         val subject = json.getJsonObject(key)
-        val subjectId = subject.getLong("Id") ?: return -1
+        val subjectId = subject.getLong("Id") ?: return null
         if (data.subjectList[subjectId] == null) {
             data.subjectList[subjectId] = Subject(
                 data.profileId,
@@ -115,6 +117,21 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             )
         }
         return teamId
+    }
+
+    fun getLessonRange(json: JsonObject?, key: String): LessonRange? {
+        val timeslot = json.getJsonObject(key)
+        val position = timeslot.getInt("Position") ?: return null
+        val start = timeslot.getString("Start") ?: return null
+        val end = timeslot.getString("End") ?: return null
+        val lessonRange = LessonRange(
+            data.profileId,
+            position,
+            Time.fromH_m(start),
+            Time.fromH_m(end)
+        )
+        data.lessonRanges[position] = lessonRange
+        return lessonRange
     }
 
     fun getSemester(json: JsonObject?): Int {

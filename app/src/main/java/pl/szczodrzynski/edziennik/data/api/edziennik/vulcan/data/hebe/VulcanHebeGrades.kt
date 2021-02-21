@@ -5,7 +5,6 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_GRADES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
-import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
@@ -35,8 +34,8 @@ class VulcanHebeGrades(
                 val category = column.getJsonObject("Category")
                 val categoryText = category.getString("Name")
 
-                val teacherId = getTeacherId(grade, "Creator")
-                val subjectId = getSubjectId(column, "Subject")
+                val teacherId = getTeacherId(grade, "Creator") ?: -1
+                val subjectId = getSubjectId(column, "Subject") ?: -1
 
                 val description = column.getString("Name")
                 val comment = grade.getString("Comment")
@@ -115,10 +114,6 @@ class VulcanHebeGrades(
                 )
             }
 
-            data.toRemove.add(
-                DataRemoveModel.Grades.semesterWithType(data.studentSemesterNumber,
-                    Grade.TYPE_NORMAL
-                ))
             data.setSyncNext(ENDPOINT_VULCAN_HEBE_GRADES, SYNC_ALWAYS)
             onSuccess(ENDPOINT_VULCAN_HEBE_GRADES)
         }
