@@ -134,6 +134,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
                 VulcanHebeMessages(data, lastSync, onSuccess).getMessages(Message.TYPE_SENT)
             }
+            ENDPOINT_VULCAN_HEBE_ATTENDANCE -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_attendance)
+                VulcanHebeAttendance(data, lastSync, onSuccess)
+            }
             else -> onSuccess(endpointId)
         }
     }
