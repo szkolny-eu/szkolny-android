@@ -171,6 +171,7 @@ const val ERROR_VULCAN_WEB_CERTIFICATE_POST_FAILED          = 351
 const val ERROR_VULCAN_WEB_GRADUATE_ACCOUNT                 = 352
 const val ERROR_VULCAN_WEB_NO_SCHOOLS                       = 353
 const val ERROR_VULCAN_HEBE_OTHER                           = 354
+const val ERROR_VULCAN_API_DEPRECATED                       = 390
 
 const val ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN           = 401
 const val ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME     = 402

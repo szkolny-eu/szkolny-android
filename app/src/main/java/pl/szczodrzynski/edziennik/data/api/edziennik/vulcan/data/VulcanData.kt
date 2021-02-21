@@ -5,6 +5,8 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data
 
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
+import pl.szczodrzynski.edziennik.data.api.LOGIN_MODE_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.*
@@ -26,7 +28,11 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
         ENDPOINT_VULCAN_HEBE_MESSAGES_SENT
     )
 
-    init {
+    init { run {
+        if (data.loginStore.mode == LOGIN_MODE_VULCAN_API) {
+            data.error(TAG, ERROR_VULCAN_API_DEPRECATED)
+            return@run
+        }
         if (data.studentSemesterNumber == 2 && data.profile?.empty != false) {
             firstSemesterSync = true
             // set to sync 1st semester first
@@ -41,7 +47,7 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
             }
             onSuccess()
         }
-    }
+    }}
 
     private fun nextEndpoint(onSuccess: () -> Unit) {
         if (data.targetEndpointIds.isEmpty()) {
