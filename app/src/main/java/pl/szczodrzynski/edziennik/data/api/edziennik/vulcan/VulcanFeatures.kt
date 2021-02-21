@@ -26,6 +26,8 @@ const val ENDPOINT_VULCAN_HEBE_TIMETABLE          = 3020
 const val ENDPOINT_VULCAN_HEBE_EXAMS              = 3030
 const val ENDPOINT_VULCAN_HEBE_GRADES             = 3040
 const val ENDPOINT_VULCAN_HEBE_HOMEWORK           = 3060
+const val ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX     = 3090
+const val ENDPOINT_VULCAN_HEBE_MESSAGES_SENT      = 3100
 
 val VulcanFeatures = listOf(
         // timetable
@@ -72,6 +74,12 @@ val VulcanFeatures = listOf(
         Feature(LOGIN_TYPE_VULCAN, FEATURE_MESSAGES_SENT, listOf(
                 ENDPOINT_VULCAN_API_MESSAGES_SENT to LOGIN_METHOD_VULCAN_API
         ), listOf(LOGIN_METHOD_VULCAN_API)),
+        Feature(LOGIN_TYPE_VULCAN, FEATURE_MESSAGES_INBOX, listOf(
+                ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX to LOGIN_METHOD_VULCAN_HEBE
+        ), listOf(LOGIN_METHOD_VULCAN_HEBE)),
+        Feature(LOGIN_TYPE_VULCAN, FEATURE_MESSAGES_SENT, listOf(
+                ENDPOINT_VULCAN_HEBE_MESSAGES_SENT to LOGIN_METHOD_VULCAN_HEBE
+        ), listOf(LOGIN_METHOD_VULCAN_HEBE)),
 
         // push config
         Feature(LOGIN_TYPE_VULCAN, FEATURE_PUSH_CONFIG, listOf(

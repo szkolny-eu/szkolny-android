@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.web.VulcanWebLuckyNumber
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
@@ -124,6 +125,14 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
             ENDPOINT_VULCAN_HEBE_HOMEWORK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
                 VulcanHebeHomework(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
+                VulcanHebeMessages(data, lastSync, onSuccess).getMessages(Message.TYPE_RECEIVED)
+            }
+            ENDPOINT_VULCAN_HEBE_MESSAGES_SENT -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
+                VulcanHebeMessages(data, lastSync, onSuccess).getMessages(Message.TYPE_SENT)
             }
             else -> onSuccess(endpointId)
         }

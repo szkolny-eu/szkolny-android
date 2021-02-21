@@ -42,9 +42,9 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
     val profile
         get() = data.profile
 
-    fun getDateTime(json: JsonObject?, key: String): Long {
+    fun getDateTime(json: JsonObject?, key: String, default: Long = System.currentTimeMillis()): Long {
         val date = json.getJsonObject(key)
-        return date.getLong("Timestamp") ?: return System.currentTimeMillis()
+        return date.getLong("Timestamp") ?: return default
     }
 
     fun getDate(json: JsonObject?, key: String): Date? {
