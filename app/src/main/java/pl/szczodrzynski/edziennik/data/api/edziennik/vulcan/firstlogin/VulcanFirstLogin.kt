@@ -9,9 +9,12 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanApi
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanWebMain
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeMain
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.CufsCertificate
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginApi
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginHebe
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginWebMain
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -25,6 +28,7 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
 
     private val api = VulcanApi(data, null)
     private val web = VulcanWebMain(data, null)
+    private val hebe = VulcanHebe(data, null)
     private val profileList = mutableListOf<Profile>()
     private val loginStoreId = data.loginStore.id
     private var firstProfileId = loginStoreId
@@ -50,8 +54,14 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                 checkSymbol(certificate)
             }
         }
-        else {
+        else if (data.loginStore.mode == LOGIN_MODE_VULCAN_API) {
             registerDevice {
+                EventBus.getDefault().postSticky(FirstLoginFinishedEvent(profileList, data.loginStore))
+                onSuccess()
+            }
+        }
+        else {
+            registerDeviceHebe {
                 EventBus.getDefault().postSticky(FirstLoginFinishedEvent(profileList, data.loginStore))
                 onSuccess()
             }
@@ -103,7 +113,7 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
                 data.apiPin = data.apiPin.toMutableMap().also {
                     it[symbol] = json.getString("PIN")
                 }
-                registerDevice(onSuccess)
+                registerDeviceHebe(onSuccess)
             }
         }
     }
@@ -195,6 +205,23 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
 
                 onSuccess()
             }
+        }
+    }
+
+    private fun registerDeviceHebe(onSuccess: () -> Unit) {
+        VulcanLoginHebe(data) {
+            VulcanHebeMain(data).getStudents(
+                profile = null,
+                profileList,
+                loginStoreId,
+                firstProfileId,
+                onEmpty = {
+                    EventBus.getDefault()
+                        .postSticky(FirstLoginFinishedEvent(listOf(), data.loginStore))
+                    onSuccess()
+                },
+                onSuccess = onSuccess
+            )
         }
     }
 }

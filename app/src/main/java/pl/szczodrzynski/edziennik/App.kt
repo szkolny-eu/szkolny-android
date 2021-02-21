@@ -294,6 +294,19 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                         "Vulcan"
                 )
 
+                val pushVulcanHebeApp = FirebaseApp.initializeApp(
+                    this@App,
+                    FirebaseOptions.Builder()
+                        .setProjectId("dzienniczekplus")
+                        .setStorageBucket("dzienniczekplus.appspot.com")
+                        .setDatabaseUrl("https://dzienniczekplus.firebaseio.com")
+                        .setGcmSenderId("987828170337")
+                        .setApiKey("AIzaSyDW8MUtanHy64_I0oCpY6cOxB3jrvJd_iA")
+                        .setApplicationId("1:987828170337:android:7e16404b9e5deaaa")
+                        .build(),
+                    "VulcanHebe"
+                )
+
                 try {
                     FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
                         val token = instanceIdResult.token
@@ -322,6 +335,14 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                         if (token != config.sync.tokenVulcan) {
                             config.sync.tokenVulcan = token
                             config.sync.tokenVulcanList = listOf()
+                        }
+                    }
+                    FirebaseInstanceId.getInstance(pushVulcanHebeApp).instanceId.addOnSuccessListener { instanceIdResult ->
+                        val token = instanceIdResult.token
+                        d("Firebase", "Got VulcanHebe token: $token")
+                        if (token != config.sync.tokenVulcanHebe) {
+                            config.sync.tokenVulcanHebe = token
+                            config.sync.tokenVulcanHebeList = listOf()
                         }
                     }
                     FirebaseMessaging.getInstance().subscribeToTopic(packageName)

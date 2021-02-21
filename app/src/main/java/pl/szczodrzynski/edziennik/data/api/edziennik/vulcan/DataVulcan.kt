@@ -4,16 +4,16 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.currentTimeUnix
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
+import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_HEBE
+import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_WEB_MAIN
+import pl.szczodrzynski.edziennik.data.api.LOGIN_MODE_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.Utils
-import pl.szczodrzynski.edziennik.values
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 
@@ -26,17 +26,27 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
             && apiFingerprint[symbol].isNotNullNorEmpty()
             && apiPrivateKey[symbol].isNotNullNorEmpty()
             && symbol.isNotNullNorEmpty()
+    fun isHebeLoginValid() = hebePublicKey.isNotNullNorEmpty()
+            && hebePrivateKey.isNotNullNorEmpty()
+            && symbol.isNotNullNorEmpty()
 
     override fun satisfyLoginMethods() {
         loginMethods.clear()
+        if (isWebMainLoginValid()) {
+            loginMethods += LOGIN_METHOD_VULCAN_WEB_MAIN
+        }
         if (isApiLoginValid()) {
             loginMethods += LOGIN_METHOD_VULCAN_API
+        }
+        if (isHebeLoginValid()) {
+            loginMethods += LOGIN_METHOD_VULCAN_HEBE
         }
     }
 
     init {
         // during the first sync `profile.studentClassName` is already set
-        if (teamList.values().none { it.type == Team.TYPE_CLASS }) {
+        if (loginStore.mode == LOGIN_MODE_VULCAN_API
+            && teamList.values().none { it.type == Team.TYPE_CLASS }) {
             profile?.studentClassName?.also { name ->
                 val id = Utils.crc16(name.toByteArray()).toLong()
 
@@ -54,6 +64,17 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     }
 
     override fun generateUserCode() = "$schoolCode:$studentId"
+
+    fun buildDeviceId(): String {
+        val deviceId = app.deviceId.padStart(16, '0')
+        val loginStoreId = loginStore.id.toString(16).padStart(4, '0')
+        val symbol = symbol?.crc16()?.toString(16)?.take(2) ?: "00"
+        return deviceId.substring(0..7) +
+                "-" + deviceId.substring(8..11) +
+                "-" + deviceId.substring(12..15) +
+                "-" + loginStoreId +
+                "-" + symbol + "6f72616e7a"
+    }
 
     /**
      * A UONET+ client symbol.
@@ -139,6 +160,16 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mStudentSemesterId = mStudentSemesterId ?: profile?.getStudentData("studentSemesterId", 0); return mStudentSemesterId ?: 0 }
         set(value) { profile?.putStudentData("studentSemesterId", value) ?: return; mStudentSemesterId = value }
 
+    private var mStudentUnitId: Int? = null
+    var studentUnitId: Int
+        get() { mStudentUnitId = mStudentUnitId ?: profile?.getStudentData("studentUnitId", 0); return mStudentUnitId ?: 0 }
+        set(value) { profile?.putStudentData("studentUnitId", value) ?: return; mStudentUnitId = value }
+
+    private var mStudentConstituentId: Int? = null
+    var studentConstituentId: Int
+        get() { mStudentConstituentId = mStudentConstituentId ?: profile?.getStudentData("studentConstituentId", 0); return mStudentConstituentId ?: 0 }
+        set(value) { profile?.putStudentData("studentConstituentId", value) ?: return; mStudentConstituentId = value }
+
     private var mSemester1Id: Int? = null
     var semester1Id: Int
         get() { mSemester1Id = mSemester1Id ?: profile?.getStudentData("semester1Id", 0); return mSemester1Id ?: 0 }
@@ -203,6 +234,32 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mApiPrivateKey = mApiPrivateKey ?: loginStore.getLoginData("apiPrivateKey", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiPrivateKey ?: mapOf() }
         set(value) { loginStore.putLoginData("apiPrivateKey", app.gson.toJson(value)); mApiPrivateKey = value }
 
+    /*    _    _      _                     _____ _____ 
+         | |  | |    | |              /\   |  __ \_   _|
+         | |__| | ___| |__   ___     /  \  | |__) || |  
+         |  __  |/ _ \ '_ \ / _ \   / /\ \ |  ___/ | |  
+         | |  | |  __/ |_) |  __/  / ____ \| |    _| |_ 
+         |_|  |_|\___|_.__/ \___| /_/    \_\_|   |____*/
+    private var mHebePublicKey: String? = null
+    var hebePublicKey: String?
+        get() { mHebePublicKey = mHebePublicKey ?: loginStore.getLoginData("hebePublicKey", null); return mHebePublicKey }
+        set(value) { loginStore.putLoginData("hebePublicKey", value); mHebePublicKey = value }
+
+    private var mHebePrivateKey: String? = null
+    var hebePrivateKey: String?
+        get() { mHebePrivateKey = mHebePrivateKey ?: loginStore.getLoginData("hebePrivateKey", null); return mHebePrivateKey }
+        set(value) { loginStore.putLoginData("hebePrivateKey", value); mHebePrivateKey = value }
+
+    private var mHebePublicHash: String? = null
+    var hebePublicHash: String?
+        get() { mHebePublicHash = mHebePublicHash ?: loginStore.getLoginData("hebePublicHash", null); return mHebePublicHash }
+        set(value) { loginStore.putLoginData("hebePublicHash", value); mHebePublicHash = value }
+
+    private var mHebeContext: String? = null
+    var hebeContext: String?
+        get() { mHebeContext = mHebeContext ?: profile?.getStudentData("hebeContext", null); return mHebeContext }
+        set(value) { profile?.putStudentData("hebeContext", value) ?: return; mHebeContext = value }
+
     val apiUrl: String?
         get() {
             val url = when (apiToken[symbol]?.substring(0, 3)) {
@@ -227,7 +284,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
             return if (url != null) "$url/$symbol/" else loginStore.getLoginData("apiUrl", null)
         }
 
-    val fullApiUrl: String?
+    val fullApiUrl: String
         get() {
             return "$apiUrl$schoolSymbol/"
         }

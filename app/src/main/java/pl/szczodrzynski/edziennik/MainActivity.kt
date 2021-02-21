@@ -38,6 +38,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -64,6 +65,7 @@ import pl.szczodrzynski.edziennik.ui.modules.base.MainSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
 import pl.szczodrzynski.edziennik.ui.modules.debug.DebugFragment
 import pl.szczodrzynski.edziennik.ui.modules.debug.LabFragment
+import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
 import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
@@ -756,6 +758,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         mainSnackbar.dismiss()
         errorSnackbar.addError(event.error).show()
+        if (event.error.errorCode == ERROR_VULCAN_API_DEPRECATED) {
+            ErrorDetailsDialog(this, listOf(event.error))
+        }
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onAppManagerDetectedEvent(event: AppManagerDetectedEvent) {

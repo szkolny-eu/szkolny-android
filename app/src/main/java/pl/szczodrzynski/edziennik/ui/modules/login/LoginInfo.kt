@@ -131,9 +131,9 @@ object LoginInfo {
                     registerLogo = R.drawable.login_logo_vulcan,
                     loginModes = listOf(
                             Mode(
-                                    loginMode = LOGIN_MODE_VULCAN_API,
+                                    loginMode = LOGIN_MODE_VULCAN_HEBE,
                                     name = R.string.login_mode_vulcan_api,
-                                    icon = R.drawable.login_mode_vulcan_api,
+                                    icon = R.drawable.login_mode_vulcan_hebe,
                                     hintText = R.string.login_mode_vulcan_api_hint,
                                     guideText = R.string.login_mode_vulcan_api_guide,
                                     isRecommended = true,
