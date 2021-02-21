@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanData
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiAttachments
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiMessagesChangeStatus
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiSendMessage
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeMessagesChangeStatus
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin.VulcanFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLogin
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
@@ -98,7 +99,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                     completed()
                     return@login
                 }
-                VulcanApiMessagesChangeStatus(data, message) {
+                VulcanHebeMessagesChangeStatus(data, message) {
                     completed()
                 }
             }

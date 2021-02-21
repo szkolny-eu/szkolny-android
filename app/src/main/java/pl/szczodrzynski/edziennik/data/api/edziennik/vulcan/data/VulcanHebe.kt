@@ -207,8 +207,9 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                 }
 
                 val envelope = when (T::class.java) {
-                    JsonObject::class.java -> json.getJsonObject("Envelope")
-                    JsonArray::class.java -> json.getJsonArray("Envelope")
+                    JsonObject::class.java -> json.getJsonObject("Envelope") as T
+                    JsonArray::class.java -> json.getJsonArray("Envelope") as T
+                    java.lang.Boolean::class.java -> json.getBoolean("Envelope") as T
                     else -> {
                         data.error(ApiError(tag, ERROR_RESPONSE_EMPTY)
                             .withResponse(response)
@@ -219,7 +220,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                 }
 
                 try {
-                    onSuccess(envelope as T, response)
+                    onSuccess(envelope, response)
                 } catch (e: Exception) {
                     data.error(ApiError(tag, EXCEPTION_VULCAN_HEBE_REQUEST)
                             .withResponse(response)
