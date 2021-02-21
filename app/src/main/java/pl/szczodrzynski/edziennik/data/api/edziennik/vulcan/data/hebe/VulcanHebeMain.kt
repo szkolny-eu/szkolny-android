@@ -76,7 +76,7 @@ class VulcanHebeMain(
                 }
 
                 val schoolSymbol = unit.getString("Symbol") ?: return@forEach
-                val schoolShort = unit.getString("Short") ?: return@forEach
+                val schoolShort = constituentUnit.getString("Short") ?: return@forEach
                 val schoolCode = "${data.symbol}_$schoolSymbol"
 
                 val studentUnitId = unit.getInt("Id") ?: return@forEach
