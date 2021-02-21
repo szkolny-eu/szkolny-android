@@ -31,6 +31,7 @@
             android:textSize="24sp" />
 
         <TextView
+            android:id="@+id/subtitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
@@ -47,13 +48,14 @@
             tools:listitem="@layout/login_chooser_item" />
 
         <TextView
+            android:id="@+id/footnoteText"
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
             android:text="@string/login_copyright_notice"
-            android:textAlignment="center" />
+            android:gravity="center" />
 
         <LinearLayout
             android:layout_width="match_parent"

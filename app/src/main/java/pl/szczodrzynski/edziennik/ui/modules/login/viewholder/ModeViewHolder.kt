@@ -10,7 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.LoginChooserModeItemBinding
+import pl.szczodrzynski.edziennik.resolveColor
+import pl.szczodrzynski.edziennik.setTintColor
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginChooserAdapter
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo
@@ -34,6 +37,19 @@ class ModeViewHolder(
             b.description.isVisible = true
             b.description.setText(item.hintText)
         }
-        b.hint.isVisible = false
+
+        b.badge.isVisible = item.isRecommended || item.isDevOnly || item.isTesting
+        if (item.isRecommended) {
+            b.badge.setText(R.string.login_chooser_mode_recommended)
+            b.badge.background.setTintColor(R.color.md_blue_300.resolveColor(app))
+        }
+        if (item.isTesting) {
+            b.badge.setText(R.string.login_chooser_mode_testing)
+            b.badge.background.setTintColor(R.color.md_yellow_300.resolveColor(app))
+        }
+        if (item.isDevOnly) {
+            b.badge.setText(R.string.login_chooser_mode_dev_only)
+            b.badge.background.setTintColor(R.color.md_red_300.resolveColor(app))
+        }
     }
 }

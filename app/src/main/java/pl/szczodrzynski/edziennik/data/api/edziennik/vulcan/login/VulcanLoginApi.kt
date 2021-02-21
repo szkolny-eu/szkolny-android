@@ -191,18 +191,6 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
             }
         }
 
-        val deviceId = data.app.deviceId.padStart(16, '0')
-        val loginStoreId = data.loginStore.id.toString(16).padStart(4, '0')
-        val symbol = data.symbol?.crc16()?.toString(16)?.take(2) ?: "00"
-        val uuid =
-                deviceId.substring(0..7) +
-                        "-" + deviceId.substring(8..11) +
-                        "-" + deviceId.substring(12..15) +
-                        "-" + loginStoreId +
-                        "-" + symbol + "6f72616e7a"
-
-        val deviceNameSuffix = " - nie usuwać"
-
         val szkolnyApi = SzkolnyApi(data.app)
         val firebaseToken = szkolnyApi.runCatching({
             getFirebaseToken("vulcan")
@@ -216,8 +204,8 @@ class VulcanLoginApi(val data: DataVulcan, val onSuccess: () -> Unit) {
                 .addHeader("RequestMobileType", "RegisterDevice")
                 .addParameter("PIN", data.apiPin[data.symbol])
                 .addParameter("TokenKey", data.apiToken[data.symbol])
-                .addParameter("DeviceId", uuid)
-                .addParameter("DeviceName", VULCAN_API_DEVICE_NAME.take(50 - deviceNameSuffix.length) + deviceNameSuffix)
+                .addParameter("DeviceId", data.buildDeviceId())
+                .addParameter("DeviceName", VULCAN_API_DEVICE_NAME)
                 .addParameter("DeviceNameUser", "")
                 .addParameter("DeviceDescription", "")
                 .addParameter("DeviceSystemType", "Android")

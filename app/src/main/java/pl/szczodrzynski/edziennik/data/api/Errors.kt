@@ -170,6 +170,8 @@ const val ERROR_VULCAN_WEB_LOGGED_OUT                       = 350
 const val ERROR_VULCAN_WEB_CERTIFICATE_POST_FAILED          = 351
 const val ERROR_VULCAN_WEB_GRADUATE_ACCOUNT                 = 352
 const val ERROR_VULCAN_WEB_NO_SCHOOLS                       = 353
+const val ERROR_VULCAN_HEBE_OTHER                           = 354
+const val ERROR_VULCAN_API_DEPRECATED                       = 390
 
 const val ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN           = 401
 const val ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME     = 402
@@ -229,5 +231,6 @@ const val ERROR_ONEDRIVE_DOWNLOAD                           = 930
 const val EXCEPTION_VULCAN_WEB_LOGIN                        = 931
 const val EXCEPTION_VULCAN_WEB_REQUEST                      = 932
 const val EXCEPTION_PODLASIE_API_REQUEST                    = 940
+const val EXCEPTION_VULCAN_HEBE_REQUEST                     = 950
 
 const val LOGIN_NO_ARGUMENTS                                = 1201

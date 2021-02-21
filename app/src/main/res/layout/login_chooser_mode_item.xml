@@ -36,19 +36,25 @@
             android:orientation="vertical"
             android:gravity="center_vertical">
 
+            <com.mikepenz.iconics.view.IconicsTextView
+                android:id="@+id/badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_8dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="2dp"
+                android:textColor="@color/md_black_1000"
+                android:textSize="12sp"
+                tools:backgroundTint="@color/md_blue_300"
+                tools:text="{cmd-alert-circle-outline} Zalecane" />
+
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/NavView.TextView.Medium"
                 tools:text="Zaloguj używając e-maila" />
-
-            <TextView
-                android:id="@+id/hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                tools:text="(zalecane)" />
 
             <TextView
                 android:id="@+id/description"

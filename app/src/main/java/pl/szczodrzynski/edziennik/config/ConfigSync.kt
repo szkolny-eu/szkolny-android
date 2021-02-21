@@ -99,6 +99,10 @@ class ConfigSync(private val config: Config) {
     var tokenVulcan: String?
         get() { mTokenVulcan = mTokenVulcan ?: config.values.get("tokenVulcan", null as String?); return mTokenVulcan }
         set(value) { config.set("tokenVulcan", value); mTokenVulcan = value }
+    private var mTokenVulcanHebe: String? = null
+    var tokenVulcanHebe: String?
+        get() { mTokenVulcanHebe = mTokenVulcanHebe ?: config.values.get("tokenVulcanHebe", null as String?); return mTokenVulcanHebe }
+        set(value) { config.set("tokenVulcanHebe", value); mTokenVulcanHebe = value }
 
     private var mTokenMobidziennikList: List<Int>? = null
     var tokenMobidziennikList: List<Int>
@@ -112,6 +116,10 @@ class ConfigSync(private val config: Config) {
     var tokenVulcanList: List<Int>
         get() { mTokenVulcanList = mTokenVulcanList ?: config.values.getIntList("tokenVulcanList", listOf()); return mTokenVulcanList ?: listOf() }
         set(value) { config.set("tokenVulcanList", value); mTokenVulcanList = value }
+    private var mTokenVulcanHebeList: List<Int>? = null
+    var tokenVulcanHebeList: List<Int>
+        get() { mTokenVulcanHebeList = mTokenVulcanHebeList ?: config.values.getIntList("tokenVulcanHebeList", listOf()); return mTokenVulcanHebeList ?: listOf() }
+        set(value) { config.set("tokenVulcanHebeList", value); mTokenVulcanHebeList = value }
 
     private var mRegisterAvailability: Map<String, RegisterAvailabilityStatus>? = null
     var registerAvailability: Map<String, RegisterAvailabilityStatus>

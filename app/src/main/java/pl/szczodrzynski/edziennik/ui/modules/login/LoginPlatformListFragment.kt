@@ -47,6 +47,7 @@ class LoginPlatformListFragment : Fragment(), CoroutineScope {
     }
 
     private lateinit var timeoutJob: Job
+    private lateinit var adapter: LoginPlatformAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded) return
@@ -57,12 +58,7 @@ class LoginPlatformListFragment : Fragment(), CoroutineScope {
         val loginMode = arguments?.getInt("loginMode") ?: return
         val mode = register.loginModes.firstOrNull { it.loginMode == loginMode } ?: return
 
-        timeoutJob = startCoroutineTimer(5000L) {
-            b.timeoutText.isVisible = true
-            timeoutJob.cancel()
-        }
-
-        val adapter = LoginPlatformAdapter(activity) { platform ->
+        adapter = LoginPlatformAdapter(activity) { platform ->
             nav.navigate(R.id.loginFormFragment, Bundle(
                     "loginType" to platform.loginType,
                     "loginMode" to platform.loginMode,
@@ -73,7 +69,30 @@ class LoginPlatformListFragment : Fragment(), CoroutineScope {
             ), activity.navOptions)
         }
 
+        loadPlatforms(register, mode)
+        b.reloadButton.isVisible = App.devMode
+        b.reloadButton.onClick {
+            LoginInfo.platformList.remove(mode.name)
+            loadPlatforms(register, mode)
+        }
+
+        b.list.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(SimpleDividerItemDecoration(context))
+        }
+    }
+
+    private fun loadPlatforms(register: LoginInfo.Register, mode: LoginInfo.Mode) {
         launch {
+            timeoutJob = startCoroutineTimer(5000L) {
+                b.timeoutText.isVisible = true
+                timeoutJob.cancel()
+            }
+            b.loadingLayout.isVisible = true
+            b.list.isVisible = false
+            b.reloadButton.isEnabled = false
+
             val platforms = LoginInfo.platformList[mode.name]
                     ?: run {
                         api.runCatching(activity) {
@@ -87,14 +106,11 @@ class LoginPlatformListFragment : Fragment(), CoroutineScope {
 
             adapter.items = platforms
             b.list.adapter = adapter
-            b.list.apply {
-                setHasFixedSize(true)
-                layoutManager = LinearLayoutManager(context)
-                addItemDecoration(SimpleDividerItemDecoration(context))
-            }
+
             timeoutJob.cancel()
             b.loadingLayout.isVisible = false
             b.list.isVisible = true
+            b.reloadButton.isEnabled = true
         }
     }
 }

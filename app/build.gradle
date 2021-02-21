@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     signingConfigs {
@@ -54,10 +54,11 @@ android {
     lintOptions {
         checkReleaseBuilds false
     }
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility '1.8'
         targetCompatibility '1.8'
     }
@@ -75,6 +76,7 @@ android {
             version "3.10.2"
         }
     }
+    ndkVersion '21.3.6528147'
 }
 
 /*task finalizeBundleDebug(type: Copy) {
@@ -104,6 +106,8 @@ tasks.whenTaskAdded { task ->
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
+
     kapt "androidx.room:room-compiler:${versions.room}"
     debugImplementation "com.amitshekhar.android:debug-db:1.0.5"
 
@@ -114,7 +118,7 @@ dependencies {
     implementation "androidx.core:core-ktx:${versions.ktx}"
     implementation "androidx.gridlayout:gridlayout:${versions.gridLayout}"
     implementation "androidx.legacy:legacy-support-v4:${versions.legacy}"
-    implementation "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}"
     implementation "androidx.recyclerview:recyclerview:${versions.recyclerView}"
     implementation "androidx.room:room-runtime:${versions.room}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
@@ -137,7 +141,7 @@ dependencies {
 
     implementation "cat.ereza:customactivityoncrash:2.2.0"
     implementation "com.applandeo:material-calendar-view:1.5.0"
-    implementation "com.crashlytics.sdk.android:crashlytics:2.10.1"
+    implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
     implementation "com.evernote:android-job:1.2.6"
     implementation "com.github.antonKozyriatskyi:CircularProgressIndicator:1.2.2"
@@ -147,7 +151,7 @@ dependencies {
     implementation "com.jaredrummler:colorpicker:1.0.2"
     implementation("com.squareup.okhttp3:okhttp") {
         version {
-            strictly "3.12.2"
+            strictly "3.12.13"
         }
     }
     implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0" // do not update
@@ -157,7 +161,7 @@ dependencies {
     implementation "me.grantland:autofittextview:0.2.1"
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "org.greenrobot:eventbus:3.1.1"
-    implementation "org.jsoup:jsoup:1.10.1"
+    implementation "org.jsoup:jsoup:1.12.1"
     implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.15"
     //implementation "se.emilsjolander:stickylistheaders:2.7.0"
     implementation 'com.github.edisonw:StickyListHeaders:master-SNAPSHOT@aar'
@@ -180,6 +184,7 @@ dependencies {
     //implementation "org.redundent:kotlin-xml-builder:1.5.3"
 
     implementation "io.github.wulkanowy:signer-android:0.1.1"
+    implementation 'com.github.wulkanowy.uonet-request-signer:hebe-jvm:a99ca50a31'
 
     implementation "androidx.work:work-runtime-ktx:${versions.work}"
 

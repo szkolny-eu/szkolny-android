@@ -5,9 +5,13 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data
 
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
+import pl.szczodrzynski.edziennik.data.api.LOGIN_MODE_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.*
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.web.VulcanWebLuckyNumber
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
@@ -15,9 +19,35 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
         private const val TAG = "VulcanData"
     }
 
-    init {
-        nextEndpoint(onSuccess)
-    }
+    private var firstSemesterSync = false
+    private val firstSemesterSyncExclude = listOf(
+        ENDPOINT_VULCAN_HEBE_MAIN,
+        ENDPOINT_VULCAN_HEBE_ADDRESSBOOK,
+        ENDPOINT_VULCAN_HEBE_TIMETABLE,
+        ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX,
+        ENDPOINT_VULCAN_HEBE_MESSAGES_SENT
+    )
+
+    init { run {
+        if (data.loginStore.mode == LOGIN_MODE_VULCAN_API) {
+            data.error(TAG, ERROR_VULCAN_API_DEPRECATED)
+            return@run
+        }
+        if (data.studentSemesterNumber == 2 && data.profile?.empty != false) {
+            firstSemesterSync = true
+            // set to sync 1st semester first
+            data.studentSemesterId = data.semester1Id
+            data.studentSemesterNumber = 1
+        }
+        nextEndpoint {
+            if (firstSemesterSync) {
+                // at the end, set back 2nd semester
+                data.studentSemesterId = data.semester2Id
+                data.studentSemesterNumber = 2
+            }
+            onSuccess()
+        }
+    }}
 
     private fun nextEndpoint(onSuccess: () -> Unit) {
         if (data.targetEndpointIds.isEmpty()) {
@@ -30,7 +60,21 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
         }
         val id = data.targetEndpointIds.firstKey()
         val lastSync = data.targetEndpointIds.remove(id)
-        useEndpoint(id, lastSync) { endpointId ->
+        useEndpoint(id, lastSync) {
+            if (firstSemesterSync && id !in firstSemesterSyncExclude) {
+                // sync 2nd semester after every endpoint
+                data.studentSemesterId = data.semester2Id
+                data.studentSemesterNumber = 2
+                useEndpoint(id, lastSync) {
+                    // set 1st semester back for the next endpoint
+                    data.studentSemesterId = data.semester1Id
+                    data.studentSemesterNumber = 1
+                    // progress further
+                    data.progress(data.progressStep)
+                    nextEndpoint(onSuccess)
+                }
+                return@useEndpoint
+            }
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
@@ -90,6 +134,51 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
             ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
                 VulcanWebLuckyNumber(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_MAIN -> {
+                if (data.profile == null) {
+                    onSuccess(ENDPOINT_VULCAN_HEBE_MAIN)
+                    return
+                }
+                data.startProgress(R.string.edziennik_progress_endpoint_student_info)
+                VulcanHebeMain(data, lastSync).getStudents(
+                    profile = data.profile,
+                    profileList = null
+                ) {
+                    onSuccess(ENDPOINT_VULCAN_HEBE_MAIN)
+                }
+            }
+            ENDPOINT_VULCAN_HEBE_ADDRESSBOOK -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_teachers)
+                VulcanHebeAddressbook(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_TIMETABLE -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_timetable)
+                VulcanHebeTimetable(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_EXAMS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_exams)
+                VulcanHebeExams(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_GRADES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_grades)
+                VulcanHebeGrades(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_HOMEWORK -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_homework)
+                VulcanHebeHomework(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
+                VulcanHebeMessages(data, lastSync, onSuccess).getMessages(Message.TYPE_RECEIVED)
+            }
+            ENDPOINT_VULCAN_HEBE_MESSAGES_SENT -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages_outbox)
+                VulcanHebeMessages(data, lastSync, onSuccess).getMessages(Message.TYPE_SENT)
+            }
+            ENDPOINT_VULCAN_HEBE_ATTENDANCE -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_attendance)
+                VulcanHebeAttendance(data, lastSync, onSuccess)
             }
             else -> onSuccess(endpointId)
         }
