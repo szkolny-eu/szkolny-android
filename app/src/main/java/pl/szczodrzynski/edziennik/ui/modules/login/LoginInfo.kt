@@ -131,64 +131,12 @@ object LoginInfo {
                     registerLogo = R.drawable.login_logo_vulcan,
                     loginModes = listOf(
                             Mode(
-                                    loginMode = LOGIN_MODE_VULCAN_API,
-                                    name = R.string.login_mode_vulcan_api,
-                                    icon = R.drawable.login_mode_vulcan_api,
-                                    hintText = R.string.login_mode_vulcan_api_hint,
-                                    guideText = R.string.login_mode_vulcan_api_guide,
-                                    isRecommended = true,
-                                    credentials = listOf(
-                                            FormField(
-                                                    keyName = "deviceToken",
-                                                    name = R.string.login_hint_token,
-                                                    icon = CommunityMaterial.Icon.cmd_code_braces,
-                                                    emptyText = R.string.login_error_no_token,
-                                                    invalidText = R.string.login_error_incorrect_token,
-                                                    errorCodes = mapOf(
-                                                            ERROR_LOGIN_VULCAN_INVALID_TOKEN to R.string.login_error_incorrect_token
-                                                    ),
-                                                    isRequired = true,
-                                                    validationRegex = "[A-Z0-9]{5,12}",
-                                                    caseMode = FormField.CaseMode.UPPER_CASE
-                                            ),
-                                            FormField(
-                                                    keyName = "symbol",
-                                                    name = R.string.login_hint_symbol,
-                                                    icon = CommunityMaterial.Icon2.cmd_school,
-                                                    emptyText = R.string.login_error_no_symbol,
-                                                    invalidText = R.string.login_error_incorrect_symbol,
-                                                    errorCodes = mapOf(
-                                                            ERROR_LOGIN_VULCAN_INVALID_SYMBOL to R.string.login_error_incorrect_symbol
-                                                    ),
-                                                    isRequired = true,
-                                                    validationRegex = "[a-z0-9_-]+",
-                                                    caseMode = FormField.CaseMode.LOWER_CASE
-                                            ),
-                                            FormField(
-                                                    keyName = "devicePin",
-                                                    name = R.string.login_hint_pin,
-                                                    icon = CommunityMaterial.Icon2.cmd_lock,
-                                                    emptyText = R.string.login_error_no_pin,
-                                                    invalidText = R.string.login_error_incorrect_pin,
-                                                    errorCodes = mapOf(
-                                                            ERROR_LOGIN_VULCAN_INVALID_PIN to R.string.login_error_incorrect_pin
-                                                    ),
-                                                    isRequired = true,
-                                                    validationRegex = "[0-9]+",
-                                                    caseMode = FormField.CaseMode.LOWER_CASE
-                                            )
-                                    ),
-                                    errorCodes = mapOf(
-                                            ERROR_LOGIN_VULCAN_EXPIRED_TOKEN to R.string.login_error_expired_token
-                                    )
-                            ),
-                            Mode(
                                     loginMode = LOGIN_MODE_VULCAN_HEBE,
                                     name = R.string.login_mode_vulcan_api,
                                     icon = R.drawable.login_mode_vulcan_hebe,
                                     hintText = R.string.login_mode_vulcan_api_hint,
                                     guideText = R.string.login_mode_vulcan_api_guide,
-                                    isTesting = true,
+                                    isRecommended = true,
                                     credentials = listOf(
                                             FormField(
                                                     keyName = "deviceToken",
