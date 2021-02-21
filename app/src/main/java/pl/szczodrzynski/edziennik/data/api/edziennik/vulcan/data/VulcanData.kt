@@ -17,8 +17,30 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
         private const val TAG = "VulcanData"
     }
 
+    private var firstSemesterSync = false
+    private val firstSemesterSyncExclude = listOf(
+        ENDPOINT_VULCAN_HEBE_MAIN,
+        ENDPOINT_VULCAN_HEBE_ADDRESSBOOK,
+        ENDPOINT_VULCAN_HEBE_TIMETABLE,
+        ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX,
+        ENDPOINT_VULCAN_HEBE_MESSAGES_SENT
+    )
+
     init {
-        nextEndpoint(onSuccess)
+        if (data.studentSemesterNumber == 2 && data.profile?.empty != false) {
+            firstSemesterSync = true
+            // set to sync 1st semester first
+            data.studentSemesterId = data.semester1Id
+            data.studentSemesterNumber = 1
+        }
+        nextEndpoint {
+            if (firstSemesterSync) {
+                // at the end, set back 2nd semester
+                data.studentSemesterId = data.semester2Id
+                data.studentSemesterNumber = 2
+            }
+            onSuccess()
+        }
     }
 
     private fun nextEndpoint(onSuccess: () -> Unit) {
@@ -32,7 +54,21 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
         }
         val id = data.targetEndpointIds.firstKey()
         val lastSync = data.targetEndpointIds.remove(id)
-        useEndpoint(id, lastSync) { endpointId ->
+        useEndpoint(id, lastSync) {
+            if (firstSemesterSync && id !in firstSemesterSyncExclude) {
+                // sync 2nd semester after every endpoint
+                data.studentSemesterId = data.semester2Id
+                data.studentSemesterNumber = 2
+                useEndpoint(id, lastSync) {
+                    // set 1st semester back for the next endpoint
+                    data.studentSemesterId = data.semester1Id
+                    data.studentSemesterNumber = 1
+                    // progress further
+                    data.progress(data.progressStep)
+                    nextEndpoint(onSuccess)
+                }
+                return@useEndpoint
+            }
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)
         }
