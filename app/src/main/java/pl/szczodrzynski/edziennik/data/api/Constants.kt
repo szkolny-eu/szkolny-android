@@ -129,6 +129,7 @@ const val VULCAN_HEBE_ENDPOINT_REGISTER_NEW = "api/mobile/register/new"
 const val VULCAN_HEBE_ENDPOINT_MAIN = "api/mobile/register/hebe"
 const val VULCAN_HEBE_ENDPOINT_EXAMS = "api/mobile/exam"
 const val VULCAN_HEBE_ENDPOINT_GRADES = "api/mobile/grade"
+const val VULCAN_HEBE_ENDPOINT_HOMEWORK = "api/mobile/homework"
 
 const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"
 

@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_HEBE
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_WEB_MAIN
+import pl.szczodrzynski.edziennik.data.api.LOGIN_MODE_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
@@ -44,7 +45,8 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
 
     init {
         // during the first sync `profile.studentClassName` is already set
-        if (teamList.values().none { it.type == Team.TYPE_CLASS }) {
+        if (loginStore.mode == LOGIN_MODE_VULCAN_API
+            && teamList.values().none { it.type == Team.TYPE_CLASS }) {
             profile?.studentClassName?.also { name ->
                 val id = Utils.crc16(name.toByteArray()).toLong()
 

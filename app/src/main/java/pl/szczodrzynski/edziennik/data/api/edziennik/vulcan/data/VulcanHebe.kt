@@ -82,12 +82,16 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         val team = json.getJsonObject(key)
         val teamId = team.getLong("Id") ?: return null
         if (data.teamList[teamId] == null) {
+            var name = team.getString("Shortcut")
+                ?: team.getString("Name")
+                ?: ""
+            name = "${profile?.studentClassName ?: ""} $name"
             data.teamList[teamId] = Team(
                 data.profileId,
                 teamId,
-                team.getString("Name") ?: "",
+                name,
                 Team.TYPE_VIRTUAL,
-                team.getString("Shortcut") ?: "",
+                "${data.schoolCode}:$name",
                 -1
             )
         }
@@ -106,7 +110,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                 teamId,
                 name,
                 Team.TYPE_CLASS,
-                name,
+                "${data.schoolCode}:$name",
                 -1
             )
         }

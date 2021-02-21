@@ -23,6 +23,7 @@ const val ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS       = 2010
 const val ENDPOINT_VULCAN_HEBE_MAIN               = 3000
 const val ENDPOINT_VULCAN_HEBE_EXAMS              = 3030
 const val ENDPOINT_VULCAN_HEBE_GRADES             = 3040
+const val ENDPOINT_VULCAN_HEBE_HOMEWORK           = 3060
 
 val VulcanFeatures = listOf(
         // timetable
@@ -48,6 +49,9 @@ val VulcanFeatures = listOf(
         Feature(LOGIN_TYPE_VULCAN, FEATURE_HOMEWORK, listOf(
                 ENDPOINT_VULCAN_API_HOMEWORK to LOGIN_METHOD_VULCAN_API
         ), listOf(LOGIN_METHOD_VULCAN_API)),
+        Feature(LOGIN_TYPE_VULCAN, FEATURE_HOMEWORK, listOf(
+                ENDPOINT_VULCAN_HEBE_HOMEWORK to LOGIN_METHOD_VULCAN_HEBE
+        ), listOf(LOGIN_METHOD_VULCAN_HEBE)),
         // behaviour
         Feature(LOGIN_TYPE_VULCAN, FEATURE_BEHAVIOUR, listOf(
                 ENDPOINT_VULCAN_API_NOTICES to LOGIN_METHOD_VULCAN_API

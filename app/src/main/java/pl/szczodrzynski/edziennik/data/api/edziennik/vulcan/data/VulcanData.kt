@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeExams
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeGrades
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeHomework
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.web.VulcanWebLuckyNumber
 import pl.szczodrzynski.edziennik.utils.Utils
 
@@ -100,6 +101,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
             ENDPOINT_VULCAN_HEBE_GRADES -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
                 VulcanHebeGrades(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_HOMEWORK -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_homework)
+                VulcanHebeHomework(data, lastSync, onSuccess)
             }
             else -> onSuccess(endpointId)
         }
