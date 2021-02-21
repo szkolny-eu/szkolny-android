@@ -8,9 +8,11 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_ATTENDANCE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_ATTENDANCE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 
 class VulcanHebeAttendance(
     override val data: DataVulcan,
@@ -23,10 +25,16 @@ class VulcanHebeAttendance(
     }
 
     init {
+        val semesterNumber = data.studentSemesterNumber
+        val startDate = profile?.getSemesterStart(semesterNumber)
+        val endDate = profile?.getSemesterEnd(semesterNumber)
+
         apiGetList(
             TAG,
             VULCAN_HEBE_ENDPOINT_ATTENDANCE,
             HebeFilterType.BY_PUPIL,
+            dateFrom = startDate,
+            dateTo = endDate,
             lastSync = lastSync
         ) { list, _ ->
             list.forEach { attendance ->
@@ -88,12 +96,19 @@ class VulcanHebeAttendance(
                             profileId,
                             Metadata.TYPE_ATTENDANCE,
                             attendanceObject.id,
-                            profile?.empty ?: true || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == Attendance.TYPE_UNKNOWN,
-                            profile?.empty ?: true || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == Attendance.TYPE_UNKNOWN
+                            profile?.empty ?: true
+                                    || baseType == Attendance.TYPE_PRESENT_CUSTOM
+                                    || baseType == Attendance.TYPE_UNKNOWN,
+                            profile?.empty ?: true
+                                    || baseType == Attendance.TYPE_PRESENT_CUSTOM
+                                    || baseType == Attendance.TYPE_UNKNOWN
                         )
                     )
                 }
             }
+
+            data.setSyncNext(ENDPOINT_VULCAN_HEBE_ATTENDANCE, SYNC_ALWAYS)
+            onSuccess(ENDPOINT_VULCAN_HEBE_ATTENDANCE)
         }
     }
 
