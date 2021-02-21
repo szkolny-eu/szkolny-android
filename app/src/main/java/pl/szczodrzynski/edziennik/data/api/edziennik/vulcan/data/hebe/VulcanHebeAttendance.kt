@@ -132,7 +132,10 @@ class VulcanHebeAttendance(
             else if (released)
                 Attendance.TYPE_RELEASED
             else if (present)
-                Attendance.TYPE_PRESENT
+                if (attendanceType.getInt("CategoryId") != 1)
+                    Attendance.TYPE_PRESENT_CUSTOM
+                else
+                    Attendance.TYPE_PRESENT
             else
                 Attendance.TYPE_UNKNOWN
         }
