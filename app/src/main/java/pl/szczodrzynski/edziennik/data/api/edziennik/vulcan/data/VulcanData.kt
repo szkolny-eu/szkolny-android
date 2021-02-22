@@ -168,6 +168,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_grades)
                 VulcanHebeGrades(data, lastSync, onSuccess)
             }
+            ENDPOINT_VULCAN_HEBE_GRADE_SUMMARY -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_proposed_grades)
+                VulcanHebeGradeSummary(data, lastSync, onSuccess)
+            }
             ENDPOINT_VULCAN_HEBE_HOMEWORK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_homework)
                 VulcanHebeHomework(data, lastSync, onSuccess)
