@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiAt
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiMessagesChangeStatus
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiSendMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeMessagesChangeStatus
+import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeSendMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin.VulcanFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLogin
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
@@ -135,6 +136,15 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
+        if (loginStore.mode != LOGIN_MODE_VULCAN_API) {
+            login(LOGIN_METHOD_VULCAN_HEBE) {
+                VulcanHebeSendMessage(data, recipients, subject, text) {
+                    completed()
+                }
+            }
+            return
+        }
+
         login(LOGIN_METHOD_VULCAN_API) {
             VulcanApiSendMessage(data, recipients, subject, text) {
                 completed()
