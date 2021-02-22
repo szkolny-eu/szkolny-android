@@ -103,7 +103,9 @@ open class Profile(
             dateSemester2Start.year -= diff
             dateYearEnd.year -= diff
         }
-        return Date.getToday() >= dateYearEnd && Date.getToday().year > studentSchoolYearStart
+        return App.config.archiverEnabled
+                && Date.getToday() >= dateYearEnd
+                && Date.getToday().year > studentSchoolYearStart
     }
     fun isBeforeYear() = false && Date.getToday() < dateSemester1Start
 

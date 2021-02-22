@@ -45,6 +45,8 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
     }
 
     override fun onPageCreated(): Boolean {
+        b.app = app
+
         b.last10unseen.onClick {
             launch(Dispatchers.Default) {
                 val events = app.db.eventDao().getAllNow(App.profileId)
