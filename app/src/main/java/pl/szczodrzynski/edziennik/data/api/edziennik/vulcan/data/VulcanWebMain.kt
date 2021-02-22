@@ -144,7 +144,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                 var count = 0
                 while (clientIndex != -1 && count < 100) {
                     val startIndex = clientIndex + clientUrl.length
-                    val endIndex = text.indexOf('/', startIndex = startIndex)
+                    val endIndex = text.indexOf('"', startIndex = startIndex)
                     val schoolSymbol = text.substring(startIndex, endIndex)
                     schoolSymbols += schoolSymbol
                     clientIndex = text.indexOf(clientUrl, startIndex = endIndex)

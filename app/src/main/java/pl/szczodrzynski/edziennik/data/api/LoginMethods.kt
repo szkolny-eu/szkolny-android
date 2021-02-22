@@ -121,11 +121,9 @@ val vulcanLoginMethods = listOf(
 
         LoginMethod(LOGIN_TYPE_VULCAN, LOGIN_METHOD_VULCAN_API, VulcanLoginApi::class.java)
                 .withIsPossible { _, loginStore ->
-                        loginStore.mode != LOGIN_MODE_VULCAN_HEBE
+                        loginStore.mode == LOGIN_MODE_VULCAN_API
                 }
-                .withRequiredLoginMethod { _, loginStore ->
-                    if (loginStore.mode == LOGIN_MODE_VULCAN_WEB) LOGIN_METHOD_VULCAN_WEB_MAIN else LOGIN_METHOD_NOT_NEEDED
-                },
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED },
 
         LoginMethod(LOGIN_TYPE_VULCAN, LOGIN_METHOD_VULCAN_HEBE, VulcanLoginHebe::class.java)
                 .withIsPossible { _, loginStore ->
