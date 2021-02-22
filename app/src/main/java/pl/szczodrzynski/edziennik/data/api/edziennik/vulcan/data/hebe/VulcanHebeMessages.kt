@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2021-2-21.
+ */
+
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import androidx.core.util.set
