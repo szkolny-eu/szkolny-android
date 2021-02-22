@@ -152,13 +152,13 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
 
     fun isCurrentYear(date: Date): Boolean {
         return profile?.let { profile ->
-            return@let profile.dateSemester1Start >= date
+            return@let date >= profile.dateSemester1Start
         } ?: false
     }
 
     fun isCurrentYear(dateTime: Long): Boolean {
         return profile?.let { profile ->
-            return@let profile.dateSemester1Start.inMillis >= dateTime
+            return@let dateTime >= profile.dateSemester1Start.inMillis
         } ?: false
     }
 
