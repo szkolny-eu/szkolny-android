@@ -19,8 +19,11 @@ const val ENDPOINT_VULCAN_API_NOTICES             = 1070
 const val ENDPOINT_VULCAN_API_ATTENDANCE          = 1080
 const val ENDPOINT_VULCAN_API_MESSAGES_INBOX      = 1090
 const val ENDPOINT_VULCAN_API_MESSAGES_SENT       = 1100
+
 const val ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS       = 2010
+
 const val ENDPOINT_VULCAN_HEBE_MAIN               = 3000
+const val ENDPOINT_VULCAN_HEBE_PUSH_CONFIG        = 3005
 const val ENDPOINT_VULCAN_HEBE_ADDRESSBOOK        = 3010
 const val ENDPOINT_VULCAN_HEBE_TIMETABLE          = 3020
 const val ENDPOINT_VULCAN_HEBE_EXAMS              = 3030
@@ -90,6 +93,11 @@ val VulcanFeatures = listOf(
         Feature(LOGIN_TYPE_VULCAN, FEATURE_PUSH_CONFIG, listOf(
                 ENDPOINT_VULCAN_API_PUSH_CONFIG to LOGIN_METHOD_VULCAN_API
         ), listOf(LOGIN_METHOD_VULCAN_API)).withShouldSync { data ->
+                !data.app.config.sync.tokenVulcanList.contains(data.profileId)
+        },
+        Feature(LOGIN_TYPE_VULCAN, FEATURE_PUSH_CONFIG, listOf(
+                ENDPOINT_VULCAN_HEBE_PUSH_CONFIG to LOGIN_METHOD_VULCAN_HEBE
+        ), listOf(LOGIN_METHOD_VULCAN_HEBE)).withShouldSync { data ->
                 !data.app.config.sync.tokenVulcanList.contains(data.profileId)
         },
 

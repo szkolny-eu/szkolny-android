@@ -148,6 +148,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
                     onSuccess(ENDPOINT_VULCAN_HEBE_MAIN)
                 }
             }
+            ENDPOINT_VULCAN_HEBE_PUSH_CONFIG -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_push_config)
+                VulcanHebePushConfig(data, lastSync, onSuccess)
+            }
             ENDPOINT_VULCAN_HEBE_ADDRESSBOOK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_teachers)
                 VulcanHebeAddressbook(data, lastSync, onSuccess)
