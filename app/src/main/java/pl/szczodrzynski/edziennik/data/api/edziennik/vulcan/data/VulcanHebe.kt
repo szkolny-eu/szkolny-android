@@ -46,7 +46,11 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
     val profile
         get() = data.profile
 
-    fun getDateTime(json: JsonObject?, key: String, default: Long = System.currentTimeMillis()): Long {
+    fun getDateTime(
+        json: JsonObject?,
+        key: String,
+        default: Long = System.currentTimeMillis()
+    ): Long {
         val date = json.getJsonObject(key)
         return date.getLong("Timestamp") ?: return default
     }
@@ -146,6 +150,12 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             2
     }
 
+    fun isCurrentYear(date: Date): Boolean {
+        return profile?.let { profile ->
+            return@let profile.dateSemester1Start >= date
+        } ?: false
+    }
+
     inline fun <reified T> apiRequest(
         tag: String,
         endpoint: String,
@@ -197,7 +207,8 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
                 if (json == null) {
-                    data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
+                    data.error(
+                        ApiError(TAG, ERROR_RESPONSE_EMPTY)
                             .withResponse(response)
                     )
                     return
@@ -205,9 +216,11 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
 
                 val status = json.getJsonObject("Status")
                 if (status?.getInt("Code") != 0) {
-                    data.error(ApiError(tag, ERROR_VULCAN_HEBE_OTHER)
-                        .withResponse(response)
-                        .withApiResponse(json.toString()))
+                    data.error(
+                        ApiError(tag, ERROR_VULCAN_HEBE_OTHER)
+                            .withResponse(response)
+                            .withApiResponse(json.toString())
+                    )
                 }
 
                 val envelope = if (json.get("Envelope").isJsonNull && null is T)
@@ -217,9 +230,10 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                     JsonArray::class.java -> json.getJsonArray("Envelope") as T
                     java.lang.Boolean::class.java -> json.getBoolean("Envelope") as T
                     else -> {
-                        data.error(ApiError(tag, ERROR_RESPONSE_EMPTY)
-                            .withResponse(response)
-                            .withApiResponse(json)
+                        data.error(
+                            ApiError(tag, ERROR_RESPONSE_EMPTY)
+                                .withResponse(response)
+                                .withApiResponse(json)
                         )
                         return
                     }
@@ -228,7 +242,8 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                 try {
                     onSuccess(envelope, response)
                 } catch (e: Exception) {
-                    data.error(ApiError(tag, EXCEPTION_VULCAN_HEBE_REQUEST)
+                    data.error(
+                        ApiError(tag, EXCEPTION_VULCAN_HEBE_REQUEST)
                             .withResponse(response)
                             .withThrowable(e)
                             .withApiResponse(json)
@@ -237,7 +252,8 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
-                data.error(ApiError(tag, ERROR_REQUEST_FAILURE)
+                data.error(
+                    ApiError(tag, ERROR_REQUEST_FAILURE)
                         .withResponse(response)
                         .withThrowable(throwable)
                 )
@@ -353,10 +369,15 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         if (folder != null)
             query["folder"] = folder.toString()
 
+        val semester1Start = profile?.dateSemester1Start?.inMillis
+
         query["lastId"] = "-2147483648" // don't ask, it's just Vulcan
         query["pageSize"] = "500"
         query["lastSyncDate"] = LocalDateTime
-            .ofInstant(Instant.ofEpochMilli(lastSync ?: 0), ZoneId.systemDefault())
+            .ofInstant(
+                Instant.ofEpochMilli(lastSync ?: semester1Start ?: 0),
+                ZoneId.systemDefault()
+            )
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 
         apiGet(tag, url, query) { json: JsonArray, response ->

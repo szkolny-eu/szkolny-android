@@ -25,16 +25,10 @@ class VulcanHebeAttendance(
     }
 
     init {
-        val semesterNumber = data.studentSemesterNumber
-        val startDate = profile?.getSemesterStart(semesterNumber)
-        val endDate = profile?.getSemesterEnd(semesterNumber)
-
         apiGetList(
             TAG,
             VULCAN_HEBE_ENDPOINT_ATTENDANCE,
             HebeFilterType.BY_PUPIL,
-            dateFrom = startDate,
-            dateTo = endDate,
             lastSync = lastSync
         ) { list, _ ->
             list.forEach { attendance ->
