@@ -38,6 +38,8 @@ class VulcanHebeHomework(
                 val teamId = data.teamClass?.id ?: -1
                 val topic = exam.getString("Content")?.trim() ?: ""
 
+                if (!isCurrentYear(eventDate)) return@forEach
+
                 val lessonList = data.db.timetableDao().getAllForDateNow(profileId, eventDate)
                 val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.startTime
 

@@ -156,6 +156,12 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         } ?: false
     }
 
+    fun isCurrentYear(dateTime: Long): Boolean {
+        return profile?.let { profile ->
+            return@let profile.dateSemester1Start.inMillis >= dateTime
+        } ?: false
+    }
+
     inline fun <reified T> apiRequest(
         tag: String,
         endpoint: String,

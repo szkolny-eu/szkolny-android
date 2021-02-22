@@ -80,6 +80,8 @@ class VulcanHebeMessages(
                 val sentDate = getDateTime(message, "DateSent")
                 val readDate = getDateTime(message, "DateRead", default = 0)
 
+                if (!isCurrentYear(sentDate)) return@forEach
+
                 val messageObject = Message(
                     profileId = profileId,
                     id = id,
