@@ -25,7 +25,7 @@ class VulcanHebeNotices(
 
     init {
         apiGetList(
-            VulcanHebeAttendance.TAG,
+            TAG,
             VULCAN_HEBE_ENDPOINT_NOTICES,
             HebeFilterType.BY_PUPIL,
             lastSync = lastSync
