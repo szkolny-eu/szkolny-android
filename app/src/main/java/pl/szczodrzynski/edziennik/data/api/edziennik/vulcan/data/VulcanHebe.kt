@@ -210,7 +210,9 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                         .withApiResponse(json.toString()))
                 }
 
-                val envelope = when (T::class.java) {
+                val envelope = if (json.get("Envelope").isJsonNull && null is T)
+                    null as T
+                else when (T::class.java) {
                     JsonObject::class.java -> json.getJsonObject("Envelope") as T
                     JsonArray::class.java -> json.getJsonArray("Envelope") as T
                     java.lang.Boolean::class.java -> json.getBoolean("Envelope") as T

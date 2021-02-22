@@ -29,6 +29,7 @@ const val ENDPOINT_VULCAN_HEBE_HOMEWORK           = 3060
 const val ENDPOINT_VULCAN_HEBE_ATTENDANCE         = 3080
 const val ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX     = 3090
 const val ENDPOINT_VULCAN_HEBE_MESSAGES_SENT      = 3100
+const val ENDPOINT_VULCAN_HEBE_LUCKY_NUMBER       = 3200
 
 val VulcanFeatures = listOf(
         // timetable
@@ -97,7 +98,17 @@ val VulcanFeatures = listOf(
          */
         Feature(LOGIN_TYPE_VULCAN, FEATURE_LUCKY_NUMBER, listOf(
                 ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS to LOGIN_METHOD_VULCAN_WEB_MAIN
-        ), listOf(LOGIN_METHOD_VULCAN_WEB_MAIN)).withShouldSync { data -> data.shouldSyncLuckyNumber() },
+        ), listOf(LOGIN_METHOD_VULCAN_WEB_MAIN))
+                .withShouldSync { data -> data.shouldSyncLuckyNumber() }
+                .withPriority(2),
+        /**
+         * Lucky number - using Hebe API
+         */
+        Feature(LOGIN_TYPE_VULCAN, FEATURE_LUCKY_NUMBER, listOf(
+                ENDPOINT_VULCAN_HEBE_LUCKY_NUMBER to LOGIN_METHOD_VULCAN_HEBE
+        ), listOf(LOGIN_METHOD_VULCAN_HEBE))
+                .withShouldSync { data -> data.shouldSyncLuckyNumber() }
+                .withPriority(1),
 
         Feature(LOGIN_TYPE_VULCAN, FEATURE_ALWAYS_NEEDED, listOf(
                 ENDPOINT_VULCAN_API_UPDATE_SEMESTER to LOGIN_METHOD_VULCAN_API,
