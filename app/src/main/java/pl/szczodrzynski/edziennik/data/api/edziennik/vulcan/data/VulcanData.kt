@@ -22,13 +22,15 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
     private var firstSemesterSync = false
     private val firstSemesterSyncExclude = listOf(
         ENDPOINT_VULCAN_HEBE_MAIN,
+        ENDPOINT_VULCAN_HEBE_PUSH_CONFIG,
         ENDPOINT_VULCAN_HEBE_ADDRESSBOOK,
         ENDPOINT_VULCAN_HEBE_TIMETABLE,
         ENDPOINT_VULCAN_HEBE_EXAMS,
         ENDPOINT_VULCAN_HEBE_HOMEWORK,
         ENDPOINT_VULCAN_HEBE_NOTICES,
         ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX,
-        ENDPOINT_VULCAN_HEBE_MESSAGES_SENT
+        ENDPOINT_VULCAN_HEBE_MESSAGES_SENT,
+        ENDPOINT_VULCAN_HEBE_LUCKY_NUMBER
     )
 
     init { run {
