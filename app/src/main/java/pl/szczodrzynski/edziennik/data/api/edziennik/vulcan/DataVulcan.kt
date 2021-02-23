@@ -16,12 +16,11 @@ import pl.szczodrzynski.edziennik.data.db.entity.Team
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
-
-    fun isWebMainLoginValid() = webExpiryTime-30 > currentTimeUnix()
-            && webAuthCookie.isNotNullNorEmpty()
+    fun isWebMainLoginValid() = symbol.isNotNullNorEmpty()
+            && (webExpiryTime[symbol] ?: 0) - 30 > currentTimeUnix()
+            && webAuthCookie[symbol].isNotNullNorEmpty()
             && webHost.isNotNullNorEmpty()
             && webType.isNotNullNorEmpty()
-            && symbol.isNotNullNorEmpty()
     fun isApiLoginValid() = currentSemesterEndDate-30 > currentTimeUnix()
             && apiFingerprint[symbol].isNotNullNorEmpty()
             && apiPrivateKey[symbol].isNotNullNorEmpty()
@@ -359,24 +358,24 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
      * If the time passes, the certificate needs to be POSTed again (if valid)
      * or re-generated.
      */
-    var webExpiryTime: Long
-        get() { mWebExpiryTime = mWebExpiryTime ?: profile?.getStudentData("webExpiryTime", 0L); return mWebExpiryTime ?: 0L }
-        set(value) { profile?.putStudentData("webExpiryTime", value); mWebExpiryTime = value }
-    private var mWebExpiryTime: Long? = null
+    var webExpiryTime: Map<String, Long?> = mapOf()
+        get() { mWebExpiryTime = mWebExpiryTime ?: loginStore.getLoginData("webExpiryTime", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mWebExpiryTime ?: mapOf() }
+        set(value) { loginStore.putLoginData("webExpiryTime", app.gson.toJson(value)); mWebExpiryTime = value }
+    private var mWebExpiryTime: Map<String, Long?>? = null
 
     /**
      * EfebSsoAuthCookie retrieved after posting a certificate
      */
-    var webAuthCookie: String?
-        get() { mWebAuthCookie = mWebAuthCookie ?: profile?.getStudentData("webAuthCookie", null); return mWebAuthCookie }
-        set(value) { profile?.putStudentData("webAuthCookie", value); mWebAuthCookie = value }
-    private var mWebAuthCookie: String? = null
+    var webAuthCookie: Map<String, String?> = mapOf()
+        get() { mWebAuthCookie = mWebAuthCookie ?: loginStore.getLoginData("webAuthCookie", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mWebAuthCookie ?: mapOf() }
+        set(value) { loginStore.putLoginData("webAuthCookie", app.gson.toJson(value)); mWebAuthCookie = value }
+    private var mWebAuthCookie: Map<String, String?>? = null
 
     /**
      * Permissions needed to get JSONs from home page
      */
-    var webPermissions: String?
-        get() { mWebPermissions = mWebPermissions ?: profile?.getStudentData("webPermissions", null); return mWebPermissions }
-        set(value) { profile?.putStudentData("webPermissions", value); mWebPermissions = value }
-    private var mWebPermissions: String? = null
+    var webPermissions: Map<String, String?> = mapOf()
+        get() { mWebPermissions = mWebPermissions ?: loginStore.getLoginData("webPermissions", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mWebPermissions ?: mapOf() }
+        set(value) { loginStore.putLoginData("webPermissions", app.gson.toJson(value)); mWebPermissions = value }
+    private var mWebPermissions: Map<String, String?>? = null
 }
