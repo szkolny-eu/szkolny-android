@@ -17,7 +17,7 @@ import pl.szczodrzynski.edziennik.utils.Utils
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
     fun isWebMainLoginValid() = symbol.isNotNullNorEmpty()
-            && (webExpiryTime[symbol] ?: 0) - 30 > currentTimeUnix()
+            && (webExpiryTime[symbol]?.toLongOrNull() ?: 0) - 30 > currentTimeUnix()
             && webAuthCookie[symbol].isNotNullNorEmpty()
             && webHost.isNotNullNorEmpty()
             && webType.isNotNullNorEmpty()
@@ -358,10 +358,10 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
      * If the time passes, the certificate needs to be POSTed again (if valid)
      * or re-generated.
      */
-    var webExpiryTime: Map<String, Long?> = mapOf()
+    var webExpiryTime: Map<String, String?> = mapOf()
         get() { mWebExpiryTime = mWebExpiryTime ?: loginStore.getLoginData("webExpiryTime", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mWebExpiryTime ?: mapOf() }
         set(value) { loginStore.putLoginData("webExpiryTime", app.gson.toJson(value)); mWebExpiryTime = value }
-    private var mWebExpiryTime: Map<String, Long?>? = null
+    private var mWebExpiryTime: Map<String, String?>? = null
 
     /**
      * EfebSsoAuthCookie retrieved after posting a certificate

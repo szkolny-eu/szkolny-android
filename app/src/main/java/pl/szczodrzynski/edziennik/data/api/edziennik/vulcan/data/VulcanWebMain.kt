@@ -86,7 +86,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     return
                 }
                 data.webExpiryTime = data.webExpiryTime.toMutableMap().also { map ->
-                    map[symbol] = Date.fromIso(certificate.expiryDate) / 1000L
+                    map[symbol] = (Date.fromIso(certificate.expiryDate) / 1000L).toString()
                 }
                 onResult(symbol, STATE_SUCCESS)
             }
