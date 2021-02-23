@@ -11,12 +11,11 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.droidsonroids.jspoon.Jspoon
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.CufsCertificate
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.isNotNullNorBlank
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.io.File
@@ -139,7 +138,28 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                 }
 
                 data.webPermissions = data.webPermissions.toMutableMap().also { map ->
-                    map[symbol] = Regexes.VULCAN_WEB_PERMISSIONS.find(text)?.let { it[1] }
+                    val permissions = Regexes.VULCAN_WEB_PERMISSIONS.find(text)?.let { it[1] }
+                    if (permissions?.isNotBlank() == true) {
+                        val studentId = permissions.split("|")
+                            .getOrNull(0)
+                            ?.base64DecodeToString()
+                            ?.toJsonObject()
+                            ?.getJsonArray("AuthInfos")
+                            ?.asJsonObjectList()
+                            ?.flatMap { authInfo ->
+                                authInfo.getJsonArray("UczenIds")
+                                    ?.map { it.asInt }
+                                    ?: listOf()
+                            }
+                            ?.firstOrNull()
+                            ?.toString()
+                        data.app.cookieJar.set(
+                            data.webHost ?: "vulcan.net.pl",
+                            "idBiezacyUczen",
+                            studentId
+                        )
+                    }
+                    map[symbol] = permissions
                 }
 
                 val schoolSymbols = mutableListOf<String>()
