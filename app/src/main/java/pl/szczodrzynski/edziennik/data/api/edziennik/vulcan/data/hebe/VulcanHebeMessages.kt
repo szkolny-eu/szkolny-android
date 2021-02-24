@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_DELETED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.navlib.crc16
 import kotlin.text.replace
 
@@ -108,6 +109,23 @@ class VulcanHebeMessages(
                         id
                     )
                     data.messageRecipientList.add(messageRecipientObject)
+                }
+
+                val attachments = message.getJsonArray("Attachments")
+                    ?.asJsonObjectList()
+                    ?: return@forEach
+
+                for (attachment in attachments) {
+                    val fileName = attachment.getString("Name") ?: continue
+                    val url = attachment.getString("Link") ?: continue
+                    val attachmentName = "$fileName:$url"
+                    val attachmentId = Utils.crc32(attachmentName.toByteArray())
+
+                    messageObject.addAttachment(
+                        id = attachmentId,
+                        name = attachmentName,
+                        size = -1
+                    )
                 }
 
                 data.messageList.add(messageObject)
