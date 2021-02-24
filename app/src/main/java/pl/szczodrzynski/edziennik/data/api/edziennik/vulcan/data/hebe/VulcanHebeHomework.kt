@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
+import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_HOMEWORK
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_HOMEWORK
@@ -11,8 +12,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.getJsonArray
 import pl.szczodrzynski.edziennik.getLong
 import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.utils.Utils
 
 class VulcanHebeHomework(
     override val data: DataVulcan,
@@ -55,6 +58,22 @@ class VulcanHebeHomework(
                     subjectId = subjectId,
                     teamId = teamId
                 )
+
+                val attachments = exam.getJsonArray("Attachments")
+                    ?.asJsonObjectList()
+                    ?: return@forEach
+
+                for (attachment in attachments) {
+                    val fileName = attachment.getString("Name") ?: continue
+                    val url = attachment.getString("Link") ?: continue
+                    val attachmentName = "$fileName:$url"
+                    val attachmentId = Utils.crc32(attachmentName.toByteArray())
+
+                    eventObject.addAttachment(
+                        id = attachmentId,
+                        name = attachmentName
+                    )
+                }
 
                 data.eventList.add(eventObject)
                 data.metadataList.add(

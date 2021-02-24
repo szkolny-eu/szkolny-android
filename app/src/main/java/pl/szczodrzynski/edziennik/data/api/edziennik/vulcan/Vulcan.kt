@@ -200,6 +200,14 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getEvent(eventFull: EventFull) {
+        if (loginStore.mode != LOGIN_MODE_VULCAN_API) {
+            eventFull.homeworkBody = ""
+
+            EventBus.getDefault().postSticky(EventGetEvent(eventFull))
+            completed()
+            return
+        }
+
         login(LOGIN_METHOD_VULCAN_API) {
             val list = data.app.db.eventDao().getAllNow(data.profileId).filter { !it.addedManually }
             VulcanApiAttachments(data, list, eventFull, EventFull::class) { _ ->
