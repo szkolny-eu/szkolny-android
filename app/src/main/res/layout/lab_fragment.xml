@@ -46,6 +46,22 @@
                 android:textAllCaps="false" />
 
             <Button
+                android:id="@+id/fullSync"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Full sync and empty profile"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/clearProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Clear all profile data"
+                android:textAllCaps="false" />
+
+            <Button
                 android:id="@+id/rodo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -70,6 +86,7 @@
                 android:id="@+id/unarchive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="Unarchive this profile"
                 android:textAllCaps="false" />
 

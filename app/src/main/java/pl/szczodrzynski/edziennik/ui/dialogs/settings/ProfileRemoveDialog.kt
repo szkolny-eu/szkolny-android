@@ -17,7 +17,8 @@ import kotlin.coroutines.CoroutineContext
 class ProfileRemoveDialog(
         val activity: MainActivity,
         val profileId: Int,
-        val profileName: String
+        val profileName: String,
+        val noProfileRemoval: Boolean = false
 ) : CoroutineScope {
     companion object {
         private const val TAG = "ProfileRemoveDialog"
@@ -52,7 +53,6 @@ class ProfileRemoveDialog(
             app.db.attendanceDao().clear(profileId)
             app.db.attendanceTypeDao().clear(profileId)
             app.db.classroomDao().clear(profileId)
-            app.db.configDao().clear(profileId)
             app.db.endpointTimerDao().clear(profileId)
             app.db.eventDao().clear(profileId)
             app.db.eventTypeDao().clear(profileId)
@@ -65,15 +65,20 @@ class ProfileRemoveDialog(
             app.db.messageRecipientDao().clear(profileId)
             app.db.noticeDao().clear(profileId)
             app.db.noticeTypeDao().clear(profileId)
-            app.db.noticeTypeDao().clear(profileId)
             app.db.notificationDao().clear(profileId)
             app.db.subjectDao().clear(profileId)
-            app.db.teacherAbsenceDao().clear(profileId)
             app.db.teacherAbsenceDao().clear(profileId)
             app.db.teacherAbsenceTypeDao().clear(profileId)
             app.db.teacherDao().clear(profileId)
             app.db.teamDao().clear(profileId)
             app.db.timetableDao().clear(profileId)
+
+            app.db.metadataDao().deleteAll(profileId)
+
+            if (noProfileRemoval)
+                return@async
+
+            app.db.configDao().clear(profileId)
 
             val loginStoreId = profileObject.loginStoreId
             val profilesUsingLoginStore = app.db.profileDao().getIdsByLoginStoreIdNow(loginStoreId)
@@ -81,7 +86,6 @@ class ProfileRemoveDialog(
                 app.db.loginStoreDao().remove(loginStoreId)
             }
             app.db.profileDao().remove(profileId)
-            app.db.metadataDao().deleteAll(profileId)
 
             if (App.profileId == profileId) {
                 app.profileLoadLast { }
