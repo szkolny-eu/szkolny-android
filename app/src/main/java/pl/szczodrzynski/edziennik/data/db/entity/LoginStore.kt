@@ -59,6 +59,7 @@ class LoginStore(
                 is Long -> putLoginData(key, o)
                 is Float -> putLoginData(key, o)
                 is Boolean -> putLoginData(key, o)
+                is Bundle -> putLoginData(key, o.toJsonObject())
             }
         }
     }

@@ -6,12 +6,12 @@ package pl.szczodrzynski.edziennik.ui.modules.login
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.google.gson.JsonObject
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.ExpandableItemModel
+import pl.szczodrzynski.fslogin.realm.RealmData
 
 object LoginInfo {
 
@@ -191,9 +191,9 @@ object LoginInfo {
                                     isDevOnly = true,
                                     isPlatformSelection = true,
                                     credentials = listOf(
-                                            getEmailCredential("webEmail"),
+                                            getEmailCredential("email"),
                                             FormField(
-                                                    keyName = "webUsername",
+                                                    keyName = "username",
                                                     name = R.string.login_hint_username,
                                                     icon = CommunityMaterial.Icon.cmd_account_outline,
                                                     emptyText = R.string.login_error_no_username,
@@ -203,7 +203,7 @@ object LoginInfo {
                                                     validationRegex = "[A-Z]{7}[0-9]+",
                                                     caseMode = FormField.CaseMode.UPPER_CASE
                                             ),
-                                            getPasswordCredential("webPassword")
+                                            getPasswordCredential("password")
                                     ),
                                     errorCodes = mapOf()
                             )
@@ -407,15 +407,12 @@ object LoginInfo {
 
     data class Platform(
             val id: Int,
-            val loginType: Int,
-            val loginMode: Int,
             val name: String,
             val description: String?,
-            val guideText: String?,
             val icon: String,
             val screenshot: String?,
             val formFields: List<String>,
-            val apiData: JsonObject
+            val realmData: RealmData
     )
 
     open class BaseCredential(

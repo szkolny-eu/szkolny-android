@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 
+import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_HEBE
@@ -14,13 +15,13 @@ import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Team
 import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.fslogin.realm.RealmData
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
     fun isWebMainLoginValid() = symbol.isNotNullNorEmpty()
             && (webExpiryTime[symbol]?.toLongOrNull() ?: 0) - 30 > currentTimeUnix()
             && webAuthCookie[symbol].isNotNullNorEmpty()
-            && webHost.isNotNullNorEmpty()
-            && webType.isNotNullNorEmpty()
+            && webRealmData != null
     fun isApiLoginValid() = currentSemesterEndDate-30 > currentTimeUnix()
             && apiFingerprint[symbol].isNotNullNorEmpty()
             && apiPrivateKey[symbol].isNotNullNorEmpty()
@@ -296,49 +297,15 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
              \/  \/ \___|_.__/  |_|   |_____/  |______\___/ \__, |_|_| |_|
                                                              __/ |
                                                             |__*/
-    /**
-     * Federation Services login type.
-     * This might be one of: cufs, adfs, adfslight.
-     */
-    var webType: String?
-        get() { mWebType = mWebType ?: loginStore.getLoginData("webType", null); return mWebType }
-        set(value) { loginStore.putLoginData("webType", value); mWebType = value }
-    private var mWebType: String? = null
+    var webRealmData: RealmData?
+        get() { mWebRealmData = mWebRealmData ?: loginStore.getLoginData("webRealmData", JsonObject()).let {
+                app.gson.fromJson(it, RealmData::class.java)
+            }; return mWebRealmData }
+        set(value) { loginStore.putLoginData("webRealmData", app.gson.toJsonTree(value) as JsonObject); mWebRealmData = value }
+    private var mWebRealmData: RealmData? = null
 
-    /**
-     * Web server providing the federation services login.
-     * If this is present, WEB_MAIN login is considered as available.
-     */
-    var webHost: String?
-        get() { mWebHost = mWebHost ?: loginStore.getLoginData("webHost", null); return mWebHost }
-        set(value) { loginStore.putLoginData("webHost", value); mWebHost = value }
-    private var mWebHost: String? = null
-
-    /**
-     * An ID used in ADFS & ADFSLight login types.
-     */
-    var webAdfsId: String?
-        get() { mWebAdfsId = mWebAdfsId ?: loginStore.getLoginData("webAdfsId", null); return mWebAdfsId }
-        set(value) { loginStore.putLoginData("webAdfsId", value); mWebAdfsId = value }
-    private var mWebAdfsId: String? = null
-
-    /**
-     * A domain override for ADFS Light.
-     */
-    var webAdfsDomain: String?
-        get() { mWebAdfsDomain = mWebAdfsDomain ?: loginStore.getLoginData("webAdfsDomain", null); return mWebAdfsDomain }
-        set(value) { loginStore.putLoginData("webAdfsDomain", value); mWebAdfsDomain = value }
-    private var mWebAdfsDomain: String? = null
-
-    var webIsHttpCufs: Boolean
-        get() { mWebIsHttpCufs = mWebIsHttpCufs ?: loginStore.getLoginData("webIsHttpCufs", false); return mWebIsHttpCufs ?: false }
-        set(value) { loginStore.putLoginData("webIsHttpCufs", value); mWebIsHttpCufs = value }
-    private var mWebIsHttpCufs: Boolean? = null
-
-    var webIsScopedAdfs: Boolean
-        get() { mWebIsScopedAdfs = mWebIsScopedAdfs ?: loginStore.getLoginData("webIsScopedAdfs", false); return mWebIsScopedAdfs ?: false }
-        set(value) { loginStore.putLoginData("webIsScopedAdfs", value); mWebIsScopedAdfs = value }
-    private var mWebIsScopedAdfs: Boolean? = null
+    val webHost
+        get() = webRealmData?.host
 
     var webEmail: String?
         get() { mWebEmail = mWebEmail ?: loginStore.getLoginData("webEmail", null); return mWebEmail }

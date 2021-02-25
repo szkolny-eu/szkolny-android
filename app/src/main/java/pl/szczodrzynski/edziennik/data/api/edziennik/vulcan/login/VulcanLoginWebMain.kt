@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.getString
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.fslogin.FSLogin
-import pl.szczodrzynski.fslogin.realm.CufsRealm
+import pl.szczodrzynski.fslogin.realm.toRealm
 
 class VulcanLoginWebMain(val data: DataVulcan, val onSuccess: () -> Unit) {
     companion object {
@@ -30,8 +30,7 @@ class VulcanLoginWebMain(val data: DataVulcan, val onSuccess: () -> Unit) {
         }
         else {
             if (data.symbol.isNotNullNorEmpty()
-                    && data.webType.isNotNullNorEmpty()
-                    && data.webHost.isNotNullNorEmpty()
+                    && data.webRealmData != null
                     && (data.webEmail.isNotNullNorEmpty() || data.webUsername.isNotNullNorEmpty())
                     && data.webPassword.isNotNullNorEmpty()) {
                 try {
@@ -56,32 +55,28 @@ class VulcanLoginWebMain(val data: DataVulcan, val onSuccess: () -> Unit) {
                 data.symbol = getString("symbol")
                 remove("symbol")
             }
+            // 4.6 - form inputs renamed
+            if (has("email")) {
+                data.webEmail = getString("email")
+                remove("email")
+            }
+            if (has("username")) {
+                data.webUsername = getString("username")
+                remove("username")
+            }
+            if (has("password")) {
+                data.webPassword = getString("password")
+                remove("password")
+            }
+        }
+
+        if (data.symbol == null && data.webRealmData != null) {
+            data.symbol = data.webRealmData?.symbol
         }
     }
 
     private fun loginWithCredentials(): Boolean {
-        val realm = when (data.webType) {
-            "cufs" -> CufsRealm(
-                    host = data.webHost ?: return false,
-                    symbol = data.symbol ?: "default",
-                    httpCufs = data.webIsHttpCufs
-            )
-            "adfs" -> CufsRealm(
-                    host = data.webHost ?: return false,
-                    symbol = data.symbol ?: "default",
-                    httpCufs = data.webIsHttpCufs
-            ).toAdfsRealm(id = data.webAdfsId ?: return false)
-            "adfslight" -> CufsRealm(
-                    host = data.webHost ?: return false,
-                    symbol = data.symbol ?: "default",
-                    httpCufs = data.webIsHttpCufs
-            ).toAdfsLightRealm(
-                    id = data.webAdfsId ?: return false,
-                    domain = data.webAdfsDomain ?: "adfslight",
-                    isScoped = data.webIsScopedAdfs
-            )
-            else -> return false
-        }
+        val realm = data.webRealmData?.toRealm() ?: return false
 
         val certificate = web.readCertificate()?.let { web.parseCertificate(it) }
         if (certificate != null && Date.fromIso(certificate.expiryDate) > System.currentTimeMillis()) {
