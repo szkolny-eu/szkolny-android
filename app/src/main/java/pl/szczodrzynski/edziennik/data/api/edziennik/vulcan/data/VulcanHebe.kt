@@ -221,9 +221,31 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                 }
 
                 val status = json.getJsonObject("Status")
-                if (status?.getInt("Code") != 0) {
+                val statusCode = status?.getInt("Code") ?: -1
+                if (statusCode != 0) {
+                    val statusMessage = status?.getString("Message")
+                    val errorCode = when (statusCode) {
+                        -1 -> ERROR_VULCAN_HEBE_SERVER_ERROR
+                        100 -> ERROR_VULCAN_HEBE_SIGNATURE_ERROR
+                        101 -> ERROR_VULCAN_HEBE_INVALID_PAYLOAD
+                        106 -> ERROR_VULCAN_HEBE_FIREBASE_ERROR
+                        108 -> ERROR_VULCAN_HEBE_CERTIFICATE_GONE
+                        200 -> when (true) {
+                            statusMessage?.contains("Class") -> ERROR_LOGIN_VULCAN_NO_PUPILS
+                            statusMessage?.contains("Token") -> ERROR_LOGIN_VULCAN_INVALID_TOKEN
+                            else -> ERROR_VULCAN_HEBE_ENTITY_NOT_FOUND
+                        }
+                        201 -> ERROR_LOGIN_VULCAN_EXPIRED_TOKEN
+                        203 -> when (json.getJsonObject("Envelope").getInt("AvailableRetries")) {
+                            2 -> ERROR_LOGIN_VULCAN_INVALID_PIN_2_REMAINING
+                            1 -> ERROR_LOGIN_VULCAN_INVALID_PIN_1_REMAINING
+                            else -> ERROR_LOGIN_VULCAN_INVALID_PIN_0_REMAINING
+                        }
+                        204 -> ERROR_LOGIN_VULCAN_INVALID_PIN_0_REMAINING
+                        else -> ERROR_VULCAN_HEBE_OTHER
+                    }
                     data.error(
-                        ApiError(tag, ERROR_VULCAN_HEBE_OTHER)
+                        ApiError(tag, errorCode)
                             .withResponse(response)
                             .withApiResponse(json.toString())
                     )
