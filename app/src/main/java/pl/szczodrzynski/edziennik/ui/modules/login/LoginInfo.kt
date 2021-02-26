@@ -188,7 +188,7 @@ object LoginInfo {
                                     icon = R.drawable.login_mode_vulcan_web,
                                     hintText = R.string.login_mode_vulcan_web_hint,
                                     guideText = R.string.login_mode_vulcan_web_guide,
-                                    isDevOnly = true,
+                                    isTesting = true,
                                     isPlatformSelection = true,
                                     credentials = listOf(
                                             getEmailCredential("email"),
