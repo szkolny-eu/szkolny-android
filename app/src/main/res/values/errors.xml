@@ -118,13 +118,22 @@
 
     <string name="error_301" translatable="false">ERROR_LOGIN_VULCAN_INVALID_SYMBOL</string>
     <string name="error_302" translatable="false">ERROR_LOGIN_VULCAN_INVALID_TOKEN</string>
-    <string name="error_309" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN</string>
     <string name="error_310" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN_0_REMAINING</string>
     <string name="error_311" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN_1_REMAINING</string>
     <string name="error_312" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN_2_REMAINING</string>
     <string name="error_321" translatable="false">ERROR_LOGIN_VULCAN_EXPIRED_TOKEN</string>
     <string name="error_331" translatable="false">ERROR_LOGIN_VULCAN_NO_PUPILS</string>
     <string name="error_343" translatable="false">ERROR_VULCAN_ATTACHMENT_DOWNLOAD</string>
+    <string name="error_344" translatable="false">ERROR_VULCAN_WEB_DATA_MISSING</string>
+    <string name="error_345" translatable="false">ERROR_VULCAN_WEB_429</string>
+    <string name="error_346" translatable="false">ERROR_VULCAN_WEB_OTHER</string>
+    <string name="error_347" translatable="false">ERROR_VULCAN_WEB_NO_CERTIFICATE</string>
+    <string name="error_348" translatable="false">ERROR_VULCAN_WEB_NO_REGISTER</string>
+    <string name="error_349" translatable="false">ERROR_VULCAN_WEB_CERTIFICATE_EXPIRED</string>
+    <string name="error_350" translatable="false">ERROR_VULCAN_WEB_LOGGED_OUT</string>
+    <string name="error_351" translatable="false">ERROR_VULCAN_WEB_CERTIFICATE_POST_FAILED</string>
+    <string name="error_352" translatable="false">ERROR_VULCAN_WEB_GRADUATE_ACCOUNT</string>
+    <string name="error_353" translatable="false">ERROR_VULCAN_WEB_NO_SCHOOLS</string>
     <string name="error_354" translatable="false">ERROR_VULCAN_HEBE_OTHER</string>
     <string name="error_360" translatable="false">ERROR_VULCAN_HEBE_SIGNATURE_ERROR</string>
     <string name="error_361" translatable="false">ERROR_VULCAN_HEBE_INVALID_PAYLOAD</string>
@@ -308,13 +317,22 @@
 
     <string name="error_301_reason">Nieprawidłowy symbol</string>
     <string name="error_302_reason">Nieprawidłowy token</string>
-    <string name="error_309_reason">Nieprawidłowy PIN</string>
     <string name="error_310_reason">Nieprawidłowy PIN. Wygeneruj nowy token.</string>
     <string name="error_311_reason">Nieprawidłowy PIN: pozostała 1 próba</string>
     <string name="error_312_reason">Nieprawidłowy PIN: pozostały 2 próby</string>
     <string name="error_321_reason">Token wygasły, wygeneruj ponownie</string>
     <string name="error_331_reason">Brak uczniów przypisanych do konta, bądź ukończyli oni już szkołę</string>
     <string name="error_343_reason">VULCAN®: nie znaleziono adresu załącznika</string>
+    <string name="error_344_reason">VULCAN®: brakujące dane logowania FS. Usuń profil i zaloguj się ponownie.</string>
+    <string name="error_345_reason">VULCAN®: błąd logowania (429). Dziennik może być przeciążony.</string>
+    <string name="error_346_reason">VULCAN®: inny błąd logowania</string>
+    <string name="error_347_reason">VULCAN®: nie znaleziono zapisanego certyfikatu</string>
+    <string name="error_348_reason">VULCAN®: konto nie jest przypisane do żadnej szkoły</string>
+    <string name="error_349_reason">VULCAN®: certyfikat logowania wygasł</string>
+    <string name="error_350_reason">VULCAN®: wylogowano z konta</string>
+    <string name="error_351_reason">VULCAN®: nie udało się wysłać certyfikatu</string>
+    <string name="error_352_reason">VULCAN®: konto nie posiada już uczniów uczęszczających do szkoły</string>
+    <string name="error_353_reason">VULCAN®: nie znaleziono żadnej szkoły. Zgłoś błąd.</string>
     <string name="error_354_reason">VULCAN®: nieznany błąd pobierania danych</string>
     <string name="error_360_reason">Nieprawidłowy podpis zapytania. Sprawdź ustawienia daty i godziny w systemie.</string>
     <string name="error_361_reason">VULCAN®: zapytanie zawiera niepoprawne dane</string>
