@@ -221,7 +221,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                 }
 
                 val status = json.getJsonObject("Status")
-                val statusCode = status?.getInt("Code") ?: -1
+                val statusCode = status?.getInt("Code") ?: 0
                 if (statusCode != 0) {
                     val statusMessage = status?.getString("Message")
                     val errorCode = when (statusCode) {
@@ -249,6 +249,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                             .withResponse(response)
                             .withApiResponse(json.toString())
                     )
+                    return
                 }
 
                 val envelope = if (json.get("Envelope").isJsonNull && null is T)
