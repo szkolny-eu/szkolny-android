@@ -5,16 +5,15 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.crc16
+import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_HEBE
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_WEB_MAIN
-import pl.szczodrzynski.edziennik.data.api.LOGIN_MODE_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.fslogin.realm.RealmData
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
@@ -22,10 +21,6 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
             && (webExpiryTime[symbol]?.toLongOrNull() ?: 0) - 30 > currentTimeUnix()
             && webAuthCookie[symbol].isNotNullNorEmpty()
             && webRealmData != null
-    fun isApiLoginValid() = currentSemesterEndDate-30 > currentTimeUnix()
-            && apiFingerprint[symbol].isNotNullNorEmpty()
-            && apiPrivateKey[symbol].isNotNullNorEmpty()
-            && symbol.isNotNullNorEmpty()
     fun isHebeLoginValid() = hebePublicKey.isNotNullNorEmpty()
             && hebePrivateKey.isNotNullNorEmpty()
             && symbol.isNotNullNorEmpty()
@@ -35,31 +30,8 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         if (isWebMainLoginValid()) {
             loginMethods += LOGIN_METHOD_VULCAN_WEB_MAIN
         }
-        if (isApiLoginValid()) {
-            loginMethods += LOGIN_METHOD_VULCAN_API
-        }
         if (isHebeLoginValid()) {
             loginMethods += LOGIN_METHOD_VULCAN_HEBE
-        }
-    }
-
-    init {
-        // during the first sync `profile.studentClassName` is already set
-        if (loginStore.mode == LOGIN_MODE_VULCAN_API
-            && teamList.values().none { it.type == Team.TYPE_CLASS }) {
-            profile?.studentClassName?.also { name ->
-                val id = Utils.crc16(name.toByteArray()).toLong()
-
-                val teamObject = Team(
-                        profileId,
-                        id,
-                        name,
-                        Team.TYPE_CLASS,
-                        "$schoolCode:$name",
-                        -1
-                )
-                teamList.put(id, teamObject)
-            }
         }
     }
 
@@ -223,16 +195,6 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     var apiPin: Map<String?, String?> = mapOf()
         get() { mApiPin = mApiPin ?: loginStore.getLoginData("apiPin", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiPin ?: mapOf() }
         set(value) { loginStore.putLoginData("apiPin", app.gson.toJson(value)); mApiPin = value }
-
-    private var mApiFingerprint: Map<String?, String?>? = null
-    var apiFingerprint: Map<String?, String?> = mapOf()
-        get() { mApiFingerprint = mApiFingerprint ?: loginStore.getLoginData("apiFingerprint", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiFingerprint ?: mapOf() }
-        set(value) { loginStore.putLoginData("apiFingerprint", app.gson.toJson(value)); mApiFingerprint = value }
-
-    private var mApiPrivateKey: Map<String?, String?>? = null
-    var apiPrivateKey: Map<String?, String?> = mapOf()
-        get() { mApiPrivateKey = mApiPrivateKey ?: loginStore.getLoginData("apiPrivateKey", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiPrivateKey ?: mapOf() }
-        set(value) { loginStore.putLoginData("apiPrivateKey", app.gson.toJson(value)); mApiPrivateKey = value }
 
     /*    _    _      _                     _____ _____ 
          | |  | |    | |              /\   |  __ \_   _|

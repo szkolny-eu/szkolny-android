@@ -183,7 +183,6 @@ dependencies {
 
     //implementation "org.redundent:kotlin-xml-builder:1.5.3"
 
-    implementation "io.github.wulkanowy:signer-android:0.1.1"
     implementation 'com.github.wulkanowy.uonet-request-signer:hebe-jvm:a99ca50a31'
 
     implementation "androidx.work:work-runtime-ktx:${versions.work}"

@@ -10,9 +10,6 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.helper.OneDriveDownloadAttachment
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanData
-import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiAttachments
-import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiMessagesChangeStatus
-import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.api.VulcanApiSendMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeMessagesChangeStatus
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeSendMessage
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.firstlogin.VulcanFirstLogin
@@ -69,6 +66,11 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     private fun login(loginMethodId: Int? = null, afterLogin: (() -> Unit)? = null) {
+        if (data.loginStore.mode == LOGIN_MODE_VULCAN_API) {
+            data.error(TAG, ERROR_VULCAN_API_DEPRECATED)
+            return
+        }
+
         d(TAG, "Trying to login with ${data.targetLoginMethodIds}")
         if (internalErrorList.isNotEmpty()) {
             d(TAG, "  - Internal errors:")
@@ -93,60 +95,21 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getMessage(message: MessageFull) {
-        if (loginStore.mode != LOGIN_MODE_VULCAN_API) {
-            login(LOGIN_METHOD_VULCAN_HEBE) {
-                if (message.seen) {
-                    EventBus.getDefault().postSticky(MessageGetEvent(message))
-                    completed()
-                    return@login
-                }
-                VulcanHebeMessagesChangeStatus(data, message) {
-                    completed()
-                }
-            }
-            return
-        }
-
-        login(LOGIN_METHOD_VULCAN_API) {
-            if (message.attachmentIds != null) {
-                VulcanApiMessagesChangeStatus(data, message) {
-                    completed()
-                }
+        login(LOGIN_METHOD_VULCAN_HEBE) {
+            if (message.seen) {
+                EventBus.getDefault().postSticky(MessageGetEvent(message))
+                completed()
                 return@login
             }
-            val list = data.app.db.messageDao().getAllNow(data.profileId)
-            VulcanApiAttachments(data, list, message, MessageFull::class) { _ ->
-                list.forEach {
-                    if (it.attachmentIds == null)
-                        it.attachmentIds = mutableListOf()
-                    data.messageList.add(it)
-                }
-                data.messageListReplace = true
-
-                if (message.seen) {
-                    EventBus.getDefault().postSticky(MessageGetEvent(message))
-                    completed()
-                    return@VulcanApiAttachments
-                }
-                VulcanApiMessagesChangeStatus(data, message) {
-                    completed()
-                }
+            VulcanHebeMessagesChangeStatus(data, message) {
+                completed()
             }
         }
     }
 
     override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
-        if (loginStore.mode != LOGIN_MODE_VULCAN_API) {
-            login(LOGIN_METHOD_VULCAN_HEBE) {
-                VulcanHebeSendMessage(data, recipients, subject, text) {
-                    completed()
-                }
-            }
-            return
-        }
-
-        login(LOGIN_METHOD_VULCAN_API) {
-            VulcanApiSendMessage(data, recipients, subject, text) {
+        login(LOGIN_METHOD_VULCAN_HEBE) {
+            VulcanHebeSendMessage(data, recipients, subject, text) {
                 completed()
             }
         }
@@ -200,27 +163,10 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getEvent(eventFull: EventFull) {
-        if (loginStore.mode != LOGIN_MODE_VULCAN_API) {
-            eventFull.homeworkBody = ""
+        eventFull.homeworkBody = ""
 
-            EventBus.getDefault().postSticky(EventGetEvent(eventFull))
-            completed()
-            return
-        }
-
-        login(LOGIN_METHOD_VULCAN_API) {
-            val list = data.app.db.eventDao().getAllNow(data.profileId).filter { !it.addedManually }
-            VulcanApiAttachments(data, list, eventFull, EventFull::class) { _ ->
-                list.forEach {
-                    it.homeworkBody = ""
-                    data.eventList.add(it)
-                }
-                data.eventListReplace = true
-
-                EventBus.getDefault().postSticky(EventGetEvent(eventFull))
-                completed()
-            }
-        }
+        EventBus.getDefault().postSticky(EventGetEvent(eventFull))
+        completed()
     }
 
     override fun firstLogin() { VulcanFirstLogin(data) { completed() } }

@@ -32,7 +32,7 @@ class VulcanLoginHebe(val data: DataVulcan, val onSuccess: () -> Unit) {
 
         copyFromLoginStore()
 
-        if (data.profile != null && data.isApiLoginValid()) {
+        if (data.profile != null && data.isHebeLoginValid()) {
             onSuccess()
         }
         else {
