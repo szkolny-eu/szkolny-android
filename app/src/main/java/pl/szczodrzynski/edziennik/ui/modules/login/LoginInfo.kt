@@ -147,7 +147,8 @@ object LoginInfo {
                                 emptyText = R.string.login_error_no_token,
                                 invalidText = R.string.login_error_incorrect_token,
                                 errorCodes = mapOf(
-                                    ERROR_LOGIN_VULCAN_INVALID_TOKEN to R.string.login_error_incorrect_token
+                                    ERROR_LOGIN_VULCAN_INVALID_TOKEN to R.string.login_error_incorrect_token,
+                                    ERROR_LOGIN_VULCAN_EXPIRED_TOKEN to R.string.login_error_expired_token
                                 ),
                                 isRequired = true,
                                 validationRegex = "[A-Z0-9]{5,12}",
@@ -173,16 +174,16 @@ object LoginInfo {
                                 emptyText = R.string.login_error_no_pin,
                                 invalidText = R.string.login_error_incorrect_pin,
                                 errorCodes = mapOf(
-                                    ERROR_LOGIN_VULCAN_INVALID_PIN to R.string.login_error_incorrect_pin
+                                    ERROR_LOGIN_VULCAN_INVALID_PIN_0_REMAINING to R.string.error_310_reason,
+                                    ERROR_LOGIN_VULCAN_INVALID_PIN_1_REMAINING to R.string.error_311_reason,
+                                    ERROR_LOGIN_VULCAN_INVALID_PIN_2_REMAINING to R.string.error_312_reason
                                 ),
                                 isRequired = true,
                                 validationRegex = "[0-9]+",
                                 caseMode = FormField.CaseMode.LOWER_CASE
                             )
                         ),
-                        errorCodes = mapOf(
-                            ERROR_LOGIN_VULCAN_EXPIRED_TOKEN to R.string.login_error_expired_token
-                        )
+                        errorCodes = mapOf()
                     ),
                     Mode(
                         loginMode = LOGIN_MODE_VULCAN_WEB,
