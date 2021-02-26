@@ -174,7 +174,7 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
         val topic = lesson[1].substringAfter(" - ", missingDelimiterValue = "").takeIf { it.isNotBlank() }
         if (topic?.startsWith("Lekcja odwołana: ") == true || entry.isEmpty())
             return
-        val subjectName = lesson[1].substringBefore(" - ")
+        val subjectName = lesson[1].substringBefore(" - ").trim()
         //val team = lesson[3]
         val teacherName = lesson[3].fixName()
 
