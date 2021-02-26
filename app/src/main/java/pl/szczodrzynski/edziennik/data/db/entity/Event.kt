@@ -93,6 +93,25 @@ open class Event(
     var attachmentIds: MutableList<Long>? = null
     var attachmentNames: MutableList<String>? = null
 
+    /**
+     * Add an attachment
+     * @param id attachment ID
+     * @param name file name incl. extension
+     * @return a Event to which the attachment has been added
+     */
+    fun addAttachment(id: Long, name: String): Event {
+        if (attachmentIds == null) attachmentIds = mutableListOf()
+        if (attachmentNames == null) attachmentNames = mutableListOf()
+        attachmentIds?.add(id)
+        attachmentNames?.add(name)
+        return this
+    }
+
+    fun clearAttachments() {
+        attachmentIds = null
+        attachmentNames = null
+    }
+
     @Ignore
     var showAsUnseen: Boolean? = null
 

@@ -88,11 +88,13 @@ class SzkolnyApi(val app: App) : CoroutineScope {
             withContext(Dispatchers.Default) { block.invoke(this@SzkolnyApi) }
         }
         catch (e: Exception) {
-            ErrorDetailsDialog(
+            withContext(coroutineContext) {
+                ErrorDetailsDialog(
                     activity,
                     listOf(e.toApiError(TAG)),
                     R.string.error_occured
-            )
+                )
+            }
             null
         }
     }
@@ -348,8 +350,8 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     }
 
     @Throws(Exception::class)
-    fun getPlatforms(registerName: String): List<LoginInfo.Platform> {
-        val response = api.appLoginPlatforms(registerName).execute()
+    fun getRealms(registerName: String): List<LoginInfo.Platform> {
+        val response = api.fsLoginRealms(registerName).execute()
 
         return parseResponse(response)
     }

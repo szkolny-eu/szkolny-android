@@ -118,41 +118,30 @@
 
     <string name="error_301" translatable="false">ERROR_LOGIN_VULCAN_INVALID_SYMBOL</string>
     <string name="error_302" translatable="false">ERROR_LOGIN_VULCAN_INVALID_TOKEN</string>
-    <string name="error_309" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN</string>
     <string name="error_310" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN_0_REMAINING</string>
     <string name="error_311" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN_1_REMAINING</string>
     <string name="error_312" translatable="false">ERROR_LOGIN_VULCAN_INVALID_PIN_2_REMAINING</string>
     <string name="error_321" translatable="false">ERROR_LOGIN_VULCAN_EXPIRED_TOKEN</string>
-    <string name="error_322" translatable="false">ERROR_LOGIN_VULCAN_OTHER</string>
-    <string name="error_330" translatable="false">ERROR_LOGIN_VULCAN_ONLY_KINDERGARTEN</string>
     <string name="error_331" translatable="false">ERROR_LOGIN_VULCAN_NO_PUPILS</string>
-    <string name="error_340" translatable="false">ERROR_VULCAN_API_MAINTENANCE</string>
-    <string name="error_341" translatable="false">ERROR_VULCAN_API_BAD_REQUEST</string>
-    <string name="error_342" translatable="false">ERROR_VULCAN_API_OTHER</string>
     <string name="error_343" translatable="false">ERROR_VULCAN_ATTACHMENT_DOWNLOAD</string>
+    <string name="error_344" translatable="false">ERROR_VULCAN_WEB_DATA_MISSING</string>
+    <string name="error_345" translatable="false">ERROR_VULCAN_WEB_429</string>
+    <string name="error_346" translatable="false">ERROR_VULCAN_WEB_OTHER</string>
+    <string name="error_347" translatable="false">ERROR_VULCAN_WEB_NO_CERTIFICATE</string>
+    <string name="error_348" translatable="false">ERROR_VULCAN_WEB_NO_REGISTER</string>
+    <string name="error_349" translatable="false">ERROR_VULCAN_WEB_CERTIFICATE_EXPIRED</string>
+    <string name="error_350" translatable="false">ERROR_VULCAN_WEB_LOGGED_OUT</string>
+    <string name="error_351" translatable="false">ERROR_VULCAN_WEB_CERTIFICATE_POST_FAILED</string>
+    <string name="error_352" translatable="false">ERROR_VULCAN_WEB_GRADUATE_ACCOUNT</string>
+    <string name="error_353" translatable="false">ERROR_VULCAN_WEB_NO_SCHOOLS</string>
+    <string name="error_354" translatable="false">ERROR_VULCAN_HEBE_OTHER</string>
+    <string name="error_360" translatable="false">ERROR_VULCAN_HEBE_SIGNATURE_ERROR</string>
+    <string name="error_361" translatable="false">ERROR_VULCAN_HEBE_INVALID_PAYLOAD</string>
+    <string name="error_362" translatable="false">ERROR_VULCAN_HEBE_FIREBASE_ERROR</string>
+    <string name="error_363" translatable="false">ERROR_VULCAN_HEBE_CERTIFICATE_GONE</string>
+    <string name="error_364" translatable="false">ERROR_VULCAN_HEBE_SERVER_ERROR</string>
+    <string name="error_365" translatable="false">ERROR_VULCAN_HEBE_ENTITY_NOT_FOUND</string>
     <string name="error_390" translatable="false">ERROR_VULCAN_API_DEPRECATED</string>
-
-    <string name="error_401" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN</string>
-    <string name="error_402" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME</string>
-    <string name="error_403" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED</string>
-    <string name="error_404" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_MAINTENANCE</string>
-    <string name="error_405" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_SERVER_ERROR</string>
-    <string name="error_410" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_OTHER</string>
-    <string name="error_411" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_API_NO_ACCESS</string>
-    <string name="error_420" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_NO_SESSION</string>
-    <string name="error_421" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_NO_AUTH</string>
-    <string name="error_422" translatable="false">ERROR_LOGIN_IDZIENNIK_WEB_NO_BEARER</string>
-    <string name="error_430" translatable="false">ERROR_IDZIENNIK_WEB_ACCESS_DENIED</string>
-    <string name="error_431" translatable="false">ERROR_IDZIENNIK_WEB_OTHER</string>
-    <string name="error_432" translatable="false">ERROR_IDZIENNIK_WEB_MAINTENANCE</string>
-    <string name="error_433" translatable="false">ERROR_IDZIENNIK_WEB_SERVER_ERROR</string>
-    <string name="error_434" translatable="false">ERROR_IDZIENNIK_WEB_PASSWORD_CHANGE_NEEDED</string>
-    <string name="error_440" translatable="false">ERROR_LOGIN_IDZIENNIK_FIRST_NO_SCHOOL_YEAR</string>
-    <string name="error_441" translatable="false">ERROR_IDZIENNIK_WEB_REQUEST_NO_DATA</string>
-    <string name="error_450" translatable="false">ERROR_IDZIENNIK_API_ACCESS_DENIED</string>
-    <string name="error_451" translatable="false">ERROR_IDZIENNIK_API_OTHER</string>
-    <string name="error_452" translatable="false">ERROR_IDZIENNIK_API_NO_REGISTER</string>
-    <string name="error_453" translatable="false">ERROR_IDZIENNIK_WEB_RECIPIENT_LIST_NO_PERMISSION</string>
 
     <string name="error_501" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN</string>
     <string name="error_510" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER</string>
@@ -176,14 +165,10 @@
     <string name="error_904" translatable="false">EXCEPTION_LIBRUS_API_REQUEST</string>
     <string name="error_905" translatable="false">EXCEPTION_LIBRUS_SYNERGIA_REQUEST</string>
     <string name="error_906" translatable="false">EXCEPTION_MOBIDZIENNIK_WEB_REQUEST</string>
-    <string name="error_907" translatable="false">EXCEPTION_VULCAN_API_REQUEST</string>
     <string name="error_908" translatable="false">EXCEPTION_MOBIDZIENNIK_WEB_FILE_REQUEST</string>
     <string name="error_909" translatable="false">EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST</string>
     <string name="error_910" translatable="false">EXCEPTION_NOTIFY</string>
     <string name="error_911" translatable="false">EXCEPTION_LIBRUS_MESSAGES_REQUEST</string>
-    <string name="error_912" translatable="false">EXCEPTION_IDZIENNIK_WEB_REQUEST</string>
-    <string name="error_913" translatable="false">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
-    <string name="error_914" translatable="false">EXCEPTION_IDZIENNIK_API_REQUEST</string>
     <string name="error_920" translatable="false">EXCEPTION_EDUDZIENNIK_WEB_REQUEST</string>
     <string name="error_921" translatable="false">EXCEPTION_EDUDZIENNIK_FILE_REQUEST</string>
     <string name="error_930" translatable="false">ERROR_ONEDRIVE_DOWNLOAD</string>
@@ -307,41 +292,30 @@
 
     <string name="error_301_reason">Nieprawidłowy symbol</string>
     <string name="error_302_reason">Nieprawidłowy token</string>
-    <string name="error_309_reason">Nieprawidłowy PIN</string>
-    <string name="error_310_reason">Nieprawidłowy PIN: pozostało 0 prób</string>
+    <string name="error_310_reason">Nieprawidłowy PIN. Wygeneruj nowy token.</string>
     <string name="error_311_reason">Nieprawidłowy PIN: pozostała 1 próba</string>
     <string name="error_312_reason">Nieprawidłowy PIN: pozostały 2 próby</string>
     <string name="error_321_reason">Token wygasły, wygeneruj ponownie</string>
-    <string name="error_322_reason">Inny błąd logowania do dziennika VULCAN®</string>
-    <string name="error_330_reason">Dziennik przedszkolny - logowanie niemożliwe</string>
     <string name="error_331_reason">Brak uczniów przypisanych do konta, bądź ukończyli oni już szkołę</string>
-    <string name="error_340_reason">VULCAN®: przerwa techniczna</string>
-    <string name="error_341_reason">VULCAN®: błąd żądania, zgłoś błąd</string>
-    <string name="error_342_reason">VULCAN®: inny błąd, wyślij zgłoszenie</string>
     <string name="error_343_reason">VULCAN®: nie znaleziono adresu załącznika</string>
+    <string name="error_344_reason">VULCAN®: brakujące dane logowania FS. Usuń profil i zaloguj się ponownie.</string>
+    <string name="error_345_reason">VULCAN®: błąd logowania (429). Dziennik może być przeciążony.</string>
+    <string name="error_346_reason">VULCAN®: inny błąd logowania</string>
+    <string name="error_347_reason">VULCAN®: nie znaleziono zapisanego certyfikatu</string>
+    <string name="error_348_reason">VULCAN®: konto nie jest przypisane do żadnej szkoły</string>
+    <string name="error_349_reason">VULCAN®: certyfikat logowania wygasł</string>
+    <string name="error_350_reason">VULCAN®: wylogowano z konta</string>
+    <string name="error_351_reason">VULCAN®: nie udało się wysłać certyfikatu</string>
+    <string name="error_352_reason">VULCAN®: konto nie posiada już uczniów uczęszczających do szkoły</string>
+    <string name="error_353_reason">VULCAN®: nie znaleziono żadnej szkoły. Zgłoś błąd.</string>
+    <string name="error_354_reason">VULCAN®: nieznany błąd pobierania danych</string>
+    <string name="error_360_reason">Nieprawidłowy podpis zapytania. Sprawdź ustawienia daty i godziny w systemie.</string>
+    <string name="error_361_reason">VULCAN®: zapytanie zawiera niepoprawne dane</string>
+    <string name="error_362_reason">Błąd powiadomień push. Sprawdź połączenie z internetem.</string>
+    <string name="error_363_reason">VULCAN®: urządzenie usunięte. Zaloguj się ponownie do dziennika.</string>
+    <string name="error_364_reason">VULCAN®: błąd serwera. Dziennik może być przeciążony.</string>
+    <string name="error_365_reason">VULCAN®: nie znaleziono bytu</string>
     <string name="error_390_reason">W związku z wygaszeniem aplikacji Dzienniczek+ przez firmę Vulcan, należy zalogować się ponownie.\n\nAby móc dalej korzystać z aplikacji Szkolny.eu, otwórz Ustawienia i wybierz opcję Dodaj nowego ucznia.\nNastępnie zaloguj się do dziennika Vulcan zgodnie z instrukcją.\n\nPrzepraszamy za niedogodności.</string>
-
-    <string name="error_401_reason">Nieprawidłowe dane logowania</string>
-    <string name="error_402_reason">Nieprawidłowa nazwa szkoły</string>
-    <string name="error_403_reason">iDziennik: wymagana zmiana hasła. Zaloguj się na stronie iDziennika, by dokonać zmiany hasła.</string>
-    <string name="error_404_reason">Chwilowa przerwa techniczna iDziennika, lub inny problem z serwerem</string>
-    <string name="error_405_reason">Chwilowa przerwa techniczna iDziennika, lub inny problem z serwerem (serwer zwrócił błąd)</string>
-    <string name="error_410_reason">iDziennik: inny błąd logowania</string>
-    <string name="error_411_reason">iDziennik: brak dostępu do API</string>
-    <string name="error_420_reason">iDziennik: nie znaleziono sesji</string>
-    <string name="error_421_reason">iDziennik: nie znaleziono tokenu autoryzacji</string>
-    <string name="error_422_reason">iDziennik: nie znaleziono tokenu API</string>
-    <string name="error_430_reason">iDziennik: brak dostępu. Zaloguj się ponownie.</string>
-    <string name="error_431_reason">iDziennik: inny błąd synchronizacji</string>
-    <string name="error_432_reason">Chwilowa przerwa techniczna iDziennika, lub inny problem z serwerem</string>
-    <string name="error_433_reason">Chwilowa przerwa techniczna iDziennika, lub inny problem z serwerem (serwer zwrócił błąd)</string>
-    <string name="error_434_reason">iDziennik: wymagana zmiana hasła. Zaloguj się na stronie iDziennika, by dokonać zmiany hasła.</string>
-    <string name="error_440_reason">iDziennik: nie znaleziono numeru roku szkolnego. Uczeń może nie być aktywny w aktualnym roku szkolnym.</string>
-    <string name="error_441_reason">iDziennik: serwer nie zwrócił żadnych danych</string>
-    <string name="error_450_reason">Brak dostępu do API iDziennika</string>
-    <string name="error_451_reason">Inny błąd API iDziennika</string>
-    <string name="error_452_reason">iDziennik: nie znaleziono ID dziennika. Zgłoś błąd programiście.</string>
-    <string name="error_453_reason">Twoje konto nie ma uprawnień do wysyłania wiadomości (bądź wystąpił inny błąd serwera iDziennika)</string>
 
     <string name="error_501_reason">Błędny email lub hasło</string>
     <string name="error_510_reason">Inny błąd logowania</string>
@@ -365,14 +339,10 @@
     <string name="error_904_reason">Zgłoś błąd: wyjątek w API LIBRUS®</string>
     <string name="error_905_reason">EXCEPTION_LIBRUS_SYNERGIA_REQUEST</string>
     <string name="error_906_reason">EXCEPTION_MOBIDZIENNIK_WEB_REQUEST</string>
-    <string name="error_907_reason">EXCEPTION_VULCAN_API_REQUEST</string>
     <string name="error_908_reason">EXCEPTION_MOBIDZIENNIK_WEB_FILE_REQUEST</string>
     <string name="error_909_reason">EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST</string>
     <string name="error_910_reason">EXCEPTION_NOTIFY</string>
     <string name="error_911_reason">Zgłoś błąd: pobieranie wiadomości LIBRUS®</string>
-    <string name="error_912_reason">EXCEPTION_IDZIENNIK_WEB_REQUEST</string>
-    <string name="error_913_reason">EXCEPTION_IDZIENNIK_WEB_API_REQUEST</string>
-    <string name="error_914_reason">EXCEPTION_IDZIENNIK_API_REQUEST</string>
     <string name="error_920_reason">Wystąpił błąd</string>
     <string name="error_921_reason">Wystąpił błąd podczas pobierania pliku</string>
     <string name="error_930_reason">Nie udało się pobrać pliku z OneDrive</string>

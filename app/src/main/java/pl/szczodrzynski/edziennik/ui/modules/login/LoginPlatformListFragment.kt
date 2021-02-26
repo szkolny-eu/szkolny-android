@@ -60,12 +60,12 @@ class LoginPlatformListFragment : Fragment(), CoroutineScope {
 
         adapter = LoginPlatformAdapter(activity) { platform ->
             nav.navigate(R.id.loginFormFragment, Bundle(
-                    "loginType" to platform.loginType,
-                    "loginMode" to platform.loginMode,
+                    "loginType" to loginType,
+                    "loginMode" to loginMode,
                     "platformName" to platform.name,
                     "platformDescription" to platform.description,
                     "platformFormFields" to platform.formFields.joinToString(";"),
-                    "platformApiData" to platform.apiData.toString()
+                    "platformRealmData" to app.gson.toJson(platform.realmData)
             ), activity.navOptions)
         }
 
@@ -96,7 +96,7 @@ class LoginPlatformListFragment : Fragment(), CoroutineScope {
             val platforms = LoginInfo.platformList[mode.name]
                     ?: run {
                         api.runCatching(activity) {
-                            getPlatforms(register.internalName)
+                            getRealms(register.internalName)
                         } ?: run {
                             nav.navigateUp()
                             return@launch

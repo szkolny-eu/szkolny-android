@@ -29,6 +29,7 @@ class SzkolnyVulcanFirebase(val app: App, val profiles: List<Profile>, val messa
         val data = message.data.getString("data")?.toJsonObject() ?: return@run
         val type = data.getString("table") ?: return@run
         val studentId = data.getInt("pupilid")
+        val loginId = data.getInt("loginid")
 
         /* pl.vulcan.uonetmobile.auxilary.enums.CDCPushEnum */
         val viewIdPair = when (type.toLowerCase(Locale.ROOT)) {
@@ -42,8 +43,9 @@ class SzkolnyVulcanFirebase(val app: App, val profiles: List<Profile>, val messa
         }
 
         val tasks = profiles.filter {
-            it.loginStoreType == LOGIN_TYPE_VULCAN &&
-                    it.getStudentData("studentId", 0) == studentId
+            it.loginStoreType == LOGIN_TYPE_VULCAN
+                    && (it.getStudentData("studentId", 0) == studentId
+                    || it.getStudentData("studentLoginId", 0) == loginId)
         }.map {
             EdziennikTask.syncProfile(it.id, listOf(viewIdPair))
         }

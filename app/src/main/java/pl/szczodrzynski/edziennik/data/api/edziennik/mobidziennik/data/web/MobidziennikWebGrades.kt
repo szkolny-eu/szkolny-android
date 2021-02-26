@@ -46,7 +46,7 @@ class MobidziennikWebGrades(override val data: DataMobidziennik,
                 when (e.tagName()) {
                     "div" -> {
                         Regexes.MOBIDZIENNIK_GRADES_SUBJECT_NAME.find(e.outerHtml())?.let {
-                            subjectName = it[1]
+                            subjectName = it[1].trim()
                         }
                     }
                     "span" -> {

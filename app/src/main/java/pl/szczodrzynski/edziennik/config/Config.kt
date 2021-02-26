@@ -105,6 +105,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mWidgetConfigs = mWidgetConfigs ?: values.get("widgetConfigs", JsonObject()); return mWidgetConfigs ?: JsonObject() }
         set(value) { set("widgetConfigs", value); mWidgetConfigs = value }
 
+    private var mArchiverEnabled: Boolean? = null
+    var archiverEnabled: Boolean
+        get() { mArchiverEnabled = mArchiverEnabled ?: values.get("archiverEnabled", true); return mArchiverEnabled ?: true }
+        set(value) { set("archiverEnabled", value); mArchiverEnabled = value }
+
     private var rawEntries: List<ConfigEntry> = db.configDao().getAllNow()
     private val profileConfigs: HashMap<Int, ProfileConfig> = hashMapOf()
     init {

@@ -32,6 +32,8 @@ class JsonElementViewHolder(
     override fun onBind(activity: AppCompatActivity, app: App, item: LabJsonElement, position: Int, adapter: LabJsonAdapter) {
         val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
 
+        b.root.setPadding(item.level * 8.dp + 8.dp, 8.dp, 8.dp, 8.dp)
+
         b.type.text = when (item.jsonElement) {
             is JsonPrimitive -> when {
                 item.jsonElement.isNumber -> "Number"
@@ -45,7 +47,9 @@ class JsonElementViewHolder(
 
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
         b.key.text = listOf(
-                item.key.asColoredSpannable(colorSecondary),
+                item.key
+                    .substringAfterLast(":")
+                    .asColoredSpannable(colorSecondary),
                 ": ",
                 item.jsonElement.toString().asItalicSpannable()
         ).concat("")

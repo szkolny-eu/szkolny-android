@@ -74,16 +74,16 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
                 message.senderId = null
 
                 content.select("table.spis tr:has(td)")?.forEach { recipientEl ->
-                    val senderEl = recipientEl.select("td:eq(0)").first()
+                    val senderEl = recipientEl.select("td:eq(1)")?.first() ?: return@forEach
                     val senderName = senderEl.text().fixName()
 
                     val teacher = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }
                     val receiverId = teacher?.id ?: -1
 
                     var readDate = 0L
-                    val isReadEl = recipientEl.select("td:eq(2)").first()
-                    if (isReadEl.ownText() != "NIE") {
-                        val readDateEl = recipientEl.select("td:eq(3) small").first()
+                    val isReadEl = recipientEl.select("td:eq(4)")?.first() ?: return@forEach
+                    if (isReadEl.html().contains("tak")) {
+                        val readDateEl = recipientEl.select("td:eq(5) small")?.first() ?: return@forEach
                         Regexes.MOBIDZIENNIK_MESSAGE_SENT_READ_DATE.find(readDateEl.ownText())?.let {
                             val date = Date(
                                     it[3].toIntOrNull() ?: 2019,

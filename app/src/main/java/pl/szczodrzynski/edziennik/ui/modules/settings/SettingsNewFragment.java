@@ -258,7 +258,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                     .color(IconicsColor.colorInt(iconColor))
                     )
                             .setOnClickAction(() -> {
-                                new ProfileRemoveDialog(activity, app.getProfile().getId(), app.getProfile().getName());
+                                new ProfileRemoveDialog(activity, app.getProfile().getId(), app.getProfile().getName(), false);
                             })
             );
 

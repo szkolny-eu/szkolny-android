@@ -11,12 +11,11 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.droidsonroids.jspoon.Jspoon
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.CufsCertificate
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.isNotNullNorBlank
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.io.File
@@ -83,10 +82,12 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     onResult(symbol, STATE_NO_REGISTER)
                     return
                 }
-                if (!validateCallback(text, response, jsonResponse = false)) {
+                if (!validateCallback(symbol, text, response, jsonResponse = false)) {
                     return
                 }
-                data.webExpiryTime = Date.fromIso(certificate.expiryDate) / 1000L
+                data.webExpiryTime = data.webExpiryTime.toMutableMap().also { map ->
+                    map[symbol] = (Date.fromIso(certificate.expiryDate) / 1000L).toString()
+                }
                 onResult(symbol, STATE_SUCCESS)
             }
 
@@ -120,7 +121,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
     fun getStartPage(symbol: String = data.symbol ?: "default", postErrors: Boolean = true, onSuccess: (html: String, schoolSymbols: List<String>) -> Unit) {
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
-                if (!validateCallback(text, response, jsonResponse = false) || text == null) {
+                if (!validateCallback(symbol, text, response, jsonResponse = false) || text == null) {
                     return
                 }
 
@@ -136,7 +137,30 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     }
                 }
 
-                data.webPermissions = Regexes.VULCAN_WEB_PERMISSIONS.find(text)?.let { it[1] }
+                data.webPermissions = data.webPermissions.toMutableMap().also { map ->
+                    val permissions = Regexes.VULCAN_WEB_PERMISSIONS.find(text)?.let { it[1] }
+                    if (permissions?.isNotBlank() == true) {
+                        val studentId = permissions.split("|")
+                            .getOrNull(0)
+                            ?.base64DecodeToString()
+                            ?.toJsonObject()
+                            ?.getJsonArray("AuthInfos")
+                            ?.asJsonObjectList()
+                            ?.flatMap { authInfo ->
+                                authInfo.getJsonArray("UczenIds")
+                                    ?.map { it.asInt }
+                                    ?: listOf()
+                            }
+                            ?.firstOrNull()
+                            ?.toString()
+                        data.app.cookieJar.set(
+                            data.webHost ?: "vulcan.net.pl",
+                            "idBiezacyUczen",
+                            studentId
+                        )
+                    }
+                    map[symbol] = permissions
+                }
 
                 val schoolSymbols = mutableListOf<String>()
                 val clientUrl = "://uonetplus-uczen.${data.webHost}/$symbol/"
@@ -144,7 +168,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                 var count = 0
                 while (clientIndex != -1 && count < 100) {
                     val startIndex = clientIndex + clientUrl.length
-                    val endIndex = text.indexOf('/', startIndex = startIndex)
+                    val endIndex = text.indexOfAny(charArrayOf('"', '/'), startIndex = startIndex)
                     val schoolSymbol = text.substring(startIndex, endIndex)
                     schoolSymbols += schoolSymbol
                     clientIndex = text.indexOf(clientUrl, startIndex = endIndex)
@@ -186,7 +210,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                 .enqueue()
     }
 
-    private fun validateCallback(text: String?, response: Response?, jsonResponse: Boolean = true): Boolean {
+    private fun validateCallback(symbol: String, text: String?, response: Response?, jsonResponse: Boolean = true): Boolean {
         if (text == null) {
             data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
                     .withResponse(response))
@@ -207,11 +231,13 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
 
         val cookies = data.app.cookieJar.getAll(data.webHost ?: "vulcan.net.pl")
         val authCookie = cookies["EfebSsoAuthCookie"]
-        if ((authCookie == null || authCookie == "null") && data.webAuthCookie != null) {
-            data.app.cookieJar.set(data.webHost ?: "vulcan.net.pl", "EfebSsoAuthCookie", data.webAuthCookie)
+        if ((authCookie == null || authCookie == "null") && data.webAuthCookie[symbol] != null) {
+            data.app.cookieJar.set(data.webHost ?: "vulcan.net.pl", "EfebSsoAuthCookie", data.webAuthCookie[symbol])
         }
-        else if (authCookie.isNotNullNorBlank() && authCookie != "null" && authCookie != data.webAuthCookie) {
-            data.webAuthCookie = authCookie
+        else if (authCookie.isNotNullNorBlank() && authCookie != "null" && authCookie != data.webAuthCookie[symbol]) {
+            data.webAuthCookie = data.webAuthCookie.toMutableMap().also { map ->
+                map[symbol] = authCookie
+            }
         }
         return true
     }
@@ -250,7 +276,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
 
         val callback = object : TextCallbackHandler() {
             override fun onSuccess(text: String?, response: Response?) {
-                if (!validateCallback(text, response))
+                if (!validateCallback(data.symbol ?: "default", text, response))
                     return
 
                 try {

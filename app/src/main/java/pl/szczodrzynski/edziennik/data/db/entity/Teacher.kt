@@ -11,6 +11,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.fixName
+import pl.szczodrzynski.edziennik.getNameInitials
 import pl.szczodrzynski.edziennik.join
 import java.util.*
 
@@ -179,6 +180,9 @@ open class Teacher {
 
     @delegate:Ignore
     val fullNameLastFirst by lazy { "$surname $name".fixName() }
+
+    @delegate:Ignore
+    val initialsLastFirst by lazy { fullNameLastFirst.getNameInitials() }
 
     val shortName: String
         get() = (if (name == null || name?.length == 0) "" else name!![0].toString()) + "." + surname

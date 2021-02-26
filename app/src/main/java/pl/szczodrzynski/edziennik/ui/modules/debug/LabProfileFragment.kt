@@ -10,16 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
+import com.afollestad.materialdialogs.MaterialDialog
+import com.google.gson.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
+import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.databinding.TemplateListPageFragmentBinding
-import pl.szczodrzynski.edziennik.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
@@ -38,6 +36,10 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
         get() = job + Dispatchers.Main
 
     // local/private variables go here
+    private lateinit var adapter: LabJsonAdapter
+    private val loginStore by lazy {
+        app.db.loginStoreDao().getByIdNow(app.profile.loginStoreId)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -48,22 +50,96 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
     }
 
     override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
-        val adapter = LabJsonAdapter(activity)
-        val json = JsonObject().also { json ->
-            json.add("app.profile", app.profile.studentData)
-            json.add("app.config", JsonParser().parse(app.gson.toJson(app.config.values)))
-            EdziennikTask.profile?.let {
-                json.add("API.profile", it.studentData)
-            } ?: {
-                json.addProperty("API.profile", "null")
-            }()
-            EdziennikTask.loginStore?.let {
-                json.add("API.loginStore", it.data)
-            } ?: {
-                json.addProperty("API.loginStore", "null")
-            }()
-        }
-        adapter.items = LabJsonAdapter.expand(json, 0)
+        adapter = LabJsonAdapter(activity, onJsonElementClick = { item ->
+            try {
+                var parent: Any = Unit
+                var obj: Any = Unit
+                var objName: String = ""
+                item.key.split(":").forEach { el ->
+                    parent = obj
+                    obj = when (el) {
+                        "App.profile" -> app.profile
+                        "App.profile.studentData" -> app.profile.studentData
+                        "App.profile.loginStore" -> loginStore?.data ?: JsonObject()
+                        "App.config" -> app.config.values
+                        else -> when (obj) {
+                            is JsonObject -> (obj as JsonObject).get(el)
+                            is JsonArray -> (obj as JsonArray).get(el.toInt())
+                            is HashMap<*, *> -> (obj as HashMap<String, String?>)[el].toString()
+                            else -> {
+                                val field = obj::class.java.getDeclaredField(el)
+                                field.isAccessible = true
+                                field.get(obj) ?: return@forEach
+                            }
+                        }
+                    }
+                    objName = el
+                }
+
+                val objVal = obj
+                val value = when (objVal) {
+                    is JsonPrimitive -> when {
+                        objVal.isString -> objVal.asString
+                        objVal.isNumber -> objVal.asNumber.toString()
+                        objVal.isBoolean -> objVal.asBoolean.toString()
+                        else -> objVal.asString
+                    }
+                    else -> objVal.toString()
+                }
+
+                MaterialDialog.Builder(activity)
+                    .input("value", value, false) { _, input ->
+                        val input = input.toString()
+                        when (parent) {
+                            is JsonObject -> {
+                                val v = objVal as JsonPrimitive
+                                when {
+                                    v.isString -> (parent as JsonObject)[objName] = input
+                                    v.isNumber -> (parent as JsonObject)[objName] = input.toLong()
+                                    v.isBoolean -> (parent as JsonObject)[objName] = input.toBoolean()
+                                }
+                            }
+                            is JsonArray -> {
+
+                            }
+                            is HashMap<*, *> -> app.config.set(objName, input)
+                            else -> {
+                                val field = parent::class.java.getDeclaredField(objName)
+                                field.isAccessible = true
+                                val newVal = when (objVal) {
+                                    is Int -> input.toInt()
+                                    is Boolean -> input.toBoolean()
+                                    is Float -> input.toFloat()
+                                    is Char -> input.toCharArray()[0]
+                                    is String -> input
+                                    is Long -> input.toLong()
+                                    is Double -> input.toDouble()
+                                    else -> input
+                                }
+                                field.set(parent, newVal)
+                            }
+                        }
+
+                        when (item.key.substringBefore(":")) {
+                            "App.profile" -> app.profileSave()
+                            "App.profile.studentData" -> app.profileSave()
+                            "App.profile.loginStore" -> app.db.loginStoreDao().add(loginStore)
+                        }
+
+                        showJson()
+
+                    }
+                    .title(item.key)
+                    .positiveText(R.string.ok)
+                    .negativeText(R.string.cancel)
+                    .show()
+            }
+            catch (e: Exception) {
+                activity.error(ApiError.fromThrowable(TAG, e))
+            }
+        })
+
+        showJson()
 
         b.list.adapter = adapter
         b.list.apply {
@@ -79,4 +155,15 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
         b.noData.isVisible = false
 
     }; return true }
+
+    private fun showJson() {
+        val json = JsonObject().also { json ->
+            json.add("App.profile", app.gson.toJsonTree(app.profile))
+            json.add("App.profile.studentData", app.profile.studentData)
+            json.add("App.profile.loginStore", loginStore?.data ?: JsonObject())
+            json.add("App.config", JsonParser().parse(app.gson.toJson(app.config.values)))
+        }
+        adapter.items = LabJsonAdapter.expand(json, 0)
+        adapter.notifyDataSetChanged()
+    }
 }
