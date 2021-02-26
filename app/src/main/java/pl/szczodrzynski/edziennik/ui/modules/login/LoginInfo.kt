@@ -271,51 +271,6 @@ object LoginInfo {
                 )
             ),
             Register(
-                loginType = LOGIN_TYPE_IDZIENNIK,
-                internalName = "idziennik",
-                registerName = R.string.login_type_idziennik,
-                registerLogo = R.drawable.login_logo_iuczniowie,
-                loginModes = listOf(
-                    Mode(
-                        loginMode = LOGIN_MODE_IDZIENNIK_WEB,
-                        name = R.string.login_mode_idziennik_web,
-                        icon = R.drawable.login_mode_idziennik_web,
-                        hintText = R.string.login_mode_idziennik_web_hint,
-                        guideText = R.string.login_mode_idziennik_web_guide,
-                        credentials = listOf(
-                            FormField(
-                                keyName = "schoolName",
-                                name = R.string.login_hint_school_name,
-                                icon = CommunityMaterial.Icon2.cmd_school,
-                                emptyText = R.string.login_error_no_school_name,
-                                invalidText = R.string.login_error_incorrect_school_name,
-                                errorCodes = mapOf(
-                                    ERROR_LOGIN_IDZIENNIK_WEB_INVALID_SCHOOL_NAME to R.string.login_error_incorrect_school_name
-                                ),
-                                isRequired = true,
-                                validationRegex = "^[a-z0-9_\\-.]+$",
-                                caseMode = FormField.CaseMode.LOWER_CASE
-                            ),
-                            FormField(
-                                keyName = "username",
-                                name = R.string.login_hint_username,
-                                icon = CommunityMaterial.Icon.cmd_account_outline,
-                                emptyText = R.string.login_error_no_username,
-                                invalidText = R.string.login_error_incorrect_username,
-                                errorCodes = mapOf(),
-                                isRequired = true,
-                                validationRegex = "^[a-z0-9_\\-.]+$",
-                                caseMode = FormField.CaseMode.LOWER_CASE
-                            ),
-                            getPasswordCredential("password")
-                        ),
-                        errorCodes = mapOf(
-                            ERROR_LOGIN_IDZIENNIK_WEB_INVALID_LOGIN to R.string.login_error_incorrect_login_or_password
-                        )
-                    )
-                )
-            ),
-            Register(
                 loginType = LOGIN_TYPE_EDUDZIENNIK,
                 internalName = "edudziennik",
                 registerName = R.string.login_type_edudziennik,

@@ -5,8 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLoginWeb
-import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLoginApi
-import pl.szczodrzynski.edziennik.data.api.edziennik.idziennik.login.IdziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginMessages
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginPortal
@@ -22,7 +20,7 @@ import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
 
 // librus
 // mobidziennik
-// idziennik
+// idziennik [*]
 // vulcan
 // mobireg
 
@@ -34,14 +32,10 @@ const val LOGIN_TYPE_IDZIENNIK = 3
 const val LOGIN_TYPE_TEMPLATE = 21
 
 // LOGIN MODES
-const val LOGIN_MODE_IDZIENNIK_WEB = 0
-
 const val LOGIN_MODE_TEMPLATE_WEB = 0
 
 // LOGIN METHODS
 const val LOGIN_METHOD_NOT_NEEDED = -1
-const val LOGIN_METHOD_IDZIENNIK_WEB = 100
-const val LOGIN_METHOD_IDZIENNIK_API = 200
 const val LOGIN_METHOD_TEMPLATE_WEB = 100
 const val LOGIN_METHOD_TEMPLATE_API = 200
 
@@ -122,16 +116,6 @@ val vulcanLoginMethods = listOf(
                         loginStore.mode != LOGIN_MODE_VULCAN_API
                 }
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
-)
-
-val idziennikLoginMethods = listOf(
-        LoginMethod(LOGIN_TYPE_IDZIENNIK, LOGIN_METHOD_IDZIENNIK_WEB, IdziennikLoginWeb::class.java)
-                .withIsPossible { _, _ -> true }
-                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED },
-
-        LoginMethod(LOGIN_TYPE_IDZIENNIK, LOGIN_METHOD_IDZIENNIK_API, IdziennikLoginApi::class.java)
-                .withIsPossible { _, _ -> true }
-                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_IDZIENNIK_WEB }
 )
 
 const val LOGIN_TYPE_EDUDZIENNIK = 5
