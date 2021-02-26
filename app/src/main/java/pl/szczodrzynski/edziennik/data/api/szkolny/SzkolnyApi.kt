@@ -88,11 +88,13 @@ class SzkolnyApi(val app: App) : CoroutineScope {
             withContext(Dispatchers.Default) { block.invoke(this@SzkolnyApi) }
         }
         catch (e: Exception) {
-            ErrorDetailsDialog(
+            withContext(coroutineContext) {
+                ErrorDetailsDialog(
                     activity,
                     listOf(e.toApiError(TAG)),
                     R.string.error_occured
-            )
+                )
+            }
             null
         }
     }
