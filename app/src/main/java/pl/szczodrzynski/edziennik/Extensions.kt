@@ -43,10 +43,9 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.security.ProviderInstaller
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.*
 import com.google.gson.JsonArray
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import im.wangchao.mhttp.Response
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -538,6 +537,12 @@ fun String.md5(): String {
     return BigInteger(1, md.digest(toByteArray())).toString(16).padStart(32, '0')
 }
 
+fun String.sha1Hex(): String {
+    val md = MessageDigest.getInstance("SHA-1")
+    md.update(toByteArray())
+    return md.digest().joinToString("") { "%02x".format(it) }
+}
+
 fun String.sha256(): ByteArray {
     val md = MessageDigest.getInstance("SHA-256")
     md.update(toByteArray())
@@ -692,6 +697,21 @@ fun JsonObject(vararg properties: Pair<String, Any?>): JsonObject {
                 is Char -> addProperty(property.first, property.second as Char?)
                 is Number -> addProperty(property.first, property.second as Number?)
                 is Boolean -> addProperty(property.first, property.second as Boolean?)
+            }
+        }
+    }
+}
+
+fun JsonObject.toBundle(): Bundle {
+    return Bundle().also {
+        for ((key, value) in this.entrySet()) {
+            when (value) {
+                is JsonObject -> it.putBundle(key, value.toBundle())
+                is JsonPrimitive -> when {
+                    value.isString -> it.putString(key, value.asString)
+                    value.isBoolean -> it.putBoolean(key, value.asBoolean)
+                    value.isNumber -> it.putInt(key, value.asInt)
+                }
             }
         }
     }

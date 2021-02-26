@@ -33,12 +33,12 @@ interface SzkolnyService {
     @POST("feedbackMessage")
     fun feedbackMessage(@Body request: FeedbackMessageRequest): Call<ApiResponse<FeedbackMessageResponse>>
 
-    @GET("appLogin/platforms/{registerName}")
-    fun appLoginPlatforms(@Path("registerName") registerName: String): Call<ApiResponse<List<LoginInfo.Platform>>>
-
     @GET("firebase/token/{registerName}")
     fun firebaseToken(@Path("registerName") registerName: String): Call<ApiResponse<String>>
 
     @GET("registerAvailability")
     fun registerAvailability(): Call<ApiResponse<Map<String, RegisterAvailabilityStatus>>>
+
+    @GET("fsLogin/{registerName}")
+    fun fsLoginRealms(@Path("registerName") registerName: String): Call<ApiResponse<List<LoginInfo.Platform>>>
 }

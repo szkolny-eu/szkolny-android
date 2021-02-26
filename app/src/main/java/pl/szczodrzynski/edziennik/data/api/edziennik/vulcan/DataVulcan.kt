@@ -4,28 +4,23 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
+import com.google.gson.JsonObject
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.crc16
+import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_HEBE
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_WEB_MAIN
-import pl.szczodrzynski.edziennik.data.api.LOGIN_MODE_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.fslogin.realm.RealmData
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
-
-    fun isWebMainLoginValid() = webExpiryTime-30 > currentTimeUnix()
-            && webAuthCookie.isNotNullNorEmpty()
-            && webHost.isNotNullNorEmpty()
-            && webType.isNotNullNorEmpty()
-            && symbol.isNotNullNorEmpty()
-    fun isApiLoginValid() = currentSemesterEndDate-30 > currentTimeUnix()
-            && apiFingerprint[symbol].isNotNullNorEmpty()
-            && apiPrivateKey[symbol].isNotNullNorEmpty()
-            && symbol.isNotNullNorEmpty()
+    fun isWebMainLoginValid() = symbol.isNotNullNorEmpty()
+            && (webExpiryTime[symbol]?.toLongOrNull() ?: 0) - 30 > currentTimeUnix()
+            && webAuthCookie[symbol].isNotNullNorEmpty()
+            && webRealmData != null
     fun isHebeLoginValid() = hebePublicKey.isNotNullNorEmpty()
             && hebePrivateKey.isNotNullNorEmpty()
             && symbol.isNotNullNorEmpty()
@@ -35,31 +30,8 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         if (isWebMainLoginValid()) {
             loginMethods += LOGIN_METHOD_VULCAN_WEB_MAIN
         }
-        if (isApiLoginValid()) {
-            loginMethods += LOGIN_METHOD_VULCAN_API
-        }
         if (isHebeLoginValid()) {
             loginMethods += LOGIN_METHOD_VULCAN_HEBE
-        }
-    }
-
-    init {
-        // during the first sync `profile.studentClassName` is already set
-        if (loginStore.mode == LOGIN_MODE_VULCAN_API
-            && teamList.values().none { it.type == Team.TYPE_CLASS }) {
-            profile?.studentClassName?.also { name ->
-                val id = Utils.crc16(name.toByteArray()).toLong()
-
-                val teamObject = Team(
-                        profileId,
-                        id,
-                        name,
-                        Team.TYPE_CLASS,
-                        "$schoolCode:$name",
-                        -1
-                )
-                teamList.put(id, teamObject)
-            }
         }
     }
 
@@ -224,16 +196,6 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mApiPin = mApiPin ?: loginStore.getLoginData("apiPin", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiPin ?: mapOf() }
         set(value) { loginStore.putLoginData("apiPin", app.gson.toJson(value)); mApiPin = value }
 
-    private var mApiFingerprint: Map<String?, String?>? = null
-    var apiFingerprint: Map<String?, String?> = mapOf()
-        get() { mApiFingerprint = mApiFingerprint ?: loginStore.getLoginData("apiFingerprint", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiFingerprint ?: mapOf() }
-        set(value) { loginStore.putLoginData("apiFingerprint", app.gson.toJson(value)); mApiFingerprint = value }
-
-    private var mApiPrivateKey: Map<String?, String?>? = null
-    var apiPrivateKey: Map<String?, String?> = mapOf()
-        get() { mApiPrivateKey = mApiPrivateKey ?: loginStore.getLoginData("apiPrivateKey", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mApiPrivateKey ?: mapOf() }
-        set(value) { loginStore.putLoginData("apiPrivateKey", app.gson.toJson(value)); mApiPrivateKey = value }
-
     /*    _    _      _                     _____ _____ 
          | |  | |    | |              /\   |  __ \_   _|
          | |__| | ___| |__   ___     /  \  | |__) || |  
@@ -297,49 +259,15 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
              \/  \/ \___|_.__/  |_|   |_____/  |______\___/ \__, |_|_| |_|
                                                              __/ |
                                                             |__*/
-    /**
-     * Federation Services login type.
-     * This might be one of: cufs, adfs, adfslight.
-     */
-    var webType: String?
-        get() { mWebType = mWebType ?: loginStore.getLoginData("webType", null); return mWebType }
-        set(value) { loginStore.putLoginData("webType", value); mWebType = value }
-    private var mWebType: String? = null
+    var webRealmData: RealmData?
+        get() { mWebRealmData = mWebRealmData ?: loginStore.getLoginData("webRealmData", JsonObject()).let {
+                app.gson.fromJson(it, RealmData::class.java)
+            }; return mWebRealmData }
+        set(value) { loginStore.putLoginData("webRealmData", app.gson.toJsonTree(value) as JsonObject); mWebRealmData = value }
+    private var mWebRealmData: RealmData? = null
 
-    /**
-     * Web server providing the federation services login.
-     * If this is present, WEB_MAIN login is considered as available.
-     */
-    var webHost: String?
-        get() { mWebHost = mWebHost ?: loginStore.getLoginData("webHost", null); return mWebHost }
-        set(value) { loginStore.putLoginData("webHost", value); mWebHost = value }
-    private var mWebHost: String? = null
-
-    /**
-     * An ID used in ADFS & ADFSLight login types.
-     */
-    var webAdfsId: String?
-        get() { mWebAdfsId = mWebAdfsId ?: loginStore.getLoginData("webAdfsId", null); return mWebAdfsId }
-        set(value) { loginStore.putLoginData("webAdfsId", value); mWebAdfsId = value }
-    private var mWebAdfsId: String? = null
-
-    /**
-     * A domain override for ADFS Light.
-     */
-    var webAdfsDomain: String?
-        get() { mWebAdfsDomain = mWebAdfsDomain ?: loginStore.getLoginData("webAdfsDomain", null); return mWebAdfsDomain }
-        set(value) { loginStore.putLoginData("webAdfsDomain", value); mWebAdfsDomain = value }
-    private var mWebAdfsDomain: String? = null
-
-    var webIsHttpCufs: Boolean
-        get() { mWebIsHttpCufs = mWebIsHttpCufs ?: loginStore.getLoginData("webIsHttpCufs", false); return mWebIsHttpCufs ?: false }
-        set(value) { loginStore.putLoginData("webIsHttpCufs", value); mWebIsHttpCufs = value }
-    private var mWebIsHttpCufs: Boolean? = null
-
-    var webIsScopedAdfs: Boolean
-        get() { mWebIsScopedAdfs = mWebIsScopedAdfs ?: loginStore.getLoginData("webIsScopedAdfs", false); return mWebIsScopedAdfs ?: false }
-        set(value) { loginStore.putLoginData("webIsScopedAdfs", value); mWebIsScopedAdfs = value }
-    private var mWebIsScopedAdfs: Boolean? = null
+    val webHost
+        get() = webRealmData?.host
 
     var webEmail: String?
         get() { mWebEmail = mWebEmail ?: loginStore.getLoginData("webEmail", null); return mWebEmail }
@@ -359,24 +287,24 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
      * If the time passes, the certificate needs to be POSTed again (if valid)
      * or re-generated.
      */
-    var webExpiryTime: Long
-        get() { mWebExpiryTime = mWebExpiryTime ?: profile?.getStudentData("webExpiryTime", 0L); return mWebExpiryTime ?: 0L }
-        set(value) { profile?.putStudentData("webExpiryTime", value); mWebExpiryTime = value }
-    private var mWebExpiryTime: Long? = null
+    var webExpiryTime: Map<String, String?> = mapOf()
+        get() { mWebExpiryTime = mWebExpiryTime ?: loginStore.getLoginData("webExpiryTime", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mWebExpiryTime ?: mapOf() }
+        set(value) { loginStore.putLoginData("webExpiryTime", app.gson.toJson(value)); mWebExpiryTime = value }
+    private var mWebExpiryTime: Map<String, String?>? = null
 
     /**
      * EfebSsoAuthCookie retrieved after posting a certificate
      */
-    var webAuthCookie: String?
-        get() { mWebAuthCookie = mWebAuthCookie ?: profile?.getStudentData("webAuthCookie", null); return mWebAuthCookie }
-        set(value) { profile?.putStudentData("webAuthCookie", value); mWebAuthCookie = value }
-    private var mWebAuthCookie: String? = null
+    var webAuthCookie: Map<String, String?> = mapOf()
+        get() { mWebAuthCookie = mWebAuthCookie ?: loginStore.getLoginData("webAuthCookie", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mWebAuthCookie ?: mapOf() }
+        set(value) { loginStore.putLoginData("webAuthCookie", app.gson.toJson(value)); mWebAuthCookie = value }
+    private var mWebAuthCookie: Map<String, String?>? = null
 
     /**
      * Permissions needed to get JSONs from home page
      */
-    var webPermissions: String?
-        get() { mWebPermissions = mWebPermissions ?: profile?.getStudentData("webPermissions", null); return mWebPermissions }
-        set(value) { profile?.putStudentData("webPermissions", value); mWebPermissions = value }
-    private var mWebPermissions: String? = null
+    var webPermissions: Map<String, String?> = mapOf()
+        get() { mWebPermissions = mWebPermissions ?: loginStore.getLoginData("webPermissions", null)?.let { app.gson.fromJson(it, field.toMutableMap()::class.java) }; return mWebPermissions ?: mapOf() }
+        set(value) { loginStore.putLoginData("webPermissions", app.gson.toJson(value)); mWebPermissions = value }
+    private var mWebPermissions: Map<String, String?>? = null
 }

@@ -14,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
-import com.google.gson.JsonParser
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.utils.paddingDp
 import com.mikepenz.iconics.utils.sizeDp
@@ -72,7 +71,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         val platformGuideText = arguments?.getString("platformGuideText")
         val platformDescription = arguments?.getString("platformDescription")
         val platformFormFields = arguments?.getString("platformFormFields")?.split(";")
-        val platformApiData = arguments?.getString("platformApiData")?.let { JsonParser().parse(it)?.asJsonObject }
+        val platformRealmData = arguments?.getString("platformRealmData")?.toJsonObject()
 
         b.title.setText(R.string.login_form_title_format, app.getString(register.registerName))
         b.subTitle.text = platformName ?: app.getString(mode.name)
@@ -159,9 +158,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                 payload.putBoolean("fakeLogin", true)
             }
 
-            platformApiData?.entrySet()?.forEach {
-                payload.putString(it.key, it.value.asString)
-            }
+            payload.putBundle("webRealmData", platformRealmData?.toBundle())
 
             var hasErrors = false
             credentials.forEach { (credential, b) ->

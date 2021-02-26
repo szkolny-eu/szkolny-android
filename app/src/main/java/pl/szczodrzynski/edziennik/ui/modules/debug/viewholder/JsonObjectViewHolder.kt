@@ -13,6 +13,7 @@ import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.databinding.LabItemObjectBinding
+import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.modules.debug.LabJsonAdapter
 import pl.szczodrzynski.edziennik.ui.modules.debug.models.LabJsonObject
@@ -32,6 +33,10 @@ class JsonObjectViewHolder(
     override fun onBind(activity: AppCompatActivity, app: App, item: LabJsonObject, position: Int, adapter: LabJsonAdapter) {
         val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
 
+        b.root.setPadding(item.level * 8.dp + 8.dp, 8.dp, 8.dp, 8.dp)
+
+        b.type.text = "Object"
+
         b.dropdownIcon.rotation = when (item.state) {
             AttendanceAdapter.STATE_CLOSED -> 0f
             else -> 180f
@@ -39,7 +44,7 @@ class JsonObjectViewHolder(
         b.previewContainer.isInvisible = item.state != AttendanceAdapter.STATE_CLOSED
         b.summaryContainer.isInvisible = item.state == AttendanceAdapter.STATE_CLOSED
 
-        b.key.text = item.key
+        b.key.text = item.key.substringAfterLast(":")
         b.previewContainer.text = item.jsonObject.toString().take(200)
         b.summaryContainer.text = item.jsonObject.size().toString() + " elements"
     }

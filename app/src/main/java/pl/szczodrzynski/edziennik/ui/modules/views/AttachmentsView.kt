@@ -121,19 +121,21 @@ class AttachmentsView @JvmOverloads constructor(
             // open file by name, or first part before ':' (Vulcan OneDrive)
             Utils.openFile(context, File(Utils.getStorageDir(), attachment.name.substringBefore(":")))
             return
-        }
+        } else if (attachment.name.contains(":")) {
+            Utils.openUrl(context, attachment.name.substringAfter(":"))
+        } else {
+            attachment.isDownloading = true
+            (adapter as? AttachmentAdapter)?.let {
+                it.notifyItemChanged(it.items.indexOf(attachment))
+            }
 
-        attachment.isDownloading = true
-        (adapter as? AttachmentAdapter)?.let {
-            it.notifyItemChanged(it.items.indexOf(attachment))
-        }
-
-        EdziennikTask.attachmentGet(
+            EdziennikTask.attachmentGet(
                 attachment.profileId,
                 attachment.owner,
                 attachment.id,
                 attachment.name
-        ).enqueue(context)
+            ).enqueue(context)
+        }
     }
 
     private val lastUpdate: Long = 0

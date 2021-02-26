@@ -85,6 +85,7 @@ class VulcanHebeAttendance(
                     subjectId = subjectId,
                     addedDate = addedDate
                 ).also {
+                    it.lessonTopic = attendance.getString("Topic")
                     it.lessonNumber = lessonNumber
                     it.isCounted = isCounted
                 }

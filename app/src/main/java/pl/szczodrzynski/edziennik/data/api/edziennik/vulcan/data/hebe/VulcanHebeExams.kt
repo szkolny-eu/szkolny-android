@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2021-2-21.
+ */
+
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import pl.szczodrzynski.edziennik.*
@@ -35,6 +39,8 @@ class VulcanHebeExams(
                     ?: data.teamClass?.id
                     ?: -1
                 val topic = exam.getString("Content")?.trim() ?: ""
+
+                if (!isCurrentYear(eventDate)) return@forEach
 
                 val lessonList = data.db.timetableDao().getAllForDateNow(profileId, eventDate)
                 val startTime = lessonList.firstOrNull { it.subjectId == subjectId }?.startTime

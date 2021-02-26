@@ -751,6 +751,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onApiTaskErrorEvent(event: ApiTaskErrorEvent) {
         EventBus.getDefault().removeStickyEvent(event)
+        if (event.error.errorCode == ERROR_VULCAN_API_DEPRECATED) {
+            if (event.error.profileId != App.profileId)
+                return
+            ErrorDetailsDialog(this, listOf(event.error))
+        }
         navView.toolbar.apply {
             subtitleFormat = R.string.toolbar_subtitle
             subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
@@ -758,9 +763,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         mainSnackbar.dismiss()
         errorSnackbar.addError(event.error).show()
-        if (event.error.errorCode == ERROR_VULCAN_API_DEPRECATED) {
-            ErrorDetailsDialog(this, listOf(event.error))
-        }
     }
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onAppManagerDetectedEvent(event: AppManagerDetectedEvent) {

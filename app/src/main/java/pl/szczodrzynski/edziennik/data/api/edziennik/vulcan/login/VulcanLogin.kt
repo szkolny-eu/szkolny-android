@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_HEBE
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_WEB_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
@@ -50,10 +49,6 @@ class VulcanLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
             LOGIN_METHOD_VULCAN_WEB_MAIN -> {
                 data.startProgress(R.string.edziennik_progress_login_vulcan_web_main)
                 VulcanLoginWebMain(data) { onSuccess(loginMethodId) }
-            }
-            LOGIN_METHOD_VULCAN_API -> {
-                data.startProgress(R.string.edziennik_progress_login_vulcan_api)
-                VulcanLoginApi(data) { onSuccess(loginMethodId) }
             }
             LOGIN_METHOD_VULCAN_HEBE -> {
                 data.startProgress(R.string.edziennik_progress_login_vulcan_api)

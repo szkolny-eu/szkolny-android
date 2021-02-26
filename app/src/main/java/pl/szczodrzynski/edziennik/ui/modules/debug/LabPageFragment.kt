@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.databinding.LabFragmentBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.fslogin.decode
@@ -59,6 +60,15 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
 
         b.rodo.onClick {
             app.db.teacherDao().query(SimpleSQLiteQuery("UPDATE teachers SET teacherSurname = \"\" WHERE profileId = ${App.profileId}"))
+        }
+        
+        b.fullSync.onClick { 
+            app.db.query(SimpleSQLiteQuery("UPDATE profiles SET empty = 1 WHERE profileId = ${App.profileId}"))
+            app.db.query(SimpleSQLiteQuery("DELETE FROM endpointTimers WHERE profileId = ${App.profileId}"))
+        }
+
+        b.clearProfile.onClick {
+            ProfileRemoveDialog(activity, App.profileId, "FAKE", noProfileRemoval = true)
         }
 
         b.removeHomework.onClick {

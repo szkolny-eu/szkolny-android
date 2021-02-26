@@ -26,6 +26,7 @@ import pl.szczodrzynski.edziennik.ui.modules.debug.models.LabJsonObject
 import pl.szczodrzynski.edziennik.ui.modules.debug.viewholder.JsonArrayViewHolder
 import pl.szczodrzynski.edziennik.ui.modules.debug.viewholder.JsonElementViewHolder
 import pl.szczodrzynski.edziennik.ui.modules.debug.viewholder.JsonObjectViewHolder
+import pl.szczodrzynski.edziennik.ui.modules.debug.viewholder.JsonSubObjectViewHolder
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.ExpandableItemModel
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
 import kotlin.coroutines.CoroutineContext
@@ -35,14 +36,20 @@ class LabJsonAdapter(
         var onJsonElementClick: ((item: LabJsonElement) -> Unit)? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), CoroutineScope {
     companion object {
-        private const val TAG = "AttendanceAdapter"
+        private const val TAG = "LabJsonAdapter"
         private const val ITEM_TYPE_OBJECT = 0
-        private const val ITEM_TYPE_ARRAY = 1
-        private const val ITEM_TYPE_ELEMENT = 2
+        private const val ITEM_TYPE_SUB_OBJECT = 1
+        private const val ITEM_TYPE_ARRAY = 2
+        private const val ITEM_TYPE_ELEMENT = 3
         const val STATE_CLOSED = 0
         const val STATE_OPENED = 1
 
         fun expand(item: Any, level: Int): MutableList<Any> {
+            val path = when (item) {
+                is LabJsonObject -> item.key + ":"
+                is LabJsonArray -> item.key + ":"
+                else -> ""
+            }
             val json = when (item) {
                 is LabJsonObject -> item.jsonObject
                 is LabJsonArray -> item.jsonArray
@@ -53,17 +60,16 @@ class LabJsonAdapter(
             }
 
             return when (json) {
-                is JsonObject -> json.entrySet().mapNotNull { wrap(it.key, it.value, level) }
-                is JsonArray -> json.mapIndexedNotNull { index, jsonElement -> wrap(index.toString(), jsonElement, level) }
-                else -> listOf(LabJsonElement("?", json, level))
+                is JsonObject -> json.entrySet().mapNotNull { wrap(path + it.key, it.value, level) }
+                is JsonArray -> json.mapIndexedNotNull { index, jsonElement -> wrap(path + index.toString(), jsonElement, level) }
+                else -> listOf(LabJsonElement("$path?", json, level))
             }.toMutableList()
         }
-        fun wrap(key: String, item: JsonElement, level: Int = 0): Any? {
+        fun wrap(key: String, item: JsonElement, level: Int = 0): Any {
             return when (item) {
                 is JsonObject -> LabJsonObject(key, item, level + 1)
                 is JsonArray -> LabJsonArray(key, item, level + 1)
-                is JsonElement -> LabJsonElement(key, item, level + 1)
-                else -> null
+                else -> LabJsonElement(key, item, level + 1)
             }
         }
     }
@@ -80,6 +86,7 @@ class LabJsonAdapter(
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             ITEM_TYPE_OBJECT -> JsonObjectViewHolder(inflater, parent)
+            ITEM_TYPE_SUB_OBJECT -> JsonSubObjectViewHolder(inflater, parent)
             ITEM_TYPE_ARRAY -> JsonArrayViewHolder(inflater, parent)
             ITEM_TYPE_ELEMENT -> JsonElementViewHolder(inflater, parent)
             else -> throw IllegalArgumentException("Incorrect viewType")
@@ -87,8 +94,10 @@ class LabJsonAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (items[position]) {
-            is LabJsonObject -> ITEM_TYPE_OBJECT
+        return when (val item = items[position]) {
+            is LabJsonObject ->
+                if (item.level == 1) ITEM_TYPE_OBJECT
+                else ITEM_TYPE_SUB_OBJECT
             is LabJsonArray -> ITEM_TYPE_ARRAY
             is LabJsonElement -> ITEM_TYPE_ELEMENT
             else -> throw IllegalArgumentException("Incorrect viewType")
@@ -118,7 +127,7 @@ class LabJsonAdapter(
                     View.ROTATION,
                     if (model.state == STATE_CLOSED) 0f else 180f,
                     if (model.state == STATE_CLOSED) 180f else 0f
-            ).setDuration(200).start();
+            ).setDuration(200).start()
         }
 
         // hide the preview, show summary
@@ -143,7 +152,9 @@ class LabJsonAdapter(
             var end: Int = items.size
             for (i in start until items.size) {
                 val model1 = items[i]
-                val level = (model1 as? ExpandableItemModel<*>)?.level ?: 3
+                val level = (model1 as? ExpandableItemModel<*>)?.level
+                    ?: (model1 as? LabJsonElement)?.level
+                    ?: model.level
                 if (level <= model.level) {
                     end = i
                     break
@@ -170,6 +181,7 @@ class LabJsonAdapter(
 
         val viewType = when (holder) {
             is JsonObjectViewHolder -> ITEM_TYPE_OBJECT
+            is JsonSubObjectViewHolder -> ITEM_TYPE_SUB_OBJECT
             is JsonArrayViewHolder -> ITEM_TYPE_ARRAY
             is JsonElementViewHolder -> ITEM_TYPE_ELEMENT
             else -> throw IllegalArgumentException("Incorrect viewType")
@@ -180,6 +192,7 @@ class LabJsonAdapter(
 
         when {
             holder is JsonObjectViewHolder && item is LabJsonObject -> holder.onBind(activity, app, item, position, this)
+            holder is JsonSubObjectViewHolder && item is LabJsonObject -> holder.onBind(activity, app, item, position, this)
             holder is JsonArrayViewHolder && item is LabJsonArray -> holder.onBind(activity, app, item, position, this)
             holder is JsonElementViewHolder && item is LabJsonElement -> holder.onBind(activity, app, item, position, this)
         }

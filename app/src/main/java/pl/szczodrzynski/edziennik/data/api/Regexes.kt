@@ -156,7 +156,7 @@ object Regexes {
         """\(przeniesiona (z|na) lekcj[ię] ([0-9]+), (.+)\)""".toRegex()
     }
     val VULCAN_WEB_PERMISSIONS by lazy {
-        """permissions: '([A-z0-9/=+\-_]+?)'""".toRegex()
+        """permissions: '([A-z0-9/=+\-_|]+?)'""".toRegex()
     }
     val VULCAN_WEB_SYMBOL_VALIDATE by lazy {
         """[A-z0-9]+""".toRegex(IGNORE_CASE)

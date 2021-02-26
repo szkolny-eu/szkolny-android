@@ -30,11 +30,12 @@
                 tools:text="lessonRanges" />
 
             <TextView
+                android:id="@+id/type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:fontFamily="monospace"
-                android:text="JsonObject"
+                android:text="Object"
                 android:textAppearance="@style/NavView.TextView.Helper" />
 
             <com.mikepenz.iconics.view.IconicsImageView
