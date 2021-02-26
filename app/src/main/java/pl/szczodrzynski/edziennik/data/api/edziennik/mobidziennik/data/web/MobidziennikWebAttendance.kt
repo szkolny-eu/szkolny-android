@@ -188,28 +188,34 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
         }
         entry = entry.removePrefix(typeSymbol)
 
-        val isCounted = true
+        var isCustom = false
         val baseType = when (typeSymbol) {
             "." -> TYPE_PRESENT
             "|" -> TYPE_ABSENT
             "+" -> TYPE_ABSENT_EXCUSED
             "s" -> TYPE_BELATED
             "z" -> TYPE_RELEASED
-            "e" -> TYPE_PRESENT_CUSTOM
-            "en" -> TYPE_ABSENT
-            "ep" -> TYPE_PRESENT_CUSTOM
-            "+ₑ" -> TYPE_ABSENT_EXCUSED
-            else -> TYPE_UNKNOWN
+            else -> {
+                isCustom = true
+                when (typeSymbol) {
+                    "e" -> TYPE_PRESENT_CUSTOM
+                    "en" -> TYPE_ABSENT
+                    "ep" -> TYPE_PRESENT_CUSTOM
+                    "+ₑ" -> TYPE_ABSENT_EXCUSED
+                    else -> TYPE_UNKNOWN
+                }
+            }
         }
         val typeName = types?.get(typeSymbol) ?: ""
         val typeColor = when (typeSymbol) {
             "e" -> 0xff673ab7
             "en" -> 0xffec407a
             "ep" -> 0xff4caf50
+            "+ₑ" -> 0xff795548
             else -> null
         }?.toInt()
 
-        val typeShort = if (isCounted)
+        val typeShort = if (!isCustom)
             data.app.attendanceManager.getTypeShort(baseType)
         else
             typeSymbol
@@ -233,7 +239,6 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                 subjectId = subjectId
         ).also {
             it.lessonTopic = topic
-            it.isCounted = isCounted
         }
 
         data.attendanceList.add(attendanceObject)
