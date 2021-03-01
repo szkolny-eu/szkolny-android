@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_loginChooserFragment_to_loginEggsFragment"
             app:destination="@id/loginEggsFragment" />
+        <!-- librus -->
+        <action android:id="@+id/action_loginChooserFragment_to_loginLibrusFragment"
+            app:destination="@id/loginLibrusFragment" />
     </fragment>
     <!-- eggs -->
     <fragment
@@ -31,6 +34,12 @@
         <action
             android:id="@+id/action_loginEggsFragment_to_loginPrizeFragment"
             app:destination="@id/loginPrizeFragment" />
+    </fragment>
+    <!-- librus -->
+    <fragment
+        android:id="@+id/loginLibrusFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginLibrusFragment"
+        android:label="LoginEggsFragment">
     </fragment>
     <fragment
         android:id="@+id/loginPrizeFragment"

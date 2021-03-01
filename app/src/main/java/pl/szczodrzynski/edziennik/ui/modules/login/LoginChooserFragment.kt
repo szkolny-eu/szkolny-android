@@ -201,6 +201,11 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             return
         }
 
+        if (loginType.loginType == LOGIN_TYPE_LIBRUS) {
+            nav.navigate(R.id.loginLibrusFragment, null, activity.navOptions)
+            return
+        }
+
         launch {
             if (!checkAvailability(loginType.loginType))
                 return@launch
