@@ -20,6 +20,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
@@ -202,6 +203,7 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         }
 
         if (loginType.loginType == LOGIN_TYPE_LIBRUS) {
+            FirebaseAnalytics.getInstance(activity).logEvent("librus_hacked", Bundle())
             nav.navigate(R.id.loginLibrusFragment, null, activity.navOptions)
             return
         }
