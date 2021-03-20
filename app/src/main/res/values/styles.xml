@@ -111,12 +111,9 @@
         <item name="md_link_color">?colorAccent</item>
         <item name="md_item_color">?android:textColorPrimary</item>
 
-        <item name="mal_toolbarTheme">@style/Theme.Mal.Toolbar.Dark</item>
-        <item name="mal_toolbarPopupTheme">@style/Theme.Mal.Toolbar.Light</item>
         <item name="mal_color_primary">?android:textColorPrimary</item>
         <item name="mal_color_secondary">?android:textColorSecondary</item>
         <item name="mal_card_background">?colorSurface</item>
-        <item name="mal_divider_color">@color/dividerColor</item>
 
         <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_light</item>
         <item name="timetable_lesson_cancelled_color">#9f9f9f</item>
@@ -147,12 +144,9 @@
         <item name="md_link_color">?colorAccent</item>
         <item name="md_item_color">?android:textColorPrimary</item>
 
-        <item name="mal_toolbarTheme">@style/Theme.Mal.Toolbar.Dark</item>
-        <item name="mal_toolbarPopupTheme">@style/Theme.Mal.Toolbar.Dark</item>
         <item name="mal_color_primary">@color/primaryTextDark</item>
         <item name="mal_color_secondary">@color/secondaryTextDark</item>
         <item name="mal_card_background">?colorSurface</item>
-        <item name="mal_divider_color">@color/dividerColor</item>
 
         <item name="timetable_lesson_bg">@drawable/timetable_lesson_bg_dark</item>
         <item name="timetable_lesson_cancelled_color">#838383</item>
