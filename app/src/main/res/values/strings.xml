@@ -1386,4 +1386,5 @@
     <string name="login_chooser_mode_testing">{cmd-alert-circle-outline} Wersja testowa</string>
     <string name="login_chooser_mode_dev_only">{cmd-android-studio} Wersja deweloperska</string>
     <string name="eggs">\???</string>
+    <string name="rate_snackbar_negative_message">Szkoda, opinie innych pomagają mi rozwijać aplikację.</string>
 </resources>

@@ -532,12 +532,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                             app.config.appRateSnackbarTime = 0
                         }
                         .onNegative { cafeBar ->
-                            Toast.makeText(this, "Szkoda, opinie innych pomagają mi rozwijać aplikację.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, R.string.rate_snackbar_negative_message, Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
                             app.config.appRateSnackbarTime = 0
                         }
                         .onNeutral { cafeBar ->
-                            Toast.makeText(this, "OK", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, R.string.ok, Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
                             app.config.appRateSnackbarTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
                         }

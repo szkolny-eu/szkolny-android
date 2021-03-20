@@ -168,7 +168,7 @@ dependencies {
     implementation "uk.co.samuelwall:material-tap-target-prompt:2.14.0"
 
     implementation project(":agendacalendarview")
-    implementation project(":cafebar")
+    implementation "eu.szkolny:cafebar:5bf0c618de"
     implementation "eu.szkolny:material-about-library:0534abf316"
     implementation project(":mhttp")
     implementation project(":nachos")
