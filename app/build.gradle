@@ -171,7 +171,7 @@ dependencies {
     implementation "eu.szkolny:cafebar:5bf0c618de"
     implementation "eu.szkolny:material-about-library:0534abf316"
     implementation project(":mhttp")
-    implementation project(":nachos")
+    implementation "eu.szkolny:nachos:0e5dfcaceb"
     //implementation project(":Navigation")
     implementation project(":szkolny-font")
 
