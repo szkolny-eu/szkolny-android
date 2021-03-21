@@ -167,6 +167,8 @@ dependencies {
     implementation "eu.szkolny:nachos:0e5dfcaceb"
     //implementation project(":Navigation")
     implementation "eu.szkolny:szkolny-font:1dab7d64ed"
+    implementation "eu.szkolny.selective-dao:annotation:27f8f3f194"
+    kapt "eu.szkolny.selective-dao:codegen:27f8f3f194"
 
     implementation "com.github.ChuckerTeam.Chucker:library:3.0.1"
     //releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.0.1"
@@ -194,9 +196,6 @@ dependencies {
     implementation "io.coil-kt:coil:0.9.2"
 
     implementation 'com.github.kuba2k2:NumberSlidingPicker:2921225f76'
-
-    implementation project(":annotation")
-    kapt project(":codegen")
 
     implementation 'com.google.android:flexbox:2.0.1'
 

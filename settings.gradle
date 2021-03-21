@@ -1,7 +1,5 @@
 include ':wear'
 include ':wear'
-include ':codegen'
-include ':annotation'
 rootProject.name='Szkolny.eu'
 include ':app'
 /*
