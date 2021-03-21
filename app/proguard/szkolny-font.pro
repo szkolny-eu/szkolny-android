@@ -1,1 +1,0 @@
--keep class com.mikepenz.szkolny_font_typeface_library.SzkolnyFont { *; }
