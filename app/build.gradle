@@ -115,15 +115,15 @@ dependencies {
     // Szkolny.eu libraries/forks
     implementation "eu.szkolny:agendacalendarview:1799f8ef47"
     implementation "eu.szkolny:cafebar:5bf0c618de"
+    implementation "eu.szkolny.fslogin:lib:2.0.0"
     implementation "eu.szkolny:material-about-library:0534abf316"
     implementation "eu.szkolny:mhttp:af4b62e6e9"
     implementation "eu.szkolny:nachos:0e5dfcaceb"
     implementation "eu.szkolny.selective-dao:annotation:27f8f3f194"
-    implementation "pl.szczodrzynski:NavLib:v0.7.0"
-    implementation "pl.szczodrzynski:NumberSlidingPicker:2921225f76"
-    implementation "pl.szczodrzynski:RecyclerTabLayout:700f980584"
-    implementation "pl.szczodrzynski:Tachyon:551943a6b5"
-    implementation "pl.szczodrzynski.FSLogin:lib:2.0.0"
+    implementation "pl.szczodrzynski:navlib:0.7.2"
+    implementation "pl.szczodrzynski:numberslidingpicker:2921225f76"
+    implementation "pl.szczodrzynski:recyclertablayout:700f980584"
+    implementation "pl.szczodrzynski:tachyon:551943a6b5"
     kapt "eu.szkolny.selective-dao:codegen:27f8f3f194"
 
     // Iconics & related
