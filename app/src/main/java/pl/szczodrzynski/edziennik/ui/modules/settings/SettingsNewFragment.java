@@ -239,7 +239,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_profile_notifications_text),
                             getString(R.string.settings_profile_notifications_subtext),
-                            icon(CommunityMaterial.Icon.cmd_filter_outline, iconSizeDp, iconColor)
+                            icon(CommunityMaterial.Icon2.cmd_filter_outline, iconSizeDp, iconColor)
                     )
                             .setOnClickAction(() -> {
                                 new NotificationFilterDialog(activity, null, null);
@@ -295,7 +295,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         new MaterialAboutSwitchItem.Builder()
                                 .text(R.string.settings_theme_snowfall_text)
                                 .subText(R.string.settings_theme_snowfall_subtext)
-                                .icon(icon(CommunityMaterial.Icon2.cmd_snowflake, iconSizeDp, iconColor))
+                                .icon(icon(CommunityMaterial.Icon3.cmd_snowflake, iconSizeDp, iconColor))
                         .setChecked(app.getConfig().getUi().getSnowfall())
                         .setOnCheckedChanged((item, isChecked) -> {
                             app.getConfig().getUi().setSnowfall(isChecked);
@@ -310,7 +310,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_theme_theme_text),
                             Themes.INSTANCE.getThemeName(activity),
-                            icon(CommunityMaterial.Icon2.cmd_palette_outline, iconSizeDp, iconColor)
+                            icon(CommunityMaterial.Icon3.cmd_palette_outline, iconSizeDp, iconColor)
                     )
                     .setOnClickAction(() -> {
                         new MaterialDialog.Builder(activity)
@@ -354,7 +354,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_theme_mini_drawer_buttons_text),
                             null,
-                            icon(CommunityMaterial.Icon.cmd_format_list_checks, iconSizeDp, iconColor)
+                            icon(CommunityMaterial.Icon2.cmd_format_list_checks, iconSizeDp, iconColor)
                     )
                     .setOnClickAction(() -> {
                         List<Integer> buttonIds = new ArrayList<>();
@@ -472,7 +472,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             items.add(
                     new MaterialAboutSwitchItem.Builder( )
                             .text(R.string.settings_theme_open_drawer_on_back_pressed_text)
-                            .icon(icon(CommunityMaterial.Icon2.cmd_menu_open, iconSizeDp, iconColor))
+                            .icon(icon(CommunityMaterial.Icon3.cmd_menu_open, iconSizeDp, iconColor))
                             .setChecked(app.getConfig().getUi().getOpenDrawerOnBackPressed())
                             .setOnCheckedChanged((item, isChecked) -> {
                                 app.getConfig().getUi().setOpenDrawerOnBackPressed(isChecked);
@@ -521,7 +521,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         return new MaterialAboutSwitchItem.Builder()
                 .text(R.string.settings_sync_wifi_text)
                 .subText(R.string.settings_sync_wifi_subtext)
-                .icon(icon(CommunityMaterial.Icon2.cmd_wifi_strength_2, iconSizeDp, iconColor))
+                .icon(icon(CommunityMaterial.Icon3.cmd_wifi_strength_2, iconSizeDp, iconColor))
         .setChecked(app.getConfig().getSync().getOnlyWifi())
         .setOnCheckedChanged((item, isChecked) -> {
             app.getConfig().getSync().setOnlyWifi(isChecked);
@@ -721,7 +721,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         new MaterialAboutActionItem(
                                 getString(R.string.settings_sync_notifications_settings_text),
                                 getString(R.string.settings_sync_notifications_settings_subtext),
-                                icon(CommunityMaterial.Icon2.cmd_settings_outline, iconSizeDp, iconColor)
+                                icon(CommunityMaterial.Icon.cmd_cog_outline, iconSizeDp, iconColor)
                         )
                         .setOnClickAction(() -> {
                             String channel = app.getNotificationChannelsManager().getData().getKey();
@@ -794,7 +794,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         return new MaterialAboutSwitchItem.Builder()
                 .text(R.string.settings_register_shared_events_text)
                 .subText(R.string.settings_register_shared_events_subtext)
-                .icon(icon(CommunityMaterial.Icon2.cmd_share_outline, iconSizeDp, iconColor))
+                .icon(icon(CommunityMaterial.Icon3.cmd_share_outline, iconSizeDp, iconColor))
         .setChecked(app.getProfile().getEnableSharedEvents())
         .setOnCheckedChanged((item, isChecked) -> {
             app.getProfile().setEnableSharedEvents(isChecked);
@@ -822,7 +822,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             items.add(new MaterialAboutActionItem(
                     getString(R.string.menu_grades_config),
                     null,
-                    icon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline, iconSizeDp, iconColor)
+                    icon(CommunityMaterial.Icon3.cmd_numeric_5_box_outline, iconSizeDp, iconColor)
             ).setOnClickAction(() -> new GradesConfigDialog(activity, false, null, null)));
 
             items.add(new MaterialAboutActionItem(
@@ -958,7 +958,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutSwitchItem.Builder()
                             .text(R.string.settings_register_count_in_seconds_text)
                             .subText(R.string.settings_register_count_in_seconds_subtext)
-                            .icon(icon(CommunityMaterial.Icon2.cmd_timer, iconSizeDp, iconColor))
+                            .icon(icon(CommunityMaterial.Icon3.cmd_timer, iconSizeDp, iconColor))
                     .setChecked(app.getConfig().getTimetable().getCountInSeconds())
                     .setOnCheckedChanged((item, isChecked) -> {
                         app.getConfig().getTimetable().setCountInSeconds(isChecked);
@@ -986,7 +986,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 items.add(
                         new MaterialAboutSwitchItem.Builder()
                                 .text(R.string.settings_register_hide_sticks_from_old)
-                                .icon(icon(CommunityMaterial.Icon2.cmd_numeric_1_box_outline, iconSizeDp, iconColor))
+                                .icon(icon(CommunityMaterial.Icon3.cmd_numeric_1_box_outline, iconSizeDp, iconColor))
                         .setChecked(app.getConfig().forProfile().getGrades().getHideSticksFromOld())
                         .setOnCheckedChanged((item, isChecked) -> {
                             app.getConfig().forProfile().getGrades().setHideSticksFromOld(isChecked);
@@ -1041,7 +1041,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_privacy_policy_text)
-                    .icon(icon(CommunityMaterial.Icon2.cmd_shield_outline, iconSizeDp, primaryTextOnPrimaryBg))
+                    .icon(icon(CommunityMaterial.Icon3.cmd_shield_outline, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://szkolny.eu/privacy-policy")))
                     .build());
 
@@ -1055,7 +1055,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_language_text)
                     .subText(R.string.settings_about_language_subtext)
-                    .icon(icon(CommunityMaterial.Icon2.cmd_translate, iconSizeDp, primaryTextOnPrimaryBg))
+                    .icon(icon(CommunityMaterial.Icon3.cmd_translate, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(() -> {
                         new MaterialDialog.Builder(activity)
                                 .title(getString(R.string.settings_about_language_dialog_title))
@@ -1090,7 +1090,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_update_text)
                     .subText(R.string.settings_about_update_subtext)
-                    .icon(icon(CommunityMaterial.Icon2.cmd_update, iconSizeDp, primaryTextOnPrimaryBg))
+                    .icon(icon(CommunityMaterial.Icon3.cmd_update, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(() -> {
                         //open browser or intent here
                         NetworkUtils net = new NetworkUtils(app);
@@ -1110,7 +1110,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_changelog_text)
-                    .icon(icon(CommunityMaterial.Icon2.cmd_radar, iconSizeDp, primaryTextOnPrimaryBg))
+                    .icon(icon(CommunityMaterial.Icon3.cmd_radar, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(() -> new ChangelogDialog(activity, null, null))
                     .build());
 

@@ -28,7 +28,7 @@
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginTop="32dp"
                     app:iiv_color="@color/colorPrimary"
-                    app:iiv_icon="cmd-account-check"
+                    app:iiv_icon="cmd-account-check-outline"
                     app:iiv_size="32dp"
                     tools:srcCompat="@tools:sample/avatars" />
 

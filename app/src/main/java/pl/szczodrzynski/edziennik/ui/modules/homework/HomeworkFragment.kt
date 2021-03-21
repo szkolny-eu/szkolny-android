@@ -100,7 +100,7 @@ class HomeworkFragment : Fragment(), CoroutineScope {
             bottomBar.apply {
                 fabEnable = true
                 fabExtendedText = getString(R.string.add)
-                fabIcon = CommunityMaterial.Icon2.cmd_plus
+                fabIcon = CommunityMaterial.Icon3.cmd_plus
             }
 
             setFabOnClickListener(View.OnClickListener {

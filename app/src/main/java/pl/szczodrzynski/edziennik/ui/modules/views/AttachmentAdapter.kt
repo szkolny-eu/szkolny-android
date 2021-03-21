@@ -69,7 +69,7 @@ class AttachmentAdapter(
             "jpg", "jpeg", "png", "bmp", "gif" -> SzkolnyFont.Icon.szf_file_image_outline
             "zip", "rar", "tar", "7z" -> SzkolnyFont.Icon.szf_zip_box_outline
             "html", "cpp", "c", "h", "css", "java", "py" -> SzkolnyFont.Icon.szf_file_code_outline
-            else -> CommunityMaterial.Icon.cmd_file_document_outline
+            else -> CommunityMaterial.Icon2.cmd_file_document_outline
         }
 
         b.chip.text = if (item.isDownloading) {
@@ -83,7 +83,7 @@ class AttachmentAdapter(
 
         b.chip.chipIcon = IconicsDrawable(context).apply {
             icon = attachmentIcon
-            colorAttr(context, R.attr.colorSurface)
+            colorAttr(context, R.attr.colorOnSurface)
             sizeDp = 24
             paddingDp = 2
         }

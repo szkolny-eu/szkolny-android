@@ -128,7 +128,7 @@ dependencies {
     // Iconics & related
     implementation "com.mikepenz:iconics-core:5.2.8"
     implementation "com.mikepenz:iconics-views:5.2.8"
-    implementation "com.mikepenz:community-material-typeface:3.5.95.1-kotlin@aar"
+    implementation "com.mikepenz:community-material-typeface:5.8.55.0-kotlin@aar"
     implementation "eu.szkolny:szkolny-font:1dab7d64ed"
 
     // Other dependencies

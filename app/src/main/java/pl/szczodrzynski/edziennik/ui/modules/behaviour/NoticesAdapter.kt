@@ -50,7 +50,7 @@ class NoticesAdapter//getting the context and product list with constructor
 
         if (notice.type == Notice.TYPE_POSITIVE) {
             holder.noticesItemType.setImageDrawable(
-                IconicsDrawable(context, CommunityMaterial.Icon2.cmd_plus_circle_outline).apply {
+                IconicsDrawable(context, CommunityMaterial.Icon3.cmd_plus_circle_outline).apply {
                     colorRes = R.color.md_green_600
                     sizeDp = 36
                 }

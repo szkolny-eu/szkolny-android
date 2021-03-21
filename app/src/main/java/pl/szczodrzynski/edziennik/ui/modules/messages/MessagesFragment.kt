@@ -97,7 +97,7 @@ class MessagesFragment : Fragment(), CoroutineScope {
             bottomBar.apply {
                 fabEnable = true
                 fabExtendedText = getString(R.string.compose)
-                fabIcon = CommunityMaterial.Icon2.cmd_pencil_outline
+                fabIcon = CommunityMaterial.Icon3.cmd_pencil_outline
             }
 
             setFabOnClickListener(View.OnClickListener {

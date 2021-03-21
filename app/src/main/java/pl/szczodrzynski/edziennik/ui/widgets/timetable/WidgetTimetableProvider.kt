@@ -117,7 +117,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
 
             views.setImageViewBitmap(
                 R.id.widgetTimetableRefresh,
-                IconicsDrawable(context, CommunityMaterial.Icon2.cmd_refresh).apply {
+                IconicsDrawable(context, CommunityMaterial.Icon3.cmd_refresh).apply {
                     colorInt = Color.WHITE
                     sizeDp = if (config.bigStyle) 24 else 16
                 }.toBitmap()

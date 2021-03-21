@@ -110,7 +110,7 @@ object LoginInfo {
                             FormField(
                                 keyName = "accountPin",
                                 name = R.string.login_hint_pin,
-                                icon = CommunityMaterial.Icon2.cmd_lock,
+                                icon = CommunityMaterial.Icon2.cmd_lock_outline,
                                 emptyText = R.string.login_error_no_pin,
                                 invalidText = R.string.login_error_incorrect_pin,
                                 errorCodes = mapOf(),
@@ -157,7 +157,7 @@ object LoginInfo {
                             FormField(
                                 keyName = "symbol",
                                 name = R.string.login_hint_symbol,
-                                icon = CommunityMaterial.Icon2.cmd_school,
+                                icon = CommunityMaterial.Icon3.cmd_school_outline,
                                 emptyText = R.string.login_error_no_symbol,
                                 invalidText = R.string.login_error_incorrect_symbol,
                                 errorCodes = mapOf(
@@ -170,7 +170,7 @@ object LoginInfo {
                             FormField(
                                 keyName = "devicePin",
                                 name = R.string.login_hint_pin,
-                                icon = CommunityMaterial.Icon2.cmd_lock,
+                                icon = CommunityMaterial.Icon2.cmd_lock_outline,
                                 emptyText = R.string.login_error_no_pin,
                                 invalidText = R.string.login_error_incorrect_pin,
                                 errorCodes = mapOf(
@@ -252,7 +252,7 @@ object LoginInfo {
                             FormField(
                                 keyName = "serverName",
                                 name = R.string.login_hint_address,
-                                icon = CommunityMaterial.Icon2.cmd_web,
+                                icon = CommunityMaterial.Icon3.cmd_web,
                                 emptyText = R.string.login_error_no_address,
                                 invalidText = R.string.login_error_incorrect_address,
                                 errorCodes = mapOf(

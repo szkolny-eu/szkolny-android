@@ -18,7 +18,7 @@
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="32dp"
             app:iiv_color="@color/colorPrimary"
-            app:iiv_icon="cmd-tooltip-account"
+            app:iiv_icon="cmd-comment-account-outline"
             app:iiv_size="32dp"
             tools:srcCompat="@tools:sample/avatars" />
 

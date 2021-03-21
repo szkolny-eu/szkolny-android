@@ -88,7 +88,7 @@ class HomeTimetableCard(
         holder.root += b.root
 
         b.settings.setImageDrawable(
-            IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_settings_outline).apply {
+            IconicsDrawable(activity, CommunityMaterial.Icon.cmd_cog_outline).apply {
                 colorAttr(activity, R.attr.colorIcon)
                 sizeDp = 20
             }
@@ -102,7 +102,7 @@ class HomeTimetableCard(
         )
 
         b.showCounter.setImageDrawable(
-            IconicsDrawable(activity, CommunityMaterial.Icon.cmd_fullscreen).apply {
+            IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_fullscreen).apply {
                 colorAttr(activity, R.attr.colorIcon)
                 sizeDp = 20
             }
