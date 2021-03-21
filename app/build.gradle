@@ -99,7 +99,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-wearable:17.0.0"
     implementation "com.google.firebase:firebase-core:18.0.2"
     implementation "com.google.firebase:firebase-crashlytics:17.4.0"
-    implementation "com.google.firebase:firebase-messaging:20.1.3"
+    implementation("com.google.firebase:firebase-messaging") { version { strictly "20.1.3" } }
 
     // OkHttp, Retrofit, Gson, Jsoup
     implementation("com.squareup.okhttp3:okhttp") { version { strictly "3.12.13" } }
@@ -142,12 +142,12 @@ dependencies {
     implementation "com.github.ChuckerTeam.Chucker:library:3.0.1"
     implementation "com.github.jetradarmobile:android-snowfall:1.2.0"
     implementation "com.github.wulkanowy.uonet-request-signer:hebe-jvm:a99ca50a31"
-    implementation "com.heinrichreimersoftware:material-intro:1.5.8" // do not update
+    implementation("com.heinrichreimersoftware:material-intro") { version { strictly "1.5.8" } }
     implementation "com.hypertrack:hyperlog:0.0.10"
     implementation "com.jaredrummler:colorpicker:1.1.0"
     implementation "com.qifan.powerpermission:powerpermission-coroutines:1.3.0"
     implementation "com.qifan.powerpermission:powerpermission:1.3.0"
-    implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0" // do not update
+    implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0"
     implementation "com.wdullaer:materialdatetimepicker:4.2.3"
     implementation "com.yuyh.json:jsonviewer:1.0.6"
     implementation "io.coil-kt:coil:1.1.1"
@@ -155,7 +155,7 @@ dependencies {
     implementation "me.grantland:autofittextview:0.2.1"
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "org.greenrobot:eventbus:3.2.0"
-    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.15"
+    implementation("pl.droidsonroids.gif:android-gif-drawable") { version { strictly "1.2.15" } }
 
     // Debug-only dependencies
     debugImplementation "com.amitshekhar.android:debug-db:1.0.5"
