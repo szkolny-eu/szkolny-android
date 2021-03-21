@@ -378,7 +378,7 @@ class EventManualDialog(
                             customColor = color
                         }
                     })
-            colorPickerDialog.show(activity.fragmentManager, "color-picker-dialog")
+            colorPickerDialog.show(activity.supportFragmentManager, "color-picker-dialog")
         }
     }}
 
