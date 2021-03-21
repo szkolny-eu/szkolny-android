@@ -1,7 +1,2 @@
-include ':wear'
-include ':wear'
 rootProject.name='Szkolny.eu'
 include ':app'
-/*
-include ':Navigation'
-project(':Navigation').projectDir = new File(settingsDir, '../Navigation/navlib')*/
