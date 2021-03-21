@@ -3,7 +3,7 @@ include ':wear'
 include ':codegen'
 include ':annotation'
 rootProject.name='Szkolny.eu'
-include ':app', ':szkolny-font'
+include ':app'
 /*
 include ':Navigation'
 project(':Navigation').projectDir = new File(settingsDir, '../Navigation/navlib')*/

@@ -97,11 +97,12 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                 b.textEdit.id = credential.name
 
                 b.textEdit.setText(arguments?.getString(credential.keyName) ?: "")
-                b.textLayout.startIconDrawable = IconicsDrawable(activity)
-                        .icon(credential.icon)
-                        .sizeDp(24)
-                        .paddingDp(2)
-                        .colorAttr(activity, R.attr.colorOnBackground)
+                b.textLayout.startIconDrawable = IconicsDrawable(activity).apply {
+                    icon = credential.icon
+                    sizeDp = 24
+                    paddingDp = 2
+                    colorAttr(activity, R.attr.colorOnBackground)
+                }
 
                 this.b.formContainer.addView(b.root)
                 credentials[credential] = b

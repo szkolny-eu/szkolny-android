@@ -16,12 +16,12 @@ import com.github.tibolte.agendacalendarview.CalendarPickerController
 import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent
 import com.github.tibolte.agendacalendarview.models.CalendarEvent
 import com.github.tibolte.agendacalendarview.models.IDayItem
-import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.IconicsSize
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
@@ -278,10 +278,11 @@ class AgendaFragment : Fragment(), CoroutineScope {
         val unreadEventDates = mutableSetOf<Int>()
 
         events.forEach { event ->
-            val eventIcon = IconicsDrawable(activity)
-                    .icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle)
-                    .size(IconicsSize.dp(10))
-                    .color(IconicsColor.colorInt(event.eventColor))
+            val eventIcon = IconicsDrawable(activity).apply {
+                icon = CommunityMaterial.Icon.cmd_checkbox_blank_circle
+                sizeDp = 10
+                colorInt = event.eventColor
+            }
 
             dayList.add(EventDay(event.startTimeCalendar, eventIcon))
 

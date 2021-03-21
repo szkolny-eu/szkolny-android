@@ -44,7 +44,7 @@ buildscript {
 
                 materialdialogs  : "0.9.6.0",
                 materialdrawer   : "817e45765c367034b03046aaea6e95eeabcb40e9",
-                iconics          : "4.0.1",
+                iconics          : "5.2.8",
                 font_cmd         : "3.5.95.1-kotlin",
 
                 navlib           : "28cdab341470dffa5f331379fe9702482681d7de",

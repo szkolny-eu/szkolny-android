@@ -25,11 +25,11 @@ import com.danielstone.materialaboutlibrary.items.MaterialAboutSwitchItem;
 import com.danielstone.materialaboutlibrary.items.MaterialAboutTitleItem;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
-import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.IconicsSize;
+import com.mikepenz.iconics.typeface.IIcon;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont;
+import com.mikepenz.iconics.utils.IconicsConvertersKt;
+import com.mikepenz.iconics.utils.IconicsDrawableExtensionsKt;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.szkolny.font.SzkolnyFont;
+import kotlin.Unit;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.ExtensionsKt;
@@ -90,6 +92,15 @@ public class SettingsNewFragment extends MaterialAboutFragment {
     private int secondaryTextOnPrimaryBg = -1;
     private int iconSizeDp = 20;
 
+    private IconicsDrawable icon(IIcon icon, int sizeDp, int color) {
+        return new IconicsDrawable(activity).apply((drawable) -> {
+            drawable.setIcon(icon);
+            IconicsConvertersKt.setSizeDp(drawable, sizeDp);
+            IconicsDrawableExtensionsKt.setColorInt(drawable, color);
+            return Unit.INSTANCE;
+        });
+    }
+
     private MaterialAboutCard getCardWithItems(CharSequence title, ArrayList<MaterialAboutItem> items, boolean primaryColor) {
         MaterialAboutCard card = new MaterialAboutCard.Builder().title(title).cardColor(0xff1976D2).build();
         card.getItems().addAll(items);
@@ -120,10 +131,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         return new MaterialAboutActionItem(
                 getString(R.string.settings_more_text),
                 null,
-                new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon.cmd_chevron_down)
-                        .size(IconicsSize.dp(14))
-                        .color(IconicsColor.colorInt(iconColor)),
+                icon(CommunityMaterial.Icon.cmd_chevron_down, 14, iconColor),
                 onClickAction
         );
     }
@@ -209,10 +217,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_profile_change_password_text),
                             getString(R.string.settings_profile_change_password_subtext),
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_key_variant)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon2.cmd_key_variant, iconSizeDp, iconColor)
                     )
                     .setOnClickAction(() -> {
 
@@ -223,10 +228,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_add_student_text),
                             getString(R.string.settings_add_student_subtext),
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_account_plus_outline)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon.cmd_account_plus_outline, iconSizeDp, iconColor)
                     )
                             .setOnClickAction(() -> {
                                 startActivity(new Intent(activity, LoginActivity.class));
@@ -237,10 +239,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_profile_notifications_text),
                             getString(R.string.settings_profile_notifications_subtext),
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_filter_outline)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon.cmd_filter_outline, iconSizeDp, iconColor)
                     )
                             .setOnClickAction(() -> {
                                 new NotificationFilterDialog(activity, null, null);
@@ -251,10 +250,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_profile_remove_text),
                             getString(R.string.settings_profile_remove_subtext),
-                            new IconicsDrawable(activity)
-                                    .icon(SzkolnyFont.Icon.szf_delete_empty_outline)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(SzkolnyFont.Icon.szf_delete_empty_outline, iconSizeDp, iconColor)
                     )
                             .setOnClickAction(() -> {
                                 new ProfileRemoveDialog(activity, app.getProfile().getId(), app.getProfile().getName(), false);
@@ -269,10 +265,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutSwitchItem.Builder()
                             .text(R.string.settings_profile_sync_text)
                             .subText(R.string.settings_profile_sync_subtext)
-                            .icon(new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_account_convert)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor)))
+                            .icon(icon(CommunityMaterial.Icon.cmd_account_convert, iconSizeDp, iconColor))
                             .setChecked(app.getProfile().getSyncEnabled())
                             .setOnCheckedChanged(((item, isChecked) -> {
                                 app.getProfile().setSyncEnabled(isChecked);
@@ -302,10 +295,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         new MaterialAboutSwitchItem.Builder()
                                 .text(R.string.settings_theme_snowfall_text)
                                 .subText(R.string.settings_theme_snowfall_subtext)
-                                .icon(new IconicsDrawable(activity)
-                                        .icon(CommunityMaterial.Icon2.cmd_snowflake)
-                                        .size(IconicsSize.dp(iconSizeDp))
-                                        .color(IconicsColor.colorInt(iconColor)))
+                                .icon(icon(CommunityMaterial.Icon2.cmd_snowflake, iconSizeDp, iconColor))
                         .setChecked(app.getConfig().getUi().getSnowfall())
                         .setOnCheckedChanged((item, isChecked) -> {
                             app.getConfig().getUi().setSnowfall(isChecked);
@@ -320,10 +310,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_theme_theme_text),
                             Themes.INSTANCE.getThemeName(activity),
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_palette_outline)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon2.cmd_palette_outline, iconSizeDp, iconColor)
                     )
                     .setOnClickAction(() -> {
                         new MaterialDialog.Builder(activity)
@@ -345,10 +332,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutSwitchItem.Builder()
                             .text(R.string.settings_theme_mini_drawer_text)
                             .subText(R.string.settings_theme_mini_drawer_subtext)
-                            .icon(new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_dots_vertical)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor)))
+                            .icon(icon(CommunityMaterial.Icon.cmd_dots_vertical, iconSizeDp, iconColor))
                             .setChecked(app.getConfig().getUi().getMiniMenuVisible())
                             .setOnCheckedChanged((item, isChecked) -> {
                                 // 0,1  1
@@ -370,10 +354,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_theme_mini_drawer_buttons_text),
                             null,
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_format_list_checks)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon.cmd_format_list_checks, iconSizeDp, iconColor)
                     )
                     .setOnClickAction(() -> {
                         List<Integer> buttonIds = new ArrayList<>();
@@ -434,10 +415,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_theme_drawer_header_text),
                             null,
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_image_outline)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon2.cmd_image_outline, iconSizeDp, iconColor)
                     )
                     .setOnClickAction(() -> {
                         if (app.getConfig().getUi().getHeaderBackground() != null) {
@@ -468,10 +446,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_theme_app_background_text),
                             getString(R.string.settings_theme_app_background_subtext),
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_image_filter_hdr)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon2.cmd_image_filter_hdr, iconSizeDp, iconColor)
                     )
                     .setOnClickAction(() -> {
                         if (app.getConfig().getUi().getAppBackground() != null) {
@@ -497,10 +472,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             items.add(
                     new MaterialAboutSwitchItem.Builder( )
                             .text(R.string.settings_theme_open_drawer_on_back_pressed_text)
-                            .icon(new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_menu_open)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor)))
+                            .icon(icon(CommunityMaterial.Icon2.cmd_menu_open, iconSizeDp, iconColor))
                             .setChecked(app.getConfig().getUi().getOpenDrawerOnBackPressed())
                             .setOnCheckedChanged((item, isChecked) -> {
                                 app.getConfig().getUi().setOpenDrawerOnBackPressed(isChecked);
@@ -549,10 +521,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         return new MaterialAboutSwitchItem.Builder()
                 .text(R.string.settings_sync_wifi_text)
                 .subText(R.string.settings_sync_wifi_subtext)
-                .icon(new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_wifi_strength_2)
-                        .size(IconicsSize.dp(iconSizeDp))
-                        .color(IconicsColor.colorInt(iconColor)))
+                .icon(icon(CommunityMaterial.Icon2.cmd_wifi_strength_2, iconSizeDp, iconColor))
         .setChecked(app.getConfig().getSync().getOnlyWifi())
         .setOnCheckedChanged((item, isChecked) -> {
             app.getConfig().getSync().setOnlyWifi(isChecked);
@@ -570,10 +539,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             syncCardIntervalItem = new MaterialAboutActionSwitchItem.Builder()
             .text(R.string.settings_sync_sync_interval_text)
                     .subText(R.string.settings_sync_sync_interval_subtext_disabled)
-            .icon(new IconicsDrawable(activity)
-                    .icon(CommunityMaterial.Icon.cmd_download_outline)
-                    .size(IconicsSize.dp(iconSizeDp))
-                    .color(IconicsColor.colorInt(iconColor)))
+            .icon(icon(CommunityMaterial.Icon.cmd_download_outline, iconSizeDp, iconColor))
             .build();
             syncCardIntervalItem.setSubTextChecked(getSyncCardIntervalSubText());
             syncCardIntervalItem.setChecked(app.getConfig().getSync().getEnabled());
@@ -644,10 +610,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutSwitchItem(
                             "Cisza na lekcjach",
                             "Nie odtwarzaj dźwięku powiadomień podczas lekcji",
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_volume_off)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon2.cmd_volume_off, iconSizeDp, iconColor)
                     )
                     .setChecked(app.appConfig.quietDuringLessons)
                     .setOnChangeAction((isChecked) -> {
@@ -661,10 +624,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             syncCardQuietHoursItem = new MaterialAboutActionSwitchItem.Builder()
             .text(R.string.settings_sync_quiet_hours_text)
             .subText(R.string.settings_sync_quiet_hours_subtext_disabled)
-                    .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_bell_sleep_outline)
-                            .size(IconicsSize.dp(iconSizeDp))
-                            .color(IconicsColor.colorInt(iconColor)))
+                    .icon(icon(CommunityMaterial.Icon.cmd_bell_sleep_outline, iconSizeDp, iconColor))
                     .build();
             syncCardQuietHoursItem.setChecked(app.getConfig().getSync().getQuietHoursEnabled());
             syncCardQuietHoursItem.setSubTextChecked(getSyncCardQuietHoursSubText());
@@ -721,10 +681,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             getString(R.string.settings_sync_web_push_text),
                             getString(R.string.settings_sync_web_push_subtext),
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_laptop)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon2.cmd_laptop, iconSizeDp, iconColor)
                     )
                     .setOnClickAction(() -> {
                         activity.loadTarget(MainActivity.TARGET_WEB_PUSH, null);
@@ -739,10 +696,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutActionItem(
                             "Dźwięk powiadomień",
                             "Szkolny.eu",
-                            new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_volume_high)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor))
+                            icon(CommunityMaterial.Icon2.cmd_volume_high, iconSizeDp, iconColor)
                     )
                     .setOnClickAction(() -> {
 
@@ -752,10 +706,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             items.add(
                     new MaterialAboutSwitchItem.Builder()
                             .text(R.string.settings_sync_updates_text)
-                            .icon(new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon.cmd_cellphone_arrow_down)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor)))
+                            .icon(icon(CommunityMaterial.Icon.cmd_cellphone_arrow_down, iconSizeDp, iconColor))
                     .setChecked(app.getConfig().getSync().getNotifyAboutUpdates())
                     .setOnCheckedChanged((item, isChecked) -> {
                         app.getConfig().getSync().setNotifyAboutUpdates(isChecked);
@@ -770,10 +721,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                         new MaterialAboutActionItem(
                                 getString(R.string.settings_sync_notifications_settings_text),
                                 getString(R.string.settings_sync_notifications_settings_subtext),
-                                new IconicsDrawable(activity)
-                                        .icon(CommunityMaterial.Icon2.cmd_settings_outline)
-                                        .size(IconicsSize.dp(iconSizeDp))
-                                        .color(IconicsColor.colorInt(iconColor))
+                                icon(CommunityMaterial.Icon2.cmd_settings_outline, iconSizeDp, iconColor)
                         )
                         .setOnClickAction(() -> {
                             String channel = app.getNotificationChannelsManager().getData().getKey();
@@ -846,10 +794,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
         return new MaterialAboutSwitchItem.Builder()
                 .text(R.string.settings_register_shared_events_text)
                 .subText(R.string.settings_register_shared_events_subtext)
-                .icon(new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_share_outline)
-                        .size(IconicsSize.dp(iconSizeDp))
-                        .color(IconicsColor.colorInt(iconColor)))
+                .icon(icon(CommunityMaterial.Icon2.cmd_share_outline, iconSizeDp, iconColor))
         .setChecked(app.getProfile().getEnableSharedEvents())
         .setOnCheckedChanged((item, isChecked) -> {
             app.getProfile().setEnableSharedEvents(isChecked);
@@ -877,28 +822,19 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             items.add(new MaterialAboutActionItem(
                     getString(R.string.menu_grades_config),
                     null,
-                    new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline)
-                            .size(IconicsSize.dp(iconSizeDp))
-                            .color(IconicsColor.colorInt(iconColor))
+                    icon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline, iconSizeDp, iconColor)
             ).setOnClickAction(() -> new GradesConfigDialog(activity, false, null, null)));
 
             items.add(new MaterialAboutActionItem(
                     getString(R.string.menu_attendance_config),
                     null,
-                    new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_calendar_remove_outline)
-                            .size(IconicsSize.dp(iconSizeDp))
-                            .color(IconicsColor.colorInt(iconColor))
+                    icon(CommunityMaterial.Icon.cmd_calendar_remove_outline, iconSizeDp, iconColor)
             ).setOnClickAction(() -> new AttendanceConfigDialog(activity, false, null, null)));
 
             registerCardAllowRegistrationItem = new MaterialAboutSwitchItem.Builder()
             .text(R.string.settings_register_allow_registration_text)
             .subText(R.string.settings_register_allow_registration_subtext)
-            .icon(new IconicsDrawable(activity)
-                    .icon(CommunityMaterial.Icon.cmd_account_circle_outline)
-                    .size(IconicsSize.dp(iconSizeDp))
-                    .color(IconicsColor.colorInt(iconColor)))
+            .icon(icon(CommunityMaterial.Icon.cmd_account_circle_outline, iconSizeDp, iconColor))
             .build();
             registerCardAllowRegistrationItem.setChecked(app.getProfile().getRegistration() == REGISTRATION_ENABLED);
             registerCardAllowRegistrationItem.setOnCheckedChangedAction((item, isChecked) -> {
@@ -955,10 +891,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             registerCardBellSyncItem = new MaterialAboutActionItem(
                     getString(R.string.settings_register_bell_sync_text),
                     getRegisterCardBellSyncSubText(),
-                    new IconicsDrawable(activity)
-                            .icon(SzkolnyFont.Icon.szf_alarm_bell_outline)
-                            .size(IconicsSize.dp(iconSizeDp))
-                            .color(IconicsColor.colorInt(iconColor))
+                    icon(SzkolnyFont.Icon.szf_alarm_bell_outline, iconSizeDp, iconColor)
             );
             registerCardBellSyncItem.setOnClickAction(() -> {
                 new MaterialDialog.Builder(activity)
@@ -1025,10 +958,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     new MaterialAboutSwitchItem.Builder()
                             .text(R.string.settings_register_count_in_seconds_text)
                             .subText(R.string.settings_register_count_in_seconds_subtext)
-                            .icon(new IconicsDrawable(activity)
-                                    .icon(CommunityMaterial.Icon2.cmd_timer)
-                                    .size(IconicsSize.dp(iconSizeDp))
-                                    .color(IconicsColor.colorInt(iconColor)))
+                            .icon(icon(CommunityMaterial.Icon2.cmd_timer, iconSizeDp, iconColor))
                     .setChecked(app.getConfig().getTimetable().getCountInSeconds())
                     .setOnCheckedChanged((item, isChecked) -> {
                         app.getConfig().getTimetable().setCountInSeconds(isChecked);
@@ -1041,10 +971,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 items.add(
                         new MaterialAboutSwitchItem.Builder()
                                 .text(R.string.settings_register_show_teacher_absences_text)
-                                .icon(new IconicsDrawable(activity)
-                                        .icon(CommunityMaterial.Icon.cmd_account_arrow_right_outline)
-                                        .size(IconicsSize.dp(iconSizeDp))
-                                        .color(IconicsColor.colorInt(iconColor)))
+                                .icon(icon(CommunityMaterial.Icon.cmd_account_arrow_right_outline, iconSizeDp, iconColor))
                         .setChecked(app.getProfile().getStudentData("showTeacherAbsences", true))
                         .setOnCheckedChanged((item, isChecked) -> {
                             app.getProfile().putStudentData("showTeacherAbsences", isChecked);
@@ -1059,10 +986,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 items.add(
                         new MaterialAboutSwitchItem.Builder()
                                 .text(R.string.settings_register_hide_sticks_from_old)
-                                .icon(new IconicsDrawable(activity)
-                                        .icon(CommunityMaterial.Icon2.cmd_numeric_1_box_outline)
-                                        .size(IconicsSize.dp(iconSizeDp))
-                                        .color(IconicsColor.colorInt(iconColor)))
+                                .icon(icon(CommunityMaterial.Icon2.cmd_numeric_1_box_outline, iconSizeDp, iconColor))
                         .setChecked(app.getConfig().forProfile().getGrades().getHideSticksFromOld())
                         .setOnCheckedChanged((item, isChecked) -> {
                             app.getConfig().forProfile().getGrades().setHideSticksFromOld(isChecked);
@@ -1098,10 +1022,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             pref_about_version = new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_version_text)
                     .subText(BuildConfig.VERSION_NAME + ", " + BuildConfig.BUILD_TYPE)
-                    .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_information_outline)
-                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                            .size(IconicsSize.dp(iconSizeDp)))
+                    .icon(icon(CommunityMaterial.Icon2.cmd_information_outline, iconSizeDp, primaryTextOnPrimaryBg))
                     .build();
             final int[] clickCounter = {0};
             pref_about_version.setOnClickAction(() -> {
@@ -1120,30 +1041,21 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_privacy_policy_text)
-                    .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_shield_outline)
-                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                            .size(IconicsSize.dp(iconSizeDp)))
+                    .icon(icon(CommunityMaterial.Icon2.cmd_shield_outline, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://szkolny.eu/privacy-policy")))
                     .build());
 
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_discord_text)
                     .subText(R.string.settings_about_discord_subtext)
-                    .icon(new IconicsDrawable(activity)
-                            .icon(SzkolnyFont.Icon.szf_discord_outline)
-                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                            .size(IconicsSize.dp(iconSizeDp)))
+                    .icon(icon(SzkolnyFont.Icon.szf_discord_outline, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(ConvenienceBuilder.createWebsiteOnClickAction(activity, Uri.parse("https://szkolny.eu/discord")))
                     .build());
 
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_language_text)
                     .subText(R.string.settings_about_language_subtext)
-                    .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_translate)
-                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                            .size(IconicsSize.dp(iconSizeDp)))
+                    .icon(icon(CommunityMaterial.Icon2.cmd_translate, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(() -> {
                         new MaterialDialog.Builder(activity)
                                 .title(getString(R.string.settings_about_language_dialog_title))
@@ -1178,10 +1090,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_update_text)
                     .subText(R.string.settings_about_update_subtext)
-                    .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_update)
-                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                            .size(IconicsSize.dp(iconSizeDp)))
+                    .icon(icon(CommunityMaterial.Icon2.cmd_update, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(() -> {
                         //open browser or intent here
                         NetworkUtils net = new NetworkUtils(app);
@@ -1201,19 +1110,13 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_changelog_text)
-                    .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon2.cmd_radar)
-                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                            .size(IconicsSize.dp(iconSizeDp)))
+                    .icon(icon(CommunityMaterial.Icon2.cmd_radar, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(() -> new ChangelogDialog(activity, null, null))
                     .build());
 
             items.add(new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_licenses_text)
-                    .icon(new IconicsDrawable(activity)
-                            .icon(CommunityMaterial.Icon.cmd_code_braces)
-                            .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                            .size(IconicsSize.dp(iconSizeDp)))
+                    .icon(icon(CommunityMaterial.Icon.cmd_code_braces, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(() -> {
                         Intent intent = new Intent(activity, SettingsLicenseActivity.class);
                         startActivity(intent);
@@ -1222,10 +1125,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
         /*items.add(new MaterialAboutActionItem.Builder()
                 .text(R.string.settings_about_intro_text)
-                .icon(new IconicsDrawable(activity)
-                        .icon(CommunityMaterial.Icon2.cmd_projector_screen)
-                        .color(IconicsColor.colorInt(iconColor))
-                        .size(IconicsSize.dp(iconSizeDp)))
+                .icon(icon(CommunityMaterial.Icon2.cmd_projector_screen, iconSizeDp, iconColor))
                 .setOnClickAction(() -> {
                     if (tryingToDevMode[0]) {
                         if (getParentFragment() instanceof SettingsGeneralFragment) {
@@ -1246,10 +1146,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                 items.add(new MaterialAboutActionItem.Builder()
                         .text(R.string.settings_about_crash_text)
                         .subText(R.string.settings_about_crash_subtext)
-                        .icon(new IconicsDrawable(activity)
-                                .icon(CommunityMaterial.Icon.cmd_bug_outline)
-                                .color(IconicsColor.colorInt(primaryTextOnPrimaryBg))
-                                .size(IconicsSize.dp(iconSizeDp)))
+                        .icon(icon(CommunityMaterial.Icon.cmd_bug_outline, iconSizeDp, primaryTextOnPrimaryBg))
                         .setOnClickAction(() -> {
                             throw new RuntimeException("MANUAL CRASH");
                         })

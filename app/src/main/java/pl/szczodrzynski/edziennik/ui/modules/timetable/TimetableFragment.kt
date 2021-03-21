@@ -18,8 +18,8 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity

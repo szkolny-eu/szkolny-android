@@ -38,10 +38,11 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
             license: OpenSourceLicense,
             libraryUrl: String): MaterialAboutCard {
         val licenseItem = MaterialAboutActionItem.Builder()
-                .icon(IconicsDrawable(this)
-                        .icon(CommunityMaterial.Icon.cmd_book_outline)
-                        .colorInt(foregroundColor)
-                        .sizeDp(18))
+                .icon(IconicsDrawable(this).apply {
+                        icon = CommunityMaterial.Icon.cmd_book_outline
+                        colorInt = foregroundColor
+                        sizeDp = 18
+                })
                 .setIconGravity(MaterialAboutActionItem.GRAVITY_TOP)
                 .text(libraryTitle)
                 .subText(String.format(getString(license.resourceId), copyrightYear, copyrightName))

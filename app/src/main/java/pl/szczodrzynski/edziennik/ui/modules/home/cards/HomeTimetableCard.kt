@@ -15,8 +15,8 @@ import androidx.core.view.setMargins
 import androidx.lifecycle.Observer
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.iconics.utils.sizeDp
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -87,17 +87,26 @@ class HomeTimetableCard(
         }
         holder.root += b.root
 
-        b.settings.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_settings_outline)
-                .colorAttr(activity, R.attr.colorIcon)
-                .sizeDp(20))
+        b.settings.setImageDrawable(
+            IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_settings_outline).apply {
+                colorAttr(activity, R.attr.colorIcon)
+                sizeDp = 20
+            }
+        )
 
-        b.bellSync.setImageDrawable(IconicsDrawable(activity, SzkolnyFont.Icon.szf_alarm_bell_outline)
-                .colorAttr(activity, R.attr.colorIcon)
-                .sizeDp(20))
+        b.bellSync.setImageDrawable(
+            IconicsDrawable(activity, SzkolnyFont.Icon.szf_alarm_bell_outline).apply {
+                colorAttr(activity, R.attr.colorIcon)
+                sizeDp = 20
+            }
+        )
 
-        b.showCounter.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon.cmd_fullscreen)
-                .colorAttr(activity, R.attr.colorIcon)
-                .sizeDp(20))
+        b.showCounter.setImageDrawable(
+            IconicsDrawable(activity, CommunityMaterial.Icon.cmd_fullscreen).apply {
+                colorAttr(activity, R.attr.colorIcon)
+                sizeDp = 20
+            }
+        )
 
         b.bellSync.setOnClickListener {
             BellSyncTimeChooseDialog(

@@ -23,16 +23,16 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.IconicsSize
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.*
 import com.mikepenz.materialdrawer.model.utils.withIsHiddenInMiniDrawer
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -519,7 +519,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
                         .content(R.string.rate_snackbar_text)
-                        .icon(IconicsDrawable(this).icon(CommunityMaterial.Icon2.cmd_star_outline).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.getPrimaryTextColor(this))))
+                        .icon(IconicsDrawable(this).apply {
+                            icon = CommunityMaterial.Icon2.cmd_star_outline
+                            sizeDp = 20
+                            colorInt = Themes.getPrimaryTextColor(this@MainActivity)
+                        })
                         .positiveText(R.string.rate_snackbar_positive)
                         .positiveColor(-0xb350b0)
                         .negativeText(R.string.rate_snackbar_negative)
