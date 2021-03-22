@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/mal_baseline_half">
+
+    <ImageView
+        android:id="@+id/mal_item_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/mal_baseline"
+        android:adjustViewBounds="false"
+        android:contentDescription="@null"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        tools:background="@tools:sample/backgrounds/scenic" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginVertical="@dimen/mal_baseline"
+        android:layout_marginEnd="@dimen/mal_baseline"
+        android:layout_marginRight="@dimen/mal_baseline"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mal_item_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="24sp"
+            tools:text="Władca Androida" />
+
+        <TextView
+            android:id="@+id/mal_item_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="14sp"
+            tools:text="kubasz" />
+    </LinearLayout>
+</LinearLayout>

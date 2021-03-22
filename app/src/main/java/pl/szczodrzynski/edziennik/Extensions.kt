@@ -1278,3 +1278,41 @@ operator fun <K, V> Iterable<Pair<K, V>>.get(key: K): V? {
 }
 
 fun ByteArray.toHexString() = joinToString("") { "%02x".format(it) }
+
+fun <E> MutableList<E>.after(what: E, insert: E) {
+    val index = indexOf(what)
+    if (index != -1)
+        add(index + 1, insert)
+}
+
+fun <E> MutableList<E>.before(what: E, insert: E) {
+    val index = indexOf(what)
+    if (index != -1)
+        add(index, insert)
+}
+
+fun <E> MutableList<E>.after(what: E, insert: Collection<E>) {
+    val index = indexOf(what)
+    if (index != -1)
+        addAll(index + 1, insert)
+}
+
+fun <E> MutableList<E>.before(what: E, insert: Collection<E>) {
+    val index = indexOf(what)
+    if (index != -1)
+        addAll(index, insert)
+}
+
+fun Context.getSyncInterval(interval: Int): String {
+    val hours = interval / 60 / 60
+    val minutes = interval / 60 % 60
+    val hoursText = if (hours > 0)
+        plural(R.plurals.time_till_hours, hours)
+    else
+        null
+    val minutesText = if (minutes > 0)
+        plural(R.plurals.time_till_minutes, minutes)
+    else
+        ""
+    return hoursText?.plus(" $minutesText") ?: minutesText
+}

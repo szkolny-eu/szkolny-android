@@ -351,8 +351,6 @@
     <string name="event_list_added_by_unknown_format">Hinzugefügt %1$s%3$s</string>
     <string name="event_list_shared_by_format">{cmd-share-variant} %1$s von %2$s%3$s</string>
     <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s von Ihnen%3$s</string>
-    <string name="event_manual_need_registration_text">Um das Ereignis freigeben zu können, müssen Sie die Serverregistrierungsoption aktivieren. Auf diese Weise können Sie Ereignisse erstellen und empfangen, die in Ihrer Klasse geteilt werden.\n\nWenn Sie auf OK klicken, wird diese automatisch aktiviert.\n\nStellen Sie sicher, dass Sie die Bedingungen lesen und akzeptieren.</string>
-    <string name="event_manual_need_registration_title">Ereignisse teilen</string>
     <string name="event_manual_remove">Ereignis entfernen…</string>
     <string name="event_manual_saving">Ereignis speichern…</string>
     <string name="event_manual_share">Ereignis teilen…</string>
@@ -830,9 +828,13 @@
     <string name="rate_snackbar_positive">etzt bewerten</string>
     <string name="rate_snackbar_text">Zeigen Sie, dass Ihnen Szkolny.eu gefällt - bewerten Sie die App und machen Sie sie noch besser!</string>
     <string name="refresh">Aktualisieren</string>
-    <string name="registration_enable_dialog_text">Die Registrierung erfolgt automatisch, wenn diese Option aktiviert ist. Sie können Ereignisse erstellen und empfangen, die mit anderen Schülern in Ihrer Klasse geteilt werden. Dank dessen können Sie Elemente, die nicht vom Lehrer gespeichert wurden, zum Klassenbuch hinzufügen.\n\nStellen Sie sicher, dass Sie die Bestimmungen der <a href="http://szkolny.eu/privacy-policy"> Datenschutzrichtlinie </a> lesen und die Bestimmungen akzeptieren.</string>
-    <string name="registration_enable_dialog_title">Server-Registrierung</string>
-    <string name="registration_enable_progress_text">Gemeinsame Ereignisse herunterladen…</string>
+    <string name="registration_config_disable_progress_text">Benutzerregistrierung aufheben…</string>
+    <string name="registration_config_disable_text">Einige Funktionen wie Ereignisfreigabe oder Benachrichtigungsweiterleitung können nicht mehr verwendet werden.\n\nDie Funktion kann je nach ausgewähltem Profil aktiviert / deaktiviert werden.</string>
+    <string name="registration_config_enable_progress_text">Gemeinsame Ereignisse herunterladen…</string>
+    <string name="registration_config_enable_text">Die Registrierung erfolgt automatisch, wenn diese Option aktiviert ist. Sie können Ereignisse erstellen und empfangen, die mit anderen Schülern in Ihrer Klasse geteilt werden. Dank dessen können Sie Elemente, die nicht vom Lehrer gespeichert wurden, zum Klassenbuch hinzufügen.\n\nStellen Sie sicher, dass Sie die Bestimmungen der <a href="http://szkolny.eu/privacy-policy"> Datenschutzrichtlinie </a> lesen und die Bestimmungen akzeptieren.</string>
+    <string name="registration_config_event_sharing_text">Um das Ereignis freigeben zu können, müssen Sie die Serverregistrierungsoption aktivieren. Auf diese Weise können Sie Ereignisse erstellen und empfangen, die in Ihrer Klasse geteilt werden.\n\nWenn Sie auf OK klicken, wird diese automatisch aktiviert.\n\nStellen Sie sicher, dass Sie die Bedingungen lesen und akzeptieren.</string>
+    <string name="registration_config_event_sharing_title">Ereignisse teilen</string>
+    <string name="registration_config_title">Szkolny.eu Server-Registrierung</string>
     <string name="remove">Löschen</string>
     <string name="removed">gelöschtet</string>
     <string name="report">Melden</string>
@@ -847,13 +849,13 @@
     <string name="settings_about_crash_text">Klicken Sie hier, um eine unerwartete Ausnahme auszulösen</string>
     <string name="settings_about_discord_subtext">Treten Sie unserem Discord-Server bei!</string>
     <string name="settings_about_discord_text">Discord Server</string>
-    <string name="settings_about_language_dialog_text">Hinweis. Diese Option funktioniert möglicherweise auf einigen Geräten und in einigen Teilen der App nicht.</string>
-    <string name="settings_about_language_dialog_title">App-Sprache ändern</string>
+    <string name="app_language_dialog_text">Hinweis. Diese Option funktioniert möglicherweise auf einigen Geräten und in einigen Teilen der App nicht.</string>
+    <string name="app_language_dialog_title">App-Sprache ändern</string>
     <string name="settings_about_language_subtext">Deutsch</string>
     <string name="settings_about_language_text">Sprache der App</string>
     <string name="settings_about_licenses_text">Open-Source-Lizenzen</string>
     <string name="settings_about_privacy_policy_text">Datenschutzrichtlinie</string>
-    <string name="settings_about_register_title_text">E-Klassenbuch</string>
+    <string name="settings_card_register_title">E-Klassenbuch</string>
     <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - Februar 2021</string>
     <string name="settings_about_update_subtext">Klicken Sie hier, um nach Aktualisierungen zu suchen</string>
     <string name="settings_about_update_text">Aktualisierung</string>
@@ -944,7 +946,7 @@
     <string name="settings_sync_sync_interval_subtext_disabled">Deaktiviert</string>
     <string name="settings_sync_sync_interval_subtext_format">Daten alle %s herunterladen</string>
     <string name="settings_sync_sync_interval_text">Automatische Synchronisierung</string>
-    <string name="settings_sync_title_text">Synchronisation und Benachrichtigungen</string>
+    <string name="settings_card_sync_title">Synchronisation und Benachrichtigungen</string>
     <string name="settings_sync_updates_text">Über App-Aktualisierungen benachrichtigen</string>
     <string name="settings_sync_web_push_subtext">Benachrichtigungen auf Ihrem PC anzeigen</string>
     <string name="settings_sync_web_push_text">Benachrichtigungsweiterleitung</string>
@@ -968,7 +970,7 @@
     <string name="settings_theme_theme_pink">Rosa</string>
     <string name="settings_theme_theme_system">System</string>
     <string name="settings_theme_theme_text">Thema</string>
-    <string name="settings_theme_title_text">Aussehen</string>
+    <string name="settings_card_theme_title">Aussehen</string>
     <string name="share">Teilen</string>
     <string name="share_intent">Teilen über…</string>
     <string name="sharing_event">Daten Teilen…</string>

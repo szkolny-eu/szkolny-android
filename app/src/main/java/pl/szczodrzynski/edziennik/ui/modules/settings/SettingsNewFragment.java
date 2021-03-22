@@ -53,8 +53,8 @@ import pl.szczodrzynski.edziennik.network.NetworkUtils;
 import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.sync.UpdateWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradesConfigDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AttendanceConfigDialog;
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.NotificationFilterDialog;
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity;
@@ -641,6 +641,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 Time time = app.getConfig().getSync().getQuietHoursStart();
                                 if (time == null)
                                     time = new Time(22, 30, 0);
+                                Time timeEnd = app.getConfig().getSync().getQuietHoursEnd();
+                                if (timeEnd == null)
+                                    app.getConfig().getSync().setQuietHoursEnd(new Time(5, 30, 0));
                                 TimePickerDialog.newInstance((v2, hourOfDay, minute, second) -> {
                                     app.getConfig().getSync().setQuietHoursEnabled(true);
                                     app.getConfig().getSync().setQuietHoursStart(new Time(hourOfDay, minute, second));
@@ -654,6 +657,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 Time time = app.getConfig().getSync().getQuietHoursEnd();
                                 if (time == null)
                                     time = new Time(5, 30, 0);
+                                Time timeStart = app.getConfig().getSync().getQuietHoursStart();
+                                if (timeStart == null)
+                                    app.getConfig().getSync().setQuietHoursStart(new Time(22, 30, 0));
                                 TimePickerDialog.newInstance((v2, hourOfDay, minute, second) -> {
                                     app.getConfig().getSync().setQuietHoursEnabled(true);
                                     app.getConfig().getSync().setQuietHoursEnd(new Time(hourOfDay, minute, second));
@@ -847,7 +853,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 registerCardAllowRegistrationItem.setChecked(true);
                                 app.getProfile().setRegistration(REGISTRATION_ENABLED);
                                 app.profileSave();
-                                addCardItem(CARD_REGISTER, 2, getRegisterCardSharedEventsItem());
+                                addCardItem(CARD_REGISTER, 3, getRegisterCardSharedEventsItem());
                                 refreshMaterialAboutList();
                             }))
                             .show();
@@ -860,7 +866,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                                 registerCardAllowRegistrationItem.setChecked(false);
                                 app.getProfile().setRegistration(REGISTRATION_DISABLED);
                                 app.profileSave();
-                                removeCardItem(CARD_REGISTER, 2);
+                                removeCardItem(CARD_REGISTER, 3);
                                 refreshMaterialAboutList();
                                 MaterialDialog progressDialog = new MaterialDialog.Builder(activity)
                                         .title(getString(R.string.settings_register_allow_registration_dialog_disabling_title))
@@ -1058,8 +1064,8 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                     .icon(icon(CommunityMaterial.Icon3.cmd_translate, iconSizeDp, primaryTextOnPrimaryBg))
                     .setOnClickAction(() -> {
                         new MaterialDialog.Builder(activity)
-                                .title(getString(R.string.settings_about_language_dialog_title))
-                                .content(getString(R.string.settings_about_language_dialog_text))
+                                .title(getString(R.string.app_language_dialog_title))
+                                .content(getString(R.string.app_language_dialog_text))
                                 .items(getString(R.string.language_system), getString(R.string.language_polish), getString(R.string.language_english), getString(R.string.language_german))
                                 .itemsCallbackSingleChoice(app.getConfig().getUi().getLanguage() == null ? 0 : app.getConfig().getUi().getLanguage().equals("pl") ? 1 : app.getConfig().getUi().getLanguage().equals("en") ? 2 : 3, (dialog, itemView, which, text) -> {
                                     switch (which) {
@@ -1168,9 +1174,9 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
         MaterialAboutList materialAboutList = new MaterialAboutList();
         materialAboutList.addCard(getCardWithItems(null, getProfileCard(false)));
-        materialAboutList.addCard(getCardWithItems(getString(R.string.settings_theme_title_text), getThemeCard(false)));
-        materialAboutList.addCard(getCardWithItems(getString(R.string.settings_sync_title_text), getSyncCard(false)));
-        materialAboutList.addCard(getCardWithItems(getString(R.string.settings_about_register_title_text), getRegisterCard(false)));
+        materialAboutList.addCard(getCardWithItems(getString(R.string.settings_card_theme_title), getThemeCard(false)));
+        materialAboutList.addCard(getCardWithItems(getString(R.string.settings_card_sync_title), getSyncCard(false)));
+        materialAboutList.addCard(getCardWithItems(getString(R.string.settings_card_register_title), getRegisterCard(false)));
         //if (configurableEndpoints != null)
         //    materialAboutList.addCard(getCardWithItems(getString(R.string.settings_sync_customize_title_text), getSyncCustomizeCard(false)));
         materialAboutList.addCard(getCardWithItems(null, getAboutCard(false), true));

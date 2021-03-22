@@ -79,6 +79,7 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.compose.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
+import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
@@ -199,8 +200,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .isStatic(true)
                     .isBelowSeparator(true)
 
-            list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsNewFragment::class)
+            list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+                    .isInDrawer(true)
+                    .isStatic(true)
+                    .isBelowSeparator(true)
+
+            list += NavTarget(DRAWER_ITEM_SETTINGS+1, R.string.menu_settings, SettingsNewFragment::class)
+                    .withIcon(CommunityMaterial.Icon3.cmd_seal)
                     .isInDrawer(true)
                     .isStatic(true)
                     .isBelowSeparator(true)
