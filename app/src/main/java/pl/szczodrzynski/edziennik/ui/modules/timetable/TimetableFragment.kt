@@ -17,9 +17,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
@@ -192,7 +191,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_generate_block_timetable)
                         .withDescription(R.string.menu_generate_block_timetable_desc)
-                        .withIcon(Icon2.cmd_table_large)
+                        .withIcon(CommunityMaterial.Icon3.cmd_table_large)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
                             GenerateBlockTimetableDialog(activity)

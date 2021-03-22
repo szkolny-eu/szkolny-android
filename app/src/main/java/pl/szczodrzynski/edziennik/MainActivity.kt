@@ -23,16 +23,16 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.IconicsSize
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.*
 import com.mikepenz.materialdrawer.model.utils.withIsHiddenInMiniDrawer
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .withPopToHome(false)
 
             list += NavTarget(DRAWER_ITEM_TIMETABLE, R.string.menu_timetable, TimetableFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_timetable)
+                    .withIcon(CommunityMaterial.Icon3.cmd_timetable)
                     .withBadgeTypeId(TYPE_LESSON_CHANGE)
                     .isInDrawer(true)
 
@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesListFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline)
+                    .withIcon(CommunityMaterial.Icon3.cmd_numeric_5_box_outline)
                     .withBadgeTypeId(TYPE_GRADE)
                     .isInDrawer(true)
 
@@ -200,7 +200,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .isBelowSeparator(true)
 
             list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsNewFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
+                    .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                     .isInDrawer(true)
                     .isStatic(true)
                     .isBelowSeparator(true)
@@ -208,7 +208,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             // profile settings items
             list += NavTarget(DRAWER_PROFILE_ADD_NEW, R.string.menu_add_new_profile, null)
-                    .withIcon(CommunityMaterial.Icon2.cmd_plus)
+                    .withIcon(CommunityMaterial.Icon3.cmd_plus)
                     .withDescription(R.string.drawer_add_new_profile_desc)
                     .isInProfileList(true)
 
@@ -237,7 +237,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (App.devMode) {
                 list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
                 list += NavTarget(TARGET_LAB, R.string.menu_lab, LabFragment::class)
-                        .withIcon(CommunityMaterial.Icon.cmd_flask_outline)
+                        .withIcon(CommunityMaterial.Icon2.cmd_flask_outline)
                         .isInDrawer(true)
                         .isBelowSeparator(true)
                         .isStatic(true)
@@ -519,7 +519,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
                         .content(R.string.rate_snackbar_text)
-                        .icon(IconicsDrawable(this).icon(CommunityMaterial.Icon2.cmd_star_outline).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.getPrimaryTextColor(this))))
+                        .icon(IconicsDrawable(this).apply {
+                            icon = CommunityMaterial.Icon3.cmd_star_outline
+                            sizeDp = 20
+                            colorInt = Themes.getPrimaryTextColor(this@MainActivity)
+                        })
                         .positiveText(R.string.rate_snackbar_positive)
                         .positiveColor(-0xb350b0)
                         .negativeText(R.string.rate_snackbar_negative)
@@ -532,12 +536,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                             app.config.appRateSnackbarTime = 0
                         }
                         .onNegative { cafeBar ->
-                            Toast.makeText(this, "Szkoda, opinie innych pomagają mi rozwijać aplikację.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, R.string.rate_snackbar_negative_message, Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
                             app.config.appRateSnackbarTime = 0
                         }
                         .onNeutral { cafeBar ->
-                            Toast.makeText(this, "OK", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, R.string.ok, Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
                             app.config.appRateSnackbarTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
                         }
@@ -561,7 +565,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 BottomSheetSeparatorItem(false),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_settings)
-                        .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
+                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                         .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) }),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_feedback)

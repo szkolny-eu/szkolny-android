@@ -38,10 +38,11 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
             license: OpenSourceLicense,
             libraryUrl: String): MaterialAboutCard {
         val licenseItem = MaterialAboutActionItem.Builder()
-                .icon(IconicsDrawable(this)
-                        .icon(CommunityMaterial.Icon.cmd_book_outline)
-                        .colorInt(foregroundColor)
-                        .sizeDp(18))
+                .icon(IconicsDrawable(this).apply {
+                        icon = CommunityMaterial.Icon.cmd_book_outline
+                        colorInt = foregroundColor
+                        sizeDp = 18
+                })
                 .setIconGravity(MaterialAboutActionItem.GRAVITY_TOP)
                 .text(libraryTitle)
                 .subText(String.format(getString(license.resourceId), copyrightYear, copyrightName))
@@ -78,12 +79,6 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
                         "Applandeo sp. z o.o.",
                         OpenSourceLicense.APACHE_2,
                         "https://github.com/Applandeo/Material-Calendar-View/"),
-                createLicenseCard(this,
-                        "Android-Job",
-                        "2007-2017",
-                        "Evernote Corporation",
-                        OpenSourceLicense.APACHE_2,
-                        "https://github.com/evernote/android-job/"),
                 createLicenseCard(this,
                         "Custom Activity On Crash",
                         "",
@@ -150,12 +145,6 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
                         "Arthur Teplitzki, 2013 Edmodo, Inc.",
                         OpenSourceLicense.APACHE_2,
                         "https://github.com/ArthurHub/Android-Image-Cropper/"),
-                createLicenseCard(this,
-                        "Material Tap Target Prompt",
-                        "2016-2018",
-                        "Samuel Wall",
-                        OpenSourceLicense.APACHE_2,
-                        "https://github.com/sjwall/MaterialTapTargetPrompt/"),
                 createLicenseCard(this,
                         "Android Swipe Layout",
                         "2014",

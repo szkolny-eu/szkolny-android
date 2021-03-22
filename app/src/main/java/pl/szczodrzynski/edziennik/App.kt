@@ -26,7 +26,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.hypertrack.hyperlog.HyperLog
 import com.mikepenz.iconics.Iconics
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import im.wangchao.mhttp.MHttp
 import kotlinx.coroutines.*
 import me.leolin.shortcutbadger.ShortcutBadger
@@ -159,7 +158,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .errorActivity(CrashActivity::class.java)
                 .apply()
         Iconics.init(applicationContext)
-        Iconics.registerFont(SzkolnyFont)
         App.db = AppDb(this)
         Themes.themeInt = config.ui.theme
         devMode = config.debugMode

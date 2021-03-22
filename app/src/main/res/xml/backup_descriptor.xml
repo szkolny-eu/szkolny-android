@@ -2,6 +2,4 @@
 <full-backup-content>
     <!-- Exclude the shared preferences file that contains the GCM registrationId -->
     <exclude domain="sharedpref" path="cookies.xml" />
-    <exclude domain="sharedpref" path="evernote_jobs.xml" />
-    <exclude domain="database" path="evernote_jobs.db" />
 </full-backup-content>

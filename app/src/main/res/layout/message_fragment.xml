@@ -217,7 +217,7 @@
                             android:layout_height="24dp"
                             android:padding="4dp"
                             app:iiv_color="?android:textColorSecondary"
-                            app:iiv_icon="cmd-reply"
+                            app:iiv_icon="cmd-reply-outline"
                             tools:srcCompat="@android:drawable/ic_menu_revert" />
 
                         <TextView

@@ -16,12 +16,11 @@ import com.github.tibolte.agendacalendarview.CalendarPickerController
 import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent
 import com.github.tibolte.agendacalendarview.models.CalendarEvent
 import com.github.tibolte.agendacalendarview.models.IDayItem
-import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.IconicsSize
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
@@ -89,7 +88,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
                         }),
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_agenda_change_view)
-                        .withIcon(if (type == Profile.AGENDA_DEFAULT) CommunityMaterial.Icon.cmd_calendar_outline else CommunityMaterial.Icon.cmd_format_list_bulleted_square)
+                        .withIcon(if (type == Profile.AGENDA_DEFAULT) CommunityMaterial.Icon.cmd_calendar_outline else CommunityMaterial.Icon2.cmd_format_list_bulleted_square)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
                             type = if (type == Profile.AGENDA_DEFAULT) Profile.AGENDA_CALENDAR else Profile.AGENDA_DEFAULT
@@ -111,7 +110,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
 
         activity.navView.bottomBar.fabEnable = true
         activity.navView.bottomBar.fabExtendedText = getString(R.string.add)
-        activity.navView.bottomBar.fabIcon = Icon2.cmd_plus
+        activity.navView.bottomBar.fabIcon = CommunityMaterial.Icon3.cmd_plus
         activity.navView.setFabOnClickListener(View.OnClickListener {
             EventManualDialog(activity, app.profileId, defaultDate = actualDate)
         })
@@ -278,10 +277,11 @@ class AgendaFragment : Fragment(), CoroutineScope {
         val unreadEventDates = mutableSetOf<Int>()
 
         events.forEach { event ->
-            val eventIcon = IconicsDrawable(activity)
-                    .icon(CommunityMaterial.Icon.cmd_checkbox_blank_circle)
-                    .size(IconicsSize.dp(10))
-                    .color(IconicsColor.colorInt(event.eventColor))
+            val eventIcon = IconicsDrawable(activity).apply {
+                icon = CommunityMaterial.Icon.cmd_checkbox_blank_circle
+                sizeDp = 10
+                colorInt = event.eventColor
+            }
 
             dayList.add(EventDay(event.startTimeCalendar, eventIcon))
 

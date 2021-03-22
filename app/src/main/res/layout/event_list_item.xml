@@ -73,14 +73,15 @@
                 android:textAppearance="@style/NavView.TextView.Medium"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia. Nie wiem co się dzieje w tym roku nie będzie już religii w szkołach podstawowych w Polsce i Europie zachodniej Afryki" />
 
+            <!-- cmd_pencil_outline -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/editButton"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/community_material_font_v3_5_95_1"
+                android:fontFamily="@font/community_material_font_v5_8_55"
                 android:minWidth="0dp"
-                android:text="\uFC92"
+                android:text="\uf2f4"
                 android:textSize="20sp"
                 tools:visibility="gone" />
 

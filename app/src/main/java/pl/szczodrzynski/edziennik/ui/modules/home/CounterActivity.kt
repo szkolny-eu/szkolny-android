@@ -7,9 +7,9 @@ package pl.szczodrzynski.edziennik.ui.modules.home
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
@@ -59,9 +59,12 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
-        b.bellSync.setImageDrawable(IconicsDrawable(this@CounterActivity, SzkolnyFont.Icon.szf_alarm_bell_outline)
-                .colorInt(0xff404040.toInt())
-                .sizeDp(36))
+        b.bellSync.setImageDrawable(
+            IconicsDrawable(this@CounterActivity, SzkolnyFont.Icon.szf_alarm_bell_outline).apply {
+                colorInt = 0xff404040.toInt()
+                sizeDp = 36
+            }
+        )
         b.bellSync.onClick {
             BellSyncTimeChooseDialog(activity = this@CounterActivity)
         }

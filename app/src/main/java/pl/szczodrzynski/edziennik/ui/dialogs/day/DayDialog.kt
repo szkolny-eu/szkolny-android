@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.row_lesson_change_item.view.*
-import kotlinx.android.synthetic.main.row_teacher_absence_item.view.*
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
@@ -111,7 +109,7 @@ class DayDialog(
         }
 
         lessonChanges.ifNotEmpty {
-            b.lessonChangeContainer.visibility = View.VISIBLE
+            b.lessonChangeContainer.root.visibility = View.VISIBLE
             b.lessonChangeContainer.lessonChangeCount.text = it.size.toString()
 
             b.lessonChangeLayout.onClick {
@@ -130,7 +128,7 @@ class DayDialog(
         }
 
         teacherAbsences.ifNotEmpty {
-            b.teacherAbsenceContainer.visibility = View.VISIBLE
+            b.teacherAbsenceContainer.root.visibility = View.VISIBLE
             b.teacherAbsenceContainer.teacherAbsenceCount.text = it.size.toString()
 
             b.teacherAbsenceLayout.onClick {

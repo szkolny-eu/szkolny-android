@@ -14,8 +14,8 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import coil.Coil
-import coil.api.load
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.github.bassaer.chatmessageview.model.IChatUser
 import com.github.bassaer.chatmessageview.model.Message
 import com.github.bassaer.chatmessageview.view.ChatView
@@ -34,14 +34,6 @@ import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.openUrl
 import java.util.*
-import kotlin.collections.List
-import kotlin.collections.any
-import kotlin.collections.filter
-import kotlin.collections.firstOrNull
-import kotlin.collections.forEach
-import kotlin.collections.forEachIndexed
-import kotlin.collections.isNotEmpty
-import kotlin.collections.mutableMapOf
 import kotlin.collections.set
 import kotlin.coroutines.CoroutineContext
 
@@ -221,13 +213,15 @@ class FeedbackFragment : Fragment(), CoroutineScope {
                 Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888).also { bmp ->
                     launch {
                         Log.d(TAG, "Created image for $userName")
-                        Coil.load(activity, image) {
-                            target {
+                        val request = ImageRequest.Builder(activity)
+                            .data(image)
+                            .target {
                                 val canvas = Canvas(bmp)
                                 it.setBounds(0, 0, bmp.width, bmp.height)
                                 it.draw(canvas)
                             }
-                        }
+                            .build()
+                        activity.imageLoader.enqueue(request)
                     }
                 }
         }

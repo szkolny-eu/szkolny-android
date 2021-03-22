@@ -1,21 +1,21 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    signingConfigs {
-    }
     compileSdkVersion setup.compileSdk
+
     defaultConfig {
         applicationId 'pl.szczodrzynski.edziennik'
         minSdkVersion setup.minSdk
         targetSdkVersion setup.targetSdk
+
         versionCode release.versionCode
         versionName release.versionName
-        multiDexEnabled true
+
+        multiDexEnabled = true
 
         externalNativeBuild {
             cmake {
@@ -28,41 +28,35 @@ android {
             variant.outputs.all {
                 if (variant.buildType.name == "release") {
                     outputFileName = "Edziennik_" + defaultConfig.versionName + ".apk"
-                } else if (variant.buildType.name == "debugMinify") {
-                    outputFileName = "Edziennik_" + defaultConfig.versionName + "_debugMinify.apk"
                 } else {
                     outputFileName = "Edziennik_" + defaultConfig.versionName + "_debug.apk"
                 }
             }
         }
         debug {
-            minifyEnabled false
+            minifyEnabled = false
         }
         release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             proguardFiles fileTree('proguard').asList().toArray()
         }
-    }
-    dependencies {
-        implementation "com.google.firebase:firebase-core:${versions.firebase}"
     }
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
     lintOptions {
-        checkReleaseBuilds false
+        checkReleaseBuilds = false
     }
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
-        sourceCompatibility '1.8'
-        targetCompatibility '1.8'
-    }
-    productFlavors {
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -76,145 +70,93 @@ android {
             version "3.10.2"
         }
     }
-    ndkVersion '21.3.6528147'
 }
-
-/*task finalizeBundleDebug(type: Copy) {
-    from("debug/debug")
-    include "app.aab"
-    destinationDir file("debug/debug")
-    rename "app.aab", "Edziennik_debug.aab"
-}
-
-// it finalizes :bundleRelease
-task finalizeBundleRelease(type: Copy) {
-    from("release/release")
-    include "app.aab"
-    destinationDir file("release/release")
-    rename "app.aab", "Edziennik_${android.defaultConfig.versionCode}.aab"
-}*/
-/*
-// this adds the above two tasks
-tasks.whenTaskAdded { task ->
-    if (task.name == "bundleDebug") {
-        task.finalizedBy finalizeBundleDebug
-    } else if (task.name == "bundleRelease") {
-        task.finalizedBy finalizeBundleRelease
-    }
-}*/
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
+    // Language cores
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
 
-    kapt "androidx.room:room-compiler:${versions.room}"
-    debugImplementation "com.amitshekhar.android:debug-db:1.0.5"
+    // Android Jetpack
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.core:core-ktx:1.3.2"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.4"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.room:room-runtime:2.2.6"
+    implementation "androidx.work:work-runtime-ktx:2.5.0"
+    kapt "androidx.room:room-compiler:2.2.6"
 
-    implementation "android.arch.navigation:navigation-fragment-ktx:${versions.navigationFragment}"
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "androidx.cardview:cardview:${versions.cardView}"
-    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
-    implementation "androidx.core:core-ktx:${versions.ktx}"
-    implementation "androidx.gridlayout:gridlayout:${versions.gridLayout}"
-    implementation "androidx.legacy:legacy-support-v4:${versions.legacy}"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}"
-    implementation "androidx.recyclerview:recyclerview:${versions.recyclerView}"
-    implementation "androidx.room:room-runtime:${versions.room}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+    // Google design libs
+    implementation "com.google.android.material:material:1.3.0"
+    implementation "com.google.android:flexbox:2.0.1"
 
-    implementation "com.google.android.gms:play-services-wearable:${versions.play_services}"
-    implementation "com.google.android.material:material:${versions.material}"
-    implementation "com.google.firebase:firebase-messaging:${versions.firebasemessaging}"
+    // Play Services/Firebase
+    implementation "com.google.android.gms:play-services-wearable:17.0.0"
+    implementation "com.google.firebase:firebase-core:18.0.2"
+    implementation "com.google.firebase:firebase-crashlytics:17.4.0"
+    implementation("com.google.firebase:firebase-messaging") { version { strictly "20.1.3" } }
 
-    //implementation "com.github.kuba2k2.MaterialDrawer:library:e603091449"
-    implementation "com.mikepenz:crossfader:1.6.0" // do not update
-    implementation "com.mikepenz:iconics-core:${versions.iconics}"
-    implementation "com.mikepenz:iconics-views:${versions.iconics}"
-    implementation "com.mikepenz:community-material-typeface:${versions.font_cmd}@aar"
-    implementation "com.mikepenz:materialize:1.2.1"
+    // OkHttp, Retrofit, Gson, Jsoup
+    implementation("com.squareup.okhttp3:okhttp") { version { strictly "3.12.13" } }
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.retrofit2:converter-scalars:2.9.0"
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation "org.jsoup:jsoup:1.13.1"
+    implementation "pl.droidsonroids:jspoon:1.3.2"
+    implementation "pl.droidsonroids.retrofit2:converter-jspoon:1.3.2"
 
-    implementation "com.github.kuba2k2:NavLib:${versions.navlib}"
+    // Szkolny.eu libraries/forks
+    implementation "eu.szkolny:agendacalendarview:1799f8ef47"
+    implementation "eu.szkolny:cafebar:5bf0c618de"
+    implementation "eu.szkolny.fslogin:lib:2.0.0"
+    implementation "eu.szkolny:material-about-library:0534abf316"
+    implementation "eu.szkolny:mhttp:af4b62e6e9"
+    implementation "eu.szkolny:nachos:0e5dfcaceb"
+    implementation "eu.szkolny.selective-dao:annotation:27f8f3f194"
+    implementation "pl.szczodrzynski:navlib:0.7.2"
+    implementation "pl.szczodrzynski:numberslidingpicker:2921225f76"
+    implementation "pl.szczodrzynski:recyclertablayout:700f980584"
+    implementation "pl.szczodrzynski:tachyon:551943a6b5"
+    kapt "eu.szkolny.selective-dao:codegen:27f8f3f194"
 
-    implementation "com.afollestad.material-dialogs:commons:${versions.materialdialogs}"
-    implementation "com.afollestad.material-dialogs:core:${versions.materialdialogs}"
+    // Iconics & related
+    implementation "com.mikepenz:iconics-core:5.2.8"
+    implementation "com.mikepenz:iconics-views:5.2.8"
+    implementation "com.mikepenz:community-material-typeface:5.8.55.0-kotlin@aar"
+    implementation "eu.szkolny:szkolny-font:1dab7d64ed"
 
-    implementation "cat.ereza:customactivityoncrash:2.2.0"
+    // Other dependencies
+    implementation "cat.ereza:customactivityoncrash:2.3.0"
+    implementation "com.afollestad.material-dialogs:commons:0.9.6.0"
+    implementation "com.afollestad.material-dialogs:core:0.9.6.0"
     implementation "com.applandeo:material-calendar-view:1.5.0"
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
-    implementation "com.evernote:android-job:1.2.6"
     implementation "com.github.antonKozyriatskyi:CircularProgressIndicator:1.2.2"
     implementation "com.github.bassaer:chatmessageview:2.0.1"
-    implementation("com.github.ozodrukh:CircularReveal:2.0.1@aar") {transitive = true}
-    implementation "com.heinrichreimersoftware:material-intro:1.5.8" // do not update
-    implementation "com.jaredrummler:colorpicker:1.0.2"
-    implementation("com.squareup.okhttp3:okhttp") {
-        version {
-            strictly "3.12.13"
-        }
-    }
-    implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0" // do not update
-    implementation "com.wdullaer:materialdatetimepicker:4.1.2"
+    implementation "com.github.ChuckerTeam.Chucker:library:3.0.1"
+    implementation "com.github.jetradarmobile:android-snowfall:1.2.0"
+    implementation "com.github.wulkanowy.uonet-request-signer:hebe-jvm:a99ca50a31"
+    implementation("com.heinrichreimersoftware:material-intro") { version { strictly "1.5.8" } }
+    implementation "com.hypertrack:hyperlog:0.0.10"
+    implementation "com.jaredrummler:colorpicker:1.1.0"
+    implementation "com.qifan.powerpermission:powerpermission-coroutines:1.3.0"
+    implementation "com.qifan.powerpermission:powerpermission:1.3.0"
+    implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0"
+    implementation "com.wdullaer:materialdatetimepicker:4.2.3"
     implementation "com.yuyh.json:jsonviewer:1.0.6"
+    implementation "io.coil-kt:coil:1.1.1"
     implementation "me.dm7.barcodescanner:zxing:1.9.8"
     implementation "me.grantland:autofittextview:0.2.1"
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
-    implementation "org.greenrobot:eventbus:3.1.1"
-    implementation "org.jsoup:jsoup:1.12.1"
-    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.15"
-    //implementation "se.emilsjolander:stickylistheaders:2.7.0"
-    implementation 'com.github.edisonw:StickyListHeaders:master-SNAPSHOT@aar'
-    implementation "uk.co.samuelwall:material-tap-target-prompt:2.14.0"
+    implementation "org.greenrobot:eventbus:3.2.0"
+    implementation("pl.droidsonroids.gif:android-gif-drawable") { version { strictly "1.2.15" } }
 
-    implementation project(":agendacalendarview")
-    implementation project(":cafebar")
-    implementation project(":material-about-library")
-    implementation project(":mhttp")
-    implementation project(":nachos")
-    //implementation project(":Navigation")
-    implementation project(":szkolny-font")
-
-    implementation "com.github.ChuckerTeam.Chucker:library:3.0.1"
-    //releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.0.1"
-
-    //implementation 'com.github.wulkanowy:uonet-request-signer:master-SNAPSHOT'
-    //implementation 'com.github.kuba2k2.uonet-request-signer:android:master-63f094b14a-1'
-
-    //implementation "org.redundent:kotlin-xml-builder:1.5.3"
-
-    implementation 'com.github.wulkanowy.uonet-request-signer:hebe-jvm:a99ca50a31'
-
-    implementation "androidx.work:work-runtime-ktx:${versions.work}"
-
-    implementation 'com.hypertrack:hyperlog:0.0.10'
-
-    implementation 'com.github.kuba2k2:RecyclerTabLayout:700f980584'
-
-    implementation 'com.github.kuba2k2:Tachyon:551943a6b5'
-
-    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
-
-    implementation 'com.github.jetradarmobile:android-snowfall:1.2.0'
-
-    implementation "io.coil-kt:coil:0.9.2"
-
-    implementation 'com.github.kuba2k2:NumberSlidingPicker:2921225f76'
-
-    implementation project(":annotation")
-    kapt project(":codegen")
-
-    implementation 'com.google.android:flexbox:2.0.1'
-
-    implementation 'com.qifan.powerpermission:powerpermission:1.3.0'
-    implementation 'com.qifan.powerpermission:powerpermission-coroutines:1.3.0'
-
-    implementation 'com.github.kuba2k2.FSLogin:lib:2.0.0'
-    implementation 'pl.droidsonroids:jspoon:1.3.2'
-    implementation "com.squareup.retrofit2:converter-scalars:2.8.1"
-    implementation "pl.droidsonroids.retrofit2:converter-jspoon:1.3.2"
-}
-repositories {
-    mavenCentral()
+    // Debug-only dependencies
+    debugImplementation "com.amitshekhar.android:debug-db:1.0.5"
 }

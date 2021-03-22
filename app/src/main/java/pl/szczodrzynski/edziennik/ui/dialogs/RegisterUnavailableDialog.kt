@@ -8,7 +8,7 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import coil.api.load
+import coil.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

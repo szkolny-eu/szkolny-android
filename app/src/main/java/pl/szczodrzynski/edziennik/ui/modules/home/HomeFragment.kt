@@ -19,14 +19,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.home.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.cards.*
-import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
@@ -75,7 +74,7 @@ class HomeFragment : Fragment(), CoroutineScope {
     private lateinit var activity: MainActivity
     private lateinit var b: FragmentHomeBinding
 
-    private lateinit var job: Job
+    private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
@@ -83,10 +82,8 @@ class HomeFragment : Fragment(), CoroutineScope {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
         b = FragmentHomeBinding.inflate(inflater)
         b.refreshLayout.setParent(activity.swipeRefreshLayout)
-        job = Job()
         return b.root
     }
 

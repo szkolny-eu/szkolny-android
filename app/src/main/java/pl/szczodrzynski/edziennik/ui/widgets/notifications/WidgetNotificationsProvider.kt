@@ -48,10 +48,10 @@ class WidgetNotificationsProvider : AppWidgetProvider() {
 
             views.setImageViewBitmap(
                     R.id.widgetNotificationsSync,
-                    IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline)
-                            .colorInt(Color.WHITE)
-                            .sizeDp(iconSize)
-                            .toBitmap()
+                    IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline).apply {
+                        colorInt = Color.WHITE
+                        sizeDp = iconSize
+                    }.toBitmap()
             )
 
             views.setViewVisibility(R.id.widgetNotificationsLoading, View.GONE)

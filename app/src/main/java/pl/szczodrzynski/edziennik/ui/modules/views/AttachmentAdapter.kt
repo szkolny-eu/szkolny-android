@@ -11,11 +11,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.iconics.utils.paddingDp
 import com.mikepenz.iconics.utils.sizeDp
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -60,7 +59,7 @@ class AttachmentAdapter(
 
         val fileName = item.name.substringBefore(":http")
         // create an icon for the attachment
-        val icon: IIcon = when (Utils.getExtensionFromFileName(fileName)) {
+        val attachmentIcon = when (Utils.getExtensionFromFileName(fileName)) {
             "doc", "docx", "odt", "rtf" -> SzkolnyFont.Icon.szf_file_word_outline
             "xls", "xlsx", "ods" -> SzkolnyFont.Icon.szf_file_excel_outline
             "ppt", "pptx", "odp" -> SzkolnyFont.Icon.szf_file_powerpoint_outline
@@ -70,7 +69,7 @@ class AttachmentAdapter(
             "jpg", "jpeg", "png", "bmp", "gif" -> SzkolnyFont.Icon.szf_file_image_outline
             "zip", "rar", "tar", "7z" -> SzkolnyFont.Icon.szf_zip_box_outline
             "html", "cpp", "c", "h", "css", "java", "py" -> SzkolnyFont.Icon.szf_file_code_outline
-            else -> CommunityMaterial.Icon.cmd_file_document_outline
+            else -> CommunityMaterial.Icon2.cmd_file_document_outline
         }
 
         b.chip.text = if (item.isDownloading) {
@@ -82,15 +81,17 @@ class AttachmentAdapter(
             } ?: fileName
         }
 
-        b.chip.chipIcon = IconicsDrawable(context)
-                .icon(icon)
-                .colorAttr(context, R.attr.colorOnSurface)
-                .sizeDp(24)
-                .paddingDp(2)
-        b.chip.closeIcon = IconicsDrawable(context)
-                .icon(CommunityMaterial.Icon.cmd_check)
-                .colorAttr(context, R.attr.colorOnSurface)
-                .sizeDp(18)
+        b.chip.chipIcon = IconicsDrawable(context).apply {
+            icon = attachmentIcon
+            colorAttr(context, R.attr.colorOnSurface)
+            sizeDp = 24
+            paddingDp = 2
+        }
+        b.chip.closeIcon = IconicsDrawable(context).apply {
+            icon = CommunityMaterial.Icon.cmd_check
+            colorAttr(context, R.attr.colorOnSurface)
+            sizeDp = 18
+        }
 
         b.chip.isCloseIconVisible = item.isDownloaded && !item.isDownloading
         // prevent progress bar flickering

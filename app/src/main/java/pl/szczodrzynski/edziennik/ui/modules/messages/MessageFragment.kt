@@ -65,9 +65,10 @@ class MessageFragment : Fragment(), CoroutineScope {
         if (!isAdded) return
 
         b.closeButton.setImageDrawable(
-                IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_window_close)
-                        .colorAttr(activity, android.R.attr.textColorSecondary)
-                        .sizeDp(12)
+                IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_window_close).apply {
+                    colorAttr(activity, android.R.attr.textColorSecondary)
+                    sizeDp = 12
+                }
         )
         b.closeButton.setOnClickListener { activity.navigateUp() }
 
@@ -230,7 +231,7 @@ class MessageFragment : Fragment(), CoroutineScope {
                 bottomBar.apply {
                     fabEnable = true
                     fabExtendedText = getString(R.string.messages_reply)
-                    fabIcon = CommunityMaterial.Icon2.cmd_reply
+                    fabIcon = CommunityMaterial.Icon3.cmd_reply_outline
                 }
 
                 setFabOnClickListener(View.OnClickListener {
