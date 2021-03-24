@@ -51,8 +51,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     companion object {
         @Volatile
         lateinit var db: AppDb
-        val config: Config by lazy { Config(db) }
-        var profile: Profile by mutableLazy { Profile(0, 0, 0, "") }
+        lateinit var config: Config
+        lateinit var profile: Profile
         val profileId
             get() = profile.id
 
@@ -106,7 +106,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .readTimeout(30, TimeUnit.SECONDS)
         builder.installHttpsSupport(this)
 
-        if (devMode || BuildConfig.DEBUG) {
+        if (devMode) {
             HyperLog.initialize(this)
             HyperLog.setLogLevel(Log.VERBOSE)
             HyperLog.setLogFormat(DebugLogFormat(this))
@@ -158,22 +158,24 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .errorActivity(CrashActivity::class.java)
                 .apply()
         Iconics.init(applicationContext)
+
+        // initialize companion object values
         App.db = AppDb(this)
-        Themes.themeInt = config.ui.theme
-        devMode = config.debugMode
-        MHttp.instance().customOkHttpClient(http)
+        App.config = Config(App.db)
+        App.profile = Profile(0, 0, 0, "")
+        debugMode = BuildConfig.DEBUG
+        devMode = config.debugMode || debugMode
 
         if (!profileLoadById(config.lastProfileId)) {
             db.profileDao().firstId?.let { profileLoadById(it) }
         }
 
+        MHttp.instance().customOkHttpClient(http)
+
+        Themes.themeInt = config.ui.theme
         config.ui.language?.let {
             setLanguage(it)
         }
-
-        debugMode = BuildConfig.DEBUG
-        if (BuildConfig.DEBUG)
-            devMode = true
 
         Signing.getCert(this)
 
@@ -183,7 +185,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
 
                 if (config.devModePassword != null)
                     checkDevModePassword()
-                devMode = debugMode || config.debugMode
 
                 if (config.sync.enabled)
                     SyncWorker.scheduleNext(this@App, false)
