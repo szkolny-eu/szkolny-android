@@ -42,8 +42,7 @@
                     android:id="@+id/noticesPraisesCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginHorizontal="5dp"
                     android:textStyle="bold"
                     tools:text="0" />
             </LinearLayout>
@@ -62,8 +61,7 @@
                     android:id="@+id/noticesWarningsCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginHorizontal="5dp"
                     android:textStyle="bold"
                     tools:text="0" />
             </LinearLayout>
@@ -82,8 +80,7 @@
                     android:id="@+id/noticesOtherCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginHorizontal="5dp"
                     android:textStyle="bold"
                     tools:text="0" />
             </LinearLayout>

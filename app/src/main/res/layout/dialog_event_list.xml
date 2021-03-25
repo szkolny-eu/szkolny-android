@@ -16,10 +16,9 @@
                 layout="@layout/row_lesson_change_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
@@ -28,10 +27,9 @@
                 layout="@layout/row_teacher_absence_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
@@ -39,8 +37,7 @@
                 android:id="@+id/eventListLessonDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
+                android:layout_marginHorizontal="24dp"
                 android:orientation="vertical">
 
                 <TextView

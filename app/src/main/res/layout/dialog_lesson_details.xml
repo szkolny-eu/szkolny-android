@@ -52,8 +52,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -131,9 +130,8 @@
                 android:id="@+id/shiftedLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -159,9 +157,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -231,8 +228,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -302,8 +298,7 @@
                 android:id="@+id/eventsNoData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:paddingVertical="16dp"
                 android:orientation="vertical"
                 android:visibility="gone"

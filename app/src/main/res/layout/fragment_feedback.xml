@@ -43,9 +43,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginLeft="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
                 android:text="@string/feedback_faq_button"
                 android:visibility="gone" />
 
@@ -112,8 +111,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:text="@string/feedback_history"
                 android:textSize="20sp" />
 

@@ -169,9 +169,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginRight="16dp"
                     android:text="Odbiorcy wiadomości:"
                     android:textAppearance="@style/NavView.TextView.Subtitle" />
 
@@ -186,9 +185,8 @@
                     android:id="@+id/messageAttachmentsTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginRight="16dp"
                     android:text="Załączniki:"
                     android:textAppearance="@style/NavView.TextView.Subtitle" />
 
@@ -226,8 +224,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_gravity="center_vertical|end"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp" />
+                            android:layout_marginHorizontal="8dp" />
 
                     </FrameLayout>
 
@@ -255,8 +252,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_gravity="center_vertical|end"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp" />
+                            android:layout_marginHorizontal="8dp" />
 
                     </FrameLayout>
 
@@ -265,8 +261,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginHorizontal="8dp"
                     android:layout_marginBottom="8dp"
                     android:orientation="horizontal"
                     android:visibility="gone"
@@ -276,8 +271,7 @@
                         android:id="@+id/messageReplyButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
@@ -305,8 +299,7 @@
                         android:id="@+id/messageForwardButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
@@ -335,8 +328,7 @@
                         android:id="@+id/messageRemoveButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
