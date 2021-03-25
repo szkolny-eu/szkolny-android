@@ -15,7 +15,6 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -55,7 +54,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileRemoveDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
@@ -389,7 +388,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
                 drawerProfileLongClickListener = { _, profile, _, view ->
                     if (view != null && profile is ProfileDrawerItem) {
-                        showProfileContextMenu(profile, view)
+                        launch {
+                            val appProfile = withContext(Dispatchers.IO) {
+                                App.db.profileDao().getByIdNow(profile.identifier.toInt())
+                            } ?: return@launch
+                            drawer.close()
+                            ProfileConfigDialog(this@MainActivity, appProfile)
+                        }
                         true
                     }
                     else {
@@ -1277,26 +1282,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         drawer.setItems(*drawerItems.toTypedArray())
         drawer.removeAllProfileSettings()
         drawer.addProfileSettings(*drawerProfiles.toTypedArray())
-    }
-
-    private fun showProfileContextMenu(profile: IProfile, view: View) {
-        val profileId = profile.identifier.toInt()
-        val popupMenu = PopupMenu(this, view)
-        popupMenu.menu.add(0, 1, 1, R.string.profile_menu_open_settings)
-        popupMenu.menu.add(0, 2, 2, R.string.profile_menu_remove)
-        popupMenu.setOnMenuItemClickListener { item ->
-            if (item.itemId == 1) {
-                if (profileId != app.profile.id) {
-                    loadProfile(profileId, DRAWER_ITEM_SETTINGS)
-                    return@setOnMenuItemClickListener true
-                }
-                loadTarget(DRAWER_ITEM_SETTINGS, null)
-            } else if (item.itemId == 2) {
-                ProfileRemoveDialog(this, profileId, profile.name?.getText(this) ?: "?")
-            }
-            true
-        }
-        popupMenu.show()
     }
 
     private val targetPopToHomeList = arrayListOf<Int>()
