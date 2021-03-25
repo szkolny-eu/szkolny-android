@@ -84,7 +84,7 @@ class EventManualDialog(
         if (activity.isFinishing)
             return@launch
         onShowListener?.invoke(TAG)
-        EventBus.getDefault().register(this)
+        EventBus.getDefault().register(this@EventManualDialog)
         b = DialogEventManualV2Binding.inflate(activity.layoutInflater)
         dialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.dialog_event_manual_title)
