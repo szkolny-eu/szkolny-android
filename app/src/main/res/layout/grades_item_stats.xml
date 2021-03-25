@@ -51,8 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:paddingHorizontal="8dp">
 
             <LinearLayout
                 android:id="@+id/normalSemester1Layout"
@@ -194,8 +193,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:paddingHorizontal="8dp">
 
             <LinearLayout
                 android:id="@+id/pointSemester1Layout"
