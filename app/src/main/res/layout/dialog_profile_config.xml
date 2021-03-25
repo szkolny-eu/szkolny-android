@@ -39,16 +39,22 @@
                     android:scaleType="centerCrop"
                     tools:src="@drawable/face_1" />
 
+                <View
+                    android:id="@+id/circleView"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom|end"
+                    tools:background="?colorSurface" />
+
                 <com.mikepenz.iconics.view.IconicsImageView
                     android:id="@+id/imageButtonIcon"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_gravity="bottom|end"
-                    app:iiv_background_color="?android:colorBackground"
                     app:iiv_color="?colorOnBackground"
-                    app:iiv_corner_radius="18dp"
                     app:iiv_icon="szf-image-plus-outline"
-                    app:iiv_padding="5dp" />
+                    app:iiv_padding="5dp"
+                    tools:background="@color/colorSurface_16dp" />
 
                 <View
                     android:id="@+id/imageButton"

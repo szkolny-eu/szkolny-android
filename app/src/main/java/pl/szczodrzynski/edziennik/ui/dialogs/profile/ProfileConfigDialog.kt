@@ -4,9 +4,12 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.profile
 
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -58,6 +61,15 @@ class ProfileConfigDialog(
 
         b.profile = profile
         profile.applyImageTo(b.image)
+
+        // I can't believe how simple it is to get the dialog's background color !!
+        val shape = MaterialShapeDrawable(activity, null, R.attr.alertDialogStyle, R.style.MaterialAlertDialog_MaterialComponents)
+        val surface = MaterialColors.getColor(activity, R.attr.colorSurface, TAG)
+        shape.setCornerSize(18.dp.toFloat())
+        shape.initializeElevationOverlay(activity)
+        shape.fillColor = ColorStateList.valueOf(surface)
+        shape.elevation = 16.dp.toFloat()
+        b.circleView.background = shape
 
         b.nameEdit.addTextChangedListener {
             profileChanged = true
