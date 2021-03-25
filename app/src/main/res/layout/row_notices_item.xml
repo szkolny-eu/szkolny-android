@@ -14,9 +14,8 @@
         app:cardElevation="4dp"
         app:cardCornerRadius="5dp"
         android:background="?selectableItemBackground"
-        android:paddingLeft="10dp"
+        android:paddingHorizontal="10dp"
         android:paddingTop="5dp"
-        android:paddingRight="10dp"
         android:paddingBottom="3dp">
 
         <LinearLayout

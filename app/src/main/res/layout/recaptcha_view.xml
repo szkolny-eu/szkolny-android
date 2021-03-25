@@ -8,9 +8,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
+        android:paddingHorizontal="16dp"
         android:paddingTop="24dp"
-        android:paddingRight="16dp"
         android:paddingBottom="8dp">
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"

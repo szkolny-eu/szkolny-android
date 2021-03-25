@@ -6,10 +6,9 @@
         android:id="@+id/teacherAbsenceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingHorizontal="24dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:clipToPadding="false"
         tools:listitem="@layout/row_dialog_teacher_absence_item" />
 </layout>

@@ -132,9 +132,8 @@
                         android:background="?selectableItemBackground"
                         android:ellipsize="end"
                         android:maxLines="3"
-                        android:paddingLeft="8dp"
+                        android:paddingHorizontal="8dp"
                         android:paddingTop="12dp"
-                        android:paddingRight="8dp"
                         android:textAppearance="@style/NavView.TextView.Subtitle"
                         app:layout_constraintEnd_toStartOf="@+id/messageDate"
                         app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
@@ -163,8 +162,7 @@
                     android:layout_marginBottom="8dp"
                     android:autoLink="all"
                     android:minHeight="250dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingHorizontal="16dp"
                     android:textIsSelectable="true"
                     tools:text="To jest treść wiadomości.\n\nZazwyczaj ma wiele linijek.\n\nTak" />
 
@@ -186,8 +184,7 @@
                     android:id="@+id/messageRecipients"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingHorizontal="16dp"
                     tools:text=" - Jan Kowalski, przeczytano: nie\n - Adam Dodatkowy, przeczytano: 20 marca, 17:35" />
 
                 <TextView
@@ -205,8 +202,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingHorizontal="16dp"
                     android:paddingBottom="8dp">
 
                     <FrameLayout
@@ -291,9 +287,8 @@
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="4dp"
+                        android:paddingHorizontal="4dp"
                         android:paddingTop="8dp"
-                        android:paddingRight="4dp"
                         android:paddingBottom="8dp">
 
                         <TextView
@@ -322,9 +317,8 @@
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="4dp"
+                        android:paddingHorizontal="4dp"
                         android:paddingTop="8dp"
-                        android:paddingRight="4dp"
                         android:paddingBottom="8dp">
 
                         <TextView
@@ -354,9 +348,8 @@
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="4dp"
+                        android:paddingHorizontal="4dp"
                         android:paddingTop="8dp"
-                        android:paddingRight="4dp"
                         android:paddingBottom="8dp">
 
                         <TextView

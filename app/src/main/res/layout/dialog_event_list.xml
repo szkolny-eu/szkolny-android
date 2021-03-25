@@ -87,9 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:clipToPadding="false"
-                android:paddingLeft="16dp"
+                android:paddingHorizontal="16dp"
                 android:paddingTop="8dp"
-                android:paddingRight="16dp"
                 android:paddingBottom="8dp"
                 tools:listitem="@layout/row_dialog_event_list_item" />
         </LinearLayout>
