@@ -190,12 +190,18 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             withContext(Dispatchers.Default) {
                 config.migrate(this@App)
 
-                SSLProvider.install(applicationContext, downloadIfNeeded = true, supportTls13 = true, onFinish = {
-                    buildHttp()
-                }, onError = {
-                    Timber.e("Failed to install SSLProvider: $it")
-                    it.printStackTrace()
-                })
+                SSLProvider.install(
+                    applicationContext,
+                    downloadIfNeeded = true,
+                    supportTls13 = false,
+                    onFinish = {
+                        buildHttp()
+                    },
+                    onError = {
+                        Timber.e("Failed to install SSLProvider: $it")
+                        it.printStackTrace()
+                    }
+                )
 
                 if (config.devModePassword != null)
                     checkDevModePassword()
