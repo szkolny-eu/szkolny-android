@@ -143,7 +143,6 @@
         <activity android:name=".ui.modules.settings.SettingsLicenseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.modules.webpush.QrScannerActivity" />
         <activity android:name="com.canhub.cropper.CropImageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/Base.Theme.AppCompat" />
