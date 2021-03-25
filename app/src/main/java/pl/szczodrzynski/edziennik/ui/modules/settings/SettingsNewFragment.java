@@ -15,6 +15,8 @@ import android.provider.Settings;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.canhub.cropper.CropImage;
+import com.canhub.cropper.CropImageView;
 import com.danielstone.materialaboutlibrary.ConvenienceBuilder;
 import com.danielstone.materialaboutlibrary.MaterialAboutFragment;
 import com.danielstone.materialaboutlibrary.items.MaterialAboutActionItem;
@@ -30,8 +32,6 @@ import com.mikepenz.iconics.typeface.IIcon;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.utils.IconicsConvertersKt;
 import com.mikepenz.iconics.utils.IconicsDrawableExtensionsKt;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;

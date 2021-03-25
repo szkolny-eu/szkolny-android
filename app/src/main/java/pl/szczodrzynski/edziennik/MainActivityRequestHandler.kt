@@ -8,8 +8,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.provider.OpenableColumns
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageView
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
 import java.io.File
@@ -76,6 +76,9 @@ class MainActivityRequestHandler(val activity: MainActivity) {
     }
 
     private fun getFileInfo(uri: Uri): Pair<String, String?> {
+        if (uri.scheme == "file") {
+            return (uri.lastPathSegment ?: "unknown") to null
+        }
         val cursor = activity.contentResolver.query(
             uri,
             null,
@@ -118,7 +121,7 @@ class MainActivityRequestHandler(val activity: MainActivity) {
     fun handleResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK)
             return
-        var uri = data?.data
+        var uri = CropImage.getPickImageResultUri(activity, data)
         when (requestCode) {
             REQUEST_LOGIN_ACTIVITY -> {
                 if (!app.config.loginFinished)
