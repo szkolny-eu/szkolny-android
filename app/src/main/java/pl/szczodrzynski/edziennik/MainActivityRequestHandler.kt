@@ -30,50 +30,62 @@ class MainActivityRequestHandler(val activity: MainActivity) {
     private val requestData = mutableMapOf<Int, Any?>()
     private val listeners = mutableMapOf<Int, (data: Any?) -> Unit>()
 
+    private val manager
+        get() = app.permissionManager
+
     fun requestLogin() = activity.startActivityForResult(
         Intent(activity, LoginActivity::class.java),
         REQUEST_LOGIN_ACTIVITY
     )
 
-    fun requestHeaderBackground(listener: (Any?) -> Unit) {
-        listeners[REQUEST_FILE_HEADER_BACKGROUND] = listener
-        activity.startActivityForResult(
-            CropImage.getPickImageChooserIntent(
-                activity,
-                activity.getString(R.string.pick_image_intent_chooser_title),
-                true,
-                true
-            ),
-            REQUEST_FILE_HEADER_BACKGROUND
-        )
-    }
+    fun requestHeaderBackground(listener: (Any?) -> Unit) =
+        manager.requestCameraPermission(
+            activity, 0, isRequired = false
+        ) {
+            listeners[REQUEST_FILE_HEADER_BACKGROUND] = listener
+            activity.startActivityForResult(
+                CropImage.getPickImageChooserIntent(
+                    activity,
+                    activity.getString(R.string.pick_image_intent_chooser_title),
+                    true,
+                    true
+                ),
+                REQUEST_FILE_HEADER_BACKGROUND
+            )
+        }
 
-    fun requestAppBackground(listener: (Any?) -> Unit) {
-        listeners[REQUEST_FILE_APP_BACKGROUND] = listener
-        activity.startActivityForResult(
-            CropImage.getPickImageChooserIntent(
-                activity,
-                activity.getString(R.string.pick_image_intent_chooser_title),
-                true,
-                true
-            ),
-            REQUEST_FILE_APP_BACKGROUND
-        )
-    }
+    fun requestAppBackground(listener: (Any?) -> Unit) =
+        manager.requestCameraPermission(
+            activity, 0, isRequired = false
+        ) {
+            listeners[REQUEST_FILE_APP_BACKGROUND] = listener
+            activity.startActivityForResult(
+                CropImage.getPickImageChooserIntent(
+                    activity,
+                    activity.getString(R.string.pick_image_intent_chooser_title),
+                    true,
+                    true
+                ),
+                REQUEST_FILE_APP_BACKGROUND
+            )
+        }
 
-    fun requestProfileImage(profile: Profile, listener: (Any?) -> Unit) {
-        listeners[REQUEST_FILE_PROFILE_IMAGE] = listener
-        requestData[REQUEST_FILE_PROFILE_IMAGE] = profile
-        activity.startActivityForResult(
-            CropImage.getPickImageChooserIntent(
-                activity,
-                activity.getString(R.string.pick_image_intent_chooser_title),
-                true,
-                true
-            ),
-            REQUEST_FILE_PROFILE_IMAGE
-        )
-    }
+    fun requestProfileImage(profile: Profile, listener: (Any?) -> Unit) =
+        manager.requestCameraPermission(
+            activity, 0, isRequired = false
+        ) {
+            listeners[REQUEST_FILE_PROFILE_IMAGE] = listener
+            requestData[REQUEST_FILE_PROFILE_IMAGE] = profile
+            activity.startActivityForResult(
+                CropImage.getPickImageChooserIntent(
+                    activity,
+                    activity.getString(R.string.pick_image_intent_chooser_title),
+                    true,
+                    true
+                ),
+                REQUEST_FILE_PROFILE_IMAGE
+            )
+        }
 
     private fun getFileInfo(uri: Uri): Pair<String, String?> {
         if (uri.scheme == "file") {
@@ -95,8 +107,7 @@ class MainActivityRequestHandler(val activity: MainActivity) {
                 val mimeType = if (mimeIndex != -1) it.getString(mimeIndex) else null
 
                 name to mimeType
-            }
-            else
+            } else
                 null
         } ?: "unknown" to null
     }
@@ -178,7 +189,8 @@ class MainActivityRequestHandler(val activity: MainActivity) {
                         .getIntent(activity)
                     activity.startActivityForResult(intent, REQUEST_CROP_PROFILE_IMAGE)
                 } else {
-                    val profile = requestData.remove(REQUEST_FILE_PROFILE_IMAGE) as? Profile ?: return
+                    val profile =
+                        requestData.remove(REQUEST_FILE_PROFILE_IMAGE) as? Profile ?: return
                     val path = saveFile(uri, "profile${profile.id}")
                     profile.image = path
                     listeners.remove(REQUEST_FILE_PROFILE_IMAGE)?.invoke(profile)
