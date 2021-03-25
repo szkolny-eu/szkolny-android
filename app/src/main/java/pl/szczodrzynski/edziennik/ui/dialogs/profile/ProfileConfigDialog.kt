@@ -85,7 +85,7 @@ class ProfileConfigDialog(
                 if (this@ProfileConfigDialog.profile == profile) {
                     profileChanged = true
                     b.profile = profile
-                    profile.applyImageTo(b.image)
+                    b.image.setImageDrawable(profile.getImageDrawable(activity))
                 }
             }
         }
