@@ -75,10 +75,7 @@
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginHorizontal="8dp"
                     android:visibility="@{unread ? View.VISIBLE : View.GONE}"
                     android:background="@drawable/unread_red_circle" />
 
