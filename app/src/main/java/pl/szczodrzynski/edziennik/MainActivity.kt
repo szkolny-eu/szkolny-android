@@ -317,6 +317,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
             else -> b.nightlyText.isVisible = false
         }
+        if (b.nightlyText.isVisible) {
+            b.nightlyText.background.setTintColor(0xa0ff0000.toInt())
+        }
 
         navLoading = true
 
