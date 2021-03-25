@@ -4,15 +4,11 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.webpush
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +21,6 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.databinding.WebPushFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.QrScannerDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
-import pl.szczodrzynski.edziennik.utils.Themes
 import kotlin.coroutines.CoroutineContext
 
 class WebPushFragment : Fragment(), CoroutineScope {
@@ -46,13 +41,13 @@ class WebPushFragment : Fragment(), CoroutineScope {
         SzkolnyApi(app)
     }
 
+    private val manager
+        get() = app.permissionManager
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
-        if (app.profile == null)
-            return inflater.inflate(R.layout.fragment_loading, container, false)
         // activity, context and profile is valid
         b = WebPushFragmentBinding.inflate(inflater)
         return b.root
@@ -60,19 +55,15 @@ class WebPushFragment : Fragment(), CoroutineScope {
 
     @SuppressLint("DefaultLocale")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO check if app, activity, b can be null
-        if (app.profile == null || !isAdded)
+        if (!isAdded)
             return
 
         b.scanQrCode.onClick {
-            val result = ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
-            if (result == PackageManager.PERMISSION_GRANTED) {
+            manager.requestCameraPermission(activity, R.string.permissions_qr_scanner) {
                 QrScannerDialog(activity, {
                     b.tokenEditText.setText(it.crc32().toString(36).toUpperCase())
                     pairBrowser(browserId = it)
                 })
-            } else {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CAMERA), 1)
             }
         }
 

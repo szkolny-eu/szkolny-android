@@ -1398,4 +1398,5 @@
     <string name="profile_config_name_hint">Nazwa profilu</string>
     <string name="profile_config_sync_enabled">Synchronizuj ten profil</string>
     <string name="profile_config_logout">Wyloguj się</string>
+    <string name="permissions_qr_scanner">Aby móc zeskanować kod QR musisz przyznać uprawnienia dostępu do kamery.\n\nKliknij OK, aby przyznać uprawnienia.</string>
 </resources>
