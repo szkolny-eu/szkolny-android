@@ -551,7 +551,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (App.devMode) {
             bottomSheet += BottomSheetPrimaryItem(false)
                     .withTitle(R.string.menu_debug)
-                    .withIcon(CommunityMaterial.Icon.cmd_android_studio)
+                    .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
                     .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_DEBUG) })
         }
     }
