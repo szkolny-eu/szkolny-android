@@ -37,8 +37,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="24dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp">
+                android:paddingVertical="16dp">
 
                 <TextView
                     android:id="@+id/title"

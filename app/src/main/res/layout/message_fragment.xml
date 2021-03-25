@@ -204,8 +204,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
+                        android:paddingVertical="8dp">
 
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:id="@+id/replyIcon"
@@ -236,8 +235,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
+                        android:paddingVertical="8dp">
 
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:id="@+id/forwardIcon"
@@ -269,8 +267,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
+                        android:paddingVertical="8dp"
                         android:visibility="visible">
 
                         <com.mikepenz.iconics.view.IconicsImageView
@@ -301,8 +298,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingHorizontal="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
+                        android:paddingVertical="8dp"
                         android:visibility="visible">
 
                         <com.mikepenz.iconics.view.IconicsImageView

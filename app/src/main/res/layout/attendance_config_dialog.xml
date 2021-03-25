@@ -33,7 +33,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
+                android:paddingBottom="8dp"
                 android:text="@string/attendance_config_use_symbols_hint"
                 android:textAppearance="@style/NavView.TextView.Helper"
                 android:textSize="12sp"

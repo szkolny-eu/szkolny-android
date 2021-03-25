@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:paddingVertical="8dp">
 
         <pl.szczodrzynski.edziennik.ui.modules.grades.GradeView
             android:id="@+id/gradeName"

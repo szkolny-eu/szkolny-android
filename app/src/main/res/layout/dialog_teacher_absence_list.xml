@@ -8,7 +8,6 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingHorizontal="24dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:paddingVertical="8dp"
         tools:listitem="@layout/row_dialog_teacher_absence_item" />
 </layout>
