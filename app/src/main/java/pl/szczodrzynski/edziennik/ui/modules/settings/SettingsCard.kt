@@ -24,5 +24,5 @@ abstract class SettingsCard(
 
     protected abstract fun buildCard(): MaterialAboutCard
     protected abstract fun getItems(): List<MaterialAboutItem>
-    protected abstract fun getItemsMore(): List<MaterialAboutItem>
+    protected open fun getItemsMore(): List<MaterialAboutItem> = listOf()
 }
