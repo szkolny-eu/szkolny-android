@@ -54,8 +54,8 @@ import pl.szczodrzynski.edziennik.sync.SyncWorker;
 import pl.szczodrzynski.edziennik.sync.UpdateWorker;
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradesConfigDialog;
+import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileRemoveDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AttendanceConfigDialog;
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog;
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.NotificationFilterDialog;
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity;
 import pl.szczodrzynski.edziennik.utils.Themes;
@@ -253,7 +253,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
                             icon(SzkolnyFont.Icon.szf_delete_empty_outline, iconSizeDp, iconColor)
                     )
                             .setOnClickAction(() -> {
-                                new ProfileRemoveDialog(activity, app.getProfile().getId(), app.getProfile().getName(), false);
+                                new ProfileRemoveDialog(activity, app.getProfile().getId(), app.getProfile().getName(), false, null);
                             })
             );
 

@@ -4,8 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.settings
 
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
-import androidx.core.graphics.drawable.toBitmap
 import com.danielstone.materialaboutlibrary.items.*
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.mikepenz.iconics.IconicsDrawable
@@ -27,11 +25,12 @@ class SettingsUtil(
 
     fun refresh() = onRefresh()
 
-    private fun IIcon.asDrawable(color: Int? = null, size: Int = 20) = IconicsDrawable(activity).apply {
-        icon = this@asDrawable
-        sizeDp = size
-        colorInt = color ?: Themes.getPrimaryTextColor(activity)
-    }
+    private fun IIcon.asDrawable(color: Int? = null, size: Int = 20) =
+        IconicsDrawable(activity).apply {
+            icon = this@asDrawable
+            sizeDp = size
+            colorInt = color ?: Themes.getPrimaryTextColor(activity)
+        }
 
     fun createCard(
         titleRes: Int?,
@@ -171,18 +170,20 @@ class SettingsUtil(
             .icon(R.mipmap.ic_splash)
             .build()
 
-    fun createProfileItem(profile: Profile, onClick: (profile: Profile) -> Unit) =
-        MaterialAboutProfileItem(
+    fun createProfileItem(
+        profile: Profile,
+        onClick: (item: MaterialAboutProfileItem, profile: Profile) -> Unit
+    ): MaterialAboutProfileItem {
+        val item = MaterialAboutProfileItem(
             MaterialAboutTitleItem.Builder()
                 .text(profile.name)
                 .desc(profile.subname)
-                .icon(RoundedBitmapDrawableFactory.create(
-                    activity.resources,
-                    profile.getImageDrawable(activity).toBitmap()
-                ).also {
-                    it.isCircular = true
-                })
-                .setOnClickAction { onClick(profile) }
+                .icon(profile.getImageDrawable(activity))
                 .build()
         )
+        item.setOnClickAction {
+            onClick(item, profile)
+        }
+        return item
+    }
 }

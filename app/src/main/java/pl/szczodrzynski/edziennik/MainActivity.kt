@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
@@ -56,7 +55,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
@@ -98,7 +97,6 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
-import java.io.File
 import java.io.IOException
 import java.util.*
 import kotlin.coroutines.CoroutineContext
@@ -110,8 +108,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         var useOldMessages = false
 
         const val TAG = "MainActivity"
-
-        const val REQUEST_LOGIN_ACTIVITY = 20222
 
         const val DRAWER_PROFILE_ADD_NEW = 200
         const val DRAWER_PROFILE_SYNC_ALL = 201
@@ -264,6 +260,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val bottomSheet: NavBottomSheet by lazy { navView.bottomSheet }
     val mainSnackbar: MainSnackbar by lazy { MainSnackbar(this) }
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
+    val requestHandler by lazy { MainActivityRequestHandler(this) }
 
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
 
@@ -479,28 +476,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         // APP BACKGROUND
-        if (app.config.ui.appBackground != null) {
-            try {
-                app.config.ui.appBackground?.let {
-                    var bg = it
-                    val bgDir = File(Environment.getExternalStoragePublicDirectory("Szkolny.eu"), "bg")
-                    if (bgDir.exists()) {
-                        val files = bgDir.listFiles()
-                        val r = Random()
-                        val i = r.nextInt(files.size)
-                        bg = files[i].toString()
-                    }
-                    val linearLayout = b.root
-                    if (bg.endsWith(".gif")) {
-                        linearLayout.background = GifDrawable(bg)
-                    } else {
-                        linearLayout.background = BitmapDrawable.createFromPath(bg)
-                    }
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
+        setAppBackground()
 
         // IT'S WINTER MY DUDES
         val today = Date.getToday()
@@ -590,7 +566,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private var profileSettingClickListener = { id: Int, view: View? ->
         when (id) {
             DRAWER_PROFILE_ADD_NEW -> {
-                startActivityForResult(Intent(this, LoginActivity::class.java), REQUEST_LOGIN_ACTIVITY)
+                requestHandler.requestLogin()
             }
             DRAWER_PROFILE_SYNC_ALL -> {
                 EdziennikTask.sync().enqueue(this)
@@ -838,7 +814,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             handleIntent(intent?.extras)
         }
     }
-    private fun handleIntent(extras: Bundle?) {
+    fun handleIntent(extras: Bundle?) {
 
         d(TAG, "handleIntent() {")
         extras?.keySet()?.forEach { key ->
@@ -996,13 +972,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_LOGIN_ACTIVITY) {
-            if (!app.config.loginFinished)
-                finish()
-            else {
-                handleIntent(data?.extras)
-            }
-        }
+        requestHandler.handleResult(requestCode, resultCode, data)
     }
 
     /*    _                     _                  _   _               _
@@ -1226,6 +1196,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         b.navView.postDelayed({
             navView.bottomBar.fabExtended = false
         }, 3000)
+    }
+
+    fun setAppBackground() {
+        try {
+            b.root.background = app.config.ui.appBackground?.let {
+                if (it.endsWith(".gif"))
+                    GifDrawable(it)
+                else
+                    BitmapDrawable.createFromPath(it)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 
     /*    _____                                _ _

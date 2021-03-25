@@ -104,10 +104,12 @@ class RegistrationConfigDialog(
             // force full registration of the user
             App.config.getFor(profile.id).hash = ""
 
-            AppSync(app, mutableListOf(), listOf(profile), SzkolnyApi(app)).run(
-                0L,
-                markAsSeen = true
-            )
+            SzkolnyApi(app).runCatching(activity) {
+                AppSync(app, mutableListOf(), listOf(profile), this).run(
+                    0L,
+                    markAsSeen = true
+                )
+            }
             app.db.profileDao().add(profile)
             if (profile.id == App.profileId) {
                 App.profile.registration = profile.registration

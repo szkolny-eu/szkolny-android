@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:paddingHorizontal="@dimen/mal_baseline_half">
 
-    <ImageView
+    <com.mikepenz.materialdrawer.view.BezelImageView
         android:id="@+id/mal_item_image"
         android:layout_width="80dp"
         android:layout_height="80dp"

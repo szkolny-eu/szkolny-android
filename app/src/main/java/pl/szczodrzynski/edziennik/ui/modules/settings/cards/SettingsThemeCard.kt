@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.settings.cards
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AppLanguageDialog
@@ -74,7 +75,28 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             text = R.string.settings_theme_drawer_header_text,
             icon = CommunityMaterial.Icon2.cmd_image_outline
         ) {
-            // TODO: 2021-03-17
+            if (app.config.ui.appBackground == null) {
+                setHeaderBackground()
+                return@createActionItem
+            }
+            MaterialAlertDialogBuilder(activity)
+                .setItems(
+                    arrayOf(
+                        activity.getString(R.string.settings_theme_drawer_header_dialog_set),
+                        activity.getString(R.string.settings_theme_drawer_header_dialog_restore)
+                    )
+                ) { _, which ->
+                    when (which) {
+                        0 -> setHeaderBackground()
+                        1 -> {
+                            app.config.ui.headerBackground = null
+                            activity.drawer.setAccountHeaderBackground(null)
+                            activity.drawer.open()
+                        }
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
         },
 
         util.createActionItem(
@@ -82,7 +104,27 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             subText = R.string.settings_theme_app_background_subtext,
             icon = CommunityMaterial.Icon2.cmd_image_filter_hdr
         ) {
-            // TODO: 2021-03-17
+            if (app.config.ui.appBackground == null) {
+                setAppBackground()
+                return@createActionItem
+            }
+            MaterialAlertDialogBuilder(activity)
+                .setItems(
+                    arrayOf(
+                        activity.getString(R.string.settings_theme_app_background_dialog_set),
+                        activity.getString(R.string.settings_theme_app_background_dialog_restore)
+                    )
+                ) { _, which ->
+                    when (which) {
+                        0 -> setAppBackground()
+                        1 -> {
+                            app.config.ui.appBackground = null
+                            activity.setAppBackground()
+                        }
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
         },
 
         util.createPropertyItem(
@@ -93,4 +135,14 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             configGlobal.ui.openDrawerOnBackPressed = it
         }
     )
+
+    private fun setHeaderBackground() = activity.requestHandler.requestHeaderBackground {
+        activity.drawer.setAccountHeaderBackground(null)
+        activity.drawer.setAccountHeaderBackground(app.config.ui.headerBackground)
+        activity.drawer.open()
+    }
+
+    private fun setAppBackground() = activity.requestHandler.requestAppBackground {
+        activity.setAppBackground()
+    }
 }
