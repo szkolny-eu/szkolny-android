@@ -103,8 +103,7 @@
             android:id="@+id/chatLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginVertical="8dp"
             android:orientation="vertical"
             android:visibility="visible">
 
@@ -119,8 +118,7 @@
                 android:id="@+id/chat_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginVertical="8dp" />
         </LinearLayout>
 
     </LinearLayout>
