@@ -115,7 +115,7 @@ dependencies {
     implementation "eu.szkolny:agendacalendarview:1799f8ef47"
     implementation "eu.szkolny:cafebar:5bf0c618de"
     implementation "eu.szkolny.fslogin:lib:2.0.0"
-    implementation "eu.szkolny:material-about-library:0534abf316"
+    implementation "eu.szkolny:material-about-library:1d5ebaf47c"
     implementation "eu.szkolny:mhttp:af4b62e6e9"
     implementation "eu.szkolny:nachos:0e5dfcaceb"
     implementation "eu.szkolny.selective-dao:annotation:27f8f3f194"
