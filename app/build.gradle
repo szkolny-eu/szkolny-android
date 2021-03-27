@@ -18,6 +18,8 @@ android {
         versionName release.versionName
 
         buildConfigField "java.util.Map<String, String>", "GIT_INFO", gitInfoMap
+        buildConfigField "long", "BUILD_TIMESTAMP", String.valueOf(System.currentTimeMillis())
+        buildConfigField "String", "VERSION_BASE", release.versionName
 
         multiDexEnabled = true
 
@@ -27,6 +29,7 @@ android {
             }
         }
     }
+
     buildTypes {
         applicationVariants.all { variant ->
             variant.outputs.all {
@@ -47,6 +50,19 @@ android {
             proguardFiles fileTree('proguard').asList().toArray()
         }
     }
+    flavorDimensions "platform"
+    productFlavors {
+        main {
+            versionName gitInfo.versionHuman
+        }
+        official {}
+        play {}
+    }
+    variantFilter { variant ->
+        def flavors = variant.flavors*.name
+        setIgnore(variant.buildType.name == "debug" && !flavors.contains("main"))
+    }
+
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
