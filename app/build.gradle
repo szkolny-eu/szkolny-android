@@ -4,6 +4,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
+apply from: 'git-info.gradle'
+
 android {
     compileSdkVersion setup.compileSdk
 
@@ -14,6 +16,8 @@ android {
 
         versionCode release.versionCode
         versionName release.versionName
+
+        buildConfigField "java.util.Map<String, String>", "GIT_INFO", gitInfoMap
 
         multiDexEnabled = true
 
