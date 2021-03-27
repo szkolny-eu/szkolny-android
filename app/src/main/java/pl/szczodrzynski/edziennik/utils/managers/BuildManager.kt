@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
+import okhttp3.Request
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.ui.modules.base.BuildInvalidActivity
@@ -121,7 +122,34 @@ class BuildManager(val app: App) : CoroutineScope {
         repo: String,
         commitHash: String
     ) = withContext(Dispatchers.IO) {
-        true
+        val request = Request.Builder()
+            .url("https://api.github.com/repos/$repo/git/commits/$commitHash")
+            .header("Accept", "application/vnd.github.v3+json")
+            .build()
+
+        val call = app.http.newCall(request)
+
+        val response = runCatching {
+            call.execute()
+        }.getOrNull() ?: return@withContext false
+
+        if (response.code() != 200)
+            return@withContext false
+
+        val json = runCatching {
+            response.body()?.string()?.toJsonObject()
+        }.getOrNull() ?: return@withContext false
+
+        val sha = json.getString("sha")
+        if (sha != commitHash)
+            return@withContext false
+
+        val author = json.getJsonObject("author") ?: return@withContext false
+        val name = author.getString("name")
+        val email = author.getString("email")
+        gitAuthor = "$name <$email>"
+
+        return@withContext true
     }
 
     fun validateBuild(activity: AppCompatActivity) {
