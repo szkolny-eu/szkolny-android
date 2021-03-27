@@ -1400,4 +1400,13 @@
     <string name="build_rev_count">Rewizje od ostatniego tagu</string>
     <string name="build_remote">Repozytorium zdalne</string>
     <string name="build_details">Informacje o kompilacji</string>
+    <string name="build_validate_progress">Trwa weryfikowanie kompilacji…</string>
+    <string name="build_invalid_no_remote_repo">Nie znaleziono odniesienia do repozytorium zdalnego. Upewnij się, że korzystasz z fork\'a oficjalnego repozytorium oraz zweryfikuj konfigurację Gradle.</string>
+    <string name="build_invalid_no_commit_hash">Nie znaleziono wartości skrótu aktualnej rewizji. Sprawdź konfigurację Gradle.</string>
+    <string name="build_invalid_remote_no_commit">Posiadasz kompilację aplikacji zawierającą nieopublikowane zmiany. Kompilacja znajduje się w repozytorium %1$s (%2$s), które jest prywatne lub nie zawiera najnowszych zmian.\n\nDla bezpieczeństwa oraz ze względów zgodności z licencją, korzystanie z aplikacji zostało zablokowane.</string>
+    <string name="build_invalid_official_unsigned">Nie możesz modyfikować tego rodzaju kompilacji aplikacji Szkolny.eu.\n\nAby wprowadzić własne zmiany, skorzystaj z kodu źródłowego dostępnego na GitHubie oraz zapoznaj się z README i informacją o licencji.\n\nhttps://szkolny.eu/github/android</string>
+    <string name="build_invalid_unstaged_changes">Ta kompilacja zawiera zmiany niezatwierdzone do żadnej rewizji. Zapisz oraz opublikuj wszystkie zmiany przed wydaniem wersji release.\n\nDla bezpieczeństwa oraz ze względów zgodności z licencją, korzystanie z aplikacji zostało zablokowane.</string>
+    <string name="build_invalid_debug">Korzystasz z kompilacji typu \"debug\". Ta informacja zostanie wyświetlona tylko jeden raz dla aktualnego urządzenia.</string>
+    <string name="build_valid_unofficial">Korzystasz z nieoficjalnej kompilacji aplikacji Szkolny.eu. Zalecamy używanie wyłącznie oficjalnych wersji aplikacji.\n\nOstatnie zmiany w tej wersji zostały wprowadzone przez %3$s w repozytorium %2$s (%1$s).\n\nTo okno nie wyświetli się ponownie.</string>
+    <string name="build_invalid_title">Informacja dotycząca wersji aplikacji</string>
 </resources>

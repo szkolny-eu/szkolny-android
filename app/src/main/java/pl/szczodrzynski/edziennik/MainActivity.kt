@@ -290,6 +290,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             setLanguage(it)
         }
 
+        app.buildManager.validateBuild(this)
+
         if (App.profileId == 0) {
             onProfileListEmptyEvent(ProfileListEmptyEvent())
             return

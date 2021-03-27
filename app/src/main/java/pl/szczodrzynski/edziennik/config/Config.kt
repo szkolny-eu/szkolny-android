@@ -110,6 +110,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mArchiverEnabled = mArchiverEnabled ?: values.get("archiverEnabled", true); return mArchiverEnabled ?: true }
         set(value) { set("archiverEnabled", value); mArchiverEnabled = value }
 
+    private var mValidation: String? = null
+    var validation: String?
+        get() { mValidation = mValidation ?: values["buildValidation"]; return mValidation }
+        set(value) { set("buildValidation", value); mValidation = value }
+
     private var rawEntries: List<ConfigEntry> = db.configDao().getAllNow()
     private val profileConfigs: HashMap<Int, ProfileConfig> = hashMapOf()
     init {
