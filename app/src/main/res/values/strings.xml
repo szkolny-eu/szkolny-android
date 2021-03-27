@@ -1387,4 +1387,17 @@
     <string name="login_chooser_mode_dev_only">{cmd-android-studio} Wersja deweloperska</string>
     <string name="eggs">\???</string>
     <string name="rate_snackbar_negative_message">Szkoda, opinie innych pomagają mi rozwijać aplikację.</string>
+    <string name="build_version">Wersja aplikacji</string>
+    <string name="build_official">Wydanie oficjalne</string>
+    <string name="build_platform">Dystrybucja</string>
+    <string name="build_platform_play">Google Play</string>
+    <string name="build_platform_apk">.APK</string>
+    <string name="build_platform_unofficial">Nieoficjalnie (.APK)</string>
+    <string name="build_branch">Gałąź Git</string>
+    <string name="build_commit">Identyfikator rewizji</string>
+    <string name="build_dirty">Niezapisane zmiany</string>
+    <string name="build_tag">Ostatni tag</string>
+    <string name="build_rev_count">Rewizje od ostatniego tagu</string>
+    <string name="build_remote">Repozytorium zdalne</string>
+    <string name="build_details">Informacje o kompilacji</string>
 </resources>

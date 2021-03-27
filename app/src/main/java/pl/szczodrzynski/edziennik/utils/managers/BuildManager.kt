@@ -4,10 +4,10 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.BuildConfig
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
-import pl.szczodrzynski.edziennik.md5
 
 class BuildManager(val app: App) {
 
@@ -50,5 +50,39 @@ class BuildManager(val app: App) {
         !isOfficial ->
             "Unofficial\n" + BuildConfig.VERSION_BASE
         else -> null
+    }
+
+    fun showVersionDialog(activity: AppCompatActivity) {
+        val yes = activity.getString(R.string.yes)
+        val no = activity.getString(R.string.no)
+
+        val fields = mapOf(
+            R.string.build_version to BuildConfig.VERSION_BASE,
+            R.string.build_official to if (isOfficial) yes else no,
+            R.string.build_platform to when {
+                isPlayRelease -> activity.getString(R.string.build_platform_play)
+                isApkRelease -> activity.getString(R.string.build_platform_apk)
+                else -> activity.getString(R.string.build_platform_unofficial)
+            },
+            R.string.build_branch to gitBranch,
+            R.string.build_commit to gitHash?.substring(0, 8),
+            R.string.build_dirty to if (gitUnstaged?.isEmpty() == true)
+                "-"
+            else
+                "\t" + gitUnstaged?.join("\n\t"),
+            R.string.build_tag to gitTag,
+            R.string.build_rev_count to gitRevCount,
+            R.string.build_remote to gitRemotes?.join("\n")
+        )
+
+        val message = fields.map { (key, value) ->
+            activity.getString(key) + ":\n" + value
+        }.join("\n\n")
+
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.build_details)
+            .setMessage(message)
+            .setPositiveButton(R.string.ok, null)
+            .show()
     }
 }
