@@ -43,7 +43,6 @@ import java.util.List;
 import eu.szkolny.font.SzkolnyFont;
 import kotlin.Unit;
 import pl.szczodrzynski.edziennik.App;
-import pl.szczodrzynski.edziennik.BuildConfig;
 import pl.szczodrzynski.edziennik.ExtensionsKt;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
@@ -1021,7 +1020,7 @@ public class SettingsNewFragment extends MaterialAboutFragment {
 
             pref_about_version = new MaterialAboutActionItem.Builder()
                     .text(R.string.settings_about_version_text)
-                    .subText(BuildConfig.VERSION_NAME + ", " + BuildConfig.BUILD_TYPE)
+                    .subText(app.getBuildManager().getVersionName())
                     .icon(icon(CommunityMaterial.Icon2.cmd_information_outline, iconSizeDp, primaryTextOnPrimaryBg))
                     .build();
             final int[] clickCounter = {0};
