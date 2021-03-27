@@ -19,7 +19,7 @@ android {
 
         buildConfigField "java.util.Map<String, String>", "GIT_INFO", gitInfoMap
         buildConfigField "long", "BUILD_TIMESTAMP", String.valueOf(System.currentTimeMillis())
-        buildConfigField "String", "VERSION_BASE", release.versionName
+        buildConfigField "String", "VERSION_BASE", "\"${release.versionName}\""
 
         multiDexEnabled = true
 
