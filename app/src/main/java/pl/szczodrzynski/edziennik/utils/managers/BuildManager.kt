@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
+import android.text.TextUtils
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -64,13 +65,23 @@ class BuildManager(val app: App) : CoroutineScope {
         val yes = activity.getString(R.string.yes)
         val no = activity.getString(R.string.no)
 
+        val colorOnBackground = R.attr.colorOnBackground.resolveAttr(activity)
+        val mtrlGreen = R.color.md_green_500.resolveColor(activity)
+        val mtrlYellow = R.color.md_yellow_700.resolveColor(activity)
+        val mtrlRed = R.color.md_red_500.resolveColor(activity)
+
         val fields = mapOf(
             R.string.build_version to BuildConfig.VERSION_BASE,
-            R.string.build_official to if (isOfficial) yes else no,
+            R.string.build_official to if (isOfficial)
+                yes.asColoredSpannable(mtrlGreen)
+            else
+                no.asColoredSpannable(mtrlRed),
             R.string.build_platform to when {
                 isPlayRelease -> activity.getString(R.string.build_platform_play)
                 isApkRelease -> activity.getString(R.string.build_platform_apk)
-                else -> activity.getString(R.string.build_platform_unofficial)
+                else -> activity
+                    .getString(R.string.build_platform_unofficial)
+                    .asColoredSpannable(mtrlYellow)
             },
             R.string.build_branch to gitBranch,
             R.string.build_commit to gitHash?.substring(0, 8),
@@ -84,8 +95,15 @@ class BuildManager(val app: App) : CoroutineScope {
         )
 
         val message = fields.map { (key, value) ->
-            activity.getString(key) + ":\n" + value
-        }.join("\n\n")
+            TextUtils.concat(
+                activity
+                    .getString(key)
+                    .asBoldSpannable()
+                    .asColoredSpannable(colorOnBackground),
+                ":\n",
+                value
+            )
+        }.concat("\n\n")
 
         MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.build_details)
