@@ -13,6 +13,7 @@ import okhttp3.Request
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.ui.modules.base.BuildInvalidActivity
+import pl.szczodrzynski.edziennik.utils.Utils
 
 class BuildManager(val app: App) : CoroutineScope {
 
@@ -109,6 +110,13 @@ class BuildManager(val app: App) : CoroutineScope {
             .setTitle(R.string.build_details)
             .setMessage(message)
             .setPositiveButton(R.string.ok, null)
+            .setNeutralButton(R.string.build_dialog_open_repo) { _, _ ->
+                val url = if (gitRemote == null)
+                    "https://szkolny.eu/github/android"
+                else
+                    "https://github.com/$gitRemote"
+                Utils.openUrl(activity, url)
+            }
             .show()
     }
 
