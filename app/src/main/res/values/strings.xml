@@ -1421,4 +1421,6 @@
     <string name="build_invalid_debug">Korzystasz z kompilacji typu \"debug\". Ta informacja zostanie wyświetlona tylko jeden raz dla aktualnego urządzenia.</string>
     <string name="build_valid_unofficial">Korzystasz z nieoficjalnej kompilacji aplikacji Szkolny.eu. Zalecamy używanie wyłącznie oficjalnych wersji aplikacji.\n\nOstatnie zmiany w tej wersji zostały wprowadzone przez %3$s w repozytorium %2$s (%1$s).\n\nTo okno nie wyświetli się ponownie.</string>
     <string name="build_invalid_title">Informacja dotycząca wersji aplikacji</string>
+    <string name="settings_about_version_details_text">Szczegóły wersji</string>
+    <string name="settings_about_version_details_subtext">Informacje o kompilacji</string>
 </resources>

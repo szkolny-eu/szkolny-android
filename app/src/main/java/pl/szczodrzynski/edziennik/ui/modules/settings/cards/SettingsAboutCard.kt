@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.after
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsCard
@@ -51,6 +52,17 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
     override fun getItems() = listOf<MaterialAboutItem>()
     override fun getItemsMore() = listOf<MaterialAboutItem>()
 
+    private val versionDetailsItem by lazy {
+        util.createActionItem(
+            text = R.string.settings_about_version_details_text,
+            subText = R.string.settings_about_version_details_subtext,
+            icon = CommunityMaterial.Icon.cmd_cellphone_information,
+            onClick = { _ ->
+                app.buildManager.showVersionDialog(activity)
+            }
+        )
+    }
+
     private fun getItems(card: MaterialAboutCard) = listOf(
         util.createTitleItem(),
 
@@ -58,6 +70,11 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
             text = R.string.settings_about_version_text,
             icon = CommunityMaterial.Icon2.cmd_information_outline,
             onClick = { item ->
+                if (!card.items.contains(versionDetailsItem)) {
+                    card.items.after(item, versionDetailsItem)
+                    util.refresh()
+                }
+
                 clickCounter++
                 if (clickCounter < 7)
                     Toast.makeText(activity, "\uD83D\uDE02", Toast.LENGTH_SHORT).show()
