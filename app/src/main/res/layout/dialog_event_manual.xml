@@ -86,16 +86,14 @@
         android:id="@+id/registerEventManualShare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginHorizontal="8dp"
         android:text="@string/dialog_event_manual_share_enabled" />
 
     <TextView
         android:id="@+id/registerEventManualShareText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginHorizontal="8dp"
         android:text="@string/dialog_event_manual_share_first_notice"
         android:visibility="gone"
         tools:visibility="visible" />

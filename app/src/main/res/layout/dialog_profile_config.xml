@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-3-22.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="pl.szczodrzynski.edziennik.data.db.entity.Profile" />
+
+        <variable
+            name="profile"
+            type="Profile" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="24dp">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <com.mikepenz.materialdrawer.view.BezelImageView
+                    android:id="@+id/image"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/face_1" />
+
+                <View
+                    android:id="@+id/circleView"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom|end"
+                    tools:background="?colorSurface" />
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/imageButtonIcon"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom|end"
+                    app:iiv_color="?colorOnBackground"
+                    app:iiv_icon="szf-image-plus-outline"
+                    app:iiv_padding="5dp"
+                    tools:background="@color/colorSurface_16dp" />
+
+                <View
+                    android:id="@+id/imageButton"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="?selectableItemBackgroundBorderless" />
+            </FrameLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nameLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/profile_config_name_hint"
+                    android:text="@={profile.name}"
+                    tools:text="Paweł Informatyczny" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/NavView.TextView.Subtitle"
+                android:textColor="?android:textColorSecondary"
+                android:text="@{profile.subname}"
+                tools:text="3b3t - 2020/2021" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/syncSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/profile_config_sync_enabled"
+                android:checked="@={profile.syncEnabled}" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/logoutButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/profile_config_logout"
+                android:textColor="@color/md_red_500"
+                app:rippleColor="@color/md_red_300"
+                app:strokeColor="@color/md_red_500" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

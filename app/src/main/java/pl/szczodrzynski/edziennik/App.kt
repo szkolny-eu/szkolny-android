@@ -26,6 +26,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.hypertrack.hyperlog.HyperLog
 import com.mikepenz.iconics.Iconics
+import eu.szkolny.sslprovider.SSLProvider
+import eu.szkolny.sslprovider.enableSupportedTls
 import im.wangchao.mhttp.MHttp
 import kotlinx.coroutines.*
 import me.leolin.shortcutbadger.ShortcutBadger
@@ -44,6 +46,7 @@ import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.*
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
@@ -51,8 +54,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     companion object {
         @Volatile
         lateinit var db: AppDb
-        val config: Config by lazy { Config(db) }
-        var profile: Profile by mutableLazy { Profile(0, 0, 0, "") }
+        lateinit var config: Config
+        lateinit var profile: Profile
         val profileId
             get() = profile.id
 
@@ -95,19 +98,22 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
          |  __  |  | |     | |  |  ___/
          | |  | |  | |     | |  | |
          |_|  |_|  |_|     |_|  |*/
-    val http: OkHttpClient by lazy {
-        val builder = OkHttpClient.Builder()
-                .cache(null)
-                .followRedirects(true)
-                .followSslRedirects(true)
-                .retryOnConnectionFailure(true)
-                .cookieJar(cookieJar)
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-        builder.installHttpsSupport(this)
+    lateinit var http: OkHttpClient
+    lateinit var httpLazy: OkHttpClient
 
-        if (devMode || BuildConfig.DEBUG) {
+    private fun buildHttp() {
+        val builder = OkHttpClient.Builder()
+            .cache(null)
+            .followRedirects(true)
+            .followSslRedirects(true)
+            .retryOnConnectionFailure(true)
+            .cookieJar(cookieJar)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .enableSupportedTls(enableCleartext = true)
+
+        if (devMode) {
             HyperLog.initialize(this)
             HyperLog.setLogLevel(Log.VERBOSE)
             HyperLog.setLogFormat(DebugLogFormat(this))
@@ -116,13 +122,14 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             builder.addInterceptor(chuckerInterceptor)
         }
 
-        builder.build()
-    }
-    val httpLazy: OkHttpClient by lazy {
-        http.newBuilder()
-                .followRedirects(false)
-                .followSslRedirects(false)
-                .build()
+        http = builder.build()
+
+        httpLazy = http.newBuilder()
+            .followRedirects(false)
+            .followSslRedirects(false)
+            .build()
+
+        MHttp.instance().customOkHttpClient(http)
     }
     val cookieJar by lazy { DumbCookieJar(this) }
 
@@ -159,22 +166,24 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .errorActivity(CrashActivity::class.java)
                 .apply()
         Iconics.init(applicationContext)
+
+        // initialize companion object values
         App.db = AppDb(this)
-        Themes.themeInt = config.ui.theme
-        devMode = config.debugMode
-        MHttp.instance().customOkHttpClient(http)
+        App.config = Config(App.db)
+        App.profile = Profile(0, 0, 0, "")
+        debugMode = BuildConfig.DEBUG
+        devMode = config.debugMode || debugMode
 
         if (!profileLoadById(config.lastProfileId)) {
             db.profileDao().firstId?.let { profileLoadById(it) }
         }
 
+        buildHttp()
+
+        Themes.themeInt = config.ui.theme
         config.ui.language?.let {
             setLanguage(it)
         }
-
-        debugMode = BuildConfig.DEBUG
-        if (BuildConfig.DEBUG)
-            devMode = true
 
         Signing.getCert(this)
 
@@ -182,9 +191,21 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             withContext(Dispatchers.Default) {
                 config.migrate(this@App)
 
+                SSLProvider.install(
+                    applicationContext,
+                    downloadIfNeeded = true,
+                    supportTls13 = false,
+                    onFinish = {
+                        buildHttp()
+                    },
+                    onError = {
+                        Timber.e("Failed to install SSLProvider: $it")
+                        it.printStackTrace()
+                    }
+                )
+
                 if (config.devModePassword != null)
                     checkDevModePassword()
-                devMode = debugMode || config.debugMode
 
                 if (config.sync.enabled)
                     SyncWorker.scheduleNext(this@App, false)

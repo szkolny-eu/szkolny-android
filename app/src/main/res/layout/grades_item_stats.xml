@@ -41,8 +41,7 @@
             android:id="@+id/normalTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginHorizontal="8dp"
             android:text="@string/grades_stats_normal"
             android:textAppearance="@style/NavView.TextView.Subtitle" />
 
@@ -51,8 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:paddingHorizontal="8dp">
 
             <LinearLayout
                 android:id="@+id/normalSemester1Layout"
@@ -183,9 +181,8 @@
             android:id="@+id/pointTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:text="@string/grades_stats_point"
             android:textAppearance="@style/NavView.TextView.Subtitle" />
 
@@ -194,8 +191,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:paddingHorizontal="8dp">
 
             <LinearLayout
                 android:id="@+id/pointSemester1Layout"

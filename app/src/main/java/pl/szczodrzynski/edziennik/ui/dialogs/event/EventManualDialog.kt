@@ -33,7 +33,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
-import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegistrationEnableDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
@@ -64,7 +64,7 @@ class EventManualDialog(
     private val app by lazy { activity.application as App }
     private lateinit var b: DialogEventManualV2Binding
     private lateinit var dialog: AlertDialog
-    private var profile: Profile? = null
+    private lateinit var profile: Profile
 
     private var customColor: Int? = null
     private val editingShared = editingEvent?.sharedBy != null
@@ -80,11 +80,11 @@ class EventManualDialog(
 
     private var progressDialog: AlertDialog? = null
 
-    init { run {
+    init { launch {
         if (activity.isFinishing)
-            return@run
+            return@launch
         onShowListener?.invoke(TAG)
-        EventBus.getDefault().register(this)
+        EventBus.getDefault().register(this@EventManualDialog)
         b = DialogEventManualV2Binding.inflate(activity.layoutInflater)
         dialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.dialog_event_manual_title)
@@ -236,8 +236,15 @@ class EventManualDialog(
         progressDialog?.dismiss()
     }
 
-    private fun loadLists() { launch {
-        profile = withContext(Dispatchers.Default) { app.db.profileDao().getByIdNow(profileId) }
+    private fun loadLists() = launch {
+        val profile = withContext(Dispatchers.Default) {
+            app.db.profileDao().getByIdNow(profileId)
+        }
+        if (profile == null) {
+            Toast.makeText(activity, R.string.event_manual_no_profile, Toast.LENGTH_SHORT).show()
+            return@launch
+        }
+        this@EventManualDialog.profile = profile
 
         with (b.dateDropdown) {
             db = app.db
@@ -380,7 +387,7 @@ class EventManualDialog(
                     })
             colorPickerDialog.show(activity.supportFragmentManager, "color-picker-dialog")
         }
-    }}
+    }
 
     private fun showRemoveEventDialog() {
         val shareNotice = when {
@@ -417,12 +424,11 @@ class EventManualDialog(
 
         val share = b.shareSwitch.isChecked
 
-        if (share && profile?.registration != Profile.REGISTRATION_ENABLED) {
-            RegistrationEnableDialog(activity, profileId).showEventShareDialog {
-                if (it != null)
-                    profile = it
-                saveEvent()
-            }
+        if (share && profile.registration != Profile.REGISTRATION_ENABLED) {
+            RegistrationConfigDialog(activity, profile, onChangeListener = { enabled ->
+                if (enabled)
+                    saveEvent()
+            }).showEventShareDialog()
             return
         }
 

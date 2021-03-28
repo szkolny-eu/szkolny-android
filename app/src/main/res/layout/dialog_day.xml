@@ -16,16 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingTop="24dp"
-            android:paddingRight="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="24dp">
 
             <TextView
                 android:id="@+id/dayDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginBottom="8dp"
                 android:textAppearance="@style/NavView.TextView.Title"
                 android:textIsSelectable="true"
@@ -35,8 +33,7 @@
                 android:id="@+id/lessonsInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginBottom="8dp"
                 android:textAppearance="@style/NavView.TextView.Helper"
                 android:textIsSelectable="true"
@@ -55,10 +52,8 @@
                     layout="@layout/row_lesson_change_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="5dp"
                     android:visibility="gone"
                     tools:visibility="visible" />
             </LinearLayout>
@@ -74,10 +69,8 @@
                     layout="@layout/row_teacher_absence_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="5dp"
                     android:visibility="gone"
                     tools:visibility="visible" />
             </LinearLayout>
@@ -86,10 +79,8 @@
                 android:id="@+id/eventsNoData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:paddingVertical="16dp"
                 android:orientation="vertical"
                 android:visibility="gone"
                 tools:visibility="visible">
