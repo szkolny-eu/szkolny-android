@@ -7,10 +7,7 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:orientation="horizontal"
-    android:paddingStart="@dimen/material_drawer_vertical_padding"
-    android:paddingLeft="@dimen/material_drawer_vertical_padding"
-    android:paddingEnd="@dimen/material_drawer_vertical_padding"
-    android:paddingRight="@dimen/material_drawer_vertical_padding">
+    android:paddingHorizontal="@dimen/material_drawer_vertical_padding">
 
     <com.mikepenz.materialdrawer.view.BezelImageView
         android:id="@+id/material_drawer_profileIcon"
@@ -98,8 +95,7 @@
             android:gravity="center"
             android:lines="1"
             android:minWidth="20dp"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
+            android:paddingHorizontal="1dp"
             android:singleLine="true"
             android:textSize="@dimen/material_drawer_item_primary_text"
             tools:text="99" />

@@ -35,8 +35,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/timetable_lesson_annotation"
                 android:fontFamily="sans-serif-condensed"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingHorizontal="8dp"
                 android:text="@string/timetable_lesson_cancelled"
                 android:textColor="#000"
                 android:textSize="12sp"
@@ -49,8 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingHorizontal="8dp"
                 android:orientation="horizontal"
                 android:baselineAligned="false">
                 <!--tools:background="@drawable/timetable_subject_color_rounded"-->
@@ -59,8 +57,7 @@
                     android:id="@+id/subjectName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginVertical="4dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-light"
@@ -77,10 +74,7 @@
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginHorizontal="8dp"
                     android:visibility="@{unread ? View.VISIBLE : View.GONE}"
                     android:background="@drawable/unread_red_circle" />
 
@@ -109,8 +103,7 @@
                     android:fontFamily="sans-serif-condensed-light"
                     android:includeFontPadding="false"
                     android:layout_marginBottom="-4dp"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"
+                    android:paddingHorizontal="4dp"
                     android:text="@{Integer.toString(lessonNumber)}"
                     android:textSize="28sp"
                     android:visibility="@{lessonNumber != null ? View.VISIBLE : View.GONE}"
@@ -126,8 +119,7 @@
                 android:layout_weight="1"
                 android:gravity="bottom"
                 android:orientation="horizontal"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp">
+                android:paddingHorizontal="8dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

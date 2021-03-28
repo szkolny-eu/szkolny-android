@@ -139,8 +139,7 @@
             android:id="@+id/showMore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:paddingVertical="16dp"
             android:text="@string/dialog_event_manual_more_options"
             android:background="?selectableItemBackground"
 

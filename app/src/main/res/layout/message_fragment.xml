@@ -117,9 +117,8 @@
                         android:background="?selectableItemBackground"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:paddingLeft="8dp"
+                        android:paddingHorizontal="8dp"
                         android:paddingTop="12dp"
-                        android:paddingRight="8dp"
                         android:textAppearance="@style/NavView.TextView.Subtitle"
                         tools:text="Allegro - wysyłamy duużo wiadomości!!! Masz nowe oferty! Możesz kupić nowego laptopa! Ale super! Ehh, to jest nadawca a nie temat więc nwm czemu to tutaj wpisałem" />
 
@@ -139,11 +138,9 @@
                     android:id="@+id/body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginVertical="8dp"
                     android:minHeight="250dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingHorizontal="16dp"
                     android:textIsSelectable="true"
                     tools:text="To jest treść wiadomości.\n\nZazwyczaj ma wiele linijek.\n\nTak" />
 
@@ -155,9 +152,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginRight="16dp"
                     android:text="Odbiorcy wiadomości:"
                     android:textAppearance="@style/NavView.TextView.Subtitle" />
 
@@ -165,17 +161,15 @@
                     android:id="@+id/recipients"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingHorizontal="16dp"
                     tools:text=" - Jan Kowalski, przeczytano: nie\n - Adam Dodatkowy, przeczytano: 20 marca, 17:35" />
 
                 <TextView
                     android:id="@+id/attachmentsTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginRight="16dp"
                     android:text="Załączniki:"
                     android:textAppearance="@style/NavView.TextView.Subtitle" />
 
@@ -183,15 +177,13 @@
                     android:id="@+id/attachmentsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginHorizontal="8dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
                     android:orientation="horizontal"
                     android:visibility="visible"
                     tools:visibility="visible">
@@ -200,16 +192,13 @@
                         android:id="@+id/replyButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="4dp"
-                        android:paddingBottom="8dp">
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="8dp">
 
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:id="@+id/replyIcon"
@@ -233,16 +222,13 @@
                         android:id="@+id/forwardButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="4dp"
-                        android:paddingBottom="8dp">
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="8dp">
 
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:id="@+id/forwardIcon"
@@ -267,16 +253,13 @@
                         android:id="@+id/deleteButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="4dp"
-                        android:paddingBottom="8dp"
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="8dp"
                         android:visibility="visible">
 
                         <com.mikepenz.iconics.view.IconicsImageView
@@ -300,16 +283,13 @@
                         android:id="@+id/downloadButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_rounded_ripple"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingLeft="4dp"
-                        android:paddingTop="8dp"
-                        android:paddingRight="4dp"
-                        android:paddingBottom="8dp"
+                        android:paddingHorizontal="4dp"
+                        android:paddingVertical="8dp"
                         android:visibility="visible">
 
                         <com.mikepenz.iconics.view.IconicsImageView

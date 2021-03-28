@@ -64,8 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:checked="true"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:paddingVertical="16dp"
             android:text="@string/login_allow_registration" />
 
         <LinearLayout

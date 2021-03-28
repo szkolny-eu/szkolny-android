@@ -38,8 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:windowBackground"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingVertical="8dp">
 
             <TextView
                 android:id="@+id/gradesListName"
@@ -62,8 +61,7 @@
                 android:id="@+id/gradesListCategory"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:ellipsize="marquee"
                 android:focusableInTouchMode="false"
                 android:marqueeRepeatLimit="marquee_forever"

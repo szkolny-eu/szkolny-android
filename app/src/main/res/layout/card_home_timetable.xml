@@ -205,8 +205,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginVertical="4dp"
                 android:background="@color/dividerColor" />
 
             <LinearLayout
@@ -239,8 +238,7 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginHorizontal="4dp"
                         android:visibility="gone"
                         tools:max="2700"
                         tools:progress="780"
@@ -259,8 +257,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginVertical="4dp"
                 android:background="@color/dividerColor" />
 
             <TextView

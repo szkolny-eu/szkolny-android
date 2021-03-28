@@ -59,8 +59,7 @@
                         android:id="@+id/presentCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginHorizontal="5dp"
                         android:textStyle="bold"
                         tools:text="0" />
                 </LinearLayout>
@@ -79,8 +78,7 @@
                         android:id="@+id/absentCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginHorizontal="5dp"
                         android:textStyle="bold"
                         tools:text="0" />
                 </LinearLayout>
@@ -99,8 +97,7 @@
                         android:id="@+id/absentUnexcusedCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginHorizontal="5dp"
                         android:textStyle="bold"
                         tools:text="0" />
                 </LinearLayout>
@@ -119,8 +116,7 @@
                         android:id="@+id/belatedCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginHorizontal="5dp"
                         android:textStyle="bold"
                         tools:text="0" />
                 </LinearLayout>
@@ -139,8 +135,7 @@
                         android:id="@+id/releasedCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginHorizontal="5dp"
                         android:textStyle="bold"
                         tools:text="8" />
 
@@ -152,8 +147,7 @@
                 android:id="@+id/attendancePercentage"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_weight="1"
                 app:direction="clockwise"
                 app:drawDot="false"

@@ -36,7 +36,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
-import com.google.android.gms.security.ProviderInstaller
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.*
@@ -46,10 +45,7 @@ import im.wangchao.mhttp.Response
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.ConnectionSpec
-import okhttp3.OkHttpClient
 import okhttp3.RequestBody
-import okhttp3.TlsVersion
 import okio.Buffer
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -59,7 +55,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.network.TLSSocketFactory
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.io.InterruptedIOException
 import java.io.PrintWriter
@@ -69,17 +64,13 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.nio.charset.Charset
-import java.security.KeyStore
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.zip.CRC32
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
-import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLException
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 import kotlin.Pair
 
 
@@ -1089,40 +1080,6 @@ fun Context.getNotificationTitle(type: Int): String {
 fun Cursor?.getString(columnName: String) = this?.getStringOrNull(getColumnIndex(columnName))
 fun Cursor?.getInt(columnName: String) = this?.getIntOrNull(getColumnIndex(columnName))
 fun Cursor?.getLong(columnName: String) = this?.getLongOrNull(getColumnIndex(columnName))
-
-fun OkHttpClient.Builder.installHttpsSupport(context: Context) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
-        try {
-            try {
-                ProviderInstaller.installIfNeeded(context)
-            } catch (e: Exception) {
-                Log.e("OkHttpTLSCompat", "Play Services not found or outdated")
-
-                val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-                trustManagerFactory.init(null as KeyStore?)
-
-                val x509TrustManager = trustManagerFactory.trustManagers.singleOrNull { it is X509TrustManager } as X509TrustManager?
-                        ?: return
-
-                val sc = SSLContext.getInstance("TLSv1.2")
-                sc.init(null, null, null)
-                sslSocketFactory(TLSSocketFactory(sc.socketFactory), x509TrustManager)
-                val cs: ConnectionSpec = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                        .tlsVersions(TlsVersion.TLS_1_0)
-                        .tlsVersions(TlsVersion.TLS_1_1)
-                        .tlsVersions(TlsVersion.TLS_1_2)
-                        .build()
-                val specs: MutableList<ConnectionSpec> = ArrayList()
-                specs.add(cs)
-                specs.add(ConnectionSpec.COMPATIBLE_TLS)
-                specs.add(ConnectionSpec.CLEARTEXT)
-                connectionSpecs(specs)
-            }
-        } catch (exc: Exception) {
-            Log.e("OkHttpTLSCompat", "Error while setting TLS 1.2", exc)
-        }
-    }
-}
 
 fun CharSequence.containsAll(list: List<CharSequence>, ignoreCase: Boolean = false): Boolean {
     for (i in list) {
