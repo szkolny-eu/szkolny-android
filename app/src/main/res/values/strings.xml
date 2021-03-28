@@ -386,8 +386,6 @@
     <string name="event_list_added_by_unknown_format">Dodano %1$s%3$s</string>
     <string name="event_list_shared_by_format">{cmd-share-variant} %1$s przez %2$s%3$s</string>
     <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie%3$s</string>
-    <string name="event_manual_need_registration_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nUpewnij się, że zapoznałeś się z warunkami  i akceptujesz jej postanowienia.</string>
-    <string name="event_manual_need_registration_title">Udostępnianie wydarzeń</string>
     <string name="event_manual_remove">Usuwam wydarzenie…</string>
     <string name="event_manual_saving">Zapisuję wydarzenie…</string>
     <string name="event_manual_share">Udostępniam wydarzenie…</string>
@@ -895,9 +893,13 @@
     <string name="rate_snackbar_positive">Oceń teraz</string>
     <string name="rate_snackbar_text">Pokaż, że podoba ci się Szkolny.eu - oceń aplikację i spraw, by była jeszcze lepsza!</string>
     <string name="refresh">Odśwież</string>
-    <string name="registration_enable_dialog_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nUpewnij się, że zapoznałeś się z warunkami <a href="http://szkolny.eu/privacy-policy">Polityki prywatności</a> i akceptujesz jej postanowienia.</string>
-    <string name="registration_enable_dialog_title">Rejestracja na serwerze</string>
-    <string name="registration_enable_progress_text">Pobieranie udostępnionych wydarzeń…</string>
+    <string name="registration_config_disable_progress_text">Trwa wyrejestrowywanie użytkownika…</string>
+    <string name="registration_config_disable_text">Stracisz możliwość korzystania z niektórych funkcji, takich jak Udostępnianie wydarzeń czy Przekazywanie powiadomień.\n\nFunkcja może być włączona/wyłączona w zależności od wybranego profilu.</string>
+    <string name="registration_config_enable_progress_text">Pobieranie udostępnionych wydarzeń…</string>
+    <string name="registration_config_enable_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
+    <string name="registration_config_event_sharing_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
+    <string name="registration_config_event_sharing_title">Udostępnianie wydarzeń</string>
+    <string name="registration_config_title">Rejestracja aplikacji Szkolny.eu</string>
     <string name="remove">Usuń</string>
     <string name="removed">Usunięto</string>
     <string name="report">Zgłoś</string>
@@ -912,13 +914,13 @@
     <string name="settings_about_crash_text">Kliknij, aby wywołać nieoczekiwany wyjątek</string>
     <string name="settings_about_discord_subtext">Dołącz do naszego serwera Discord!</string>
     <string name="settings_about_discord_text">Serwer Discord</string>
-    <string name="settings_about_language_dialog_text">Uwaga. Ta opcja może nie działać na niektórych urządzeniach oraz w niektórych fragmentach aplikacji.</string>
-    <string name="settings_about_language_dialog_title">Zmień język aplikacji</string>
+    <string name="app_language_dialog_text">Uwaga. Ta opcja może nie działać na niektórych urządzeniach oraz w niektórych fragmentach aplikacji.</string>
+    <string name="app_language_dialog_title">Zmień język aplikacji</string>
     <string name="settings_about_language_subtext">Polski</string>
     <string name="settings_about_language_text">Język aplikacji</string>
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
-    <string name="settings_about_register_title_text">E-dziennik</string>
+    <string name="settings_card_register_title">E-dziennik</string>
     <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nwrzesień 2018 - luty 2021</string>
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
@@ -1011,7 +1013,7 @@
     <string name="settings_sync_sync_interval_subtext_disabled">Wyłączona</string>
     <string name="settings_sync_sync_interval_subtext_format">Pobieraj dane co %s</string>
     <string name="settings_sync_sync_interval_text">Synchronizacja automatyczna</string>
-    <string name="settings_sync_title_text">Synchronizacja i powiadomienia</string>
+    <string name="settings_card_sync_title">Synchronizacja i powiadomienia</string>
     <string name="settings_sync_updates_text">Powiadamiaj o aktualizacjach aplikacji</string>
     <string name="settings_sync_web_push_subtext">Pokazuj powiadomienia na swoim komputerze</string>
     <string name="settings_sync_web_push_text">Przekazywanie powiadomień</string>
@@ -1035,7 +1037,7 @@
     <string name="settings_theme_theme_pink">Różowy</string>
     <string name="settings_theme_theme_system">Systemowy</string>
     <string name="settings_theme_theme_text">Motyw</string>
-    <string name="settings_theme_title_text">Wygląd</string>
+    <string name="settings_card_theme_title">Wygląd</string>
     <string name="share">Udostępnij</string>
     <string name="share_intent">Udostępnij przez…</string>
     <string name="sharing_event">Udostępnianie danych…</string>
@@ -1387,4 +1389,14 @@
     <string name="login_chooser_mode_dev_only">{cmd-android-studio} Wersja deweloperska</string>
     <string name="eggs">\???</string>
     <string name="rate_snackbar_negative_message">Szkoda, opinie innych pomagają mi rozwijać aplikację.</string>
+    <string name="event_manual_no_profile">Nie znaleziono profilu ucznia.</string>
+    <string name="see_also">Zobacz także</string>
+    <string name="settings_about_homepage_text">Wejdź na stronę aplikacji</string>
+    <string name="settings_about_homepage_subtext">Uzyskaj pomoc lub wesprzyj autorów</string>
+    <string name="settings_about_github_text">Kod źródłowy</string>
+    <string name="settings_about_github_subtext">Pomóż w rozwoju aplikacji na GitHubie</string>
+    <string name="profile_config_name_hint">Nazwa profilu</string>
+    <string name="profile_config_sync_enabled">Synchronizuj ten profil</string>
+    <string name="profile_config_logout">Wyloguj się</string>
+    <string name="permissions_qr_scanner">Aby móc zeskanować kod QR musisz przyznać uprawnienia dostępu do kamery.\n\nKliknij OK, aby przyznać uprawnienia.</string>
 </resources>

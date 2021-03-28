@@ -10,13 +10,11 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -56,7 +54,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
@@ -79,7 +77,7 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.compose.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
-import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
+import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
@@ -97,7 +95,6 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
-import java.io.File
 import java.io.IOException
 import java.util.*
 import kotlin.coroutines.CoroutineContext
@@ -109,8 +106,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         var useOldMessages = false
 
         const val TAG = "MainActivity"
-
-        const val REQUEST_LOGIN_ACTIVITY = 20222
 
         const val DRAWER_PROFILE_ADD_NEW = 200
         const val DRAWER_PROFILE_SYNC_ALL = 201
@@ -199,7 +194,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .isStatic(true)
                     .isBelowSeparator(true)
 
-            list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsNewFragment::class)
+            list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                     .isInDrawer(true)
                     .isStatic(true)
@@ -257,6 +252,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val bottomSheet: NavBottomSheet by lazy { navView.bottomSheet }
     val mainSnackbar: MainSnackbar by lazy { MainSnackbar(this) }
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
+    val requestHandler by lazy { MainActivityRequestHandler(this) }
 
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
 
@@ -392,7 +388,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
                 drawerProfileLongClickListener = { _, profile, _, view ->
                     if (view != null && profile is ProfileDrawerItem) {
-                        showProfileContextMenu(profile, view)
+                        launch {
+                            val appProfile = withContext(Dispatchers.IO) {
+                                App.db.profileDao().getByIdNow(profile.identifier.toInt())
+                            } ?: return@launch
+                            drawer.close()
+                            ProfileConfigDialog(this@MainActivity, appProfile)
+                        }
                         true
                     }
                     else {
@@ -472,28 +474,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         // APP BACKGROUND
-        if (app.config.ui.appBackground != null) {
-            try {
-                app.config.ui.appBackground?.let {
-                    var bg = it
-                    val bgDir = File(Environment.getExternalStoragePublicDirectory("Szkolny.eu"), "bg")
-                    if (bgDir.exists()) {
-                        val files = bgDir.listFiles()
-                        val r = Random()
-                        val i = r.nextInt(files.size)
-                        bg = files[i].toString()
-                    }
-                    val linearLayout = b.root
-                    if (bg.endsWith(".gif")) {
-                        linearLayout.background = GifDrawable(bg)
-                    } else {
-                        linearLayout.background = BitmapDrawable.createFromPath(bg)
-                    }
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
+        setAppBackground()
 
         // IT'S WINTER MY DUDES
         val today = Date.getToday()
@@ -575,7 +556,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (App.devMode) {
             bottomSheet += BottomSheetPrimaryItem(false)
                     .withTitle(R.string.menu_debug)
-                    .withIcon(CommunityMaterial.Icon.cmd_android_studio)
+                    .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
                     .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_DEBUG) })
         }
     }
@@ -583,7 +564,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private var profileSettingClickListener = { id: Int, view: View? ->
         when (id) {
             DRAWER_PROFILE_ADD_NEW -> {
-                startActivityForResult(Intent(this, LoginActivity::class.java), REQUEST_LOGIN_ACTIVITY)
+                requestHandler.requestLogin()
             }
             DRAWER_PROFILE_SYNC_ALL -> {
                 EdziennikTask.sync().enqueue(this)
@@ -831,7 +812,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             handleIntent(intent?.extras)
         }
     }
-    private fun handleIntent(extras: Bundle?) {
+    fun handleIntent(extras: Bundle?) {
 
         d(TAG, "handleIntent() {")
         extras?.keySet()?.forEach { key ->
@@ -989,13 +970,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_LOGIN_ACTIVITY) {
-            if (!app.config.loginFinished)
-                finish()
-            else {
-                handleIntent(data?.extras)
-            }
-        }
+        requestHandler.handleResult(requestCode, resultCode, data)
     }
 
     /*    _                     _                  _   _               _
@@ -1221,6 +1196,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }, 3000)
     }
 
+    fun setAppBackground() {
+        try {
+            b.root.background = app.config.ui.appBackground?.let {
+                if (it.endsWith(".gif"))
+                    GifDrawable(it)
+                else
+                    BitmapDrawable.createFromPath(it)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
     /*    _____                                _ _
          |  __ \                              (_) |
          | |  | |_ __ __ ___      _____ _ __   _| |_ ___ _ __ ___  ___
@@ -1294,26 +1282,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         drawer.setItems(*drawerItems.toTypedArray())
         drawer.removeAllProfileSettings()
         drawer.addProfileSettings(*drawerProfiles.toTypedArray())
-    }
-
-    private fun showProfileContextMenu(profile: IProfile, view: View) {
-        val profileId = profile.identifier.toInt()
-        val popupMenu = PopupMenu(this, view)
-        popupMenu.menu.add(0, 1, 1, R.string.profile_menu_open_settings)
-        popupMenu.menu.add(0, 2, 2, R.string.profile_menu_remove)
-        popupMenu.setOnMenuItemClickListener { item ->
-            if (item.itemId == 1) {
-                if (profileId != app.profile.id) {
-                    loadProfile(profileId, DRAWER_ITEM_SETTINGS)
-                    return@setOnMenuItemClickListener true
-                }
-                loadTarget(DRAWER_ITEM_SETTINGS, null)
-            } else if (item.itemId == 2) {
-                ProfileRemoveDialog(this, profileId, profile.name?.getText(this) ?: "?")
-            }
-            true
-        }
-        popupMenu.show()
     }
 
     private val targetPopToHomeList = arrayListOf<Int>()

@@ -13,7 +13,6 @@ import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.DialogGradeDetailsBinding
 import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.setTintColor
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext

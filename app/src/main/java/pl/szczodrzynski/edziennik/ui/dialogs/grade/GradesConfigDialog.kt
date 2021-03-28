@@ -2,7 +2,7 @@
  * Copyright (c) Kacper Ziubryniewicz 2020-1-16
  */
 
-package pl.szczodrzynski.edziennik.ui.dialogs.settings
+package pl.szczodrzynski.edziennik.ui.dialogs.grade
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AlertDialog

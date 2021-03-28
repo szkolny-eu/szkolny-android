@@ -31,49 +31,91 @@ class PermissionManager(val app: App) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    private fun isStoragePermissionGranted() = if (Build.VERSION.SDK_INT >= 23) {
-        app.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-    } else {
-        true
+    private fun isPermissionGranted(name: String) =
+        if (Build.VERSION.SDK_INT >= 23)
+            app.checkSelfPermission(name) == PackageManager.PERMISSION_GRANTED
+        else
+            true
+
+    private fun openPermissionSettings(activity: AppCompatActivity) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", app.packageName, null)
+        intent.data = uri
+        activity.startActivity(intent)
     }
 
-    fun requestStoragePermission(
-            activity: AppCompatActivity,
-            @StringRes permissionMessage: Int,
-            onSuccess: suspend CoroutineScope.() -> Unit
+    private fun requestPermission(
+        activity: AppCompatActivity,
+        @StringRes permissionMessage: Int,
+        isRequired: Boolean = true,
+        permissionName: String,
+        onSuccess: suspend CoroutineScope.() -> Unit
     ) {
         launch {
-            if (isStoragePermissionGranted()) {
+            if (isPermissionGranted(permissionName)) {
                 onSuccess()
                 return@launch
             }
-            val result = activity.awaitAskPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            val result = activity.awaitAskPermissions(permissionName)
             when {
                 result.hasAllGranted() -> onSuccess()
                 result.hasRational() -> {
+                    if (!isRequired) {
+                        onSuccess()
+                        return@launch
+                    }
                     MaterialAlertDialogBuilder(activity)
-                            .setTitle(R.string.permissions_required)
-                            .setMessage(permissionMessage)
-                            .setPositiveButton(R.string.ok) { _, _ ->
-                                requestStoragePermission(activity, permissionMessage, onSuccess)
-                            }
-                            .setNegativeButton(R.string.cancel, null)
-                            .show()
+                        .setTitle(R.string.permissions_required)
+                        .setMessage(permissionMessage)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            requestPermission(
+                                activity,
+                                permissionMessage,
+                                isRequired,
+                                permissionName,
+                                onSuccess
+                            )
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
                 }
                 result.hasPermanentDenied() -> {
                     MaterialAlertDialogBuilder(activity)
-                            .setTitle(R.string.permissions_required)
-                            .setMessage(R.string.permissions_denied)
-                            .setPositiveButton(R.string.ok) { _, _ ->
-                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                val uri = Uri.fromParts("package", app.packageName, null)
-                                intent.data = uri
-                                activity.startActivity(intent)
-                            }
-                            .setNegativeButton(R.string.cancel, null)
-                            .show()
+                        .setTitle(R.string.permissions_required)
+                        .setMessage(R.string.permissions_denied)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            openPermissionSettings(activity)
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
                 }
             }
         }
     }
+
+    fun requestStoragePermission(
+        activity: AppCompatActivity,
+        @StringRes permissionMessage: Int,
+        isRequired: Boolean = true,
+        onSuccess: suspend CoroutineScope.() -> Unit
+    ) = requestPermission(
+        activity,
+        permissionMessage,
+        isRequired,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        onSuccess
+    )
+
+    fun requestCameraPermission(
+        activity: AppCompatActivity,
+        @StringRes permissionMessage: Int,
+        isRequired: Boolean = true,
+        onSuccess: suspend CoroutineScope.() -> Unit
+    ) = requestPermission(
+        activity,
+        permissionMessage,
+        isRequired,
+        Manifest.permission.CAMERA,
+        onSuccess
+    )
 }

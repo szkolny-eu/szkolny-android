@@ -351,8 +351,6 @@
     <string name="event_list_added_by_unknown_format">Adde %1$s%3$s</string>
     <string name="event_list_shared_by_format">{cmd-share-variant} %1$s by %2$s%3$s</string>
     <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s by you%3$s</string>
-    <string name="event_manual_need_registration_text">You need to turn on server registration, in order to share an event. This option lets you create and receive shared events in your class.\n\nIt will be turned on automatically by pressing OK.\n\nBefore turning it on, make sure you\'ve read the terms and accept them</string>
-    <string name="event_manual_need_registration_title">Sharing events</string>
     <string name="event_manual_remove">Removing event…</string>
     <string name="event_manual_saving">Saving event…</string>
     <string name="event_manual_share">Sharing event…</string>
@@ -832,9 +830,13 @@
     <string name="rate_snackbar_positive">Rate now</string>
     <string name="rate_snackbar_text">Show that you like Szkolny.eu - rate the app and make it even better!</string>
     <string name="refresh">Refresh</string>
-    <string name="registration_enable_dialog_text">Registration is automatic if this option is enabled. It allows you to create and receive events shared with other students in your class. Thanks to this, you can add items not saved by the teacher to the journal.\n\nMake sure you read the terms and accept them.</string>
-    <string name="registration_enable_dialog_title">Server registration</string>
-    <string name="registration_enable_progress_text">Syncing shared events…</string>
+    <string name="registration_config_disable_progress_text">Unregistering the user…</string>
+    <string name="registration_config_disable_text">You won\'t be able to use some functions anymore, like Event sharing and Notification forwarding.\n\nThis feature may be enabled/disabled depending on the active profile.</string>
+    <string name="registration_config_enable_progress_text">Syncing shared events…</string>
+    <string name="registration_config_enable_text">Registration is automatic if this option is enabled. It allows you to create and receive events shared with other students in your class. Thanks to this, you can add items not saved by the teacher to the journal.\n\nContinuing means reading and accepting the <a href="https://szkolny.eu/privacy-policy">Privacy policy</a>.</string>
+    <string name="registration_config_event_sharing_text">You need to turn on server registration, in order to share an event. This option lets you create and receive shared events in your class.\n\nIt will be turned on automatically by pressing OK.\n\nContinuing means reading and accepting the <a href="https://szkolny.eu/privacy-policy">Privacy policy</a>.</string>
+    <string name="registration_config_event_sharing_title">Sharing events</string>
+    <string name="registration_config_title">Szkolny.eu server registration</string>
     <string name="remove">Remove</string>
     <string name="removed">Removed</string>
     <string name="report">Report</string>
@@ -849,13 +851,13 @@
     <string name="settings_about_crash_text">Click to throw an unexpected exception</string>
     <string name="settings_about_discord_subtext">Join our Discord community!</string>
     <string name="settings_about_discord_text">Discord server</string>
-    <string name="settings_about_language_dialog_text">Notice. This feature may not work on some devices or in some parts of the app.</string>
-    <string name="settings_about_language_dialog_title">Change app language</string>
-    <string name="settings_about_language_subtext">"English "</string>
+    <string name="app_language_dialog_text">Notice. This feature may not work on some devices or in some parts of the app.</string>
+    <string name="app_language_dialog_title">Change app language</string>
+    <string name="settings_about_language_subtext">English</string>
     <string name="settings_about_language_text">App language</string>
     <string name="settings_about_licenses_text">Open-source licenses</string>
     <string name="settings_about_privacy_policy_text">Privacy policy</string>
-    <string name="settings_about_register_title_text">E-register</string>
+    <string name="settings_card_register_title">E-register</string>
     <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - February 2021</string>
     <string name="settings_about_update_subtext">Click to check for updates</string>
     <string name="settings_about_update_text">Update</string>
@@ -946,7 +948,7 @@
     <string name="settings_sync_sync_interval_subtext_disabled">Disabled</string>
     <string name="settings_sync_sync_interval_subtext_format">Download data every %s</string>
     <string name="settings_sync_sync_interval_text">Automatic sync</string>
-    <string name="settings_sync_title_text">Sync &amp; notifications</string>
+    <string name="settings_card_sync_title">Sync &amp; notifications</string>
     <string name="settings_sync_updates_text">Notify about app updates</string>
     <string name="settings_sync_web_push_subtext">Show notifications on your PC</string>
     <string name="settings_sync_web_push_text">Notification forwarding</string>
@@ -970,7 +972,7 @@
     <string name="settings_theme_theme_pink">Pink</string>
     <string name="settings_theme_theme_system">System</string>
     <string name="settings_theme_theme_text">Theme</string>
-    <string name="settings_theme_title_text">Appearance</string>
+    <string name="settings_card_theme_title">Appearance</string>
     <string name="share">Share</string>
     <string name="share_intent">Share…</string>
     <string name="sharing_event">Sharing events…</string>

@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-11-13.
  */
 
-package pl.szczodrzynski.edziennik.ui.dialogs.settings
+package pl.szczodrzynski.edziennik.ui.dialogs.profile
 
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -18,7 +18,8 @@ class ProfileRemoveDialog(
         val activity: MainActivity,
         val profileId: Int,
         val profileName: String,
-        val noProfileRemoval: Boolean = false
+        val noProfileRemoval: Boolean = false,
+        val onRemove: (() -> Unit)? = null
 ) : CoroutineScope {
     companion object {
         private const val TAG = "ProfileRemoveDialog"
@@ -95,5 +96,6 @@ class ProfileRemoveDialog(
         dialog.dismiss()
         activity.reloadTarget()
         Toast.makeText(activity, R.string.dialog_profile_remove_success, Toast.LENGTH_LONG).show()
+        onRemove?.invoke()
     }}
 }
