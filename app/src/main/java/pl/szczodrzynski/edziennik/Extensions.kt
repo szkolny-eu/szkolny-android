@@ -1113,6 +1113,29 @@ fun Throwable.toErrorCode() = when (this) {
     else -> null
 }
 private fun ApiResponse.Error.toErrorCode() = when (this.code) {
+    "PdoError" -> ERROR_API_PDO_ERROR
+    "InvalidClient" -> ERROR_API_INVALID_CLIENT
+    "InvalidArgument" -> ERROR_API_INVALID_ARGUMENT
+    "InvalidSignature" -> ERROR_API_INVALID_SIGNATURE
+    "MissingScopes" -> ERROR_API_MISSING_SCOPES
+    "ResourceNotFound" -> ERROR_API_RESOURCE_NOT_FOUND
+    "InternalServerError" -> ERROR_API_INTERNAL_SERVER_ERROR
+    "PhpError" -> ERROR_API_PHP_E_ERROR
+    "PhpWarning" -> ERROR_API_PHP_E_WARNING
+    "PhpParse" -> ERROR_API_PHP_E_PARSE
+    "PhpNotice" -> ERROR_API_PHP_E_NOTICE
+    "PhpOther" -> ERROR_API_PHP_E_OTHER
+    "ApiMaintenance" -> ERROR_API_MAINTENANCE
+    "MissingArgument" -> ERROR_API_MISSING_ARGUMENT
+    "MissingPayload" -> ERROR_API_PAYLOAD_EMPTY
+    "InvalidAction" -> ERROR_API_INVALID_ACTION
+    "VersionNotFound" -> ERROR_API_UPDATE_NOT_FOUND
+    "InvalidDeviceIdUserCode" -> ERROR_API_INVALID_DEVICEID_USERCODE
+    "InvalidPairToken" -> ERROR_API_INVALID_PAIRTOKEN
+    "InvalidBrowserId" -> ERROR_API_INVALID_BROWSERID
+    "InvalidDeviceId" -> ERROR_API_INVALID_DEVICEID
+    "InvalidDeviceIdBrowserId" -> ERROR_API_INVALID_DEVICEID_BROWSERID
+    "HelpCategoryNotFound" -> ERROR_API_HELP_CATEGORY_NOT_FOUND
     else -> ERROR_API_EXCEPTION
 }
 fun Throwable.toApiError(tag: String) = ApiError.fromThrowable(tag, this)

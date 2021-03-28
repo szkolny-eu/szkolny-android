@@ -36,6 +36,30 @@
     <string name="error_3000" translatable="false">ERROR_CAPTCHA_NEEDED</string>
     <string name="error_3001" translatable="false">ERROR_CAPTCHA_LIBRUS_PORTAL</string>
 
+    <string name="error_5000" translatable="false">ERROR_API_PDO_ERROR</string>
+    <string name="error_5001" translatable="false">ERROR_API_INVALID_CLIENT</string>
+    <string name="error_5002" translatable="false">ERROR_API_INVALID_ARGUMENT</string>
+    <string name="error_5003" translatable="false">ERROR_API_INVALID_SIGNATURE</string>
+    <string name="error_5004" translatable="false">ERROR_API_MISSING_SCOPES</string>
+    <string name="error_5005" translatable="false">ERROR_API_RESOURCE_NOT_FOUND</string>
+    <string name="error_5006" translatable="false">ERROR_API_INTERNAL_SERVER_ERROR</string>
+    <string name="error_5007" translatable="false">ERROR_API_PHP_E_ERROR</string>
+    <string name="error_5008" translatable="false">ERROR_API_PHP_E_WARNING</string>
+    <string name="error_5009" translatable="false">ERROR_API_PHP_E_PARSE</string>
+    <string name="error_5010" translatable="false">ERROR_API_PHP_E_NOTICE</string>
+    <string name="error_5011" translatable="false">ERROR_API_PHP_E_OTHER</string>
+    <string name="error_5012" translatable="false">ERROR_API_MAINTENANCE</string>
+    <string name="error_5013" translatable="false">ERROR_API_MISSING_ARGUMENT</string>
+    <string name="error_5014" translatable="false">ERROR_API_PAYLOAD_EMPTY</string>
+    <string name="error_5015" translatable="false">ERROR_API_INVALID_ACTION</string>
+    <string name="error_5016" translatable="false">ERROR_API_UPDATE_NOT_FOUND</string>
+    <string name="error_5017" translatable="false">ERROR_API_INVALID_DEVICEID_USERCODE</string>
+    <string name="error_5018" translatable="false">ERROR_API_INVALID_PAIRTOKEN</string>
+    <string name="error_5019" translatable="false">ERROR_API_INVALID_BROWSERID</string>
+    <string name="error_5020" translatable="false">ERROR_API_INVALID_DEVICEID</string>
+    <string name="error_5021" translatable="false">ERROR_API_INVALID_DEVICEID_BROWSERID</string>
+    <string name="error_5022" translatable="false">ERROR_API_HELP_CATEGORY_NOT_FOUND</string>
+
     <string name="error_120" translatable="false">CODE_INTERNAL_LIBRUS_ACCOUNT_410</string>
     <string name="error_121" translatable="false">CODE_INTERNAL_LIBRUS_SYNERGIA_EXPIRED</string>
     <string name="error_124" translatable="false">ERROR_LOGIN_LIBRUS_API_CAPTCHA_NEEDED</string>
@@ -209,6 +233,30 @@
 
     <string name="error_3000_reason">Wymagane rozwiązanie zadania Captcha</string>
     <string name="error_3001_reason">LIBRUS®️: wymagane rozwiązanie zadania Captcha</string>
+
+    <string name="error_5000_reason">ERROR_API_PDO_ERROR</string>
+    <string name="error_5001_reason">Nieprawidłowy ID klienta API</string>
+    <string name="error_5002_reason">API: nieprawidłowy argument</string>
+    <string name="error_5003_reason">Brak dostępu do API</string>
+    <string name="error_5004_reason">Brak uprawnień do zasobu API</string>
+    <string name="error_5005_reason">Nie znaleziono zasobu API</string>
+    <string name="error_5006_reason">Błąd serwera API Szkolny.eu</string>
+    <string name="error_5007_reason">ERROR_API_PHP_E_ERROR</string>
+    <string name="error_5008_reason">ERROR_API_PHP_E_WARNING</string>
+    <string name="error_5009_reason">ERROR_API_PHP_E_PARSE</string>
+    <string name="error_5010_reason">ERROR_API_PHP_E_NOTICE</string>
+    <string name="error_5011_reason">ERROR_API_PHP_E_OTHER</string>
+    <string name="error_5012_reason">API Szkolny.eu: przerwa techniczna</string>
+    <string name="error_5013_reason">API: brakujący argument</string>
+    <string name="error_5014_reason">API: brak przesłanej zawartości</string>
+    <string name="error_5015_reason">ERROR_API_INVALID_ACTION</string>
+    <string name="error_5016_reason">API: nie znaleziono wybranej aktualizacji</string>
+    <string name="error_5017_reason">ERROR_API_INVALID_DEVICEID_USERCODE</string>
+    <string name="error_5018_reason">Nieprawidłowy token przeglądarki</string>
+    <string name="error_5019_reason">ERROR_API_INVALID_BROWSERID</string>
+    <string name="error_5020_reason">ERROR_API_INVALID_DEVICEID</string>
+    <string name="error_5021_reason">ERROR_API_INVALID_DEVICEID_BROWSERID</string>
+    <string name="error_5022_reason">ERROR_API_HELP_CATEGORY_NOT_FOUND</string>
 
     <string name="error_120_reason">CODE_INTERNAL_LIBRUS_ACCOUNT_410</string>
     <string name="error_121_reason">CODE_INTERNAL_LIBRUS_SYNERGIA_EXPIRED</string>
