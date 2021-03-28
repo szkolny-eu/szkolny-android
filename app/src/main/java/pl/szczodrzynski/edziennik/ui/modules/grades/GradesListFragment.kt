@@ -23,7 +23,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_GRADE
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.GradesListFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradeDetailsDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSemester
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesStats

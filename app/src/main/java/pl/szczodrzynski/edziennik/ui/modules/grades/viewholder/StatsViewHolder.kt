@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.GradesItemStatsBinding
 import pl.szczodrzynski.edziennik.onClick
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesStats
 import java.text.DecimalFormat

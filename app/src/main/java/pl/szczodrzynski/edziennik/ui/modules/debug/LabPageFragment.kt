@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.databinding.LabFragmentBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.fslogin.decode

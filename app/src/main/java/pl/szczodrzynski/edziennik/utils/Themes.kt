@@ -42,6 +42,12 @@ object Themes {
             theme = themeList[value]
         }
 
+    var themeIndex
+        get() = themeList.indexOf(theme)
+        set(value) {
+            theme = themeList[value]
+        }
+
 
     val appThemeNoDisplay: Int
         get() = if (theme.isDark) R.style.AppTheme_Dark_NoDisplay else R.style.AppTheme_Light_NoDisplay
@@ -61,38 +67,15 @@ object Themes {
         return getColorFromAttr(context, android.R.attr.textColorSecondary)
     }
 
-    /*public static int getChipColorRes() {
-        switch (themeInt) {
-            case THEME_LIGHT:
-                return R.color.chipBackgroundLight;
-            default:
-            case THEME_DARK:
-                return R.color.chipBackgroundDark;
-            case THEME_BLACK:
-                return R.color.chipBackgroundBlack;
-            case THEME_CHOCOLATE:
-                return R.color.chipBackgroundChocolate;
-            case THEME_BLUE:
-                return R.color.chipBackgroundBlue;
-            case THEME_PURPLE:
-                return R.color.chipBackgroundPurple;
-            case THEME_GREEN:
-                return R.color.chipBackgroundGreen;
-            case THEME_AMBER:
-                return R.color.chipBackgroundAmber;
-            case THEME_RED:
-                return R.color.chipBackgroundRed;
-        }
-    }*/
     fun getThemeName(context: Context): String {
         return context.getString(theme.name)
     }
 
-    fun getThemeNames(context: Context): List<String> {
-        val list = mutableListOf<String>()
-        for (theme in themeList) {
-            list += context.getString(theme.name)
+    @StringRes
+    fun getThemeNameRes() = theme.name
+
+    fun getThemeNames(context: Context) =
+        themeList.map {
+            context.getString(it.name)
         }
-        return list
-    }
 }

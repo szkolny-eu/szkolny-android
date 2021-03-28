@@ -1,12 +1,9 @@
 package pl.szczodrzynski.edziennik
 
-import android.Manifest
-import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.database.Cursor
@@ -29,7 +26,6 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.*
-import androidx.core.app.ActivityCompat
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
@@ -294,19 +290,6 @@ fun colorFromCssName(name: String): Int {
 }
 
 fun List<Profile>.filterOutArchived() = this.filter { !it.archived }
-
-fun Activity.isStoragePermissionGranted(): Boolean {
-    return if (Build.VERSION.SDK_INT >= 23) {
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            true
-        } else {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            false
-        }
-    } else {
-        true
-    }
-}
 
 fun Response?.getUnixDate(): Long {
     val rfcDate = this?.headers()?.get("date") ?: return currentTimeUnix()
@@ -1235,3 +1218,41 @@ operator fun <K, V> Iterable<Pair<K, V>>.get(key: K): V? {
 }
 
 fun ByteArray.toHexString() = joinToString("") { "%02x".format(it) }
+
+fun <E> MutableList<E>.after(what: E, insert: E) {
+    val index = indexOf(what)
+    if (index != -1)
+        add(index + 1, insert)
+}
+
+fun <E> MutableList<E>.before(what: E, insert: E) {
+    val index = indexOf(what)
+    if (index != -1)
+        add(index, insert)
+}
+
+fun <E> MutableList<E>.after(what: E, insert: Collection<E>) {
+    val index = indexOf(what)
+    if (index != -1)
+        addAll(index + 1, insert)
+}
+
+fun <E> MutableList<E>.before(what: E, insert: Collection<E>) {
+    val index = indexOf(what)
+    if (index != -1)
+        addAll(index, insert)
+}
+
+fun Context.getSyncInterval(interval: Int): String {
+    val hours = interval / 60 / 60
+    val minutes = interval / 60 % 60
+    val hoursText = if (hours > 0)
+        plural(R.plurals.time_till_hours, hours)
+    else
+        null
+    val minutesText = if (minutes > 0)
+        plural(R.plurals.time_till_minutes, minutes)
+    else
+        ""
+    return hoursText?.plus(" $minutesText") ?: minutesText
+}
