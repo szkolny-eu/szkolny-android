@@ -182,8 +182,8 @@ class BuildManager(val app: App) : CoroutineScope {
                 return@launch
             }
 
-            // official, signed package
-            if (isOfficial)
+            // officially signed package
+            if (isSigned)
                 return@launch
 
             // seems official, but unsigned
