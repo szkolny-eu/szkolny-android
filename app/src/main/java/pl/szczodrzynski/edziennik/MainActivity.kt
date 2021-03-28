@@ -36,11 +36,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import pl.szczodrzynski.edziennik.data.api.ERROR_API_INVALID_SIGNATURE
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
@@ -628,22 +630,40 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         app.profile.registerName?.let { registerName ->
             var status = app.config.sync.registerAvailability[registerName]
             if (status == null || status.nextCheckAt < currentTimeUnix()) {
-                withContext(Dispatchers.IO) {
-                    val api = SzkolnyApi(app)
-                    api.runCatching(this@MainActivity) {
+                val api = SzkolnyApi(app)
+                val result = withContext(Dispatchers.IO) {
+                    return@withContext api.runCatching({
                         val availability = getRegisterAvailability()
                         app.config.sync.registerAvailability = availability
-                        status = availability[registerName]
+                        availability[registerName]
+                    }, onError = {
+                        if (it.toErrorCode() == ERROR_API_INVALID_SIGNATURE) {
+                            return@withContext false
+                        }
+                        return@withContext it
+                    })
+                }
+
+                when (result) {
+                    false -> {
+                        Toast.makeText(this@MainActivity, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
+                        return@let
+                    }
+                    is Throwable -> {
+                        errorSnackbar.addError(result.toApiError(SzkolnyApi.TAG)).show()
+                        return
+                    }
+                    is RegisterAvailabilityStatus -> {
+                        status = result
                     }
                 }
             }
 
-            if (status?.available != true
-                    || status?.minVersionCode ?: BuildConfig.VERSION_CODE > BuildConfig.VERSION_CODE) {
+            if (status?.available != true || status.minVersionCode > BuildConfig.VERSION_CODE) {
                 swipeRefreshLayout.isRefreshing = false
                 loadTarget(DRAWER_ITEM_HOME)
                 if (status != null)
-                    RegisterUnavailableDialog(this, status!!)
+                    RegisterUnavailableDialog(this, status)
                 return
             }
         }

@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.szkolny
 
 import android.os.Build
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -14,6 +15,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.ERROR_API_INVALID_SIGNATURE
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.DateAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.TimeAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
@@ -89,11 +91,17 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         }
         catch (e: Exception) {
             withContext(coroutineContext) {
+                val apiError = e.toApiError(TAG)
+                if (apiError.errorCode == ERROR_API_INVALID_SIGNATURE) {
+                    Toast.makeText(activity, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
+                    return@withContext null
+                }
                 ErrorDetailsDialog(
                     activity,
-                    listOf(e.toApiError(TAG)),
+                    listOf(apiError),
                     R.string.error_occured
                 )
+                null
             }
             null
         }
