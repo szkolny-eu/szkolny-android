@@ -1425,4 +1425,5 @@
     <string name="settings_about_version_details_subtext">Informacje o kompilacji</string>
     <string name="build_dialog_open_repo">Sprawdź kod</string>
     <string name="error_no_api_access">Brak dostępu do API</string>
+    <string name="build_date">Data kompilacji</string>
 </resources>

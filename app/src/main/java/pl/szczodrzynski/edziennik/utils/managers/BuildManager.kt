@@ -14,6 +14,10 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.ui.modules.base.BuildInvalidActivity
 import pl.szczodrzynski.edziennik.utils.Utils
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 class BuildManager(val app: App) : CoroutineScope {
 
@@ -84,6 +88,9 @@ class BuildManager(val app: App) : CoroutineScope {
                     .getString(R.string.build_platform_unofficial)
                     .asColoredSpannable(mtrlYellow)
             },
+            R.string.build_date to ZonedDateTime
+                .ofInstant(Instant.ofEpochMilli(buildTimestamp), ZoneId.systemDefault())
+                .format(DateTimeFormatter.RFC_1123_DATE_TIME),
             R.string.build_branch to gitBranch,
             R.string.build_commit to gitHash?.substring(0, 8),
             R.string.build_dirty to if (gitUnstaged?.isEmpty() == true)
