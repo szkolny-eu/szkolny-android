@@ -202,12 +202,6 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             return
         }
 
-        if (loginType.loginType == LOGIN_TYPE_LIBRUS) {
-            FirebaseAnalytics.getInstance(activity).logEvent("librus_hacked", Bundle())
-            nav.navigate(R.id.loginLibrusFragment, null, activity.navOptions)
-            return
-        }
-
         launch {
             if (!checkAvailability(loginType.loginType))
                 return@launch
