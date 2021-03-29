@@ -12,25 +12,30 @@ import pl.szczodrzynski.edziennik.md5
 class ApiCacheInterceptor(val app: App) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (Signing.appCertificate.md5() == app.config.apiInvalidCert) {
+        val request = chain.request()
+        if (request.url().host() == "api.szkolny.eu"
+            && Signing.appCertificate.md5() == app.config.apiInvalidCert
+        ) {
             val response = ApiResponse<Unit>(
                 success = false,
                 errors = listOf(ApiResponse.Error("InvalidSignature", ""))
             )
 
             return Response.Builder()
-                .request(chain.request())
+                .request(request)
                 .protocol(Protocol.HTTP_1_1)
                 .code(401)
                 .message("Unauthorized")
                 .addHeader("Content-Type", "application/json")
-                .body(ResponseBody.create(
-                    MediaType.parse("application/json"),
-                    app.gson.toJson(response)
-                ))
+                .body(
+                    ResponseBody.create(
+                        MediaType.parse("application/json"),
+                        app.gson.toJson(response)
+                    )
+                )
                 .build()
         }
 
-        return chain.proceed(chain.request())
+        return chain.proceed(request)
     }
 }

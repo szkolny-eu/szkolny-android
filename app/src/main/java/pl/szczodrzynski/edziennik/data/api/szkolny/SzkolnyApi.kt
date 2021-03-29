@@ -367,8 +367,10 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     @Throws(Exception::class)
     fun getRealms(registerName: String): List<LoginInfo.Platform> {
         val response = api.fsLoginRealms(registerName).execute()
-
-        return parseResponse(response)
+        if (response.isSuccessful && response.body() != null) {
+            return response.body()!!
+        }
+        throw SzkolnyApiException(null)
     }
 
     @Throws(Exception::class)
