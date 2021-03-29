@@ -115,6 +115,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mValidation = mValidation ?: values["buildValidation"]; return mValidation }
         set(value) { set("buildValidation", value); mValidation = value }
 
+    private var mApiInvalidCert: String? = null
+    var apiInvalidCert: String?
+        get() { mApiInvalidCert = mApiInvalidCert ?: values["apiInvalidCert"]; return mApiInvalidCert }
+        set(value) { set("apiInvalidCert", value); mApiInvalidCert = value }
+
     private var rawEntries: List<ConfigEntry> = db.configDao().getAllNow()
     private val profileConfigs: HashMap<Int, ProfileConfig> = hashMapOf()
     init {

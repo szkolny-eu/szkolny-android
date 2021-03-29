@@ -1112,7 +1112,7 @@ fun Throwable.toErrorCode() = when (this) {
     is SzkolnyApiException -> this.error?.toErrorCode()
     else -> null
 }
-private fun ApiResponse.Error.toErrorCode() = when (this.code) {
+fun ApiResponse.Error.toErrorCode() = when (this.code) {
     "PdoError" -> ERROR_API_PDO_ERROR
     "InvalidClient" -> ERROR_API_INVALID_CLIENT
     "InvalidArgument" -> ERROR_API_INVALID_ARGUMENT
