@@ -650,7 +650,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         return@let
                     }
                     is Throwable -> {
-                        errorSnackbar.addError(result.toApiError(SzkolnyApi.TAG)).show()
+                        errorSnackbar.addError(result.toApiError(TAG)).show()
                         return
                     }
                     is RegisterAvailabilityStatus -> {
