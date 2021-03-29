@@ -165,6 +165,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 .errorActivity(CrashActivity::class.java)
                 .apply()
         Iconics.init(applicationContext)
+        Iconics.respectFontBoundsDefault = true
 
         // initialize companion object values
         App.db = AppDb(this)

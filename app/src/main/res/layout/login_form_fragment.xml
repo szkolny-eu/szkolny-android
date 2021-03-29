@@ -106,7 +106,7 @@
                         android:layout_height="24dp"
                         app:iiv_color="?colorOnError"
                         app:iiv_icon="cmd-alert-circle-outline"
-                        app:iiv_size="20dp" />
+                        app:iiv_size="24dp" />
 
                     <TextView
                         android:id="@+id/errorText"

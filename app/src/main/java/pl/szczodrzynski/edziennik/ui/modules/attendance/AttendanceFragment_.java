@@ -127,7 +127,7 @@ public class AttendanceFragment_ extends Fragment {
                 CafeBar.builder(activity)
                         .to(activity.getNavView().getCoordinator())
                         .content(R.string.sync_old_data_info)
-                        .icon(new IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_download_outline).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.INSTANCE.getPrimaryTextColor(activity))))
+                        .icon(new IconicsDrawable(activity).icon(CommunityMaterial.Icon.cmd_download_outline).size(IconicsSize.dp(24)).color(IconicsColor.colorInt(Themes.INSTANCE.getPrimaryTextColor(activity))))
                         .positiveText(R.string.refresh)
                         .positiveColor(0xff4caf50)
                         .negativeText(R.string.ok)
