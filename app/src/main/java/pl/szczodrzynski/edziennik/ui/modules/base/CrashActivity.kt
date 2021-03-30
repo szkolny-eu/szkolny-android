@@ -12,7 +12,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash
-import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
@@ -87,15 +87,13 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
         }
 
         val moreInfoButton = findViewById<Button>(R.id.crash_details_btn)
-        moreInfoButton.setOnClickListener { v: View? ->
-            MaterialDialog.Builder(this@CrashActivity)
-                    .title(R.string.crash_details)
-                    .content(Html.fromHtml(getErrorString(intent, false)))
-                    .typeface(null, "RobotoMono-Regular.ttf")
-                    .positiveText(R.string.close)
-                    .neutralText(R.string.copy_to_clipboard)
-                    .onNeutral { _, _ -> copyErrorToClipboard() }
-                    .show()
+        moreInfoButton.setOnClickListener {
+            MaterialAlertDialogBuilder(this, R.style.AppTheme_MaterialAlertDialogMonospace)
+                .setTitle(R.string.crash_details)
+                .setMessage(Html.fromHtml(getErrorString(intent, false)))
+                .setPositiveButton(R.string.close, null)
+                .setNeutralButton(R.string.copy_to_clipboard) { _, _ -> copyErrorToClipboard() }
+                .show()
         }
 
         val errorInformation = CustomActivityOnCrash.getAllErrorDetailsFromIntent(this@CrashActivity, intent)

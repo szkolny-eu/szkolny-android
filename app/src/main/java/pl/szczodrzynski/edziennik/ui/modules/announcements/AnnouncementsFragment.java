@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 
 import org.greenrobot.eventbus.EventBus;
@@ -161,12 +161,12 @@ public class AnnouncementsFragment extends Fragment {
     }
 
     private void showAnnouncementDetailsDialog(AnnouncementFull announcement) {
-        MaterialDialog dialog = new MaterialDialog.Builder(activity)
-                .title(announcement.getSubject())
-                .customView(R.layout.dialog_announcement, true)
-                .positiveText(R.string.ok)
+        DialogAnnouncementBinding b = DialogAnnouncementBinding.inflate(LayoutInflater.from(activity), null, false);
+        new MaterialAlertDialogBuilder(activity)
+                .setTitle(announcement.getSubject())
+                .setView(b.getRoot())
+                .setPositiveButton(R.string.ok, null)
                 .show();
-        DialogAnnouncementBinding b = DialogAnnouncementBinding.bind(dialog.getCustomView());
         b.text.setText(announcement.getTeacherName() +"\n\n"+ (announcement.getStartDate() != null ? announcement.getStartDate().getFormattedString() : "-") + (announcement.getEndDate() != null ? " do " + announcement.getEndDate().getFormattedString() : "")+"\n\n" +announcement.getText());
         if (!announcement.getSeen() && app.getProfile().getLoginStoreType() != LOGIN_TYPE_LIBRUS) {
             announcement.setSeen(true);
