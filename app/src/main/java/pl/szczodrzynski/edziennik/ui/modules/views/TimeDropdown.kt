@@ -8,7 +8,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.*
@@ -177,17 +178,19 @@ class TimeDropdown : TextInputDropDown {
     fun pickerDialog() {
         val time = (getSelected() as? Pair<*, *>)?.first as? Time ?: Time.getNow()
 
-        TimePickerDialog
-                .newInstance({ _, hourOfDay, minute, second ->
-                    val timeSelected = Time(hourOfDay, minute, second)
+        MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(time.hour)
+            .setMinute(time.minute)
+            .build()
+            .also { dialog ->
+                dialog.addOnPositiveButtonClickListener {
+                    val timeSelected = Time(dialog.hour, dialog.minute, 0)
                     selectTime(timeSelected)
                     onTimeSelected?.invoke(timeSelected, null, null)
-                }, time.hour, time.minute, 0, true)
-                .apply {
-                    this@TimeDropdown.activity ?: return@apply
-                    accentColor = R.attr.colorPrimary.resolveAttr(this@TimeDropdown.activity)
-                    show(this@TimeDropdown.activity!!.supportFragmentManager, "TimePickerDialog")
                 }
+            }
+            .show(activity!!.supportFragmentManager, "TimeDropdown")
     }
 
     fun selectTime(time: Time) {
