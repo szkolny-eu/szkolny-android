@@ -3,9 +3,11 @@ package pl.szczodrzynski.edziennik.utils
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.material.textfield.TextInputEditText
-import pl.szczodrzynski.edziennik.R
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 
 open class TextInputDropDown : TextInputEditText {
     constructor(context: Context) : super(context) {
@@ -32,11 +34,12 @@ open class TextInputDropDown : TextInputEditText {
     }
 
     open fun create(context: Context) {
-        val drawable = context.resources.getDrawable(R.drawable.dropdown_arrow)
-        val wrappedDrawable = DrawableCompat.wrap(drawable)
-        DrawableCompat.setTint(wrappedDrawable, Themes.getPrimaryTextColor(context))
+        val drawable = IconicsDrawable(context, CommunityMaterial.Icon.cmd_chevron_down).apply {
+            colorInt = Themes.getPrimaryTextColor(context)
+            sizeDp = 24
+        }
 
-        setCompoundDrawablesWithIntrinsicBounds(null, null, wrappedDrawable, null)
+        setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
         isFocusableInTouchMode = false
         isCursorVisible = false
         isLongClickable = false
