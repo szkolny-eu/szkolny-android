@@ -38,7 +38,6 @@ import pl.szczodrzynski.edziennik.data.api.events.ProfileListEmptyEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.network.NetworkUtils
 import pl.szczodrzynski.edziennik.network.cookie.DumbCookieJar
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
@@ -88,7 +87,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             .build()
 
     val permissionChecker by lazy { PermissionChecker(this) }
-    val networkUtils by lazy { NetworkUtils(this) }
     val gson by lazy { Gson() }
 
     /*    _    _ _______ _______ _____

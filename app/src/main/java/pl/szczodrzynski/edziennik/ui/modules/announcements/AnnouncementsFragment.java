@@ -120,7 +120,7 @@ public class AnnouncementsFragment extends Fragment {
                     return;
                 }*/
                 AnnouncementsAdapter announcementsAdapter = new AnnouncementsAdapter(activity, announcements, (v, announcement) -> {
-                    if (announcement.getText() == null || (app.getProfile().getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.getSeen() && app.getNetworkUtils().isOnline())) {
+                    if (announcement.getText() == null || (app.getProfile().getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.getSeen())) {
                         EdziennikTask.Companion.announcementGet(App.Companion.getProfileId(), announcement).enqueue(requireContext());
                     } else {
                         showAnnouncementDetailsDialog(announcement);

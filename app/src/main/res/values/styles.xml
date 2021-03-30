@@ -98,7 +98,6 @@
         <item name="colorPrimaryDark">#1976d2</item>
         <item name="colorPrimaryVariant">#2196f3</item>
         <item name="colorAccent">#ff3d00</item>
-        <item name="colorSection">@color/colorSection</item>
 
         <item name="colorFab">#4CAF50</item>
         <item name="colorFabIcon">#c8e6c9</item>
@@ -131,7 +130,6 @@
         <item name="colorPrimaryDark">#1976d2</item>
         <item name="colorPrimaryVariant">#2196f3</item>
         <item name="colorAccent">#ffb300</item>
-        <item name="colorSection">@color/colorSection</item>
 
         <item name="colorFab">#4CAF50</item>
         <item name="colorFabIcon">#c8e6c9</item>

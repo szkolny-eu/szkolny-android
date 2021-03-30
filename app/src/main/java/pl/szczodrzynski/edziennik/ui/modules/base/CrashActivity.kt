@@ -69,34 +69,20 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
         val restartButton = findViewById<Button>(R.id.crash_restart_btn)
         restartButton.setOnClickListener { CustomActivityOnCrash.restartApplication(this@CrashActivity, config) }
 
-        val devMessageButton = findViewById<Button>(R.id.crash_dev_message_btn)
-        devMessageButton.setOnClickListener {
-            val i = Intent(this@CrashActivity, CrashGtfoActivity::class.java)
-            startActivity(i)
-        }
-
         val reportButton = findViewById<Button>(R.id.crash_report_btn)
         reportButton.setOnClickListener {
-            if (!app.networkUtils.isOnline) {
-                MaterialDialog.Builder(this@CrashActivity)
-                        .title(R.string.network_you_are_offline_title)
-                        .content(R.string.network_you_are_offline_text)
-                        .positiveText(R.string.ok)
-                        .show()
-            } else {
-                launch {
-                    api.runCatching({
-                        withContext(Dispatchers.Default) {
-                            errorReport(listOf(getReportableError(intent)))
-                        }
-                    }, {
-                        Toast.makeText(app, getString(R.string.crash_report_cannot_send) + it, Toast.LENGTH_LONG).show()
-                    }) ?: return@launch
+            launch {
+                api.runCatching({
+                    withContext(Dispatchers.Default) {
+                        errorReport(listOf(getReportableError(intent)))
+                    }
+                }, {
+                    Toast.makeText(app, getString(R.string.crash_report_cannot_send) + it, Toast.LENGTH_LONG).show()
+                }) ?: return@launch
 
-                    Toast.makeText(app, getString(R.string.crash_report_sent), Toast.LENGTH_SHORT).show()
-                    reportButton.isEnabled = false
-                    reportButton.setTextColor(resources.getColor(android.R.color.darker_gray))
-                }
+                Toast.makeText(app, getString(R.string.crash_report_sent), Toast.LENGTH_SHORT).show()
+                reportButton.isEnabled = false
+                reportButton.setTextColor(resources.getColor(android.R.color.darker_gray))
             }
         }
 
