@@ -101,15 +101,6 @@
                     android:text="@string/crash_details"
                     android:textColor="@color/colorPrimary" />
 
-                <Button
-                    android:id="@+id/crash_dev_message_btn"
-                    style="?borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/crash_dev_message"
-                    android:textColor="@color/colorPrimary"
-                    android:visibility="gone"/>
-
             </LinearLayout>
 
             <ImageView

@@ -16,8 +16,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
@@ -25,7 +25,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
-import pl.szczodrzynski.edziennik.resolveAttr
+import pl.szczodrzynski.edziennik.getSchoolYearConstrains
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.timetable.GenerateBlockTimetableDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -167,19 +167,23 @@ class TimetableFragment : Fragment(), CoroutineScope {
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.timetable_select_day)
                         .withIcon(SzkolnyFont.Icon.szf_calendar_today_outline)
-                        .withOnClickListener(View.OnClickListener {
+                        .withOnClickListener { _ ->
                             activity.bottomSheet.close()
-                            val date = Date.getToday()
-                            DatePickerDialog
-                                    .newInstance({ _, year, monthOfYear, dayOfMonth ->
-                                        val dateSelected = Date(year, monthOfYear, dayOfMonth)
-                                        b.tabLayout.setCurrentItem(items.indexOfFirst { it == dateSelected }, true)
-                                    }, date.year, date.month, date.day)
-                                    .apply {
-                                        accentColor = R.attr.colorPrimary.resolveAttr(this@TimetableFragment.activity)
-                                        show(this@TimetableFragment.activity.supportFragmentManager, "DatePickerDialog")
+                            val date = pageSelection ?: Date.getToday()
+                            MaterialDatePicker.Builder.datePicker()
+                                .setSelection(date.inMillisUtc)
+                                .setCalendarConstraints(app.profile.getSchoolYearConstrains())
+                                .build()
+                                .apply {
+                                    addOnPositiveButtonClickListener { millis ->
+                                        val dateSelected = Date.fromMillisUtc(millis)
+                                        val index = items.indexOfFirst { it == dateSelected }
+                                        if (index != -1)
+                                            b.tabLayout.setCurrentItem(index, true)
                                     }
-                        }),
+                                }
+                                .show(activity.supportFragmentManager, TAG)
+                        },
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_add_event)
                         .withDescription(R.string.menu_add_event_desc)

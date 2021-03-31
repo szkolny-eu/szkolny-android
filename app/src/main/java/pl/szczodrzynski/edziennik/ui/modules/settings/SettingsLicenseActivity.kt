@@ -309,14 +309,6 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
         ),
 
         license(
-            "Material DateTime Picker",
-            "2015",
-            "Wouter Dullaert",
-            OpenSourceLicense.APACHE_2,
-            "https://github.com/wdullaer/MaterialDateTimePicker"
-        ),
-
-        license(
             "JsonViewer",
             "2017",
             "smuyyh",

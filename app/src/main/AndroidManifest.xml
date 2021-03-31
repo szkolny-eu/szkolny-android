@@ -123,9 +123,6 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:process=":error_activity"
             android:theme="@style/DeadTheme" />
-        <activity android:name=".ui.modules.base.CrashGtfoActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/DeadTheme" />
         <activity android:name=".ui.modules.intro.ChangelogIntroActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
@@ -179,13 +176,6 @@
               ____) |  __/ |   \ V /| | (_|  __/\__ \
              |_____/ \___|_|    \_/ |_|\___\___||___/
         -->
-        <!--<service android:name=".sync.MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>-->
         <service android:name=".data.api.ApiService" />
         <service android:name=".data.firebase.MyFirebaseService"
             android:exported="false">

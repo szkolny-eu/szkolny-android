@@ -10,14 +10,13 @@ import android.util.AttributeSet
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.observeOnce
-import pl.szczodrzynski.edziennik.resolveAttr
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -179,17 +178,17 @@ class DateDropdown : TextInputDropDown {
     fun pickerDialog() {
         val date = getSelected() as? Date ?: Date.getToday()
 
-        DatePickerDialog
-                .newInstance({ _, year, monthOfYear, dayOfMonth ->
-                    val dateSelected = Date(year, monthOfYear+1, dayOfMonth)
+        MaterialDatePicker.Builder.datePicker()
+            .setSelection(date.inMillisUtc)
+            .build()
+            .apply {
+                addOnPositiveButtonClickListener { millis ->
+                    val dateSelected = Date.fromMillisUtc(millis)
                     selectDate(dateSelected)
                     onDateSelected?.invoke(dateSelected, null)
-                }, date.year, date.month-1, date.day)
-                .apply {
-                    this@DateDropdown.activity ?: return@apply
-                    accentColor = R.attr.colorPrimary.resolveAttr(this@DateDropdown.activity)
-                    show(this@DateDropdown.activity!!.supportFragmentManager, "DatePickerDialog")
                 }
+            }
+            .show(activity!!.supportFragmentManager, "DateDropdown")
     }
 
     fun selectDate(date: Date) {

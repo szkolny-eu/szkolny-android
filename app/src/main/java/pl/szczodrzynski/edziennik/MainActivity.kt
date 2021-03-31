@@ -66,7 +66,6 @@ import pl.szczodrzynski.edziennik.ui.modules.debug.LabFragment
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
-import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
@@ -126,7 +125,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         const val DRAWER_ITEM_DEBUG = 102
 
         const val TARGET_GRADES_EDITOR = 501
-        const val TARGET_HELP = 502
         const val TARGET_FEEDBACK = 120
         const val TARGET_MESSAGES_DETAILS = 503
         const val TARGET_MESSAGES_COMPOSE = 504
@@ -224,7 +222,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             // other target items, not directly navigated
             list += NavTarget(TARGET_GRADES_EDITOR, R.string.menu_grades_editor, GradesEditorFragment::class)
-            list += NavTarget(TARGET_HELP, R.string.menu_help, HelpFragment::class)
             list += NavTarget(TARGET_FEEDBACK, R.string.menu_feedback, FeedbackFragment::class)
             list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessageFragment::class).withPopTo(DRAWER_ITEM_MESSAGES)
             list += NavTarget(TARGET_MESSAGES_COMPOSE, R.string.menu_message_compose, MessagesComposeFragment::class)

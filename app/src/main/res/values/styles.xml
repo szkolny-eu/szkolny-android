@@ -87,10 +87,14 @@
         <item name="textColor">?android:textColorSecondary</item>
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
+    <style name="AppTheme.MaterialAlertDialogMonospace" parent="AppTheme.MaterialAlertDialog">
+        <item name="materialAlertDialogBodyTextStyle">@style/AppTheme.MaterialAlertDialogMonospace.BodyText</item>
+    </style>
+    <style name="AppTheme.MaterialAlertDialogMonospace.BodyText" parent="AppTheme.MaterialAlertDialog.BodyText">
+        <item name="android:typeface">monospace</item>
+    </style>
 
     <style name="AppTheme" parent="NavView" />
-
-    <style name="mdtp_ActionButton.Text" parent="Widget.MaterialComponents.Button.TextButton.Dialog"/>
 
     <!-- Base application theme. -->
     <style name="AppTheme.Light" parent="NavView.Light">
@@ -98,18 +102,11 @@
         <item name="colorPrimaryDark">#1976d2</item>
         <item name="colorPrimaryVariant">#2196f3</item>
         <item name="colorAccent">#ff3d00</item>
-        <item name="colorSection">@color/colorSection</item>
 
         <item name="colorFab">#4CAF50</item>
         <item name="colorFabIcon">#c8e6c9</item>
         <item name="colorOnFab">#ffffff</item>
         <item name="colorIcon">#8a000000</item>
-
-        <item name="md_dark_theme">false</item>
-        <item name="md_title_color">?android:textColorPrimary</item>
-        <item name="md_content_color">?android:textColorPrimary</item>
-        <item name="md_link_color">?colorAccent</item>
-        <item name="md_item_color">?android:textColorPrimary</item>
 
         <item name="mal_color_primary">?android:textColorPrimary</item>
         <item name="mal_color_secondary">?android:textColorSecondary</item>
@@ -124,25 +121,17 @@
         <item name="halfHourDividerColor">#e0e0e0</item>
 
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
-        <item name="mdtp_theme_dark">false</item>
     </style>
     <style name="AppTheme.Dark" parent="NavView.Dark">
         <item name="colorPrimary">#64b5f6</item>
         <item name="colorPrimaryDark">#1976d2</item>
         <item name="colorPrimaryVariant">#2196f3</item>
         <item name="colorAccent">#ffb300</item>
-        <item name="colorSection">@color/colorSection</item>
 
         <item name="colorFab">#4CAF50</item>
         <item name="colorFabIcon">#c8e6c9</item>
         <item name="colorOnFab">#ffffff</item>
         <item name="colorIcon">#b4ffffff</item>
-
-        <item name="md_dark_theme">true</item>
-        <item name="md_title_color">?android:textColorPrimary</item>
-        <item name="md_content_color">?android:textColorPrimary</item>
-        <item name="md_link_color">?colorAccent</item>
-        <item name="md_item_color">?android:textColorPrimary</item>
 
         <item name="mal_color_primary">@color/primaryTextDark</item>
         <item name="mal_color_secondary">@color/secondaryTextDark</item>
@@ -157,7 +146,6 @@
         <item name="halfHourDividerColor">#40ffffff</item>
 
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
-        <item name="mdtp_theme_dark">true</item>
     </style>
 
 

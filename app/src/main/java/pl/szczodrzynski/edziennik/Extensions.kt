@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.*
 import com.google.gson.JsonArray
@@ -1255,4 +1256,11 @@ fun Context.getSyncInterval(interval: Int): String {
     else
         ""
     return hoursText?.plus(" $minutesText") ?: minutesText
+}
+
+fun Profile.getSchoolYearConstrains(): CalendarConstraints {
+    return CalendarConstraints.Builder()
+        .setStart(dateSemester1Start.inMillisUtc)
+        .setEnd(dateYearEnd.inMillisUtc)
+        .build()
 }

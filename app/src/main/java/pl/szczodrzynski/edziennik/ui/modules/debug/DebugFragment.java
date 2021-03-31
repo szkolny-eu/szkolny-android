@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.yuyh.jsonviewer.library.JsonRecyclerView;
@@ -211,10 +211,10 @@ public class DebugFragment extends Fragment {
                 mRecyclerView.bindJson(result);
             }
             catch (Exception e) {
-                new MaterialDialog.Builder(getActivity())
-                        .title("Result")
-                        .content(result)
-                        .positiveText(R.string.ok)
+                new MaterialAlertDialogBuilder(getActivity(), R.style.AppTheme_MaterialAlertDialogMonospace)
+                        .setTitle("Result")
+                        .setMessage(result)
+                        .setPositiveButton(R.string.ok, null)
                         .show();
             }
             mRecyclerView.setTextSize(20);
