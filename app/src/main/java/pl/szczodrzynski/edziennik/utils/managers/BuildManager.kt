@@ -122,7 +122,7 @@ class BuildManager(val app: App) : CoroutineScope {
                 val url = if (gitRemote == null)
                     "https://szkolny.eu/github/android"
                 else
-                    "https://github.com/$gitRemote"
+                    "https://github.com/$gitRemote/tree/$gitHash"
                 Utils.openUrl(activity, url)
             }
             .show()
