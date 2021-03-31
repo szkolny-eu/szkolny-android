@@ -119,7 +119,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                 R.id.widgetTimetableRefresh,
                 IconicsDrawable(context, CommunityMaterial.Icon3.cmd_refresh).apply {
                     colorInt = Color.WHITE
-                    sizeDp = if (config.bigStyle) 24 else 16
+                    sizeDp = if (config.bigStyle) 28 else 20
                 }.toBitmap()
             )
 
@@ -127,7 +127,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                 R.id.widgetTimetableSync,
                 IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline).apply {
                     colorInt = Color.WHITE
-                    sizeDp = if (config.bigStyle) 24 else 16
+                    sizeDp = if (config.bigStyle) 28 else 20
                 }.toBitmap()
             )
 

@@ -505,7 +505,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         .content(R.string.rate_snackbar_text)
                         .icon(IconicsDrawable(this).apply {
                             icon = CommunityMaterial.Icon3.cmd_star_outline
-                            sizeDp = 20
+                            sizeDp = 24
                             colorInt = Themes.getPrimaryTextColor(this@MainActivity)
                         })
                         .positiveText(R.string.rate_snackbar_positive)

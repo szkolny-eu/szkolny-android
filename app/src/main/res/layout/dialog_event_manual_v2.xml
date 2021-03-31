@@ -145,11 +145,11 @@
 
             app:iiv_end_icon="cmd-chevron-down"
             app:iiv_end_color="?android:textColorSecondary"
-            app:iiv_end_size="16dp"
+            app:iiv_end_size="24dp"
 
             app:iiv_end_checked_icon="cmd-chevron-up"
             app:iiv_end_checked_color="?android:textColorSecondary"
-            app:iiv_end_checked_size="16dp"/>
+            app:iiv_end_checked_size="24dp"/>
 
         <LinearLayout
             android:id="@+id/moreLayout"

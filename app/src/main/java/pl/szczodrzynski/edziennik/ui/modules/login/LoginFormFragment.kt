@@ -15,7 +15,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.utils.paddingDp
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -100,7 +99,6 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                 b.textLayout.startIconDrawable = IconicsDrawable(activity).apply {
                     icon = credential.icon
                     sizeDp = 24
-                    paddingDp = 2
                     colorAttr(activity, R.attr.colorOnBackground)
                 }
 

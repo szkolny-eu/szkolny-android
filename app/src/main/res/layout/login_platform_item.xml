@@ -60,6 +60,6 @@
             android:background="?selectableItemBackgroundBorderless"
             app:iiv_color="?colorOnBackground"
             app:iiv_icon="cmd-image-search-outline"
-            app:iiv_size="36dp" />
+            app:iiv_size="40dp" />
     </LinearLayout>
 </layout>
