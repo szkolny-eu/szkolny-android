@@ -67,7 +67,7 @@ class MessageFragment : Fragment(), CoroutineScope {
         b.closeButton.setImageDrawable(
                 IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_window_close).apply {
                     colorAttr(activity, android.R.attr.textColorSecondary)
-                    sizeDp = 12
+                    sizeDp = 16
                 }
         )
         b.closeButton.setOnClickListener { activity.navigateUp() }

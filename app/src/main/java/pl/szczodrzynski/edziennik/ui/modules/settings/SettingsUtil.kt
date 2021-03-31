@@ -25,7 +25,7 @@ class SettingsUtil(
 
     fun refresh() = onRefresh()
 
-    private fun IIcon.asDrawable(color: Int? = null, size: Int = 20) =
+    private fun IIcon.asDrawable(color: Int? = null, size: Int = 24) =
         IconicsDrawable(activity).apply {
             icon = this@asDrawable
             sizeDp = size
@@ -66,7 +66,7 @@ class SettingsUtil(
 
         val moreItem = MaterialAboutActionItem.Builder()
             .text(R.string.settings_more_text)
-            .icon(CommunityMaterial.Icon.cmd_chevron_down.asDrawable(iconColor, size = 14))
+            .icon(CommunityMaterial.Icon.cmd_chevron_down.asDrawable(iconColor, size = 24))
             .build()
 
         moreItem.setOnClickAction {

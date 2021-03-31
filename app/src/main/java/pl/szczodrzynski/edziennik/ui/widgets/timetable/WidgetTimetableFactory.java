@@ -130,7 +130,7 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
     private Bitmap homeIconBitmap() {
         return new IconicsDrawable(context).apply((drawable) -> {
             IconicsConvertersKt.setColorRes(drawable, R.color.md_red_500);
-            IconicsConvertersKt.setSizeDp(drawable, 10);
+            IconicsConvertersKt.setSizeDp(drawable, 14);
             IconicsDrawableExtensionsKt.icon(drawable, CommunityMaterial.Icon2.cmd_home);
             return Unit.INSTANCE;
         }).toBitmap();

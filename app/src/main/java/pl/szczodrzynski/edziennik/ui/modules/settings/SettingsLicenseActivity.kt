@@ -26,7 +26,7 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
         get() = IconicsDrawable(this).apply {
             icon = CommunityMaterial.Icon.cmd_book_outline
             colorInt = foregroundColor
-            sizeDp = 18
+            sizeDp = 24
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -204,7 +204,6 @@
                             android:id="@+id/replyIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:padding="4dp"
                             app:iiv_color="?android:textColorSecondary"
                             app:iiv_icon="cmd-reply-outline"
                             tools:srcCompat="@android:drawable/ic_menu_revert" />
@@ -234,7 +233,6 @@
                             android:id="@+id/forwardIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:padding="4dp"
                             app:iiv_color="?android:textColorSecondary"
                             app:iiv_icon="cmd-arrow-right"
                             tools:srcCompat="@android:drawable/ic_media_ff" />
@@ -265,7 +263,6 @@
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:padding="4dp"
                             app:iiv_color="?android:textColorSecondary"
                             app:iiv_icon="cmd-delete-outline"
                             tools:srcCompat="@android:drawable/ic_menu_delete" />
@@ -295,7 +292,6 @@
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:padding="4dp"
                             app:iiv_color="?android:textColorSecondary"
                             app:iiv_icon="cmd-download-outline"
                             tools:srcCompat="@android:drawable/ic_menu_delete" />
