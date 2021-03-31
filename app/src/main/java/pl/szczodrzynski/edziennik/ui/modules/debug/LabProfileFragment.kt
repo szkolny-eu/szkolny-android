@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +18,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.databinding.TemplateListPageFragmentBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.input
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
@@ -87,51 +88,55 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                     else -> objVal.toString()
                 }
 
-                MaterialDialog.Builder(activity)
-                    .input("value", value, false) { _, input ->
-                        val input = input.toString()
-                        when (parent) {
-                            is JsonObject -> {
-                                val v = objVal as JsonPrimitive
-                                when {
-                                    v.isString -> (parent as JsonObject)[objName] = input
-                                    v.isNumber -> (parent as JsonObject)[objName] = input.toLong()
-                                    v.isBoolean -> (parent as JsonObject)[objName] = input.toBoolean()
+                MaterialAlertDialogBuilder(activity)
+                    .setTitle(item.key)
+                    .input(
+                        hint = "value",
+                        value = value,
+                        positiveButton = R.string.ok,
+                        positiveListener = { _, input ->
+                            when (parent) {
+                                is JsonObject -> {
+                                    val v = objVal as JsonPrimitive
+                                    when {
+                                        v.isString -> (parent as JsonObject)[objName] = input
+                                        v.isNumber -> (parent as JsonObject)[objName] = input.toLong()
+                                        v.isBoolean -> (parent as JsonObject)[objName] = input.toBoolean()
+                                    }
+                                }
+                                is JsonArray -> {
+
+                                }
+                                is HashMap<*, *> -> app.config.set(objName, input)
+                                else -> {
+                                    val field = parent::class.java.getDeclaredField(objName)
+                                    field.isAccessible = true
+                                    val newVal = when (objVal) {
+                                        is Int -> input.toInt()
+                                        is Boolean -> input.toBoolean()
+                                        is Float -> input.toFloat()
+                                        is Char -> input.toCharArray()[0]
+                                        is String -> input
+                                        is Long -> input.toLong()
+                                        is Double -> input.toDouble()
+                                        else -> input
+                                    }
+                                    field.set(parent, newVal)
                                 }
                             }
-                            is JsonArray -> {
 
+                            when (item.key.substringBefore(":")) {
+                                "App.profile" -> app.profileSave()
+                                "App.profile.studentData" -> app.profileSave()
+                                "App.profile.loginStore" -> app.db.loginStoreDao().add(loginStore)
                             }
-                            is HashMap<*, *> -> app.config.set(objName, input)
-                            else -> {
-                                val field = parent::class.java.getDeclaredField(objName)
-                                field.isAccessible = true
-                                val newVal = when (objVal) {
-                                    is Int -> input.toInt()
-                                    is Boolean -> input.toBoolean()
-                                    is Float -> input.toFloat()
-                                    is Char -> input.toCharArray()[0]
-                                    is String -> input
-                                    is Long -> input.toLong()
-                                    is Double -> input.toDouble()
-                                    else -> input
-                                }
-                                field.set(parent, newVal)
-                            }
+
+                            showJson()
+
+                            return@input true
                         }
-
-                        when (item.key.substringBefore(":")) {
-                            "App.profile" -> app.profileSave()
-                            "App.profile.studentData" -> app.profileSave()
-                            "App.profile.loginStore" -> app.db.loginStoreDao().add(loginStore)
-                        }
-
-                        showJson()
-
-                    }
-                    .title(item.key)
-                    .positiveText(R.string.ok)
-                    .negativeText(R.string.cancel)
+                    )
+                    .setNegativeButton(R.string.cancel, null)
                     .show()
             }
             catch (e: Exception) {

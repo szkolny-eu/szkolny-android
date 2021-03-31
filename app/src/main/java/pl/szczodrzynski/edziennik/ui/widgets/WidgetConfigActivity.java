@@ -8,17 +8,18 @@ import android.app.Activity;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.graphics.Color;
+import android.database.DataSetObserver;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.SeekBar;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
-import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -27,6 +28,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.entity.Profile;
 import pl.szczodrzynski.edziennik.databinding.DialogWidgetConfigBinding;
+import pl.szczodrzynski.edziennik.databinding.WidgetProfileDialogItemBinding;
 import pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider;
@@ -96,45 +98,84 @@ public class WidgetConfigActivity extends Activity {
     }
 
     private void selectProfile() {
-        MaterialSimpleListAdapter adapter =
-                new MaterialSimpleListAdapter((dialog, index1, item) -> {
-                    profileId = (int) item.getId();
-                    profileName = item.toString();
+        if (profileList.size() > 1 && widgetType != WIDGET_LUCKY_NUMBER) {
+            profileList.add(
+                    new Profile(-1,
+                            0,
+                            0,
+                            getString(R.string.widget_config_all_profiles),
+                            null,
+                            "",
+                            "",
+                            null,
+                            new JsonObject()
+                    )
+            );
+        }
+
+        ListAdapter adapter = new ListAdapter() {
+            @Override public boolean areAllItemsEnabled() { return true; }
+            @Override public boolean isEnabled(int position) { return true; }
+            @Override public void registerDataSetObserver(DataSetObserver observer) { }
+            @Override public void unregisterDataSetObserver(DataSetObserver observer) { }
+            @Override public boolean hasStableIds() { return true; }
+            @Override public int getItemViewType(int position) { return 0; }
+            @Override public int getViewTypeCount() { return 1; }
+            @Override public boolean isEmpty() { return false; }
+
+            @Override public int getCount() { return profileList.size(); }
+            @Override public Object getItem(int position) { return profileList.get(position); }
+
+            @Override
+            public long getItemId(int position) {
+                return profileList.get(position).getId();
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                WidgetProfileDialogItemBinding b;
+                if (convertView == null) {
+                    b = WidgetProfileDialogItemBinding.inflate(getLayoutInflater(), null, false);
+                }
+                else {
+                    b = WidgetProfileDialogItemBinding.bind(convertView);
+                }
+                Profile profile = profileList.get(position);
+
+                b.name.setText(profile.getName());
+                b.subname.setText(profile.getSubname());
+                b.subname.setVisibility(profile.getSubname() == null ? View.GONE : View.VISIBLE);
+                b.image.setVisibility(profile.getId() == -1 ? View.GONE : View.VISIBLE);
+                if (profile.getId() == -1)
+                    b.image.setImageDrawable(null);
+                else
+                    b.image.setImageDrawable(profile.getImageDrawable(WidgetConfigActivity.this));
+
+                b.getRoot().setOnClickListener(v -> {
+                    profileId = profile.getId();
+                    profileName = profile.getName();
                     configure();
                 });
 
-        for (Profile profile : profileList) {
-            adapter.add(
-                    new MaterialSimpleListItem.Builder(this)
-                            .id(profile.getId())
-                            .content(profile.getName())
-                            .icon(profile.getImageDrawable(this))
-                            .backgroundColor(Color.WHITE)
-                            .build());
-        }
-        if (profileList.size() > 1 && widgetType != WIDGET_LUCKY_NUMBER) {
-            adapter.add(
-                    new MaterialSimpleListItem.Builder(this)
-                            .id(-1)
-                            .content(R.string.widget_config_all_profiles)
-                            .backgroundColor(Color.WHITE)
-                            .build());
-        }
-        new MaterialDialog.Builder(this)
-                .title(R.string.choose_profile)
-                .adapter(adapter, null)
-                .dismissListener(dialog -> finish())
+                return b.getRoot();
+            }
+        };
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.choose_profile)
+                .setAdapter(adapter, null)
+                .setOnDismissListener(dialog -> finish())
                 .show();
     }
 
     private void configure() {
-        MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title(R.string.widget_config_activity_customize)
-                .customView(R.layout.dialog_widget_config, true)
-                .dismissListener(dialog1 -> finish())
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .onPositive(((dialog1, which) -> {
+        b = DialogWidgetConfigBinding.inflate(getLayoutInflater(), null, false);
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.widget_config_activity_customize)
+                .setView(b.getRoot())
+                .setOnDismissListener(dialog -> finish())
+                .setPositiveButton(R.string.ok, ((dialog, which) -> {
                     WidgetConfig config = new WidgetConfig(profileId, bigStyle, darkTheme, opacity);
                     JsonObject configs = app.getConfig().getWidgetConfigs();
                     configs.add(Integer.toString(mAppWidgetId), app.getGson().toJsonTree(config));
@@ -165,9 +206,8 @@ public class WidgetConfigActivity extends Activity {
                     setResult(RESULT_OK, resultValue);
                     finish();
                 }))
+                .setNegativeButton(R.string.cancel, null)
                 .show();
-
-        b = DialogWidgetConfigBinding.bind(dialog.getCustomView());
 
         b.setProfileName(profileName);
 

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.paddingDp
 import com.mikepenz.iconics.utils.sizeDp
 import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.CoroutineScope
@@ -85,12 +84,11 @@ class AttachmentAdapter(
             icon = attachmentIcon
             colorAttr(context, R.attr.colorOnSurface)
             sizeDp = 24
-            paddingDp = 2
         }
         b.chip.closeIcon = IconicsDrawable(context).apply {
             icon = CommunityMaterial.Icon.cmd_check
             colorAttr(context, R.attr.colorOnSurface)
-            sizeDp = 18
+            sizeDp = 24
         }
 
         b.chip.isCloseIconVisible = item.isDownloaded && !item.isDownloading

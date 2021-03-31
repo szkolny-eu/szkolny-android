@@ -17,7 +17,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:background="@color/md_red_500"
-                android:padding="20dp"
+                android:padding="18dp"
                 app:iiv_color="@color/md_white_1000"
                 app:iiv_icon="cmd-delete"
                 tools:srcCompat="@tools:sample/avatars" />
@@ -27,7 +27,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:background="@color/md_green_500"
-                android:padding="20dp"
+                android:padding="18dp"
                 app:iiv_color="@color/md_white_1000"
                 app:iiv_icon="cmd-pencil"
                 tools:srcCompat="@tools:sample/avatars" />

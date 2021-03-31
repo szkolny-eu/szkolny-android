@@ -23,6 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipChildren="false"
             android:orientation="vertical"
             android:paddingHorizontal="24dp"
             android:paddingTop="24dp">
@@ -30,7 +31,8 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                android:clipChildren="false">
 
                 <com.mikepenz.materialdrawer.view.BezelImageView
                     android:id="@+id/image"
@@ -56,12 +58,12 @@
                     app:iiv_padding="5dp"
                     tools:background="@color/colorSurface_16dp" />
 
-                <View
+                <FrameLayout
                     android:id="@+id/imageButton"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_gravity="bottom|end"
-                    android:background="?selectableItemBackgroundBorderless" />
+                    android:foreground="?selectableItemBackgroundBorderless" />
             </FrameLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -85,9 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center_horizontal"
+                android:text="@{profile.subname}"
                 android:textAppearance="@style/NavView.TextView.Subtitle"
                 android:textColor="?android:textColorSecondary"
-                android:text="@{profile.subname}"
                 tools:text="3b3t - 2020/2021" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -95,8 +97,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/profile_config_sync_enabled"
-                android:checked="@={profile.syncEnabled}" />
+                android:checked="@={profile.syncEnabled}"
+                android:text="@string/profile_config_sync_enabled" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/logoutButton"

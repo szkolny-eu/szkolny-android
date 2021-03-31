@@ -11,10 +11,11 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.databinding.FragmentGradesEditorBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.input
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_AVG
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_SEM
@@ -72,12 +73,11 @@ class GradesEditorFragment : Fragment() {
         semester = arguments.getInt("semester", 1)
 
         if (subjectId == -1L) {
-            MaterialDialog.Builder(activity)
-                    .title(R.string.error_occured)
-                    .content(R.string.error_no_subject_id)
-                    .positiveText(R.string.ok)
-                    .onPositive { _, _ -> activity.navigateUp() }
-                    .show()
+            MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.error_occured)
+                .setMessage(R.string.error_no_subject_id)
+                .setPositiveButton(R.string.ok) { _, _ -> activity.navigateUp() }
+                .show()
             return
         }
 
@@ -193,12 +193,11 @@ class GradesEditorFragment : Fragment() {
 
         app.db.subjectDao().getById(App.profileId, subjectId).observe(this, Observer { subject ->
             if (subject == null || subject.id == -1L) {
-                MaterialDialog.Builder(activity)
-                        .title(R.string.error_occured)
-                        .content(R.string.error_no_subject_id)
-                        .positiveText(R.string.ok)
-                        .onPositive { _, _ -> activity.navigateUp() }
-                        .show()
+                MaterialAlertDialogBuilder(activity)
+                    .setTitle(R.string.error_occured)
+                    .setMessage(R.string.error_no_subject_id)
+                    .setPositiveButton(R.string.ok) { _, _ -> activity.navigateUp() }
+                    .show()
                 return@Observer
             }
 
@@ -329,21 +328,24 @@ class GradesEditorFragment : Fragment() {
 
             popup.setOnMenuItemClickListener { item ->
                 if (item.itemId == 100) {
-                    MaterialDialog.Builder(v.context)
-                            .title(R.string.grades_editor_add_grade_title)
-                            .content(R.string.grades_editor_add_grade_weight)
-                            .inputType(InputType.TYPE_NUMBER_FLAG_SIGNED)
-                            .input(null, null) { _, input ->
+                    MaterialAlertDialogBuilder(v.context)
+                        .setTitle(R.string.grades_editor_add_grade_title)
+                        .input(
+                            message = v.context.getString(R.string.grades_editor_add_grade_weight),
+                            type = InputType.TYPE_NUMBER_FLAG_SIGNED,
+                            positiveButton = R.string.ok,
+                            positiveListener = { _, input ->
                                 try {
-                                    editorGrade.weight = input.toString().toFloat()
+                                    editorGrade.weight = input.toFloat()
                                     callback()
                                 } catch (e: Exception) {
                                     e.printStackTrace()
                                 }
+                                true
                             }
-                            .positiveText(R.string.ok)
-                            .negativeText(R.string.cancel)
-                            .show()
+                        )
+                        .setNegativeButton(R.string.cancel, null)
+                        .show()
                 } else {
                     editorGrade.weight = item.itemId.toFloat()
                     callback()

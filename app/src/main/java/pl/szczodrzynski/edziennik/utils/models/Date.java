@@ -70,6 +70,13 @@ public class Date implements Comparable<Date> {
         return new Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
     }
 
+    public static Date fromMillisUtc(long millis) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(millis);
+        c.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return new Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
+    }
+
     public static Date fromCalendar(Calendar c) {
         return new Date(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
     }
@@ -91,6 +98,14 @@ public class Date implements Comparable<Date> {
         Calendar c = Calendar.getInstance();
         c.set(year, month - 1, day, 0, 0, 0);
         c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
+
+    public long getInMillisUtc() {
+        Calendar c = Calendar.getInstance();
+        c.set(year, month - 1, day, 0, 0, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        c.setTimeZone(TimeZone.getTimeZone("UTC"));
         return c.getTimeInMillis();
     }
 

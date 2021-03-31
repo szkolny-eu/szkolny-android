@@ -26,7 +26,7 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
         get() = IconicsDrawable(this).apply {
             icon = CommunityMaterial.Icon.cmd_book_outline
             colorInt = foregroundColor
-            sizeDp = 18
+            sizeDp = 24
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -306,14 +306,6 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
             "Qifan Yang",
             OpenSourceLicense.APACHE_2,
             "https://github.com/underwindfall/PowerPermission"
-        ),
-
-        license(
-            "Material DateTime Picker",
-            "2015",
-            "Wouter Dullaert",
-            OpenSourceLicense.APACHE_2,
-            "https://github.com/wdullaer/MaterialDateTimePicker"
         ),
 
         license(

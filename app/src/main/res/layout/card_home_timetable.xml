@@ -178,27 +178,27 @@
 
                 <ImageView
                     android:id="@+id/settings"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:padding="10dp"
+                    android:padding="12dp"
                     android:visibility="gone"
                     tools:src="@sample/settings" />
 
                 <ImageView
                     android:id="@+id/bellSync"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:padding="10dp"
+                    android:padding="12dp"
                     tools:src="@sample/settings" />
 
                 <ImageView
                     android:id="@+id/showCounter"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:padding="10dp"
+                    android:padding="12dp"
                     tools:src="@sample/settings" />
             </LinearLayout>
 
