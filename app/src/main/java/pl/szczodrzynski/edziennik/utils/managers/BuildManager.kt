@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.ui.modules.base.BuildInvalidActivity
 import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -42,7 +43,7 @@ class BuildManager(val app: App) : CoroutineScope {
     var gitRemote: String? = ""
     var gitAuthor: String? = ""
 
-    val isSigned = Signing.appCertificate.md5() == "d8bab5259fda7d72121fe5db526a3d4d"
+    val isSigned = Signing.appCertificate.md5() == "f98c600d6ea0cb5bc40ffc8e6f7824ac"
 
     val isPlayRelease = isRelease && buildFlavor == "play"
     val isApkRelease = isRelease && buildFlavor == "official"
@@ -188,14 +189,7 @@ class BuildManager(val app: App) : CoroutineScope {
     fun validateBuild(activity: AppCompatActivity) {
         launch {
             gitRemote = getRemoteRepo()
-            if (gitRemote == null && !isDebug) {
-                invalidateBuild(activity, null, InvalidBuildReason.NO_REMOTE_REPO)
-                return@launch
-            }
-            if (gitHash == null) {
-                invalidateBuild(activity, null, InvalidBuildReason.NO_COMMIT_HASH)
-                return@launch
-            }
+            d("BuildManager", "isSigned = $isSigned, buildType = $buildType, buildFlavor = $buildFlavor, remote = $gitRemote")
 
             // officially signed package
             if (isSigned)
@@ -204,6 +198,16 @@ class BuildManager(val app: App) : CoroutineScope {
             // seems official, but unsigned
             if (isPlayRelease || isApkRelease) {
                 invalidateBuild(activity, null, InvalidBuildReason.OFFICIAL_UNSIGNED)
+                return@launch
+            }
+
+            // probably no git repository, disabled on debug
+            if (gitRemote == null && !isDebug) {
+                invalidateBuild(activity, null, InvalidBuildReason.NO_REMOTE_REPO)
+                return@launch
+            }
+            if (gitHash == null) {
+                invalidateBuild(activity, null, InvalidBuildReason.NO_COMMIT_HASH)
                 return@launch
             }
 
