@@ -16,15 +16,16 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity
@@ -202,12 +203,6 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             return
         }
 
-        if (loginType.loginType == LOGIN_TYPE_LIBRUS) {
-            FirebaseAnalytics.getInstance(activity).logEvent("librus_hacked", Bundle())
-            nav.navigate(R.id.loginLibrusFragment, null, activity.navOptions)
-            return
-        }
-
         launch {
             if (!checkAvailability(loginType.loginType))
                 return@launch
@@ -255,19 +250,38 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         }?.let { registerName ->
             var status = app.config.sync.registerAvailability[registerName]
             if (status == null || status.nextCheckAt < currentTimeUnix()) {
-                withContext(Dispatchers.IO) {
-                    val api = SzkolnyApi(app)
-                    api.runCatching(activity) {
+                val api = SzkolnyApi(app)
+                val result = withContext(Dispatchers.IO) {
+                    return@withContext api.runCatching({
                         val availability = getRegisterAvailability()
                         app.config.sync.registerAvailability = availability
-                        status = availability[registerName]
+                        availability[registerName]
+                    }, onError = {
+                        if (it.toErrorCode() == ERROR_API_INVALID_SIGNATURE) {
+                            return@withContext false
+                        }
+                        return@withContext it
+                    })
+                }
+
+                when (result) {
+                    false -> {
+                        Toast.makeText(activity, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
+                        return@let
+                    }
+                    is Throwable -> {
+                        activity.errorSnackbar.addError(result.toApiError(TAG)).show()
+                        return false
+                    }
+                    is RegisterAvailabilityStatus -> {
+                        status = result
                     }
                 }
             }
 
-            if (status?.available != true) {
+            if (status?.available != true || status.minVersionCode > BuildConfig.VERSION_CODE) {
                 if (status != null)
-                    RegisterUnavailableDialog(activity, status!!)
+                    RegisterUnavailableDialog(activity, status)
                 return false
             }
         }

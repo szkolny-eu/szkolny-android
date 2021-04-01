@@ -143,6 +143,7 @@
         <activity android:name="com.canhub.cropper.CropImageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".ui.modules.base.BuildInvalidActivity" />
 
         <!--  _____               _
              |  __ \             (_)

@@ -90,7 +90,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
                 return
             }
 
-            profile.registerName?.let { registerName ->
+            profile.registerName?.also { registerName ->
                 var status = app.config.sync.registerAvailability[registerName]
                 if (status == null || status.nextCheckAt < currentTimeUnix()) {
                     val api = SzkolnyApi(app)
@@ -99,7 +99,11 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
                         app.config.sync.registerAvailability = availability
                         status = availability[registerName]
                     }, onError = {
-                        taskCallback.onError(it.toApiError(TAG))
+                        val apiError = it.toApiError(TAG)
+                        if (apiError.errorCode == ERROR_API_INVALID_SIGNATURE) {
+                            return@also
+                        }
+                        taskCallback.onError(apiError)
                         return
                     })
                 }

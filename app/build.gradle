@@ -4,6 +4,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
+apply from: 'git-info.gradle'
+
 android {
     compileSdkVersion setup.compileSdk
 
@@ -15,6 +17,10 @@ android {
         versionCode release.versionCode
         versionName release.versionName
 
+        buildConfigField "java.util.Map<String, String>", "GIT_INFO", gitInfoMap
+        buildConfigField "long", "BUILD_TIMESTAMP", String.valueOf(System.currentTimeMillis())
+        buildConfigField "String", "VERSION_BASE", "\"${release.versionName}\""
+
         multiDexEnabled = true
 
         externalNativeBuild {
@@ -23,16 +29,8 @@ android {
             }
         }
     }
+
     buildTypes {
-        applicationVariants.all { variant ->
-            variant.outputs.all {
-                if (variant.buildType.name == "release") {
-                    outputFileName = "Edziennik_" + defaultConfig.versionName + ".apk"
-                } else {
-                    outputFileName = "Edziennik_" + defaultConfig.versionName + "_debug.apk"
-                }
-            }
-        }
         debug {
             minifyEnabled = false
         }
@@ -43,6 +41,19 @@ android {
             proguardFiles fileTree('proguard').asList().toArray()
         }
     }
+    flavorDimensions "platform"
+    productFlavors {
+        main {
+            versionName gitInfo.versionHuman
+        }
+        official {}
+        play {}
+    }
+    variantFilter { variant ->
+        def flavors = variant.flavors*.name
+        setIgnore(variant.buildType.name == "debug" && !flavors.contains("main"))
+    }
+
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
@@ -69,6 +80,30 @@ android {
             path "src/main/cpp/CMakeLists.txt"
             version "3.10.2"
         }
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (!task.name.endsWith("Release") && !task.name.endsWith("ReleaseWithR8"))
+        return
+    def renameTaskName = "rename${task.name.capitalize()}"
+
+    def flavor = ""
+    if (task.name.startsWith("bundle"))
+        flavor = task.name.substring("bundle".length(), task.name.indexOf("Release")).uncapitalize()
+    if (task.name.startsWith("assemble"))
+        flavor = task.name.substring("assemble".length(), task.name.indexOf("Release")).uncapitalize()
+    if (task.name.startsWith("minify"))
+        flavor = task.name.substring("minify".length(), task.name.indexOf("Release")).uncapitalize()
+
+    if (flavor != "") {
+        tasks.create(renameTaskName, Copy) {
+            from file("${projectDir}/${flavor}/release/"), file("${buildDir}/outputs/mapping/${flavor}Release/")
+            include "*.aab", "*.apk", "mapping.txt", "output-metadata.json"
+            destinationDir file("${projectDir}/release/")
+            rename ".+?\\.(.+)", "Edziennik_${android.defaultConfig.versionName}_${flavor}." + '$1'
+        }
+        task.finalizedBy(renameTaskName)
     }
 }
 

@@ -69,6 +69,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     val eventManager by lazy { EventManager(this) }
     val permissionManager by lazy { PermissionManager(this) }
     val attendanceManager by lazy { AttendanceManager(this) }
+    val buildManager by lazy { BuildManager(this) }
 
     val db
         get() = App.db
