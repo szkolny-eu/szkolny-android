@@ -79,3 +79,5 @@ Dodatkowo:
 - **wersje skompilowane nie mogą być dystrybuowane za pomocą Google Play oraz żadnej platformy, na której istnieje oficjalna wersja aplikacji**
 
 **Autorzy aplikacji nie biorą odpowiedzialności za używanie aplikacji, modyfikowanie oraz dystrybuowanie.**
+
+Znaki towarowe zamieszczone w aplikacji oraz tym dokumencie należą do ich prawowitych właścicieli i są używane wyłącznie w celach informacyjnych.
