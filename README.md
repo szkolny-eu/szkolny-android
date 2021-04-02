@@ -30,17 +30,17 @@ Szkolny.eu jest nieoficjalną aplikacją, umożliwiającą rodzicom i uczniom do
 
 - plan lekcji, terminarz, oceny, wiadomości, zadania domowe, uwagi, frekwencja
 - wygodne **widgety** na ekran główny
-- łatwa komunikacja z nauczycielami-**odbieranie, wyszukiwanie i wysyłanie wiadomości**
+- łatwa komunikacja z nauczycielami — **odbieranie, wyszukiwanie i wysyłanie wiadomości**
 - pobieranie **załączników wiadomości i zadań domowych**
 - **powiadomienia** o nowych informacjach na telefonie lub na komputerze
-- organizacja zadań domowych i sprawdzianów-łatwe oznaczanie jako wykonane
+- organizacja zadań domowych i sprawdzianów — łatwe oznaczanie jako wykonane
 - obliczanie **średniej ocen** ze wszystkich przedmiotów, oceny proponowane i końcowe
-- Symulator edycji ocen-obliczanie średniej z przedmiotu po zmianie dowolnych jego ocen
+- Symulator edycji ocen — obliczanie średniej z przedmiotu po zmianie dowolnych jego ocen
 - **dodawanie własnych wydarzeń** i zadań do terminarza
 - nowoczesny i intuicyjny interfejs użytkownika
-- **obsługa wielu profili** uczniów-jeżeli jesteś Rodzicem, możesz skonfigurować wszystkie swoje konta uczniowskie i łatwo między nimi przełączać
+- **obsługa wielu profili** uczniów — jeżeli jesteś Rodzicem, możesz skonfigurować wszystkie swoje konta uczniowskie i łatwo między nimi przełączać
 - opcja **automatycznej synchronizacji** z E-dziennikiem
-- opcja Ciszy nocnej-nigdy więcej budzących Cię dźwięków z telefonu
+- opcja Ciszy nocnej — nigdy więcej budzących Cię dźwięków z telefonu
 
 [Zobacz porównanie funkcji z innymi aplikacjami](https://szkolny.eu/funkcje)
 
