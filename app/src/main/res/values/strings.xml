@@ -1415,7 +1415,7 @@
     <string name="build_invalid_official_unsigned">Nie możesz modyfikować tego rodzaju kompilacji aplikacji Szkolny.eu.\n\nAby wprowadzić własne zmiany, skorzystaj z kodu źródłowego dostępnego na GitHubie oraz zapoznaj się z README i informacją o licencji.\n\nhttps://szkolny.eu/github/android</string>
     <string name="build_invalid_unstaged_changes">Ta kompilacja zawiera zmiany niezatwierdzone do żadnej rewizji. Zapisz oraz opublikuj wszystkie zmiany przed wydaniem wersji \"release\".\n\nDla bezpieczeństwa oraz ze względów zgodności z licencją, korzystanie z aplikacji zostało zablokowane.</string>
     <string name="build_invalid_debug">Korzystasz z kompilacji typu \"debug\". Ta informacja zostanie wyświetlona tylko jeden raz dla aktualnego urządzenia.</string>
-    <string name="build_valid_unofficial">Korzystasz z nieoficjalnej kompilacji aplikacji Szkolny.eu. Zalecamy używanie wyłącznie oficjalnych wersji aplikacji.\n\nOstatnie zmiany w tej wersji zostały wprowadzone przez %3$s w repozytorium %2$s (%1$s).\n\nTo okno nie wyświetli się ponownie.</string>
+    <string name="build_valid_unofficial">Korzystasz z nieoficjalnej kompilacji aplikacji Szkolny.eu. Zalecamy używanie wyłącznie oficjalnych wersji aplikacji.\n\nOstatnie zmiany w tej wersji zostały wprowadzone przez:\n%3$s\nw repozytorium:\n%1$s (%2$s).\n\nTo okno nie wyświetli się ponownie.</string>
     <string name="build_invalid_title">Informacja dotycząca wersji aplikacji</string>
     <string name="settings_about_version_details_text">Szczegóły wersji</string>
     <string name="settings_about_version_details_subtext">Informacje o kompilacji</string>
