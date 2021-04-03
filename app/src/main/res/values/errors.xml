@@ -393,7 +393,6 @@
     <string name="error_911_reason">Zgłoś błąd: pobieranie wiadomości LIBRUS®</string>
     <string name="error_920_reason">Wystąpił błąd</string>
     <string name="error_921_reason">Wystąpił błąd podczas pobierania pliku</string>
-    <string name="error_930_reason">Nie udało się pobrać pliku z OneDrive</string>
     <string name="error_931_reason">EXCEPTION_VULCAN_WEB_LOGIN</string>
     <string name="error_932_reason">EXCEPTION_VULCAN_WEB_REQUEST</string>
     <string name="error_940_reason">Zgłoś błąd: wyjątek w API PPE</string>
