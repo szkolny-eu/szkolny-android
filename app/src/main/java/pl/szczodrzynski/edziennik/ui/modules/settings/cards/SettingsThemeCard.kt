@@ -28,7 +28,19 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             util.createPropertyItem(
                 text = R.string.settings_theme_snowfall_text,
                 subText = R.string.settings_theme_snowfall_subtext,
-                icon = CommunityMaterial.Icon3.cmd_snowflake,
+                icon = CommunityMaterial.Icon.cmd_egg_easter,
+                value = configGlobal.ui.snowfall
+            ) { _, it ->
+                configGlobal.ui.snowfall = it
+                activity.recreate()
+            }
+        else null,
+
+        if (Date.getToday().month == 4 || Date.getToday().month == 3) // not cool if statement
+            util.createPropertyItem(
+                text = R.string.settings_theme_eggfall_text,
+                subText = R.string.settings_theme_eggfall_subtext,
+                icon = CommunityMaterial.Icon.cmd_egg_easter,
                 value = configGlobal.ui.snowfall
             ) { _, it ->
                 configGlobal.ui.snowfall = it

@@ -470,8 +470,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         // IT'S WINTER MY DUDES
         val today = Date.getToday()
-        if ((today.month == 12 || today.month == 1) && app.config.ui.snowfall) {
+        if ((today.month % 11 == 1) && app.config.ui.snowfall) {
             b.rootFrame.addView(layoutInflater.inflate(R.layout.snowfall, b.rootFrame, false))
+        }
+        else if ((today.month == 3 || today.month == 4) && app.config.ui.snowfall) {
+            b.rootFrame.addView(layoutInflater.inflate(R.layout.eggfall, b.rootFrame, false))
         }
 
         // WHAT'S NEW DIALOG

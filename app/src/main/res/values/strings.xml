@@ -1034,6 +1034,8 @@
     <string name="settings_theme_open_drawer_on_back_pressed_text">Otwieraj menu przyciskiem wstecz</string>
     <string name="settings_theme_snowfall_subtext">Dzwonią dzwonki sań</string>
     <string name="settings_theme_snowfall_text">Pada śnieg, pada śnieg</string>
+    <string name="settings_theme_eggfall_subtext">Brrrr</string>
+    <string name="settings_theme_eggfall_text">Bajo jajo, bajo jajo</string>
     <string name="settings_theme_theme_pink">Różowy</string>
     <string name="settings_theme_theme_system">Systemowy</string>
     <string name="settings_theme_theme_text">Motyw</string>
