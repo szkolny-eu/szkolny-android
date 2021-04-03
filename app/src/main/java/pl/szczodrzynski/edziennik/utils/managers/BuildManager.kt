@@ -56,9 +56,9 @@ class BuildManager(val app: App) : CoroutineScope {
     }
 
     val versionBadge = when {
-        isOfficial && isNightly ->
+        isSigned && isNightly ->
             "Nightly\n" + BuildConfig.VERSION_NAME.substringAfterLast('.')
-        isOfficial && isDaily ->
+        isSigned && isDaily ->
             "Daily\n" + BuildConfig.VERSION_NAME.substringAfterLast('.')
         isDebug ->
             "Debug\n" + BuildConfig.VERSION_BASE
@@ -78,10 +78,21 @@ class BuildManager(val app: App) : CoroutineScope {
 
         val fields = mapOf(
             R.string.build_version to BuildConfig.VERSION_BASE,
-            R.string.build_official to if (isOfficial)
-                yes.asColoredSpannable(mtrlGreen)
-            else
-                no.asColoredSpannable(mtrlRed),
+            R.string.build_official to when {
+                isOfficial -> yes.asColoredSpannable(mtrlGreen)
+                isSigned -> TextUtils.concat(
+                    yes.asColoredSpannable(mtrlYellow),
+                    when {
+                        isNightly -> " (nightly build)"
+                        isDaily -> " (daily build)"
+                        else -> no.asColoredSpannable(mtrlYellow)
+                    }
+                )
+                else -> TextUtils.concat(
+                    no.asColoredSpannable(mtrlRed),
+                    if (gitAuthor != null) " ($gitAuthor)" else ""
+                )
+            },
             R.string.build_platform to when {
                 isPlayRelease -> activity.getString(R.string.build_platform_play)
                 isApkRelease -> activity.getString(R.string.build_platform_apk)
@@ -229,8 +240,10 @@ class BuildManager(val app: App) : CoroutineScope {
             val validation = Signing.appCertificate + gitHash + gitRemotes?.join(";")
 
             // app already validated
-            if (app.config.validation == validation.md5())
+            if (app.config.validation?.substringBefore(":") == validation.md5()){
+                gitAuthor = app.config.validation?.substringAfter(":")
                 return@launch
+            }
 
             val dialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.please_wait)
@@ -251,7 +264,7 @@ class BuildManager(val app: App) : CoroutineScope {
             }
 
             // release, unofficial, published build
-            app.config.validation = validation.md5()
+            app.config.validation = validation.md5() + ":" + gitAuthor
             invalidateBuild(activity, dialog, InvalidBuildReason.VALID)
         }
     }
