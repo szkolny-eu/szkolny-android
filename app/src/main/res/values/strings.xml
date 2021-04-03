@@ -1355,7 +1355,7 @@
     <string name="login_mode_podlasie_api_guide">Podaj token aplikacji mobilnej.</string>
     <string name="edziennik_progress_login_podlasie_api">Logowanie do PPE…</string>
     <string name="profile_archived_title">Profil jest archiwalny</string>
-    <string name="profile_archived_text">Przeglądasz dane ucznia z poprzedniego roku szkolnego (%d/%d). Synchronizacja oraz pobieranie wiadomości i niektórych zadań domowych zostały wyłączone.  Aby otworzyć profil ucznia z aktualnego roku, wybierz Zamknij archiwum na stronie głównej.</string>
+    <string name="profile_archived_text">Przeglądasz dane ucznia z poprzedniego roku szkolnego (%d/%d). Synchronizacja oraz pobieranie wiadomości i niektórych zadań domowych zostały wyłączone.\n\nAby otworzyć profil ucznia z aktualnego roku, wybierz Zamknij archiwum na stronie głównej.</string>
     <string name="profile_year_not_started_title">Wakacje ;)</string>
     <string name="profile_year_not_started_format">Prawdopodobnie rok szkolny dla tego ucznia jeszcze się nie zaczął (zacznie się %s). Spróbuj wykonać synchronizację później.</string>
     <string name="profile_archiving_title">Koniec roku szkolnego</string>
@@ -1367,7 +1367,7 @@
     <string name="home_archive_close_no_target_text">Uczeń %s nie posiada profilu na tym koncie w aktualnym roku szkolnym. Prawdopodobnie ten profil został usunięty lub uczeń nie uczęszcza już do tej klasy.\n\nAby przejść do aktualnego profilu, wybierz ucznia z listy lub zaloguj się na jego konto przyciskiem Dodaj ucznia.</string>
     <string name="login_copyright_notice">Znaki towarowe zamieszczone w tej aplikacji należą do ich prawowitych właścicieli i są używane wyłącznie w celach informacyjnych.</string>
     <string name="update_available_title">Dostępna aktualizacja aplikacji</string>
-    <string name="update_available_format">Używasz starej wersji aplikacji Szkolny.eu (%s). Aby móc korzystać z aplikacji oraz zapewnić najlepsze działanie, zaktualizuj aplikację do wersji %s.  Dziennik zmian: %s</string>
+    <string name="update_available_format">Używasz starej wersji aplikacji Szkolny.eu (%s). Aby móc korzystać z aplikacji oraz zapewnić najlepsze działanie, zaktualizuj aplikację do wersji %s.\n\nDziennik zmian:\n%s</string>
     <string name="update_available_fallback">Posiadasz nieaktualną wersję aplikacji Szkolny.eu. Aby móc dalej synchronizować dane, musisz zaktualizować aplikację.</string>
     <string name="update_available_button">Aktualizuj</string>
     <string name="update_available_later">Nie teraz</string>
@@ -1379,7 +1379,7 @@
     <string name="settings_register_hide_sticks_from_old">Stara nie zobaczy pał</string>
     <string name="login_podlasie_logout_devices">Wyloguj z pozostałych urządzeń</string>
     <string name="login_chooser_testing_title">Wersja testowa</string>
-    <string name="login_chooser_testing_text">Wybrany sposób logowania jest jeszcze w fazie testów i może nie działać poprawnie.  Jeśli masz problemy z aplikacją, wybierz zalecany sposób logowania.</string>
+    <string name="login_chooser_testing_text">Wybrany sposób logowania jest jeszcze w fazie testów i może nie działać poprawnie.\n\nJeśli masz problemy z aplikacją, wybierz zalecany sposób logowania.</string>
     <string name="login_chooser_mode_recommended">{cmd-information-outline} Zalecane</string>
     <string name="login_chooser_mode_testing">{cmd-alert-circle-outline} Wersja testowa</string>
     <string name="login_chooser_mode_dev_only">{cmd-android-studio} Wersja deweloperska</string>
@@ -1422,6 +1422,6 @@
     <string name="build_dialog_open_repo">Sprawdź kod</string>
     <string name="error_no_api_access">Brak dostępu do API</string>
     <string name="build_date">Data kompilacji</string>
-    <string name="permissions_generate_timetable">Aby móc zapisać wygenerowany plan lekcji musisz przyznać uprawnienia dostępu do pamięci urządzenia.  Kliknij OK, aby przyznać uprawnienia.</string>
+    <string name="permissions_generate_timetable">Aby móc zapisać wygenerowany plan lekcji musisz przyznać uprawnienia dostępu do pamięci urządzenia.\n\nKliknij OK, aby przyznać uprawnienia.</string>
     <string name="error_930_reason">Nie udało się pobrać pliku z OneDrive</string>
 </resources>
