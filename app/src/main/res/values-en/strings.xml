@@ -1239,7 +1239,7 @@
     <string name="build_official">Official build</string>
     <string name="build_platform_play">Google Play</string>
     <string name="login_chooser_testing_title">Test version</string>
-    <string name="login_chooser_mode_recommended">{cmd-information-outline} Recommened</string>
+    <string name="login_chooser_mode_recommended">{cmd-information-outline} Recommended</string>
     <string name="login_chooser_mode_dev_only">{cmd-android-studio} Developer version</string>
     <string name="login_chooser_mode_testing">{cmd-alert-circle-outline} Test version</string>
     <string name="eggs">\???</string>
