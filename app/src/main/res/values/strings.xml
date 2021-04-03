@@ -1355,7 +1355,7 @@
     <string name="login_mode_podlasie_api_guide">Podaj token aplikacji mobilnej.</string>
     <string name="edziennik_progress_login_podlasie_api">Logowanie do PPE…</string>
     <string name="profile_archived_title">Profil jest archiwalny</string>
-    <string name="profile_archived_text">Przeglądasz dane ucznia z poprzedniego roku szkolnego (%d/%d). Synchronizacja oraz pobieranie wiadomości i niektórych zadań domowych zostały wyłączone.\n\nAby otworzyć profil ucznia z aktualnego roku, wybierz Zamknij archiwum na stronie głównej.</string>
+    <string name="profile_archived_text">Przeglądasz dane ucznia z poprzedniego roku szkolnego (%d/%d). Synchronizacja oraz pobieranie wiadomości i niektórych zadań domowych zostały wyłączone.\n\nAby otworzyć profil ucznia z aktualnego roku, wybierz "Zamknij archiwum" na stronie głównej.</string>
     <string name="profile_year_not_started_title">Wakacje ;)</string>
     <string name="profile_year_not_started_format">Prawdopodobnie rok szkolny dla tego ucznia jeszcze się nie zaczął (zacznie się %s). Spróbuj wykonać synchronizację później.</string>
     <string name="profile_archiving_title">Koniec roku szkolnego</string>
@@ -1394,7 +1394,7 @@
     <string name="profile_config_name_hint">Nazwa profilu</string>
     <string name="profile_config_sync_enabled">Synchronizuj ten profil</string>
     <string name="profile_config_logout">Wyloguj się</string>
-    <string name="permissions_qr_scanner">Aby móc zeskanować kod QR musisz przyznać uprawnienia dostępu do kamery.  Kliknij OK, aby przyznać uprawnienia.</string>
+    <string name="permissions_qr_scanner">Aby móc zeskanować kod QR musisz przyznać uprawnienia dostępu do kamery. \\n\\nKliknij OK, aby przyznać uprawnienia.</string>
     <string name="build_version">Wersja aplikacji</string>
     <string name="build_official">Wydanie oficjalne</string>
     <string name="build_platform">Dystrybucja</string>
@@ -1423,5 +1423,4 @@
     <string name="error_no_api_access">Brak dostępu do API</string>
     <string name="build_date">Data kompilacji</string>
     <string name="permissions_generate_timetable">Aby móc zapisać wygenerowany plan lekcji musisz przyznać uprawnienia dostępu do pamięci urządzenia.\n\nKliknij OK, aby przyznać uprawnienia.</string>
-    <string name="error_930_reason">Nie udało się pobrać pliku z OneDrive</string>
 </resources>

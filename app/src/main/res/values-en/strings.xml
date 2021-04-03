@@ -1239,7 +1239,7 @@
     <string name="build_official">Official build</string>
     <string name="build_platform_play">Google Play</string>
     <string name="login_chooser_testing_title">Test version</string>
-    <string name="login_chooser_mode_recommended">{cmd-information-outline} Recomenned</string>
+    <string name="login_chooser_mode_recommended">{cmd-information-outline} Recommened</string>
     <string name="login_chooser_mode_dev_only">{cmd-android-studio} Developer version</string>
     <string name="login_chooser_mode_testing">{cmd-alert-circle-outline} Test version</string>
     <string name="eggs">\???</string>
@@ -1343,7 +1343,7 @@
     <string name="login_copyright_notice">Trademarks featured in this application belong to their rightful owners and are used for informational purposes only.</string>
     <string name="home_archive_text">"You are viewing a student's data from the school year %d/%d. "</string>
     <string name="login_mode_edudziennik_web_hint">Use data, that you provide on e-journal website</string>
-    <string name="permissions_qr_scanner">To be able to scan the QR code, you need to grant access to the camera. Click OK to grant permissions.</string>
+    <string name="permissions_qr_scanner">To be able to scan the QR code, you need to grant access to the camera.\\n\\nClick OK to grant permissions.</string>
     <string name="rate_snackbar_negative_message">It\'s a pity, the opinions of others help me develop the application.</string>
     <string name="login_chooser_testing_text">The selected login method is still being tested and may not work properly. If you have problems with the app, please choose the recommended login method.</string>
     <string name="update_available_fallback">You have an outdated version of the Szkolny.eu application. You need to update the app to continue to sync data.</string>
