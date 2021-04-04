@@ -1284,12 +1284,12 @@
     <string name="attendance_tab_summary">Summary</string>
     <string name="attendance_details_type">Type</string>
     <string name="home_availability_info">See more</string>
-    <string name="home_availability_title">Update availble</string>
+    <string name="home_availability_title">Update available</string>
     <string name="settings_about_version_details_subtext">Information about build</string>
     <string name="home_availability_text">Update app to the latest version - %s.</string>
     <string name="update_available_title">App update available</string>
     <string name="home_archive_close">Close archive</string>
-    <string name="home_archive_title">Archive profile</string>
+    <string name="home_archive_title">Archived profile</string>
     <string name="profile_archived_title">Profile is archived</string>
     <string name="profile_year_not_started_title">Holiday ;)</string>
     <string name="profile_archiving_title">The end of the school year</string>
