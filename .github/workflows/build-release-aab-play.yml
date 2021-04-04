@@ -1,0 +1,129 @@
+name: Release build - Google Play [AAB]
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  prepare:
+    name: Prepare build environment
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          clean: false
+      - name: Set executable permissions to gradlew
+        run: chmod +x ./gradlew
+      - name: Setup Python
+        uses: actions/setup-python@v2
+      - name: Install packages
+        uses: BSFishy/pip-action@v1
+        with:
+          packages: |
+            python-dotenv
+            pycryptodome
+            mysql-connector-python
+            requests
+      - name: Write signing passwords
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+        run: python $GITHUB_WORKSPACE/.github/utils/sign.py $GITHUB_WORKSPACE commit
+  build:
+    name: Build App Bundle
+    runs-on: self-hosted
+    needs:
+      - prepare
+    outputs:
+      androidHome: ${{ env.ANDROID_HOME }}
+      androidSdkRoot: ${{ env.ANDROID_SDK_ROOT }}
+    steps:
+      - name: Setup JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Clean build artifacts
+        run: |
+          rm -rf app/release/*
+          rm -rf app/build/outputs/apk/*
+          rm -rf app/build/outputs/bundle/*
+      - name: Bundle play release with Gradle
+        run: ./gradlew bundlePlayRelease
+  sign:
+    name: Sign App Bundle
+    runs-on: self-hosted
+    needs:
+      - build
+    outputs:
+      signedReleaseFile: ${{ steps.artifacts.outputs.signedReleaseFile }}
+      signedReleaseFileRelative: ${{ steps.artifacts.outputs.signedReleaseFileRelative }}
+    steps:
+      - name: Sign build artifacts
+        id: sign_app
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/release
+          signingKeyBase64: ${{ secrets.KEY_STORE }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASSWORD }}
+        env:
+          ANDROID_HOME: ${{ needs.build.outputs.androidHome }}
+          ANDROID_SDK_ROOT: ${{ needs.build.outputs.androidSdkRoot }}
+          BUILD_TOOLS_VERSION: "30.0.2"
+      - name: Rename signed artifacts
+        id: artifacts
+        run: python $GITHUB_WORKSPACE/.github/utils/rename_artifacts.py $GITHUB_WORKSPACE
+  publish:
+    name: Publish App Bundle
+    runs-on: self-hosted
+    needs:
+      - sign
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v2
+
+      - name: Extract changelogs
+        id: changelog
+        run: python $GITHUB_WORKSPACE/.github/utils/extract_changelogs.py $GITHUB_WORKSPACE
+
+      - name: Save version metadata
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          APK_SERVER_RELEASE: ${{ secrets.APK_SERVER_RELEASE }}
+          APK_SERVER_NIGHTLY: ${{ secrets.APK_SERVER_NIGHTLY }}
+        run: python $GITHUB_WORKSPACE/.github/utils/save_version.py $GITHUB_WORKSPACE
+
+      - name: Publish AAB to Google Play
+        uses: r0adkll/upload-google-play@v1
+        if: ${{ endsWith(needs.sign.outputs.signedReleaseFile, '.aab') }}
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: pl.szczodrzynski.edziennik
+          releaseFile: ${{ needs.sign.outputs.signedReleaseFile }}
+          releaseName: ${{ steps.changelog.outputs.appVersionName }}
+          track: ${{ secrets.PLAY_RELEASE_TRACK }}
+          userFraction: 1.0
+          whatsNewDirectory: ${{ steps.changelog.outputs.changelogDir }}
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v2
+        if: true
+        with:
+          name: ${{ steps.changelog.outputs.appVersionName }}
+          path: |
+            app/release/whatsnew*/
+            app/release/*.apk
+            app/release/*.aab
+            app/release/*.json
+            app/release/*.txt
