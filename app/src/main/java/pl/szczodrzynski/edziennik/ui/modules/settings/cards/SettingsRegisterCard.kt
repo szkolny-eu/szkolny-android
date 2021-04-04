@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.ui.modules.settings.cards
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import eu.szkolny.font.SzkolnyFont
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.after
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
@@ -141,12 +142,15 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
         else
             null,
 
-        util.createPropertyItem(
-            text = R.string.settings_register_hide_sticks_from_old,
-            icon = CommunityMaterial.Icon3.cmd_numeric_1_box_outline,
-            value = configProfile.grades.hideSticksFromOld
-        ) { _, it ->
-            configProfile.grades.hideSticksFromOld = it
-        }
+        if (App.devMode)
+            util.createPropertyItem(
+                text = R.string.settings_register_hide_sticks_from_old,
+                icon = CommunityMaterial.Icon3.cmd_numeric_1_box_outline,
+                value = configProfile.grades.hideSticksFromOld
+            ) { _, it ->
+                configProfile.grades.hideSticksFromOld = it
+            }
+        else
+            null
     )
 }
