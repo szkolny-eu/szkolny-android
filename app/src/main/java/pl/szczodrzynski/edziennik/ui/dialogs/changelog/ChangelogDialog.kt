@@ -44,9 +44,14 @@ class ChangelogDialog(
         val textView = TextView(activity)
         textView.setPadding(24.dp, 24.dp, 24.dp, 0)
 
-        val text = app.assets.open("pl-changelog.html").bufferedReader().use {
+        var text = app.assets.open("pl-changelog.html").bufferedReader().use {
             it.readText()
         }
+
+        val commitsUrlPrefix = "https://github.com/szkolny-eu/szkolny-android/commits?author="
+        text = text.replace("""\[(.+?)]\(@([A-z0-9-]+)\)""".toRegex(), "<a href=\"$commitsUrlPrefix$2\">$1</a>")
+        text = text.replace("""\s@([A-z0-9-]+)""".toRegex(), " <a href=\"$commitsUrlPrefix$1\">@$1</a>")
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             textView.text = Html.fromHtml(text)
         }
