@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
+import android.content.pm.PackageManager
 import android.text.TextUtils
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,11 +27,17 @@ class BuildManager(val app: App) : CoroutineScope {
 
     val buildFlavor = BuildConfig.FLAVOR
     val buildType = BuildConfig.BUILD_TYPE
-    val buildTimestamp = BuildConfig.BUILD_TIMESTAMP
     val isRelease = !BuildConfig.DEBUG
     val isDebug = BuildConfig.DEBUG
     val isNightly = BuildConfig.VERSION_NAME.contains("nightly")
     val isDaily = BuildConfig.VERSION_NAME.contains("daily")
+
+    val buildTimestamp: Long
+        get() {
+            val info = app.packageManager.getApplicationInfo(app.packageName, PackageManager.GET_META_DATA)
+            val metadata = info.metaData
+            return metadata?.getFloat("buildTimestamp")?.toLong() ?: 0
+        }
 
     val gitHash = BuildConfig.GIT_INFO["hash"]
     val gitVersion = BuildConfig.GIT_INFO["version"]

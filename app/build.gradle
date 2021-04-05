@@ -18,8 +18,10 @@ android {
         versionName release.versionName
 
         buildConfigField "java.util.Map<String, String>", "GIT_INFO", gitInfoMap
-        buildConfigField "long", "BUILD_TIMESTAMP", String.valueOf(System.currentTimeMillis())
         buildConfigField "String", "VERSION_BASE", "\"${release.versionName}\""
+        manifestPlaceholders = [
+                buildTimestamp: String.valueOf(System.currentTimeMillis())
+        ]
 
         multiDexEnabled = true
 
