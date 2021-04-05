@@ -98,7 +98,10 @@ tasks.whenTaskAdded { task ->
 
     if (flavor != "") {
         tasks.create(renameTaskName, Copy) {
-            from file("${projectDir}/${flavor}/release/"), file("${buildDir}/outputs/mapping/${flavor}Release/"), file("${buildDir}/outputs/apk/${flavor}Release/")
+            from file("${projectDir}/${flavor}/release/"),
+                    file("${buildDir}/outputs/mapping/${flavor}Release/"),
+                    file("${buildDir}/outputs/apk/${flavor}/release/"),
+                    file("${buildDir}/outputs/bundle/${flavor}Release/")
             include "*.aab", "*.apk", "mapping.txt", "output-metadata.json"
             destinationDir file("${projectDir}/release/")
             rename ".+?\\.(.+)", "Edziennik_${android.defaultConfig.versionName}_${flavor}." + '$1'
