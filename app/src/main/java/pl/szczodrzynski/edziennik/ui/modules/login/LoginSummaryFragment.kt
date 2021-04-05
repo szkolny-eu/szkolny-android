@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.ui.modules.login
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,19 +74,6 @@ class LoginSummaryFragment : Fragment(), CoroutineScope {
         }
 
         b.finishButton.onClick {
-            if (!app.config.privacyPolicyAccepted) {
-                MaterialAlertDialogBuilder(activity)
-                        .setTitle(R.string.privacy_policy)
-                        .setMessage(Html.fromHtml("Korzystając z aplikacji potwierdzasz <a href=\"http://szkolny.eu/privacy-policy\">przeczytanie Polityki prywatności</a> i akceptujesz jej postanowienia."))
-                        .setPositiveButton(R.string.i_agree) { _, _ ->
-                            app.config.privacyPolicyAccepted = true
-                            b.finishButton.performClick()
-                        }
-                        .setNegativeButton(R.string.i_disagree, null)
-                        .show()
-                return@onClick
-            }
-
             val args = Bundle(
                     "registrationAllowed" to b.registerMeSwitch.isChecked
             )
