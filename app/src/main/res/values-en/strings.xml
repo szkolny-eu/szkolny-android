@@ -1325,7 +1325,7 @@
     <string name="login_mode_mobidziennik_web_hint">Provide data, that you use on e-register website</string>
     <string name="attendance_details_type_id">Base type ID</string>
     <string name="attendance_details_is_counted">Counted to the stats?</string>
-    <string name="login_chooser_subtitle">Choose which e-register your school uses. If you have several accounts in different e-registere, you will be able to add them later.</string>
+    <string name="login_chooser_subtitle">Choose which e-register your school uses. If you have several accounts in different e-registers, you will be able to add them later.</string>
     <string name="login_mode_librus_email_hint">You must have a LIBRUS® Rodzina account</string>
     <string name="login_mode_librus_jst_hint">Only Oświata w Radomiu and Innowacyjny Tarnobrzeg</string>
     <string name="login_platform_list_title">How do you log into the e-register?</string>
