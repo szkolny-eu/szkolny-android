@@ -1276,7 +1276,7 @@
     <string name="settings_about_version_details_text">Version details</string>
     <string name="build_date">Build date</string>
     <string name="error_no_api_access">No API access</string>
-    <string name="attendance_details_time">Hour</string>
+    <string name="attendance_details_time">Time</string>
     <string name="settings_about_github_subtext">Help with app development on GitHub</string>
     <string name="build_platform">Distribution</string>
     <string name="build_validate_progress">Build verification in progress...</string>
