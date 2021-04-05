@@ -1,8 +1,6 @@
-# Szkolny.eu
-
-Nieoficjalna aplikacja do obsługi najpopularniejszych dzienników elektronicznych w Polsce.
-
 <div align="center">
+
+![Readme Banner](.github/readme-banner.png)
 
 [![Discord](https://img.shields.io/discord/619178050562686988?color=%237289DA&logo=discord&logoColor=white&style=for-the-badge)](https://szkolny.eu/discord)
 [![Oficjalna strona](https://img.shields.io/badge/-website-orange?style=for-the-badge&logo=internet-explorer&logoColor=white)](https://szkolny.eu/)
