@@ -88,9 +88,10 @@ class BuildManager(val app: App) : CoroutineScope {
                         else -> no.asColoredSpannable(mtrlYellow)
                     }
                 )
+                isDebug -> no
                 else -> TextUtils.concat(
                     no.asColoredSpannable(mtrlRed),
-                    if (gitAuthor != null) " ($gitAuthor)" else ""
+                    if (gitAuthor.isNotNullNorBlank()) " ($gitAuthor)" else ""
                 )
             },
             R.string.build_platform to when {
