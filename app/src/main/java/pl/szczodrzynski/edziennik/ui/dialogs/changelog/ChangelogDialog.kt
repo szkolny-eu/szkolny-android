@@ -17,6 +17,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.dp
+import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod
 import kotlin.coroutines.CoroutineContext
 
 class ChangelogDialog(
@@ -52,6 +53,8 @@ class ChangelogDialog(
         else {
             textView.text = Html.fromHtml(text.replace("<li>", "<br><li> - "))
         }
+
+        textView.movementMethod = BetterLinkMovementMethod.getInstance()
 
         val scrollView = ScrollView(activity)
         scrollView.addView(textView)
