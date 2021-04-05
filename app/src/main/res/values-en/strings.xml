@@ -1333,7 +1333,7 @@
     <string name="attendance_config_use_symbols_hint">Visible when the list is expanded</string>
     <string name="attendance_config_show_presence_in_month">Display attendance in months view</string>
     <string name="attendance_percentage_format">%.2f%%</string>
-    <string name="attendance_period_summary_format">Attendance during this period: %.2%%</string>
+    <string name="attendance_period_summary_format">Attendance during this period: %.2f%%</string>
     <string name="settings_add_student_subtext">Log in child/parent account in app</string>
     <string name="login_mode_edudziennik_web_guide">Enter the e-mail address and password that you use to log in to the browser on the EduDziennik website.</string>
     <string name="profile_year_not_started_format">Probably the school year for this student has not yet started (will start %s). Please try to sync later.</string>
