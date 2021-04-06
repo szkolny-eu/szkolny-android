@@ -1236,4 +1236,6 @@
     <string name="permissions_denied">You denied the required permissions for the application.\n\nIn order to grant the permission, open the Permissions screen for Szkolny.eu in phone settings.\n\nClick OK to open app settings now.</string>
     <string name="permissions_required">Required permissions</string>
     <string name="settings_register_hide_sticks_from_old">Your mother won\'t see your F grades</string>
+    <string name="settings_about_contributors_text">App contributors</string>
+    <string name="settings_about_contributors_subtext">List of Szkolny contributors</string>
 </resources>

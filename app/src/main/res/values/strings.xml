@@ -1393,6 +1393,8 @@
     <string name="see_also">Zobacz także</string>
     <string name="settings_about_homepage_text">Wejdź na stronę aplikacji</string>
     <string name="settings_about_homepage_subtext">Uzyskaj pomoc lub wesprzyj autorów</string>
+    <string name="settings_about_contributors_text">Twórcy aplikacji</string>
+    <string name="settings_about_contributors_subtext">Lista twórców Szkolnego</string>
     <string name="settings_about_github_text">Kod źródłowy</string>
     <string name="settings_about_github_subtext">Pomóż w rozwoju aplikacji na GitHubie</string>
     <string name="profile_config_name_hint">Nazwa profilu</string>

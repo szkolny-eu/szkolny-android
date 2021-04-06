@@ -1232,4 +1232,6 @@
     <string name="you_are_offline_title">Netzwerkverbindung</string>
     <string name="login_summary_account_child">(Kind)</string>
     <string name="login_summary_account_parent">(Elternteil)</string>
+    <string name="settings_about_contributors_text">Anwendungsentwickler</string>
+    <string name="settings_about_contributors_subtext">Liste der Szkolny-Entwickler</string>
 </resources>
