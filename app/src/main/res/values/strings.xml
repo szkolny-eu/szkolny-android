@@ -1346,10 +1346,6 @@
     <string name="login_mode_vulcan_web_guide">Podaj dane, którymi logujesz się na stronie internetowej dziennika VULCAN® lub na miejskiej platformie.</string>
     <string name="login_mode_mobidziennik_web_guide">Podaj dane, których używasz do logowania na stronie MobiDziennika. Jako adres serwera możesz wpisać adres strony internetowej, na której masz MobiDziennik.</string>
     <string name="edziennik_progress_login_vulcan_web_main">Logowanie do dziennika VULCAN®...</string>
-    <string name="login_type_idziennik">iDziennik Progman / iUczniowie</string>
-    <string name="login_mode_idziennik_web">Zaloguj używając nazwy użytkownika i hasła</string>
-    <string name="login_mode_idziennik_web_hint">Podaj dane, których używasz na stronie internetowej e-dziennika</string>
-    <string name="login_mode_idziennik_web_guide">Użyj danych, które wpisujesz w formularz na stronie iDziennika. Jeśli nie pamiętasz hasła, wejdź na http://iuczniowie.progman.pl/ i kliknij przycisk \"Zapomniałem hasła\".</string>
     <string name="login_type_edudziennik">EduDziennik</string>
     <string name="login_mode_edudziennik_web">Zaloguj używając e-maila i hasła</string>
     <string name="login_mode_edudziennik_web_hint">Użyj danych, które podajesz na stronie internetowej e-dziennika</string>
@@ -1429,4 +1425,5 @@
     <string name="error_no_api_access">Brak dostępu do API</string>
     <string name="build_date">Data kompilacji</string>
     <string name="permissions_generate_timetable">Aby móc zapisać wygenerowany plan lekcji musisz przyznać uprawnienia dostępu do pamięci urządzenia.\n\nKliknij OK, aby przyznać uprawnienia.</string>
+    <string name="privacy_policy_dialog_html"><![CDATA[Korzystając z aplikacji potwierdzasz <a href="https://szkolny.eu/privacy-policy">przeczytanie Polityki prywatności</a> i akceptujesz jej postanowienia.<br /><br />Autorzy aplikacji nie biorą odpowiedzialności za korzystanie z aplikacji Szkolny.eu.]]></string>
 </resources>

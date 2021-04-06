@@ -1,8 +1,6 @@
-# Szkolny.eu
-
-Nieoficjalna aplikacja do obsługi najpopularniejszych dzienników elektronicznych w Polsce.
-
 <div align="center">
+
+![Readme Banner](.github/readme-banner.png)
 
 [![Discord](https://img.shields.io/discord/619178050562686988?color=%237289DA&logo=discord&logoColor=white&style=for-the-badge)](https://szkolny.eu/discord)
 [![Oficjalna strona](https://img.shields.io/badge/-website-orange?style=for-the-badge&logo=internet-explorer&logoColor=white)](https://szkolny.eu/)
@@ -11,6 +9,10 @@ Nieoficjalna aplikacja do obsługi najpopularniejszych dzienników elektroniczny
 ![Wersja Androida](https://img.shields.io/badge/android-4.1%2B-orange?style=for-the-badge&logo=android)
 [![Najnowsza wersja](https://img.shields.io/github/v/release/szkolny-eu/szkolny-android?color=%2344CC11&include_prereleases&logo=github&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/releases/latest)
 ![Licencja](https://img.shields.io/github/license/szkolny-eu/szkolny-android?color=blue&logo=github&logoColor=white&style=for-the-badge)
+
+[![Release build](https://img.shields.io/github/workflow/status/szkolny-eu/szkolny-android/Release%20build%20-%20official?label=Release&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-apk.yml)
+[![Play build](https://img.shields.io/github/workflow/status/szkolny-eu/szkolny-android/Release%20build%20-%20Google%20Play%20%5BAAB%5D?label=Play&logo=google-play&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-aab-play.yml)
+[![Nightly build](https://img.shields.io/github/workflow/status/szkolny-eu/szkolny-android/Nightly%20build?label=Nightly&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-nightly-apk.yml)
 
 </div>
 
