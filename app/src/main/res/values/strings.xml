@@ -1424,4 +1424,5 @@
     <string name="build_date">Data kompilacji</string>
     <string name="permissions_generate_timetable">Aby móc zapisać wygenerowany plan lekcji musisz przyznać uprawnienia dostępu do pamięci urządzenia.\n\nKliknij OK, aby przyznać uprawnienia.</string>
     <string name="privacy_policy_dialog_html"><![CDATA[Korzystając z aplikacji potwierdzasz <a href="https://szkolny.eu/privacy-policy">przeczytanie Polityki prywatności</a> i akceptujesz jej postanowienia.<br /><br />Autorzy aplikacji nie biorą odpowiedzialności za korzystanie z aplikacji Szkolny.eu.]]></string>
+    <string name="login_chooser_version_format">Szkolny.eu v%s\n%s</string>
 </resources>

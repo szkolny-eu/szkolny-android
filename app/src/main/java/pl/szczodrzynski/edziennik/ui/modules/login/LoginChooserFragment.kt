@@ -33,6 +33,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity
 import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
+import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
 class LoginChooserFragment : Fragment(), CoroutineScope {
@@ -64,6 +65,15 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded) return
+
+        b.versionText.setText(
+            R.string.login_chooser_version_format,
+            app.buildManager.versionName,
+            Date.fromMillis(app.buildManager.buildTimestamp).stringY_m_d
+        )
+        b.versionText.onClick {
+            app.buildManager.showVersionDialog(activity)
+        }
 
         val adapter = LoginChooserAdapter(activity, this::onLoginModeClicked)
 
