@@ -21,10 +21,8 @@ if __name__ == "__main__":
     print("::set-output name=changelogDir::" + dir)
 
     (title, changelog) = get_changelog(project_dir, format="plain")
-    with open(dir + "whatsnew-pl-PL", "w", encoding="utf-8") as f:
-        f.write(changelog)
-    print("::set-output name=changelogPlainFile::" + dir + "whatsnew-pl-PL")
 
+    # plain text changelog - Firebase App Distribution
     with open(dir + "whatsnew-titled.txt", "w", encoding="utf-8") as f:
         f.write(title)
         f.write("\n")
@@ -33,15 +31,30 @@ if __name__ == "__main__":
 
     print("::set-output name=changelogTitle::" + title)
 
+    # plain text changelog, max 500 chars - Google Play
+    with open(dir + "whatsnew-pl-PL", "w", encoding="utf-8") as f:
+        changelog_lines = changelog.split("\n")
+        changelog = ""
+        for line in changelog_lines:
+            if len(changelog) + len(line) < 500:
+                changelog += "\n" + line
+        changelog = changelog.strip()
+        f.write(changelog)
+
+    print("::set-output name=changelogPlainFile::" + dir + "whatsnew-pl-PL")
+
+    # markdown changelog - Discord webhook
     (_, changelog) = get_changelog(project_dir, format="markdown")
     with open(dir + "whatsnew.md", "w", encoding="utf-8") as f:
         f.write(changelog)
     print("::set-output name=changelogMarkdownFile::" + dir + "whatsnew.md")
 
+    # html changelog - version info in DB
     (_, changelog) = get_changelog(project_dir, format="html")
     with open(dir + "whatsnew.html", "w", encoding="utf-8") as f:
         f.write(changelog)
     print("::set-output name=changelogHtmlFile::" + dir + "whatsnew.html")
+
 
     changelog = get_commit_log(project_dir, format="plain", max_lines=10)
     with open(dir + "commit_log.txt", "w", encoding="utf-8") as f:
