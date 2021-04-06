@@ -24,7 +24,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsLicenseActivity
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsUtil
-import pl.szczodrzynski.edziennik.ui.modules.contributors.ContributorsActivity
+import pl.szczodrzynski.edziennik.ui.modules.settings.contributors.ContributorsActivity
 import pl.szczodrzynski.edziennik.utils.Utils
 import kotlin.coroutines.CoroutineContext
 

@@ -15,6 +15,7 @@ class ApiCacheInterceptor(val app: App) : Interceptor {
         val request = chain.request()
         if (request.url().host() == "api.szkolny.eu"
             && Signing.appCertificate.md5() == app.config.apiInvalidCert
+            && !app.buildManager.isSigned
         ) {
             val response = ApiResponse<Unit>(
                 success = false,

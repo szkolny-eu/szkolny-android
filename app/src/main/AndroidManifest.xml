@@ -1,214 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="pl.szczodrzynski.edziennik"> <!-- PowerPermission uses minSdk 21, it's safe to override as it is used only in >= 23 -->
-    <application
-        android:name=".App"
-        android:allowBackup="true"
-        android:fullBackupContent="@xml/backup_descriptor"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme.Dark"
-        android:usesCleartextTraffic="true"
-        tools:ignore="UnusedAttribute">
-        <activity android:name=".ui.modules.contributors.ContributorsActivity"></activity>
-        <!--
-          __  __       _                      _   _       _ _
-             |  \/  |     (_)           /\       | | (_)     (_) |
-             | \  / | __ _ _ _ __      /  \   ___| |_ ___   ___| |_ _   _
-             | |\/| |/ _` | | '_ \    / /\ \ / __| __| \ \ / / | __| | | |
-             | |  | | (_| | | | | |  / ____ \ (__| |_| |\ V /| | |_| |_| |
-             |_|  |_|\__,_|_|_| |_| /_/    \_\___|\__|_| \_/ |_|\__|\__, |
-                                                                     __/ |
-                                                                    |___/
-        -->
-        <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <!--
-             __          ___     _            _
-             \ \        / (_)   | |          | |
-              \ \  /\  / / _  __| | __ _  ___| |_  ___
-               \ \/  \/ / | |/ _` |/ _` |/ _ \ __|/ __|
-                \  /\  /  | | (_| | (_| |  __/ |_ \__ \
-                 \/  \/   |_|\__,_|\__, |\___|\__||___/
-                                    __/ |
-                                   |___/
-        -->
-        <activity
-            android:name=".ui.widgets.WidgetConfigActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:noHistory="true"
-            android:theme="@style/AppTheme.Dark.NoDisplay">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity> <!-- TIMETABLE -->
-        <activity
-            android:name=".ui.widgets.LessonDialogActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:label=""
-            android:noHistory="true"
-            android:theme="@style/AppTheme.Dark.NoDisplay" />
-
-        <activity
-            android:name=".ui.modules.base.CrashActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:process=":error_activity"
-            android:theme="@style/DeadTheme" />
-
-        <activity
-            android:name=".ui.modules.intro.ChangelogIntroActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Intro" /> <!-- NOTIFICATIONS -->
-        <activity
-            android:name=".ui.modules.login.LoginActivity"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.Light" />
-
-        <activity
-            android:name=".ui.modules.home.CounterActivity"
-            android:theme="@style/AppTheme.Black" /> <!-- LUCKY NUMBER -->
-        <activity
-            android:name=".ui.modules.feedback.FeedbackActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
-        <!--
-               _   _       _ _   _
-                 /\       | | (_)     (_) | (_)
-                /  \   ___| |_ ___   ___| |_ _  ___  ___
-               / /\ \ / __| __| \ \ / / | __| |/ _ \/ __|
-              / ____ \ (__| |_| |\ V /| | |_| |  __/\__ \
-             /_/    \_\___|\__|_| \_/ |_|\__|_|\___||___/
-        -->
-        <activity
-            android:name=".ui.modules.settings.SettingsLicenseActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.canhub.cropper.CropImageActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".ui.modules.base.BuildInvalidActivity" />
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
-        </provider>
-        <receiver
-            android:name=".ui.widgets.timetable.WidgetTimetableProvider"
-            android:label="@string/widget_timetable_title">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_timetable_info" />
-        </receiver>
-        <receiver
-            android:name=".ui.widgets.notifications.WidgetNotificationsProvider"
-            android:label="@string/widget_notifications_title">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_notifications_info" />
-        </receiver>
-        <receiver
-            android:name=".ui.widgets.luckynumber.WidgetLuckyNumberProvider"
-            android:label="@string/widget_lucky_number_title">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_lucky_number_info" />
-        </receiver>
-        <receiver
-            android:name=".receivers.UserPresentReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-        <!--
-  _____               _
-             |  __ \             (_)
-             | |__) |___  ___ ___ ___   _____ _ __ ___
-             |  _  // _ \/ __/ _ \ \ \ / / _ \ '__/ __|
-             | | \ \  __/ (_|  __/ |\ V /  __/ |  \__ \
-             |_|  \_\___|\___\___|_| \_/ \___|_|  |___/
-        -->
-        <receiver android:name=".sync.UpdateDownloaderService$DownloadProgressReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".receivers.SzkolnyReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="pl.szczodrzynski.edziennik.SZKOLNY_MAIN" />
-            </intent-filter>
-        </receiver>
-        <service
-            android:name=".ui.widgets.timetable.WidgetTimetableService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <!--
-   _____                 _
-              / ____|               (_)
-             | (___   ___ _ ____   ___  ___ ___  ___
-              \___ \ / _ \ '__\ \ / / |/ __/ _ \/ __|
-              ____) |  __/ |   \ V /| | (_|  __/\__ \
-             |_____/ \___|_|    \_/ |_|\___\___||___/
-        -->
-        <service
-            android:name=".ui.widgets.notifications.WidgetNotificationsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <service android:name=".data.api.ApiService" />
-        <service
-            android:name=".data.firebase.MyFirebaseService"
-            android:exported="false">
-            <intent-filter android:priority="10000000">
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <!--
-              _____                _     _
-             |  __ \              (_)   | |
-             | |__) | __ _____   ___  __| | ___ _ __ ___
-             |  ___/ '__/ _ \ \ / / |/ _` |/ _ \ '__/ __|
-             | |   | | | (_) \ V /| | (_| |  __/ |  \__ \
-             |_|   |_|  \___/ \_/ |_|\__,_|\___|_|  |___/
-        -->
-        <service android:name=".sync.UpdateDownloaderService" />
-    </application>
+    package="pl.szczodrzynski.edziennik">
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -221,6 +14,197 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!-- PowerPermission uses minSdk 21, it's safe to override as it is used only in >= 23 -->
     <uses-sdk tools:overrideLibrary="com.qifan.powerpermission.coroutines, com.qifan.powerpermission.core" />
 
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.Dark"
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute">
+
+        <meta-data android:name="buildTimestamp" android:value="${buildTimestamp}" />
+
+        <!--  __  __       _                      _   _       _ _
+             |  \/  |     (_)           /\       | | (_)     (_) |
+             | \  / | __ _ _ _ __      /  \   ___| |_ ___   ___| |_ _   _
+             | |\/| |/ _` | | '_ \    / /\ \ / __| __| \ \ / / | __| | | |
+             | |  | | (_| | | | | |  / ____ \ (__| |_| |\ V /| | |_| |_| |
+             |_|  |_|\__,_|_|_| |_| /_/    \_\___|\__|_| \_/ |_|\__|\__, |
+                                                                     __/ |
+                                                                    |___/ -->
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+             __          ___     _            _
+             \ \        / (_)   | |          | |
+              \ \  /\  / / _  __| | __ _  ___| |_  ___
+               \ \/  \/ / | |/ _` |/ _` |/ _ \ __|/ __|
+                \  /\  /  | | (_| | (_| |  __/ |_ \__ \
+                 \/  \/   |_|\__,_|\__, |\___|\__||___/
+                                    __/ |
+                                   |___/
+        -->
+        <activity android:name=".ui.widgets.WidgetConfigActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.Dark.NoDisplay">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <!-- TIMETABLE -->
+        <receiver android:name=".ui.widgets.timetable.WidgetTimetableProvider"
+            android:label="@string/widget_timetable_title">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_timetable_info" />
+        </receiver>
+        <service android:name=".ui.widgets.timetable.WidgetTimetableService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <activity android:name=".ui.widgets.LessonDialogActivity"
+            android:label=""
+            android:configChanges="orientation|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.Dark.NoDisplay" />
+        <!-- NOTIFICATIONS -->
+        <receiver android:name=".ui.widgets.notifications.WidgetNotificationsProvider"
+            android:label="@string/widget_notifications_title">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_notifications_info" />
+        </receiver>
+        <service android:name=".ui.widgets.notifications.WidgetNotificationsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <!-- LUCKY NUMBER -->
+        <receiver android:name=".ui.widgets.luckynumber.WidgetLuckyNumberProvider"
+            android:label="@string/widget_lucky_number_title">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_lucky_number_info" />
+        </receiver>
+
+        <!--               _   _       _ _   _
+                 /\       | | (_)     (_) | (_)
+                /  \   ___| |_ ___   ___| |_ _  ___  ___
+               / /\ \ / __| __| \ \ / / | __| |/ _ \/ __|
+              / ____ \ (__| |_| |\ V /| | |_| |  __/\__ \
+             /_/    \_\___|\__|_| \_/ |_|\__|_|\___||___/
+        -->
+        <activity android:name=".ui.modules.base.CrashActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:process=":error_activity"
+            android:theme="@style/DeadTheme" />
+        <activity android:name=".ui.modules.intro.ChangelogIntroActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Intro" />
+        <activity android:name=".ui.modules.login.LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Light" />
+        <activity android:name=".ui.modules.home.CounterActivity"
+            android:theme="@style/AppTheme.Black" />
+        <activity android:name=".ui.modules.feedback.FeedbackActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.modules.settings.SettingsLicenseActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/AppTheme" />
+        <activity android:name="com.canhub.cropper.CropImageActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".ui.modules.base.BuildInvalidActivity" />
+        <activity android:name="pl.szczodrzynski.edziennik.ui.modules.settings.contributors.ContributorsActivity"></activity>
+
+        <!--  _____               _
+             |  __ \             (_)
+             | |__) |___  ___ ___ ___   _____ _ __ ___
+             |  _  // _ \/ __/ _ \ \ \ / / _ \ '__/ __|
+             | | \ \  __/ (_|  __/ |\ V /  __/ |  \__ \
+             |_|  \_\___|\___\___|_| \_/ \___|_|  |___/
+        -->
+        <receiver android:name=".receivers.UserPresentReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".sync.UpdateDownloaderService$DownloadProgressReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.SzkolnyReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="pl.szczodrzynski.edziennik.SZKOLNY_MAIN" />
+            </intent-filter>
+        </receiver>
+
+        <!--   _____                 _
+              / ____|               (_)
+             | (___   ___ _ ____   ___  ___ ___  ___
+              \___ \ / _ \ '__\ \ / / |/ __/ _ \/ __|
+              ____) |  __/ |   \ V /| | (_|  __/\__ \
+             |_____/ \___|_|    \_/ |_|\___\___||___/
+        -->
+        <service android:name=".data.api.ApiService" />
+        <service android:name=".data.firebase.MyFirebaseService"
+            android:exported="false">
+            <intent-filter android:priority="10000000">
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".sync.UpdateDownloaderService" />
+
+        <!--
+              _____                _     _
+             |  __ \              (_)   | |
+             | |__) | __ _____   ___  __| | ___ _ __ ___
+             |  ___/ '__/ _ \ \ / / |/ _` |/ _ \ '__/ __|
+             | |   | | | (_) \ V /| | (_| |  __/ |  \__ \
+             |_|   |_|  \___/ \_/ |_|\__,_|\___|_|  |___/
+        -->
+        <provider android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+    </application>
 </manifest>

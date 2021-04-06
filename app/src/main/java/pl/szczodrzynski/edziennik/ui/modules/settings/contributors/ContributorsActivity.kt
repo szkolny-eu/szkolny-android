@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.modules.contributors
+package pl.szczodrzynski.edziennik.ui.modules.settings.contributors
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
