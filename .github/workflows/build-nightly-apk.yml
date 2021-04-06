@@ -46,7 +46,7 @@ jobs:
     runs-on: self-hosted
     needs:
       - prepare
-    if: needs.prepare.outputs.hasNewChanges
+    if: ${{ needs.prepare.outputs.hasNewChanges == 'true' }}
     outputs:
       androidHome: ${{ env.ANDROID_HOME }}
       androidSdkRoot: ${{ env.ANDROID_SDK_ROOT }}

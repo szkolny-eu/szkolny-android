@@ -26,7 +26,7 @@ if __name__ == "__main__":
         exit(-1)
 
     with requests.get(
-        f"https://api.github.com/repos/{repo}/actions/runs?per_page=1&status=success"
+        f"https://api.github.com/repos/{repo}/actions/runs?per_page=5&status=success"
     ) as r:
         data = json.loads(r.text)
         runs = [run for run in data["workflow_runs"] if run["head_sha"] == sha]
