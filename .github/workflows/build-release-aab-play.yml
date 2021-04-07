@@ -113,12 +113,11 @@ jobs:
           releaseFile: ${{ needs.sign.outputs.signedReleaseFile }}
           releaseName: ${{ steps.changelog.outputs.appVersionName }}
           track: ${{ secrets.PLAY_RELEASE_TRACK }}
-          userFraction: 1.0
           whatsNewDirectory: ${{ steps.changelog.outputs.changelogDir }}
 
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v2
-        if: true
+        if: always()
         with:
           name: ${{ steps.changelog.outputs.appVersionName }}
           path: |
