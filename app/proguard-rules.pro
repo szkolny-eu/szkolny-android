@@ -33,8 +33,8 @@
 
 -keepnames class androidx.appcompat.view.menu.MenuBuilder { setHeaderTitleInt(java.lang.CharSequence); }
 -keepnames class androidx.appcompat.view.menu.MenuPopupHelper { showPopup(int, int, boolean, boolean); }
--keepclassmembernames class androidx.appcompat.view.menu.StandardMenuPopup { private mShowTitle; }
--keepclassmembernames class androidx.appcompat.view.menu.MenuItemImpl { private mClickListener; }
+-keepclassmembernames class androidx.appcompat.view.menu.StandardMenuPopup { private *; }
+-keepclassmembernames class androidx.appcompat.view.menu.MenuItemImpl { private *; }
 
 -keepclassmembernames class com.mikepenz.materialdrawer.widget.MiniDrawerSliderView { private *; }
 
