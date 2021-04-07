@@ -15,20 +15,26 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.URLSpan
 import android.text.util.Linkify
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
-import pl.szczodrzynski.edziennik.Intent
-import pl.szczodrzynski.edziennik.copyToClipboard
+import androidx.core.widget.addTextChangedListener
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.Regexes
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.getTextPosition
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 @SuppressLint("RestrictedApi")
 object BetterLink {
+
+    /**
+     * Used in conjunction with the item's ID to execute the
+     * [attach]'s onActionSelected listener when the item is
+     * clicked.
+     */
+    private const val FLAG_ACTION = 0x8000
 
     private fun MenuBuilder.setTitle(title: CharSequence): MenuBuilder {
         this::class.java.getDeclaredMethod("setHeaderTitleInt", CharSequence::class.java).let {
@@ -38,11 +44,25 @@ object BetterLink {
         return this
     }
 
+    private fun MenuItem.addListener(listener: (item: MenuItem) -> Boolean): MenuItem {
+        this::class.java.getDeclaredField("mClickListener").let {
+            it.isAccessible = true
+            val oldListener = it.get(this) as? MenuItem.OnMenuItemClickListener
+            it.set(this, object : MenuItem.OnMenuItemClickListener {
+                override fun onMenuItemClick(item: MenuItem): Boolean {
+                    oldListener?.onMenuItemClick(item)
+                    return listener(item)
+                }
+            })
+        }
+        return this
+    }
+
     private fun createUrlItems(menu: MenuBuilder, context: Context, url: String) {
         menu.setTitle(url)
         menu.add(
             1,
-            1,
+            2,
             2,
             "Otwórz w przeglądarce"
         ).setOnMenuItemClickListener {
@@ -54,8 +74,8 @@ object BetterLink {
     private fun createMailtoItems(menu: MenuBuilder, context: Context, url: String) {
         menu.add(
             1,
-            20,
-            2,
+            3,
+            3,
             "Napisz e-mail"
         ).setOnMenuItemClickListener {
             Utils.openUrl(context, url)
@@ -68,8 +88,8 @@ object BetterLink {
         menu.setTitle(date.formattedString)
         menu.add(
             1,
-            10,
-            2,
+            4 or FLAG_ACTION,
+            4,
             "Utwórz wydarzenie"
         ).setOnMenuItemClickListener {
             val intent = Intent(
@@ -82,12 +102,30 @@ object BetterLink {
         }
     }
 
+    private fun createTeacherItems(menu: MenuBuilder, context: Context, teacherId: Long, fullName: String) {
+        menu.setTitle(fullName)
+        menu.add(
+            1,
+            5 or FLAG_ACTION,
+            5,
+            "Napisz wiadomość"
+        ).setOnMenuItemClickListener {
+            val intent = Intent(
+                Intent.ACTION_MAIN,
+                "fragmentId" to MainActivity.TARGET_MESSAGES_COMPOSE,
+                "messageRecipientId" to teacherId
+            )
+            context.sendBroadcast(intent)
+            true
+        }
+    }
+
     private fun onClickListener(
         view: TextView,
         span: BetterLinkMovementMethod.ClickableSpanWithText,
         onActionSelected: (() -> Unit)?
     ): Boolean {
-        val c = view.context
+        val context = view.context
 
         val spanned = view.text as Spanned
         val start = spanned.getSpanStart(span.span())
@@ -99,7 +137,7 @@ object BetterLink {
 
         val rect = view.getTextPosition(start..end)
 
-        val popupView = View(c)
+        val popupView = View(context)
         popupView.layoutParams = ViewGroup.LayoutParams(rect.width(), rect.height())
         popupView.setBackgroundColor(Color.TRANSPARENT)
 
@@ -108,30 +146,46 @@ object BetterLink {
         popupView.x = rect.left.toFloat() - parentLocation[0]
         popupView.y = rect.top.toFloat() - parentLocation[1]
 
-        val menu = MenuBuilder(c)
-        val helper = MenuPopupHelper(c, menu, popupView)
+        val menu = MenuBuilder(context)
+        val helper = MenuPopupHelper(context, menu, popupView)
         val popup = helper.popup
 
         val spanUrl = span.text()
-        val spanText = spanUrl.substringAfter(":")
+        val spanParameter = spanUrl.substringAfter(":")
+        val spanText = spanned.substring(start, end)
 
         //goToTimetableItem = menu.add(1, 11, 3, "Idź do planu lekcji")
 
         // create appropriate items for spans
         when {
-            spanUrl.startsWith("mailto:") -> createMailtoItems(menu, c, spanUrl)
-            spanUrl.startsWith("dateYmd:") -> createDateItems(menu, c, parseDateYmd(spanText))
-            spanUrl.startsWith("dateDmy:") -> createDateItems(menu, c, parseDateDmy(spanText))
-            spanUrl.startsWith("dateAbs:") -> createDateItems(menu, c, parseDateAbs(spanText))
-            spanUrl.startsWith("dateRel:") -> createDateItems(menu, c, parseDateRel(spanText))
-            else -> createUrlItems(menu, c, spanUrl)
+            spanUrl.startsWith("mailto:") -> createMailtoItems(menu, context, spanUrl)
+            spanUrl.startsWith("dateYmd:") -> createDateItems(menu, context, parseDateYmd(spanParameter))
+            spanUrl.startsWith("dateDmy:") -> createDateItems(menu, context, parseDateDmy(spanParameter))
+            spanUrl.startsWith("dateAbs:") -> createDateItems(menu, context, parseDateAbs(spanParameter))
+            spanUrl.startsWith("dateRel:") -> createDateItems(menu, context, parseDateRel(spanParameter))
+            spanUrl.startsWith("teacher:") -> createTeacherItems(
+                menu,
+                context,
+                teacherId = spanParameter.toLongOrNull() ?: -1,
+                fullName = spanText
+            )
+            else -> createUrlItems(menu, context, spanUrl)
         }
         menu.add(1, 1000, 1000, "Kopiuj tekst").setOnMenuItemClickListener {
-            spanText.copyToClipboard(c)
+            spanParameter.copyToClipboard(context)
             true
         }
 
         helper.setOnDismissListener { parent.removeView(popupView) }
+
+        menu.visibleItems.forEach { item ->
+            if ((item.itemId and FLAG_ACTION) != FLAG_ACTION)
+                return@forEach
+            item.addListener {
+                onActionSelected?.invoke()
+                true
+            }
+        }
 
         popup::class.java.getDeclaredField("mShowTitle").let {
             it.isAccessible = true
@@ -152,6 +206,7 @@ object BetterLink {
 
     fun attach(
         textView: TextView,
+        teachers: Map<Long, String>? = null,
         onActionSelected: (() -> Unit)? = null
     ) {
         textView.autoLinkMask = Linkify.WEB_URLS or Linkify.EMAIL_ADDRESSES
@@ -162,7 +217,31 @@ object BetterLink {
                 onClickListener(view, span, onActionSelected)
             }
 
+        textView.addTextChangedListener {
+            attachSpan(textView, teachers)
+        }
+
+        attachSpan(textView, teachers)
+    }
+
+    private fun attachSpan(
+        textView: TextView,
+        teachers: Map<Long, String>? = null
+    ) {
         val spanned = textView.text as? Spannable ?: SpannableString(textView.text)
+
+        teachers?.forEach { (id, fullName) ->
+            val index = textView.text.indexOf(fullName)
+            if (index == -1)
+                return@forEach
+            val span = URLSpan("teacher:$id")
+            spanned.setSpan(
+                span,
+                index,
+                index + fullName.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
 
         Regexes.LINKIFY_DATE_YMD.findAll(textView.text).forEach { match ->
             val span = URLSpan("dateYmd:" + match.value)

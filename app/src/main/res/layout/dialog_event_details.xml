@@ -112,6 +112,7 @@
                 android:text="@string/dialog_event_details_teacher"
                 android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"/>
             <TextView
+                android:id="@+id/teacherName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{event.teacherName}"
