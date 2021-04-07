@@ -199,10 +199,14 @@ class EventDetailsDialog(
         }
         b.downloadButton.attachToastHint(R.string.hint_download_again)
 
+        BetterLink.attach(b.topic, onActionSelected = dialog::dismiss)
 
-        b.topic.text = event.topic
-        BetterLink.attach(b.topic) {
-            dialog.dismiss()
+        event.teacherName?.let { name ->
+            BetterLink.attach(
+                b.teacherName,
+                teachers = mapOf(event.teacherId to name),
+                onActionSelected = dialog::dismiss
+            )
         }
 
         if (event.homeworkBody == null && !event.addedManually && event.type == Event.TYPE_HOMEWORK) {
@@ -220,10 +224,7 @@ class EventDetailsDialog(
             b.bodyTitle.isVisible = true
             b.bodyProgressBar.isVisible = false
             b.body.isVisible = true
-            b.body.text = event.homeworkBody
-            BetterLink.attach(b.body) {
-                dialog.dismiss()
-            }
+            BetterLink.attach(b.body, onActionSelected = dialog::dismiss)
         }
 
         if (event.attachmentIds.isNullOrEmpty() || event.attachmentNames.isNullOrEmpty()) {

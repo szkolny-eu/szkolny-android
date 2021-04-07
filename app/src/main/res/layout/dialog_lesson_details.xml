@@ -176,6 +176,7 @@
                         android:textAppearance="@style/NavView.TextView.Helper"
                         android:text="@string/dialog_lesson_details_teacher" />
                     <TextView
+                        android:id="@+id/oldTeacherNameView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/NavView.TextView.Helper"
@@ -186,6 +187,7 @@
                         app:strikeThrough="@{true}"
                         tools:text="Janósz Kowalski" />
                     <TextView
+                        android:id="@+id/teacherNameView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{teacherName}"

@@ -25,6 +25,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
+import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -216,5 +217,19 @@ class LessonDetailsDialog(
                 b.eventsNoData.visibility = View.VISIBLE
             }
         })
+
+        lesson.displayTeacherName?.let { name ->
+            lesson.displayTeacherId ?: return@let
+            BetterLink.attach(
+                b.teacherNameView,
+                teachers = mapOf(lesson.displayTeacherId!! to name),
+                onActionSelected = dialog::dismiss
+            )
+            BetterLink.attach(
+                b.oldTeacherNameView,
+                teachers = mapOf(lesson.displayTeacherId!! to name),
+                onActionSelected = dialog::dismiss
+            )
+        }
     }
 }
