@@ -139,18 +139,17 @@
             android:id="@+id/showMore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:paddingVertical="16dp"
             android:text="@string/dialog_event_manual_more_options"
             android:background="?selectableItemBackground"
 
             app:iiv_end_icon="cmd-chevron-down"
             app:iiv_end_color="?android:textColorSecondary"
-            app:iiv_end_size="16dp"
+            app:iiv_end_size="24dp"
 
             app:iiv_end_checked_icon="cmd-chevron-up"
             app:iiv_end_checked_color="?android:textColorSecondary"
-            app:iiv_end_checked_size="16dp"/>
+            app:iiv_end_checked_size="24dp"/>
 
         <LinearLayout
             android:id="@+id/moreLayout"

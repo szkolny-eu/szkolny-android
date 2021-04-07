@@ -10,9 +10,8 @@
             android:id="@+id/subjectName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:textSize="24sp"
             android:textAppearance="@style/NavView.TextView.Title"
             tools:text="geografia" />
@@ -21,9 +20,8 @@
             android:id="@+id/semesterName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:textAppearance="@style/NavView.TextView.Subtitle"
             tools:text="Semestr 1" />
 
@@ -36,8 +34,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:text="@string/grades_editor_semester_average_before" />
 
             <TextView
@@ -47,8 +44,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/bg_rounded_4dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingHorizontal="5dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:text="0.63" />
@@ -63,8 +59,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:text="@string/grades_editor_semester_average_after" />
 
             <TextView
@@ -74,8 +69,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/bg_rounded_4dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
+                android:paddingHorizontal="5dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 tools:text="2.75" />
@@ -96,8 +90,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginHorizontal="8dp"
                     android:text="@string/grades_editor_semester_year_average_before" />
 
                 <TextView
@@ -107,8 +100,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/bg_rounded_4dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
+                    android:paddingHorizontal="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     tools:text="0.63" />
@@ -123,8 +115,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginHorizontal="8dp"
                     android:text="@string/grades_editor_semester_year_average_after" />
 
                 <TextView
@@ -134,8 +125,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:background="@drawable/bg_rounded_4dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
+                    android:paddingHorizontal="5dp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     tools:text="2.75" />
@@ -146,9 +136,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:text="@string/grades_editor_modify_help"
             android:textStyle="italic" />
 
@@ -156,9 +145,8 @@
             android:id="@+id/addGrade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:minHeight="0dp"
             android:text="@string/grades_editor_add_grade" />
 
@@ -166,9 +154,8 @@
             android:id="@+id/restoreGrades"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
             android:minHeight="0dp"
             android:text="@string/grades_editor_restore" />
 

@@ -1,0 +1,125 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2021-3-27.
+ */
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.eclipse.jgit:org.eclipse.jgit:5.5.+"
+    }
+}
+
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.errors.RepositoryNotFoundException
+import org.eclipse.jgit.lib.Constants
+import org.eclipse.jgit.lib.Ref
+import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.revwalk.RevCommit
+import org.eclipse.jgit.revwalk.RevTag
+import org.eclipse.jgit.revwalk.RevWalk
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder
+
+private def getGit() {
+    Repository repo
+    try {
+        repo = new FileRepositoryBuilder()
+                .readEnvironment()
+                .findGitDir(project.projectDir)
+                .build()
+    } catch (IllegalArgumentException | RepositoryNotFoundException ignore) {
+        def logger = LoggerFactory.getLogger("androidGitVersion")
+        logger.error("No git repository reachable from ${project.projectDir}")
+        return results
+    }
+    return Git.wrap(repo)
+}
+
+private static def getTags(Repository repo, Git git) {
+    RevWalk walk = new RevWalk(repo)
+    def tags = git.tagList().call().findResults { ref ->
+        def obj = walk.parseAny(ref.getObjectId())
+        def name = null
+        if (obj instanceof RevTag) {
+            name = obj.getTagName()
+        } else if (obj instanceof RevCommit) {
+            name = Repository.shortenRefName(ref.name)
+        }
+        [obj.id, name]
+    }
+    walk.close()
+    return tags
+}
+
+private static def getLastTag(Repository repo, Git git, Ref head) {
+    def tags = getTags(repo, git)
+
+    RevWalk revs = new RevWalk(repo)
+    revs.markStart(revs.parseCommit(head.getObjectId()))
+    def revCount = 0
+    Collection<List> commitTags = null
+    for (RevCommit commit : revs) {
+        def tagsHere = tags.findAll { (it[0] == commit.id) }
+        if (tagsHere) {
+            commitTags = tagsHere.stream().map {
+                [it[0].name, it[1], revCount]
+            }.toArray()
+            break
+        }
+        revCount++
+    }
+
+    return commitTags.last()
+}
+
+private def buildGitInfo() {
+    Git git = getGit()
+    Repository repo = git.repository
+
+    def head = repo.findRef(Constants.HEAD).target
+
+    def remotes = git.remoteList().call()
+            .stream()
+            .map {
+                it.name + "(" + it.URIs.stream()
+                        .map { it.rawPath.stripMargin('/').replace(".git", "") }
+                        .toArray()
+                        .join(", ") + ")"
+            }
+            .toArray()
+            .join("; ")
+
+    def status = git.status().call()
+    def dirty = status.hasUncommittedChanges()
+
+    def tag = getLastTag(repo, git, head)
+    def tagName = tag[1]
+    def tagRevCount = tag[2]
+    def versionName = tagName.replace("v", "")
+
+    def result = [
+            hash        : head.objectId.name,
+            branch      : repo.branch,
+            dirty       : dirty,
+            remotes     : remotes,
+            unstaged    : status.uncommittedChanges.join("; "),
+            tag         : tagName,
+            revCount    : tagRevCount,
+            version     : """$tagName-$tagRevCount-g${head.objectId.name.substring(0, 8)}""" + (dirty ? ".dirty" : ""),
+            versionHuman: """$versionName-${repo.branch.replace("/", "_")}""" + (dirty ? ".dirty" : "")
+    ]
+    return result
+}
+
+private static def getMapString(map) {
+    def hashMap = "new java.util.HashMap<String, String>() { {\n"
+    map.each { k, v -> hashMap += """\tput("${k}", "${v}");\n""" }
+    return hashMap + "} }"
+}
+
+ext {
+    gitInfo = buildGitInfo()
+    gitInfoMap = getMapString(gitInfo)
+}

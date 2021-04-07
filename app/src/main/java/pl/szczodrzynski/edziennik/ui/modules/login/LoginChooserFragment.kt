@@ -10,12 +10,15 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,10 +27,13 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity
+import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
+import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
 class LoginChooserFragment : Fragment(), CoroutineScope {
@@ -59,6 +65,15 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded) return
+
+        b.versionText.setText(
+            R.string.login_chooser_version_format,
+            app.buildManager.versionName,
+            Date.fromMillis(app.buildManager.buildTimestamp).stringY_m_d
+        )
+        b.versionText.onClick {
+            app.buildManager.showVersionDialog(activity)
+        }
 
         val adapter = LoginChooserAdapter(activity, this::onLoginModeClicked)
 
@@ -201,6 +216,23 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             return
         }
 
+        if (!app.config.privacyPolicyAccepted) {
+            MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.privacy_policy)
+                .setMessage(Html.fromHtml(activity.getString(R.string.privacy_policy_dialog_html)))
+                .setPositiveButton(R.string.i_agree) { _, _ ->
+                    app.config.privacyPolicyAccepted = true
+                    onLoginModeClicked(loginType, loginMode)
+                }
+                .setNegativeButton(R.string.i_disagree, null)
+                .show()
+                .also { dialog ->
+                    dialog.findViewById<TextView>(android.R.id.message)?.movementMethod =
+                        BetterLinkMovementMethod.getInstance()
+                }
+            return
+        }
+
         launch {
             if (!checkAvailability(loginType.loginType))
                 return@launch
@@ -248,19 +280,38 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         }?.let { registerName ->
             var status = app.config.sync.registerAvailability[registerName]
             if (status == null || status.nextCheckAt < currentTimeUnix()) {
-                withContext(Dispatchers.IO) {
-                    val api = SzkolnyApi(app)
-                    api.runCatching(activity) {
+                val api = SzkolnyApi(app)
+                val result = withContext(Dispatchers.IO) {
+                    return@withContext api.runCatching({
                         val availability = getRegisterAvailability()
                         app.config.sync.registerAvailability = availability
-                        status = availability[registerName]
+                        availability[registerName]
+                    }, onError = {
+                        if (it.toErrorCode() == ERROR_API_INVALID_SIGNATURE) {
+                            return@withContext false
+                        }
+                        return@withContext it
+                    })
+                }
+
+                when (result) {
+                    false -> {
+                        Toast.makeText(activity, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
+                        return@let
+                    }
+                    is Throwable -> {
+                        activity.errorSnackbar.addError(result.toApiError(TAG)).show()
+                        return false
+                    }
+                    is RegisterAvailabilityStatus -> {
+                        status = result
                     }
                 }
             }
 
-            if (status?.available != true) {
+            if (status?.available != true || status.minVersionCode > BuildConfig.VERSION_CODE) {
                 if (status != null)
-                    RegisterUnavailableDialog(activity, status!!)
+                    RegisterUnavailableDialog(activity, status)
                 return false
             }
         }

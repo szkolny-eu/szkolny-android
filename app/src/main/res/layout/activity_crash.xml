@@ -20,8 +20,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:paddingBottom="@dimen/customactivityoncrash_activity_vertical_margin"
-            android:paddingLeft="@dimen/customactivityoncrash_activity_horizontal_margin"
-            android:paddingRight="@dimen/customactivityoncrash_activity_horizontal_margin"
+            android:paddingHorizontal="@dimen/customactivityoncrash_activity_horizontal_margin"
             android:paddingTop="@dimen/customactivityoncrash_activity_vertical_margin">
 
             <ImageView
@@ -101,15 +100,6 @@
                     android:layout_height="match_parent"
                     android:text="@string/crash_details"
                     android:textColor="@color/colorPrimary" />
-
-                <Button
-                    android:id="@+id/crash_dev_message_btn"
-                    style="?borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/crash_dev_message"
-                    android:textColor="@color/colorPrimary"
-                    android:visibility="gone"/>
 
             </LinearLayout>
 

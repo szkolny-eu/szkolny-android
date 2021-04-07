@@ -24,13 +24,14 @@ import android.widget.RemoteViewsService;
 
 import androidx.annotation.DrawableRes;
 
-import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
+import com.mikepenz.iconics.utils.IconicsConvertersKt;
+import com.mikepenz.iconics.utils.IconicsDrawableExtensionsKt;
 
 import java.util.List;
 
+import kotlin.Unit;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel;
@@ -124,6 +125,15 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
         canvas.drawBitmap(resultBitmap, 0, 0, p);
 
         return resultBitmap;
+    }
+
+    private Bitmap homeIconBitmap() {
+        return new IconicsDrawable(context).apply((drawable) -> {
+            IconicsConvertersKt.setColorRes(drawable, R.color.md_red_500);
+            IconicsConvertersKt.setSizeDp(drawable, 14);
+            IconicsDrawableExtensionsKt.icon(drawable, CommunityMaterial.Icon2.cmd_home);
+            return Unit.INSTANCE;
+        }).toBitmap();
     }
 
     @Override
@@ -270,19 +280,19 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
                 if (lesson.eventColors.size() >= 1) {
                     views.setViewVisibility(R.id.widgetTimetableEvent1, View.VISIBLE);
                     if (lesson.eventColors.get(0) == -1)
-                        views.setBitmap(R.id.widgetTimetableEvent1, "setImageBitmap", new IconicsDrawable(context).color(IconicsColor.colorRes(R.color.md_red_500)).size(IconicsSize.dp(10)).icon(CommunityMaterial.Icon2.cmd_home).toBitmap());
+                        views.setBitmap(R.id.widgetTimetableEvent1, "setImageBitmap", homeIconBitmap());
                     else
                         views.setBitmap(R.id.widgetTimetableEvent1, "setImageBitmap", getColoredBitmap(context, R.drawable.event_color_circle, lesson.eventColors.get(0), eventIndicatorSize, eventIndicatorSize));
                     if (lesson.eventColors.size() >= 2) {
                         views.setViewVisibility(R.id.widgetTimetableEvent2, View.VISIBLE);
                         if (lesson.eventColors.get(1) == -1)
-                            views.setBitmap(R.id.widgetTimetableEvent2, "setImageBitmap", new IconicsDrawable(context).color(IconicsColor.colorRes(R.color.md_red_500)).size(IconicsSize.dp(10)).icon(CommunityMaterial.Icon2.cmd_home).toBitmap());
+                            views.setBitmap(R.id.widgetTimetableEvent2, "setImageBitmap", homeIconBitmap());
                         else
                             views.setBitmap(R.id.widgetTimetableEvent2, "setImageBitmap", getColoredBitmap(context, R.drawable.event_color_circle, lesson.eventColors.get(1), eventIndicatorSize, eventIndicatorSize));
                         if (lesson.eventColors.size() >= 3) {
                             views.setViewVisibility(R.id.widgetTimetableEvent3, View.VISIBLE);
                             if (lesson.eventColors.get(2) == -1)
-                                views.setBitmap(R.id.widgetTimetableEvent3, "setImageBitmap", new IconicsDrawable(context).color(IconicsColor.colorRes(R.color.md_red_500)).size(IconicsSize.dp(10)).icon(CommunityMaterial.Icon2.cmd_home).toBitmap());
+                                views.setBitmap(R.id.widgetTimetableEvent3, "setImageBitmap", homeIconBitmap());
                             else
                                 views.setBitmap(R.id.widgetTimetableEvent3, "setImageBitmap", getColoredBitmap(context, R.drawable.event_color_circle, lesson.eventColors.get(2), eventIndicatorSize, eventIndicatorSize));
                         }

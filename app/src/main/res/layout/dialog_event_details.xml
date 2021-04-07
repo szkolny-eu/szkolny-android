@@ -27,9 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="24dp"
-            android:paddingTop="24dp"
-            android:paddingRight="24dp">
+            android:paddingHorizontal="24dp"
+            android:paddingTop="24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -206,6 +205,7 @@
                 app:flexWrap="wrap"
                 app:justifyContent="flex_end">
 
+                <!-- cmd_eye_check_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/checkDoneButton"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -213,53 +213,57 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:checkable="true"
-                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
-                    android:text="\uFCE1"
+                    android:text="\uf4df"
                     android:textSize="20sp" />
 
+                <!-- cmd_pencil_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/editButton"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
-                    android:text="\uFC92"
+                    android:text="\uf2f4"
                     android:textSize="20sp" />
 
+                <!-- cmd_calendar_export -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/saveInCalendarButton"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
-                    android:text="\uFB09"
+                    android:text="\uf97a"
                     android:textSize="20sp" />
 
+                <!-- cmd_cursor_default_click_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/goToTimetableButton"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
-                    android:text="\uFCDA"
+                    android:text="\ufc90"
                     android:textSize="20sp" />
 
+                <!-- cmd_download_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/downloadButton"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="@font/community_material_font_v3_5_95_1"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="0dp"
-                    android:text="\uFB6B"
+                    android:text="\uf436"
                     android:textSize="20sp" />
             </com.google.android.flexbox.FlexboxLayout>
         </LinearLayout>

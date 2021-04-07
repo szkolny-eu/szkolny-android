@@ -29,6 +29,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
 
+        <meta-data android:name="buildTimestamp" android:value="${buildTimestamp}" />
+
         <!--  __  __       _                      _   _       _ _
              |  \/  |     (_)           /\       | | (_)     (_) |
              | \  / | __ _ _ _ __      /  \   ___| |_ ___   ___| |_ _   _
@@ -123,9 +125,6 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:process=":error_activity"
             android:theme="@style/DeadTheme" />
-        <activity android:name=".ui.modules.base.CrashGtfoActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/DeadTheme" />
         <activity android:name=".ui.modules.intro.ChangelogIntroActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
@@ -143,10 +142,10 @@
         <activity android:name=".ui.modules.settings.SettingsLicenseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.modules.webpush.QrScannerActivity" />
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+        <activity android:name="com.canhub.cropper.CropImageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".ui.modules.base.BuildInvalidActivity" />
 
         <!--  _____               _
              |  __ \             (_)
@@ -180,13 +179,6 @@
               ____) |  __/ |   \ V /| | (_|  __/\__ \
              |_____/ \___|_|    \_/ |_|\___\___||___/
         -->
-        <!--<service android:name=".sync.MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>-->
         <service android:name=".data.api.ApiService" />
         <service android:name=".data.firebase.MyFirebaseService"
             android:exported="false">

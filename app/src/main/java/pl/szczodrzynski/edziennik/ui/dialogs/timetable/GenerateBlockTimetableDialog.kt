@@ -18,8 +18,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.FileProvider
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -107,25 +107,27 @@ class GenerateBlockTimetableDialog(
                 .show()
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.onClick {
-            when (b.weekSelectionRadioGroup.checkedRadioButtonId) {
-                R.id.withChangesCurrentWeekRadio -> generateBlockTimetable(weekCurrentStart, weekCurrentEnd)
-                R.id.withChangesNextWeekRadio -> generateBlockTimetable(weekNextStart, weekNextEnd)
-                R.id.forSelectedWeekRadio -> selectDate()
+            app.permissionManager.requestStoragePermission(activity, permissionMessage = R.string.permissions_generate_timetable) {
+                when (b.weekSelectionRadioGroup.checkedRadioButtonId) {
+                    R.id.withChangesCurrentWeekRadio -> generateBlockTimetable(weekCurrentStart, weekCurrentEnd)
+                    R.id.withChangesNextWeekRadio -> generateBlockTimetable(weekNextStart, weekNextEnd)
+                    R.id.forSelectedWeekRadio -> selectDate()
+                }
             }
         }
     }}
 
     private fun selectDate() {
-        val date = Date.getToday()
-        DatePickerDialog
-                .newInstance({ _, year, monthOfYear, dayOfMonth ->
-                    val dateSelected = Date(year, monthOfYear, dayOfMonth)
+        MaterialDatePicker.Builder.datePicker()
+            .setCalendarConstraints(app.profile.getSchoolYearConstrains())
+            .build()
+            .apply {
+                addOnPositiveButtonClickListener { millis ->
+                    val dateSelected = Date.fromMillisUtc(millis)
                     generateBlockTimetable(dateSelected.weekStart, dateSelected.weekEnd)
-                }, date.year, date.month, date.day)
-                .apply {
-                    accentColor = R.attr.colorPrimary.resolveAttr(this@GenerateBlockTimetableDialog.activity)
-                    show(this@GenerateBlockTimetableDialog.activity.supportFragmentManager, "DatePickerDialog")
                 }
+            }
+            .show(activity.supportFragmentManager, TAG)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

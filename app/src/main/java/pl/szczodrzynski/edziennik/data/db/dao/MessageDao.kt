@@ -8,9 +8,9 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import eu.szkolny.selectivedao.annotation.SelectiveDao
+import eu.szkolny.selectivedao.annotation.UpdateSelective
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.annotation.SelectiveDao
-import pl.szczodrzynski.edziennik.annotation.UpdateSelective
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata

@@ -18,7 +18,7 @@
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="32dp"
             app:iiv_color="@color/colorPrimary"
-            app:iiv_icon="cmd-school"
+            app:iiv_icon="cmd-school-outline"
             app:iiv_size="32dp"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -72,10 +72,16 @@
                 android:text="@string/cancel"
                 android:textAllCaps="false" />
 
-            <Space
+            <TextView
+                android:id="@+id/versionText"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:textAppearance="@style/NavView.TextView.Small"
+                android:textSize="12sp"
+                tools:text="Szkolny.eu v4.7-rc.2\n2021-04-06" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/helpButton"

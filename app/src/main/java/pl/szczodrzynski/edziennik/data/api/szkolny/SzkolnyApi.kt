@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.szkolny
 
 import android.os.Build
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -14,9 +15,12 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.ERROR_API_INVALID_SIGNATURE
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.DateAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.TimeAdapter
+import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.ApiCacheInterceptor
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
+import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
@@ -55,6 +59,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         val okHttpClient: OkHttpClient = app.http.newBuilder()
                 .followRedirects(true)
                 .callTimeout(10, SECONDS)
+                .addInterceptor(ApiCacheInterceptor(app))
                 .addInterceptor(SignatureInterceptor(app))
                 .build()
 
@@ -89,11 +94,17 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         }
         catch (e: Exception) {
             withContext(coroutineContext) {
+                val apiError = e.toApiError(TAG)
+                if (apiError.errorCode == ERROR_API_INVALID_SIGNATURE) {
+                    Toast.makeText(activity, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
+                    return@withContext null
+                }
                 ErrorDetailsDialog(
                     activity,
-                    listOf(e.toApiError(TAG)),
+                    listOf(apiError),
                     R.string.error_occured
                 )
+                null
             }
             null
         }
@@ -148,6 +159,10 @@ class SzkolnyApi(val app: App) : CoroutineScope {
             catch (e: Exception) {
                 null
             }
+        }
+
+        if (body?.errors?.any { it.toErrorCode() == ERROR_API_INVALID_SIGNATURE } == true) {
+            app.config.apiInvalidCert = Signing.appCertificate.md5()
         }
 
         throw SzkolnyApiException(body?.errors?.firstOrNull())
@@ -352,8 +367,10 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     @Throws(Exception::class)
     fun getRealms(registerName: String): List<LoginInfo.Platform> {
         val response = api.fsLoginRealms(registerName).execute()
-
-        return parseResponse(response)
+        if (response.isSuccessful && response.body() != null) {
+            return response.body()!!
+        }
+        throw SzkolnyApiException(null)
     }
 
     @Throws(Exception::class)

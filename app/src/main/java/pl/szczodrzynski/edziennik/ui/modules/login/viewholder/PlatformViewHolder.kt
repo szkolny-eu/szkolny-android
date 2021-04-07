@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
+import coil.load
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.databinding.LoginPlatformItemBinding
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder

@@ -10,39 +10,39 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.IconicsSize
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.*
 import com.mikepenz.materialdrawer.model.utils.withIsHiddenInMiniDrawer
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import pl.szczodrzynski.edziennik.data.api.ERROR_API_INVALID_SIGNATURE
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
@@ -56,7 +56,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileRemoveDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
@@ -68,7 +68,6 @@ import pl.szczodrzynski.edziennik.ui.modules.debug.LabFragment
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
-import pl.szczodrzynski.edziennik.ui.modules.feedback.HelpFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
@@ -79,7 +78,7 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.compose.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
-import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsNewFragment
+import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
@@ -97,7 +96,6 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
-import java.io.File
 import java.io.IOException
 import java.util.*
 import kotlin.coroutines.CoroutineContext
@@ -109,8 +107,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         var useOldMessages = false
 
         const val TAG = "MainActivity"
-
-        const val REQUEST_LOGIN_ACTIVITY = 20222
 
         const val DRAWER_PROFILE_ADD_NEW = 200
         const val DRAWER_PROFILE_SYNC_ALL = 201
@@ -131,7 +127,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         const val DRAWER_ITEM_DEBUG = 102
 
         const val TARGET_GRADES_EDITOR = 501
-        const val TARGET_HELP = 502
         const val TARGET_FEEDBACK = 120
         const val TARGET_MESSAGES_DETAILS = 503
         const val TARGET_MESSAGES_COMPOSE = 504
@@ -152,7 +147,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .withPopToHome(false)
 
             list += NavTarget(DRAWER_ITEM_TIMETABLE, R.string.menu_timetable, TimetableFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_timetable)
+                    .withIcon(CommunityMaterial.Icon3.cmd_timetable)
                     .withBadgeTypeId(TYPE_LESSON_CHANGE)
                     .isInDrawer(true)
 
@@ -162,7 +157,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesListFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_numeric_5_box_outline)
+                    .withIcon(CommunityMaterial.Icon3.cmd_numeric_5_box_outline)
                     .withBadgeTypeId(TYPE_GRADE)
                     .isInDrawer(true)
 
@@ -199,8 +194,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .isStatic(true)
                     .isBelowSeparator(true)
 
-            list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsNewFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
+            list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsFragment::class)
+                    .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                     .isInDrawer(true)
                     .isStatic(true)
                     .isBelowSeparator(true)
@@ -208,7 +203,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             // profile settings items
             list += NavTarget(DRAWER_PROFILE_ADD_NEW, R.string.menu_add_new_profile, null)
-                    .withIcon(CommunityMaterial.Icon2.cmd_plus)
+                    .withIcon(CommunityMaterial.Icon3.cmd_plus)
                     .withDescription(R.string.drawer_add_new_profile_desc)
                     .isInProfileList(true)
 
@@ -229,7 +224,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             // other target items, not directly navigated
             list += NavTarget(TARGET_GRADES_EDITOR, R.string.menu_grades_editor, GradesEditorFragment::class)
-            list += NavTarget(TARGET_HELP, R.string.menu_help, HelpFragment::class)
             list += NavTarget(TARGET_FEEDBACK, R.string.menu_feedback, FeedbackFragment::class)
             list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessageFragment::class).withPopTo(DRAWER_ITEM_MESSAGES)
             list += NavTarget(TARGET_MESSAGES_COMPOSE, R.string.menu_message_compose, MessagesComposeFragment::class)
@@ -237,7 +231,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (App.devMode) {
                 list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
                 list += NavTarget(TARGET_LAB, R.string.menu_lab, LabFragment::class)
-                        .withIcon(CommunityMaterial.Icon.cmd_flask_outline)
+                        .withIcon(CommunityMaterial.Icon2.cmd_flask_outline)
                         .isInDrawer(true)
                         .isBelowSeparator(true)
                         .isStatic(true)
@@ -257,6 +251,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val bottomSheet: NavBottomSheet by lazy { navView.bottomSheet }
     val mainSnackbar: MainSnackbar by lazy { MainSnackbar(this) }
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
+    val requestHandler by lazy { MainActivityRequestHandler(this) }
 
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
 
@@ -290,6 +285,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             setLanguage(it)
         }
 
+        app.buildManager.validateBuild(this)
+
         if (App.profileId == 0) {
             onProfileListEmptyEvent(ProfileListEmptyEvent())
             return
@@ -302,20 +299,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
-        when {
-            BuildConfig.VERSION_NAME.contains("nightly") -> {
-                b.nightlyText.isVisible = true
-                b.nightlyText.text = "Nightly\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
-            }
-            BuildConfig.VERSION_NAME.contains("daily") -> {
-                b.nightlyText.isVisible = true
-                b.nightlyText.text = "Daily\n"+BuildConfig.VERSION_NAME.substringAfterLast(".")
-            }
-            BuildConfig.DEBUG -> {
-                b.nightlyText.isVisible = true
-                b.nightlyText.text = "Debug\n"+BuildConfig.VERSION_NAME
-            }
-            else -> b.nightlyText.isVisible = false
+        val versionBadge = app.buildManager.versionBadge
+        b.nightlyText.isVisible = versionBadge != null
+        b.nightlyText.text = versionBadge
+        if (versionBadge != null) {
+            b.nightlyText.background.setTintColor(0xa0ff0000.toInt())
         }
 
         navLoading = true
@@ -392,7 +380,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
                 drawerProfileLongClickListener = { _, profile, _, view ->
                     if (view != null && profile is ProfileDrawerItem) {
-                        showProfileContextMenu(profile, view)
+                        launch {
+                            val appProfile = withContext(Dispatchers.IO) {
+                                App.db.profileDao().getByIdNow(profile.identifier.toInt())
+                            } ?: return@launch
+                            drawer.close()
+                            ProfileConfigDialog(this@MainActivity, appProfile)
+                        }
                         true
                     }
                     else {
@@ -472,28 +466,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         // APP BACKGROUND
-        if (app.config.ui.appBackground != null) {
-            try {
-                app.config.ui.appBackground?.let {
-                    var bg = it
-                    val bgDir = File(Environment.getExternalStoragePublicDirectory("Szkolny.eu"), "bg")
-                    if (bgDir.exists()) {
-                        val files = bgDir.listFiles()
-                        val r = Random()
-                        val i = r.nextInt(files.size)
-                        bg = files[i].toString()
-                    }
-                    val linearLayout = b.root
-                    if (bg.endsWith(".gif")) {
-                        linearLayout.background = GifDrawable(bg)
-                    } else {
-                        linearLayout.background = BitmapDrawable.createFromPath(bg)
-                    }
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
+        setAppBackground()
 
         // IT'S WINTER MY DUDES
         val today = Date.getToday()
@@ -519,7 +492,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
                         .content(R.string.rate_snackbar_text)
-                        .icon(IconicsDrawable(this).icon(CommunityMaterial.Icon2.cmd_star_outline).size(IconicsSize.dp(20)).color(IconicsColor.colorInt(Themes.getPrimaryTextColor(this))))
+                        .icon(IconicsDrawable(this).apply {
+                            icon = CommunityMaterial.Icon3.cmd_star_outline
+                            sizeDp = 24
+                            colorInt = Themes.getPrimaryTextColor(this@MainActivity)
+                        })
                         .positiveText(R.string.rate_snackbar_positive)
                         .positiveColor(-0xb350b0)
                         .negativeText(R.string.rate_snackbar_negative)
@@ -532,12 +509,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                             app.config.appRateSnackbarTime = 0
                         }
                         .onNegative { cafeBar ->
-                            Toast.makeText(this, "Szkoda, opinie innych pomagają mi rozwijać aplikację.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, R.string.rate_snackbar_negative_message, Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
                             app.config.appRateSnackbarTime = 0
                         }
                         .onNeutral { cafeBar ->
-                            Toast.makeText(this, "OK", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, R.string.ok, Toast.LENGTH_LONG).show()
                             cafeBar.dismiss()
                             app.config.appRateSnackbarTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
                         }
@@ -561,7 +538,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 BottomSheetSeparatorItem(false),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_settings)
-                        .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
+                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                         .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) }),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_feedback)
@@ -571,7 +548,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (App.devMode) {
             bottomSheet += BottomSheetPrimaryItem(false)
                     .withTitle(R.string.menu_debug)
-                    .withIcon(CommunityMaterial.Icon.cmd_android_studio)
+                    .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
                     .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_DEBUG) })
         }
     }
@@ -579,7 +556,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private var profileSettingClickListener = { id: Int, view: View? ->
         when (id) {
             DRAWER_PROFILE_ADD_NEW -> {
-                startActivityForResult(Intent(this, LoginActivity::class.java), REQUEST_LOGIN_ACTIVITY)
+                requestHandler.requestLogin()
             }
             DRAWER_PROFILE_SYNC_ALL -> {
                 EdziennikTask.sync().enqueue(this)
@@ -650,22 +627,40 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         app.profile.registerName?.let { registerName ->
             var status = app.config.sync.registerAvailability[registerName]
             if (status == null || status.nextCheckAt < currentTimeUnix()) {
-                withContext(Dispatchers.IO) {
-                    val api = SzkolnyApi(app)
-                    api.runCatching(this@MainActivity) {
+                val api = SzkolnyApi(app)
+                val result = withContext(Dispatchers.IO) {
+                    return@withContext api.runCatching({
                         val availability = getRegisterAvailability()
                         app.config.sync.registerAvailability = availability
-                        status = availability[registerName]
+                        availability[registerName]
+                    }, onError = {
+                        if (it.toErrorCode() == ERROR_API_INVALID_SIGNATURE) {
+                            return@withContext false
+                        }
+                        return@withContext it
+                    })
+                }
+
+                when (result) {
+                    false -> {
+                        Toast.makeText(this@MainActivity, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
+                        return@let
+                    }
+                    is Throwable -> {
+                        errorSnackbar.addError(result.toApiError(TAG)).show()
+                        return
+                    }
+                    is RegisterAvailabilityStatus -> {
+                        status = result
                     }
                 }
             }
 
-            if (status?.available != true
-                    || status?.minVersionCode ?: BuildConfig.VERSION_CODE > BuildConfig.VERSION_CODE) {
+            if (status?.available != true || status.minVersionCode > BuildConfig.VERSION_CODE) {
                 swipeRefreshLayout.isRefreshing = false
                 loadTarget(DRAWER_ITEM_HOME)
                 if (status != null)
-                    RegisterUnavailableDialog(this, status!!)
+                    RegisterUnavailableDialog(this, status)
                 return
             }
         }
@@ -827,7 +822,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             handleIntent(intent?.extras)
         }
     }
-    private fun handleIntent(extras: Bundle?) {
+    fun handleIntent(extras: Bundle?) {
 
         d(TAG, "handleIntent() {")
         extras?.keySet()?.forEach { key ->
@@ -985,13 +980,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_LOGIN_ACTIVITY) {
-            if (!app.config.loginFinished)
-                finish()
-            else {
-                handleIntent(data?.extras)
-            }
-        }
+        requestHandler.handleResult(requestCode, resultCode, data)
     }
 
     /*    _                     _                  _   _               _
@@ -1217,6 +1206,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }, 3000)
     }
 
+    fun setAppBackground() {
+        try {
+            b.root.background = app.config.ui.appBackground?.let {
+                if (it.endsWith(".gif"))
+                    GifDrawable(it)
+                else
+                    BitmapDrawable.createFromPath(it)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
     /*    _____                                _ _
          |  __ \                              (_) |
          | |  | |_ __ __ ___      _____ _ __   _| |_ ___ _ __ ___  ___
@@ -1290,26 +1292,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         drawer.setItems(*drawerItems.toTypedArray())
         drawer.removeAllProfileSettings()
         drawer.addProfileSettings(*drawerProfiles.toTypedArray())
-    }
-
-    private fun showProfileContextMenu(profile: IProfile, view: View) {
-        val profileId = profile.identifier.toInt()
-        val popupMenu = PopupMenu(this, view)
-        popupMenu.menu.add(0, 1, 1, R.string.profile_menu_open_settings)
-        popupMenu.menu.add(0, 2, 2, R.string.profile_menu_remove)
-        popupMenu.setOnMenuItemClickListener { item ->
-            if (item.itemId == 1) {
-                if (profileId != app.profile.id) {
-                    loadProfile(profileId, DRAWER_ITEM_SETTINGS)
-                    return@setOnMenuItemClickListener true
-                }
-                loadTarget(DRAWER_ITEM_SETTINGS, null)
-            } else if (item.itemId == 2) {
-                ProfileRemoveDialog(this, profileId, profile.name?.getText(this) ?: "?")
-            }
-            true
-        }
-        popupMenu.show()
     }
 
     private val targetPopToHomeList = arrayListOf<Int>()

@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon2
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_GRADES_EDITOR
@@ -24,7 +23,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_GRADE
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.GradesListFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradeDetailsDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSemester
 import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesStats
@@ -71,7 +70,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
         val adapter = GradesAdapter(activity)
         var firstRun = true
 
-        app.db.gradeDao().getAllOrderBy(App.profileId, app.gradesManager.getOrderByString()).observe(this@GradesListFragment, Observer { grades -> this@GradesListFragment.launch {
+        app.db.gradeDao().getAllOrderBy(App.profileId, app.gradesManager.getOrderByString()).observe(viewLifecycleOwner, Observer { grades -> this@GradesListFragment.launch {
             if (!isAdded) return@launch
 
             val items = when {
@@ -135,7 +134,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
         activity.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_grades_config)
-                        .withIcon(Icon2.cmd_settings_outline)
+                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
                             GradesConfigDialog(activity, true, null, null)

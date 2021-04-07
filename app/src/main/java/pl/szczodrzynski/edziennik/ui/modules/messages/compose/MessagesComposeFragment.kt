@@ -316,7 +316,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         activity.navView.bottomBar.apply {
             fabEnable = true
             fabExtendedText = getString(R.string.messages_compose_send)
-            fabIcon = CommunityMaterial.Icon2.cmd_send
+            fabIcon = CommunityMaterial.Icon3.cmd_send_outline
 
             setFabOnClickListener(View.OnClickListener {
                 sendMessage()

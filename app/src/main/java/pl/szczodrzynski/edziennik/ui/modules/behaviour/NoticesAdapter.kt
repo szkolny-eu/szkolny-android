@@ -13,9 +13,9 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.typeface.library.szkolny.font.SzkolnyFont
 import com.mikepenz.iconics.utils.colorRes
 import com.mikepenz.iconics.utils.sizeDp
+import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
@@ -49,17 +49,26 @@ class NoticesAdapter//getting the context and product list with constructor
         holder.noticesItemAddedDate.text = Date.fromMillis(notice.addedDate).formattedString
 
         if (notice.type == Notice.TYPE_POSITIVE) {
-            holder.noticesItemType.setImageDrawable(IconicsDrawable(context, CommunityMaterial.Icon2.cmd_plus_circle_outline)
-                    .colorRes(R.color.md_green_600)
-                    .sizeDp(36))
+            holder.noticesItemType.setImageDrawable(
+                IconicsDrawable(context, CommunityMaterial.Icon3.cmd_plus_circle_outline).apply {
+                    colorRes = R.color.md_green_600
+                    sizeDp = 36
+                }
+            )
         } else if (notice.type == Notice.TYPE_NEGATIVE) {
-            holder.noticesItemType.setImageDrawable(IconicsDrawable(context, CommunityMaterial.Icon.cmd_alert_decagram_outline)
-                    .colorRes(R.color.md_red_600)
-                    .sizeDp(36))
+            holder.noticesItemType.setImageDrawable(
+                IconicsDrawable(context, CommunityMaterial.Icon.cmd_alert_decagram_outline).apply {
+                    colorRes = R.color.md_red_600
+                    sizeDp = 36
+                }
+            )
         } else {
-            holder.noticesItemType.setImageDrawable(IconicsDrawable(context, SzkolnyFont.Icon.szf_message_processing_outline)
-                    .colorRes(R.color.md_blue_500)
-                    .sizeDp(36))
+            holder.noticesItemType.setImageDrawable(
+                IconicsDrawable(context, SzkolnyFont.Icon.szf_message_processing_outline).apply {
+                    colorRes = R.color.md_blue_500
+                    sizeDp = 36
+                }
+            )
         }
 
         if (!notice.seen) {

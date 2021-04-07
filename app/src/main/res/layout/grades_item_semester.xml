@@ -24,7 +24,7 @@
             android:scaleType="centerInside"
             app:iiv_color="?android:textColorSecondary"
             app:iiv_icon="cmd-chevron-down"
-            app:iiv_size="16dp"
+            app:iiv_size="24dp"
             tools:src="@android:drawable/ic_menu_more" />
 
         <TextView
@@ -85,7 +85,7 @@
             android:scaleType="centerInside"
             app:iiv_color="?android:textColorSecondary"
             app:iiv_icon="cmd-playlist-edit"
-            app:iiv_size="16dp"
+            app:iiv_size="24dp"
             tools:src="@android:drawable/ic_menu_edit" />
     </LinearLayout>
 </layout>

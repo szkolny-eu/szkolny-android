@@ -5,10 +5,13 @@
 package pl.szczodrzynski.edziennik.data.api.task
 
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.data.api.ERROR_API_INVALID_SIGNATURE
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApiException
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.toErrorCode
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class AppSync(val app: App, val notifications: MutableList<Notification>, val profiles: List<Profile>, val api: SzkolnyApi) {
@@ -27,7 +30,13 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
      */
     fun run(lastSyncTime: Long, markAsSeen: Boolean = false): Int {
         val blacklistedIds = app.db.eventDao().blacklistedIds
-        val events = api.getEvents(profiles, notifications, blacklistedIds, lastSyncTime)
+        val events = try {
+            api.getEvents(profiles, notifications, blacklistedIds, lastSyncTime)
+        } catch (e: SzkolnyApiException) {
+            if (e.toErrorCode() == ERROR_API_INVALID_SIGNATURE)
+                return 0
+            throw e
+        }
 
         app.config.sync.lastAppSync = System.currentTimeMillis()
 

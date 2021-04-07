@@ -9,12 +9,13 @@ import android.content.ContextWrapper
 import android.text.InputType
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
-import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.crc16
 import pl.szczodrzynski.edziennik.data.db.AppDb
+import pl.szczodrzynski.edziennik.ui.dialogs.input
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 
 class SubjectDropdown : TextInputDropDown {
@@ -105,19 +106,25 @@ class SubjectDropdown : TextInputDropDown {
 
     fun customNameDialog() {
         activity ?: return
-        MaterialDialog.Builder(activity!!)
-                .title("Własny przedmiot")
-                .inputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE)
-                .input("Nazwa", "") { _: MaterialDialog?, input: CharSequence ->
-                    customSubjectName = input.toString()
+        MaterialAlertDialogBuilder(activity!!)
+            .setTitle("Własny przedmiot")
+            .input(
+                hint = "Nazwa",
+                type = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE,
+                positiveButton = R.string.ok,
+                positiveListener = { _, input ->
+                    customSubjectName = input
                     select(Item(
-                            -1L * customSubjectName.crc16(),
-                            customSubjectName,
-                            tag = customSubjectName
+                        -1L * customSubjectName.crc16(),
+                        customSubjectName,
+                        tag = customSubjectName
                     ))
                     onCustomSubjectSelected?.invoke(customSubjectName)
+                    true
                 }
-                .show()
+            )
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     fun selectSubject(subjectId: Long) {

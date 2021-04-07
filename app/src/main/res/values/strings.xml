@@ -386,8 +386,6 @@
     <string name="event_list_added_by_unknown_format">Dodano %1$s%3$s</string>
     <string name="event_list_shared_by_format">{cmd-share-variant} %1$s przez %2$s%3$s</string>
     <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s przez Ciebie%3$s</string>
-    <string name="event_manual_need_registration_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nUpewnij się, że zapoznałeś się z warunkami  i akceptujesz jej postanowienia.</string>
-    <string name="event_manual_need_registration_title">Udostępnianie wydarzeń</string>
     <string name="event_manual_remove">Usuwam wydarzenie…</string>
     <string name="event_manual_saving">Zapisuję wydarzenie…</string>
     <string name="event_manual_share">Udostępniam wydarzenie…</string>
@@ -895,9 +893,13 @@
     <string name="rate_snackbar_positive">Oceń teraz</string>
     <string name="rate_snackbar_text">Pokaż, że podoba ci się Szkolny.eu - oceń aplikację i spraw, by była jeszcze lepsza!</string>
     <string name="refresh">Odśwież</string>
-    <string name="registration_enable_dialog_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nUpewnij się, że zapoznałeś się z warunkami <a href="http://szkolny.eu/privacy-policy">Polityki prywatności</a> i akceptujesz jej postanowienia.</string>
-    <string name="registration_enable_dialog_title">Rejestracja na serwerze</string>
-    <string name="registration_enable_progress_text">Pobieranie udostępnionych wydarzeń…</string>
+    <string name="registration_config_disable_progress_text">Trwa wyrejestrowywanie użytkownika…</string>
+    <string name="registration_config_disable_text">Stracisz możliwość korzystania z niektórych funkcji, takich jak Udostępnianie wydarzeń czy Przekazywanie powiadomień.\n\nFunkcja może być włączona/wyłączona w zależności od wybranego profilu.</string>
+    <string name="registration_config_enable_progress_text">Pobieranie udostępnionych wydarzeń…</string>
+    <string name="registration_config_enable_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
+    <string name="registration_config_event_sharing_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
+    <string name="registration_config_event_sharing_title">Udostępnianie wydarzeń</string>
+    <string name="registration_config_title">Rejestracja aplikacji Szkolny.eu</string>
     <string name="remove">Usuń</string>
     <string name="removed">Usunięto</string>
     <string name="report">Zgłoś</string>
@@ -912,13 +914,13 @@
     <string name="settings_about_crash_text">Kliknij, aby wywołać nieoczekiwany wyjątek</string>
     <string name="settings_about_discord_subtext">Dołącz do naszego serwera Discord!</string>
     <string name="settings_about_discord_text">Serwer Discord</string>
-    <string name="settings_about_language_dialog_text">Uwaga. Ta opcja może nie działać na niektórych urządzeniach oraz w niektórych fragmentach aplikacji.</string>
-    <string name="settings_about_language_dialog_title">Zmień język aplikacji</string>
+    <string name="app_language_dialog_text">Uwaga. Ta opcja może nie działać na niektórych urządzeniach oraz w niektórych fragmentach aplikacji.</string>
+    <string name="app_language_dialog_title">Zmień język aplikacji</string>
     <string name="settings_about_language_subtext">Polski</string>
     <string name="settings_about_language_text">Język aplikacji</string>
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
-    <string name="settings_about_register_title_text">E-dziennik</string>
+    <string name="settings_card_register_title">E-dziennik</string>
     <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nwrzesień 2018 - luty 2021</string>
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
@@ -1011,7 +1013,7 @@
     <string name="settings_sync_sync_interval_subtext_disabled">Wyłączona</string>
     <string name="settings_sync_sync_interval_subtext_format">Pobieraj dane co %s</string>
     <string name="settings_sync_sync_interval_text">Synchronizacja automatyczna</string>
-    <string name="settings_sync_title_text">Synchronizacja i powiadomienia</string>
+    <string name="settings_card_sync_title">Synchronizacja i powiadomienia</string>
     <string name="settings_sync_updates_text">Powiadamiaj o aktualizacjach aplikacji</string>
     <string name="settings_sync_web_push_subtext">Pokazuj powiadomienia na swoim komputerze</string>
     <string name="settings_sync_web_push_text">Przekazywanie powiadomień</string>
@@ -1035,7 +1037,7 @@
     <string name="settings_theme_theme_pink">Różowy</string>
     <string name="settings_theme_theme_system">Systemowy</string>
     <string name="settings_theme_theme_text">Motyw</string>
-    <string name="settings_theme_title_text">Wygląd</string>
+    <string name="settings_card_theme_title">Wygląd</string>
     <string name="share">Udostępnij</string>
     <string name="share_intent">Udostępnij przez…</string>
     <string name="sharing_event">Udostępnianie danych…</string>
@@ -1344,10 +1346,6 @@
     <string name="login_mode_vulcan_web_guide">Podaj dane, którymi logujesz się na stronie internetowej dziennika VULCAN® lub na miejskiej platformie.</string>
     <string name="login_mode_mobidziennik_web_guide">Podaj dane, których używasz do logowania na stronie MobiDziennika. Jako adres serwera możesz wpisać adres strony internetowej, na której masz MobiDziennik.</string>
     <string name="edziennik_progress_login_vulcan_web_main">Logowanie do dziennika VULCAN®...</string>
-    <string name="login_type_idziennik">iDziennik Progman / iUczniowie</string>
-    <string name="login_mode_idziennik_web">Zaloguj używając nazwy użytkownika i hasła</string>
-    <string name="login_mode_idziennik_web_hint">Podaj dane, których używasz na stronie internetowej e-dziennika</string>
-    <string name="login_mode_idziennik_web_guide">Użyj danych, które wpisujesz w formularz na stronie iDziennika. Jeśli nie pamiętasz hasła, wejdź na http://iuczniowie.progman.pl/ i kliknij przycisk \"Zapomniałem hasła\".</string>
     <string name="login_type_edudziennik">EduDziennik</string>
     <string name="login_mode_edudziennik_web">Zaloguj używając e-maila i hasła</string>
     <string name="login_mode_edudziennik_web_hint">Użyj danych, które podajesz na stronie internetowej e-dziennika</string>
@@ -1386,4 +1384,45 @@
     <string name="login_chooser_mode_testing">{cmd-alert-circle-outline} Wersja testowa</string>
     <string name="login_chooser_mode_dev_only">{cmd-android-studio} Wersja deweloperska</string>
     <string name="eggs">\???</string>
+    <string name="rate_snackbar_negative_message">Szkoda, opinie innych pomagają mi rozwijać aplikację.</string>
+    <string name="event_manual_no_profile">Nie znaleziono profilu ucznia.</string>
+    <string name="see_also">Zobacz także</string>
+    <string name="settings_about_homepage_text">Wejdź na stronę aplikacji</string>
+    <string name="settings_about_homepage_subtext">Uzyskaj pomoc lub wesprzyj autorów</string>
+    <string name="settings_about_github_text">Kod źródłowy</string>
+    <string name="settings_about_github_subtext">Pomóż w rozwoju aplikacji na GitHubie</string>
+    <string name="profile_config_name_hint">Nazwa profilu</string>
+    <string name="profile_config_sync_enabled">Synchronizuj ten profil</string>
+    <string name="profile_config_logout">Wyloguj się</string>
+    <string name="permissions_qr_scanner">Aby móc zeskanować kod QR musisz przyznać uprawnienia dostępu do kamery.\n\nKliknij OK, aby przyznać uprawnienia.</string>
+    <string name="build_version">Wersja aplikacji</string>
+    <string name="build_official">Wydanie oficjalne</string>
+    <string name="build_platform">Dystrybucja</string>
+    <string name="build_platform_play">Google Play</string>
+    <string name="build_platform_apk">.APK</string>
+    <string name="build_platform_unofficial">Nieoficjalnie (.APK)</string>
+    <string name="build_branch">Gałąź Git</string>
+    <string name="build_commit">Identyfikator rewizji</string>
+    <string name="build_dirty">Niezapisane zmiany</string>
+    <string name="build_tag">Ostatni tag</string>
+    <string name="build_rev_count">Rewizje od ostatniego tagu</string>
+    <string name="build_remote">Repozytorium zdalne</string>
+    <string name="build_details">Informacje o kompilacji</string>
+    <string name="build_validate_progress">Trwa weryfikowanie kompilacji…</string>
+    <string name="build_invalid_no_remote_repo">Nie znaleziono odniesienia do repozytorium zdalnego. Upewnij się, że korzystasz z fork\'a oficjalnego repozytorium oraz zweryfikuj konfigurację Gradle.</string>
+    <string name="build_invalid_no_commit_hash">Nie znaleziono wartości skrótu aktualnej rewizji. Sprawdź konfigurację Gradle.</string>
+    <string name="build_invalid_remote_no_commit">Posiadasz kompilację aplikacji zawierającą nieopublikowane zmiany. Kompilacja znajduje się w repozytorium:\n%1$s (%2$s)\nktóre jest prywatne lub nie zawiera najnowszych zmian.\n\nDla bezpieczeństwa oraz ze względów zgodności z licencją, korzystanie z aplikacji zostało zablokowane.</string>
+    <string name="build_invalid_official_unsigned">Nie możesz modyfikować tego rodzaju kompilacji aplikacji Szkolny.eu.\n\nAby wprowadzić własne zmiany, skorzystaj z kodu źródłowego dostępnego na GitHubie oraz zapoznaj się z README i informacją o licencji.\n\nhttps://szkolny.eu/github/android</string>
+    <string name="build_invalid_unstaged_changes">Ta kompilacja zawiera zmiany niezatwierdzone do żadnej rewizji. Zapisz oraz opublikuj wszystkie zmiany przed wydaniem wersji \"release\".\n\nDla bezpieczeństwa oraz ze względów zgodności z licencją, korzystanie z aplikacji zostało zablokowane.</string>
+    <string name="build_invalid_debug">Korzystasz z kompilacji typu \"debug\". Ta informacja zostanie wyświetlona tylko jeden raz dla aktualnego urządzenia.</string>
+    <string name="build_valid_unofficial">Korzystasz z nieoficjalnej kompilacji aplikacji Szkolny.eu. Zalecamy używanie wyłącznie oficjalnych wersji aplikacji.\n\nOstatnie zmiany w tej wersji zostały wprowadzone przez:\n%3$s\nw repozytorium:\n%1$s (%2$s).\n\nTo okno nie wyświetli się ponownie.</string>
+    <string name="build_invalid_title">Informacja dotycząca wersji aplikacji</string>
+    <string name="settings_about_version_details_text">Szczegóły wersji</string>
+    <string name="settings_about_version_details_subtext">Informacje o kompilacji</string>
+    <string name="build_dialog_open_repo">Sprawdź kod</string>
+    <string name="error_no_api_access">Brak dostępu do API</string>
+    <string name="build_date">Data kompilacji</string>
+    <string name="permissions_generate_timetable">Aby móc zapisać wygenerowany plan lekcji musisz przyznać uprawnienia dostępu do pamięci urządzenia.\n\nKliknij OK, aby przyznać uprawnienia.</string>
+    <string name="privacy_policy_dialog_html"><![CDATA[Korzystając z aplikacji potwierdzasz <a href="https://szkolny.eu/privacy-policy">przeczytanie Polityki prywatności</a> i akceptujesz jej postanowienia.<br /><br />Autorzy aplikacji nie biorą odpowiedzialności za korzystanie z aplikacji Szkolny.eu.]]></string>
+    <string name="login_chooser_version_format">Szkolny.eu v%s\n%s</string>
 </resources>

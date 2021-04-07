@@ -60,7 +60,7 @@ class AttendanceFragment : Fragment(), CoroutineScope {
         activity.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_attendance_config)
-                        .withIcon(CommunityMaterial.Icon2.cmd_settings_outline)
+                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
                             AttendanceConfigDialog(activity, true, null, null)

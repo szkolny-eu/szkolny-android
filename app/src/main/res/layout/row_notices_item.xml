@@ -14,9 +14,8 @@
         app:cardElevation="4dp"
         app:cardCornerRadius="5dp"
         android:background="?selectableItemBackground"
-        android:paddingLeft="10dp"
+        android:paddingHorizontal="10dp"
         android:paddingTop="5dp"
-        android:paddingRight="10dp"
         android:paddingBottom="3dp">
 
         <LinearLayout
@@ -34,8 +33,7 @@
                     android:id="@+id/noticesItemType"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginVertical="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@tools:sample/avatars" />

@@ -115,13 +115,21 @@ class WidgetTimetableProvider : AppWidgetProvider() {
 
             views.setOnClickPendingIntent(R.id.widgetTimetableSync, getPendingSelfIntent(context, ACTION_SYNC_DATA))
 
-            views.setImageViewBitmap(R.id.widgetTimetableRefresh, IconicsDrawable(context, CommunityMaterial.Icon2.cmd_refresh)
-                    .colorInt(Color.WHITE)
-                    .sizeDp(if (config.bigStyle) 24 else 16).toBitmap())
+            views.setImageViewBitmap(
+                R.id.widgetTimetableRefresh,
+                IconicsDrawable(context, CommunityMaterial.Icon3.cmd_refresh).apply {
+                    colorInt = Color.WHITE
+                    sizeDp = if (config.bigStyle) 28 else 20
+                }.toBitmap()
+            )
 
-            views.setImageViewBitmap(R.id.widgetTimetableSync, IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline)
-                    .colorInt(Color.WHITE)
-                    .sizeDp(if (config.bigStyle) 24 else 16).toBitmap())
+            views.setImageViewBitmap(
+                R.id.widgetTimetableSync,
+                IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline).apply {
+                    colorInt = Color.WHITE
+                    sizeDp = if (config.bigStyle) 28 else 20
+                }.toBitmap()
+            )
 
             prepareAppWidget(app, appWidgetId, views, config, bellSyncDiffMillis)
 

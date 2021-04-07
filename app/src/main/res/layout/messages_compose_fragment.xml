@@ -87,8 +87,7 @@
                 android:id="@+id/fontStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="4dp">
 
                 <com.google.android.material.button.MaterialButton
@@ -125,8 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:text="Breakpoints!"
                 android:visibility="gone"/>
 

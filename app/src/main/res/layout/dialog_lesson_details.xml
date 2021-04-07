@@ -31,9 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingTop="24dp"
-            android:paddingRight="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="24dp">
 
             <TextView
                 android:id="@+id/annotation"
@@ -41,8 +40,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/timetable_lesson_annotation"
                 android:fontFamily="sans-serif-condensed"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingHorizontal="8dp"
                 android:text="@string/timetable_lesson_cancelled"
                 android:textColor="#000"
                 android:textSize="12sp"
@@ -54,8 +52,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -133,9 +130,8 @@
                 android:id="@+id/shiftedLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -161,9 +157,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -233,8 +228,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -304,10 +298,8 @@
                 android:id="@+id/eventsNoData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:paddingVertical="16dp"
                 android:orientation="vertical"
                 android:visibility="gone"
                 tools:visibility="visible">

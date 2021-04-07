@@ -12,7 +12,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
-import coil.api.load
+import coil.load
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

@@ -27,8 +27,7 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:paddingLeft="15.0dip"
-                android:paddingRight="15.0dip"
+                android:paddingHorizontal="15dp"
                 android:text="@string/widget_timetable_title"
                 android:textColor="@color/primaryTextDark"
                 android:textSize="24sp" />
@@ -39,8 +38,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:paddingLeft="15.0dip"
-                android:paddingRight="15.0dip"
+                android:paddingHorizontal="15dp"
                 android:textColor="@color/primaryTextDark"
                 android:textSize="16sp"
                 tools:text="Test test etst tetete" />

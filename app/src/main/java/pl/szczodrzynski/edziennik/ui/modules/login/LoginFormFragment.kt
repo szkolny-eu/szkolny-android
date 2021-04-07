@@ -15,7 +15,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.utils.paddingDp
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -97,11 +96,11 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                 b.textEdit.id = credential.name
 
                 b.textEdit.setText(arguments?.getString(credential.keyName) ?: "")
-                b.textLayout.startIconDrawable = IconicsDrawable(activity)
-                        .icon(credential.icon)
-                        .sizeDp(24)
-                        .paddingDp(2)
-                        .colorAttr(activity, R.attr.colorOnBackground)
+                b.textLayout.startIconDrawable = IconicsDrawable(activity).apply {
+                    icon = credential.icon
+                    sizeDp = 24
+                    colorAttr(activity, R.attr.colorOnBackground)
+                }
 
                 this.b.formContainer.addView(b.root)
                 credentials[credential] = b

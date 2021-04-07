@@ -32,8 +32,7 @@
         android:id="@+id/freeDayText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginHorizontal="32dp"
         android:gravity="center"
         android:textSize="16sp"
         tools:text="Dzień wolny dla szkoły z puli dyrektorskiej z okazji obchodów Światowego Dnia Wtorku w mieście Poznań i na przedmieśiach" />

@@ -32,7 +32,7 @@ class WidgetNotificationsProvider : AppWidgetProvider() {
         for (appWidgetId in appWidgetIds) {
             val config = widgetConfigs.getJsonObject(appWidgetId.toString())?.let { app.gson.fromJson(it, WidgetConfig::class.java) } ?: continue
 
-            val iconSize = if (config.bigStyle) 24 else 16
+            val iconSize = if (config.bigStyle) 28 else 20
 
             val views: RemoteViews = if (config.bigStyle) {
                 RemoteViews(app.packageName, if (config.darkTheme) R.layout.widget_notifications_dark_big else R.layout.widget_notifications_big)
@@ -48,10 +48,10 @@ class WidgetNotificationsProvider : AppWidgetProvider() {
 
             views.setImageViewBitmap(
                     R.id.widgetNotificationsSync,
-                    IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline)
-                            .colorInt(Color.WHITE)
-                            .sizeDp(iconSize)
-                            .toBitmap()
+                    IconicsDrawable(context, CommunityMaterial.Icon.cmd_download_outline).apply {
+                        colorInt = Color.WHITE
+                        sizeDp = iconSize
+                    }.toBitmap()
             )
 
             views.setViewVisibility(R.id.widgetNotificationsLoading, View.GONE)
