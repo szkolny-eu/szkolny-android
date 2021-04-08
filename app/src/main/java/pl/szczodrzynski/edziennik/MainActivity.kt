@@ -21,6 +21,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.jetradarmobile.snowfall.SnowfallView
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
@@ -474,7 +475,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             b.rootFrame.addView(layoutInflater.inflate(R.layout.snowfall, b.rootFrame, false))
         }
         else if ((today.month == 3 || today.month == 4) && app.config.ui.snowfall) {
-            b.rootFrame.addView(layoutInflater.inflate(R.layout.eggfall, b.rootFrame, false))
+            val eggfall = layoutInflater.inflate(R.layout.eggfall, b.rootFrame, false) as SnowfallView
+            eggfall.setSnowflakeBitmaps(listOf(
+                BitmapFactory.decodeResource(resources, R.drawable.egg1),
+                BitmapFactory.decodeResource(resources, R.drawable.egg2),
+                BitmapFactory.decodeResource(resources, R.drawable.egg3),
+                BitmapFactory.decodeResource(resources, R.drawable.egg4),
+                BitmapFactory.decodeResource(resources, R.drawable.egg5),
+                BitmapFactory.decodeResource(resources, R.drawable.egg6)
+            ))
+            b.rootFrame.addView(eggfall)
         }
 
         // WHAT'S NEW DIALOG

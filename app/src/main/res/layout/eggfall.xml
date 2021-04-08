@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Kuba Szczodrzyński 2019-12-15.
+  ~ Copyright (c) Mateusz Idziejczak 2021-4-3.
   -->
 
 <com.jetradarmobile.snowfall.SnowfallView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:snowflakeImage="@drawable/egg"
-    app:snowflakesNum="100"
-    app:snowflakeAlphaMin="240"
     app:snowflakeAlphaMax="250"
-    app:snowflakeSizeMin="24dp"
-    app:snowflakeSizeMax="48dp" />
+    app:snowflakeAlphaMin="150"
+    app:snowflakeSizeMax="32dp"
+    app:snowflakeSizeMin="16dp"
+    app:snowflakesNum="70" />
