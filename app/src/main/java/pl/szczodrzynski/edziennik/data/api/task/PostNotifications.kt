@@ -8,6 +8,9 @@ import android.util.SparseIntArray
 import androidx.core.app.NotificationCompat
 import androidx.core.util.forEach
 import androidx.core.util.set
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.IIcon
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_SERVER_MESSAGE
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -71,6 +74,24 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
         return summaryTexts.concat(", ")
     }
 
+    private fun getLargeIcon(type: Int): IconicsDrawable {
+        val icon = when (type) {
+            AppNotification.TYPE_TIMETABLE_LESSON_CHANGE -> CommunityMaterial.Icon3.cmd_timetable
+            AppNotification.TYPE_NEW_GRADE -> CommunityMaterial.Icon3.cmd_numeric_5_box_outline
+            AppNotification.TYPE_NEW_EVENT -> CommunityMaterial.Icon.cmd_calendar_outline
+            AppNotification.TYPE_NEW_HOMEWORK -> CommunityMaterial.Icon3.cmd_notebook_outline
+            AppNotification.TYPE_NEW_SHARED_EVENT -> CommunityMaterial.Icon.cmd_calendar_outline
+            AppNotification.TYPE_NEW_SHARED_HOMEWORK -> CommunityMaterial.Icon3.cmd_notebook_outline
+            AppNotification.TYPE_NEW_MESSAGE -> CommunityMaterial.Icon.cmd_email_outline
+            AppNotification.TYPE_NEW_NOTICE -> CommunityMaterial.Icon.cmd_emoticon_outline
+            AppNotification.TYPE_NEW_ATTENDANCE -> CommunityMaterial.Icon.cmd_calendar_remove_outline
+            AppNotification.TYPE_LUCKY_NUMBER -> CommunityMaterial.Icon.cmd_bell_ring_outline
+            AppNotification.TYPE_NEW_ANNOUNCEMENT -> CommunityMaterial.Icon.cmd_bullhorn_outline
+            else -> CommunityMaterial.Icon.cmd_bell_ring_outline
+        }
+        return IconicsDrawable(app, icon)
+    }
+
     init { run {
         val count = nList.size
         if (count == 0)
@@ -107,6 +128,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                     .setContentText(buildSummaryText(summaryCounts))
                     .setTicker(newNotificationsText)
                     .setSmallIcon(R.drawable.ic_notification)
+                    .setLargeIcon(IconicsDrawable(app, CommunityMaterial.Icon.cmd_bell_ring_outline).toBitmap())
                     .setStyle(NotificationCompat.InboxStyle()
                             .also {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -137,6 +159,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                         .setSubText(if (it.type == TYPE_SERVER_MESSAGE) null else it.title)
                         .setTicker("${it.profileName}: ${it.title}")
                         .setSmallIcon(R.drawable.ic_notification)
+                        .setLargeIcon(getLargeIcon(it.type).toBitmap())
                         .setStyle(NotificationCompat.BigTextStyle()
                                 .bigText(it.text))
                         .setWhen(it.addedDate)
@@ -160,6 +183,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                         .setContentText(buildSummaryText(summaryCounts))
                         .setTicker(newNotificationsText)
                         .setSmallIcon(R.drawable.ic_notification)
+                        .setLargeIcon(IconicsDrawable(app, CommunityMaterial.Icon.cmd_bell_ring_outline).toBitmap())
                         .addDefaults()
                         .setGroupSummary(true)
                         .setContentIntent(summaryIntent)
