@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
+import android.content.pm.PackageManager
 import android.text.TextUtils
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,11 +27,17 @@ class BuildManager(val app: App) : CoroutineScope {
 
     val buildFlavor = BuildConfig.FLAVOR
     val buildType = BuildConfig.BUILD_TYPE
-    val buildTimestamp = BuildConfig.BUILD_TIMESTAMP
     val isRelease = !BuildConfig.DEBUG
     val isDebug = BuildConfig.DEBUG
     val isNightly = BuildConfig.VERSION_NAME.contains("nightly")
     val isDaily = BuildConfig.VERSION_NAME.contains("daily")
+
+    val buildTimestamp: Long
+        get() {
+            val info = app.packageManager.getApplicationInfo(app.packageName, PackageManager.GET_META_DATA)
+            val metadata = info.metaData
+            return metadata?.getFloat("buildTimestamp")?.toLong() ?: 0
+        }
 
     val gitHash = BuildConfig.GIT_INFO["hash"]
     val gitVersion = BuildConfig.GIT_INFO["version"]
@@ -56,9 +63,9 @@ class BuildManager(val app: App) : CoroutineScope {
     }
 
     val versionBadge = when {
-        isOfficial && isNightly ->
+        isSigned && isNightly ->
             "Nightly\n" + BuildConfig.VERSION_NAME.substringAfterLast('.')
-        isOfficial && isDaily ->
+        isSigned && isDaily ->
             "Daily\n" + BuildConfig.VERSION_NAME.substringAfterLast('.')
         isDebug ->
             "Debug\n" + BuildConfig.VERSION_BASE
@@ -78,10 +85,22 @@ class BuildManager(val app: App) : CoroutineScope {
 
         val fields = mapOf(
             R.string.build_version to BuildConfig.VERSION_BASE,
-            R.string.build_official to if (isOfficial)
-                yes.asColoredSpannable(mtrlGreen)
-            else
-                no.asColoredSpannable(mtrlRed),
+            R.string.build_official to when {
+                isOfficial -> yes.asColoredSpannable(mtrlGreen)
+                isSigned -> TextUtils.concat(
+                    yes.asColoredSpannable(mtrlYellow),
+                    when {
+                        isNightly -> " (nightly build)"
+                        isDaily -> " (daily build)"
+                        else -> no.asColoredSpannable(mtrlYellow)
+                    }
+                )
+                isDebug -> no
+                else -> TextUtils.concat(
+                    no.asColoredSpannable(mtrlRed),
+                    if (gitAuthor.isNotNullNorBlank()) " ($gitAuthor)" else ""
+                )
+            },
             R.string.build_platform to when {
                 isPlayRelease -> activity.getString(R.string.build_platform_play)
                 isApkRelease -> activity.getString(R.string.build_platform_apk)
@@ -229,8 +248,10 @@ class BuildManager(val app: App) : CoroutineScope {
             val validation = Signing.appCertificate + gitHash + gitRemotes?.join(";")
 
             // app already validated
-            if (app.config.validation == validation.md5())
+            if (app.config.validation?.substringBefore(":") == validation.md5()){
+                gitAuthor = app.config.validation?.substringAfter(":")
                 return@launch
+            }
 
             val dialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.please_wait)
@@ -251,7 +272,7 @@ class BuildManager(val app: App) : CoroutineScope {
             }
 
             // release, unofficial, published build
-            app.config.validation = validation.md5()
+            app.config.validation = validation.md5() + ":" + gitAuthor
             invalidateBuild(activity, dialog, InvalidBuildReason.VALID)
         }
     }

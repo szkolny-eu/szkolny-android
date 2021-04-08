@@ -1,8 +1,6 @@
-# Szkolny.eu
-
-Nieoficjalna aplikacja do obsługi najpopularniejszych dzienników elektronicznych w Polsce.
-
 <div align="center">
+
+![Readme Banner](.github/readme-banner.png)
 
 [![Discord](https://img.shields.io/discord/619178050562686988?color=%237289DA&logo=discord&logoColor=white&style=for-the-badge)](https://szkolny.eu/discord)
 [![Oficjalna strona](https://img.shields.io/badge/-website-orange?style=for-the-badge&logo=internet-explorer&logoColor=white)](https://szkolny.eu/)
@@ -12,11 +10,15 @@ Nieoficjalna aplikacja do obsługi najpopularniejszych dzienników elektroniczny
 [![Najnowsza wersja](https://img.shields.io/github/v/release/szkolny-eu/szkolny-android?color=%2344CC11&include_prereleases&logo=github&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/releases/latest)
 ![Licencja](https://img.shields.io/github/license/szkolny-eu/szkolny-android?color=blue&logo=github&logoColor=white&style=for-the-badge)
 
+[![Release build](https://img.shields.io/github/workflow/status/szkolny-eu/szkolny-android/Release%20build%20-%20official?label=Release&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-apk.yml)
+[![Play build](https://img.shields.io/github/workflow/status/szkolny-eu/szkolny-android/Release%20build%20-%20Google%20Play%20%5BAAB%5D?label=Play&logo=google-play&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-release-aab-play.yml)
+[![Nightly build](https://img.shields.io/github/workflow/status/szkolny-eu/szkolny-android/Nightly%20build?label=Nightly&logo=github-actions&logoColor=white&style=for-the-badge)](https://github.com/szkolny-eu/szkolny-android/actions/workflows/build-nightly-apk.yml)
+
 </div>
 
 ## Ważna informacja
 
-Jak zapewne już wiecie, we wrześniu 2020r. **firma Librus zabroniła nam** publikowania w sklepie Google Play naszej aplikacji z obsługą dziennika Librus&reg; Synergia. Prowadziliśmy rozmowy, aby **umożliwić Wam wygodny, bezpłatny dostęp do Waszych ocen, wiadomości, zadań domowych**, jednak oczekiwania firmy Librus zdecydowanie przekroczyły wszelkie nasze możliwości finansowe. Mając na uwadze powyższe względy, zdecydowaliśmy się opublikować kod źródłowy aplikacji Szkolny.eu. Liczymy, że dzięki temu aplikacja będzie mogła dalej funkcjonować, być rozwijana, pomagając Wam w czasie zdalnego nauczania i przez kolejne lata nauki.
+Jak zapewne już wiecie, we wrześniu 2020 r. **firma Librus zabroniła nam** publikowania w sklepie Google Play naszej aplikacji z obsługą dziennika Librus&reg; Synergia. Prowadziliśmy rozmowy, aby **umożliwić Wam wygodny, bezpłatny dostęp do Waszych ocen, wiadomości, zadań domowych**, jednak oczekiwania firmy Librus zdecydowanie przekroczyły wszelkie nasze możliwości finansowe. Mając na uwadze powyższe względy, zdecydowaliśmy się opublikować kod źródłowy aplikacji Szkolny.eu. Liczymy, że dzięki temu aplikacja będzie mogła dalej funkcjonować, być rozwijana, pomagając Wam w czasie zdalnego nauczania i przez kolejne lata nauki.
 
 __Zachęcamy do [przeczytania całej informacji](https://szkolny.eu/informacja) na naszej stronie.__
 
@@ -30,17 +32,17 @@ Szkolny.eu jest nieoficjalną aplikacją, umożliwiającą rodzicom i uczniom do
 
 - plan lekcji, terminarz, oceny, wiadomości, zadania domowe, uwagi, frekwencja
 - wygodne **widgety** na ekran główny
-- łatwa komunikacja z nauczycielami - **odbieranie, wyszukiwanie i wysyłanie wiadomości**
+- łatwa komunikacja z nauczycielami — **odbieranie, wyszukiwanie i wysyłanie wiadomości**
 - pobieranie **załączników wiadomości i zadań domowych**
 - **powiadomienia** o nowych informacjach na telefonie lub na komputerze
-- organizacja zadań domowych i sprawdzianów - łatwe oznaczanie jako wykonane
+- organizacja zadań domowych i sprawdzianów — łatwe oznaczanie jako wykonane
 - obliczanie **średniej ocen** ze wszystkich przedmiotów, oceny proponowane i końcowe
-- Symulator edycji ocen - obliczanie średniej z przedmiotu po zmianie dowolnych jego ocen
+- Symulator edycji ocen — obliczanie średniej z przedmiotu po zmianie dowolnych jego ocen
 - **dodawanie własnych wydarzeń** i zadań do terminarza
 - nowoczesny i intuicyjny interfejs użytkownika
-- **obsługa wielu profili** uczniów - jeżeli jesteś Rodzicem, możesz skonfigurować wszystkie swoje konta uczniowskie i łatwo między nimi przełączać
+- **obsługa wielu profili** uczniów — jeżeli jesteś Rodzicem, możesz skonfigurować wszystkie swoje konta uczniowskie i łatwo między nimi przełączać
 - opcja **automatycznej synchronizacji** z E-dziennikiem
-- opcja Ciszy nocnej - nigdy więcej budzących Cię dźwięków z telefonu
+- opcja Ciszy nocnej — nigdy więcej budzących Cię dźwięków z telefonu
 
 [Zobacz porównanie funkcji z innymi aplikacjami](https://szkolny.eu/funkcje)
 
@@ -53,7 +55,7 @@ Najnowsze wersje możesz pobrać z Google Play lub bezpośrednio z naszej strony
 
 ### Kompilacja
 
-Aby uruchomić aplikację "ze źródeł" należy użyć Android Studio w wersji co najmniej 4.2 Beta 6. Wersja `debug` może wtedy zostać zainstalowana np. na emulatorze Androida.
+Aby uruchomić aplikację „ze źródeł” należy użyć Android Studio w wersji co najmniej 4.2 Beta 6. Wersja `debug` może wtedy zostać zainstalowana np. na emulatorze Androida.
 
 Aby zbudować wersję produkcyjną, tzn. `release` należy użyć wariantu `mainRelease` oraz podpisać wyjściowy plik .APK sygnaturą w wersji V1 i V2.
 
@@ -68,15 +70,15 @@ __Jeśli masz jakieś pytania, zapraszamy na [nasz serwer Discord](https://szkol
 ## Licencja
 
 Szkolny.eu publikowany jest na licencji [GNU GPLv3](LICENSE). W szczególności, deweloper:
-- może modyfikować oraz usprawniać kod aplikacji
-- może dystrybuować wersje produkcyjne
-- musi opublikować wszelkie wprowadzone zmiany, tzn. publiczny fork tego repozytorium
-- nie może zmieniać licencji ani copyrightu aplikacji
+- Może modyfikować oraz usprawniać kod aplikacji
+- Może dystrybuować wersje produkcyjne
+- Musi opublikować wszelkie wprowadzone zmiany, tzn. publiczny fork tego repozytorium
+- Nie może zmieniać licencji ani copyrightu aplikacji
 
 Dodatkowo:
-- zabronione jest modyfikowanie lub usuwanie kodu odpowiedzialnego za zgodność wersji produkcyjnych z licencją
+- Zabronione jest modyfikowanie lub usuwanie kodu odpowiedzialnego za zgodność wersji produkcyjnych z licencją.
 
-- **wersje skompilowane nie mogą być dystrybuowane za pomocą Google Play oraz żadnej platformy, na której istnieje oficjalna wersja aplikacji**
+- **Wersje skompilowane nie mogą być dystrybuowane za pomocą Google Play oraz żadnej platformy, na której istnieje oficjalna wersja aplikacji**.
 
 **Autorzy aplikacji nie biorą odpowiedzialności za używanie aplikacji, modyfikowanie oraz dystrybuowanie.**
 

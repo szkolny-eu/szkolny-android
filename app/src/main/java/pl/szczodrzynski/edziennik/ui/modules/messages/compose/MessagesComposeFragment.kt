@@ -345,6 +345,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.recipients.setAdapter(adapter)
 
         handleReplyMessage()
+        handleMailToIntent()
     }}
 
     private fun handleReplyMessage() { launch {
@@ -401,6 +402,22 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             b.recipients.requestFocus()
         }
     }}
+
+    private fun handleMailToIntent() {
+        val teacherId = arguments?.getLong("messageRecipientId")
+        if (teacherId == 0L)
+            return
+
+        val chipList = mutableListOf<ChipInfo>()
+        teachers.firstOrNull { it.id == teacherId }?.let { teacher ->
+            teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
+            chipList += ChipInfo(teacher.fullName, teacher)
+        }
+        b.recipients.addTextWithChips(chipList)
+
+        val subject = arguments?.getString("messageSubject")
+        b.subject.setText(subject ?: return)
+    }
 
     private fun sendMessage() {
         b.recipientsLayout.error = null

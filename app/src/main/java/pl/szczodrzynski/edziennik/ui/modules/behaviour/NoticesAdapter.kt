@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
+import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.Utils.bs
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -82,6 +83,14 @@ class NoticesAdapter//getting the context and product list with constructor
             AsyncTask.execute { app.db.metadataDao().setSeen(App.profileId, notice, true) }
         } else {
             holder.noticesItemReason.background = null
+        }
+
+        BetterLink.attach(holder.noticesItemReason)
+
+        notice.teacherName?.let { name ->
+            BetterLink.attach(holder.noticesItemTeacherName, teachers = mapOf(
+                notice.teacherId to name
+            ))
         }
     }
 

@@ -84,7 +84,7 @@ private def buildGitInfo() {
             .stream()
             .map {
                 it.name + "(" + it.URIs.stream()
-                        .map { it.rawPath }
+                        .map { it.rawPath.stripMargin('/').replace(".git", "") }
                         .toArray()
                         .join(", ") + ")"
             }
