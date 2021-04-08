@@ -82,12 +82,9 @@ import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
-import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
-import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
-import pl.szczodrzynski.edziennik.utils.appManagerIntentList
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.navlib.*
@@ -474,7 +471,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if ((today.month % 11 == 1) && app.config.ui.snowfall) {
             b.rootFrame.addView(layoutInflater.inflate(R.layout.snowfall, b.rootFrame, false))
         }
-        else if ((today.month == 3 || today.month == 4) && app.config.ui.snowfall) {
+        else if (app.config.ui.eggfall && BigNightUtil().isDataWielkanocyNearDzisiaj()) {
             val eggfall = layoutInflater.inflate(R.layout.eggfall, b.rootFrame, false) as SnowfallView
             eggfall.setSnowflakeBitmaps(listOf(
                 BitmapFactory.decodeResource(resources, R.drawable.egg1),

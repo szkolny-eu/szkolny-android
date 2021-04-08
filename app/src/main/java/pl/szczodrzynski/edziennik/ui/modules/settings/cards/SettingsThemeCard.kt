@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.settings.MiniMenuConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ThemeChooserDialog
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsUtil
-import pl.szczodrzynski.edziennik.utils.EggfallUtil
+import pl.szczodrzynski.edziennik.utils.BigNightUtil
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -37,7 +37,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             }
         else null,
 
-        if (Date.getToday().month == 4 || Date.getToday().month == 3) // not cool if statement
+        if (BigNightUtil().isDataWielkanocyNearDzisiaj()) // cool klasa for utility to dzień wielkanocy
             util.createPropertyItem(
                 text = R.string.settings_theme_eggfall_text,
                 subText = R.string.settings_theme_eggfall_subtext,
