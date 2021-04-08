@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.settings.MiniMenuConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ThemeChooserDialog
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsUtil
+import pl.szczodrzynski.edziennik.utils.EggfallUtil
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -28,7 +29,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             util.createPropertyItem(
                 text = R.string.settings_theme_snowfall_text,
                 subText = R.string.settings_theme_snowfall_subtext,
-                icon = CommunityMaterial.Icon.cmd_egg_easter,
+                icon = CommunityMaterial.Icon3.cmd_snowflake,
                 value = configGlobal.ui.snowfall
             ) { _, it ->
                 configGlobal.ui.snowfall = it
@@ -41,9 +42,9 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                 text = R.string.settings_theme_eggfall_text,
                 subText = R.string.settings_theme_eggfall_subtext,
                 icon = CommunityMaterial.Icon.cmd_egg_easter,
-                value = configGlobal.ui.snowfall
+                value = configGlobal.ui.eggfall
             ) { _, it ->
-                configGlobal.ui.snowfall = it
+                configGlobal.ui.eggfall = it
                 activity.recreate()
             }
         else null,
