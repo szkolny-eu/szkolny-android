@@ -8,9 +8,10 @@ import android.util.SparseIntArray
 import androidx.core.app.NotificationCompat
 import androidx.core.util.forEach
 import androidx.core.util.set
+import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_SERVER_MESSAGE
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -128,7 +129,9 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                     .setContentText(buildSummaryText(summaryCounts))
                     .setTicker(newNotificationsText)
                     .setSmallIcon(R.drawable.ic_notification)
-                    .setLargeIcon(IconicsDrawable(app, CommunityMaterial.Icon.cmd_bell_ring_outline).toBitmap())
+                    .setLargeIcon(IconicsDrawable(app, CommunityMaterial.Icon.cmd_bell_ring_outline)
+                        .color { IconicsColor.colorRes(R.color.md_white_1000) }
+                        .toBitmap())
                     .setStyle(NotificationCompat.InboxStyle()
                             .also {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -159,7 +162,9 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                         .setSubText(if (it.type == TYPE_SERVER_MESSAGE) null else it.title)
                         .setTicker("${it.profileName}: ${it.title}")
                         .setSmallIcon(R.drawable.ic_notification)
-                        .setLargeIcon(getLargeIcon(it.type).toBitmap())
+                        .setLargeIcon(getLargeIcon(it.type)
+                            .color { IconicsColor.colorRes(R.color.colorPrimary) }
+                            .toBitmap())
                         .setStyle(NotificationCompat.BigTextStyle()
                                 .bigText(it.text))
                         .setWhen(it.addedDate)
@@ -183,7 +188,9 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                         .setContentText(buildSummaryText(summaryCounts))
                         .setTicker(newNotificationsText)
                         .setSmallIcon(R.drawable.ic_notification)
-                        .setLargeIcon(IconicsDrawable(app, CommunityMaterial.Icon.cmd_bell_ring_outline).toBitmap())
+                        .setLargeIcon(IconicsDrawable(app, CommunityMaterial.Icon.cmd_bell_ring_outline)
+                            .color { IconicsColor.colorRes(R.color.md_white_1000) }
+                            .toBitmap())
                         .addDefaults()
                         .setGroupSummary(true)
                         .setContentIntent(summaryIntent)
