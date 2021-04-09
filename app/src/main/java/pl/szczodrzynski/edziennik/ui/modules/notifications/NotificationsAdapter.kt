@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.utils.colorRes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,6 +44,10 @@ class NotificationsAdapter(
 
         val date = Date.fromMillis(item.addedDate).formattedString
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
+
+        b.notificationIcon.icon = IconicsDrawable(app, item.getLargeIcon()).apply {
+            colorRes = R.color.colorPrimary
+        }
 
         b.title.text = item.text
         b.profileDate.text = listOf(
