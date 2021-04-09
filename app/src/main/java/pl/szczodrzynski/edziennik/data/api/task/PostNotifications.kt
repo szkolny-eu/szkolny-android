@@ -85,7 +85,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
             AppNotification.TYPE_NEW_MESSAGE -> CommunityMaterial.Icon.cmd_email_outline
             AppNotification.TYPE_NEW_NOTICE -> CommunityMaterial.Icon.cmd_emoticon_outline
             AppNotification.TYPE_NEW_ATTENDANCE -> CommunityMaterial.Icon.cmd_calendar_remove_outline
-            AppNotification.TYPE_LUCKY_NUMBER -> CommunityMaterial.Icon.cmd_bell_ring_outline
+            AppNotification.TYPE_LUCKY_NUMBER -> CommunityMaterial.Icon.cmd_emoticon_excited_outline
             AppNotification.TYPE_NEW_ANNOUNCEMENT -> CommunityMaterial.Icon.cmd_bullhorn_outline
             else -> CommunityMaterial.Icon.cmd_bell_ring_outline
         }
