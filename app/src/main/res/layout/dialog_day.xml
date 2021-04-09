@@ -49,7 +49,7 @@
 
                 <include
                     android:id="@+id/lessonChangeContainer"
-                    layout="@layout/row_lesson_change_item"
+                    layout="@layout/agenda_lesson_changes_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
@@ -66,7 +66,7 @@
 
                 <include
                     android:id="@+id/teacherAbsenceContainer"
-                    layout="@layout/row_teacher_absence_item"
+                    layout="@layout/agenda_teacher_absence_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
