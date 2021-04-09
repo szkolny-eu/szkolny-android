@@ -75,7 +75,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
                             EventManualDialog(
                                 activity,
                                 app.profileId,
-                                defaultDate = agendaDefault?.selectedDate
+                                defaultDate = AgendaFragmentDefault.selectedDate
                             )
                         },
                 BottomSheetPrimaryItem(true)
@@ -112,7 +112,11 @@ class AgendaFragment : Fragment(), CoroutineScope {
         activity.navView.bottomBar.fabExtendedText = getString(R.string.add)
         activity.navView.bottomBar.fabIcon = CommunityMaterial.Icon3.cmd_plus
         activity.navView.setFabOnClickListener {
-            EventManualDialog(activity, app.profileId, defaultDate = agendaDefault?.selectedDate)
+            EventManualDialog(
+                activity,
+                app.profileId,
+                defaultDate = AgendaFragmentDefault.selectedDate
+            )
         }
 
         activity.gainAttention()

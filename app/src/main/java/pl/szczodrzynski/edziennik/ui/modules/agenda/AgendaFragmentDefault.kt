@@ -7,7 +7,10 @@ package pl.szczodrzynski.edziennik.ui.modules.agenda
 import android.util.SparseIntArray
 import androidx.core.util.forEach
 import androidx.core.util.set
+import com.github.tibolte.agendacalendarview.CalendarManager
 import com.github.tibolte.agendacalendarview.CalendarPickerController
+import com.github.tibolte.agendacalendarview.agenda.AgendaAdapter
+import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent
 import com.github.tibolte.agendacalendarview.models.CalendarEvent
 import com.github.tibolte.agendacalendarview.models.IDayItem
 import kotlinx.coroutines.Dispatchers
@@ -15,6 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.day.DayDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog
@@ -33,30 +37,39 @@ class AgendaFragmentDefault(
     private val app: App,
     private val b: FragmentAgendaDefaultBinding
 ) {
+    companion object {
+        var selectedDate: Date = Date.getToday()
+    }
+
     private val unreadDates = mutableSetOf<Int>()
-    var selectedDate: Date = Date.getToday()
+    private val events = mutableListOf<CalendarEvent>()
+    private var isInitialized = false
 
     suspend fun initView(fragment: AgendaFragment) {
-        val dateStart = app.profile.dateSemester1Start.asCalendar
-        val dateEnd = app.profile.dateYearEnd.asCalendar
+        isInitialized = false
 
-        val events = withContext(Dispatchers.Default) {
-            val events = mutableListOf<CalendarEvent>()
-
+        withContext(Dispatchers.Default) {
             addLessonChanges(events)
 
             val showTeacherAbsences = app.profile.getStudentData("showTeacherAbsences", true)
             if (showTeacherAbsences) {
                 addTeacherAbsence(events)
             }
-
-            addEvents(events)
-
-            return@withContext events
         }
 
-        if (!fragment.isAdded)
-            return
+        app.db.eventDao().getAll(app.profileId).observe(fragment) {
+            addEvents(events, it)
+            if (isInitialized)
+                updateView()
+            else
+                initViewPriv()
+        }
+    }
+
+    private fun initViewPriv() {
+        val dateStart = app.profile.dateSemester1Start.asCalendar
+        val dateEnd = app.profile.dateYearEnd.asCalendar
+
         b.agendaDefaultView.init(
             events,
             dateStart,
@@ -71,7 +84,11 @@ class AgendaFragmentDefault(
                     when (event) {
                         is AgendaEvent -> DayDialog(activity, app.profileId, date)
                         is LessonChangesEvent -> LessonChangeDialog(activity, app.profileId, date)
-                        is TeacherAbsenceEvent -> TeacherAbsenceDialog(activity, app.profileId, date)
+                        is TeacherAbsenceEvent -> TeacherAbsenceDialog(
+                            activity,
+                            app.profileId,
+                            date
+                        )
                     }
                 }
 
@@ -91,10 +108,25 @@ class AgendaFragmentDefault(
             LessonChangesEventRenderer(),
             TeacherAbsenceEventRenderer()
         )
+
+        isInitialized = true
     }
 
-    private fun addEvents(events: MutableList<CalendarEvent>) {
-        val eventList = app.db.eventDao().getAllNow(app.profileId)
+    private fun updateView() {
+        val manager = CalendarManager.getInstance()
+        manager.events.clear()
+        manager.loadEvents(events, BaseCalendarEvent())
+
+        val adapter = b.agendaDefaultView.agendaView.agendaListView.adapter as? AgendaAdapter
+        adapter?.updateEvents(manager.events)
+        b.agendaDefaultView.agendaView.agendaListView.scrollToCurrentDate(selectedDate.asCalendar)
+    }
+
+    private fun addEvents(
+        events: MutableList<CalendarEvent>,
+        eventList: List<EventFull>
+    ) {
+        events.removeAll { it is AgendaEvent }
 
         events += eventList.map {
             if (!it.seen)

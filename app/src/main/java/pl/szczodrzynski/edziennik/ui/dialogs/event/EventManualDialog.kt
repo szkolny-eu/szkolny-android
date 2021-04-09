@@ -20,7 +20,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
@@ -599,8 +598,6 @@ class EventManualDialog(
 
         dialog.dismiss()
         Toast.makeText(activity, R.string.saved, Toast.LENGTH_SHORT).show()
-        if (activity is MainActivity && activity.navTargetId == DRAWER_ITEM_AGENDA)
-            activity.reloadTarget()
     }
     private fun finishRemoving() {
         editingEvent ?: return
@@ -613,7 +610,5 @@ class EventManualDialog(
         removeEventDialog?.dismiss()
         dialog.dismiss()
         Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
-        if (activity is MainActivity && activity.navTargetId == DRAWER_ITEM_AGENDA)
-            activity.reloadTarget()
     }
 }
