@@ -26,6 +26,8 @@ import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.event.AgendaEvent
+import pl.szczodrzynski.edziennik.ui.modules.agenda.event.AgendaEventGroup
+import pl.szczodrzynski.edziennik.ui.modules.agenda.event.AgendaEventGroupRenderer
 import pl.szczodrzynski.edziennik.ui.modules.agenda.event.AgendaEventRenderer
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchanges.LessonChangesEvent
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchanges.LessonChangesEventRenderer
@@ -111,6 +113,7 @@ class AgendaFragmentDefault(
                 }
             },
             AgendaEventRenderer(isCompactMode),
+            AgendaEventGroupRenderer(),
             LessonChangesEventRenderer(),
             TeacherAbsenceEventRenderer()
         )
@@ -135,10 +138,33 @@ class AgendaFragmentDefault(
     ) {
         events.removeAll { it is AgendaEvent }
 
-        events += eventList.map {
-            if (!it.seen)
-                unreadDates.add(it.date.value)
-            AgendaEvent(it)
+        if (!profileConfig.agendaGroupByType) {
+            events += eventList.map {
+                if (!it.seen)
+                    unreadDates.add(it.date.value)
+                AgendaEvent(it)
+            }
+            return
+        }
+
+        eventList.groupBy {
+            it.date.value to it.type
+        }.forEach { (_, list) ->
+            val event = list.first()
+            if (list.size == 1) {
+                if (!event.seen)
+                    unreadDates.add(event.date.value)
+                events += AgendaEvent(event)
+            }
+            else {
+                events.add(0, AgendaEventGroup(
+                    profileId = event.profileId,
+                    date = event.date,
+                    typeName = event.typeName ?: "-",
+                    typeColor = event.typeColor ?: event.eventColor,
+                    eventCount = list.size
+                ))
+            }
         }
     }
 

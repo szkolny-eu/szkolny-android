@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-4-10.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/foreground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="@drawable/bg_rounded_8dp_outline"
+    tools:foregroundTint="@color/blue_selected">
+
+    <LinearLayout
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rounded_8dp"
+        android:orientation="horizontal"
+        tools:backgroundTint="@color/blue_selected"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_8dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textAppearance="@style/NavView.TextView.Medium"
+            tools:backgroundTint="@color/blue_selected"
+            tools:text="informacja"
+            tools:textColor="@color/md_white_1000" />
+
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="2dp"
+            android:layout_marginRight="-1dp"
+            android:background="@drawable/bg_rounded_8dp"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:paddingStart="16dp"
+            android:paddingLeft="16dp"
+            android:paddingEnd="18dp"
+            android:paddingRight="18dp"
+            android:textSize="20sp"
+            tools:backgroundTint="?android:colorBackground"
+            tools:text="3" />
+    </LinearLayout>
+</FrameLayout>
