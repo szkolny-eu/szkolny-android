@@ -11,5 +11,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
 
     <dimen name="section_margin_top">16dp</dimen>
     <dimen name="section_underline_height">2dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>
