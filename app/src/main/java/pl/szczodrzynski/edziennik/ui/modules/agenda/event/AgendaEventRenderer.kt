@@ -11,12 +11,16 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedEventBinding
 import pl.szczodrzynski.edziennik.utils.Colors
 
-class AgendaEventRenderer : EventRenderer<AgendaEvent>() {
+class AgendaEventRenderer(
+    private val isCompact: Boolean
+) : EventRenderer<AgendaEvent>() {
 
     @SuppressLint("SetTextI18n")
     override fun render(view: View, aEvent: AgendaEvent) {
         val b = AgendaWrappedEventBinding.bind(view).item
         val event = aEvent.event
+
+        b.isCompact = isCompact
 
         b.card.setCardBackgroundColor(event.eventColor)
         b.eventTitle.setTextColor(Colors.legibleTextColor(event.eventColor))

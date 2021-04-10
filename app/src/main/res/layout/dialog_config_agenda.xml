@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-4-10.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="config"
+            type="pl.szczodrzynski.edziennik.config.ProfileConfigUI" />
+
+        <variable
+            name="isAgendaMode"
+            type="boolean" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/agenda_config_appearance"
+                android:textAppearance="@style/NavView.TextView.Subtitle" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.agendaLessonChanges}"
+                android:minHeight="32dp"
+                android:text="@string/agenda_config_lesson_changes" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.agendaTeacherAbsence}"
+                android:minHeight="32dp"
+                android:text="@string/agenda_config_teacher_absence" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.agendaCompactMode}"
+                android:enabled="@{isAgendaMode}"
+                android:minHeight="32dp"
+                android:text="@string/agenda_config_compact_mode"
+                tools:enabled="false" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:enabled="@{isAgendaMode}"
+                android:text="@string/agenda_config_compact_mode_hint"
+                android:textAppearance="@style/NavView.TextView.Small"
+                tools:enabled="false" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.agendaGroupByType}"
+                android:enabled="@{isAgendaMode}"
+                android:minHeight="32dp"
+                android:text="@string/agenda_config_group_by_type"
+                tools:enabled="false" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/agenda_config_mode_unavailable"
+                android:textStyle="italic"
+                android:visibility="@{isAgendaMode ? View.GONE : View.VISIBLE}" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/agenda_config_event_sharing"
+                android:textAppearance="@style/NavView.TextView.Subtitle" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/eventSharingEnabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="32dp"
+                android:text="@string/agenda_config_event_sharing_enabled" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/agenda_config_elearning"
+                android:textAppearance="@style/NavView.TextView.Subtitle" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/elearningEnabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.agendaElearningMark}"
+                android:minHeight="32dp"
+                android:onClick="@{() -> elearningType.setEnabled(elearningEnabled.isChecked())}"
+                android:text="@string/agenda_config_elearning_mark" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/elearningType"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{config.agendaElearningMark}"
+                android:hint="@string/agenda_config_elearning_type">
+
+                <pl.szczodrzynski.edziennik.utils.TextInputDropDown
+                    android:id="@+id/elearningTypeDropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.agendaElearningGroup}"
+                android:minHeight="32dp"
+                android:text="@string/agenda_config_elearning_group" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

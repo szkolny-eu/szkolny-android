@@ -25,6 +25,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.agenda.AgendaConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.day.DayDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.Themes
@@ -77,6 +78,13 @@ class AgendaFragment : Fragment(), CoroutineScope {
                                 app.profileId,
                                 defaultDate = AgendaFragmentDefault.selectedDate
                             )
+                        },
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_agenda_config)
+                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+                        .withOnClickListener {
+                            activity.bottomSheet.close()
+                            AgendaConfigDialog(activity, true, null, null)
                         },
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_agenda_change_view)
@@ -135,8 +143,6 @@ class AgendaFragment : Fragment(), CoroutineScope {
 
         agendaDefault = AgendaFragmentDefault(activity, app, b)
         agendaDefault?.initView(this@AgendaFragment)
-
-        b.progressBar.visibility = View.GONE
     }}}
 
     private fun createCalendarAgendaView() { (b as? FragmentAgendaCalendarBinding)?.let { b -> launch {

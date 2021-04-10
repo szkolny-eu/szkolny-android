@@ -3,37 +3,50 @@
   ~ Copyright (c) Kuba Szczodrzyński 2021-4-8.
   -->
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="5dp"
-    tools:cardBackgroundColor="@color/blue_selected">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isCompact"
+            type="boolean" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        app:cardCornerRadius="5dp"
+        tools:cardBackgroundColor="@color/blue_selected">
 
-        <TextView
-            android:id="@+id/eventTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:textSize="16sp"
-            tools:text="sprawdzian - Język polski" />
-
-        <TextView
-            android:id="@+id/eventSubtitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/calendar_text_default"
-            android:textSize="12sp"
-            tools:text="9:05, biologia, Jan Kowalski, 7a" />
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/eventTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:maxLines="@{isCompact ? 2 : 3}"
+                android:textSize="16sp"
+                tools:text="sprawdzian - Język polski" />
+
+            <TextView
+                android:id="@+id/eventSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/calendar_text_default"
+                android:textSize="12sp"
+                android:visibility="@{isCompact ? View.GONE : View.VISIBLE}"
+                tools:text="9:05, biologia, Jan Kowalski, 7a" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

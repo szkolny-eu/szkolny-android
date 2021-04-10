@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.ui.modules.agenda
 import android.util.SparseIntArray
 import androidx.core.util.forEach
 import androidx.core.util.set
+import androidx.core.view.isVisible
 import com.github.tibolte.agendacalendarview.CalendarManager
 import com.github.tibolte.agendacalendarview.CalendarPickerController
 import com.github.tibolte.agendacalendarview.agenda.AgendaAdapter
@@ -21,6 +22,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.day.DayDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.event.AgendaEvent
@@ -44,17 +46,17 @@ class AgendaFragmentDefault(
     private val unreadDates = mutableSetOf<Int>()
     private val events = mutableListOf<CalendarEvent>()
     private var isInitialized = false
+    private val profileConfig by lazy { app.config.forProfile().ui }
 
     suspend fun initView(fragment: AgendaFragment) {
         isInitialized = false
 
         withContext(Dispatchers.Default) {
-            addLessonChanges(events)
+            if (profileConfig.agendaLessonChanges)
+                addLessonChanges(events)
 
-            val showTeacherAbsences = app.profile.getStudentData("showTeacherAbsences", true)
-            if (showTeacherAbsences) {
+            if (profileConfig.agendaTeacherAbsence)
                 addTeacherAbsence(events)
-            }
         }
 
         app.db.eventDao().getAll(app.profileId).observe(fragment) {
@@ -70,6 +72,8 @@ class AgendaFragmentDefault(
         val dateStart = app.profile.dateSemester1Start.asCalendar
         val dateEnd = app.profile.dateYearEnd.asCalendar
 
+        val isCompactMode = profileConfig.agendaCompactMode
+
         b.agendaDefaultView.init(
             events,
             dateStart,
@@ -82,13 +86,15 @@ class AgendaFragmentDefault(
                     val date = Date.fromCalendar(event.instanceDay)
 
                     when (event) {
-                        is AgendaEvent -> DayDialog(activity, app.profileId, date)
+                        is AgendaEvent -> EventDetailsDialog(activity, event.event)
                         is LessonChangesEvent -> LessonChangeDialog(activity, app.profileId, date)
                         is TeacherAbsenceEvent -> TeacherAbsenceDialog(
                             activity,
                             app.profileId,
                             date
                         )
+                        is BaseCalendarEvent -> if (event.isPlaceHolder)
+                            DayDialog(activity, app.profileId, date)
                     }
                 }
 
@@ -104,12 +110,13 @@ class AgendaFragmentDefault(
                     }
                 }
             },
-            AgendaEventRenderer(),
+            AgendaEventRenderer(isCompactMode),
             LessonChangesEventRenderer(),
             TeacherAbsenceEventRenderer()
         )
 
         isInitialized = true
+        b.progressBar.isVisible = false
     }
 
     private fun updateView() {
