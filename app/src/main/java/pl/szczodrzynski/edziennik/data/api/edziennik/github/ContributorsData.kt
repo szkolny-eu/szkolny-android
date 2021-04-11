@@ -1,15 +1,15 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.github
 
-import android.util.Log
+import com.google.gson.GsonBuilder
 import okhttp3.*
-import org.json.JSONArray
+import pl.szczodrzynski.edziennik.data.api.edziennik.github.Contributor
 import pl.szczodrzynski.edziennik.App
 import java.io.IOException
 import kotlin.coroutines.suspendCoroutine
 
-class ContributorsData() {
+object ContributorsData {
 
-    suspend fun getContributors(app: App): JSONArray {
+    suspend fun getContributors(app: App): List<Contributor> {
 
         val request = Request.Builder()
             .url("https://api.github.com/repos/szkolny-eu/szkolny-android/contributors")
@@ -27,8 +27,10 @@ class ContributorsData() {
                     if (!response.isSuccessful)
                         cont.resumeWith(Result.failure(IOException("Unexpected code $response")))
 
-                    val jsonString = response.body()?.string()
-                    val json = JSONArray(jsonString)
+                    val gson = GsonBuilder().create()
+
+                    val body = response.body()?.string()
+                    val json = gson.fromJson(body, Array<Contributor>::class.java).toList()
                     cont.resumeWith(Result.success(json))
                 }
             })

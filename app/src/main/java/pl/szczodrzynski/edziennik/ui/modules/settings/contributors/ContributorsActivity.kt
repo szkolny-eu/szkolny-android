@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.github.ContributorsData
+import pl.szczodrzynski.edziennik.data.api.edziennik.github.Contributor
 
 class ContributorsActivity() : AppCompatActivity() {
 
@@ -20,10 +21,11 @@ class ContributorsActivity() : AppCompatActivity() {
 
         val app: App = this.application as App
 
-        val contributorsData = ContributorsData()
         lifecycleScope.launch {
-            val contributorsJSON = contributorsData.getContributors(app)
-            Log.e("Response", contributorsJSON.toString())
+            val contributors: List<Contributor> = ContributorsData.getContributors(app)
+            for(contributor in contributors) {
+                Log.e("Response", contributor.login)
+            }
         }
 
         setContentView(R.layout.activity_contributors)
