@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Kuba Szczodrzyński 2021-4-10.
+  ~ Copyright (c) Kuba Szczodrzyński 2021-4-11.
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,8 +10,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_rounded_8dp"
     android:foreground="@drawable/bg_rounded_8dp_outline"
-    tools:backgroundTint="@color/blue_selected"
-    tools:foregroundTint="@color/blue_selected">
+    tools:backgroundTint="#ff1744"
+    tools:foregroundTint="#ff1744">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,12 +23,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
+            android:gravity="center_vertical"
             android:padding="10dp"
             android:textAppearance="@style/NavView.TextView.Medium"
-            tools:text="informacja"
+            tools:text="@string/agenda_lesson_changes"
             tools:textColor="@color/md_white_1000" />
 
         <TextView
@@ -36,16 +34,21 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginVertical="2dp"
-            android:layout_marginRight="-1dp"
-            android:background="@drawable/bg_rounded_8dp"
             android:gravity="center"
-            android:paddingStart="16dp"
-            android:paddingLeft="16dp"
-            android:paddingEnd="18dp"
-            android:paddingRight="18dp"
+            android:paddingHorizontal="16dp"
             android:textSize="20sp"
-            tools:backgroundTint="?android:colorBackground"
-            tools:text="3" />
+            tools:text="3"
+            tools:textColor="@color/md_white_1000" />
+
+        <View
+            android:id="@+id/badgeBackground"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_rounded_8dp"
+            android:layout_marginRight="-24dp"
+            android:layout_marginEnd="-24dp"
+            android:layout_marginTop="-24dp"
+            tools:backgroundTint="?android:colorBackground"/>
     </LinearLayout>
 
     <View
@@ -53,6 +56,6 @@
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_gravity="end"
-        android:layout_margin="6dp"
+        android:layout_margin="8dp"
         android:background="@drawable/unread_red_circle" />
 </FrameLayout>

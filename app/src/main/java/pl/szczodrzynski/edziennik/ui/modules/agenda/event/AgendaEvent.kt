@@ -8,12 +8,13 @@ import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.ui.modules.agenda.BaseEvent
 
 class AgendaEvent(
-    val event: EventFull
+    val event: EventFull,
+    showBadge: Boolean = !event.seen
 ) : BaseEvent(
     id = event.id,
     time = event.startTimeCalendar,
     color = event.eventColor,
-    showBadge = !event.seen
+    showBadge = showBadge
 ) {
-    override fun copy() = AgendaEvent(event)
+    override fun copy() = AgendaEvent(event, showBadge)
 }

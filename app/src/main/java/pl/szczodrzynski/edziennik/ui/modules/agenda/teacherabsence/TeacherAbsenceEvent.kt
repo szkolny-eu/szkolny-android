@@ -10,12 +10,12 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 class TeacherAbsenceEvent(
     val profileId: Int,
     val date: Date,
-    val absenceCount: Int
+    val count: Int
 ) : BaseEvent(
     id = date.value.toLong(),
     time = date.asCalendar,
     color = 0xffff1744.toInt(),
     showBadge = false
 ) {
-    override fun copy() = TeacherAbsenceEvent(profileId, date, absenceCount)
+    override fun copy() = TeacherAbsenceEvent(profileId, date, count)
 }

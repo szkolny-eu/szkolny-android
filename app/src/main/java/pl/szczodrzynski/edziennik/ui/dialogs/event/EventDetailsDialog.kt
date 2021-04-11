@@ -92,6 +92,10 @@ class EventDetailsDialog(
         b.eventShared = eventShared
         b.eventOwn = eventOwn
 
+        if (!event.seen) {
+            app.eventManager.markAsSeen(event)
+        }
+
         val bullet = " • "
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 

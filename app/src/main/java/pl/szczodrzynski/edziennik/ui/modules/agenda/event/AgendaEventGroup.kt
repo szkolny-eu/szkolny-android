@@ -12,12 +12,13 @@ class AgendaEventGroup(
     val date: Date,
     val typeName: String,
     val typeColor: Int,
-    val eventCount: Int
+    val count: Int,
+    showBadge: Boolean
 ) : BaseEvent(
     id = date.value.toLong(),
     time = date.asCalendar,
     color = typeColor,
-    showBadge = false
+    showBadge = showBadge
 ) {
-    override fun copy() = AgendaEventGroup(profileId, date, typeName, typeColor, eventCount)
+    override fun copy() = AgendaEventGroup(profileId, date, typeName, typeColor, count, showBadge)
 }

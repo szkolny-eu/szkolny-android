@@ -13,7 +13,8 @@ open class BaseEvent(
     private val id: Long,
     private val time: Calendar,
     private val color: Int,
-    private val showBadge: Boolean
+    private var showBadge: Boolean,
+    var showItemBadge: Boolean = showBadge
 ) : CalendarEvent {
 
     override fun copy() = BaseEvent(id, time, color, showBadge)
@@ -36,6 +37,12 @@ open class BaseEvent(
         weekReference = value
     }
 
+    override fun getShowBadge() = showBadge
+    override fun setShowBadge(value: Boolean) {
+        showBadge = value
+        showItemBadge = value
+    }
+
     override fun getId() = id
     override fun getStartTime() = time
     override fun getEndTime() = time
@@ -44,7 +51,6 @@ open class BaseEvent(
     override fun getLocation() = ""
     override fun getColor() = color
     override fun getTextColor() = 0
-    override fun getShowBadge() = showBadge
     override fun isPlaceholder() = false
     override fun isAllDay() = false
 
@@ -55,7 +61,6 @@ open class BaseEvent(
     override fun setDescription(value: String) = Unit
     override fun setLocation(value: String) = Unit
     override fun setTextColor(value: Int) = Unit
-    override fun setShowBadge(value: Boolean) = Unit
     override fun setPlaceholder(value: Boolean) = Unit
     override fun setAllDay(value: Boolean) = Unit
 }
