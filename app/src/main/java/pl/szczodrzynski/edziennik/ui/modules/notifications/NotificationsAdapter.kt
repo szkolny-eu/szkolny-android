@@ -45,7 +45,7 @@ class NotificationsAdapter(
         val date = Date.fromMillis(item.addedDate).formattedString
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
-        b.notificationIcon.icon = IconicsDrawable(app, item.getLargeIcon()).apply {
+        b.notificationIcon.background = IconicsDrawable(app, item.getLargeIcon()).apply {
             colorRes = R.color.colorPrimary
         }
 
