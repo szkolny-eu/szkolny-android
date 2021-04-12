@@ -969,6 +969,8 @@
     <string name="settings_theme_open_drawer_on_back_pressed_text">Back button opens drawer</string>
     <string name="settings_theme_snowfall_subtext">Jingle all the way</string>
     <string name="settings_theme_snowfall_text">Jingle bells, Jingle bells</string>
+    <string name="settings_theme_eggfall_subtext">Brrrr</string>
+    <string name="settings_theme_eggfall_text">Bajo jajo, bajo jajo</string>
     <string name="settings_theme_theme_pink">Pink</string>
     <string name="settings_theme_theme_system">System</string>
     <string name="settings_theme_theme_text">Theme</string>
