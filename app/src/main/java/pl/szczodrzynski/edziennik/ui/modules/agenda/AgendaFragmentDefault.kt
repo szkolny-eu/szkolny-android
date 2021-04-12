@@ -59,17 +59,27 @@ class AgendaFragmentDefault(
     private val manager
         get() = CalendarManager.getInstance()
 
-    // TODO: 2021-04-11 find a way to attach the OnScrollListener automatically
-    // then set this to IDLE by default
-    // the FAB also needs the original listener, though
-    private var scrollState = OnScrollListener.SCROLL_STATE_TOUCH_SCROLL
+    private var scrollState = OnScrollListener.SCROLL_STATE_IDLE
     private var updatePending = false
     private var notifyPending = false
     override fun onScrollStateChanged(view: AbsListView?, newScrollState: Int) {
+        b.agendaDefaultView.agendaScrollListener.onScrollStateChanged(view, scrollState)
         scrollState = newScrollState
         if (updatePending) updateData()
         if (notifyPending) notifyDataSetChanged()
     }
+
+    override fun onScroll(
+        view: AbsListView?,
+        firstVisibleItem: Int,
+        visibleItemCount: Int,
+        totalItemCount: Int
+    ) = b.agendaDefaultView.agendaScrollListener.onScroll(
+        view,
+        firstVisibleItem,
+        visibleItemCount,
+        totalItemCount
+    )
 
     /**
      * Mark the data as needing update, either after 1 second (when
@@ -93,13 +103,6 @@ class AgendaFragmentDefault(
             adapter?.notifyDataSetChanged()
         } else notifyPending = true
     }
-
-    override fun onScroll(
-        view: AbsListView?,
-        firstVisibleItem: Int,
-        visibleItemCount: Int,
-        totalItemCount: Int
-    ) = Unit
 
     suspend fun initView(fragment: AgendaFragment) {
         isInitialized = false
@@ -182,6 +185,8 @@ class AgendaFragmentDefault(
             LessonChangesEventRenderer(),
             TeacherAbsenceEventRenderer()
         )
+
+        listView.setOnScrollListener(this)
 
         isInitialized = true
         b.progressBar.isVisible = false
