@@ -17,13 +17,14 @@ class LessonChangesEventRenderer : EventRenderer<LessonChangesEvent>() {
 
     override fun render(view: View, event: LessonChangesEvent) {
         val b = AgendaWrappedCounterBinding.bind(view).item
+        val textColor = Colors.legibleTextColor(event.color)
 
         b.card.foreground.setTintColor(event.color)
         b.card.background.setTintColor(event.color)
         b.name.setText(R.string.agenda_lesson_changes)
-        b.name.setTextColor(Colors.legibleTextColor(event.color))
+        b.name.setTextColor(textColor)
         b.count.text = event.count.toString()
-        b.count.setTextColor(b.name.currentTextColor)
+        b.count.setTextColor(textColor)
 
         b.badgeBackground.isVisible = event.showItemBadge
         b.badgeBackground.background.setTintColor(
