@@ -49,4 +49,24 @@ class ProfileConfigUI(private val config: ProfileConfig) {
     var homeCards: List<HomeCardModel>
         get() { mHomeCards = mHomeCards ?: config.values.get("homeCards", listOf(), HomeCardModel::class.java); return mHomeCards ?: listOf() }
         set(value) { config.set("homeCards", value); mHomeCards = value }
+
+    private var mMessagesGreetingOnCompose: Boolean? = null
+    var messagesGreetingOnCompose: Boolean
+        get() { mMessagesGreetingOnCompose = mMessagesGreetingOnCompose ?: config.values.get("messagesGreetingOnCompose", true); return mMessagesGreetingOnCompose ?: true }
+        set(value) { config.set("messagesGreetingOnCompose", value); mMessagesGreetingOnCompose = value }
+
+    private var mMessagesGreetingOnReply: Boolean? = null
+    var messagesGreetingOnReply: Boolean
+        get() { mMessagesGreetingOnReply = mMessagesGreetingOnReply ?: config.values.get("messagesGreetingOnReply", true); return mMessagesGreetingOnReply ?: true }
+        set(value) { config.set("messagesGreetingOnReply", value); mMessagesGreetingOnReply = value }
+
+    private var mMessagesGreetingOnForward: Boolean? = null
+    var messagesGreetingOnForward: Boolean
+        get() { mMessagesGreetingOnForward = mMessagesGreetingOnForward ?: config.values.get("messagesGreetingOnForward", false); return mMessagesGreetingOnForward ?: false }
+        set(value) { config.set("messagesGreetingOnForward", value); mMessagesGreetingOnForward = value }
+
+    private var mMessagesGreetingText: String? = null
+    var messagesGreetingText: String?
+        get() { mMessagesGreetingText = mMessagesGreetingText ?: config.values["messagesGreetingText"]; return mMessagesGreetingText }
+        set(value) { config.set("messagesGreetingText", value); mMessagesGreetingText = value }
 }

@@ -1444,4 +1444,10 @@
     <string name="legend_event_added_manually">{cmd-clipboard-edit-outline} wydarzenie dodane ręcznie</string>
     <string name="legend_event_is_done">{cmd-check} oznaczono jako wykonane</string>
     <string name="agenda_config_not_available_yet">Funkcja jeszcze nie jest dostępna.</string>
+    <string name="messages_config_compose">Tworzenie wiadomości</string>
+    <string name="messages_config_greeting_on_compose">Dodaj podpis przy tworzeniu wiadomości</string>
+    <string name="messages_config_greeting_on_reply">Dodaj podpis przy odpowiadaniu na wiadomość</string>
+    <string name="messages_config_greeting_on_forward">Dodaj podpis przy przekazywaniu wiadomości</string>
+    <string name="messages_config_greeting_text">Treść podpisu</string>
+    <string name="menu_messages_config">Ustawienia wiadomości</string>
 </resources>
