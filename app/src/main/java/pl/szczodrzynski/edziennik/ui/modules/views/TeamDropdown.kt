@@ -5,9 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.modules.views
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.util.AttributeSet
-import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
@@ -20,22 +18,10 @@ class TeamDropdown : TextInputDropDown {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private val activity: AppCompatActivity?
-        get() {
-            var context: Context? = context ?: return null
-            if (context is AppCompatActivity) return context
-            while (context is ContextWrapper) {
-                if (context is AppCompatActivity)
-                    return context
-                context = context.baseContext
-            }
-            return null
-        }
-
     lateinit var db: AppDb
     var profileId: Int = 0
     var showNoTeam = true
-    var onTeamSelected: ((teamId: Long?) -> Unit)? = null
+    var onTeamSelected: ((team: Team?) -> Unit)? = null
 
     override fun create(context: Context) {
         super.create(context)
@@ -59,7 +45,7 @@ class TeamDropdown : TextInputDropDown {
             list += teams.map { Item(
                     it.id,
                     it.name,
-                    tag = it.id
+                    tag = it
             ) }
 
             list
@@ -72,10 +58,11 @@ class TeamDropdown : TextInputDropDown {
             when (it.tag) {
                 -1L -> {
                     // no team
+                    deselect()
                     onTeamSelected?.invoke(null)
-                    true
+                    false
                 }
-                is Long -> {
+                is Team -> {
                     // selected a team
                     onTeamSelected?.invoke(it.tag)
                     true
@@ -85,21 +72,29 @@ class TeamDropdown : TextInputDropDown {
         }
     }
 
-    fun selectTeam(teamId: Long) {
-        if (select(teamId) == null)
-            select(Item(
-                    teamId,
-                    "nieznana grupa ($teamId)",
-                    tag = teamId
-            ))
+    /**
+     * Select a teacher by the [teamId].
+     */
+    fun selectTeam(teamId: Long): Item? {
+        if (teamId == -1L) {
+            deselect()
+            return null
+        }
+        return select(teamId)
     }
 
-    fun selectDefault(teamId: Long?) {
+    /**
+     * Select a team by the [teamId] **if it's not selected yet**.
+     */
+    fun selectDefault(teamId: Long?): Item? {
         if (teamId == null || selected != null)
-            return
-        selectTeam(teamId)
+            return null
+        return selectTeam(teamId)
     }
 
+    /**
+     * Select a team of the [Team.TYPE_CLASS] type.
+     */
     fun selectTeamClass() {
         select(items.singleOrNull {
             it.tag is Team && it.tag.type == Team.TYPE_CLASS
@@ -110,12 +105,12 @@ class TeamDropdown : TextInputDropDown {
      * Get the currently selected team.
      * ### Returns:
      * - null if no valid team is selected
-     * - [Long] - the team's ID
+     * - [Team] - the selected team
      */
-    fun getSelected(): Any? {
+    fun getSelected(): Team? {
         return when (selected?.tag) {
             -1L -> null
-            is Long -> selected?.tag as Long
+            is Team -> selected?.tag as Team
             else -> null
         }
     }

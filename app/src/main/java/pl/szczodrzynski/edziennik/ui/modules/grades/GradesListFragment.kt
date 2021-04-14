@@ -48,9 +48,12 @@ class GradesListFragment : Fragment(), CoroutineScope {
         get() = job + Dispatchers.Main
 
     // local/private variables go here
-    private val manager by lazy { app.gradesManager }
-    private val dontCountEnabled by lazy { manager.dontCountEnabled }
-    private val dontCountGrades by lazy { manager.dontCountGrades }
+    private val manager
+        get() = app.gradesManager
+    private val dontCountEnabled
+        get() = manager.dontCountEnabled
+    private val dontCountGrades
+        get() = manager.dontCountGrades
     private var expandSubjectId = 0L
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

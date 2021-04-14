@@ -1427,4 +1427,21 @@
     <string name="permissions_generate_timetable">Aby móc zapisać wygenerowany plan lekcji musisz przyznać uprawnienia dostępu do pamięci urządzenia.\n\nKliknij OK, aby przyznać uprawnienia.</string>
     <string name="privacy_policy_dialog_html"><![CDATA[Korzystając z aplikacji potwierdzasz <a href="https://szkolny.eu/privacy-policy">przeczytanie Polityki prywatności</a> i akceptujesz jej postanowienia.<br /><br />Autorzy aplikacji nie biorą odpowiedzialności za korzystanie z aplikacji Szkolny.eu.]]></string>
     <string name="login_chooser_version_format">Szkolny.eu v%s\n%s</string>
+    <string name="menu_agenda_config">Ustawienia terminarza</string>
+    <string name="agenda_config_appearance">Wygląd</string>
+    <string name="agenda_config_lesson_changes">Pokazuj zmiany planu lekcji</string>
+    <string name="agenda_config_teacher_absence">Pokazuj nieobecności nauczycieli</string>
+    <string name="agenda_config_compact_mode">Tryb kompaktowy</string>
+    <string name="agenda_config_compact_mode_hint">Mniejszy rozmiar wydarzeń na liście</string>
+    <string name="agenda_config_group_by_type">Grupuj wydarzenia tego samego typu</string>
+    <string name="agenda_config_mode_unavailable">Niedostępne w trybie kalendarza</string>
+    <string name="agenda_config_event_sharing">Udostępnianie wydarzeń</string>
+    <string name="agenda_config_event_sharing_enabled">Włącz Udostępnianie wydarzeń</string>
+    <string name="agenda_config_elearning">Nauczanie zdalne</string>
+    <string name="agenda_config_elearning_mark">Ustaw wydarzenia jako lekcje on-line</string>
+    <string name="agenda_config_elearning_type">Wybierz rodzaj wydarzeń</string>
+    <string name="agenda_config_elearning_group">Grupuj lekcje on-line na liście</string>
+    <string name="legend_event_added_manually">{cmd-clipboard-edit-outline} wydarzenie dodane ręcznie</string>
+    <string name="legend_event_is_done">{cmd-check} oznaczono jako wykonane</string>
+    <string name="agenda_config_not_available_yet">Funkcja jeszcze nie jest dostępna.</string>
 </resources>
