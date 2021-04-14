@@ -84,6 +84,9 @@ class TeacherDropdown : TextInputDropDown {
         }
     }
 
+    /**
+     * Select a teacher by the [teacherId].
+     */
     fun selectTeacher(teacherId: Long) {
         if (select(teacherId) == null)
             select(Item(
@@ -93,6 +96,9 @@ class TeacherDropdown : TextInputDropDown {
             ))
     }
 
+    /**
+     * Select a teacher by the [teacherId] **if it's not selected yet**.
+     */
     fun selectDefault(teacherId: Long?) {
         if (teacherId == null || selected != null)
             return

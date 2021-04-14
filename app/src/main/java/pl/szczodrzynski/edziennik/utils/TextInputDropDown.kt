@@ -1,7 +1,11 @@
 package pl.szczodrzynski.edziennik.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import com.google.android.material.textfield.TextInputEditText
 import com.mikepenz.iconics.IconicsDrawable
@@ -33,6 +37,7 @@ open class TextInputDropDown : TextInputEditText {
         setText(selected?.displayText ?: selected?.text)
     }
 
+    @SuppressLint("RestrictedApi")
     open fun create(context: Context) {
         val drawable = IconicsDrawable(context, CommunityMaterial.Icon.cmd_chevron_down).apply {
             colorInt = Themes.getPrimaryTextColor(context)
@@ -58,7 +63,9 @@ open class TextInputDropDown : TextInputEditText {
             val popup = PopupMenu(context, this)
 
             items.forEachIndexed { index, item ->
-                popup.menu.add(0, item.id.toInt(), index, item.text)
+                popup.menu.add(0, item.id.toInt(), index, item.text).also {
+                    it.icon = item.icon
+                }
             }
 
             popup.setOnMenuItemClickListener { menuItem ->
@@ -70,29 +77,46 @@ open class TextInputDropDown : TextInputEditText {
                 true
             }
 
-            popup.setOnDismissListener {
+            val helper = MenuPopupHelper(context, popup.menu as MenuBuilder, this)
+            helper.setForceShowIcon(true)
+            helper.setOnDismissListener {
                 clearFocus()
             }
-
-            popup.show()
+            helper.show()
         }
     }
 
-    fun select(item: Item): Item? {
+    /**
+     * Select an arbitrary [item]. Allows to select an item not present
+     * in the original list.
+     */
+    fun select(item: Item): Item {
         selected = item
         updateText()
         error = null
         return item
     }
 
+    /**
+     * Select an item by its ID. Returns the selected item
+     * if found.
+     */
     fun select(id: Long?): Item? {
         return items.singleOrNull { it.id == id }?.let { select(it) }
     }
 
+    /**
+     * Select an item by its tag. Returns the selected item
+     * if found.
+     */
     fun select(tag: Any?): Item? {
         return items.singleOrNull { it.tag == tag }?.let { select(it) }
     }
 
+    /**
+     * Select an item by its index. Returns the selected item
+     * if the index exists.
+     */
     fun select(index: Int): Item? {
         return items.getOrNull(index)?.let { select(it) }
     }
@@ -143,5 +167,11 @@ open class TextInputDropDown : TextInputEditText {
         }
     }
 
-    class Item(val id: Long, val text: CharSequence, val displayText: CharSequence? = null, val tag: Any? = null)
+    class Item(
+        val id: Long,
+        val text: CharSequence,
+        val displayText: CharSequence? = null,
+        val tag: Any? = null,
+        val icon: Drawable? = null
+    )
 }
