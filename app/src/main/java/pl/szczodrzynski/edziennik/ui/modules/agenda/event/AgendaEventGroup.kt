@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 class AgendaEventGroup(
     val profileId: Int,
     val date: Date,
+    val typeId: Long,
     val typeName: String,
     val typeColor: Int,
     val count: Int,
@@ -20,5 +21,5 @@ class AgendaEventGroup(
     color = typeColor,
     showBadge = showBadge
 ) {
-    override fun copy() = AgendaEventGroup(profileId, date, typeName, typeColor, count, showBadge)
+    override fun copy() = AgendaEventGroup(profileId, date, typeId, typeName, typeColor, count, showBadge)
 }

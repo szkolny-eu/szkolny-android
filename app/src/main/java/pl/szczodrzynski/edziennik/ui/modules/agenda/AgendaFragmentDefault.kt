@@ -155,7 +155,7 @@ class AgendaFragmentDefault(
                             app.profileId,
                             date
                         )
-                        is AgendaEventGroup -> DayDialog(activity, app.profileId, date)
+                        is AgendaEventGroup -> DayDialog(activity, app.profileId, date, eventTypeId = event.typeId)
                         is BaseCalendarEvent -> if (event.isPlaceHolder)
                             DayDialog(activity, app.profileId, date)
                     }
@@ -260,6 +260,7 @@ class AgendaFragmentDefault(
                 events.add(0, AgendaEventGroup(
                     profileId = event.profileId,
                     date = event.date,
+                    typeId = event.type,
                     typeName = event.typeName ?: "-",
                     typeColor = event.typeColor ?: event.eventColor,
                     count = list.size,
