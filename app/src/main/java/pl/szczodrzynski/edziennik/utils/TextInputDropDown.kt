@@ -33,7 +33,7 @@ open class TextInputDropDown : TextInputEditText {
     val selectedId
         get() = selected?.id
 
-    fun updateText() {
+    private fun updateText() {
         setText(selected?.displayText ?: selected?.text)
     }
 

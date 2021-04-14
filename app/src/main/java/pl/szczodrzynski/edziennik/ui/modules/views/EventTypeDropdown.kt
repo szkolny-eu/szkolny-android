@@ -5,9 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.modules.views
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.util.AttributeSet
-import androidx.appcompat.app.AppCompatActivity
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
@@ -22,18 +20,6 @@ class EventTypeDropdown : TextInputDropDown {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-
-    private val activity: AppCompatActivity?
-        get() {
-            var context: Context? = context ?: return null
-            if (context is AppCompatActivity) return context
-            while (context is ContextWrapper) {
-                if (context is AppCompatActivity)
-                    return context
-                context = context.baseContext
-            }
-            return null
-        }
 
     lateinit var db: AppDb
     var profileId: Int = 0
@@ -83,9 +69,7 @@ class EventTypeDropdown : TextInputDropDown {
     /**
      * Select an event type by the [typeId].
      */
-    fun selectType(typeId: Long) {
-        select(typeId)
-    }
+    fun selectType(typeId: Long) = select(typeId)
 
     /**
      * Select an event type by the [typeId] **if it's not selected yet**.

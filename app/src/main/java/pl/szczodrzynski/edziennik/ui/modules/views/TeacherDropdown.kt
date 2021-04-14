@@ -5,13 +5,12 @@
 package pl.szczodrzynski.edziennik.ui.modules.views
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.util.AttributeSet
-import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.AppDb
+import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 
 class TeacherDropdown : TextInputDropDown {
@@ -19,22 +18,10 @@ class TeacherDropdown : TextInputDropDown {
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private val activity: AppCompatActivity?
-        get() {
-            var context: Context? = context ?: return null
-            if (context is AppCompatActivity) return context
-            while (context is ContextWrapper) {
-                if (context is AppCompatActivity)
-                    return context
-                context = context.baseContext
-            }
-            return null
-        }
-
     lateinit var db: AppDb
     var profileId: Int = 0
     var showNoTeacher = true
-    var onTeacherSelected: ((teacherId: Long?) -> Unit)? = null
+    var onTeacherSelected: ((teacher: Teacher?) -> Unit)? = null
 
     override fun create(context: Context) {
         super.create(context)
@@ -58,7 +45,7 @@ class TeacherDropdown : TextInputDropDown {
             list += teachers.map { Item(
                     it.id,
                     it.fullName,
-                    tag = it.id
+                    tag = it
             ) }
 
             list
@@ -71,10 +58,11 @@ class TeacherDropdown : TextInputDropDown {
             when (it.tag) {
                 -1L -> {
                     // no teacher
+                    deselect()
                     onTeacherSelected?.invoke(null)
-                    true
+                    false
                 }
-                is Long -> {
+                is Teacher -> {
                     // selected a teacher
                     onTeacherSelected?.invoke(it.tag)
                     true
@@ -87,34 +75,33 @@ class TeacherDropdown : TextInputDropDown {
     /**
      * Select a teacher by the [teacherId].
      */
-    fun selectTeacher(teacherId: Long) {
-        if (select(teacherId) == null)
-            select(Item(
-                    teacherId,
-                    "nieznany nauczyciel ($teacherId)",
-                    tag = teacherId
-            ))
+    fun selectTeacher(teacherId: Long): Item? {
+        if (teacherId == -1L) {
+            deselect()
+            return null
+        }
+        return select(teacherId)
     }
 
     /**
      * Select a teacher by the [teacherId] **if it's not selected yet**.
      */
-    fun selectDefault(teacherId: Long?) {
+    fun selectDefault(teacherId: Long?): Item? {
         if (teacherId == null || selected != null)
-            return
-        selectTeacher(teacherId)
+            return null
+        return selectTeacher(teacherId)
     }
 
     /**
      * Get the currently selected teacher.
      * ### Returns:
      * - null if no valid teacher is selected
-     * - [Long] - the selected teacher's ID
+     * - [Teacher] - the selected teacher
      */
-    fun getSelected(): Long? {
+    fun getSelected(): Teacher? {
         return when (selected?.tag) {
             -1L -> null
-            is Long -> selected?.tag as Long
+            is Teacher -> selected?.tag as Teacher
             else -> null
         }
     }

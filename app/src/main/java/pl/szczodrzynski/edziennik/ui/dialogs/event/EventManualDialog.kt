@@ -23,9 +23,7 @@ import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.db.entity.Event
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
@@ -396,11 +394,11 @@ class EventManualDialog(
     private fun saveEvent() {
         val date = b.dateDropdown.getSelected() as? Date
         val timeSelected = b.timeDropdown.getSelected()
-        val teamId = b.teamDropdown.getSelected() as? Long
-        val type = b.typeDropdown.selected?.id
+        val team = b.teamDropdown.getSelected()
+        val type = b.typeDropdown.getSelected()
         val topic = b.topic.text?.toString()
-        val subjectId = b.subjectDropdown.getSelected() as? Long
-        val teacherId = b.teacherDropdown.getSelected()
+        val subject = b.subjectDropdown.getSelected() as? Subject
+        val teacher = b.teacherDropdown.getSelected()
 
         val share = b.shareSwitch.isChecked
 
@@ -431,7 +429,7 @@ class EventManualDialog(
             isError = true
         }
 
-        if (share && teamId == null) {
+        if (share && team == null) {
             b.teamDropdown.error = app.getString(R.string.dialog_event_manual_team_choose)
             if (!isError) b.teamDropdown.parent.requestChildFocus(b.teamDropdown, b.teamDropdown)
             isError = true
@@ -467,10 +465,10 @@ class EventManualDialog(
                 time = startTime,
                 topic = topic,
                 color = customColor,
-                type = type ?: Event.TYPE_DEFAULT,
-                teacherId = teacherId ?: -1,
-                subjectId = subjectId ?: -1,
-                teamId = teamId ?: -1,
+                type = type?.id ?: Event.TYPE_DEFAULT,
+                teacherId = teacher?.id ?: -1,
+                subjectId = subject?.id ?: -1,
+                teamId = team?.id ?: -1,
                 addedDate = editingEvent?.addedDate ?: System.currentTimeMillis()
         ).also {
             it.addedManually = true
@@ -478,7 +476,7 @@ class EventManualDialog(
 
         val metadataObject = Metadata(
                 profileId,
-                when (type) {
+                when (type?.id) {
                     Event.TYPE_HOMEWORK -> Metadata.TYPE_HOMEWORK
                     else -> Metadata.TYPE_EVENT
                 },
@@ -578,10 +576,10 @@ class EventManualDialog(
         }
 
         onSaveListener?.invoke(eventObject.withMetadata(metadataObject).also {
-            it.subjectLongName = b.subjectDropdown.selected?.text?.toString()
-            it.teacherName = b.teacherDropdown.selected?.text?.toString()
-            it.teamName = b.teamDropdown.selected?.text?.toString()
-            it.typeName = b.typeDropdown.selected?.text?.toString()
+            it.subjectLongName = (b.subjectDropdown.getSelected() as? Subject)?.longName
+            it.teacherName = b.teacherDropdown.getSelected()?.fullName
+            it.teamName = b.teamDropdown.getSelected()?.name
+            it.typeName = b.typeDropdown.getSelected()?.name
         })
         dialog.dismiss()
         Toast.makeText(activity, R.string.saved, Toast.LENGTH_SHORT).show()
