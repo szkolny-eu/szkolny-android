@@ -32,7 +32,7 @@ import kotlin.coroutines.CoroutineContext
 
 class EventDetailsDialog(
         val activity: AppCompatActivity,
-        val event: EventFull,
+        var event: EventFull,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
@@ -139,6 +139,7 @@ class EventDetailsDialog(
                             launch(Dispatchers.Default) {
                                 app.db.eventDao().replace(event)
                             }
+                            update()
                             b.checkDoneButton.isChecked = true
                         }
                         .setNegativeButton(R.string.cancel, null)
@@ -149,6 +150,7 @@ class EventDetailsDialog(
                 launch(Dispatchers.Default) {
                     app.db.eventDao().replace(event)
                 }
+                update()
             }
         }
         b.checkDoneButton.attachToastHint(R.string.hint_mark_as_done)
@@ -160,6 +162,14 @@ class EventDetailsDialog(
                     activity,
                     event.profileId,
                     editingEvent = event,
+                    onSaveListener = {
+                        if (it == null) {
+                            dialog.dismiss()
+                            return@EventManualDialog
+                        }
+                        event = it
+                        update()
+                    },
                     onShowListener = onShowListener,
                     onDismissListener = onDismissListener
             )
@@ -327,8 +337,6 @@ class EventDetailsDialog(
         removeEventDialog?.dismiss()
         dialog.dismiss()
         Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
-        if (activity is MainActivity && activity.navTargetId == MainActivity.DRAWER_ITEM_AGENDA)
-            activity.reloadTarget()
     }
 
     private fun openInCalendar() { launch {

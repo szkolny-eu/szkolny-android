@@ -48,6 +48,7 @@ class EventManualDialog(
         val defaultTime: Time? = null,
         val defaultType: Long? = null,
         val editingEvent: EventFull? = null,
+        val onSaveListener: ((event: EventFull?) -> Unit)? = null,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
@@ -596,6 +597,7 @@ class EventManualDialog(
             }
         }
 
+        onSaveListener?.invoke(eventObject.withMetadata(metadataObject))
         dialog.dismiss()
         Toast.makeText(activity, R.string.saved, Toast.LENGTH_SHORT).show()
     }
@@ -608,6 +610,7 @@ class EventManualDialog(
         }
 
         removeEventDialog?.dismiss()
+        onSaveListener?.invoke(null)
         dialog.dismiss()
         Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
     }
