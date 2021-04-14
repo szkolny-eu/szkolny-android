@@ -54,7 +54,8 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
     private var endHour = DEFAULT_END_HOUR
     private var firstEventMinute = 24 * 60
 
-    private val manager by lazy { app.timetableManager }
+    private val manager
+        get() = app.timetableManager
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }

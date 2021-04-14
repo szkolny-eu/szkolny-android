@@ -10,10 +10,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.github.tibolte.agendacalendarview.render.EventRenderer
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorInt
-import com.mikepenz.iconics.utils.sizeDp
 import com.mikepenz.iconics.view.IconicsTextView
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedEventBinding
@@ -22,8 +18,10 @@ import pl.szczodrzynski.edziennik.join
 import pl.szczodrzynski.edziennik.resolveAttr
 import pl.szczodrzynski.edziennik.setTintColor
 import pl.szczodrzynski.edziennik.utils.Colors
+import pl.szczodrzynski.edziennik.utils.managers.EventManager
 
 class AgendaEventRenderer(
+    val manager: EventManager,
     val isCompact: Boolean
 ) : EventRenderer<AgendaEvent>() {
 
@@ -55,8 +53,6 @@ class AgendaEventRenderer(
         else
             event.time!!.stringHM
 
-        var eventTitle = "${event.typeName ?: "wydarzenie"} - ${event.topic}"
-
         val eventSubtitle = listOfNotNull(
             timeText,
             event.subjectLongName,
@@ -64,27 +60,12 @@ class AgendaEventRenderer(
             event.teamName
         ).join(", ")
 
-        if (event.addedManually) {
-            eventTitle = "{cmd-clipboard-edit-outline} $eventTitle"
-        }
-
         card.foreground.setTintColor(event.eventColor)
         card.background.setTintColor(event.eventColor)
-        title.text = eventTitle
+        manager.setEventTopic(title, event, doneIconColor = textColor)
         title.setTextColor(textColor)
         subtitle?.text = eventSubtitle
         subtitle?.setTextColor(textColor)
-
-        title.setCompoundDrawables(
-            null,
-            null,
-            if (event.isDone) IconicsDrawable(card.context).apply {
-                icon = CommunityMaterial.Icon.cmd_check
-                colorInt = textColor
-                sizeDp = 24
-            } else null,
-            null
-        )
 
         badgeBackground.isVisible = aEvent.showItemBadge
         badgeBackground.background.setTintColor(

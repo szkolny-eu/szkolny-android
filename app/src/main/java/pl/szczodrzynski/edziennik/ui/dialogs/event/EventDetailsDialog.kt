@@ -46,6 +46,8 @@ class EventDetailsDialog(
     private var removeEventDialog: AlertDialog? = null
     private val eventShared = event.sharedBy != null
     private val eventOwn = event.sharedBy == "self"
+    private val manager
+        get() = app.eventManager
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -93,7 +95,7 @@ class EventDetailsDialog(
         b.eventOwn = eventOwn
 
         if (!event.seen) {
-            app.eventManager.markAsSeen(event)
+            manager.markAsSeen(event)
         }
 
         val bullet = " • "
@@ -104,11 +106,7 @@ class EventDetailsDialog(
         }
         catch (_: Exception) {}
 
-        b.legend.text = listOfNotNull(
-            if (event.addedManually) R.string.legend_event_added_manually else null,
-            if (event.isDone) R.string.legend_event_is_done else null
-        ).map { activity.getString(it) }.join("\n")
-        b.legend.isVisible = b.legend.text.isNotBlank()
+        manager.setLegendText(b.legend, event)
 
         b.typeColor.background?.setTintColor(event.eventColor)
 

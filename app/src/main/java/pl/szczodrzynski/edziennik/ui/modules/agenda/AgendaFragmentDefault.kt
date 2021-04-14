@@ -136,7 +136,13 @@ class AgendaFragmentDefault(
             dateEnd,
             Locale.getDefault(),
             object : CalendarPickerController {
-                override fun onDaySelected(dayItem: IDayItem) {}
+                override fun onDaySelected(dayItem: IDayItem) {
+                    val c = Calendar.getInstance()
+                    c.time = dayItem.date
+                    if (c.timeInMillis == selectedDate.inMillis) {
+                        DayDialog(activity, app.profileId, selectedDate)
+                    }
+                }
 
                 override fun onEventSelected(event: CalendarEvent) {
                     val date = Date.fromCalendar(event.instanceDay)
@@ -180,7 +186,7 @@ class AgendaFragmentDefault(
                     }
                 }
             },
-            AgendaEventRenderer(isCompactMode),
+            AgendaEventRenderer(app.eventManager, isCompactMode),
             AgendaEventGroupRenderer(),
             LessonChangesEventRenderer(),
             TeacherAbsenceEventRenderer()
@@ -197,7 +203,7 @@ class AgendaFragmentDefault(
         manager.loadEvents(events, BaseCalendarEvent())
 
         adapter?.updateEvents(manager.events)
-        listView.scrollToCurrentDate(selectedDate.asCalendar)
+        //listView.scrollToCurrentDate(selectedDate.asCalendar)
     }
 
     private fun setAsRead(date: Calendar) {
