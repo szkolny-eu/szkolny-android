@@ -5,7 +5,5 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages.models
 
 class MessagesSearch {
-    var isFocused = false
-    var searchText = ""
-    var count = 0
+    var searchText: CharSequence = ""
 }
