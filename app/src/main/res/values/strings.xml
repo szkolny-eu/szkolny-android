@@ -1439,4 +1439,6 @@
     <string name="agenda_config_elearning_mark">Ustaw wydarzenia jako lekcje on-line</string>
     <string name="agenda_config_elearning_type">Wybierz rodzaj wydarzeń</string>
     <string name="agenda_config_elearning_group">Grupuj lekcje on-line na liście</string>
+    <string name="legend_event_added_manually">{cmd-clipboard-edit-outline} wydarzenie dodane ręcznie</string>
+    <string name="legend_event_is_done">{cmd-check} oznaczono jako wykonane</string>
 </resources>

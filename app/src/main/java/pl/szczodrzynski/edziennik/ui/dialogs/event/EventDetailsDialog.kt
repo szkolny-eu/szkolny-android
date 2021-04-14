@@ -104,6 +104,12 @@ class EventDetailsDialog(
         }
         catch (_: Exception) {}
 
+        b.legend.text = listOfNotNull(
+            if (event.addedManually) R.string.legend_event_added_manually else null,
+            if (event.isDone) R.string.legend_event_is_done else null
+        ).map { activity.getString(it) }.join("\n")
+        b.legend.isVisible = b.legend.text.isNotBlank()
+
         b.typeColor.background?.setTintColor(event.eventColor)
 
         b.details = mutableListOf(
