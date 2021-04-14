@@ -5,16 +5,16 @@
 package pl.szczodrzynski.edziennik.ui.modules.timetable
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
+import androidx.core.view.isVisible
+import androidx.core.view.marginTop
 import androidx.core.view.setPadding
-import androidx.lifecycle.Observer
+import androidx.core.view.updateLayoutParams
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
 import kotlinx.coroutines.*
@@ -24,14 +24,15 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
+import pl.szczodrzynski.edziennik.databinding.TimetableDayFragmentBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableNoTimetableBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.timetable.LessonDetailsDialog
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
-import pl.szczodrzynski.edziennik.utils.ListenerScrollView
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
@@ -44,75 +45,66 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
     private lateinit var app: App
     private lateinit var activity: MainActivity
     private lateinit var inflater: AsyncLayoutInflater
+    private lateinit var b: TimetableDayFragmentBinding
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    private var timeIndicatorJob: Job? = null
+
     private lateinit var date: Date
     private var startHour = DEFAULT_START_HOUR
     private var endHour = DEFAULT_END_HOUR
     private var firstEventMinute = 24 * 60
+    private var paddingTop = 0
 
-    private val manager by lazy { app.timetableManager }
+    private val manager
+        get() = app.timetableManager
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
-    // the day ScrollView
-    private val dayScrollDelegate = lazy {
-        val dayScroll = ListenerScrollView(context!!)
-        dayScroll.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        dayScroll.setOnRefreshLayoutEnabledListener { enabled ->
-            refreshLayout?.isEnabled = enabled
-        }
-        dayScroll
-    }
-    private val dayScroll by dayScrollDelegate
-    // the lesson DayView
+
     private val dayView by lazy {
-        val dayView = DayView(context!!, DayViewConfig(
-                startHour = startHour,
-                endHour = endHour,
-                dividerHeight = 1.dp,
-                halfHourHeight = 60.dp,
-                hourDividerColor = R.attr.hourDividerColor.resolveAttr(context),
-                halfHourDividerColor = R.attr.halfHourDividerColor.resolveAttr(context),
-                hourLabelWidth = 40.dp,
-                hourLabelMarginEnd = 10.dp,
-                eventMargin = 2.dp
+        val dayView = DayView(activity, DayViewConfig(
+            startHour = startHour,
+            endHour = endHour,
+            dividerHeight = 1.dp,
+            halfHourHeight = 60.dp,
+            hourDividerColor = R.attr.hourDividerColor.resolveAttr(context),
+            halfHourDividerColor = R.attr.halfHourDividerColor.resolveAttr(context),
+            hourLabelWidth = 40.dp,
+            hourLabelMarginEnd = 10.dp,
+            eventMargin = 2.dp
         ), true)
         dayView.setPadding(10.dp)
-        dayScroll.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        dayScroll.addView(dayView)
-        dayView
+        return@lazy dayView
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        this.inflater = AsyncLayoutInflater(context!!)
+        this.inflater = AsyncLayoutInflater(requireContext())
+
         date = arguments?.getInt("date")?.let { Date.fromValue(it) } ?: Date.getToday()
         startHour = arguments?.getInt("startHour") ?: DEFAULT_START_HOUR
         endHour = arguments?.getInt("endHour") ?: DEFAULT_END_HOUR
-        return FrameLayout(activity).apply {
-            layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            addView(ProgressBar(activity).apply {
-                layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER)
-            })
-        }
+
+        b = TimetableDayFragmentBinding.inflate(inflater, null, false)
+        return b.root
     }
 
     override fun onPageCreated(): Boolean {
         // observe lesson database
-        app.db.timetableDao().getAllForDate(App.profileId, date).observe(this, Observer { lessons ->
+        app.db.timetableDao().getAllForDate(App.profileId, date).observe(this) { lessons ->
             launch {
                 val events = withContext(Dispatchers.Default) {
                     app.db.eventDao().getAllByDateNow(App.profileId, date)
                 }
                 processLessonList(lessons, events)
             }
-        })
+        }
 
         return true
     }
@@ -120,9 +112,10 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
     private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>) {
         // no lessons - timetable not downloaded yet
         if (lessons.isEmpty()) {
-            inflater.inflate(R.layout.timetable_no_timetable, view as FrameLayout?) { view, _, parent ->
-                parent?.removeAllViews()
-                parent?.addView(view)
+            inflater.inflate(R.layout.timetable_no_timetable, b.root) { view, _, _ ->
+                b.root.removeAllViews()
+                b.root.addView(view)
+
                 val b = TimetableNoTimetableBinding.bind(view)
                 val weekStart = date.weekStart.stringY_m_d
                 b.noTimetableSync.onClick {
@@ -143,9 +136,9 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         }
         // one lesson indicating a day without lessons
         if (lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
-            inflater.inflate(R.layout.timetable_no_lessons, view as FrameLayout?) { view, _, parent ->
-                parent?.removeAllViews()
-                parent?.addView(view)
+            inflater.inflate(R.layout.timetable_no_lessons, b.root) { view, _, _ ->
+                b.root.removeAllViews()
+                b.root.addView(view)
             }
             return
         }
@@ -157,12 +150,12 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             return
         }
 
-        // clear the root view and add the ScrollView
-        (view as FrameLayout?)?.removeAllViews()
-        (view as FrameLayout?)?.addView(dayScroll)
+        b.scrollView.isVisible = true
+        b.dayFrame.removeView(b.dayView)
+        b.dayFrame.addView(dayView, 0)
 
         // Inflate a label view for each hour the day view will display
-        val hourLabelViews = ArrayList<View>()
+        val hourLabelViews = mutableListOf<View>()
         for (i in dayView.startHour..dayView.endHour) {
             if (!isAdded)
                 continue
@@ -171,6 +164,11 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             hourLabelViews.add(hourLabelView)
         }
         dayView.setHourLabelViews(hourLabelViews)
+        // measure dayView top padding needed for the timeIndicator
+        hourLabelViews.getOrNull(0)?.let {
+            it.measure(0, 0)
+            paddingTop = it.measuredHeight / 2 + dayView.paddingTop
+        }
 
         lessons.forEach { it.showAsUnseen = !it.seen }
 
@@ -201,8 +199,12 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
             // Try to recycle an existing event view if there are enough left, otherwise inflate
             // a new one
-            val eventView = (if (remaining > 0) recycled?.get(--remaining) else layoutInflater.inflate(R.layout.timetable_lesson, dayView, false))
-                    ?: continue
+            val eventView =
+                (if (remaining > 0) recycled?.get(--remaining) else layoutInflater.inflate(
+                    R.layout.timetable_lesson,
+                    dayView,
+                    false
+                )) ?: continue
             val lb = TimetableLessonBinding.bind(eventView)
             eventViews += eventView
 
@@ -290,16 +292,50 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             eventTimeRanges.add(DayView.EventTimeRange(startMinute, endMinute))
         }
 
+        updateTimeIndicator()
+
         dayView.setEventViews(eventViews, eventTimeRanges)
         val firstEventTop = (firstEventMinute - dayView.startHour * 60) * dayView.minuteHeight
-        dayScroll.scrollTo(0, firstEventTop.toInt())
+        b.scrollView.scrollTo(0, firstEventTop.toInt())
+
+        b.progressBar.isVisible = false
+    }
+
+    private fun updateTimeIndicator() {
+        val time = Time.getNow()
+        val isTimeInView =
+            date == Date.getToday() && time.hour in dayView.startHour..dayView.endHour
+
+        b.timeIndicator.isVisible = isTimeInView
+        b.timeIndicatorMarker.isVisible = isTimeInView
+        if (isTimeInView) {
+            val startTime = Time(dayView.startHour, 0, 0)
+            val seconds = time.inSeconds - startTime.inSeconds * 1f
+            b.timeIndicator.updateLayoutParams<FrameLayout.LayoutParams> {
+                topMargin = (seconds * dayView.minuteHeight / 60f).toInt() + paddingTop
+            }
+            b.timeIndicatorMarker.updateLayoutParams<FrameLayout.LayoutParams> {
+                topMargin = b.timeIndicator.marginTop - (16.dp / 2) + (1.dp / 2)
+            }
+        }
+
+        if (timeIndicatorJob == null) {
+            timeIndicatorJob = startCoroutineTimer(repeatMillis = 30000) {
+                updateTimeIndicator()
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        if (dayScrollDelegate.isInitialized()) {
-            val firstEventTop = (firstEventMinute - dayView.startHour * 60) * dayView.minuteHeight
-            dayScroll.scrollTo(0, firstEventTop.toInt())
-        }
+        val firstEventTop = (firstEventMinute - dayView.startHour * 60) * dayView.minuteHeight
+        b.scrollView.scrollTo(0, firstEventTop.toInt())
+        updateTimeIndicator()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timeIndicatorJob?.cancel()
+        timeIndicatorJob = null
     }
 }

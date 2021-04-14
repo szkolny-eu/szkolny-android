@@ -50,7 +50,8 @@ class LessonDetailsDialog(
         get() = job + Dispatchers.Main
 
     private lateinit var adapter: EventListAdapter
-    private val manager by lazy { app.timetableManager }
+    private val manager
+        get() = app.timetableManager
 
     init { run {
         if (activity.isFinishing)

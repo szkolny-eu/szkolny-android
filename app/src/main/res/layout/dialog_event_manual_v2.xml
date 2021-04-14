@@ -94,7 +94,7 @@
                 android:layout_weight="1"
                 android:hint="@string/dialog_event_manual_type">
 
-                <pl.szczodrzynski.edziennik.utils.TextInputDropDown
+                <pl.szczodrzynski.edziennik.ui.modules.views.EventTypeDropdown
                     android:id="@+id/typeDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

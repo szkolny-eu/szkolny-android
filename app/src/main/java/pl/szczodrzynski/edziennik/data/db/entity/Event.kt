@@ -116,14 +116,7 @@ open class Event(
     var showAsUnseen: Boolean? = null
 
     val startTimeCalendar: Calendar
-        get() = Calendar.getInstance().also { it.set(
-                date.year,
-                date.month - 1,
-                date.day,
-                time?.hour ?: 0,
-                time?.minute ?: 0,
-                time?.second ?: 0
-        ) }
+        get() = date.getAsCalendar(time)
 
     val endTimeCalendar: Calendar
         get() = startTimeCalendar.also {

@@ -32,7 +32,7 @@ import kotlin.coroutines.CoroutineContext
 
 class EventDetailsDialog(
         val activity: AppCompatActivity,
-        val event: EventFull,
+        var event: EventFull,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
@@ -46,6 +46,8 @@ class EventDetailsDialog(
     private var removeEventDialog: AlertDialog? = null
     private val eventShared = event.sharedBy != null
     private val eventOwn = event.sharedBy == "self"
+    private val manager
+        get() = app.eventManager
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -92,6 +94,10 @@ class EventDetailsDialog(
         b.eventShared = eventShared
         b.eventOwn = eventOwn
 
+        if (!event.seen) {
+            manager.markAsSeen(event)
+        }
+
         val bullet = " • "
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
@@ -99,6 +105,8 @@ class EventDetailsDialog(
             b.monthName = app.resources.getStringArray(R.array.months_day_of_array)[event.date.month - 1]
         }
         catch (_: Exception) {}
+
+        manager.setLegendText(b.legend, event)
 
         b.typeColor.background?.setTintColor(event.eventColor)
 
@@ -135,6 +143,7 @@ class EventDetailsDialog(
                             launch(Dispatchers.Default) {
                                 app.db.eventDao().replace(event)
                             }
+                            update()
                             b.checkDoneButton.isChecked = true
                         }
                         .setNegativeButton(R.string.cancel, null)
@@ -145,6 +154,7 @@ class EventDetailsDialog(
                 launch(Dispatchers.Default) {
                     app.db.eventDao().replace(event)
                 }
+                update()
             }
         }
         b.checkDoneButton.attachToastHint(R.string.hint_mark_as_done)
@@ -156,6 +166,14 @@ class EventDetailsDialog(
                     activity,
                     event.profileId,
                     editingEvent = event,
+                    onSaveListener = {
+                        if (it == null) {
+                            dialog.dismiss()
+                            return@EventManualDialog
+                        }
+                        event = it
+                        update()
+                    },
                     onShowListener = onShowListener,
                     onDismissListener = onDismissListener
             )
@@ -323,8 +341,6 @@ class EventDetailsDialog(
         removeEventDialog?.dismiss()
         dialog.dismiss()
         Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
-        if (activity is MainActivity && activity.navTargetId == MainActivity.DRAWER_ITEM_AGENDA)
-            activity.reloadTarget()
     }
 
     private fun openInCalendar() { launch {

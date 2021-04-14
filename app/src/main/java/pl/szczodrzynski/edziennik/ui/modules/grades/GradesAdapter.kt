@@ -40,7 +40,8 @@ class GradesAdapter(
     }
 
     private val app = activity.applicationContext as App
-    private val manager = app.gradesManager
+    private val manager
+        get() = app.gradesManager
 
     private val job = Job()
     override val coroutineContext: CoroutineContext

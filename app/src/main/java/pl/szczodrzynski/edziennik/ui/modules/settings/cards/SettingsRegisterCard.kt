@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.after
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_ENABLED
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.agenda.AgendaConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.bell.BellSyncConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AttendanceConfigDialog
@@ -59,6 +60,13 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
     }
 
     override fun getItems() = listOfNotNull(
+        util.createActionItem(
+            text = R.string.menu_agenda_config,
+            icon = CommunityMaterial.Icon.cmd_calendar_outline
+        ) {
+            AgendaConfigDialog(activity, reloadOnDismiss = false)
+        },
+
         util.createActionItem(
             text = R.string.menu_grades_config,
             icon = CommunityMaterial.Icon3.cmd_numeric_5_box_outline
