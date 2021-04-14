@@ -10,6 +10,8 @@ import android.content.Intent
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.JsonObject
+import com.mikepenz.iconics.typeface.IIcon
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.MainActivity
 
 @Entity(tableName = "notifications")
@@ -95,5 +97,20 @@ data class Notification(
         val intent = Intent(context, MainActivity::class.java)
         fillIntent(intent)
         return PendingIntent.getActivity(context, id.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
+    }
+
+    fun getLargeIcon(): IIcon = when (type) {
+        TYPE_TIMETABLE_LESSON_CHANGE -> CommunityMaterial.Icon3.cmd_timetable
+        TYPE_NEW_GRADE -> CommunityMaterial.Icon3.cmd_numeric_5_box_outline
+        TYPE_NEW_EVENT -> CommunityMaterial.Icon.cmd_calendar_outline
+        TYPE_NEW_HOMEWORK -> CommunityMaterial.Icon3.cmd_notebook_outline
+        TYPE_NEW_SHARED_EVENT -> CommunityMaterial.Icon.cmd_calendar_outline
+        TYPE_NEW_SHARED_HOMEWORK -> CommunityMaterial.Icon3.cmd_notebook_outline
+        TYPE_NEW_MESSAGE -> CommunityMaterial.Icon.cmd_email_outline
+        TYPE_NEW_NOTICE -> CommunityMaterial.Icon.cmd_emoticon_outline
+        TYPE_NEW_ATTENDANCE -> CommunityMaterial.Icon.cmd_calendar_remove_outline
+        TYPE_LUCKY_NUMBER -> CommunityMaterial.Icon.cmd_emoticon_excited_outline
+        TYPE_NEW_ANNOUNCEMENT -> CommunityMaterial.Icon.cmd_bullhorn_outline
+        else -> CommunityMaterial.Icon.cmd_bell_ring_outline
     }
 }

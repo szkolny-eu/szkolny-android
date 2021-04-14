@@ -9,12 +9,28 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Medium"
-            tools:text="Dzisiaj 1 to szczęśliwy numerek" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/notificationIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="centerInside"
+                tools:background="@android:drawable/ic_menu_more" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:textAppearance="@style/NavView.TextView.Medium"
+                tools:text="Dzisiaj 1 to szczęśliwy numerek" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

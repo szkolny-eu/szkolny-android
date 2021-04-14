@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.settings.MiniMenuConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ThemeChooserDialog
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsUtil
+import pl.szczodrzynski.edziennik.utils.BigNightUtil
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -32,6 +33,18 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
                 value = configGlobal.ui.snowfall
             ) { _, it ->
                 configGlobal.ui.snowfall = it
+                activity.recreate()
+            }
+        else null,
+
+        if (BigNightUtil().isDataWielkanocyNearDzisiaj()) // cool klasa for utility to dzień wielkanocy
+            util.createPropertyItem(
+                text = R.string.settings_theme_eggfall_text,
+                subText = R.string.settings_theme_eggfall_subtext,
+                icon = CommunityMaterial.Icon.cmd_egg_easter,
+                value = configGlobal.ui.eggfall
+            ) { _, it ->
+                configGlobal.ui.eggfall = it
                 activity.recreate()
             }
         else null,

@@ -856,7 +856,7 @@
     <string name="settings_about_licenses_text">Open-Source-Lizenzen</string>
     <string name="settings_about_privacy_policy_text">Datenschutzrichtlinie</string>
     <string name="settings_card_register_title">E-Klassenbuch</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - Februar 2021</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - April 2021</string>
     <string name="settings_about_update_subtext">Klicken Sie hier, um nach Aktualisierungen zu suchen</string>
     <string name="settings_about_update_text">Aktualisierung</string>
     <string name="settings_about_version_text">Version</string>
@@ -967,6 +967,8 @@
     <string name="settings_theme_open_drawer_on_back_pressed_text">Öffnen Sie das Menü mit der Zurück-Taste</string>
     <string name="settings_theme_snowfall_subtext">Schlittenfahrt im Schnee</string>
     <string name="settings_theme_snowfall_text">Jingle Bells, Jingle Bells</string>
+    <string name="settings_theme_eggfall_subtext">Brrrr</string>
+    <string name="settings_theme_eggfall_text">Bajo jajo, bajo jajo</string>
     <string name="settings_theme_theme_pink">Rosa</string>
     <string name="settings_theme_theme_system">System</string>
     <string name="settings_theme_theme_text">Thema</string>

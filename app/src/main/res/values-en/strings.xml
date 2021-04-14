@@ -858,7 +858,7 @@
     <string name="settings_about_licenses_text">Open-source licenses</string>
     <string name="settings_about_privacy_policy_text">Privacy policy</string>
     <string name="settings_card_register_title">E-register</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - February 2021</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - April 2021</string>
     <string name="settings_about_update_subtext">Click to check for updates</string>
     <string name="settings_about_update_text">Update</string>
     <string name="settings_about_version_text">Version</string>
@@ -969,6 +969,8 @@
     <string name="settings_theme_open_drawer_on_back_pressed_text">Back button opens drawer</string>
     <string name="settings_theme_snowfall_subtext">Jingle all the way</string>
     <string name="settings_theme_snowfall_text">Jingle bells, Jingle bells</string>
+    <string name="settings_theme_eggfall_subtext">Brrrr</string>
+    <string name="settings_theme_eggfall_text">Bajo jajo, bajo jajo</string>
     <string name="settings_theme_theme_pink">Pink</string>
     <string name="settings_theme_theme_system">System</string>
     <string name="settings_theme_theme_text">Theme</string>
