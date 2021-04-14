@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.after
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_ENABLED
+import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.bell.BellSyncConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.grade.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AttendanceConfigDialog
@@ -63,6 +64,13 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
             icon = CommunityMaterial.Icon3.cmd_numeric_5_box_outline
         ) {
             GradesConfigDialog(activity, reloadOnDismiss = false)
+        },
+
+        util.createActionItem(
+            text = R.string.menu_messages_config,
+            icon = CommunityMaterial.Icon.cmd_calendar_outline
+        ) {
+            MessagesConfigDialog(activity, reloadOnDismiss = false)
         },
 
         util.createActionItem(

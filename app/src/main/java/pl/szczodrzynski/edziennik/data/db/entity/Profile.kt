@@ -129,6 +129,9 @@ open class Profile(
     val isParent
         get() = accountName != null
 
+    val accountOwnerName
+        get() = accountName ?: studentNameLong
+
     val registerName
         get() = when (loginStoreType) {
             LOGIN_TYPE_LIBRUS -> "librus"
