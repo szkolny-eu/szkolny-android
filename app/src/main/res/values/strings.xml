@@ -1450,4 +1450,5 @@
     <string name="messages_config_greeting_on_forward">Dodaj podpis przy przekazywaniu wiadomości</string>
     <string name="messages_config_greeting_text">Treść podpisu</string>
     <string name="menu_messages_config">Ustawienia wiadomości</string>
+    <string name="event_type_elearning">lekcja online</string>
 </resources>
