@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.szkolny
 
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
@@ -36,6 +37,7 @@ import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -298,6 +300,8 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 pairToken = pairToken
         )).execute()
 
+        Log.e("RESPOŁNS OD BROŁSERA", response.toString())
+
         return parseResponse(response).browsers
     }
 
@@ -369,6 +373,15 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         val response = api.fsLoginRealms(registerName).execute()
         if (response.isSuccessful && response.body() != null) {
             return response.body()!!
+        }
+        throw SzkolnyApiException(null)
+    }
+
+    @Throws(Exception::class)
+    fun getContributors(): Contributor {
+        val response = api.contributors().execute()
+        if (response.isSuccessful && response.body() != null) {
+            return parseResponse(response)
         }
         throw SzkolnyApiException(null)
     }
