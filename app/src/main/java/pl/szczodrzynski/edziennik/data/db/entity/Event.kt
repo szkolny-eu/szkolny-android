@@ -45,6 +45,7 @@ open class Event(
         var addedDate: Long = System.currentTimeMillis()
 ) : Keepable() {
     companion object {
+        const val TYPE_ELEARNING = -5L
         const val TYPE_UNDEFINED = -2L
         const val TYPE_HOMEWORK = -1L
         const val TYPE_DEFAULT = 0L
@@ -57,7 +58,7 @@ open class Event(
         const val TYPE_READING = 7L
         const val TYPE_CLASS_EVENT = 8L
         const val TYPE_INFORMATION = 9L
-        const val TYPE_TEACHER_ABSENCE = 10L
+        const val COLOR_ELEARNING = 0xfff57f17.toInt()
         const val COLOR_HOMEWORK = 0xff795548.toInt()
         const val COLOR_DEFAULT = 0xffffc107.toInt()
         const val COLOR_EXAM = 0xfff44336.toInt()
@@ -69,7 +70,6 @@ open class Event(
         const val COLOR_READING = 0xFFFFEB3B.toInt()
         const val COLOR_CLASS_EVENT = 0xff388e3c.toInt()
         const val COLOR_INFORMATION = 0xff039be5.toInt()
-        const val COLOR_TEACHER_ABSENCE = 0xff039be5.toInt()
     }
 
     @ColumnInfo(name = "eventAddedManually")
