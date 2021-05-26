@@ -95,8 +95,10 @@ class LoginEggsFragment : Fragment(), CoroutineScope {
                     anim.interpolator = AccelerateDecelerateInterpolator()
                     anim.duration = 10
                     anim.fillAfter = true
-                    activity.getRootView().startAnimation(anim)
-                    nav.navigate(R.id.loginPrizeFragment, null, activity.navOptions)
+                    activity.runOnUiThread {
+                        activity.getRootView().startAnimation(anim)
+                        nav.navigate(R.id.loginPrizeFragment, null, activity.navOptions)
+                    }
                 }
             }, "EggInterface")
             loadUrl("https://szkolny.eu/game/runner.html")
