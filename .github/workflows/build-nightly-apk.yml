@@ -124,7 +124,7 @@ jobs:
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
-          token: ${{ secrets.FIREBASE_TOKEN }}
+          serviceCredentialsFile: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           groups: ${{ secrets.FIREBASE_GROUPS_NIGHTLY }}
           file: ${{ needs.sign.outputs.signedReleaseFile }}
           releaseNotesFile: ${{ steps.changelog.outputs.commitLogPlainFile }}
