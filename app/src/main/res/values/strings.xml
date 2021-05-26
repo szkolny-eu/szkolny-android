@@ -1451,4 +1451,10 @@
     <string name="messages_config_greeting_text">Treść podpisu</string>
     <string name="menu_messages_config">Ustawienia wiadomości</string>
     <string name="event_type_elearning">lekcja online</string>
+    <string name="notification_lesson_change_long_format">Rodzaj: %s\nData: %s (%s)\nLekcja: %s\nNauczyciel: %s</string>
+    <string name="notification_event_long_format">Rodzaj: %s\nPrzedmiot: %s\nTermin: %s (%s), %s\nTreść: %s</string>
+    <string name="notification_shared_event_long_format">Dodane przez: %s\nRodzaj: %s\nPrzedmiot: %s\nTermin: %s (%s), %s\nTreść: %s</string>
+    <string name="notification_grade_long_format">Ocena: %s (waga %s)\nPrzedmiot: %s\nKategoria: %s\nOpis: %s\nNauczyciel: %s</string>
+    <string name="notification_notice_long_format">Rodzaj: %s\nNauczyciel: %s\nTreść: %s</string>
+    <string name="notification_attendance_long_format">Rodzaj: %s\nTermin: %s, %s\nNr lekcji: %s\nPrzedmiot: %s\nNauczyciel: %s\nTemat lekcji: %s</string>
 </resources>

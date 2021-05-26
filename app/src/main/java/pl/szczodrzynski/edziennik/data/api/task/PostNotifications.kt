@@ -148,7 +148,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                             colorRes = R.color.colorPrimary
                         }.toBitmap())
                         .setStyle(NotificationCompat.BigTextStyle()
-                                .bigText(it.text))
+                                .bigText(it.textLong ?: it.text))
                         .setWhen(it.addedDate)
                         .addDefaults()
                         .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
