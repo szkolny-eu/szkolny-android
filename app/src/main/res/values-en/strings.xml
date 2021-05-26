@@ -356,7 +356,7 @@
     <string name="event_manual_share">Sharing event…</string>
     <string name="event_manual_unshare">Removing event from the rest of the class…</string>
     <string name="event_manual_unshare_remove">Removing shared event…</string>
-    <string name="event_mark_as_done_text">Are you sure you want to mark this task as completed?\n\nIt won\'t show up on the main or homework pages, but will still be available in the timetable</string>
+    <string name="event_mark_as_done_text">Are you sure you want to mark this task as completed?\n\nIt won\'t show up on the main or homework pages, but will still be available in the agenda.</string>
     <string name="event_mark_as_done_title">Mark as done</string>
     <string name="event_other">other</string>
     <string name="event_project">project</string>
@@ -858,7 +858,7 @@
     <string name="settings_about_licenses_text">Open-source licenses</string>
     <string name="settings_about_privacy_policy_text">Privacy policy</string>
     <string name="settings_card_register_title">E-register</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - April 2021</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - May 2021</string>
     <string name="settings_about_update_subtext">Click to check for updates</string>
     <string name="settings_about_update_text">Update</string>
     <string name="settings_about_version_text">Version</string>
