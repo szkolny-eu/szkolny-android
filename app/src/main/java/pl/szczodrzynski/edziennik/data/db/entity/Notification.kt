@@ -21,6 +21,7 @@ data class Notification(
 
         val title: String,
         val text: String,
+        val textLong: String? = null,
 
         val type: Int,
 
