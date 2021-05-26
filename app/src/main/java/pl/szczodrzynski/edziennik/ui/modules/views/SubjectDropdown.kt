@@ -15,6 +15,7 @@ import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.crc16
 import pl.szczodrzynski.edziennik.data.db.AppDb
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.ui.dialogs.input
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 
@@ -40,7 +41,7 @@ class SubjectDropdown : TextInputDropDown {
     var showNoSubject = true
     var showCustomSubject = false
     var customSubjectName = ""
-    var onSubjectSelected: ((subjectId: Long?) -> Unit)? = null
+    var onSubjectSelected: ((subject: Subject?) -> Unit)? = null
     var onCustomSubjectSelected: ((subjectName: String) -> Unit)? = null
 
     override fun create(context: Context) {
@@ -73,7 +74,7 @@ class SubjectDropdown : TextInputDropDown {
             list += subjects.map { Item(
                     it.id,
                     it.longName,
-                    tag = it.id
+                    tag = it
             ) }
 
             list
@@ -91,10 +92,11 @@ class SubjectDropdown : TextInputDropDown {
                 }
                 -1L -> {
                     // no subject
+                    deselect()
                     onSubjectSelected?.invoke(null)
-                    true
+                    false
                 }
-                is Long -> {
+                is Subject -> {
                     // selected a subject
                     onSubjectSelected?.invoke(it.tag)
                     true
@@ -104,7 +106,7 @@ class SubjectDropdown : TextInputDropDown {
         }
     }
 
-    fun customNameDialog() {
+    private fun customNameDialog() {
         activity ?: return
         MaterialAlertDialogBuilder(activity!!)
             .setTitle("Własny przedmiot")
@@ -127,32 +129,37 @@ class SubjectDropdown : TextInputDropDown {
             .show()
     }
 
-    fun selectSubject(subjectId: Long) {
-        if (select(subjectId) == null)
-            select(Item(
-                    subjectId,
-                    "nieznany przedmiot ($subjectId)",
-                    tag = subjectId
-            ))
+    /**
+     * Select a subject by the [subjectId].
+     */
+    fun selectSubject(subjectId: Long): Item? {
+        if (subjectId == -1L) {
+            deselect()
+            return null
+        }
+        return select(subjectId)
     }
 
-    fun selectDefault(subjectId: Long?) {
+    /**
+     * Select a subject by the [subjectId] **if it's not selected yet**.
+     */
+    fun selectDefault(subjectId: Long?): Item? {
         if (subjectId == null || selected != null)
-            return
-        selectSubject(subjectId)
+            return null
+        return selectSubject(subjectId)
     }
 
     /**
      * Get the currently selected subject.
      * ### Returns:
      * - null if no valid subject is selected
-     * - [Long] - the selected subject's ID
+     * - [Subject] - the selected subject
      * - [String] - a custom subject name entered, if [showCustomSubject] == true
      */
     fun getSelected(): Any? {
         return when (selected?.tag) {
             -1L -> null
-            is Long -> selected?.tag as Long
+            is Subject -> selected?.tag as Subject
             is String -> selected?.tag as String
             else -> null
         }

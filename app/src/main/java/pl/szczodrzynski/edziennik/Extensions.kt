@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.*
+import android.text.style.CharacterStyle
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
@@ -552,28 +553,46 @@ fun CharSequence?.asBoldSpannable(): Spannable {
     spannable.setSpan(StyleSpan(Typeface.BOLD), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannable
 }
-fun CharSequence.asSpannable(vararg spans: Any, substring: String? = null, ignoreCase: Boolean = false, ignoreDiacritics: Boolean = false): Spannable {
+fun CharSequence.asSpannable(
+    vararg spans: CharacterStyle,
+    substring: CharSequence? = null,
+    ignoreCase: Boolean = false,
+    ignoreDiacritics: Boolean = false
+): Spannable {
     val spannable = SpannableString(this)
-    if (substring == null) {
-        spans.forEach {
-            spannable.setSpan(it, 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-    }
-    else if (substring.isNotEmpty()) {
-        val string =
-                if (ignoreDiacritics)
-                    this.cleanDiacritics()
-                else this
+    substring?.let { substr ->
+        val string = if (ignoreDiacritics)
+            this.cleanDiacritics()
+        else
+            this
+        val search = if (ignoreDiacritics)
+            substr.cleanDiacritics()
+        else
+            substr.toString()
 
-        var index = string.indexOf(substring, ignoreCase = ignoreCase)
-                .takeIf { it != -1 } ?: indexOf(substring, ignoreCase = ignoreCase)
-        while (index >= 0) {
-            spans.forEach {
-                spannable.setSpan(it, index, index + substring.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        var index = 0
+        do {
+            index = string.indexOf(
+                string = search,
+                startIndex = index,
+                ignoreCase = ignoreCase
+            )
+
+            if (index >= 0) {
+                spans.forEach {
+                    spannable.setSpan(
+                        CharacterStyle.wrap(it),
+                        index,
+                        index + substring.length,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+                index += substring.length.coerceAtLeast(1)
             }
-            index = string.indexOf(substring, startIndex = index + 1, ignoreCase = ignoreCase)
-                    .takeIf { it != -1 } ?: indexOf(substring, startIndex = index + 1, ignoreCase = ignoreCase)
-        }
+        } while (index >= 0)
+
+    } ?: spans.forEach {
+        spannable.setSpan(it, 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
     return spannable
 }

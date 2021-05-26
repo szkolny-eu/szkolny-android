@@ -94,17 +94,29 @@ public class Date implements Comparable<Date> {
         }
     }
 
-    public long getInMillis() {
+    public Calendar getAsCalendar() {
         Calendar c = Calendar.getInstance();
         c.set(year, month - 1, day, 0, 0, 0);
         c.set(Calendar.MILLISECOND, 0);
+        return c;
+    }
+
+    public Calendar getAsCalendar(Time time) {
+        if (time == null)
+            return getAsCalendar();
+        Calendar c = Calendar.getInstance();
+        c.set(year, month - 1, day, time.hour, time.minute, time.second);
+        c.set(Calendar.MILLISECOND, 0);
+        return c;
+    }
+
+    public long getInMillis() {
+        Calendar c = getAsCalendar();
         return c.getTimeInMillis();
     }
 
     public long getInMillisUtc() {
-        Calendar c = Calendar.getInstance();
-        c.set(year, month - 1, day, 0, 0, 0);
-        c.set(Calendar.MILLISECOND, 0);
+        Calendar c = getAsCalendar();
         c.setTimeZone(TimeZone.getTimeZone("UTC"));
         return c.getTimeInMillis();
     }
@@ -179,13 +191,7 @@ public class Date implements Comparable<Date> {
     }
 
     public long combineWith(Time time) {
-        if (time == null) {
-            return getInMillis();
-        }
-        Calendar c = Calendar.getInstance();
-        c.set(this.year, this.month - 1, this.day, time.hour, time.minute, time.second);
-        c.set(Calendar.MILLISECOND, 0);
-        return c.getTimeInMillis();
+        return getAsCalendar(time).getTimeInMillis();
     }
 
     public int getWeekDay() {

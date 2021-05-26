@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.messages.compose
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
@@ -43,6 +44,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
 import pl.szczodrzynski.edziennik.utils.Colors
@@ -50,6 +52,7 @@ import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Themes.getPrimaryTextColor
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.elevateSurface
 import kotlin.coroutines.CoroutineContext
 import kotlin.text.replace
@@ -66,6 +69,10 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
+
+    private val profileConfig by lazy { app.config.forProfile().ui }
+    private val greetingText
+        get() = profileConfig.messagesGreetingText ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
 
     private var teachers = mutableListOf<Teacher>()
 
@@ -130,6 +137,16 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 }
             }
         }*/
+
+        activity.bottomSheet.prependItem(
+            BottomSheetPrimaryItem(true)
+                .withTitle(R.string.menu_messages_config)
+                .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+                .withOnClickListener {
+                    activity.bottomSheet.close()
+                    MessagesConfigDialog(activity, false, null, null)
+                }
+        )
 
         launch {
             delay(100)
@@ -290,7 +307,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.recipients.setIllegalCharacterIdentifier { c ->
             c.toString().matches("[\\n;:_ ]".toRegex())
         }
-        b.recipients.setOnChipRemoveListener { _ ->
+        b.recipients.setOnChipRemoveListener {
             b.recipients.setSelection(b.recipients.text.length)
         }
 
@@ -318,14 +335,15 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             fabExtendedText = getString(R.string.messages_compose_send)
             fabIcon = CommunityMaterial.Icon3.cmd_send_outline
 
-            setFabOnClickListener(View.OnClickListener {
+            setFabOnClickListener {
                 sendMessage()
-            })
+            }
         }
 
         activity.gainAttentionFAB()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateRecipientList(list: List<Teacher>) { launch {
         withContext(Dispatchers.Default) {
             teachers = list.sortedBy { it.fullName }.toMutableList()
@@ -344,10 +362,14 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         val adapter = MessagesComposeSuggestionAdapter(activity, teachers)
         b.recipients.setAdapter(adapter)
 
+        if (profileConfig.messagesGreetingOnCompose)
+            b.text.setText(greetingText)
+
         handleReplyMessage()
+        handleMailToIntent()
     }}
 
-    private fun handleReplyMessage() { launch {
+    private fun handleReplyMessage() = launch {
         val replyMessage = arguments?.getString("message")
         if (replyMessage != null) {
             val chipList = mutableListOf<ChipInfo>()
@@ -369,8 +391,10 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
                 if (arguments?.getString("type") == "reply") {
                     // add greeting text
-                    span.replace(0, 0, "\n\nZ poważaniem,\n${app.profile.accountName
-                            ?: app.profile.studentNameLong ?: ""}\n\n\n")
+                    if (profileConfig.messagesGreetingOnReply)
+                        span.replace(0, 0, "$greetingText\n\n\n")
+                    else
+                        span.replace(0, 0, "\n\n")
 
                     teachers.firstOrNull { it.id == msg.senderId }?.let { teacher ->
                         teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
@@ -378,7 +402,12 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                     }
                     subject = "Re: ${msg.subject}"
                 } else {
-                    span.replace(0, 0, "\n\n")
+                    // add greeting text
+                    if (profileConfig.messagesGreetingOnForward)
+                        span.replace(0, 0, "$greetingText\n\n\n")
+                    else
+                        span.replace(0, 0, "\n\n")
+
                     subject = "Fwd: ${msg.subject}"
                 }
                 body = MessagesUtils.htmlToSpannable(activity, msg.body
@@ -400,7 +429,23 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         else {
             b.recipients.requestFocus()
         }
-    }}
+    }
+
+    private fun handleMailToIntent() {
+        val teacherId = arguments?.getLong("messageRecipientId")
+        if (teacherId == 0L)
+            return
+
+        val chipList = mutableListOf<ChipInfo>()
+        teachers.firstOrNull { it.id == teacherId }?.let { teacher ->
+            teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
+            chipList += ChipInfo(teacher.fullName, teacher)
+        }
+        b.recipients.addTextWithChips(chipList)
+
+        val subject = arguments?.getString("messageSubject")
+        b.subject.setText(subject ?: return)
+    }
 
     private fun sendMessage() {
         b.recipientsLayout.error = null

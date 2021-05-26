@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.getNotificationTitle
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.utils.models.Week
 
 class Notifications(val app: App, val notifications: MutableList<Notification>, val profiles: List<Profile>) {
     companion object {
@@ -42,13 +43,22 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
             val text = app.getString(
                     R.string.notification_lesson_change_format,
                     lesson.getDisplayChangeType(app),
-                    if (lesson.displayDate == null) "" else lesson.displayDate!!.formattedString,
+                    lesson.displayDate?.formattedString ?: "",
                     lesson.changeSubjectName
+            )
+            val textLong = app.getString(
+                    R.string.notification_lesson_change_long_format,
+                    lesson.getDisplayChangeType(app),
+                    lesson.displayDate?.formattedString ?: "-",
+                    lesson.displayDate?.weekDay?.let { Week.getFullDayName(it) } ?: "-",
+                    lesson.changeSubjectName,
+                    lesson.changeTeacherName
             )
             notifications += Notification(
                     id = Notification.buildId(lesson.profileId, Notification.TYPE_TIMETABLE_LESSON_CHANGE, lesson.id),
                     title = app.getNotificationTitle(Notification.TYPE_TIMETABLE_LESSON_CHANGE),
                     text = text,
+                    textLong = textLong,
                     type = Notification.TYPE_TIMETABLE_LESSON_CHANGE,
                     profileId = lesson.profileId,
                     profileName = profiles.singleOrNull { it.id == lesson.profileId }?.name,
@@ -79,11 +89,21 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                         event.date.formattedString,
                         event.subjectLongName
                 )
+            val textLong = app.getString(
+                    R.string.notification_event_long_format,
+                    event.typeName ?: "-",
+                    event.subjectLongName ?: "-",
+                    event.date.formattedString,
+                    Week.getFullDayName(event.date.weekDay),
+                    event.time?.stringHM ?: app.getString(R.string.event_all_day),
+                    event.topic.take(200)
+            )
             val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
             notifications += Notification(
                     id = Notification.buildId(event.profileId, type, event.id),
                     title = app.getNotificationTitle(type),
                     text = text,
+                    textLong = textLong,
                     type = type,
                     profileId = event.profileId,
                     profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
@@ -102,11 +122,22 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     event.date.formattedString,
                     event.topic
             )
+            val textLong = app.getString(
+                    R.string.notification_shared_event_long_format,
+                    event.sharedByName,
+                    event.typeName ?: "-",
+                    event.subjectLongName ?: "-",
+                    event.date.formattedString,
+                    Week.getFullDayName(event.date.weekDay),
+                    event.time?.stringHM ?: app.getString(R.string.event_all_day),
+                    event.topic.take(200)
+            )
             val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
             notifications += Notification(
                     id = Notification.buildId(event.profileId, type, event.id),
                     title = app.getNotificationTitle(type),
                     text = text,
+                    textLong = textLong,
                     type = type,
                     profileId = event.profileId,
                     profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
@@ -130,10 +161,20 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     gradeName,
                     grade.subjectLongName
             )
+            val textLong = app.getString(
+                    R.string.notification_grade_long_format,
+                    gradeName,
+                    grade.weight.toString(),
+                    grade.subjectLongName ?: "-",
+                    grade.category ?: "-",
+                    grade.description ?: "-",
+                    grade.teacherName ?: "-"
+            )
             notifications += Notification(
                     id = Notification.buildId(grade.profileId, Notification.TYPE_NEW_GRADE, grade.id),
                     title = app.getNotificationTitle(Notification.TYPE_NEW_GRADE),
                     text = text,
+                    textLong = textLong,
                     type = Notification.TYPE_NEW_GRADE,
                     profileId = grade.profileId,
                     profileName = profiles.singleOrNull { it.id == grade.profileId }?.name,
@@ -158,10 +199,17 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     notice.teacherName,
                     Date.fromMillis(notice.addedDate).formattedString
             )
+            val textLong = app.getString(
+                    R.string.notification_notice_long_format,
+                    noticeTypeStr,
+                    notice.teacherName ?: "-",
+                    notice.text.take(200)
+            )
             notifications += Notification(
                     id = Notification.buildId(notice.profileId, Notification.TYPE_NEW_NOTICE, notice.id),
                     title = app.getNotificationTitle(Notification.TYPE_NEW_NOTICE),
                     text = text,
+                    textLong = textLong,
                     type = Notification.TYPE_NEW_NOTICE,
                     profileId = notice.profileId,
                     profileName = profiles.singleOrNull { it.id == notice.profileId }?.name,
@@ -193,10 +241,21 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     attendance.subjectLongName,
                     attendance.date.formattedString
             )
+            val textLong = app.getString(
+                    R.string.notification_attendance_long_format,
+                    attendanceTypeStr,
+                    attendance.date.formattedString,
+                    attendance.startTime?.stringHM ?: "-",
+                    attendance.lessonNumber ?: "-",
+                    attendance.subjectLongName ?: "-",
+                    attendance.teacherName ?: "-",
+                    attendance.lessonTopic ?: "-"
+            )
             notifications += Notification(
                     id = Notification.buildId(attendance.profileId, Notification.TYPE_NEW_ATTENDANCE, attendance.id),
                     title = app.getNotificationTitle(Notification.TYPE_NEW_ATTENDANCE),
                     text = text,
+                    textLong = textLong,
                     type = Notification.TYPE_NEW_ATTENDANCE,
                     profileId = attendance.profileId,
                     profileName = profiles.singleOrNull { it.id == attendance.profileId }?.name,

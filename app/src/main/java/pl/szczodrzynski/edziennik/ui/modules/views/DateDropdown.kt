@@ -175,7 +175,7 @@ class DateDropdown : TextInputDropDown {
         }
     }
 
-    fun pickerDialog() {
+    private fun pickerDialog() {
         val date = getSelected() as? Date ?: Date.getToday()
 
         MaterialDatePicker.Builder.datePicker()

@@ -4,8 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.event
 
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -20,23 +18,18 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.db.entity.Event
-import pl.szczodrzynski.edziennik.data.db.entity.EventType
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
-import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
@@ -49,6 +42,7 @@ class EventManualDialog(
         val defaultTime: Time? = null,
         val defaultType: Long? = null,
         val editingEvent: EventFull? = null,
+        val onSaveListener: ((event: EventFull?) -> Unit)? = null,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
@@ -323,57 +317,41 @@ class EventManualDialog(
             selectDefault(defaultLesson?.displayTeacherId)
         }
 
+        with (b.typeDropdown) {
+            db = app.db
+            profileId = this@EventManualDialog.profileId
+            loadItems()
+            selectDefault(editingEvent?.type)
+            selectDefault(defaultType)
 
-        val deferred = async(Dispatchers.Default) {
-            // get the event type list
-            var eventTypes = app.db.eventTypeDao().getAllNow(profileId)
-
-            if (eventTypes.none { it.id in -1L..10L }) {
-                eventTypes = app.db.eventTypeDao().addDefaultTypes(activity, profileId)
+            onTypeSelected = {
+                b.typeColor.background.setTintColor(it.color)
+                customColor = null
             }
-
-            b.typeDropdown.clear()
-            b.typeDropdown += eventTypes.map { TextInputDropDown.Item(it.id, it.name, tag = it) }
-        }
-        deferred.await()
-
-        b.typeDropdown.isEnabled = true
-
-        defaultType?.let {
-            b.typeDropdown.select(it)
         }
 
-        b.typeDropdown.selected?.let { item ->
-            customColor = (item.tag as EventType).color
-        }
-
-        // copy IDs from event being edited
+        // copy data from event being edited
         editingEvent?.let {
             b.topic.setText(it.topic)
-            b.typeDropdown.select(it.type)?.let { item ->
-                customColor = (item.tag as EventType).color
-            }
-            if (it.color != null && it.color != -1)
+            if (it.color != -1)
                 customColor = it.color
         }
+
+        b.typeColor.background.setTintColor(
+            customColor
+                ?: b.typeDropdown.getSelected()?.color
+                ?: Event.COLOR_DEFAULT
+        )
 
         // copy IDs from the LessonFull
         defaultLesson?.let {
             b.teamDropdown.select(it.displayTeamId)
         }
 
-        b.typeDropdown.setOnChangeListener {
-            b.typeColor.background.colorFilter = PorterDuffColorFilter((it.tag as EventType).color, PorterDuff.Mode.SRC_ATOP)
-            customColor = null
-            return@setOnChangeListener true
-        }
-
-        (customColor ?: Event.COLOR_DEFAULT).let {
-            b.typeColor.background.colorFilter = PorterDuffColorFilter(it, PorterDuff.Mode.SRC_ATOP)
-        }
-
         b.typeColor.onClick {
-            val currentColor = (b.typeDropdown.selected?.tag as EventType?)?.color ?: Event.COLOR_DEFAULT
+            val currentColor = customColor
+                ?: b.typeDropdown.getSelected()?.color
+                ?: Event.COLOR_DEFAULT
             val colorPickerDialog = ColorPickerDialog.newBuilder()
                     .setColor(currentColor)
                     .create()
@@ -381,7 +359,7 @@ class EventManualDialog(
                     object : ColorPickerDialogListener {
                         override fun onDialogDismissed(dialogId: Int) {}
                         override fun onColorSelected(dialogId: Int, color: Int) {
-                            b.typeColor.background.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+                            b.typeColor.background.setTintColor(color)
                             customColor = color
                         }
                     })
@@ -416,11 +394,11 @@ class EventManualDialog(
     private fun saveEvent() {
         val date = b.dateDropdown.getSelected() as? Date
         val timeSelected = b.timeDropdown.getSelected()
-        val teamId = b.teamDropdown.getSelected() as? Long
-        val type = b.typeDropdown.selected?.id
+        val team = b.teamDropdown.getSelected()
+        val type = b.typeDropdown.getSelected()
         val topic = b.topic.text?.toString()
-        val subjectId = b.subjectDropdown.getSelected() as? Long
-        val teacherId = b.teacherDropdown.getSelected()
+        val subject = b.subjectDropdown.getSelected() as? Subject
+        val teacher = b.teacherDropdown.getSelected()
 
         val share = b.shareSwitch.isChecked
 
@@ -451,7 +429,7 @@ class EventManualDialog(
             isError = true
         }
 
-        if (share && teamId == null) {
+        if (share && team == null) {
             b.teamDropdown.error = app.getString(R.string.dialog_event_manual_team_choose)
             if (!isError) b.teamDropdown.parent.requestChildFocus(b.teamDropdown, b.teamDropdown)
             isError = true
@@ -487,10 +465,10 @@ class EventManualDialog(
                 time = startTime,
                 topic = topic,
                 color = customColor,
-                type = type ?: Event.TYPE_DEFAULT,
-                teacherId = teacherId ?: -1,
-                subjectId = subjectId ?: -1,
-                teamId = teamId ?: -1,
+                type = type?.id ?: Event.TYPE_DEFAULT,
+                teacherId = teacher?.id ?: -1,
+                subjectId = subject?.id ?: -1,
+                teamId = team?.id ?: -1,
                 addedDate = editingEvent?.addedDate ?: System.currentTimeMillis()
         ).also {
             it.addedManually = true
@@ -498,7 +476,7 @@ class EventManualDialog(
 
         val metadataObject = Metadata(
                 profileId,
-                when (type) {
+                when (type?.id) {
                     Event.TYPE_HOMEWORK -> Metadata.TYPE_HOMEWORK
                     else -> Metadata.TYPE_EVENT
                 },
@@ -597,10 +575,14 @@ class EventManualDialog(
             }
         }
 
+        onSaveListener?.invoke(eventObject.withMetadata(metadataObject).also {
+            it.subjectLongName = (b.subjectDropdown.getSelected() as? Subject)?.longName
+            it.teacherName = b.teacherDropdown.getSelected()?.fullName
+            it.teamName = b.teamDropdown.getSelected()?.name
+            it.typeName = b.typeDropdown.getSelected()?.name
+        })
         dialog.dismiss()
         Toast.makeText(activity, R.string.saved, Toast.LENGTH_SHORT).show()
-        if (activity is MainActivity && activity.navTargetId == DRAWER_ITEM_AGENDA)
-            activity.reloadTarget()
     }
     private fun finishRemoving() {
         editingEvent ?: return
@@ -611,9 +593,8 @@ class EventManualDialog(
         }
 
         removeEventDialog?.dismiss()
+        onSaveListener?.invoke(null)
         dialog.dismiss()
         Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
-        if (activity is MainActivity && activity.navTargetId == DRAWER_ITEM_AGENDA)
-            activity.reloadTarget()
     }
 }

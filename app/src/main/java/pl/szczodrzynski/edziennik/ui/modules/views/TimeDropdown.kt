@@ -175,7 +175,7 @@ class TimeDropdown : TextInputDropDown {
         return !noTimetable
     }
 
-    fun pickerDialog() {
+    private fun pickerDialog() {
         val time = (getSelected() as? Pair<*, *>)?.first as? Time ?: Time.getNow()
 
         MaterialTimePicker.Builder()

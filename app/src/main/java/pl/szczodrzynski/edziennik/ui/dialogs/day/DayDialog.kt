@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.ui.dialogs.day
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
@@ -19,6 +19,10 @@ import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog
+import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchanges.LessonChangesEvent
+import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchanges.LessonChangesEventRenderer
+import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEvent
+import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEventRenderer
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -29,6 +33,7 @@ class DayDialog(
         val activity: AppCompatActivity,
         val profileId: Int,
         val date: Date,
+        val eventTypeId: Long? = null,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
@@ -109,38 +114,51 @@ class DayDialog(
         }
 
         lessonChanges.ifNotEmpty {
-            b.lessonChangeContainer.root.visibility = View.VISIBLE
-            b.lessonChangeContainer.lessonChangeCount.text = it.size.toString()
+            LessonChangesEventRenderer().render(
+                b.lessonChanges, LessonChangesEvent(
+                    profileId = profileId,
+                    date = date,
+                    count = it.size,
+                    showBadge = false
+                )
+            )
 
-            b.lessonChangeLayout.onClick {
+            b.lessonChangesFrame.onClick {
                 LessonChangeDialog(
-                        activity,
-                        profileId,
-                        date,
-                        onShowListener = onShowListener,
-                        onDismissListener = onDismissListener
+                    activity,
+                    profileId,
+                    date,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener
                 )
             }
         }
+        b.lessonChangesFrame.isVisible = lessonChanges.isNotEmpty()
 
         val teacherAbsences = withContext(Dispatchers.Default) {
             app.db.teacherAbsenceDao().getAllByDateNow(profileId, date)
         }
 
         teacherAbsences.ifNotEmpty {
-            b.teacherAbsenceContainer.root.visibility = View.VISIBLE
-            b.teacherAbsenceContainer.teacherAbsenceCount.text = it.size.toString()
+            TeacherAbsenceEventRenderer().render(
+                b.teacherAbsence, TeacherAbsenceEvent(
+                    profileId = profileId,
+                    date = date,
+                    count = it.size
+                )
+            )
 
-            b.teacherAbsenceLayout.onClick {
+            b.teacherAbsenceFrame.onClick {
                 TeacherAbsenceDialog(
-                        activity,
-                        profileId,
-                        date,
-                        onShowListener = onShowListener,
-                        onDismissListener = onDismissListener
+                    activity,
+                    profileId,
+                    date,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener
                 )
             }
         }
+        b.teacherAbsenceFrame.isVisible = teacherAbsences.isNotEmpty()
 
         adapter = EventListAdapter(
                 activity,
@@ -169,8 +187,12 @@ class DayDialog(
                 }
         )
 
-        app.db.eventDao().getAllByDate(profileId, date).observe(activity, Observer { events ->
-            adapter.items = events
+        app.db.eventDao().getAllByDate(profileId, date).observe(activity) { events ->
+            adapter.items = if (eventTypeId != null)
+                events.filter { it.type == eventTypeId }
+            else
+                events
+
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter
                 b.eventsView.apply {
@@ -189,6 +211,6 @@ class DayDialog(
                 b.eventsView.visibility = View.GONE
                 b.eventsNoData.visibility = View.VISIBLE
             }
-        })
+        }
     }}
 }

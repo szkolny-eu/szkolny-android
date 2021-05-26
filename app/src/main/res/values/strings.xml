@@ -921,7 +921,7 @@
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
     <string name="settings_card_register_title">E-dziennik</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nwrzesień 2018 - luty 2021</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nwrzesień 2018 - maj 2021</string>
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
     <string name="settings_about_version_text">Wersja</string>
@@ -1034,6 +1034,8 @@
     <string name="settings_theme_open_drawer_on_back_pressed_text">Otwieraj menu przyciskiem wstecz</string>
     <string name="settings_theme_snowfall_subtext">Dzwonią dzwonki sań</string>
     <string name="settings_theme_snowfall_text">Pada śnieg, pada śnieg</string>
+    <string name="settings_theme_eggfall_subtext">Brrrr</string>
+    <string name="settings_theme_eggfall_text">Bajo jajo, bajo jajo</string>
     <string name="settings_theme_theme_pink">Różowy</string>
     <string name="settings_theme_theme_system">Systemowy</string>
     <string name="settings_theme_theme_text">Motyw</string>
@@ -1425,4 +1427,34 @@
     <string name="permissions_generate_timetable">Aby móc zapisać wygenerowany plan lekcji musisz przyznać uprawnienia dostępu do pamięci urządzenia.\n\nKliknij OK, aby przyznać uprawnienia.</string>
     <string name="privacy_policy_dialog_html"><![CDATA[Korzystając z aplikacji potwierdzasz <a href="https://szkolny.eu/privacy-policy">przeczytanie Polityki prywatności</a> i akceptujesz jej postanowienia.<br /><br />Autorzy aplikacji nie biorą odpowiedzialności za korzystanie z aplikacji Szkolny.eu.]]></string>
     <string name="login_chooser_version_format">Szkolny.eu v%s\n%s</string>
+    <string name="menu_agenda_config">Ustawienia terminarza</string>
+    <string name="agenda_config_appearance">Wygląd</string>
+    <string name="agenda_config_lesson_changes">Pokazuj zmiany planu lekcji</string>
+    <string name="agenda_config_teacher_absence">Pokazuj nieobecności nauczycieli</string>
+    <string name="agenda_config_compact_mode">Tryb kompaktowy</string>
+    <string name="agenda_config_compact_mode_hint">Mniejszy rozmiar wydarzeń na liście</string>
+    <string name="agenda_config_group_by_type">Grupuj wydarzenia tego samego typu</string>
+    <string name="agenda_config_mode_unavailable">Niedostępne w trybie kalendarza</string>
+    <string name="agenda_config_event_sharing">Udostępnianie wydarzeń</string>
+    <string name="agenda_config_event_sharing_enabled">Włącz Udostępnianie wydarzeń</string>
+    <string name="agenda_config_elearning">Nauczanie zdalne</string>
+    <string name="agenda_config_elearning_mark">Ustaw wydarzenia jako lekcje on-line</string>
+    <string name="agenda_config_elearning_type">Wybierz rodzaj wydarzeń</string>
+    <string name="agenda_config_elearning_group">Grupuj lekcje on-line na liście</string>
+    <string name="legend_event_added_manually">{cmd-clipboard-edit-outline} wydarzenie dodane ręcznie</string>
+    <string name="legend_event_is_done">{cmd-check} oznaczono jako wykonane</string>
+    <string name="agenda_config_not_available_yet">Funkcja jeszcze nie jest dostępna.</string>
+    <string name="messages_config_compose">Tworzenie wiadomości</string>
+    <string name="messages_config_greeting_on_compose">Dodaj podpis przy tworzeniu wiadomości</string>
+    <string name="messages_config_greeting_on_reply">Dodaj podpis przy odpowiadaniu na wiadomość</string>
+    <string name="messages_config_greeting_on_forward">Dodaj podpis przy przekazywaniu wiadomości</string>
+    <string name="messages_config_greeting_text">Treść podpisu</string>
+    <string name="menu_messages_config">Ustawienia wiadomości</string>
+    <string name="event_type_elearning">lekcja online</string>
+    <string name="notification_lesson_change_long_format">Rodzaj: %s\nData: %s (%s)\nLekcja: %s\nNauczyciel: %s</string>
+    <string name="notification_event_long_format">Rodzaj: %s\nPrzedmiot: %s\nTermin: %s (%s), %s\nTreść: %s</string>
+    <string name="notification_shared_event_long_format">Dodane przez: %s\nRodzaj: %s\nPrzedmiot: %s\nTermin: %s (%s), %s\nTreść: %s</string>
+    <string name="notification_grade_long_format">Ocena: %s (waga %s)\nPrzedmiot: %s\nKategoria: %s\nOpis: %s\nNauczyciel: %s</string>
+    <string name="notification_notice_long_format">Rodzaj: %s\nNauczyciel: %s\nTreść: %s</string>
+    <string name="notification_attendance_long_format">Rodzaj: %s\nTermin: %s, %s\nNr lekcji: %s\nPrzedmiot: %s\nNauczyciel: %s\nTemat lekcji: %s</string>
 </resources>

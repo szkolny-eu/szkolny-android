@@ -49,6 +49,11 @@ class ConfigUI(private val config: Config) {
         get() { mSnowfall = mSnowfall ?: config.values.get("snowfall", false); return mSnowfall ?: false }
         set(value) { config.set("snowfall", value); mSnowfall = value }
 
+    private var mEggfall: Boolean? = null
+    var eggfall: Boolean
+        get() { mEggfall = mEggfall ?: config.values.get("eggfall", false); return mEggfall ?: false }
+        set(value) { config.set("eggfall", value); mEggfall = value }
+
     private var mBottomSheetOpened: Boolean? = null
     var bottomSheetOpened: Boolean
         get() { mBottomSheetOpened = mBottomSheetOpened ?: config.values.get("bottomSheetOpened", false); return mBottomSheetOpened ?: false }

@@ -33,7 +33,8 @@ class EventListAdapter(
 ) : RecyclerView.Adapter<EventListAdapter.ViewHolder>(), CoroutineScope {
 
     private val app = context.applicationContext as App
-    private val manager = app.eventManager
+    private val manager
+        get() = app.eventManager
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -67,7 +68,7 @@ class EventListAdapter(
 
         b.simpleMode = simpleMode
 
-        b.topic.text = event.topic
+        manager.setEventTopic(b.topic, event, showType = false)
         b.topic.maxLines = if (simpleMode) 2 else 3
 
         b.details.text = mutableListOf<CharSequence?>(
@@ -101,8 +102,6 @@ class EventListAdapter(
             onEventEditClick?.invoke(event)
         }
         b.editButton.attachToastHint(R.string.hint_edit_event)
-
-        b.isDone.isVisible = event.isDone
 
         if (event.showAsUnseen == null)
             event.showAsUnseen = !event.seen

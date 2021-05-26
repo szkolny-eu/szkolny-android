@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
+import java.net.URLEncoder
 
 class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
                                  override val lastSync: Long?,
@@ -27,7 +28,8 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
     }
 
     init {
-        webGet(TAG, "/dziennik/wyszukiwarkawiadomosci?q=+") { text ->
+        val query = URLEncoder.encode(data.profile?.studentNameLong ?: "a", "UTF-8")
+        webGet(TAG, "/dziennik/wyszukiwarkawiadomosci?q=$query") { text ->
             MobidziennikLuckyNumberExtractor(data, text)
 
             val doc = Jsoup.parse(text)

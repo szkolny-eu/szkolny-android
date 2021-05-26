@@ -12,7 +12,9 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.databinding.MessagesFragmentBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.FragmentLazyPagerAdapter
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import kotlin.coroutines.CoroutineContext
 
 class MessagesFragment : Fragment(), CoroutineScope {
@@ -100,9 +102,19 @@ class MessagesFragment : Fragment(), CoroutineScope {
                 fabIcon = CommunityMaterial.Icon3.cmd_pencil_outline
             }
 
-            setFabOnClickListener(View.OnClickListener {
+            bottomSheet.prependItem(
+                BottomSheetPrimaryItem(true)
+                    .withTitle(R.string.menu_messages_config)
+                    .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+                    .withOnClickListener {
+                        activity.bottomSheet.close()
+                        MessagesConfigDialog(activity, false, null, null)
+                    }
+            )
+
+            setFabOnClickListener {
                 activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE)
-            })
+            }
         }
 
         activity.gainAttentionFAB()
