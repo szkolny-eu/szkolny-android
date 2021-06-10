@@ -43,7 +43,7 @@ const val LIBRUS_API_TOKEN_URL = "https://api.librus.pl/OAuth/Token"
 const val LIBRUS_API_TOKEN_JST_URL = "https://api.librus.pl/OAuth/TokenJST"
 const val LIBRUS_API_AUTHORIZATION = "Mjg6ODRmZGQzYTg3YjAzZDNlYTZmZmU3NzdiNThiMzMyYjE="
 const val LIBRUS_API_SECRET_JST = "18b7c1ee08216f636a1b1a2440e68398"
-const val LIBRUS_API_CLIENT_ID_JST = "49"
+const val LIBRUS_API_CLIENT_ID_JST = "59"
 //const val LIBRUS_API_CLIENT_ID_JST_REFRESH = "42"
 
 const val LIBRUS_JST_DEMO_CODE = "68656A21"
