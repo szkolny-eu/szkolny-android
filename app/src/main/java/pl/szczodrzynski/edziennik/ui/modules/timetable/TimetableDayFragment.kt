@@ -151,7 +151,10 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         }
 
         b.scrollView.isVisible = true
-        b.dayFrame.removeAllViews()
+        if(b.dayView.parent != null){
+            b.dayFrame.removeView(b.dayView)
+        }
+        b.dayFrame.removeView(dayView)
         b.dayFrame.addView(dayView, 0)
 
         // Inflate a label view for each hour the day view will display
