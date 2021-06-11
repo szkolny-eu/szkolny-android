@@ -36,12 +36,6 @@
                 android:layout_marginHorizontal="8dp"
                 android:background="@color/md_red_500"
                 tools:layout_marginTop="100dp" />
-
-            <com.linkedin.android.tachyon.DayView
-                android:id="@+id/dayView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:layout_height="match_parent" />
         </FrameLayout>
     </pl.szczodrzynski.edziennik.utils.ListenerScrollView>
 
