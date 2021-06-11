@@ -151,9 +151,6 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         }
 
         b.scrollView.isVisible = true
-        if(b.dayView.parent != null){
-            b.dayFrame.removeView(b.dayView)
-        }
         b.dayFrame.removeView(dayView)
         b.dayFrame.addView(dayView, 0)
 
