@@ -5,8 +5,8 @@ buildscript {
         kotlin_version = '1.4.31'
 
         release = [
-                versionName: "4.8.1",
-                versionCode: 4080199
+                versionName: "4.8.2",
+                versionCode: 4080299
         ]
 
         setup = [
