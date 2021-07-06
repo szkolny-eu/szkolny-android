@@ -44,7 +44,10 @@ class TranslatorsAdapter(context: Context?, translators: List<ContributorItem>?)
         if (translations == null) translations = 0
 
         name.text = translator?.name
-        username.text = "@${translator?.login} - $translations translations"
+        username.text = "@${translator?.login} -  "+ mContext?.resources?.getQuantityString(
+        R.plurals.contributions_quantity,
+        translations
+        )
         profileImage.load(translator?.avatarUrl) {
             transformations(CircleCropTransformation())
         }

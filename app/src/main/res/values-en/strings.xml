@@ -1237,6 +1237,16 @@
     <string name="permissions_required">Required permissions</string>
     <string name="settings_about_contributors_text">App contributors</string>
     <string name="settings_about_contributors_subtext">List of Szkolny contributors</string>
+    <string name="contributors">Contributors</string>
+    <string name="translators">Translators</string>
+    <plurals name="contributions_quantity">
+        <item quantity="one">%d contribution</item>
+        <item quantity="other">%d contributions</item>
+    </plurals>
+    <plurals name="translations_quantity">
+        <item quantity="one">%d translation</item>
+        <item quantity="other">%d translations</item>
+    </plurals>
     <string name="settings_register_hide_sticks_from_old">Hide sticks from old</string>
     <string name="build_official">Official build</string>
     <string name="build_platform_play">Google Play</string>

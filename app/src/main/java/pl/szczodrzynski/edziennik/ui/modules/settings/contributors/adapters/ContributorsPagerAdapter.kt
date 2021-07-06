@@ -1,11 +1,13 @@
 package pl.szczodrzynski.edziennik.ui.modules.settings.contributors.adapters
 
+import android.provider.Settings.Global.getString
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.Contributor
 import pl.szczodrzynski.edziennik.ui.modules.settings.contributors.ContributorsFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.contributors.TranslatorsFragment
+import pl.szczodrzynski.edziennik.R
 
 class ContributorsPagerAdapter(fm: FragmentManager, contributors: Contributor?): FragmentPagerAdapter(fm) {
 
@@ -26,10 +28,10 @@ class ContributorsPagerAdapter(fm: FragmentManager, contributors: Contributor?):
         return 2
     }
 
-    override fun getPageTitle(position: Int): CharSequence {
+    override fun getPageTitle(position: Int): Int {
         return when (position) {
-            0 -> "Contributors"
-            else -> "Translators"
+            0 -> R.string.contributors
+            else -> R.string.translators
         }
     }
 }

@@ -44,7 +44,11 @@ class ContributorsAdapter(context: Context?, contributors: List<ContributorItem>
         if (contributions == null) contributions = 0
 
         name.text = mContributors?.get(position)?.name
-        username.text = "@${contributor?.login} - $contributions contributions"
+        username.text = "@${contributor?.login} - " + mContext?.resources?.getQuantityString(
+            R.plurals.contributions_quantity,
+            contributions
+        )
+
         profileImage.load(contributor?.avatarUrl) {
             transformations(CircleCropTransformation())
         }
