@@ -22,7 +22,7 @@ Jak zapewne już wiecie, we wrześniu 2020 r. **firma Librus zabroniła nam** pu
 
 __Zachęcamy do [przeczytania całej informacji](https://szkolny.eu/informacja) na naszej stronie.__
 
-*- Autorzy Szkolny.eu*
+*~Autorzy Szkolny.eu*
 
 ## O aplikacji
 
