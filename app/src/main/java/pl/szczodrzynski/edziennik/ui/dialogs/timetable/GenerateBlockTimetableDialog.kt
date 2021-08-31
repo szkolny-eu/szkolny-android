@@ -4,11 +4,14 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.timetable
 
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.View.MeasureSpec
