@@ -381,7 +381,7 @@ class GenerateBlockTimetableDialog(
                 val values = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, "plan_lekcji_${app.profile.name}_${today}_${now}.png")
                     put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                    put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + "Szkolny.eu")
                 }
 
                 val resolver: ContentResolver = activity.applicationContext.contentResolver
