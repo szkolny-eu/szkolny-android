@@ -376,45 +376,31 @@ class GenerateBlockTimetableDialog(
 
             val today = Date.getToday().stringY_m_d
             val now = Time.getNow().stringH_M_S
+            val filename = "plan_lekcji_${app.profile.name}_${today}_${now}.png"
+            val resolver: ContentResolver = activity.applicationContext.contentResolver
+            val values = ContentValues()
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val values = ContentValues().apply {
-                    put(MediaStore.MediaColumns.DISPLAY_NAME, "plan_lekcji_${app.profile.name}_${today}_${now}.png")
-                    put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
-                    put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + "Szkolny.eu")
-                }
-
-                val resolver: ContentResolver = activity.applicationContext.contentResolver
-                val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
-                try {
-                    val fos = resolver.openOutputStream(uri)
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-                    fos?.close()
-                } catch (e: Exception) {
-                    Log.e("SAVE_IMAGE", e.message, e)
-                    return@withContext null
-                }
-
-                uri
+                values.put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + "Szkolny.eu")
             } else {
-                val outputDir = Environment.getExternalStoragePublicDirectory("Szkolny.eu").apply { mkdirs() }
-                val outputFile = File(outputDir, "plan_lekcji_${app.profile.name}_${today}_${now}.png")
-                try {
-                    val fos = FileOutputStream(outputFile)
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-                    fos.close()
-                } catch (e: Exception) {
-                    Log.e("SAVE_IMAGE", e.message, e)
-                    return@withContext null
-                }
-                val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    FileProvider.getUriForFile(activity, app.packageName + ".provider", outputFile)
-                } else {
-                    Uri.parse("file://" + outputFile.absolutePath)
-                }
-
-                uri
+                val picturesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + File.separator + "Szkolny.eu"
+                File(picturesDirectory).mkdirs()
+                values.put(MediaStore.MediaColumns.DATA, picturesDirectory + File.separator + filename)
             }
+
+            try {
+                val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)!!
+                val fos = resolver.openOutputStream(uri)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                fos?.close()
+                uri
+            } catch (e: Exception) {
+                Log.e("SAVE_IMAGE", e.message, e)
+                return@withContext null
+            }
+
         }
 
         progressDialog.dismiss()
