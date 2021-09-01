@@ -383,11 +383,11 @@ class GenerateBlockTimetableDialog(
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 values.put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + "Szkolny.eu")
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, File(Environment.DIRECTORY_PICTURES, "Szkolny.eu").path)
             } else {
-                val picturesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + File.separator + "Szkolny.eu"
-                File(picturesDirectory).mkdirs()
-                values.put(MediaStore.MediaColumns.DATA, picturesDirectory + File.separator + filename)
+                val picturesDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath, "Szkolny.eu")
+                picturesDirectory.mkdirs()
+                values.put(MediaStore.MediaColumns.DATA, File(picturesDirectory, filename).path)
             }
 
             try {
