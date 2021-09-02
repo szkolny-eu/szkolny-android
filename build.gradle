@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.4.31'
+        kotlin_version = '1.5.20'
 
         release = [
                 versionName: "4.8.2",

@@ -48,7 +48,7 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
         //syncWeeks.clear()
         //syncWeeks += Date.fromY_m_d("2019-12-19")
 
-        syncWeeks.minBy { it.value }?.let {
+        syncWeeks.minByOrNull { it.value }?.let {
             data.toRemove.add(DataRemoveModel.Attendance.from(it))
         }
 

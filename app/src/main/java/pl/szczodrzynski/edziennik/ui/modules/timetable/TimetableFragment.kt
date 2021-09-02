@@ -120,8 +120,8 @@ class TimetableFragment : Fragment(), CoroutineScope {
             }
 
             val lessonRanges = app.db.lessonRangeDao().getAllNow(App.profileId)
-            startHour = lessonRanges.map { it.startTime.hour }.min() ?: DEFAULT_START_HOUR
-            endHour = lessonRanges.map { it.endTime.hour }.max()?.plus(1) ?: DEFAULT_END_HOUR
+            startHour = lessonRanges.map { it.startTime.hour }.minOrNull() ?: DEFAULT_START_HOUR
+            endHour = lessonRanges.map { it.endTime.hour }.maxOrNull()?.plus(1) ?: DEFAULT_END_HOUR
         }
         deferred.await()
         if (!isAdded)
