@@ -35,7 +35,7 @@ class ContributorsAdapter(
         val item = items[position]
         val b = holder.b
 
-        b.text.text = item.name
+        b.text.text = item.name ?: item.login
         b.subtext.setText(
             R.string.contributors_subtext_format,
             item.login,

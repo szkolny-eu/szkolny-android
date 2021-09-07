@@ -11,7 +11,7 @@ data class ContributorsResponse(
     @Parcelize
     data class Item(
         val login: String,
-        val name: String,
+        val name: String?,
         val avatarUrl: String,
         val profileUrl: String,
         val contributions: Int?
