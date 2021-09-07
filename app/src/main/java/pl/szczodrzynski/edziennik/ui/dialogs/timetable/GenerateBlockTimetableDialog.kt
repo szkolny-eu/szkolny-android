@@ -385,7 +385,7 @@ class GenerateBlockTimetableDialog(
                 values.put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
                 values.put(MediaStore.MediaColumns.RELATIVE_PATH, File(Environment.DIRECTORY_PICTURES, "Szkolny.eu").path)
             } else {
-                val picturesDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath, "Szkolny.eu")
+                val picturesDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Szkolny.eu")
                 picturesDirectory.mkdirs()
                 values.put(MediaStore.MediaColumns.DATA, File(picturesDirectory, filename).path)
             }
