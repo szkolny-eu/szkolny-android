@@ -4,11 +4,14 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.timetable
 
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.View.MeasureSpec
@@ -373,25 +376,31 @@ class GenerateBlockTimetableDialog(
 
             val today = Date.getToday().stringY_m_d
             val now = Time.getNow().stringH_M_S
+            val filename = "plan_lekcji_${app.profile.name}_${today}_${now}.png"
+            val resolver: ContentResolver = activity.applicationContext.contentResolver
+            val values = ContentValues()
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
 
-            val outputDir = Environment.getExternalStoragePublicDirectory("Szkolny.eu").apply { mkdirs() }
-            val outputFile = File(outputDir, "plan_lekcji_${app.profile.name}_${today}_${now}.png")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                values.put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, File(Environment.DIRECTORY_PICTURES, "Szkolny.eu").path)
+            } else {
+                val picturesDirectory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Szkolny.eu")
+                picturesDirectory.mkdirs()
+                values.put(MediaStore.MediaColumns.DATA, File(picturesDirectory, filename).path)
+            }
 
             try {
-                val fos = FileOutputStream(outputFile)
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-                fos.close()
+                val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return@withContext null
+                resolver.openOutputStream(uri).use {
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                }
+                uri
             } catch (e: Exception) {
                 Log.e("SAVE_IMAGE", e.message, e)
                 return@withContext null
             }
 
-            val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                FileProvider.getUriForFile(activity, app.packageName + ".provider", outputFile)
-            } else {
-                Uri.parse("file://" + outputFile.absolutePath)
-            }
-            uri
         }
 
         progressDialog.dismiss()
