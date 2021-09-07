@@ -28,7 +28,9 @@
         android:theme="@style/AppTheme.Dark"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+
         <meta-data android:name="buildTimestamp" android:value="${buildTimestamp}" />
+
         <!--  __  __       _                      _   _       _ _
              |  \/  |     (_)           /\       | | (_)     (_) |
              | \  / | __ _ _ _ __      /  \   ___| |_ ___   ___| |_ _   _
