@@ -40,10 +40,10 @@ class VulcanHebeSendMessage(
         val senderName = (profile?.accountName ?: profile?.studentNameLong)
             ?.swapFirstLastName() ?: ""
         val sender = JsonObject(
-            "Address" to senderName,
+            "Address" to data.senderAddressName,
             "LoginId" to data.studentLoginId.toString(),
             "Initials" to senderName.getNameInitials(),
-            "AddressHash" to senderName.sha1Hex()
+            "AddressHash" to data.senderAddressHash
         )
 
         apiPost(
