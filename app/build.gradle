@@ -154,7 +154,7 @@ dependencies {
 
     // Szkolny.eu libraries/forks
     implementation "eu.szkolny:android-snowfall:1ca9ea2da3"
-    implementation "eu.szkolny:agendacalendarview:5431f03098"
+    implementation "eu.szkolny:agendacalendarview:ac0f3dcf42"
     implementation "eu.szkolny:cafebar:5bf0c618de"
     implementation "eu.szkolny.fslogin:lib:2.0.0"
     implementation "eu.szkolny:material-about-library:1d5ebaf47c"
