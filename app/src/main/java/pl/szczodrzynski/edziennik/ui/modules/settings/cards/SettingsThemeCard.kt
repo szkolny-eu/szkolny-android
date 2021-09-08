@@ -88,7 +88,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             text = R.string.settings_theme_drawer_header_text,
             icon = CommunityMaterial.Icon2.cmd_image_outline
         ) {
-            if (app.config.ui.appBackground == null) {
+            if (app.config.ui.headerBackground == null) {
                 setHeaderBackground()
                 return@createActionItem
             }
