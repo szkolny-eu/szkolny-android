@@ -14,6 +14,7 @@ data class ContributorsResponse(
         val name: String?,
         val avatarUrl: String,
         val profileUrl: String,
+        val itemUrl: String,
         val contributions: Int?
     ) : Parcelable
 }

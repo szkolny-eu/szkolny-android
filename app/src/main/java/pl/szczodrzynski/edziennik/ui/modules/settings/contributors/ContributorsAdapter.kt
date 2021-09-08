@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.ui.modules.settings.contributors
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.PluralsRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -19,7 +20,9 @@ import pl.szczodrzynski.edziennik.utils.Utils
 
 class ContributorsAdapter(
     val activity: AppCompatActivity,
-    val items: List<ContributorsResponse.Item>
+    val items: List<ContributorsResponse.Item>,
+    @PluralsRes
+    val quantityPluralRes: Int
 ) : RecyclerView.Adapter<ContributorsAdapter.ViewHolder>() {
     companion object {
         private const val TAG = "ContributorsAdapter"
@@ -40,7 +43,7 @@ class ContributorsAdapter(
             R.string.contributors_subtext_format,
             item.login,
             activity.plural(
-                R.plurals.contributions_quantity,
+                quantityPluralRes,
                 item.contributions ?: 0
             )
         )
@@ -50,7 +53,7 @@ class ContributorsAdapter(
         }
 
         b.root.setOnClickListener {
-            Utils.openUrl(activity, item.profileUrl)
+            Utils.openUrl(activity, item.itemUrl)
         }
     }
 

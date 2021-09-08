@@ -55,4 +55,13 @@
         <item quantity="one">%1$s - %2$d unread</item>
         <item quantity="other">%1$s - %2$d unread</item>
     </plurals>
+
+    <plurals name="contributions_quantity">
+        <item quantity="one">%d contribution</item>
+        <item quantity="other">%d contributions</item>
+    </plurals>
+    <plurals name="translations_quantity">
+        <item quantity="one">%d translation</item>
+        <item quantity="other">%d translations</item>
+    </plurals>
 </resources>

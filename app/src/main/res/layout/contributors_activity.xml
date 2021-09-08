@@ -7,11 +7,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorSurface_6dp"
+            android:visibility="gone"
             app:tabIndicatorColor="?colorPrimary"
             app:tabMode="auto"
             app:tabSelectedTextColor="?colorPrimary"
@@ -21,6 +28,7 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
 </layout>

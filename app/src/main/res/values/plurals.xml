@@ -159,4 +159,15 @@
         <item quantity="few">%d oceny</item> <!-- 2, 3, 4, 32, 33, 34 -->
         <item quantity="other">%d ocen</item> <!-- 5, 10, 12, 13, 21, 25 -->
     </plurals>
+
+    <plurals name="contributions_quantity">
+        <item quantity="one">%d commit</item>
+        <item quantity="few">%d commity</item>
+        <item quantity="other">%d commit\'ów</item>
+    </plurals>
+    <plurals name="translations_quantity">
+        <item quantity="one">%d tłumaczenie</item>
+        <item quantity="few">%d tłumaczenia</item>
+        <item quantity="other">%d tłumaczeń</item>
+    </plurals>
 </resources>

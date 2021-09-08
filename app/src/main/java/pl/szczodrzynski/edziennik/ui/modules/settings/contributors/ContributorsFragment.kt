@@ -32,8 +32,9 @@ class ContributorsFragment : LazyFragment() {
 
         val contributorsArray = requireArguments().getParcelableArray("items") as Array<ContributorsResponse.Item>
         val contributors = contributorsArray.toList()
+        val quantityPluralRes = requireArguments().getInt("quantityPluralRes")
 
-        val adapter = ContributorsAdapter(activity, contributors)
+        val adapter = ContributorsAdapter(activity, contributors, quantityPluralRes)
         b.list.adapter = adapter
         b.list.apply {
             setHasFixedSize(true)
