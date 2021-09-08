@@ -27,6 +27,9 @@ interface SzkolnyService {
     @POST("appUser")
     fun appUser(@Body request: AppUserRequest): Call<ApiResponse<Unit>>
 
+    @GET("contributors/android")
+    fun contributors(): Call<ApiResponse<ContributorsResponse>>
+
     @GET("updates/app")
     fun updates(@Query("channel") channel: String = "release"): Call<ApiResponse<List<Update>>>
 

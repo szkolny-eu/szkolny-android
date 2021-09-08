@@ -1391,6 +1391,10 @@
     <string name="see_also">Zobacz także</string>
     <string name="settings_about_homepage_text">Wejdź na stronę aplikacji</string>
     <string name="settings_about_homepage_subtext">Uzyskaj pomoc lub wesprzyj autorów</string>
+    <string name="settings_about_contributors_text">Twórcy aplikacji</string>
+    <string name="settings_about_contributors_subtext">Lista twórców Szkolnego</string>
+    <string name="contributors">Współtwórcy</string>
+    <string name="translators">Tłumacze</string>
     <string name="settings_about_github_text">Kod źródłowy</string>
     <string name="settings_about_github_subtext">Pomóż w rozwoju aplikacji na GitHubie</string>
     <string name="profile_config_name_hint">Nazwa profilu</string>
@@ -1457,4 +1461,6 @@
     <string name="notification_grade_long_format">Ocena: %s (waga %s)\nPrzedmiot: %s\nKategoria: %s\nOpis: %s\nNauczyciel: %s</string>
     <string name="notification_notice_long_format">Rodzaj: %s\nNauczyciel: %s\nTreść: %s</string>
     <string name="notification_attendance_long_format">Rodzaj: %s\nTermin: %s, %s\nNr lekcji: %s\nPrzedmiot: %s\nNauczyciel: %s\nTemat lekcji: %s</string>
+    <string name="contributors_subtext_format" translatable="false">\@%s - %s</string>
+    <string name="contributors_headline">Najłatwiejszy sposób na korzystanie z e-dziennika.</string>
 </resources>

@@ -22,10 +22,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.ApiCacheIntercept
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.*
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
@@ -369,6 +366,15 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         val response = api.fsLoginRealms(registerName).execute()
         if (response.isSuccessful && response.body() != null) {
             return response.body()!!
+        }
+        throw SzkolnyApiException(null)
+    }
+
+    @Throws(Exception::class)
+    fun getContributors(): ContributorsResponse {
+        val response = api.contributors().execute()
+        if (response.isSuccessful && response.body() != null) {
+            return parseResponse(response)
         }
         throw SzkolnyApiException(null)
     }

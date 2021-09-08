@@ -1237,6 +1237,10 @@
     <string name="permissions_attachment">In order to download the file, you have to grant file storage permission for the application.\n\nClick OK to grant the permission.</string>
     <string name="permissions_denied">You denied the required permissions for the application.\n\nIn order to grant the permission, open the Permissions screen for Szkolny.eu in phone settings.\n\nClick OK to open app settings now.</string>
     <string name="permissions_required">Required permissions</string>
+    <string name="settings_about_contributors_text">App contributors</string>
+    <string name="settings_about_contributors_subtext">List of Szkolny.eu contributors</string>
+    <string name="contributors">Contributors</string>
+    <string name="translators">Translators</string>
     <string name="settings_register_hide_sticks_from_old">Hide sticks from old</string>
     <string name="build_official">Official build</string>
     <string name="build_platform_play">Google Play</string>

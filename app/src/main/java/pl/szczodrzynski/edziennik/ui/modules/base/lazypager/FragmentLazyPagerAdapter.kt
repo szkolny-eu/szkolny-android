@@ -9,7 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class FragmentLazyPagerAdapter(
         fragmentManager: FragmentManager,
-        swipeRefreshLayout: SwipeRefreshLayout,
+        swipeRefreshLayout: SwipeRefreshLayout? = null,
         val fragments: List<Pair<LazyFragment, CharSequence>>
 ) : LazyPagerAdapter(fragmentManager, swipeRefreshLayout) {
     override fun getPage(position: Int) = fragments[position].first

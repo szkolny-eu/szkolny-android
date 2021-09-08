@@ -24,6 +24,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsLicenseActivity
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsUtil
+import pl.szczodrzynski.edziennik.ui.modules.settings.contributors.ContributorsActivity
 import pl.szczodrzynski.edziennik.utils.Utils
 import kotlin.coroutines.CoroutineContext
 
@@ -88,6 +89,14 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
             }
         ).also {
             it.subText = BuildConfig.VERSION_NAME + ", " + BuildConfig.BUILD_TYPE
+        },
+
+        util.createActionItem(
+            text = R.string.settings_about_contributors_text,
+            subText = R.string.settings_about_contributors_subtext,
+            icon = CommunityMaterial.Icon.cmd_account_group_outline
+        ) {
+            activity.startActivity(Intent(activity, ContributorsActivity::class.java))
         },
 
         util.createMoreItem(card, items = listOf(
