@@ -503,10 +503,14 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             text.toString()
         }
 
+        textHtml = textHtml
+            .replace("</b><b>", "")
+            .replace("</i><i>", "")
+            .replace("p style=\"margin-top:0; margin-bottom:0;\"", "p")
+
         if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_MOBIDZIENNIK) {
             textHtml = textHtml
-                    .replace("p style=\"margin-top:0; margin-bottom:0;\"", "span")
-                    .replace("</p>", "</span>")
+                    .replace("</p><br>", "</p>")
                     .replace("<b>", "<strong>")
                     .replace("</b>", "</strong>")
                     .replace("<i>", "<em>")
