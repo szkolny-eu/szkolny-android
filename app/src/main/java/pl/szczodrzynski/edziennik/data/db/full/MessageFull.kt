@@ -30,7 +30,7 @@ class MessageFull(
     @Ignore
     var filterWeight = 0
     @Ignore
-    var searchHighlightText: String? = null
+    var searchHighlightText: CharSequence? = null
 
     // metadata
     var seen = false

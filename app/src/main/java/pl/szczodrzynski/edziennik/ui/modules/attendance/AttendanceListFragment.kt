@@ -41,7 +41,8 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
         get() = job + Dispatchers.Main
 
     // local/private variables go here
-    private val manager by lazy { app.attendanceManager }
+    private val manager
+        get() = app.attendanceManager
     private var viewType = AttendanceFragment.VIEW_DAYS
     private var expandSubjectId = 0L
 

@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.config
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.getIntList
 import pl.szczodrzynski.edziennik.config.utils.set
@@ -123,6 +124,19 @@ class ConfigSync(private val config: Config) {
 
     private var mRegisterAvailability: Map<String, RegisterAvailabilityStatus>? = null
     var registerAvailability: Map<String, RegisterAvailabilityStatus>
-        get() { mRegisterAvailability = mRegisterAvailability ?: config.values.get("registerAvailability", null as String?)?.let { it -> gson.fromJson<Map<String, RegisterAvailabilityStatus>>(it, object: TypeToken<Map<String, RegisterAvailabilityStatus>>(){}.type) }; return mRegisterAvailability ?: mapOf() }
-        set(value) { config.setMap("registerAvailability", value); mRegisterAvailability = value }
+        get() {
+            val flavor = config.values.get("registerAvailabilityFlavor", null as String?)
+            if (BuildConfig.FLAVOR != flavor)
+                return mapOf()
+
+            mRegisterAvailability = mRegisterAvailability ?: config.values.get("registerAvailability", null as String?)?.let { it ->
+                gson.fromJson(it, object: TypeToken<Map<String, RegisterAvailabilityStatus>>(){}.type)
+            }
+            return mRegisterAvailability ?: mapOf()
+        }
+        set(value) {
+            config.setMap("registerAvailability", value)
+            config.set("registerAvailabilityFlavor", BuildConfig.FLAVOR)
+            mRegisterAvailability = value
+        }
 }

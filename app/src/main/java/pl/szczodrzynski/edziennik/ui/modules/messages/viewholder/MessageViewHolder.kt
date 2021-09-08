@@ -22,17 +22,21 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MessageViewHolder(
-        inflater: LayoutInflater,
-        parent: ViewGroup,
-        val b: MessagesListItemBinding = MessagesListItemBinding.inflate(inflater, parent, false)
+    inflater: LayoutInflater,
+    parent: ViewGroup,
+    val b: MessagesListItemBinding = MessagesListItemBinding.inflate(inflater, parent, false)
 ) : RecyclerView.ViewHolder(b.root), BindableViewHolder<MessageFull, MessagesAdapter> {
     companion object {
         private const val TAG = "MessageViewHolder"
     }
 
-    override fun onBind(activity: AppCompatActivity, app: App, item: MessageFull, position: Int, adapter: MessagesAdapter) {
-        val manager = app.gradesManager
-
+    override fun onBind(
+        activity: AppCompatActivity,
+        app: App,
+        item: MessageFull,
+        position: Int,
+        adapter: MessagesAdapter
+    ) {
         b.messageSubject.text = item.subject
         b.messageDate.text = Date.fromMillis(item.addedDate).formattedStringShort
         b.messageAttachmentImage.isVisible = item.hasAttachments
@@ -55,15 +59,17 @@ class MessageViewHolder(
         b.messageProfileBackground.setImageBitmap(messageInfo.profileImage)
         b.messageSender.text = messageInfo.profileName
 
-        item.searchHighlightText?.let { highlight ->
+        item.searchHighlightText?.toString()?.let { highlight ->
             val colorHighlight = R.attr.colorControlHighlight.resolveAttr(activity)
 
             b.messageSubject.text = b.messageSubject.text.asSpannable(
-                    StyleSpan(Typeface.BOLD), BackgroundColorSpan(colorHighlight),
-                    substring = highlight, ignoreCase = true, ignoreDiacritics = true)
+                StyleSpan(Typeface.BOLD), BackgroundColorSpan(colorHighlight),
+                substring = highlight, ignoreCase = true, ignoreDiacritics = true
+            )
             b.messageSender.text = b.messageSender.text.asSpannable(
-                    StyleSpan(Typeface.BOLD), BackgroundColorSpan(colorHighlight),
-                    substring = highlight, ignoreCase = true, ignoreDiacritics = true)
+                StyleSpan(Typeface.BOLD), BackgroundColorSpan(colorHighlight),
+                substring = highlight, ignoreCase = true, ignoreDiacritics = true
+            )
         }
 
         adapter.onItemClick?.let { listener ->

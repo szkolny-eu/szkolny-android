@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-4-14.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <pl.szczodrzynski.edziennik.utils.ListenerScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <FrameLayout
+            android:id="@+id/dayFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_height="match_parent">
+
+            <View
+                android:id="@+id/timeIndicatorMarker"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/timetable_marker_triangle"
+                tools:layout_marginTop="92.5dp" />
+
+            <View
+                android:id="@+id/timeIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@color/md_red_500"
+                tools:layout_marginTop="100dp" />
+        </FrameLayout>
+    </pl.szczodrzynski.edziennik.utils.ListenerScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+</FrameLayout>

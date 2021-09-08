@@ -33,6 +33,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
     private lateinit var app: App
     private lateinit var activity: MainActivity
     private lateinit var b: MessagesListFragmentBinding
+    private var adapter: MessagesAdapter? = null
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
@@ -53,21 +54,22 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
         val messageType = arguments.getInt("messageType", Message.TYPE_RECEIVED)
         var topPosition = arguments.getInt("topPosition", NO_POSITION)
         var bottomPosition = arguments.getInt("bottomPosition", NO_POSITION)
+        val searchText = arguments.getString("searchText", "")
 
         teachers = withContext(Dispatchers.Default) {
             app.db.teacherDao().getAllNow(App.profileId)
         }
 
-        val adapter = MessagesAdapter(activity, teachers) {
+        adapter = MessagesAdapter(activity, teachers) {
             activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, Bundle(
                     "messageId" to it.id
             ))
         }
 
-        app.db.messageDao().getAllByType(App.profileId, messageType).observe(this@MessagesListFragment, Observer { items ->
+        app.db.messageDao().getAllByType(App.profileId, messageType).observe(this@MessagesListFragment, Observer { messages ->
             if (!isAdded) return@Observer
 
-            items.forEach { message ->
+            messages.forEach { message ->
                 message.recipients?.removeAll { it.profileId != message.profileId }
                 message.recipients?.forEach { recipient ->
                     if (recipient.fullName == null) {
@@ -77,13 +79,22 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             }
 
             // load & configure the adapter
-            adapter.items = items.toMutableList()
-            adapter.items.add(0, MessagesSearch().also {
-                it.count = items.size
+            val items = messages.toMutableList<Any>()
+            items.add(0, MessagesSearch().also {
+                it.searchText = searchText
             })
-            adapter.allItems = adapter.items.toMutableList()
+
+            adapter?.items = items
+            adapter?.allItems = items
+
             if (items.isNotNullNorEmpty() && b.list.adapter == null) {
-                b.list.adapter = adapter
+                if (searchText.isNotBlank())
+                    adapter?.filter?.filter(searchText) {
+                        b.list.adapter = adapter
+                    }
+                else
+                    b.list.adapter = adapter
+
                 b.list.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
@@ -92,7 +103,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
                         addOnScrollListener(onScrollListener)
                 }
             }
-            adapter.notifyDataSetChanged()
+
             setSwipeToRefresh(messageType in Message.TYPE_RECEIVED..Message.TYPE_SENT && items.isNullOrEmpty())
 
             (b.list.layoutManager as? LinearLayoutManager)?.let { layoutManager ->
@@ -119,10 +130,15 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (!isAdded) return
+        if (!isAdded)
+            return
+        val layoutManager = (b.list.layoutManager as? LinearLayoutManager)
+        val searchItem = adapter?.items?.firstOrNull { it is MessagesSearch } as? MessagesSearch
+
         onPageDestroy?.invoke(position, Bundle(
-                "topPosition" to (b.list.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition(),
-                "bottomPosition" to (b.list.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition()
+            "topPosition" to layoutManager?.findFirstVisibleItemPosition(),
+            "bottomPosition" to layoutManager?.findLastCompletelyVisibleItemPosition(),
+            "searchText" to searchItem?.searchText?.toString()
         ))
     }
 }

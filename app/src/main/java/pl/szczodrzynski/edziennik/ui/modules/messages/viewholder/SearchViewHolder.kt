@@ -9,38 +9,43 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.MessagesListItemSearchBinding
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesAdapter
 import pl.szczodrzynski.edziennik.ui.modules.messages.models.MessagesSearch
+import pl.szczodrzynski.edziennik.ui.modules.messages.utils.SearchTextWatcher
 
 class SearchViewHolder(
-        inflater: LayoutInflater,
-        parent: ViewGroup,
-        val b: MessagesListItemSearchBinding = MessagesListItemSearchBinding.inflate(inflater, parent, false)
+    inflater: LayoutInflater,
+    parent: ViewGroup,
+    val b: MessagesListItemSearchBinding = MessagesListItemSearchBinding.inflate(
+        inflater,
+        parent,
+        false
+    )
 ) : RecyclerView.ViewHolder(b.root), BindableViewHolder<MessagesSearch, MessagesAdapter> {
     companion object {
         private const val TAG = "SearchViewHolder"
     }
 
-    override fun onBind(activity: AppCompatActivity, app: App, item: MessagesSearch, position: Int, adapter: MessagesAdapter) {
-        b.searchEdit.removeTextChangedListener(adapter.textWatcher)
-        b.searchEdit.addTextChangedListener(adapter.textWatcher)
+    override fun onBind(
+        activity: AppCompatActivity,
+        app: App,
+        item: MessagesSearch,
+        position: Int,
+        adapter: MessagesAdapter
+    ) {
+        val watcher = SearchTextWatcher(b, adapter.filter, item)
+        b.searchEdit.removeTextChangedListener(watcher)
 
-        /*b.searchEdit.setOnKeyboardListener(object : TextInputKeyboardEdit.KeyboardListener {
-            override fun onStateChanged(keyboardEditText: TextInputKeyboardEdit, showing: Boolean) {
-                item.isFocused = showing
-            }
-        })*/
+        if (adapter.items.isEmpty() || adapter.items.size == adapter.allItems.size)
+            b.searchLayout.helperText = " "
+        else
+            b.searchLayout.helperText =
+                b.root.context.getString(R.string.messages_search_results, adapter.items.size - 1)
+        b.searchEdit.setText(item.searchText)
 
-        /*if (b.searchEdit.text.toString() != item.searchText) {
-            b.searchEdit.setText(item.searchText)
-            b.searchEdit.setSelection(item.searchText.length)
-        }*/
-
-        //b.searchLayout.helperText = app.getString(R.string.messages_search_results, item.count)
-
-        /*if (item.isFocused && !b.searchEdit.isFocused)
-            b.searchEdit.requestFocus()*/
+        b.searchEdit.addTextChangedListener(watcher)
     }
 }

@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.databinding.AttendanceDetailsDialogBinding
 import pl.szczodrzynski.edziennik.setTintColor
+import pl.szczodrzynski.edziennik.utils.BetterLink
 import kotlin.coroutines.CoroutineContext
 
 class AttendanceDetailsDialog(
@@ -60,5 +61,13 @@ class AttendanceDetailsDialog(
         b.attendanceName.background.setTintColor(attendanceColor)
 
         b.attendanceIsCounted.setText(if (attendance.isCounted) R.string.yes else R.string.no)
+
+        attendance.teacherName?.let { name ->
+            BetterLink.attach(
+                b.teacherName,
+                teachers = mapOf(attendance.teacherId to name),
+                onActionSelected = dialog::dismiss
+            )
+        }
     }}
 }

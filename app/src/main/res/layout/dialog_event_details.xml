@@ -105,13 +105,28 @@
 
             </LinearLayout>
 
+            <com.mikepenz.iconics.view.IconicsTextView
+                android:id="@+id/legend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/NavView.TextView.Helper"
+                tools:text="[!] wydarzenie dodane ręcznie\n[V] oznaczono jako wykonane" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/divider"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:textAppearance="@style/NavView.TextView.Helper"
                 android:text="@string/dialog_event_details_teacher"
                 android:visibility="@{event.teacherName != null ? View.VISIBLE : View.GONE}"/>
             <TextView
+                android:id="@+id/teacherName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{event.teacherName}"

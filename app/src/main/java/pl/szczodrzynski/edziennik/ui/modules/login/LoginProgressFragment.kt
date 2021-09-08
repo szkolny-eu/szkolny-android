@@ -76,7 +76,7 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
 
             val maxProfileId = max(
                     app.db.profileDao().lastId ?: 0,
-                    activity.profiles.maxBy { it.profile.id }?.profile?.id ?: 0
+                    activity.profiles.maxByOrNull { it.profile.id }?.profile?.id ?: 0
             )
             val loginType = args.getInt("loginType", -1)
             val loginMode = args.getInt("loginMode", 0)

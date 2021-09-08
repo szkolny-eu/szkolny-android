@@ -45,6 +45,7 @@ class WidgetNotificationsFactory(val app: App, val config: WidgetConfig) : Remot
                     getLong("id") ?: 0,
                     getString("title") ?: "",
                     getString("text") ?: "",
+                    getString("textLong"),
                     getInt("type") ?: 0,
                     getInt("profileId"),
                     getString("profileName"),

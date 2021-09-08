@@ -43,10 +43,12 @@ jobs:
       androidHome: ${{ env.ANDROID_HOME }}
       androidSdkRoot: ${{ env.ANDROID_SDK_ROOT }}
     steps:
-      - name: Setup JDK 1.8
-        uses: actions/setup-java@v1
+      - name: Setup JDK 11
+        uses: actions/setup-java@v2
         with:
-          java-version: 1.8
+          distribution: 'zulu'
+          java-version: '11'
+          cache: 'gradle'
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
       - name: Clean build artifacts
@@ -113,12 +115,11 @@ jobs:
           releaseFile: ${{ needs.sign.outputs.signedReleaseFile }}
           releaseName: ${{ steps.changelog.outputs.appVersionName }}
           track: ${{ secrets.PLAY_RELEASE_TRACK }}
-          userFraction: 1.0
           whatsNewDirectory: ${{ steps.changelog.outputs.changelogDir }}
 
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v2
-        if: true
+        if: always()
         with:
           name: ${{ steps.changelog.outputs.appVersionName }}
           path: |

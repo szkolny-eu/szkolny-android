@@ -30,10 +30,12 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.colorAttr
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
@@ -64,10 +66,20 @@ class MessageFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded) return
 
+        activity.bottomSheet.prependItem(
+            BottomSheetPrimaryItem(true)
+                .withTitle(R.string.menu_messages_config)
+                .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+                .withOnClickListener {
+                    activity.bottomSheet.close()
+                    MessagesConfigDialog(activity, false, null, null)
+                }
+        )
+
         b.closeButton.setImageDrawable(
                 IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_window_close).apply {
                     colorAttr(activity, android.R.attr.textColorSecondary)
-                    sizeDp = 16
+                    sizeDp = 24
                 }
         )
         b.closeButton.setOnClickListener { activity.navigateUp() }
