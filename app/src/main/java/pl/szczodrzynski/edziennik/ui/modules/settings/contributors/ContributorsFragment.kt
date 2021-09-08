@@ -29,7 +29,6 @@ class ContributorsFragment : LazyFragment() {
     }
 
     override fun onPageCreated(): Boolean {
-
         val contributorsArray = requireArguments().getParcelableArray("items") as Array<ContributorsResponse.Item>
         val contributors = contributorsArray.toList()
         val quantityPluralRes = requireArguments().getInt("quantityPluralRes")
