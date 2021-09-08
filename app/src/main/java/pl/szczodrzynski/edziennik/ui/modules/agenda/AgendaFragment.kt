@@ -21,6 +21,7 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.entity.EventType
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding
@@ -136,9 +137,22 @@ class AgendaFragment : Fragment(), CoroutineScope {
         }
     }
 
+    private suspend fun checkEventTypes() {
+        withContext(Dispatchers.Default) {
+            val eventTypes = app.db.eventTypeDao().getAllNow(app.profileId).map {
+                it.id
+            }
+            val defaultEventTypes = EventType.getTypeColorMap().keys
+            if (!eventTypes.containsAll(defaultEventTypes)) {
+                app.db.eventTypeDao().addDefaultTypes(activity, app.profileId)
+            }
+        }
+    }
+
     private fun createDefaultAgendaView() { (b as? FragmentAgendaDefaultBinding)?.let { b -> launch {
         if (!isAdded)
             return@launch
+        checkEventTypes()
         delay(500)
 
         agendaDefault = AgendaFragmentDefault(activity, app, b)
@@ -146,6 +160,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
     }}}
 
     private fun createCalendarAgendaView() { (b as? FragmentAgendaCalendarBinding)?.let { b -> launch {
+        checkEventTypes()
         delay(300)
 
         val dayList = mutableListOf<EventDay>()
