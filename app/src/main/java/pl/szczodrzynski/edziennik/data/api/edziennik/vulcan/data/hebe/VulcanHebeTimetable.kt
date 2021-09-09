@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_TIMETABLE_CHANGE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_CANCELLED
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_CHANGE
@@ -47,7 +48,7 @@ class VulcanHebeTimetable(
             ?: previousWeekStart
         val dateTo = dateFrom.clone().stepForward(0, 0, 13)
 
-        val lastSync = null
+        val lastSync = 0L
 
         apiGetList(
             TAG,
@@ -105,6 +106,8 @@ class VulcanHebeTimetable(
                     TAG,
                     "Clearing lessons between ${dateFrom.stringY_m_d} and ${dateTo.stringY_m_d}"
                 )
+
+                data.toRemove.add(DataRemoveModel.Timetable.between(dateFrom, dateTo))
 
                 data.lessonList.addAll(lessonList)
 
