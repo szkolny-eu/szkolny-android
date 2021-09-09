@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 import com.google.gson.JsonObject
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_HEBE_MISSING_SENDER_ENTRY
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGES_SEND
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
@@ -27,6 +28,22 @@ class VulcanHebeSendMessage(
     }
 
     init {
+        if (data.senderAddressName == null || data.senderAddressHash == null) {
+            VulcanHebeMain(data).getStudents(data.profile, null) {
+                if (data.senderAddressName == null || data.senderAddressHash == null) {
+                    data.error(TAG, ERROR_VULCAN_HEBE_MISSING_SENDER_ENTRY)
+                }
+                else {
+                    sendMessage()
+                }
+            }
+        }
+        else {
+            sendMessage()
+        }
+    }
+
+    private fun sendMessage() {
         val recipientsArray = JsonArray()
         recipients.forEach { teacher ->
             recipientsArray += JsonObject(
