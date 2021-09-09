@@ -222,6 +222,16 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mHebeContext = mHebeContext ?: profile?.getStudentData("hebeContext", null); return mHebeContext }
         set(value) { profile?.putStudentData("hebeContext", value) ?: return; mHebeContext = value }
 
+    private var mSenderAddressHash: String? = null
+    var senderAddressHash: String?
+        get() { mSenderAddressHash = mSenderAddressHash ?: profile?.getStudentData("senderAddressHash", null); return mSenderAddressHash }
+        set(value) { profile?.putStudentData("senderAddressHash", value) ?: return; mSenderAddressHash = value }
+
+    private var mSenderAddressName: String? = null
+    var senderAddressName: String?
+        get() { mSenderAddressName = mSenderAddressName ?: profile?.getStudentData("senderAddressName", null); return mSenderAddressName }
+        set(value) { profile?.putStudentData("senderAddressName", value) ?: return; mSenderAddressName = value }
+
     val apiUrl: String?
         get() {
             val url = when (apiToken[symbol]?.substring(0, 3)) {
