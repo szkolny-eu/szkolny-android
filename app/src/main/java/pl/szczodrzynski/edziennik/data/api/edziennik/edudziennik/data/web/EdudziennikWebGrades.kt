@@ -53,7 +53,7 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
 
                 val subjectId = subjectElement.id().trim()
                 val subjectName = subjectElement.child(0).text().trim()
-                val subject = data.getSubject(subjectId, subjectName)
+                val subject = data.getSubject(subjectId.crc32(), subjectName)
 
                 val gradeType = when {
                     subjectElement.select("#sum").text().isNotBlank() -> TYPE_POINT_SUM
