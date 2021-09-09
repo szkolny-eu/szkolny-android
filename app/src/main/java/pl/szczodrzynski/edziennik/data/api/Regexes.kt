@@ -117,6 +117,17 @@ object Regexes {
     }
 
 
+    val MOBIDZIENNIK_TIMETABLE_TOP by lazy {
+        """<div class="plansc_top">.+?</div></div>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_TIMETABLE_CELL by lazy {
+        """<div class="plansc_cnt_w" style="(.+?)">.+?style="(.+?)".+?title="(.+?)".+?>\s+(.+?)\s+</div>""".toRegex(DOT_MATCHES_ALL)
+    }
+    val MOBIDZIENNIK_TIMETABLE_LEFT by lazy {
+        """<div class="plansc_godz">.+?</div></div>""".toRegex(DOT_MATCHES_ALL)
+    }
+
+
 
     val IDZIENNIK_LOGIN_HIDDEN_FIELDS by lazy {
         """<input type="hidden".+?name="([A-z0-9_]+)?".+?value="([A-z0-9_+-/=]+)?".+?>""".toRegex(DOT_MATCHES_ALL)
