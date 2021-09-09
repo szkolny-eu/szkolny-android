@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
 import org.jsoup.Jsoup
+import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SUBJECT_ID
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_TEACHER_ID
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
@@ -89,7 +90,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
                         val subjectId = EDUDZIENNIK_SUBJECT_ID.find(subjectElement.attr("href"))?.get(1)
                                 ?: return@forEachIndexed
                         val subjectName = subjectElement.text().trim()
-                        val subject = data.getSubject(subjectId, subjectName)
+                        val subject = data.getSubject(subjectId.crc32(), subjectName)
 
                         /* Getting teacher */
 

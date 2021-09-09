@@ -36,7 +36,7 @@ class PodlasieApiFinalGrades(val data: DataPodlasie, val rows: List<JsonObject>)
             }
 
             val subjectName = grade.getString("SchoolSubject") ?: return@forEach
-            val subject = data.getSubject(subjectName)
+            val subject = data.getSubject(null, subjectName)
 
             val addedDate = if (profile.empty) profile.getSemesterStart(semester).inMillis
             else System.currentTimeMillis()

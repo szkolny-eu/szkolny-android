@@ -81,39 +81,4 @@ class DataPodlasie(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
 
     val loginShort: String?
         get() = studentLogin?.split('@')?.get(0)
-
-    fun getSubject(name: String): Subject {
-        val id = name.crc32()
-        return subjectList.singleOrNull { it.id == id } ?: run {
-            val subject = Subject(profileId, id, name, name)
-            subjectList.put(id, subject)
-            subject
-        }
-    }
-
-    fun getTeacher(firstName: String, lastName: String): Teacher {
-        val name = "$firstName $lastName".fixName()
-        return teacherList.singleOrNull { it.fullName == name } ?: run {
-            val id = name.crc32()
-            val teacher = Teacher(profileId, id, firstName, lastName)
-            teacherList.put(id, teacher)
-            teacher
-        }
-    }
-
-    fun getTeam(name: String? = null): Team {
-        if (name == "cała klasa" || name == null) return teamClass ?: run {
-            val id = className!!.crc32()
-            val teamCode = "$schoolShortName:$className"
-            val team = Team(profileId, id, className, Team.TYPE_CLASS, teamCode, -1)
-            teamList.put(id, team)
-            return team
-        } else {
-            val id = name.crc32()
-            val teamCode = "$schoolShortName:$name"
-            val team = Team(profileId, id, name, Team.TYPE_VIRTUAL, teamCode, -1)
-            teamList.put(id, team)
-            return team
-        }
-    }
 }

@@ -40,7 +40,7 @@ class EdudziennikWebExams(override val data: DataEdudziennik,
                 val subjectId = EDUDZIENNIK_SUBJECT_ID.find(subjectElement.attr("href"))?.get(1)
                         ?: return@forEach
                 val subjectName  = subjectElement.text().trim()
-                val subject = data.getSubject(subjectId, subjectName)
+                val subject = data.getSubject(subjectId.crc32(), subjectName)
 
                 val dateString = examElement.child(2).text().trim()
                 if (dateString.isBlank()) return@forEach

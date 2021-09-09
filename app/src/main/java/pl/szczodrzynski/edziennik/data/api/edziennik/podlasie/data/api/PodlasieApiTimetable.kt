@@ -43,14 +43,21 @@ class PodlasieApiTimetable(val data: DataPodlasie, rows: List<JsonObject>) {
             val startTime = lesson.getString("TimeFrom")?.let { Time.fromH_m_s(it) }
                     ?: return@forEach
             val endTime = lesson.getString("TimeTo")?.let { Time.fromH_m_s(it) } ?: return@forEach
-            val subject = lesson.getString("SchoolSubject")?.let { data.getSubject(it) }
+            val subject = lesson.getString("SchoolSubject")?.let { data.getSubject(null, it) }
                     ?: return@forEach
 
             val teacherFirstName = lesson.getString("TeacherFirstName") ?: return@forEach
             val teacherLastName = lesson.getString("TeacherLastName") ?: return@forEach
             val teacher = data.getTeacher(teacherFirstName, teacherLastName)
 
-            val team = lesson.getString("Group")?.let { data.getTeam(it) } ?: return@forEach
+            val team = lesson.getString("Group")?.let {
+                data.getTeam(
+                    id = null,
+                    name = it,
+                    schoolCode = data.schoolShortName ?: "",
+                    isTeamClass = it == "cała klasa"
+                )
+            } ?: return@forEach
             val classroom = lesson.getString("Room")
 
             Lesson(data.profileId, -1).also {

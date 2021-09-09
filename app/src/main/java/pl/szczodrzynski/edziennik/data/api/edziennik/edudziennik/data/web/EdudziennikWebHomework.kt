@@ -41,7 +41,7 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
                     val subjectId = EDUDZIENNIK_SUBJECT_ID.find(subjectElement.attr("href"))?.get(1)
                             ?: return@forEach
                     val subjectName = subjectElement.text()
-                    val subject = data.getSubject(subjectId, subjectName)
+                    val subject = data.getSubject(subjectId.crc32(), subjectName)
 
                     val lessons = data.app.db.timetableDao().getAllForDateNow(profileId, date)
                     val startTime = lessons.firstOrNull { it.subjectId == subject.id }?.displayStartTime

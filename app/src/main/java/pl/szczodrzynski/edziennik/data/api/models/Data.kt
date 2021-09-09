@@ -2,6 +2,7 @@ package pl.szczodrzynski.edziennik.data.api.models
 
 import android.util.LongSparseArray
 import android.util.SparseArray
+import androidx.core.util.set
 import androidx.core.util.size
 import androidx.room.OnConflictStrategy
 import com.google.gson.JsonObject
@@ -375,5 +376,109 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
 
     fun startProgress(stringRes: Int) {
         callback.onStartProgress(stringRes)
+    }
+
+    /*    _    _ _   _ _
+         | |  | | | (_) |
+         | |  | | |_ _| |___
+         | |  | | __| | / __|
+         | |__| | |_| | \__ \
+          \____/ \__|_|_|__*/
+    fun getSubject(id: Long?, name: String, shortName: String = name): Subject {
+        var subject = subjectList.singleOrNull { it.id == id }
+        if (subject == null)
+            subject = subjectList.singleOrNull { it.longName == name }
+        if (subject == null)
+            subject = subjectList.singleOrNull { it.shortName == name }
+
+        if (subject == null) {
+            subject = Subject(
+                profileId,
+                id ?: name.crc32(),
+                name,
+                shortName
+            )
+            subjectList[subject.id] = subject
+        }
+        return subject
+    }
+
+    fun getTeam(id: Long?, name: String, schoolCode: String, isTeamClass: Boolean = false): Team {
+        if (isTeamClass && teamClass != null)
+            return teamClass as Team
+        var team = teamList.singleOrNull { it.id == id }
+
+        val namePlain = name.replace(" ", "")
+        if (team == null)
+            team = teamList.singleOrNull { it.name.replace(" ", "") == namePlain }
+
+        if (team == null) {
+            team = Team(
+                profileId,
+                id ?: name.crc32(),
+                name,
+                if (isTeamClass) Team.TYPE_CLASS else Team.TYPE_VIRTUAL,
+                "$schoolCode:$name",
+                -1
+            )
+            teamList[team.id] = team
+        }
+        return team
+    }
+
+    fun getTeacher(firstName: String, lastName: String, loginId: String? = null): Teacher {
+        val teacher = teacherList.singleOrNull { it.fullName == "$firstName $lastName" }
+        return validateTeacher(teacher, firstName, lastName, loginId)
+    }
+
+    fun getTeacher(firstNameChar: Char, lastName: String, loginId: String? = null): Teacher {
+        val teacher = teacherList.singleOrNull { it.shortName == "$firstNameChar.$lastName" }
+        return validateTeacher(teacher, firstNameChar.toString(), lastName, loginId)
+    }
+
+    fun getTeacherByLastFirst(nameLastFirst: String, loginId: String? = null): Teacher {
+        val nameParts = nameLastFirst.split(" ")
+        return if (nameParts.size == 1)
+            getTeacher(nameParts[0], "", loginId)
+        else
+            getTeacher(nameParts[1], nameParts[0], loginId)
+    }
+
+    fun getTeacherByFirstLast(nameFirstLast: String, loginId: String? = null): Teacher {
+        val nameParts = nameFirstLast.split(" ")
+        return if (nameParts.size == 1)
+            getTeacher(nameParts[0], "", loginId)
+        else
+            getTeacher(nameParts[0], nameParts[1], loginId)
+    }
+
+    fun getTeacherByFDotLast(nameFDotLast: String, loginId: String? = null): Teacher {
+        val nameParts = nameFDotLast.split(".")
+        return if (nameParts.size == 1)
+            getTeacher(nameParts[0], "", loginId)
+        else
+            getTeacher(nameParts[0][0], nameParts[1], loginId)
+    }
+
+    fun getTeacherByFDotSpaceLast(nameFDotSpaceLast: String, loginId: String? = null): Teacher {
+        val nameParts = nameFDotSpaceLast.split(".")
+        return if (nameParts.size == 1)
+            getTeacher(nameParts[0], "", loginId)
+        else
+            getTeacher(nameParts[0][0], nameParts[1], loginId)
+    }
+
+    private fun validateTeacher(teacher: Teacher?, firstName: String, lastName: String, loginId: String?): Teacher {
+        val obj = teacher ?: Teacher(profileId, -1, firstName, lastName, loginId).apply {
+            id = fullName.crc32()
+            teacherList[id] = this
+        }
+        return obj.also {
+            if (loginId != null && it.loginId != null)
+                it.loginId = loginId
+            if (firstName.length > 1)
+                it.name = firstName
+            it.surname = lastName
+        }
     }
 }
