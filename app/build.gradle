@@ -36,6 +36,9 @@ android {
     buildTypes {
         debug {
             minifyEnabled = false
+            manifestPlaceholders = [
+                    buildTimestamp: 0
+            ]
         }
         release {
             minifyEnabled = true
