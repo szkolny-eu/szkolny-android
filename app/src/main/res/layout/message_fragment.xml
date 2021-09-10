@@ -57,7 +57,7 @@
             android:visibility="visible"
             tools:visibility="gone"/>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -306,6 +306,6 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </layout>

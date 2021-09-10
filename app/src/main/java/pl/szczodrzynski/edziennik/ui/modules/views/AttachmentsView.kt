@@ -80,6 +80,7 @@ class AttachmentsView @JvmOverloads constructor(
             list.adapter = adapter
             list.apply {
                 setHasFixedSize(false)
+                isNestedScrollingEnabled = false
                 layoutManager = LinearLayoutManager(context)
                 addItemDecoration(SimpleDividerItemDecoration(context))
             }
