@@ -58,7 +58,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         val profileId
             get() = profile.id
 
-        var chucker = false
+        var enableChucker = false
         var debugMode = false
         var devMode = false
     }
@@ -116,7 +116,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             HyperLog.initialize(this)
             HyperLog.setLogLevel(Log.VERBOSE)
             HyperLog.setLogFormat(DebugLogFormat(this))
-            if (chucker) {
+            if (enableChucker) {
                 val chuckerCollector = ChuckerCollector(this, true, RetentionManager.Period.ONE_HOUR)
                 val chuckerInterceptor = ChuckerInterceptor(this, chuckerCollector)
                 builder.addInterceptor(chuckerInterceptor)
@@ -175,7 +175,10 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         App.profile = Profile(0, 0, 0, "")
         debugMode = BuildConfig.DEBUG
         devMode = config.debugMode || debugMode
-        chucker = config.chucker
+        if (devMode)
+            enableChucker = true
+        else
+            enableChucker = config.enableChucker
 
         if (!profileLoadById(config.lastProfileId)) {
             db.profileDao().firstId?.let { profileLoadById(it) }

@@ -78,10 +78,10 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             app.db.eventDao().getRawNow("UPDATE events SET homeworkBody = NULL WHERE profileId = ${App.profileId}")
         }
 
-        b.chucker.isChecked = app.config.chucker
+        b.chucker.isChecked = app.config.enableChucker
 
         b.chucker.onChange { _, isChecked ->
-            app.config.chucker = isChecked
+            app.config.enableChucker = isChecked
             MaterialAlertDialogBuilder(activity)
                 .setTitle("Restart")
                 .setMessage("Wymagany restart aplikacji")
