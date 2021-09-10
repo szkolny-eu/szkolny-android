@@ -776,7 +776,8 @@ public class Utils {
     public static File getStorageDir() {
         if (storageDir != null)
             return storageDir;
-        storageDir = Environment.getExternalStoragePublicDirectory("Szkolny.eu");
+        storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        storageDir = new File(storageDir, "Szkolny.eu");
         storageDir.mkdirs();
         return storageDir;
     }
