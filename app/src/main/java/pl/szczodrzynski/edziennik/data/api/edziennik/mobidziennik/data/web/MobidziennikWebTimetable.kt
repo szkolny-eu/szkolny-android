@@ -228,8 +228,15 @@ class MobidziennikWebTimetable(
 
                         item.startsWith("%") -> {
                             subjectName = item.trim('%')
+                            // I have no idea what's going on here
+                            // ok now seriously.. the subject (long or short) item
+                            // may NOT be 0th, as the HH:MM - HH:MM item may be before
+                            // or even the typeName item. As these are always **before**,
+                            // they are removed in previous iterations, so the first not removed
+                            // item should be the long/short subjectName needing to be removed now.
+                            toRemove.add(items[toRemove.size])
+                            // ...and this has to be added later
                             toRemove.add(item)
-                            toRemove.add(items[0])
                         }
 
                         item.startsWith("&") -> {
