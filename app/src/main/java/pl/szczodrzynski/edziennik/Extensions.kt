@@ -14,6 +14,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.*
 import android.text.style.CharacterStyle
 import android.text.style.ForegroundColorSpan
@@ -737,6 +738,7 @@ fun Bundle(vararg properties: Pair<String, Any?>): Bundle {
                 is Short -> putShort(property.first, property.second as Short)
                 is Double -> putDouble(property.first, property.second as Double)
                 is Boolean -> putBoolean(property.first, property.second as Boolean)
+                is Array<*> -> putParcelableArray(property.first, property.second as Array<out Parcelable>)
             }
         }
     }

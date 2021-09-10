@@ -32,6 +32,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="8dp"
             android:fontFamily="sans-serif-light"
+            android:gravity="center"
             android:text="@string/grades_stats_no_data"
             android:textSize="16sp"
             android:visibility="gone"

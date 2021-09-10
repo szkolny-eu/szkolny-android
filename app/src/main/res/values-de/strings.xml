@@ -856,7 +856,7 @@
     <string name="settings_about_licenses_text">Open-Source-Lizenzen</string>
     <string name="settings_about_privacy_policy_text">Datenschutzrichtlinie</string>
     <string name="settings_card_register_title">E-Klassenbuch</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - Mai 2021</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - Juni 2021</string>
     <string name="settings_about_update_subtext">Klicken Sie hier, um nach Aktualisierungen zu suchen</string>
     <string name="settings_about_update_text">Aktualisierung</string>
     <string name="settings_about_version_text">Version</string>
@@ -1234,4 +1234,6 @@
     <string name="you_are_offline_title">Netzwerkverbindung</string>
     <string name="login_summary_account_child">(Kind)</string>
     <string name="login_summary_account_parent">(Elternteil)</string>
+    <string name="settings_about_contributors_text">Anwendungsentwickler</string>
+    <string name="settings_about_contributors_subtext">Liste der Szkolny-Entwickler</string>
 </resources>

@@ -111,37 +111,6 @@ class DataEdudziennik(app: App, profile: Profile?, loginStore: LoginStore) : Dat
     val courseStudentEndpoint: String
         get() = "Course/$studentId/"
 
-    fun getSubject(longId: String, name: String): Subject {
-        val id = longId.crc32()
-        return subjectList.singleOrNull { it.id == id } ?: run {
-            val subject = Subject(profileId, id, name, name)
-            subjectList.put(id, subject)
-            subject
-        }
-    }
-
-    fun getTeacher(firstName: String, lastName: String, longId: String? = null): Teacher {
-        val name = "$firstName $lastName".fixName()
-        val id = name.crc32()
-        return teacherList.singleOrNull { it.id == id }?.also {
-            if (longId != null && it.loginId == null) it.loginId = longId
-        } ?: run {
-            val teacher = Teacher(profileId, id, firstName, lastName, longId)
-            teacherList.put(id, teacher)
-            teacher
-        }
-    }
-
-    fun getTeacherByFirstLast(nameFirstLast: String, longId: String? = null): Teacher {
-        val nameParts = nameFirstLast.split(" ")
-        return getTeacher(nameParts[0], nameParts[1], longId)
-    }
-
-    fun getTeacherByLastFirst(nameLastFirst: String, longId: String? = null): Teacher {
-        val nameParts = nameLastFirst.split(" ")
-        return getTeacher(nameParts[1], nameParts[0], longId)
-    }
-
     fun getEventType(longId: String, name: String): EventType {
         val id = longId.crc16().toLong()
         return eventTypes.singleOrNull { it.id == id } ?: run {

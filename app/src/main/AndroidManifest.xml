@@ -146,6 +146,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".ui.modules.base.BuildInvalidActivity" />
+        <activity android:name=".ui.modules.settings.contributors.ContributorsActivity" />
 
         <!--  _____               _
              |  __ \             (_)

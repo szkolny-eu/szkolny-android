@@ -37,9 +37,7 @@ class AttachmentsView @JvmOverloads constructor(
     }
 
     private val storageDir by lazy {
-        val storageDir = Environment.getExternalStoragePublicDirectory("Szkolny.eu")
-        storageDir.mkdirs()
-        storageDir
+        Utils.getStorageDir()
     }
 
     fun init(arguments: Bundle, owner: Any) {
@@ -82,6 +80,7 @@ class AttachmentsView @JvmOverloads constructor(
             list.adapter = adapter
             list.apply {
                 setHasFixedSize(false)
+                isNestedScrollingEnabled = false
                 layoutManager = LinearLayoutManager(context)
                 addItemDecoration(SimpleDividerItemDecoration(context))
             }

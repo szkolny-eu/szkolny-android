@@ -34,7 +34,7 @@ class PodlasieApiGrades(val data: DataPodlasie, val rows: List<JsonObject>) {
             val teacher = data.getTeacher(teacherFirstName, teacherLastName)
 
             val subjectName = grade.getString("SchoolSubject") ?: return@forEach
-            val subject = data.getSubject(subjectName)
+            val subject = data.getSubject(null, subjectName)
 
             val addedDate = grade.getString("ReceivedDate")?.let { Date.fromY_m_d(it).inMillis }
                     ?: System.currentTimeMillis()

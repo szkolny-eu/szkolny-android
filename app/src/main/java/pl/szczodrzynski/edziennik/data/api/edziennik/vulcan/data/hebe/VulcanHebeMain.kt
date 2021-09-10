@@ -97,6 +97,10 @@ class VulcanHebeMain(
                 val studentSemesterId = period.getInt("Id") ?: return@forEach
                 val studentSemesterNumber = period.getInt("Number") ?: return@forEach
 
+                val senderEntry = student.getJsonObject("SenderEntry")
+                val senderAddressName = senderEntry.getString("Address")
+                val senderAddressHash = senderEntry.getString("AddressHash")
+
                 val hebeContext = student.getString("Context")
 
                 val isParent = login.getString("LoginRole").equals("opiekun", ignoreCase = true)
@@ -143,6 +147,8 @@ class VulcanHebeMain(
                     studentData["schoolSymbol"] = schoolSymbol
                     studentData["schoolShort"] = schoolShort
                     studentData["schoolName"] = schoolCode
+                    studentData["senderAddressName"] = senderAddressName
+                    studentData["senderAddressHash"] = senderAddressHash
                     studentData["hebeContext"] = hebeContext
                 }
                 dateSemester1Start?.let {

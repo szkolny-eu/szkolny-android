@@ -179,6 +179,7 @@ object LoginInfo {
                                     ERROR_LOGIN_VULCAN_INVALID_PIN_2_REMAINING to R.string.error_312_reason
                                 ),
                                 isRequired = true,
+                                isNumber = true,
                                 validationRegex = "[0-9]+",
                                 caseMode = FormField.CaseMode.LOWER_CASE
                             )
@@ -401,6 +402,7 @@ object LoginInfo {
         val validationRegex: String,
         val caseMode: CaseMode = CaseMode.UNCHANGED,
         val hideText: Boolean = false,
+        val isNumber: Boolean = false,
         val stripTextRegex: String? = null
     ) : BaseCredential(keyName, name, errorCodes) {
         enum class CaseMode { UNCHANGED, UPPER_CASE, LOWER_CASE }

@@ -165,6 +165,7 @@
     <string name="error_363" translatable="false">ERROR_VULCAN_HEBE_CERTIFICATE_GONE</string>
     <string name="error_364" translatable="false">ERROR_VULCAN_HEBE_SERVER_ERROR</string>
     <string name="error_365" translatable="false">ERROR_VULCAN_HEBE_ENTITY_NOT_FOUND</string>
+    <string name="error_366" translatable="false">ERROR_VULCAN_HEBE_MISSING_SENDER_ENTRY</string>
     <string name="error_390" translatable="false">ERROR_VULCAN_API_DEPRECATED</string>
 
     <string name="error_501" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN</string>
@@ -363,6 +364,7 @@
     <string name="error_363_reason">VULCAN®: urządzenie usunięte. Zaloguj się ponownie do dziennika.</string>
     <string name="error_364_reason">VULCAN®: błąd serwera. Dziennik może być przeciążony.</string>
     <string name="error_365_reason">VULCAN®: nie znaleziono bytu</string>
+    <string name="error_366_reason">Błąd wysyłania wiadomości - brak informacji o nadawcy.</string>
     <string name="error_390_reason">W związku z wygaszeniem aplikacji Dzienniczek+ przez firmę Vulcan, należy zalogować się ponownie.\n\nAby móc dalej korzystać z aplikacji Szkolny.eu, otwórz Ustawienia i wybierz opcję Dodaj nowego ucznia.\nNastępnie zaloguj się do dziennika Vulcan zgodnie z instrukcją.\n\nPrzepraszamy za niedogodności.</string>
 
     <string name="error_501_reason">Błędny email lub hasło</string>

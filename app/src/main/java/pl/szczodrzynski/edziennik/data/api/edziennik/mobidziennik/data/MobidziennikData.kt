@@ -84,6 +84,10 @@ class MobidziennikData(val data: DataMobidziennik, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_lucky_number)
                 MobidziennikWebManuals(data, lastSync, onSuccess)
             }*/
+            ENDPOINT_MOBIDZIENNIK_WEB_TIMETABLE-> {
+                data.startProgress(R.string.edziennik_progress_endpoint_timetable)
+                MobidziennikWebTimetable(data, lastSync, onSuccess)
+            }
             else -> onSuccess(endpointId)
         }
     }

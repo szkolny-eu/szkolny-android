@@ -38,7 +38,7 @@ class VulcanHebeAttendance(
             lastSync = lastSync
         ) { list, _ ->
             list.forEach { attendance ->
-                val id = attendance.getLong("AuxPresenceId") ?: return@forEach
+                val id = attendance.getLong("Id") ?: return@forEach
                 val type = attendance.getJsonObject("PresenceType") ?: return@forEach
                 val baseType = getBaseType(type)
                 val typeName = type.getString("Name") ?: return@forEach

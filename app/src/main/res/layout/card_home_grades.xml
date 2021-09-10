@@ -22,6 +22,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:fontFamily="sans-serif-light"
+            android:gravity="center"
             android:text="@string/card_grades_no_data"
             android:textSize="16sp" />
 

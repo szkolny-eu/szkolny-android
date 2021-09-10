@@ -85,6 +85,9 @@ class LoginFormFragment : Fragment(), CoroutineScope {
             if (credential is LoginInfo.FormField) {
                 val b = LoginFormFieldItemBinding.inflate(layoutInflater)
                 b.textLayout.hint = app.getString(credential.name)
+                if (credential.isNumber) {
+                    b.textEdit.inputType = InputType.TYPE_CLASS_NUMBER
+                }
                 if (credential.hideText) {
                     b.textEdit.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
                     b.textLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE

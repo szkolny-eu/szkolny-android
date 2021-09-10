@@ -22,7 +22,13 @@ class PodlasieApiMain(override val data: DataPodlasie,
 
     init {
         apiGet(TAG, PODLASIE_API_USER_ENDPOINT) { json ->
-            data.getTeam() // Save the class team when it doesn't exist.
+            // Save the class team when it doesn't exist.
+            data.getTeam(
+                id = null,
+                name = data.className ?: "",
+                schoolCode = data.schoolShortName ?: "",
+                isTeamClass = true
+            )
 
             json.getInt("LuckyNumber")?.let { PodlasieApiLuckyNumber(data, it) }
             json.getJsonArray("Teacher")?.asJsonObjectList()?.let { PodlasieApiTeachers(data, it) }

@@ -73,7 +73,7 @@ class EdudziennikWebStart(override val data: DataEdudziennik,
         EDUDZIENNIK_SUBJECTS_START.findAll(text).forEach {
             val id = it[1].trim()
             val name = it[2].trim()
-            data.getSubject(id, name)
+            data.getSubject(id.crc32(), name)
         }
     }
 }
