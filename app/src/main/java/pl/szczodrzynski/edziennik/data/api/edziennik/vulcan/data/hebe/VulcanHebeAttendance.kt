@@ -28,6 +28,7 @@ class VulcanHebeAttendance(
         val semesterNumber = data.studentSemesterNumber
         val startDate = profile?.getSemesterStart(semesterNumber)
         val endDate = profile?.getSemesterEnd(semesterNumber)
+        val lastSync = 0L
 
         apiGetList(
             TAG,
