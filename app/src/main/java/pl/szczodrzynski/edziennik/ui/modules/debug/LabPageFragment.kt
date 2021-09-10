@@ -5,10 +5,12 @@
 package pl.szczodrzynski.edziennik.ui.modules.debug
 
 import android.os.Bundle
+import android.os.Process
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,6 +23,7 @@ import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.fslogin.decode
 import kotlin.coroutines.CoroutineContext
+import kotlin.system.exitProcess
 
 class LabPageFragment : LazyFragment(), CoroutineScope {
     companion object {
@@ -73,6 +76,37 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
 
         b.removeHomework.onClick {
             app.db.eventDao().getRawNow("UPDATE events SET homeworkBody = NULL WHERE profileId = ${App.profileId}")
+        }
+
+        b.chucker.isChecked = app.config.chucker
+
+        b.chucker.onChange { _, isChecked ->
+            app.config.chucker = isChecked
+            MaterialAlertDialogBuilder(activity)
+                .setTitle("Restart")
+                .setMessage("Wymagany restart aplikacji")
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    Process.killProcess(Process.myPid())
+                    Runtime.getRuntime().exit(0)
+                    exitProcess(0)
+                }
+                .setCancelable(false)
+                .show()
+        }
+
+
+        b.disableDebug.onClick {
+            app.config.debugMode = false
+            MaterialAlertDialogBuilder(activity)
+                .setTitle("Restart")
+                .setMessage("Wymagany restart aplikacji")
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    Process.killProcess(Process.myPid())
+                    Runtime.getRuntime().exit(0)
+                    exitProcess(0)
+                }
+                .setCancelable(false)
+                .show()
         }
 
         b.unarchive.onClick {

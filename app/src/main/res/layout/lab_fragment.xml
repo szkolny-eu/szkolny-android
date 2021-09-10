@@ -3,7 +3,8 @@
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-3.
   -->
 
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:ignore="HardcodedText">
 
@@ -37,6 +38,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+            <Switch
+                android:id="@+id/chucker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chucker" />
 
             <Button
                 android:id="@+id/last10unseen"
@@ -101,6 +108,14 @@
                 android:layout_height="wrap_content"
                 android:checked="@={app.config.archiverEnabled}"
                 android:text="Archiver enabled" />
+
+            <Button
+                android:id="@+id/disableDebug"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Disable Dev Mode"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/windowBackgroundRed" />
         </LinearLayout>
     </ScrollView>
 </layout>

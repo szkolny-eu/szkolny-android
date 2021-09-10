@@ -80,6 +80,11 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mDebugMode = mDebugMode ?: values.get("debugMode", false); return mDebugMode ?: false }
         set(value) { set("debugMode", value); mDebugMode = value }
 
+    private var mChucker: Boolean? = null
+    var chucker: Boolean
+        get() { mChucker = mChucker ?: values.get("chucker", false); return mChucker ?: false }
+        set(value) { set("chucker", value); mChucker = value }
+
     private var mDevModePassword: String? = null
     var devModePassword: String?
         get() { mDevModePassword = mDevModePassword ?: values.get("devModePassword", null as String?); return mDevModePassword }
