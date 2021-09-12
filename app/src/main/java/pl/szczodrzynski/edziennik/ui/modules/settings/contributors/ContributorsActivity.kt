@@ -78,7 +78,7 @@ class ContributorsActivity : AppCompatActivity(), CoroutineScope {
             KeyEvent.KEYCODE_A -> {
                 if (konami == 9) {
                     konami += 1
-                    b.pickaxe.isVisible = true
+                    b.konami.isVisible = true
                 }
                 else
                     konami = 0
@@ -102,7 +102,7 @@ class ContributorsActivity : AppCompatActivity(), CoroutineScope {
         b.viewPager.isVisible = false
 
         b.szkolny.onLongClick {
-            if (b.pickaxe.isVisible) {
+            if (b.konami.isVisible) {
                 b.glove.isVisible = true
                 b.szkolny.isVisible = false
             }

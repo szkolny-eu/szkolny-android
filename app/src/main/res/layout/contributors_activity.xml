@@ -20,13 +20,13 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
 
-            <pl.droidsonroids.gif.GifImageView
-                android:id="@+id/pickaxe"
+            <ImageView
+                android:id="@+id/konami"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_gravity="bottom|end"
-                android:src="@drawable/pickaxe"
-                android:visibility="gone" />
+                android:visibility="visible"
+                app:srcCompat="@drawable/emoji_glasses" />
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
