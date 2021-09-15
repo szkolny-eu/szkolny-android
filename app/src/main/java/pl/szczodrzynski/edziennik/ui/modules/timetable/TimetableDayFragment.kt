@@ -4,24 +4,37 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.timetable
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.annotation.ColorRes
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.core.view.isVisible
 import androidx.core.view.marginTop
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
+import com.mikepenz.iconics.IconicsColor
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.color
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableDayFragmentBinding
@@ -33,6 +46,7 @@ import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Compani
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.navlib.colorAttr
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
@@ -102,14 +116,17 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                 val events = withContext(Dispatchers.Default) {
                     app.db.eventDao().getAllByDateNow(App.profileId, date)
                 }
-                processLessonList(lessons, events)
+                val attendances = withContext(Dispatchers.Default) {
+                    app.db.attendanceDao().getAllByDateNow(App.profileId, date)
+                }
+                processLessonList(lessons, events, attendances)
             }
         }
 
         return true
     }
 
-    private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>) {
+    private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>, attendances: List<AttendanceFull>) {
         // no lessons - timetable not downloaded yet
         if (lessons.isEmpty()) {
             inflater.inflate(R.layout.timetable_no_timetable, b.root) { view, _, _ ->
@@ -172,10 +189,11 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
         lessons.forEach { it.showAsUnseen = !it.seen }
 
-        buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events)
+        buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events, attendances)
     }
 
-    private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>) {
+    @SuppressLint("ResourceType")
+    private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>, attendances: List<AttendanceFull>) {
         if (!isAdded)
             return
 
@@ -192,6 +210,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
         for (lesson in lessons) {
+            val attendance = attendances.find {  it.startTime == lesson.startTime }
             val startTime = lesson.displayStartTime ?: continue
             val endTime = lesson.displayEndTime ?: continue
 
@@ -275,6 +294,65 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             }
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
+
+            when (attendance?.baseType) {
+                0, 10 -> {
+                    lb.attendanceIcon.setImageDrawable(
+                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_check_circle_outline).apply {
+                            color = IconicsColor.colorRes(R.color.md_green_500)
+                            sizeDp = 24
+                        }
+                    )
+                }
+                1 -> {
+                    lb.attendanceIcon.setImageDrawable(
+                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_close_circle_outline).apply {
+                            color = IconicsColor.colorRes(R.color.md_red_500)
+                            sizeDp = 24
+                        }
+                    )
+                }
+                2 -> {
+                    lb.attendanceIcon.setImageDrawable(
+                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_circle_edit_outline).apply {
+                            color = IconicsColor.colorRes(R.color.md_blue_500)
+                            sizeDp = 24
+                        }
+                    )
+                }
+                3 -> {
+                    lb.attendanceIcon.setImageDrawable(
+                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_account_supervisor_circle_outline).apply {
+                            color = IconicsColor.colorRes(R.color.md_lime_500)
+                            sizeDp = 24
+                        }
+                    )
+                }
+                4 -> {
+                    lb.attendanceIcon.setImageDrawable(
+                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_clock_alert_outline).apply {
+                            color = IconicsColor.colorRes(R.color.md_orange_600)
+                            sizeDp = 24
+                        }
+                    )
+                }
+                5 -> {
+                    lb.attendanceIcon.setImageDrawable(
+                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_clock_check_outline).apply {
+                            color = IconicsColor.colorRes(R.color.md_yellow_500)
+                            sizeDp = 24
+                        }
+                    )
+                }
+                6 -> {
+                    lb.attendanceIcon.setImageDrawable(
+                        IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_sticker_circle_outline).apply {
+                            color = IconicsColor.colorRes(R.color.md_pink_400)
+                            sizeDp = 24
+                        }
+                    )
+                }
+            }
 
             lb.unread = lesson.type != Lesson.TYPE_NORMAL && lesson.showAsUnseen
             if (!lesson.seen) {
