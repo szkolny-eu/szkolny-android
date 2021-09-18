@@ -75,15 +75,16 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="8dp"
-                    android:visibility="@{unread ? View.VISIBLE : View.GONE}"
-                    android:background="@drawable/unread_red_circle" />
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/unread_red_circle"
+                    android:visibility="@{unread ? View.VISIBLE : View.GONE}" />
 
                 <ImageView
                     android:id="@+id/attendanceIcon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:visibility="gone"
+                    android:layout_marginTop="4dp"
                     tools:srcCompat="@sample/check"
                     tools:visibility="visible" />
 
@@ -100,14 +101,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="sans-serif-condensed-light"
                     android:includeFontPadding="false"
-                    android:layout_marginBottom="-4dp"
                     android:paddingHorizontal="4dp"
                     android:text="@{Integer.toString(lessonNumber)}"
                     android:textSize="28sp"
                     android:visibility="@{lessonNumber != null ? View.VISIBLE : View.GONE}"
-                    tools:text="3"/>
+                    tools:text="3" />
                 <!--android:layout_marginTop="@{annotationVisible ? `-4dp` : `4dp`}"
                     android:layout_marginBottom="@{annotationVisible ? `-4dp` : `0dp`}"-->
 

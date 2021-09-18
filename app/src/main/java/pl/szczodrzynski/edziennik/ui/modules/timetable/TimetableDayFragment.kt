@@ -27,6 +27,7 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.color
 import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.colorRes
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
@@ -192,7 +193,6 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events, attendances)
     }
 
-    @SuppressLint("ResourceType")
     private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>, attendances: List<AttendanceFull>) {
         if (!isAdded)
             return
@@ -295,63 +295,25 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
 
-            when (attendance?.baseType) {
-                0, 10 -> {
-                    lb.attendanceIcon.setImageDrawable(
-                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_check_circle_outline).apply {
-                            color = IconicsColor.colorRes(R.color.md_green_500)
-                            sizeDp = 24
-                        }
-                    )
-                }
-                1 -> {
-                    lb.attendanceIcon.setImageDrawable(
-                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_close_circle_outline).apply {
-                            color = IconicsColor.colorRes(R.color.md_red_500)
-                            sizeDp = 24
-                        }
-                    )
-                }
-                2 -> {
-                    lb.attendanceIcon.setImageDrawable(
-                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_circle_edit_outline).apply {
-                            color = IconicsColor.colorRes(R.color.md_blue_500)
-                            sizeDp = 24
-                        }
-                    )
-                }
-                3 -> {
-                    lb.attendanceIcon.setImageDrawable(
-                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_account_supervisor_circle_outline).apply {
-                            color = IconicsColor.colorRes(R.color.md_lime_500)
-                            sizeDp = 24
-                        }
-                    )
-                }
-                4 -> {
-                    lb.attendanceIcon.setImageDrawable(
-                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_clock_alert_outline).apply {
-                            color = IconicsColor.colorRes(R.color.md_orange_600)
-                            sizeDp = 24
-                        }
-                    )
-                }
-                5 -> {
-                    lb.attendanceIcon.setImageDrawable(
-                        IconicsDrawable(activity, CommunityMaterial.Icon.cmd_clock_check_outline).apply {
-                            color = IconicsColor.colorRes(R.color.md_yellow_500)
-                            sizeDp = 24
-                        }
-                    )
-                }
-                6 -> {
-                    lb.attendanceIcon.setImageDrawable(
-                        IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_sticker_circle_outline).apply {
-                            color = IconicsColor.colorRes(R.color.md_pink_400)
-                            sizeDp = 24
-                        }
-                    )
-                }
+            val typeIcon = when (attendance?.baseType) {
+                Attendance.TYPE_PRESENT, Attendance.TYPE_PRESENT_CUSTOM -> CommunityMaterial.Icon.cmd_check_circle_outline to R.color.md_green_500
+                Attendance.TYPE_ABSENT -> CommunityMaterial.Icon.cmd_close_circle_outline to R.color.md_red_500
+                Attendance.TYPE_ABSENT_EXCUSED -> CommunityMaterial.Icon.cmd_circle_edit_outline to R.color.md_blue_500
+                Attendance.TYPE_RELEASED -> CommunityMaterial.Icon.cmd_account_supervisor_circle_outline to R.color.md_lime_500
+                Attendance.TYPE_BELATED -> CommunityMaterial.Icon.cmd_clock_alert_outline to R.color.md_orange_600
+                Attendance.TYPE_BELATED_EXCUSED -> CommunityMaterial.Icon.cmd_clock_check_outline to R.color.md_yellow_500
+                Attendance.TYPE_DAY_FREE -> CommunityMaterial.Icon3.cmd_sticker_circle_outline to R.color.md_pink_400
+                else -> null
+            }
+
+            if (typeIcon != null) {
+                val (icon, color) = typeIcon
+                lb.attendanceIcon.setImageDrawable(
+                    IconicsDrawable(activity, icon).apply {
+                        colorRes = color
+                        sizeDp = 24
+                    }
+                )
             }
 
             lb.unread = lesson.type != Lesson.TYPE_NORMAL && lesson.showAsUnseen
