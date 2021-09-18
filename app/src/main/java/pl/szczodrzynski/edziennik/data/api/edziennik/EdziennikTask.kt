@@ -18,7 +18,6 @@ import pl.szczodrzynski.edziennik.data.api.events.RegisterAvailabilityEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
@@ -27,6 +26,7 @@ import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.utils.Utils.d
+import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 
 open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTask(profileId) {
     companion object {
@@ -90,35 +90,21 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
                 return
             }
 
-            profile.registerName?.also { registerName ->
-                var status = app.config.sync.registerAvailability[registerName]
-                if (status == null || status.nextCheckAt < currentTimeUnix()) {
-                    val api = SzkolnyApi(app)
-                    api.runCatching({
-                        val availability = getRegisterAvailability()
-                        app.config.sync.registerAvailability = availability
-                        status = availability[registerName]
-                    }, onError = {
-                        val apiError = it.toApiError(TAG)
-                        if (apiError.errorCode == ERROR_API_INVALID_SIGNATURE) {
-                            return@also
-                        }
-                        taskCallback.onError(apiError)
-                        return
-                    })
-                }
-
-                if (status?.available != true
-                        || status?.minVersionCode ?: BuildConfig.VERSION_CODE > BuildConfig.VERSION_CODE) {
+            val error = app.availabilityManager.check(profile)
+            when (error?.type) {
+                Type.NOT_AVAILABLE -> {
                     if (EventBus.getDefault().hasSubscriberForEvent(RegisterAvailabilityEvent::class.java)) {
-                        EventBus.getDefault().postSticky(
-                                RegisterAvailabilityEvent(app.config.sync.registerAvailability)
-                        )
+                        EventBus.getDefault().postSticky(RegisterAvailabilityEvent())
                     }
                     cancel()
                     taskCallback.onCompleted()
                     return
                 }
+                Type.API_ERROR -> {
+                    taskCallback.onError(error.apiError!!)
+                    return
+                }
+                else -> return@let
             }
         }
 
