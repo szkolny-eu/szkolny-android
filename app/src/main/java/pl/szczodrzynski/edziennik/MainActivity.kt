@@ -85,6 +85,8 @@ import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
+import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager
+import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.navlib.*
@@ -634,44 +636,22 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             return
         }
 
-        app.profile.registerName?.let { registerName ->
-            var status = app.config.sync.registerAvailability[registerName]
-            if (status == null || status.nextCheckAt < currentTimeUnix()) {
-                val api = SzkolnyApi(app)
-                val result = withContext(Dispatchers.IO) {
-                    return@withContext api.runCatching({
-                        val availability = getRegisterAvailability()
-                        app.config.sync.registerAvailability = availability
-                        availability[registerName]
-                    }, onError = {
-                        if (it.toErrorCode() == ERROR_API_INVALID_SIGNATURE) {
-                            return@withContext false
-                        }
-                        return@withContext it
-                    })
-                }
-
-                when (result) {
-                    false -> {
-                        Toast.makeText(this@MainActivity, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
-                        return@let
-                    }
-                    is Throwable -> {
-                        errorSnackbar.addError(result.toApiError(TAG)).show()
-                        return
-                    }
-                    is RegisterAvailabilityStatus -> {
-                        status = result
-                    }
-                }
-            }
-
-            if (status?.available != true || status.minVersionCode > BuildConfig.VERSION_CODE) {
+        val error = withContext(Dispatchers.IO) {
+            app.availabilityManager.check(app.profile)
+        }
+        when (error?.type) {
+            Type.NOT_AVAILABLE -> {
                 swipeRefreshLayout.isRefreshing = false
                 loadTarget(DRAWER_ITEM_HOME)
-                if (status != null)
-                    RegisterUnavailableDialog(this, status)
+                RegisterUnavailableDialog(this, error.status!!)
                 return
+            }
+            Type.API_ERROR -> {
+                errorSnackbar.addError(error.apiError!!).show()
+                return
+            }
+            Type.NO_API_ACCESS -> {
+                Toast.makeText(this, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -699,10 +679,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onRegisterAvailabilityEvent(event: RegisterAvailabilityEvent) {
         EventBus.getDefault().removeStickyEvent(event)
-        app.profile.registerName?.let { registerName ->
-            event.data[registerName]?.let {
-                RegisterUnavailableDialog(this, it)
-            }
+        val error = app.availabilityManager.check(app.profile, cacheOnly = true)
+        if (error != null) {
+            RegisterUnavailableDialog(this, error.status!!)
         }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -42,8 +42,6 @@ class RegisterUnavailableDialog(
     init { run {
         if (activity.isFinishing)
             return@run
-        if (status.available && status.minVersionCode <= BuildConfig.VERSION_CODE)
-            return@run
         onShowListener?.invoke(TAG)
         app = activity.applicationContext as App
 
