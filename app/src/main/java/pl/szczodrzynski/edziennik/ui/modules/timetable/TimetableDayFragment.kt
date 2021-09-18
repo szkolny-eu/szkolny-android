@@ -117,10 +117,10 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                 val events = withContext(Dispatchers.Default) {
                     app.db.eventDao().getAllByDateNow(App.profileId, date)
                 }
-                val attendances = withContext(Dispatchers.Default) {
+                val attendanceList = withContext(Dispatchers.Default) {
                     app.db.attendanceDao().getAllByDateNow(App.profileId, date)
                 }
-                processLessonList(lessons, events, attendances)
+                processLessonList(lessons, events, attendanceList)
             }
         }
 
@@ -193,7 +193,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events, attendances)
     }
 
-    private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>, attendances: List<AttendanceFull>) {
+    private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {
         if (!isAdded)
             return
 
@@ -210,7 +210,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
         for (lesson in lessons) {
-            val attendance = attendances.find {  it.startTime == lesson.startTime }
+            val attendance = attendanceList.find {  it.startTime == lesson.startTime }
             val startTime = lesson.displayStartTime ?: continue
             val endTime = lesson.displayEndTime ?: continue
 
@@ -314,6 +314,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                         sizeDp = 24
                     }
                 )
+                lb.attendanceIcon.isVisible = true
             }
 
             lb.unread = lesson.type != Lesson.TYPE_NORMAL && lesson.showAsUnseen
