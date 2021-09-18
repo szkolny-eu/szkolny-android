@@ -175,8 +175,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         App.config = Config(App.db)
         App.profile = Profile(0, 0, 0, "")
         debugMode = BuildConfig.DEBUG
-        devMode = config.debugMode || debugMode
-        enableChucker = config.enableChucker || devMode
+        devMode = config.devMode ?: debugMode
+        enableChucker = config.enableChucker ?: devMode
 
         if (!profileLoadById(config.lastProfileId)) {
             db.profileDao().firstId?.let { profileLoadById(it) }

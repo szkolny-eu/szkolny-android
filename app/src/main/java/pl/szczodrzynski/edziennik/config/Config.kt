@@ -12,10 +12,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.config.db.ConfigEntry
-import pl.szczodrzynski.edziennik.config.utils.ConfigMigration
-import pl.szczodrzynski.edziennik.config.utils.get
-import pl.szczodrzynski.edziennik.config.utils.set
-import pl.szczodrzynski.edziennik.config.utils.toHashMap
+import pl.szczodrzynski.edziennik.config.utils.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import kotlin.coroutines.CoroutineContext
@@ -75,15 +72,15 @@ class Config(val db: AppDb) : CoroutineScope, AbstractConfig {
         get() { mPrivacyPolicyAccepted = mPrivacyPolicyAccepted ?: values.get("privacyPolicyAccepted", false); return mPrivacyPolicyAccepted ?: false }
         set(value) { set("privacyPolicyAccepted", value); mPrivacyPolicyAccepted = value }
 
-    private var mDebugMode: Boolean? = null
-    var debugMode: Boolean
-        get() { mDebugMode = mDebugMode ?: values.get("debugMode", false); return mDebugMode ?: false }
-        set(value) { set("debugMode", value); mDebugMode = value }
+    private var mDevMode: Boolean? = null
+    var devMode: Boolean?
+        get() { mDevMode = mDevMode ?: values.getBooleanOrNull("debugMode"); return mDevMode }
+        set(value) { set("debugMode", value?.toString()); mDevMode = value }
 
     private var mEnableChucker: Boolean? = null
-    var enableChucker: Boolean
-        get() { mEnableChucker = mEnableChucker ?: values.get("enableChucker", false); return mEnableChucker ?: false }
-        set(value) { set("enableChucker", value); mEnableChucker = value }
+    var enableChucker: Boolean?
+        get() { mEnableChucker = mEnableChucker ?: values.getBooleanOrNull("enableChucker"); return mEnableChucker }
+        set(value) { set("enableChucker", value?.toString()); mEnableChucker = value }
 
     private var mDevModePassword: String? = null
     var devModePassword: String?

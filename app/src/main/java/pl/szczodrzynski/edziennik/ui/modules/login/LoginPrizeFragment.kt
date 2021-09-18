@@ -53,7 +53,7 @@ class LoginPrizeFragment : Fragment(), CoroutineScope {
                     .setTitle(R.string.are_you_sure)
                     .setMessage(R.string.dev_mode_enable_warning)
                     .setPositiveButton(R.string.yes) { _, _ ->
-                        app.config.debugMode = true
+                        app.config.devMode = true
                         App.devMode = true
                         MaterialAlertDialogBuilder(activity)
                                 .setTitle("Restart")
@@ -67,8 +67,8 @@ class LoginPrizeFragment : Fragment(), CoroutineScope {
                                 .show()
                     }
                     .setNegativeButton(R.string.no) { _, _ ->
-                        app.config.debugMode = false
-                        App.devMode = false
+                        app.config.devMode = App.debugMode
+                        App.devMode = App.debugMode
                         activity.finish()
                     }
                     .show()
