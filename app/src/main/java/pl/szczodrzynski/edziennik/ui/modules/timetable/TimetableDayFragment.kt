@@ -182,7 +182,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
         lessons.forEach { it.showAsUnseen = !it.seen }
 
-        buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events, attendances)
+        buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events, attendanceList)
     }
 
     private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {
