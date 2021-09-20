@@ -19,7 +19,7 @@ import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.colorRes
+import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
@@ -300,7 +300,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             if (typeIcon != null) {
                 lb.attendanceIcon.setImageDrawable(
                     IconicsDrawable(activity, typeIcon).apply {
-                        colorRes = app.attendanceManager.getAttendanceColor(attendance!!)
+                        colorInt = app.attendanceManager.getAttendanceColor(attendance!!)
                         sizeDp = 24
                     }
                 )
