@@ -21,6 +21,7 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
@@ -293,7 +294,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                 Attendance.TYPE_RELEASED -> CommunityMaterial.Icon.cmd_account_arrow_right_outline
                 Attendance.TYPE_BELATED -> CommunityMaterial.Icon.cmd_clock_alert_outline
                 Attendance.TYPE_BELATED_EXCUSED -> CommunityMaterial.Icon.cmd_clock_check_outline
-                Attendance.TYPE_DAY_FREE -> CommunityMaterial.Icon3.cmd_umbrella_outline
+                Attendance.TYPE_DAY_FREE -> SzkolnyFont.Icon.szf_umbrella_beach_outline
                 else -> null
             }
 
