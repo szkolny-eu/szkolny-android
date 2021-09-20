@@ -119,7 +119,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         return true
     }
 
-    private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>, attendances: List<AttendanceFull>) {
+    private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {
         // no lessons - timetable not downloaded yet
         if (lessons.isEmpty()) {
             inflater.inflate(R.layout.timetable_no_timetable, b.root) { view, _, _ ->
