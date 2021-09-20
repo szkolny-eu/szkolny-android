@@ -75,7 +75,7 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="-4dp"
                     android:background="@drawable/unread_red_circle"
                     android:visibility="@{unread ? View.VISIBLE : View.GONE}" />
 
@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="-4dp"
                     android:fontFamily="sans-serif-condensed-light"
                     android:includeFontPadding="false"
                     android:paddingHorizontal="4dp"

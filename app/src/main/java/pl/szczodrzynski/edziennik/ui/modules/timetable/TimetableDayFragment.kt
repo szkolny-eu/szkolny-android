@@ -4,29 +4,21 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.timetable
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.annotation.ColorRes
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.core.view.isVisible
 import androidx.core.view.marginTop
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
-import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.color
-import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.colorRes
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
@@ -47,7 +39,6 @@ import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Compani
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
-import pl.szczodrzynski.navlib.colorAttr
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
@@ -296,21 +287,20 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
 
             val typeIcon = when (attendance?.baseType) {
-                Attendance.TYPE_PRESENT, Attendance.TYPE_PRESENT_CUSTOM -> CommunityMaterial.Icon.cmd_check_circle_outline to R.color.md_green_500
-                Attendance.TYPE_ABSENT -> CommunityMaterial.Icon.cmd_close_circle_outline to R.color.md_red_500
-                Attendance.TYPE_ABSENT_EXCUSED -> CommunityMaterial.Icon.cmd_circle_edit_outline to R.color.md_blue_500
-                Attendance.TYPE_RELEASED -> CommunityMaterial.Icon.cmd_account_supervisor_circle_outline to R.color.md_lime_500
-                Attendance.TYPE_BELATED -> CommunityMaterial.Icon.cmd_clock_alert_outline to R.color.md_orange_600
-                Attendance.TYPE_BELATED_EXCUSED -> CommunityMaterial.Icon.cmd_clock_check_outline to R.color.md_yellow_500
-                Attendance.TYPE_DAY_FREE -> CommunityMaterial.Icon3.cmd_sticker_circle_outline to R.color.md_pink_400
+                Attendance.TYPE_PRESENT, Attendance.TYPE_PRESENT_CUSTOM -> CommunityMaterial.Icon.cmd_check
+                Attendance.TYPE_ABSENT -> CommunityMaterial.Icon.cmd_close
+                Attendance.TYPE_ABSENT_EXCUSED -> CommunityMaterial.Icon3.cmd_progress_close
+                Attendance.TYPE_RELEASED -> CommunityMaterial.Icon.cmd_account_arrow_right_outline
+                Attendance.TYPE_BELATED -> CommunityMaterial.Icon.cmd_clock_alert_outline
+                Attendance.TYPE_BELATED_EXCUSED -> CommunityMaterial.Icon.cmd_clock_check_outline
+                Attendance.TYPE_DAY_FREE -> CommunityMaterial.Icon3.cmd_umbrella_outline
                 else -> null
             }
 
             if (typeIcon != null) {
-                val (icon, color) = typeIcon
                 lb.attendanceIcon.setImageDrawable(
-                    IconicsDrawable(activity, icon).apply {
-                        colorRes = color
+                    IconicsDrawable(activity, typeIcon).apply {
+                        colorRes = app.attendanceManager.getAttendanceColor(attendance!!)
                         sizeDp = 24
                     }
                 )
