@@ -140,7 +140,7 @@ open class Profile(
             LOGIN_TYPE_MOBIDZIENNIK -> "mobidziennik"
             LOGIN_TYPE_PODLASIE -> "podlasie"
             LOGIN_TYPE_EDUDZIENNIK -> "edudziennik"
-            else -> null
+            else -> "unknown"
         }
 
     override fun getImageDrawable(context: Context): Drawable {

@@ -50,7 +50,8 @@ class HomeAvailabilityCard(
         }
         holder.root += b.root
 
-        val status = app.config.sync.registerAvailability[profile.registerName]
+        val error = app.availabilityManager.check(profile, cacheOnly = true)
+        val status = error?.status
         val update = app.config.update
 
         if (update == null && status == null)
@@ -58,7 +59,8 @@ class HomeAvailabilityCard(
 
         var onInfoClick = { _: View -> }
 
-        if (status != null && !status.available && status.userMessage != null) {
+        // show "register unavailable" only when disabled
+        if (status?.userMessage != null) {
             b.homeAvailabilityTitle.text = HtmlCompat.fromHtml(status.userMessage.title, HtmlCompat.FROM_HTML_MODE_LEGACY)
             b.homeAvailabilityText.text = HtmlCompat.fromHtml(status.userMessage.contentShort, HtmlCompat.FROM_HTML_MODE_LEGACY)
             b.homeAvailabilityUpdate.isVisible = false
@@ -69,6 +71,7 @@ class HomeAvailabilityCard(
                 RegisterUnavailableDialog(activity, status)
             }
         }
+        // show "update available" when available OR version too old for the register
         else if (update != null && update.versionCode > BuildConfig.VERSION_CODE) {
             b.homeAvailabilityTitle.setText(R.string.home_availability_title)
             b.homeAvailabilityText.setText(R.string.home_availability_text, update.versionName)
@@ -77,6 +80,9 @@ class HomeAvailabilityCard(
             onInfoClick = {
                 UpdateAvailableDialog(activity, update)
             }
+        }
+        else {
+            b.root.isVisible = false
         }
 
         b.homeAvailabilityUpdate.onClick {

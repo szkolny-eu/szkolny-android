@@ -41,6 +41,7 @@ class LabFragment : Fragment(), CoroutineScope {
         app = activity.application as App
         b = TemplateFragmentBinding.inflate(inflater)
         b.refreshLayout.setParent(activity.swipeRefreshLayout)
+        b.refreshLayout.isEnabled = false
         return b.root
     }
 

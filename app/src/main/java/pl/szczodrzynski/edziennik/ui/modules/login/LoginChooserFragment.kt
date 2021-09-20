@@ -26,13 +26,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
-import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity
 import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
+import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
@@ -269,52 +268,23 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
     }
 
     private suspend fun checkAvailability(loginType: Int): Boolean {
-        when (loginType) {
-            LOGIN_TYPE_LIBRUS -> "librus"
-            LOGIN_TYPE_VULCAN -> "vulcan"
-            LOGIN_TYPE_IDZIENNIK -> "idziennik"
-            LOGIN_TYPE_MOBIDZIENNIK -> "mobidziennik"
-            LOGIN_TYPE_PODLASIE -> "podlasie"
-            LOGIN_TYPE_EDUDZIENNIK -> "edudziennik"
-            else -> null
-        }?.let { registerName ->
-            var status = app.config.sync.registerAvailability[registerName]
-            if (status == null || status.nextCheckAt < currentTimeUnix()) {
-                val api = SzkolnyApi(app)
-                val result = withContext(Dispatchers.IO) {
-                    return@withContext api.runCatching({
-                        val availability = getRegisterAvailability()
-                        app.config.sync.registerAvailability = availability
-                        availability[registerName]
-                    }, onError = {
-                        if (it.toErrorCode() == ERROR_API_INVALID_SIGNATURE) {
-                            return@withContext false
-                        }
-                        return@withContext it
-                    })
-                }
+        val error = withContext(Dispatchers.IO) {
+            app.availabilityManager.check(loginType)
+        } ?: return true
 
-                when (result) {
-                    false -> {
-                        Toast.makeText(activity, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
-                        return@let
-                    }
-                    is Throwable -> {
-                        activity.errorSnackbar.addError(result.toApiError(TAG)).show()
-                        return false
-                    }
-                    is RegisterAvailabilityStatus -> {
-                        status = result
-                    }
-                }
+        return when (error.type) {
+            Type.NOT_AVAILABLE -> {
+                RegisterUnavailableDialog(activity, error.status!!)
+                false
             }
-
-            if (status?.available != true || status.minVersionCode > BuildConfig.VERSION_CODE) {
-                if (status != null)
-                    RegisterUnavailableDialog(activity, status)
-                return false
+            Type.API_ERROR -> {
+                activity.errorSnackbar.addError(error.apiError!!).show()
+                false
+            }
+            Type.NO_API_ACCESS -> {
+                Toast.makeText(activity, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
+                true
             }
         }
-        return true
     }
 }
