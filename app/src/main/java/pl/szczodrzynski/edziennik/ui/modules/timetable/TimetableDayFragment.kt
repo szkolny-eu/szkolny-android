@@ -305,8 +305,8 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                         sizeDp = 24
                     }
                 )
-                lb.attendanceIcon.isVisible = true
             }
+            lb.attendanceIcon.isVisible = typeIcon != null
 
             lb.unread = lesson.type != Lesson.TYPE_NORMAL && lesson.showAsUnseen
             if (!lesson.seen) {
