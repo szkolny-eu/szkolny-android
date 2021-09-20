@@ -202,7 +202,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
         for (lesson in lessons) {
-            val attendance = attendanceList.find {  it.startTime == lesson.startTime }
+            val attendance = attendanceList.find { it.startTime == lesson.startTime }
             val startTime = lesson.displayStartTime ?: continue
             val endTime = lesson.displayEndTime ?: continue
 
