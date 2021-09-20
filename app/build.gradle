@@ -172,8 +172,8 @@ dependencies {
     kapt "eu.szkolny.selective-dao:codegen:27f8f3f194"
 
     // Iconics & related
-    implementation "com.mikepenz:iconics-core:5.3.0-b01"
-    implementation "com.mikepenz:iconics-views:5.3.0-b01"
+    implementation "com.mikepenz:iconics-core:5.3.1"
+    implementation "com.mikepenz:iconics-views:5.3.1"
     implementation "com.mikepenz:community-material-typeface:5.8.55.0-kotlin@aar"
     implementation "eu.szkolny:szkolny-font:1.3"
 
