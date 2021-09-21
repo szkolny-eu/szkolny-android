@@ -4,6 +4,9 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
+import com.mikepenz.iconics.typeface.IIcon
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -61,6 +64,17 @@ class AttendanceManager(val app: App) : CoroutineScope {
                 ?: if (attendance.baseType == Attendance.TYPE_PRESENT_CUSTOM || !attendance.isCounted)
                     attendance.typeColor ?: 0xff64b5f6.toInt()
                 else getAttendanceColor(attendance.baseType)
+    }
+
+    fun getAttendanceIcon(attendance: Attendance): IIcon? = when (attendance.baseType) {
+        Attendance.TYPE_PRESENT, Attendance.TYPE_PRESENT_CUSTOM -> CommunityMaterial.Icon.cmd_check
+        Attendance.TYPE_ABSENT -> CommunityMaterial.Icon.cmd_close
+        Attendance.TYPE_ABSENT_EXCUSED -> CommunityMaterial.Icon3.cmd_progress_close
+        Attendance.TYPE_RELEASED -> CommunityMaterial.Icon.cmd_account_arrow_right_outline
+        Attendance.TYPE_BELATED -> CommunityMaterial.Icon.cmd_clock_alert_outline
+        Attendance.TYPE_BELATED_EXCUSED -> CommunityMaterial.Icon.cmd_clock_check_outline
+        Attendance.TYPE_DAY_FREE -> SzkolnyFont.Icon.szf_umbrella_beach_outline
+        else -> null
     }
 
     /*    _    _ _____    _____                 _  __ _

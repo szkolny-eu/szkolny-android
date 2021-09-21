@@ -134,7 +134,8 @@
                 android:layout_marginTop="8dp"
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/shiftedText"
@@ -288,6 +289,60 @@
                         tools:text="12345" />
                 </LinearLayout>
 
+            </LinearLayout>
+
+            <View
+                android:id="@+id/attendanceDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/divider"/>
+
+            <LinearLayout
+                android:id="@+id/attendanceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceView
+                    android:id="@+id/attendanceView"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    tools:background="@drawable/bg_rounded_8dp"
+                    tools:backgroundTint="#f44336"
+                    tools:gravity="center"
+                    tools:text="nb"
+                    tools:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/attendanceType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textSize="16sp"
+                    tools:text="nieobecność usprawiedliweniowsza1234324" />
+
+                <ImageView
+                    android:id="@+id/attendanceIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginHorizontal="8dp"
+                    tools:srcCompat="@sample/check" />
+
+                <Button
+                    android:id="@+id/attendanceDetails"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dialog_lesson_attendance_details" />
             </LinearLayout>
 
             <View

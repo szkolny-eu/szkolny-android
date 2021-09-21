@@ -9,12 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
-import androidx.core.view.isVisible
-import androidx.core.view.marginTop
-import androidx.core.view.setPadding
-import androidx.core.view.updateLayoutParams
+import androidx.core.view.*
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
 import com.mikepenz.iconics.IconicsDrawable
@@ -68,6 +66,8 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
     private val manager
         get() = app.timetableManager
+    private val attendanceManager
+        get() = app.attendanceManager
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
@@ -219,11 +219,17 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             val lb = TimetableLessonBinding.bind(eventView)
             eventViews += eventView
 
-            eventView.tag = lesson
+            eventView.tag = lesson to attendance
 
             eventView.setOnClickListener {
-                if (isAdded && it.tag is LessonFull)
-                    LessonDetailsDialog(activity, it.tag as LessonFull)
+                if (isAdded && it.tag is Pair<*, *>) {
+                    val (lessonObj, attendanceObj) = it.tag as Pair<*, *>
+                    LessonDetailsDialog(
+                        activity = activity,
+                        lesson = lessonObj as LessonFull,
+                        attendance = attendanceObj as AttendanceFull?
+                    )
+                }
             }
 
             val eventList = events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
@@ -287,26 +293,17 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
 
-            val typeIcon = when (attendance?.baseType) {
-                Attendance.TYPE_PRESENT, Attendance.TYPE_PRESENT_CUSTOM -> CommunityMaterial.Icon.cmd_check
-                Attendance.TYPE_ABSENT -> CommunityMaterial.Icon.cmd_close
-                Attendance.TYPE_ABSENT_EXCUSED -> CommunityMaterial.Icon3.cmd_progress_close
-                Attendance.TYPE_RELEASED -> CommunityMaterial.Icon.cmd_account_arrow_right_outline
-                Attendance.TYPE_BELATED -> CommunityMaterial.Icon.cmd_clock_alert_outline
-                Attendance.TYPE_BELATED_EXCUSED -> CommunityMaterial.Icon.cmd_clock_check_outline
-                Attendance.TYPE_DAY_FREE -> SzkolnyFont.Icon.szf_umbrella_beach_outline
-                else -> null
-            }
-
-            if (typeIcon != null) {
+            lb.attendanceIcon.isVisible = attendance?.let {
+                val icon = attendanceManager.getAttendanceIcon(it) ?: return@let false
+                val color = attendanceManager.getAttendanceColor(it)
                 lb.attendanceIcon.setImageDrawable(
-                    IconicsDrawable(activity, typeIcon).apply {
-                        colorInt = app.attendanceManager.getAttendanceColor(attendance!!)
+                    IconicsDrawable(activity, icon).apply {
+                        colorInt = color
                         sizeDp = 24
                     }
                 )
-            }
-            lb.attendanceIcon.isVisible = typeIcon != null
+                true
+            } ?: false
 
             lb.unread = lesson.type != Lesson.TYPE_NORMAL && lesson.showAsUnseen
             if (!lesson.seen) {
