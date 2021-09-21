@@ -64,6 +64,8 @@ abstract class AttendanceDao : BaseDao<Attendance, AttendanceFull> {
             getRawNow("$QUERY WHERE notified = 0 $ORDER_BY")
     fun getNotNotifiedNow(profileId: Int) =
             getRawNow("$QUERY WHERE attendances.profileId = $profileId AND notified = 0 $ORDER_BY")
+    fun getAllByDateNow(profileId: Int, date: Date) =
+            getRawNow("$QUERY WHERE attendances.profileId = $profileId AND attendanceDate = '${date.stringY_m_d}' $ORDER_BY")
 
     // GET ONE - NOW
     fun getByIdNow(profileId: Int, id: Long) =
