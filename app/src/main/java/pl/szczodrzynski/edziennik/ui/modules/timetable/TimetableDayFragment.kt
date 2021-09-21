@@ -315,6 +315,12 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
             lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
+            val lessonNumberMargin =
+                if (lb.annotationVisible) (-8).dp
+                else 0
+            lb.lessonNumberText.updateLayoutParams<LinearLayout.LayoutParams> {
+                updateMargins(top = lessonNumberMargin, bottom = lessonNumberMargin)
+            }
 
             // The day view needs the event time ranges in the start minute/end minute format,
             // so calculate those here
