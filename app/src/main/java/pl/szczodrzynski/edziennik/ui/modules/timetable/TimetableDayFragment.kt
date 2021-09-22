@@ -9,19 +9,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
-import androidx.core.view.isVisible
-import androidx.core.view.marginTop
-import androidx.core.view.setPadding
-import androidx.core.view.updateLayoutParams
+import androidx.core.view.*
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
+import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
+import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableDayFragmentBinding
@@ -61,6 +66,8 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
     private val manager
         get() = app.timetableManager
+    private val attendanceManager
+        get() = app.attendanceManager
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
@@ -102,14 +109,17 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                 val events = withContext(Dispatchers.Default) {
                     app.db.eventDao().getAllByDateNow(App.profileId, date)
                 }
-                processLessonList(lessons, events)
+                val attendanceList = withContext(Dispatchers.Default) {
+                    app.db.attendanceDao().getAllByDateNow(App.profileId, date)
+                }
+                processLessonList(lessons, events, attendanceList)
             }
         }
 
         return true
     }
 
-    private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>) {
+    private fun processLessonList(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {
         // no lessons - timetable not downloaded yet
         if (lessons.isEmpty()) {
             inflater.inflate(R.layout.timetable_no_timetable, b.root) { view, _, _ ->
@@ -172,10 +182,10 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
         lessons.forEach { it.showAsUnseen = !it.seen }
 
-        buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events)
+        buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events, attendanceList)
     }
 
-    private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>) {
+    private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {
         if (!isAdded)
             return
 
@@ -192,6 +202,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
         for (lesson in lessons) {
+            val attendance = attendanceList.find { it.startTime == lesson.startTime }
             val startTime = lesson.displayStartTime ?: continue
             val endTime = lesson.displayEndTime ?: continue
 
@@ -208,11 +219,17 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             val lb = TimetableLessonBinding.bind(eventView)
             eventViews += eventView
 
-            eventView.tag = lesson
+            eventView.tag = lesson to attendance
 
             eventView.setOnClickListener {
-                if (isAdded && it.tag is LessonFull)
-                    LessonDetailsDialog(activity, it.tag as LessonFull)
+                if (isAdded && it.tag is Pair<*, *>) {
+                    val (lessonObj, attendanceObj) = it.tag as Pair<*, *>
+                    LessonDetailsDialog(
+                        activity = activity,
+                        lesson = lessonObj as LessonFull,
+                        attendance = attendanceObj as AttendanceFull?
+                    )
+                }
             }
 
             val eventList = events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
@@ -276,6 +293,18 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
 
+            lb.attendanceIcon.isVisible = attendance?.let {
+                val icon = attendanceManager.getAttendanceIcon(it) ?: return@let false
+                val color = attendanceManager.getAttendanceColor(it)
+                lb.attendanceIcon.setImageDrawable(
+                    IconicsDrawable(activity, icon).apply {
+                        colorInt = color
+                        sizeDp = 24
+                    }
+                )
+                true
+            } ?: false
+
             lb.unread = lesson.type != Lesson.TYPE_NORMAL && lesson.showAsUnseen
             if (!lesson.seen) {
                 manager.markAsSeen(lesson)
@@ -283,6 +312,12 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
             lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
+            val lessonNumberMargin =
+                if (lb.annotationVisible) (-8).dp
+                else 0
+            lb.lessonNumberText.updateLayoutParams<LinearLayout.LayoutParams> {
+                updateMargins(top = lessonNumberMargin, bottom = lessonNumberMargin)
+            }
 
             // The day view needs the event time ranges in the start minute/end minute format,
             // so calculate those here

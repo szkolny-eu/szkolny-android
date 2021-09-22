@@ -163,10 +163,9 @@ class HomeFragment : Fragment(), CoroutineScope {
         if (app.profile.archived)
             items.add(0, HomeArchiveCard(101, app, activity, this, app.profile))
 
-        val status = app.config.sync.registerAvailability[app.profile.registerName]
+        val status = app.availabilityManager.check(app.profile, cacheOnly = true)?.status
         val update = app.config.update
-        if (update != null && update.versionCode > BuildConfig.VERSION_CODE
-                || status != null && (!status.available || status.minVersionCode > BuildConfig.VERSION_CODE)) {
+        if (update != null && update.versionCode > BuildConfig.VERSION_CODE || status?.userMessage != null) {
             items.add(0, HomeAvailabilityCard(102, app, activity, this, app.profile))
         }
 

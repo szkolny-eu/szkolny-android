@@ -60,7 +60,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                     ) ?: return@launch
                     app.config.sync.registerAvailability = data
                     if (EventBus.getDefault().hasSubscriberForEvent(RegisterAvailabilityEvent::class.java)) {
-                        EventBus.getDefault().postSticky(RegisterAvailabilityEvent(data))
+                        EventBus.getDefault().postSticky(RegisterAvailabilityEvent())
                     }
                 }
             }

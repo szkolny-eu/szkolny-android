@@ -8,15 +8,20 @@ import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
 import pl.szczodrzynski.edziennik.onClick
@@ -24,6 +29,7 @@ import pl.szczodrzynski.edziennik.setText
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceDetailsDialog
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
@@ -34,6 +40,7 @@ import kotlin.coroutines.CoroutineContext
 class LessonDetailsDialog(
         val activity: AppCompatActivity,
         val lesson: LessonFull,
+        val attendance: AttendanceFull? = null,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
@@ -52,6 +59,8 @@ class LessonDetailsDialog(
     private lateinit var adapter: EventListAdapter
     private val manager
         get() = app.timetableManager
+    private val attendanceManager
+        get() = app.attendanceManager
 
     init { run {
         if (activity.isFinishing)
@@ -168,6 +177,27 @@ class LessonDetailsDialog(
         }
         if (lesson.type != Lesson.TYPE_CANCELLED && lesson.displayTeamId != null) {
             b.teamName = lesson.teamName
+        }
+
+        b.attendanceDivider.isVisible = attendance != null
+        b.attendanceLayout.isVisible = attendance != null
+        if (attendance != null) {
+            b.attendanceView.setAttendance(attendance, app.attendanceManager, bigView = true)
+            b.attendanceType.text = attendance.typeName
+            b.attendanceIcon.isVisible = attendance.let {
+                val icon = attendanceManager.getAttendanceIcon(it) ?: return@let false
+                val color = attendanceManager.getAttendanceColor(it)
+                b.attendanceIcon.setImageDrawable(
+                    IconicsDrawable(activity, icon).apply {
+                        colorInt = color
+                        sizeDp = 24
+                    }
+                )
+                true
+            }
+            b.attendanceDetails.onClick {
+                AttendanceDetailsDialog(activity, attendance, onShowListener, onDismissListener)
+            }
         }
 
         adapter = EventListAdapter(

@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.databinding.LabFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileRemoveDialog
@@ -78,10 +79,10 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             app.db.eventDao().getRawNow("UPDATE events SET homeworkBody = NULL WHERE profileId = ${App.profileId}")
         }
 
-        b.chucker.isChecked = app.config.enableChucker
-
+        b.chucker.isChecked = App.enableChucker
         b.chucker.onChange { _, isChecked ->
             app.config.enableChucker = isChecked
+            App.enableChucker = isChecked
             MaterialAlertDialogBuilder(activity)
                 .setTitle("Restart")
                 .setMessage("Wymagany restart aplikacji")
@@ -94,9 +95,9 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
                 .show()
         }
 
-
         b.disableDebug.onClick {
-            app.config.debugMode = false
+            app.config.devMode = false
+            App.devMode = false
             MaterialAlertDialogBuilder(activity)
                 .setTitle("Restart")
                 .setMessage("Wymagany restart aplikacji")
@@ -113,6 +114,14 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             app.profile.archived = false
             app.profile.archiveId = null
             app.profileSave()
+        }
+
+        b.resetCert.onClick {
+            app.config.apiInvalidCert = null
+        }
+
+        b.rebuildConfig.onClick {
+            App.config = Config(App.db)
         }
 
         val profiles = app.db.profileDao().allNow

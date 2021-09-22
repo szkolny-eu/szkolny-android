@@ -1,15 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-3.
   -->
 
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     tools:ignore="HardcodedText">
 
     <data>
-        <variable name="app" type="pl.szczodrzynski.edziennik.App"/>
+
+        <variable
+            name="app"
+            type="pl.szczodrzynski.edziennik.App" />
     </data>
 
     <ScrollView
@@ -39,7 +41,7 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
 
-            <Switch
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/chucker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
-                tools:text="Cookies:\n\nsynergia.librus.pl\n    DZIENNIKSID=L01~1234567890abcdef"/>
+                tools:text="Cookies:\n\nsynergia.librus.pl\n    DZIENNIKSID=L01~1234567890abcdef" />
 
             <Button
                 android:id="@+id/unarchive"
@@ -99,9 +101,9 @@
 
             <pl.szczodrzynski.edziennik.utils.TextInputDropDown
                 android:id="@+id/profile"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" />
+                android:layout_height="wrap_content" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:layout_width="match_parent"
@@ -109,13 +111,36 @@
                 android:checked="@={app.config.archiverEnabled}"
                 android:text="Archiver enabled" />
 
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@={app.config.apiAvailabilityCheck}"
+                android:text="Availability check enabled" />
+
+            <Button
+                android:id="@+id/resetCert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Reset API signature"
+                android:textAllCaps="false" />
+
             <Button
                 android:id="@+id/disableDebug"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="Disable Dev Mode"
                 android:textAllCaps="false"
                 app:backgroundTint="@color/windowBackgroundRed" />
+
+            <Button
+                android:id="@+id/rebuildConfig"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Rebuild App.config"
+                android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>
 </layout>
