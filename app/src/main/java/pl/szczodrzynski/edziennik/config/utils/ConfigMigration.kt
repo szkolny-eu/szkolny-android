@@ -67,7 +67,7 @@ class ConfigMigration(app: App, config: Config) {
         if (dataVersion < 3) {
             update = null
             privacyPolicyAccepted = false
-            debugMode = false
+            devMode = null
             devModePassword = null
             appInstalledTime = 0L
             appRateSnackbarTime = 0L

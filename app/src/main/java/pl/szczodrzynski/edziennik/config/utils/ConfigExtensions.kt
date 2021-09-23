@@ -59,6 +59,9 @@ fun HashMap<String, String?>.get(key: String, default: String?): String? {
 fun HashMap<String, String?>.get(key: String, default: Boolean): Boolean {
     return this[key]?.toBoolean() ?: default
 }
+fun HashMap<String, String?>.getBooleanOrNull(key: String): Boolean? {
+    return this[key]?.toBooleanStrictOrNull()
+}
 fun HashMap<String, String?>.get(key: String, default: Int): Int {
     return this[key]?.toIntOrNull() ?: default
 }
