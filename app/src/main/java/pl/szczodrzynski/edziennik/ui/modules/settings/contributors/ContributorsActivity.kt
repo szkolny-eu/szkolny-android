@@ -44,7 +44,7 @@ class ContributorsActivity : AppCompatActivity(), CoroutineScope {
             KeyEvent.KEYCODE_DPAD_LEFT -> {konami = if (konami == 4 || konami == 6) konami.inc() else 0; true}
             KeyEvent.KEYCODE_DPAD_RIGHT -> {konami = if (konami == 5 || konami == 7) konami.inc() else 0; true}
             KeyEvent.KEYCODE_B -> {konami = if (konami == 8) konami.inc() else 0; true}
-            KeyEvent.KEYCODE_A -> {if (konami == 9) {konami += 1; b.konami.isVisible = true} else {konami = 0}; true}
+            KeyEvent.KEYCODE_A -> {if (konami == 9) {konami.inc(); b.konami.isVisible = true} else {konami = 0}; true}
             else -> {konami = 0; super.onKeyUp(keyCode, event)}
         }
     }

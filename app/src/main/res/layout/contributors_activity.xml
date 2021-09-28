@@ -25,7 +25,7 @@
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_gravity="bottom|end"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:srcCompat="@drawable/emoji_glasses" />
 
             <com.google.android.material.appbar.AppBarLayout
@@ -51,8 +51,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="25dp"
-                            android:layout_marginBottom="25dp">
+                            android:layout_marginTop="16dp">
 
                             <ImageView
                                 android:id="@+id/glove"
@@ -71,9 +70,7 @@
                                 android:scaleType="center"
                                 android:scaleX="0.8"
                                 android:scaleY="0.8"
-                                android:src="@mipmap/ic_splash"
-                                tools:visibility="visible" />
-
+                                android:src="@mipmap/ic_splash" />
                         </FrameLayout>
 
                         <TextView
@@ -96,7 +93,6 @@
                             android:gravity="center"
                             android:text="@string/contributors_headline"
                             android:textAppearance="@style/NavView.TextView.Medium" />
-
                     </LinearLayout>
 
                     <com.google.android.material.tabs.TabLayout
@@ -113,7 +109,6 @@
                         app:tabSelectedTextColor="?colorPrimary"
                         app:tabTextColor="?android:textColorPrimary"
                         tools:visibility="visible" />
-
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -124,7 +119,6 @@
                 android:visibility="gone"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:visibility="visible" />
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>
 </layout>
