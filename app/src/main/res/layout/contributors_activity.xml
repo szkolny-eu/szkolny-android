@@ -48,15 +48,18 @@
                         app:layout_collapseParallaxMultiplier="0.7">
 
                         <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="239dp">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginBottom="25dp">
 
                             <ImageView
                                 android:id="@+id/glove"
                                 android:layout_width="144dp"
                                 android:layout_height="144dp"
                                 android:layout_gravity="center"
-                                android:layout_marginBottom="5dp"
+                                android:paddingBottom="4dp"
                                 android:visibility="gone"
                                 app:srcCompat="@drawable/thanos_idle" />
 
@@ -68,7 +71,8 @@
                                 android:scaleType="center"
                                 android:scaleX="0.8"
                                 android:scaleY="0.8"
-                                android:src="@mipmap/ic_splash" />
+                                android:src="@mipmap/ic_splash"
+                                tools:visibility="visible" />
 
                         </FrameLayout>
 
@@ -117,10 +121,10 @@
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:visibility="invisible" >
+                tools:visibility="visible" />
 
-            </pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyViewPager>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>
 </layout>

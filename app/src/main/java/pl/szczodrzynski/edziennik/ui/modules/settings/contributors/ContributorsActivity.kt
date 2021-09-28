@@ -3,7 +3,6 @@ package pl.szczodrzynski.edziennik.ui.modules.settings.contributors
 import android.os.Bundle
 import android.os.Process
 import android.view.KeyEvent
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,58 +35,17 @@ class ContributorsActivity : AppCompatActivity(), CoroutineScope {
     // local/private variables go here
     private val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
 
-    var konami = 0
+    private var konami = 0
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         return when (keyCode) {
-            KeyEvent.KEYCODE_DPAD_UP -> {
-                if (konami == 0 || konami == 1)
-                    konami += 1
-                else
-                    konami = 0
-                true
-            }
-            KeyEvent.KEYCODE_DPAD_DOWN -> {
-                if (konami == 2 || konami == 3)
-                    konami += 1
-                else
-                    konami = 0
-                true
-            }
-            KeyEvent.KEYCODE_DPAD_LEFT-> {
-                if (konami == 4 || konami == 6)
-                    konami += 1
-                else
-                    konami = 0
-                true
-            }
-            KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                if (konami == 5 || konami == 7)
-                    konami += 1
-                else
-                    konami = 0
-                true
-            }
-            KeyEvent.KEYCODE_B -> {
-                if (konami == 8)
-                    konami += 1
-                else
-                    konami = 0
-                true
-            }
-            KeyEvent.KEYCODE_A -> {
-                if (konami == 9) {
-                    konami += 1
-                    b.konami.isVisible = true
-                }
-                else
-                    konami = 0
-                true
-            }
-            else -> {
-                konami = 0
-                super.onKeyUp(keyCode, event)
-            }
+            KeyEvent.KEYCODE_DPAD_UP -> {konami = if (konami == 0 || konami == 1) konami.inc() else 0; true}
+            KeyEvent.KEYCODE_DPAD_DOWN -> {konami = if (konami == 2 || konami == 3) konami.inc() else 0; true}
+            KeyEvent.KEYCODE_DPAD_LEFT -> {konami = if (konami == 4 || konami == 6) konami.inc() else 0; true}
+            KeyEvent.KEYCODE_DPAD_RIGHT -> {konami = if (konami == 5 || konami == 7) konami.inc() else 0; true}
+            KeyEvent.KEYCODE_B -> {konami = if (konami == 8) konami.inc() else 0; true}
+            KeyEvent.KEYCODE_A -> {if (konami == 9) {konami += 1; b.konami.isVisible = true} else {konami = 0}; true}
+            else -> {konami = 0; super.onKeyUp(keyCode, event)}
         }
     }
 
@@ -114,7 +72,7 @@ class ContributorsActivity : AppCompatActivity(), CoroutineScope {
                 .setTitle(R.string.are_you_sure)
                 .setMessage(R.string.dev_mode_enable_warning)
                 .setPositiveButton(R.string.yes) { _, _ ->
-                    app.config.debugMode = true
+                    app.config.devMode = true
                     App.devMode = true
                     MaterialAlertDialogBuilder(this)
                         .setTitle("Restart")
@@ -128,7 +86,7 @@ class ContributorsActivity : AppCompatActivity(), CoroutineScope {
                         .show()
                 }
                 .setNegativeButton(R.string.no) { _, _ ->
-                    app.config.debugMode = false
+                    app.config.devMode = false
                     App.devMode = false
                     this.finish()
                 }
