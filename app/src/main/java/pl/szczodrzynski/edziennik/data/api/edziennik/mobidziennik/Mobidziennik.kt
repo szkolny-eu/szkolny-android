@@ -120,8 +120,15 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
 
     override fun getEvent(eventFull: EventFull) {
         login(LOGIN_METHOD_MOBIDZIENNIK_WEB) {
-            MobidziennikWebGetHomework(data, eventFull) {
-                completed()
+            if (eventFull.isHomework) {
+                MobidziennikWebGetHomework(data, eventFull) {
+                    completed()
+                }
+            }
+            else {
+                MobidziennikWebGetEvent(data, eventFull) {
+                    completed()
+                }
             }
         }
     }

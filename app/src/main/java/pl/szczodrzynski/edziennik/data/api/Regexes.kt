@@ -16,6 +16,10 @@ object Regexes {
         """[^0-9]""".toRegex()
     }
 
+    val HTML_BR by lazy {
+        """<br\s?/?>""".toRegex()
+    }
+
 
 
     val MOBIDZIENNIK_GRADES_SUBJECT_NAME by lazy {
@@ -125,6 +129,11 @@ object Regexes {
     }
     val MOBIDZIENNIK_TIMETABLE_LEFT by lazy {
         """<div class="plansc_godz">.+?</div></div>""".toRegex(DOT_MATCHES_ALL)
+    }
+
+
+    val MOBIDZIENNIK_EVENT_CONTENT by lazy {
+        """<h1>(.+?) <small>\(wpisał\(a\) (.+?) w dniu ([0-9-]{10})\).+?<strong>(.+?)</strong><br""".toRegex(DOT_MATCHES_ALL)
     }
 
 

@@ -226,7 +226,7 @@ class EventDetailsDialog(
             )
         }
 
-        if (!event.addedManually && event.isHomework && event.homeworkBody == null) {
+        if (!event.addedManually && (!event.isDownloaded || event.isHomework && event.homeworkBody == null)) {
             b.bodyTitle.isVisible = true
             b.bodyProgressBar.isVisible = true
             b.body.isVisible = false

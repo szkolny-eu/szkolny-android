@@ -84,6 +84,13 @@ open class Event(
     var isDone: Boolean = false
 
     /**
+     * Whether the full contents of the event are already stored locally.
+     * There may be a need to download the full topic or body.
+     */
+    @ColumnInfo(name = "eventIsDownloaded")
+    var isDownloaded: Boolean = true
+
+    /**
      * Body/text of the event, if this is a [TYPE_HOMEWORK].
      * May be null if the body is not downloaded yet, or the type is not [TYPE_HOMEWORK].
      * May be empty or blank if the homework has no specific body attached,
