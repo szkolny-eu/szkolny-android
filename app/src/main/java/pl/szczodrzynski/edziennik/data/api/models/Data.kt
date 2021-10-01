@@ -437,11 +437,13 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     }
 
     fun getTeacherByLastFirst(nameLastFirst: String, loginId: String? = null): Teacher {
+        // comparing full name is safer than splitting and swapping
+        val teacher = teacherList.singleOrNull { it.fullNameLastFirst == nameLastFirst }
         val nameParts = nameLastFirst.split(" ")
         return if (nameParts.size == 1)
-            getTeacher(nameParts[0], "", loginId)
+            validateTeacher(teacher, nameParts[0], "", loginId)
         else
-            getTeacher(nameParts[1], nameParts[0], loginId)
+            validateTeacher(teacher, nameParts[1], nameParts[0], loginId)
     }
 
     fun getTeacherByFirstLast(nameFirstLast: String, loginId: String? = null): Teacher {

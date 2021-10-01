@@ -81,6 +81,7 @@ class MobidziennikWebCalendar(override val data: DataMobidziennik,
                             subjectId = -1,
                             teamId = data.teamClass?.id ?: -1
                     )
+                    eventObject.isDownloaded = false
 
                     data.eventList.add(eventObject)
                     data.metadataList.add(

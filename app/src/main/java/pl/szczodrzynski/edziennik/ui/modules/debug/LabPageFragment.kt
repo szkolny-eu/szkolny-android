@@ -17,7 +17,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.config.Config
-import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.databinding.LabFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileRemoveDialog
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
@@ -55,7 +54,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
         b.last10unseen.onClick {
             launch(Dispatchers.Default) {
                 val events = app.db.eventDao().getAllNow(App.profileId)
-                val ids = events.sortedBy { it.date }.filter { it.type == Event.TYPE_HOMEWORK }.takeLast(10)
+                val ids = events.sortedBy { it.date }.filter { it.isHomework }.takeLast(10)
                 ids.forEach {
                     app.db.metadataDao().setSeen(App.profileId, it, false)
                 }

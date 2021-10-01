@@ -139,13 +139,13 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
 
             val metadata = Metadata(
                     event.profileId,
-                    if (event.type == Event.TYPE_HOMEWORK) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT,
+                    if (event.isHomework) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT,
                     event.id,
                     false,
                     true
             )
 
-            val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_SHARED_HOMEWORK else Notification.TYPE_NEW_SHARED_EVENT
+            val type = if (event.isHomework) Notification.TYPE_NEW_SHARED_HOMEWORK else Notification.TYPE_NEW_SHARED_EVENT
             val notificationFilter = app.config.getFor(event.profileId).sync.notificationFilter
 
             if (!notificationFilter.contains(type)) {
@@ -156,7 +156,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         type = type,
                         profileId = profile.id,
                         profileName = profile.name,
-                        viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                        viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
                         addedDate = event.addedDate
                 ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
                 notificationList += notification

@@ -70,7 +70,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
 
     private fun eventNotifications() {
         for (event in app.db.eventDao().getNotNotifiedNow().filter { it.date >= today }) {
-            val text = if (event.type == Event.TYPE_HOMEWORK)
+            val text = if (event.isHomework)
                 app.getString(
                         if (event.subjectLongName.isNullOrEmpty())
                             R.string.notification_homework_no_subject_format
@@ -98,7 +98,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     event.time?.stringHM ?: app.getString(R.string.event_all_day),
                     event.topic.take(200)
             )
-            val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
+            val type = if (event.isHomework) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
             notifications += Notification(
                     id = Notification.buildId(event.profileId, type, event.id),
                     title = app.getNotificationTitle(type),
@@ -107,7 +107,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = type,
                     profileId = event.profileId,
                     profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
-                    viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                    viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
                     addedDate = event.addedDate
             ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }
@@ -132,7 +132,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     event.time?.stringHM ?: app.getString(R.string.event_all_day),
                     event.topic.take(200)
             )
-            val type = if (event.type == Event.TYPE_HOMEWORK) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
+            val type = if (event.isHomework) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
             notifications += Notification(
                     id = Notification.buildId(event.profileId, type, event.id),
                     title = app.getNotificationTitle(type),
@@ -141,7 +141,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = type,
                     profileId = event.profileId,
                     profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
-                    viewId = if (event.type == Event.TYPE_HOMEWORK) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                    viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
                     addedDate = event.addedDate
             ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }

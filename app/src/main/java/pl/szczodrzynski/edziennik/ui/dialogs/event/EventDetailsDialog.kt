@@ -22,7 +22,6 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.EventGetEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
@@ -227,7 +226,7 @@ class EventDetailsDialog(
             )
         }
 
-        if (event.homeworkBody == null && !event.addedManually && event.type == Event.TYPE_HOMEWORK) {
+        if (!event.addedManually && (!event.isDownloaded || event.isHomework && event.homeworkBody == null)) {
             b.bodyTitle.isVisible = true
             b.bodyProgressBar.isVisible = true
             b.body.isVisible = false

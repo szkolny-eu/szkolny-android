@@ -26,6 +26,7 @@ class EventFull(
             sharedBy = it.sharedBy
             sharedByName = it.sharedByName
             blacklisted = it.blacklisted
+            isDownloaded = it.isDownloaded
             homeworkBody = it.homeworkBody
             attachmentIds = it.attachmentIds
             attachmentNames = it.attachmentNames
