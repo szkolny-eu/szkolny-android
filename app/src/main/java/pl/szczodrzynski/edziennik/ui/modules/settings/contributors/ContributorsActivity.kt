@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Process
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -38,14 +39,22 @@ class ContributorsActivity : AppCompatActivity(), CoroutineScope {
     private var konami = 0
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        return when (keyCode) {
-            KeyEvent.KEYCODE_DPAD_UP -> {konami = if (konami == 0 || konami == 1) konami.inc() else 0; true}
-            KeyEvent.KEYCODE_DPAD_DOWN -> {konami = if (konami == 2 || konami == 3) konami.inc() else 0; true}
-            KeyEvent.KEYCODE_DPAD_LEFT -> {konami = if (konami == 4 || konami == 6) konami.inc() else 0; true}
-            KeyEvent.KEYCODE_DPAD_RIGHT -> {konami = if (konami == 5 || konami == 7) konami.inc() else 0; true}
-            KeyEvent.KEYCODE_B -> {konami = if (konami == 8) konami.inc() else 0; true}
-            KeyEvent.KEYCODE_A -> {if (konami == 9) {konami = konami.inc(); b.konami.isVisible = true} else {konami = 0}; true}
-            else -> {konami = 0; super.onKeyUp(keyCode, event)}
+        when (keyCode) {
+            KeyEvent.KEYCODE_DPAD_UP -> konami in 0..1
+            KeyEvent.KEYCODE_DPAD_DOWN -> konami in 2..3
+            KeyEvent.KEYCODE_DPAD_LEFT -> konami in 4..6 step 2
+            KeyEvent.KEYCODE_DPAD_RIGHT -> konami in 5..7 step 2
+            KeyEvent.KEYCODE_B -> konami == 8
+            KeyEvent.KEYCODE_A -> konami == 9
+            else -> false
+        }.let {
+            if (!it) {
+                konami = 0
+                return super.onKeyUp(keyCode, event)
+            }
+            konami++
+            b.konami.isVisible = konami == 10
+            return true
         }
     }
 
@@ -62,7 +71,7 @@ class ContributorsActivity : AppCompatActivity(), CoroutineScope {
         b.szkolny.onLongClick {
             if (b.konami.isVisible) {
                 b.glove.isVisible = true
-                b.szkolny.isVisible = false
+                b.szkolny.isInvisible = true
             }
             true
         }

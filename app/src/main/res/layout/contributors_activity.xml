@@ -54,15 +54,6 @@
                             android:layout_marginTop="16dp">
 
                             <ImageView
-                                android:id="@+id/glove"
-                                android:layout_width="144dp"
-                                android:layout_height="144dp"
-                                android:layout_gravity="center"
-                                android:paddingBottom="4dp"
-                                android:visibility="gone"
-                                app:srcCompat="@drawable/thanos_idle" />
-
-                            <ImageView
                                 android:id="@+id/szkolny"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -71,6 +62,15 @@
                                 android:scaleX="0.8"
                                 android:scaleY="0.8"
                                 android:src="@mipmap/ic_splash" />
+
+                            <ImageView
+                                android:id="@+id/glove"
+                                android:layout_width="144dp"
+                                android:layout_height="144dp"
+                                android:layout_gravity="center"
+                                android:paddingBottom="4dp"
+                                android:visibility="gone"
+                                app:srcCompat="@drawable/thanos_idle" />
                         </FrameLayout>
 
                         <TextView
