@@ -4,6 +4,15 @@
 
 package pl.szczodrzynski.edziennik.data.db.dao;
 
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ANNOUNCEMENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ATTENDANCE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_EVENT;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_GRADE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_HOMEWORK;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_LESSON_CHANGE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_MESSAGE;
+import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_NOTICE;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -22,15 +31,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.Metadata;
 import pl.szczodrzynski.edziennik.data.db.entity.Notice;
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull;
 import pl.szczodrzynski.edziennik.utils.models.UnreadCounter;
-
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ANNOUNCEMENT;
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ATTENDANCE;
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_EVENT;
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_GRADE;
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_HOMEWORK;
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_LESSON_CHANGE;
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_MESSAGE;
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_NOTICE;
 
 @Dao
 public abstract class MetadataDao {
@@ -78,8 +78,8 @@ public abstract class MetadataDao {
             }
         }
         if (o instanceof Event) {
-            if (add(new Metadata(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), seen, false)) == -1) {
-                updateSeen(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), seen);
+            if (add(new Metadata(profileId, ((Event) o).isHomework() ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), seen, false)) == -1) {
+                updateSeen(profileId, ((Event) o).isHomework() ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), seen);
             }
         }
         if (o instanceof LessonFull) {
@@ -117,8 +117,8 @@ public abstract class MetadataDao {
             }
         }
         if (o instanceof Event) {
-            if (add(new Metadata(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), false, notified)) == -1) {
-                updateNotified(profileId, ((Event) o).getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), notified);
+            if (add(new Metadata(profileId, ((Event) o).isHomework() ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), false, notified)) == -1) {
+                updateNotified(profileId, ((Event) o).isHomework() ? TYPE_HOMEWORK : TYPE_EVENT, ((Event) o).getId(), notified);
             }
         }
         if (o instanceof LessonFull) {
@@ -141,9 +141,9 @@ public abstract class MetadataDao {
     @Transaction
     public void setBoth(int profileId, Event o, boolean seen, boolean notified, long addedDate) {
         if (o != null) {
-            if (add(new Metadata(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), seen, notified)) == -1) {
-                updateSeen(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), seen);
-                updateNotified(profileId, o.getType() == Event.TYPE_HOMEWORK ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), notified);
+            if (add(new Metadata(profileId, o.isHomework() ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), seen, notified)) == -1) {
+                updateSeen(profileId, o.isHomework() ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), seen);
+                updateNotified(profileId, o.isHomework() ? TYPE_HOMEWORK : TYPE_EVENT, o.getId(), notified);
             }
         }
     }

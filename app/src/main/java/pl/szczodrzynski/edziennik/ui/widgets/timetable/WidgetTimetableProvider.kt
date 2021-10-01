@@ -27,7 +27,6 @@ import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
-import pl.szczodrzynski.edziennik.data.db.entity.Event.Companion.TYPE_HOMEWORK
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_NO_LESSONS
 import pl.szczodrzynski.edziennik.ui.widgets.LessonDialogActivity
@@ -355,7 +354,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                 for (event in events) {
                     if (event.time == null || event.time != lesson.displayStartTime)
                         continue
-                    model.eventColors.add(if (event.type == TYPE_HOMEWORK) ItemWidgetTimetableModel.EVENT_COLOR_HOMEWORK else event.eventColor)
+                    model.eventColors.add(if (event.isHomework) ItemWidgetTimetableModel.EVENT_COLOR_HOMEWORK else event.eventColor)
                 }
 
                 models += model

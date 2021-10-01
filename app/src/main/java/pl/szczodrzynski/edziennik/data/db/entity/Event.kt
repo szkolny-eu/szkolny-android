@@ -123,6 +123,9 @@ open class Event(
             it.timeInMillis += 45 * MINUTE * 1000
         }
 
+    val isHomework
+        get() = type == TYPE_HOMEWORK
+
     @Ignore
     fun withMetadata(metadata: Metadata) = EventFull(this, metadata)
 }
