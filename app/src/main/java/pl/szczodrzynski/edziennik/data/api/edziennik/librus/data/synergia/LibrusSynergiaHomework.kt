@@ -79,6 +79,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                             teamId = data.teamClass?.id ?: -1,
                             addedDate = addedDate.inMillis
                     )
+                    eventObject.isDownloaded = false
 
                     data.eventList.add(eventObject)
                     data.metadataList.add(Metadata(

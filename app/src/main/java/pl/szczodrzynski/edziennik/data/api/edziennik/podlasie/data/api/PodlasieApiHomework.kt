@@ -37,6 +37,7 @@ class PodlasieApiHomework(val data: DataPodlasie, val rows: List<JsonObject>) {
                     addedDate = addedDate
             ).apply {
                 homeworkBody = description
+                isDownloaded = true
             }
 
             eventObject.attachmentIds = mutableListOf()

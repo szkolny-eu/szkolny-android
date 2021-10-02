@@ -164,6 +164,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
 
     override fun getEvent(eventFull: EventFull) {
         eventFull.homeworkBody = ""
+        eventFull.isDownloaded = true
 
         EventBus.getDefault().postSticky(EventGetEvent(eventFull))
         completed()

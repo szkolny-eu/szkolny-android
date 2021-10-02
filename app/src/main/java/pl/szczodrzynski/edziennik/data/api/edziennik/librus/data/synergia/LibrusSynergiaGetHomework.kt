@@ -24,6 +24,7 @@ class LibrusSynergiaGetHomework(override val data: DataLibrus,
 
             event.topic = table[1].select("td")[1].text()
             event.homeworkBody = Html.fromHtml(table[5].select("td")[1].html()).toString()
+            event.isDownloaded = true
 
             event.attachmentIds = mutableListOf()
             event.attachmentNames = mutableListOf()

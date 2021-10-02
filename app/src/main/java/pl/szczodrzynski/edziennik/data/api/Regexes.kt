@@ -54,14 +54,15 @@ object Regexes {
         """events: (.+),$""".toRegex(RegexOption.MULTILINE)
     }
 
+    val MOBIDZIENNIK_WEB_ATTACHMENT by lazy {
+        """href="https://.+?\.mobidziennik.pl/.+?&(?:amp;)?zalacznik(_rozwiazania)?=([0-9]+)".+?>(.+?)(?: <small.+?\(([0-9.]+)\s(M|K|G|)B\)</small>)?</a>""".toRegex()
+    }
+
     val MOBIDZIENNIK_MESSAGE_READ_DATE by lazy {
         """czas przeczytania:.+?,\s([0-9]+)\s(.+?)\s([0-9]{4}),\sgodzina\s([0-9:]+)""".toRegex(DOT_MATCHES_ALL)
     }
     val MOBIDZIENNIK_MESSAGE_SENT_READ_DATE by lazy {
         """.+?,\s([0-9]+)\s(.+?)\s([0-9]{4}),\sgodzina\s([0-9:]+)""".toRegex(DOT_MATCHES_ALL)
-    }
-    val MOBIDZIENNIK_MESSAGE_ATTACHMENT by lazy {
-        """href="https://.+?\.mobidziennik.pl/.+?&(?:amp;)?zalacznik=([0-9]+)"(?:.+?<small.+?\(([0-9.]+)\s(M|K|G|)B\))*""".toRegex(DOT_MATCHES_ALL)
     }
     val MOBIDZIENNIK_MESSAGE_SENT_READ_BY by lazy {
         """([0-9]+)/([0-9]+)""".toRegex()
@@ -104,20 +105,24 @@ object Regexes {
         """<strong>(.+?)</strong>\s*<small>\s*\((.+?),\s*(.+?)\)""".toRegex(DOT_MATCHES_ALL)
     }
 
-    val MOBIDZIENNIK_HOMEWORK_ROW by lazy {
+    val MOBIDZIENNIK_MOBILE_HOMEWORK_ROW by lazy {
         """class="rowRolling">(.+?</div>\s*</td>)""".toRegex(DOT_MATCHES_ALL)
     }
-    val MOBIDZIENNIK_HOMEWORK_ITEM by lazy {
+    val MOBIDZIENNIK_MOBILE_HOMEWORK_ITEM by lazy {
         """<p><b>(.+?):</b>\s*(.+?)\s*</p>""".toRegex(DOT_MATCHES_ALL)
     }
-    val MOBIDZIENNIK_HOMEWORK_BODY by lazy {
+    val MOBIDZIENNIK_MOBILE_HOMEWORK_BODY by lazy {
         """Treść:</b>(.+?)<p><b>""".toRegex(DOT_MATCHES_ALL)
     }
-    val MOBIDZIENNIK_HOMEWORK_ID by lazy {
-        """zadanieFormularz\(([0-9]+),""".toRegex(DOT_MATCHES_ALL)
+    val MOBIDZIENNIK_MOBILE_HOMEWORK_ID by lazy {
+        """name="id_zadania" value="([0-9]+)"""".toRegex(DOT_MATCHES_ALL)
     }
-    val MOBIDZIENNIK_HOMEWORK_ATTACHMENT by lazy {
+    val MOBIDZIENNIK_MOBILE_HOMEWORK_ATTACHMENT by lazy {
         """zalacznik(_zadania)?=([0-9]+)'.+?word-break">(.+?)</td>""".toRegex(DOT_MATCHES_ALL)
+    }
+
+    val MOBIDZIENNIK_WEB_HOMEWORK_ADDED_DATE by lazy {
+        """Wpisał\(a\):</td>\s+<th>\s+(.+?), (.+?), ([0-9]{1,2}) (.+?) ([0-9]{4}), godzina ([0-9:]+)""".toRegex()
     }
 
 
