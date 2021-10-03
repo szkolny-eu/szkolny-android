@@ -6,23 +6,20 @@ package pl.szczodrzynski.edziennik.ui.modules.messages.compose
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
+import android.text.*
+import android.text.style.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hootsuite.nachos.ChipConfiguration
 import com.hootsuite.nachos.chip.ChipInfo
@@ -52,6 +49,10 @@ import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Themes.getPrimaryTextColor
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.edziennik.utils.span.BoldSpan
+import pl.szczodrzynski.edziennik.utils.span.ItalicSpan
+import pl.szczodrzynski.edziennik.utils.span.SubscriptSizeSpan
+import pl.szczodrzynski.edziennik.utils.span.SuperscriptSizeSpan
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.elevateSurface
 import kotlin.coroutines.CoroutineContext
@@ -76,11 +77,22 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
     private var teachers = mutableListOf<Teacher>()
 
+    private val removedZeroLengthSpans = listOf(
+        BoldSpan::class.java,
+        ItalicSpan::class.java,
+        UnderlineSpan::class.java,
+        StrikethroughSpan::class.java,
+        SubscriptSizeSpan::class.java,
+        SuperscriptSizeSpan::class.java,
+    )
+    private var watchFormatChecked = true
+    private var watchSelectionChanged = true
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
+        requireContext().theme.applyStyle(Themes.appTheme, true)
         // activity, context and profile is valid
         b = MessagesComposeFragmentBinding.inflate(inflater)
         return b.root
@@ -103,40 +115,12 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             // do your job
         }
 
-        /*b.fontStyleBold.icon = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_format_bold)
-                .sizeDp(24)
-                .colorAttr(activity, R.attr.colorOnPrimary)
-        b.fontStyleItalic.icon = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_format_italic)
-                .sizeDp(24)
-                .colorAttr(activity, R.attr.colorOnPrimary)
-        b.fontStyleUnderline.icon = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_format_underline)
-                .sizeDp(24)
-                .colorAttr(activity, R.attr.colorOnPrimary)
-
-        b.fontStyle.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            val span: Any = when (checkedId) {
-                R.id.fontStyleBold -> StyleSpan(Typeface.BOLD)
-                R.id.fontStyleItalic -> StyleSpan(Typeface.ITALIC)
-                R.id.fontStyleUnderline -> UnderlineSpan()
-                else -> StyleSpan(Typeface.NORMAL)
+        if (App.devMode) {
+            b.textHtml.isVisible = true
+            b.text.addTextChangedListener {
+                b.textHtml.text = getHtmlText()
             }
-
-            if (isChecked) {
-                val flags = if (b.text.selectionStart == b.text.selectionEnd)
-                    SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-                else
-                    SpannableString.SPAN_EXCLUSIVE_INCLUSIVE
-                b.text.text?.setSpan(span, b.text.selectionStart, b.text.selectionEnd, flags)
-            }
-            else {
-                b.text.text?.getSpans(b.text.selectionStart, b.text.selectionEnd, span.javaClass)?.forEach {
-                    if (it is StyleSpan && span is StyleSpan && it.style == span.style)
-                        b.text.text?.removeSpan(it)
-                    else if (it.javaClass == span.javaClass)
-                        b.text.text?.removeSpan(it)
-                }
-            }
-        }*/
+        }
 
         activity.bottomSheet.prependItem(
             BottomSheetPrimaryItem(true)
@@ -156,6 +140,50 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         }
     }
 
+    private fun getHtmlText(): String {
+        val text = b.text.text ?: return ""
+
+        // apparently setting the spans to a different Spannable calls the original EditText's
+        // onSelectionChanged with selectionStart=-1, which in effect unchecks the format toggles
+        watchSelectionChanged = false
+        var textHtml = if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
+            val spanned = SpannableString(text)
+            // remove zero-length spans, as they seem to affect
+            // the whole line when converted to HTML
+            spanned.getSpans(0, spanned.length, Any::class.java).forEach {
+                val spanStart = spanned.getSpanStart(it)
+                val spanEnd = spanned.getSpanEnd(it)
+                if (spanStart == spanEnd && it::class.java in removedZeroLengthSpans)
+                    spanned.removeSpan(it)
+            }
+            HtmlCompat.toHtml(spanned, HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+                .replace("\n", "")
+                .replace(" dir=\"ltr\"", "")
+                .replace("</b><b>", "")
+                .replace("</i><i>", "")
+                .replace("</u><u>", "")
+                .replace("</sub><sub>", "")
+                .replace("</sup><sup>", "")
+                .replace("p style=\"margin-top:0; margin-bottom:0;\"", "p")
+        } else {
+            text.toString()
+        }
+        watchSelectionChanged = true
+
+        if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_MOBIDZIENNIK) {
+            textHtml = textHtml
+                .replace("<br>", "<p>&nbsp;</p>")
+                .replace("<b>", "<strong>")
+                .replace("</b>", "</strong>")
+                .replace("<i>", "<em>")
+                .replace("</i>", "</em>")
+                .replace("<u>", "<span style=\"text-decoration: underline;\">")
+                .replace("</u>", "</span>")
+        }
+
+        return textHtml
+    }
+
     private fun getRecipientList() {
         if (System.currentTimeMillis() - app.profile.lastReceiversSync > 1 * DAY * 1000 && app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
             activity.snackbar("Pobieranie listy odbiorców...")
@@ -169,6 +197,111 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 updateRecipientList(list)
             }
         }
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private fun onFormatChecked(
+        group: MaterialButtonToggleGroup,
+        checkedId: Int,
+        isChecked: Boolean
+    ) {
+        if (!watchFormatChecked)
+            return
+        val span = when (checkedId) {
+            R.id.fontStyleBold -> BoldSpan()
+            R.id.fontStyleItalic -> ItalicSpan()
+            R.id.fontStyleUnderline -> UnderlineSpan()
+            R.id.fontStyleStrike -> StrikethroughSpan()
+            R.id.fontStyleSubscript -> SubscriptSizeSpan(10, dip = true)
+            R.id.fontStyleSuperscript -> SuperscriptSizeSpan(10, dip = true)
+            else -> return
+        }
+        val selectionStart = b.text.selectionStart
+        val selectionEnd = b.text.selectionEnd
+        val spanned = b.text.text ?: return
+        if (selectionStart == -1 || selectionEnd == -1)
+            return
+
+        val spanFlags = if (selectionStart == selectionEnd)
+            SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+        else
+            SpannableString.SPAN_EXCLUSIVE_INCLUSIVE
+
+        watchSelectionChanged = false
+        if (isChecked) {
+            val wordBounds = spanned.getWordBounds(selectionStart, onlyInWord = true)
+            if (selectionStart == selectionEnd && wordBounds != null) {
+                val (start, end) = wordBounds
+                spanned.setSpan(span, start, end, spanFlags)
+            } else {
+                spanned.setSpan(span, selectionStart, selectionEnd, spanFlags)
+            }
+        } else {
+            spanned.getSpans(selectionStart, selectionEnd, span.javaClass).forEach {
+                if (it.javaClass != span.javaClass)
+                    return@forEach
+
+                val spanStart = spanned.getSpanStart(it)
+                val spanEnd = spanned.getSpanEnd(it)
+                val wordBounds = spanned.getWordBounds(selectionStart, onlyInWord = true)
+                when {
+                    selectionStart == selectionEnd && wordBounds == null -> {
+                        // a word is not selected, remove the entire span
+                        // this should happen only when the cursor is at the end of a word
+                        spanned.removeSpan(it)
+
+                        // TODO (not really) - this could allow to change spans mid-word
+                        // but in reality acts weirdly and does not apply the span to letters
+                        // added to the word after disabling it...
+                        // spanned.setSpan(it, spanStart, spanEnd, SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+                    selectionStart == selectionEnd -> {
+                        // a word is selected, slice the span in two
+                        val (wordStart, wordEnd) = wordBounds!!
+                        spanned.removeSpan(it)
+                        if (spanStart < wordStart)
+                            spanned.setSpan(it, spanStart, wordStart, spanFlags)
+                        if (spanEnd > wordEnd)
+                            spanned.setSpan(span, wordEnd, spanEnd, spanFlags)
+                    }
+                    else -> {
+                        spanned.removeSpan(it)
+                        // use "it" and "span" only once, so they don't replace the applied range
+                        if (spanStart < selectionStart)
+                            spanned.setSpan(it, spanStart, selectionStart, spanFlags)
+                        if (spanEnd > selectionEnd)
+                            spanned.setSpan(span, selectionEnd, spanEnd, spanFlags)
+                    }
+                }
+            }
+        }
+        watchSelectionChanged = true
+
+        if (App.devMode)
+            b.textHtml.text = getHtmlText()
+    }
+
+    private fun onSelectionChanged(selectionStart: Int, selectionEnd: Int) {
+        if (!watchSelectionChanged)
+            return
+        val spanned = b.text.text ?: return
+        val spans = spanned.getSpans(selectionStart, selectionEnd, Any::class.java).mapNotNull {
+            val spanStart = spanned.getSpanStart(it)
+            val spanEnd = spanned.getSpanEnd(it)
+            // remove 0-length spans after navigating out of them
+            if (spanStart == spanEnd && it::class.java in removedZeroLengthSpans)
+                spanned.removeSpan(it)
+            val isChecked = selectionStart > spanStart && selectionEnd <= spanEnd
+            if (isChecked) it else null
+        }
+        watchFormatChecked = false
+        b.fontStyleBold.isChecked = spans.any { it is BoldSpan }
+        b.fontStyleItalic.isChecked = spans.any { it is ItalicSpan }
+        b.fontStyleUnderline.isChecked = spans.any { it is UnderlineSpan }
+        b.fontStyleStrike.isChecked = spans.any { it is StrikethroughSpan }
+        b.fontStyleSubscript.isChecked = spans.any { it is SubscriptSizeSpan }
+        b.fontStyleSuperscript.isChecked = spans.any { it is SuperscriptSizeSpan }
+        watchFormatChecked = true
     }
 
     private fun createView() {
@@ -203,7 +336,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             else -> -1
         }
 
-        b.recipients.chipTokenizer = SpanChipTokenizer<ChipSpan>(activity, object : ChipSpanChipCreator() {
+        b.recipients.chipTokenizer = SpanChipTokenizer(activity, object : ChipSpanChipCreator() {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan? {
                 if (data == null || data !is Teacher)
                     return null
@@ -330,6 +463,16 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.subjectLayout.isEnabled = false
         b.textLayout.isEnabled = false
 
+        b.fontStyleBold.text = CommunityMaterial.Icon2.cmd_format_bold.character.toString()
+        b.fontStyleItalic.text = CommunityMaterial.Icon2.cmd_format_italic.character.toString()
+        b.fontStyleUnderline.text = CommunityMaterial.Icon2.cmd_format_underline.character.toString()
+        b.fontStyleStrike.text = CommunityMaterial.Icon2.cmd_format_strikethrough.character.toString()
+        b.fontStyleSubscript.text = CommunityMaterial.Icon2.cmd_format_subscript.character.toString()
+        b.fontStyleSuperscript.text = CommunityMaterial.Icon2.cmd_format_superscript.character.toString()
+
+        b.fontStyle.addOnButtonCheckedListener(this::onFormatChecked)
+        b.text.setSelectionChangedListener(this::onSelectionChanged)
+
         activity.navView.bottomBar.apply {
             fabEnable = true
             fabExtendedText = getString(R.string.messages_compose_send)
@@ -382,11 +525,11 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 val dateString = getString(R.string.messages_date_time_format, Date.fromMillis(msg.addedDate).formattedStringShort, Time.fromMillis(msg.addedDate).stringHM)
                 // add original message info
                 span.appendText("W dniu ")
-                span.appendSpan(dateString, StyleSpan(Typeface.ITALIC), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.appendSpan(dateString, ItalicSpan(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText(", ")
-                span.appendSpan(msg.senderName.fixName(), StyleSpan(Typeface.ITALIC), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.appendSpan(msg.senderName.fixName(), ItalicSpan(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText(" napisał(a):")
-                span.setSpan(StyleSpan(Typeface.BOLD), 0, span.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.setSpan(BoldSpan(), 0, span.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText("\n\n")
 
                 if (arguments?.getString("type") == "reply") {
@@ -494,30 +637,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         if (b.textLayout.counterMaxLength != -1 && b.text.length() > b.textLayout.counterMaxLength)
             return
 
-        var textHtml = if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
-            HtmlCompat.toHtml(SpannableString(text), HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
-                    .replace("\n", "")
-                    .replace(" dir=\"ltr\"", "")
-        }
-        else {
-            text.toString()
-        }
-
-        textHtml = textHtml
-            .replace("</b><b>", "")
-            .replace("</i><i>", "")
-            .replace("p style=\"margin-top:0; margin-bottom:0;\"", "p")
-
-        if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_MOBIDZIENNIK) {
-            textHtml = textHtml
-                    .replace("</p><br>", "</p>")
-                    .replace("<b>", "<strong>")
-                    .replace("</b>", "</strong>")
-                    .replace("<i>", "<em>")
-                    .replace("</i>", "</em>")
-                    .replace("<u>", "<span style=\"text-decoration: underline;\">")
-                    .replace("</u>", "</span>")
-        }
+        val textHtml = getHtmlText()
 
         activity.bottomSheet.hideKeyboard()
 
@@ -525,7 +645,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 .setTitle(R.string.messages_compose_confirm_title)
                 .setMessage(R.string.messages_compose_confirm_text)
                 .setPositiveButton(R.string.send) { _, _ ->
-                    EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), textHtml.trim()).enqueue(activity)
+                    EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), textHtml).enqueue(activity)
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()

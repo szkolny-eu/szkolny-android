@@ -1,20 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-12-22.
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="40dp"
-            android:orientation="vertical"><!-- half of the FAB's size -->
-
+            android:orientation="vertical"
+            android:paddingBottom="40dp"><!-- half of the FAB's size -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/recipientsLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
@@ -22,8 +27,8 @@
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxBackgroundMode="filled"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/dropdown_arrow">
+                app:endIconDrawable="@drawable/dropdown_arrow"
+                app:endIconMode="custom">
 
                 <com.hootsuite.nachos.NachoTextView
                     android:id="@+id/recipients"
@@ -34,7 +39,6 @@
                     android:focusableInTouchMode="true"
                     android:focusedByDefault="true"
                     android:hint="@string/messages_compose_to_hint" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -55,10 +59,9 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="@string/messages_compose_subject_hint"
+                    android:inputType="textCapSentences|textAutoCorrect|textShortMessage|textAutoComplete|textEmailSubject"
                     android:singleLine="true"
-                    tools:text="kachoomba"
-                    android:inputType="textCapSentences|textAutoCorrect|textShortMessage|textAutoComplete|textEmailSubject"/>
-
+                    tools:text="kachoomba" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -69,66 +72,116 @@
                 app:boxBackgroundMode="filled"
                 app:counterEnabled="true"
                 tools:counterMaxLength="1983">
+
                 <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                     android:id="@+id/text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ems="10"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:minLines="3"
-                    android:hint="@string/messages_compose_text_hint"
-                    android:ems="10"
                     android:gravity="start|top"
-                    tools:text="Witam,\n\nchciałem przekazać bardzo ważną wiadomość.\nJest to cytat znanej osoby.\n\n&quot;To jest tak, ale nie. Pamiętaj żeby oczywiście&quot;\n\nCytat ma bardzo duże przesłanie i ogromny wpływ na dzisiejszą kulturę i rozwój współczesnej cywilizacji.\n\nJako zadanie domowe, należy wypisać 5 pierwszych liczb pierwszych. Uzasadnij decyzję, odwołując się do cytatu i 3 innych przykładów z literatury lub filmu.\n\nPozdrawiam,\nJa."
-                    android:inputType="textMultiLine|textAutoCorrect|textLongMessage|textAutoComplete|textCapSentences" />
+                    android:hint="@string/messages_compose_text_hint"
+                    android:inputType="textMultiLine|textAutoCorrect|textLongMessage|textAutoComplete|textCapSentences"
+                    android:minLines="3"
+                    tools:text="Witam,\n\nchciałem przekazać bardzo ważną wiadomość.\nJest to cytat znanej osoby.\n\n&quot;To jest tak, ale nie. Pamiętaj żeby oczywiście&quot;\n\nCytat ma bardzo duże przesłanie i ogromny wpływ na dzisiejszą kulturę i rozwój współczesnej cywilizacji.\n\nJako zadanie domowe, należy wypisać 5 pierwszych liczb pierwszych. Uzasadnij decyzję, odwołując się do cytatu i 3 innych przykładów z literatury lub filmu.\n\nPozdrawiam,\nJa." />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--<com.google.android.material.button.MaterialButtonToggleGroup
+            <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/fontStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="4dp">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="8dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fontStyleBold"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="48dp"
-                    tools:icon="@sample/format-bold"
-                    app:iconPadding="0dp"/>
+                    android:textSize="20sp"
+                    app:iconPadding="0dp"
+                    tools:text="\uf674" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fontStyleItalic"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="48dp"
-                    tools:icon="@sample/format-bold"
-                    app:iconPadding="0dp"/>
+                    android:textSize="20sp"
+                    app:iconPadding="0dp"
+                    tools:text="\uf691" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fontStyleUnderline"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
                     android:minWidth="48dp"
-                    tools:icon="@sample/format-bold"
-                    app:iconPadding="0dp"/>
+                    android:textSize="20sp"
+                    app:iconPadding="0dp"
+                    tools:text="\uf6c5" />
 
-            </com.google.android.material.button.MaterialButtonToggleGroup>-->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fontStyleStrike"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
+                    android:minWidth="48dp"
+                    android:textSize="20sp"
+                    app:iconPadding="0dp"
+                    tools:text="\uf6b1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fontStyleSubscript"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
+                    android:minWidth="48dp"
+                    android:textSize="20sp"
+                    android:visibility="gone"
+                    app:iconPadding="0dp"
+                    tools:text="\uf6b2" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fontStyleSuperscript"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/community_material_font_v5_8_55"
+                    android:minWidth="48dp"
+                    android:textSize="20sp"
+                    android:visibility="gone"
+                    app:iconPadding="0dp"
+                    tools:text="\uf6b3" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <Button
                 android:id="@+id/breakpoints"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_marginHorizontal="8dp"
                 android:text="Breakpoints!"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-
+            <TextView
+                android:id="@+id/textHtml"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:fontFamily="monospace"
+                android:visibility="gone"
+                tools:text="&lt;p&gt;Witam,&lt;/p&gt;To jest bardzo długi tekst żeby sprawdzić ok działa"
+                tools:visibility="visible" />
         </LinearLayout>
     </ScrollView>
 </layout>

@@ -13,6 +13,7 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.text.HtmlCompat
 import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.resolveAttr
+import pl.szczodrzynski.edziennik.utils.span.ImprovedBulletSpan
 import pl.szczodrzynski.navlib.blendColors
 
 object BetterHtml {

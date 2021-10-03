@@ -1308,3 +1308,39 @@ fun Profile.getSchoolYearConstrains(): CalendarConstraints {
         .setEnd(dateYearEnd.inMillisUtc)
         .build()
 }
+
+fun CharSequence.getWordBounds(position: Int, onlyInWord: Boolean = false): Pair<Int, Int>? {
+    if (length == 0)
+        return null
+
+    // only if cursor between letters
+    if (onlyInWord) {
+        if (position < 1)
+            return null
+        if (position == length)
+            return null
+
+        val charBefore = this[position - 1]
+        if (charBefore.isWhitespace())
+            return null
+        val charAfter = this[position]
+        if (charAfter.isWhitespace())
+            return null
+    }
+
+    var rangeStart = substring(0 until position).indexOfLast { it.isWhitespace() }
+    if (rangeStart == -1) // no whitespace, set to first index
+        rangeStart = 0
+    else // cut the leading whitespace
+        rangeStart += 1
+
+    var rangeEnd = substring(position).indexOfFirst { it.isWhitespace() }
+    if (rangeEnd == -1) // no whitespace, set to last index
+        rangeEnd = length
+    else // append the substring offset
+        rangeEnd += position
+
+    if (!onlyInWord && rangeStart == rangeEnd)
+        return null
+    return rangeStart to rangeEnd
+}
