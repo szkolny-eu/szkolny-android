@@ -29,6 +29,7 @@ class EdudziennikWebGetHomework(
                 if (description != null) event.topic = Html.fromHtml(description).toString()
 
                 event.homeworkBody = ""
+                event.isDownloaded = true
                 event.attachmentNames = null
 
                 data.eventList += event

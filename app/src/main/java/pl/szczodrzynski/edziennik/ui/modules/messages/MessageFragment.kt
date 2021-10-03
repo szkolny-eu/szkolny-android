@@ -301,8 +301,8 @@ class MessageFragment : Fragment(), CoroutineScope {
                 it.putInt("profileId", message.profileId)
                 it.putLongArray("attachmentIds", message.attachmentIds!!.toLongArray())
                 it.putStringArray("attachmentNames", message.attachmentNames!!.toTypedArray())
-                //if (message.attachmentSizes.isNotNullNorEmpty())
-                //    it.putLongArray("attachmentSizes", message.attachmentSizes!!.toLongArray())
+                if (message.attachmentSizes.isNotNullNorEmpty())
+                    it.putLongArray("attachmentSizes", message.attachmentSizes!!.toLongArray())
             }, owner = message)
         }
     }

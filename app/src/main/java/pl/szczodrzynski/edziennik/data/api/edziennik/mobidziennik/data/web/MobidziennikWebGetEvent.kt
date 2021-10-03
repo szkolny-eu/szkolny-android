@@ -42,9 +42,9 @@ class MobidziennikWebGetEvent(
 
                 event.topic = topic
                 event.homeworkBody = body
+                event.isDownloaded = true
                 event.teacherId = teacher.id
                 event.addedDate = addedDate.inMillis
-                event.isDownloaded = true
             }
 
             data.eventList.add(event)

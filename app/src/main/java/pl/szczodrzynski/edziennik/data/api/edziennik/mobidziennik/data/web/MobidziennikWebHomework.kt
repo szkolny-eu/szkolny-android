@@ -33,14 +33,14 @@ class MobidziennikWebHomework(override val data: DataMobidziennik,
         webGet(TAG, "/mobile/$endpoint") { text ->
             MobidziennikLuckyNumberExtractor(data, text)
 
-            Regexes.MOBIDZIENNIK_HOMEWORK_ROW.findAll(text).forEach { homeworkMatch ->
+            Regexes.MOBIDZIENNIK_MOBILE_HOMEWORK_ROW.findAll(text).forEach { homeworkMatch ->
                 val tableRow = homeworkMatch[1].ifBlank { return@forEach }
 
                 /*val items = Regexes.MOBIDZIENNIK_HOMEWORK_ITEM.findAll(tableRow).map { match ->
                     match[1] to match[2].fixWhiteSpaces()
                 }.toList()*/
 
-                val id = Regexes.MOBIDZIENNIK_HOMEWORK_ID.find(tableRow)?.get(1)?.toLongOrNull() ?: return@forEach
+                val id = Regexes.MOBIDZIENNIK_MOBILE_HOMEWORK_ID.find(tableRow)?.get(1)?.toLongOrNull() ?: return@forEach
                 if (event.id != id)
                     return@forEach
 
@@ -48,12 +48,13 @@ class MobidziennikWebHomework(override val data: DataMobidziennik,
 
                 event.attachmentIds = mutableListOf()
                 event.attachmentNames = mutableListOf()
-                Regexes.MOBIDZIENNIK_HOMEWORK_ATTACHMENT.findAll(tableRow).forEach {
+                Regexes.MOBIDZIENNIK_MOBILE_HOMEWORK_ATTACHMENT.findAll(tableRow).forEach {
                     event.attachmentIds?.add(it[1].toLongOrNull() ?: return@forEach)
                     event.attachmentNames?.add(it[2])
                 }
 
                 event.homeworkBody = ""
+                event.isDownloaded = true
             }
 
             //data.eventList.add(eventObject)

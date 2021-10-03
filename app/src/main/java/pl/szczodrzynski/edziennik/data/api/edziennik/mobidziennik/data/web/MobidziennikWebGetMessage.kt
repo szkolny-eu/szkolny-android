@@ -118,18 +118,16 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
                 this.body = body.html()
 
                 clearAttachments()
-                content.select("ul li").map { it.select("a").first() }.forEach {
-                    val attachmentName = it.ownText()
-                    Regexes.MOBIDZIENNIK_MESSAGE_ATTACHMENT.find(it.outerHtml())?.let { match ->
-                        val attachmentId = match[1].toLong()
-                        var size = match[2].toFloatOrNull() ?: -1f
-                        when (match[3]) {
-                            "K" -> size *= 1024f
-                            "M" -> size *= 1024f * 1024f
-                            "G" -> size *= 1024f * 1024f * 1024f
-                        }
-                        message.addAttachment(attachmentId, attachmentName, size.toLong())
+                Regexes.MOBIDZIENNIK_WEB_ATTACHMENT.findAll(text).forEach { match ->
+                    val attachmentId = match[2].toLong()
+                    val attachmentName = match[3]
+                    var size = match[4].toFloatOrNull() ?: -1f
+                    when (match[5]) {
+                        "K" -> size *= 1024f
+                        "M" -> size *= 1024f * 1024f
+                        "G" -> size *= 1024f * 1024f * 1024f
                     }
+                    message.addAttachment(attachmentId, attachmentName, size.toLong())
                 }
             }
 
