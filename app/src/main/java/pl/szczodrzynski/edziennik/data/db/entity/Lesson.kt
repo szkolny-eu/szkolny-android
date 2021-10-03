@@ -48,6 +48,8 @@ open class Lesson(
     var oldTeamId: Long? = null
     var oldClassroom: String? = null
 
+    var isExtra: Boolean = false
+
     val displayDate: Date?
         get() {
             if (type == TYPE_SHIFTED_SOURCE)
@@ -121,11 +123,13 @@ open class Lesson(
         return true
     }
 
-    override fun hashCode(): Int { // intentionally ignoring ID and display* here
+    override fun hashCode(): Int { // intentionally ignoring ID, display* and isExtra here
         var result = profileId
         result = 31 * result + type
         result = 31 * result + (date?.hashCode() ?: 0)
-        result = 31 * result + (lessonNumber ?: 0)
+        // this creates problems in Mobidziennik with extra lessons
+        // ... and is not generally useful anyway
+        // result = 31 * result + (lessonNumber ?: 0)
         result = 31 * result + (startTime?.hashCode() ?: 0)
         result = 31 * result + (endTime?.hashCode() ?: 0)
         result = 31 * result + (subjectId?.hashCode() ?: 0)
@@ -133,7 +137,7 @@ open class Lesson(
         result = 31 * result + (teamId?.hashCode() ?: 0)
         result = 31 * result + (classroom?.hashCode() ?: 0)
         result = 31 * result + (oldDate?.hashCode() ?: 0)
-        result = 31 * result + (oldLessonNumber ?: 0)
+        // result = 31 * result + (oldLessonNumber ?: 0)
         result = 31 * result + (oldStartTime?.hashCode() ?: 0)
         result = 31 * result + (oldEndTime?.hashCode() ?: 0)
         result = 31 * result + (oldSubjectId?.hashCode() ?: 0)

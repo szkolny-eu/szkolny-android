@@ -35,7 +35,6 @@ class MobidziennikApiTeams(val data: DataMobidziennik, tableTeams: List<String>?
         }
         if (tableRelations != null) {
             val allTeams = data.teamList.values()
-            data.teamList.clear()
 
             for (row in tableRelations) {
                 if (row.isEmpty())

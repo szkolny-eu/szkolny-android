@@ -24,7 +24,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
         val dataStart = Date.getToday()
         val dataEnd = dataStart.clone().stepForward(0, 0, 7 + (6 - dataStart.weekDay))
 
-        data.toRemove.add(DataRemoveModel.Timetable.between(dataStart.clone(), dataEnd))
+        data.toRemove.add(DataRemoveModel.Timetable.between(dataStart.clone(), dataEnd, isExtra = false))
 
         val dataDays = mutableListOf<Int>()
         while (dataStart <= dataEnd) {
