@@ -531,11 +531,11 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 val dateString = getString(R.string.messages_date_time_format, Date.fromMillis(msg.addedDate).formattedStringShort, Time.fromMillis(msg.addedDate).stringHM)
                 // add original message info
                 span.appendText("W dniu ")
-                span.appendSpan(dateString, ItalicSpan(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.appendSpan(dateString, ItalicSpan(), SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText(", ")
-                span.appendSpan(msg.senderName.fixName(), ItalicSpan(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.appendSpan(msg.senderName.fixName(), ItalicSpan(), SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText(" napisał(a):")
-                span.setSpan(BoldSpan(), 0, span.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.setSpan(BoldSpan(), 0, span.length, SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText("\n\n")
 
                 if (arguments?.getString("type") == "reply") {

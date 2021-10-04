@@ -6,14 +6,15 @@ package pl.szczodrzynski.edziennik.utils.html
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.BulletSpan
+import android.text.style.*
 import androidx.core.graphics.ColorUtils
 import androidx.core.text.HtmlCompat
 import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.resolveAttr
-import pl.szczodrzynski.edziennik.utils.span.ImprovedBulletSpan
+import pl.szczodrzynski.edziennik.utils.span.*
 import pl.szczodrzynski.navlib.blendColors
 
 object BetterHtml {
@@ -66,20 +67,34 @@ object BetterHtml {
                 LiTagHandler()
         )
 
-        val spannableBuilder = SpannableStringBuilder(htmlSpannable)
-        val bulletSpans = spannableBuilder.getSpans(0, spannableBuilder.length, BulletSpan::class.java)
-        bulletSpans.forEach {
-            val start = spannableBuilder.getSpanStart(it)
-            val end = spannableBuilder.getSpanEnd(it)
-            spannableBuilder.removeSpan(it)
-            spannableBuilder.setSpan(
-                    ImprovedBulletSpan(bulletRadius = 3.dp, startWidth = 24.dp, gapWidth = 8.dp),
-                    start,
-                    end,
-                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-            )
+        val spanned = SpannableStringBuilder(htmlSpannable)
+        spanned.getSpans(0, spanned.length, Any::class.java).forEach {
+            val spanStart = spanned.getSpanStart(it)
+            val spanEnd = spanned.getSpanEnd(it)
+            val spanFlags = spanned.getSpanFlags(it)
+
+            val newSpan: Any? = when (it) {
+                is BulletSpan -> ImprovedBulletSpan(
+                    bulletRadius = 3.dp,
+                    startWidth = 24.dp,
+                    gapWidth = 8.dp
+                )
+                is StyleSpan -> when (it.style) {
+                    Typeface.BOLD -> BoldSpan()
+                    Typeface.ITALIC -> ItalicSpan()
+                    else -> null
+                }
+                is SubscriptSpan -> SubscriptSizeSpan(size = 10, dip = true)
+                is SuperscriptSpan -> SuperscriptSizeSpan(size = 10, dip = true)
+                else -> null
+            }
+
+            if (newSpan != null) {
+                spanned.removeSpan(it)
+                spanned.setSpan(newSpan, spanStart, spanEnd, spanFlags)
+            }
         }
 
-        return spannableBuilder
+        return spanned
     }
 }
