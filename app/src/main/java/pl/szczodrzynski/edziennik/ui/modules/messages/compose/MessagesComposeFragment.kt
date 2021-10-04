@@ -5,8 +5,6 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages.compose
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.*
 import android.text.Spanned.*
@@ -15,18 +13,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.hootsuite.nachos.ChipConfiguration
 import com.hootsuite.nachos.chip.ChipInfo
-import com.hootsuite.nachos.chip.ChipSpan
-import com.hootsuite.nachos.chip.ChipSpanChipCreator
-import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -45,9 +38,8 @@ import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
-import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.edziennik.utils.Themes.getPrimaryTextColor
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.span.BoldSpan
@@ -55,7 +47,6 @@ import pl.szczodrzynski.edziennik.utils.span.ItalicSpan
 import pl.szczodrzynski.edziennik.utils.span.SubscriptSizeSpan
 import pl.szczodrzynski.edziennik.utils.span.SuperscriptSizeSpan
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
-import pl.szczodrzynski.navlib.elevateSurface
 import kotlin.coroutines.CoroutineContext
 import kotlin.text.replace
 
@@ -217,61 +208,13 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             R.id.fontStyleSuperscript -> SuperscriptSizeSpan(10, dip = true)
             else -> return
         }
-        val selectionStart = b.text.selectionStart
-        val selectionEnd = b.text.selectionEnd
-        val cursorOnly = selectionStart == selectionEnd
-        val spanned = b.text.text ?: return
-        if (selectionStart == -1 || selectionEnd == -1) return
 
         // see comments in getHtmlText()
         watchSelectionChanged = false
-        if (isChecked) {
-            val wordBounds = spanned.getWordBounds(selectionStart, onlyInWord = true)
-            if (cursorOnly && wordBounds != null) {
-                // use the detected word bounds instead of cursor/selection
-                val (start, end) = wordBounds
-                spanned.setSpan(span, start, end, SPAN_EXCLUSIVE_INCLUSIVE)
-            } else {
-                val spanFlags = if (cursorOnly)
-                    SPAN_INCLUSIVE_INCLUSIVE
-                else
-                    SPAN_EXCLUSIVE_INCLUSIVE
-                spanned.setSpan(span, selectionStart, selectionEnd, spanFlags)
-            }
-        } else {
-            spanned.getSpans(selectionStart, selectionEnd, span.javaClass).forEach {
-                val spanStart = spanned.getSpanStart(it)
-                val spanEnd = spanned.getSpanEnd(it)
-                val wordBounds = spanned.getWordBounds(selectionStart, onlyInWord = true)
-
-                val (newSpanStart, newSpanEnd, newSpanFlags) = when {
-                    !cursorOnly -> {
-                        // cut the selected range out of the span
-                        Triple(selectionStart, selectionEnd, SPAN_EXCLUSIVE_INCLUSIVE)
-                    }
-                    wordBounds == null -> {
-                        // this allows to change spans mid-word - EXCLUSIVE so the style does
-                        // not apply to characters typed later
-                        // it's set back to INCLUSIVE when the cursor enters the word again
-                        // (onSelectionChanged)
-                        Triple(selectionStart, selectionEnd, SPAN_EXCLUSIVE_EXCLUSIVE)
-                    }
-                    else /* wordBounds != null */ -> {
-                        // a word is selected, slice the span in two
-                        Triple(wordBounds.first, wordBounds.second, SPAN_EXCLUSIVE_INCLUSIVE)
-                    }
-                }
-
-                // remove the existing span
-                spanned.removeSpan(it)
-                // reapply the span wherever needed
-                // use "it" and "span" only once, so they don't replace the applied range
-                if (spanStart < newSpanStart)
-                    spanned.setSpan(it, spanStart, newSpanStart, newSpanFlags)
-                if (spanEnd > newSpanEnd)
-                    spanned.setSpan(span, newSpanEnd, spanEnd, newSpanFlags)
-            }
-        }
+        if (isChecked)
+            BetterHtml.applyFormat(span, b.text)
+        else
+            BetterHtml.removeFormat(span, b.text)
         watchSelectionChanged = true
 
         if (App.devMode)
@@ -342,107 +285,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             else -> -1
         }
 
-        b.recipients.chipTokenizer = SpanChipTokenizer(activity, object : ChipSpanChipCreator() {
-            override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan? {
-                if (data == null || data !is Teacher)
-                    return null
-                if (data.id !in -24L..0L) {
-                    b.recipients.allChips.forEach {
-                        if (it.data == data) {
-                            Toast.makeText(activity, R.string.messages_compose_recipient_exists, Toast.LENGTH_SHORT).show()
-                            return null
-                        }
-                    }
-                    val chipSpan = ChipSpan(context, data.fullName, BitmapDrawable(context.resources, data.image), data)
-                    chipSpan.setIconBackgroundColor(Colors.stringToMaterialColor(data.fullName))
-                    return chipSpan
-                }
-
-                val type = (data.id * -1).toInt()
-
-                val textColorPrimary = android.R.attr.textColorPrimary.resolveAttr(activity)
-                val textColorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
-
-                val sortByCategory = type in listOf(
-                        Teacher.TYPE_PARENTS_COUNCIL,
-                        Teacher.TYPE_EDUCATOR,
-                        Teacher.TYPE_STUDENT
-                )
-                val teachers = if (sortByCategory)
-                    teachers.sortedBy { it.typeDescription }
-                else
-                    teachers
-
-                val category = mutableListOf<Teacher>()
-                val categoryNames = mutableListOf<CharSequence>()
-                val categoryCheckedItems = mutableListOf<Boolean>()
-                teachers.forEach { teacher ->
-                    if (!teacher.isType(type))
-                        return@forEach
-
-                    category += teacher
-                    val name = teacher.fullName
-                    val description = when (type) {
-                        Teacher.TYPE_TEACHER -> null
-                        Teacher.TYPE_PARENTS_COUNCIL -> teacher.typeDescription
-                        Teacher.TYPE_SCHOOL_PARENTS_COUNCIL -> null
-                        Teacher.TYPE_PEDAGOGUE -> null
-                        Teacher.TYPE_LIBRARIAN -> null
-                        Teacher.TYPE_SCHOOL_ADMIN -> null
-                        Teacher.TYPE_SUPER_ADMIN -> null
-                        Teacher.TYPE_SECRETARIAT -> null
-                        Teacher.TYPE_PRINCIPAL -> null
-                        Teacher.TYPE_EDUCATOR -> teacher.typeDescription
-                        Teacher.TYPE_PARENT -> teacher.typeDescription
-                        Teacher.TYPE_STUDENT -> teacher.typeDescription
-                        Teacher.TYPE_SPECIALIST -> null
-                        else -> teacher.typeDescription
-                    }
-                    categoryNames += listOfNotNull(
-                            name.asSpannable(
-                                    ForegroundColorSpan(textColorPrimary)
-                            ),
-                            description?.asSpannable(
-                                    ForegroundColorSpan(textColorSecondary),
-                                    AbsoluteSizeSpan(14.dp)
-                            )
-                    ).concat("\n")
-
-                    // check the teacher if already added as a recipient
-                    categoryCheckedItems += b.recipients.allChips.firstOrNull { it.data == teacher } != null
-                }
-
-                MaterialAlertDialogBuilder(activity)
-                        .setTitle("Dodaj odbiorców - "+ Teacher.typeName(activity, type))
-                        //.setMessage(getString(R.string.messages_compose_recipients_text_format, Teacher.typeName(activity, type)))
-                        .setPositiveButton("OK", null)
-                        .setNeutralButton("Anuluj", null)
-                        .setMultiChoiceItems(categoryNames.toTypedArray(), categoryCheckedItems.toBooleanArray()) { _, which, isChecked ->
-                            val teacher = category[which]
-                            if (isChecked) {
-                                val chipInfoList = mutableListOf<ChipInfo>()
-                                teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
-                                chipInfoList.add(ChipInfo(teacher.fullName, teacher))
-                                b.recipients.addTextWithChips(chipInfoList)
-                            }
-                            else {
-                                b.recipients.allChips.forEach {
-                                    if (it.data == teacher)
-                                        b.recipients.chipTokenizer?.deleteChipAndPadding(it, b.recipients.text)
-                                }
-                            }
-                        }
-                        .show()
-                return null
-            }
-
-            override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
-                super.configureChip(chip, chipConfiguration)
-                chip.setBackgroundColor(elevateSurface(activity, 8).toColorStateList())
-                chip.setTextColor(getPrimaryTextColor(activity))
-            }
-        }, ChipSpan::class.java)
-
+        b.recipients.chipTokenizer = MessagesComposeChipTokenizer(activity, b.recipients, teachers)
         b.recipients.setIllegalCharacterIdentifier { c ->
             c.toString().matches("[\\n;:_ ]".toRegex())
         }
