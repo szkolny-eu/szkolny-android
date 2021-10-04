@@ -79,6 +79,8 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     )
     private var watchFormatChecked = true
     private var watchSelectionChanged = true
+    private val enableTextStyling
+        get() = app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -138,7 +140,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         // apparently setting the spans to a different Spannable calls the original EditText's
         // onSelectionChanged with selectionStart=-1, which in effect unchecks the format toggles
         watchSelectionChanged = false
-        var textHtml = if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
+        var textHtml = if (enableTextStyling) {
             val spanned = SpannableString(text)
             // remove zero-length spans, as they seem to affect
             // the whole line when converted to HTML
@@ -312,6 +314,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.subjectLayout.isEnabled = false
         b.textLayout.isEnabled = false
 
+        b.fontStyle.isVisible = enableTextStyling
         b.fontStyleBold.isEnabled = false
         b.fontStyleItalic.isEnabled = false
         b.fontStyleUnderline.isEnabled = false
@@ -429,6 +432,8 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             b.subject.setText(subject)
             b.text.apply {
                 text = span.appendText(body)
+                if (!enableTextStyling)
+                    setText(text?.toString())
                 setSelection(0)
             }
             b.root.scrollTo(0, 0)
