@@ -312,6 +312,21 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.subjectLayout.isEnabled = false
         b.textLayout.isEnabled = false
 
+        b.fontStyleBold.isEnabled = false
+        b.fontStyleItalic.isEnabled = false
+        b.fontStyleUnderline.isEnabled = false
+        b.fontStyleStrike.isEnabled = false
+        b.fontStyleSubscript.isEnabled = false
+        b.fontStyleSuperscript.isEnabled = false
+        b.text.setOnFocusChangeListener { _, hasFocus ->
+            b.fontStyleBold.isEnabled = hasFocus
+            b.fontStyleItalic.isEnabled = hasFocus
+            b.fontStyleUnderline.isEnabled = hasFocus
+            b.fontStyleStrike.isEnabled = hasFocus
+            b.fontStyleSubscript.isEnabled = hasFocus
+            b.fontStyleSuperscript.isEnabled = hasFocus
+        }
+
         b.fontStyleBold.text = CommunityMaterial.Icon2.cmd_format_bold.character.toString()
         b.fontStyleItalic.text = CommunityMaterial.Icon2.cmd_format_italic.character.toString()
         b.fontStyleUnderline.text = CommunityMaterial.Icon2.cmd_format_underline.character.toString()
