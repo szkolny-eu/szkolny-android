@@ -5,17 +5,28 @@
 package pl.szczodrzynski.edziennik.utils.span
 
 import android.text.TextPaint
-import android.text.style.AbsoluteSizeSpan
+import android.text.style.SuperscriptSpan
 
-class SuperscriptSizeSpan(size: Int, dip: Boolean) : AbsoluteSizeSpan(size, dip) {
+class SuperscriptSizeSpan(
+    private val size: Int,
+    private val dip: Boolean,
+) : SuperscriptSpan() {
 
     override fun updateDrawState(textPaint: TextPaint) {
         super.updateDrawState(textPaint)
-        textPaint.baselineShift += (textPaint.ascent() / 2).toInt()
+        if (dip) {
+            textPaint.textSize = size * textPaint.density
+        } else {
+            textPaint.textSize = size.toFloat()
+        }
     }
 
     override fun updateMeasureState(textPaint: TextPaint) {
         super.updateMeasureState(textPaint)
-        textPaint.baselineShift += (textPaint.ascent() / 2).toInt()
+        if (dip) {
+            textPaint.textSize = size * textPaint.density
+        } else {
+            textPaint.textSize = size.toFloat()
+        }
     }
 }

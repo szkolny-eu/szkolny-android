@@ -1321,20 +1321,20 @@ fun CharSequence.getWordBounds(position: Int, onlyInWord: Boolean = false): Pair
             return null
 
         val charBefore = this[position - 1]
-        if (charBefore.isWhitespace())
+        if (!charBefore.isLetterOrDigit())
             return null
         val charAfter = this[position]
-        if (charAfter.isWhitespace())
+        if (!charAfter.isLetterOrDigit())
             return null
     }
 
-    var rangeStart = substring(0 until position).indexOfLast { it.isWhitespace() }
+    var rangeStart = substring(0 until position).indexOfLast { !it.isLetterOrDigit() }
     if (rangeStart == -1) // no whitespace, set to first index
         rangeStart = 0
     else // cut the leading whitespace
         rangeStart += 1
 
-    var rangeEnd = substring(position).indexOfFirst { it.isWhitespace() }
+    var rangeEnd = substring(position).indexOfFirst { !it.isLetterOrDigit() }
     if (rangeEnd == -1) // no whitespace, set to last index
         rangeEnd = length
     else // append the substring offset
@@ -1344,3 +1344,5 @@ fun CharSequence.getWordBounds(position: Int, onlyInWord: Boolean = false): Pair
         return null
     return rangeStart to rangeEnd
 }
+
+infix fun Int.hasSet(what: Int) = this and what == what

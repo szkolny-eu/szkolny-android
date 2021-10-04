@@ -9,6 +9,7 @@ import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.*
+import android.text.Spanned.*
 import android.text.style.*
 import android.view.LayoutInflater
 import android.view.View
@@ -77,7 +78,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
     private var teachers = mutableListOf<Teacher>()
 
-    private val removedZeroLengthSpans = listOf(
+    private val userAddedSpans = listOf(
         BoldSpan::class.java,
         ItalicSpan::class.java,
         UnderlineSpan::class.java,
@@ -153,7 +154,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             spanned.getSpans(0, spanned.length, Any::class.java).forEach {
                 val spanStart = spanned.getSpanStart(it)
                 val spanEnd = spanned.getSpanEnd(it)
-                if (spanStart == spanEnd && it::class.java in removedZeroLengthSpans)
+                if (spanStart == spanEnd && it::class.java in userAddedSpans)
                     spanned.removeSpan(it)
             }
             HtmlCompat.toHtml(spanned, HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
@@ -218,61 +219,57 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         }
         val selectionStart = b.text.selectionStart
         val selectionEnd = b.text.selectionEnd
+        val cursorOnly = selectionStart == selectionEnd
         val spanned = b.text.text ?: return
-        if (selectionStart == -1 || selectionEnd == -1)
-            return
+        if (selectionStart == -1 || selectionEnd == -1) return
 
-        val spanFlags = if (selectionStart == selectionEnd)
-            SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-        else
-            SpannableString.SPAN_EXCLUSIVE_INCLUSIVE
-
+        // see comments in getHtmlText()
         watchSelectionChanged = false
         if (isChecked) {
             val wordBounds = spanned.getWordBounds(selectionStart, onlyInWord = true)
-            if (selectionStart == selectionEnd && wordBounds != null) {
+            if (cursorOnly && wordBounds != null) {
+                // use the detected word bounds instead of cursor/selection
                 val (start, end) = wordBounds
-                spanned.setSpan(span, start, end, spanFlags)
+                spanned.setSpan(span, start, end, SPAN_EXCLUSIVE_INCLUSIVE)
             } else {
+                val spanFlags = if (cursorOnly)
+                    SPAN_INCLUSIVE_INCLUSIVE
+                else
+                    SPAN_EXCLUSIVE_INCLUSIVE
                 spanned.setSpan(span, selectionStart, selectionEnd, spanFlags)
             }
         } else {
             spanned.getSpans(selectionStart, selectionEnd, span.javaClass).forEach {
-                if (it.javaClass != span.javaClass)
-                    return@forEach
-
                 val spanStart = spanned.getSpanStart(it)
                 val spanEnd = spanned.getSpanEnd(it)
                 val wordBounds = spanned.getWordBounds(selectionStart, onlyInWord = true)
-                when {
-                    selectionStart == selectionEnd && wordBounds == null -> {
-                        // a word is not selected, remove the entire span
-                        // this should happen only when the cursor is at the end of a word
-                        spanned.removeSpan(it)
 
-                        // TODO (not really) - this could allow to change spans mid-word
-                        // but in reality acts weirdly and does not apply the span to letters
-                        // added to the word after disabling it...
-                        // spanned.setSpan(it, spanStart, spanEnd, SPAN_EXCLUSIVE_EXCLUSIVE)
+                val (newSpanStart, newSpanEnd, newSpanFlags) = when {
+                    !cursorOnly -> {
+                        // cut the selected range out of the span
+                        Triple(selectionStart, selectionEnd, SPAN_EXCLUSIVE_INCLUSIVE)
                     }
-                    selectionStart == selectionEnd -> {
+                    wordBounds == null -> {
+                        // this allows to change spans mid-word - EXCLUSIVE so the style does
+                        // not apply to characters typed later
+                        // it's set back to INCLUSIVE when the cursor enters the word again
+                        // (onSelectionChanged)
+                        Triple(selectionStart, selectionEnd, SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+                    else /* wordBounds != null */ -> {
                         // a word is selected, slice the span in two
-                        val (wordStart, wordEnd) = wordBounds!!
-                        spanned.removeSpan(it)
-                        if (spanStart < wordStart)
-                            spanned.setSpan(it, spanStart, wordStart, spanFlags)
-                        if (spanEnd > wordEnd)
-                            spanned.setSpan(span, wordEnd, spanEnd, spanFlags)
-                    }
-                    else -> {
-                        spanned.removeSpan(it)
-                        // use "it" and "span" only once, so they don't replace the applied range
-                        if (spanStart < selectionStart)
-                            spanned.setSpan(it, spanStart, selectionStart, spanFlags)
-                        if (spanEnd > selectionEnd)
-                            spanned.setSpan(span, selectionEnd, spanEnd, spanFlags)
+                        Triple(wordBounds.first, wordBounds.second, SPAN_EXCLUSIVE_INCLUSIVE)
                     }
                 }
+
+                // remove the existing span
+                spanned.removeSpan(it)
+                // reapply the span wherever needed
+                // use "it" and "span" only once, so they don't replace the applied range
+                if (spanStart < newSpanStart)
+                    spanned.setSpan(it, spanStart, newSpanStart, newSpanFlags)
+                if (spanEnd > newSpanEnd)
+                    spanned.setSpan(span, newSpanEnd, spanEnd, newSpanFlags)
             }
         }
         watchSelectionChanged = true
@@ -286,21 +283,30 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             return
         val spanned = b.text.text ?: return
         val spans = spanned.getSpans(selectionStart, selectionEnd, Any::class.java).mapNotNull {
+            if (it::class.java !in userAddedSpans)
+                return@mapNotNull null
             val spanStart = spanned.getSpanStart(it)
             val spanEnd = spanned.getSpanEnd(it)
             // remove 0-length spans after navigating out of them
-            if (spanStart == spanEnd && it::class.java in removedZeroLengthSpans)
+            if (spanStart == spanEnd)
                 spanned.removeSpan(it)
-            val isChecked = selectionStart > spanStart && selectionEnd <= spanEnd
-            if (isChecked) it else null
+            else if (spanned.getSpanFlags(it) hasSet SPAN_EXCLUSIVE_EXCLUSIVE)
+                spanned.setSpan(it, spanStart, spanEnd, SPAN_EXCLUSIVE_INCLUSIVE)
+
+            // names are helpful here
+            val isNotAfterWord = selectionEnd <= spanEnd
+            val isSelectionInWord = selectionStart != selectionEnd && selectionStart >= spanStart
+            val isCursorInWord = selectionStart == selectionEnd && selectionStart > spanStart
+            val isChecked = (isCursorInWord || isSelectionInWord) && isNotAfterWord
+            if (isChecked) it::class.java else null
         }
         watchFormatChecked = false
-        b.fontStyleBold.isChecked = spans.any { it is BoldSpan }
-        b.fontStyleItalic.isChecked = spans.any { it is ItalicSpan }
-        b.fontStyleUnderline.isChecked = spans.any { it is UnderlineSpan }
-        b.fontStyleStrike.isChecked = spans.any { it is StrikethroughSpan }
-        b.fontStyleSubscript.isChecked = spans.any { it is SubscriptSizeSpan }
-        b.fontStyleSuperscript.isChecked = spans.any { it is SuperscriptSizeSpan }
+        b.fontStyleBold.isChecked = BoldSpan::class.java in spans
+        b.fontStyleItalic.isChecked = ItalicSpan::class.java in spans
+        b.fontStyleUnderline.isChecked = UnderlineSpan::class.java in spans
+        b.fontStyleStrike.isChecked = StrikethroughSpan::class.java in spans
+        b.fontStyleSubscript.isChecked = SubscriptSizeSpan::class.java in spans
+        b.fontStyleSuperscript.isChecked = SuperscriptSizeSpan::class.java in spans
         watchFormatChecked = true
     }
 
