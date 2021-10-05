@@ -12,6 +12,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.colorRes
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -20,6 +23,7 @@ import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolde
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesAdapter
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.navlib.colorAttr
 
 class MessageViewHolder(
     inflater: LayoutInflater,
@@ -54,6 +58,19 @@ class MessageViewHolder(
         b.messageSubject.typeface = typeface
         b.messageDate.setTextAppearance(activity, style)
         b.messageDate.typeface = typeface
+
+        if (item.id % 2L == 0L) {
+            b.messageStar.icon?.colorRes = R.color.md_amber_500
+            b.messageStar.icon?.icon = CommunityMaterial.Icon3.cmd_star
+        } else {
+            b.messageStar.icon?.colorAttr(activity, android.R.attr.textColorSecondary)
+            b.messageStar.icon?.icon = CommunityMaterial.Icon3.cmd_star_outline
+        }
+
+        b.messageStar.onClick {
+
+        }
+        b.messageStar.attachToastHint(R.string.hint_message_star)
 
         val messageInfo = MessagesUtils.getMessageInfo(app, item, 48, 24, 18, 12)
         b.messageProfileBackground.setImageBitmap(messageInfo.profileImage)

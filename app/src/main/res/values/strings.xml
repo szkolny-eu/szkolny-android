@@ -1471,4 +1471,5 @@
     <string name="hint_style_subscript">Indeks dolny</string>
     <string name="hint_style_superscript">Indeks górny</string>
     <string name="messages_compose_style_clear">Wyczyść format</string>
+    <string name="hint_message_star">Oznacz gwiazdką</string>
 </resources>
