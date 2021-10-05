@@ -1464,4 +1464,10 @@
     <string name="contributors_subtext_format" translatable="false">\@%s - %s</string>
     <string name="contributors_headline">Najłatwiejszy sposób na korzystanie z e-dziennika.</string>
     <string name="dialog_lesson_attendance_details">Szczegóły</string>
+    <string name="hint_style_bold">Pogrubienie</string>
+    <string name="hint_style_italic">Pochylenie</string>
+    <string name="hint_style_underline">Podkreślenie</string>
+    <string name="hint_style_strike">Przekreślenie</string>
+    <string name="hint_style_subscript">Indeks dolny</string>
+    <string name="hint_style_superscript">Indeks górny</string>
 </resources>

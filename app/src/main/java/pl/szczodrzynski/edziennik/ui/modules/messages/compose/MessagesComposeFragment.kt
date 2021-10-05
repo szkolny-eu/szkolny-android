@@ -336,6 +336,12 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.fontStyleStrike.text = CommunityMaterial.Icon2.cmd_format_strikethrough.character.toString()
         b.fontStyleSubscript.text = CommunityMaterial.Icon2.cmd_format_subscript.character.toString()
         b.fontStyleSuperscript.text = CommunityMaterial.Icon2.cmd_format_superscript.character.toString()
+        b.fontStyleBold.attachToastHint(R.string.hint_style_bold)
+        b.fontStyleItalic.attachToastHint(R.string.hint_style_italic)
+        b.fontStyleUnderline.attachToastHint(R.string.hint_style_underline)
+        b.fontStyleStrike.attachToastHint(R.string.hint_style_strike)
+        b.fontStyleSubscript.attachToastHint(R.string.hint_style_subscript)
+        b.fontStyleSuperscript.attachToastHint(R.string.hint_style_superscript)
 
         b.fontStyle.addOnButtonCheckedListener(this::onFormatChecked)
         b.text.setSelectionChangedListener(this::onSelectionChanged)
