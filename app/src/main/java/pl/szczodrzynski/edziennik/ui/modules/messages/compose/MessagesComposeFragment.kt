@@ -69,14 +69,6 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
     private var teachers = mutableListOf<Teacher>()
 
-    private val userAddedSpans = listOf(
-        BoldSpan::class.java,
-        ItalicSpan::class.java,
-        UnderlineSpan::class.java,
-        StrikethroughSpan::class.java,
-        SubscriptSizeSpan::class.java,
-        SuperscriptSizeSpan::class.java,
-    )
     private var watchFormatChecked = true
     private var watchSelectionChanged = true
     private val enableTextStyling
@@ -147,7 +139,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             spanned.getSpans(0, spanned.length, Any::class.java).forEach {
                 val spanStart = spanned.getSpanStart(it)
                 val spanEnd = spanned.getSpanEnd(it)
-                if (spanStart == spanEnd && it::class.java in userAddedSpans)
+                if (spanStart == spanEnd && it::class.java in BetterHtml.customSpanClasses)
                     spanned.removeSpan(it)
             }
             HtmlCompat.toHtml(spanned, HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
@@ -214,13 +206,25 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         // see comments in getHtmlText()
         watchSelectionChanged = false
         if (isChecked)
-            BetterHtml.applyFormat(span, b.text)
+            BetterHtml.applyFormat(span = span, editText = b.text)
         else
-            BetterHtml.removeFormat(span, b.text)
+            BetterHtml.removeFormat(span = span, editText = b.text)
         watchSelectionChanged = true
 
         if (App.devMode)
             b.textHtml.text = getHtmlText()
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private fun onFormatClear(view: View) {
+        // shortened version on onFormatChecked(), removing all spans
+        watchSelectionChanged = false
+        BetterHtml.removeFormat(span = null, editText = b.text)
+        watchSelectionChanged = true
+        if (App.devMode)
+            b.textHtml.text = getHtmlText()
+        // force update of text style toggle states
+        onSelectionChanged(b.text.selectionStart, b.text.selectionEnd)
     }
 
     private fun onSelectionChanged(selectionStart: Int, selectionEnd: Int) {
@@ -228,7 +232,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             return
         val spanned = b.text.text ?: return
         val spans = spanned.getSpans(selectionStart, selectionEnd, Any::class.java).mapNotNull {
-            if (it::class.java !in userAddedSpans)
+            if (it::class.java !in BetterHtml.customSpanClasses)
                 return@mapNotNull null
             val spanStart = spanned.getSpanStart(it)
             val spanEnd = spanned.getSpanEnd(it)
@@ -314,13 +318,14 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.subjectLayout.isEnabled = false
         b.textLayout.isEnabled = false
 
-        b.fontStyle.isVisible = enableTextStyling
+        b.fontStyleLayout.isVisible = enableTextStyling
         b.fontStyleBold.isEnabled = false
         b.fontStyleItalic.isEnabled = false
         b.fontStyleUnderline.isEnabled = false
         b.fontStyleStrike.isEnabled = false
         b.fontStyleSubscript.isEnabled = false
         b.fontStyleSuperscript.isEnabled = false
+        b.fontStyleClear.isEnabled = false
         b.text.setOnFocusChangeListener { _, hasFocus ->
             b.fontStyleBold.isEnabled = hasFocus
             b.fontStyleItalic.isEnabled = hasFocus
@@ -328,6 +333,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             b.fontStyleStrike.isEnabled = hasFocus
             b.fontStyleSubscript.isEnabled = hasFocus
             b.fontStyleSuperscript.isEnabled = hasFocus
+            b.fontStyleClear.isEnabled = hasFocus
         }
 
         b.fontStyleBold.text = CommunityMaterial.Icon2.cmd_format_bold.character.toString()
@@ -343,7 +349,22 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.fontStyleSubscript.attachToastHint(R.string.hint_style_subscript)
         b.fontStyleSuperscript.attachToastHint(R.string.hint_style_superscript)
 
+        /*b.fontStyleBold.shapeAppearanceModel = b.fontStyleBold.shapeAppearanceModel
+            .toBuilder()
+            .setBottomLeftCornerSize(0f)
+            .build()
+        b.fontStyleSuperscript.shapeAppearanceModel = b.fontStyleBold.shapeAppearanceModel
+            .toBuilder()
+            .setBottomRightCornerSize(0f)
+            .build()
+        b.fontStyleClear.shapeAppearanceModel = b.fontStyleClear.shapeAppearanceModel
+            .toBuilder()
+            .setTopLeftCornerSize(0f)
+            .setTopRightCornerSize(0f)
+            .build()*/
+
         b.fontStyle.addOnButtonCheckedListener(this::onFormatChecked)
+        b.fontStyleClear.setOnClickListener(this::onFormatClear)
         b.text.setSelectionChangedListener(this::onSelectionChanged)
 
         activity.navView.bottomBar.apply {

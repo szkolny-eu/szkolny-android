@@ -87,79 +87,96 @@
                     tools:text="Witam,\n\nchciałem przekazać bardzo ważną wiadomość.\nJest to cytat znanej osoby.\n\n&quot;To jest tak, ale nie. Pamiętaj żeby oczywiście&quot;\n\nCytat ma bardzo duże przesłanie i ogromny wpływ na dzisiejszą kulturę i rozwój współczesnej cywilizacji.\n\nJako zadanie domowe, należy wypisać 5 pierwszych liczb pierwszych. Uzasadnij decyzję, odwołując się do cytatu i 3 innych przykładów z literatury lub filmu.\n\nPozdrawiam,\nJa." />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/fontStyle"
+            <LinearLayout
+                android:id="@+id/fontStyleLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="8dp">
+                android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/fontStyleBold"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/fontStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/community_material_font_v5_8_55"
-                    android:minWidth="48dp"
-                    android:textSize="20sp"
-                    app:iconPadding="0dp"
-                    tools:text="\uf674" />
+                    android:layout_marginHorizontal="8dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/fontStyleItalic"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/community_material_font_v5_8_55"
-                    android:minWidth="48dp"
-                    android:textSize="20sp"
-                    app:iconPadding="0dp"
-                    tools:text="\uf691" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fontStyleBold"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/community_material_font_v5_8_55"
+                        android:minWidth="48dp"
+                        android:textSize="20sp"
+                        app:iconPadding="0dp"
+                        tools:text="\uf674" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/fontStyleUnderline"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/community_material_font_v5_8_55"
-                    android:minWidth="48dp"
-                    android:textSize="20sp"
-                    app:iconPadding="0dp"
-                    tools:text="\uf6c5" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fontStyleItalic"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/community_material_font_v5_8_55"
+                        android:minWidth="48dp"
+                        android:textSize="20sp"
+                        app:iconPadding="0dp"
+                        tools:text="\uf691" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/fontStyleStrike"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/community_material_font_v5_8_55"
-                    android:minWidth="48dp"
-                    android:textSize="20sp"
-                    app:iconPadding="0dp"
-                    tools:text="\uf6b1" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fontStyleUnderline"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/community_material_font_v5_8_55"
+                        android:minWidth="48dp"
+                        android:textSize="20sp"
+                        app:iconPadding="0dp"
+                        tools:text="\uf6c5" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/fontStyleSubscript"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/community_material_font_v5_8_55"
-                    android:minWidth="48dp"
-                    android:textSize="20sp"
-                    app:iconPadding="0dp"
-                    tools:text="\uf6b2" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fontStyleStrike"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/community_material_font_v5_8_55"
+                        android:minWidth="48dp"
+                        android:textSize="20sp"
+                        app:iconPadding="0dp"
+                        tools:text="\uf6b1" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fontStyleSubscript"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/community_material_font_v5_8_55"
+                        android:minWidth="48dp"
+                        android:textSize="20sp"
+                        app:iconPadding="0dp"
+                        tools:text="\uf6b2" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fontStyleSuperscript"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/community_material_font_v5_8_55"
+                        android:minWidth="48dp"
+                        android:textSize="20sp"
+                        app:iconPadding="0dp"
+                        tools:text="\uf6b3" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <!-- TODO 2021-10-05: stack the group and button on top -->
+                <!-- android:layout_marginTop="-13dp" -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/fontStyleSuperscript"
+                    android:id="@+id/fontStyleClear"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/community_material_font_v5_8_55"
-                    android:minWidth="48dp"
-                    android:textSize="20sp"
-                    app:iconPadding="0dp"
-                    tools:text="\uf6b3" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+                    android:layout_marginHorizontal="8dp"
+                    android:text="@string/messages_compose_style_clear" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/breakpoints"

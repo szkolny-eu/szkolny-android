@@ -23,6 +23,15 @@ import pl.szczodrzynski.navlib.blendColors
 
 object BetterHtml {
 
+    val customSpanClasses = listOf(
+        BoldSpan::class.java,
+        ItalicSpan::class.java,
+        UnderlineSpan::class.java,
+        StrikethroughSpan::class.java,
+        SubscriptSizeSpan::class.java,
+        SuperscriptSizeSpan::class.java,
+    )
+
     @JvmStatic
     fun fromHtml(context: Context, html: String): Spanned {
         val hexPattern = "(#[a-fA-F0-9]{6})"
@@ -110,7 +119,7 @@ object BetterHtml {
         applyFormat(span, editText.text ?: return, editText.selectionStart, editText.selectionEnd)
     }
 
-    fun removeFormat(span: Any, editText: AppCompatEditText) {
+    fun removeFormat(span: Any?, editText: AppCompatEditText) {
         removeFormat(span, editText.text ?: return, editText.selectionStart, editText.selectionEnd)
     }
 
@@ -132,11 +141,14 @@ object BetterHtml {
         }
     }
 
-    fun removeFormat(span: Any, spanned: Editable, selectionStart: Int, selectionEnd: Int) {
+    fun removeFormat(span: Any?, spanned: Editable, selectionStart: Int, selectionEnd: Int) {
         if (selectionStart == -1 || selectionEnd == -1) return
         val cursorOnly = selectionStart == selectionEnd
 
-        spanned.getSpans(selectionStart, selectionEnd, span.javaClass).forEach {
+        val spanClass = span?.javaClass ?: Any::class.java
+        spanned.getSpans(selectionStart, selectionEnd, spanClass).forEach {
+            if (span == null && it::class.java !in customSpanClasses)
+                return@forEach
             val spanStart = spanned.getSpanStart(it)
             val spanEnd = spanned.getSpanEnd(it)
             val wordBounds = spanned.getWordBounds(selectionStart, onlyInWord = true)
@@ -161,12 +173,14 @@ object BetterHtml {
 
             // remove the existing span
             spanned.removeSpan(it)
+            // "clone" the span so it can be applied twice, if needed
+            // (can't use 'span' from the parameters as it's nullable)
+            val itClone = it::class.java.newInstance()
             // reapply the span wherever needed
-            // use "it" and "span" only once, so they don't replace the applied range
             if (spanStart < newSpanStart)
                 spanned.setSpan(it, spanStart, newSpanStart, newSpanFlags)
             if (spanEnd > newSpanEnd)
-                spanned.setSpan(span, newSpanEnd, spanEnd, newSpanFlags)
+                spanned.setSpan(itClone, newSpanEnd, spanEnd, newSpanFlags)
         }
     }
 }
