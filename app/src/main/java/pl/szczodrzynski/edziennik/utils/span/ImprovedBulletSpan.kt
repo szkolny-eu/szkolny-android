@@ -6,7 +6,7 @@
  * https://github.com/davidbilik/bullet-span-sample/blob/master/app/src/main/java/cz/davidbilik/bulletsample/ImprovedBulletSpan.kt
  */
 
-package pl.szczodrzynski.edziennik.utils.html
+package pl.szczodrzynski.edziennik.utils.span
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -20,10 +20,10 @@ import android.text.style.LeadingMarginSpan
  * Copy of [android.text.style.BulletSpan] from android SDK 28 with removed internal code
  */
 class ImprovedBulletSpan(
-        val bulletRadius: Int = STANDARD_BULLET_RADIUS,
-        val startWidth: Int = STANDARD_GAP_WIDTH,
-        val gapWidth: Int = STANDARD_GAP_WIDTH,
-        val color: Int = STANDARD_COLOR
+    val bulletRadius: Int = STANDARD_BULLET_RADIUS,
+    val startWidth: Int = STANDARD_GAP_WIDTH,
+    val gapWidth: Int = STANDARD_GAP_WIDTH,
+    val color: Int = STANDARD_COLOR
 ) : LeadingMarginSpan {
 
     companion object {

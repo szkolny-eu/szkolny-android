@@ -18,6 +18,7 @@ class TextInputKeyboardEdit : AppCompatEditText {
      * Keyboard Listener
      */
     internal var listener: KeyboardListener? = null
+    private var selectionListener: ((Int, Int) -> Unit)? = null
 
     constructor(context: Context) : super(context)
 
@@ -27,14 +28,12 @@ class TextInputKeyboardEdit : AppCompatEditText {
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect)
-        if (listener != null)
-            listener!!.onStateChanged(this, true)
+        listener?.onStateChanged(this, true)
     }
 
     override fun onKeyPreIme(keyCode: Int, @NonNull event: KeyEvent): Boolean {
         if (event.keyCode == KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-            if (listener != null)
-                listener!!.onStateChanged(this, false)
+            listener?.onStateChanged(this, false)
 
             // Hide cursor
             isFocusable = false
@@ -48,6 +47,15 @@ class TextInputKeyboardEdit : AppCompatEditText {
 
     fun setOnKeyboardListener(listener: KeyboardListener) {
         this.listener = listener
+    }
+
+    fun setSelectionChangedListener(listener: ((selectionStart: Int, selectionEnd: Int) -> Unit)?) {
+        this.selectionListener = listener
+    }
+
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        super.onSelectionChanged(selStart, selEnd)
+        selectionListener?.invoke(selStart, selEnd)
     }
 
     interface KeyboardListener {

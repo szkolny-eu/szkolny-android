@@ -5,30 +5,21 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages.compose
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Typeface
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
+import android.text.*
+import android.text.Spanned.*
+import android.text.style.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.hootsuite.nachos.ChipConfiguration
 import com.hootsuite.nachos.chip.ChipInfo
-import com.hootsuite.nachos.chip.ChipSpan
-import com.hootsuite.nachos.chip.ChipSpanChipCreator
-import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -47,13 +38,15 @@ import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
-import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.edziennik.utils.Themes.getPrimaryTextColor
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.edziennik.utils.span.BoldSpan
+import pl.szczodrzynski.edziennik.utils.span.ItalicSpan
+import pl.szczodrzynski.edziennik.utils.span.SubscriptSizeSpan
+import pl.szczodrzynski.edziennik.utils.span.SuperscriptSizeSpan
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
-import pl.szczodrzynski.navlib.elevateSurface
 import kotlin.coroutines.CoroutineContext
 import kotlin.text.replace
 
@@ -76,11 +69,16 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
     private var teachers = mutableListOf<Teacher>()
 
+    private var watchFormatChecked = true
+    private var watchSelectionChanged = true
+    private val enableTextStyling
+        get() = app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
-        context!!.theme.applyStyle(Themes.appTheme, true)
+        requireContext().theme.applyStyle(Themes.appTheme, true)
         // activity, context and profile is valid
         b = MessagesComposeFragmentBinding.inflate(inflater)
         return b.root
@@ -103,40 +101,12 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             // do your job
         }
 
-        /*b.fontStyleBold.icon = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_format_bold)
-                .sizeDp(24)
-                .colorAttr(activity, R.attr.colorOnPrimary)
-        b.fontStyleItalic.icon = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_format_italic)
-                .sizeDp(24)
-                .colorAttr(activity, R.attr.colorOnPrimary)
-        b.fontStyleUnderline.icon = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_format_underline)
-                .sizeDp(24)
-                .colorAttr(activity, R.attr.colorOnPrimary)
-
-        b.fontStyle.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            val span: Any = when (checkedId) {
-                R.id.fontStyleBold -> StyleSpan(Typeface.BOLD)
-                R.id.fontStyleItalic -> StyleSpan(Typeface.ITALIC)
-                R.id.fontStyleUnderline -> UnderlineSpan()
-                else -> StyleSpan(Typeface.NORMAL)
+        if (App.devMode) {
+            b.textHtml.isVisible = true
+            b.text.addTextChangedListener {
+                b.textHtml.text = getHtmlText()
             }
-
-            if (isChecked) {
-                val flags = if (b.text.selectionStart == b.text.selectionEnd)
-                    SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-                else
-                    SpannableString.SPAN_EXCLUSIVE_INCLUSIVE
-                b.text.text?.setSpan(span, b.text.selectionStart, b.text.selectionEnd, flags)
-            }
-            else {
-                b.text.text?.getSpans(b.text.selectionStart, b.text.selectionEnd, span.javaClass)?.forEach {
-                    if (it is StyleSpan && span is StyleSpan && it.style == span.style)
-                        b.text.text?.removeSpan(it)
-                    else if (it.javaClass == span.javaClass)
-                        b.text.text?.removeSpan(it)
-                }
-            }
-        }*/
+        }
 
         activity.bottomSheet.prependItem(
             BottomSheetPrimaryItem(true)
@@ -156,6 +126,50 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         }
     }
 
+    private fun getHtmlText(): String {
+        val text = b.text.text ?: return ""
+
+        // apparently setting the spans to a different Spannable calls the original EditText's
+        // onSelectionChanged with selectionStart=-1, which in effect unchecks the format toggles
+        watchSelectionChanged = false
+        var textHtml = if (enableTextStyling) {
+            val spanned = SpannableString(text)
+            // remove zero-length spans, as they seem to affect
+            // the whole line when converted to HTML
+            spanned.getSpans(0, spanned.length, Any::class.java).forEach {
+                val spanStart = spanned.getSpanStart(it)
+                val spanEnd = spanned.getSpanEnd(it)
+                if (spanStart == spanEnd && it::class.java in BetterHtml.customSpanClasses)
+                    spanned.removeSpan(it)
+            }
+            HtmlCompat.toHtml(spanned, HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+                .replace("\n", "")
+                .replace(" dir=\"ltr\"", "")
+                .replace("</b><b>", "")
+                .replace("</i><i>", "")
+                .replace("</u><u>", "")
+                .replace("</sub><sub>", "")
+                .replace("</sup><sup>", "")
+                .replace("p style=\"margin-top:0; margin-bottom:0;\"", "p")
+        } else {
+            text.toString()
+        }
+        watchSelectionChanged = true
+
+        if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_MOBIDZIENNIK) {
+            textHtml = textHtml
+                .replace("<br>", "<p>&nbsp;</p>")
+                .replace("<b>", "<strong>")
+                .replace("</b>", "</strong>")
+                .replace("<i>", "<em>")
+                .replace("</i>", "</em>")
+                .replace("<u>", "<span style=\"text-decoration: underline;\">")
+                .replace("</u>", "</span>")
+        }
+
+        return textHtml
+    }
+
     private fun getRecipientList() {
         if (System.currentTimeMillis() - app.profile.lastReceiversSync > 1 * DAY * 1000 && app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
             activity.snackbar("Pobieranie listy odbiorców...")
@@ -169,6 +183,80 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 updateRecipientList(list)
             }
         }
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private fun onFormatChecked(
+        group: MaterialButtonToggleGroup,
+        checkedId: Int,
+        isChecked: Boolean
+    ) {
+        if (!watchFormatChecked)
+            return
+        val span = when (checkedId) {
+            R.id.fontStyleBold -> BoldSpan()
+            R.id.fontStyleItalic -> ItalicSpan()
+            R.id.fontStyleUnderline -> UnderlineSpan()
+            R.id.fontStyleStrike -> StrikethroughSpan()
+            R.id.fontStyleSubscript -> SubscriptSizeSpan(10, dip = true)
+            R.id.fontStyleSuperscript -> SuperscriptSizeSpan(10, dip = true)
+            else -> return
+        }
+
+        // see comments in getHtmlText()
+        watchSelectionChanged = false
+        if (isChecked)
+            BetterHtml.applyFormat(span = span, editText = b.text)
+        else
+            BetterHtml.removeFormat(span = span, editText = b.text)
+        watchSelectionChanged = true
+
+        if (App.devMode)
+            b.textHtml.text = getHtmlText()
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private fun onFormatClear(view: View) {
+        // shortened version on onFormatChecked(), removing all spans
+        watchSelectionChanged = false
+        BetterHtml.removeFormat(span = null, editText = b.text)
+        watchSelectionChanged = true
+        if (App.devMode)
+            b.textHtml.text = getHtmlText()
+        // force update of text style toggle states
+        onSelectionChanged(b.text.selectionStart, b.text.selectionEnd)
+    }
+
+    private fun onSelectionChanged(selectionStart: Int, selectionEnd: Int) {
+        if (!watchSelectionChanged)
+            return
+        val spanned = b.text.text ?: return
+        val spans = spanned.getSpans(selectionStart, selectionEnd, Any::class.java).mapNotNull {
+            if (it::class.java !in BetterHtml.customSpanClasses)
+                return@mapNotNull null
+            val spanStart = spanned.getSpanStart(it)
+            val spanEnd = spanned.getSpanEnd(it)
+            // remove 0-length spans after navigating out of them
+            if (spanStart == spanEnd)
+                spanned.removeSpan(it)
+            else if (spanned.getSpanFlags(it) hasSet SPAN_EXCLUSIVE_EXCLUSIVE)
+                spanned.setSpan(it, spanStart, spanEnd, SPAN_EXCLUSIVE_INCLUSIVE)
+
+            // names are helpful here
+            val isNotAfterWord = selectionEnd <= spanEnd
+            val isSelectionInWord = selectionStart != selectionEnd && selectionStart >= spanStart
+            val isCursorInWord = selectionStart == selectionEnd && selectionStart > spanStart
+            val isChecked = (isCursorInWord || isSelectionInWord) && isNotAfterWord
+            if (isChecked) it::class.java else null
+        }
+        watchFormatChecked = false
+        b.fontStyleBold.isChecked = BoldSpan::class.java in spans
+        b.fontStyleItalic.isChecked = ItalicSpan::class.java in spans
+        b.fontStyleUnderline.isChecked = UnderlineSpan::class.java in spans
+        b.fontStyleStrike.isChecked = StrikethroughSpan::class.java in spans
+        b.fontStyleSubscript.isChecked = SubscriptSizeSpan::class.java in spans
+        b.fontStyleSuperscript.isChecked = SuperscriptSizeSpan::class.java in spans
+        watchFormatChecked = true
     }
 
     private fun createView() {
@@ -203,107 +291,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             else -> -1
         }
 
-        b.recipients.chipTokenizer = SpanChipTokenizer<ChipSpan>(activity, object : ChipSpanChipCreator() {
-            override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan? {
-                if (data == null || data !is Teacher)
-                    return null
-                if (data.id !in -24L..0L) {
-                    b.recipients.allChips.forEach {
-                        if (it.data == data) {
-                            Toast.makeText(activity, R.string.messages_compose_recipient_exists, Toast.LENGTH_SHORT).show()
-                            return null
-                        }
-                    }
-                    val chipSpan = ChipSpan(context, data.fullName, BitmapDrawable(context.resources, data.image), data)
-                    chipSpan.setIconBackgroundColor(Colors.stringToMaterialColor(data.fullName))
-                    return chipSpan
-                }
-
-                val type = (data.id * -1).toInt()
-
-                val textColorPrimary = android.R.attr.textColorPrimary.resolveAttr(activity)
-                val textColorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
-
-                val sortByCategory = type in listOf(
-                        Teacher.TYPE_PARENTS_COUNCIL,
-                        Teacher.TYPE_EDUCATOR,
-                        Teacher.TYPE_STUDENT
-                )
-                val teachers = if (sortByCategory)
-                    teachers.sortedBy { it.typeDescription }
-                else
-                    teachers
-
-                val category = mutableListOf<Teacher>()
-                val categoryNames = mutableListOf<CharSequence>()
-                val categoryCheckedItems = mutableListOf<Boolean>()
-                teachers.forEach { teacher ->
-                    if (!teacher.isType(type))
-                        return@forEach
-
-                    category += teacher
-                    val name = teacher.fullName
-                    val description = when (type) {
-                        Teacher.TYPE_TEACHER -> null
-                        Teacher.TYPE_PARENTS_COUNCIL -> teacher.typeDescription
-                        Teacher.TYPE_SCHOOL_PARENTS_COUNCIL -> null
-                        Teacher.TYPE_PEDAGOGUE -> null
-                        Teacher.TYPE_LIBRARIAN -> null
-                        Teacher.TYPE_SCHOOL_ADMIN -> null
-                        Teacher.TYPE_SUPER_ADMIN -> null
-                        Teacher.TYPE_SECRETARIAT -> null
-                        Teacher.TYPE_PRINCIPAL -> null
-                        Teacher.TYPE_EDUCATOR -> teacher.typeDescription
-                        Teacher.TYPE_PARENT -> teacher.typeDescription
-                        Teacher.TYPE_STUDENT -> teacher.typeDescription
-                        Teacher.TYPE_SPECIALIST -> null
-                        else -> teacher.typeDescription
-                    }
-                    categoryNames += listOfNotNull(
-                            name.asSpannable(
-                                    ForegroundColorSpan(textColorPrimary)
-                            ),
-                            description?.asSpannable(
-                                    ForegroundColorSpan(textColorSecondary),
-                                    AbsoluteSizeSpan(14.dp)
-                            )
-                    ).concat("\n")
-
-                    // check the teacher if already added as a recipient
-                    categoryCheckedItems += b.recipients.allChips.firstOrNull { it.data == teacher } != null
-                }
-
-                MaterialAlertDialogBuilder(activity)
-                        .setTitle("Dodaj odbiorców - "+ Teacher.typeName(activity, type))
-                        //.setMessage(getString(R.string.messages_compose_recipients_text_format, Teacher.typeName(activity, type)))
-                        .setPositiveButton("OK", null)
-                        .setNeutralButton("Anuluj", null)
-                        .setMultiChoiceItems(categoryNames.toTypedArray(), categoryCheckedItems.toBooleanArray()) { _, which, isChecked ->
-                            val teacher = category[which]
-                            if (isChecked) {
-                                val chipInfoList = mutableListOf<ChipInfo>()
-                                teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
-                                chipInfoList.add(ChipInfo(teacher.fullName, teacher))
-                                b.recipients.addTextWithChips(chipInfoList)
-                            }
-                            else {
-                                b.recipients.allChips.forEach {
-                                    if (it.data == teacher)
-                                        b.recipients.chipTokenizer?.deleteChipAndPadding(it, b.recipients.text)
-                                }
-                            }
-                        }
-                        .show()
-                return null
-            }
-
-            override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
-                super.configureChip(chip, chipConfiguration)
-                chip.setBackgroundColor(elevateSurface(activity, 8).toColorStateList())
-                chip.setTextColor(getPrimaryTextColor(activity))
-            }
-        }, ChipSpan::class.java)
-
+        b.recipients.chipTokenizer = MessagesComposeChipTokenizer(activity, b.recipients, teachers)
         b.recipients.setIllegalCharacterIdentifier { c ->
             c.toString().matches("[\\n;:_ ]".toRegex())
         }
@@ -329,6 +317,55 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.recipientsLayout.isEnabled = false
         b.subjectLayout.isEnabled = false
         b.textLayout.isEnabled = false
+
+        b.fontStyleLayout.isVisible = enableTextStyling
+        b.fontStyleBold.isEnabled = false
+        b.fontStyleItalic.isEnabled = false
+        b.fontStyleUnderline.isEnabled = false
+        b.fontStyleStrike.isEnabled = false
+        b.fontStyleSubscript.isEnabled = false
+        b.fontStyleSuperscript.isEnabled = false
+        b.fontStyleClear.isEnabled = false
+        b.text.setOnFocusChangeListener { _, hasFocus ->
+            b.fontStyleBold.isEnabled = hasFocus
+            b.fontStyleItalic.isEnabled = hasFocus
+            b.fontStyleUnderline.isEnabled = hasFocus
+            b.fontStyleStrike.isEnabled = hasFocus
+            b.fontStyleSubscript.isEnabled = hasFocus
+            b.fontStyleSuperscript.isEnabled = hasFocus
+            b.fontStyleClear.isEnabled = hasFocus
+        }
+
+        b.fontStyleBold.text = CommunityMaterial.Icon2.cmd_format_bold.character.toString()
+        b.fontStyleItalic.text = CommunityMaterial.Icon2.cmd_format_italic.character.toString()
+        b.fontStyleUnderline.text = CommunityMaterial.Icon2.cmd_format_underline.character.toString()
+        b.fontStyleStrike.text = CommunityMaterial.Icon2.cmd_format_strikethrough.character.toString()
+        b.fontStyleSubscript.text = CommunityMaterial.Icon2.cmd_format_subscript.character.toString()
+        b.fontStyleSuperscript.text = CommunityMaterial.Icon2.cmd_format_superscript.character.toString()
+        b.fontStyleBold.attachToastHint(R.string.hint_style_bold)
+        b.fontStyleItalic.attachToastHint(R.string.hint_style_italic)
+        b.fontStyleUnderline.attachToastHint(R.string.hint_style_underline)
+        b.fontStyleStrike.attachToastHint(R.string.hint_style_strike)
+        b.fontStyleSubscript.attachToastHint(R.string.hint_style_subscript)
+        b.fontStyleSuperscript.attachToastHint(R.string.hint_style_superscript)
+
+        /*b.fontStyleBold.shapeAppearanceModel = b.fontStyleBold.shapeAppearanceModel
+            .toBuilder()
+            .setBottomLeftCornerSize(0f)
+            .build()
+        b.fontStyleSuperscript.shapeAppearanceModel = b.fontStyleBold.shapeAppearanceModel
+            .toBuilder()
+            .setBottomRightCornerSize(0f)
+            .build()
+        b.fontStyleClear.shapeAppearanceModel = b.fontStyleClear.shapeAppearanceModel
+            .toBuilder()
+            .setTopLeftCornerSize(0f)
+            .setTopRightCornerSize(0f)
+            .build()*/
+
+        b.fontStyle.addOnButtonCheckedListener(this::onFormatChecked)
+        b.fontStyleClear.setOnClickListener(this::onFormatClear)
+        b.text.setSelectionChangedListener(this::onSelectionChanged)
 
         activity.navView.bottomBar.apply {
             fabEnable = true
@@ -382,11 +419,11 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 val dateString = getString(R.string.messages_date_time_format, Date.fromMillis(msg.addedDate).formattedStringShort, Time.fromMillis(msg.addedDate).stringHM)
                 // add original message info
                 span.appendText("W dniu ")
-                span.appendSpan(dateString, StyleSpan(Typeface.ITALIC), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.appendSpan(dateString, ItalicSpan(), SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText(", ")
-                span.appendSpan(msg.senderName.fixName(), StyleSpan(Typeface.ITALIC), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.appendSpan(msg.senderName.fixName(), ItalicSpan(), SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText(" napisał(a):")
-                span.setSpan(StyleSpan(Typeface.BOLD), 0, span.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                span.setSpan(BoldSpan(), 0, span.length, SPAN_EXCLUSIVE_EXCLUSIVE)
                 span.appendText("\n\n")
 
                 if (arguments?.getString("type") == "reply") {
@@ -422,6 +459,8 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             b.subject.setText(subject)
             b.text.apply {
                 text = span.appendText(body)
+                if (!enableTextStyling)
+                    setText(text?.toString())
                 setSelection(0)
             }
             b.root.scrollTo(0, 0)
@@ -494,30 +533,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         if (b.textLayout.counterMaxLength != -1 && b.text.length() > b.textLayout.counterMaxLength)
             return
 
-        var textHtml = if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
-            HtmlCompat.toHtml(SpannableString(text), HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
-                    .replace("\n", "")
-                    .replace(" dir=\"ltr\"", "")
-        }
-        else {
-            text.toString()
-        }
-
-        textHtml = textHtml
-            .replace("</b><b>", "")
-            .replace("</i><i>", "")
-            .replace("p style=\"margin-top:0; margin-bottom:0;\"", "p")
-
-        if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_MOBIDZIENNIK) {
-            textHtml = textHtml
-                    .replace("</p><br>", "</p>")
-                    .replace("<b>", "<strong>")
-                    .replace("</b>", "</strong>")
-                    .replace("<i>", "<em>")
-                    .replace("</i>", "</em>")
-                    .replace("<u>", "<span style=\"text-decoration: underline;\">")
-                    .replace("</u>", "</span>")
-        }
+        val textHtml = getHtmlText()
 
         activity.bottomSheet.hideKeyboard()
 
@@ -525,7 +541,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 .setTitle(R.string.messages_compose_confirm_title)
                 .setMessage(R.string.messages_compose_confirm_text)
                 .setPositiveButton(R.string.send) { _, _ ->
-                    EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), textHtml.trim()).enqueue(activity)
+                    EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), textHtml).enqueue(activity)
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
