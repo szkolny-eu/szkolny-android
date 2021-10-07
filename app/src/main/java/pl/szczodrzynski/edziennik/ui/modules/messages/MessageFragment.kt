@@ -146,25 +146,34 @@ class MessageFragment : Fragment(), CoroutineScope {
                         else
                             app.db.messageDao().getByIdNow(App.profileId, messageId)
 
+                if (msg == null)
+                    return@withContext null
+
+                // make recipients ID-unique
+                // this helps when multiple profiles receive the same message
+                // (there are multiple -1 recipients for the same message ID)
+                val recipientsDistinct =
+                    msg.recipients?.distinctBy { it.id } ?: return@withContext null
+                msg.recipients?.clear()
+                msg.recipients?.addAll(recipientsDistinct)
+
                 // load recipients in sent messages
                 val teachers by lazy { app.db.teacherDao().getAllNow(App.profileId) }
-                msg?.recipients?.forEach { recipient ->
+                msg.recipients?.forEach { recipient ->
                     if (recipient.fullName == null) {
                         recipient.fullName = teachers.firstOrNull { it.id == recipient.id }?.fullName ?: ""
                     }
                 }
 
-                if (msg?.type == TYPE_SENT && msg.senderName == null) {
+                if (msg.type == TYPE_SENT && msg.senderName == null) {
                     msg.senderName = app.profile.accountName ?: app.profile.studentNameLong
                 }
 
-                msg?.also {
-                    //it.recipients = app.db.messageRecipientDao().getAllByMessageId(it.profileId, it.id)
-                    if (it.body != null && !it.seen) {
-                        app.db.metadataDao().setSeen(it.profileId, it, true)
-                    }
+                //msg.recipients = app.db.messageRecipientDao().getAllByMessageId(msg.profileId, msg.id)
+                if (msg.body != null && !msg.seen) {
+                    app.db.metadataDao().setSeen(msg.profileId, msg, true)
                 }
-
+                return@withContext msg
             } ?: run {
                 activity.navigateUp()
                 return@launch
