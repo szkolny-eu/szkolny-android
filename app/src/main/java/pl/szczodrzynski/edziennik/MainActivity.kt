@@ -37,13 +37,10 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
-import pl.szczodrzynski.edziennik.data.api.ERROR_API_INVALID_SIGNATURE
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
@@ -85,7 +82,6 @@ import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
-import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
@@ -254,6 +250,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val requestHandler by lazy { MainActivityRequestHandler(this) }
 
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
+    var onBackPressed: (() -> Boolean)? = null
 
     val app: App by lazy {
         applicationContext as App
@@ -1291,7 +1288,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     || navTarget.id == DRAWER_ITEM_HOME)) {
                 b.navView.drawer.toggle()
             } else {
-                navigateUp()
+                if (onBackPressed?.invoke() != false)
+                    navigateUp()
             }
         }
     }

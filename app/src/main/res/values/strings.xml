@@ -1479,4 +1479,7 @@
     <string name="messages_compose_subject_reply_format" translatable="false">Re: %s</string>
     <string name="messages_compose_subject_forward_format" translatable="false">Fwd: %s</string>
     <string name="messages_compose_body_load_failed">Nie udało się wczytać oryginalnej wiadomości.</string>
+    <string name="messages_compose_save_draft_title">Zapisz zmiany</string>
+    <string name="messages_compose_save_draft_text">Czy chcesz zapisać wiadomość jako wersję roboczą?\n\nBędzie możliwa późniejsza edycja oraz wysłanie wiadomości.</string>
+    <string name="discard">Odrzuć</string>
 </resources>

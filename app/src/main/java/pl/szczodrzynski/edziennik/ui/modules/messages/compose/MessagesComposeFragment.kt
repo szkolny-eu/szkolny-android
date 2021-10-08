@@ -287,6 +287,28 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         activity.gainAttentionFAB()
     }
 
+    private fun onBackPressed(): Boolean {
+        val messageText = b.text.text?.toString()?.trim() ?: ""
+        val greetingText = this.greetingText.trim()
+        // navigateUp if nothing changed
+        if ((!changedRecipients || b.recipients.allChips.isEmpty())
+            && (!changedSubject || b.subject.text.isNullOrBlank())
+            && (!changedBody || messageText.isEmpty() || messageText == greetingText)
+        )
+            return true
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.messages_compose_save_draft_title)
+            .setMessage(R.string.messages_compose_save_draft_text)
+            .setPositiveButton(R.string.save) { _, _ ->
+
+            }
+            .setNegativeButton(R.string.discard) { _, _ ->
+                activity.navigateUp()
+            }
+            .show()
+        return false
+    }
+
     @SuppressLint("SetTextI18n")
     private fun updateRecipientList(list: List<Teacher>) { launch {
         withContext(Dispatchers.Default) {
@@ -384,6 +406,20 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isAdded || !this::activity.isInitialized)
+            return
+        activity.onBackPressed = this::onBackPressed
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!isAdded || !this::activity.isInitialized)
+            return
+        activity.onBackPressed = null
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
