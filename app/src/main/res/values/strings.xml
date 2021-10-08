@@ -1476,4 +1476,7 @@
     <string name="message_delete">Usuń</string>
     <string name="message_reply">Odpowiedz</string>
     <string name="message_download">Pobierz ponownie</string>
+    <string name="messages_compose_subject_reply_format" translatable="false">Re: %s</string>
+    <string name="messages_compose_subject_forward_format" translatable="false">Fwd: %s</string>
+    <string name="messages_compose_body_load_failed">Nie udało się wczytać oryginalnej wiadomości.</string>
 </resources>
