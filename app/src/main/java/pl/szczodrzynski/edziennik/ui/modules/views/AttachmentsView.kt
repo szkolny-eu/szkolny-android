@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.ui.modules.views
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Environment
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -68,7 +67,10 @@ class AttachmentsView @JvmOverloads constructor(
 
         attachmentIds.forEachIndexed { index, id ->
             val name = attachmentNames[index] ?: return@forEachIndexed
-            val size = attachmentSizes?.getOrNull(index)
+            var size = attachmentSizes?.getOrNull(index)
+            // hide the size if less than 1 byte
+            if (size?.compareTo(1) == -1)
+                size = null
 
             val item = AttachmentAdapter.Item(profileId, owner, id, name, size)
             adapter.items += item
@@ -100,6 +102,8 @@ class AttachmentsView @JvmOverloads constructor(
                     val fileUrl = item.name.substringAfter(":", missingDelimiterValue = "")
                     // update file name with the downloaded one
                     item.name = attachmentFile.name
+                    // update file size (useful for items with no defined size)
+                    item.size = attachmentFile.length()
                     // save the download url back
                     if (fileUrl != "")
                         item.name += ":$fileUrl"
