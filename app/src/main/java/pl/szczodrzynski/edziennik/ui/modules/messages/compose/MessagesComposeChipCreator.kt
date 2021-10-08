@@ -62,10 +62,12 @@ class MessagesComposeChipCreator(
             Teacher.TYPE_EDUCATOR,
             Teacher.TYPE_STUDENT
         )
+
+        val adapter = nacho.adapter as? MessagesComposeSuggestionAdapter ?: return null
         val teachers = if (sortByCategory)
-            teacherList.sortedBy { it.typeDescription }
+            adapter.originalList.sortedBy { it.typeDescription }
         else
-            teacherList
+            adapter.originalList
 
         val category = mutableListOf<Teacher>()
         val categoryNames = mutableListOf<CharSequence>()
