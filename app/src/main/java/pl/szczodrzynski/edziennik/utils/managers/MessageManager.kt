@@ -56,19 +56,17 @@ class MessageManager(private val app: App) {
         }
 
         message.recipients?.forEach { recipient ->
-            when {
-                // store the account name as a recipient
-                recipient.id == -1L -> recipient.fullName =
-                    app.profile.accountName ?: app.profile.studentNameLong
+            // store the account name as a recipient
+            if (recipient.id == -1L)
+                recipient.fullName = app.profile.accountName ?: app.profile.studentNameLong
 
-                // lookup a teacher by the recipient ID
-                recipient.fullName == null -> recipient.fullName =
-                    teachers.firstOrNull { it.id == recipient.id }?.fullName ?: ""
+            // lookup a teacher by the recipient ID
+            if (recipient.fullName == null)
+                recipient.fullName = teachers.firstOrNull { it.id == recipient.id }?.fullName ?: ""
 
-                // unset the readByEveryone flag
-                recipient.readDate < 1 && message.type == Message.TYPE_SENT ->
-                    message.readByEveryone = false
-            }
+            // unset the readByEveryone flag
+            if (recipient.readDate < 1 && message.type == Message.TYPE_SENT)
+                message.readByEveryone = false
         }
 
         // store the account name as sender for sent messages
