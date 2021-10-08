@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_MESSAGES_COMPOSE
+import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_MESSAGES_DETAILS
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -61,9 +63,13 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
         }
 
         adapter = MessagesAdapter(activity, teachers, onItemClick = {
-            activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, Bundle(
-                "messageId" to it.id
-            ))
+            val (target, args) =
+                if (it.type == Message.TYPE_DRAFT) {
+                    TARGET_MESSAGES_COMPOSE to Bundle("message" to app.gson.toJson(it))
+                } else {
+                    TARGET_MESSAGES_DETAILS to Bundle("messageId" to it.id)
+                }
+            activity.loadTarget(target, args)
         }, onStarClick = {
             this@MessagesListFragment.launch {
                 manager.starMessage(it, !it.isStarred)

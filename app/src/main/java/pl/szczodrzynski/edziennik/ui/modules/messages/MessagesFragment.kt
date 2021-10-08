@@ -57,33 +57,41 @@ class MessagesFragment : Fragment(), CoroutineScope {
         val args = arguments
 
         val pagerAdapter = FragmentLazyPagerAdapter(
-                fragmentManager ?: return,
-                b.refreshLayout,
-                listOf(
-                        MessagesListFragment().apply {
-                            onPageDestroy = this@MessagesFragment.onPageDestroy
-                            arguments = Bundle("messageType" to Message.TYPE_RECEIVED)
-                            args?.getBundle("page0")?.let {
-                                arguments?.putAll(it)
-                            }
-                        } to getString(R.string.messages_tab_received),
+            fragmentManager = parentFragmentManager,
+            swipeRefreshLayout = b.refreshLayout,
+            fragments = listOf(
+                MessagesListFragment().apply {
+                    onPageDestroy = this@MessagesFragment.onPageDestroy
+                    arguments = Bundle("messageType" to Message.TYPE_RECEIVED)
+                    args?.getBundle("page0")?.let {
+                        arguments?.putAll(it)
+                    }
+                } to getString(R.string.messages_tab_received),
 
-                        MessagesListFragment().apply {
-                            onPageDestroy = this@MessagesFragment.onPageDestroy
-                            arguments = Bundle("messageType" to Message.TYPE_SENT)
-                            args?.getBundle("page1")?.let {
-                                arguments?.putAll(it)
-                            }
-                        } to getString(R.string.messages_tab_sent),
+                MessagesListFragment().apply {
+                    onPageDestroy = this@MessagesFragment.onPageDestroy
+                    arguments = Bundle("messageType" to Message.TYPE_SENT)
+                    args?.getBundle("page1")?.let {
+                        arguments?.putAll(it)
+                    }
+                } to getString(R.string.messages_tab_sent),
 
-                        MessagesListFragment().apply {
-                            onPageDestroy = this@MessagesFragment.onPageDestroy
-                            arguments = Bundle("messageType" to Message.TYPE_DELETED)
-                            args?.getBundle("page2")?.let {
-                                arguments?.putAll(it)
-                            }
-                        } to getString(R.string.messages_tab_deleted)
-                )
+                MessagesListFragment().apply {
+                    onPageDestroy = this@MessagesFragment.onPageDestroy
+                    arguments = Bundle("messageType" to Message.TYPE_DELETED)
+                    args?.getBundle("page2")?.let {
+                        arguments?.putAll(it)
+                    }
+                } to getString(R.string.messages_tab_deleted),
+
+                MessagesListFragment().apply {
+                    onPageDestroy = this@MessagesFragment.onPageDestroy
+                    arguments = Bundle("messageType" to Message.TYPE_DRAFT)
+                    args?.getBundle("page3")?.let {
+                        arguments?.putAll(it)
+                    }
+                } to getString(R.string.messages_tab_draft),
+            ),
         )
         b.viewPager.apply {
             offscreenPageLimit = 1

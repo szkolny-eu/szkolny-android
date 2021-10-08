@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.ScrollView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -24,6 +25,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.ERROR_MESSAGE_NOT_SENT
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
@@ -31,9 +33,11 @@ import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.managers.MessageManager.UIConfig
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
@@ -72,6 +76,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     private var changedRecipients = false
     private var changedSubject = false
     private var changedBody = false
+    private var draftMessageId: Long? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -265,6 +270,9 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.fontStyleLayout.isVisible = enableTextStyling
         if (enableTextStyling) {
             textStylingManager.attach(stylingConfig)
+            b.fontStyle.addOnButtonCheckedListener { _, _, _ ->
+                changedBody = true
+            }
         }
 
         if (App.devMode) {
@@ -300,7 +308,12 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             .setTitle(R.string.messages_compose_save_draft_title)
             .setMessage(R.string.messages_compose_save_draft_text)
             .setPositiveButton(R.string.save) { _, _ ->
-
+                launch {
+                    manager.saveAsDraft(uiConfig, stylingConfig, App.profileId, draftMessageId)
+                    Toast.makeText(activity, R.string.messages_compose_draft_saved, Toast.LENGTH_SHORT).show()
+                    MessagesFragment.pageSelection = Message.TYPE_DRAFT
+                    activity.loadTarget(DRAWER_ITEM_MESSAGES)
+                }
             }
             .setNegativeButton(R.string.discard) { _, _ ->
                 activity.navigateUp()
@@ -329,7 +342,10 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         val adapter = MessagesComposeSuggestionAdapter(activity, teachers)
         b.recipients.setAdapter(adapter)
 
-        manager.fillWithBundle(uiConfig, arguments)
+        val message = manager.fillWithBundle(uiConfig, arguments)
+        if (message != null && message.type == Message.TYPE_DRAFT) {
+            draftMessageId = message.id
+        }
 
         when {
             b.recipients.text.isBlank() -> b.recipients.requestFocus()
@@ -441,6 +457,12 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         if (event.message == null) {
             activity.error(ApiError(TAG, ERROR_MESSAGE_NOT_SENT))
             return
+        }
+
+        if (draftMessageId != null) {
+            launch {
+                manager.deleteDraft(App.profileId, draftMessageId!!)
+            }
         }
 
         activity.snackbar(app.getString(R.string.messages_sent_success), app.getString(R.string.ok))

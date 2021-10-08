@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.widget.Button
 import android.widget.TextView
@@ -86,8 +87,9 @@ class TextStylingManager(private val app: App) {
             .build()*/
     }
 
-    fun getHtmlText(config: StylingConfig): String {
-        val spanned = config.editText.text ?: return ""
+    fun getHtmlText(config: StylingConfig, enableHtmlCompatible: Boolean = true): String {
+        val text = config.editText.text?.trim() ?: return ""
+        val spanned = SpannableStringBuilder(text)
 
         // apparently setting the spans to a different Spannable calls the original EditText's
         // onSelectionChanged with selectionStart=-1, which in effect unchecks the format toggles
@@ -113,7 +115,7 @@ class TextStylingManager(private val app: App) {
 
         config.watchSelectionChanged = true
 
-        if (config.htmlCompatibleMode) {
+        if (config.htmlCompatibleMode && enableHtmlCompatible) {
             textHtml = textHtml
                 .replace("<br>", "<p>&nbsp;</p>")
                 .replace("<b>", "<strong>")

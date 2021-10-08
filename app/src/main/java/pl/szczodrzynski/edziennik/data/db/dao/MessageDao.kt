@@ -51,6 +51,9 @@ abstract class MessageDao : BaseDao<Message, MessageFull> {
     @Query("DELETE FROM messages WHERE keep = 0")
     abstract override fun removeNotKept()
 
+    @Query("DELETE FROM messages WHERE profileId = :profileId AND messageId = :messageId")
+    abstract fun delete(profileId: Int, messageId: Long)
+
     // GET ALL - LIVE DATA
     fun getAll(profileId: Int) =
             getRaw("$QUERY WHERE messages.profileId = $profileId $ORDER_BY")

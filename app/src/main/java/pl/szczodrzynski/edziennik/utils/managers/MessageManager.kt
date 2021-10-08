@@ -18,11 +18,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message
+import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.span.BoldSpan
@@ -135,9 +138,48 @@ class MessageManager(private val app: App) {
         }
     }
 
-    fun fillWithBundle(config: UIConfig, args: Bundle?) {
-        args ?: return
-        val message = args.getString("message")
+    suspend fun deleteDraft(profileId: Int, messageId: Long) {
+        withContext(Dispatchers.Default) {
+            app.db.messageRecipientDao().clearFor(profileId, messageId)
+            app.db.messageDao().delete(profileId, messageId)
+            app.db.metadataDao().delete(profileId, Metadata.TYPE_MESSAGE, messageId)
+        }
+    }
+
+    suspend fun saveAsDraft(config: UIConfig, stylingConfig: StylingConfig, profileId: Int, messageId: Long?) {
+        val teachers = config.recipients.allChips.mapNotNull { it.data as? Teacher }
+        val subject = config.subject.text?.toString() ?: ""
+        val body = textStylingManager.getHtmlText(stylingConfig, enableHtmlCompatible = false)
+
+        withContext(Dispatchers.Default) {
+            if (messageId != null) {
+                app.db.messageRecipientDao().clearFor(profileId, messageId)
+            }
+
+            val message = Message(
+                profileId = profileId,
+                id = messageId ?: System.currentTimeMillis(),
+                type = Message.TYPE_DRAFT,
+                subject = subject,
+                body = body,
+                senderId = -1L,
+                addedDate = System.currentTimeMillis(),
+            )
+            val metadata = Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true)
+
+            val recipients = teachers.map {
+                MessageRecipient(profileId, it.id, message.id)
+            }
+
+            app.db.messageDao().replace(message)
+            app.db.messageRecipientDao().addAll(recipients)
+            app.db.metadataDao().add(metadata)
+        }
+    }
+
+    fun fillWithBundle(config: UIConfig, args: Bundle?): Message? {
+        args ?: return null
+        val messageJson = args.getString("message")
         val teacherId = args.getLong("messageRecipientId")
         val subject = args.getString("messageSubject")
         val payloadType = args.getString("type")
@@ -147,19 +189,23 @@ class MessageManager(private val app: App) {
         if (subject != null)
             config.subject.setText(subject)
 
+        val message = if (messageJson != null)
+            app.gson.fromJson(messageJson, MessageFull::class.java)
+        else null
+
         when {
-            message != null && payloadType == "draft" -> {
-                val messageObject = app.gson.fromJson(message, MessageFull::class.java)
-                fillWithDraftMessage(config, messageObject)
+            message != null && message.type == Message.TYPE_DRAFT -> {
+                fillWithDraftMessage(config, message)
             }
             message != null -> {
-                val messageObject = app.gson.fromJson(message, MessageFull::class.java)
-                fillWithMessage(config, messageObject, payloadType)
+                fillWithMessage(config, message, payloadType)
             }
             teacherId != 0L -> {
                 fillWithRecipientIds(config, teacherId)
             }
         }
+
+        return message
     }
 
     private fun createRecipientChips(config: UIConfig, vararg teacherIds: Long?): List<ChipInfo> {
@@ -227,7 +273,13 @@ class MessageManager(private val app: App) {
         config.body.text = spanned
     }
 
-    private fun fillWithDraftMessage(config: UIConfig, message: Message) {
+    private fun fillWithDraftMessage(config: UIConfig, message: MessageFull) {
+        val recipientIds = message.recipients?.map { it.id }?.toTypedArray() ?: emptyArray()
+        fillWithRecipientIds(config, *recipientIds)
 
+        config.subject.setText(message.subject)
+
+        val body = message.body ?: config.context.getString(R.string.messages_compose_body_load_failed)
+        config.body.setText(BetterHtml.fromHtml(config.context, body))
     }
 }
