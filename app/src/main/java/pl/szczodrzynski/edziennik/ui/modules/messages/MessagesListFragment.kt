@@ -12,13 +12,11 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessagesListFragmentBinding
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.models.MessagesSearch
@@ -33,13 +31,15 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
     private lateinit var app: App
     private lateinit var activity: MainActivity
     private lateinit var b: MessagesListFragmentBinding
-    private var adapter: MessagesAdapter? = null
+    private lateinit var adapter: MessagesAdapter
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
     // local/private variables go here
+    private val manager
+        get() = app.messageManager
     var teachers = listOf<Teacher>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -54,22 +54,28 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
         val messageType = arguments.getInt("messageType", Message.TYPE_RECEIVED)
         var topPosition = arguments.getInt("topPosition", NO_POSITION)
         var bottomPosition = arguments.getInt("bottomPosition", NO_POSITION)
-        val searchText = arguments.getString("searchText", "")
+        val searchText = arguments?.getString("searchText")
 
         teachers = withContext(Dispatchers.Default) {
             app.db.teacherDao().getAllNow(App.profileId)
         }
 
-        adapter = MessagesAdapter(activity, teachers) {
+        adapter = MessagesAdapter(activity, teachers, onItemClick = {
             activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, Bundle(
-                    "messageId" to it.id
+                "messageId" to it.id
             ))
-        }
+        }, onStarClick = {
+            this@MessagesListFragment.launch {
+                manager.starMessage(it, !it.isStarred)
+            }
+        })
 
         app.db.messageDao().getAllByType(App.profileId, messageType).observe(this@MessagesListFragment, Observer { messages ->
-            if (!isAdded) return@Observer
+            if (!isAdded || !this@MessagesListFragment::adapter.isInitialized)
+                return@Observer
 
             messages.forEach { message ->
+                // uh oh, so these are the workarounds ??
                 message.recipients?.removeAll { it.profileId != message.profileId }
                 message.recipients?.forEach { recipient ->
                     if (recipient.fullName == null) {
@@ -78,62 +84,62 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
                 }
             }
 
-            // load & configure the adapter
-            val items = messages.toMutableList<Any>()
-            items.add(0, MessagesSearch().also {
-                it.searchText = searchText
-            })
+            // show/hide relevant views
+            setSwipeToRefresh(messageType in Message.TYPE_RECEIVED..Message.TYPE_SENT)
+            b.progressBar.isVisible = false
+            b.list.isVisible = messages.isNotEmpty()
+            b.noData.isVisible = messages.isEmpty()
+            if (messages.isEmpty()) {
+                return@Observer
+            }
 
-            adapter?.items = items
-            adapter?.allItems = items
+            if (adapter.allItems.isEmpty()) {
+                // items empty - add the search field
+                adapter.allItems += MessagesSearch().also {
+                    it.searchText = searchText ?: ""
+                }
+            } else {
+                // items not empty - remove all messages
+                adapter.allItems.removeAll { it is MessageFull }
+            }
+            // add all messages
+            adapter.allItems.addAll(messages)
 
-            if (items.isNotNullNorEmpty() && b.list.adapter == null) {
-                if (searchText.isNotBlank())
-                    adapter?.filter?.filter(searchText) {
-                        b.list.adapter = adapter
-                    }
-                else
-                    b.list.adapter = adapter
-
+            // configure the adapter & recycler view
+            if (b.list.adapter == null) {
                 b.list.apply {
                     setHasFixedSize(true)
                     layoutManager = LinearLayoutManager(context)
                     addItemDecoration(SimpleDividerItemDecoration(context))
                     if (messageType in Message.TYPE_RECEIVED..Message.TYPE_SENT)
                         addOnScrollListener(onScrollListener)
+                    this.adapter = this@MessagesListFragment.adapter
                 }
             }
 
-            setSwipeToRefresh(messageType in Message.TYPE_RECEIVED..Message.TYPE_SENT && items.isNullOrEmpty())
+            val layoutManager = (b.list.layoutManager as? LinearLayoutManager) ?: return@Observer
 
-            (b.list.layoutManager as? LinearLayoutManager)?.let { layoutManager ->
-                if (topPosition != NO_POSITION && topPosition > layoutManager.findLastCompletelyVisibleItemPosition()) {
-                    b.list.scrollToPosition(topPosition)
-                } else if (bottomPosition != NO_POSITION && bottomPosition < layoutManager.findFirstVisibleItemPosition()) {
-                    b.list.scrollToPosition(bottomPosition)
-                }
-                topPosition = NO_POSITION
-                bottomPosition = NO_POSITION
-            }
+            // reapply the filter
+            val searchItem = adapter.items.firstOrNull { it is MessagesSearch } as? MessagesSearch
+            adapter.filter.filter(searchText ?: searchItem?.searchText, null)
 
-            // show/hide relevant views
-            b.progressBar.isVisible = false
-            if (items.isNullOrEmpty()) {
-                b.list.isVisible = false
-                b.noData.isVisible = true
-            } else {
-                b.list.isVisible = true
-                b.noData.isVisible = false
+            // restore the previously saved scroll position
+            if (topPosition != NO_POSITION && topPosition > layoutManager.findLastCompletelyVisibleItemPosition()) {
+                b.list.scrollToPosition(topPosition)
+            } else if (bottomPosition != NO_POSITION && bottomPosition < layoutManager.findFirstVisibleItemPosition()) {
+                b.list.scrollToPosition(bottomPosition)
             }
+            topPosition = NO_POSITION
+            bottomPosition = NO_POSITION
         })
     }; return true }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (!isAdded)
+        if (!isAdded || !this::adapter.isInitialized)
             return
         val layoutManager = (b.list.layoutManager as? LinearLayoutManager)
-        val searchItem = adapter?.items?.firstOrNull { it is MessagesSearch } as? MessagesSearch
+        val searchItem = adapter.items.firstOrNull { it is MessagesSearch } as? MessagesSearch
 
         onPageDestroy?.invoke(position, Bundle(
             "topPosition" to layoutManager?.findFirstVisibleItemPosition(),

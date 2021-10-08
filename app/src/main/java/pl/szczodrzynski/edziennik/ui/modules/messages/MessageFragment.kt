@@ -27,7 +27,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore.Companion.LOGIN_TYPE_IDZIENNIK
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_DELETED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
-import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
@@ -53,6 +52,8 @@ class MessageFragment : Fragment(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    private val manager
+        get() = app.messageManager
     private lateinit var message: MessageFull
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -92,6 +93,35 @@ class MessageFragment : Fragment(), CoroutineScope {
             it.maxLines = if (it.maxLines == 30) 2 else 30
         }
 
+        val replyDrawable = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_reply_outline).apply {
+            sizeDp = 24
+            colorAttr(activity, android.R.attr.textColorPrimary)
+        }
+        val forwardDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_arrow_right).apply {
+            sizeDp = 24
+            colorAttr(activity, android.R.attr.textColorPrimary)
+        }
+        val deleteDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_delete_outline).apply {
+            sizeDp = 24
+            colorAttr(activity, android.R.attr.textColorPrimary)
+        }
+        val downloadDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_download_outline).apply {
+            sizeDp = 24
+            colorAttr(activity, android.R.attr.textColorPrimary)
+        }
+        b.replyButton.setCompoundDrawables(null, replyDrawable, null, null)
+        b.forwardButton.setCompoundDrawables(null, forwardDrawable, null, null)
+        b.deleteButton.setCompoundDrawables(null, deleteDrawable, null, null)
+        b.downloadButton.setCompoundDrawables(null, downloadDrawable, null, null)
+
+        b.messageStar.onClick {
+            launch {
+                manager.starMessage(message, !message.isStarred)
+                manager.setStarIcon(b.messageStar, message)
+            }
+        }
+        b.messageStar.attachToastHint(R.string.hint_message_star)
+
         b.replyButton.onClick {
             activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE, Bundle(
                     "message" to app.gson.toJson(message),
@@ -110,10 +140,7 @@ class MessageFragment : Fragment(), CoroutineScope {
                     .setMessage(R.string.messages_delete_confirmation_text)
                     .setPositiveButton(R.string.ok) { _, _ ->
                         launch {
-                            message.type = TYPE_DELETED
-                            withContext(Dispatchers.Default) {
-                                app.db.messageDao().replace(message)
-                            }
+                            manager.markAsDeleted(message)
                             Toast.makeText(activity, "Wiadomość przeniesiona do usuniętych", Toast.LENGTH_SHORT).show()
                             activity.navigateUp()
                         }
@@ -127,59 +154,10 @@ class MessageFragment : Fragment(), CoroutineScope {
         }
 
         launch {
-
-            val messageString = arguments?.getString("message")
-            val messageId = arguments?.getLong("messageId")
-            if (messageId == null) {
+            message = manager.getMessage(App.profileId, arguments) ?: run {
                 activity.navigateUp()
                 return@launch
             }
-
-            val msg = withContext(Dispatchers.Default) {
-
-                val msg =
-                        if (messageString != null)
-                            app.gson.fromJson(messageString, MessageFull::class.java)?.also {
-                                if (arguments?.getLong("sentDate") ?: 0L > 0L)
-                                    it.addedDate = arguments?.getLong("sentDate") ?: 0L
-                            }
-                        else
-                            app.db.messageDao().getByIdNow(App.profileId, messageId)
-
-                if (msg == null)
-                    return@withContext null
-
-                // make recipients ID-unique
-                // this helps when multiple profiles receive the same message
-                // (there are multiple -1 recipients for the same message ID)
-                val recipientsDistinct =
-                    msg.recipients?.distinctBy { it.id } ?: return@withContext null
-                msg.recipients?.clear()
-                msg.recipients?.addAll(recipientsDistinct)
-
-                // load recipients in sent messages
-                val teachers by lazy { app.db.teacherDao().getAllNow(App.profileId) }
-                msg.recipients?.forEach { recipient ->
-                    if (recipient.fullName == null) {
-                        recipient.fullName = teachers.firstOrNull { it.id == recipient.id }?.fullName ?: ""
-                    }
-                }
-
-                if (msg.type == TYPE_SENT && msg.senderName == null) {
-                    msg.senderName = app.profile.accountName ?: app.profile.studentNameLong
-                }
-
-                //msg.recipients = app.db.messageRecipientDao().getAllByMessageId(msg.profileId, msg.id)
-                if (msg.body != null && !msg.seen) {
-                    app.db.metadataDao().setSeen(msg.profileId, msg, true)
-                }
-                return@withContext msg
-            } ?: run {
-                activity.navigateUp()
-                return@launch
-            }
-
-            message = msg
             b.subject.text = message.subject
             checkMessage()
         }
@@ -208,7 +186,6 @@ class MessageFragment : Fragment(), CoroutineScope {
             }
         }
 
-        val readByAll = checkRecipients()
         if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_VULCAN) {
             // vulcan: change message status or download attachments
             if (message.type == TYPE_RECEIVED && !message.seen || message.attachmentIds == null) {
@@ -216,23 +193,13 @@ class MessageFragment : Fragment(), CoroutineScope {
                 return
             }
         }
-        else if (!readByAll) {
+        else if (!message.readByEveryone) {
             // if a sent msg is not read by everyone, download it again to check the read status
             EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
             return
         }
 
         showMessage()
-    }
-
-    private fun checkRecipients(): Boolean {
-        message.recipients?.forEach { recipient ->
-            if (recipient.id == -1L)
-                recipient.fullName = app.profile.accountName ?: app.profile.studentNameLong ?: ""
-            if (message.type == TYPE_SENT && recipient.readDate < 1)
-                return false
-        }
-        return true
     }
 
     private fun showMessage() {
@@ -245,6 +212,8 @@ class MessageFragment : Fragment(), CoroutineScope {
 
         b.subject.text = message.subject
 
+        manager.setStarIcon(b.messageStar, message)
+
         b.replyButton.isVisible = message.type == TYPE_RECEIVED || message.type == TYPE_DELETED
         b.deleteButton.isVisible = message.type == TYPE_RECEIVED
         if (message.type == TYPE_RECEIVED || message.type == TYPE_DELETED) {
@@ -255,9 +224,9 @@ class MessageFragment : Fragment(), CoroutineScope {
                     fabIcon = CommunityMaterial.Icon3.cmd_reply_outline
                 }
 
-                setFabOnClickListener(View.OnClickListener {
+                setFabOnClickListener {
                     b.replyButton.performClick()
-                })
+                }
             }
             activity.gainAttentionFAB()
         }

@@ -31,6 +31,8 @@ class MessageFull(
     var filterWeight = 0
     @Ignore
     var searchHighlightText: CharSequence? = null
+    @Ignore
+    var readByEveryone = true
 
     // metadata
     var seen = false

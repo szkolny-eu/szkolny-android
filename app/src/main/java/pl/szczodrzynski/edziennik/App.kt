@@ -73,6 +73,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     val buildManager by lazy { BuildManager(this) }
     val availabilityManager by lazy { AvailabilityManager(this) }
     val textStylingManager by lazy { TextStylingManager(this) }
+    val messageManager by lazy { MessageManager(this) }
 
     val db
         get() = App.db

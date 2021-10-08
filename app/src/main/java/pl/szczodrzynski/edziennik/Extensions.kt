@@ -814,6 +814,8 @@ fun View.attachToastHint(stringRes: Int) = onLongClick {
     true
 }
 
+fun View.detachToastHint() = setOnLongClickListener(null)
+
 fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
     observe(lifecycleOwner, object : Observer<T> {
         override fun onChanged(t: T?) {
