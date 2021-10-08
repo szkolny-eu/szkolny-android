@@ -142,8 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginHorizontal="8dp"
                         android:gravity="center_horizontal"
                         android:textAppearance="@style/NavView.TextView.Small"
                         tools:text="20 lis 2021\n14:26" />
