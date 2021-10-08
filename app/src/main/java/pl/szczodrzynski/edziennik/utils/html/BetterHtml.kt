@@ -26,7 +26,7 @@ object BetterHtml {
     val customSpanClasses = listOf(
         BoldSpan::class.java,
         ItalicSpan::class.java,
-        UnderlineSpan::class.java,
+        UnderlineCustomSpan::class.java,
         StrikethroughSpan::class.java,
         SubscriptSizeSpan::class.java,
         SuperscriptSizeSpan::class.java,
@@ -101,8 +101,9 @@ object BetterHtml {
                     Typeface.ITALIC -> ItalicSpan()
                     else -> null
                 }
-                is SubscriptSpan -> SubscriptSizeSpan(size = 10, dip = true)
-                is SuperscriptSpan -> SuperscriptSizeSpan(size = 10, dip = true)
+                is UnderlineSpan -> UnderlineCustomSpan()
+                is SubscriptSpan -> SubscriptSizeSpan()
+                is SuperscriptSpan -> SuperscriptSizeSpan()
                 else -> null
             }
 

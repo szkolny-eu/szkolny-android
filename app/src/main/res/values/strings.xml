@@ -744,7 +744,7 @@
     <string name="messages_compose_text_hint">Napisz wiadomość…</string>
     <string name="messages_compose_title">Napisz wiadomość</string>
     <string name="messages_compose_to_hint">Do</string>
-    <string name="messages_date_time_format" translatable="false">%s, %s</string>
+    <string name="messages_date_time_format" translatable="false">%s\n%s</string>
     <string name="messages_delete_confirmation">Czy chcesz usunąć wiadomość?</string>
     <string name="messages_delete_confirmation_text">Spowoduje to przeniesienie wiadomości do zakładki \"Usunięte\" w aplikacji. Zmiany nie wpłyną na wiadomość w e-dzienniku (nie zostanie ona tam usunięta).</string>
     <string name="messages_download_error">Błąd pobierania wiadomości</string>
@@ -1471,4 +1471,9 @@
     <string name="hint_style_subscript">Indeks dolny</string>
     <string name="hint_style_superscript">Indeks górny</string>
     <string name="messages_compose_style_clear">Wyczyść format</string>
+    <string name="hint_message_star">Oznacz gwiazdką</string>
+    <string name="message_forward">Przekaż dalej</string>
+    <string name="message_delete">Usuń</string>
+    <string name="message_reply">Odpowiedz</string>
+    <string name="message_download">Pobierz ponownie</string>
 </resources>

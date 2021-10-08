@@ -55,6 +55,11 @@ class MessageViewHolder(
         b.messageDate.setTextAppearance(activity, style)
         b.messageDate.typeface = typeface
 
+        if (adapter.onStarClick == null) {
+            b.messageStar.isVisible = false
+        }
+        b.messageStar.detachToastHint()
+
         val messageInfo = MessagesUtils.getMessageInfo(app, item, 48, 24, 18, 12)
         b.messageProfileBackground.setImageBitmap(messageInfo.profileImage)
         b.messageSender.text = messageInfo.profileName
@@ -74,6 +79,12 @@ class MessageViewHolder(
 
         adapter.onItemClick?.let { listener ->
             b.root.onClick { listener(item) }
+        }
+        adapter.onStarClick?.let { listener ->
+            b.messageStar.isVisible = true
+            adapter.manager.setStarIcon(b.messageStar, item)
+            b.messageStar.onClick { listener(item) }
+            b.messageStar.attachToastHint(R.string.hint_message_star)
         }
     }
 }

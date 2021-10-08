@@ -13,15 +13,16 @@ class MessagesComparator : Comparator<Any> {
             return 0
 
         return when {
-            // standard sorting
+            // descending sorting (1. true, 2. false)
+            o1.isStarred && !o2.isStarred -> -1
+            !o1.isStarred && o2.isStarred -> 1
+            // ascending sorting
             o1.filterWeight > o2.filterWeight -> 1
             o1.filterWeight < o2.filterWeight -> -1
-            else -> when {
-                // reversed sorting
-                o1.addedDate > o2.addedDate -> -1
-                o1.addedDate < o2.addedDate -> 1
-                else -> 0
-            }
+            // descending sorting
+            o1.addedDate > o2.addedDate -> -1
+            o1.addedDate < o2.addedDate -> 1
+            else -> 0
         }
     }
 }

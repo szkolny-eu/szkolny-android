@@ -22,7 +22,8 @@ import kotlin.coroutines.CoroutineContext
 class MessagesAdapter(
     val activity: AppCompatActivity,
     val teachers: List<Teacher>,
-    val onItemClick: ((item: MessageFull) -> Unit)? = null
+    val onItemClick: ((item: MessageFull) -> Unit)? = null,
+    val onStarClick: ((item: MessageFull) -> Unit)? = null,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), CoroutineScope, Filterable {
     companion object {
         private const val TAG = "MessagesAdapter"
@@ -32,13 +33,17 @@ class MessagesAdapter(
 
     private val app = activity.applicationContext as App
     // optional: place the manager here
+    internal val manager
+        get() = app.messageManager
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    // mutable var changed by the filter
     var items = listOf<Any>()
-    var allItems = listOf<Any>()
+    // mutable list managed by the fragment
+    val allItems = mutableListOf<Any>()
     val typefaceNormal: Typeface by lazy { Typeface.create(Typeface.DEFAULT, Typeface.NORMAL) }
     val typefaceBold: Typeface by lazy { Typeface.create(Typeface.DEFAULT, Typeface.BOLD) }
 

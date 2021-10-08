@@ -41,7 +41,7 @@ open class Message(
     }
 
     @ColumnInfo(name = "messageIsPinned")
-    var isPinned: Boolean = false
+    var isStarred: Boolean = false
 
     var hasAttachments = false // if the attachments are not yet downloaded but we already know there are some
         get() = field || attachmentIds.isNotNullNorEmpty()

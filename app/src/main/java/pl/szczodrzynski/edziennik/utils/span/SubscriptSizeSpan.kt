@@ -7,10 +7,10 @@ package pl.szczodrzynski.edziennik.utils.span
 import android.text.TextPaint
 import android.text.style.SubscriptSpan
 
-class SubscriptSizeSpan(
-    private val size: Int,
-    private val dip: Boolean,
-) : SubscriptSpan() {
+class SubscriptSizeSpan : SubscriptSpan() {
+
+    private val size = 10
+    private val dip = true
 
     override fun updateDrawState(textPaint: TextPaint) {
         super.updateDrawState(textPaint)

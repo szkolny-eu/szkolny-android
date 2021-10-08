@@ -13,11 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hootsuite.nachos.chip.ChipInfo
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
@@ -27,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.ERROR_MESSAGE_NOT_SENT
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
@@ -39,16 +38,12 @@ import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
 import pl.szczodrzynski.edziennik.utils.Themes
-import pl.szczodrzynski.edziennik.utils.html.BetterHtml
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
-import pl.szczodrzynski.edziennik.utils.span.BoldSpan
-import pl.szczodrzynski.edziennik.utils.span.ItalicSpan
-import pl.szczodrzynski.edziennik.utils.span.SubscriptSizeSpan
-import pl.szczodrzynski.edziennik.utils.span.SuperscriptSizeSpan
+import pl.szczodrzynski.edziennik.utils.span.*
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import kotlin.coroutines.CoroutineContext
-import kotlin.text.replace
 
 class MessagesComposeFragment : Fragment(), CoroutineScope {
     companion object {
@@ -63,14 +58,17 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+//    private val manager
+//        get() = app.messageManager
+    private val textStylingManager
+        get() = app.textStylingManager
     private val profileConfig by lazy { app.config.forProfile().ui }
     private val greetingText
         get() = profileConfig.messagesGreetingText ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
 
     private var teachers = mutableListOf<Teacher>()
 
-    private var watchFormatChecked = true
-    private var watchSelectionChanged = true
+    private lateinit var stylingConfig: StylingConfig
     private val enableTextStyling
         get() = app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN
 
@@ -101,13 +99,6 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             // do your job
         }
 
-        if (App.devMode) {
-            b.textHtml.isVisible = true
-            b.text.addTextChangedListener {
-                b.textHtml.text = getHtmlText()
-            }
-        }
-
         activity.bottomSheet.prependItem(
             BottomSheetPrimaryItem(true)
                 .withTitle(R.string.menu_messages_config)
@@ -126,48 +117,11 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         }
     }
 
-    private fun getHtmlText(): String {
-        val text = b.text.text ?: return ""
-
-        // apparently setting the spans to a different Spannable calls the original EditText's
-        // onSelectionChanged with selectionStart=-1, which in effect unchecks the format toggles
-        watchSelectionChanged = false
-        var textHtml = if (enableTextStyling) {
-            val spanned = SpannableString(text)
-            // remove zero-length spans, as they seem to affect
-            // the whole line when converted to HTML
-            spanned.getSpans(0, spanned.length, Any::class.java).forEach {
-                val spanStart = spanned.getSpanStart(it)
-                val spanEnd = spanned.getSpanEnd(it)
-                if (spanStart == spanEnd && it::class.java in BetterHtml.customSpanClasses)
-                    spanned.removeSpan(it)
-            }
-            HtmlCompat.toHtml(spanned, HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
-                .replace("\n", "")
-                .replace(" dir=\"ltr\"", "")
-                .replace("</b><b>", "")
-                .replace("</i><i>", "")
-                .replace("</u><u>", "")
-                .replace("</sub><sub>", "")
-                .replace("</sup><sup>", "")
-                .replace("p style=\"margin-top:0; margin-bottom:0;\"", "p")
-        } else {
-            text.toString()
-        }
-        watchSelectionChanged = true
-
-        if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_MOBIDZIENNIK) {
-            textHtml = textHtml
-                .replace("<br>", "<p>&nbsp;</p>")
-                .replace("<b>", "<strong>")
-                .replace("</b>", "</strong>")
-                .replace("<i>", "<em>")
-                .replace("</i>", "</em>")
-                .replace("<u>", "<span style=\"text-decoration: underline;\">")
-                .replace("</u>", "</span>")
-        }
-
-        return textHtml
+    private fun getMessageBody(): String {
+        return if (enableTextStyling)
+            textStylingManager.getHtmlText(stylingConfig)
+        else
+            b.text.text?.toString() ?: ""
     }
 
     private fun getRecipientList() {
@@ -183,80 +137,6 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 updateRecipientList(list)
             }
         }
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    private fun onFormatChecked(
-        group: MaterialButtonToggleGroup,
-        checkedId: Int,
-        isChecked: Boolean
-    ) {
-        if (!watchFormatChecked)
-            return
-        val span = when (checkedId) {
-            R.id.fontStyleBold -> BoldSpan()
-            R.id.fontStyleItalic -> ItalicSpan()
-            R.id.fontStyleUnderline -> UnderlineSpan()
-            R.id.fontStyleStrike -> StrikethroughSpan()
-            R.id.fontStyleSubscript -> SubscriptSizeSpan(10, dip = true)
-            R.id.fontStyleSuperscript -> SuperscriptSizeSpan(10, dip = true)
-            else -> return
-        }
-
-        // see comments in getHtmlText()
-        watchSelectionChanged = false
-        if (isChecked)
-            BetterHtml.applyFormat(span = span, editText = b.text)
-        else
-            BetterHtml.removeFormat(span = span, editText = b.text)
-        watchSelectionChanged = true
-
-        if (App.devMode)
-            b.textHtml.text = getHtmlText()
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    private fun onFormatClear(view: View) {
-        // shortened version on onFormatChecked(), removing all spans
-        watchSelectionChanged = false
-        BetterHtml.removeFormat(span = null, editText = b.text)
-        watchSelectionChanged = true
-        if (App.devMode)
-            b.textHtml.text = getHtmlText()
-        // force update of text style toggle states
-        onSelectionChanged(b.text.selectionStart, b.text.selectionEnd)
-    }
-
-    private fun onSelectionChanged(selectionStart: Int, selectionEnd: Int) {
-        if (!watchSelectionChanged)
-            return
-        val spanned = b.text.text ?: return
-        val spans = spanned.getSpans(selectionStart, selectionEnd, Any::class.java).mapNotNull {
-            if (it::class.java !in BetterHtml.customSpanClasses)
-                return@mapNotNull null
-            val spanStart = spanned.getSpanStart(it)
-            val spanEnd = spanned.getSpanEnd(it)
-            // remove 0-length spans after navigating out of them
-            if (spanStart == spanEnd)
-                spanned.removeSpan(it)
-            else if (spanned.getSpanFlags(it) hasSet SPAN_EXCLUSIVE_EXCLUSIVE)
-                spanned.setSpan(it, spanStart, spanEnd, SPAN_EXCLUSIVE_INCLUSIVE)
-
-            // names are helpful here
-            val isNotAfterWord = selectionEnd <= spanEnd
-            val isSelectionInWord = selectionStart != selectionEnd && selectionStart >= spanStart
-            val isCursorInWord = selectionStart == selectionEnd && selectionStart > spanStart
-            val isChecked = (isCursorInWord || isSelectionInWord) && isNotAfterWord
-            if (isChecked) it::class.java else null
-        }
-        watchFormatChecked = false
-        b.fontStyleBold.isChecked = BoldSpan::class.java in spans
-        b.fontStyleItalic.isChecked = ItalicSpan::class.java in spans
-        b.fontStyleUnderline.isChecked = UnderlineSpan::class.java in spans
-        b.fontStyleStrike.isChecked = StrikethroughSpan::class.java in spans
-        b.fontStyleSubscript.isChecked = SubscriptSizeSpan::class.java in spans
-        b.fontStyleSuperscript.isChecked = SuperscriptSizeSpan::class.java in spans
-        watchFormatChecked = true
     }
 
     private fun createView() {
@@ -318,54 +198,66 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.subjectLayout.isEnabled = false
         b.textLayout.isEnabled = false
 
+        val styles = listOf(
+            StylingConfig.Style(
+                button = b.fontStyleBold,
+                spanClass = BoldSpan::class.java,
+                icon = CommunityMaterial.Icon2.cmd_format_bold,
+                hint = R.string.hint_style_bold,
+            ),
+            StylingConfig.Style(
+                button = b.fontStyleItalic,
+                spanClass = ItalicSpan::class.java,
+                icon = CommunityMaterial.Icon2.cmd_format_italic,
+                hint = R.string.hint_style_italic,
+            ),
+            StylingConfig.Style(
+                button = b.fontStyleUnderline,
+                // a custom span is used to prevent issues with keyboards which underline words
+                spanClass = UnderlineCustomSpan::class.java,
+                icon = CommunityMaterial.Icon2.cmd_format_underline,
+                hint = R.string.hint_style_underline,
+            ),
+            StylingConfig.Style(
+                button = b.fontStyleStrike,
+                spanClass = StrikethroughSpan::class.java,
+                icon = CommunityMaterial.Icon2.cmd_format_strikethrough,
+                hint = R.string.hint_style_strike,
+            ),
+            StylingConfig.Style(
+                button = b.fontStyleSubscript,
+                spanClass = SubscriptSizeSpan::class.java,
+                icon = CommunityMaterial.Icon2.cmd_format_subscript,
+                hint = R.string.hint_style_subscript,
+            ),
+            StylingConfig.Style(
+                button = b.fontStyleSuperscript,
+                spanClass = SuperscriptSizeSpan::class.java,
+                icon = CommunityMaterial.Icon2.cmd_format_superscript,
+                hint = R.string.hint_style_superscript,
+            ),
+        )
+
+        stylingConfig = StylingConfig(
+            editText = b.text,
+            fontStyleGroup = b.fontStyle,
+            fontStyleClear = b.fontStyleClear,
+            styles = styles,
+            textHtml = if (App.devMode) b.textHtml else null,
+            htmlCompatibleMode = app.profile.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK,
+        )
+
         b.fontStyleLayout.isVisible = enableTextStyling
-        b.fontStyleBold.isEnabled = false
-        b.fontStyleItalic.isEnabled = false
-        b.fontStyleUnderline.isEnabled = false
-        b.fontStyleStrike.isEnabled = false
-        b.fontStyleSubscript.isEnabled = false
-        b.fontStyleSuperscript.isEnabled = false
-        b.fontStyleClear.isEnabled = false
-        b.text.setOnFocusChangeListener { _, hasFocus ->
-            b.fontStyleBold.isEnabled = hasFocus
-            b.fontStyleItalic.isEnabled = hasFocus
-            b.fontStyleUnderline.isEnabled = hasFocus
-            b.fontStyleStrike.isEnabled = hasFocus
-            b.fontStyleSubscript.isEnabled = hasFocus
-            b.fontStyleSuperscript.isEnabled = hasFocus
-            b.fontStyleClear.isEnabled = hasFocus
+        if (enableTextStyling) {
+            textStylingManager.attach(stylingConfig)
         }
 
-        b.fontStyleBold.text = CommunityMaterial.Icon2.cmd_format_bold.character.toString()
-        b.fontStyleItalic.text = CommunityMaterial.Icon2.cmd_format_italic.character.toString()
-        b.fontStyleUnderline.text = CommunityMaterial.Icon2.cmd_format_underline.character.toString()
-        b.fontStyleStrike.text = CommunityMaterial.Icon2.cmd_format_strikethrough.character.toString()
-        b.fontStyleSubscript.text = CommunityMaterial.Icon2.cmd_format_subscript.character.toString()
-        b.fontStyleSuperscript.text = CommunityMaterial.Icon2.cmd_format_superscript.character.toString()
-        b.fontStyleBold.attachToastHint(R.string.hint_style_bold)
-        b.fontStyleItalic.attachToastHint(R.string.hint_style_italic)
-        b.fontStyleUnderline.attachToastHint(R.string.hint_style_underline)
-        b.fontStyleStrike.attachToastHint(R.string.hint_style_strike)
-        b.fontStyleSubscript.attachToastHint(R.string.hint_style_subscript)
-        b.fontStyleSuperscript.attachToastHint(R.string.hint_style_superscript)
-
-        /*b.fontStyleBold.shapeAppearanceModel = b.fontStyleBold.shapeAppearanceModel
-            .toBuilder()
-            .setBottomLeftCornerSize(0f)
-            .build()
-        b.fontStyleSuperscript.shapeAppearanceModel = b.fontStyleBold.shapeAppearanceModel
-            .toBuilder()
-            .setBottomRightCornerSize(0f)
-            .build()
-        b.fontStyleClear.shapeAppearanceModel = b.fontStyleClear.shapeAppearanceModel
-            .toBuilder()
-            .setTopLeftCornerSize(0f)
-            .setTopRightCornerSize(0f)
-            .build()*/
-
-        b.fontStyle.addOnButtonCheckedListener(this::onFormatChecked)
-        b.fontStyleClear.setOnClickListener(this::onFormatClear)
-        b.text.setSelectionChangedListener(this::onSelectionChanged)
+        if (App.devMode) {
+            b.textHtml.isVisible = true
+            b.text.addTextChangedListener {
+                b.textHtml.text = getMessageBody()
+            }
+        }
 
         activity.navView.bottomBar.apply {
             fabEnable = true
@@ -533,7 +425,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         if (b.textLayout.counterMaxLength != -1 && b.text.length() > b.textLayout.counterMaxLength)
             return
 
-        val textHtml = getHtmlText()
+        val body = getMessageBody()
 
         activity.bottomSheet.hideKeyboard()
 
@@ -541,7 +433,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 .setTitle(R.string.messages_compose_confirm_title)
                 .setMessage(R.string.messages_compose_confirm_text)
                 .setPositiveButton(R.string.send) { _, _ ->
-                    EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), textHtml).enqueue(activity)
+                    EdziennikTask.messageSend(App.profileId, recipients, subject.trim(), body).enqueue(activity)
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()

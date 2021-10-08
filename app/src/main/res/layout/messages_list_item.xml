@@ -2,10 +2,9 @@
 <!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-4.
   -->
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -40,9 +39,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
+            android:paddingEnd="32dp"
+            android:paddingRight="32dp"
             android:singleLine="true"
-            android:textStyle="normal"
             android:textAppearance="@style/NavView.TextView.Helper"
+            android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
             app:layout_constraintTop_toBottomOf="@+id/messageSender"
@@ -72,6 +73,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginBottom="12dp"
+            android:paddingEnd="32dp"
+            android:paddingRight="32dp"
             android:singleLine="true"
             android:textAppearance="@style/NavView.TextView.Helper"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -79,6 +82,23 @@
             app:layout_constraintStart_toEndOf="@+id/messageProfileBackground"
             app:layout_constraintTop_toBottomOf="@+id/messageSubject"
             tools:text="Znajdź produkty, których szukasz. Witaj Kuba Szczodrzyński (Client" />
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/messageStar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            app:iiv_color="?android:textColorSecondary"
+            app:iiv_icon="cmd-star-outline"
+            app:iiv_size="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/messageDate"
+            tools:background="@android:drawable/star_off" />
 
         <TextView
             android:id="@+id/messageDate"
@@ -106,6 +126,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/messageDate"
             app:layout_constraintEnd_toStartOf="@+id/messageDate"
             app:layout_constraintTop_toTopOf="@+id/messageDate"
-            tools:srcCompat="@tools:sample/avatars[4]" />
+            tools:background="@tools:sample/avatars[4]" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

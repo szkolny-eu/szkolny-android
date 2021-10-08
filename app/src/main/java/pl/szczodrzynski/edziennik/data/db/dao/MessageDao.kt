@@ -29,7 +29,7 @@ abstract class MessageDao : BaseDao<Message, MessageFull> {
             LEFT JOIN metadata ON messageId = thingId AND thingType = ${Metadata.TYPE_MESSAGE} AND metadata.profileId = messages.profileId
         """
 
-        private const val ORDER_BY = """ORDER BY messageIsPinned, addedDate DESC"""
+        private const val ORDER_BY = """ORDER BY messageIsPinned DESC, addedDate DESC"""
     }
 
     private val selective by lazy { MessageDaoSelective(App.db) }
