@@ -320,7 +320,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         activity.gainAttentionFAB()
     }
 
-    private fun onBackPressed(): Boolean {
+    private fun onBeforeNavigate(): Boolean {
         val messageText = b.text.text?.toString()?.trim() ?: ""
         val greetingText = this.greetingText.trim()
         // navigateUp if nothing changed
@@ -340,10 +340,10 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             .setPositiveButton(R.string.save) { _, _ ->
                 saveDraft()
                 MessagesFragment.pageSelection = Message.TYPE_DRAFT
-                activity.loadTarget(DRAWER_ITEM_MESSAGES)
+                activity.loadTarget(DRAWER_ITEM_MESSAGES, skipBeforeNavigate = true)
             }
             .setNegativeButton(R.string.discard) { _, _ ->
-                activity.navigateUp()
+                activity.resumePausedNavigation()
             }
             .show()
     }
@@ -370,7 +370,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                     if (draftMessageId != null)
                         manager.deleteDraft(App.profileId, draftMessageId!!)
                     Toast.makeText(activity, R.string.messages_compose_draft_discarded, Toast.LENGTH_SHORT).show()
-                    activity.navigateUp()
+                    activity.navigateUp(skipBeforeNavigate = true)
                 }
             }
             .setNegativeButton(R.string.cancel, null)
@@ -486,14 +486,14 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         super.onResume()
         if (!isAdded || !this::activity.isInitialized)
             return
-        activity.onBackPressed = this::onBackPressed
+        activity.onBeforeNavigate = this::onBeforeNavigate
     }
 
     override fun onPause() {
         super.onPause()
-        if (!isAdded || !this::activity.isInitialized)
+        if (!this::activity.isInitialized)
             return
-        activity.onBackPressed = null
+        activity.onBeforeNavigate = null
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -528,6 +528,6 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 "messageId" to event.message.id,
                 "message" to app.gson.toJson(event.message),
                 "sentDate" to event.sentDate
-        ))
+        ), skipBeforeNavigate = true)
     }
 }

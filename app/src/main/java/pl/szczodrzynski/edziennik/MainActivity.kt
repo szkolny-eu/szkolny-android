@@ -247,7 +247,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val requestHandler by lazy { MainActivityRequestHandler(this) }
 
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
-    var onBackPressed: (() -> Boolean)? = null
+
+    var onBeforeNavigate: (() -> Boolean)? = null
+    var pausedNavigationData: PausedNavigationData? = null
+        private set
 
     val app: App by lazy {
         applicationContext as App
@@ -367,11 +370,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
                 drawerItemSelectedListener = { id, _, _ ->
                     loadTarget(id)
-                    true
                 }
                 drawerProfileSelectedListener = { id, _, _, _ ->
-                    loadProfile(id)
-                    false
+                    // why is this negated -_-
+                    !loadProfile(id)
                 }
                 drawerProfileLongClickListener = { _, profile, _, view ->
                     if (view != null && profile is ProfileDrawerItem) {
@@ -982,31 +984,84 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             .setPopExitAnim(R.anim.task_close_exit) // new fragment exit
             .build()
 
+    private fun canNavigate(): Boolean = onBeforeNavigate?.invoke() != false
+
+    fun resumePausedNavigation(): Boolean {
+        if (pausedNavigationData == null)
+            return false
+        pausedNavigationData?.let { data ->
+            when (data) {
+                is PausedNavigationData.LoadProfile -> loadProfile(
+                    id = data.id,
+                    drawerSelection = data.drawerSelection,
+                    arguments = data.arguments,
+                    skipBeforeNavigate = true,
+                )
+                is PausedNavigationData.LoadTarget -> loadTarget(
+                    id = data.id,
+                    arguments = data.arguments,
+                    skipBeforeNavigate = true,
+                )
+                else -> return false
+            }
+        }
+        pausedNavigationData = null
+        return true
+    }
+
     fun loadProfile(id: Int) = loadProfile(id, navTargetId)
     // fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
-    fun loadProfile(profile: Profile) = loadProfile(
-            profile,
-            navTargetId,
-            null,
-            if (app.profile.archived) app.profile.id else null
-    )
-    private fun loadProfile(id: Int, drawerSelection: Int, arguments: Bundle? = null) {
+    fun loadProfile(profile: Profile): Boolean {
+        if (!canNavigate()) {
+            pausedNavigationData = PausedNavigationData.LoadProfile(
+                id = profile.id,
+                drawerSelection = navTargetId,
+                arguments = null,
+            )
+            return false
+        }
+
+        loadProfile(profile, navTargetId, null)
+        return true
+    }
+    private fun loadProfile(
+        id: Int,
+        drawerSelection: Int,
+        arguments: Bundle? = null,
+        skipBeforeNavigate: Boolean = false,
+    ): Boolean {
+        if (!skipBeforeNavigate && !canNavigate()) {
+            drawer.close()
+            // restore the previous profile after changing it with the drawer
+            // well, it still does not change the toolbar profile image,
+            // but that's now NavView's problem, not mine.
+            drawer.currentProfile = app.profile.id
+            pausedNavigationData = PausedNavigationData.LoadProfile(
+                id = id,
+                drawerSelection = drawerSelection,
+                arguments = arguments,
+            )
+            return false
+        }
+
         if (App.profileId == id) {
             drawer.currentProfile = app.profile.id
-            loadTarget(drawerSelection, arguments)
-            return
+            // skipBeforeNavigate because it's checked above already
+            loadTarget(drawerSelection, arguments, skipBeforeNavigate = true)
+            return true
         }
-        val previousArchivedId = if (app.profile.archived) app.profile.id else null
         app.profileLoad(id) {
-            loadProfile(it, drawerSelection, arguments, previousArchivedId)
+            loadProfile(it, drawerSelection, arguments)
         }
+        return true
     }
-    private fun loadProfile(profile: Profile, drawerSelection: Int, arguments: Bundle?, previousArchivedId: Int?) {
+    private fun loadProfile(profile: Profile, drawerSelection: Int, arguments: Bundle?) {
         App.profile = profile
         MessagesFragment.pageSelection = -1
 
         setDrawerItems()
 
+        val previousArchivedId = if (app.profile.archived) app.profile.id else null
         if (previousArchivedId != null) {
             // prevents accidentally removing the first item if the archived profile is not shown
             drawer.removeProfileById(previousArchivedId)
@@ -1027,25 +1082,43 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         // update it manually when switching profiles from other source
         //if (drawer.currentProfile != app.profile.id)
         drawer.currentProfile = app.profileId
-        loadTarget(drawerSelection, arguments)
+        loadTarget(drawerSelection, arguments, skipBeforeNavigate = true)
     }
-    fun loadTarget(id: Int, arguments: Bundle? = null) {
+    fun loadTarget(
+        id: Int,
+        arguments: Bundle? = null,
+        skipBeforeNavigate: Boolean = false,
+    ): Boolean {
         var loadId = id
         if (loadId == -1) {
             loadId = DRAWER_ITEM_HOME
         }
         val target = navTargetList
                 .firstOrNull { it.id == loadId }
-        if (target == null) {
+        return if (target == null) {
             Toast.makeText(this, getString(R.string.error_invalid_fragment, id), Toast.LENGTH_LONG).show()
-            loadTarget(navTargetList.first(), arguments)
-        }
-        else {
-            loadTarget(target, arguments)
+            loadTarget(navTargetList.first(), arguments, skipBeforeNavigate)
+        } else {
+            loadTarget(target, arguments, skipBeforeNavigate)
         }
     }
-    private fun loadTarget(target: NavTarget, args: Bundle? = null) {
+    private fun loadTarget(
+        target: NavTarget,
+        args: Bundle? = null,
+        skipBeforeNavigate: Boolean = false,
+    ): Boolean {
         d("NavDebug", "loadTarget(target = $target, args = $args)")
+
+        if (!skipBeforeNavigate && !canNavigate()) {
+            bottomSheet.close()
+            drawer.close()
+            pausedNavigationData = PausedNavigationData.LoadTarget(
+                id = target.id,
+                arguments = args,
+            )
+            return false
+        }
+        pausedNavigationData = null
 
         val arguments = args ?: navBackStack.firstOrNull { it.first.id == target.id }?.second ?: Bundle()
         bottomSheet.close()
@@ -1061,7 +1134,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         d("NavDebug", "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
 
-        val fragment = target.fragmentClass?.java?.newInstance() ?: return
+        val fragment = target.fragmentClass?.java?.newInstance() ?: return false
         fragment.arguments = arguments
         val transaction = fragmentManager.beginTransaction()
 
@@ -1139,32 +1212,32 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             )
             setTaskDescription(taskDesc)
         }
-
+        return true
     }
     fun reloadTarget() = loadTarget(navTarget)
 
-    private fun popBackStack(): Boolean {
+    private fun popBackStack(skipBeforeNavigate: Boolean = false): Boolean {
         if (navBackStack.size == 0) {
             return false
         }
         // TODO back stack argument support
         when {
             navTarget.popToHome -> {
-                loadTarget(HOME_ID)
+                loadTarget(HOME_ID, skipBeforeNavigate = skipBeforeNavigate)
             }
             navTarget.popTo != null -> {
-                loadTarget(navTarget.popTo ?: HOME_ID)
+                loadTarget(navTarget.popTo ?: HOME_ID, skipBeforeNavigate = skipBeforeNavigate)
             }
             else -> {
                 navBackStack.last().let {
-                    loadTarget(it.first, it.second)
+                    loadTarget(it.first, it.second, skipBeforeNavigate = skipBeforeNavigate)
                 }
             }
         }
         return true
     }
-    fun navigateUp() {
-        if (!popBackStack()) {
+    fun navigateUp(skipBeforeNavigate: Boolean = false) {
+        if (!popBackStack(skipBeforeNavigate)) {
             super.onBackPressed()
         }
     }
@@ -1297,8 +1370,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     || navTarget.id == DRAWER_ITEM_HOME)) {
                 b.navView.drawer.toggle()
             } else {
-                if (onBackPressed?.invoke() != false)
-                    navigateUp()
+                navigateUp()
             }
         }
     }
