@@ -79,10 +79,13 @@ object BetterHtml {
         @Suppress("DEPRECATION")
         val htmlSpannable = HtmlCompat.fromHtml(
             text,
-            HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_DIV,
+            HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM
+                    or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST
+                    or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_DIV
+                    or HtmlCompat.FROM_HTML_MODE_LEGACY,
             null,
             LiTagHandler()
-        )
+        ).trimEnd() // fromHtml seems to add two line breaks at the end, needlessly
 
         val spanned = SpannableStringBuilder(htmlSpannable)
         spanned.getSpans(0, spanned.length, Any::class.java).forEach {
