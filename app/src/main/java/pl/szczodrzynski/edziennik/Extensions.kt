@@ -738,6 +738,8 @@ fun Bundle(vararg properties: Pair<String, Any?>): Bundle {
                 is Short -> putShort(property.first, property.second as Short)
                 is Double -> putDouble(property.first, property.second as Double)
                 is Boolean -> putBoolean(property.first, property.second as Boolean)
+                is Bundle -> putBundle(property.first, property.second as Bundle)
+                is Parcelable -> putParcelable(property.first, property.second as Parcelable)
                 is Array<*> -> putParcelableArray(property.first, property.second as Array<out Parcelable>)
             }
         }
