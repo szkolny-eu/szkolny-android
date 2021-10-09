@@ -74,10 +74,9 @@ class MessageManager(private val app: App) {
             }
         } ?: return null
 
-        // make recipients ID-unique
         // this helps when multiple profiles receive the same message
         // (there are multiple -1 recipients for the same message ID)
-        val recipientsDistinct = message.recipients?.distinctBy { it.id } ?: return null
+        val recipientsDistinct = message.recipients?.filter { it.profileId == profileId } ?: return null
         message.recipients?.clear()
         message.recipients?.addAll(recipientsDistinct)
 
