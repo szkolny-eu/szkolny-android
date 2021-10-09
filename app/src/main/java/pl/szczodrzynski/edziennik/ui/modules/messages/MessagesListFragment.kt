@@ -11,9 +11,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_MESSAGES_COMPOSE
+import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_MESSAGES_DETAILS
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -52,8 +53,8 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
 
     override fun onPageCreated(): Boolean { startCoroutineTimer(100L) {
         val messageType = arguments.getInt("messageType", Message.TYPE_RECEIVED)
-        var topPosition = arguments.getInt("topPosition", NO_POSITION)
-        var bottomPosition = arguments.getInt("bottomPosition", NO_POSITION)
+        var recyclerViewState =
+            arguments?.getParcelable<LinearLayoutManager.SavedState>("recyclerViewState")
         val searchText = arguments?.getString("searchText")
 
         teachers = withContext(Dispatchers.Default) {
@@ -61,9 +62,13 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
         }
 
         adapter = MessagesAdapter(activity, teachers, onItemClick = {
-            activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, Bundle(
-                "messageId" to it.id
-            ))
+            val (target, args) =
+                if (it.type == Message.TYPE_DRAFT) {
+                    TARGET_MESSAGES_COMPOSE to Bundle("message" to app.gson.toJson(it))
+                } else {
+                    TARGET_MESSAGES_DETAILS to Bundle("messageId" to it.id)
+                }
+            activity.loadTarget(target, args)
         }, onStarClick = {
             this@MessagesListFragment.launch {
                 manager.starMessage(it, !it.isStarred)
@@ -121,16 +126,13 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
 
             // reapply the filter
             val searchItem = adapter.items.firstOrNull { it is MessagesSearch } as? MessagesSearch
-            adapter.filter.filter(searchText ?: searchItem?.searchText, null)
-
-            // restore the previously saved scroll position
-            if (topPosition != NO_POSITION && topPosition > layoutManager.findLastCompletelyVisibleItemPosition()) {
-                b.list.scrollToPosition(topPosition)
-            } else if (bottomPosition != NO_POSITION && bottomPosition < layoutManager.findFirstVisibleItemPosition()) {
-                b.list.scrollToPosition(bottomPosition)
+            adapter.filter.filter(searchText ?: searchItem?.searchText) {
+                // restore the previously saved scroll position
+                recyclerViewState?.let {
+                    layoutManager.onRestoreInstanceState(it)
+                }
+                recyclerViewState = null
             }
-            topPosition = NO_POSITION
-            bottomPosition = NO_POSITION
         })
     }; return true }
 
@@ -142,8 +144,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
         val searchItem = adapter.items.firstOrNull { it is MessagesSearch } as? MessagesSearch
 
         onPageDestroy?.invoke(position, Bundle(
-            "topPosition" to layoutManager?.findFirstVisibleItemPosition(),
-            "bottomPosition" to layoutManager?.findLastCompletelyVisibleItemPosition(),
+            "recyclerViewState" to layoutManager?.onSaveInstanceState(),
             "searchText" to searchItem?.searchText?.toString()
         ))
     }

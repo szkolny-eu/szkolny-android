@@ -13,17 +13,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
+import android.widget.ScrollView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.hootsuite.nachos.chip.ChipInfo
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.ERROR_MESSAGE_NOT_SENT
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
@@ -31,19 +33,19 @@ import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.utils.managers.MessageManager.UIConfig
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
-import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.span.*
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
+
 
 class MessagesComposeFragment : Fragment(), CoroutineScope {
     companion object {
@@ -58,19 +60,25 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-//    private val manager
-//        get() = app.messageManager
+    private val manager
+        get() = app.messageManager
     private val textStylingManager
         get() = app.textStylingManager
     private val profileConfig by lazy { app.config.forProfile().ui }
     private val greetingText
         get() = profileConfig.messagesGreetingText ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
 
-    private var teachers = mutableListOf<Teacher>()
+    private val teachers = mutableListOf<Teacher>()
 
     private lateinit var stylingConfig: StylingConfig
+    private lateinit var uiConfig: UIConfig
     private val enableTextStyling
         get() = app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN
+    private var changedRecipients = false
+    private var changedSubject = false
+    private var changedBody = false
+    private var discardDraftItem: BottomSheetPrimaryItem? = null
+    private var draftMessageId: Long? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -99,7 +107,30 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             // do your job
         }
 
-        activity.bottomSheet.prependItem(
+        discardDraftItem = BottomSheetPrimaryItem(true)
+            .withTitle(R.string.messages_compose_discard_draft)
+            .withIcon(CommunityMaterial.Icon3.cmd_text_box_remove_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                discardDraftDialog()
+            }
+
+        activity.bottomSheet.prependItems(
+            BottomSheetPrimaryItem(true)
+                .withTitle(R.string.messages_compose_send_long)
+                .withIcon(CommunityMaterial.Icon3.cmd_send_outline)
+                .withOnClickListener {
+                    activity.bottomSheet.close()
+                    sendMessage()
+                },
+            BottomSheetPrimaryItem(true)
+                .withTitle(R.string.messages_compose_save_draft)
+                .withIcon(CommunityMaterial.Icon.cmd_content_save_edit_outline)
+                .withOnClickListener {
+                    activity.bottomSheet.close()
+                    saveDraft()
+                },
+            BottomSheetSeparatorItem(true),
             BottomSheetPrimaryItem(true)
                 .withTitle(R.string.menu_messages_config)
                 .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
@@ -146,12 +177,15 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
         b.recipients.addTextChangedListener(onTextChanged = { _, _, _, _ ->
             b.recipientsLayout.error = null
+            changedRecipients = true
         })
         b.subject.addTextChangedListener(onTextChanged = { _, _, _, _ ->
             b.subjectLayout.error = null
+            changedSubject = true
         })
         b.text.addTextChangedListener(onTextChanged = { _, _, _, _ ->
             b.textLayout.error = null
+            changedBody = true
         })
 
         b.subjectLayout.counterMaxLength = when (app.profile.loginStoreType) {
@@ -238,6 +272,17 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             ),
         )
 
+        uiConfig = UIConfig(
+            context = activity,
+            recipients = b.recipients,
+            subject = b.subject,
+            body = b.text,
+            teachers = teachers,
+            greetingOnCompose = profileConfig.messagesGreetingOnCompose,
+            greetingOnReply = profileConfig.messagesGreetingOnReply,
+            greetingOnForward = profileConfig.messagesGreetingOnForward,
+            greetingText = greetingText,
+        )
         stylingConfig = StylingConfig(
             editText = b.text,
             fontStyleGroup = b.fontStyle,
@@ -250,6 +295,9 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.fontStyleLayout.isVisible = enableTextStyling
         if (enableTextStyling) {
             textStylingManager.attach(stylingConfig)
+            b.fontStyle.addOnButtonCheckedListener { _, _, _ ->
+                changedBody = true
+            }
         }
 
         if (App.devMode) {
@@ -272,10 +320,68 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         activity.gainAttentionFAB()
     }
 
+    private fun onBeforeNavigate(): Boolean {
+        val messageText = b.text.text?.toString()?.trim() ?: ""
+        val greetingText = this.greetingText.trim()
+        // navigateUp if nothing changed
+        if ((!changedRecipients || b.recipients.allChips.isEmpty())
+            && (!changedSubject || b.subject.text.isNullOrBlank())
+            && (!changedBody || messageText.isEmpty() || messageText == greetingText)
+        )
+            return true
+        saveDraftDialog()
+        return false
+    }
+
+    private fun saveDraftDialog() {
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.messages_compose_save_draft_title)
+            .setMessage(R.string.messages_compose_save_draft_text)
+            .setPositiveButton(R.string.save) { _, _ ->
+                saveDraft()
+                MessagesFragment.pageSelection = Message.TYPE_DRAFT
+                activity.loadTarget(DRAWER_ITEM_MESSAGES, skipBeforeNavigate = true)
+            }
+            .setNegativeButton(R.string.discard) { _, _ ->
+                activity.resumePausedNavigation()
+            }
+            .show()
+    }
+
+    private fun saveDraft() {
+        launch {
+            manager.saveAsDraft(uiConfig, stylingConfig, App.profileId, draftMessageId)
+            Toast.makeText(activity, R.string.messages_compose_draft_saved, Toast.LENGTH_SHORT).show()
+            changedRecipients = false
+            changedSubject = false
+            changedBody = false
+        }
+        if (discardDraftItem != null)
+            activity.bottomSheet.addItemAt(2, discardDraftItem!!)
+        discardDraftItem = null
+    }
+
+    private fun discardDraftDialog() {
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.messages_compose_discard_draft_title)
+            .setMessage(R.string.messages_compose_discard_draft_text)
+            .setPositiveButton(R.string.remove) { _, _ ->
+                launch {
+                    if (draftMessageId != null)
+                        manager.deleteDraft(App.profileId, draftMessageId!!)
+                    Toast.makeText(activity, R.string.messages_compose_draft_discarded, Toast.LENGTH_SHORT).show()
+                    activity.navigateUp(skipBeforeNavigate = true)
+                }
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
     @SuppressLint("SetTextI18n")
     private fun updateRecipientList(list: List<Teacher>) { launch {
         withContext(Dispatchers.Default) {
-            teachers = list.sortedBy { it.fullName }.toMutableList()
+            teachers.clear()
+            teachers.addAll(list.sortedBy { it.fullName })
             Teacher.types.mapTo(teachers) {
                 Teacher(-1, -it.toLong(), Teacher.typeName(activity, it), "")
             }
@@ -291,92 +397,29 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         val adapter = MessagesComposeSuggestionAdapter(activity, teachers)
         b.recipients.setAdapter(adapter)
 
-        if (profileConfig.messagesGreetingOnCompose)
-            b.text.setText(greetingText)
+        val message = manager.fillWithBundle(uiConfig, arguments)
+        if (message != null && message.type == Message.TYPE_DRAFT) {
+            draftMessageId = message.id
+            if (discardDraftItem != null)
+                activity.bottomSheet.addItemAt(2, discardDraftItem!!)
+            discardDraftItem = null
+        }
 
-        handleReplyMessage()
-        handleMailToIntent()
+        when {
+            b.recipients.text.isBlank() -> b.recipients.requestFocus()
+            b.subject.text.isNullOrBlank() -> b.subject.requestFocus()
+            else -> b.text.requestFocus()
+        }
+
+        if (!enableTextStyling)
+            b.text.setText(b.text.text?.toString())
+        b.text.setSelection(0)
+         (b.root as? ScrollView)?.smoothScrollTo(0, 0)
+
+        changedRecipients = false
+        changedSubject = false
+        changedBody = false
     }}
-
-    private fun handleReplyMessage() = launch {
-        val replyMessage = arguments?.getString("message")
-        if (replyMessage != null) {
-            val chipList = mutableListOf<ChipInfo>()
-            var subject = ""
-            val span = SpannableStringBuilder()
-            var body: CharSequence = ""
-
-            withContext(Dispatchers.Default) {
-                val msg = app.gson.fromJson(replyMessage, MessageFull::class.java)
-                val dateString = getString(R.string.messages_date_time_format, Date.fromMillis(msg.addedDate).formattedStringShort, Time.fromMillis(msg.addedDate).stringHM)
-                // add original message info
-                span.appendText("W dniu ")
-                span.appendSpan(dateString, ItalicSpan(), SPAN_EXCLUSIVE_EXCLUSIVE)
-                span.appendText(", ")
-                span.appendSpan(msg.senderName.fixName(), ItalicSpan(), SPAN_EXCLUSIVE_EXCLUSIVE)
-                span.appendText(" napisał(a):")
-                span.setSpan(BoldSpan(), 0, span.length, SPAN_EXCLUSIVE_EXCLUSIVE)
-                span.appendText("\n\n")
-
-                if (arguments?.getString("type") == "reply") {
-                    // add greeting text
-                    if (profileConfig.messagesGreetingOnReply)
-                        span.replace(0, 0, "$greetingText\n\n\n")
-                    else
-                        span.replace(0, 0, "\n\n")
-
-                    teachers.firstOrNull { it.id == msg.senderId }?.let { teacher ->
-                        teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
-                        chipList += ChipInfo(teacher.fullName, teacher)
-                    }
-                    subject = "Re: ${msg.subject}"
-                } else {
-                    // add greeting text
-                    if (profileConfig.messagesGreetingOnForward)
-                        span.replace(0, 0, "$greetingText\n\n\n")
-                    else
-                        span.replace(0, 0, "\n\n")
-
-                    subject = "Fwd: ${msg.subject}"
-                }
-                body = MessagesUtils.htmlToSpannable(activity, msg.body
-                        ?: "Nie udało się wczytać oryginalnej wiadomości.")//Html.fromHtml(msg.body?.replace("<br\\s?/?>".toRegex(), "\n") ?: "Nie udało się wczytać oryginalnej wiadomości.")
-            }
-
-            b.recipients.addTextWithChips(chipList)
-            if (b.recipients.text.isNullOrEmpty())
-                b.recipients.requestFocus()
-            else
-                b.text.requestFocus()
-            b.subject.setText(subject)
-            b.text.apply {
-                text = span.appendText(body)
-                if (!enableTextStyling)
-                    setText(text?.toString())
-                setSelection(0)
-            }
-            b.root.scrollTo(0, 0)
-        }
-        else {
-            b.recipients.requestFocus()
-        }
-    }
-
-    private fun handleMailToIntent() {
-        val teacherId = arguments?.getLong("messageRecipientId")
-        if (teacherId == 0L)
-            return
-
-        val chipList = mutableListOf<ChipInfo>()
-        teachers.firstOrNull { it.id == teacherId }?.let { teacher ->
-            teacher.image = getProfileImage(48, 24, 16, 12, 1, teacher.fullName)
-            chipList += ChipInfo(teacher.fullName, teacher)
-        }
-        b.recipients.addTextWithChips(chipList)
-
-        val subject = arguments?.getString("messageSubject")
-        b.subject.setText(subject ?: return)
-    }
 
     private fun sendMessage() {
         b.recipientsLayout.error = null
@@ -439,6 +482,20 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 .show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!isAdded || !this::activity.isInitialized)
+            return
+        activity.onBeforeNavigate = this::onBeforeNavigate
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!this::activity.isInitialized)
+            return
+        activity.onBeforeNavigate = null
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onRecipientListGetEvent(event: RecipientListGetEvent) {
         if (event.profileId != App.profileId)
@@ -460,11 +517,17 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             return
         }
 
+        if (draftMessageId != null) {
+            launch {
+                manager.deleteDraft(App.profileId, draftMessageId!!)
+            }
+        }
+
         activity.snackbar(app.getString(R.string.messages_sent_success), app.getString(R.string.ok))
         activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, Bundle(
                 "messageId" to event.message.id,
                 "message" to app.gson.toJson(event.message),
                 "sentDate" to event.sentDate
-        ))
+        ), skipBeforeNavigate = true)
     }
 }

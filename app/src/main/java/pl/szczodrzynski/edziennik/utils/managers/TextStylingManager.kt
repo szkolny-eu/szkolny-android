@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.widget.Button
 import android.widget.TextView
@@ -21,6 +22,10 @@ import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 class TextStylingManager(private val app: App) {
     companion object {
         private const val TAG = "TextStylingManager"
+    }
+
+    private val paragraphBrRegex by lazy {
+        "((?:<br>)+)</p>".toRegex()
     }
 
     data class StylingConfig(
@@ -86,8 +91,15 @@ class TextStylingManager(private val app: App) {
             .build()*/
     }
 
-    fun getHtmlText(config: StylingConfig): String {
-        val spanned = config.editText.text ?: return ""
+    fun getHtmlText(config: StylingConfig, enableHtmlCompatible: Boolean = true): String {
+        val text = config.editText.text?.trimEnd() ?: return ""
+        val spanned = SpannableStringBuilder(text)
+
+        val htmlCompatibleMode = config.htmlCompatibleMode && enableHtmlCompatible
+        val toHtmlFlag = if (htmlCompatibleMode)
+            HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL
+        else
+            HtmlCompat.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE
 
         // apparently setting the spans to a different Spannable calls the original EditText's
         // onSelectionChanged with selectionStart=-1, which in effect unchecks the format toggles
@@ -101,7 +113,7 @@ class TextStylingManager(private val app: App) {
             if (spanStart == spanEnd && it::class.java in BetterHtml.customSpanClasses)
                 spanned.removeSpan(it)
         }
-        var textHtml = HtmlCompat.toHtml(spanned, HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+        var textHtml = HtmlCompat.toHtml(spanned, toHtmlFlag)
             .replace("\n", "")
             .replace(" dir=\"ltr\"", "")
             .replace("</b><b>", "")
@@ -110,10 +122,15 @@ class TextStylingManager(private val app: App) {
             .replace("</sub><sub>", "")
             .replace("</sup><sup>", "")
             .replace("p style=\"margin-top:0; margin-bottom:0;\"", "p")
+            .replace("<br></p>", "</p><br>")
+            // replace multiple newlines so they convert fromHtml correctly
+            // this should not be breaking with htmlCompatibleMode == true,
+            // as line breaks cannot occur inside paragraphs with these flags
+            .replace(paragraphBrRegex, "</p>$1")
 
         config.watchSelectionChanged = true
 
-        if (config.htmlCompatibleMode) {
+        if (htmlCompatibleMode) {
             textHtml = textHtml
                 .replace("<br>", "<p>&nbsp;</p>")
                 .replace("<b>", "<strong>")

@@ -730,7 +730,7 @@
     <string name="messages_compose_confirm_title">Potwierdź wysłanie wiadomości</string>
     <string name="messages_compose_menu_attachment">Dodaj załącznik</string>
     <string name="messages_compose_menu_discard">Odrzuć wiadomość</string>
-    <string name="messages_compose_menu_save_draft">Zapisz wersję roboczą</string>
+    <string name="messages_compose_save_draft">Zapisz wersję roboczą</string>
     <string name="messages_compose_menu_send">Wyślij</string>
     <string name="messages_compose_recipient_exists">Ten odbiorca został już wybrany</string>
     <string name="messages_compose_recipients_empty">Wybierz odbiorców</string>
@@ -1476,4 +1476,17 @@
     <string name="message_delete">Usuń</string>
     <string name="message_reply">Odpowiedz</string>
     <string name="message_download">Pobierz ponownie</string>
+    <string name="messages_compose_subject_reply_format" translatable="false">Re: %s</string>
+    <string name="messages_compose_subject_forward_format" translatable="false">Fwd: %s</string>
+    <string name="messages_compose_body_load_failed">Nie udało się wczytać oryginalnej wiadomości.</string>
+    <string name="messages_compose_save_draft_title">Zapisz zmiany</string>
+    <string name="messages_compose_save_draft_text">Czy chcesz zapisać zmiany jako wersję roboczą?\n\nBędzie możliwa późniejsza edycja oraz wysłanie wiadomości.</string>
+    <string name="discard">Odrzuć</string>
+    <string name="messages_compose_draft_saved">Zapisano wersję roboczą</string>
+    <string name="messages_tab_draft">Wersje robocze</string>
+    <string name="messages_compose_send_long">Wyślij wiadomość</string>
+    <string name="messages_compose_discard_draft">Usuń wersję roboczą</string>
+    <string name="messages_compose_draft_discarded">Usunięto wersję roboczą</string>
+    <string name="messages_compose_discard_draft_title">Usuń wersję roboczą</string>
+    <string name="messages_compose_discard_draft_text">Czy chcesz odrzucić zapisaną wersję wiadomości? Spowoduje to również anulowanie wprowadzonych zmian i usunięcie wiadomości.</string>
 </resources>

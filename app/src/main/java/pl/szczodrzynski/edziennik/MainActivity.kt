@@ -17,7 +17,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,20 +29,17 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.*
-import com.mikepenz.materialdrawer.model.utils.withIsHiddenInMiniDrawer
+import com.mikepenz.materialdrawer.model.utils.hiddenInMiniDrawer
 import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
-import pl.szczodrzynski.edziennik.data.api.ERROR_API_INVALID_SIGNATURE
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
@@ -85,7 +81,6 @@ import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
-import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
@@ -102,15 +97,13 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
+    @Suppress("MemberVisibilityCanBePrivate")
     companion object {
-
-        var useOldMessages = false
 
         const val TAG = "MainActivity"
 
         const val DRAWER_PROFILE_ADD_NEW = 200
         const val DRAWER_PROFILE_SYNC_ALL = 201
-        const val DRAWER_PROFILE_EXPORT_DATA = 202
         const val DRAWER_PROFILE_MANAGE = 203
         const val DRAWER_PROFILE_MARK_ALL_AS_READ = 204
         const val DRAWER_ITEM_HOME = 1
@@ -255,6 +248,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
 
+    var onBeforeNavigate: (() -> Boolean)? = null
+    var pausedNavigationData: PausedNavigationData? = null
+        private set
+
     val app: App by lazy {
         applicationContext as App
     }
@@ -327,6 +324,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     window.statusBarColor = statusBarColor
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ColorUtils.calculateLuminance(statusBarColor) > 0.6) {
+                    @Suppress("deprecation")
                     window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 }
 
@@ -370,13 +368,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 drawerProfileListEmptyListener = {
                     onProfileListEmptyEvent(ProfileListEmptyEvent())
                 }
-                drawerItemSelectedListener = { id, position, drawerItem ->
+                drawerItemSelectedListener = { id, _, _ ->
                     loadTarget(id)
-                    true
                 }
-                drawerProfileSelectedListener = { id, profile, _, _ ->
-                    loadProfile(id)
-                    false
+                drawerProfileSelectedListener = { id, _, _, _ ->
+                    // why is this negated -_-
+                    !loadProfile(id)
                 }
                 drawerProfileLongClickListener = { _, profile, _, view ->
                     if (view != null && profile is ProfileDrawerItem) {
@@ -408,7 +405,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             savedInstanceState.clear()
         }
 
-        app.db.profileDao().all.observe(this, Observer { profiles ->
+        app.db.profileDao().all.observe(this) { profiles ->
             val allArchived = profiles.all { it.archived }
             drawer.setProfileList(profiles.filter { it.id >= 0 && (!it.archived || allArchived) }.toMutableList())
             //prepend the archived profile if loaded
@@ -424,18 +421,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 })
             }
             drawer.currentProfile = App.profileId
-        })
+        }
 
         setDrawerItems()
 
         handleIntent(intent?.extras)
 
-        app.db.metadataDao().unreadCounts.observe(this, Observer { unreadCounters ->
+        app.db.metadataDao().unreadCounts.observe(this) { unreadCounters ->
             unreadCounters.map {
                 it.type = it.thingType
             }
             drawer.setUnreadCounterList(unreadCounters)
-        })
+        }
 
         b.swipeRefreshLayout.isEnabled = true
         b.swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
@@ -543,29 +540,29 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_sync)
                         .withIcon(CommunityMaterial.Icon.cmd_download_outline)
-                        .withOnClickListener(View.OnClickListener {
+                        .withOnClickListener {
                             bottomSheet.close()
                             SyncViewListDialog(this, navTargetId)
-                        }),
+                        },
                 BottomSheetSeparatorItem(false),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_settings)
                         .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                        .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) }),
+                        .withOnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) },
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_feedback)
                         .withIcon(CommunityMaterial.Icon2.cmd_help_circle_outline)
-                        .withOnClickListener(View.OnClickListener { loadTarget(TARGET_FEEDBACK) })
+                        .withOnClickListener { loadTarget(TARGET_FEEDBACK) }
         )
         if (App.devMode) {
             bottomSheet += BottomSheetPrimaryItem(false)
                     .withTitle(R.string.menu_debug)
                     .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
-                    .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_DEBUG) })
+                    .withOnClickListener { loadTarget(DRAWER_ITEM_DEBUG) }
         }
     }
 
-    private var profileSettingClickListener = { id: Int, view: View? ->
+    private var profileSettingClickListener = { id: Int, _: View? ->
         when (id) {
             DRAWER_PROFILE_ADD_NEW -> {
                 requestHandler.requestLogin()
@@ -599,7 +596,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
          |_____/ \__, |_| |_|\___|
                   __/ |
                  |__*/
-    suspend fun syncCurrentFeature() {
+    private suspend fun syncCurrentFeature() {
         if (app.profile.archived) {
             MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.profile_archived_title)
@@ -756,7 +753,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.app_manager_dialog_title)
                 .setMessage(R.string.app_manager_dialog_text)
-                .setPositiveButton(R.string.ok) { dialog, which ->
+                .setPositiveButton(R.string.ok) { _, _ ->
                     try {
                         for (intent in appManagerIntentList) {
                             if (packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
@@ -772,7 +769,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         }
                     }
                 }
-                .setNeutralButton(R.string.dont_ask_again) { dialog, which ->
+                .setNeutralButton(R.string.dont_ask_again) { _, _ ->
                     app.config.sync.dontShowAppManagerDialog = true
                 }
                 .setCancelable(false)
@@ -967,6 +964,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         super.onNewIntent(intent)
         handleIntent(intent?.extras)
     }
+
+    @Suppress("deprecation")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         requestHandler.handleResult(requestCode, resultCode, data)
@@ -985,31 +984,84 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             .setPopExitAnim(R.anim.task_close_exit) // new fragment exit
             .build()
 
+    private fun canNavigate(): Boolean = onBeforeNavigate?.invoke() != false
+
+    fun resumePausedNavigation(): Boolean {
+        if (pausedNavigationData == null)
+            return false
+        pausedNavigationData?.let { data ->
+            when (data) {
+                is PausedNavigationData.LoadProfile -> loadProfile(
+                    id = data.id,
+                    drawerSelection = data.drawerSelection,
+                    arguments = data.arguments,
+                    skipBeforeNavigate = true,
+                )
+                is PausedNavigationData.LoadTarget -> loadTarget(
+                    id = data.id,
+                    arguments = data.arguments,
+                    skipBeforeNavigate = true,
+                )
+                else -> return false
+            }
+        }
+        pausedNavigationData = null
+        return true
+    }
+
     fun loadProfile(id: Int) = loadProfile(id, navTargetId)
-    fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
-    fun loadProfile(profile: Profile) = loadProfile(
-            profile,
-            navTargetId,
-            null,
-            if (app.profile.archived) app.profile.id else null
-    )
-    private fun loadProfile(id: Int, drawerSelection: Int, arguments: Bundle? = null) {
+    // fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
+    fun loadProfile(profile: Profile): Boolean {
+        if (!canNavigate()) {
+            pausedNavigationData = PausedNavigationData.LoadProfile(
+                id = profile.id,
+                drawerSelection = navTargetId,
+                arguments = null,
+            )
+            return false
+        }
+
+        loadProfile(profile, navTargetId, null)
+        return true
+    }
+    private fun loadProfile(
+        id: Int,
+        drawerSelection: Int,
+        arguments: Bundle? = null,
+        skipBeforeNavigate: Boolean = false,
+    ): Boolean {
+        if (!skipBeforeNavigate && !canNavigate()) {
+            drawer.close()
+            // restore the previous profile after changing it with the drawer
+            // well, it still does not change the toolbar profile image,
+            // but that's now NavView's problem, not mine.
+            drawer.currentProfile = app.profile.id
+            pausedNavigationData = PausedNavigationData.LoadProfile(
+                id = id,
+                drawerSelection = drawerSelection,
+                arguments = arguments,
+            )
+            return false
+        }
+
         if (App.profileId == id) {
             drawer.currentProfile = app.profile.id
-            loadTarget(drawerSelection, arguments)
-            return
+            // skipBeforeNavigate because it's checked above already
+            loadTarget(drawerSelection, arguments, skipBeforeNavigate = true)
+            return true
         }
-        val previousArchivedId = if (app.profile.archived) app.profile.id else null
         app.profileLoad(id) {
-            loadProfile(it, drawerSelection, arguments, previousArchivedId)
+            loadProfile(it, drawerSelection, arguments)
         }
+        return true
     }
-    private fun loadProfile(profile: Profile, drawerSelection: Int, arguments: Bundle?, previousArchivedId: Int?) {
+    private fun loadProfile(profile: Profile, drawerSelection: Int, arguments: Bundle?) {
         App.profile = profile
         MessagesFragment.pageSelection = -1
 
         setDrawerItems()
 
+        val previousArchivedId = if (app.profile.archived) app.profile.id else null
         if (previousArchivedId != null) {
             // prevents accidentally removing the first item if the archived profile is not shown
             drawer.removeProfileById(previousArchivedId)
@@ -1030,25 +1082,43 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         // update it manually when switching profiles from other source
         //if (drawer.currentProfile != app.profile.id)
         drawer.currentProfile = app.profileId
-        loadTarget(drawerSelection, arguments)
+        loadTarget(drawerSelection, arguments, skipBeforeNavigate = true)
     }
-    fun loadTarget(id: Int, arguments: Bundle? = null) {
+    fun loadTarget(
+        id: Int,
+        arguments: Bundle? = null,
+        skipBeforeNavigate: Boolean = false,
+    ): Boolean {
         var loadId = id
         if (loadId == -1) {
             loadId = DRAWER_ITEM_HOME
         }
         val target = navTargetList
                 .firstOrNull { it.id == loadId }
-        if (target == null) {
+        return if (target == null) {
             Toast.makeText(this, getString(R.string.error_invalid_fragment, id), Toast.LENGTH_LONG).show()
-            loadTarget(navTargetList.first(), arguments)
-        }
-        else {
-            loadTarget(target, arguments)
+            loadTarget(navTargetList.first(), arguments, skipBeforeNavigate)
+        } else {
+            loadTarget(target, arguments, skipBeforeNavigate)
         }
     }
-    private fun loadTarget(target: NavTarget, args: Bundle? = null) {
+    private fun loadTarget(
+        target: NavTarget,
+        args: Bundle? = null,
+        skipBeforeNavigate: Boolean = false,
+    ): Boolean {
         d("NavDebug", "loadTarget(target = $target, args = $args)")
+
+        if (!skipBeforeNavigate && !canNavigate()) {
+            bottomSheet.close()
+            drawer.close()
+            pausedNavigationData = PausedNavigationData.LoadTarget(
+                id = target.id,
+                arguments = args,
+            )
+            return false
+        }
+        pausedNavigationData = null
 
         val arguments = args ?: navBackStack.firstOrNull { it.first.id == target.id }?.second ?: Bundle()
         bottomSheet.close()
@@ -1064,7 +1134,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         d("NavDebug", "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
 
-        val fragment = target.fragmentClass?.java?.newInstance() ?: return
+        val fragment = target.fragmentClass?.java?.newInstance() ?: return false
         fragment.arguments = arguments
         val transaction = fragmentManager.beginTransaction()
 
@@ -1134,6 +1204,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         // TASK DESCRIPTION
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+            @Suppress("deprecation")
             val taskDesc = ActivityManager.TaskDescription(
                     if (target.id == HOME_ID) getString(R.string.app_name) else getString(R.string.app_task_format, getString(target.name)),
                     bm,
@@ -1141,32 +1212,32 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             )
             setTaskDescription(taskDesc)
         }
-
+        return true
     }
     fun reloadTarget() = loadTarget(navTarget)
 
-    private fun popBackStack(): Boolean {
+    private fun popBackStack(skipBeforeNavigate: Boolean = false): Boolean {
         if (navBackStack.size == 0) {
             return false
         }
         // TODO back stack argument support
         when {
             navTarget.popToHome -> {
-                loadTarget(HOME_ID)
+                loadTarget(HOME_ID, skipBeforeNavigate = skipBeforeNavigate)
             }
             navTarget.popTo != null -> {
-                loadTarget(navTarget.popTo ?: HOME_ID)
+                loadTarget(navTarget.popTo ?: HOME_ID, skipBeforeNavigate = skipBeforeNavigate)
             }
             else -> {
                 navBackStack.last().let {
-                    loadTarget(it.first, it.second)
+                    loadTarget(it.first, it.second, skipBeforeNavigate = skipBeforeNavigate)
                 }
             }
         }
         return true
     }
-    fun navigateUp() {
-        if (!popBackStack()) {
+    fun navigateUp(skipBeforeNavigate: Boolean = false) {
+        if (!popBackStack(skipBeforeNavigate)) {
             super.onBackPressed()
         }
     }
@@ -1214,17 +1285,22 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
          | |  | | '__/ _` \ \ /\ / / _ \ '__| | | __/ _ \ '_ ` _ \/ __|
          | |__| | | | (_| |\ V  V /  __/ |    | | ||  __/ | | | | \__ \
          |_____/|_|  \__,_| \_/\_/ \___|_|    |_|\__\___|_| |_| |_|__*/
+    @Suppress("UNUSED_PARAMETER")
     private fun createDrawerItem(target: NavTarget, level: Int = 1): IDrawerItem<*> {
-        val item = DrawerPrimaryItem()
-                .withIdentifier(target.id.toLong())
-                .withName(target.name)
-                .withIsHiddenInMiniDrawer(!app.config.ui.miniMenuButtons.contains(target.id))
-                .also { if (target.description != null) it.withDescription(target.description!!) }
-                .also { if (target.icon != null) it.withIcon(target.icon!!) }
-                .also { if (target.title != null) it.withAppTitle(getString(target.title!!)) }
-                .also { if (target.badgeTypeId != null) it.withBadgeStyle(drawer.badgeStyle)}
-                .withSelectedBackgroundAnimated(false)
-
+        val item = DrawerPrimaryItem().apply {
+            identifier = target.id.toLong()
+            nameRes = target.name
+            hiddenInMiniDrawer = !app.config.ui.miniMenuButtons.contains(target.id)
+            if (target.description != null)
+                descriptionRes = target.description!!
+            if (target.icon != null)
+                withIcon(target.icon!!)
+            if (target.title != null)
+                appTitle = getString(target.title!!)
+            if (target.badgeTypeId != null)
+                badgeStyle = drawer.badgeStyle
+            isSelectedBackgroundAnimated = false
+        }
         if (target.badgeTypeId != null)
             drawer.addUnreadCounterType(target.badgeTypeId!!, target.id)
         // TODO sub items
@@ -1266,11 +1342,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
 
             if (target.isInProfileList) {
-                drawerProfiles += ProfileSettingDrawerItem()
-                        .withIdentifier(target.id.toLong())
-                        .withName(target.name)
-                        .also { if (target.description != null) it.withDescription(target.description!!) }
-                        .also { if (target.icon != null) it.withIcon(target.icon!!) }
+                drawerProfiles += ProfileSettingDrawerItem().apply {
+                    identifier = target.id.toLong()
+                    nameRes = target.name
+                    if (target.description != null)
+                        descriptionRes = target.description!!
+                    if (target.icon != null)
+                        withIcon(target.icon!!)
+                }
             }
         }
 

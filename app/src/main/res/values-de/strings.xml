@@ -675,7 +675,7 @@
     <string name="messages_compose_confirm_title">Bestätigen Sie das Senden der Nachricht</string>
     <string name="messages_compose_menu_attachment">Fügen Sie einen Anhang hinzu</string>
     <string name="messages_compose_menu_discard">Nachricht abbrechen</string>
-    <string name="messages_compose_menu_save_draft">Entwurf speichern</string>
+    <string name="messages_compose_save_draft">Entwurf speichern</string>
     <string name="messages_compose_menu_send">Senden</string>
     <string name="messages_compose_recipient_exists">Dieser Empfänger wurde bereits ausgewählt</string>
     <string name="messages_compose_recipients_empty">Wählen Sie die Empfänger aus</string>
