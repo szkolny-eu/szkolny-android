@@ -677,7 +677,7 @@
     <string name="messages_compose_confirm_title">Confirm sending the message</string>
     <string name="messages_compose_menu_attachment">Add an attachment</string>
     <string name="messages_compose_menu_discard">Abort message</string>
-    <string name="messages_compose_menu_save_draft">Save draft</string>
+    <string name="messages_compose_save_draft">Save draft</string>
     <string name="messages_compose_menu_send">Send</string>
     <string name="messages_compose_recipient_exists">This recipient has already been selected</string>
     <string name="messages_compose_recipients_empty">Select recipients</string>

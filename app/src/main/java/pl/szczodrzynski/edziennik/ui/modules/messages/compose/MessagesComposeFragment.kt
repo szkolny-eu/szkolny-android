@@ -43,6 +43,7 @@ import pl.szczodrzynski.edziennik.utils.managers.MessageManager.UIConfig
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
 import pl.szczodrzynski.edziennik.utils.span.*
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
+import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
 
 
@@ -76,6 +77,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     private var changedRecipients = false
     private var changedSubject = false
     private var changedBody = false
+    private var discardDraftItem: BottomSheetPrimaryItem? = null
     private var draftMessageId: Long? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -105,7 +107,30 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             // do your job
         }
 
-        activity.bottomSheet.prependItem(
+        discardDraftItem = BottomSheetPrimaryItem(true)
+            .withTitle(R.string.messages_compose_discard_draft)
+            .withIcon(CommunityMaterial.Icon3.cmd_text_box_remove_outline)
+            .withOnClickListener {
+                activity.bottomSheet.close()
+                discardDraftDialog()
+            }
+
+        activity.bottomSheet.prependItems(
+            BottomSheetPrimaryItem(true)
+                .withTitle(R.string.messages_compose_send_long)
+                .withIcon(CommunityMaterial.Icon3.cmd_send_outline)
+                .withOnClickListener {
+                    activity.bottomSheet.close()
+                    sendMessage()
+                },
+            BottomSheetPrimaryItem(true)
+                .withTitle(R.string.messages_compose_save_draft)
+                .withIcon(CommunityMaterial.Icon.cmd_content_save_edit_outline)
+                .withOnClickListener {
+                    activity.bottomSheet.close()
+                    saveDraft()
+                },
+            BottomSheetSeparatorItem(true),
             BottomSheetPrimaryItem(true)
                 .withTitle(R.string.menu_messages_config)
                 .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
@@ -304,22 +329,52 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             && (!changedBody || messageText.isEmpty() || messageText == greetingText)
         )
             return true
+        saveDraftDialog()
+        return false
+    }
+
+    private fun saveDraftDialog() {
         MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.messages_compose_save_draft_title)
             .setMessage(R.string.messages_compose_save_draft_text)
             .setPositiveButton(R.string.save) { _, _ ->
-                launch {
-                    manager.saveAsDraft(uiConfig, stylingConfig, App.profileId, draftMessageId)
-                    Toast.makeText(activity, R.string.messages_compose_draft_saved, Toast.LENGTH_SHORT).show()
-                    MessagesFragment.pageSelection = Message.TYPE_DRAFT
-                    activity.loadTarget(DRAWER_ITEM_MESSAGES)
-                }
+                saveDraft()
+                MessagesFragment.pageSelection = Message.TYPE_DRAFT
+                activity.loadTarget(DRAWER_ITEM_MESSAGES)
             }
             .setNegativeButton(R.string.discard) { _, _ ->
                 activity.navigateUp()
             }
             .show()
-        return false
+    }
+
+    private fun saveDraft() {
+        launch {
+            manager.saveAsDraft(uiConfig, stylingConfig, App.profileId, draftMessageId)
+            Toast.makeText(activity, R.string.messages_compose_draft_saved, Toast.LENGTH_SHORT).show()
+            changedRecipients = false
+            changedSubject = false
+            changedBody = false
+        }
+        if (discardDraftItem != null)
+            activity.bottomSheet.addItemAt(2, discardDraftItem!!)
+        discardDraftItem = null
+    }
+
+    private fun discardDraftDialog() {
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.messages_compose_discard_draft_title)
+            .setMessage(R.string.messages_compose_discard_draft_text)
+            .setPositiveButton(R.string.remove) { _, _ ->
+                launch {
+                    if (draftMessageId != null)
+                        manager.deleteDraft(App.profileId, draftMessageId!!)
+                    Toast.makeText(activity, R.string.messages_compose_draft_discarded, Toast.LENGTH_SHORT).show()
+                    activity.navigateUp()
+                }
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -345,6 +400,9 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         val message = manager.fillWithBundle(uiConfig, arguments)
         if (message != null && message.type == Message.TYPE_DRAFT) {
             draftMessageId = message.id
+            if (discardDraftItem != null)
+                activity.bottomSheet.addItemAt(2, discardDraftItem!!)
+            discardDraftItem = null
         }
 
         when {
