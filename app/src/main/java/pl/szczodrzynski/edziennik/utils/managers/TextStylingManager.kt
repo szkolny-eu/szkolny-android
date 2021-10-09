@@ -91,7 +91,7 @@ class TextStylingManager(private val app: App) {
             .build()*/
     }
 
-    fun getHtmlText(config: StylingConfig, enableHtmlCompatible: Boolean = false): String {
+    fun getHtmlText(config: StylingConfig, enableHtmlCompatible: Boolean = true): String {
         val text = config.editText.text?.trimEnd() ?: return ""
         val spanned = SpannableStringBuilder(text)
 
