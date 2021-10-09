@@ -253,6 +253,7 @@
                         android:layout_weight="1"
                         android:paddingHorizontal="4dp"
                         android:paddingTop="16dp"
+                        android:paddingBottom="8dp"
                         android:text="@string/message_download"
                         android:textAllCaps="false"
                         android:visibility="gone"
