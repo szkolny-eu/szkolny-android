@@ -92,7 +92,7 @@ class TextStylingManager(private val app: App) {
     }
 
     fun getHtmlText(config: StylingConfig, enableHtmlCompatible: Boolean = false): String {
-        val text = config.editText.text?.trim() ?: return ""
+        val text = config.editText.text?.trimEnd() ?: return ""
         val spanned = SpannableStringBuilder(text)
 
         val htmlCompatibleMode = config.htmlCompatibleMode && enableHtmlCompatible
