@@ -17,7 +17,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,7 +29,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.*
-import com.mikepenz.materialdrawer.model.utils.withIsHiddenInMiniDrawer
+import com.mikepenz.materialdrawer.model.utils.hiddenInMiniDrawer
 import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -98,15 +97,13 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
+    @Suppress("MemberVisibilityCanBePrivate")
     companion object {
-
-        var useOldMessages = false
 
         const val TAG = "MainActivity"
 
         const val DRAWER_PROFILE_ADD_NEW = 200
         const val DRAWER_PROFILE_SYNC_ALL = 201
-        const val DRAWER_PROFILE_EXPORT_DATA = 202
         const val DRAWER_PROFILE_MANAGE = 203
         const val DRAWER_PROFILE_MARK_ALL_AS_READ = 204
         const val DRAWER_ITEM_HOME = 1
@@ -324,6 +321,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     window.statusBarColor = statusBarColor
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ColorUtils.calculateLuminance(statusBarColor) > 0.6) {
+                    @Suppress("deprecation")
                     window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 }
 
@@ -367,11 +365,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 drawerProfileListEmptyListener = {
                     onProfileListEmptyEvent(ProfileListEmptyEvent())
                 }
-                drawerItemSelectedListener = { id, position, drawerItem ->
+                drawerItemSelectedListener = { id, _, _ ->
                     loadTarget(id)
                     true
                 }
-                drawerProfileSelectedListener = { id, profile, _, _ ->
+                drawerProfileSelectedListener = { id, _, _, _ ->
                     loadProfile(id)
                     false
                 }
@@ -405,7 +403,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             savedInstanceState.clear()
         }
 
-        app.db.profileDao().all.observe(this, Observer { profiles ->
+        app.db.profileDao().all.observe(this) { profiles ->
             val allArchived = profiles.all { it.archived }
             drawer.setProfileList(profiles.filter { it.id >= 0 && (!it.archived || allArchived) }.toMutableList())
             //prepend the archived profile if loaded
@@ -421,18 +419,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 })
             }
             drawer.currentProfile = App.profileId
-        })
+        }
 
         setDrawerItems()
 
         handleIntent(intent?.extras)
 
-        app.db.metadataDao().unreadCounts.observe(this, Observer { unreadCounters ->
+        app.db.metadataDao().unreadCounts.observe(this) { unreadCounters ->
             unreadCounters.map {
                 it.type = it.thingType
             }
             drawer.setUnreadCounterList(unreadCounters)
-        })
+        }
 
         b.swipeRefreshLayout.isEnabled = true
         b.swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
@@ -540,29 +538,29 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_sync)
                         .withIcon(CommunityMaterial.Icon.cmd_download_outline)
-                        .withOnClickListener(View.OnClickListener {
+                        .withOnClickListener {
                             bottomSheet.close()
                             SyncViewListDialog(this, navTargetId)
-                        }),
+                        },
                 BottomSheetSeparatorItem(false),
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_settings)
                         .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                        .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) }),
+                        .withOnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) },
                 BottomSheetPrimaryItem(false)
                         .withTitle(R.string.menu_feedback)
                         .withIcon(CommunityMaterial.Icon2.cmd_help_circle_outline)
-                        .withOnClickListener(View.OnClickListener { loadTarget(TARGET_FEEDBACK) })
+                        .withOnClickListener { loadTarget(TARGET_FEEDBACK) }
         )
         if (App.devMode) {
             bottomSheet += BottomSheetPrimaryItem(false)
                     .withTitle(R.string.menu_debug)
                     .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
-                    .withOnClickListener(View.OnClickListener { loadTarget(DRAWER_ITEM_DEBUG) })
+                    .withOnClickListener { loadTarget(DRAWER_ITEM_DEBUG) }
         }
     }
 
-    private var profileSettingClickListener = { id: Int, view: View? ->
+    private var profileSettingClickListener = { id: Int, _: View? ->
         when (id) {
             DRAWER_PROFILE_ADD_NEW -> {
                 requestHandler.requestLogin()
@@ -596,7 +594,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
          |_____/ \__, |_| |_|\___|
                   __/ |
                  |__*/
-    suspend fun syncCurrentFeature() {
+    private suspend fun syncCurrentFeature() {
         if (app.profile.archived) {
             MaterialAlertDialogBuilder(this)
                     .setTitle(R.string.profile_archived_title)
@@ -753,7 +751,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.app_manager_dialog_title)
                 .setMessage(R.string.app_manager_dialog_text)
-                .setPositiveButton(R.string.ok) { dialog, which ->
+                .setPositiveButton(R.string.ok) { _, _ ->
                     try {
                         for (intent in appManagerIntentList) {
                             if (packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
@@ -769,7 +767,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         }
                     }
                 }
-                .setNeutralButton(R.string.dont_ask_again) { dialog, which ->
+                .setNeutralButton(R.string.dont_ask_again) { _, _ ->
                     app.config.sync.dontShowAppManagerDialog = true
                 }
                 .setCancelable(false)
@@ -964,6 +962,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         super.onNewIntent(intent)
         handleIntent(intent?.extras)
     }
+
+    @Suppress("deprecation")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         requestHandler.handleResult(requestCode, resultCode, data)
@@ -983,7 +983,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             .build()
 
     fun loadProfile(id: Int) = loadProfile(id, navTargetId)
-    fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
+    // fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
     fun loadProfile(profile: Profile) = loadProfile(
             profile,
             navTargetId,
@@ -1131,6 +1131,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         // TASK DESCRIPTION
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+            @Suppress("deprecation")
             val taskDesc = ActivityManager.TaskDescription(
                     if (target.id == HOME_ID) getString(R.string.app_name) else getString(R.string.app_task_format, getString(target.name)),
                     bm,
@@ -1211,17 +1212,22 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
          | |  | | '__/ _` \ \ /\ / / _ \ '__| | | __/ _ \ '_ ` _ \/ __|
          | |__| | | | (_| |\ V  V /  __/ |    | | ||  __/ | | | | \__ \
          |_____/|_|  \__,_| \_/\_/ \___|_|    |_|\__\___|_| |_| |_|__*/
+    @Suppress("UNUSED_PARAMETER")
     private fun createDrawerItem(target: NavTarget, level: Int = 1): IDrawerItem<*> {
-        val item = DrawerPrimaryItem()
-                .withIdentifier(target.id.toLong())
-                .withName(target.name)
-                .withIsHiddenInMiniDrawer(!app.config.ui.miniMenuButtons.contains(target.id))
-                .also { if (target.description != null) it.withDescription(target.description!!) }
-                .also { if (target.icon != null) it.withIcon(target.icon!!) }
-                .also { if (target.title != null) it.withAppTitle(getString(target.title!!)) }
-                .also { if (target.badgeTypeId != null) it.withBadgeStyle(drawer.badgeStyle)}
-                .withSelectedBackgroundAnimated(false)
-
+        val item = DrawerPrimaryItem().apply {
+            identifier = target.id.toLong()
+            nameRes = target.name
+            hiddenInMiniDrawer = !app.config.ui.miniMenuButtons.contains(target.id)
+            if (target.description != null)
+                descriptionRes = target.description!!
+            if (target.icon != null)
+                withIcon(target.icon!!)
+            if (target.title != null)
+                appTitle = getString(target.title!!)
+            if (target.badgeTypeId != null)
+                badgeStyle = drawer.badgeStyle
+            isSelectedBackgroundAnimated = false
+        }
         if (target.badgeTypeId != null)
             drawer.addUnreadCounterType(target.badgeTypeId!!, target.id)
         // TODO sub items
@@ -1263,11 +1269,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
 
             if (target.isInProfileList) {
-                drawerProfiles += ProfileSettingDrawerItem()
-                        .withIdentifier(target.id.toLong())
-                        .withName(target.name)
-                        .also { if (target.description != null) it.withDescription(target.description!!) }
-                        .also { if (target.icon != null) it.withIcon(target.icon!!) }
+                drawerProfiles += ProfileSettingDrawerItem().apply {
+                    identifier = target.id.toLong()
+                    nameRes = target.name
+                    if (target.description != null)
+                        descriptionRes = target.description!!
+                    if (target.icon != null)
+                        withIcon(target.icon!!)
+                }
             }
         }
 
