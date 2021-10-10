@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-11-12.
  */
 
-package pl.szczodrzynski.edziennik.ui.dialogs.event
+package pl.szczodrzynski.edziennik.ui.modules.event
 
 import android.view.View
 import android.widget.Toast

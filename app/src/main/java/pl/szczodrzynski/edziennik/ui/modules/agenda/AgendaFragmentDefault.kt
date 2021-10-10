@@ -22,7 +22,6 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.day.DayDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.event.AgendaEvent
@@ -33,6 +32,7 @@ import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchanges.LessonChangesE
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchanges.LessonChangesEventRenderer
 import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEvent
 import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEventRenderer
+import pl.szczodrzynski.edziennik.ui.modules.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.util.*
 

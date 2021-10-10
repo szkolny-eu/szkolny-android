@@ -52,7 +52,6 @@ import pl.szczodrzynski.edziennik.ui.dialogs.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
@@ -64,6 +63,7 @@ import pl.szczodrzynski.edziennik.ui.modules.debug.DebugFragment
 import pl.szczodrzynski.edziennik.ui.modules.debug.LabFragment
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.modules.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListFragment
 import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment

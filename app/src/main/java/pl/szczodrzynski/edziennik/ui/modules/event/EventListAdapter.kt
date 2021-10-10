@@ -2,7 +2,7 @@
  * Copyright (c) Kacper Ziubryniewicz 2019-11-30
  */
 
-package pl.szczodrzynski.edziennik.ui.dialogs.event
+package pl.szczodrzynski.edziennik.ui.modules.event
 
 import android.content.Context
 import android.view.LayoutInflater

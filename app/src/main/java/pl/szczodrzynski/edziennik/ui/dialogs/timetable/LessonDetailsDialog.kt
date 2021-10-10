@@ -26,10 +26,10 @@ import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
 import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.setText
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceDetailsDialog
+import pl.szczodrzynski.edziennik.ui.modules.event.EventDetailsDialog
+import pl.szczodrzynski.edziennik.ui.modules.event.EventListAdapter
+import pl.szczodrzynski.edziennik.ui.modules.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
