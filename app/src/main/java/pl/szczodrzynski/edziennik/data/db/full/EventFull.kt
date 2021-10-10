@@ -58,7 +58,7 @@ class EventFull(
     override val searchKeywords by lazy {
         listOf(
             listOf(topic, homeworkBody),
-            attachmentNames ?: listOf(),
+            attachmentNames,
             listOf(subjectLongName),
             listOf(teacherName),
             listOf(sharedByName),

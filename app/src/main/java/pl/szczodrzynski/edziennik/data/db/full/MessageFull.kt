@@ -38,11 +38,12 @@ class MessageFull(
     override val searchKeywords by lazy {
         listOf(
             when {
-                isSent -> recipients?.map { it.fullName } ?: listOf()
+                isSent -> recipients?.map { it.fullName }
                 else -> listOf(senderName)
             },
             listOf(subject),
             listOf(body),
+            attachmentNames,
         )
     }
 

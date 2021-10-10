@@ -80,7 +80,7 @@ abstract class SearchableAdapter<T : Searchable<T>>(
         return allItems.filterIsInstance<SearchField>().firstOrNull()
     }
 
-    fun highlightSearchText(item: T, text: CharSequence, color: Int): SpannableStringBuilder {
+    fun highlightSearchText(item: T, text: CharSequence, color: Int): CharSequence {
         if (item.searchHighlightText == null)
             return SpannableStringBuilder(text)
         return text.asSpannable(

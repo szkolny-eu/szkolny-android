@@ -10,7 +10,7 @@ interface Searchable<in T> : Comparable<Searchable<*>> {
      * A prioritized list of keywords sets. First items are of the highest priority.
      * Items within a keyword set have the same priority.
      */
-    val searchKeywords: List<List<String?>>
+    val searchKeywords: List<List<String?>?>
 
     /**
      * A priority assigned by [SearchFilter]. Lower numbers mean a higher priority.

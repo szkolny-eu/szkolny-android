@@ -71,6 +71,7 @@ class SearchFilter<T : Searchable<T>>(
             var matchWeight: Int
 
             searchKeywords.forEachIndexed { priority, keywords ->
+                keywords ?: return@forEachIndexed
                 keywords.forEach { keyword ->
                     matchWeight = getMatchWeight(keyword, prefix)
                     if (matchWeight != NO_MATCH) {
