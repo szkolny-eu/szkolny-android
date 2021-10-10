@@ -10,6 +10,7 @@ import androidx.room.Index
 import com.google.gson.annotations.SerializedName
 import pl.szczodrzynski.edziennik.MINUTE
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
+import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
@@ -97,6 +98,8 @@ open class Event(
      * or the topic contains the body already.
      */
     var homeworkBody: String? = null
+    val hasAttachments
+        get() = attachmentIds.isNotNullNorEmpty()
     var attachmentIds: MutableList<Long>? = null
     var attachmentNames: MutableList<String>? = null
 

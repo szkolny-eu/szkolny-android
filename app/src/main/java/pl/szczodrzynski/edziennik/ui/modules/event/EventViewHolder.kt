@@ -109,6 +109,8 @@ class EventViewHolder(
             b.addedBy.text.replace(addedBy, addedBySpanned)
         ).buildIconics()
 
+        b.attachmentIcon.isVisible = item.hasAttachments
+
         b.typeColor.background?.setTintColor(item.eventColor)
         b.typeColor.isVisible = adapter.showType
 

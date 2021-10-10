@@ -114,13 +114,10 @@
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/messageAttachmentImage"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_marginEnd="4dp"
             android:layout_marginRight="4dp"
-            android:adjustViewBounds="true"
-            android:paddingVertical="2dp"
-            android:scaleType="fitCenter"
             app:iiv_color="?android:textColorSecondary"
             app:iiv_icon="cmd-attachment"
             app:layout_constraintBottom_toBottomOf="@+id/messageDate"
