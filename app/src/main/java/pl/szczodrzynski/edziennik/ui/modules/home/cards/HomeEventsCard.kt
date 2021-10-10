@@ -22,9 +22,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.CardHomeEventsBinding
 import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.onClick
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.modules.event.EventDetailsDialog
+import pl.szczodrzynski.edziennik.ui.modules.event.EventListAdapter
+import pl.szczodrzynski.edziennik.ui.modules.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
@@ -82,7 +82,7 @@ class HomeEventsCard(
         )
 
         app.db.eventDao().getNearestNotDone(profile.id, Date.getToday(), 4).observe(activity, Observer { events ->
-            adapter.items = events
+            adapter.setAllItems(events)
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter
                 b.eventsView.apply {

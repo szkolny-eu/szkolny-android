@@ -2,40 +2,28 @@
  * Copyright (c) Kuba Szczodrzyński 2020-4-5.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.messages.viewholder
+package pl.szczodrzynski.edziennik.ui.modules.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.databinding.MessagesListItemSearchBinding
-import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesAdapter
-import pl.szczodrzynski.edziennik.ui.modules.messages.models.MessagesSearch
-import pl.szczodrzynski.edziennik.ui.modules.messages.utils.SearchTextWatcher
+import pl.szczodrzynski.edziennik.databinding.SearchItemBinding
 
 class SearchViewHolder(
     inflater: LayoutInflater,
     parent: ViewGroup,
-    val b: MessagesListItemSearchBinding = MessagesListItemSearchBinding.inflate(
+    val b: SearchItemBinding = SearchItemBinding.inflate(
         inflater,
         parent,
         false
-    )
-) : RecyclerView.ViewHolder(b.root), BindableViewHolder<MessagesSearch, MessagesAdapter> {
+    ),
+) : RecyclerView.ViewHolder(b.root) {
     companion object {
         private const val TAG = "SearchViewHolder"
     }
 
-    override fun onBind(
-        activity: AppCompatActivity,
-        app: App,
-        item: MessagesSearch,
-        position: Int,
-        adapter: MessagesAdapter
-    ) {
+    internal fun bind(item: SearchField, adapter: SearchableAdapter<*>) {
         val watcher = SearchTextWatcher(b, adapter.filter, item)
         b.searchEdit.removeTextChangedListener(watcher)
 

@@ -2,18 +2,17 @@
  * Copyright (c) Kuba Szczodrzyński 2021-4-14.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.messages.utils
+package pl.szczodrzynski.edziennik.ui.modules.search
 
 import android.text.Editable
 import android.text.TextWatcher
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.databinding.MessagesListItemSearchBinding
-import pl.szczodrzynski.edziennik.ui.modules.messages.models.MessagesSearch
+import pl.szczodrzynski.edziennik.databinding.SearchItemBinding
 
 class SearchTextWatcher(
-    private val b: MessagesListItemSearchBinding,
-    private val filter: MessagesFilter,
-    private val item: MessagesSearch
+    private val b: SearchItemBinding,
+    private val filter: SearchFilter<*>,
+    private val item: SearchField,
 ) : TextWatcher {
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit

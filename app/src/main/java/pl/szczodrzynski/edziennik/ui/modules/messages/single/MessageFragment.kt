@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-11-12.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.messages
+package pl.szczodrzynski.edziennik.ui.modules.messages.single
 
 import android.os.Bundle
 import android.text.Html
@@ -25,11 +25,11 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore.Companion.LOGIN_TYPE_IDZIENNIK
-import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_DELETED
-import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
+import pl.szczodrzynski.edziennik.ui.modules.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -188,7 +188,7 @@ class MessageFragment : Fragment(), CoroutineScope {
 
         if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_VULCAN) {
             // vulcan: change message status or download attachments
-            if (message.type == TYPE_RECEIVED && !message.seen || message.attachmentIds == null) {
+            if ((message.isReceived || message.isDeleted) && !message.seen || message.attachmentIds == null) {
                 EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
                 return
             }
@@ -214,9 +214,9 @@ class MessageFragment : Fragment(), CoroutineScope {
 
         manager.setStarIcon(b.messageStar, message)
 
-        b.replyButton.isVisible = message.type == TYPE_RECEIVED || message.type == TYPE_DELETED
-        b.deleteButton.isVisible = message.type == TYPE_RECEIVED
-        if (message.type == TYPE_RECEIVED || message.type == TYPE_DELETED) {
+        b.replyButton.isVisible = message.isReceived || message.isDeleted
+        b.deleteButton.isVisible = message.isReceived
+        if (message.isReceived || message.isDeleted) {
             activity.navView.apply {
                 bottomBar.apply {
                     fabEnable = true

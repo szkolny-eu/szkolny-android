@@ -87,7 +87,7 @@ class VulcanHebeSendMessage(
             }
 
             VulcanHebeMessages(data, null) {
-                val message = data.messageList.firstOrNull { it.type == Message.TYPE_SENT && it.subject == subject }
+                val message = data.messageList.firstOrNull { it.isSent && it.subject == subject }
                 val metadata = data.metadataList.firstOrNull { it.thingType == Metadata.TYPE_MESSAGE && it.thingId == messageId }
                 val event = MessageSentEvent(data.profileId, message, message?.addedDate)
 

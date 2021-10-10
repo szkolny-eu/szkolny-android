@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2020-4-4.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.messages
+package pl.szczodrzynski.edziennik.ui.modules.messages.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,10 +17,8 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_MESSAGES_COMPOSE
 import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_MESSAGES_DETAILS
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessagesListFragmentBinding
 import pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyFragment
-import pl.szczodrzynski.edziennik.ui.modules.messages.models.MessagesSearch
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 
@@ -63,7 +61,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
 
         adapter = MessagesAdapter(activity, teachers, onItemClick = {
             val (target, args) =
-                if (it.type == Message.TYPE_DRAFT) {
+                if (it.isDraft) {
                     TARGET_MESSAGES_COMPOSE to Bundle("message" to app.gson.toJson(it))
                 } else {
                     TARGET_MESSAGES_DETAILS to Bundle("messageId" to it.id)
@@ -98,17 +96,8 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
                 return@Observer
             }
 
-            if (adapter.allItems.isEmpty()) {
-                // items empty - add the search field
-                adapter.allItems += MessagesSearch().also {
-                    it.searchText = searchText ?: ""
-                }
-            } else {
-                // items not empty - remove all messages
-                adapter.allItems.removeAll { it is MessageFull }
-            }
-            // add all messages
-            adapter.allItems.addAll(messages)
+            // apply the new message list
+            adapter.setAllItems(messages, searchText, addSearchField = true)
 
             // configure the adapter & recycler view
             if (b.list.adapter == null) {
@@ -125,8 +114,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             val layoutManager = (b.list.layoutManager as? LinearLayoutManager) ?: return@Observer
 
             // reapply the filter
-            val searchItem = adapter.items.firstOrNull { it is MessagesSearch } as? MessagesSearch
-            adapter.filter.filter(searchText ?: searchItem?.searchText) {
+            adapter.getSearchField()?.applyTo(adapter) {
                 // restore the previously saved scroll position
                 recyclerViewState?.let {
                     layoutManager.onRestoreInstanceState(it)
@@ -141,11 +129,11 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
         if (!isAdded || !this::adapter.isInitialized)
             return
         val layoutManager = (b.list.layoutManager as? LinearLayoutManager)
-        val searchItem = adapter.items.firstOrNull { it is MessagesSearch } as? MessagesSearch
+        val searchField = adapter.getSearchField()
 
         onPageDestroy?.invoke(position, Bundle(
             "recyclerViewState" to layoutManager?.onSaveInstanceState(),
-            "searchText" to searchItem?.searchText?.toString()
+            "searchText" to searchField?.searchText?.toString()
         ))
     }
 }

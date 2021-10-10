@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-12-18.
  */
 
-package pl.szczodrzynski.edziennik.ui.dialogs.event
+package pl.szczodrzynski.edziennik.ui.modules.event
 
 import android.content.ActivityNotFoundException
 import android.content.Intent

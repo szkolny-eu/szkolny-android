@@ -2,24 +2,20 @@
  * Copyright (c) Kuba Szczodrzyński 2021-4-14.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.messages.utils
+package pl.szczodrzynski.edziennik.ui.modules.search
 
 import android.widget.Filter
 import pl.szczodrzynski.edziennik.cleanDiacritics
-import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.full.MessageFull
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesAdapter
 import java.util.*
 import kotlin.math.min
 
-class MessagesFilter(
-    private val adapter: MessagesAdapter
+class SearchFilter<T : Searchable<T>>(
+    private val adapter: SearchableAdapter<T>,
 ) : Filter() {
     companion object {
         private const val NO_MATCH = 1000
     }
 
-    private val comparator = MessagesComparator()
     private var prevCount = -1
 
     private val allItems
@@ -54,75 +50,58 @@ class MessagesFilter(
 
         if (prefix.isNullOrBlank()) {
             allItems.forEach {
-                if (it is MessageFull)
-                    it.searchHighlightText = null
+                it.searchPriority = NO_MATCH
+                it.searchHighlightText = null
             }
             results.values = allItems.toList()
             results.count = allItems.size
             return results
         }
 
-        val items = mutableListOf<Any>()
-
-        allItems.forEach {
-            if (it !is MessageFull) {
-                items.add(it)
-                return@forEach
+        val newItems = allItems.mapNotNull { item ->
+            if (item is SearchField) {
+                return@mapNotNull item
             }
-            it.filterWeight = NO_MATCH
-            it.searchHighlightText = null
+            item.searchPriority = NO_MATCH
+            item.searchHighlightText = null
 
-            var weight: Int
-            // weights 11..13 and 110
-            if (it.type == Message.TYPE_SENT) {
-                it.recipients?.forEach { recipient ->
-                    weight = getMatchWeight(recipient.fullName, prefix)
-                    if (weight != NO_MATCH) {
-                        if (weight == 3)
-                            weight = 100
-                        it.filterWeight = min(it.filterWeight, 10 + weight)
+            // get all keyword sets from the entity
+            val searchKeywords = item.searchKeywords
+            // a temporary variable for the loops below
+            var matchWeight: Int
+
+            searchKeywords.forEachIndexed { priority, keywords ->
+                keywords ?: return@forEachIndexed
+                keywords.forEach { keyword ->
+                    matchWeight = getMatchWeight(keyword, prefix)
+                    if (matchWeight != NO_MATCH) {
+                        // a match not at the word start boundary should be least prioritized
+                        if (matchWeight == 3)
+                            matchWeight = 100
+                        item.searchPriority = min(item.searchPriority, priority * 10 + matchWeight)
                     }
                 }
-            } else {
-                weight = getMatchWeight(it.senderName, prefix)
-                if (weight != NO_MATCH) {
-                    if (weight == 3)
-                        weight = 100
-                    it.filterWeight = min(it.filterWeight, 10 + weight)
-                }
             }
 
-            // weights 21..23 and 120
-            weight = getMatchWeight(it.subject, prefix)
-            if (weight != NO_MATCH) {
-                if (weight == 3)
-                    weight = 100
-                it.filterWeight = min(it.filterWeight, 20 + weight)
+            if (item.searchPriority != NO_MATCH) {
+                // the adapter is reversed, the search priority also should be
+                if (adapter.isReversed)
+                    item.searchPriority *= -1
+                item.searchHighlightText = prefix.toString()
+                return@mapNotNull item
             }
-
-            // weights 31..33 and 130
-            weight = getMatchWeight(it.body, prefix)
-            if (weight != NO_MATCH) {
-                if (weight == 3)
-                    weight = 100
-                it.filterWeight = min(it.filterWeight, 30 + weight)
-            }
-
-            if (it.filterWeight != NO_MATCH) {
-                it.searchHighlightText = prefix
-                items.add(it)
-            }
+            return@mapNotNull null
         }
 
-        Collections.sort(items, comparator)
-        results.values = items
-        results.count = items.size
+        results.values = newItems.sorted()
+        results.count = newItems.size
         return results
     }
 
     override fun publishResults(constraint: CharSequence?, results: FilterResults) {
         results.values?.let {
-            adapter.items = it as MutableList<Any>
+            @Suppress("UNCHECKED_CAST") // yes I know it's checked.
+            adapter.setFilteredItems(it as List<T>)
         }
         // do not re-bind the search box
         val count = results.count - 1

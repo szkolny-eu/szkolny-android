@@ -14,15 +14,15 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.databinding.DialogDayBinding
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventDetailsDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventListAdapter
-import pl.szczodrzynski.edziennik.ui.dialogs.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.lessonchange.LessonChangeDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchanges.LessonChangesEvent
 import pl.szczodrzynski.edziennik.ui.modules.agenda.lessonchanges.LessonChangesEventRenderer
 import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEvent
 import pl.szczodrzynski.edziennik.ui.modules.agenda.teacherabsence.TeacherAbsenceEventRenderer
+import pl.szczodrzynski.edziennik.ui.modules.event.EventDetailsDialog
+import pl.szczodrzynski.edziennik.ui.modules.event.EventListAdapter
+import pl.szczodrzynski.edziennik.ui.modules.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -161,7 +161,7 @@ class DayDialog(
         b.teacherAbsenceFrame.isVisible = teacherAbsences.isNotEmpty()
 
         adapter = EventListAdapter(
-                activity,
+                activity = activity,
                 showWeekDay = false,
                 showDate = false,
                 showType = true,
@@ -188,10 +188,12 @@ class DayDialog(
         )
 
         app.db.eventDao().getAllByDate(profileId, date).observe(activity) { events ->
-            adapter.items = if (eventTypeId != null)
-                events.filter { it.type == eventTypeId }
-            else
-                events
+            adapter.setAllItems(
+                if (eventTypeId != null)
+                    events.filter { it.type == eventTypeId }
+                else
+                    events,
+            )
 
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter
