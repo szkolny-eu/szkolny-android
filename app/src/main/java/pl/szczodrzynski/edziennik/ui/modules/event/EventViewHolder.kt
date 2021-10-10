@@ -80,6 +80,7 @@ class EventViewHolder(
             else null,
         ).concat(bullet)
 
+        val addedBy = item.sharedByName ?: item.teacherName ?: ""
         b.addedBy.setText(
             when (item.sharedBy) {
                 null -> when {
@@ -93,14 +94,16 @@ class EventViewHolder(
             /* 1$ */
             Date.fromMillis(item.addedDate).formattedString,
             /* 2$ */
-            adapter.highlightSearchText(
-                item = item,
-                text = item.sharedByName ?: item.teacherName ?: "",
-                color = colorHighlight
-            ),
+            addedBy,
             /* 3$ */
             item.teamName?.let { bullet + it } ?: "",
         )
+        val addedBySpanned = adapter.highlightSearchText(
+            item = item,
+            text = addedBy,
+            color = colorHighlight
+        )
+        b.addedBy.text = b.addedBy.text.replace(addedBy, addedBySpanned)
 
         b.typeColor.background?.setTintColor(item.eventColor)
         b.typeColor.isVisible = adapter.showType
