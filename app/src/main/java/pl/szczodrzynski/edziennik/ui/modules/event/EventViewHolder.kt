@@ -4,11 +4,13 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.event
 
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.mikepenz.iconics.utils.buildIconics
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.EventListItemBinding
@@ -55,7 +57,7 @@ class EventViewHolder(
             item = item,
             text = b.topic.text,
             color = colorHighlight
-        )
+        ).buildIconics()
         b.topic.maxLines = if (adapter.simpleMode) 2 else 3
 
         b.details.text = mutableListOf(
@@ -103,7 +105,9 @@ class EventViewHolder(
             text = addedBy,
             color = colorHighlight
         )
-        b.addedBy.text = b.addedBy.text.replace(addedBy, addedBySpanned)
+        b.addedBy.text = SpannableString(
+            b.addedBy.text.replace(addedBy, addedBySpanned)
+        ).buildIconics()
 
         b.typeColor.background?.setTintColor(item.eventColor)
         b.typeColor.isVisible = adapter.showType

@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
@@ -39,7 +40,7 @@ class EventManager(val app: App) : CoroutineScope {
     }
 
     fun setEventTopic(
-        title: IconicsTextView,
+        title: TextView,
         event: EventFull,
         showType: Boolean = true,
         doneIconColor: Int? = null
