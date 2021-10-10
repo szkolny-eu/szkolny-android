@@ -7,6 +7,7 @@ import androidx.room.Ignore
 import androidx.room.Relation
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
+import pl.szczodrzynski.edziennik.ui.modules.search.Searchable
 
 class MessageFull(
         profileId: Int, id: Long, type: Int,
@@ -16,7 +17,7 @@ class MessageFull(
         profileId, id, type,
         subject, body, senderId,
         addedDate
-) {
+), Searchable<MessageFull> {
     var senderName: String? = null
     @Relation(parentColumn = "messageId", entityColumn = "messageId", entity = MessageRecipient::class)
     var recipients: MutableList<MessageRecipientFull>? = null
@@ -28,9 +29,40 @@ class MessageFull(
     }
 
     @Ignore
-    var filterWeight = 0
+    override var searchPriority = 0
+
     @Ignore
-    var searchHighlightText: CharSequence? = null
+    override var searchHighlightText: CharSequence? = null
+
+    @delegate:Ignore
+    override val searchKeywords by lazy {
+        listOf(
+            when {
+                isSent -> recipients?.map { it.fullName } ?: listOf()
+                else -> listOf(senderName)
+            },
+            listOf(subject),
+            listOf(body)
+        )
+    }
+
+    override fun compareTo(other: Searchable<*>): Int {
+        if (other !is MessageFull)
+            return 0
+        return when {
+            // ascending sorting
+            searchPriority > other.searchPriority -> 1
+            searchPriority < other.searchPriority -> -1
+            // descending sorting (1. true, 2. false)
+            isStarred && !other.isStarred -> -1
+            !isStarred && other.isStarred -> 1
+            // descending sorting
+            addedDate > other.addedDate -> -1
+            addedDate < other.addedDate -> 1
+            else -> 0
+        }
+    }
+
     @Ignore
     var readByEveryone = true
 

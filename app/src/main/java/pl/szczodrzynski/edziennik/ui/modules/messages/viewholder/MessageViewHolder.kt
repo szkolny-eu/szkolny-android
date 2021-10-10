@@ -4,9 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.messages.viewholder
 
-import android.graphics.Typeface
-import android.text.style.BackgroundColorSpan
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +20,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 class MessageViewHolder(
     inflater: LayoutInflater,
     parent: ViewGroup,
-    val b: MessagesListItemBinding = MessagesListItemBinding.inflate(inflater, parent, false)
+    val b: MessagesListItemBinding = MessagesListItemBinding.inflate(inflater, parent, false),
 ) : RecyclerView.ViewHolder(b.root), BindableViewHolder<MessageFull, MessagesAdapter> {
     companion object {
         private const val TAG = "MessageViewHolder"
@@ -34,9 +31,8 @@ class MessageViewHolder(
         app: App,
         item: MessageFull,
         position: Int,
-        adapter: MessagesAdapter
+        adapter: MessagesAdapter,
     ) {
-        b.messageSubject.text = item.subject
         b.messageDate.text = Date.fromMillis(item.addedDate).formattedStringShort
         b.messageAttachmentImage.isVisible = item.hasAttachments
 
@@ -61,20 +57,18 @@ class MessageViewHolder(
 
         val messageInfo = MessagesUtils.getMessageInfo(app, item, 48, 24, 18, 12)
         b.messageProfileBackground.setImageBitmap(messageInfo.profileImage)
-        b.messageSender.text = messageInfo.profileName
 
-        item.searchHighlightText?.toString()?.let { highlight ->
-            val colorHighlight = R.attr.colorControlHighlight.resolveAttr(activity)
-
-            b.messageSubject.text = b.messageSubject.text.asSpannable(
-                StyleSpan(Typeface.BOLD), BackgroundColorSpan(colorHighlight),
-                substring = highlight, ignoreCase = true, ignoreDiacritics = true
-            )
-            b.messageSender.text = b.messageSender.text.asSpannable(
-                StyleSpan(Typeface.BOLD), BackgroundColorSpan(colorHighlight),
-                substring = highlight, ignoreCase = true, ignoreDiacritics = true
-            )
-        }
+        val colorHighlight = R.attr.colorControlHighlight.resolveAttr(activity)
+        b.messageSubject.text = adapter.highlightSearchText(
+            item = item,
+            text = item.subject,
+            color = colorHighlight
+        )
+        b.messageSender.text = adapter.highlightSearchText(
+            item = item,
+            text = messageInfo.profileName ?: "",
+            color = colorHighlight
+        )
 
         adapter.onItemClick?.let { listener ->
             b.root.onClick { listener(item) }
