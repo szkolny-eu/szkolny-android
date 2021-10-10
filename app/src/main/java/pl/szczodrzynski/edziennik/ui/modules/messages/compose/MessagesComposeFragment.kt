@@ -37,7 +37,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.managers.MessageManager.UIConfig
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig

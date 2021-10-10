@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2019-11-12.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.messages
+package pl.szczodrzynski.edziennik.ui.modules.messages.single
 
 import android.os.Bundle
 import android.text.Html
@@ -28,6 +28,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.LoginStore.Companion.LOGIN_TYPE
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
+import pl.szczodrzynski.edziennik.ui.modules.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.models.Date

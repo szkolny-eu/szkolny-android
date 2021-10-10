@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2020-4-5.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.messages.viewholder
+package pl.szczodrzynski.edziennik.ui.modules.messages.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +13,6 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessagesListItemBinding
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesAdapter
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.models.Date
 

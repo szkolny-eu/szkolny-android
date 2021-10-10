@@ -70,9 +70,9 @@ import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
 import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessageFragment
-import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.modules.messages.compose.MessagesComposeFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.list.MessagesFragment
+import pl.szczodrzynski.edziennik.ui.modules.messages.single.MessageFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsFragment

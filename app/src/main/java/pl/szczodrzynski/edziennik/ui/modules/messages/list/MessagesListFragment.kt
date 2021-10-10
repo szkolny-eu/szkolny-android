@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2020-4-4.
  */
 
-package pl.szczodrzynski.edziennik.ui.modules.messages
+package pl.szczodrzynski.edziennik.ui.modules.messages.list
 
 import android.os.Bundle
 import android.view.LayoutInflater

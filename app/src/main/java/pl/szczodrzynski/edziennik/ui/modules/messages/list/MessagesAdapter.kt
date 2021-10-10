@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.modules.messages
+package pl.szczodrzynski.edziennik.ui.modules.messages.list
 
 import android.graphics.Typeface
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
-import pl.szczodrzynski.edziennik.ui.modules.messages.viewholder.MessageViewHolder
 import pl.szczodrzynski.edziennik.ui.modules.search.SearchableAdapter
 
 class MessagesAdapter(

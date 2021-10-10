@@ -1,4 +1,4 @@
-package pl.szczodrzynski.edziennik.ui.modules.messages
+package pl.szczodrzynski.edziennik.ui.modules.messages.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
