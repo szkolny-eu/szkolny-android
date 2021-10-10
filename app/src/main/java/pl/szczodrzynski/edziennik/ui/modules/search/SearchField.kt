@@ -12,7 +12,7 @@ class SearchField(
 
     override val searchKeywords = emptyList<List<String>>()
     override var searchPriority = 0
-    override var searchHighlightText: CharSequence? = null
+    override var searchHighlightText: String? = null
     override fun compareTo(other: Searchable<*>) = 0
 
     fun applyTo(adapter: SearchableAdapter<*>, listener: Filter.FilterListener? = null) {

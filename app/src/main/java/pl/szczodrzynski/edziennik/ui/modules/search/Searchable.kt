@@ -20,5 +20,5 @@ interface Searchable<in T> : Comparable<Searchable<*>> {
     /**
      * The text to be highlighted when filtering.
      */
-    var searchHighlightText: CharSequence?
+    var searchHighlightText: String?
 }

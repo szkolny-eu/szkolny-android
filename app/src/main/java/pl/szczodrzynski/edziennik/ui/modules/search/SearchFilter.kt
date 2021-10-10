@@ -87,7 +87,7 @@ class SearchFilter<T : Searchable<T>>(
                 // the adapter is reversed, the search priority also should be
                 if (adapter.isReversed)
                     item.searchPriority *= -1
-                item.searchHighlightText = prefix
+                item.searchHighlightText = prefix.toString()
                 return@mapNotNull item
             }
             return@mapNotNull null

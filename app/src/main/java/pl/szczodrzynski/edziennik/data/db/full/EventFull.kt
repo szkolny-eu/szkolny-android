@@ -49,12 +49,15 @@ class EventFull(
     var teamCode: String? = null
 
     @Ignore
+    @Transient
     override var searchPriority = 0
 
     @Ignore
-    override var searchHighlightText: CharSequence? = null
+    @Transient
+    override var searchHighlightText: String? = null
 
     @delegate:Ignore
+    @delegate:Transient
     override val searchKeywords by lazy {
         listOf(
             listOf(topic, homeworkBody),
