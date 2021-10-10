@@ -3,6 +3,7 @@
  */
 package pl.szczodrzynski.edziennik.data.db.full
 
+import androidx.core.text.HtmlCompat
 import androidx.room.Ignore
 import androidx.room.Relation
 import pl.szczodrzynski.edziennik.data.db.entity.Message
@@ -28,6 +29,15 @@ class MessageFull(
         return this
     }
 
+    @delegate:Ignore
+    @delegate:Transient
+    val bodyHtml by lazy {
+        body?.let {
+            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
+    }
+
+
     @Ignore
     @Transient
     override var searchPriority = 0
@@ -45,7 +55,7 @@ class MessageFull(
                 else -> listOf(senderName)
             },
             listOf(subject),
-            listOf(body),
+            listOf(bodyHtml?.toString()),
             attachmentNames,
         )
     }

@@ -35,8 +35,7 @@ class MessageViewHolder(
         b.messageDate.text = Date.fromMillis(item.addedDate).formattedStringShort
         b.messageAttachmentImage.isVisible = item.hasAttachments
 
-        val text = item.body?.take(200) ?: ""
-        b.messageBody.text = MessagesUtils.htmlToSpannable(activity, text)
+        b.messageBody.text = item.bodyHtml?.take(200)
 
         val isRead = item.isSent || item.isDraft || item.seen
         val typeface = if (isRead) adapter.typefaceNormal else adapter.typefaceBold
