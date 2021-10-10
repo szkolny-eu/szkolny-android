@@ -42,7 +42,7 @@ class MessageFull(
                 else -> listOf(senderName)
             },
             listOf(subject),
-            listOf(body)
+            listOf(body),
         )
     }
 

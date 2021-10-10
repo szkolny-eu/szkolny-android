@@ -54,57 +54,57 @@ class HomeworkListFragment : LazyFragment(), CoroutineScope {
         }
 
         val adapter = EventListAdapter(
-                activity,
-                showWeekDay = true,
-                showDate = true,
-                showType = false,
-                showTime = true,
-                showSubject = true,
-                markAsSeen = true,
-                onItemClick = {
-                    EventDetailsDialog(
-                            activity,
-                            it
-                    )
-                },
-                onEventEditClick = {
-                    EventManualDialog(
-                            activity,
-                            it.profileId,
-                            editingEvent = it
-                    )
-                }
+            activity,
+            showWeekDay = true,
+            showDate = true,
+            showType = false,
+            showTime = true,
+            showSubject = true,
+            markAsSeen = true,
+            isReversed = homeworkDate == HomeworkDate.PAST,
+            onItemClick = {
+                EventDetailsDialog(
+                    activity,
+                    it
+                )
+            },
+            onEventEditClick = {
+                EventManualDialog(
+                    activity,
+                    it.profileId,
+                    editingEvent = it
+                )
+            }
         )
 
-        app.db.eventDao().getAllByType(App.profileId, Event.TYPE_HOMEWORK, filter).observe(this@HomeworkListFragment, Observer { items ->
+        app.db.eventDao().getAllByType(App.profileId, Event.TYPE_HOMEWORK, filter).observe(this@HomeworkListFragment, Observer { events ->
             if (!isAdded) return@Observer
 
-            // load & configure the adapter
-            adapter.items = items
-            if (items.isNotNullNorEmpty() && b.list.adapter == null) {
-                b.list.adapter = adapter
+            // show/hide relevant views
+            setSwipeToRefresh(events.isEmpty())
+            b.progressBar.isVisible = false
+            b.list.isVisible = events.isNotEmpty()
+            b.noData.isVisible = events.isEmpty()
+            if (events.isEmpty()) {
+                return@Observer
+            }
+
+            // apply the new event list
+            adapter.setAllItems(events, addSearchField = true)
+
+            // configure the adapter & recycler view
+            if (b.list.adapter == null) {
                 b.list.apply {
                     setHasFixedSize(true)
-                    layoutManager = LinearLayoutManager(context).apply {
-                        reverseLayout = homeworkDate == HomeworkDate.PAST
-                        stackFromEnd = homeworkDate == HomeworkDate.PAST
-                    }
+                    layoutManager = LinearLayoutManager(context)
                     addItemDecoration(SimpleDividerItemDecoration(context))
                     addOnScrollListener(onScrollListener)
+                    this.adapter = adapter
                 }
             }
-            adapter.notifyDataSetChanged()
-            setSwipeToRefresh(items.isNullOrEmpty())
 
-            // show/hide relevant views
-            b.progressBar.isVisible = false
-            if (items.isNullOrEmpty()) {
-                b.list.isVisible = false
-                b.noData.isVisible = true
-            } else {
-                b.list.isVisible = true
-                b.noData.isVisible = false
-            }
+            // reapply the filter
+            adapter.getSearchField()?.applyTo(adapter)
         })
     }; return true }
 }

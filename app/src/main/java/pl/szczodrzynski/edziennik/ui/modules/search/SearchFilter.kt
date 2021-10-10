@@ -50,6 +50,7 @@ class SearchFilter<T : Searchable<T>>(
 
         if (prefix.isNullOrBlank()) {
             allItems.forEach {
+                it.searchPriority = NO_MATCH
                 it.searchHighlightText = null
             }
             results.values = allItems.toList()
@@ -82,6 +83,9 @@ class SearchFilter<T : Searchable<T>>(
             }
 
             if (item.searchPriority != NO_MATCH) {
+                // the adapter is reversed, the search priority also should be
+                if (adapter.isReversed)
+                    item.searchPriority *= -1
                 item.searchHighlightText = prefix
                 return@mapNotNull item
             }
@@ -96,7 +100,7 @@ class SearchFilter<T : Searchable<T>>(
     override fun publishResults(constraint: CharSequence?, results: FilterResults) {
         results.values?.let {
             @Suppress("UNCHECKED_CAST") // yes I know it's checked.
-            adapter.items = it as List<T>
+            adapter.setFilteredItems(it as List<T>)
         }
         // do not re-bind the search box
         val count = results.count - 1

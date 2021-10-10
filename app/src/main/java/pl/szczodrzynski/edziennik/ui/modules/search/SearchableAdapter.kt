@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.search
 
+import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,19 +13,48 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.asSpannable
 import pl.szczodrzynski.edziennik.utils.span.BoldSpan
 
-abstract class SearchableAdapter<T : Searchable<T>> :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
+abstract class SearchableAdapter<T : Searchable<T>>(
+    val isReversed: Boolean = false,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
     companion object {
         const val ITEM_TYPE_SEARCH = 2137
     }
 
-    // mutable var changed by the filter
+    /**
+     * A mutable list managed by [setAllItems].
+     * Items are never displayed straight from this list.
+     * Items in this list are always sorted according to their
+     * natural order, with the [SearchField] preceding any other.
+     */
     val allItems = mutableListOf<T>()
-    // mutable list managed by the fragment
-    var items = listOf<T>()
-        internal set
 
-    fun setAllItems(items: List<T>, searchText: String? = null, addSearchField: Boolean = true) {
+    /**
+     * A mutable var changed by the [SearchFilter].
+     * This list is the only direct source of displayed items.
+     * Items in this list may be in reverse order ([isReversed]), with the [SearchField]
+     * still as the first item.
+     */
+    var items = listOf<T>()
+        private set
+
+    /**
+     * Set [items] as the currently displayed item list. The [items] are first
+     * sorted appropriately to the [isReversed] property.
+     */
+    internal fun setFilteredItems(items: List<T>) {
+        this.items = if (isReversed)
+            items.sortedDescending() // the sort is stable - SearchField should stay at the top
+        else
+            items.sorted()
+    }
+
+    /**
+     * Put [items] to the sorted, unfiltered data source.
+     *
+     * @param searchText the text to fill the [SearchField] with, by default
+     * @param addSearchField whether searching should be enabled and visible
+     */
+    fun setAllItems(items: List<T>, searchText: String? = null, addSearchField: Boolean = false) {
         if (allItems.isEmpty()) {
             // items empty - add the search field
             if (addSearchField) {
@@ -36,7 +66,11 @@ abstract class SearchableAdapter<T : Searchable<T>> :
             allItems.removeAll { it !is SearchField }
         }
         // add all new items
-        allItems.addAll(items)
+        allItems.addAll(items.sorted())
+        // show all items if searching is disabled
+        if (!addSearchField) {
+            setFilteredItems(allItems)
+        }
     }
 
     /**
@@ -46,9 +80,9 @@ abstract class SearchableAdapter<T : Searchable<T>> :
         return allItems.filterIsInstance<SearchField>().firstOrNull()
     }
 
-    fun highlightSearchText(item: T, text: CharSequence, color: Int): CharSequence {
+    fun highlightSearchText(item: T, text: CharSequence, color: Int): SpannableStringBuilder {
         if (item.searchHighlightText == null)
-            return text
+            return SpannableStringBuilder(text)
         return text.asSpannable(
             BoldSpan(),
             BackgroundColorSpan(color),

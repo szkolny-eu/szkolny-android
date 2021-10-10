@@ -228,7 +228,7 @@ class LessonDetailsDialog(
         )
 
         app.db.eventDao().getAllByDateTime(lesson.profileId, lessonDate, lessonTime).observe(activity, Observer { events ->
-            adapter.items = events
+            adapter.setAllItems(events)
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter
                 b.eventsView.apply {

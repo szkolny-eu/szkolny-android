@@ -97,7 +97,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             }
 
             // apply the new message list
-            adapter.setAllItems(messages, searchText)
+            adapter.setAllItems(messages, searchText, addSearchField = true)
 
             // configure the adapter & recycler view
             if (b.list.adapter == null) {
@@ -114,8 +114,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             val layoutManager = (b.list.layoutManager as? LinearLayoutManager) ?: return@Observer
 
             // reapply the filter
-            val searchField = adapter.getSearchField()
-            adapter.filter.filter(searchText ?: searchField?.searchText) {
+            adapter.getSearchField()?.applyTo(adapter) {
                 // restore the previously saved scroll position
                 recyclerViewState?.let {
                     layoutManager.onRestoreInstanceState(it)

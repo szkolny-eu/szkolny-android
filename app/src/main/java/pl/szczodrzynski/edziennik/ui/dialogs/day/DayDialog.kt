@@ -161,7 +161,7 @@ class DayDialog(
         b.teacherAbsenceFrame.isVisible = teacherAbsences.isNotEmpty()
 
         adapter = EventListAdapter(
-                activity,
+                activity = activity,
                 showWeekDay = false,
                 showDate = false,
                 showType = true,
@@ -188,10 +188,12 @@ class DayDialog(
         )
 
         app.db.eventDao().getAllByDate(profileId, date).observe(activity) { events ->
-            adapter.items = if (eventTypeId != null)
-                events.filter { it.type == eventTypeId }
-            else
-                events
+            adapter.setAllItems(
+                if (eventTypeId != null)
+                    events.filter { it.type == eventTypeId }
+                else
+                    events,
+            )
 
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter
