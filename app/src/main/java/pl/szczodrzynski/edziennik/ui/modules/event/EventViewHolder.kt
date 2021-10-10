@@ -53,10 +53,12 @@ class EventViewHolder(
         b.simpleMode = adapter.simpleMode
 
         manager.setEventTopic(b.topic, item, showType = false)
-        b.topic.text = adapter.highlightSearchText(
-            item = item,
-            text = b.topic.text,
-            color = colorHighlight
+        b.topic.text = SpannableString(
+            adapter.highlightSearchText(
+                item = item,
+                text = b.topic.text,
+                color = colorHighlight
+            )
         ).buildIconics()
         b.topic.maxLines = if (adapter.simpleMode) 2 else 3
 
