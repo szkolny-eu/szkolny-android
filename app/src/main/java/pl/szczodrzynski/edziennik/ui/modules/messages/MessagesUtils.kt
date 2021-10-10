@@ -9,7 +9,6 @@ import android.text.Spanned
 import androidx.core.graphics.ColorUtils
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.fixName
 import pl.szczodrzynski.edziennik.getNameInitials
@@ -123,10 +122,10 @@ object MessagesUtils {
     fun getMessageInfo(app: App, message: MessageFull, diameterDp: Int, textSizeBigDp: Int, textSizeMediumDp: Int, textSizeSmallDp: Int): MessageInfo {
         var profileImage: Bitmap? = null
         var profileName: String? = null
-        if (message.type == Message.TYPE_RECEIVED || message.type == Message.TYPE_DELETED) {
+        if (message.isReceived || message.isDeleted) {
             profileName = message.senderName?.fixName()
             profileImage = getProfileImage(diameterDp, textSizeBigDp, textSizeMediumDp, textSizeSmallDp, 1, profileName)
-        } else if (message.type == Message.TYPE_SENT || message.type == Message.TYPE_DRAFT && message.recipients != null) {
+        } else if (message.isSent || message.isDraft && message.recipients != null) {
             when (val count = message.recipients?.size ?: 0) {
                 0 -> {
                     profileName = app.getString(R.string.messages_draft_title)

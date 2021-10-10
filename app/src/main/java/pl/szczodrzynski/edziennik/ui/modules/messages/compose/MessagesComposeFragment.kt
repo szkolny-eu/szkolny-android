@@ -398,7 +398,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.recipients.setAdapter(adapter)
 
         val message = manager.fillWithBundle(uiConfig, arguments)
-        if (message != null && message.type == Message.TYPE_DRAFT) {
+        if (message != null && message.isDraft) {
             draftMessageId = message.id
             if (discardDraftItem != null)
                 activity.bottomSheet.addItemAt(2, discardDraftItem!!)

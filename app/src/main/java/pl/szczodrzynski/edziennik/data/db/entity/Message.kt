@@ -43,6 +43,15 @@ open class Message(
     @ColumnInfo(name = "messageIsPinned")
     var isStarred: Boolean = false
 
+    val isReceived
+        get() = type == TYPE_RECEIVED
+    val isSent
+        get() = type == TYPE_SENT
+    val isDeleted
+        get() = type == TYPE_DELETED
+    val isDraft
+        get() = type == TYPE_DRAFT
+
     var hasAttachments = false // if the attachments are not yet downloaded but we already know there are some
         get() = field || attachmentIds.isNotNullNorEmpty()
     var attachmentIds: MutableList<Long>? = null

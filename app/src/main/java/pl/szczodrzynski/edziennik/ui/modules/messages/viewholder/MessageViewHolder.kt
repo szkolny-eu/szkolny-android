@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessagesListItemBinding
 import pl.szczodrzynski.edziennik.ui.modules.grades.viewholder.BindableViewHolder
@@ -44,7 +43,7 @@ class MessageViewHolder(
         val text = item.body?.take(200) ?: ""
         b.messageBody.text = MessagesUtils.htmlToSpannable(activity, text)
 
-        val isRead = item.type == Message.TYPE_SENT || item.type == Message.TYPE_DRAFT || item.seen
+        val isRead = item.isSent || item.isDraft || item.seen
         val typeface = if (isRead) adapter.typefaceNormal else adapter.typefaceBold
         val style = if (isRead) R.style.NavView_TextView_Small else R.style.NavView_TextView_Normal
         // set text styles

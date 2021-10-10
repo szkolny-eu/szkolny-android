@@ -95,12 +95,12 @@ class MessageManager(private val app: App) {
                 recipient.fullName = teachers.firstOrNull { it.id == recipient.id }?.fullName ?: ""
 
             // unset the readByEveryone flag
-            if (recipient.readDate < 1 && message.type == Message.TYPE_SENT)
+            if (recipient.readDate < 1 && message.isSent)
                 message.readByEveryone = false
         }
 
         // store the account name as sender for sent messages
-        if (message.type == Message.TYPE_SENT && message.senderName == null) {
+        if (message.isSent && message.senderName == null) {
             message.senderName = app.profile.accountName ?: app.profile.studentNameLong
         }
 
@@ -193,7 +193,7 @@ class MessageManager(private val app: App) {
         else null
 
         when {
-            message != null && message.type == Message.TYPE_DRAFT -> {
+            message != null && message.isDraft -> {
                 fillWithDraftMessage(config, message)
             }
             message != null -> {

@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.ui.modules.messages.utils
 
 import android.widget.Filter
 import pl.szczodrzynski.edziennik.cleanDiacritics
-import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesAdapter
 import java.util.*
@@ -74,7 +73,7 @@ class MessagesFilter(
 
             var weight: Int
             // weights 11..13 and 110
-            if (it.type == Message.TYPE_SENT) {
+            if (it.isSent) {
                 it.recipients?.forEach { recipient ->
                     weight = getMatchWeight(recipient.fullName, prefix)
                     if (weight != NO_MATCH) {

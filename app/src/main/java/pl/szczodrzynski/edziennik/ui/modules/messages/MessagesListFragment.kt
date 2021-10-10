@@ -63,7 +63,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
 
         adapter = MessagesAdapter(activity, teachers, onItemClick = {
             val (target, args) =
-                if (it.type == Message.TYPE_DRAFT) {
+                if (it.isDraft) {
                     TARGET_MESSAGES_COMPOSE to Bundle("message" to app.gson.toJson(it))
                 } else {
                     TARGET_MESSAGES_DETAILS to Bundle("messageId" to it.id)

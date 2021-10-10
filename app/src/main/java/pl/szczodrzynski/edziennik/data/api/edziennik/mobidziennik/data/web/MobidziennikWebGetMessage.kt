@@ -10,8 +10,6 @@ import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
-import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
@@ -31,7 +29,7 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
     }
 
     init {
-        val typeUrl = if (message.type == Message.TYPE_SENT)
+        val typeUrl = if (message.isSent)
             "wiadwyslana"
         else
             "wiadodebrana"
@@ -46,7 +44,7 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
 
             val body = content.select(".wiadomosc_tresc").first()
 
-            if (message.type == TYPE_RECEIVED) {
+            if (message.isReceived) {
                 var readDate = System.currentTimeMillis()
                 Regexes.MOBIDZIENNIK_MESSAGE_READ_DATE.find(body.html())?.let {
                     val date = Date(

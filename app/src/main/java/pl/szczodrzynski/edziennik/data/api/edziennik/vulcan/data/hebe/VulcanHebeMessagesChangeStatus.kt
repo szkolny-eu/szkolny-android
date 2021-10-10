@@ -10,7 +10,6 @@ import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGES_STATUS
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
-import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -48,7 +47,7 @@ class VulcanHebeMessagesChangeStatus(
                 messageObject.seen = true
             }
 
-            if (messageObject.type != Message.TYPE_SENT) {
+            if (!messageObject.isSent) {
                 val messageRecipientObject = MessageRecipient(
                     profileId,
                     -1,
