@@ -1489,4 +1489,6 @@
     <string name="messages_compose_draft_discarded">Usunięto wersję roboczą</string>
     <string name="messages_compose_discard_draft_title">Usuń wersję roboczą</string>
     <string name="messages_compose_discard_draft_text">Czy chcesz odrzucić zapisaną wersję wiadomości? Spowoduje to również anulowanie wprowadzonych zmian i usunięcie wiadomości.</string>
+    <string name="login_mobidziennik_server_prefix">https://</string>
+    <string name="login_mobidziennik_server_suffix">.mobidziennik.pl/</string>
 </resources>

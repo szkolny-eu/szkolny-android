@@ -95,6 +95,10 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                 b.textEdit.addTextChangedListener {
                     b.textLayout.error = null
                 }
+                if (credential.prefix != null)
+                    b.textLayout.prefixText = app.getString(credential.prefix)
+                if (credential.suffix != null)
+                    b.textLayout.suffixText = app.getString(credential.suffix)
 
                 b.textEdit.id = credential.name
 

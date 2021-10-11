@@ -259,6 +259,8 @@ object LoginInfo {
                                 errorCodes = mapOf(
                                     ERROR_LOGIN_MOBIDZIENNIK_WEB_INVALID_ADDRESS to R.string.login_error_incorrect_address
                                 ),
+                                prefix = R.string.login_mobidziennik_server_prefix,
+                                suffix = R.string.login_mobidziennik_server_suffix,
                                 isRequired = true,
                                 validationRegex = "^[a-z0-9_\\-]+\$",
                                 caseMode = FormField.CaseMode.LOWER_CASE
@@ -397,6 +399,10 @@ object LoginInfo {
         override val errorCodes: Map<Int, Int>,
         @StringRes
         val hintText: Int? = null,
+        @StringRes
+        val prefix: Int? = null,
+        @StringRes
+        val suffix: Int? = null,
 
         val isRequired: Boolean = true,
         val validationRegex: String,
