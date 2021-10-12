@@ -38,6 +38,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.messages.list.MessagesFragment
+import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.managers.MessageManager.UIConfig
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
@@ -103,6 +104,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.breakpoints.visibility = if (App.devMode) View.VISIBLE else View.GONE
         b.breakpoints.setOnClickListener {
             b.breakpoints.isEnabled = true
+            @SuppressLint("SetTextI18n")
             b.breakpoints.text = "Breakpoints!"
             // do your job
         }
@@ -232,45 +234,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         b.subjectLayout.isEnabled = false
         b.textLayout.isEnabled = false
 
-        val styles = listOf(
-            StylingConfig.Style(
-                button = b.fontStyleBold,
-                spanClass = BoldSpan::class.java,
-                icon = CommunityMaterial.Icon2.cmd_format_bold,
-                hint = R.string.hint_style_bold,
-            ),
-            StylingConfig.Style(
-                button = b.fontStyleItalic,
-                spanClass = ItalicSpan::class.java,
-                icon = CommunityMaterial.Icon2.cmd_format_italic,
-                hint = R.string.hint_style_italic,
-            ),
-            StylingConfig.Style(
-                button = b.fontStyleUnderline,
-                // a custom span is used to prevent issues with keyboards which underline words
-                spanClass = UnderlineCustomSpan::class.java,
-                icon = CommunityMaterial.Icon2.cmd_format_underline,
-                hint = R.string.hint_style_underline,
-            ),
-            StylingConfig.Style(
-                button = b.fontStyleStrike,
-                spanClass = StrikethroughSpan::class.java,
-                icon = CommunityMaterial.Icon2.cmd_format_strikethrough,
-                hint = R.string.hint_style_strike,
-            ),
-            StylingConfig.Style(
-                button = b.fontStyleSubscript,
-                spanClass = SubscriptSizeSpan::class.java,
-                icon = CommunityMaterial.Icon2.cmd_format_subscript,
-                hint = R.string.hint_style_subscript,
-            ),
-            StylingConfig.Style(
-                button = b.fontStyleSuperscript,
-                spanClass = SuperscriptSizeSpan::class.java,
-                icon = CommunityMaterial.Icon2.cmd_format_superscript,
-                hint = R.string.hint_style_superscript,
-            ),
-        )
+        val styles = DefaultTextStyles.getAsList(b.fontStyle)
 
         uiConfig = UIConfig(
             context = activity,
@@ -285,17 +249,17 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         )
         stylingConfig = StylingConfig(
             editText = b.text,
-            fontStyleGroup = b.fontStyle,
-            fontStyleClear = b.fontStyleClear,
+            fontStyleGroup = b.fontStyle.styles,
+            fontStyleClear = b.fontStyle.clear,
             styles = styles,
             textHtml = if (App.devMode) b.textHtml else null,
             htmlCompatibleMode = app.profile.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK,
         )
 
-        b.fontStyleLayout.isVisible = enableTextStyling
+        b.fontStyle.root.isVisible = enableTextStyling
         if (enableTextStyling) {
             textStylingManager.attach(stylingConfig)
-            b.fontStyle.addOnButtonCheckedListener { _, _, _ ->
+            b.fontStyle.styles.addOnButtonCheckedListener { _, _, _ ->
                 changedBody = true
             }
         }
