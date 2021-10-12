@@ -200,7 +200,8 @@ open class Profile(
                     MainActivity.DRAWER_ITEM_MESSAGES,
                     MainActivity.DRAWER_ITEM_HOMEWORK,
                     MainActivity.DRAWER_ITEM_BEHAVIOUR,
-                    MainActivity.DRAWER_ITEM_ATTENDANCE
+                    MainActivity.DRAWER_ITEM_ATTENDANCE,
+                    MainActivity.DRAWER_ITEM_TEACHERS
             )
             LoginStore.LOGIN_TYPE_LIBRUS,
             LoginStore.LOGIN_TYPE_IDZIENNIK -> listOf(

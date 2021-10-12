@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOME
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TEACHERS
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
@@ -80,6 +81,7 @@ object Features {
             DRAWER_ITEM_BEHAVIOUR -> listOf(FEATURE_BEHAVIOUR)
             DRAWER_ITEM_ATTENDANCE -> listOf(FEATURE_ATTENDANCE)
             DRAWER_ITEM_ANNOUNCEMENTS -> listOf(FEATURE_ANNOUNCEMENTS)
+            DRAWER_ITEM_TEACHERS -> listOf(FEATURE_TEACHERS)
             else -> getAllFeatures()
         } + getAllNecessary()).sorted()
     }
