@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -27,6 +30,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
+import pl.szczodrzynski.edziennik.ui.dialogs.StyledTextDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
@@ -126,6 +130,21 @@ class EventManualDialog(
                 else
                     Anim.collapse(b.moreLayout, 200, null)
             }
+        }
+
+        b.topicLayout.endIconDrawable = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_open_in_new).apply {
+            sizeDp = 24
+        }
+        b.topicLayout.setEndIconOnClickListener {
+            StyledTextDialog(
+                activity,
+                initialText = b.topic.text,
+                onSuccess = {
+                    b.topic.text = it
+                },
+                onShowListener,
+                onDismissListener
+            )
         }
 
         updateShareText()
