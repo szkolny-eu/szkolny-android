@@ -799,7 +799,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             DRAWER_ITEM_HOMEWORK -> R.string.sync_feature_homework
             DRAWER_ITEM_BEHAVIOUR -> R.string.sync_feature_notices
             DRAWER_ITEM_ATTENDANCE -> R.string.sync_feature_attendance
-            DRAWER_ITEM_TEACHERS -> R.string.sync_feature_teachers
             DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
                 1 -> R.string.sync_feature_messages_outbox
                 else -> R.string.sync_feature_messages_inbox
@@ -1357,7 +1356,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     targetHomeId = target.id
                 }
             }
-            else if (target.isInDrawer && supportedFragments.contains(DRAWER_ITEM_TEACHERS) && target.id == DRAWER_ITEM_MORE) {
+            else if (target.isInDrawer && target.id == DRAWER_ITEM_MORE) {
                 drawerItems += createDrawerItem(target)
                 if (target.id == 1) {
                     targetHomeId = target.id
