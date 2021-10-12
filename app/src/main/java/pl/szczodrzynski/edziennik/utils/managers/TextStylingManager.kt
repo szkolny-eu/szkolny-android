@@ -28,14 +28,22 @@ class TextStylingManager(private val app: App) {
         "((?:<br>)+)</p>".toRegex()
     }
 
-    data class StylingConfig(
+    open class StylingConfigBase(
         val editText: TextInputKeyboardEdit,
+        val htmlCompatibleMode: Boolean = false,
+    ) {
+        var watchStyleChecked = true
+        var watchSelectionChanged = true
+    }
+
+    class StylingConfig(
+        editText: TextInputKeyboardEdit,
         val fontStyleGroup: MaterialButtonToggleGroup,
         val fontStyleClear: Button,
         val styles: List<Style>,
         val textHtml: TextView? = null,
-        val htmlCompatibleMode: Boolean = false,
-    ) {
+        htmlCompatibleMode: Boolean = false,
+    ) : StylingConfigBase(editText, htmlCompatibleMode) {
         data class Style(
             val button: MaterialButton,
             val spanClass: Class<*>,
@@ -45,9 +53,6 @@ class TextStylingManager(private val app: App) {
         ) {
             fun newInstance(): Any = spanClass.newInstance()
         }
-
-        var watchStyleChecked = true
-        var watchSelectionChanged = true
     }
 
     fun attach(config: StylingConfig) {
@@ -91,7 +96,7 @@ class TextStylingManager(private val app: App) {
             .build()*/
     }
 
-    fun getHtmlText(config: StylingConfig, enableHtmlCompatible: Boolean = true): String {
+    fun getHtmlText(config: StylingConfigBase, enableHtmlCompatible: Boolean = true): String {
         val text = config.editText.text?.trimEnd() ?: return ""
         val spanned = SpannableStringBuilder(text)
 
@@ -147,7 +152,7 @@ class TextStylingManager(private val app: App) {
     private fun onStyleChecked(
         config: StylingConfig,
         style: StylingConfig.Style,
-        isChecked: Boolean
+        isChecked: Boolean,
     ) {
         if (!config.watchStyleChecked)
             return

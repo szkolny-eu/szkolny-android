@@ -33,7 +33,7 @@ object BetterHtml {
     )
 
     @JvmStatic
-    fun fromHtml(context: Context, html: String): Spanned {
+    fun fromHtml(context: Context, html: CharSequence): Spanned {
         val hexPattern = "(#[a-fA-F0-9]{6})"
         val colorRegex = "(?:color=\"$hexPattern\")|(?:style=\"color: ?${hexPattern})"
             .toRegex(RegexOption.IGNORE_CASE)

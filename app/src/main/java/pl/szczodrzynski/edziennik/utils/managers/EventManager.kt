@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
 class EventManager(val app: App) : CoroutineScope {
@@ -45,16 +46,16 @@ class EventManager(val app: App) : CoroutineScope {
         showType: Boolean = true,
         doneIconColor: Int? = null
     ) {
-        var eventTopic = if (showType)
-            "${event.typeName ?: "wydarzenie"} - ${event.topic}"
-        else
-            event.topic
+        val topicSpan = BetterHtml.fromHtml(
+            context = title.context,
+            html = event.topic.replace("\n", "<br>")
+        )
 
-        if (event.addedManually) {
-            eventTopic = "{cmd-clipboard-edit-outline} $eventTopic"
-        }
-
-        title.text = eventTopic
+        title.text = listOfNotNull(
+            if (event.addedManually) "{cmd-clipboard-edit-outline} " else null,
+            if (showType) "${event.typeName ?: "wydarzenie"} - " else null,
+            topicSpan,
+        ).concat()
 
         title.setCompoundDrawables(
             null,

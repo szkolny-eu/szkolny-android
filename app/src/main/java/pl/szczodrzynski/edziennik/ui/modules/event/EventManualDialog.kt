@@ -34,6 +34,8 @@ import pl.szczodrzynski.edziennik.ui.dialogs.StyledTextDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfigBase
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
@@ -63,6 +65,10 @@ class EventManualDialog(
     private lateinit var b: DialogEventManualV2Binding
     private lateinit var dialog: AlertDialog
     private lateinit var profile: Profile
+    private lateinit var stylingConfig: StylingConfigBase
+
+    private val textStylingManager
+        get() = app.textStylingManager
 
     private var customColor: Int? = null
     private val editingShared = editingEvent?.sharedBy != null
@@ -146,6 +152,8 @@ class EventManualDialog(
                 onDismissListener
             )
         }
+
+        stylingConfig = StylingConfigBase(editText = b.topic)
 
         updateShareText()
         b.shareSwitch.onChange { _, isChecked ->
@@ -351,7 +359,7 @@ class EventManualDialog(
 
         // copy data from event being edited
         editingEvent?.let {
-            b.topic.setText(it.topic)
+            b.topic.setText(BetterHtml.fromHtml(activity, it.topic))
             if (it.color != -1)
                 customColor = it.color
         }
@@ -477,12 +485,13 @@ class EventManualDialog(
 
         val id = System.currentTimeMillis()
 
+        val topicHtml = textStylingManager.getHtmlText(stylingConfig)
         val eventObject = Event(
                 profileId = profileId,
                 id = editingEvent?.id ?: id,
                 date = date,
                 time = startTime,
-                topic = topic,
+                topic = topicHtml,
                 color = customColor,
                 type = type?.id ?: Event.TYPE_DEFAULT,
                 teacherId = teacher?.id ?: -1,

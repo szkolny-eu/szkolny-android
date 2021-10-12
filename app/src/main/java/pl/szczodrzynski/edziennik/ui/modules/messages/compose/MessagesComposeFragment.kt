@@ -47,7 +47,6 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import kotlin.coroutines.CoroutineContext
 
-
 class MessagesComposeFragment : Fragment(), CoroutineScope {
     companion object {
         private const val TAG = "MessagesComposeFragment"
