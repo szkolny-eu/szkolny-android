@@ -24,8 +24,6 @@ public class Metadata {
     public static final int TYPE_MESSAGE = 8;
     public static final int TYPE_TEACHER_ABSENCE = 9;
     public static final int TYPE_LUCKY_NUMBER = 10;
-    public static final int TYPE_MORE = 11;
-    public static final int TYPE_TEACHER = 12;
 
     public int profileId;
 
@@ -72,10 +70,6 @@ public class Metadata {
                 return "TYPE_ANNOUNCEMENT";
             case TYPE_MESSAGE:
                 return "TYPE_MESSAGE";
-            case TYPE_MORE:
-                return "TYPE_MORE";
-            case TYPE_TEACHER:
-                return "TYPE_TEACHER";
             default:
                 return "TYPE_UNKNOWN";
         }

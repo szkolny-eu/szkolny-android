@@ -1151,7 +1151,6 @@
     <string name="sync_feature_messages_outbox">Pobieram wiadomości wysłane…</string>
     <string name="sync_feature_notices">Pobieram uwagi…</string>
     <string name="sync_feature_syncing_all">Synchronizuję wszystko…</string>
-    <string name="sync_feature_teachers">Pobieram listę nauczycieli...</string>
     <string name="sync_feature_text">Wybierz, które elementy chcesz zsynchronizować.</string>
     <string name="sync_feature_timetable">Pobieram plan lekcji…</string>
     <string name="sync_feature_title">Synchronizacja ręczna</string>
