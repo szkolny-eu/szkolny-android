@@ -656,6 +656,7 @@
     <string name="menu_message">Nachricht</string>
     <string name="menu_message_compose">Schreiben Sie eine Nachricht</string>
     <string name="menu_messages">Nachrichten</string>
+    <string name="menu_more">Mehr</string>
     <string name="menu_notices">Verhalten</string>
     <string name="menu_notifications">Benachrichtigungen</string>
     <string name="menu_remove_notifications">Löschen</string>
@@ -1236,4 +1237,5 @@
     <string name="login_summary_account_parent">(Elternteil)</string>
     <string name="settings_about_contributors_text">Anwendungsentwickler</string>
     <string name="settings_about_contributors_subtext">Liste der Szkolny-Entwickler</string>
+    <string name="menu_teachers">Lehrer</string>
 </resources>

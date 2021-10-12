@@ -76,6 +76,7 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.single.MessageFragment
 import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsFragment
+import pl.szczodrzynski.edziennik.ui.modules.teachers.TeachersListFragment
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.*
@@ -116,6 +117,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         const val DRAWER_ITEM_ATTENDANCE = 16
         const val DRAWER_ITEM_ANNOUNCEMENTS = 18
         const val DRAWER_ITEM_NOTIFICATIONS = 20
+        const val DRAWER_ITEM_MORE = 21
+        const val DRAWER_ITEM_TEACHERS = 22
         const val DRAWER_ITEM_SETTINGS = 101
         const val DRAWER_ITEM_DEBUG = 102
 
@@ -174,10 +177,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .withBadgeTypeId(TYPE_ATTENDANCE)
                     .isInDrawer(true)
 
+            list += NavTarget(DRAWER_ITEM_TEACHERS, R.string.menu_teachers, TeachersListFragment::class)
+                    .withIcon(CommunityMaterial.Icon3.cmd_shield_account_outline)
+
             list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS, R.string.menu_announcements, AnnouncementsFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_bullhorn_outline)
                     .withBadgeTypeId(TYPE_ANNOUNCEMENT)
                     .isInDrawer(true)
+
+            list += NavTarget(DRAWER_ITEM_MORE, R.string.menu_more, null)
+                    .withIcon(CommunityMaterial.Icon3.cmd_menu_down)
+                    .isInDrawer(true)
+                    .withSubItems(list.first { it.id == DRAWER_ITEM_TEACHERS })
 
 
             // static drawer items
@@ -788,6 +799,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             DRAWER_ITEM_HOMEWORK -> R.string.sync_feature_homework
             DRAWER_ITEM_BEHAVIOUR -> R.string.sync_feature_notices
             DRAWER_ITEM_ATTENDANCE -> R.string.sync_feature_attendance
+            DRAWER_ITEM_TEACHERS -> R.string.sync_feature_teachers
             DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
                 1 -> R.string.sync_feature_messages_outbox
                 else -> R.string.sync_feature_messages_inbox
@@ -1098,8 +1110,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         return if (target == null) {
             Toast.makeText(this, getString(R.string.error_invalid_fragment, id), Toast.LENGTH_LONG).show()
             loadTarget(navTargetList.first(), arguments, skipBeforeNavigate)
-        } else {
+        }
+        else if (target.fragmentClass != null) {
             loadTarget(target, arguments, skipBeforeNavigate)
+        }
+        else {
+            false
         }
     }
     private fun loadTarget(
@@ -1300,16 +1316,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (target.badgeTypeId != null)
                 badgeStyle = drawer.badgeStyle
             isSelectedBackgroundAnimated = false
+            this.level = level
         }
         if (target.badgeTypeId != null)
             drawer.addUnreadCounterType(target.badgeTypeId!!, target.id)
-        // TODO sub items
-        /*
+
         if (target.subItems != null) {
             for (subItem in target.subItems!!) {
+                item.isSelectable = false
                 item.subItems += createDrawerItem(subItem, level+1)
             }
-        }*/
+        }
 
         return item
     }
@@ -1335,6 +1352,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 targetPopToHomeList += target.id
 
             if (target.isInDrawer && (target.isStatic || supportedFragments.isEmpty() || supportedFragments.contains(target.id))) {
+                drawerItems += createDrawerItem(target)
+                if (target.id == 1) {
+                    targetHomeId = target.id
+                }
+            }
+            else if (target.isInDrawer && supportedFragments.contains(DRAWER_ITEM_TEACHERS) && target.id == DRAWER_ITEM_MORE) {
                 drawerItems += createDrawerItem(target)
                 if (target.id == 1) {
                     targetHomeId = target.id
