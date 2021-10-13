@@ -71,7 +71,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
+            <com.mikepenz.iconics.view.IconicsTextView
                 android:id="@+id/topic"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
