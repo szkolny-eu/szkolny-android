@@ -25,9 +25,7 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import com.mikepenz.materialdrawer.model.DividerDrawerItem
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
+import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.*
 import com.mikepenz.materialdrawer.model.utils.hiddenInMiniDrawer
 import eu.szkolny.font.SzkolnyFont
@@ -1314,30 +1312,31 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
          |_____/|_|  \__,_| \_/\_/ \___|_|    |_|\__\___|_| |_| |_|__*/
     @Suppress("UNUSED_PARAMETER")
     private fun createDrawerItem(target: NavTarget, level: Int = 1): IDrawerItem<*> {
-        val item = DrawerPrimaryItem().apply {
-            identifier = target.id.toLong()
-            nameRes = target.name
-            hiddenInMiniDrawer = !app.config.ui.miniMenuButtons.contains(target.id)
-            if (target.description != null)
-                descriptionRes = target.description!!
-            if (target.icon != null)
-                withIcon(target.icon!!)
-            if (target.title != null)
-                appTitle = getString(target.title!!)
-            if (target.badgeTypeId != null)
-                badgeStyle = drawer.badgeStyle
-            isSelectedBackgroundAnimated = false
-            this.level = level
+        val item = when {
+            target.subItems != null -> ExpandableDrawerItem()
+            level > 1 -> SecondaryDrawerItem()
+            else -> DrawerPrimaryItem()
+        }
+
+        item.also {
+            it.identifier = target.id.toLong()
+            it.nameRes = target.name
+            it.hiddenInMiniDrawer = !app.config.ui.miniMenuButtons.contains(target.id)
+            it.description = target.description?.toStringHolder()
+            it.icon = target.icon?.toImageHolder()
+            if (it is DrawerPrimaryItem)
+                it.appTitle = target.title?.resolveString(this)
+            if (it is ColorfulBadgeable && target.badgeTypeId != null)
+                it.badgeStyle = drawer.badgeStyle
+            it.isSelectedBackgroundAnimated = false
+            it.level = level
         }
         if (target.badgeTypeId != null)
             drawer.addUnreadCounterType(target.badgeTypeId!!, target.id)
 
-        if (target.subItems != null) {
-            for (subItem in target.subItems!!) {
-                item.isSelectable = false
-                item.subItems += createDrawerItem(subItem, level+1)
-            }
-        }
+        item.subItems = target.subItems?.map {
+            createDrawerItem(it, level + 1)
+        }?.toMutableList() ?: mutableListOf()
 
         return item
     }
