@@ -268,13 +268,6 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             }
         }
 
-        if (App.devMode) {
-            b.textHtml.isVisible = true
-            b.text.addTextChangedListener {
-                b.textHtml.text = getMessageBody()
-            }
-        }
-
         activity.navView.bottomBar.apply {
             fabEnable = true
             fabExtendedText = getString(R.string.messages_compose_send)

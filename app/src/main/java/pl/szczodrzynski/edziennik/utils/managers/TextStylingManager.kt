@@ -10,16 +10,18 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.mikepenz.iconics.typeface.IIcon
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.attachToastHint
 import pl.szczodrzynski.edziennik.hasSet
+import pl.szczodrzynski.edziennik.replaceSpanned
 import pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.COMPATIBLE
-import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.ORIGINAL
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.*
 
 class TextStylingManager(private val app: App) {
     companion object {
@@ -101,6 +103,14 @@ class TextStylingManager(private val app: App) {
             onSelectionChanged(config, selectionStart, selectionEnd)
         }
 
+        if (config.textHtml != null) {
+            config.editText.addTextChangedListener {
+                config.textHtml.text = getHtmlText(config)
+            }
+            config.textHtml.isVisible = true
+            config.textHtml.text = getHtmlText(config)
+        }
+
         /*b.fontStyleBold.shapeAppearanceModel = b.fontStyleBold.shapeAppearanceModel
             .toBuilder()
             .setBottomLeftCornerSize(0f)
@@ -117,7 +127,12 @@ class TextStylingManager(private val app: App) {
     }
 
     fun getHtmlText(config: StylingConfigBase, htmlMode: HtmlMode = config.htmlMode): String {
-        val text = config.editText.text?.trimEnd() ?: return ""
+        var text = config.editText.text?.trimEnd() ?: return ""
+
+        if (htmlMode == SIMPLE) {
+            text = text.replaceSpanned("\n", Char(0).toString())
+        }
+
         val spanned = SpannableStringBuilder(text)
 
         val toHtmlFlag = when (htmlMode) {
@@ -137,6 +152,7 @@ class TextStylingManager(private val app: App) {
             if (spanStart == spanEnd && it::class.java in BetterHtml.customSpanClasses)
                 spanned.removeSpan(it)
         }
+
         var textHtml = HtmlCompat.toHtml(spanned, toHtmlFlag)
             .replace("\n", "")
             .replace(" dir=\"ltr\"", "")
@@ -163,6 +179,12 @@ class TextStylingManager(private val app: App) {
                 .replace("</i>", "</em>")
                 .replace("<u>", "<span style=\"text-decoration: underline;\">")
                 .replace("</u>", "</span>")
+        } else if (htmlMode == SIMPLE) {
+            textHtml = textHtml
+                .replace("<p>", "")
+                .replace("</p>", "")
+                .replace("<br>", "")
+                .replace("&#0;", "\n")
         }
 
         return textHtml

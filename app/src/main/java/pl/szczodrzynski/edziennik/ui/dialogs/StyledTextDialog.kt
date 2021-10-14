@@ -65,7 +65,7 @@ class StyledTextDialog(
             fontStyleGroup = b.fontStyle.styles,
             fontStyleClear = b.fontStyle.clear,
             styles = DefaultTextStyles.getAsList(b.fontStyle),
-            textHtml = null,
+            textHtml = if (App.devMode) b.htmlText else null,
             htmlMode = SIMPLE,
         )
 
@@ -73,6 +73,7 @@ class StyledTextDialog(
 
         b.editText.text = initialText
 
+        // this is awful
         if (Themes.isDark) {
             val colorStateList = ColorStateList.valueOf(0x40ffffff)
             b.fontStyle.bold.strokeColor = colorStateList

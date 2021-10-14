@@ -1007,8 +1007,19 @@ inline fun <T> LongSparseArray<T>.filter(predicate: (T) -> Boolean): List<T> {
     return destination
 }
 
-fun CharSequence.replace(oldValue: String, newValue: CharSequence, ignoreCase: Boolean = false): CharSequence =
-        splitToSequence(oldValue, ignoreCase = ignoreCase).toList().concat(newValue)
+fun CharSequence.replaceSpanned(oldValue: String, newValue: CharSequence, ignoreCase: Boolean = false): CharSequence {
+    var seq = this
+    var index = seq.indexOf(oldValue, ignoreCase = ignoreCase)
+    while (index != -1) {
+        val sb = SpannableStringBuilder()
+        sb.appendRange(seq, 0, index)
+        sb.append(newValue)
+        sb.appendRange(seq, index + oldValue.length, seq.length)
+        seq = sb
+        index = seq.indexOf(oldValue, startIndex = index + 1, ignoreCase = ignoreCase)
+    }
+    return seq
+}
 
 fun Int.toColorStateList(): ColorStateList {
     val states = arrayOf(

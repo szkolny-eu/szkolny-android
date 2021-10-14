@@ -95,7 +95,7 @@
                 tools:visibility="visible" />
         </LinearLayout>
 
-        <TextView
+        <com.mikepenz.iconics.view.IconicsTextView
             android:id="@+id/addedBy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

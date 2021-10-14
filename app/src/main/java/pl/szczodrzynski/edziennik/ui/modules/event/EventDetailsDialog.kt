@@ -26,7 +26,6 @@ import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.BetterLink
-import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
 
@@ -94,16 +93,8 @@ class EventDetailsDialog(
         b.eventShared = eventShared
         b.eventOwn = eventOwn
 
-        b.topic.text = BetterHtml.fromHtml(
-            context = activity,
-            html = event.topic.replace("\n", "<br>")
-        )
-        event.homeworkBody?.let { body ->
-            b.body.text = BetterHtml.fromHtml(
-                context = activity,
-                html = body.replace("\n", "<br>")
-            )
-        }
+        b.topic.text = event.topicHtml
+        b.body.text = event.bodyHtml
 
         if (!event.seen) {
             manager.markAsSeen(event)

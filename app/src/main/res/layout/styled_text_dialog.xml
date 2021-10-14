@@ -34,5 +34,13 @@
         <include
             android:id="@+id/fontStyle"
             layout="@layout/styled_text_buttons" />
+
+        <TextView
+            android:id="@+id/htmlText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="monospace"
+            android:visibility="gone" />
     </LinearLayout>
 </ScrollView>
