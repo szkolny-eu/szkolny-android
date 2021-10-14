@@ -362,7 +362,7 @@ class EventDetailsDialog(
         val intent = Intent(Intent.ACTION_EDIT).apply {
             data = Events.CONTENT_URI
             putExtra(Events.TITLE, title)
-            putExtra(Events.DESCRIPTION, event.topic)
+            putExtra(Events.DESCRIPTION, event.topicHtml.toString())
 
             if (event.time == null) {
                 putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true)

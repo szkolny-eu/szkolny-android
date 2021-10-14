@@ -3,6 +3,7 @@
  */
 package pl.szczodrzynski.edziennik.data.db.full
 
+import androidx.core.text.HtmlCompat
 import androidx.room.Ignore
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
@@ -48,6 +49,20 @@ class EventFull(
     var teamName: String? = null
     var teamCode: String? = null
 
+    @delegate:Ignore
+    @delegate:Transient
+    val topicHtml by lazy {
+        HtmlCompat.fromHtml(topic, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    }
+
+    @delegate:Ignore
+    @delegate:Transient
+    val bodyHtml by lazy {
+        homeworkBody?.let {
+            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
+    }
+
     @Ignore
     @Transient
     override var searchPriority = 0
@@ -60,7 +75,7 @@ class EventFull(
     @delegate:Transient
     override val searchKeywords by lazy {
         listOf(
-            listOf(topic, homeworkBody),
+            listOf(topicHtml.toString(), bodyHtml?.toString()),
             attachmentNames,
             listOf(subjectLongName),
             listOf(teacherName),

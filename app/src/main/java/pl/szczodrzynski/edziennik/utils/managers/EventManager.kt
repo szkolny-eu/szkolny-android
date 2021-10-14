@@ -16,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
 class EventManager(val app: App) : CoroutineScope {
@@ -46,10 +45,7 @@ class EventManager(val app: App) : CoroutineScope {
         showType: Boolean = true,
         doneIconColor: Int? = null
     ) {
-        val topicSpan = BetterHtml.fromHtml(
-            context = title.context,
-            html = event.topic.replace("\n", "<br>")
-        )
+        val topicSpan = event.topicHtml
 
         title.text = listOfNotNull(
             if (event.addedManually) "{cmd-clipboard-edit-outline} " else null,

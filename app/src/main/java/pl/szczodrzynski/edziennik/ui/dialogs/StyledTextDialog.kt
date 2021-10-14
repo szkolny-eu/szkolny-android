@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.StyledTextDialogBinding
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
 import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.SIMPLE
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
 
 class StyledTextDialog(
@@ -65,6 +66,7 @@ class StyledTextDialog(
             fontStyleClear = b.fontStyle.clear,
             styles = DefaultTextStyles.getAsList(b.fontStyle),
             textHtml = null,
+            htmlMode = SIMPLE,
         )
 
         manager.attach(config)

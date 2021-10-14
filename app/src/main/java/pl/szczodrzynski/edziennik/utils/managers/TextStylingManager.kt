@@ -18,6 +18,8 @@ import pl.szczodrzynski.edziennik.attachToastHint
 import pl.szczodrzynski.edziennik.hasSet
 import pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.COMPATIBLE
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.ORIGINAL
 
 class TextStylingManager(private val app: App) {
     companion object {
@@ -28,9 +30,27 @@ class TextStylingManager(private val app: App) {
         "((?:<br>)+)</p>".toRegex()
     }
 
+    enum class HtmlMode {
+        /**
+         * The default mode, suitable for fromHtml conversion.
+         */
+        ORIGINAL,
+
+        /**
+         * A more browser-compatible mode.
+         */
+        COMPATIBLE,
+
+        /**
+         * A simple, paragraph-stripped mode with \n instead of <br>.
+         * The converted text has no HTML tags when no spans in source.
+         */
+        SIMPLE,
+    }
+
     open class StylingConfigBase(
         val editText: TextInputKeyboardEdit,
-        val htmlCompatibleMode: Boolean = false,
+        val htmlMode: HtmlMode = ORIGINAL,
     ) {
         var watchStyleChecked = true
         var watchSelectionChanged = true
@@ -42,8 +62,8 @@ class TextStylingManager(private val app: App) {
         val fontStyleClear: Button,
         val styles: List<Style>,
         val textHtml: TextView? = null,
-        htmlCompatibleMode: Boolean = false,
-    ) : StylingConfigBase(editText, htmlCompatibleMode) {
+        htmlMode: HtmlMode = ORIGINAL,
+    ) : StylingConfigBase(editText, htmlMode) {
         data class Style(
             val button: MaterialButton,
             val spanClass: Class<*>,
@@ -96,15 +116,14 @@ class TextStylingManager(private val app: App) {
             .build()*/
     }
 
-    fun getHtmlText(config: StylingConfigBase, enableHtmlCompatible: Boolean = true): String {
+    fun getHtmlText(config: StylingConfigBase, htmlMode: HtmlMode = config.htmlMode): String {
         val text = config.editText.text?.trimEnd() ?: return ""
         val spanned = SpannableStringBuilder(text)
 
-        val htmlCompatibleMode = config.htmlCompatibleMode && enableHtmlCompatible
-        val toHtmlFlag = if (htmlCompatibleMode)
-            HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL
-        else
-            HtmlCompat.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE
+        val toHtmlFlag = when (htmlMode) {
+            COMPATIBLE -> HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL
+            else -> HtmlCompat.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE
+        }
 
         // apparently setting the spans to a different Spannable calls the original EditText's
         // onSelectionChanged with selectionStart=-1, which in effect unchecks the format toggles
@@ -135,7 +154,7 @@ class TextStylingManager(private val app: App) {
 
         config.watchSelectionChanged = true
 
-        if (htmlCompatibleMode) {
+        if (htmlMode == COMPATIBLE) {
             textHtml = textHtml
                 .replace("<br>", "<p>&nbsp;</p>")
                 .replace("<b>", "<strong>")

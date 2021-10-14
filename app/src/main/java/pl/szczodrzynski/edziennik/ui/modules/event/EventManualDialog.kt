@@ -35,6 +35,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.SIMPLE
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfigBase
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -153,7 +154,7 @@ class EventManualDialog(
             )
         }
 
-        stylingConfig = StylingConfigBase(editText = b.topic)
+        stylingConfig = StylingConfigBase(editText = b.topic, htmlMode = SIMPLE)
 
         updateShareText()
         b.shareSwitch.onChange { _, isChecked ->

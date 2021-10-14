@@ -41,6 +41,8 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.managers.MessageManager.UIConfig
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.COMPATIBLE
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.ORIGINAL
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
 import pl.szczodrzynski.edziennik.utils.span.*
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -252,7 +254,10 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             fontStyleClear = b.fontStyle.clear,
             styles = styles,
             textHtml = if (App.devMode) b.textHtml else null,
-            htmlCompatibleMode = app.profile.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK,
+            htmlMode = when (app.profile.loginStoreType) {
+                LOGIN_TYPE_MOBIDZIENNIK -> COMPATIBLE
+                else -> ORIGINAL
+            },
         )
 
         b.fontStyle.root.isVisible = enableTextStyling

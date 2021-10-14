@@ -37,7 +37,6 @@ class MessageFull(
         }
     }
 
-
     @Ignore
     @Transient
     override var searchPriority = 0
