@@ -133,6 +133,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         val navTargetList: List<NavTarget> by lazy {
             val list: MutableList<NavTarget> = mutableListOf()
+            val more_list: MutableList<NavTarget> = mutableListOf()
 
             // home item
             list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragment::class)
@@ -177,8 +178,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .withBadgeTypeId(TYPE_ATTENDANCE)
                     .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_TEACHERS, R.string.menu_teachers, TeachersListFragment::class)
+            more_list += NavTarget(DRAWER_ITEM_TEACHERS, R.string.menu_teachers, TeachersListFragment::class)
                     .withIcon(CommunityMaterial.Icon3.cmd_shield_account_outline)
+                    .isStatic(true)
 
             list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS, R.string.menu_announcements, AnnouncementsFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_bullhorn_outline)
@@ -188,7 +190,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             list += NavTarget(DRAWER_ITEM_MORE, R.string.menu_more, null)
                     .withIcon(CommunityMaterial.Icon3.cmd_menu_down)
                     .isInDrawer(true)
-                    .withSubItems(list.first { it.id == DRAWER_ITEM_TEACHERS })
+                    .isStatic(true)
+                    .withSubItems(more_list.first { it.id == DRAWER_ITEM_TEACHERS })
 
 
             // static drawer items
@@ -1104,8 +1107,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (loadId == -1) {
             loadId = DRAWER_ITEM_HOME
         }
-        val target = navTargetList
-                .firstOrNull { it.id == loadId }
+        val target = when (loadId) {
+            DRAWER_ITEM_TEACHERS -> {
+                navTargetList
+                    .firstOrNull { it.id == DRAWER_ITEM_MORE }
+                    ?.subItems?.firstOrNull { it.id == loadId }
+            }
+            else -> {
+                navTargetList
+                    .firstOrNull { it.id == loadId }
+            }
+        }
         return if (target == null) {
             Toast.makeText(this, getString(R.string.error_invalid_fragment, id), Toast.LENGTH_LONG).show()
             loadTarget(navTargetList.first(), arguments, skipBeforeNavigate)
@@ -1351,12 +1363,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 targetPopToHomeList += target.id
 
             if (target.isInDrawer && (target.isStatic || supportedFragments.isEmpty() || supportedFragments.contains(target.id))) {
-                drawerItems += createDrawerItem(target)
-                if (target.id == 1) {
-                    targetHomeId = target.id
-                }
-            }
-            else if (target.isInDrawer && target.id == DRAWER_ITEM_MORE) {
                 drawerItems += createDrawerItem(target)
                 if (target.id == 1) {
                     targetHomeId = target.id
