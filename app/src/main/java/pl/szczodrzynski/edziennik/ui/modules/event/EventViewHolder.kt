@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.modules.event
 
-import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -53,13 +52,11 @@ class EventViewHolder(
         b.simpleMode = adapter.simpleMode
 
         manager.setEventTopic(b.topic, item, showType = false)
-        b.topic.text = SpannableString(
-            adapter.highlightSearchText(
-                item = item,
-                text = b.topic.text,
-                color = colorHighlight
-            )
-        ).buildIconics()
+        b.topic.text = adapter.highlightSearchText(
+            item = item,
+            text = b.topic.text,
+            color = colorHighlight
+        )
         b.topic.maxLines = if (adapter.simpleMode) 2 else 3
 
         b.details.text = mutableListOf(
@@ -107,9 +104,10 @@ class EventViewHolder(
             text = addedBy,
             color = colorHighlight
         )
-        b.addedBy.text = SpannableString(
-            b.addedBy.text.replace(addedBy, addedBySpanned)
-        ).buildIconics()
+        b.addedBy.text = b.addedBy.text.replace(addedBy, addedBySpanned)
+        // for now, as CharSequence.replace() converts the original sequence to string,
+        // so the Iconics span data is lost and the share icon set above does not display
+        b.addedBy.buildIconics()
 
         b.attachmentIcon.isVisible = item.hasAttachments
 
