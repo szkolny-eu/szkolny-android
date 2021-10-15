@@ -69,80 +69,90 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
     }
 
     private fun eventNotifications() {
-        for (event in app.db.eventDao().getNotNotifiedNow().filter { it.date >= today }) {
+        app.db.eventDao().getNotNotifiedNow().filter {
+            it.date >= today
+        }.forEach { event ->
             val text = if (event.isHomework)
                 app.getString(
-                        if (event.subjectLongName.isNullOrEmpty())
-                            R.string.notification_homework_no_subject_format
-                        else
-                            R.string.notification_homework_format,
-                        event.subjectLongName,
-                        event.date.formattedString
+                    if (event.subjectLongName.isNullOrEmpty())
+                        R.string.notification_homework_no_subject_format
+                    else
+                        R.string.notification_homework_format,
+                    event.subjectLongName,
+                    event.date.formattedString
                 )
             else
                 app.getString(
-                        if (event.subjectLongName.isNullOrEmpty())
-                            R.string.notification_event_no_subject_format
-                        else
-                            R.string.notification_event_format,
-                        event.typeName ?: "wydarzenie",
-                        event.date.formattedString,
-                        event.subjectLongName
+                    if (event.subjectLongName.isNullOrEmpty())
+                        R.string.notification_event_no_subject_format
+                    else
+                        R.string.notification_event_format,
+                    event.typeName ?: "wydarzenie",
+                    event.date.formattedString,
+                    event.subjectLongName
                 )
             val textLong = app.getString(
-                    R.string.notification_event_long_format,
-                    event.typeName ?: "-",
-                    event.subjectLongName ?: "-",
-                    event.date.formattedString,
-                    Week.getFullDayName(event.date.weekDay),
-                    event.time?.stringHM ?: app.getString(R.string.event_all_day),
-                    event.topic.take(200)
+                R.string.notification_event_long_format,
+                event.typeName ?: "-",
+                event.subjectLongName ?: "-",
+                event.date.formattedString,
+                Week.getFullDayName(event.date.weekDay),
+                event.time?.stringHM ?: app.getString(R.string.event_all_day),
+                event.topic.take(200)
             )
-            val type = if (event.isHomework) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
+            val type = if (event.isHomework)
+                Notification.TYPE_NEW_HOMEWORK
+            else
+                Notification.TYPE_NEW_EVENT
             notifications += Notification(
-                    id = Notification.buildId(event.profileId, type, event.id),
-                    title = app.getNotificationTitle(type),
-                    text = text,
-                    textLong = textLong,
-                    type = type,
-                    profileId = event.profileId,
-                    profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
-                    viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
-                    addedDate = event.addedDate
+                id = Notification.buildId(event.profileId, type, event.id),
+                title = app.getNotificationTitle(type),
+                text = text,
+                textLong = textLong,
+                type = type,
+                profileId = event.profileId,
+                profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
+                viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                addedDate = event.addedDate
             ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }
     }
 
     fun sharedEventNotifications() {
-        for (event in app.db.eventDao().getNotNotifiedNow().filter { it.date >= today && it.sharedBy != null }) {
+        app.db.eventDao().getNotNotifiedNow().filter {
+            it.date >= today && it.sharedBy != null && it.sharedBy != "self"
+        }.forEach { event ->
             val text = app.getString(
-                    R.string.notification_shared_event_format,
-                    event.sharedByName,
-                    event.typeName ?: "wydarzenie",
-                    event.date.formattedString,
-                    event.topic
+                R.string.notification_shared_event_format,
+                event.sharedByName,
+                event.typeName ?: "wydarzenie",
+                event.date.formattedString,
+                event.topic
             )
             val textLong = app.getString(
-                    R.string.notification_shared_event_long_format,
-                    event.sharedByName,
-                    event.typeName ?: "-",
-                    event.subjectLongName ?: "-",
-                    event.date.formattedString,
-                    Week.getFullDayName(event.date.weekDay),
-                    event.time?.stringHM ?: app.getString(R.string.event_all_day),
-                    event.topic.take(200)
+                R.string.notification_shared_event_long_format,
+                event.sharedByName,
+                event.typeName ?: "-",
+                event.subjectLongName ?: "-",
+                event.date.formattedString,
+                Week.getFullDayName(event.date.weekDay),
+                event.time?.stringHM ?: app.getString(R.string.event_all_day),
+                event.topic.take(200)
             )
-            val type = if (event.isHomework) Notification.TYPE_NEW_HOMEWORK else Notification.TYPE_NEW_EVENT
+            val type = if (event.isHomework)
+                Notification.TYPE_NEW_HOMEWORK
+            else
+                Notification.TYPE_NEW_EVENT
             notifications += Notification(
-                    id = Notification.buildId(event.profileId, type, event.id),
-                    title = app.getNotificationTitle(type),
-                    text = text,
-                    textLong = textLong,
-                    type = type,
-                    profileId = event.profileId,
-                    profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
-                    viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
-                    addedDate = event.addedDate
+                id = Notification.buildId(event.profileId, type, event.id),
+                title = app.getNotificationTitle(type),
+                text = text,
+                textLong = textLong,
+                type = type,
+                profileId = event.profileId,
+                profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
+                viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                addedDate = event.addedDate
             ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }
     }
