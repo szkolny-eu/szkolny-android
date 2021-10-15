@@ -67,13 +67,13 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
 
                 val gradeValues = if (grades.isNotEmpty()) {
                     subjects.select(".avg-$subjectId .grade-tip > p").first()
-                            .text().split('+').map {
+                            ?.text()?.split('+')?.map {
                                 val split = it.split('*')
                                 val value = split[1].trim().toFloatOrNull()
                                 val weight = value?.let { split[0].trim().toFloatOrNull() } ?: 0f
 
                                 Pair(value ?: 0f, weight)
-                            }
+                            } ?: emptyList()
                 } else emptyList()
 
                 grades.forEachIndexed { index, gradeElement ->

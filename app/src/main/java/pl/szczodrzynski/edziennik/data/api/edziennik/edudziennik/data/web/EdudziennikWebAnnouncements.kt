@@ -40,7 +40,7 @@ class EdudziennikWebAnnouncements(override val data: DataEdudziennik,
                     val teacherName = announcementElement.child(1).text()
                     val teacher = data.getTeacherByFirstLast(teacherName)
 
-                    val dateString = announcementElement.getElementsByClass("datetime").first().text()
+                    val dateString = announcementElement.getElementsByClass("datetime").first()?.text()
                     val startDate = Date.fromY_m_d(dateString)
                     val addedDate = Date.fromIsoHm(dateString)
 

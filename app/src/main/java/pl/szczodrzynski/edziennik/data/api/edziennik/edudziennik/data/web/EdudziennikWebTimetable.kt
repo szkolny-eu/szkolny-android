@@ -57,7 +57,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
 
             val table = doc.select("#Schedule tbody").first()
 
-            if (!table.text().contains("Brak planu lekcji.")) {
+            if (table?.text()?.contains("Brak planu lekcji.") == false) {
                 table.children().forEach { row ->
                     val rowElements = row.children()
 

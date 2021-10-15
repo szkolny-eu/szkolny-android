@@ -40,13 +40,14 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
 
             val doc = Jsoup.parse(text)
 
-            val content = doc.select("#content").first()
+            val content = doc.select("#content").first() ?: return@webGet
 
             val body = content.select(".wiadomosc_tresc").first()
+            val bodyHtml = body?.html() ?: ""
 
             if (message.isReceived) {
                 var readDate = System.currentTimeMillis()
-                Regexes.MOBIDZIENNIK_MESSAGE_READ_DATE.find(body.html())?.let {
+                Regexes.MOBIDZIENNIK_MESSAGE_READ_DATE.find(bodyHtml)?.let {
                     val date = Date(
                             it[3].toIntOrNull() ?: 2019,
                             monthFromName(it[2]),
@@ -71,35 +72,35 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
             } else {
                 message.senderId = null
 
-                content.select("table.spis tr:has(td)")?.forEach { recipientEl ->
-                    val senderEl = recipientEl.select("td:eq(1)")?.first() ?: return@forEach
+                content.select("table.spis tr:has(td)").forEach { recipientEl ->
+                    val senderEl = recipientEl.select("td:eq(1)").first() ?: return@forEach
                     val senderName = senderEl.text().fixName()
 
                     val teacher = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }
                     val receiverId = teacher?.id ?: -1
 
                     var readDate = 0L
-                    val isReadEl = recipientEl.select("td:eq(4)")?.first() ?: return@forEach
+                    val isReadEl = recipientEl.select("td:eq(4)").first() ?: return@forEach
                     if (isReadEl.html().contains("tak")) {
-                        val readDateEl = recipientEl.select("td:eq(5) small")?.first() ?: return@forEach
+                        val readDateEl = recipientEl.select("td:eq(5) small").first() ?: return@forEach
                         Regexes.MOBIDZIENNIK_MESSAGE_SENT_READ_DATE.find(readDateEl.ownText())?.let {
                             val date = Date(
-                                    it[3].toIntOrNull() ?: 2019,
-                                    monthFromName(it[2]),
-                                    it[1].toIntOrNull() ?: 1
+                                it[3].toIntOrNull() ?: 2019,
+                                monthFromName(it[2]),
+                                it[1].toIntOrNull() ?: 1
                             )
                             val time = Time.fromH_m_s(
-                                    it[4] // TODO blank string safety
+                                it[4] // TODO blank string safety
                             )
                             readDate = date.combineWith(time)
                         }
                     }
 
                     val recipient = MessageRecipientFull(
-                            profileId = profileId,
-                            id = receiverId,
-                            messageId = message.id,
-                            readDate = readDate
+                        profileId = profileId,
+                        id = receiverId,
+                        messageId = message.id,
+                        readDate = readDate
                     )
 
                     recipient.fullName = teacher?.fullName ?: "?"
@@ -109,11 +110,11 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
             }
 
             // this line removes the sender and read date details
-            body.select("div").remove()
+            body?.select("div")?.remove()
 
             // this needs to be at the end
             message.apply {
-                this.body = body.html()
+                this.body = body?.html()
 
                 clearAttachments()
                 Regexes.MOBIDZIENNIK_WEB_ATTACHMENT.findAll(text).forEach { match ->
