@@ -29,7 +29,7 @@ class EdudziennikWebNotes(override val data: DataEdudziennik,
             val doc = Jsoup.parseBodyFragment("<table>" + text.trim() + "</table>")
 
             doc.getElementsByTag("tr").forEach { noteElement ->
-                val dateElement = noteElement.getElementsByClass("date").first().child(0)
+                val dateElement = noteElement.getElementsByClass("date").first()?.child(0) ?: return@forEach
                 val addedDate = Date.fromY_m_d(dateElement.text()).inMillis
 
                 val id = EDUDZIENNIK_NOTE_ID.find(dateElement.attr("href"))?.get(0)?.crc32()

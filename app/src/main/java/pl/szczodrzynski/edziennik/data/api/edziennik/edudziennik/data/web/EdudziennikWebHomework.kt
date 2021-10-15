@@ -32,7 +32,7 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
 
             if (doc.getElementsByClass("message").text().trim() != "Brak prac domowych") {
                 doc.getElementsByTag("tr").forEach { homeworkElement ->
-                    val dateElement = homeworkElement.getElementsByClass("date").first().child(0)
+                    val dateElement = homeworkElement.getElementsByClass("date").first()?.child(0) ?: return@forEach
                     val idStr = EDUDZIENNIK_HOMEWORK_ID.find(dateElement.attr("href"))?.get(1) ?: return@forEach
                     val id = idStr.crc32()
                     val date = Date.fromY_m_d(dateElement.text())

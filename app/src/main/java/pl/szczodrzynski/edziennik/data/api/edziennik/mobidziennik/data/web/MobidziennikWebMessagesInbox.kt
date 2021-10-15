@@ -36,26 +36,26 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
 
             val doc = Jsoup.parse(text)
 
-            val list = doc.getElementsByClass("spis")?.first()?.getElementsByClass("podswietl")
+            val list = doc.getElementsByClass("spis").first()?.getElementsByClass("podswietl")
             list?.forEach { item ->
                 val id = item.attr("rel").toLongOrNull() ?: return@forEach
 
                 val subjectEl = item.select("td:eq(0)").first()
                 var hasAttachments = false
-                if (subjectEl.getElementsByTag("a").size != 0) {
+                if (subjectEl?.getElementsByTag("a")?.size ?: 0 > 0) {
                     hasAttachments = true
                 }
-                val subject = subjectEl.ownText()
+                val subject = subjectEl?.ownText() ?: ""
 
                 val addedDateEl = item.select("td:eq(1) small").first()
-                val addedDate = Date.fromIsoHm(addedDateEl.text())
+                val addedDate = Date.fromIsoHm(addedDateEl?.text())
 
                 val senderEl = item.select("td:eq(2)").first()
-                val senderName = senderEl.ownText().fixName()
+                val senderName = senderEl?.ownText().fixName()
                 val senderId = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }?.id
                 data.messageRecipientIgnoreList.add(MessageRecipient(profileId, -1, id))
 
-                val isRead = item.select("td:eq(3) span").first().hasClass("wiadomosc_przeczytana")
+                val isRead = item.select("td:eq(3) span").first()?.hasClass("wiadomosc_przeczytana") == true
 
                 val message = Message(
                         profileId = profileId,
