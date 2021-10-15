@@ -52,14 +52,14 @@ class EventFull(
     @delegate:Ignore
     @delegate:Transient
     val topicHtml by lazy {
-        HtmlCompat.fromHtml(topic, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        HtmlCompat.fromHtml(topic, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
     }
 
     @delegate:Ignore
     @delegate:Transient
     val bodyHtml by lazy {
         homeworkBody?.let {
-            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
         }
     }
 

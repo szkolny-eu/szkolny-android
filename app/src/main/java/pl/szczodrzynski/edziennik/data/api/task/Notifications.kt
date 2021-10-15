@@ -127,7 +127,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                 event.sharedByName,
                 event.typeName ?: "wydarzenie",
                 event.date.formattedString,
-                event.topic
+                event.topicHtml
             )
             val textLong = app.getString(
                 R.string.notification_shared_event_long_format,
@@ -137,7 +137,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                 event.date.formattedString,
                 Week.getFullDayName(event.date.weekDay),
                 event.time?.stringHM ?: app.getString(R.string.event_all_day),
-                event.topic.take(200)
+                event.topicHtml.take(200)
             )
             val type = if (event.isHomework)
                 Notification.TYPE_NEW_HOMEWORK

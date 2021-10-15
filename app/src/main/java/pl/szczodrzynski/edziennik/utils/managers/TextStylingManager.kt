@@ -6,6 +6,10 @@ package pl.szczodrzynski.edziennik.utils.managers
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.style.StrikethroughSpan
+import android.text.style.SubscriptSpan
+import android.text.style.SuperscriptSpan
+import android.text.style.UnderlineSpan
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -15,13 +19,12 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.mikepenz.iconics.typeface.IIcon
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.attachToastHint
-import pl.szczodrzynski.edziennik.hasSet
-import pl.szczodrzynski.edziennik.replaceSpanned
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.*
+import pl.szczodrzynski.edziennik.utils.span.BoldSpan
+import pl.szczodrzynski.edziennik.utils.span.ItalicSpan
 
 class TextStylingManager(private val app: App) {
     companion object {
@@ -48,6 +51,11 @@ class TextStylingManager(private val app: App) {
          * The converted text has no HTML tags when no spans in source.
          */
         SIMPLE,
+
+        /**
+         * Markdown-compatible text mode.
+         */
+        MARKDOWN,
     }
 
     open class StylingConfigBase(
@@ -127,12 +135,7 @@ class TextStylingManager(private val app: App) {
     }
 
     fun getHtmlText(config: StylingConfigBase, htmlMode: HtmlMode = config.htmlMode): String {
-        var text = config.editText.text?.trimEnd() ?: return ""
-
-        if (htmlMode == SIMPLE) {
-            text = text.replaceSpanned("\n", Char(0).toString())
-        }
-
+        val text = config.editText.text?.trimEnd() ?: return ""
         val spanned = SpannableStringBuilder(text)
 
         val toHtmlFlag = when (htmlMode) {
@@ -153,20 +156,36 @@ class TextStylingManager(private val app: App) {
                 spanned.removeSpan(it)
         }
 
-        var textHtml = HtmlCompat.toHtml(spanned, toHtmlFlag)
-            .replace("\n", "")
-            .replace(" dir=\"ltr\"", "")
-            .replace("</b><b>", "")
-            .replace("</i><i>", "")
-            .replace("</u><u>", "")
-            .replace("</sub><sub>", "")
-            .replace("</sup><sup>", "")
-            .replace("p style=\"margin-top:0; margin-bottom:0;\"", "p")
-            .replace("<br></p>", "</p><br>")
-            // replace multiple newlines so they convert fromHtml correctly
-            // this should not be breaking with htmlCompatibleMode == true,
-            // as line breaks cannot occur inside paragraphs with these flags
-            .replace(paragraphBrRegex, "</p>$1")
+        var textHtml = when (htmlMode) {
+            SIMPLE -> spanned
+                .replaceSpan(BoldSpan::class.java, "<b>", "</b>")
+                .replaceSpan(ItalicSpan::class.java, "<i>", "</i>")
+                .replaceSpan(UnderlineSpan::class.java, "<u>", "</u>")
+                .replaceSpan(StrikethroughSpan::class.java, "<s>", "</s>")
+                .replaceSpan(SubscriptSpan::class.java, "<sub>", "</sub>")
+                .replaceSpan(SuperscriptSpan::class.java, "<sup>", "</sup>")
+                .toString()
+            MARKDOWN -> spanned
+                .replaceSpan(BoldSpan::class.java, "**", "**")
+                .replaceSpan(ItalicSpan::class.java, "_", "_")
+                .replaceSpan(UnderlineSpan::class.java, "__", "__")
+                .replaceSpan(StrikethroughSpan::class.java, "~~", "~~")
+                .toString()
+            else -> HtmlCompat.toHtml(spanned, toHtmlFlag)
+                .replace("\n", "")
+                .replace(" dir=\"ltr\"", "")
+                .replace("</b><b>", "")
+                .replace("</i><i>", "")
+                .replace("</u><u>", "")
+                .replace("</sub><sub>", "")
+                .replace("</sup><sup>", "")
+                .replace("p style=\"margin-top:0; margin-bottom:0;\"", "p")
+                .replace("<br></p>", "</p><br>")
+                // replace multiple newlines so they convert fromHtml correctly
+                // this should not be breaking with htmlCompatibleMode == true,
+                // as line breaks cannot occur inside paragraphs with these flags
+                .replace(paragraphBrRegex, "</p>$1")
+        }
 
         config.watchSelectionChanged = true
 
@@ -179,12 +198,6 @@ class TextStylingManager(private val app: App) {
                 .replace("</i>", "</em>")
                 .replace("<u>", "<span style=\"text-decoration: underline;\">")
                 .replace("</u>", "</span>")
-        } else if (htmlMode == SIMPLE) {
-            textHtml = textHtml
-                .replace("<p>", "")
-                .replace("</p>", "")
-                .replace("<br>", "")
-                .replace("&#0;", "\n")
         }
 
         return textHtml

@@ -1021,6 +1021,16 @@ fun CharSequence.replaceSpanned(oldValue: String, newValue: CharSequence, ignore
     return seq
 }
 
+fun SpannableStringBuilder.replaceSpan(spanClass: Class<*>, prefix: CharSequence, suffix: CharSequence): SpannableStringBuilder {
+    getSpans(0, length, spanClass).forEach {
+        val spanStart = getSpanStart(it)
+        insert(spanStart, prefix)
+        val spanEnd = getSpanEnd(it)
+        insert(spanEnd, suffix)
+    }
+    return this
+}
+
 fun Int.toColorStateList(): ColorStateList {
     val states = arrayOf(
         intArrayOf( android.R.attr.state_enabled ),

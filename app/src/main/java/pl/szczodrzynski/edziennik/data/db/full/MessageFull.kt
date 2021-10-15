@@ -33,7 +33,7 @@ class MessageFull(
     @delegate:Transient
     val bodyHtml by lazy {
         body?.let {
-            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
         }
     }
 
