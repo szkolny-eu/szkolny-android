@@ -1238,4 +1238,5 @@
     <string name="settings_about_contributors_text">Anwendungsentwickler</string>
     <string name="settings_about_contributors_subtext">Liste der Szkolny-Entwickler</string>
     <string name="menu_teachers">Lehrer</string>
+    <string name="edziennik_progress_endpoint_adressbook">Adressbuch herunterladen...</string>
 </resources>

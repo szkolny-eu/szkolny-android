@@ -4,20 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.utils.colorRes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.TeachersListItemBinding
-import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.onClick
 import kotlin.coroutines.CoroutineContext
 
 class TeachersAdapter(
-        private val activity: AppCompatActivity,
-        val onItemClick: ((item: Teacher) -> Unit)? = null
+    private val activity: AppCompatActivity,
+    val onItemClick: ((item: Teacher) -> Unit)? = null,
 ) : RecyclerView.Adapter<TeachersAdapter.ViewHolder>(), CoroutineScope {
     companion object {
         private const val TAG = "TeachersAdapter"
@@ -42,12 +41,22 @@ class TeachersAdapter(
         val item = items[position]
         val b = holder.b
 
-        val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
-
-
         b.name.text = item.fullName
         b.initials.text = item.initialsLastFirst
-        b.role.text = item.shortName
+        var role: String = ""
+        if (item.subjects.isNotNullNorEmpty()) {
+            role = item.getTypeText(activity).plus(": ")
+            item.subjects.forEachIndexed { index, subject ->
+                role = if (index > 0) {
+                    role.plus(subject).plus(", ")
+                } else {
+                    role.plus(subject)
+                }
+            }
+        } else {
+            role = item.getTypeText(activity)
+        }
+        b.role.text = role
 
         onItemClick?.let { listener ->
             b.root.onClick { listener(item) }

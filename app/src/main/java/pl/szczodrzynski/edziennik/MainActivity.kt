@@ -131,7 +131,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         val navTargetList: List<NavTarget> by lazy {
             val list: MutableList<NavTarget> = mutableListOf()
-            val more_list: MutableList<NavTarget> = mutableListOf()
+            val moreList: MutableList<NavTarget> = mutableListOf()
+
+            moreList += NavTarget(DRAWER_ITEM_TEACHERS, R.string.menu_teachers, TeachersListFragment::class)
+                .withIcon(CommunityMaterial.Icon3.cmd_shield_account_outline)
+                .isStatic(true)
 
             // home item
             list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragment::class)
@@ -176,20 +180,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     .withBadgeTypeId(TYPE_ATTENDANCE)
                     .isInDrawer(true)
 
-            more_list += NavTarget(DRAWER_ITEM_TEACHERS, R.string.menu_teachers, TeachersListFragment::class)
-                    .withIcon(CommunityMaterial.Icon3.cmd_shield_account_outline)
-                    .isStatic(true)
-
             list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS, R.string.menu_announcements, AnnouncementsFragment::class)
                     .withIcon(CommunityMaterial.Icon.cmd_bullhorn_outline)
                     .withBadgeTypeId(TYPE_ANNOUNCEMENT)
                     .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_MORE, R.string.menu_more, null)
-                    .withIcon(CommunityMaterial.Icon3.cmd_menu_down)
+                    .withIcon(CommunityMaterial.Icon.cmd_dots_vertical_circle_outline)
                     .isInDrawer(true)
                     .isStatic(true)
-                    .withSubItems(more_list.first { it.id == DRAWER_ITEM_TEACHERS })
+                    .withSubItems(moreList.first { it.id == DRAWER_ITEM_TEACHERS })
 
 
             // static drawer items

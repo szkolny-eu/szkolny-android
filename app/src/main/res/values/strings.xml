@@ -301,6 +301,7 @@
     <string name="edziennik_notification_api_text">Dzięki niej, aplikacja Szkolny.eu może synchronizować dane z e-dziennikiem. Możesz ją zamknąć, ponieważ w tej chwili nic nie robi.</string>
     <string name="edziennik_notification_api_title">Usługa synchronizacji</string>
     <string name="edziennik_progress_endpoint_account_details">Pobieranie szczegółów konta…</string>
+    <string name="edziennik_progress_endpoint_adressbook">Pobieranie listy odbiorców…</string>
     <string name="edziennik_progress_endpoint_announcements">Pobieranie ogłoszeń szkolnych…</string>
     <string name="edziennik_progress_endpoint_attendance">Pobieranie frekwencji ucznia…</string>
     <string name="edziennik_progress_endpoint_attendance_types">Pobieranie kategorii obecności…</string>

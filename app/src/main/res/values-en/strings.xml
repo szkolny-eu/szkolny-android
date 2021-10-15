@@ -1374,4 +1374,5 @@
     <string name="login_summary_account_child">(Child)</string>
     <string name="login_summary_account_parent">(Parent)</string>
     <string name="menu_teachers">Teachers</string>
+    <string name="edziennik_progress_endpoint_adressbook">Syncing adressbook...</string>
 </resources>

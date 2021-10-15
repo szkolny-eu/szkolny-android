@@ -16,7 +16,7 @@ import pl.szczodrzynski.edziennik.join
 import java.util.*
 
 @Entity(tableName = "teachers",
-        primaryKeys = ["profileId", "teacherId"])
+    primaryKeys = ["profileId", "teacherId"])
 open class Teacher {
     companion object {
         const val TYPE_TEACHER = 0 // 1
@@ -26,6 +26,7 @@ open class Teacher {
         const val TYPE_SECRETARIAT = 4 // 16
         const val TYPE_PRINCIPAL = 5 // 32
         const val TYPE_SCHOOL_ADMIN = 6 // 64
+
         // not teachers
         const val TYPE_SPECIALIST = 7 // 128
         const val TYPE_SUPER_ADMIN = 10 // 1024
@@ -36,7 +37,8 @@ open class Teacher {
         const val TYPE_OTHER = 24 // 16777216
         const val IS_TEACHER_MASK = 127
 
-        val types: List<Int> by lazy { listOf(
+        val types: List<Int> by lazy {
+            listOf(
                 TYPE_TEACHER,
                 TYPE_EDUCATOR,
                 TYPE_PEDAGOGUE,
@@ -51,7 +53,8 @@ open class Teacher {
                 TYPE_PARENTS_COUNCIL,
                 TYPE_SCHOOL_PARENTS_COUNCIL,
                 TYPE_OTHER
-        ) }
+            )
+        }
 
         fun typeName(c: Context, type: Int, typeDescription: String? = null): String {
             val suffix = typeDescription?.let { " ($typeDescription)" } ?: ""
@@ -94,6 +97,9 @@ open class Teacher {
     @ColumnInfo(name = "teacherTypeDescription")
     var typeDescription: String? = null
 
+    @ColumnInfo(name = "teacherSubjects")
+    var subjects: MutableList<String> = mutableListOf()
+
     fun isType(checkingType: Int): Boolean {
         return type and (1 shl checkingType) >= 1
     }
@@ -103,6 +109,10 @@ open class Teacher {
 
     fun setTeacherType(i: Int) {
         type = type or (1 shl i)
+    }
+
+    fun addTeacherSubject(subject: String) {
+        subjects.plusAssign(subject)
     }
 
     fun unsetTeacherType(i: Int) {
@@ -128,6 +138,7 @@ open class Teacher {
      */
     @Ignore
     var recipientDisplayName: CharSequence? = null
+
     /**
      * Used in Message composing - determining the priority
      * of search result, based on the search phrase match
@@ -141,7 +152,6 @@ open class Teacher {
         this.profileId = profileId
         this.id = id
     }
-
 
 
     @Ignore
