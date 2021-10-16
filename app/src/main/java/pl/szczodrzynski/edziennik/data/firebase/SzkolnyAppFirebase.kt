@@ -122,7 +122,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                     id = json.getLong("id") ?: return,
                     date = json.getInt("eventDate")?.let { Date.fromValue(it) } ?: return,
                     time = json.getInt("startTime")?.let { Time.fromValue(it) },
-                    topic = json.getString("topic") ?: "",
+                    topic = json.getString("topicHtml") ?: json.getString("topic") ?: "",
                     color = json.getInt("color"),
                     type = json.getLong("type") ?: 0,
                     teacherId = json.getLong("teacherId") ?: -1,

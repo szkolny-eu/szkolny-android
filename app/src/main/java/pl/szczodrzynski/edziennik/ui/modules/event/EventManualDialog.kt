@@ -360,7 +360,7 @@ class EventManualDialog(
 
         // copy data from event being edited
         editingEvent?.let {
-            b.topic.setText(BetterHtml.fromHtml(activity, it.topic))
+            b.topic.setText(BetterHtml.fromHtml(activity, it.topic, nl2br = true))
             if (it.color != -1)
                 customColor = it.color
         }
