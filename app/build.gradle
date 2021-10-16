@@ -31,6 +31,12 @@ android {
                 cppFlags "-std=c++11"
             }
         }
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
 
     buildTypes {
