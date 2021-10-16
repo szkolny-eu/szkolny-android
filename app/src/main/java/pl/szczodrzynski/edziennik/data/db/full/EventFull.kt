@@ -3,11 +3,11 @@
  */
 package pl.szczodrzynski.edziennik.data.db.full
 
-import androidx.core.text.HtmlCompat
 import androidx.room.Ignore
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.ui.modules.search.Searchable
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -52,14 +52,14 @@ class EventFull(
     @delegate:Ignore
     @delegate:Transient
     val topicHtml by lazy {
-        HtmlCompat.fromHtml(topic, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
+        BetterHtml.fromHtml(context = null, topic, nl2br = true)
     }
 
     @delegate:Ignore
     @delegate:Transient
     val bodyHtml by lazy {
         homeworkBody?.let {
-            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
+            BetterHtml.fromHtml(context = null, it, nl2br = true)
         }
     }
 

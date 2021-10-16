@@ -3,12 +3,12 @@
  */
 package pl.szczodrzynski.edziennik.data.db.full
 
-import androidx.core.text.HtmlCompat
 import androidx.room.Ignore
 import androidx.room.Relation
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.ui.modules.search.Searchable
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 
 class MessageFull(
         profileId: Int, id: Long, type: Int,
@@ -33,7 +33,7 @@ class MessageFull(
     @delegate:Transient
     val bodyHtml by lazy {
         body?.let {
-            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
+            BetterHtml.fromHtml(context = null, it)
         }
     }
 

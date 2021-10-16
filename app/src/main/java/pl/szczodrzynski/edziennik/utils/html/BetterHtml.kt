@@ -32,8 +32,14 @@ object BetterHtml {
         SuperscriptSizeSpan::class.java,
     )
 
+    fun fromHtml(context: Context, stringRes: Int) = fromHtml(
+        context,
+        context.getString(stringRes),
+        nl2br = true,
+    )
+
     @JvmStatic
-    fun fromHtml(context: Context, html: CharSequence): Spanned {
+    fun fromHtml(context: Context?, html: CharSequence, nl2br: Boolean = false): Spanned {
         val hexPattern = "(#[a-fA-F0-9]{6})"
         val colorRegex = "(?:color=\"$hexPattern\")|(?:style=\"color: ?${hexPattern})"
             .toRegex(RegexOption.IGNORE_CASE)
@@ -42,29 +48,35 @@ object BetterHtml {
             .replace("\\[META:[A-z0-9]+;[0-9-]+]".toRegex(), "")
             .replace("background-color: ?$hexPattern;".toRegex(), "")
 
-        val colorBackground = android.R.attr.colorBackground.resolveAttr(context)
-        val textColorPrimary = android.R.attr.textColorPrimary.resolveAttr(context) and 0xffffff
+        if (nl2br) {
+            text = text.replace("\n", "<br>")
+        }
 
-        colorRegex.findAll(text).forEach { result ->
-            val group = result.groups.drop(1).firstOrNull { it != null } ?: return@forEach
+        if (context != null) {
+            val colorBackground = android.R.attr.colorBackground.resolveAttr(context)
+            val textColorPrimary = android.R.attr.textColorPrimary.resolveAttr(context) and 0xffffff
 
-            val color = Color.parseColor(group.value)
-            var newColor = 0xff000000.toInt() or color
+            colorRegex.findAll(text).forEach { result ->
+                val group = result.groups.drop(1).firstOrNull { it != null } ?: return@forEach
 
-            var blendAmount = 1
-            var numIterations = 0
+                val color = Color.parseColor(group.value)
+                var newColor = 0xff000000.toInt() or color
 
-            while (numIterations < 100 && ColorUtils.calculateContrast(
-                    colorBackground,
-                    newColor
-                ) < 4.5f
-            ) {
-                blendAmount += 2
-                newColor = blendColors(color, blendAmount shl 24 or textColorPrimary)
-                numIterations++
+                var blendAmount = 1
+                var numIterations = 0
+
+                while (numIterations < 100 && ColorUtils.calculateContrast(
+                        colorBackground,
+                        newColor
+                    ) < 4.5f
+                ) {
+                    blendAmount += 2
+                    newColor = blendColors(color, blendAmount shl 24 or textColorPrimary)
+                    numIterations++
+                }
+
+                text = text.replaceRange(group.range, "#" + (newColor and 0xffffff).toString(16))
             }
-
-            text = text.replaceRange(group.range, "#" + (newColor and 0xffffff).toString(16))
         }
 
         /*val olRegex = """<ol>(.+?)</\s*?ol>"""
