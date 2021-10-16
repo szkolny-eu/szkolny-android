@@ -151,7 +151,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             val type = if (event.isHomework) Notification.TYPE_NEW_SHARED_HOMEWORK else Notification.TYPE_NEW_SHARED_EVENT
             val notificationFilter = app.config.getFor(event.profileId).sync.notificationFilter
 
-            if (!notificationFilter.contains(type)) {
+            if (!notificationFilter.contains(type) && event.sharedBy != "self") {
                 val notification = Notification(
                         id = Notification.buildId(event.profileId, type, event.id),
                         title = app.getNotificationTitle(type),
