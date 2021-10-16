@@ -31,6 +31,7 @@ import kotlin.coroutines.CoroutineContext
 
 class EventDetailsDialog(
         val activity: AppCompatActivity,
+        // this event is observed for changes
         var event: EventFull,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
@@ -85,7 +86,11 @@ class EventDetailsDialog(
             showRemoveEventDialog()
         }
 
-        update()
+        // watch the event for changes
+        app.db.eventDao().getById(event.profileId, event.id).observe(activity) {
+            event = it ?: return@observe
+            update()
+        }
     }}
 
     private fun update() {
@@ -173,8 +178,9 @@ class EventDetailsDialog(
                             dialog.dismiss()
                             return@EventManualDialog
                         }
-                        event = it
-                        update()
+                        // this should not be needed as the event is observed by the ID
+                        // event = it
+                        // update()
                     },
                     onShowListener = onShowListener,
                     onDismissListener = onDismissListener

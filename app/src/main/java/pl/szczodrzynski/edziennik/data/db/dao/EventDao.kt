@@ -84,6 +84,10 @@ abstract class EventDao : BaseDao<Event, EventFull> {
     fun getAllByDateNow(profileId: Int, date: Date) =
             getRawNow("$QUERY WHERE $NOT_BLACKLISTED AND events.profileId = $profileId AND eventDate = '${date.stringY_m_d}' $ORDER_BY")
 
+    // GET ONE - LIVE DATA
+    fun getById(profileId: Int, id: Long) =
+        getOne("$QUERY WHERE events.profileId = $profileId AND eventId = $id")
+
     // GET ONE - NOW
     fun getByIdNow(profileId: Int, id: Long) =
             getOneNow("$QUERY WHERE events.profileId = $profileId AND eventId = $id")
