@@ -8,7 +8,7 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="androidx.core.text.HtmlCompat" />
+        <import type="pl.szczodrzynski.edziennik.utils.html.BetterHtml" />
         <variable
             name="message"
             type="pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus.Message" />
@@ -43,7 +43,7 @@
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{HtmlCompat.fromHtml(message.title, HtmlCompat.FROM_HTML_MODE_LEGACY)}"
+                    android:text="@{BetterHtml.fromHtml(context, message.title, false)}"
                     android:textAppearance="@style/NavView.TextView.Title"
                     tools:text="Dziennik nie działa" />
 
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@{HtmlCompat.fromHtml(message.contentLong, HtmlCompat.FROM_HTML_MODE_LEGACY)}"
+                    android:text="@{BetterHtml.fromHtml(context, message.contentLong, false)}"
                     tools:text="Dziennik się zepsuł i nie działa, szkoda\n\n\nwiele linijek ma ten tekst" />
 
                 <com.google.android.material.button.MaterialButton

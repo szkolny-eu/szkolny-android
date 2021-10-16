@@ -31,6 +31,7 @@ import kotlin.coroutines.CoroutineContext
 
 class EventDetailsDialog(
         val activity: AppCompatActivity,
+        // this event is observed for changes
         var event: EventFull,
         val onShowListener: ((tag: String) -> Unit)? = null,
         val onDismissListener: ((tag: String) -> Unit)? = null
@@ -85,13 +86,20 @@ class EventDetailsDialog(
             showRemoveEventDialog()
         }
 
-        update()
+        // watch the event for changes
+        app.db.eventDao().getById(event.profileId, event.id).observe(activity) {
+            event = it ?: return@observe
+            update()
+        }
     }}
 
     private fun update() {
         b.event = event
         b.eventShared = eventShared
         b.eventOwn = eventOwn
+
+        b.topic.text = event.topicHtml
+        b.body.text = event.bodyHtml
 
         if (!event.seen) {
             manager.markAsSeen(event)
@@ -170,8 +178,9 @@ class EventDetailsDialog(
                             dialog.dismiss()
                             return@EventManualDialog
                         }
-                        event = it
-                        update()
+                        // this should not be needed as the event is observed by the ID
+                        // event = it
+                        // update()
                     },
                     onShowListener = onShowListener,
                     onDismissListener = onDismissListener
@@ -350,7 +359,7 @@ class EventDetailsDialog(
         val intent = Intent(Intent.ACTION_EDIT).apply {
             data = Events.CONTENT_URI
             putExtra(Events.TITLE, title)
-            putExtra(Events.DESCRIPTION, event.topic)
+            putExtra(Events.DESCRIPTION, event.topicHtml.toString())
 
             if (event.time == null) {
                 putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true)

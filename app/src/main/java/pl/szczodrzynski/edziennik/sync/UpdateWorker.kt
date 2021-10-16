@@ -9,7 +9,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.text.Html
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.work.*
@@ -20,6 +19,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.utils.Utils
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
@@ -115,7 +115,7 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
                         .setStyle(NotificationCompat.BigTextStyle()
                                 .bigText(listOf(
                                         app.getString(R.string.notification_updates_text, update.versionName),
-                                        update.releaseNotes?.let { Html.fromHtml(it) }
+                                        update.releaseNotes?.let { BetterHtml.fromHtml(context = null, it) }
                                 ).concat("\n")))
                         .setColor(0xff2196f3.toInt())
                         .setLights(0xFF00FFFF.toInt(), 2000, 2000)

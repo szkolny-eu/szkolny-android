@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -27,9 +30,13 @@ import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
+import pl.szczodrzynski.edziennik.ui.dialogs.StyledTextDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.modules.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.SIMPLE
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfigBase
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
@@ -59,6 +66,10 @@ class EventManualDialog(
     private lateinit var b: DialogEventManualV2Binding
     private lateinit var dialog: AlertDialog
     private lateinit var profile: Profile
+    private lateinit var stylingConfig: StylingConfigBase
+
+    private val textStylingManager
+        get() = app.textStylingManager
 
     private var customColor: Int? = null
     private val editingShared = editingEvent?.sharedBy != null
@@ -127,6 +138,23 @@ class EventManualDialog(
                     Anim.collapse(b.moreLayout, 200, null)
             }
         }
+
+        b.topicLayout.endIconDrawable = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_open_in_new).apply {
+            sizeDp = 24
+        }
+        b.topicLayout.setEndIconOnClickListener {
+            StyledTextDialog(
+                activity,
+                initialText = b.topic.text,
+                onSuccess = {
+                    b.topic.text = it
+                },
+                onShowListener,
+                onDismissListener
+            )
+        }
+
+        stylingConfig = StylingConfigBase(editText = b.topic, htmlMode = SIMPLE)
 
         updateShareText()
         b.shareSwitch.onChange { _, isChecked ->
@@ -332,7 +360,7 @@ class EventManualDialog(
 
         // copy data from event being edited
         editingEvent?.let {
-            b.topic.setText(it.topic)
+            b.topic.setText(BetterHtml.fromHtml(activity, it.topic, nl2br = true))
             if (it.color != -1)
                 customColor = it.color
         }
@@ -458,12 +486,13 @@ class EventManualDialog(
 
         val id = System.currentTimeMillis()
 
+        val topicHtml = textStylingManager.getHtmlText(stylingConfig)
         val eventObject = Event(
                 profileId = profileId,
                 id = editingEvent?.id ?: id,
                 date = date,
                 time = startTime,
-                topic = topic,
+                topic = topicHtml,
                 color = customColor,
                 type = type?.id ?: Event.TYPE_DEFAULT,
                 teacherId = teacher?.id ?: -1,

@@ -10,7 +10,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +30,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackActivity
 import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 import pl.szczodrzynski.edziennik.utils.models.Date
 import kotlin.coroutines.CoroutineContext
@@ -218,7 +218,7 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         if (!app.config.privacyPolicyAccepted) {
             MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.privacy_policy)
-                .setMessage(Html.fromHtml(activity.getString(R.string.privacy_policy_dialog_html)))
+                .setMessage(BetterHtml.fromHtml(activity, R.string.privacy_policy_dialog_html))
                 .setPositiveButton(R.string.i_agree) { _, _ ->
                     app.config.privacyPolicyAccepted = true
                     onLoginModeClicked(loginType, loginMode)

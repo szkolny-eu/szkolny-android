@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.mikepenz.iconics.utils.buildIconics
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.EventListItemBinding
@@ -99,15 +98,13 @@ class EventViewHolder(
             /* 3$ */
             item.teamName?.let { bullet + it } ?: "",
         )
+        // workaround for the span data lost during setText above
         val addedBySpanned = adapter.highlightSearchText(
             item = item,
             text = addedBy,
             color = colorHighlight
         )
-        b.addedBy.text = b.addedBy.text.replace(addedBy, addedBySpanned)
-        // for now, as CharSequence.replace() converts the original sequence to string,
-        // so the Iconics span data is lost and the share icon set above does not display
-        b.addedBy.buildIconics()
+        b.addedBy.text = b.addedBy.text.replaceSpanned(addedBy, addedBySpanned)
 
         b.attachmentIcon.isVisible = item.hasAttachments
 

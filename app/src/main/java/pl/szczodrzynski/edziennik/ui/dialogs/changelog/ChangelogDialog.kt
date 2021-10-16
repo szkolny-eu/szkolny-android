@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.ui.dialogs.changelog
 
 import android.os.Build
-import android.text.Html
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -18,6 +17,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.dp
 import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
 class ChangelogDialog(
@@ -52,12 +52,11 @@ class ChangelogDialog(
         text = text.replace("""\[(.+?)]\(@([A-z0-9-]+)\)""".toRegex(), "<a href=\"$commitsUrlPrefix$2\">$1</a>")
         text = text.replace("""\s@([A-z0-9-]+)""".toRegex(), " <a href=\"$commitsUrlPrefix$1\">@$1</a>")
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textView.text = Html.fromHtml(text)
-        }
-        else {
-            textView.text = Html.fromHtml(text.replace("<li>", "<br><li> - "))
-        }
+        val html = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            text
+        else
+            text.replace("<li>", "<br><li> - ")
+        textView.text = BetterHtml.fromHtml(activity, html)
 
         textView.movementMethod = BetterLinkMovementMethod.getInstance()
 

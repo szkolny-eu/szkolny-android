@@ -75,6 +75,7 @@ open class Event(
 
     @ColumnInfo(name = "eventAddedManually")
     var addedManually: Boolean = false
+        get() = field || sharedBy == "self"
     @ColumnInfo(name = "eventSharedBy")
     var sharedBy: String? = null
     @ColumnInfo(name = "eventSharedByName")

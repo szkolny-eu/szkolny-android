@@ -4,12 +4,12 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 
-import android.text.Html
 import androidx.core.util.contains
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -26,7 +26,7 @@ class MobidziennikApiHomework(val data: DataMobidziennik, rows: List<String>) {
                 val id = cols[0].toLong()
                 val teacherId = cols[7].toLong()
                 val subjectId = cols[6].toLong()
-                val topic = Html.fromHtml(cols[1])?.toString()?.trim() ?: ""
+                val topic = BetterHtml.fromHtml(context = null, cols[1]).toString().trim()
                 val eventDate = Date.fromYmd(cols[2])
                 val startTime = Time.fromYmdHm(cols[3])
 
