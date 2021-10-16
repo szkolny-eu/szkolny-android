@@ -245,7 +245,10 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                     seen = profile.empty
                     notified = profile.empty
 
-                    if (profile.userCode == event.sharedBy) sharedBy = "self"
+                    if (profile.userCode == event.sharedBy) {
+                        sharedBy = "self"
+                        addedManually = true
+                    }
                 }
             }
         }
