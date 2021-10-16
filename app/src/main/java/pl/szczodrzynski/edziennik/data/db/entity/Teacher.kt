@@ -111,9 +111,7 @@ open class Teacher {
         type = type or (1 shl i)
     }
 
-    fun addTeacherSubject(subject: String) {
-        subjects.plusAssign(subject)
-    }
+    fun addSubject(subjectId: Long) = subjects.add(subjectId)
 
     fun unsetTeacherType(i: Int) {
         type = type and (1 shl i).inv()
