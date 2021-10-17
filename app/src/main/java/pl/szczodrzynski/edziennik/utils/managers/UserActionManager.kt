@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.data.api.ERROR_CAPTCHA_LIBRUS_PORTAL
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.ui.dialogs.captcha.LibrusCaptchaDialog
+import pl.szczodrzynski.edziennik.ui.captcha.LibrusCaptchaDialog
 
 class UserActionManager(val app: App) {
     companion object {

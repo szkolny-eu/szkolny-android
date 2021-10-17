@@ -28,9 +28,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDetailsDialog
-import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
-import pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo
+import pl.szczodrzynski.edziennik.ui.error.ErrorDetailsDialog
+import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.login.LoginInfo
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import retrofit2.Response

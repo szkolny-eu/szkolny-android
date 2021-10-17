@@ -70,7 +70,7 @@
                 tools:src="@android:drawable/ic_menu_more" />
         </LinearLayout>
 
-        <pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceBar
+        <pl.szczodrzynski.edziennik.ui.attendance.AttendanceBar
             android:id="@+id/attendanceBar"
             android:layout_width="match_parent"
             android:layout_height="12dp"

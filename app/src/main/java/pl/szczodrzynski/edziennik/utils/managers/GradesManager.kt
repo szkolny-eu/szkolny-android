@@ -15,8 +15,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_AVG
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
-import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesAverages
-import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSemester
+import pl.szczodrzynski.edziennik.ui.grades.models.GradesAverages
+import pl.szczodrzynski.edziennik.ui.grades.models.GradesSemester
 import java.text.DecimalFormat
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.floor

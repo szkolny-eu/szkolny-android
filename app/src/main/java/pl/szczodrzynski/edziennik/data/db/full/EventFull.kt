@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.db.full
 import androidx.room.Ignore
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.ui.modules.search.Searchable
+import pl.szczodrzynski.edziennik.ui.search.Searchable
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time

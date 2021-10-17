@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2020-5-4.
+ * Copyright (c) Kuba Szczodrzyński 2021-10-17.
  */
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings

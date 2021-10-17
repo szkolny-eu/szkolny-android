@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
-import pl.szczodrzynski.edziennik.ui.modules.messages.list.MessagesFragment
+import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import kotlin.coroutines.CoroutineContext
 
 class SyncViewListDialog(

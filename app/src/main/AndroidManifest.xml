@@ -121,32 +121,32 @@
               / ____ \ (__| |_| |\ V /| | |_| |  __/\__ \
              /_/    \_\___|\__|_| \_/ |_|\__|_|\___||___/
         -->
-        <activity android:name=".ui.modules.base.CrashActivity"
+        <activity android:name=".ui.base.CrashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:process=":error_activity"
             android:theme="@style/DeadTheme" />
-        <activity android:name=".ui.modules.intro.ChangelogIntroActivity"
+        <activity android:name=".ui.intro.ChangelogIntroActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:theme="@style/Theme.Intro" />
-        <activity android:name=".ui.modules.login.LoginActivity"
+        <activity android:name=".ui.login.LoginActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.Light" />
-        <activity android:name=".ui.modules.home.CounterActivity"
+        <activity android:name=".ui.home.CounterActivity"
             android:theme="@style/AppTheme.Black" />
-        <activity android:name=".ui.modules.feedback.FeedbackActivity"
+        <activity android:name=".ui.feedback.FeedbackActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.modules.settings.SettingsLicenseActivity"
+        <activity android:name=".ui.settings.SettingsLicenseActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme" />
         <activity android:name="com.canhub.cropper.CropImageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".ui.modules.base.BuildInvalidActivity" />
-        <activity android:name=".ui.modules.settings.contributors.ContributorsActivity" />
+        <activity android:name=".ui.base.BuildInvalidActivity" />
+        <activity android:name=".ui.settings.contributors.ContributorsActivity" />
 
         <!--  _____               _
              |  __ \             (_)

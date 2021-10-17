@@ -112,7 +112,7 @@
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
-            <pl.szczodrzynski.edziennik.ui.modules.base.lazypager.LazyViewPager
+            <pl.szczodrzynski.edziennik.ui.base.lazypager.LazyViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

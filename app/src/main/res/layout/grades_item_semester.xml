@@ -60,7 +60,7 @@
             tools:text1="suma: 175 pkt"
             tools:text2="średnia: 4,78" />
 
-        <pl.szczodrzynski.edziennik.ui.modules.grades.GradeView
+        <pl.szczodrzynski.edziennik.ui.grades.GradeView
             android:id="@+id/proposedGrade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             tools:layout_marginRight="5dp"
             tools:visibility="visible" />
 
-        <pl.szczodrzynski.edziennik.ui.modules.grades.GradeView
+        <pl.szczodrzynski.edziennik.ui.grades.GradeView
             android:id="@+id/finalGrade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

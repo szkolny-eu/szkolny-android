@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
 
-                <pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceView
+                <pl.szczodrzynski.edziennik.ui.attendance.AttendanceView
                     android:id="@+id/type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
