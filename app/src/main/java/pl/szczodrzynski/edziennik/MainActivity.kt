@@ -1290,8 +1290,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             @Suppress("deprecation")
             val taskDesc = ActivityManager.TaskDescription(
-                if (target.id == HOME_ID) getString(R.string.app_name) else getString(R.string.app_task_format,
-                    getString(target.name)),
+                if (target.id == HOME_ID)
+                    getString(R.string.app_name)
+                else
+                    getString(R.string.app_task_format, getString(target.name)),
                 bm,
                 getColorFromAttr(this, R.attr.colorSurface)
             )
