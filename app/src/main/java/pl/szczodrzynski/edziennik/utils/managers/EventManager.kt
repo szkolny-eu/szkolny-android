@@ -45,16 +45,13 @@ class EventManager(val app: App) : CoroutineScope {
         showType: Boolean = true,
         doneIconColor: Int? = null
     ) {
-        var eventTopic = if (showType)
-            "${event.typeName ?: "wydarzenie"} - ${event.topic}"
-        else
-            event.topic
+        val topicSpan = event.topicHtml
 
-        if (event.addedManually) {
-            eventTopic = "{cmd-clipboard-edit-outline} $eventTopic"
-        }
-
-        title.text = eventTopic
+        title.text = listOfNotNull(
+            if (event.addedManually) "{cmd-clipboard-edit-outline} " else null,
+            if (showType) "${event.typeName ?: "wydarzenie"} - " else null,
+            topicSpan,
+        ).concat()
 
         title.setCompoundDrawables(
             null,

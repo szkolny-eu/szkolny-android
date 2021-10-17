@@ -40,37 +40,37 @@ class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
 
             val doc = Jsoup.parse(text)
 
-            val list = doc.getElementsByClass("spis")?.first()?.getElementsByClass("podswietl")
+            val list = doc.getElementsByClass("spis").first()?.getElementsByClass("podswietl")
             list?.forEach { item ->
                 val id = item.attr("rel").toLongOrNull() ?: return@forEach
 
                 val subjectEl = item.select("td:eq(0)").first()
                 var hasAttachments = false
-                if (subjectEl.getElementsByTag("a").size != 0) {
+                if (subjectEl?.getElementsByTag("a")?.size ?: 0 > 0) {
                     hasAttachments = true
                 }
-                val subject = subjectEl.ownText()
+                val subject = subjectEl?.ownText() ?: ""
 
-                val readByString = item.select("td:eq(2)").first().text()
+                val readByString = item.select("td:eq(2)").first()?.text() ?: ""
                 val (readBy, sentTo) = Regexes.MOBIDZIENNIK_MESSAGE_SENT_READ_BY.find(readByString).let {
                     (it?.get(1)?.toIntOrNull() ?: 0) to (it?.get(2)?.toIntOrNull() ?: 0)
                 }
 
                 val recipientEl = item.select("td:eq(1) a span").first()
-                val recipientNames = recipientEl.ownText().split(", ")
+                val recipientNames = recipientEl?.ownText()?.split(", ")
                 val readState = when (readBy) {
                     0 -> 0
                     sentTo -> 1
                     else -> -1
                 }.toLong()
-                for (recipientName in recipientNames) {
+                recipientNames?.forEach { recipientName ->
                     val name = recipientName.fixName()
                     val recipientId = data.teacherList.singleOrNull { it.fullNameLastFirst == name }?.id ?: -1
                     data.messageRecipientIgnoreList.add(MessageRecipient(profileId, recipientId, -1, readState, id))
                 }
 
                 val addedDateEl = item.select("td:eq(3) small").first()
-                val addedDate = Date.fromIsoHm(addedDateEl.text())
+                val addedDate = Date.fromIsoHm(addedDateEl?.text())
 
                 val message = Message(
                         profileId = profileId,

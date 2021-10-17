@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs
 
-import android.text.Html
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -14,6 +13,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.sync.UpdateDownloaderService
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
 class UpdateAvailableDialog(
@@ -48,7 +48,7 @@ class UpdateAvailableDialog(
                         R.string.update_available_format,
                         BuildConfig.VERSION_NAME,
                         update.versionName,
-                        update.releaseNotes?.let { Html.fromHtml(it) } ?: "---"
+                        update.releaseNotes?.let { BetterHtml.fromHtml(activity, it) } ?: "---"
                 )
                 .setPositiveButton(R.string.update_available_button) { dialog, _ ->
                     activity.startService(Intent(app, UpdateDownloaderService::class.java))

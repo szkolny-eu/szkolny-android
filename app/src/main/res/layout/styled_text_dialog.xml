@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-10-11.
+  -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="250dp"
+            app:counterEnabled="true">
+
+            <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:inputType="textMultiLine|textAutoCorrect|textLongMessage|textAutoComplete|textCapSentences"
+                android:minLines="10"
+                tools:text="Witam,\n\nchciałem przekazać bardzo ważną wiadomość.\nJest to cytat znanej osoby.\n\n&quot;To jest tak, ale nie. Pamiętaj żeby oczywiście&quot;\n\nCytat ma bardzo duże przesłanie i ogromny wpływ na dzisiejszą kulturę i rozwój współczesnej cywilizacji.\n\nJako zadanie domowe, należy wypisać 5 pierwszych liczb pierwszych. Uzasadnij decyzję, odwołując się do cytatu i 3 innych przykładów z literatury lub filmu.\n\nPozdrawiam,\nJa." />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <include
+            android:id="@+id/fontStyle"
+            layout="@layout/styled_text_buttons" />
+
+        <TextView
+            android:id="@+id/htmlText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="monospace"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

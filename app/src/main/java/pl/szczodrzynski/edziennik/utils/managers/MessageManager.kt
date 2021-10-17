@@ -25,6 +25,7 @@ import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.ORIGINAL
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -148,7 +149,7 @@ class MessageManager(private val app: App) {
     suspend fun saveAsDraft(config: UIConfig, stylingConfig: StylingConfig, profileId: Int, messageId: Long?) {
         val teachers = config.recipients.allChips.mapNotNull { it.data as? Teacher }
         val subject = config.subject.text?.toString() ?: ""
-        val body = textStylingManager.getHtmlText(stylingConfig, enableHtmlCompatible = false)
+        val body = textStylingManager.getHtmlText(stylingConfig, htmlMode = ORIGINAL)
 
         withContext(Dispatchers.Default) {
             if (messageId != null) {

@@ -164,7 +164,6 @@
                 android:id="@+id/topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{event.topic}"
                 android:textAppearance="@style/NavView.TextView.Medium"
                 android:textIsSelectable="true"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
@@ -190,7 +189,6 @@
                 android:id="@+id/body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{event.homeworkBody}"
                 android:textAppearance="@style/NavView.TextView.Medium"
                 android:textIsSelectable="true"
                 tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />

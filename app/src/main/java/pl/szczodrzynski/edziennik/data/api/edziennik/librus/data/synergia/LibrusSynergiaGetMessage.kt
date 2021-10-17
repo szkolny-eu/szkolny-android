@@ -87,7 +87,7 @@ class LibrusSynergiaGetMessage(override val data: DataLibrus,
                             })
                         }
 
-                        val readDateText = readElement.select(".left").text()
+                        val readDateText = readElement?.select(".left")?.text()
                         val readDate = when (readDateText.isNotNullNorEmpty()) {
                             true -> Date.fromIso(readDateText)
                             else -> 0
@@ -108,7 +108,7 @@ class LibrusSynergiaGetMessage(override val data: DataLibrus,
 
                     Message.TYPE_SENT -> {
 
-                        readElement.select("tr").forEachIndexed { i, receiver ->
+                        readElement?.select("tr")?.forEachIndexed { i, receiver ->
                             if (i == 0) return@forEachIndexed // Skip the header
 
                             val receiverFullName = receiver.child(0).text()

@@ -118,11 +118,14 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/topicLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/dialog_event_manual_topic">
+            android:hint="@string/dialog_event_manual_topic"
+            app:endIconMode="custom"
+            tools:endIconDrawable="@android:drawable/ic_menu_crop">
 
             <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                 android:id="@+id/topic"

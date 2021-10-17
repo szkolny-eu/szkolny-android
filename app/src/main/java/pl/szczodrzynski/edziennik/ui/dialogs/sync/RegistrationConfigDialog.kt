@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.sync
 
-import android.text.Html
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -14,6 +13,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.task.AppSync
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
 class RegistrationConfigDialog(
@@ -61,7 +61,7 @@ class RegistrationConfigDialog(
         onShowListener?.invoke(TAG + "Enable")
         dialog = MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.registration_config_title)
-            .setMessage(Html.fromHtml(app.getString(R.string.registration_config_enable_text)))
+            .setMessage(BetterHtml.fromHtml(activity, R.string.registration_config_enable_text))
             .setPositiveButton(R.string.i_agree) { _, _ ->
                 enableRegistration()
             }
@@ -76,7 +76,7 @@ class RegistrationConfigDialog(
         onShowListener?.invoke(TAG + "Disable")
         dialog = MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.registration_config_title)
-            .setMessage(Html.fromHtml(app.getString(R.string.registration_config_disable_text)))
+            .setMessage(R.string.registration_config_disable_text)
             .setPositiveButton(R.string.ok) { _, _ ->
                 disableRegistration()
             }

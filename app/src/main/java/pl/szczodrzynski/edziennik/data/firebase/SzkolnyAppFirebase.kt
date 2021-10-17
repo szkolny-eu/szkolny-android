@@ -122,7 +122,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                     id = json.getLong("id") ?: return,
                     date = json.getInt("eventDate")?.let { Date.fromValue(it) } ?: return,
                     time = json.getInt("startTime")?.let { Time.fromValue(it) },
-                    topic = json.getString("topic") ?: "",
+                    topic = json.getString("topicHtml") ?: json.getString("topic") ?: "",
                     color = json.getInt("color"),
                     type = json.getLong("type") ?: 0,
                     teacherId = json.getLong("teacherId") ?: -1,
@@ -135,7 +135,10 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
 
             event.sharedBy = json.getString("sharedBy")
             event.sharedByName = json.getString("sharedByName")
-            if (profile.userCode == event.sharedBy) event.sharedBy = "self"
+            if (profile.userCode == event.sharedBy) {
+                event.sharedBy = "self"
+                event.addedManually = true
+            }
 
             val metadata = Metadata(
                     event.profileId,
@@ -148,7 +151,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             val type = if (event.isHomework) Notification.TYPE_NEW_SHARED_HOMEWORK else Notification.TYPE_NEW_SHARED_EVENT
             val notificationFilter = app.config.getFor(event.profileId).sync.notificationFilter
 
-            if (!notificationFilter.contains(type)) {
+            if (!notificationFilter.contains(type) && event.sharedBy != "self") {
                 val notification = Notification(
                         id = Notification.buildId(event.profileId, type, event.id),
                         title = app.getNotificationTitle(type),

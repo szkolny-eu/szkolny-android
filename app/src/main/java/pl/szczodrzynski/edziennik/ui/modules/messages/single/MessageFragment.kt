@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.ui.modules.messages.single
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +31,7 @@ import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.modules.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.BetterLink
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -255,7 +255,7 @@ class MessageFragment : Fragment(), CoroutineScope {
             }
         }
         messageRecipients.append("</ul>")
-        b.recipients.text = Html.fromHtml(messageRecipients.toString())
+        b.recipients.text = BetterHtml.fromHtml(activity, messageRecipients)
 
         showAttachments()
 

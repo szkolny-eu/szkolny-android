@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -22,6 +21,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.utils.Themes.appTheme
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
 /*
@@ -90,7 +90,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
         moreInfoButton.setOnClickListener {
             MaterialAlertDialogBuilder(this, R.style.AppTheme_MaterialAlertDialogMonospace)
                 .setTitle(R.string.crash_details)
-                .setMessage(Html.fromHtml(getErrorString(intent, false)))
+                .setMessage(BetterHtml.fromHtml(context = null, getErrorString(intent, false)))
                 .setPositiveButton(R.string.close, null)
                 .setNeutralButton(R.string.copy_to_clipboard) { _, _ -> copyErrorToClipboard() }
                 .show()

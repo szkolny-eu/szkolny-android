@@ -4,6 +4,8 @@
 
 package pl.szczodrzynski.edziennik.ui.widgets.timetable;
 
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
+
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -16,7 +18,6 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -32,13 +33,12 @@ import com.mikepenz.iconics.utils.IconicsDrawableExtensionsKt;
 import java.util.List;
 
 import kotlin.Unit;
+import pl.szczodrzynski.edziennik.ExtensionsKt;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel;
 import pl.szczodrzynski.edziennik.utils.models.Time;
 import pl.szczodrzynski.edziennik.utils.models.Week;
-
-import static android.util.TypedValue.COMPLEX_UNIT_SP;
 
 public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFactory {
 
@@ -309,17 +309,17 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
 
             views.setViewVisibility(R.id.widgetTimetableOldSubjectName, View.GONE);
             if (lesson.lessonChange) {
-                views.setTextViewText(R.id.widgetTimetableSubjectName, Html.fromHtml("<i>"+lesson.subjectName+"</i>"));
+                views.setTextViewText(R.id.widgetTimetableSubjectName, ExtensionsKt.asItalicSpannable(lesson.subjectName));
                 if (lesson.lessonChangeNoClassroom) {
-                    views.setTextViewText(R.id.widgetTimetableClassroomName, Html.fromHtml("<del>"+lesson.classroomName+"</del>"));
+                    views.setTextViewText(R.id.widgetTimetableClassroomName, ExtensionsKt.asStrikethroughSpannable(lesson.classroomName));
                 }
                 else {
-                    views.setTextViewText(R.id.widgetTimetableClassroomName, Html.fromHtml("<i>" + lesson.classroomName + "</i>"));
+                    views.setTextViewText(R.id.widgetTimetableClassroomName, ExtensionsKt.asItalicSpannable(lesson.classroomName));
                 }
             }
             else if (lesson.lessonCancelled) {
-                views.setTextViewText(R.id.widgetTimetableSubjectName, Html.fromHtml("<del>"+lesson.subjectName+"</del>"));
-                views.setTextViewText(R.id.widgetTimetableClassroomName, Html.fromHtml("<del>"+lesson.classroomName+"</del>"));
+                views.setTextViewText(R.id.widgetTimetableSubjectName, ExtensionsKt.asStrikethroughSpannable(lesson.subjectName));
+                views.setTextViewText(R.id.widgetTimetableClassroomName, ExtensionsKt.asStrikethroughSpannable(lesson.classroomName));
             }
             else {
                 views.setTextViewText(R.id.widgetTimetableSubjectName, lesson.subjectName);

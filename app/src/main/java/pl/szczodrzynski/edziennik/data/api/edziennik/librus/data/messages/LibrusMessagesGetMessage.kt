@@ -35,7 +35,7 @@ class LibrusMessagesGetMessage(override val data: DataLibrus,
                 "messageId" to messageObject.id,
                 "archive" to 0
         )) { doc ->
-            val message = doc.select("response GetMessage data").first()
+            val message = doc.select("response GetMessage data").first() ?: return@messagesGet
 
             val body = Base64.decode(message.select("Message").text(), Base64.DEFAULT)
                     .toString(Charset.defaultCharset())

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
@@ -25,6 +24,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
 class HomeAvailabilityCard(
@@ -61,8 +61,8 @@ class HomeAvailabilityCard(
 
         // show "register unavailable" only when disabled
         if (status?.userMessage != null) {
-            b.homeAvailabilityTitle.text = HtmlCompat.fromHtml(status.userMessage.title, HtmlCompat.FROM_HTML_MODE_LEGACY)
-            b.homeAvailabilityText.text = HtmlCompat.fromHtml(status.userMessage.contentShort, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            b.homeAvailabilityTitle.text = BetterHtml.fromHtml(activity, status.userMessage.title)
+            b.homeAvailabilityText.text = BetterHtml.fromHtml(activity, status.userMessage.contentShort)
             b.homeAvailabilityUpdate.isVisible = false
             b.homeAvailabilityIcon.setImageResource(R.drawable.ic_sync)
             if (status.userMessage.icon != null)
