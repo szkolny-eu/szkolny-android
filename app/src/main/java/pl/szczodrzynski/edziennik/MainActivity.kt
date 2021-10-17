@@ -443,8 +443,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         app.db.profileDao().all.observe(this) { profiles ->
             val allArchived = profiles.all { it.archived }
-            drawer.setProfileList(profiles.filter { it.id >= 0 && (!it.archived || allArchived) }
-                .toMutableList())
+            drawer.setProfileList(profiles.filter {
+                it.id >= 0 && (!it.archived || allArchived)
+            }.toMutableList())
             //prepend the archived profile if loaded
             if (app.profile.archived && !allArchived) {
                 drawer.prependProfile(Profile(
