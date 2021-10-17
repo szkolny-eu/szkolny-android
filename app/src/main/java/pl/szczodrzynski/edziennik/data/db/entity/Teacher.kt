@@ -147,8 +147,6 @@ open class Teacher {
         this.profileId = profileId
         this.id = id
     }
-
-
     @Ignore
     constructor(profileId: Int, id: Long, name: String, surname: String) {
         this.profileId = profileId
