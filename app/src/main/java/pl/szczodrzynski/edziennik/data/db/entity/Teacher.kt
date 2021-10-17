@@ -95,7 +95,7 @@ open class Teacher {
     var typeDescription: String? = null
 
     @ColumnInfo(name = "teacherSubjects")
-    var subjects: MutableList<Long> = mutableListOf()
+    var subjects = mutableListOf<Long>()
 
     fun isType(checkingType: Int): Boolean {
         return type and (1 shl checkingType) >= 1
