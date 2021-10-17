@@ -1200,8 +1200,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         pausedNavigationData = null
 
-        val arguments =
-            args ?: navBackStack.firstOrNull { it.first.id == target.id }?.second ?: Bundle()
+        val arguments = args 
+            ?: navBackStack.firstOrNull { it.first.id == target.id }?.second
+            ?: Bundle()
         bottomSheet.close()
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false
