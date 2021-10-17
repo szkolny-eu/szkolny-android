@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 class Migration96 : Migration(95, 96) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        // timetable - is extra flag
-        database.execSQL("ALTER TABLE teachers ADD COLUMN subjects TEXT;")
+        // teachers - associated subjects list
+        database.execSQL("ALTER TABLE teachers ADD COLUMN teacherSubjects TEXT NOT NULL;")
     }
 }
