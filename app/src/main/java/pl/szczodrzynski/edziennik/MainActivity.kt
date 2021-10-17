@@ -507,8 +507,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if ((today.month % 11 == 1) && app.config.ui.snowfall) {
             b.rootFrame.addView(layoutInflater.inflate(R.layout.snowfall, b.rootFrame, false))
         } else if (app.config.ui.eggfall && BigNightUtil().isDataWielkanocyNearDzisiaj()) {
-            val eggfall =
-                layoutInflater.inflate(R.layout.eggfall, b.rootFrame, false) as SnowfallView
+            val eggfall = layoutInflater.inflate(
+                R.layout.eggfall,
+                b.rootFrame,
+                false
+            ) as SnowfallView
             eggfall.setSnowflakeBitmaps(listOf(
                 BitmapFactory.decodeResource(resources, R.drawable.egg1),
                 BitmapFactory.decodeResource(resources, R.drawable.egg2),
