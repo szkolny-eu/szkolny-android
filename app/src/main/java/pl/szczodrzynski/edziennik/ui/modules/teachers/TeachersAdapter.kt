@@ -12,11 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.databinding.TeachersListItemBinding
+import pl.szczodrzynski.edziennik.databinding.TeacherItemBinding
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.onClick
 import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import kotlin.coroutines.CoroutineContext
@@ -40,7 +38,7 @@ class TeachersAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(activity)
-        val view = TeachersListItemBinding.inflate(inflater, parent, false)
+        val view = TeacherItemBinding.inflate(inflater, parent, false)
         return ViewHolder(view)
     }
 
@@ -55,7 +53,7 @@ class TeachersAdapter(
             val subjects = item.subjects.map { App.db.subjectDao().getByIdNow(App.profileId, it).longName }
             role = role.plus(": ").plus(subjects.joinToString())
         }
-        b.role.text = role
+        b.type.text = role
 
         item.fullName.let { name ->
             BetterLink.attach(
@@ -67,5 +65,5 @@ class TeachersAdapter(
 
     override fun getItemCount() = items.size
 
-    class ViewHolder(val b: TeachersListItemBinding) : RecyclerView.ViewHolder(b.root)
+    class ViewHolder(val b: TeacherItemBinding) : RecyclerView.ViewHolder(b.root)
 }
