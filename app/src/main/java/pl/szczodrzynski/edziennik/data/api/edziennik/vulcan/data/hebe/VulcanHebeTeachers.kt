@@ -37,7 +37,6 @@ class VulcanHebeTeachers(
                     data.getTeacherByFirstLast(name?.plus(" ")?.plus(surname) ?: displayName!!)
 
                 teacher.addSubject(data.getSubject(null, subjectName).id)
-
             }
             data.setSyncNext(ENDPOINT_VULCAN_HEBE_TEACHERS, 2 * DAY)
             onSuccess(ENDPOINT_VULCAN_HEBE_TEACHERS)
