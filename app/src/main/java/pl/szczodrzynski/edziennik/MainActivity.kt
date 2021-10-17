@@ -903,8 +903,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     true
                 }
                 "createManualEvent" -> {
-                    val date =
-                        extras.getString("eventDate")?.let { Date.fromY_m_d(it) } ?: Date.getToday()
+                    val date = extras.getString("eventDate")
+                        ?.let { Date.fromY_m_d(it) }
+                        ?: Date.getToday()
                     EventManualDialog(
                         this,
                         App.profileId,
