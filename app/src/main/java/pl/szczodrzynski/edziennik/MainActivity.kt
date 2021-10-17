@@ -1472,8 +1472,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun error(error: ApiError) = errorSnackbar.addError(error).show()
-    fun snackbar(text: String, actionText: String? = null, onClick: (() -> Unit)? = null) =
-        mainSnackbar.snackbar(text, actionText, onClick)
+    fun snackbar(
+        text: String,
+        actionText: String? = null,
+        onClick: (() -> Unit)? = null,
+    ) = mainSnackbar.snackbar(text, actionText, onClick)
 
     fun snackbarDismiss() = mainSnackbar.dismiss()
 }
