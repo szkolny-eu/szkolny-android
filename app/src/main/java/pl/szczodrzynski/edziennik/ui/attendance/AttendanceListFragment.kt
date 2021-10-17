@@ -17,8 +17,8 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.databinding.AttendanceListFragmentBinding
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceDayRange
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceMonth
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceTypeGroup

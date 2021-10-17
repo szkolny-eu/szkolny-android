@@ -12,8 +12,9 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonNull
 import com.google.gson.JsonPrimitive
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.databinding.LabItemElementBinding
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.debug.LabJsonAdapter
 import pl.szczodrzynski.edziennik.ui.debug.models.LabJsonElement
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder

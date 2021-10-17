@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
 

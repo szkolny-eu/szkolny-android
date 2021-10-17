@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.after
+import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard

@@ -45,6 +45,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker

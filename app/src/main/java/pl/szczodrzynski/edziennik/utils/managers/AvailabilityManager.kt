@@ -6,13 +6,13 @@ package pl.szczodrzynski.edziennik.utils.managers
 
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.toApiError
+import pl.szczodrzynski.edziennik.ext.currentTimeUnix
+import pl.szczodrzynski.edziennik.ext.toApiError
 
 class AvailabilityManager(val app: App) {
     companion object {

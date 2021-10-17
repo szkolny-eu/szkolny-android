@@ -14,8 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.addOnPageSelectedListener
 import pl.szczodrzynski.edziennik.databinding.TemplateFragmentBinding
+import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
 import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
 import kotlin.coroutines.CoroutineContext
 

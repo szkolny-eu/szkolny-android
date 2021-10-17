@@ -15,6 +15,10 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailability
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.task.PostNotifications
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getLong
+import pl.szczodrzynski.edziennik.ext.getNotificationTitle
+import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time

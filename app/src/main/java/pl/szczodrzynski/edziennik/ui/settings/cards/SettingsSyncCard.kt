@@ -13,8 +13,8 @@ import android.provider.Settings
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.after
-import pl.szczodrzynski.edziennik.getSyncInterval
+import pl.szczodrzynski.edziennik.ext.after
+import pl.szczodrzynski.edziennik.ext.getSyncInterval
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.NotificationFilterDialog

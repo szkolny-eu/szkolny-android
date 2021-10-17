@@ -13,10 +13,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.crc16
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
-import pl.szczodrzynski.edziennik.input
+import pl.szczodrzynski.edziennik.ext.crc16
+import pl.szczodrzynski.edziennik.ext.input
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 
 class SubjectDropdown : TextInputDropDown {

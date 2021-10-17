@@ -18,6 +18,9 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
+import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.formatDate
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import java.util.concurrent.TimeUnit

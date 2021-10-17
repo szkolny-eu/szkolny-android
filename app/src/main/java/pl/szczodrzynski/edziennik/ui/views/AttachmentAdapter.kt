@@ -22,8 +22,8 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.databinding.AttachmentListItemBinding
-import pl.szczodrzynski.edziennik.onClick
-import pl.szczodrzynski.edziennik.onLongClick
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.onLongClick
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.navlib.colorAttr
 import kotlin.coroutines.CoroutineContext

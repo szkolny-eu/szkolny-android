@@ -12,10 +12,10 @@ import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.asSpannable
-import pl.szczodrzynski.edziennik.cleanDiacritics
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.resolveAttr
+import pl.szczodrzynski.edziennik.ext.asSpannable
+import pl.szczodrzynski.edziennik.ext.cleanDiacritics
+import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils.getProfileImage
 import java.util.*
 

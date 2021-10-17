@@ -18,6 +18,9 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.databinding.LoginPlatformListFragmentBinding
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 

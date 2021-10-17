@@ -18,6 +18,9 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.databinding.TemplateListPageFragmentBinding
+import pl.szczodrzynski.edziennik.ext.input
+import pl.szczodrzynski.edziennik.ext.set
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext

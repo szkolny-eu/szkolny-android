@@ -10,10 +10,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.singleOrNull
-import pl.szczodrzynski.edziennik.swapFirstLastName
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.singleOrNull
+import pl.szczodrzynski.edziennik.ext.swapFirstLastName
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusSynergiaGetMessage(override val data: DataLibrus,

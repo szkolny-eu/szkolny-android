@@ -29,6 +29,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.CardHomeTimetableBinding
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.BellSyncTimeChooseDialog
 import pl.szczodrzynski.edziennik.ui.home.CounterActivity
 import pl.szczodrzynski.edziennik.ui.home.HomeCard

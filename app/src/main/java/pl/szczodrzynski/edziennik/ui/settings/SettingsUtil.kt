@@ -13,8 +13,8 @@ import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.after
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Themes
 

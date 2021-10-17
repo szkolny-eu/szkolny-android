@@ -13,7 +13,7 @@ import kotlinx.coroutines.Job
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.dp
+import pl.szczodrzynski.edziennik.ext.dp
 import kotlin.coroutines.CoroutineContext
 
 class QrScannerDialog(

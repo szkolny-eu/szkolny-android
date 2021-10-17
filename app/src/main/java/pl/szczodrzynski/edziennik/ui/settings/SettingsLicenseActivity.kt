@@ -15,7 +15,7 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.resolveColor
+import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.utils.Themes
 
 class SettingsLicenseActivity : MaterialAboutActivity() {

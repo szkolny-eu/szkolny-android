@@ -5,13 +5,13 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.api
 
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.ext.crc32
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class PodlasieApiHomework(val data: DataPodlasie, val rows: List<JsonObject>) {

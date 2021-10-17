@@ -14,8 +14,8 @@ import coil.transform.CircleCropTransformation
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.ContributorsResponse
 import pl.szczodrzynski.edziennik.databinding.ContributorsListItemBinding
-import pl.szczodrzynski.edziennik.plural
-import pl.szczodrzynski.edziennik.setText
+import pl.szczodrzynski.edziennik.ext.plural
+import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class ContributorsAdapter(

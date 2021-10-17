@@ -20,9 +20,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEA
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_UNKNOWN
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time

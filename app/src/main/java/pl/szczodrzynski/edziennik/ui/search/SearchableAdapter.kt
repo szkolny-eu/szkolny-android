@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import pl.szczodrzynski.edziennik.asSpannable
+import pl.szczodrzynski.edziennik.ext.asSpannable
 import pl.szczodrzynski.edziennik.utils.span.BoldSpan
 
 abstract class SearchableAdapter<T : Searchable<T>>(

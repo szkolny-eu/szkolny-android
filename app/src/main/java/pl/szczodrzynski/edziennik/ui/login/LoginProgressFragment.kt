@@ -28,7 +28,7 @@ import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.LoginProgressFragmentBinding
-import pl.szczodrzynski.edziennik.joinNotNullStrings
+import pl.szczodrzynski.edziennik.ext.joinNotNullStrings
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 

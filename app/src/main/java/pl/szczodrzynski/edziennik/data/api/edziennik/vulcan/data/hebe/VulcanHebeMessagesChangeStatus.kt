@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import org.greenrobot.eventbus.EventBus
-import pl.szczodrzynski.edziennik.JsonObject
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGES_STATUS
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
@@ -13,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.ext.JsonObject
 
 class VulcanHebeMessagesChangeStatus(
     override val data: DataVulcan,

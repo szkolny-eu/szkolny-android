@@ -15,6 +15,9 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.ContributorsResponse
 import pl.szczodrzynski.edziennik.databinding.ContributorsActivityBinding
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.onLongClick
 import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
 import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
 import kotlin.coroutines.CoroutineContext

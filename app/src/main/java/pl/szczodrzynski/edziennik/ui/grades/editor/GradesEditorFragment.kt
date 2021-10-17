@@ -15,6 +15,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.databinding.FragmentGradesEditorBinding
+import pl.szczodrzynski.edziennik.ext.getFloat
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getLong
+import pl.szczodrzynski.edziennik.ext.input
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_AVG
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_AVG_2_SEM

@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.dp
+import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext

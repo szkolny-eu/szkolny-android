@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_ENABLED
 import pl.szczodrzynski.edziennik.databinding.DialogConfigAgendaBinding
+import pl.szczodrzynski.edziennik.ext.onChange
 import java.util.*
 
 class AgendaConfigDialog(

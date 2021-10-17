@@ -11,6 +11,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.ext.HOUR
+import pl.szczodrzynski.edziennik.ext.MINUTE
+import pl.szczodrzynski.edziennik.ext.getSyncInterval
 import kotlin.coroutines.CoroutineContext
 
 class SyncIntervalDialog(

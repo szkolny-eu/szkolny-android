@@ -29,6 +29,7 @@ import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableDayFragmentBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableNoTimetableBinding
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR

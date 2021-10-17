@@ -4,11 +4,11 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.template.login
 
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.ERROR_LOGIN_DATA_MISSING
 import pl.szczodrzynski.edziennik.data.api.ERROR_PROFILE_MISSING
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.DataTemplate
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.ext.currentTimeUnix
 
 class TemplateLoginWeb(val data: DataTemplate, val onSuccess: () -> Unit) {
     companion object {

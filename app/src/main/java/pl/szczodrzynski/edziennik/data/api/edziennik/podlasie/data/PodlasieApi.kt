@@ -12,9 +12,9 @@ import im.wangchao.mhttp.callback.JsonCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.getJsonObject
-import pl.szczodrzynski.edziennik.toHexString
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getJsonObject
+import pl.szczodrzynski.edziennik.ext.toHexString
 import pl.szczodrzynski.edziennik.utils.Utils
 import java.security.MessageDigest
 import java.text.SimpleDateFormat

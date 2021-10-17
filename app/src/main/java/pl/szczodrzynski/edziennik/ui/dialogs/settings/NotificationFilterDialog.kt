@@ -13,7 +13,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
-import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.ext.onClick
 import kotlin.coroutines.CoroutineContext
 
 // TODO refactor dialog to allow configuring other profiles

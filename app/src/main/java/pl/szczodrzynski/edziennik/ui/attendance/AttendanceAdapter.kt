@@ -18,7 +18,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
-import pl.szczodrzynski.edziennik.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.attendance.models.*
 import pl.szczodrzynski.edziennik.ui.attendance.viewholder.*
 import pl.szczodrzynski.edziennik.ui.grades.models.ExpandableItemModel

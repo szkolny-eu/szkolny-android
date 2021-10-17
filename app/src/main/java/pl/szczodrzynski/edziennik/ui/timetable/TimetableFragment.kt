@@ -25,7 +25,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
-import pl.szczodrzynski.edziennik.getSchoolYearConstrains
+import pl.szczodrzynski.edziennik.ext.getSchoolYearConstrains
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem

@@ -9,9 +9,9 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.after
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_ENABLED
+import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.*
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.settings.SettingsUtil

@@ -4,12 +4,12 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
-import pl.szczodrzynski.edziennik.MONTH
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_TEACHERS
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_TEACHERS
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
-import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.ext.MONTH
+import pl.szczodrzynski.edziennik.ext.get
 
 class EdudziennikWebTeachers(override val data: DataEdudziennik,
                              override val lastSync: Long?,

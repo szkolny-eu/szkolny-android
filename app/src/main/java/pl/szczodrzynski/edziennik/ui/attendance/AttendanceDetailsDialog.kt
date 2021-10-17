@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.databinding.AttendanceDetailsDialogBinding
-import pl.szczodrzynski.edziennik.setTintColor
+import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import kotlin.coroutines.CoroutineContext
 

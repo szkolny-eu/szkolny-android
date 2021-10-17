@@ -17,8 +17,8 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
-import pl.szczodrzynski.edziennik.onClick
-import pl.szczodrzynski.edziennik.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.grades.models.*
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.*
 import kotlin.coroutines.CoroutineContext

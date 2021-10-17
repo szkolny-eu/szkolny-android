@@ -13,9 +13,14 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.databinding.AttendanceItemMonthBinding
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter.Companion.STATE_CLOSED
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceView

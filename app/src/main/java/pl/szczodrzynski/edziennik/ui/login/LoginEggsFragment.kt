@@ -24,7 +24,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.md5
+import pl.szczodrzynski.edziennik.ext.md5
 import kotlin.coroutines.CoroutineContext
 
 class LoginEggsFragment : Fragment(), CoroutineScope {

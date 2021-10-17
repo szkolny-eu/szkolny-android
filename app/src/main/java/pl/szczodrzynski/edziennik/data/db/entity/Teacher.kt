@@ -10,9 +10,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.getNameInitials
-import pl.szczodrzynski.edziennik.join
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.getNameInitials
+import pl.szczodrzynski.edziennik.ext.join
 import java.util.*
 
 @Entity(tableName = "teachers",

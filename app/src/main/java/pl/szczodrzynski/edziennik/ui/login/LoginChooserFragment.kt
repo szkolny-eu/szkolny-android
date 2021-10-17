@@ -26,6 +26,7 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.feedback.FeedbackActivity
 import pl.szczodrzynski.edziennik.utils.BetterLinkMovementMethod

@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogBellSyncBinding
-import pl.szczodrzynski.edziennik.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
 

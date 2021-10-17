@@ -20,6 +20,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.mikepenz.iconics.typeface.IIcon
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.ext.attachToastHint
+import pl.szczodrzynski.edziennik.ext.hasSet
+import pl.szczodrzynski.edziennik.ext.replaceSpan
 import pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.*

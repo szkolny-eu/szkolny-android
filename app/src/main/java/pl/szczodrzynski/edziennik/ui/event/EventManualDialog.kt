@@ -30,6 +30,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.StyledTextDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.views.TimeDropdown.Companion.DISPLAY_LESSONS

@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_SCHOOLS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
 

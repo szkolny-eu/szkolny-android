@@ -15,9 +15,13 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.databinding.AttendanceFragmentBinding
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
 import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AttendanceConfigDialog
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem

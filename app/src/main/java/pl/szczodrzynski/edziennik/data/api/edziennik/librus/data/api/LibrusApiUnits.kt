@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_UNITS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusApiUnits(override val data: DataLibrus,
                      override val lastSync: Long?,

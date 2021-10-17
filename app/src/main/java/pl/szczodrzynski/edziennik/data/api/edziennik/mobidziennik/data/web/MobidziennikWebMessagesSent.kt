@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web
 
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
@@ -15,9 +14,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
@@ -96,7 +96,7 @@ class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
                         ))
             }
 
-            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_SENT, 1*DAY, DRAWER_ITEM_MESSAGES)
+            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_SENT, 1* DAY, DRAWER_ITEM_MESSAGES)
             onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_SENT)
         }
     }

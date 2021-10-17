@@ -29,7 +29,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.CardHomeGradesBinding
-import pl.szczodrzynski.edziennik.dp
+import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ui.grades.GradeView
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter

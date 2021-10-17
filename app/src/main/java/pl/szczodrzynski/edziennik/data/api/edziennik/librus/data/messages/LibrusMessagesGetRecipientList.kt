@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusMessagesGetRecipientList(override val data: DataLibrus,
                                      val onSuccess: () -> Unit

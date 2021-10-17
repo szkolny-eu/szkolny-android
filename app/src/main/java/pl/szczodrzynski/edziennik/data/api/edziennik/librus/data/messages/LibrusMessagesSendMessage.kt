@@ -5,16 +5,16 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages
 
 import org.greenrobot.eventbus.EventBus
-import pl.szczodrzynski.edziennik.base64Encode
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.getJsonObject
-import pl.szczodrzynski.edziennik.getLong
-import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.ext.base64Encode
+import pl.szczodrzynski.edziennik.ext.getJsonObject
+import pl.szczodrzynski.edziennik.ext.getLong
+import pl.szczodrzynski.edziennik.ext.getString
 
 class LibrusMessagesSendMessage(override val data: DataLibrus,
                                 val recipients: List<Teacher>,

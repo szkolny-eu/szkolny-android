@@ -10,7 +10,7 @@ import com.github.tibolte.agendacalendarview.render.EventRenderer
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AgendaCounterItemBinding
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedCounterBinding
-import pl.szczodrzynski.edziennik.setTintColor
+import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.utils.Colors
 
 class TeacherAbsenceEventRenderer : EventRenderer<TeacherAbsenceEvent>() {

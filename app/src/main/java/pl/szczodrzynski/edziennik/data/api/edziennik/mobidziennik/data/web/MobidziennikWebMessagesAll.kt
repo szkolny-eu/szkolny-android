@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.web
 
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
@@ -14,8 +13,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.net.URLEncoder
 
@@ -36,7 +36,7 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
 
             val listElement = doc.getElementsByClass("spis").first()
             if (listElement == null) {
-                data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, 7*DAY)
+                data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, 7* DAY)
                 onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL)
                 return@webGet
             }
@@ -89,7 +89,7 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
 
             // sync every 7 days as we probably don't expect more than
             // 30 received messages during a week, without any normal sync
-            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, 7*DAY)
+            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL, 7* DAY)
             onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_ALL)
         }
     }

@@ -13,6 +13,8 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.databinding.HomeworkListFragmentBinding
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter

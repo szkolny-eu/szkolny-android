@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.GradesItemSemesterBinding
-import pl.szczodrzynski.edziennik.setText
+import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSemester
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject

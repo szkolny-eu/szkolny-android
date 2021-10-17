@@ -12,9 +12,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.concat
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.databinding.AttendanceItemAttendanceBinding
+import pl.szczodrzynski.edziennik.ext.concat
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceDayRange
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceMonth

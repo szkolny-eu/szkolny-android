@@ -5,7 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.search
 
 import android.widget.Filter
-import pl.szczodrzynski.edziennik.cleanDiacritics
+import pl.szczodrzynski.edziennik.ext.cleanDiacritics
 import java.util.*
 import kotlin.math.min
 

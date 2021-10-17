@@ -23,6 +23,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.LoginFormCheckboxItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFieldItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFragmentBinding
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.navlib.colorAttr
 import java.util.*
 import kotlin.coroutines.CoroutineContext

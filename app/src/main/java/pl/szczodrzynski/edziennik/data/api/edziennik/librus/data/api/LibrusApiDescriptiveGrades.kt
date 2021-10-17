@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_TEXT
 import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusApiDescriptiveGrades(override val data: DataLibrus,

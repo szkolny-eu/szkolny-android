@@ -6,9 +6,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik
 
 import android.content.Intent
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.Intent
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 

@@ -18,6 +18,10 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.CardHomeAvailabilityBinding
+import pl.szczodrzynski.edziennik.ext.Intent
+import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.sync.UpdateDownloaderService
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateAvailableDialog

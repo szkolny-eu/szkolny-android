@@ -24,6 +24,10 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.databinding.AttendanceSummaryFragmentBinding
+import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceFragment.Companion.VIEW_SUMMARY
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceSubject
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment

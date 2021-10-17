@@ -17,9 +17,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_DELETED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.navlib.crc16
-import kotlin.text.replace
 
 class VulcanHebeMessages(
     override val data: DataVulcan,

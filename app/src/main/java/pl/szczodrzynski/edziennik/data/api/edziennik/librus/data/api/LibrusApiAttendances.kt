@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusApiAttendances(override val data: DataLibrus,

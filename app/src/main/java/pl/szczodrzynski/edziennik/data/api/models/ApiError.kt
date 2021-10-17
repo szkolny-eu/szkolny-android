@@ -13,8 +13,8 @@ import pl.szczodrzynski.edziennik.data.api.ERROR_API_EXCEPTION
 import pl.szczodrzynski.edziennik.data.api.ERROR_EXCEPTION
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApiException
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
-import pl.szczodrzynski.edziennik.stackTraceString
-import pl.szczodrzynski.edziennik.toErrorCode
+import pl.szczodrzynski.edziennik.ext.stackTraceString
+import pl.szczodrzynski.edziennik.ext.toErrorCode
 
 class ApiError(val tag: String, var errorCode: Int) {
     companion object {

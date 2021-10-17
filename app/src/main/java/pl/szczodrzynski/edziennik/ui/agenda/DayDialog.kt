@@ -14,6 +14,9 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.databinding.DialogDayBinding
+import pl.szczodrzynski.edziennik.ext.ifNotEmpty
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ui.agenda.lessonchanges.LessonChangesDialog
 import pl.szczodrzynski.edziennik.ui.agenda.lessonchanges.LessonChangesEvent
 import pl.szczodrzynski.edziennik.ui.agenda.lessonchanges.LessonChangesEventRenderer

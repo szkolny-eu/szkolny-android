@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBID
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.EventGetEvent
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.ext.get
 
 class MobidziennikWebHomework(override val data: DataMobidziennik,
                               override val lastSync: Long?,

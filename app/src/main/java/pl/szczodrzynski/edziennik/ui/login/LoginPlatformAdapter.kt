@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.login.viewholder.PlatformViewHolder
 import kotlin.coroutines.CoroutineContext
 

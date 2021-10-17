@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
-import pl.szczodrzynski.edziennik.observeOnce
+import pl.szczodrzynski.edziennik.ext.observeOnce
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week

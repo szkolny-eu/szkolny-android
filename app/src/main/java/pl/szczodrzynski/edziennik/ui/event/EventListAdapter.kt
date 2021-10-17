@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.search.SearchableAdapter
 import kotlin.coroutines.CoroutineContext
 

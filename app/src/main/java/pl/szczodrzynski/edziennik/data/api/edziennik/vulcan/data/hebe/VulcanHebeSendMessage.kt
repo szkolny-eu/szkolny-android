@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.ext.*
 
 class VulcanHebeSendMessage(
     override val data: DataVulcan,

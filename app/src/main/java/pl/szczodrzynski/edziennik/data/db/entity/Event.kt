@@ -8,9 +8,9 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index
 import com.google.gson.annotations.SerializedName
-import pl.szczodrzynski.edziennik.MINUTE
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.MINUTE
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*

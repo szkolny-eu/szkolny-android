@@ -4,6 +4,8 @@
 
 package pl.szczodrzynski.edziennik.ui.widgets;
 
+import static pl.szczodrzynski.edziennik.ext.DataExtensionsKt.filterOutArchived;
+
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
@@ -32,8 +34,6 @@ import pl.szczodrzynski.edziennik.databinding.WidgetProfileDialogItemBinding;
 import pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider;
 import pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider;
-
-import static pl.szczodrzynski.edziennik.ExtensionsKt.filterOutArchived;
 
 public class WidgetConfigActivity extends Activity {
 

@@ -12,7 +12,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.databinding.LabItemSubObjectBinding
-import pl.szczodrzynski.edziennik.dp
+import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.debug.LabJsonAdapter
 import pl.szczodrzynski.edziennik.ui.debug.models.LabJsonObject

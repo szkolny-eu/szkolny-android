@@ -17,7 +17,8 @@ import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
@@ -25,6 +26,9 @@ import pl.szczodrzynski.edziennik.data.api.events.ApiTaskProgressEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskStartedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.LoginSyncFragmentBinding
+import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.asBoldSpannable
+import pl.szczodrzynski.edziennik.ext.concat
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 

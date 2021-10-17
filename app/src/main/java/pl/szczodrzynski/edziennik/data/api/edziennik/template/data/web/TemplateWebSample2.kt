@@ -4,12 +4,12 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.template.data.web
 
-import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.DataTemplate
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.ENDPOINT_TEMPLATE_WEB_SAMPLE_2
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.data.TemplateWeb
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.ext.DAY
 
 class TemplateWebSample2(override val data: DataTemplate,
                          override val lastSync: Long?,

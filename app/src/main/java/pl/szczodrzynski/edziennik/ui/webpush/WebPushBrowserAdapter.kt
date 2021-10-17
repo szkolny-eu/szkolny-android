@@ -12,8 +12,8 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.databinding.WebPushBrowserItemBinding
-import pl.szczodrzynski.edziennik.onClick
-import pl.szczodrzynski.edziennik.setText
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setText
 
 class WebPushBrowserAdapter(
         val context: Context,

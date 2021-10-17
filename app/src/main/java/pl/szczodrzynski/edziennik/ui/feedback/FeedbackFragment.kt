@@ -25,12 +25,12 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.crc16
 import pl.szczodrzynski.edziennik.data.api.events.FeedbackMessageEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
 import pl.szczodrzynski.edziennik.databinding.FragmentFeedbackBinding
-import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.ext.crc16
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.openUrl
 import java.util.*

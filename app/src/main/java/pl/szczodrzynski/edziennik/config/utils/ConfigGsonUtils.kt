@@ -5,7 +5,7 @@ package pl.szczodrzynski.edziennik.config.utils
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import pl.szczodrzynski.edziennik.getInt
+import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ui.home.HomeCardModel
 import pl.szczodrzynski.edziennik.utils.models.Time
 

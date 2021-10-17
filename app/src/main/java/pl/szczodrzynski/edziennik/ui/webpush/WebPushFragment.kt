@@ -19,6 +19,8 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.WebPushResponse
 import pl.szczodrzynski.edziennik.databinding.WebPushFragmentBinding
+import pl.szczodrzynski.edziennik.ext.crc32
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.dialogs.QrScannerDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext

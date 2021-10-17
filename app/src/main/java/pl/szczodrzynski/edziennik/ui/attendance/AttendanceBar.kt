@@ -10,7 +10,7 @@ import android.graphics.*
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
-import pl.szczodrzynski.edziennik.dp
+import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.utils.Colors
 import kotlin.math.roundToInt
 

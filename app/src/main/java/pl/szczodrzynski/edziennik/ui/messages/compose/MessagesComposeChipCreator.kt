@@ -17,6 +17,7 @@ import com.hootsuite.nachos.chip.ChipSpan
 import com.hootsuite.nachos.chip.ChipSpanChipCreator
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.Themes

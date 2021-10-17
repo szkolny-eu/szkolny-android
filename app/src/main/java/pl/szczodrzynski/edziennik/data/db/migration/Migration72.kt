@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.db.migration
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import pl.szczodrzynski.edziennik.crc32
+import pl.szczodrzynski.edziennik.ext.crc32
 
 class Migration72 : Migration(71, 72) {
     override fun migrate(database: SupportSQLiteDatabase) {

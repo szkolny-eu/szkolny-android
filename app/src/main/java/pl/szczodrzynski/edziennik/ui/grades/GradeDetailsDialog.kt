@@ -11,8 +11,8 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.DialogGradeDetailsBinding
-import pl.szczodrzynski.edziennik.onClick
-import pl.szczodrzynski.edziennik.setTintColor
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration

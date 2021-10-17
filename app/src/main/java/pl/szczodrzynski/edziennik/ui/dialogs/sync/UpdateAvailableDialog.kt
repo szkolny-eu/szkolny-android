@@ -12,6 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
+import pl.szczodrzynski.edziennik.ext.Intent
+import pl.szczodrzynski.edziennik.ext.setMessage
 import pl.szczodrzynski.edziennik.sync.UpdateDownloaderService
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext

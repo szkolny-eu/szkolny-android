@@ -23,9 +23,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_PROPOSED
-import pl.szczodrzynski.edziennik.dp
-import pl.szczodrzynski.edziennik.resolveAttr
-import pl.szczodrzynski.edziennik.setTintColor
+import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager
 
 class GradeView : AppCompatTextView {

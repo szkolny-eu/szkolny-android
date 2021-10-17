@@ -12,6 +12,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.sephiroth.android.library.numberpicker.doOnStopTrackingTouch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.DialogConfigGradesBinding
+import pl.szczodrzynski.edziennik.ext.join
+import pl.szczodrzynski.edziennik.ext.onChange
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setOnSelectedListener
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_MODE_DEFAULT
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_MODE_WEIGHTED
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC

@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.databinding.DialogRegisterUnavailableBinding
-import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.utils.Utils
 import kotlin.coroutines.CoroutineContext
 

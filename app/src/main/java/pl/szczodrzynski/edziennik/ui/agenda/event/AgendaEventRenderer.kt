@@ -14,9 +14,9 @@ import com.mikepenz.iconics.view.IconicsTextView
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedEventBinding
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedEventCompactBinding
-import pl.szczodrzynski.edziennik.join
-import pl.szczodrzynski.edziennik.resolveAttr
-import pl.szczodrzynski.edziennik.setTintColor
+import pl.szczodrzynski.edziennik.ext.join
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.managers.EventManager
 

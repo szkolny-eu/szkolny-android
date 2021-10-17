@@ -9,8 +9,8 @@ import androidx.core.view.isVisible
 import com.github.tibolte.agendacalendarview.render.EventRenderer
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AgendaWrappedGroupBinding
-import pl.szczodrzynski.edziennik.resolveAttr
-import pl.szczodrzynski.edziennik.setTintColor
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.utils.Colors
 
 class AgendaEventGroupRenderer : EventRenderer<AgendaEventGroup>() {

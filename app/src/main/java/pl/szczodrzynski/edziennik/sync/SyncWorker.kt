@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.work.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
-import pl.szczodrzynski.edziennik.formatDate
+import pl.szczodrzynski.edziennik.ext.formatDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.util.concurrent.TimeUnit
 

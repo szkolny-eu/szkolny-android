@@ -13,7 +13,7 @@ import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.databinding.LabItemObjectBinding
-import pl.szczodrzynski.edziennik.dp
+import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.debug.LabJsonAdapter
 import pl.szczodrzynski.edziennik.ui.debug.models.LabJsonArray

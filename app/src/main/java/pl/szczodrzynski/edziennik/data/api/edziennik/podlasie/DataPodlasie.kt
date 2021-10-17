@@ -4,11 +4,13 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie
 
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_PODLASIE_API
 import pl.szczodrzynski.edziennik.data.api.models.Data
-import pl.szczodrzynski.edziennik.data.db.entity.*
-import kotlin.text.replace
+import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.crc32
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 
 class DataPodlasie(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 

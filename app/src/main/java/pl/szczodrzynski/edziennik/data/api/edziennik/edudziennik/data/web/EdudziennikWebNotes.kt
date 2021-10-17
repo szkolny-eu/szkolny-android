@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_NOTE_ID
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_NOTES
@@ -13,7 +12,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.Edudzienni
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.ext.crc32
+import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EdudziennikWebNotes(override val data: DataEdudziennik,

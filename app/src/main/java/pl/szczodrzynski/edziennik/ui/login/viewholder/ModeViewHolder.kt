@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.LoginChooserModeItemBinding
-import pl.szczodrzynski.edziennik.resolveColor
-import pl.szczodrzynski.edziennik.setTintColor
+import pl.szczodrzynski.edziennik.ext.resolveColor
+import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
 import pl.szczodrzynski.edziennik.ui.login.LoginChooserAdapter
 import pl.szczodrzynski.edziennik.ui.login.LoginInfo

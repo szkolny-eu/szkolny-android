@@ -17,6 +17,10 @@ import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
+import pl.szczodrzynski.edziennik.ext.asItalicSpannable
+import pl.szczodrzynski.edziennik.ext.asStrikethroughSpannable
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.listOfNotEmpty
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time

@@ -14,8 +14,8 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.LoginSummaryItemBinding
-import pl.szczodrzynski.edziennik.onClick
-import pl.szczodrzynski.edziennik.trigger
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.trigger
 import kotlin.coroutines.CoroutineContext
 
 class LoginSummaryAdapter(

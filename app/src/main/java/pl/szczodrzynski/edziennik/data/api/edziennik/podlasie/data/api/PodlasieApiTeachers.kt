@@ -7,9 +7,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.api
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.getLong
-import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getLong
+import pl.szczodrzynski.edziennik.ext.getString
 
 class PodlasieApiTeachers(val data: DataPodlasie, val rows: List<JsonObject>) {
     init {

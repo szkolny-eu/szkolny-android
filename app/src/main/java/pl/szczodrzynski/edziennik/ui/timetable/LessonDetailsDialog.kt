@@ -24,8 +24,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
-import pl.szczodrzynski.edziennik.onClick
-import pl.szczodrzynski.edziennik.setText
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter

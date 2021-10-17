@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.web
 
-import pl.szczodrzynski.edziennik.DAY
 import pl.szczodrzynski.edziennik.data.api.VULCAN_WEB_ENDPOINT_LUCKY_NUMBER
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS
@@ -12,7 +11,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanWebMain
 import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.getJsonArray
+import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ext.getJsonArray
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -67,7 +67,7 @@ class VulcanWebLuckyNumber(override val data: DataVulcan,
                 if (Date.getToday().weekDay <= Week.FRIDAY && Time.getNow().hour >= 22) {
                     // working days, after 10PM
                     // consider the lucky number is disabled; sync in 4 days
-                    nextSync = System.currentTimeMillis() + 4*DAY*1000
+                    nextSync = System.currentTimeMillis() + 4* DAY *1000
                 }
                 else if (Date.getToday().weekDay <= Week.FRIDAY && Time.getNow().hour < 22) {
                     // working days, before 10PM

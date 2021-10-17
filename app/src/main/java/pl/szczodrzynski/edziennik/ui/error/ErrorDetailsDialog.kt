@@ -12,6 +12,7 @@ import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.ext.*
 import kotlin.coroutines.CoroutineContext
 
 class ErrorDetailsDialog(

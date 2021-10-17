@@ -14,8 +14,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.getLong
-import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.ext.getLong
+import pl.szczodrzynski.edziennik.ext.getString
 
 class SzkolnyMobidziennikFirebase(val app: App, val profiles: List<Profile>, val message: FirebaseService.Message) {
     /*{

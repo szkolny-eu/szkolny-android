@@ -5,11 +5,11 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.template.data
 
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.ERROR_TEMPLATE_WEB_OTHER
 import pl.szczodrzynski.edziennik.data.api.GET
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.DataTemplate
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.ext.currentTimeUnix
 
 open class TemplateWeb(open val data: DataTemplate, open val lastSync: Long?) {
     companion object {

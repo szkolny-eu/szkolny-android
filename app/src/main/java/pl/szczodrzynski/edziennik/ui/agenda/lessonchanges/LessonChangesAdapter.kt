@@ -11,10 +11,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.navlib.getColorFromAttr
 
 class LessonChangesAdapter(

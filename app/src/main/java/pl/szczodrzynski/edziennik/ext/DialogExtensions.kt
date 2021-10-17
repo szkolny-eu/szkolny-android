@@ -2,10 +2,11 @@
  * Copyright (c) Kuba Szczodrzyński 2021-3-30.
  */
 
-package pl.szczodrzynski.edziennik
+package pl.szczodrzynski.edziennik.ext
 
 import android.text.InputType
 import android.view.LayoutInflater
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -39,5 +40,15 @@ fun MaterialAlertDialogBuilder.input(
     }
     setView(b.root)
 
+    return this
+}
+
+fun MaterialAlertDialogBuilder.setTitle(@StringRes resId: Int, vararg formatArgs: Any): MaterialAlertDialogBuilder {
+    setTitle(context.getString(resId, *formatArgs))
+    return this
+}
+
+fun MaterialAlertDialogBuilder.setMessage(@StringRes resId: Int, vararg formatArgs: Any): MaterialAlertDialogBuilder {
+    setMessage(context.getString(resId, *formatArgs))
     return this
 }

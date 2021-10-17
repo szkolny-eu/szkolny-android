@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login
 
 import com.google.gson.JsonObject
 import io.github.wulkanowy.signer.hebe.generateKeyPair
-import pl.szczodrzynski.edziennik.JsonObject
 import pl.szczodrzynski.edziennik.data.api.ERROR_LOGIN_DATA_MISSING
 import pl.szczodrzynski.edziennik.data.api.VULCAN_API_DEVICE_NAME
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_REGISTER_NEW
@@ -14,8 +13,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.getString
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 
 class VulcanLoginHebe(val data: DataVulcan, val onSuccess: () -> Unit) {
     companion object {

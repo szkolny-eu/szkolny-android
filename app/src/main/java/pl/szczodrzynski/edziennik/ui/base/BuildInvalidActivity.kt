@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.mikepenz.iconics.utils.colorInt
 import pl.szczodrzynski.edziennik.databinding.ActivityBuildInvalidBinding
-import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.utils.Themes
 
 class BuildInvalidActivity : AppCompatActivity() {

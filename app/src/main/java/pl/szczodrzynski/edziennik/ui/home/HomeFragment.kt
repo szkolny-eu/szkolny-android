@@ -21,9 +21,13 @@ import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial.Icon
 import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.BuildConfig
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.home.cards.*
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem

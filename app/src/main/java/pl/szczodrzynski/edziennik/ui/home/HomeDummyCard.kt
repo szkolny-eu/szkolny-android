@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import kotlin.coroutines.CoroutineContext
 
 class HomeDummyCard(override val id: Int) : HomeCard, CoroutineScope {

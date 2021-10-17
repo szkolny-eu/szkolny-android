@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AttendanceItemSubjectBinding
-import pl.szczodrzynski.edziennik.setText
+import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter.Companion.STATE_CLOSED
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceSubject

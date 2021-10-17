@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApiException
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.toErrorCode
+import pl.szczodrzynski.edziennik.ext.toErrorCode
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class AppSync(val app: App, val notifications: MutableList<Notification>, val profiles: List<Profile>, val api: SzkolnyApi) {

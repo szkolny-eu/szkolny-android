@@ -9,7 +9,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.util.Base64
 import pl.szczodrzynski.edziennik.BuildConfig
-import pl.szczodrzynski.edziennik.sha256
+import pl.szczodrzynski.edziennik.ext.sha256
 import java.security.MessageDigest
 
 object Signing {
