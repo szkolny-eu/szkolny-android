@@ -357,8 +357,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     window.statusBarColor = statusBarColor
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ColorUtils.calculateLuminance(
-                        statusBarColor) > 0.6
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                        && ColorUtils.calculateLuminance(statusBarColor) > 0.6
                 ) {
                     @Suppress("deprecation")
                     window.decorView.systemUiVisibility =
