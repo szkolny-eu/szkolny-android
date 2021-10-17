@@ -119,8 +119,20 @@
                         android:textStyle="bold"
                         tools:text="Nieprawidłowy login lub hasło, konto nie zostało aktywowane, lub dziennik ma problemy egzystencjalne" />
                 </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
+
+        <ImageButton
+            android:id="@+id/loginQrScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/login_vulcan_qr"
+            android:scaleType="centerInside"
+            tools:srcCompat="@drawable/login_mode_vulcan_hebe" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -149,6 +161,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:text="@string/login_button"
                 android:textAllCaps="false" />
+
         </LinearLayout>
     </LinearLayout>
 </layout>

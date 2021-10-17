@@ -5,16 +5,20 @@
 package pl.szczodrzynski.edziennik.ui.modules.login
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +27,8 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.LoginFormCheckboxItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFieldItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFragmentBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.QrScannerDialog
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.navlib.colorAttr
 import java.util.*
 import kotlin.coroutines.CoroutineContext
@@ -30,6 +36,7 @@ import kotlin.coroutines.CoroutineContext
 class LoginFormFragment : Fragment(), CoroutineScope {
     companion object {
         private const val TAG = "LoginFormFragment"
+
         // eggs
         var wantEggs = false
     }
@@ -45,7 +52,11 @@ class LoginFormFragment : Fragment(), CoroutineScope {
 
     // local/private variables go here
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         activity = (getActivity() as LoginActivity?) ?: return null
         context ?: return null
         app = activity.application as App
@@ -87,6 +98,9 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                 b.textLayout.hint = app.getString(credential.name)
                 if (credential.isNumber) {
                     b.textEdit.inputType = InputType.TYPE_CLASS_NUMBER
+                }
+                if (credential.qrDecoderClass == "TBA") {
+                    b.textLayout.endIconDrawable = IconicsDrawable(activity,CommunityMaterial.Icon3.cmd_qrcode).apply {colorInt = Color.BLACK; sizeDp = 72}
                 }
                 if (credential.hideText) {
                     b.textEdit.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
@@ -154,10 +168,46 @@ class LoginFormFragment : Fragment(), CoroutineScope {
             }
         }
 
+        if (register.internalName == "vulcan") {
+            b.loginQrScan.setImageDrawable(IconicsDrawable(activity,
+                CommunityMaterial.Icon3.cmd_qrcode_scan).apply {
+                colorInt = Color.BLACK
+                sizeDp = 72
+            }
+            )
+
+            b.loginQrScan.onClick {
+                QrScannerDialog(activity, { code ->
+                    try {
+                        val data = Utils.VulcanQrEncryptionUtils.decode(code)
+                        "CERT#https?://.+?/([A-z]+)/mobile-api#([A-z0-9]+)#ENDCERT".toRegex()
+                            .find(data)?.let {
+                                credentials.forEach { (credential, b) ->
+                                    if (credential is LoginInfo.FormField && b is LoginFormFieldItemBinding) {
+                                        when {
+                                            credential.keyName == "deviceToken" -> {
+                                                b.textEdit.setText(it[2])
+                                            }
+                                            credential.keyName == "symbol" -> {
+                                                b.textEdit.setText(it[1])
+                                            }
+                                            credential.keyName == "devicePin" && b.textEdit.requestFocus() -> {
+                                                activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                    } catch (_: Exception) {
+                    }
+                })
+            }
+        }
+
         b.loginButton.onClick {
             val payload = Bundle(
-                    "loginType" to loginType,
-                    "loginMode" to loginMode
+                "loginType" to loginType,
+                "loginMode" to loginMode
             )
 
             if (App.debugMode && b.fakeLogin.isChecked) {

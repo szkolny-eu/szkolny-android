@@ -409,7 +409,8 @@ object LoginInfo {
         val caseMode: CaseMode = CaseMode.UNCHANGED,
         val hideText: Boolean = false,
         val isNumber: Boolean = false,
-        val stripTextRegex: String? = null
+        val stripTextRegex: String? = null,
+        val qrDecoderClass: String? = null
     ) : BaseCredential(keyName, name, errorCodes) {
         enum class CaseMode { UNCHANGED, UPPER_CASE, LOWER_CASE }
     }
