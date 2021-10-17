@@ -758,9 +758,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 subtitle = if (event.progress < 0f)
                     event.progressText ?: ""
                 else
-                    getString(R.string.toolbar_subtitle_syncing_format,
+                    getString(
+                        R.string.toolbar_subtitle_syncing_format,
                         event.progress.roundToInt(),
-                        event.progressText ?: "")
+                        event.progressText ?: "",
+                    )
 
             }
         }
