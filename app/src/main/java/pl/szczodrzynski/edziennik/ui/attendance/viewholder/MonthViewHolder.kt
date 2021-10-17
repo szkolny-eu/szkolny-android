@@ -62,7 +62,6 @@ class MonthViewHolder(
 
         b.previewContainer.removeAllViews()
 
-        val sum = item.typeCountMap.entries.sumBy { it.value }.toFloat()
         item.typeCountMap.forEach { (type, count) ->
             val layout = LinearLayout(contextWrapper)
             val attendance = Attendance(

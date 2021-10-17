@@ -179,12 +179,12 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
                         .sortedBy { it.first }
                         .toMap()
 
-                val totalCount = month.typeCountMap.entries.sumBy {
+                val totalCount = month.typeCountMap.entries.sumOf {
                     if (!it.key.isCounted || it.key.baseType == Attendance.TYPE_UNKNOWN)
                         0
                     else it.value
                 }
-                val presenceCount = month.typeCountMap.entries.sumBy {
+                val presenceCount = month.typeCountMap.entries.sumOf {
                     when (it.key.baseType) {
                         Attendance.TYPE_PRESENT,
                             Attendance.TYPE_PRESENT_CUSTOM,

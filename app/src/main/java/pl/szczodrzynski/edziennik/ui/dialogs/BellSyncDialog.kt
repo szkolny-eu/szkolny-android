@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogBellSyncBinding
+import pl.szczodrzynski.edziennik.ext.resolveDrawable
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
@@ -86,7 +87,7 @@ class BellSyncDialog(
         }
 
         if (Time.diff(Time.getNow(), bellTime) > Time(2, 0, 0)) { // Easter egg ^^
-            b.bellSyncButton.setImageDrawable(app.resources.getDrawable(R.drawable.ic_bell_wtf)) // wtf
+            b.bellSyncButton.setImageDrawable(R.drawable.ic_bell_wtf.resolveDrawable(app)) // wtf
         }
 
         launch {

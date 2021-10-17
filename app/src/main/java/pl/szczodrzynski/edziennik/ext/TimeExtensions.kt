@@ -25,7 +25,7 @@ fun Response?.getUnixDate(): Long {
     val rfcDate = this?.headers()?.get("date") ?: return currentTimeUnix()
     val pattern = "EEE, dd MMM yyyy HH:mm:ss Z"
     val format = SimpleDateFormat(pattern, Locale.ENGLISH)
-    return format.parse(rfcDate).time / 1000
+    return (format.parse(rfcDate)?.time ?: 0) / 1000
 }
 
 fun Long.formatDate(format: String = "yyyy-MM-dd HH:mm:ss"): String = SimpleDateFormat(format).format(this)
@@ -61,7 +61,6 @@ fun Context.timeTill(time: Int, delimiter: String = " ", countInSeconds: Boolean
         }
         if (hours == 0 && minutes < 10) {
             if (!prefixAdded) parts += R.plurals.time_till_text to seconds
-            prefixAdded = true
             parts += R.plurals.time_till_seconds to seconds
         }
     } else {
@@ -93,7 +92,6 @@ fun Context.timeLeft(time: Int, delimiter: String = " ", countInSeconds: Boolean
         }
         if (hours == 0 && minutes < 10) {
             if (!prefixAdded) parts += R.plurals.time_left_text to seconds
-            prefixAdded = true
             parts += R.plurals.time_left_seconds to seconds
         }
     } else {

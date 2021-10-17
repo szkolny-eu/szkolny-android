@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.ui.attendance.viewholder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
@@ -20,7 +19,6 @@ import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceDayRange
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceMonth
 import pl.szczodrzynski.edziennik.ui.grades.models.ExpandableItemModel
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
-import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Week
 
 class AttendanceViewHolder(
@@ -34,7 +32,6 @@ class AttendanceViewHolder(
 
     override fun onBind(activity: AppCompatActivity, app: App, item: AttendanceFull, position: Int, adapter: AttendanceAdapter) {
         val manager = app.attendanceManager
-        val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
 
         val bullet = " • "
 

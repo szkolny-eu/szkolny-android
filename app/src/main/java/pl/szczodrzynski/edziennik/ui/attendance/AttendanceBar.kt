@@ -69,7 +69,7 @@ class AttendanceBar : View {
     override fun onDraw(canvas: Canvas?) {
         canvas ?: return
 
-        val sum = attendancesList.sumBy { it.count }
+        val sum = attendancesList.sumOf { it.count }
         if (sum == 0) {
             return
         }

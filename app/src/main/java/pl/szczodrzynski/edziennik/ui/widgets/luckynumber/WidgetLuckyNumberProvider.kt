@@ -42,10 +42,7 @@ class WidgetLuckyNumberProvider : AppWidgetProvider() {
             val views = getRemoteViews(app, config)
 
             val today = Date.getToday()
-            val todayValue = today.value
-
             val tomorrow = Date.getToday().stepForward(0, 0, 1)
-            val tomorrowValue = tomorrow.value
 
             val profile = app.db.profileDao().getByIdNow(config.profileId)
             val luckyNumber = app.db.luckyNumberDao().getNearestFutureNow(config.profileId, today)

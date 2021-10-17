@@ -48,8 +48,8 @@ class MobidziennikWebHomework(override val data: DataMobidziennik,
 
                 event.attachmentIds = mutableListOf()
                 event.attachmentNames = mutableListOf()
-                Regexes.MOBIDZIENNIK_MOBILE_HOMEWORK_ATTACHMENT.findAll(tableRow).forEach {
-                    event.attachmentIds?.add(it[1].toLongOrNull() ?: return@forEach)
+                Regexes.MOBIDZIENNIK_MOBILE_HOMEWORK_ATTACHMENT.findAll(tableRow).onEach {
+                    event.attachmentIds?.add(it[1].toLongOrNull() ?: return@onEach)
                     event.attachmentNames?.add(it[2])
                 }
 

@@ -56,7 +56,6 @@ class DateDropdown : TextInputDropDown {
 
     suspend fun loadItems() {
         val date = Date.getToday()
-        val today = date.value
         var weekDay = date.weekDay
 
         val dates = withContext(Dispatchers.Default) {

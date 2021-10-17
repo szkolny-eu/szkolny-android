@@ -131,11 +131,11 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                 // verify the lesson count is the same as dates & entries
                 if (count != lessonDates.count() || count != entries.count())
                     return@forEach
-                ranges.forEach { range ->
+                ranges.onEach { range ->
                     val lessonDate = dateIterator.next()
                     val entry = entriesIterator.next()
                     if (range == null || entry.isBlank())
-                        return@forEach
+                        return@onEach
                     val startTime = Time.fromH_m(range[1])
 
                     range[2].split(" / ").mapNotNull {
@@ -186,7 +186,7 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
             if (entry.startsWith(symbol) && symbol.length > typeSymbol.length)
                 typeSymbol = symbol
         }
-        entry = entry.removePrefix(typeSymbol)
+        // entry = entry.removePrefix(typeSymbol)
 
         var isCustom = false
         val baseType = when (typeSymbol) {

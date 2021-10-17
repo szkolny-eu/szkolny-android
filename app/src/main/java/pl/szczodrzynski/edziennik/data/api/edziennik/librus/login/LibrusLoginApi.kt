@@ -63,7 +63,7 @@ class LibrusLoginApi {
     }
 
     private fun copyFromLoginStore() {
-        data.loginStore.data?.apply {
+        data.loginStore.data.apply {
             if (has("accountLogin")) {
                 data.apiLogin = getString("accountLogin")
                 remove("accountLogin")

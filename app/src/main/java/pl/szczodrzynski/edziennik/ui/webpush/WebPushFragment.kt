@@ -63,14 +63,14 @@ class WebPushFragment : Fragment(), CoroutineScope {
         b.scanQrCode.onClick {
             manager.requestCameraPermission(activity, R.string.permissions_qr_scanner) {
                 QrScannerDialog(activity, {
-                    b.tokenEditText.setText(it.crc32().toString(36).toUpperCase())
+                    b.tokenEditText.setText(it.crc32().toString(36).uppercase())
                     pairBrowser(browserId = it)
                 })
             }
         }
 
         b.tokenAccept.onClick {
-            val pairToken = b.tokenEditText.text.toString().toUpperCase()
+            val pairToken = b.tokenEditText.text.toString().uppercase()
             if (!"[0-9A-Z]{3,13}".toRegex().matches(pairToken)) {
                 b.tokenLayout.error = app.getString(R.string.web_push_token_invalid)
                 return@onClick

@@ -8,7 +8,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
@@ -18,7 +17,6 @@ import pl.szczodrzynski.edziennik.ui.attendance.AttendanceAdapter
 import pl.szczodrzynski.edziennik.ui.debug.LabJsonAdapter
 import pl.szczodrzynski.edziennik.ui.debug.models.LabJsonObject
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
-import pl.szczodrzynski.edziennik.utils.Themes
 
 class JsonObjectViewHolder(
         inflater: LayoutInflater,
@@ -31,8 +29,6 @@ class JsonObjectViewHolder(
 
     @SuppressLint("SetTextI18n")
     override fun onBind(activity: AppCompatActivity, app: App, item: LabJsonObject, position: Int, adapter: LabJsonAdapter) {
-        val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
-
         b.root.setPadding(item.level * 8.dp + 8.dp, 8.dp, 8.dp, 8.dp)
 
         b.type.text = "Object"

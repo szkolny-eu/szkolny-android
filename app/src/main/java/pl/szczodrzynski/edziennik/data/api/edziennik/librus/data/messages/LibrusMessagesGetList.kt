@@ -109,7 +109,7 @@ class LibrusMessagesGetList(override val data: DataLibrus,
                             id
                     )
 
-                    element.select("isAnyFileAttached")?.text()?.let {
+                    element.select("isAnyFileAttached").text()?.let {
                         if (it == "1")
                             messageObject.hasAttachments = true
                     }

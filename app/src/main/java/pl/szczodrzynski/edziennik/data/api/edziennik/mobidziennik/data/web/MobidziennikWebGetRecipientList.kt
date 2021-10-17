@@ -26,7 +26,7 @@ class MobidziennikWebGetRecipientList(override val data: DataMobidziennik,
     init {
         webGet(TAG, "/mobile/dodajwiadomosc") { text ->
             Regexes.MOBIDZIENNIK_MESSAGE_RECIPIENTS_JSON.find(text)?.let { match ->
-                val recipientLists = JsonParser().parse(match[1]).asJsonArray
+                val recipientLists = JsonParser.parseString(match[1]).asJsonArray
                 recipientLists?.asJsonObjectList()?.forEach { list ->
                     val listType = list.getString("typ")?.toIntOrNull() ?: -1
                     val listName = list.getString("nazwa") ?: ""

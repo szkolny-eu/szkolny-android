@@ -21,7 +21,7 @@ class TemplateWebSample(override val data: DataTemplate,
     }
 
     init {
-        webGet(TAG, "/api/v3/getData.php") { json ->
+        webGet(TAG, "/api/v3/getData.php") {
             // here you can access and update any fields of the `data` object
 
             // ================

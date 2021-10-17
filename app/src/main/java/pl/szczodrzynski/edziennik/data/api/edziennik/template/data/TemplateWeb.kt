@@ -28,6 +28,7 @@ open class TemplateWeb(open val data: DataTemplate, open val lastSync: Long?) {
      * You can customize this method's parameters to best fit the implemented e-register.
      * Just make sure that [tag] and [onSuccess] is present.
      */
+    @Suppress("UNUSED_PARAMETER")
     fun webGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, onSuccess: (json: JsonObject?) -> Unit) {
         val json = JsonObject()
         json.addProperty("foo", "bar")

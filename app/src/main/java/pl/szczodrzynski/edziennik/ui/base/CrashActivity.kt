@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.api.ERROR_APP_CRASH
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.utils.Themes.appTheme
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
@@ -82,7 +83,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
 
                 Toast.makeText(app, getString(R.string.crash_report_sent), Toast.LENGTH_SHORT).show()
                 reportButton.isEnabled = false
-                reportButton.setTextColor(resources.getColor(android.R.color.darker_gray))
+                reportButton.setTextColor(android.R.color.darker_gray.resolveColor(this@CrashActivity))
             }
         }
 
@@ -115,7 +116,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
         content = content.replace(packageName.toRegex(), "<font color='#4caf50'>$packageName</font>")
         content = content.replace("\n".toRegex(), "<br>")
         contentPlain += "\n" + Build.MANUFACTURER + "\n" + Build.BRAND + "\n" + Build.MODEL + "\n" + Build.DEVICE + "\n"
-        if (app.profile != null && app.profile.registration == Profile.REGISTRATION_ENABLED) {
+        if (app.profile.registration == Profile.REGISTRATION_ENABLED) {
             contentPlain += "U: " + app.profile.userCode + "\nS: " + app.profile.studentNameLong + "\n"
         }
         contentPlain += BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE

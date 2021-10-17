@@ -44,7 +44,7 @@ class EdudziennikWebAttendance(override val data: DataEdudziennik,
                 return@map Triple(
                         symbol,
                         name,
-                        when (name.toLowerCase(Locale.ROOT)) {
+                        when (name.lowercase()) {
                             "obecność" -> Attendance.TYPE_PRESENT
                             "nieobecność" -> Attendance.TYPE_ABSENT
                             "spóźnienie" -> Attendance.TYPE_BELATED

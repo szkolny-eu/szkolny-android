@@ -26,8 +26,8 @@ class LibrusApiClassrooms(override val data: DataLibrus,
 
             classrooms?.forEach { classroom ->
                 val id = classroom.getLong("Id") ?: return@forEach
-                val name = classroom.getString("Name")?.toLowerCase(Locale.getDefault()) ?: ""
-                val symbol = classroom.getString("Symbol")?.toLowerCase(Locale.getDefault()) ?: ""
+                val name = classroom.getString("Name")?.lowercase() ?: ""
+                val symbol = classroom.getString("Symbol")?.lowercase() ?: ""
                 val nameShort = name.fixWhiteSpaces().split(" ").onEach { it[0] }.joinToString()
                 val symbolParts = symbol.fixWhiteSpaces().split(" ")
 

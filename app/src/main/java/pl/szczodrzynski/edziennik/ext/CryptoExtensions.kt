@@ -16,7 +16,7 @@ fun String.crc16(): Int {
     var crc = 0xFFFF
     for (aBuffer in this) {
         crc = crc.ushr(8) or (crc shl 8) and 0xffff
-        crc = crc xor (aBuffer.toInt() and 0xff) // byte to int, trunc sign
+        crc = crc xor (aBuffer.code and 0xff) // byte to int, trunc sign
         crc = crc xor (crc and 0xff shr 4)
         crc = crc xor (crc shl 12 and 0xffff)
         crc = crc xor (crc and 0xFF shl 5 and 0xffff)

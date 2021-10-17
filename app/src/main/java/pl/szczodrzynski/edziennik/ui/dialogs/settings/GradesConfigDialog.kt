@@ -115,7 +115,7 @@ class GradesConfigDialog(
                 b.dontCountGradesText
                         .text
                         ?.toString()
-                        ?.toLowerCase(Locale.getDefault())
+                        ?.lowercase()
                         ?.replace(", ", ",")
         )
         profileConfig.dontCountEnabled = b.dontCountGrades.isChecked

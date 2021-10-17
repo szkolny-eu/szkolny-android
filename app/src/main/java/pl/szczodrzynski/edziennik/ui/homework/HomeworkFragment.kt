@@ -78,7 +78,7 @@ class HomeworkFragment : Fragment(), CoroutineScope {
                 }))
 
         val pagerAdapter = FragmentLazyPagerAdapter(
-                fragmentManager ?: return,
+            parentFragmentManager,
                 b.refreshLayout,
                 listOf(
                         HomeworkListFragment().apply {

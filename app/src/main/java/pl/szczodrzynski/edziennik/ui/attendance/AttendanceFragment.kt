@@ -85,7 +85,7 @@ class AttendanceFragment : Fragment(), CoroutineScope {
             pageSelection = app.config.forProfile().attendance.attendancePageSelection
 
         val pagerAdapter = FragmentLazyPagerAdapter(
-                fragmentManager ?: return,
+            parentFragmentManager,
                 b.refreshLayout,
                 listOf(
                         AttendanceSummaryFragment() to getString(R.string.attendance_tab_summary),

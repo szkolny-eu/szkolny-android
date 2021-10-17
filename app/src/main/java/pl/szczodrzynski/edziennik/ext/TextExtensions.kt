@@ -112,7 +112,7 @@ fun String.getShortName(): String {
  */
 fun String?.getNameInitials(): String {
     if (this.isNullOrBlank()) return ""
-    return this.toUpperCase().fixWhiteSpaces().split(" ").take(2).map { it[0] }.joinToString("")
+    return this.uppercase().fixWhiteSpaces().split(" ").take(2).map { it[0] }.joinToString("")
 }
 
 operator fun MatchResult.get(group: Int): String {
@@ -230,7 +230,7 @@ val String.firstLettersName: String
         this.split(" ").forEach {
             if (it.isBlank())
                 return@forEach
-            nameShort += it[0].toLowerCase()
+            nameShort += it[0].lowercase()
         }
         return nameShort
     }

@@ -168,7 +168,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
             json.add("App.profile", app.gson.toJsonTree(app.profile))
             json.add("App.profile.studentData", app.profile.studentData)
             json.add("App.profile.loginStore", loginStore?.data ?: JsonObject())
-            json.add("App.config", JsonParser().parse(app.gson.toJson(app.config.values.toSortedMap())))
+            json.add("App.config", JsonParser.parseString(app.gson.toJson(app.config.values.toSortedMap())))
         }
         adapter.items = LabJsonAdapter.expand(json, 0)
         adapter.notifyDataSetChanged()

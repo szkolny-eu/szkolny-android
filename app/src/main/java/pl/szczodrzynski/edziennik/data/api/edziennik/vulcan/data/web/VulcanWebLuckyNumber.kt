@@ -62,7 +62,7 @@ class VulcanWebLuckyNumber(override val data: DataVulcan,
                                     profile?.empty ?: false
                             ))
                 }
-            } ?: {
+            } ?: run {
                 // no lucky number
                 if (Date.getToday().weekDay <= Week.FRIDAY && Time.getNow().hour >= 22) {
                     // working days, after 10PM
@@ -77,7 +77,7 @@ class VulcanWebLuckyNumber(override val data: DataVulcan,
                     // weekends
                     nextSync = Week.getNearestWeekDayDate(Week.MONDAY).combineWith(Time(5, 0, 0))
                 }
-            }()
+            }
 
             data.setSyncNext(ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS, SYNC_ALWAYS)
             onSuccess(ENDPOINT_VULCAN_WEB_LUCKY_NUMBERS)

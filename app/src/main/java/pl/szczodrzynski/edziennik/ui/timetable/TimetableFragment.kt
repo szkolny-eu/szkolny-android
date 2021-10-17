@@ -127,7 +127,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
             return@launch
 
         val pagerAdapter = TimetablePagerAdapter(
-                fragmentManager ?: return@launch,
+            parentFragmentManager,
                 items,
                 startHour,
                 endHour

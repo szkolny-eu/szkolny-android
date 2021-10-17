@@ -9,12 +9,12 @@ import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.core.content.res.ResourcesCompat
 
 fun colorFromName(name: String?): Int {
     val i = (name ?: "").crc32()
@@ -60,20 +60,10 @@ fun @receiver:AttrRes Int.resolveAttr(context: Context?): Int {
 }
 @ColorInt
 fun @receiver:ColorRes Int.resolveColor(context: Context): Int {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        context.resources.getColor(this, context.theme)
-    }
-    else {
-        context.resources.getColor(this)
-    }
+    return ResourcesCompat.getColor(context.resources, this, context.theme)
 }
 fun @receiver:DrawableRes Int.resolveDrawable(context: Context): Drawable {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        context.resources.getDrawable(this, context.theme)
-    }
-    else {
-        context.resources.getDrawable(this)
-    }
+    return ResourcesCompat.getDrawable(context.resources, this, context.theme)!!
 }
 
 fun Int.toColorStateList(): ColorStateList {

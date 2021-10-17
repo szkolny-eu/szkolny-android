@@ -13,7 +13,6 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Message
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.ext.*
 
@@ -89,7 +88,7 @@ class VulcanHebeSendMessage(
 
             VulcanHebeMessages(data, null) {
                 val message = data.messageList.firstOrNull { it.isSent && it.subject == subject }
-                val metadata = data.metadataList.firstOrNull { it.thingType == Metadata.TYPE_MESSAGE && it.thingId == messageId }
+                // val metadata = data.metadataList.firstOrNull { it.thingType == Metadata.TYPE_MESSAGE && it.thingId == messageId }
                 val event = MessageSentEvent(data.profileId, message, message?.addedDate)
 
                 EventBus.getDefault().postSticky(event)

@@ -49,7 +49,7 @@ class LabFragment : Fragment(), CoroutineScope {
         if (!isAdded) return
 
         val pagerAdapter = FragmentLazyPagerAdapter(
-                fragmentManager ?: return,
+            parentFragmentManager,
                 b.refreshLayout,
                 listOf(
                         LabPageFragment() to "click me",

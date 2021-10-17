@@ -20,7 +20,7 @@ class TemplateApiSample(override val data: DataTemplate,
     }
 
     init {
-        apiGet(TAG, "/api/v3/getData.php") { json ->
+        apiGet(TAG, "/api/v3/getData.php") { _ ->
             // here you can access and update any fields of the `data` object
 
             // ================

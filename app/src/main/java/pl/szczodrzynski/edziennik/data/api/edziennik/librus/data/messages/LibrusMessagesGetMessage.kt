@@ -108,7 +108,7 @@ class LibrusMessagesGetMessage(override val data: DataLibrus,
                             readDate = readDate
                     )
 
-                    messageRecipientObject.fullName = profile.accountName ?: profile.studentNameLong ?: ""
+                    messageRecipientObject.fullName = profile.accountName ?: profile.studentNameLong
 
                     messageRecipientList.add(messageRecipientObject)
                 }

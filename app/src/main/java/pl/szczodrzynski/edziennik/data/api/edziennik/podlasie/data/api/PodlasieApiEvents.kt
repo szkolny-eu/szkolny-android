@@ -26,7 +26,7 @@ class PodlasieApiEvents(val data: DataPodlasie, val rows: List<JsonObject>) {
             val name = event.getString("Name")?.replace("&#34;", "\"") ?: ""
             val description = event.getString("Description")?.replace("&#34;", "\"") ?: ""
 
-            val type = when (event.getString("Category")?.toLowerCase(Locale.getDefault())) {
+            val type = when (event.getString("Category")?.lowercase()) {
                 "klasówka" -> Event.TYPE_EXAM
                 "praca domowa" -> Event.TYPE_HOMEWORK
                 "wycieczka" -> Event.TYPE_EXCURSION

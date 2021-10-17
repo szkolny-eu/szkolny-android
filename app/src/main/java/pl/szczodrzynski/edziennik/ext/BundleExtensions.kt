@@ -27,10 +27,12 @@ fun Bundle?.getIntOrNull(key: String): Int? {
     return this?.get(key) as? Int
 }
 
+@Suppress("UNCHECKED_CAST")
 fun <T : Any> Bundle?.get(key: String): T? {
     return this?.get(key) as? T?
 }
 
+@Suppress("UNCHECKED_CAST")
 fun Bundle(vararg properties: Pair<String, Any?>): Bundle {
     return Bundle().apply {
         for (property in properties) {

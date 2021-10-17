@@ -109,7 +109,7 @@ class GradesEditorFragment : Fragment() {
                         continue
                     }
                     var weight = editorGrade.weight
-                    if (config.dontCountEnabled && config.dontCountGrades.contains(editorGrade.name.toLowerCase().trim())) {
+                    if (config.dontCountEnabled && config.dontCountGrades.contains(editorGrade.name.lowercase().trim())) {
                         weight = 0f
                     }
                     val value = editorGrade.value * weight
@@ -174,7 +174,7 @@ class GradesEditorFragment : Fragment() {
         averageSemester = 0f
         for (editorGrade in editorGrades) {
             var weight = editorGrade.weight
-            if (config.dontCountEnabled && config.dontCountGrades.contains(editorGrade.name.toLowerCase().trim())) {
+            if (config.dontCountEnabled && config.dontCountGrades.contains(editorGrade.name.lowercase().trim())) {
                 weight = 0f
             }
             val value = editorGrade.value * weight
@@ -216,7 +216,7 @@ class GradesEditorFragment : Fragment() {
                             continue
                         }
                         var weight = grade.weight
-                        if (config.dontCountEnabled && config.dontCountGrades.contains(grade.name.toLowerCase().trim())) {
+                        if (config.dontCountEnabled && config.dontCountGrades.contains(grade.name.lowercase().trim())) {
                             weight = 0f
                         }
                         val value = grade.value * weight

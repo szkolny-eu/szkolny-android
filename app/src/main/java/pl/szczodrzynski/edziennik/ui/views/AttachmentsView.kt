@@ -161,7 +161,7 @@ class AttachmentsView @JvmOverloads constructor(
                 // get the download url before updating file name
                 val fileUrl = attachment.name.substringAfter(":", missingDelimiterValue = "")
                 // update file name with the downloaded one
-                attachment.name = File(event.fileName).name
+                attachment.name = File(event.fileName ?: return).name
                 // save the download url back
                 if (fileUrl != "")
                     attachment.name += ":$fileUrl"

@@ -84,7 +84,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                         } else {
                             val csrfMatcher = Pattern.compile("name=\"csrf-token\" content=\"([A-z0-9=+/\\-_]+?)\"", Pattern.DOTALL).matcher(text)
                             if (csrfMatcher.find()) {
-                                login(csrfMatcher.group(1))
+                                login(csrfMatcher.group(1) ?: "")
                             } else {
                                 data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_CSRF_MISSING)
                                         .withResponse(response)

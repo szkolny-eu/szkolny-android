@@ -175,9 +175,9 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                         text = text.trim()
 
                     if (credential.caseMode == LoginInfo.FormField.CaseMode.UPPER_CASE)
-                        text = text.toUpperCase(Locale.getDefault())
+                        text = text.uppercase()
                     if (credential.caseMode == LoginInfo.FormField.CaseMode.LOWER_CASE)
-                        text = text.toLowerCase(Locale.getDefault())
+                        text = text.lowercase()
 
                     credential.stripTextRegex?.let {
                         text = text.replace(it.toRegex(), "")

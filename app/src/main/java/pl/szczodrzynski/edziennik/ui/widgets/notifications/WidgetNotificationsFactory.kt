@@ -56,7 +56,7 @@ class WidgetNotificationsFactory(val app: App, val config: WidgetConfig) : Remot
                     getString("profileName"),
                     getInt("posted") == 1,
                     getInt("viewId"),
-                    getString("extras")?.let { JsonParser().parse(it).asJsonObject },
+                    getString("extras")?.let { JsonParser.parseString(it).asJsonObject },
                     getLong("addedDate") ?: System.currentTimeMillis()
             )
         } ?: return views

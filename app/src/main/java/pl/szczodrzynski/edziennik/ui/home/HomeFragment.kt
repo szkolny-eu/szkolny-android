@@ -138,8 +138,6 @@ class HomeFragment : Fragment(), CoroutineScope {
             b.refreshLayout.isEnabled = scrollY == 0
         }
 
-        val showUnified = false
-
         val cards = app.config.forProfile().ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
         if (cards.isEmpty()) {
             cards += listOf(

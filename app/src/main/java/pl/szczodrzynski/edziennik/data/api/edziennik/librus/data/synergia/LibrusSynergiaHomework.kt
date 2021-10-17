@@ -42,7 +42,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
             doc.select("table.myHomeworkTable > tbody").firstOrNull()?.also { homeworkTable ->
                 val homeworkElements = homeworkTable.children()
 
-                homeworkElements.forEachIndexed { i, el ->
+                homeworkElements.forEach { el ->
                     val elements = el.children()
 
                     val subjectName = elements[0].text().trim()
@@ -56,7 +56,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                     val eventDate = Date.fromY_m_d(elements[6].text().trim())
                     val id = "/podglad/([0-9]+)'".toRegex().find(
                             elements[9].select("input").attr("onclick")
-                    )?.get(1)?.toLong() ?: return@forEachIndexed
+                    )?.get(1)?.toLong() ?: return@forEach
 
                     val lessons = data.db.timetableDao().getAllForDateNow(profileId, eventDate)
                     val startTime = lessons.firstOrNull { it.subjectId == subjectId }?.startTime

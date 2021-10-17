@@ -15,7 +15,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.utils.Utils.crc16
 import pl.szczodrzynski.edziennik.utils.models.Date
-import java.util.*
 
 class MobidziennikWebCalendar(override val data: DataMobidziennik,
                               override val lastSync: Long?,
@@ -30,7 +29,7 @@ class MobidziennikWebCalendar(override val data: DataMobidziennik,
             MobidziennikLuckyNumberExtractor(data, text)
 
             Regexes.MOBIDZIENNIK_CLASS_CALENDAR.find(text)?.let {
-                val events = JsonParser().parse(it.groupValues[1]).asJsonArray
+                val events = JsonParser.parseString(it.groupValues[1]).asJsonArray
                 for (eventEl in events) {
                     val event = eventEl.asJsonObject
 
@@ -50,7 +49,7 @@ class MobidziennikWebCalendar(override val data: DataMobidziennik,
                     val dateString = event.getString("start") ?: continue
                     val eventDate = Date.fromY_m_d(dateString)
 
-                    val eventType = when (event.getString("color")?.toLowerCase(Locale.getDefault())) {
+                    val eventType = when (event.getString("color")?.lowercase()) {
                         "#c54449" -> Event.TYPE_SHORT_QUIZ
                         "#ab0001" -> Event.TYPE_EXAM
                         "#008928" -> Event.TYPE_CLASS_EVENT

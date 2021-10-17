@@ -181,7 +181,7 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
                         subjectName = it.value.firstOrNull()?.subjectLongName ?: "",
                         items = it.value.toMutableList()
                 ) }
-                .sortedBy { it.subjectName.toLowerCase() }
+                .sortedBy { it.subjectName.lowercase() }
 
         var totalCountSum = 0
         var presenceCountSum = 0
@@ -193,12 +193,12 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
                     .sortedBy { it.first }
                     .toMap()
 
-            val totalCount = subject.typeCountMap.entries.sumBy {
+            val totalCount = subject.typeCountMap.entries.sumOf {
                 if (!it.key.isCounted || it.key.baseType == Attendance.TYPE_UNKNOWN)
                     0
                 else it.value
             }
-            val presenceCount = subject.typeCountMap.entries.sumBy {
+            val presenceCount = subject.typeCountMap.entries.sumOf {
                 when (it.key.baseType) {
                     Attendance.TYPE_PRESENT,
                     Attendance.TYPE_PRESENT_CUSTOM,

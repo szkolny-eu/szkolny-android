@@ -120,7 +120,7 @@ class GradesManager(val app: App) : CoroutineScope {
     fun getGradeWeight(dontCountEnabled: Boolean, dontCountGrades: List<String>, grade: Grade): Float {
         if (!dontCountEnabled)
             return grade.weight
-        if (grade.name.toLowerCase().trim() in dontCountGrades)
+        if (grade.name.lowercase().trim() in dontCountGrades)
             return 0f
         return grade.weight
     }
@@ -153,7 +153,7 @@ class GradesManager(val app: App) : CoroutineScope {
                 }
             type == TYPE_NORMAL && defColor -> grade.color and 0xffffff
             type in TYPE_NORMAL..TYPE_YEAR_FINAL -> {
-                when (grade.name.toLowerCase()) {
+                when (grade.name.lowercase()) {
                     "+", "++", "+++" -> 0x4caf50
                     "0", "-", "-,", "-,-,", "np", "np.", "npnp", "np,", "np,np,", "bs", "nk", "bz" -> 0xff7043
                     "1-", "1", "f", "ng" -> 0xff0000
@@ -181,7 +181,7 @@ class GradesManager(val app: App) : CoroutineScope {
      * the specified [name].
      */
     fun getGradeValue(name: String): Float {
-        return when (name.toLowerCase()) {
+        return when (name.lowercase()) {
             "1-" -> 0.75f
             "1" -> 1.00f
             "1+" -> 1.50f
@@ -211,7 +211,7 @@ class GradesManager(val app: App) : CoroutineScope {
     }
 
     fun getGradeNumberName(name: String): String {
-        return when(name.toLowerCase()){
+        return when(name.lowercase()){
             "niedostateczny", "f" -> "1"
             "niedostateczny plus", "f+" -> "1+"
             "niedostateczny minus", "f-" -> "1-"

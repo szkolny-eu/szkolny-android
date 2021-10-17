@@ -175,7 +175,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     count++
                 }
                 schoolSymbols.removeAll {
-                    it.toLowerCase() == "default"
+                    it.lowercase() == "default"
                             || !it.matches(Regexes.VULCAN_WEB_SYMBOL_VALIDATE)
                 }
                 
@@ -280,7 +280,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     return
 
                 try {
-                    val json = JsonParser().parse(text).asJsonObject
+                    val json = JsonParser.parseString(text).asJsonObject
                     onSuccess(json, response)
                 } catch (e: Exception) {
                     data.error(ApiError(tag, EXCEPTION_VULCAN_WEB_REQUEST)
