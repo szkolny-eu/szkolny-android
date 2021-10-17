@@ -126,7 +126,7 @@ dependencies {
     // Android Jetpack
     implementation "androidx.appcompat:appcompat:1.3.1"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.1"
     implementation "androidx.core:core-ktx:1.6.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
@@ -141,8 +141,8 @@ dependencies {
 
     // Play Services/Firebase
     implementation "com.google.android.gms:play-services-wearable:17.1.0"
-    implementation "com.google.firebase:firebase-core:19.0.1"
-    implementation "com.google.firebase:firebase-crashlytics:18.2.1"
+    implementation "com.google.firebase:firebase-core:19.0.2"
+    implementation "com.google.firebase:firebase-crashlytics:18.2.3"
     implementation("com.google.firebase:firebase-messaging") { version { strictly "20.1.3" } }
 
     // OkHttp, Retrofit, Gson, Jsoup
@@ -200,5 +200,5 @@ dependencies {
     implementation("pl.droidsonroids.gif:android-gif-drawable") { version { strictly "1.2.15" } }
 
     // Debug-only dependencies
-    debugImplementation "com.amitshekhar.android:debug-db:1.0.5"
+    debugImplementation "com.amitshekhar.android:debug-db:1.0.6"
 }

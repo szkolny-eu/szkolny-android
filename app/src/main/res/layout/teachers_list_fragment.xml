@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) Kuba Szczodrzyński 2019-11-22.
+  ~ Copyright (c) Antoni Czaplicki 2021-10-15.
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,10 +26,10 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:padding="16dp"
-            android:text="@string/notifications_no_data"
+            android:text="@string/teachers_no_data"
             android:textSize="24sp"
             android:visibility="gone"
-            app:drawableTopCompat="@drawable/face_2"
+            app:drawableTopCompat="@drawable/ic_archive"
             tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView

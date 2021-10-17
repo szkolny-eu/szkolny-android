@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2019-11-22.
+ * Copyright (c) Antoni Czaplicki 2021-10-15.
  */
 
 package pl.szczodrzynski.edziennik.ui.modules.teachers

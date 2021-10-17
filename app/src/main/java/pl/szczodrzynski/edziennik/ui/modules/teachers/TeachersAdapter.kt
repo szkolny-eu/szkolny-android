@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Antoni Czaplicki 2021-10-15.
+ */
+
 package pl.szczodrzynski.edziennik.ui.modules.teachers
 
 import android.view.LayoutInflater
@@ -8,10 +12,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.TeachersListItemBinding
 import pl.szczodrzynski.edziennik.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.onClick
+import pl.szczodrzynski.edziennik.ui.modules.messages.MessagesUtils.getProfileImage
+import pl.szczodrzynski.edziennik.utils.BetterLink
 import kotlin.coroutines.CoroutineContext
 
 class TeachersAdapter(
@@ -42,24 +49,19 @@ class TeachersAdapter(
         val b = holder.b
 
         b.name.text = item.fullName
-        b.initials.text = item.initialsLastFirst
-        var role: String = ""
+        b.image.setImageBitmap(item.image?: getProfileImage(48, 24, 16, 12, 1, item.fullName))
+        var role = item.getTypeText(activity)
         if (item.subjects.isNotNullNorEmpty()) {
-            role = item.getTypeText(activity).plus(": ")
-            item.subjects.forEachIndexed { index, subject ->
-                role = if (index > 0) {
-                    role.plus(subject).plus(", ")
-                } else {
-                    role.plus(subject)
-                }
-            }
-        } else {
-            role = item.getTypeText(activity)
+            val subjects = item.subjects.map { App.db.subjectDao().getByIdNow(App.profileId, it).longName }
+            role = role.plus(": ").plus(subjects.joinToString())
         }
         b.role.text = role
 
-        onItemClick?.let { listener ->
-            b.root.onClick { listener(item) }
+        item.fullName.let { name ->
+            BetterLink.attach(
+                b.name,
+                teachers = mapOf(item.id to name)
+            )
         }
     }
 

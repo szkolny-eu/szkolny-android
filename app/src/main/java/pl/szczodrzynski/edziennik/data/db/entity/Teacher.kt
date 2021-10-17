@@ -9,10 +9,7 @@ import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
-import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.getNameInitials
-import pl.szczodrzynski.edziennik.join
+import pl.szczodrzynski.edziennik.*
 import java.util.*
 
 @Entity(tableName = "teachers",
@@ -98,7 +95,7 @@ open class Teacher {
     var typeDescription: String? = null
 
     @ColumnInfo(name = "teacherSubjects")
-    var subjects: MutableList<String> = mutableListOf()
+    var subjects: MutableList<Long> = mutableListOf()
 
     fun isType(checkingType: Int): Boolean {
         return type and (1 shl checkingType) >= 1
@@ -178,6 +175,7 @@ open class Teacher {
             this.surname = it.surname
             this.type = it.type
             this.typeDescription = it.typeDescription
+            this.subjects = it.subjects
             this.image = it.image
             this.recipientDisplayName = it.recipientDisplayName
         }
@@ -203,6 +201,7 @@ open class Teacher {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", type=" + dumpType() +
+                ", subjects=" + subjects.joinToString() +
                 ", typeDescription='" + typeDescription + '\'' +
                 '}'
     }

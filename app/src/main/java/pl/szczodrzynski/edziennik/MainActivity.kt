@@ -133,113 +133,135 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             val list: MutableList<NavTarget> = mutableListOf()
             val moreList: MutableList<NavTarget> = mutableListOf()
 
-            moreList += NavTarget(DRAWER_ITEM_TEACHERS, R.string.menu_teachers, TeachersListFragment::class)
+            moreList += NavTarget(DRAWER_ITEM_TEACHERS,
+                R.string.menu_teachers,
+                TeachersListFragment::class)
                 .withIcon(CommunityMaterial.Icon3.cmd_shield_account_outline)
                 .isStatic(true)
 
             // home item
             list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragment::class)
-                    .withTitle(R.string.app_name)
-                    .withIcon(CommunityMaterial.Icon2.cmd_home_outline)
-                    .isInDrawer(true)
-                    .isStatic(true)
-                    .withPopToHome(false)
+                .withTitle(R.string.app_name)
+                .withIcon(CommunityMaterial.Icon2.cmd_home_outline)
+                .isInDrawer(true)
+                .isStatic(true)
+                .withPopToHome(false)
 
-            list += NavTarget(DRAWER_ITEM_TIMETABLE, R.string.menu_timetable, TimetableFragment::class)
-                    .withIcon(CommunityMaterial.Icon3.cmd_timetable)
-                    .withBadgeTypeId(TYPE_LESSON_CHANGE)
-                    .isInDrawer(true)
+            list += NavTarget(DRAWER_ITEM_TIMETABLE,
+                R.string.menu_timetable,
+                TimetableFragment::class)
+                .withIcon(CommunityMaterial.Icon3.cmd_timetable)
+                .withBadgeTypeId(TYPE_LESSON_CHANGE)
+                .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_AGENDA, R.string.menu_agenda, AgendaFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_calendar_outline)
-                    .withBadgeTypeId(TYPE_EVENT)
-                    .isInDrawer(true)
+                .withIcon(CommunityMaterial.Icon.cmd_calendar_outline)
+                .withBadgeTypeId(TYPE_EVENT)
+                .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesListFragment::class)
-                    .withIcon(CommunityMaterial.Icon3.cmd_numeric_5_box_outline)
-                    .withBadgeTypeId(TYPE_GRADE)
-                    .isInDrawer(true)
+                .withIcon(CommunityMaterial.Icon3.cmd_numeric_5_box_outline)
+                .withBadgeTypeId(TYPE_GRADE)
+                .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_MESSAGES, R.string.menu_messages, MessagesFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_email_outline)
-                    .withBadgeTypeId(TYPE_MESSAGE)
-                    .isInDrawer(true)
+                .withIcon(CommunityMaterial.Icon.cmd_email_outline)
+                .withBadgeTypeId(TYPE_MESSAGE)
+                .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_HOMEWORK, R.string.menu_homework, HomeworkFragment::class)
-                    .withIcon(SzkolnyFont.Icon.szf_notebook_outline)
-                    .withBadgeTypeId(TYPE_HOMEWORK)
-                    .isInDrawer(true)
+                .withIcon(SzkolnyFont.Icon.szf_notebook_outline)
+                .withBadgeTypeId(TYPE_HOMEWORK)
+                .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_BEHAVIOUR, R.string.menu_notices, BehaviourFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_emoticon_outline)
-                    .withBadgeTypeId(TYPE_NOTICE)
-                    .isInDrawer(true)
+            list += NavTarget(DRAWER_ITEM_BEHAVIOUR,
+                R.string.menu_notices,
+                BehaviourFragment::class)
+                .withIcon(CommunityMaterial.Icon.cmd_emoticon_outline)
+                .withBadgeTypeId(TYPE_NOTICE)
+                .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_ATTENDANCE, R.string.menu_attendance, AttendanceFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_calendar_remove_outline)
-                    .withBadgeTypeId(TYPE_ATTENDANCE)
-                    .isInDrawer(true)
+            list += NavTarget(DRAWER_ITEM_ATTENDANCE,
+                R.string.menu_attendance,
+                AttendanceFragment::class)
+                .withIcon(CommunityMaterial.Icon.cmd_calendar_remove_outline)
+                .withBadgeTypeId(TYPE_ATTENDANCE)
+                .isInDrawer(true)
 
-            list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS, R.string.menu_announcements, AnnouncementsFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_bullhorn_outline)
-                    .withBadgeTypeId(TYPE_ANNOUNCEMENT)
-                    .isInDrawer(true)
+            list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS,
+                R.string.menu_announcements,
+                AnnouncementsFragment::class)
+                .withIcon(CommunityMaterial.Icon.cmd_bullhorn_outline)
+                .withBadgeTypeId(TYPE_ANNOUNCEMENT)
+                .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_MORE, R.string.menu_more, null)
-                    .withIcon(CommunityMaterial.Icon.cmd_dots_vertical_circle_outline)
-                    .isInDrawer(true)
-                    .isStatic(true)
-                    .withSubItems(moreList.first { it.id == DRAWER_ITEM_TEACHERS })
+                .withIcon(CommunityMaterial.Icon.cmd_dots_horizontal_circle_outline)
+                .isInDrawer(true)
+                .isStatic(true)
+                .withSubItems(*moreList.toTypedArray())
 
 
             // static drawer items
-            list += NavTarget(DRAWER_ITEM_NOTIFICATIONS, R.string.menu_notifications, NotificationsListFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_bell_ring_outline)
-                    .isInDrawer(true)
-                    .isStatic(true)
-                    .isBelowSeparator(true)
+            list += NavTarget(DRAWER_ITEM_NOTIFICATIONS,
+                R.string.menu_notifications,
+                NotificationsListFragment::class)
+                .withIcon(CommunityMaterial.Icon.cmd_bell_ring_outline)
+                .isInDrawer(true)
+                .isStatic(true)
+                .isBelowSeparator(true)
 
             list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsFragment::class)
-                    .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                    .isInDrawer(true)
-                    .isStatic(true)
-                    .isBelowSeparator(true)
+                .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+                .isInDrawer(true)
+                .isStatic(true)
+                .isBelowSeparator(true)
 
 
             // profile settings items
             list += NavTarget(DRAWER_PROFILE_ADD_NEW, R.string.menu_add_new_profile, null)
-                    .withIcon(CommunityMaterial.Icon3.cmd_plus)
-                    .withDescription(R.string.drawer_add_new_profile_desc)
-                    .isInProfileList(true)
+                .withIcon(CommunityMaterial.Icon3.cmd_plus)
+                .withDescription(R.string.drawer_add_new_profile_desc)
+                .isInProfileList(true)
 
-            list += NavTarget(DRAWER_PROFILE_MANAGE, R.string.menu_manage_profiles, ProfileManagerFragment::class)
-                    .withTitle(R.string.title_profile_manager)
-                    .withIcon(CommunityMaterial.Icon.cmd_account_group)
-                    .withDescription(R.string.drawer_manage_profiles_desc)
-                    .isInProfileList(false)
+            list += NavTarget(DRAWER_PROFILE_MANAGE,
+                R.string.menu_manage_profiles,
+                ProfileManagerFragment::class)
+                .withTitle(R.string.title_profile_manager)
+                .withIcon(CommunityMaterial.Icon.cmd_account_group)
+                .withDescription(R.string.drawer_manage_profiles_desc)
+                .isInProfileList(false)
 
-            list += NavTarget(DRAWER_PROFILE_MARK_ALL_AS_READ, R.string.menu_mark_everything_as_read, null)
-                    .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
-                    .isInProfileList(true)
+            list += NavTarget(DRAWER_PROFILE_MARK_ALL_AS_READ,
+                R.string.menu_mark_everything_as_read,
+                null)
+                .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
+                .isInProfileList(true)
 
             list += NavTarget(DRAWER_PROFILE_SYNC_ALL, R.string.menu_sync_all, null)
-                    .withIcon(CommunityMaterial.Icon.cmd_download_outline)
-                    .isInProfileList(true)
+                .withIcon(CommunityMaterial.Icon.cmd_download_outline)
+                .isInProfileList(true)
 
 
             // other target items, not directly navigated
-            list += NavTarget(TARGET_GRADES_EDITOR, R.string.menu_grades_editor, GradesEditorFragment::class)
+            list += NavTarget(TARGET_GRADES_EDITOR,
+                R.string.menu_grades_editor,
+                GradesEditorFragment::class)
             list += NavTarget(TARGET_FEEDBACK, R.string.menu_feedback, FeedbackFragment::class)
-            list += NavTarget(TARGET_MESSAGES_DETAILS, R.string.menu_message, MessageFragment::class).withPopTo(DRAWER_ITEM_MESSAGES)
-            list += NavTarget(TARGET_MESSAGES_COMPOSE, R.string.menu_message_compose, MessagesComposeFragment::class)
+            list += NavTarget(TARGET_MESSAGES_DETAILS,
+                R.string.menu_message,
+                MessageFragment::class).withPopTo(DRAWER_ITEM_MESSAGES)
+            list += NavTarget(TARGET_MESSAGES_COMPOSE,
+                R.string.menu_message_compose,
+                MessagesComposeFragment::class)
             list += NavTarget(TARGET_WEB_PUSH, R.string.menu_web_push, WebPushFragment::class)
             if (App.devMode) {
                 list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
                 list += NavTarget(TARGET_LAB, R.string.menu_lab, LabFragment::class)
-                        .withIcon(CommunityMaterial.Icon2.cmd_flask_outline)
-                        .isInDrawer(true)
-                        .isBelowSeparator(true)
-                        .isStatic(true)
+                    .withIcon(CommunityMaterial.Icon2.cmd_flask_outline)
+                    .isInDrawer(true)
+                    .isBelowSeparator(true)
+                    .isStatic(true)
             }
 
             list
@@ -335,9 +357,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     window.statusBarColor = statusBarColor
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ColorUtils.calculateLuminance(statusBarColor) > 0.6) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ColorUtils.calculateLuminance(
+                        statusBarColor) > 0.6
+                ) {
                     @Suppress("deprecation")
-                    window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    window.decorView.systemUiVisibility =
+                        window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 }
 
                 // TODO fix navlib navbar detection, orientation change issues, status bar color setting if not fullscreen
@@ -357,8 +382,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 fabGravity = Gravity.CENTER
                 if (Themes.isDark) {
                     setBackgroundColor(blendColors(
-                            getColorFromAttr(context, R.attr.colorSurface),
-                            getColorFromRes(R.color.colorSurface_4dp)
+                        getColorFromAttr(context, R.attr.colorSurface),
+                        getColorFromRes(R.color.colorSurface_4dp)
                     ))
                     elevation = dpToPx(4).toFloat()
                 }
@@ -397,8 +422,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                             ProfileConfigDialog(this@MainActivity, appProfile)
                         }
                         true
-                    }
-                    else {
+                    } else {
                         false
                     }
                 }
@@ -419,15 +443,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         app.db.profileDao().all.observe(this) { profiles ->
             val allArchived = profiles.all { it.archived }
-            drawer.setProfileList(profiles.filter { it.id >= 0 && (!it.archived || allArchived) }.toMutableList())
+            drawer.setProfileList(profiles.filter { it.id >= 0 && (!it.archived || allArchived) }
+                .toMutableList())
             //prepend the archived profile if loaded
             if (app.profile.archived && !allArchived) {
                 drawer.prependProfile(Profile(
-                        id = app.profile.id,
-                        loginStoreId = app.profile.loginStoreId,
-                        loginStoreType = app.profile.loginStoreType,
-                        name = app.profile.name,
-                        subname = "Archiwum - ${app.profile.subname}"
+                    id = app.profile.id,
+                    loginStoreId = app.profile.loginStoreId,
+                    loginStoreType = app.profile.loginStoreType,
+                    name = app.profile.name,
+                    subname = "Archiwum - ${app.profile.subname}"
                 ).also {
                     it.archived = true
                 })
@@ -449,9 +474,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         b.swipeRefreshLayout.isEnabled = true
         b.swipeRefreshLayout.setOnRefreshListener { launch { syncCurrentFeature() } }
         b.swipeRefreshLayout.setColorSchemeResources(
-                R.color.md_blue_500,
-                R.color.md_amber_500,
-                R.color.md_green_500
+            R.color.md_blue_500,
+            R.color.md_amber_500,
+            R.color.md_green_500
         )
 
         SyncWorker.scheduleNext(app)
@@ -481,9 +506,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         val today = Date.getToday()
         if ((today.month % 11 == 1) && app.config.ui.snowfall) {
             b.rootFrame.addView(layoutInflater.inflate(R.layout.snowfall, b.rootFrame, false))
-        }
-        else if (app.config.ui.eggfall && BigNightUtil().isDataWielkanocyNearDzisiaj()) {
-            val eggfall = layoutInflater.inflate(R.layout.eggfall, b.rootFrame, false) as SnowfallView
+        } else if (app.config.ui.eggfall && BigNightUtil().isDataWielkanocyNearDzisiaj()) {
+            val eggfall =
+                layoutInflater.inflate(R.layout.eggfall, b.rootFrame, false) as SnowfallView
             eggfall.setSnowflakeBitmaps(listOf(
                 BitmapFactory.decodeResource(resources, R.drawable.egg1),
                 BitmapFactory.decodeResource(resources, R.drawable.egg2),
@@ -512,65 +537,68 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (app.config.appRateSnackbarTime != 0L && app.config.appRateSnackbarTime <= System.currentTimeMillis()) {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
-                        .content(R.string.rate_snackbar_text)
-                        .icon(IconicsDrawable(this).apply {
-                            icon = CommunityMaterial.Icon3.cmd_star_outline
-                            sizeDp = 24
-                            colorInt = Themes.getPrimaryTextColor(this@MainActivity)
-                        })
-                        .positiveText(R.string.rate_snackbar_positive)
-                        .positiveColor(-0xb350b0)
-                        .negativeText(R.string.rate_snackbar_negative)
-                        .negativeColor(0xff666666.toInt())
-                        .neutralText(R.string.rate_snackbar_neutral)
-                        .neutralColor(0xff666666.toInt())
-                        .onPositive { cafeBar ->
-                            Utils.openGooglePlay(this)
-                            cafeBar.dismiss()
-                            app.config.appRateSnackbarTime = 0
-                        }
-                        .onNegative { cafeBar ->
-                            Toast.makeText(this, R.string.rate_snackbar_negative_message, Toast.LENGTH_LONG).show()
-                            cafeBar.dismiss()
-                            app.config.appRateSnackbarTime = 0
-                        }
-                        .onNeutral { cafeBar ->
-                            Toast.makeText(this, R.string.ok, Toast.LENGTH_LONG).show()
-                            cafeBar.dismiss()
-                            app.config.appRateSnackbarTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
-                        }
-                        .autoDismiss(false)
-                        .swipeToDismiss(true)
-                        .floating(true)
-                        .show()
+                    .content(R.string.rate_snackbar_text)
+                    .icon(IconicsDrawable(this).apply {
+                        icon = CommunityMaterial.Icon3.cmd_star_outline
+                        sizeDp = 24
+                        colorInt = Themes.getPrimaryTextColor(this@MainActivity)
+                    })
+                    .positiveText(R.string.rate_snackbar_positive)
+                    .positiveColor(-0xb350b0)
+                    .negativeText(R.string.rate_snackbar_negative)
+                    .negativeColor(0xff666666.toInt())
+                    .neutralText(R.string.rate_snackbar_neutral)
+                    .neutralColor(0xff666666.toInt())
+                    .onPositive { cafeBar ->
+                        Utils.openGooglePlay(this)
+                        cafeBar.dismiss()
+                        app.config.appRateSnackbarTime = 0
+                    }
+                    .onNegative { cafeBar ->
+                        Toast.makeText(this,
+                            R.string.rate_snackbar_negative_message,
+                            Toast.LENGTH_LONG).show()
+                        cafeBar.dismiss()
+                        app.config.appRateSnackbarTime = 0
+                    }
+                    .onNeutral { cafeBar ->
+                        Toast.makeText(this, R.string.ok, Toast.LENGTH_LONG).show()
+                        cafeBar.dismiss()
+                        app.config.appRateSnackbarTime =
+                            System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000
+                    }
+                    .autoDismiss(false)
+                    .swipeToDismiss(true)
+                    .floating(true)
+                    .show()
             }, 10000)
         }
 
         // CONTEXT MENU ITEMS
         bottomSheet.removeAllItems()
         bottomSheet.appendItems(
-                BottomSheetPrimaryItem(false)
-                        .withTitle(R.string.menu_sync)
-                        .withIcon(CommunityMaterial.Icon.cmd_download_outline)
-                        .withOnClickListener {
-                            bottomSheet.close()
-                            SyncViewListDialog(this, navTargetId)
-                        },
-                BottomSheetSeparatorItem(false),
-                BottomSheetPrimaryItem(false)
-                        .withTitle(R.string.menu_settings)
-                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                        .withOnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) },
-                BottomSheetPrimaryItem(false)
-                        .withTitle(R.string.menu_feedback)
-                        .withIcon(CommunityMaterial.Icon2.cmd_help_circle_outline)
-                        .withOnClickListener { loadTarget(TARGET_FEEDBACK) }
+            BottomSheetPrimaryItem(false)
+                .withTitle(R.string.menu_sync)
+                .withIcon(CommunityMaterial.Icon.cmd_download_outline)
+                .withOnClickListener {
+                    bottomSheet.close()
+                    SyncViewListDialog(this, navTargetId)
+                },
+            BottomSheetSeparatorItem(false),
+            BottomSheetPrimaryItem(false)
+                .withTitle(R.string.menu_settings)
+                .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+                .withOnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) },
+            BottomSheetPrimaryItem(false)
+                .withTitle(R.string.menu_feedback)
+                .withIcon(CommunityMaterial.Icon2.cmd_help_circle_outline)
+                .withOnClickListener { loadTarget(TARGET_FEEDBACK) }
         )
         if (App.devMode) {
             bottomSheet += BottomSheetPrimaryItem(false)
-                    .withTitle(R.string.menu_debug)
-                    .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
-                    .withOnClickListener { loadTarget(DRAWER_ITEM_DEBUG) }
+                .withTitle(R.string.menu_debug)
+                .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
+                .withOnClickListener { loadTarget(DRAWER_ITEM_DEBUG) }
         }
     }
 
@@ -582,17 +610,22 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             DRAWER_PROFILE_SYNC_ALL -> {
                 EdziennikTask.sync().enqueue(this)
             }
-            DRAWER_PROFILE_MARK_ALL_AS_READ -> { launch {
-                withContext(Dispatchers.Default) {
-                    app.db.profileDao().allNow.forEach { profile ->
-                        if (profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS)
-                            app.db.metadataDao().setAllSeenExceptMessagesAndAnnouncements(profile.id, true)
-                        else
-                            app.db.metadataDao().setAllSeenExceptMessages(profile.id, true)
+            DRAWER_PROFILE_MARK_ALL_AS_READ -> {
+                launch {
+                    withContext(Dispatchers.Default) {
+                        app.db.profileDao().allNow.forEach { profile ->
+                            if (profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS)
+                                app.db.metadataDao()
+                                    .setAllSeenExceptMessagesAndAnnouncements(profile.id, true)
+                            else
+                                app.db.metadataDao().setAllSeenExceptMessages(profile.id, true)
+                        }
                     }
+                    Toast.makeText(this@MainActivity,
+                        R.string.main_menu_mark_as_read_success,
+                        Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(this@MainActivity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
-            }}
+            }
             else -> {
                 loadTarget(id)
             }
@@ -611,36 +644,36 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private suspend fun syncCurrentFeature() {
         if (app.profile.archived) {
             MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.profile_archived_title)
-                    .setMessage(
-                            R.string.profile_archived_text,
-                            app.profile.studentSchoolYearStart,
-                            app.profile.studentSchoolYearStart + 1
-                    )
-                    .setPositiveButton(R.string.ok, null)
-                    .show()
+                .setTitle(R.string.profile_archived_title)
+                .setMessage(
+                    R.string.profile_archived_text,
+                    app.profile.studentSchoolYearStart,
+                    app.profile.studentSchoolYearStart + 1
+                )
+                .setPositiveButton(R.string.ok, null)
+                .show()
             swipeRefreshLayout.isRefreshing = false
             return
         }
         if (app.profile.shouldArchive()) {
             MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.profile_archiving_title)
-                    .setMessage(
-                            R.string.profile_archiving_format,
-                            app.profile.dateYearEnd.formattedString
-                    )
-                    .setPositiveButton(R.string.ok, null)
-                    .show()
+                .setTitle(R.string.profile_archiving_title)
+                .setMessage(
+                    R.string.profile_archiving_format,
+                    app.profile.dateYearEnd.formattedString
+                )
+                .setPositiveButton(R.string.ok, null)
+                .show()
         }
         if (app.profile.isBeforeYear()) {
             MaterialAlertDialogBuilder(this)
-                    .setTitle(R.string.profile_year_not_started_title)
-                    .setMessage(
-                            R.string.profile_year_not_started_format,
-                            app.profile.dateSemester1Start.formattedString
-                    )
-                    .setPositiveButton(R.string.ok, null)
-                    .show()
+                .setTitle(R.string.profile_year_not_started_title)
+                .setMessage(
+                    R.string.profile_year_not_started_format,
+                    app.profile.dateSemester1Start.formattedString
+                )
+                .setPositiveButton(R.string.ok, null)
+                .show()
             swipeRefreshLayout.isRefreshing = false
             return
         }
@@ -675,16 +708,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             else -> null
         }
         EdziennikTask.syncProfile(
-                App.profileId,
-                listOf(navTargetId to fragmentParam),
-                arguments = arguments
+            App.profileId,
+            listOf(navTargetId to fragmentParam),
+            arguments = arguments
         ).enqueue(this)
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onUpdateEvent(event: Update) {
         EventBus.getDefault().removeStickyEvent(event)
         UpdateAvailableDialog(this, event)
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onRegisterAvailabilityEvent(event: RegisterAvailabilityEvent) {
         EventBus.getDefault().removeStickyEvent(event)
@@ -693,6 +728,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             RegisterUnavailableDialog(this, error.status!!)
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskStartedEvent(event: ApiTaskStartedEvent) {
         swipeRefreshLayout.isRefreshing = true
@@ -704,6 +740,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onProfileListEmptyEvent(event: ProfileListEmptyEvent) {
         d(TAG, "Profile list is empty. Launch LoginActivity.")
@@ -711,6 +748,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskProgressEvent(event: ApiTaskProgressEvent) {
         if (event.profileId == App.profileId) {
@@ -720,11 +758,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 subtitle = if (event.progress < 0f)
                     event.progressText ?: ""
                 else
-                    getString(R.string.toolbar_subtitle_syncing_format, event.progress.roundToInt(), event.progressText ?: "")
+                    getString(R.string.toolbar_subtitle_syncing_format,
+                        event.progress.roundToInt(),
+                        event.progressText ?: "")
 
             }
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onApiTaskFinishedEvent(event: ApiTaskFinishedEvent) {
         EventBus.getDefault().removeStickyEvent(event)
@@ -736,11 +777,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onApiTaskAllFinishedEvent(event: ApiTaskAllFinishedEvent) {
         EventBus.getDefault().removeStickyEvent(event)
         swipeRefreshLayout.isRefreshing = false
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onApiTaskErrorEvent(event: ApiTaskErrorEvent) {
         EventBus.getDefault().removeStickyEvent(event)
@@ -757,36 +800,41 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         mainSnackbar.dismiss()
         errorSnackbar.addError(event.error).show()
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onAppManagerDetectedEvent(event: AppManagerDetectedEvent) {
         EventBus.getDefault().removeStickyEvent(event)
         if (app.config.sync.dontShowAppManagerDialog)
             return
         MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.app_manager_dialog_title)
-                .setMessage(R.string.app_manager_dialog_text)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    try {
-                        for (intent in appManagerIntentList) {
-                            if (packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
-                                startActivity(intent)
-                            }
-                        }
-                    } catch (e: Exception) {
-                        try {
-                            startActivity(Intent(Settings.ACTION_SETTINGS))
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            Toast.makeText(this, R.string.app_manager_open_failed, Toast.LENGTH_SHORT).show()
+            .setTitle(R.string.app_manager_dialog_title)
+            .setMessage(R.string.app_manager_dialog_text)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                try {
+                    for (intent in appManagerIntentList) {
+                        if (packageManager.resolveActivity(intent,
+                                PackageManager.MATCH_DEFAULT_ONLY) != null
+                        ) {
+                            startActivity(intent)
                         }
                     }
+                } catch (e: Exception) {
+                    try {
+                        startActivity(Intent(Settings.ACTION_SETTINGS))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Toast.makeText(this, R.string.app_manager_open_failed, Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
-                .setNeutralButton(R.string.dont_ask_again) { _, _ ->
-                    app.config.sync.dontShowAppManagerDialog = true
-                }
-                .setCancelable(false)
-                .show()
+            }
+            .setNeutralButton(R.string.dont_ask_again) { _, _ ->
+                app.config.sync.dontShowAppManagerDialog = true
+            }
+            .setCancelable(false)
+            .show()
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserActionRequiredEvent(event: UserActionRequiredEvent) {
         app.userActionManager.execute(this, event.profileId, event.type)
@@ -820,11 +868,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             handleIntent(intent?.extras)
         }
     }
+
     fun handleIntent(extras: Bundle?) {
 
         d(TAG, "handleIntent() {")
         extras?.keySet()?.forEach { key ->
-            d(TAG, "    \"$key\": "+extras.get(key))
+            d(TAG, "    \"$key\": " + extras.get(key))
         }
         d(TAG, "}")
 
@@ -835,9 +884,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             val handled = when (extras.getString("action")) {
                 "serverMessage" -> {
                     ServerMessageDialog(
-                            this,
-                            extras.getString("serverMessageTitle") ?: getString(R.string.app_name),
-                            extras.getString("serverMessageText") ?: ""
+                        this,
+                        extras.getString("serverMessageTitle") ?: getString(R.string.app_name),
+                        extras.getString("serverMessageText") ?: ""
                     )
                     true
                 }
@@ -847,18 +896,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
                 "userActionRequired" -> {
                     app.userActionManager.execute(
-                            this,
-                            extras.getInt("profileId"),
-                            extras.getInt("type")
+                        this,
+                        extras.getInt("profileId"),
+                        extras.getInt("type")
                     )
                     true
                 }
                 "createManualEvent" -> {
-                    val date = extras.getString("eventDate")?.let { Date.fromY_m_d(it) } ?: Date.getToday()
+                    val date =
+                        extras.getString("eventDate")?.let { Date.fromY_m_d(it) } ?: Date.getToday()
                     EventManualDialog(
-                            this,
-                            App.profileId,
-                            defaultDate = date
+                        this,
+                        App.profileId,
+                        defaultDate = date
                     )
                     true
                 }
@@ -925,9 +975,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override fun recreate() {
         recreate(navTargetId)
     }
+
     fun recreate(targetId: Int) {
         recreate(targetId, null)
     }
+
     fun recreate(targetId: Int? = null, arguments: Bundle? = null) {
         val intent = Intent(this, MainActivity::class.java)
         if (arguments != null)
@@ -944,10 +996,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         d(TAG, "Activity started")
         super.onStart()
     }
+
     override fun onStop() {
         d(TAG, "Activity stopped")
         super.onStop()
     }
+
     override fun onResume() {
         d(TAG, "Activity resumed")
         val filter = IntentFilter()
@@ -956,12 +1010,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         EventBus.getDefault().register(this)
         super.onResume()
     }
+
     override fun onPause() {
         d(TAG, "Activity paused")
         unregisterReceiver(intentReceiver)
         EventBus.getDefault().unregister(this)
         super.onPause()
     }
+
     override fun onDestroy() {
         d(TAG, "Activity destroyed")
         super.onDestroy()
@@ -990,11 +1046,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
          | |___| (_) | (_| | (_| | | | | | | |  __/ |_| | | | (_) | (_| \__ \
          |______\___/ \__,_|\__,_| |_| |_| |_|\___|\__|_| |_|\___/ \__,_|__*/
     val navOptions = NavOptions.Builder()
-            .setEnterAnim(R.anim.task_open_enter) // new fragment enter
-            .setExitAnim(R.anim.task_open_exit) // old fragment exit
-            .setPopEnterAnim(R.anim.task_close_enter) // old fragment enter back
-            .setPopExitAnim(R.anim.task_close_exit) // new fragment exit
-            .build()
+        .setEnterAnim(R.anim.task_open_enter) // new fragment enter
+        .setExitAnim(R.anim.task_open_exit) // old fragment exit
+        .setPopEnterAnim(R.anim.task_close_enter) // old fragment enter back
+        .setPopExitAnim(R.anim.task_close_exit) // new fragment exit
+        .build()
 
     private fun canNavigate(): Boolean = onBeforeNavigate?.invoke() != false
 
@@ -1022,6 +1078,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun loadProfile(id: Int) = loadProfile(id, navTargetId)
+
     // fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
     fun loadProfile(profile: Profile): Boolean {
         if (!canNavigate()) {
@@ -1036,6 +1093,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         loadProfile(profile, navTargetId, null)
         return true
     }
+
     private fun loadProfile(
         id: Int,
         drawerSelection: Int,
@@ -1067,6 +1125,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         return true
     }
+
     private fun loadProfile(profile: Profile, drawerSelection: Int, arguments: Bundle?) {
         App.profile = profile
         MessagesFragment.pageSelection = -1
@@ -1080,11 +1139,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         if (profile.archived) {
             drawer.prependProfile(Profile(
-                    id = profile.id,
-                    loginStoreId = profile.loginStoreId,
-                    loginStoreType = profile.loginStoreType,
-                    name = profile.name,
-                    subname = "Archiwum - ${profile.subname}"
+                id = profile.id,
+                loginStoreId = profile.loginStoreId,
+                loginStoreType = profile.loginStoreType,
+                name = profile.name,
+                subname = "Archiwum - ${profile.subname}"
             ).also {
                 it.archived = true
             })
@@ -1096,6 +1155,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         drawer.currentProfile = app.profileId
         loadTarget(drawerSelection, arguments, skipBeforeNavigate = true)
     }
+
     fun loadTarget(
         id: Int,
         arguments: Bundle? = null,
@@ -1105,28 +1165,23 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (loadId == -1) {
             loadId = DRAWER_ITEM_HOME
         }
-        val target = when (loadId) {
-            DRAWER_ITEM_TEACHERS -> {
-                navTargetList
-                    .firstOrNull { it.id == DRAWER_ITEM_MORE }
-                    ?.subItems?.firstOrNull { it.id == loadId }
-            }
-            else -> {
-                navTargetList
-                    .firstOrNull { it.id == loadId }
+        var target = navTargetList.firstOrNull { it.id == loadId }
+        if (target == null) {
+            navTargetList.forEach {
+                target = navTargetList.firstOrNull { it.id == loadId }
             }
         }
         return if (target == null) {
-            Toast.makeText(this, getString(R.string.error_invalid_fragment, id), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.error_invalid_fragment, id), Toast.LENGTH_LONG)
+                .show()
             loadTarget(navTargetList.first(), arguments, skipBeforeNavigate)
-        }
-        else if (target.fragmentClass != null) {
-            loadTarget(target, arguments, skipBeforeNavigate)
-        }
-        else {
+        } else if (target!!.fragmentClass != null) {
+            loadTarget(target!!, arguments, skipBeforeNavigate)
+        } else {
             false
         }
     }
+
     private fun loadTarget(
         target: NavTarget,
         args: Bundle? = null,
@@ -1145,7 +1200,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         pausedNavigationData = null
 
-        val arguments = args ?: navBackStack.firstOrNull { it.first.id == target.id }?.second ?: Bundle()
+        val arguments =
+            args ?: navBackStack.firstOrNull { it.first.id == target.id }?.second ?: Bundle()
         bottomSheet.close()
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false
@@ -1157,7 +1213,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
 
-        d("NavDebug", "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
+        d("NavDebug",
+            "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
 
         val fragment = target.fragmentClass?.java?.newInstance() ?: return false
         fragment.arguments = arguments
@@ -1166,18 +1223,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (navTarget == target) {
             // just reload the current target
             transaction.setCustomAnimations(
-                    R.anim.fade_in,
-                    R.anim.fade_out
+                R.anim.fade_in,
+                R.anim.fade_out
             )
-        }
-        else {
+        } else {
             navBackStack.keys().lastIndexOf(target).let {
                 if (it == -1)
                     return@let target
                 // pop the back stack up until that target
                 transaction.setCustomAnimations(
-                        R.anim.task_close_enter,
-                        R.anim.task_close_exit
+                    R.anim.task_close_enter,
+                    R.anim.task_close_exit
                 )
 
                 // navigating grades_add -> grades
@@ -1200,8 +1256,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 // target is neither current nor in the back stack
                 // so navigate to it
                 transaction.setCustomAnimations(
-                        R.anim.task_open_enter,
-                        R.anim.task_open_exit
+                    R.anim.task_open_enter,
+                    R.anim.task_open_exit
                 )
                 navBackStack.add(navTarget to navArguments)
                 navTarget = target
@@ -1218,7 +1274,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
-        d("NavDebug", "Current fragment ${navTarget.fragmentClass?.java?.simpleName}, pop to home ${navTarget.popToHome}, back stack:")
+        d("NavDebug",
+            "Current fragment ${navTarget.fragmentClass?.java?.simpleName}, pop to home ${navTarget.popToHome}, back stack:")
         navBackStack.forEachIndexed { index, target2 ->
             d("NavDebug", " - $index: ${target2.first.fragmentClass?.java?.simpleName}")
         }
@@ -1229,16 +1286,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         // TASK DESCRIPTION
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+
             @Suppress("deprecation")
             val taskDesc = ActivityManager.TaskDescription(
-                    if (target.id == HOME_ID) getString(R.string.app_name) else getString(R.string.app_task_format, getString(target.name)),
-                    bm,
-                    getColorFromAttr(this, R.attr.colorSurface)
+                if (target.id == HOME_ID) getString(R.string.app_name) else getString(R.string.app_task_format,
+                    getString(target.name)),
+                bm,
+                getColorFromAttr(this, R.attr.colorSurface)
             )
             setTaskDescription(taskDesc)
         }
         return true
     }
+
     fun reloadTarget() = loadTarget(navTarget)
 
     private fun popBackStack(skipBeforeNavigate: Boolean = false): Boolean {
@@ -1261,6 +1321,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         return true
     }
+
     fun navigateUp(skipBeforeNavigate: Boolean = false) {
         if (!popBackStack(skipBeforeNavigate)) {
             super.onBackPressed()
@@ -1361,7 +1422,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (target.popToHome)
                 targetPopToHomeList += target.id
 
-            if (target.isInDrawer && (target.isStatic || supportedFragments.isEmpty() || supportedFragments.contains(target.id))) {
+            if (target.isInDrawer && (target.isStatic || supportedFragments.isEmpty() || supportedFragments.contains(
+                    target.id))
+            ) {
                 drawerItems += createDrawerItem(target)
                 if (target.id == 1) {
                     targetHomeId = target.id
@@ -1394,7 +1457,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override fun onBackPressed() {
         if (!b.navView.onBackPressed()) {
             if (App.config.ui.openDrawerOnBackPressed && ((navTarget.popTo == null && navTarget.popToHome)
-                    || navTarget.id == DRAWER_ITEM_HOME)) {
+                        || navTarget.id == DRAWER_ITEM_HOME)
+            ) {
                 b.navView.drawer.toggle()
             } else {
                 navigateUp()
@@ -1403,6 +1467,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun error(error: ApiError) = errorSnackbar.addError(error).show()
-    fun snackbar(text: String, actionText: String? = null, onClick: (() -> Unit)? = null) = mainSnackbar.snackbar(text, actionText, onClick)
+    fun snackbar(text: String, actionText: String? = null, onClick: (() -> Unit)? = null) =
+        mainSnackbar.snackbar(text, actionText, onClick)
+
     fun snackbarDismiss() = mainSnackbar.dismiss()
 }
