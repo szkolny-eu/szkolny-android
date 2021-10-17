@@ -1425,8 +1425,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (target.popToHome)
                 targetPopToHomeList += target.id
 
-            if (target.isInDrawer && (target.isStatic || supportedFragments.isEmpty() || supportedFragments.contains(
-                    target.id))
+            if (target.isInDrawer && (
+                    target.isStatic
+                    || supportedFragments.isEmpty()
+                    || supportedFragments.contains(target.id))
             ) {
                 drawerItems += createDrawerItem(target)
                 if (target.id == 1) {
