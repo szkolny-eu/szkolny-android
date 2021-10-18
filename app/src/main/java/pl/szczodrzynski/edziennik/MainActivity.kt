@@ -1172,7 +1172,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (loadId == -1) {
             loadId = DRAWER_ITEM_HOME
         }
-        val targets = navTargetList.flatMap { it.subItems?.toList() ?: emptyList() }.plus(navTargetList)
+        val targets = navTargetList
+            .flatMap { it.subItems?.toList() ?: emptyList() }
+            .plus(navTargetList)
         val target = targets.firstOrNull { it.id == loadId }
         return when {
             target == null -> {
