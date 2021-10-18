@@ -44,6 +44,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.mikepenz.iconics.typeface.IIcon
+import com.mikepenz.materialdrawer.holder.StringHolder
 import im.wangchao.mhttp.Response
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -59,6 +61,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.entity.Team
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.navlib.ImageHolder
 import java.io.InterruptedIOException
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -862,6 +865,8 @@ fun @receiver:DrawableRes Int.resolveDrawable(context: Context): Drawable {
     }
 }
 
+fun @receiver:StringRes Int.resolveString(context: Context) = context.getString(this)
+
 fun View.findParentById(targetId: Int): View? {
     if (id == targetId) {
         return this
@@ -1371,3 +1376,7 @@ fun CharSequence.getWordBounds(position: Int, onlyInWord: Boolean = false): Pair
 }
 
 infix fun Int.hasSet(what: Int) = this and what == what
+
+fun Int.toStringHolder() = StringHolder(this)
+fun CharSequence.toStringHolder() = StringHolder(this)
+fun IIcon.toImageHolder() = ImageHolder(this)
