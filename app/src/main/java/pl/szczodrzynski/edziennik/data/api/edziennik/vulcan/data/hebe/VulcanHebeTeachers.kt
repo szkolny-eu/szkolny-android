@@ -33,8 +33,9 @@ class VulcanHebeTeachers(
                 val displayName = person.getString("DisplayName")
                 val subjectName = person.getString("Description") ?: return@apiGetList
 
-                val teacher =
-                    data.getTeacherByFirstLast(name?.plus(" ")?.plus(surname) ?: displayName ?: return@forEach)
+                val teacher = data.getTeacherByFirstLast(
+                    name?.plus(" ")?.plus(surname) ?: displayName ?: return@forEach
+                )
 
                 teacher.addSubject(data.getSubject(null, subjectName).id)
             }
