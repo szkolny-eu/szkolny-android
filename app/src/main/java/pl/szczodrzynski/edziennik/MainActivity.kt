@@ -1172,20 +1172,23 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (loadId == -1) {
             loadId = DRAWER_ITEM_HOME
         }
-        var target = navTargetList.firstOrNull { it.id == loadId }
-        if (target == null) {
-            navTargetList.forEach {
-                target = navTargetList.firstOrNull { it.id == loadId }
+        val targets = navTargetList.flatMap { it.subItems?.toList() ?: emptyList() }.plus(navTargetList)
+        val target = targets.firstOrNull { it.id == loadId }
+        return when {
+            target == null -> {
+                Toast.makeText(
+                    this,
+                    getString(R.string.error_invalid_fragment, id),
+                    Toast.LENGTH_LONG,
+                ).show()
+                loadTarget(navTargetList.first(), arguments, skipBeforeNavigate)
             }
-        }
-        return if (target == null) {
-            Toast.makeText(this, getString(R.string.error_invalid_fragment, id), Toast.LENGTH_LONG)
-                .show()
-            loadTarget(navTargetList.first(), arguments, skipBeforeNavigate)
-        } else if (target!!.fragmentClass != null) {
-            loadTarget(target!!, arguments, skipBeforeNavigate)
-        } else {
-            false
+            target.fragmentClass != null -> {
+                loadTarget(target, arguments, skipBeforeNavigate)
+            }
+            else -> {
+                false
+            }
         }
     }
 
