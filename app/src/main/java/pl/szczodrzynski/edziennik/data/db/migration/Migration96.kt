@@ -10,6 +10,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 class Migration96 : Migration(95, 96) {
     override fun migrate(database: SupportSQLiteDatabase) {
         // teachers - associated subjects list
-        database.execSQL("ALTER TABLE teachers ADD COLUMN teacherSubjects TEXT NOT NULL;")
+        database.execSQL("ALTER TABLE teachers ADD COLUMN teacherSubjects TEXT NOT NULL DEFAULT [];")
     }
 }
