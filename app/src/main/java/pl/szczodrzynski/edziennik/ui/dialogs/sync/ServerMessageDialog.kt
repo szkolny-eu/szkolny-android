@@ -4,48 +4,24 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.sync
 
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import kotlin.coroutines.CoroutineContext
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
 
 class ServerMessageDialog(
-        val activity: AppCompatActivity,
-        val title: String,
-        val message: CharSequence,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "ServerMessageDialog"
-    }
+    activity: AppCompatActivity,
+    private val titleText: String,
+    private val messageText: CharSequence,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BaseDialog(activity, onShowListener, onDismissListener) {
 
-    private lateinit var app: App
-    private lateinit var dialog: AlertDialog
+    override val TAG = "ServerMessageDialog"
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getTitle() = titleText
+    override fun getTitleRes(): Int? = null
+    override fun getMessage() = messageText
+    override fun getPositiveButtonText() = R.string.close
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(R.string.close) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                }
-                .show()
-    }}
+    override suspend fun onShow() = Unit
 }

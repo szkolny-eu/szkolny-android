@@ -77,14 +77,14 @@ class AgendaFragment : Fragment(), CoroutineScope {
                                 activity,
                                 app.profileId,
                                 defaultDate = AgendaFragmentDefault.selectedDate
-                            )
+                            ).show()
                         },
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_agenda_config)
                         .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                         .withOnClickListener {
                             activity.bottomSheet.close()
-                            AgendaConfigDialog(activity, true, null, null)
+                            AgendaConfigDialog(activity, true, null, null).show()
                         },
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_agenda_change_view)
@@ -124,7 +124,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
                 activity,
                 app.profileId,
                 defaultDate = AgendaFragmentDefault.selectedDate
-            )
+            ).show()
         }
 
         activity.gainAttention()
@@ -188,7 +188,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
                 unreadEventDates.remove(date.value)
             }
 
-            DayDialog(activity, app.profileId, date)
+            DayDialog(activity, app.profileId, date).show()
         }}
 
         b.progressBar.visibility = View.GONE

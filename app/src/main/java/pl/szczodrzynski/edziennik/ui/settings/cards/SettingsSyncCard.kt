@@ -108,7 +108,7 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
                     item.onCheckedChangedAction.onCheckedChanged(item, true)
                     if (configGlobal.sync.enabled)
                         util.refresh()
-                })
+                }).show()
             }
         ).also {
             it.subTextChecked = activity.getSyncInterval(configGlobal.sync.interval)
@@ -124,7 +124,7 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
             subText = R.string.settings_profile_notifications_subtext,
             icon = CommunityMaterial.Icon2.cmd_filter_outline
         ) {
-            NotificationFilterDialog(activity)
+            NotificationFilterDialog(activity).show()
         },
 
         util.createPropertyActionItem(

@@ -65,7 +65,7 @@ class HomeworkFragment : Fragment(), CoroutineScope {
                 .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
                 .withOnClickListener(View.OnClickListener {
                     activity.bottomSheet.close()
-                    EventManualDialog(activity, App.profileId, defaultType = Event.TYPE_HOMEWORK)
+                    EventManualDialog(activity, App.profileId, defaultType = Event.TYPE_HOMEWORK).show()
                 }),
         BottomSheetSeparatorItem(true),
         BottomSheetPrimaryItem(true)
@@ -108,7 +108,7 @@ class HomeworkFragment : Fragment(), CoroutineScope {
             }
 
             setFabOnClickListener(View.OnClickListener {
-                EventManualDialog(activity, App.profileId, defaultType = Event.TYPE_HOMEWORK)
+                EventManualDialog(activity, App.profileId, defaultType = Event.TYPE_HOMEWORK).show()
             })
         }
 

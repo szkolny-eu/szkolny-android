@@ -141,7 +141,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
                 .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                 .withOnClickListener {
                     activity.bottomSheet.close()
-                    MessagesConfigDialog(activity, false, null, null)
+                    MessagesConfigDialog(activity, false, null, null).show()
                 }
         )
 

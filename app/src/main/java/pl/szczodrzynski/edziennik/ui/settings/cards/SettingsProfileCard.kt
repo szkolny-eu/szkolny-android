@@ -31,7 +31,7 @@ class SettingsProfileCard(util: SettingsUtil) : SettingsCard(util) {
             card.items.remove(item)
             card.items.add(index, getProfileItem())
             util.refresh()
-        })
+        }).show()
     }
 
     override fun getItems() = listOf(

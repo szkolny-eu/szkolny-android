@@ -87,7 +87,7 @@ class HomeDebugCard(
 
         b.librusCaptchaButton.onClick {
             //app.startActivity(Intent(activity, LoginLibrusCaptchaActivity::class.java))
-            LibrusCaptchaDialog(activity, onSuccess = {}, onFailure = {})
+            LibrusCaptchaDialog(activity, onSuccess = {}, onFailure = {}).show()
         }
 
         b.getLogs.onClick {

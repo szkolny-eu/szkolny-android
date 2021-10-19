@@ -54,7 +54,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             subText = Themes.getThemeNameRes(),
             icon = CommunityMaterial.Icon3.cmd_palette_outline
         ) {
-            ThemeChooserDialog(activity)
+            ThemeChooserDialog(activity).show()
         },
 
         util.createActionItem(
@@ -62,7 +62,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             subText = R.string.settings_about_language_subtext,
             icon = CommunityMaterial.Icon3.cmd_translate
         ) {
-            AppLanguageDialog(activity)
+            AppLanguageDialog(activity).show()
         },
 
         util.createPropertyItem(
@@ -81,7 +81,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
             text = R.string.settings_theme_mini_drawer_buttons_text,
             icon = CommunityMaterial.Icon2.cmd_format_list_checks
         ) {
-            MiniMenuConfigDialog(activity)
+            MiniMenuConfigDialog(activity).show()
         },
 
         util.createActionItem(

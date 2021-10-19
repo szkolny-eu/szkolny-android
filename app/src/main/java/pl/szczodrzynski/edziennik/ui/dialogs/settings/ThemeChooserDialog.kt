@@ -4,62 +4,38 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
 import pl.szczodrzynski.edziennik.utils.Themes
-import kotlin.coroutines.CoroutineContext
 
 class ThemeChooserDialog(
-    val activity: AppCompatActivity,
-    val onShowListener: ((tag: String) -> Unit)? = null,
-    val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "ThemeChooserDialog"
+    activity: AppCompatActivity,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BaseDialog(activity, onShowListener, onDismissListener) {
+
+    override val TAG = "ThemeChooserDialog"
+
+    override fun getTitleRes() = R.string.settings_theme_theme_text
+    override fun getPositiveButtonText() = R.string.ok
+    override fun getNegativeButtonText() = R.string.cancel
+
+    override fun getSingleChoiceItems(): Map<CharSequence, Any> = Themes.themeList.associate {
+        activity.getString(it.name) to it.id
     }
 
-    private lateinit var app: App
-    private lateinit var dialog: AlertDialog
+    override fun getDefaultSelectedItem() = Themes.theme.id
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override suspend fun onShow() = Unit
 
-    // local variables go here
-
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-
-        dialog = MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.settings_theme_theme_text)
-            .setSingleChoiceItems(
-                Themes.getThemeNames(activity).toTypedArray(),
-                Themes.themeIndex,
-                null
-            )
-            .setPositiveButton(R.string.ok) { _, _ ->
-                val which = dialog.listView.checkedItemPosition
-
-                val theme = Themes.themeList[which]
-                if (app.config.ui.theme == theme.id)
-                    return@setPositiveButton
-                app.config.ui.theme = theme.id
-                Themes.themeIndex = which
-                activity.recreate()
-            }
-            .setNegativeButton(R.string.cancel, null)
-            .setOnDismissListener {
-                onDismissListener?.invoke(TAG)
-            }
-            .show()
-    }}
+    override suspend fun onPositiveClick(): Boolean {
+        val themeId = getSingleSelection() as? Int ?: return DISMISS
+        if (app.config.ui.theme != themeId) {
+            app.config.ui.theme = themeId
+            Themes.themeInt = themeId
+            activity.recreate()
+        }
+        return DISMISS
+    }
 }

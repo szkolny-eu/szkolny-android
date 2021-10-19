@@ -4,59 +4,42 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
-import androidx.appcompat.app.AlertDialog
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.MessagesConfigDialogBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
 
 class MessagesConfigDialog(
-    private val activity: AppCompatActivity,
-    private val reloadOnDismiss: Boolean = true,
-    private val onShowListener: ((tag: String) -> Unit)? = null,
-    private val onDismissListener: ((tag: String) -> Unit)? = null
+    activity: AppCompatActivity,
+    reloadOnDismiss: Boolean = true,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : ConfigDialog<MessagesConfigDialogBinding>(
+    activity,
+    reloadOnDismiss,
+    onShowListener,
+    onDismissListener,
 ) {
-    companion object {
-        const val TAG = "MessagesConfigDialog"
-    }
 
-    private val app by lazy { activity.application as App }
-    private val config by lazy { app.config.ui }
-    private val profileConfig by lazy { app.config.forProfile().ui }
+    override val TAG = "MessagesConfigDialog"
 
-    private lateinit var b: MessagesConfigDialogBinding
-    private lateinit var dialog: AlertDialog
+    override fun getTitleRes() = R.string.menu_messages_config
+    override fun inflate(layoutInflater: LayoutInflater) =
+        MessagesConfigDialogBinding.inflate(layoutInflater)
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        b = MessagesConfigDialogBinding.inflate(activity.layoutInflater)
-        onShowListener?.invoke(TAG)
-        dialog = MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.menu_messages_config)
-            .setView(b.root)
-            .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
-            .setOnDismissListener {
-                saveConfig()
-                onDismissListener?.invoke(TAG)
-                if (reloadOnDismiss) (activity as? MainActivity)?.reloadTarget()
-            }
-            .create()
-        loadConfig()
-        dialog.show()
-    }}
+    private val profileConfig by lazy { app.config.getFor(app.profileId).ui }
 
-    private fun loadConfig() {
+    override suspend fun loadConfig() {
         b.config = profileConfig
 
         b.greetingText.setText(
-            profileConfig.messagesGreetingText ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
+            profileConfig.messagesGreetingText
+                ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
         )
     }
 
-    private fun saveConfig() {
+    override suspend fun saveConfig() {
         val greetingText = b.greetingText.text?.toString()?.trim()
         if (greetingText.isNullOrEmpty())
             profileConfig.messagesGreetingText = null

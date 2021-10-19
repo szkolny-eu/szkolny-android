@@ -4,63 +4,77 @@
 
 package pl.szczodrzynski.edziennik.ui.template
 
-import androidx.appcompat.app.AlertDialog
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogTemplateBinding
-import pl.szczodrzynski.edziennik.ext.onClick
-import kotlin.coroutines.CoroutineContext
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.base.ViewDialog
 
+/**
+ * This class represents a sample dialog using the new style.
+ *
+ * A dialog may subclass the [BaseDialog], [ViewDialog] or [BindingDialog].
+ *
+ * Fields and methods have the preferred order which should be used when writing new code.
+ * The position of the first occurrence of duplicated methods should be used.
+ * Multi-line methods should be followed by a blank line, one-liners may be just joined together.
+ *
+ * Constructor properties should be private.
+ *
+ * [onShow], when not used, should be placed just before the local variables, as a one-liner.
+ * All other multi-line methods go below the local variables part.
+ */
 class TemplateDialog(
-        val activity: AppCompatActivity,
-        val onActionPerformed: (() -> Unit)? = null,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "TemplateDialog"
-    }
+    activity: AppCompatActivity,
+    private val onActionPerformed: (() -> Unit)? = null,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<DialogTemplateBinding>(activity, onShowListener, onDismissListener) {
 
-    private lateinit var app: App
-    private lateinit var b: DialogTemplateBinding
-    private lateinit var dialog: AlertDialog
+    override val TAG = "TemplateDialog"
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getTitle(): CharSequence = "Template"
+    override fun getTitleRes() = R.string.menu_template
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogTemplateBinding.inflate(layoutInflater)
+
+    // override fun getTitle(): CharSequence = "Template"
+    // override fun getTitleRes() = R.string.menu_template
+    // override fun getMessage() = ""
+    // override fun getMessageRes() = R.string.edziennik_progress_login_template_api
+    // override fun getMessageFormat() =
+    //     R.string.card_update_text_format to listOf(
+    //         BuildConfig.VERSION_BASE,
+    //         "5.0",
+    //     )
+
+    // override fun getTitleRes() = R.string.menu_template
+    override fun isCancelable() = true
+    override fun getPositiveButtonText() = R.string.ok
+    override fun getNeutralButtonText() = R.string.reset
+    override fun getNegativeButtonText() = R.string.cancel
+
+    // getSingleChoiceItem / getMultiChoiceItems
+    // getDefaultSelectedItem / getDefaultSelectedItems
+
+    // to convert a map of StringIDs to CharSequences
+    // .mapKeys { (resId, _) -> activity.getString(resId) }
+
+    override suspend fun onShow() = Unit
 
     // local variables go here
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-        b = DialogTemplateBinding.inflate(activity.layoutInflater)
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setView(b.root)
-                .setPositiveButton(R.string.close) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setNeutralButton(R.string.add, null)
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                }
-                .show()
+    // onPositiveClick
+    // onNeutralClick
+    // onNegativeClick
 
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL)?.onClick {
-            // do custom action on neutral button click
-            // (does not dismiss the dialog)
-        }
+    // onSingleSelectionChanged
+    // onMultiSelectionChanged
 
-        b.clickMe.onClick {
-            onActionPerformed?.invoke()
-            dialog.dismiss()
-        }
-    }}
+    // getRootView
+    // onBeforeShow
+    // onShow
+    // onDismiss
 }

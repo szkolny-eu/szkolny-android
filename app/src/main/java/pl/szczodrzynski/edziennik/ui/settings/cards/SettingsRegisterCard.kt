@@ -59,28 +59,28 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
             text = R.string.menu_agenda_config,
             icon = CommunityMaterial.Icon.cmd_calendar_outline
         ) {
-            AgendaConfigDialog(activity, reloadOnDismiss = false)
+            AgendaConfigDialog(activity, reloadOnDismiss = false).show()
         },
 
         util.createActionItem(
             text = R.string.menu_grades_config,
             icon = CommunityMaterial.Icon3.cmd_numeric_5_box_outline
         ) {
-            GradesConfigDialog(activity, reloadOnDismiss = false)
+            GradesConfigDialog(activity, reloadOnDismiss = false).show()
         },
 
         util.createActionItem(
             text = R.string.menu_messages_config,
             icon = CommunityMaterial.Icon.cmd_calendar_outline
         ) {
-            MessagesConfigDialog(activity, reloadOnDismiss = false)
+            MessagesConfigDialog(activity, reloadOnDismiss = false).show()
         },
 
         util.createActionItem(
             text = R.string.menu_attendance_config,
             icon = CommunityMaterial.Icon.cmd_calendar_remove_outline
         ) {
-            AttendanceConfigDialog(activity, reloadOnDismiss = false)
+            AttendanceConfigDialog(activity, reloadOnDismiss = false).show()
         },
 
         util.createPropertyItem(
@@ -126,7 +126,7 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
                 BellSyncConfigDialog(activity, onChangeListener = {
                     it.subText = getBellSync()
                     util.refresh()
-                })
+                }).show()
             }
         ).also {
             it.subText = getBellSync()

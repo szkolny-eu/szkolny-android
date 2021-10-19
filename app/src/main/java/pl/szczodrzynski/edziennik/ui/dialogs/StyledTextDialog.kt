@@ -7,59 +7,45 @@ package pl.szczodrzynski.edziennik.ui.dialogs
 import android.content.res.ColorStateList
 import android.text.Editable
 import android.text.SpannableStringBuilder
-import androidx.appcompat.app.AlertDialog
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.StyledTextDialogBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.SIMPLE
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfig
 
 class StyledTextDialog(
-    val activity: AppCompatActivity,
+    activity: AppCompatActivity,
     val initialText: Editable?,
     val onSuccess: (text: Editable) -> Unit,
-    val onShowListener: ((tag: String) -> Unit)? = null,
-    val onDismissListener: ((tag: String) -> Unit)? = null
-) {
-    companion object {
-        private const val TAG = "StyledTextDialog"
-    }
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<StyledTextDialogBinding>(activity, onShowListener, onDismissListener) {
 
-    private lateinit var app: App
-    private lateinit var b: StyledTextDialogBinding
-    private lateinit var dialog: AlertDialog
+    override val TAG = "StyledTextDialog"
+
     private lateinit var config: StylingConfig
 
     private val manager
         get() = app.textStylingManager
 
-    init {
-        show()
+    override fun getTitleRes() = R.string.styled_text_dialog_title
+    override fun inflate(layoutInflater: LayoutInflater) =
+        StyledTextDialogBinding.inflate(layoutInflater)
+
+    override fun getPositiveButtonText() = R.string.save
+    override fun getNeutralButtonText() = R.string.cancel
+
+    override suspend fun onPositiveClick(): Boolean {
+        onSuccess(b.editText.text ?: SpannableStringBuilder(""))
+        return DISMISS
     }
 
-    fun show() {
-        if (activity.isFinishing)
-            return
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-        b = StyledTextDialogBinding.inflate(activity.layoutInflater)
-
-        dialog = MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.styled_text_dialog_title)
-            .setView(b.root)
-            .setPositiveButton(R.string.save) { _, _ ->
-                onSuccess(b.editText.text ?: SpannableStringBuilder(""))
-            }
-            .setNeutralButton(R.string.cancel, null)
-            .setOnDismissListener {
-                onDismissListener?.invoke(TAG)
-            }
-            .show()
-
+    override suspend fun onShow() {
         config = StylingConfig(
             editText = b.editText,
             fontStyleGroup = b.fontStyle.styles,

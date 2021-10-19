@@ -72,7 +72,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
         }
 
         b.clearProfile.onClick {
-            ProfileRemoveDialog(activity, App.profileId, "FAKE", noProfileRemoval = true)
+            ProfileRemoveDialog(activity, App.profileId, "FAKE", noProfileRemoval = true).show()
         }
 
         b.removeHomework.onClick {

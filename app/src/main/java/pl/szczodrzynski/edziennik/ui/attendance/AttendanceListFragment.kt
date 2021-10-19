@@ -96,7 +96,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
         }})
 
         adapter.onAttendanceClick = {
-            AttendanceDetailsDialog(activity, it)
+            AttendanceDetailsDialog(activity, it).show()
         }
     }; return true}
 

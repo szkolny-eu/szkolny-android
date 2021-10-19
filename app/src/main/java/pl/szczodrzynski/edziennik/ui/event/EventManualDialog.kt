@@ -4,10 +4,10 @@
 
 package pl.szczodrzynski.edziennik.ui.event
 
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AlertDialog.BUTTON_NEUTRAL
 import androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -32,6 +32,7 @@ import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.StyledTextDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.views.TimeDropdown.Companion.DISPLAY_LESSONS
 import pl.szczodrzynski.edziennik.utils.Anim
@@ -40,32 +41,32 @@ import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.SIM
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfigBase
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
-import kotlin.coroutines.CoroutineContext
 
+// TODO: 2021-10-19 rewrite to the new dialog style
 class EventManualDialog(
-        val activity: AppCompatActivity,
-        val profileId: Int,
-        val defaultLesson: LessonFull? = null,
-        val defaultDate: Date? = null,
-        val defaultTime: Time? = null,
-        val defaultType: Long? = null,
-        val editingEvent: EventFull? = null,
-        val onSaveListener: ((event: EventFull?) -> Unit)? = null,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
+    activity: AppCompatActivity,
+    private val profileId: Int,
+    private val defaultLesson: LessonFull? = null,
+    private val defaultDate: Date? = null,
+    private val defaultTime: Time? = null,
+    private val defaultType: Long? = null,
+    private val editingEvent: EventFull? = null,
+    private val onSaveListener: ((event: EventFull?) -> Unit)? = null,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<DialogEventManualV2Binding>(activity, onShowListener, onDismissListener) {
 
-    companion object {
-        private const val TAG = "EventManualDialog"
-    }
+    override val TAG = "EventManualDialog"
 
-    private val job: Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getTitleRes() = R.string.dialog_event_manual_title
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogEventManualV2Binding.inflate(layoutInflater)
 
-    private val app by lazy { activity.application as App }
-    private lateinit var b: DialogEventManualV2Binding
-    private lateinit var dialog: AlertDialog
+    override fun isCancelable() = false
+    override fun getPositiveButtonText() = R.string.save
+    override fun getNeutralButtonText() = if (editingEvent != null) R.string.remove else null
+    override fun getNegativeButtonText() = R.string.cancel
+
     private lateinit var profile: Profile
     private lateinit var stylingConfig: StylingConfigBase
 
@@ -86,46 +87,28 @@ class EventManualDialog(
 
     private var progressDialog: AlertDialog? = null
 
-    init { launch {
-        if (activity.isFinishing)
-            return@launch
-        onShowListener?.invoke(TAG)
+    override suspend fun onPositiveClick(): Boolean {
+        saveEvent()
+        return NO_DISMISS
+    }
+
+    override suspend fun onNeutralClick(): Boolean {
+        showRemoveEventDialog()
+        return NO_DISMISS
+    }
+
+    override suspend fun onBeforeShow(): Boolean {
         EventBus.getDefault().register(this@EventManualDialog)
-        b = DialogEventManualV2Binding.inflate(activity.layoutInflater)
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.dialog_event_manual_title)
-                .setView(b.root)
-                .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-                .setPositiveButton(R.string.save, null)
-                .apply {
-                    if (editingEvent != null) {
-                        setNeutralButton(R.string.remove, null)
-                    }
-                }
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                    EventBus.getDefault().unregister(this@EventManualDialog)
-                    enqueuedWeekDialog?.dismiss()
-                    progressDialog?.dismiss()
-                }
-                .setCancelable(false)
-                .create()
-                .apply {
-                    setOnShowListener { dialog ->
-                        val positiveButton = (dialog as AlertDialog).getButton(BUTTON_POSITIVE)
-                        positiveButton?.setOnClickListener {
-                            saveEvent()
-                        }
+        return true
+    }
 
-                        val neutralButton = dialog.getButton(BUTTON_NEUTRAL)
-                        neutralButton?.setOnClickListener {
-                            showRemoveEventDialog()
-                        }
-                    }
+    override fun onDismiss() {
+        EventBus.getDefault().unregister(this@EventManualDialog)
+        enqueuedWeekDialog?.dismiss()
+        progressDialog?.dismiss()
+    }
 
-                    show()
-                }
-
+    override suspend fun onShow() {
         b.shareSwitch.isChecked = editingShared
         b.shareSwitch.isEnabled = !editingShared || (editingShared && editingOwn)
 
@@ -152,7 +135,7 @@ class EventManualDialog(
                 },
                 onShowListener,
                 onDismissListener
-            )
+            ).show()
         }
 
         stylingConfig = StylingConfigBase(editText = b.topic, htmlMode = SIMPLE)
@@ -163,7 +146,7 @@ class EventManualDialog(
         }
 
         loadLists()
-    }}
+    }
 
     private fun updateShareText(checked: Boolean = b.shareSwitch.isChecked) {
         b.shareDetails.visibility = if (checked || editingShared)
@@ -259,13 +242,13 @@ class EventManualDialog(
         progressDialog?.dismiss()
     }
 
-    private fun loadLists() = launch {
+    private suspend fun loadLists() {
         val profile = withContext(Dispatchers.Default) {
             app.db.profileDao().getByIdNow(profileId)
         }
         if (profile == null) {
             Toast.makeText(activity, R.string.event_manual_no_profile, Toast.LENGTH_SHORT).show()
-            return@launch
+            return
         }
         this@EventManualDialog.profile = profile
 
@@ -611,7 +594,7 @@ class EventManualDialog(
             it.teamName = b.teamDropdown.getSelected()?.name
             it.typeName = b.typeDropdown.getSelected()?.name
         })
-        dialog.dismiss()
+        dismiss()
         Toast.makeText(activity, R.string.saved, Toast.LENGTH_SHORT).show()
     }
     private fun finishRemoving() {
@@ -624,7 +607,7 @@ class EventManualDialog(
 
         removeEventDialog?.dismiss()
         onSaveListener?.invoke(null)
-        dialog.dismiss()
+        dismiss()
         Toast.makeText(activity, R.string.removed, Toast.LENGTH_SHORT).show()
     }
 }
