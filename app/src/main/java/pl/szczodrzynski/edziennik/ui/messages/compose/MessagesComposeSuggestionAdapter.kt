@@ -30,7 +30,7 @@ class MessagesComposeSuggestionAdapter(
     private val comparator by lazy { Comparator { o1: Teacher, o2: Teacher -> o1.recipientWeight - o2.recipientWeight } }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val listItem = convertView ?: LayoutInflater.from(context).inflate(R.layout.messages_compose_suggestion_item, parent, false)
+        val listItem = convertView ?: LayoutInflater.from(context).inflate(R.layout.teacher_item, parent, false)
 
         val teacher = teacherList[position]
         val name = listItem.findViewById<TextView>(R.id.name)

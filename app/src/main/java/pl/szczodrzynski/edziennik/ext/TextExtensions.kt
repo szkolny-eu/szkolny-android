@@ -16,6 +16,8 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import androidx.annotation.PluralsRes
+import androidx.annotation.StringRes
+import com.mikepenz.materialdrawer.holder.StringHolder
 
 fun CharSequence?.isNotNullNorEmpty(): Boolean {
     return this != null && this.isNotEmpty()
@@ -336,3 +338,8 @@ fun CharSequence.getWordBounds(position: Int, onlyInWord: Boolean = false): Pair
         return null
     return rangeStart to rangeEnd
 }
+
+fun Int.toStringHolder() = StringHolder(this)
+fun CharSequence.toStringHolder() = StringHolder(this)
+
+fun @receiver:StringRes Int.resolveString(context: Context) = context.getString(this)
