@@ -52,7 +52,7 @@ class TeachersListFragment : Fragment(), CoroutineScope {
             if (!isAdded) return@Observer
 
             // load & configure the adapter
-            adapter.items = items
+            adapter.items = items.sortedByDescending { it.subjects.isNotEmpty() }
             if (items.isNotNullNorEmpty() && b.list.adapter == null) {
                 b.list.adapter = adapter
                 b.list.apply {

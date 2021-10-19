@@ -4,17 +4,28 @@
 
 package pl.szczodrzynski.edziennik.ui.teachers
 
+import android.content.Intent
+import android.graphics.Color
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.colorInt
+import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.TeacherItemBinding
-import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils.getProfileImage
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import kotlin.coroutines.CoroutineContext
@@ -54,12 +65,26 @@ class TeachersAdapter(
             role = role.plus(": ").plus(subjects.joinToString())
         }
         b.type.text = role
+        b.controls.isVisible = true
+        b.copy.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon.cmd_clipboard_text_multiple_outline).apply {sizeDp = 30})
+        b.message.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon.cmd_email_plus_outline).apply {sizeDp = 30})
 
-        item.fullName.let { name ->
-            BetterLink.attach(
-                b.name,
-                teachers = mapOf(item.id to name)
+        b.message.onClick {
+            val intent = Intent(
+                Intent.ACTION_MAIN,
+                "fragmentId" to MainActivity.TARGET_MESSAGES_COMPOSE,
+                "messageRecipientId" to item.id
             )
+            activity.sendBroadcast(intent)
+        }
+
+        b.copy.onClick {
+            item.fullName.copyToClipboard(activity)
+            Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show()
+            b.copy.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon.cmd_clipboard_check_multiple_outline).apply {sizeDp = 30})
+            Handler().postDelayed({
+                b.copy.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon.cmd_clipboard_text_multiple_outline).apply {sizeDp = 30})
+            }, 5000)
         }
     }
 
