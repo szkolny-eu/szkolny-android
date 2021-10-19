@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_EVENT_TYPES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusApiEventTypes(override val data: DataLibrus,
                           override val lastSync: Long?,
@@ -30,7 +31,7 @@ class LibrusApiEventTypes(override val data: DataLibrus,
                 data.eventTypes.put(id, EventType(profileId, id, name, color))
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_EVENT_TYPES, 4*DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_EVENT_TYPES, 4* DAY)
             onSuccess(ENDPOINT_LIBRUS_API_EVENT_TYPES)
         }
     }

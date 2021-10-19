@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.config
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.set
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.AGENDA_DEFAULT
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardModel
+import pl.szczodrzynski.edziennik.ui.home.HomeCardModel
 
 class ProfileConfigUI(private val config: ProfileConfig) {
     private var mAgendaViewType: Int? = null

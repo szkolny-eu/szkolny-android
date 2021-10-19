@@ -6,7 +6,12 @@ package pl.szczodrzynski.edziennik.data.api.szkolny.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.BuildConfig
+import pl.szczodrzynski.edziennik.ext.bodyToString
+import pl.szczodrzynski.edziennik.ext.currentTimeUnix
+import pl.szczodrzynski.edziennik.ext.hmacSHA1
+import pl.szczodrzynski.edziennik.ext.md5
 
 class SignatureInterceptor(val app: App) : Interceptor {
     companion object {

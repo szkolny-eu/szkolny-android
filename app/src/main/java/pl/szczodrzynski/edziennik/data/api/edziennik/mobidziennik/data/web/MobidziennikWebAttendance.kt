@@ -20,9 +20,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEA
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_UNKNOWN
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -131,11 +131,11 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
                 // verify the lesson count is the same as dates & entries
                 if (count != lessonDates.count() || count != entries.count())
                     return@forEach
-                ranges.forEach { range ->
+                ranges.onEach { range ->
                     val lessonDate = dateIterator.next()
                     val entry = entriesIterator.next()
                     if (range == null || entry.isBlank())
-                        return@forEach
+                        return@onEach
                     val startTime = Time.fromH_m(range[1])
 
                     range[2].split(" / ").mapNotNull {
@@ -186,7 +186,7 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
             if (entry.startsWith(symbol) && symbol.length > typeSymbol.length)
                 typeSymbol = symbol
         }
-        entry = entry.removePrefix(typeSymbol)
+        // entry = entry.removePrefix(typeSymbol)
 
         var isCustom = false
         val baseType = when (typeSymbol) {

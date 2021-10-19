@@ -43,40 +43,41 @@ import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
-import pl.szczodrzynski.edziennik.ui.dialogs.RegisterUnavailableDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.ServerMessageDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.UpdateAvailableDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.changelog.ChangelogDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.profile.ProfileConfigDialog
+import pl.szczodrzynski.edziennik.ui.agenda.AgendaFragment
+import pl.szczodrzynski.edziennik.ui.announcements.AnnouncementsFragment
+import pl.szczodrzynski.edziennik.ui.attendance.AttendanceFragment
+import pl.szczodrzynski.edziennik.ui.base.MainSnackbar
+import pl.szczodrzynski.edziennik.ui.behaviour.BehaviourFragment
+import pl.szczodrzynski.edziennik.ui.debug.DebugFragment
+import pl.szczodrzynski.edziennik.ui.debug.LabFragment
+import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
-import pl.szczodrzynski.edziennik.ui.modules.agenda.AgendaFragment
-import pl.szczodrzynski.edziennik.ui.modules.announcements.AnnouncementsFragment
-import pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceFragment
-import pl.szczodrzynski.edziennik.ui.modules.base.MainSnackbar
-import pl.szczodrzynski.edziennik.ui.modules.behaviour.BehaviourFragment
-import pl.szczodrzynski.edziennik.ui.modules.debug.DebugFragment
-import pl.szczodrzynski.edziennik.ui.modules.debug.LabFragment
-import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDetailsDialog
-import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
-import pl.szczodrzynski.edziennik.ui.modules.event.EventManualDialog
-import pl.szczodrzynski.edziennik.ui.modules.feedback.FeedbackFragment
-import pl.szczodrzynski.edziennik.ui.modules.grades.GradesListFragment
-import pl.szczodrzynski.edziennik.ui.modules.grades.editor.GradesEditorFragment
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeFragment
-import pl.szczodrzynski.edziennik.ui.modules.homework.HomeworkFragment
-import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
-import pl.szczodrzynski.edziennik.ui.modules.messages.compose.MessagesComposeFragment
-import pl.szczodrzynski.edziennik.ui.modules.messages.list.MessagesFragment
-import pl.szczodrzynski.edziennik.ui.modules.messages.single.MessageFragment
-import pl.szczodrzynski.edziennik.ui.modules.notifications.NotificationsListFragment
-import pl.szczodrzynski.edziennik.ui.modules.settings.ProfileManagerFragment
-import pl.szczodrzynski.edziennik.ui.modules.settings.SettingsFragment
-import pl.szczodrzynski.edziennik.ui.modules.teachers.TeachersListFragment
-import pl.szczodrzynski.edziennik.ui.modules.timetable.TimetableFragment
-import pl.szczodrzynski.edziennik.ui.modules.webpush.WebPushFragment
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateAvailableDialog
+import pl.szczodrzynski.edziennik.ui.error.ErrorDetailsDialog
+import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.feedback.FeedbackFragment
+import pl.szczodrzynski.edziennik.ui.grades.GradesListFragment
+import pl.szczodrzynski.edziennik.ui.grades.editor.GradesEditorFragment
+import pl.szczodrzynski.edziennik.ui.home.HomeFragment
+import pl.szczodrzynski.edziennik.ui.homework.HomeworkFragment
+import pl.szczodrzynski.edziennik.ui.login.LoginActivity
+import pl.szczodrzynski.edziennik.ui.messages.compose.MessagesComposeFragment
+import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
+import pl.szczodrzynski.edziennik.ui.messages.single.MessageFragment
+import pl.szczodrzynski.edziennik.ui.notifications.NotificationsListFragment
+import pl.szczodrzynski.edziennik.ui.settings.ProfileManagerFragment
+import pl.szczodrzynski.edziennik.ui.settings.SettingsFragment
+import pl.szczodrzynski.edziennik.ui.teachers.TeachersListFragment
+import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
+import pl.szczodrzynski.edziennik.ui.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
@@ -1212,7 +1213,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         pausedNavigationData = null
 
-        val arguments = args 
+        val arguments = args
             ?: navBackStack.firstOrNull { it.first.id == target.id }?.second
             ?: Bundle()
         bottomSheet.close()

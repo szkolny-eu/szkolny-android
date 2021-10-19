@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.szkolny
 
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.*
-import pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo
+import pl.szczodrzynski.edziennik.ui.login.LoginInfo
 import retrofit2.Call
 import retrofit2.http.*
 

@@ -33,8 +33,8 @@ import com.mikepenz.iconics.utils.IconicsDrawableExtensionsKt;
 import java.util.List;
 
 import kotlin.Unit;
-import pl.szczodrzynski.edziennik.ExtensionsKt;
 import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.ext.TextExtensionsKt;
 import pl.szczodrzynski.edziennik.utils.models.Date;
 import pl.szczodrzynski.edziennik.utils.models.ItemWidgetTimetableModel;
 import pl.szczodrzynski.edziennik.utils.models.Time;
@@ -309,17 +309,17 @@ public class WidgetTimetableFactory implements RemoteViewsService.RemoteViewsFac
 
             views.setViewVisibility(R.id.widgetTimetableOldSubjectName, View.GONE);
             if (lesson.lessonChange) {
-                views.setTextViewText(R.id.widgetTimetableSubjectName, ExtensionsKt.asItalicSpannable(lesson.subjectName));
+                views.setTextViewText(R.id.widgetTimetableSubjectName, TextExtensionsKt.asItalicSpannable(lesson.subjectName));
                 if (lesson.lessonChangeNoClassroom) {
-                    views.setTextViewText(R.id.widgetTimetableClassroomName, ExtensionsKt.asStrikethroughSpannable(lesson.classroomName));
+                    views.setTextViewText(R.id.widgetTimetableClassroomName, TextExtensionsKt.asStrikethroughSpannable(lesson.classroomName));
                 }
                 else {
-                    views.setTextViewText(R.id.widgetTimetableClassroomName, ExtensionsKt.asItalicSpannable(lesson.classroomName));
+                    views.setTextViewText(R.id.widgetTimetableClassroomName, TextExtensionsKt.asItalicSpannable(lesson.classroomName));
                 }
             }
             else if (lesson.lessonCancelled) {
-                views.setTextViewText(R.id.widgetTimetableSubjectName, ExtensionsKt.asStrikethroughSpannable(lesson.subjectName));
-                views.setTextViewText(R.id.widgetTimetableClassroomName, ExtensionsKt.asStrikethroughSpannable(lesson.classroomName));
+                views.setTextViewText(R.id.widgetTimetableSubjectName, TextExtensionsKt.asStrikethroughSpannable(lesson.subjectName));
+                views.setTextViewText(R.id.widgetTimetableClassroomName, TextExtensionsKt.asStrikethroughSpannable(lesson.classroomName));
             }
             else {
                 views.setTextViewText(R.id.widgetTimetableSubjectName, lesson.subjectName);

@@ -5,15 +5,15 @@
 package pl.szczodrzynski.edziennik.data.api.szkolny.response
 
 import pl.szczodrzynski.edziennik.BuildConfig
-import pl.szczodrzynski.edziennik.DAY
-import pl.szczodrzynski.edziennik.currentTimeUnix
+import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ext.currentTimeUnix
 
 data class RegisterAvailabilityStatus(
-        val available: Boolean,
-        val name: String?,
-        val userMessage: Message?,
-        val nextCheckAt: Long = currentTimeUnix() + 7 * DAY,
-        val minVersionCode: Int = BuildConfig.VERSION_CODE
+    val available: Boolean,
+    val name: String?,
+    val userMessage: Message?,
+    val nextCheckAt: Long = currentTimeUnix() + 7 * DAY,
+    val minVersionCode: Int = BuildConfig.VERSION_CODE
 ) {
     data class Message(
             val title: String,

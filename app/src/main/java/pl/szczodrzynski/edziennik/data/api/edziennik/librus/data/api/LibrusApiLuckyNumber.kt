@@ -4,12 +4,12 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.api
 
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_LUCKY_NUMBER
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -22,7 +22,7 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
     }
 
     init {
-        var nextSync = System.currentTimeMillis() + 2*DAY*1000
+        var nextSync = System.currentTimeMillis() + 2* DAY *1000
 
         apiGet(TAG, "LuckyNumbers") { json ->
             if (json.isJsonNull) {
@@ -41,7 +41,7 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
                     if (luckyNumberDate >= Date.getToday())
                         nextSync = luckyNumberDate.combineWith(Time(15, 0, 0))
                     else
-                        nextSync = System.currentTimeMillis() + 6*HOUR*1000
+                        nextSync = System.currentTimeMillis() + 6* HOUR *1000
 
                     data.luckyNumberList.add(luckyNumberObject)
                     data.metadataList.add(

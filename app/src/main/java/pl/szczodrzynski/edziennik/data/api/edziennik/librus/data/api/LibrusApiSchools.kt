@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_SCHOOLS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
 
@@ -29,7 +30,7 @@ class LibrusApiSchools(override val data: DataLibrus,
             // create the school's short name using first letters of each long name's word
             // append the town name and save to student data
             val schoolNameShort = schoolNameLong?.firstLettersName
-            val schoolTown = school?.getString("Town")?.toLowerCase(Locale.getDefault())
+            val schoolTown = school?.getString("Town")?.lowercase()
             data.schoolName = schoolId.toString() + schoolNameShort + "_" + schoolTown
 
             school?.getJsonArray("LessonsRange")?.let { ranges ->

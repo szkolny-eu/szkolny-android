@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia
 
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.HOUR
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.data.api.POST
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
@@ -14,8 +13,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusSynergia
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.ext.HOUR
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusSynergiaHomework(override val data: DataLibrus,
@@ -42,7 +42,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
             doc.select("table.myHomeworkTable > tbody").firstOrNull()?.also { homeworkTable ->
                 val homeworkElements = homeworkTable.children()
 
-                homeworkElements.forEachIndexed { i, el ->
+                homeworkElements.forEach { el ->
                     val elements = el.children()
 
                     val subjectName = elements[0].text().trim()
@@ -56,7 +56,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                     val eventDate = Date.fromY_m_d(elements[6].text().trim())
                     val id = "/podglad/([0-9]+)'".toRegex().find(
                             elements[9].select("input").attr("onclick")
-                    )?.get(1)?.toLong() ?: return@forEachIndexed
+                    )?.get(1)?.toLong() ?: return@forEach
 
                     val lessons = data.db.timetableDao().getAllForDateNow(profileId, eventDate)
                     val startTime = lessons.firstOrNull { it.subjectId == subjectId }?.startTime

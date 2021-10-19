@@ -15,6 +15,10 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailability
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.task.PostNotifications
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getLong
+import pl.szczodrzynski.edziennik.ext.getNotificationTitle
+import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -104,7 +108,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
     }
 
     private fun sharedEvent(teamCode: String, jsonStr: String, message: String) {
-        val json = JsonParser().parse(jsonStr).asJsonObject
+        val json = JsonParser.parseString(jsonStr).asJsonObject
         val teams = app.db.teamDao().allNow
         // not used, as the server provides a sharing message
         //val eventTypes = app.db.eventTypeDao().allNow
@@ -188,8 +192,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
 
             if (!notificationFilter.contains(Notification.TYPE_REMOVED_SHARED_EVENT)) {
                 val notification = Notification(
-                        id = Notification.buildId(profile.id
-                                ?: 0, Notification.TYPE_REMOVED_SHARED_EVENT, eventId),
+                        id = Notification.buildId(profile.id, Notification.TYPE_REMOVED_SHARED_EVENT, eventId),
                         title = app.getNotificationTitle(Notification.TYPE_REMOVED_SHARED_EVENT),
                         text = message,
                         type = Notification.TYPE_REMOVED_SHARED_EVENT,

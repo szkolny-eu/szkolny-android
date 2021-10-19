@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.firstlogin
 
 import org.greenrobot.eventbus.EventBus
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_PODLASIE
 import pl.szczodrzynski.edziennik.data.api.PODLASIE_API_LOGOUT_DEVICES_ENDPOINT
 import pl.szczodrzynski.edziennik.data.api.PODLASIE_API_USER_ENDPOINT
@@ -14,6 +13,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.PodlasieApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.login.PodlasieLoginApi
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.getShortName
+import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.set
 
 class PodlasieFirstLogin(val data: DataPodlasie, val onSuccess: () -> Unit) {
     companion object {

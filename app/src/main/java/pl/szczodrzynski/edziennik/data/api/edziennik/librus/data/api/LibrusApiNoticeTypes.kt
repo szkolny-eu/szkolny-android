@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_NOTICE_TYPES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.NoticeType
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusApiNoticeTypes(override val data: DataLibrus,
                            override val lastSync: Long?,
@@ -29,7 +30,7 @@ class LibrusApiNoticeTypes(override val data: DataLibrus,
                 data.noticeTypes.put(id, NoticeType(profileId, id, name))
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_NOTICE_TYPES, 4*DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_NOTICE_TYPES, 4* DAY)
             onSuccess(ENDPOINT_LIBRUS_API_NOTICE_TYPES)
         }
     }

@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/loginChooserFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginChooserFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginChooserFragment"
         android:label="LoginChooserFragment">
         <action
             android:id="@+id/action_loginChooserFragment_to_loginPlatformListFragment"
@@ -26,7 +26,7 @@
     <!-- eggs -->
     <fragment
         android:id="@+id/loginEggsFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginEggsFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginEggsFragment"
         android:label="LoginEggsFragment">
         <action
             android:id="@+id/action_loginEggsFragment_to_loginPrizeFragment"
@@ -34,12 +34,12 @@
     </fragment>
     <fragment
         android:id="@+id/loginPrizeFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginPrizeFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginPrizeFragment"
         android:label="LoginPrizeFragment">
     </fragment>
     <fragment
         android:id="@+id/loginPlatformListFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginPlatformListFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginPlatformListFragment"
         android:label="LoginPlatformListFragment">
         <action
             android:id="@+id/action_loginPlatformListFragment_to_loginFormFragment"
@@ -47,7 +47,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFormFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginFormFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginFormFragment"
         android:label="LoginFormFragment">
         <action
             android:id="@+id/action_loginFormFragment_to_loginProgressFragment"
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginProgressFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginProgressFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginProgressFragment"
         android:label="LoginProgressFragment">
         <action
             android:id="@+id/action_loginProgressFragment_to_loginSummaryFragment2"
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginSummaryFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginSummaryFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginSummaryFragment"
         android:label="LoginSummaryFragment">
         <action
             android:id="@+id/action_loginSummaryFragment_to_loginChooserFragment"
@@ -74,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginSyncFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginSyncFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginSyncFragment"
         android:label="LoginSyncFragment">
         <action
             android:id="@+id/action_loginSyncFragment_to_loginSyncErrorFragment2"
@@ -85,7 +85,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginSyncErrorFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginSyncErrorFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginSyncErrorFragment"
         android:label="LoginSyncErrorFragment">
         <action
             android:id="@+id/action_loginSyncErrorFragment_to_loginFinishFragment2"
@@ -93,6 +93,6 @@
     </fragment>
     <fragment
         android:id="@+id/loginFinishFragment"
-        android:name="pl.szczodrzynski.edziennik.ui.modules.login.LoginFinishFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.login.LoginFinishFragment"
         android:label="LoginFinishFragment" />
 </navigation>

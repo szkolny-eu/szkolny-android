@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Kuba Szczodrzyński 2020-5-4.
+ * Copyright (c) Kuba Szczodrzyński 2021-10-17.
  */
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.AttendanceConfigDialogBinding
-import pl.szczodrzynski.edziennik.onChange
+import pl.szczodrzynski.edziennik.ext.onChange
 
 class AttendanceConfigDialog(
         val activity: AppCompatActivity,

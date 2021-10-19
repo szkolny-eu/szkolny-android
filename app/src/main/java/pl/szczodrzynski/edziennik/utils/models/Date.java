@@ -10,8 +10,8 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import pl.szczodrzynski.edziennik.ExtensionsKt;
 import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.ext.TextExtensionsKt;
 
 public class Date implements Comparable<Date> {
     public int year = 0;
@@ -325,7 +325,7 @@ public class Date implements Comparable<Date> {
             else if (dayDiff == 2) {
                 return context.getString(R.string.the_day_after);
             }
-            return context.getString(R.string.in_format, ExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
+            return context.getString(R.string.in_format, TextExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
         }
         else if (dayDiff < 0) {
             if (dayDiff == -1) {
@@ -334,7 +334,7 @@ public class Date implements Comparable<Date> {
             else if (dayDiff == -2) {
                 return context.getString(R.string.the_day_before);
             }
-            return context.getString(R.string.ago_format, ExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
+            return context.getString(R.string.ago_format, TextExtensionsKt.plural(context, R.plurals.time_till_days, Math.abs(dayDiff)));
         }
         return context.getString(R.string.today);
     }

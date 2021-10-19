@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
-import pl.szczodrzynski.edziennik.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import kotlin.coroutines.CoroutineContext
 
 class AttendanceManager(val app: App) : CoroutineScope {

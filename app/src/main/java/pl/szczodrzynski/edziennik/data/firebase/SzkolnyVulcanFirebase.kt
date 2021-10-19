@@ -10,6 +10,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.toJsonObject
 import java.util.*
 
 class SzkolnyVulcanFirebase(val app: App, val profiles: List<Profile>, val message: FirebaseService.Message) {
@@ -32,7 +35,7 @@ class SzkolnyVulcanFirebase(val app: App, val profiles: List<Profile>, val messa
         val loginId = data.getInt("loginid")
 
         /* pl.vulcan.uonetmobile.auxilary.enums.CDCPushEnum */
-        val viewIdPair = when (type.toLowerCase(Locale.ROOT)) {
+        val viewIdPair = when (type.lowercase()) {
             "wiadomosc" -> MainActivity.DRAWER_ITEM_MESSAGES to Message.TYPE_RECEIVED
             "ocena" -> MainActivity.DRAWER_ITEM_GRADES to 0
             "uwaga" -> MainActivity.DRAWER_ITEM_BEHAVIOUR to 0
