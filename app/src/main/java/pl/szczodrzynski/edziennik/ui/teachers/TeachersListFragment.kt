@@ -48,7 +48,7 @@ class TeachersListFragment : Fragment(), CoroutineScope {
 
         val adapter = TeachersAdapter(activity)
 
-        app.db.teacherDao().getAllTeachers(App.profileId).observe(this@TeachersListFragment, Observer { items ->
+        app.db.teacherDao().getAllTeachers(App.profileId).observe(viewLifecycleOwner, Observer { items ->
             if (!isAdded) return@Observer
 
             // load & configure the adapter
