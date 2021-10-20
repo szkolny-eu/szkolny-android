@@ -46,29 +46,31 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/controls"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <ImageView
-            android:id="@+id/copy"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            app:srcCompat="?attr/actionModeCopyDrawable" />
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/message"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            app:srcCompat="@drawable/ic_no_messages" />
+            android:foreground="@drawable/bg_rounded_ripple_4dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_no_messages"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/copy"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:foreground="@drawable/bg_rounded_ripple_4dp"
+            app:srcCompat="?attr/actionModeCopyDrawable" />
+
     </LinearLayout>
 
 </LinearLayout>
