@@ -9,8 +9,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.getLong
-import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.ext.getLong
+import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
@@ -26,7 +26,7 @@ class PodlasieApiEvents(val data: DataPodlasie, val rows: List<JsonObject>) {
             val name = event.getString("Name")?.replace("&#34;", "\"") ?: ""
             val description = event.getString("Description")?.replace("&#34;", "\"") ?: ""
 
-            val type = when (event.getString("Category")?.toLowerCase(Locale.getDefault())) {
+            val type = when (event.getString("Category")?.lowercase()) {
                 "klasówka" -> Event.TYPE_EXAM
                 "praca domowa" -> Event.TYPE_HOMEWORK
                 "wycieczka" -> Event.TYPE_EXCURSION

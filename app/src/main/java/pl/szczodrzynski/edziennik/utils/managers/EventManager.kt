@@ -14,8 +14,13 @@ import com.mikepenz.iconics.view.IconicsTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.join
+import pl.szczodrzynski.edziennik.ext.resolveColor
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import kotlin.coroutines.CoroutineContext
 
 class EventManager(val app: App) : CoroutineScope {

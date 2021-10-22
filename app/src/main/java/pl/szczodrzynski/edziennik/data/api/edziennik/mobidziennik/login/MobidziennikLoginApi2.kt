@@ -9,10 +9,14 @@ import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.JsonCallbackHandler
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.getJsonObject
+import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikLoginApi2(val data: DataMobidziennik, val onSuccess: () -> Unit) {

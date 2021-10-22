@@ -7,6 +7,7 @@ import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusSynergia
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 

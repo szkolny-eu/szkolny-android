@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanHebeMain(

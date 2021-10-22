@@ -8,7 +8,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.*
-import pl.szczodrzynski.edziennik.getNotificationTitle
+import pl.szczodrzynski.edziennik.ext.getNotificationTitle
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
 

@@ -7,7 +7,7 @@ import androidx.room.Ignore
 import androidx.room.Relation
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
-import pl.szczodrzynski.edziennik.ui.modules.search.Searchable
+import pl.szczodrzynski.edziennik.ui.search.Searchable
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 
 class MessageFull(

@@ -4,14 +4,14 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.api
 
-import pl.szczodrzynski.edziennik.asJsonObjectList
 import pl.szczodrzynski.edziennik.data.api.PODLASIE_API_USER_ENDPOINT
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.ENDPOINT_PODLASIE_API_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.PodlasieApi
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.getJsonArray
+import pl.szczodrzynski.edziennik.ext.asJsonObjectList
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getJsonArray
 
 class PodlasieApiMain(override val data: DataPodlasie,
                       override val lastSync: Long?,

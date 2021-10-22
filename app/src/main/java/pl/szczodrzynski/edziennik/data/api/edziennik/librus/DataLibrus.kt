@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_PORTAL
@@ -13,7 +12,8 @@ import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_SYNERGIA
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.currentTimeUnix
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 
 class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
 

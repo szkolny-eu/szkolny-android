@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
-import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_ATTENDANCE_ENTRIES
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_ATTENDANCE_TYPE
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_ATTENDANCE_TYPES
@@ -14,8 +13,9 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.Edudzienni
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.ext.crc32
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.util.*
 
@@ -44,7 +44,7 @@ class EdudziennikWebAttendance(override val data: DataEdudziennik,
                 return@map Triple(
                         symbol,
                         name,
-                        when (name.toLowerCase(Locale.ROOT)) {
+                        when (name.lowercase()) {
                             "obecność" -> Attendance.TYPE_PRESENT
                             "nieobecność" -> Attendance.TYPE_ABSENT
                             "spóźnienie" -> Attendance.TYPE_BELATED

@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusMessagesGetRecipientList(override val data: DataLibrus,
                                      val onSuccess: () -> Unit
@@ -28,9 +29,9 @@ class LibrusMessagesGetRecipientList(override val data: DataLibrus,
         messagesGet(TAG, "Receivers/action/GetTypes", parameters = mapOf(
             "includeClass" to 1
         )) { doc ->
-            doc.select("response GetTypes data list ArrayItem")?.forEach {
-                val id = it.getElementsByTag("id")?.firstOrNull()?.ownText() ?: return@forEach
-                val name = it.getElementsByTag("name")?.firstOrNull()?.ownText() ?: return@forEach
+            doc.select("response GetTypes data list ArrayItem").forEach {
+                val id = it.getElementsByTag("id").firstOrNull()?.ownText() ?: return@forEach
+                val name = it.getElementsByTag("name").firstOrNull()?.ownText() ?: return@forEach
                 listTypes += id to name
             }
 
@@ -55,7 +56,7 @@ class LibrusMessagesGetRecipientList(override val data: DataLibrus,
             if (dataEl is JsonObject) {
                 val listEl = dataEl.get("ArrayItem")
                 if (listEl is JsonArray) {
-                    listEl.asJsonObjectList()?.forEach { item ->
+                    listEl.asJsonObjectList().forEach { item ->
                         processElement(item, type.first, type.second)
                     }
                 }
@@ -71,7 +72,7 @@ class LibrusMessagesGetRecipientList(override val data: DataLibrus,
     private fun processElement(element: JsonObject, typeId: String, typeName: String, listName: String? = null) {
         val listEl = element.getJsonObject("list")?.get("ArrayItem")
         if (listEl is JsonArray) {
-            listEl.asJsonObjectList()?.let { list ->
+            listEl.asJsonObjectList().let { list ->
                 val label = element.getString("label") ?: ""
                 list.forEach { item ->
                     processElement(item, typeId, typeName, label)

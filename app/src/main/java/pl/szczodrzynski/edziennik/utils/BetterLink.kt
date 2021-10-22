@@ -24,6 +24,10 @@ import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.core.widget.addTextChangedListener
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.Regexes
+import pl.szczodrzynski.edziennik.ext.Intent
+import pl.szczodrzynski.edziennik.ext.copyToClipboard
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.getTextPosition
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 @SuppressLint("RestrictedApi")

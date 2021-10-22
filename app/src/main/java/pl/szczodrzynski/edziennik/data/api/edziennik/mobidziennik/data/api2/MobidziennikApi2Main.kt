@@ -14,8 +14,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBID
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLoginApi2
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.getJsonObject
-import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.ext.getJsonObject
+import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class MobidziennikApi2Main(val data: DataMobidziennik,

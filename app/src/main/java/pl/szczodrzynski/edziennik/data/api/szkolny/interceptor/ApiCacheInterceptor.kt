@@ -7,7 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.szkolny.interceptor
 import okhttp3.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.ApiResponse
-import pl.szczodrzynski.edziennik.md5
+import pl.szczodrzynski.edziennik.ext.md5
 
 class ApiCacheInterceptor(val app: App) : Interceptor {
 

@@ -4,10 +4,10 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.api
 
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_ME
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusApiMe(override val data: DataLibrus,
                   override val lastSync: Long?,
@@ -34,7 +34,7 @@ class LibrusApiMe(override val data: DataLibrus,
             data.profile?.studentNameLong =
                     buildFullName(user?.getString("FirstName"), user?.getString("LastName"))
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_ME, 2*DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_ME, 2* DAY)
             onSuccess(ENDPOINT_LIBRUS_API_ME)
         }
     }

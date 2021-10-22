@@ -17,7 +17,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_PARENT
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_PARENTS_COUNCIL
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_STUDENT
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_TEACHER
-import kotlin.text.replace
+import pl.szczodrzynski.edziennik.ext.*
 
 class VulcanHebeAddressbook(
     override val data: DataVulcan,

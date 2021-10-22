@@ -15,9 +15,9 @@ import android.text.style.*
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.graphics.ColorUtils
 import androidx.core.text.HtmlCompat
-import pl.szczodrzynski.edziennik.dp
-import pl.szczodrzynski.edziennik.getWordBounds
-import pl.szczodrzynski.edziennik.resolveAttr
+import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.getWordBounds
+import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.utils.span.*
 import pl.szczodrzynski.navlib.blendColors
 

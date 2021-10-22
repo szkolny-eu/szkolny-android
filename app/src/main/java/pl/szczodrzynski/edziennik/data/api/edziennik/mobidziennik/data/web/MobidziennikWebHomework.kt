@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBID
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.EventGetEvent
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.ext.get
 
 class MobidziennikWebHomework(override val data: DataMobidziennik,
                               override val lastSync: Long?,
@@ -48,8 +48,8 @@ class MobidziennikWebHomework(override val data: DataMobidziennik,
 
                 event.attachmentIds = mutableListOf()
                 event.attachmentNames = mutableListOf()
-                Regexes.MOBIDZIENNIK_MOBILE_HOMEWORK_ATTACHMENT.findAll(tableRow).forEach {
-                    event.attachmentIds?.add(it[1].toLongOrNull() ?: return@forEach)
+                Regexes.MOBIDZIENNIK_MOBILE_HOMEWORK_ATTACHMENT.findAll(tableRow).onEach {
+                    event.attachmentIds?.add(it[1].toLongOrNull() ?: return@onEach)
                     event.attachmentNames?.add(it[2])
                 }
 

@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_LESSONS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.LibrusLesson
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusApiLessons(override val data: DataLibrus,
                        override val lastSync: Long?,
@@ -39,7 +40,7 @@ class LibrusApiLessons(override val data: DataLibrus,
                 data.librusLessons.put(id, librusLesson)
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_LESSONS, 4*DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_LESSONS, 4* DAY)
             onSuccess(ENDPOINT_LIBRUS_API_LESSONS)
         }
     }

@@ -4,13 +4,13 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.api
 
-import pl.szczodrzynski.edziennik.JsonObject
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_PUSH_CONFIG
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.getJsonObject
+import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getJsonObject
 
 class LibrusApiPushConfig(override val data: DataLibrus,
                           override val lastSync: Long?,
