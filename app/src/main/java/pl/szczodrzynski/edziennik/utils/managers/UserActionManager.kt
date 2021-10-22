@@ -87,11 +87,15 @@ class UserActionManager(val app: App) {
             return
         // show captcha dialog
         // use passed onSuccess listener, else sync profile
-        LibrusCaptchaDialog(activity, onSuccess = onSuccess ?: { code ->
-            EdziennikTask.syncProfile(profileId, arguments = JsonObject(
+        LibrusCaptchaDialog(
+            activity = activity,
+            onSuccess = onSuccess ?: { code ->
+                EdziennikTask.syncProfile(profileId, arguments = JsonObject(
                     "recaptchaCode" to code,
                     "recaptchaTime" to System.currentTimeMillis()
-            )).enqueue(activity)
-        }, onFailure = onFailure)
+                )).enqueue(activity)
+            },
+            onFailure = onFailure
+        ).show()
     }
 }

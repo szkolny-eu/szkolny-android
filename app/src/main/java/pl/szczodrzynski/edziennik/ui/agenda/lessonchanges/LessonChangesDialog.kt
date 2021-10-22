@@ -1,76 +1,53 @@
 package pl.szczodrzynski.edziennik.ui.agenda.lessonchanges
 
-import androidx.appcompat.app.AlertDialog
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.App
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogLessonChangeListBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.timetable.LessonDetailsDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
-import kotlin.coroutines.CoroutineContext
 
 class LessonChangesDialog(
-        val activity: AppCompatActivity,
-        val profileId: Int,
-        private val defaultDate: Date,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        const val TAG = "LessonChangeDialog"
-    }
+    activity: AppCompatActivity,
+    private val profileId: Int,
+    private val defaultDate: Date,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<DialogLessonChangeListBinding>(activity, onShowListener, onDismissListener) {
 
-    private val app by lazy { activity.application as App }
+    override val TAG = "LessonChangesDialog"
 
-    private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getTitle(): String = defaultDate.formattedString
+    override fun getTitleRes(): Int? = null
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogLessonChangeListBinding.inflate(layoutInflater)
 
-    private lateinit var b: DialogLessonChangeListBinding
-    private lateinit var dialog: AlertDialog
+    override fun getPositiveButtonText() = R.string.close
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        job = Job()
-        onShowListener?.invoke(TAG)
-        b = DialogLessonChangeListBinding.inflate(activity.layoutInflater)
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(defaultDate.formattedString)
-                .setView(b.root)
-                .setPositiveButton(R.string.close) { dialog, _ -> dialog.dismiss() }
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                }
-                .create()
-        loadLessonChanges()
-    }}
-
-    private fun loadLessonChanges() { launch {
+    override suspend fun onShow() {
         val lessonChanges = withContext(Dispatchers.Default) {
             app.db.timetableDao().getChangesForDateNow(profileId, defaultDate)
         }
 
         val adapter = LessonChangesAdapter(
-                activity,
-                onItemClick = {
-                    LessonDetailsDialog(
-                            activity,
-                            it,
-                            onShowListener = onShowListener,
-                            onDismissListener = onDismissListener
-                    )
-                }
+            activity,
+            onItemClick = {
+                LessonDetailsDialog(
+                    activity,
+                    it,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener
+                ).show()
+            }
         ).apply {
             items = lessonChanges
         }
 
         b.lessonChangeView.adapter = adapter
         b.lessonChangeView.layoutManager = LinearLayoutManager(activity)
-
-        dialog.show()
-    }}
+    }
 }

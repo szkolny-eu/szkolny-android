@@ -104,7 +104,7 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
                 text = R.string.settings_about_changelog_text,
                 icon = CommunityMaterial.Icon3.cmd_radar
             ) {
-                ChangelogDialog(activity)
+                ChangelogDialog(activity).show()
             },
 
             util.createActionItem(

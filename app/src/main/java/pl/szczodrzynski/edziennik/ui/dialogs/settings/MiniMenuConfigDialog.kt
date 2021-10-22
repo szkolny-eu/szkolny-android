@@ -4,13 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ANNOUNCEMENTS
@@ -24,73 +18,45 @@ import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_NOTIFICATIO
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_SETTINGS
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.R
-import kotlin.coroutines.CoroutineContext
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
 
 class MiniMenuConfigDialog(
-    val activity: AppCompatActivity,
-    val onShowListener: ((tag: String) -> Unit)? = null,
-    val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "MiniMenuConfigDialog"
+    activity: AppCompatActivity,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BaseDialog(activity, onShowListener, onDismissListener) {
+
+    override val TAG = "BellSyncTimeChooseDialog"
+
+    override fun getTitleRes() = R.string.settings_theme_mini_drawer_buttons_dialog_title
+    override fun getMessageRes() = R.string.settings_theme_mini_drawer_buttons_dialog_text
+    override fun getPositiveButtonText() = R.string.ok
+    override fun getNegativeButtonText() = R.string.cancel
+
+    override fun getMultiChoiceItems(): Map<CharSequence, Any> = mapOf(
+        R.string.menu_home_page to DRAWER_ITEM_HOME,
+        R.string.menu_timetable to DRAWER_ITEM_TIMETABLE,
+        R.string.menu_agenda to DRAWER_ITEM_AGENDA,
+        R.string.menu_grades to DRAWER_ITEM_GRADES,
+        R.string.menu_messages to DRAWER_ITEM_MESSAGES,
+        R.string.menu_homework to DRAWER_ITEM_HOMEWORK,
+        R.string.menu_notices to DRAWER_ITEM_BEHAVIOUR,
+        R.string.menu_attendance to DRAWER_ITEM_ATTENDANCE,
+        R.string.menu_announcements to DRAWER_ITEM_ANNOUNCEMENTS,
+        R.string.menu_notifications to DRAWER_ITEM_NOTIFICATIONS,
+        R.string.menu_settings to DRAWER_ITEM_SETTINGS,
+    ).mapKeys { (resId, _) -> activity.getString(resId) }
+
+    override fun getDefaultSelectedItems() = app.config.ui.miniMenuButtons.toSet()
+
+    override suspend fun onShow() = Unit
+
+    override suspend fun onPositiveClick(): Boolean {
+        app.config.ui.miniMenuButtons = getMultiSelection().filterIsInstance<Int>()
+        if (activity is MainActivity) {
+            activity.setDrawerItems()
+            activity.drawer.updateBadges()
+        }
+        return DISMISS
     }
-
-    private lateinit var app: App
-    private lateinit var dialog: AlertDialog
-
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    // local variables go here
-
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-
-        val buttons = mapOf(
-            DRAWER_ITEM_HOME to R.string.menu_home_page,
-            DRAWER_ITEM_TIMETABLE to R.string.menu_timetable,
-            DRAWER_ITEM_AGENDA to R.string.menu_agenda,
-            DRAWER_ITEM_GRADES to R.string.menu_grades,
-            DRAWER_ITEM_MESSAGES to R.string.menu_messages,
-            DRAWER_ITEM_HOMEWORK to R.string.menu_homework,
-            DRAWER_ITEM_BEHAVIOUR to R.string.menu_notices,
-            DRAWER_ITEM_ATTENDANCE to R.string.menu_attendance,
-            DRAWER_ITEM_ANNOUNCEMENTS to R.string.menu_announcements,
-            DRAWER_ITEM_NOTIFICATIONS to R.string.menu_notifications,
-            DRAWER_ITEM_SETTINGS to R.string.menu_settings
-        )
-        val miniMenuButtons = app.config.ui.miniMenuButtons
-
-        dialog = MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.settings_theme_mini_drawer_buttons_dialog_title)
-            //.setMessage(R.string.settings_theme_mini_drawer_buttons_dialog_text)
-            .setMultiChoiceItems(
-                buttons.map { activity.getString(it.value) }.toTypedArray(),
-                buttons.map { it.key in miniMenuButtons }.toBooleanArray(),
-                null
-            )
-            .setPositiveButton(R.string.ok) { _, _ ->
-                app.config.ui.miniMenuButtons =
-                    buttons.keys.mapIndexedNotNull { index, id ->
-                        if (dialog.listView.checkedItemPositions[index])
-                            id
-                        else
-                            null
-                    }
-
-                if (activity is MainActivity) {
-                    activity.setDrawerItems()
-                    activity.drawer.updateBadges()
-                }
-            }
-            .setNegativeButton(R.string.cancel, null)
-            .setOnDismissListener {
-                onDismissListener?.invoke(TAG)
-            }
-            .show()
-    }}
 }

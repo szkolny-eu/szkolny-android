@@ -225,7 +225,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                         activity = activity,
                         lesson = lessonObj as LessonFull,
                         attendance = attendanceObj as AttendanceFull?
-                    )
+                    ).show()
                 }
             }
 

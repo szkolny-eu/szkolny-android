@@ -110,7 +110,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
         }})
 
         adapter.onGradeClick = {
-            GradeDetailsDialog(activity, it)
+            GradeDetailsDialog(activity, it).show()
         }
 
         adapter.onGradesEditorClick = { subject, semester ->
@@ -140,7 +140,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
                         .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
-                            GradesConfigDialog(activity, true, null, null)
+                            GradesConfigDialog(activity, true, null, null).show()
                         }),
                 BottomSheetSeparatorItem(true),
                 BottomSheetPrimaryItem(true)

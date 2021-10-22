@@ -71,7 +71,7 @@ class LessonDialogActivity : AppCompatActivity(), CoroutineScope {
                             if (shownDialogs.isEmpty())
                                 finish()
                         }
-                )
+                ).show()
             }
         }
     }

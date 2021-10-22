@@ -4,66 +4,54 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.sync
 
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.BuildConfig
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.ext.Intent
-import pl.szczodrzynski.edziennik.ext.setMessage
 import pl.szczodrzynski.edziennik.sync.UpdateDownloaderService
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
-import kotlin.coroutines.CoroutineContext
 
 class UpdateAvailableDialog(
-        val activity: AppCompatActivity,
-        val update: Update,
-        val mandatory: Boolean = update.updateMandatory,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "UpdateAvailableDialog"
+    activity: AppCompatActivity,
+    private val update: Update?,
+    private val mandatory: Boolean = update?.updateMandatory ?: false,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BaseDialog(activity, onShowListener, onDismissListener) {
+
+    override val TAG = "UpdateAvailableDialog"
+
+    override fun getTitleRes() = R.string.update_available_title
+    override fun getMessageFormat(): Pair<Int, List<CharSequence>> {
+        if (update != null) {
+            return R.string.update_available_format to listOf(
+                BuildConfig.VERSION_NAME,
+                update.versionName,
+                update.releaseNotes?.let { BetterHtml.fromHtml(activity, it) } ?: "---",
+            )
+        }
+        return R.string.update_available_fallback to emptyList()
     }
 
-    private lateinit var app: App
-    private lateinit var dialog: AlertDialog
+    override fun isCancelable() = !mandatory
+    override fun getPositiveButtonText() = R.string.update_available_button
+    override fun getNeutralButtonText() = if (mandatory) null else R.string.update_available_later
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override suspend fun onShow() = Unit
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        if (update.versionCode <= BuildConfig.VERSION_CODE)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
+    override suspend fun onPositiveClick(): Boolean {
+        if (update == null)
+            Utils.openGooglePlay(activity)
+        else
+            activity.startService(Intent(app, UpdateDownloaderService::class.java))
+        return NO_DISMISS
+    }
 
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.update_available_title)
-                .setMessage(
-                        R.string.update_available_format,
-                        BuildConfig.VERSION_NAME,
-                        update.versionName,
-                        update.releaseNotes?.let { BetterHtml.fromHtml(activity, it) } ?: "---"
-                )
-                .setPositiveButton(R.string.update_available_button) { dialog, _ ->
-                    activity.startService(Intent(app, UpdateDownloaderService::class.java))
-                    dialog.dismiss()
-                }
-                .also {
-                    if (!mandatory)
-                        it.setNeutralButton(R.string.update_available_later, null)
-                }
-                .setCancelable(!mandatory)
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                }
-                .show()
-    }}
+    override suspend fun onBeforeShow(): Boolean {
+        // show only if app is older than available
+        return update == null || update.versionCode > BuildConfig.VERSION_CODE
+    }
 }

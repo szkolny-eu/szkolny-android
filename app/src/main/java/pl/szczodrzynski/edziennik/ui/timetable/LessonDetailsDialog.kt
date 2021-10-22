@@ -5,19 +5,14 @@
 package pl.szczodrzynski.edziennik.ui.timetable
 
 import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
@@ -27,6 +22,7 @@ import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceDetailsDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
@@ -34,26 +30,23 @@ import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
-import kotlin.coroutines.CoroutineContext
 
 class LessonDetailsDialog(
-        val activity: AppCompatActivity,
-        val lesson: LessonFull,
-        val attendance: AttendanceFull? = null,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "LessonDetailsDialog"
-    }
+    activity: AppCompatActivity,
+    private val lesson: LessonFull,
+    private val attendance: AttendanceFull? = null,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<DialogLessonDetailsBinding>(activity, onShowListener, onDismissListener) {
 
-    private lateinit var app: App
-    private lateinit var b: DialogLessonDetailsBinding
-    private lateinit var dialog: AlertDialog
+    override val TAG = "LessonDetailsDialog"
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getTitleRes(): Int? = null
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogLessonDetailsBinding.inflate(layoutInflater)
+
+    override fun getPositiveButtonText() = R.string.close
+    override fun getNeutralButtonText() = R.string.add
 
     private lateinit var adapter: EventListAdapter
     private val manager
@@ -61,44 +54,26 @@ class LessonDetailsDialog(
     private val attendanceManager
         get() = app.attendanceManager
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-        b = DialogLessonDetailsBinding.inflate(activity.layoutInflater)
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setView(b.root)
-                .setPositiveButton(R.string.close) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setNeutralButton(R.string.add, null)
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                }
-                .show()
+    override suspend fun onNeutralClick(): Boolean {
+        EventManualDialog(
+            activity,
+            lesson.profileId,
+            defaultLesson = lesson,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener
+        ).show()
+        return NO_DISMISS
+    }
 
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL)?.onClick {
-            EventManualDialog(
-                    activity,
-                    lesson.profileId,
-                    defaultLesson = lesson,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
-            )
-        }
-
+    override suspend fun onShow() {
         if (App.devMode)
             b.lessonId.visibility = View.VISIBLE
 
-        update()
-    }}
-
-    private fun update() {
         b.lesson = lesson
         val lessonDate = lesson.displayDate ?: return
         val lessonTime = lesson.displayStartTime ?: return
-        b.lessonDate.text = Week.getFullDayName(lessonDate.weekDay) + ", " + lessonDate.formattedString
+        b.lessonDate.text =
+            Week.getFullDayName(lessonDate.weekDay) + ", " + lessonDate.formattedString
 
         b.annotationVisible = manager.getAnnotation(activity, lesson, b.annotation)
 
@@ -110,13 +85,13 @@ class LessonDetailsDialog(
                     otherLessonDate = lesson.date
                     when {
                         lesson.date != lesson.oldDate -> b.shiftedText.setText(
-                                R.string.timetable_lesson_shifted_other_day,
-                                lesson.date?.stringY_m_d ?: "?",
-                                lesson.startTime?.stringHM ?: "?"
+                            R.string.timetable_lesson_shifted_other_day,
+                            lesson.date?.stringY_m_d ?: "?",
+                            lesson.startTime?.stringHM ?: "?"
                         )
                         lesson.startTime != lesson.oldStartTime -> b.shiftedText.setText(
-                                R.string.timetable_lesson_shifted_same_day,
-                                lesson.startTime?.stringHM ?: "?"
+                            R.string.timetable_lesson_shifted_same_day,
+                            lesson.startTime?.stringHM ?: "?"
                         )
                         else -> b.shiftedText.setText(R.string.timetable_lesson_shifted)
                     }
@@ -125,13 +100,13 @@ class LessonDetailsDialog(
                     otherLessonDate = lesson.oldDate
                     when {
                         lesson.date != lesson.oldDate -> b.shiftedText.setText(
-                                R.string.timetable_lesson_shifted_from_other_day,
-                                lesson.oldDate?.stringY_m_d ?: "?",
-                                lesson.oldStartTime?.stringHM ?: "?"
+                            R.string.timetable_lesson_shifted_from_other_day,
+                            lesson.oldDate?.stringY_m_d ?: "?",
+                            lesson.oldStartTime?.stringHM ?: "?"
                         )
                         lesson.startTime != lesson.oldStartTime -> b.shiftedText.setText(
-                                R.string.timetable_lesson_shifted_from_same_day,
-                                lesson.oldStartTime?.stringHM ?: "?"
+                            R.string.timetable_lesson_shifted_from_same_day,
+                            lesson.oldStartTime?.stringHM ?: "?"
                         )
                         else -> b.shiftedText.setText(R.string.timetable_lesson_shifted_from)
                     }
@@ -145,8 +120,7 @@ class LessonDetailsDialog(
                 }
                 activity.sendBroadcast(intent)
             }
-        }
-        else {
+        } else {
             b.shiftedLayout.visibility = View.GONE
         }
 
@@ -195,38 +169,47 @@ class LessonDetailsDialog(
                 true
             }
             b.attendanceDetails.onClick {
-                AttendanceDetailsDialog(activity, attendance, onShowListener, onDismissListener)
+                AttendanceDetailsDialog(
+                    activity = activity,
+                    attendance = attendance,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener,
+                ).show()
             }
         }
 
         adapter = EventListAdapter(
-                activity,
-                showWeekDay = false,
-                showDate = false,
-                showType = true,
-                showTime = true,
-                showSubject = true,
-                markAsSeen = true,
-                onItemClick = {
-                    EventDetailsDialog(
-                            activity,
-                            it,
-                            onShowListener = onShowListener,
-                            onDismissListener = onDismissListener
-                    )
-                },
-                onEventEditClick = {
-                    EventManualDialog(
-                            activity,
-                            it.profileId,
-                            editingEvent = it,
-                            onShowListener = onShowListener,
-                            onDismissListener = onDismissListener
-                    )
-                }
+            activity,
+            showWeekDay = false,
+            showDate = false,
+            showType = true,
+            showTime = true,
+            showSubject = true,
+            markAsSeen = true,
+            onItemClick = {
+                EventDetailsDialog(
+                    activity,
+                    it,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener
+                ).show()
+            },
+            onEventEditClick = {
+                EventManualDialog(
+                    activity,
+                    it.profileId,
+                    editingEvent = it,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener
+                ).show()
+            }
         )
 
-        app.db.eventDao().getAllByDateTime(lesson.profileId, lessonDate, lessonTime).observe(activity, Observer { events ->
+        app.db.eventDao().getAllByDateTime(
+            lesson.profileId,
+            lessonDate,
+            lessonTime
+        ).observe(activity) { events ->
             adapter.setAllItems(events)
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter
@@ -246,7 +229,7 @@ class LessonDetailsDialog(
                 b.eventsView.visibility = View.GONE
                 b.eventsNoData.visibility = View.VISIBLE
             }
-        })
+        }
 
         lesson.displayTeacherName?.let { name ->
             lesson.displayTeacherId ?: return@let

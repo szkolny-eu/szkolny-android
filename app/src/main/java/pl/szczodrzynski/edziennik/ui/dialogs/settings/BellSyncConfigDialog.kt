@@ -4,40 +4,31 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
-import android.widget.TextView
+import android.view.LayoutInflater
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.databinding.DialogEditTextBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.models.Time
-import kotlin.coroutines.CoroutineContext
 
 class BellSyncConfigDialog(
-    val activity: AppCompatActivity,
-    val onChangeListener: (() -> Unit)? = null,
-    val onShowListener: ((tag: String) -> Unit)? = null,
-    val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "BellSyncConfigDialog"
-    }
+    activity: AppCompatActivity,
+    private val onChangeListener: (() -> Unit)? = null,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<DialogEditTextBinding>(activity, onShowListener, onDismissListener) {
 
-    private lateinit var app: App
-    private lateinit var dialog: AlertDialog
+    override val TAG = "BellSyncConfigDialog"
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getTitleRes() = R.string.bell_sync_title
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogEditTextBinding.inflate(layoutInflater)
 
-    // local variables go here
+    override fun getPositiveButtonText() = R.string.ok
+    override fun getNeutralButtonText() = R.string.reset
+    override fun getNegativeButtonText() = R.string.cancel
 
     private fun parse(input: String): Pair<Time, Int>? {
         if (input.length < 8) {
@@ -56,63 +47,46 @@ class BellSyncConfigDialog(
         return time to multiplier
     }
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-
-        dialog = MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.bell_sync_title)
-            .setView(R.layout.dialog_edit_text)
-            .setPositiveButton(R.string.ok, null)
-            .setNegativeButton(R.string.cancel, null)
-            .setNeutralButton(R.string.reset) { _, _ ->
-                app.config.timetable.bellSyncDiff = null
-                app.config.timetable.bellSyncMultiplier = 0
-                onChangeListener?.invoke()
-            }
-            .setOnDismissListener {
-                onDismissListener?.invoke(TAG)
-            }
-            .show()
-
-        val message = dialog.findViewById<TextView>(android.R.id.title)
-        val editText = dialog.findViewById<TextInputEditText>(android.R.id.text1)
-        val textLayout = dialog.findViewById<TextInputLayout>(R.id.text_input_layout)
-
-        message?.setText(R.string.bell_sync_adjust_content)
-        editText?.hint = "±H:MM:SS"
-        editText?.setText(app.config.timetable.bellSyncDiff?.let {
+    override suspend fun onShow() {
+        b.title.setText(R.string.bell_sync_adjust_content)
+        b.text1.hint = "±H:MM:SS"
+        b.text1.setText(app.config.timetable.bellSyncDiff?.let {
             (if (app.config.timetable.bellSyncMultiplier == -1) "-" else "+") + it.stringHMS
         } ?: "+0:00:00")
-        editText?.addTextChangedListener { text ->
+        b.text1.addTextChangedListener { text ->
             val input = text?.toString()
-            textLayout?.error =
+            b.textInputLayout.error =
                 if (input != null && parse(input) == null)
                     activity.getString(R.string.bell_sync_adjust_error)
                 else
                     null
         }
+    }
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.onClick {
-            val input = editText?.text?.toString() ?: return@onClick
-            val parsed = parse(input)
-            if (parsed == null) {
-                Toast.makeText(activity, R.string.bell_sync_adjust_error, Toast.LENGTH_SHORT).show()
-                return@onClick
-            }
-
-            val (time, multiplier) = parsed
-            app.config.timetable.bellSyncDiff =
-                if (time.value == 0)
-                    null
-                else
-                    time
-            app.config.timetable.bellSyncMultiplier = multiplier
-
-            onChangeListener?.invoke()
-            dialog.dismiss()
+    override suspend fun onPositiveClick(): Boolean {
+        val input = b.text1.text?.toString() ?: return NO_DISMISS
+        val parsed = parse(input)
+        if (parsed == null) {
+            Toast.makeText(activity, R.string.bell_sync_adjust_error, Toast.LENGTH_SHORT).show()
+            return NO_DISMISS
         }
-    }}
+
+        val (time, multiplier) = parsed
+        app.config.timetable.bellSyncDiff =
+            if (time.value == 0)
+                null
+            else
+                time
+        app.config.timetable.bellSyncMultiplier = multiplier
+
+        onChangeListener?.invoke()
+        return DISMISS
+    }
+
+    override suspend fun onNeutralClick(): Boolean {
+        app.config.timetable.bellSyncDiff = null
+        app.config.timetable.bellSyncMultiplier = 0
+        onChangeListener?.invoke()
+        return DISMISS
+    }
 }

@@ -8,6 +8,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.provider.CalendarContract
 import android.provider.CalendarContract.Events
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -25,34 +26,34 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.models.Date
-import kotlin.coroutines.CoroutineContext
 
+// TODO: 2021-10-19 rewrite to the new dialog style
 class EventDetailsDialog(
-        val activity: AppCompatActivity,
-        // this event is observed for changes
-        var event: EventFull,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "EventDetailsDialog"
-    }
+    activity: AppCompatActivity,
+    // this event is observed for changes
+    private var event: EventFull,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<DialogEventDetailsBinding>(activity, onShowListener, onDismissListener) {
 
-    private lateinit var app: App
-    private lateinit var b: DialogEventDetailsBinding
-    private lateinit var dialog: AlertDialog
+    override val TAG = "EventDetailsDialog"
+
+    override fun getTitleRes(): Int? = null
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogEventDetailsBinding.inflate(layoutInflater)
+
+    override fun getPositiveButtonText() = R.string.close
+    override fun getNeutralButtonText() = if (event.addedManually) R.string.remove else null
+
     private var removeEventDialog: AlertDialog? = null
     private val eventShared = event.sharedBy != null
     private val eventOwn = event.sharedBy == "self"
     private val manager
         get() = app.eventManager
-
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
 
     private val api by lazy {
         SzkolnyApi(app)
@@ -60,39 +61,28 @@ class EventDetailsDialog(
 
     private var progressDialog: AlertDialog? = null
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
+    override suspend fun onNeutralClick(): Boolean {
+        showRemoveEventDialog()
+        return NO_DISMISS
+    }
+
+    override suspend fun onBeforeShow(): Boolean {
         EventBus.getDefault().register(this)
-        app = activity.applicationContext as App
-        b = DialogEventDetailsBinding.inflate(activity.layoutInflater)
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setView(b.root)
-                .setPositiveButton(R.string.close) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .apply {
-                    if (event.addedManually)
-                        setNeutralButton(R.string.remove, null)
-                }
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                    EventBus.getDefault().unregister(this@EventDetailsDialog)
-                    progressDialog?.dismiss()
-                }
-                .show()
+        return true
+    }
 
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL)?.onClick {
-            showRemoveEventDialog()
-        }
-
+    override suspend fun onShow() {
         // watch the event for changes
         app.db.eventDao().getById(event.profileId, event.id).observe(activity) {
             event = it ?: return@observe
             update()
         }
-    }}
+    }
+
+    override fun onDismiss() {
+        EventBus.getDefault().unregister(this@EventDetailsDialog)
+        progressDialog?.dismiss()
+    }
 
     private fun update() {
         b.event = event
@@ -185,7 +175,7 @@ class EventDetailsDialog(
                     },
                     onShowListener = onShowListener,
                     onDismissListener = onDismissListener
-            )
+            ).show()
         }
         b.editButton.attachToastHint(R.string.hint_edit_event)
 

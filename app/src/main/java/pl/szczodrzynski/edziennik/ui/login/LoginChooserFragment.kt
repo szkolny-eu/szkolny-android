@@ -275,7 +275,7 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
 
         return when (error.type) {
             Type.NOT_AVAILABLE -> {
-                RegisterUnavailableDialog(activity, error.status!!)
+                RegisterUnavailableDialog(activity, error.status!!).show()
                 false
             }
             Type.API_ERROR -> {

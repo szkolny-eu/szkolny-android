@@ -189,7 +189,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
                         .withIcon(SzkolnyFont.Icon.szf_calendar_plus_outline)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
-                            EventManualDialog(activity, App.profileId, defaultDate = pageSelection)
+                            EventManualDialog(activity, App.profileId, defaultDate = pageSelection).show()
                         }),
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_generate_block_timetable)

@@ -102,7 +102,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                         .withIcon(Icon.cmd_card_bulleted_settings_outline)
                         .withOnClickListener(OnClickListener {
                             activity.bottomSheet.close()
-                            HomeConfigDialog(activity, reloadOnDismiss = true)
+                            HomeConfigDialog(activity, reloadOnDismiss = true).show()
                         }),
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_set_student_number)
@@ -131,7 +131,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                         })
         )
         b.configureCards.onClick {
-            HomeConfigDialog(activity, reloadOnDismiss = true)
+            HomeConfigDialog(activity, reloadOnDismiss = true).show()
         }
 
         b.scrollView.setOnScrollChangeListener { _: NestedScrollView?, _: Int, scrollY: Int, _: Int, _: Int ->

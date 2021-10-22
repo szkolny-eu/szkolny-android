@@ -4,12 +4,11 @@
 
 package pl.szczodrzynski.edziennik.ui.agenda
 
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
@@ -23,6 +22,7 @@ import pl.szczodrzynski.edziennik.ui.agenda.lessonchanges.LessonChangesEventRend
 import pl.szczodrzynski.edziennik.ui.agenda.teacherabsence.TeacherAbsenceDialog
 import pl.szczodrzynski.edziennik.ui.agenda.teacherabsence.TeacherAbsenceEvent
 import pl.szczodrzynski.edziennik.ui.agenda.teacherabsence.TeacherAbsenceEventRenderer
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
@@ -30,87 +30,67 @@ import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
-import kotlin.coroutines.CoroutineContext
 
 class DayDialog(
-        val activity: AppCompatActivity,
-        val profileId: Int,
-        val date: Date,
-        val eventTypeId: Long? = null,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "DayDialog"
-    }
+    activity: AppCompatActivity,
+    private val profileId: Int,
+    private val date: Date,
+    private val eventTypeId: Long? = null,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<DialogDayBinding>(activity, onShowListener, onDismissListener) {
 
-    private lateinit var app: App
-    private lateinit var b: DialogDayBinding
-    private lateinit var dialog: AlertDialog
+    override val TAG = "DayDialog"
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getTitleRes(): Int? = null
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogDayBinding.inflate(layoutInflater)
+
+    override fun getPositiveButtonText() = R.string.close
+    override fun getNeutralButtonText() = R.string.add
 
     private lateinit var adapter: EventListAdapter
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-        b = DialogDayBinding.inflate(activity.layoutInflater)
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setView(b.root)
-                .setPositiveButton(R.string.close) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setNeutralButton(R.string.add, null)
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                }
-                .show()
+    override suspend fun onNeutralClick(): Boolean {
+        EventManualDialog(
+            activity,
+            profileId,
+            defaultDate = date,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener
+        ).show()
+        return NO_DISMISS
+    }
 
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL)?.onClick {
-            EventManualDialog(
-                    activity,
-                    profileId,
-                    defaultDate = date,
-                    onShowListener = onShowListener,
-                    onDismissListener = onDismissListener
-            )
-        }
-
-        update()
-    }}
-
-    private fun update() { launch {
+    override suspend fun onShow() {
         b.dayDate.setText(
-                R.string.dialog_day_date_format,
-                Week.getFullDayName(date.weekDay),
-                date.formattedString
+            R.string.dialog_day_date_format,
+            Week.getFullDayName(date.weekDay),
+            date.formattedString
         )
 
         val lessons = withContext(Dispatchers.Default) {
             app.db.timetableDao().getAllForDateNow(profileId, date)
         }.filter { it.type != Lesson.TYPE_NO_LESSONS }
 
-        if (lessons.isNotEmpty()) { run {
-            val startTime = lessons.first().startTime ?: return@run
-            val endTime = lessons.last().endTime ?: return@run
-            val diff = Time.diff(startTime, endTime)
+        if (lessons.isNotEmpty()) {
+            run {
+                val startTime = lessons.first().startTime ?: return@run
+                val endTime = lessons.last().endTime ?: return@run
+                val diff = Time.diff(startTime, endTime)
 
-            b.lessonsInfo.setText(
+                b.lessonsInfo.setText(
                     R.string.dialog_day_lessons_info,
                     startTime.stringHM,
                     endTime.stringHM,
                     lessons.size.toString(),
                     diff.hour.toString(),
                     diff.minute.toString()
-            )
+                )
 
-            b.lessonsInfo.visibility = View.VISIBLE
-        }}
+                b.lessonsInfo.visibility = View.VISIBLE
+            }
+        }
 
         val lessonChanges = withContext(Dispatchers.Default) {
             app.db.timetableDao().getChangesForDateNow(profileId, date)
@@ -133,7 +113,7 @@ class DayDialog(
                     date,
                     onShowListener = onShowListener,
                     onDismissListener = onDismissListener
-                )
+                ).show()
             }
         }
         b.lessonChangesFrame.isVisible = lessonChanges.isNotEmpty()
@@ -158,36 +138,36 @@ class DayDialog(
                     date,
                     onShowListener = onShowListener,
                     onDismissListener = onDismissListener
-                )
+                ).show()
             }
         }
         b.teacherAbsenceFrame.isVisible = teacherAbsences.isNotEmpty()
 
         adapter = EventListAdapter(
-                activity = activity,
-                showWeekDay = false,
-                showDate = false,
-                showType = true,
-                showTime = true,
-                showSubject = true,
-                markAsSeen = true,
-                onItemClick = {
-                    EventDetailsDialog(
-                            activity,
-                            it,
-                            onShowListener = onShowListener,
-                            onDismissListener = onDismissListener
-                    )
-                },
-                onEventEditClick = {
-                    EventManualDialog(
-                            activity,
-                            it.profileId,
-                            editingEvent = it,
-                            onShowListener = onShowListener,
-                            onDismissListener = onDismissListener
-                    )
-                }
+            activity = activity,
+            showWeekDay = false,
+            showDate = false,
+            showType = true,
+            showTime = true,
+            showSubject = true,
+            markAsSeen = true,
+            onItemClick = {
+                EventDetailsDialog(
+                    activity,
+                    it,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener
+                ).show()
+            },
+            onEventEditClick = {
+                EventManualDialog(
+                    activity,
+                    it.profileId,
+                    editingEvent = it,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener
+                ).show()
+            }
         )
 
         app.db.eventDao().getAllByDate(profileId, date).observe(activity) { events ->
@@ -217,5 +197,5 @@ class DayDialog(
                 b.eventsNoData.visibility = View.VISIBLE
             }
         }
-    }}
+    }
 }
