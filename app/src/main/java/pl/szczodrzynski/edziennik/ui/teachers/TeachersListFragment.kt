@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.TeachersListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 
@@ -52,7 +53,10 @@ class TeachersListFragment : Fragment(), CoroutineScope {
             if (!isAdded) return@Observer
 
             // load & configure the adapter
-            adapter.items = items.sortedByDescending { it.subjects.isNotEmpty() }
+            adapter.items = items.sortedByDescending { it.type == 0 }.sortedByDescending { it.type != 0 }.sortedByDescending { it.subjects.isNotEmpty() }
+            adapter.items.forEach {
+                it.image = it.image ?: MessagesUtils.getProfileImage(48, 24, 16, 12, 1, it.fullName)
+            }
             if (items.isNotNullNorEmpty() && b.list.adapter == null) {
                 b.list.adapter = adapter
                 b.list.apply {

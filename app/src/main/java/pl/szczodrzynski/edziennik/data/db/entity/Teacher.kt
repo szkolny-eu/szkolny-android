@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.getNameInitials
@@ -124,6 +125,22 @@ open class Teacher {
                 list += typeName(c, it, typeDescription)
         }
         return list.join(", ")
+    }
+
+    fun getTypeName(c: Context, subject_list: List<Subject>): String {
+        var role = getTypeText(c)
+        if (subjects.isNotEmpty()) {
+            val list = subjects.map { subject_list.first { element -> it == element.id }.longName}  //{ App.db.subjectDao().getByIdNow(App.profileId, it).longName }
+            role = when {
+                role.isNotBlank() -> {
+                    role.plus(": ").plus(list.joinToString())
+                }
+                else -> {
+                    role.plus(list.joinToString())
+                }
+            }
+        }
+        return role
     }
 
 

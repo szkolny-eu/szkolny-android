@@ -57,51 +57,26 @@ class TeachersAdapter(
         val b = holder.b
 
         b.name.text = item.fullName
-        b.image.setImageBitmap(item.image ?: getProfileImage(48, 24, 16, 12, 1, item.fullName))
-        var role = item.getTypeText(activity)
-        if (item.subjects.isNotNullNorEmpty()) {
-            val subjects = item.subjects.map { App.db.subjectDao().getByIdNow(App.profileId, it).longName }
-            role = when {
-                role.isNotNullNorBlank() -> {
-                    role.plus(": ").plus(subjects.joinToString())
-                }
-                else -> {
-                    role.plus(subjects.joinToString())
-                }
-            }
-        }
-        b.type.text = role
-        b.copy.setImageDrawable(IconicsDrawable(activity,
-            CommunityMaterial.Icon.cmd_clipboard_text_multiple_outline).apply {
-            colorAttr(activity,
-                R.attr.colorIcon); sizeDp = 24
+        b.image.setImageBitmap(item.image)
+        b.type.text = item.getTypeName(activity, App.db.subjectDao().getAllNow(App.profileId))
+        b.copy.isVisible = true
+        b.copy.setImageDrawable(IconicsDrawable(activity, CommunityMaterial.Icon.cmd_clipboard_text_multiple_outline).apply {
+            colorAttr(activity, R.attr.colorIcon)
+            sizeDp = 24
         })
         b.copy.onClick {
             item.fullName.copyToClipboard(activity)
             Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show()
-            b.copy.setImageDrawable(IconicsDrawable(activity,
-                CommunityMaterial.Icon.cmd_clipboard_check_multiple_outline).apply {
-                colorAttr(activity,
-                    R.attr.colorIcon); sizeDp = 24
-            })
-
-            Timer().schedule(5000) {
-                b.copy.setImageDrawable(IconicsDrawable(activity,
-                    CommunityMaterial.Icon.cmd_clipboard_text_multiple_outline).apply {
-                    colorAttr(activity, R.attr.colorIcon)
-                    sizeDp = 24
-                })
-            }
         }
         if (item.loginId.isNotNullNorBlank()) {
-            b.message.isVisible = true
-            b.message.setImageDrawable(IconicsDrawable(activity,
+            b.sendMessage.isVisible = true
+            b.sendMessage.setImageDrawable(IconicsDrawable(activity,
                 CommunityMaterial.Icon.cmd_email_plus_outline).apply {
                 colorAttr(activity,
                     R.attr.colorIcon); sizeDp = 24
             })
 
-            b.message.onClick {
+            b.sendMessage.onClick {
                 val intent = Intent(
                     Intent.ACTION_MAIN,
                     "fragmentId" to MainActivity.TARGET_MESSAGES_COMPOSE,
