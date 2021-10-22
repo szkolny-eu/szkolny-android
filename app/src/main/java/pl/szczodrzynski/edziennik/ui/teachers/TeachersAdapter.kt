@@ -12,9 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -24,11 +21,10 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.TeacherItemBinding
-import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils.getProfileImage
-import pl.szczodrzynski.navlib.colorAttr
-import java.util.*
-import kotlin.concurrent.schedule
+import pl.szczodrzynski.edziennik.ext.Intent
+import pl.szczodrzynski.edziennik.ext.copyToClipboard
+import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
+import pl.szczodrzynski.edziennik.ext.onClick
 import kotlin.coroutines.CoroutineContext
 
 class TeachersAdapter(
