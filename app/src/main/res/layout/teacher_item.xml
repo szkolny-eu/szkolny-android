@@ -45,28 +45,32 @@
 
     </LinearLayout>
 
-    <ImageView
+    <com.mikepenz.iconics.view.IconicsImageButton
         android:id="@+id/sendMessage"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        android:foreground="@drawable/bg_rounded_ripple_4dp"
+        android:background="?selectableItemBackground"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_no_messages"
+        app:iiv_color="?android:textColorSecondary"
+        app:iiv_icon="cmd-email-plus-outline"
+        app:iiv_size="24dp"
         tools:visibility="visible" />
 
-    <ImageView
+    <com.mikepenz.iconics.view.IconicsImageButton
         android:id="@+id/copy"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
-        android:foreground="@drawable/bg_rounded_ripple_4dp"
+        android:background="?selectableItemBackground"
         android:visibility="gone"
-        app:srcCompat="?attr/actionModeCopyDrawable"
+        app:iiv_color="?android:textColorSecondary"
+        app:iiv_icon="cmd-clipboard-text-multiple-outline"
+        app:iiv_size="24dp"
         tools:visibility="visible" />
 
 </LinearLayout>

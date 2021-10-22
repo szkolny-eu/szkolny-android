@@ -53,10 +53,11 @@ class TeachersListFragment : Fragment(), CoroutineScope {
             if (!isAdded) return@Observer
 
             // load & configure the adapter
-            adapter.items = items.sortedByDescending { it.type == 0 }.sortedByDescending { it.type != 0 }.sortedByDescending { it.subjects.isNotEmpty() }
+            adapter.items = items.sortedWith(compareBy({ it.subjects.isEmpty() }, { it.type == 0 }, { it.type != 0 }))
             adapter.items.forEach {
                 it.image = it.image ?: MessagesUtils.getProfileImage(48, 24, 16, 12, 1, it.fullName)
             }
+            adapter.subjectList = App.db.subjectDao().getAllNow(App.profileId)
             if (items.isNotNullNorEmpty() && b.list.adapter == null) {
                 b.list.adapter = adapter
                 b.list.apply {
