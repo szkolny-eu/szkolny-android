@@ -112,7 +112,7 @@ class HomeTimetableCard(
         b.bellSync.setOnClickListener {
             BellSyncTimeChooseDialog(
                     activity
-            )
+            ).show()
         }
 
         b.showCounter.setOnClickListener {

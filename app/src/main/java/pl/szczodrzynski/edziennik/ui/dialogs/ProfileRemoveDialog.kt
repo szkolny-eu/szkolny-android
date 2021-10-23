@@ -5,51 +5,41 @@
 package pl.szczodrzynski.edziennik.ui.dialogs
 
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
-import kotlin.coroutines.CoroutineContext
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
 
 class ProfileRemoveDialog(
-        val activity: MainActivity,
-        val profileId: Int,
-        val profileName: String,
-        val noProfileRemoval: Boolean = false,
-        val onRemove: (() -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "ProfileRemoveDialog"
-    }
+    activity: AppCompatActivity,
+    val profileId: Int,
+    val profileName: String,
+    val noProfileRemoval: Boolean = false,
+    val onRemove: (() -> Unit)? = null,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BaseDialog(activity, onShowListener, onDismissListener) {
 
-    private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override val TAG = "ProfileRemoveDialog"
 
-    private val app by lazy { activity.application as App }
-    private lateinit var b: DialogLessonDetailsBinding
-    private lateinit var dialog: AlertDialog
+    override fun getTitleRes() = R.string.profile_menu_remove_confirm
+    override fun getMessageFormat() =
+        R.string.profile_menu_remove_confirm_text_format to listOf(
+            profileName,
+            profileName
+        )
 
-    init { run {
-        job = Job()
+    override fun isCancelable() = false
+    override fun getPositiveButtonText() = R.string.remove
+    override fun getNeutralButtonText() = R.string.cancel
 
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.profile_menu_remove_confirm)
-                .setMessage(activity.getString(R.string.profile_menu_remove_confirm_text_format, profileName, profileName))
-                .setPositiveButton(R.string.remove) { _, _ ->
-                    removeProfile()
-                }
-                .setNeutralButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-                .setCancelable(false)
-                .show()
-    }}
+    override suspend fun onShow() = Unit
 
-    private fun removeProfile() { launch {
-        val deferred = async(Dispatchers.Default) {
-            val profileObject = app.db.profileDao().getByIdNow(profileId) ?: return@async
+    override suspend fun onPositiveClick(): Boolean {
+        withContext(Dispatchers.Default) {
+            val profileObject = app.db.profileDao().getByIdNow(profileId) ?: return@withContext
             app.db.announcementDao().clear(profileId)
             app.db.attendanceDao().clear(profileId)
             app.db.attendanceTypeDao().clear(profileId)
@@ -77,12 +67,13 @@ class ProfileRemoveDialog(
             app.db.metadataDao().deleteAll(profileId)
 
             if (noProfileRemoval)
-                return@async
+                return@withContext
 
             app.db.configDao().clear(profileId)
 
             val loginStoreId = profileObject.loginStoreId
-            val profilesUsingLoginStore = app.db.profileDao().getIdsByLoginStoreIdNow(loginStoreId)
+            val profilesUsingLoginStore =
+                app.db.profileDao().getIdsByLoginStoreIdNow(loginStoreId)
             if (profilesUsingLoginStore.size == 1) {
                 app.db.loginStoreDao().remove(loginStoreId)
             }
@@ -92,10 +83,13 @@ class ProfileRemoveDialog(
                 app.profileLoadLast { }
             }
         }
-        deferred.await()
-        dialog.dismiss()
-        activity.reloadTarget()
+
+        if (activity is MainActivity)
+            activity.reloadTarget()
+
         Toast.makeText(activity, R.string.dialog_profile_remove_success, Toast.LENGTH_LONG).show()
         onRemove?.invoke()
-    }}
+
+        return DISMISS
+    }
 }

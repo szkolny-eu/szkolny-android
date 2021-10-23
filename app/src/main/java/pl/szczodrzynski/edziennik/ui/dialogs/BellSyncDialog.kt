@@ -4,41 +4,32 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs
 
-import androidx.appcompat.app.AlertDialog
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogBellSyncBinding
 import pl.szczodrzynski.edziennik.ext.resolveDrawable
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.models.Time
-import kotlin.coroutines.CoroutineContext
 
 class BellSyncDialog(
-        val activity: AppCompatActivity,
-        private val bellTime: Time,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
+    activity: AppCompatActivity,
+    private val bellTime: Time,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<DialogBellSyncBinding>(activity, onShowListener, onDismissListener) {
 
-    companion object {
-        const val TAG = "BellSyncDialog"
-    }
+    override val TAG = "BellSyncDialog"
 
-    private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getTitleRes() = R.string.bell_sync_title
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogBellSyncBinding.inflate(layoutInflater)
 
-    private lateinit var dialog: AlertDialog
-    private lateinit var b: DialogBellSyncBinding
-
-    private val app by lazy { activity.application as App }
+    override fun getNeutralButtonText() = R.string.cancel
 
     private var counterJob: Job? = null
 
@@ -50,25 +41,7 @@ class BellSyncDialog(
             return Pair(bellDiff, multiplier)
         }
 
-    init { apply {
-        if (activity.isFinishing)
-            return@apply
-        job = Job()
-        b = DialogBellSyncBinding.inflate(activity.layoutInflater)
-        onShowListener?.invoke(TAG)
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.bell_sync_title)
-                .setView(b.root)
-                .setNeutralButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-                .setOnDismissListener {
-                    counterJob?.cancel()
-                    onDismissListener?.invoke(TAG)
-                }
-                .show()
-        initView()
-    }}
-
-    private fun initView() {
+    override suspend fun onShow() {
         b.bellSyncButton.setOnClickListener {
             val (bellDiff, multiplier) = actualBellDiff
             val bellDiffText = (if (multiplier == -1) '-' else '+') + bellDiff.stringHMS
@@ -76,26 +49,29 @@ class BellSyncDialog(
             app.config.timetable.bellSyncMultiplier = multiplier
 
             MaterialAlertDialogBuilder(activity)
-                    .setTitle(R.string.bell_sync_title)
-                    .setMessage(app.getString(R.string.bell_sync_results, bellDiffText))
-                    .setPositiveButton(R.string.ok) { resultsDialog, _ ->
-                        resultsDialog.dismiss()
-                        dialog.dismiss()
-                        if (activity is MainActivity) activity.reloadTarget()
-                    }
-                    .show()
+                .setTitle(R.string.bell_sync_title)
+                .setMessage(app.getString(R.string.bell_sync_results, bellDiffText))
+                .setPositiveButton(R.string.ok) { resultsDialog, _ ->
+                    resultsDialog.dismiss()
+                    dialog.dismiss()
+                    if (activity is MainActivity) activity.reloadTarget()
+                }
+                .show()
         }
 
         if (Time.diff(Time.getNow(), bellTime) > Time(2, 0, 0)) { // Easter egg ^^
             b.bellSyncButton.setImageDrawable(R.drawable.ic_bell_wtf.resolveDrawable(app)) // wtf
         }
 
-        launch {
-            counterJob = startCoroutineTimer(repeatMillis = 500) {
-                val (bellDiff, multiplier) = actualBellDiff
-                val bellDiffText = (if (multiplier == -1) '-' else '+') + bellDiff.stringHMS
-                b.bellSyncHowto.text = app.getString(R.string.bell_sync_howto, bellTime.stringHM, bellDiffText)
-            }
+        counterJob = startCoroutineTimer(repeatMillis = 500) {
+            val (bellDiff, multiplier) = actualBellDiff
+            val bellDiffText = (if (multiplier == -1) '-' else '+') + bellDiff.stringHMS
+            b.bellSyncHowto.text =
+                app.getString(R.string.bell_sync_howto, bellTime.stringHM, bellDiffText)
         }
+    }
+
+    override fun onDismiss() {
+        counterJob?.cancel()
     }
 }

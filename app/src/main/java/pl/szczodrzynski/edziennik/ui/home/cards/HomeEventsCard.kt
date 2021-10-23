@@ -70,14 +70,14 @@ class HomeEventsCard(
                     EventDetailsDialog(
                             activity,
                             it
-                    )
+                    ).show()
                 },
                 onEventEditClick = {
                     EventManualDialog(
                             activity,
                             it.profileId,
                             editingEvent = it
-                    )
+                    ).show()
                 }
         )
 

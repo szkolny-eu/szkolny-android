@@ -108,7 +108,7 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
         }})
 
         adapter.onAttendanceClick = {
-            AttendanceDetailsDialog(activity, it)
+            AttendanceDetailsDialog(activity, it).show()
         }
 
         b.toggleGroup.check(when (periodSelection) {

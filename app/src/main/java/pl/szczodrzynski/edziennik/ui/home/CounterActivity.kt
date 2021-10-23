@@ -70,7 +70,7 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
             }
         )
         b.bellSync.onClick {
-            BellSyncTimeChooseDialog(activity = this@CounterActivity)
+            BellSyncTimeChooseDialog(activity = this@CounterActivity).show()
         }
 
         app.config.timetable.bellSyncDiff?.let {

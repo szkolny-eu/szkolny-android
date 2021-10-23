@@ -34,7 +34,7 @@ class ErrorSnackbar(val activity: AppCompatActivity) : CoroutineScope {
         this.coordinator = coordinatorLayout
         snackbar = Snackbar.make(coordinator, R.string.snackbar_error_text, Snackbar.LENGTH_INDEFINITE)
         snackbar?.setAction(R.string.more) {
-            ErrorDetailsDialog(activity, errors)
+            ErrorDetailsDialog(activity, errors).show()
             errors = mutableListOf()
         }
         val bgColor = ColorUtils.compositeColors(

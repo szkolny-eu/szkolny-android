@@ -105,7 +105,7 @@ class StatsViewHolder(
         b.customValueDivider.isVisible = manager.dontCountEnabled || manager.plusValue != null || manager.minusValue != null
         b.customValueLayout.isVisible = b.customValueDivider.isVisible
         b.customValueButton.onClick {
-            GradesConfigDialog(activity, reloadOnDismiss = true)
+            GradesConfigDialog(activity, reloadOnDismiss = true).show()
         }
     }
 

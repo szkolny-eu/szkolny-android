@@ -68,14 +68,14 @@ class HomeworkListFragment : LazyFragment(), CoroutineScope {
                 EventDetailsDialog(
                     activity,
                     it
-                )
+                ).show()
             },
             onEventEditClick = {
                 EventManualDialog(
                     activity,
                     it.profileId,
                     editingEvent = it
-                )
+                ).show()
             }
         )
 

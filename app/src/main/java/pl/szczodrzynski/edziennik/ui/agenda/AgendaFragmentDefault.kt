@@ -139,7 +139,7 @@ class AgendaFragmentDefault(
                     val c = Calendar.getInstance()
                     c.time = dayItem.date
                     if (c.timeInMillis == selectedDate.inMillis) {
-                        DayDialog(activity, app.profileId, selectedDate)
+                        DayDialog(activity, app.profileId, selectedDate).show()
                     }
                 }
 
@@ -147,16 +147,25 @@ class AgendaFragmentDefault(
                     val date = Date.fromCalendar(event.instanceDay)
 
                     when (event) {
-                        is AgendaEvent -> EventDetailsDialog(activity, event.event)
-                        is LessonChangesEvent -> LessonChangesDialog(activity, app.profileId, date)
+                        is AgendaEvent -> EventDetailsDialog(activity, event.event).show()
+                        is LessonChangesEvent -> LessonChangesDialog(
+                            activity = activity,
+                            profileId = app.profileId,
+                            defaultDate = date
+                        ).show()
                         is TeacherAbsenceEvent -> TeacherAbsenceDialog(
-                            activity,
-                            app.profileId,
-                            date
-                        )
-                        is AgendaEventGroup -> DayDialog(activity, app.profileId, date, eventTypeId = event.typeId)
+                            activity = activity,
+                            profileId = app.profileId,
+                            date = date
+                        ).show()
+                        is AgendaEventGroup -> DayDialog(
+                            activity = activity,
+                            profileId = app.profileId,
+                            date = date,
+                            eventTypeId = event.typeId,
+                        ).show()
                         is BaseCalendarEvent -> if (event.isPlaceHolder)
-                            DayDialog(activity, app.profileId, date)
+                            DayDialog(activity, app.profileId, date).show()
                     }
 
                     if (event is BaseEvent && event.showItemBadge) {

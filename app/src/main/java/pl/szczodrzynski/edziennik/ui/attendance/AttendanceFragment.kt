@@ -67,7 +67,7 @@ class AttendanceFragment : Fragment(), CoroutineScope {
                         .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
-                            AttendanceConfigDialog(activity, true, null, null)
+                            AttendanceConfigDialog(activity, true, null, null).show()
                         }),
                 BottomSheetSeparatorItem(true),
                 BottomSheetPrimaryItem(true)

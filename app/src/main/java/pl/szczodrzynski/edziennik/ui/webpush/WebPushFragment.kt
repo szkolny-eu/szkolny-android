@@ -65,7 +65,7 @@ class WebPushFragment : Fragment(), CoroutineScope {
                 QrScannerDialog(activity, {
                     b.tokenEditText.setText(it.crc32().toString(36).uppercase())
                     pairBrowser(browserId = it)
-                })
+                }).show()
             }
         }
 

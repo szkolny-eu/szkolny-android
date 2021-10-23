@@ -4,113 +4,93 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.sync
 
-import androidx.appcompat.app.AlertDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ANNOUNCEMENTS
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCE
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_BEHAVIOUR
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOME
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
+import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
-import pl.szczodrzynski.edziennik.databinding.DialogLessonDetailsBinding
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
-import kotlin.coroutines.CoroutineContext
 
 class SyncViewListDialog(
-        val activity: MainActivity,
-        val currentViewId: Int? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "SyncViewListDialog"
+    activity: MainActivity,
+    private val currentViewId: Int,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BaseDialog(activity, onShowListener, onDismissListener) {
+
+    override val TAG = "SyncViewListDialog"
+
+    override fun getTitleRes() = R.string.dialog_sync_view_list_title
+    override fun getPositiveButtonText() = R.string.ok
+    override fun getNeutralButtonText() = R.string.sync_feature_all
+    override fun getNegativeButtonText() = R.string.cancel
+
+    override fun getMultiChoiceItems(): Map<CharSequence, Any> {
+        items = mapOf(
+            R.string.menu_timetable to DRAWER_ITEM_TIMETABLE,
+            R.string.menu_agenda to DRAWER_ITEM_AGENDA,
+            R.string.menu_grades to DRAWER_ITEM_GRADES,
+            R.string.menu_homework to DRAWER_ITEM_HOMEWORK,
+            R.string.menu_notices to DRAWER_ITEM_BEHAVIOUR,
+            R.string.menu_attendance to DRAWER_ITEM_ATTENDANCE,
+            R.string.title_messages_inbox_single to (DRAWER_ITEM_MESSAGES to 0),
+            R.string.title_messages_sent_single to (DRAWER_ITEM_MESSAGES to 1),
+            R.string.menu_announcements to DRAWER_ITEM_ANNOUNCEMENTS,
+        ).mapKeys { (resId, _) -> activity.getString(resId) }
+        return items
     }
 
-    private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getDefaultSelectedItems(): Set<Any> {
+        val everything = currentViewId == DRAWER_ITEM_HOME
+        return when {
+            everything -> items.values.toSet()
+            currentViewId == DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
+                1 -> setOf(DRAWER_ITEM_MESSAGES to 1)
+                else -> setOf(DRAWER_ITEM_MESSAGES to 0)
+            }
+            else -> setOf(currentViewId)
+        }
+    }
 
-    private val app by lazy { activity.application as App }
-    private lateinit var b: DialogLessonDetailsBinding
-    private lateinit var dialog: AlertDialog
+    override suspend fun onShow() = Unit
 
-    init { run {
-        job = Job()
+    private lateinit var items: Map<CharSequence, Any>
 
-        val viewIds = arrayOf(
-                MainActivity.DRAWER_ITEM_TIMETABLE,
-                MainActivity.DRAWER_ITEM_AGENDA,
-                MainActivity.DRAWER_ITEM_GRADES,
-                MainActivity.DRAWER_ITEM_HOMEWORK,
-                MainActivity.DRAWER_ITEM_BEHAVIOUR,
-                MainActivity.DRAWER_ITEM_ATTENDANCE,
-                MainActivity.DRAWER_ITEM_MESSAGES,
-                MainActivity.DRAWER_ITEM_MESSAGES,
-                MainActivity.DRAWER_ITEM_ANNOUNCEMENTS
-        )
+    @Suppress("UNCHECKED_CAST")
+    override suspend fun onPositiveClick(): Boolean {
+        val selected = getMultiSelection().mapNotNull {
+            when (it) {
+                is Int -> it to 0
+                is Pair<*, *> -> it as Pair<Int, Int>
+                else -> null
+            }
+        }
 
-        val items = arrayOf<String>(
-                app.getString(R.string.menu_timetable),
-                app.getString(R.string.menu_agenda),
-                app.getString(R.string.menu_grades),
-                app.getString(R.string.menu_homework),
-                app.getString(R.string.menu_notices),
-                app.getString(R.string.menu_attendance),
-                app.getString(R.string.title_messages_inbox_single),
-                app.getString(R.string.title_messages_sent_single),
-                app.getString(R.string.menu_announcements)
-        )
+        if (selected.isEmpty())
+            return DISMISS
 
-        val everything = currentViewId == MainActivity.DRAWER_ITEM_HOME
-        val checkedItems = booleanArrayOf(
-                everything || currentViewId == MainActivity.DRAWER_ITEM_TIMETABLE,
-                everything || currentViewId == MainActivity.DRAWER_ITEM_AGENDA,
-                everything || currentViewId == MainActivity.DRAWER_ITEM_GRADES,
-                everything || currentViewId == MainActivity.DRAWER_ITEM_HOMEWORK,
-                everything || currentViewId == MainActivity.DRAWER_ITEM_BEHAVIOUR,
-                everything || currentViewId == MainActivity.DRAWER_ITEM_ATTENDANCE,
-                everything || currentViewId == MainActivity.DRAWER_ITEM_MESSAGES && MessagesFragment.pageSelection != 1,
-                everything || currentViewId == MainActivity.DRAWER_ITEM_MESSAGES && MessagesFragment.pageSelection == 1,
-                everything || currentViewId == MainActivity.DRAWER_ITEM_ANNOUNCEMENTS
-        )
-        val userChooses = checkedItems.toMutableList()
+        if (activity is MainActivity)
+            activity.swipeRefreshLayout.isRefreshing = true
+        EdziennikTask.syncProfile(
+            App.profileId,
+            selected
+        ).enqueue(activity)
+        return DISMISS
+    }
 
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.dialog_sync_view_list_title)
-                .setMultiChoiceItems(items, checkedItems) { _, which, isChecked ->
-                    userChooses[which] = isChecked
-                }
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    dialog.dismiss()
-
-                    val selectedViewIds = userChooses.mapIndexed { index, it ->
-                        if (it)
-                            viewIds[index] to when (index) {
-                                7 -> 1
-                                else -> 0
-                            }
-                        else
-                            null
-                    }.let {
-                        listOfNotNull(*it.toTypedArray())
-                    }
-
-                    if (selectedViewIds.isNotEmpty()) {
-                        activity.swipeRefreshLayout.isRefreshing = true
-                        EdziennikTask.syncProfile(
-                                App.profileId,
-                                selectedViewIds
-                        ).enqueue(activity)
-                    }
-                }
-                .setNeutralButton(R.string.sync_feature_all) { _, _ ->
-                    dialog.dismiss()
-
-                    activity.swipeRefreshLayout.isRefreshing = true
-                    EdziennikTask.syncProfile(App.profileId).enqueue(activity)
-                }
-                .setNegativeButton(R.string.cancel) { _, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-    }}
+    override suspend fun onNeutralClick(): Boolean {
+        if (activity is MainActivity)
+            activity.swipeRefreshLayout.isRefreshing = true
+        EdziennikTask.syncProfile(App.profileId).enqueue(activity)
+        return DISMISS
+    }
 }

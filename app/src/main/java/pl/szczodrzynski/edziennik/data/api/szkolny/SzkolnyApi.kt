@@ -103,7 +103,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                     activity,
                     listOf(apiError),
                     R.string.error_occured
-                )
+                ).show()
                 null
             }
             null

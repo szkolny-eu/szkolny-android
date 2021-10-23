@@ -420,7 +420,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                                 App.db.profileDao().getByIdNow(profile.identifier.toInt())
                             } ?: return@launch
                             drawer.close()
-                            ProfileConfigDialog(this@MainActivity, appProfile)
+                            ProfileConfigDialog(this@MainActivity, appProfile).show()
                         }
                         true
                     } else {
@@ -529,7 +529,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (app.config.appVersion < BuildConfig.VERSION_CODE) {
             // force an AppSync after update
             app.config.sync.lastAppSync = 0L
-            ChangelogDialog(this)
+            ChangelogDialog(this).show()
             if (app.config.appVersion < 170) {
                 //Intent intent = new Intent(this, ChangelogIntroActivity.class);
                 //startActivity(intent);
@@ -587,7 +587,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 .withIcon(CommunityMaterial.Icon.cmd_download_outline)
                 .withOnClickListener {
                     bottomSheet.close()
-                    SyncViewListDialog(this, navTargetId)
+                    SyncViewListDialog(this, navTargetId).show()
                 },
             BottomSheetSeparatorItem(false),
             BottomSheetPrimaryItem(false)
@@ -690,7 +690,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             Type.NOT_AVAILABLE -> {
                 swipeRefreshLayout.isRefreshing = false
                 loadTarget(DRAWER_ITEM_HOME)
-                RegisterUnavailableDialog(this, error.status!!)
+                RegisterUnavailableDialog(this, error.status!!).show()
                 return
             }
             Type.API_ERROR -> {
@@ -722,7 +722,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onUpdateEvent(event: Update) {
         EventBus.getDefault().removeStickyEvent(event)
-        UpdateAvailableDialog(this, event)
+        UpdateAvailableDialog(this, event).show()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -730,7 +730,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         EventBus.getDefault().removeStickyEvent(event)
         val error = app.availabilityManager.check(app.profile, cacheOnly = true)
         if (error != null) {
-            RegisterUnavailableDialog(this, error.status!!)
+            RegisterUnavailableDialog(this, error.status!!).show()
         }
     }
 
@@ -797,7 +797,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (event.error.errorCode == ERROR_VULCAN_API_DEPRECATED) {
             if (event.error.profileId != App.profileId)
                 return
-            ErrorDetailsDialog(this, listOf(event.error))
+            ErrorDetailsDialog(this, listOf(event.error)).show()
         }
         navView.toolbar.apply {
             subtitleFormat = R.string.toolbar_subtitle
@@ -894,7 +894,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         this,
                         extras.getString("serverMessageTitle") ?: getString(R.string.app_name),
                         extras.getString("serverMessageText") ?: ""
-                    )
+                    ).show()
                     true
                 }
                 "feedbackMessage" -> {
@@ -917,7 +917,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         this,
                         App.profileId,
                         defaultDate = date
-                    )
+                    ).show()
                     true
                 }
                 else -> false

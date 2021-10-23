@@ -4,96 +4,71 @@
 
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
-import pl.szczodrzynski.edziennik.ext.onClick
-import kotlin.coroutines.CoroutineContext
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
 
-// TODO refactor dialog to allow configuring other profiles
-// than the selected one in UI
 class NotificationFilterDialog(
-        val activity: AppCompatActivity,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "NotificationFilterDialog"
-        private val notificationTypes = listOf(
-                Notification.TYPE_TIMETABLE_LESSON_CHANGE to R.string.notification_type_timetable_lesson_change,
-                Notification.TYPE_NEW_GRADE to R.string.notification_type_new_grade,
-                Notification.TYPE_NEW_EVENT to R.string.notification_type_new_event,
-                Notification.TYPE_NEW_HOMEWORK to R.string.notification_type_new_homework,
-                Notification.TYPE_NEW_MESSAGE to R.string.notification_type_new_message,
-                Notification.TYPE_LUCKY_NUMBER to R.string.notification_type_lucky_number,
-                Notification.TYPE_NEW_NOTICE to R.string.notification_type_notice,
-                Notification.TYPE_NEW_ATTENDANCE to R.string.notification_type_attendance,
-                Notification.TYPE_NEW_ANNOUNCEMENT to R.string.notification_type_new_announcement,
-                Notification.TYPE_NEW_SHARED_EVENT to R.string.notification_type_new_shared_event,
-                Notification.TYPE_NEW_SHARED_HOMEWORK to R.string.notification_type_new_shared_homework,
-                Notification.TYPE_REMOVED_SHARED_EVENT to R.string.notification_type_removed_shared_event,
-                Notification.TYPE_TEACHER_ABSENCE to R.string.notification_type_new_teacher_absence
-        )
+    activity: AppCompatActivity,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BaseDialog(activity, onShowListener, onDismissListener) {
+
+    override val TAG = "NotificationFilterDialog"
+
+    override fun getTitleRes() = R.string.dialog_notification_filter_title
+    override fun getMessageRes() = R.string.dialog_notification_filter_text
+    override fun getPositiveButtonText() = R.string.ok
+    override fun getNegativeButtonText() = R.string.cancel
+
+    override fun getMultiChoiceItems(): Map<CharSequence, Any> {
+        notificationTypes = mapOf(
+            R.string.notification_type_timetable_lesson_change to Notification.TYPE_TIMETABLE_LESSON_CHANGE,
+            R.string.notification_type_new_grade to Notification.TYPE_NEW_GRADE,
+            R.string.notification_type_new_event to Notification.TYPE_NEW_EVENT,
+            R.string.notification_type_new_homework to Notification.TYPE_NEW_HOMEWORK,
+            R.string.notification_type_new_message to Notification.TYPE_NEW_MESSAGE,
+            R.string.notification_type_lucky_number to Notification.TYPE_LUCKY_NUMBER,
+            R.string.notification_type_notice to Notification.TYPE_NEW_NOTICE,
+            R.string.notification_type_attendance to Notification.TYPE_NEW_ATTENDANCE,
+            R.string.notification_type_new_announcement to Notification.TYPE_NEW_ANNOUNCEMENT,
+            R.string.notification_type_new_shared_event to Notification.TYPE_NEW_SHARED_EVENT,
+            R.string.notification_type_new_shared_homework to Notification.TYPE_NEW_SHARED_HOMEWORK,
+            R.string.notification_type_removed_shared_event to Notification.TYPE_REMOVED_SHARED_EVENT,
+            R.string.notification_type_new_teacher_absence to Notification.TYPE_TEACHER_ABSENCE,
+        ).mapKeys { (resId, _) -> activity.getString(resId) }
+        return notificationTypes
     }
 
-    private lateinit var app: App
-    private lateinit var dialog: AlertDialog
+    override fun getDefaultSelectedItems() =
+        notificationTypes.values.subtract(app.config.forProfile().sync.notificationFilter)
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override suspend fun onShow() = Unit
 
-    private val notificationFilter = mutableListOf<Int>()
+    private lateinit var notificationTypes: Map<CharSequence, Int>
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
+    override suspend fun onPositiveClick(): Boolean {
+        val enabledTypes = getMultiSelection().filterIsInstance<Int>()
+        val disabledTypes = notificationTypes.values.subtract(enabledTypes).toList()
 
-        notificationFilter.clear()
-        notificationFilter += app.config.forProfile().sync.notificationFilter
-        val items = notificationTypes.map { app.getString(it.second) }.toTypedArray()
-        val checkedItems = notificationTypes.map { !notificationFilter.contains(it.first) }.toBooleanArray()
-
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.dialog_notification_filter_title)
-                //.setMessage(R.string.dialog_notification_filter_text)
-                .setMultiChoiceItems(items, checkedItems) { _, which, isChecked ->
-                    val type = notificationTypes[which].first
-                    notificationFilter.remove(type)
-                    if (!isChecked)
-                        notificationFilter += type
-                }
-                .setPositiveButton(R.string.ok, null)
-                .setNegativeButton(R.string.cancel, null)
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                }
-                .show()
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.onClick {
-            if (notificationFilter.isEmpty()) {
-                app.config.forProfile().sync.notificationFilter = notificationFilter
-                dialog.dismiss()
-                return@onClick
-            }
+        if (disabledTypes.isNotEmpty()) {
             // warn user when he tries to disable some notifications
             MaterialAlertDialogBuilder(activity)
-                    .setTitle(R.string.are_you_sure)
-                    .setMessage(R.string.notification_filter_warning)
-                    .setPositiveButton(R.string.ok) { _, _ ->
-                        app.config.forProfile().sync.notificationFilter = notificationFilter
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
+                .setTitle(R.string.are_you_sure)
+                .setMessage(R.string.notification_filter_warning)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    app.config.forProfile().sync.notificationFilter = disabledTypes
+                    dismiss()
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+            return NO_DISMISS
         }
-    }}
+
+        app.config.forProfile().sync.notificationFilter = disabledTypes
+
+        return DISMISS
+    }
 }

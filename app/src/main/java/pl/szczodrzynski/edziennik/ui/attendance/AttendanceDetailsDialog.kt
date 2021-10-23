@@ -4,54 +4,33 @@
 
 package pl.szczodrzynski.edziennik.ui.attendance
 
-import androidx.appcompat.app.AlertDialog
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.databinding.AttendanceDetailsDialogBinding
 import pl.szczodrzynski.edziennik.ext.setTintColor
+import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.BetterLink
-import kotlin.coroutines.CoroutineContext
 
 class AttendanceDetailsDialog(
-        val activity: AppCompatActivity,
-        val attendance: AttendanceFull,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
-) : CoroutineScope {
-    companion object {
-        private const val TAG = "AttendanceDetailsDialog"
-    }
+    activity: AppCompatActivity,
+    private val attendance: AttendanceFull,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : BindingDialog<AttendanceDetailsDialogBinding>(activity, onShowListener, onDismissListener) {
 
-    private lateinit var app: App
-    private lateinit var b: AttendanceDetailsDialogBinding
-    private lateinit var dialog: AlertDialog
+    override val TAG = "AttendanceDetailsDialog"
 
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+    override fun getTitleRes(): Int? = null
+    override fun inflate(layoutInflater: LayoutInflater) =
+        AttendanceDetailsDialogBinding.inflate(layoutInflater)
 
-    // local variables go here
+    override fun getPositiveButtonText() = R.string.close
 
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        onShowListener?.invoke(TAG)
-        app = activity.applicationContext as App
-        b = AttendanceDetailsDialogBinding.inflate(activity.layoutInflater)
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setView(b.root)
-                .setPositiveButton(R.string.close, null)
-                .setOnDismissListener {
-                    onDismissListener?.invoke(TAG)
-                }
-                .show()
+    override suspend fun onShow() {
         val manager = app.attendanceManager
 
         val attendanceColor = manager.getAttendanceColor(attendance)
@@ -69,5 +48,5 @@ class AttendanceDetailsDialog(
                 onActionSelected = dialog::dismiss
             )
         }
-    }}
+    }
 }

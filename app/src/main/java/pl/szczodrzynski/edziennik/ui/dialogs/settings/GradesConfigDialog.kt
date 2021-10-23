@@ -5,17 +5,18 @@
 package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AlertDialog
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.sephiroth.android.library.numberpicker.doOnStopTrackingTouch
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.DialogConfigGradesBinding
 import pl.szczodrzynski.edziennik.ext.join
 import pl.szczodrzynski.edziennik.ext.onChange
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setOnSelectedListener
+import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_MODE_DEFAULT
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_MODE_WEIGHTED
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC
@@ -25,47 +26,29 @@ import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_SEM_2_AVG
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_1_SEM_2_SEM
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_ALL_GRADES
-import java.util.*
 
 class GradesConfigDialog(
-        val activity: AppCompatActivity,
-        private val reloadOnDismiss: Boolean = true,
-        val onShowListener: ((tag: String) -> Unit)? = null,
-        val onDismissListener: ((tag: String) -> Unit)? = null
+    activity: AppCompatActivity,
+    reloadOnDismiss: Boolean = true,
+    onShowListener: ((tag: String) -> Unit)? = null,
+    onDismissListener: ((tag: String) -> Unit)? = null,
+) : ConfigDialog<DialogConfigGradesBinding>(
+    activity,
+    reloadOnDismiss,
+    onShowListener,
+    onDismissListener,
 ) {
-    companion object {
-        const val TAG = "GradesConfigDialog"
-    }
 
-    private val app by lazy { activity.application as App }
-    private val config by lazy { app.config.grades }
+    override val TAG = "GradesConfigDialog"
+
+    override fun getTitleRes() = R.string.menu_grades_config
+    override fun inflate(layoutInflater: LayoutInflater) =
+        DialogConfigGradesBinding.inflate(layoutInflater)
+
     private val profileConfig by lazy { app.config.getFor(app.profileId).grades }
 
-    private lateinit var b: DialogConfigGradesBinding
-    private lateinit var dialog: AlertDialog
-
-    init { run {
-        if (activity.isFinishing)
-            return@run
-        b = DialogConfigGradesBinding.inflate(activity.layoutInflater)
-        onShowListener?.invoke(TAG)
-        dialog = MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.menu_grades_config)
-                .setView(b.root)
-                .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
-                .setOnDismissListener {
-                    saveConfig()
-                    onDismissListener?.invoke(TAG)
-                    if (reloadOnDismiss) (activity as? MainActivity)?.reloadTarget()
-                }
-                .create()
-        initView()
-        loadConfig()
-        dialog.show()
-    }}
-
     @SuppressLint("SetTextI18n")
-    private fun loadConfig() {
+    override suspend fun loadConfig() {
         b.customPlusCheckBox.isChecked = profileConfig.plusValue != null
         b.customPlusValue.isVisible = b.customPlusCheckBox.isChecked
         b.customMinusCheckBox.isChecked = profileConfig.minusValue != null
@@ -79,7 +62,7 @@ class GradesConfigDialog(
             ORDER_BY_SUBJECT_ASC -> b.sortGradesBySubjectRadio
             else -> null
         }?.isChecked = true
-        
+
         when (profileConfig.colorMode) {
             COLOR_MODE_DEFAULT -> b.gradeColorFromERegister
             COLOR_MODE_WEIGHTED -> b.gradeColorByValue
@@ -95,37 +78,39 @@ class GradesConfigDialog(
             else -> null
         }?.isChecked = true
 
-        b.dontCountGrades.isChecked = profileConfig.dontCountEnabled && profileConfig.dontCountGrades.isNotEmpty()
+        b.dontCountGrades.isChecked =
+            profileConfig.dontCountEnabled && profileConfig.dontCountGrades.isNotEmpty()
         b.hideImproved.isChecked = profileConfig.hideImproved
         b.averageWithoutWeight.isChecked = profileConfig.averageWithoutWeight
 
         if (profileConfig.dontCountGrades.isEmpty()) {
             b.dontCountGradesText.setText("nb, 0, bz, bd")
-        }
-        else {
+        } else {
             b.dontCountGradesText.setText(profileConfig.dontCountGrades.join(", "))
         }
     }
 
-    private fun saveConfig() {
-        profileConfig.plusValue = if (b.customPlusCheckBox.isChecked) b.customPlusValue.progress else null
-        profileConfig.minusValue = if (b.customMinusCheckBox.isChecked) b.customMinusValue.progress else null
+    override suspend fun saveConfig() {
+        profileConfig.plusValue =
+            if (b.customPlusCheckBox.isChecked) b.customPlusValue.progress else null
+        profileConfig.minusValue =
+            if (b.customMinusCheckBox.isChecked) b.customMinusValue.progress else null
 
         b.dontCountGradesText.setText(
-                b.dontCountGradesText
-                        .text
-                        ?.toString()
-                        ?.lowercase()
-                        ?.replace(", ", ",")
+            b.dontCountGradesText
+                .text
+                ?.toString()
+                ?.lowercase()
+                ?.replace(", ", ",")
         )
         profileConfig.dontCountEnabled = b.dontCountGrades.isChecked
         profileConfig.dontCountGrades = b.dontCountGradesText.text
-                ?.split(",")
-                ?.map { it.trim() }
-                ?: listOf()
+            ?.split(",")
+            ?.map { it.trim() }
+            ?: listOf()
     }
 
-    private fun initView() {
+    override fun initView() {
         b.customPlusCheckBox.onChange { _, isChecked ->
             b.customPlusValue.isVisible = isChecked
         }
@@ -145,24 +130,38 @@ class GradesConfigDialog(
         b.sortGradesByDateRadio.setOnSelectedListener { config.orderBy = ORDER_BY_DATE_DESC }
         b.sortGradesBySubjectRadio.setOnSelectedListener { config.orderBy = ORDER_BY_SUBJECT_ASC }
 
-        b.gradeColorFromERegister.setOnSelectedListener { profileConfig.colorMode = COLOR_MODE_DEFAULT }
+        b.gradeColorFromERegister.setOnSelectedListener {
+            profileConfig.colorMode = COLOR_MODE_DEFAULT
+        }
         b.gradeColorByValue.setOnSelectedListener { profileConfig.colorMode = COLOR_MODE_WEIGHTED }
 
-        b.gradeAverageMode4.setOnSelectedListener { profileConfig.yearAverageMode = YEAR_ALL_GRADES }
-        b.gradeAverageMode0.setOnSelectedListener { profileConfig.yearAverageMode = YEAR_1_AVG_2_AVG }
-        b.gradeAverageMode1.setOnSelectedListener { profileConfig.yearAverageMode = YEAR_1_SEM_2_AVG }
-        b.gradeAverageMode2.setOnSelectedListener { profileConfig.yearAverageMode = YEAR_1_AVG_2_SEM }
-        b.gradeAverageMode3.setOnSelectedListener { profileConfig.yearAverageMode = YEAR_1_SEM_2_SEM }
+        b.gradeAverageMode4.setOnSelectedListener {
+            profileConfig.yearAverageMode = YEAR_ALL_GRADES
+        }
+        b.gradeAverageMode0.setOnSelectedListener {
+            profileConfig.yearAverageMode = YEAR_1_AVG_2_AVG
+        }
+        b.gradeAverageMode1.setOnSelectedListener {
+            profileConfig.yearAverageMode = YEAR_1_SEM_2_AVG
+        }
+        b.gradeAverageMode2.setOnSelectedListener {
+            profileConfig.yearAverageMode = YEAR_1_AVG_2_SEM
+        }
+        b.gradeAverageMode3.setOnSelectedListener {
+            profileConfig.yearAverageMode = YEAR_1_SEM_2_SEM
+        }
 
         b.hideImproved.onChange { _, isChecked -> profileConfig.hideImproved = isChecked }
-        b.averageWithoutWeight.onChange { _, isChecked -> profileConfig.averageWithoutWeight = isChecked }
+        b.averageWithoutWeight.onChange { _, isChecked ->
+            profileConfig.averageWithoutWeight = isChecked
+        }
 
         b.averageWithoutWeightHelp.onClick {
             MaterialAlertDialogBuilder(activity)
-                    .setTitle(R.string.grades_config_average_without_weight)
-                    .setMessage(R.string.grades_config_average_without_weight_message)
-                    .setPositiveButton(R.string.ok, null)
-                    .show()
+                .setTitle(R.string.grades_config_average_without_weight)
+                .setMessage(R.string.grades_config_average_without_weight_message)
+                .setPositiveButton(R.string.ok, null)
+                .show()
         }
     }
 }

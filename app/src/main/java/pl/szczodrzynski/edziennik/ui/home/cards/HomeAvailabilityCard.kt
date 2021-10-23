@@ -72,7 +72,7 @@ class HomeAvailabilityCard(
             if (status.userMessage.icon != null)
                 b.homeAvailabilityIcon.load(status.userMessage.icon)
             onInfoClick = {
-                RegisterUnavailableDialog(activity, status)
+                RegisterUnavailableDialog(activity, status).show()
             }
         }
         // show "update available" when available OR version too old for the register
@@ -82,7 +82,7 @@ class HomeAvailabilityCard(
             b.homeAvailabilityUpdate.isVisible = true
             b.homeAvailabilityIcon.setImageResource(R.drawable.ic_update)
             onInfoClick = {
-                UpdateAvailableDialog(activity, update)
+                UpdateAvailableDialog(activity, update).show()
             }
         }
         else {
