@@ -4,10 +4,9 @@
 
 package pl.szczodrzynski.edziennik.data.db.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
+import pl.szczodrzynski.edziennik.ui.search.Searchable
+import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 
 @Entity(
     tableName = "notes",
@@ -42,7 +41,7 @@ data class Note(
     val sharedByName: String? = null,
 
     val addedDate: Long = System.currentTimeMillis(),
-) {
+) : Searchable<Note> {
     enum class OwnerType(
         val isShareable: Boolean,
         val canReplace: Boolean,
@@ -57,5 +56,50 @@ data class Note(
         LESSON(isShareable = true, canReplace = false),
         LESSON_SUBJECT(isShareable = true, canReplace = false),
         MESSAGE(isShareable = true, canReplace = false),
+    }
+
+    @delegate:Ignore
+    @delegate:Transient
+    val topicHtml by lazy {
+        topic?.let {
+            BetterHtml.fromHtml(context = null, it, nl2br = true)
+        }
+    }
+
+    @delegate:Ignore
+    @delegate:Transient
+    val bodyHtml by lazy {
+        BetterHtml.fromHtml(context = null, body, nl2br = true)
+    }
+
+    @Ignore
+    @Transient
+    override var searchPriority = 0
+
+    @Ignore
+    @Transient
+    override var searchHighlightText: String? = null
+
+    @delegate:Ignore
+    @delegate:Transient
+    override val searchKeywords by lazy {
+        listOf(
+            listOf(topicHtml?.toString(), bodyHtml.toString()),
+            listOf(sharedByName),
+        )
+    }
+
+    override fun compareTo(other: Searchable<*>): Int {
+        if (other !is Note)
+            return 0
+        return when {
+            // ascending sorting
+            searchPriority > other.searchPriority -> 1
+            searchPriority < other.searchPriority -> -1
+            // descending sorting
+            addedDate > other.addedDate -> -1
+            addedDate < other.addedDate -> 1
+            else -> 0
+        }
     }
 }
