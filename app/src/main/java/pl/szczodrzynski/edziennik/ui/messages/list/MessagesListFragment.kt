@@ -62,7 +62,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             app.db.teacherDao().getAllNow(App.profileId)
         }
 
-        adapter = MessagesAdapter(activity, teachers, onItemClick = {
+        adapter = MessagesAdapter(activity, teachers, onMessageClick = {
             val (target, args) =
                 if (it.isDraft) {
                     TARGET_MESSAGES_COMPOSE to Bundle("message" to app.gson.toJson(it))

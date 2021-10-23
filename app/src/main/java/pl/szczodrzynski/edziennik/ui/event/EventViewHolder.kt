@@ -36,14 +36,16 @@ class EventViewHolder(
     ) {
         val manager = app.eventManager
 
-        b.root.onClick {
-            adapter.onItemClick?.invoke(item)
-            if (!item.seen) {
-                manager.markAsSeen(item)
-            }
-            if (item.showAsUnseen == true) {
-                item.showAsUnseen = false
-                adapter.notifyItemChanged(item)
+        if (adapter.onEventClick != null) {
+            b.root.onClick {
+                adapter.onEventClick.invoke(item)
+                if (!item.seen) {
+                    manager.markAsSeen(item)
+                }
+                if (item.showAsUnseen == true) {
+                    item.showAsUnseen = false
+                    adapter.notifyItemChanged(item)
+                }
             }
         }
 
@@ -113,11 +115,17 @@ class EventViewHolder(
         b.typeColor.background?.setTintColor(item.eventColor)
         b.typeColor.isVisible = adapter.showType
 
-        b.editButton.isVisible = !adapter.simpleMode && item.addedManually && !item.isDone
-        b.editButton.onClick {
-            adapter.onEventEditClick?.invoke(item)
+        b.editButton.isVisible = !adapter.simpleMode
+                && item.addedManually
+                && !item.isDone
+                && adapter.onEventEditClick != null
+
+        if (adapter.onEventEditClick != null) {
+            b.editButton.onClick {
+                adapter.onEventEditClick.invoke(item)
+            }
+            b.editButton.attachToastHint(R.string.hint_edit_event)
         }
-        b.editButton.attachToastHint(R.string.hint_edit_event)
 
         if (item.showAsUnseen == null)
             item.showAsUnseen = !item.seen

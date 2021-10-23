@@ -20,7 +20,7 @@ import pl.szczodrzynski.navlib.getColorFromAttr
 
 class LessonChangesAdapter(
         val context: Context,
-        private val onItemClick: ((lesson: LessonFull) -> Unit)? = null
+        private val onLessonClick: ((lesson: LessonFull) -> Unit)? = null
 ) : RecyclerView.Adapter<LessonChangesAdapter.ViewHolder>() {
 
     var items = listOf<LessonFull>()
@@ -39,8 +39,10 @@ class LessonChangesAdapter(
         val lesson = items[position]
         val b = holder.b
 
-        b.root.onClick {
-            onItemClick?.invoke(lesson)
+        if (onLessonClick != null) {
+            b.root.onClick {
+                onLessonClick.invoke(lesson)
+            }
         }
 
         val startTime = lesson.displayStartTime ?: return

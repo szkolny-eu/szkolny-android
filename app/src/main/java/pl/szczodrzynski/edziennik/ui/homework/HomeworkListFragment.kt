@@ -64,7 +64,7 @@ class HomeworkListFragment : LazyFragment(), CoroutineScope {
             showSubject = true,
             markAsSeen = true,
             isReversed = homeworkDate == HomeworkDate.PAST,
-            onItemClick = {
+            onEventClick = {
                 EventDetailsDialog(
                     activity,
                     it

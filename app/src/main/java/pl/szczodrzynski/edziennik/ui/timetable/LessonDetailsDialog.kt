@@ -187,7 +187,7 @@ class LessonDetailsDialog(
             showTime = true,
             showSubject = true,
             markAsSeen = true,
-            onItemClick = {
+            onEventClick = {
                 EventDetailsDialog(
                     activity,
                     it,

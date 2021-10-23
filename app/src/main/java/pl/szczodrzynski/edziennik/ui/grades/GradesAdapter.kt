@@ -218,7 +218,10 @@ class GradesAdapter(
             }
         }
 
-        holder.itemView.setOnClickListener(onClickListener)
+        if (item !is GradeFull || onGradeClick != null)
+            holder.itemView.setOnClickListener(onClickListener)
+        else
+            holder.itemView.setOnClickListener(null)
     }
 
     fun notifyItemChanged(model: Any) {

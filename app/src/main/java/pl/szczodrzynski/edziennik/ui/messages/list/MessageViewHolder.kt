@@ -73,7 +73,7 @@ class MessageViewHolder(
             color = colorHighlight
         )
 
-        adapter.onItemClick?.let { listener ->
+        adapter.onMessageClick?.let { listener ->
             b.root.onClick { listener(item) }
         }
         adapter.onStarClick?.let { listener ->

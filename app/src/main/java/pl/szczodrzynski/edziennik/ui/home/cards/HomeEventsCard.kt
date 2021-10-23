@@ -66,7 +66,7 @@ class HomeEventsCard(
                 showTime = false,
                 showSubject = false,
                 markAsSeen = false,
-                onItemClick = {
+                onEventClick = {
                     EventDetailsDialog(
                             activity,
                             it

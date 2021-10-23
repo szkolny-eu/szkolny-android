@@ -56,7 +56,7 @@ class NoteManager(private val app: App) {
                     showSubject = true,
                     markAsSeen = false,
                     isReversed = false,
-                    onItemClick = {
+                    onEventClick = {
                         showItemDetailsDialog(activity, it)
                     },
                 ).also {
@@ -71,14 +71,14 @@ class NoteManager(private val app: App) {
                 }
             }
             is LessonFull -> {
-                LessonChangesAdapter(activity, onItemClick = {
+                LessonChangesAdapter(activity, onLessonClick = {
                     showItemDetailsDialog(activity, it)
                 }).also {
                     it.items = listOf(item)
                 }
             }
             is MessageFull -> {
-                MessagesAdapter(activity, teachers = listOf(), onItemClick = {
+                MessagesAdapter(activity, teachers = listOf(), onMessageClick = {
                     showItemDetailsDialog(activity, it)
                 }).also {
                     it.setAllItems(listOf(item))

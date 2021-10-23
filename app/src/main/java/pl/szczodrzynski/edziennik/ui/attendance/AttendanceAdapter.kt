@@ -175,7 +175,10 @@ class AttendanceAdapter(
             holder is EmptyViewHolder && item is AttendanceEmpty -> holder.onBind(activity, app, item, position, this)
         }
 
-        holder.itemView.setOnClickListener(onClickListener)
+        if (item !is AttendanceFull || onAttendanceClick != null)
+            holder.itemView.setOnClickListener(onClickListener)
+        else
+            holder.itemView.setOnClickListener(null)
     }
 
     fun notifyItemChanged(model: Any) {

@@ -35,7 +35,7 @@ class LessonChangesDialog(
 
         val adapter = LessonChangesAdapter(
             activity,
-            onItemClick = {
+            onLessonClick = {
                 LessonDetailsDialog(
                     activity,
                     it,

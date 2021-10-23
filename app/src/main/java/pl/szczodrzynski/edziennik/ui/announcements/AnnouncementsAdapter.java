@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,13 +25,14 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdap
 
     private Context context;
     public List<AnnouncementFull> announcementList;
+    @Nullable
     public OnAnnouncementClickListener onClick;
 
     public interface OnAnnouncementClickListener {
         void onClick(View v, AnnouncementFull announcement);
     }
 
-    public AnnouncementsAdapter(Context context, List<AnnouncementFull> announcementList, OnAnnouncementClickListener onClick) {
+    public AnnouncementsAdapter(Context context, List<AnnouncementFull> announcementList, @Nullable OnAnnouncementClickListener onClick) {
         //setHasStableIds(true);
 
         this.context = context;
@@ -54,11 +56,12 @@ public class AnnouncementsAdapter extends RecyclerView.Adapter<AnnouncementsAdap
         AnnouncementFull item = announcementList.get(groupPosition);
         RowAnnouncementsItemBinding b = holder.b;
 
-        b.announcementsItem.setOnClickListener((v -> {
-            if (onClick != null) {
-                onClick.onClick(v, item);
-            }
-        }));
+        if (onClick != null) {
+            b.announcementsItem.setOnClickListener(v -> onClick.onClick(v, item));
+        }
+        else {
+            b.announcementsItem.setOnClickListener(null);
+        }
         b.announcementsItemSender.setText(item.getTeacherName());
         b.announcementsItemTitle.setText(item.getSubject());
         b.announcementsItemText.setText(item.getText());
