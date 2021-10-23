@@ -1,5 +1,7 @@
 package pl.szczodrzynski.edziennik.ui.login.qr
 
 interface LoginQrDecoder {
-    fun decode(value: ByteArray): Map<String, String>
+
+    fun decode(value: String): Map<String, String>?
+    fun focusFieldName(): String?
 }
