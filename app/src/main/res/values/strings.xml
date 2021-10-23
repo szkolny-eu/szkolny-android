@@ -1500,4 +1500,6 @@
     <string name="notes_button">Notatki</string>
     <string name="notes_no_data">Nie dodano żadnych notatek</string>
     <string name="notes_no_data_hint">Możesz dodać notatki oraz udostępnić je w klasie, używając przycisku Dodaj.</string>
+    <string name="legend_notes_added">{cmd-playlist-edit} dodano notatki</string>
+    <string name="notes_added_by_you_format">Dodano %1$s</string>
 </resources>

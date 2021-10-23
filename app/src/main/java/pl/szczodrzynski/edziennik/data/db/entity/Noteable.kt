@@ -7,11 +7,14 @@ package pl.szczodrzynski.edziennik.data.db.entity
 interface Noteable {
 
     fun getNoteType(): Note.OwnerType
+    fun getNoteOwnerProfileId(): Int
+    fun getNoteOwnerId(): Long
 
     var notes: MutableList<Note>
 
-    fun filterNotes(profileId: Int) {
+    fun filterNotes() {
         val type = getNoteType()
+        val profileId = getNoteOwnerProfileId()
         notes.removeAll {
             it.profileId != profileId || it.ownerType != type
         }

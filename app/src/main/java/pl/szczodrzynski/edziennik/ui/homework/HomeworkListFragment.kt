@@ -83,7 +83,7 @@ class HomeworkListFragment : LazyFragment(), CoroutineScope {
             if (!isAdded) return@Observer
 
             events.forEach {
-                it.filterNotes(it.profileId)
+                it.filterNotes()
             }
 
             // show/hide relevant views

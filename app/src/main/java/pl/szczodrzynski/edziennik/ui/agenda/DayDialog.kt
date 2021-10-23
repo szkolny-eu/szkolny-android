@@ -37,6 +37,7 @@ class DayDialog(
     private val profileId: Int,
     private val date: Date,
     private val eventTypeId: Long? = null,
+    private val showNotesButton: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogDayBinding>(activity, onShowListener, onDismissListener) {
@@ -173,7 +174,7 @@ class DayDialog(
 
         app.db.eventDao().getAllByDate(profileId, date).observe(activity) { events ->
             events.forEach {
-                it.filterNotes(it.profileId)
+                it.filterNotes()
             }
 
             adapter.setAllItems(
@@ -203,6 +204,7 @@ class DayDialog(
             }
         }
 
+        b.notesButton.isVisible = showNotesButton
         b.notesButton.setupNotesButton(
             activity = activity,
             profileId = profileId,

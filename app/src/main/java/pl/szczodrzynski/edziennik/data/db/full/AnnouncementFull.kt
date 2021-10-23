@@ -29,4 +29,6 @@ class AnnouncementFull(
     @Relation(parentColumn = "announcementId", entityColumn = "noteOwnerId", entity = Note::class)
     override lateinit var notes: MutableList<Note>
     override fun getNoteType() = Note.OwnerType.ANNOUNCEMENT
+    override fun getNoteOwnerProfileId() = profileId
+    override fun getNoteOwnerId() = id
 }

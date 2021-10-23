@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 class GradeDetailsDialog(
     activity: AppCompatActivity,
     private val grade: GradeFull,
+    private val showNotesButton: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogGradeDetailsBinding>(activity, onShowListener, onDismissListener) {
@@ -74,7 +75,7 @@ class GradeDetailsDialog(
         }
 
         historyList.forEach {
-            it.filterNotes(it.profileId)
+            it.filterNotes()
         }
 
         b.historyVisible = historyList.isNotEmpty()
@@ -92,6 +93,7 @@ class GradeDetailsDialog(
             }
         }
 
+        b.notesButton.isVisible = showNotesButton
         b.notesButton.setupNotesButton(
             activity = activity,
             profileId = grade.profileId,

@@ -77,7 +77,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
             if (!isAdded) return@launch
 
             grades.forEach {
-                it.filterNotes(it.profileId)
+                it.filterNotes()
             }
 
             val items = when {

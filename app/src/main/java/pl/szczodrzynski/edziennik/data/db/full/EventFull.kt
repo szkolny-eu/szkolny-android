@@ -116,4 +116,6 @@ class EventFull(
     @Relation(parentColumn = "eventId", entityColumn = "noteOwnerId", entity = Note::class)
     override lateinit var notes: MutableList<Note>
     override fun getNoteType() = Note.OwnerType.EVENT
+    override fun getNoteOwnerProfileId() = profileId
+    override fun getNoteOwnerId() = id
 }

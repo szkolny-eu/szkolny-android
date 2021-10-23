@@ -36,6 +36,7 @@ class LessonDetailsDialog(
     activity: AppCompatActivity,
     private val lesson: LessonFull,
     private val attendance: AttendanceFull? = null,
+    private val showNotesButton: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogLessonDetailsBinding>(activity, onShowListener, onDismissListener) {
@@ -212,7 +213,7 @@ class LessonDetailsDialog(
             lessonTime
         ).observe(activity) { events ->
             events.forEach {
-                it.filterNotes(it.profileId)
+                it.filterNotes()
             }
 
             adapter.setAllItems(events)
@@ -250,6 +251,7 @@ class LessonDetailsDialog(
             )
         }
 
+        b.notesButton.isVisible = showNotesButton
         b.notesButton.setupNotesButton(
             activity = activity,
             profileId = lesson.profileId,

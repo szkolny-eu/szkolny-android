@@ -108,7 +108,7 @@ public class AnnouncementsFragment extends Fragment {
                 return;
 
             for (AnnouncementFull it : announcements) {
-                it.filterNotes(it.getProfileId());
+                it.filterNotes();
             }
 
             if (announcements == null) {

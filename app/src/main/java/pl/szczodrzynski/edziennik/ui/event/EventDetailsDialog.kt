@@ -37,6 +37,7 @@ class EventDetailsDialog(
     activity: AppCompatActivity,
     // this event is observed for changes
     private var event: EventFull,
+    private val showNotesButton: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogEventDetailsBinding>(activity, onShowListener, onDismissListener) {
@@ -97,7 +98,7 @@ class EventDetailsDialog(
             manager.markAsSeen(event)
         }
 
-        event.filterNotes(event.profileId)
+        event.filterNotes()
 
         val bullet = " • "
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
@@ -261,6 +262,7 @@ class EventDetailsDialog(
             }, owner = event)
         }
 
+        b.notesButton.isVisible = showNotesButton
         b.notesButton.setupNotesButton(
             activity = activity,
             profileId = event.profileId,

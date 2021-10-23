@@ -83,6 +83,7 @@ abstract class AppDb : RoomDatabase() {
     abstract fun configDao(): ConfigDao
     abstract fun librusLessonDao(): LibrusLessonDao
     abstract fun timetableManualDao(): TimetableManualDao
+    abstract fun noteDao(): NoteDao
     abstract fun metadataDao(): MetadataDao
 
     companion object {

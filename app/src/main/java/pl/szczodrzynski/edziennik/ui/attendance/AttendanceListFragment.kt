@@ -67,7 +67,7 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
             if (!isAdded) return@launch
 
             items.forEach {
-                it.filterNotes(it.profileId)
+                it.filterNotes()
             }
 
             // load & configure the adapter

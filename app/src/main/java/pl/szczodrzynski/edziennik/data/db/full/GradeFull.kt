@@ -30,4 +30,6 @@ class GradeFull(
     @Relation(parentColumn = "gradeId", entityColumn = "noteOwnerId", entity = Note::class)
     override lateinit var notes: MutableList<Note>
     override fun getNoteType() = Note.OwnerType.GRADE
+    override fun getNoteOwnerProfileId() = profileId
+    override fun getNoteOwnerId() = id
 }

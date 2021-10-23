@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.ui.notes
 import android.view.Gravity
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import com.google.android.material.button.MaterialButton
@@ -24,6 +25,8 @@ fun MaterialButton.setupNotesButton(
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) {
+    if (!isVisible)
+        return
     icon = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_playlist_edit)
     setText(R.string.notes_button)
     iconPadding = 8.dp
@@ -37,7 +40,6 @@ fun MaterialButton.setupNotesButton(
     onClick {
         NoteListDialog(
             activity = activity,
-            profileId = profileId,
             owner = owner,
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,

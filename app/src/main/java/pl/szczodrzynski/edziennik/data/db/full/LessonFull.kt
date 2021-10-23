@@ -140,4 +140,6 @@ class LessonFull(
     @Relation(parentColumn = "id", entityColumn = "noteOwnerId", entity = Note::class)
     override lateinit var notes: MutableList<Note>
     override fun getNoteType() = Note.OwnerType.LESSON
+    override fun getNoteOwnerProfileId() = profileId
+    override fun getNoteOwnerId() = id
 }

@@ -385,6 +385,16 @@ public class Date implements Comparable<Date>, Noteable {
         return Note.OwnerType.DAY;
     }
 
+    @Override
+    public int getNoteOwnerProfileId() {
+        return 0;
+    }
+
+    @Override
+    public long getNoteOwnerId() {
+        return 0;
+    }
+
     @Nullable
     @Override
     public CharSequence getNoteSubstituteText() {
@@ -402,8 +412,8 @@ public class Date implements Comparable<Date>, Noteable {
     }
 
     @Override
-    public void filterNotes(int profileId) {
-        Noteable.DefaultImpls.filterNotes(this, profileId);
+    public void filterNotes() {
+        Noteable.DefaultImpls.filterNotes(this);
     }
 
     @Override

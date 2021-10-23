@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.ui.attendance
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.isVisible
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
@@ -19,6 +20,7 @@ import pl.szczodrzynski.edziennik.utils.BetterLink
 class AttendanceDetailsDialog(
     activity: AppCompatActivity,
     private val attendance: AttendanceFull,
+    private val showNotesButton: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<AttendanceDetailsDialogBinding>(activity, onShowListener, onDismissListener) {
@@ -50,6 +52,7 @@ class AttendanceDetailsDialog(
             )
         }
 
+        b.notesButton.isVisible = showNotesButton
         b.notesButton.setupNotesButton(
             activity = activity,
             profileId = attendance.profileId,
