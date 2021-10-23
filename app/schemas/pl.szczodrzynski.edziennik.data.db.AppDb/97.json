@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 96,
-    "identityHash": "a0d52bce4783f5ebe94d6c0a08db5d03",
+    "version": 97,
+    "identityHash": "08a8998e311e4e62a9e9554132b5c011",
     "entities": [
       {
         "tableName": "grades",
@@ -144,7 +144,7 @@
       },
       {
         "tableName": "teachers",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`profileId` INTEGER NOT NULL, `teacherId` INTEGER NOT NULL, `teacherLoginId` TEXT, `teacherName` TEXT, `teacherSurname` TEXT, `teacherType` INTEGER NOT NULL, `teacherTypeDescription` TEXT, PRIMARY KEY(`profileId`, `teacherId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`profileId` INTEGER NOT NULL, `teacherId` INTEGER NOT NULL, `teacherLoginId` TEXT, `teacherName` TEXT, `teacherSurname` TEXT, `teacherType` INTEGER NOT NULL, `teacherTypeDescription` TEXT, `teacherSubjects` TEXT NOT NULL, PRIMARY KEY(`profileId`, `teacherId`))",
         "fields": [
           {
             "fieldPath": "profileId",
@@ -187,6 +187,12 @@
             "columnName": "teacherTypeDescription",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "subjects",
+            "columnName": "teacherSubjects",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -2281,7 +2287,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a0d52bce4783f5ebe94d6c0a08db5d03')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '08a8998e311e4e62a9e9554132b5c011')"
     ]
   }
 }
