@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_SUBJECTS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusApiSubjects(override val data: DataLibrus,
                         override val lastSync: Long?,
@@ -32,7 +33,7 @@ class LibrusApiSubjects(override val data: DataLibrus,
 
             data.subjectList.put(1, Subject(profileId, 1, "Zachowanie", "zach"))
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_SUBJECTS, 4*DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_SUBJECTS, 4* DAY)
             onSuccess(ENDPOINT_LIBRUS_API_SUBJECTS)
         }
     }

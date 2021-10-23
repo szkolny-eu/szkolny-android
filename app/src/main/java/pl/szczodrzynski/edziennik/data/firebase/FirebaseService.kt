@@ -13,7 +13,7 @@ import com.google.firebase.iid.zzad
 import com.google.firebase.iid.zzaz
 import com.google.firebase.messaging.zzc
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.ext.*
 import java.util.*
 import com.google.firebase.messaging.zzo.zza as logNotificationOpen
 import com.google.firebase.messaging.zzo.zza as logNotificationReceived

@@ -5,13 +5,13 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.template
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_API
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.currentTimeUnix
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 
 /**
  * Use http://patorjk.com/software/taag/#p=display&f=Big for the ascii art

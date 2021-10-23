@@ -4,8 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
-import pl.szczodrzynski.edziennik.MONTH
-import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.ERROR_EDUDZIENNIK_WEB_TEAM_MISSING
 import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SUBJECTS_START
@@ -14,8 +12,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZI
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.firstLettersName
-import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.ext.MONTH
+import pl.szczodrzynski.edziennik.ext.crc32
+import pl.szczodrzynski.edziennik.ext.firstLettersName
+import pl.szczodrzynski.edziennik.ext.get
 
 class EdudziennikWebStart(override val data: DataEdudziennik,
                           override val lastSync: Long?,

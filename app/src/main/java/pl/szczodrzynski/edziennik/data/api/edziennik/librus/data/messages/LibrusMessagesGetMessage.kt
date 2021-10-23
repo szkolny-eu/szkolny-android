@@ -15,10 +15,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.notEmptyOrNull
-import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.notEmptyOrNull
+import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.nio.charset.Charset
 
@@ -108,7 +108,7 @@ class LibrusMessagesGetMessage(override val data: DataLibrus,
                             readDate = readDate
                     )
 
-                    messageRecipientObject.fullName = profile.accountName ?: profile.studentNameLong ?: ""
+                    messageRecipientObject.fullName = profile.accountName ?: profile.studentNameLong
 
                     messageRecipientList.add(messageRecipientObject)
                 }

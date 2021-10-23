@@ -11,8 +11,8 @@ import androidx.work.WorkManager
 import androidx.work.impl.WorkManagerImpl
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MINUTE
-import pl.szczodrzynski.edziennik.formatDate
+import pl.szczodrzynski.edziennik.ext.MINUTE
+import pl.szczodrzynski.edziennik.ext.formatDate
 import pl.szczodrzynski.edziennik.utils.Utils
 
 object WorkerUtils {

@@ -8,7 +8,7 @@ import android.os.Bundle
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.ext.*
 
 @Entity(tableName = "loginStores", primaryKeys = ["loginStoreId"])
 class LoginStore(

@@ -656,6 +656,7 @@
     <string name="menu_message">Nachricht</string>
     <string name="menu_message_compose">Schreiben Sie eine Nachricht</string>
     <string name="menu_messages">Nachrichten</string>
+    <string name="menu_more">Mehr</string>
     <string name="menu_notices">Verhalten</string>
     <string name="menu_notifications">Benachrichtigungen</string>
     <string name="menu_remove_notifications">Löschen</string>
@@ -1108,6 +1109,7 @@
     <string name="teacher_super_admin">Administrator / Superadministrator</string>
     <string name="teacher_teacher">Lehrer</string>
     <string name="teachers_browse_category">Kategorie durchsuchen</string>
+    <string name="teachers_no_data">Keine Lehrer.</string>
     <string name="the_day_after">Übermorgen</string>
     <string name="the_day_before">Vorgestern</string>
     <string name="theme_amber">Bernstein</string>
@@ -1236,4 +1238,6 @@
     <string name="login_summary_account_parent">(Elternteil)</string>
     <string name="settings_about_contributors_text">Anwendungsentwickler</string>
     <string name="settings_about_contributors_subtext">Liste der Szkolny-Entwickler</string>
+    <string name="menu_teachers">Lehrer</string>
+    <string name="edziennik_progress_endpoint_addressbook">Addressbuch herunterladen…</string>
 </resources>

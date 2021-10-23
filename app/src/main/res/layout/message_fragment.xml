@@ -188,7 +188,7 @@
                     android:text="Załączniki:"
                     android:textAppearance="@style/NavView.TextView.Subtitle" />
 
-                <pl.szczodrzynski.edziennik.ui.modules.views.AttachmentsView
+                <pl.szczodrzynski.edziennik.ui.views.AttachmentsView
                     android:id="@+id/attachmentsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

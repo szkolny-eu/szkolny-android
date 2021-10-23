@@ -658,6 +658,7 @@
     <string name="menu_message">Message</string>
     <string name="menu_message_compose">Compose</string>
     <string name="menu_messages">Messages</string>
+    <string name="menu_more">More</string>
     <string name="menu_notices">Behaviour</string>
     <string name="menu_notifications">Notifications</string>
     <string name="menu_remove_notifications">Clear</string>
@@ -1110,6 +1111,7 @@
     <string name="teacher_super_admin">SuperAdmin</string>
     <string name="teacher_teacher">Teacher</string>
     <string name="teachers_browse_category">Browse category</string>
+    <string name="teachers_no_data">No teachers.</string>
     <string name="the_day_after">overmorrow</string>
     <string name="the_day_before">the day before yesterday</string>
     <string name="theme_amber">Amber</string>
@@ -1372,4 +1374,6 @@
     <string name="permissions_generate_timetable">In order to be able to save the generated timetable, you must grant access rights to the device\'s memory.\n\nClick OK to grant permissions.</string>
     <string name="login_summary_account_child">(Child)</string>
     <string name="login_summary_account_parent">(Parent)</string>
+    <string name="menu_teachers">Teachers</string>
+    <string name="edziennik_progress_endpoint_addressbook">Syncing addressbook…</string>
 </resources>

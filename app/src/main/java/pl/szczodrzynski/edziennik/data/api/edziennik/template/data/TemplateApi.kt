@@ -5,11 +5,11 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.template.data
 
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.currentTimeUnix
 import pl.szczodrzynski.edziennik.data.api.ERROR_TEMPLATE_WEB_OTHER
 import pl.szczodrzynski.edziennik.data.api.GET
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.DataTemplate
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.ext.currentTimeUnix
 
 open class TemplateApi(open val data: DataTemplate, open val lastSync: Long?) {
     companion object {
@@ -28,6 +28,7 @@ open class TemplateApi(open val data: DataTemplate, open val lastSync: Long?) {
      * You can customize this method's parameters to best fit the implemented e-register.
      * Just make sure that [tag] and [onSuccess] is present.
      */
+    @Suppress("UNUSED_PARAMETER")
     fun apiGet(tag: String, endpoint: String, method: Int = GET, payload: JsonObject? = null, onSuccess: (json: JsonObject?) -> Unit) {
         val json = JsonObject()
         json.addProperty("foo", "bar")

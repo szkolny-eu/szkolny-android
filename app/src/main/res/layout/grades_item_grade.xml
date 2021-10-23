@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         android:paddingVertical="8dp">
 
-        <pl.szczodrzynski.edziennik.ui.modules.grades.GradeView
+        <pl.szczodrzynski.edziennik.ui.grades.GradeView
             android:id="@+id/gradeName"
             android:layout_width="40dp"
             android:layout_height="40dp"

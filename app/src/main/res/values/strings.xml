@@ -301,6 +301,7 @@
     <string name="edziennik_notification_api_text">Dzięki niej, aplikacja Szkolny.eu może synchronizować dane z e-dziennikiem. Możesz ją zamknąć, ponieważ w tej chwili nic nie robi.</string>
     <string name="edziennik_notification_api_title">Usługa synchronizacji</string>
     <string name="edziennik_progress_endpoint_account_details">Pobieranie szczegółów konta…</string>
+    <string name="edziennik_progress_endpoint_addressbook">Pobieranie listy odbiorców…</string>
     <string name="edziennik_progress_endpoint_announcements">Pobieranie ogłoszeń szkolnych…</string>
     <string name="edziennik_progress_endpoint_attendance">Pobieranie frekwencji ucznia…</string>
     <string name="edziennik_progress_endpoint_attendance_types">Pobieranie kategorii obecności…</string>
@@ -708,6 +709,7 @@
     <string name="menu_message">Wiadomość</string>
     <string name="menu_message_compose">Napisz wiadomość</string>
     <string name="menu_messages">Wiadomości</string>
+    <string name="menu_more">Więcej</string>
     <string name="menu_notices">Zachowanie</string>
     <string name="menu_notifications">Powiadomienia</string>
     <string name="menu_remove_notifications">Usuń wszystkie</string>
@@ -716,6 +718,7 @@
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_sync">Synchronizuj</string>
     <string name="menu_sync_all">Synchronizuj wszystkie</string>
+    <string name="menu_teachers">Nauczyciele</string>
     <string name="menu_template">Szablon</string>
     <string name="menu_timetable">Plan lekcji</string>
     <string name="menu_timetable_manual">Edytor planu lekcji</string>
@@ -1180,6 +1183,7 @@
     <string name="teacher_super_admin">Administrator / SuperAdministrator</string>
     <string name="teacher_teacher">Nauczyciel</string>
     <string name="teachers_browse_category">Przeglądaj kategorię</string>
+    <string name="teachers_no_data">Brak nauczycieli.</string>
     <string name="the_day_after">pojutrze</string>
     <string name="the_day_before">przedwczoraj</string>
     <string name="theme_amber">Bursztynowy</string>

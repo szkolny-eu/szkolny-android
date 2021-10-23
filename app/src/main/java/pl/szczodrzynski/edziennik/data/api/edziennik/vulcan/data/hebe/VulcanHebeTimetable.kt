@@ -20,6 +20,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_SHIFTED_S
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_SHIFTED_TARGET
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.ext.getBoolean
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getJsonObject
+import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week

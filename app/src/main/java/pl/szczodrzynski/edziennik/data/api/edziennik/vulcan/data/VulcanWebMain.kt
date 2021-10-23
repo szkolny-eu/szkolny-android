@@ -11,11 +11,11 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.droidsonroids.jspoon.Jspoon
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.CufsCertificate
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.io.File
@@ -175,7 +175,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     count++
                 }
                 schoolSymbols.removeAll {
-                    it.toLowerCase() == "default"
+                    it.lowercase() == "default"
                             || !it.matches(Regexes.VULCAN_WEB_SYMBOL_VALIDATE)
                 }
                 
@@ -280,7 +280,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     return
 
                 try {
-                    val json = JsonParser().parse(text).asJsonObject
+                    val json = JsonParser.parseString(text).asJsonObject
                     onSuccess(json, response)
                 } catch (e: Exception) {
                     data.error(ApiError(tag, EXCEPTION_VULCAN_WEB_REQUEST)

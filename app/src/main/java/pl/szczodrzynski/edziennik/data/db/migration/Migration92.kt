@@ -13,7 +13,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Event.Companion.TYPE_ELEARNING
 import pl.szczodrzynski.edziennik.data.db.entity.Event.Companion.TYPE_INFORMATION
 import pl.szczodrzynski.edziennik.data.db.entity.EventType.Companion.SOURCE_DEFAULT
 import pl.szczodrzynski.edziennik.data.db.entity.EventType.Companion.SOURCE_REGISTER
-import pl.szczodrzynski.edziennik.getInt
+import pl.szczodrzynski.edziennik.ext.getInt
 
 class Migration92 : Migration(91, 92) {
     override fun migrate(database: SupportSQLiteDatabase) {

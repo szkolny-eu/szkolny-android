@@ -10,13 +10,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.getNameInitials
-import pl.szczodrzynski.edziennik.join
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.getNameInitials
+import pl.szczodrzynski.edziennik.ext.join
 import java.util.*
 
 @Entity(tableName = "teachers",
-        primaryKeys = ["profileId", "teacherId"])
+    primaryKeys = ["profileId", "teacherId"])
 open class Teacher {
     companion object {
         const val TYPE_TEACHER = 0 // 1
@@ -26,6 +26,7 @@ open class Teacher {
         const val TYPE_SECRETARIAT = 4 // 16
         const val TYPE_PRINCIPAL = 5 // 32
         const val TYPE_SCHOOL_ADMIN = 6 // 64
+
         // not teachers
         const val TYPE_SPECIALIST = 7 // 128
         const val TYPE_SUPER_ADMIN = 10 // 1024
@@ -36,7 +37,8 @@ open class Teacher {
         const val TYPE_OTHER = 24 // 16777216
         const val IS_TEACHER_MASK = 127
 
-        val types: List<Int> by lazy { listOf(
+        val types: List<Int> by lazy {
+            listOf(
                 TYPE_TEACHER,
                 TYPE_EDUCATOR,
                 TYPE_PEDAGOGUE,
@@ -51,7 +53,8 @@ open class Teacher {
                 TYPE_PARENTS_COUNCIL,
                 TYPE_SCHOOL_PARENTS_COUNCIL,
                 TYPE_OTHER
-        ) }
+            )
+        }
 
         fun typeName(c: Context, type: Int, typeDescription: String? = null): String {
             val suffix = typeDescription?.let { " ($typeDescription)" } ?: ""
@@ -94,6 +97,9 @@ open class Teacher {
     @ColumnInfo(name = "teacherTypeDescription")
     var typeDescription: String? = null
 
+    @ColumnInfo(name = "teacherSubjects")
+    var subjects = mutableListOf<Long>()
+
     fun isType(checkingType: Int): Boolean {
         return type and (1 shl checkingType) >= 1
     }
@@ -104,6 +110,8 @@ open class Teacher {
     fun setTeacherType(i: Int) {
         type = type or (1 shl i)
     }
+
+    fun addSubject(subjectId: Long) = subjects.add(subjectId)
 
     fun unsetTeacherType(i: Int) {
         type = type and (1 shl i).inv()
@@ -128,6 +136,7 @@ open class Teacher {
      */
     @Ignore
     var recipientDisplayName: CharSequence? = null
+
     /**
      * Used in Message composing - determining the priority
      * of search result, based on the search phrase match
@@ -141,8 +150,6 @@ open class Teacher {
         this.profileId = profileId
         this.id = id
     }
-
-
 
     @Ignore
     constructor(profileId: Int, id: Long, name: String, surname: String) {
@@ -170,6 +177,7 @@ open class Teacher {
             this.surname = it.surname
             this.type = it.type
             this.typeDescription = it.typeDescription
+            this.subjects = it.subjects
             this.image = it.image
             this.recipientDisplayName = it.recipientDisplayName
         }
@@ -195,6 +203,7 @@ open class Teacher {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", type=" + dumpType() +
+                ", subjects=" + subjects.joinToString() +
                 ", typeDescription='" + typeDescription + '\'' +
                 '}'
     }

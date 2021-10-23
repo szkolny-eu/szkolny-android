@@ -11,8 +11,8 @@ import android.content.Context
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.Bundle
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.receivers.SzkolnyReceiver
 import kotlin.math.roundToInt
 

@@ -7,8 +7,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.Mobidzien
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.set
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.set
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Unit) {
