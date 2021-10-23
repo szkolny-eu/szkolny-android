@@ -45,7 +45,7 @@ open class Attendance(
         var teacherId: Long,
         var subjectId: Long,
         var addedDate: Long = System.currentTimeMillis()
-) : Keepable() {
+) : Keepable(), Noteable {
     companion object {
         const val TYPE_UNKNOWN = -1         // #3f51b5
         const val TYPE_PRESENT = 0          // #009688
@@ -75,4 +75,6 @@ open class Attendance(
     val typeObject by lazy {
         AttendanceType(profileId, baseType.toLong(),  baseType, typeName, typeShort, typeSymbol, typeColor).also { it.isCounted = isCounted }
     }
+
+    override fun getNoteType() = Note.OwnerType.ATTENDANCE
 }

@@ -26,6 +26,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -197,5 +198,13 @@ class DayDialog(
                 b.eventsNoData.visibility = View.VISIBLE
             }
         }
+
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            profileId = profileId,
+            owner = date,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
     }
 }

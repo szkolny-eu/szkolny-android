@@ -30,11 +30,13 @@ open class Announcement(
 
         var teacherId: Long,
         var addedDate: Long = System.currentTimeMillis()
-) : Keepable() {
+) : Keepable(), Noteable {
 
     @ColumnInfo(name = "announcementIdString")
     var idString: String? = null
 
     @Ignore
     var showAsUnseen: Boolean? = null
+
+    override fun getNoteType() = Note.OwnerType.ANNOUNCEMENT
 }

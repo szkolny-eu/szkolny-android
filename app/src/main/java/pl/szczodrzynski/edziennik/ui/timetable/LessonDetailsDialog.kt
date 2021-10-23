@@ -26,6 +26,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -244,5 +245,13 @@ class LessonDetailsDialog(
                 onActionSelected = dialog::dismiss
             )
         }
+
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            profileId = lesson.profileId,
+            owner = lesson,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
     }
 }

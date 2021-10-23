@@ -1496,4 +1496,8 @@
     <string name="login_mobidziennik_server_prefix">https://</string>
     <string name="login_mobidziennik_server_suffix">.mobidziennik.pl/</string>
     <string name="styled_text_dialog_title">Edytuj tekst</string>
+    <string name="notes_list_dialog_title">Notatki</string>
+    <string name="notes_button">Notatki</string>
+    <string name="notes_no_data">Nie dodano żadnych notatek</string>
+    <string name="notes_no_data_hint">Możesz dodać notatki oraz udostępnić je w klasie, używając przycisku Dodaj.</string>
 </resources>

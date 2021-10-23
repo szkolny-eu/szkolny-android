@@ -74,7 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:orientation="vertical"
-            android:paddingVertical="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -106,5 +107,13 @@
             android:clipToPadding="false"
             tools:listitem="@layout/event_list_item"
             tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/notesButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/notes_button" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

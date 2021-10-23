@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 open class Lesson(
         val profileId: Int,
         var id: Long
-) : Keepable() {
+) : Keepable(), Noteable {
     companion object {
         const val TYPE_NO_LESSONS = -1
         const val TYPE_NORMAL = 0
@@ -95,6 +95,8 @@ open class Lesson(
                 "oldTeamId=$oldTeamId, " +
                 "oldClassroom=$oldClassroom)"
     }
+
+    override fun getNoteType() = Note.OwnerType.LESSON
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

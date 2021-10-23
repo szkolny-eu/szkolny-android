@@ -156,7 +156,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:textAppearance="@style/NavView.TextView.Helper"
                 android:text="@string/dialog_event_details_topic"/>
 
@@ -172,7 +172,7 @@
                 android:id="@+id/bodyTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/dialog_event_details_body"
                 android:textAppearance="@style/NavView.TextView.Helper" />
 
@@ -197,7 +197,7 @@
                 android:id="@+id/attachmentsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/dialog_event_details_attachments"
                 android:textAppearance="@style/NavView.TextView.Helper" />
 
@@ -279,6 +279,14 @@
                     android:text="\uf436"
                     android:textSize="20sp" />
             </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/notesButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/notes_button" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

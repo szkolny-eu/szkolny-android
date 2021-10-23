@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.databinding.AttendanceDetailsDialogBinding
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
 
 class AttendanceDetailsDialog(
@@ -48,5 +49,13 @@ class AttendanceDetailsDialog(
                 onActionSelected = dialog::dismiss
             )
         }
+
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            profileId = attendance.profileId,
+            owner = attendance,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
     }
 }

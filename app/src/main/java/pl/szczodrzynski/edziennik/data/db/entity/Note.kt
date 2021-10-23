@@ -47,11 +47,12 @@ data class Note(
         val isShareable: Boolean,
         val canReplace: Boolean,
     ) {
+        ANNOUNCEMENT(isShareable = true, canReplace = false),
         ATTENDANCE(isShareable = false, canReplace = true),
         BEHAVIOR(isShareable = false, canReplace = false),
         DAY(isShareable = true, canReplace = false),
         EVENT(isShareable = true, canReplace = true),
-        EVENT_SUBJECT(isShareable = true, canReplace = true),
+        EVENT_SUBJECT(isShareable = true, canReplace = false),
         GRADE(isShareable = false, canReplace = true),
         LESSON(isShareable = true, canReplace = false),
         LESSON_SUBJECT(isShareable = true, canReplace = false),

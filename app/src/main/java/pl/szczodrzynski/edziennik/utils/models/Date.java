@@ -11,9 +11,11 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.data.db.entity.Note;
+import pl.szczodrzynski.edziennik.data.db.entity.Noteable;
 import pl.szczodrzynski.edziennik.ext.TextExtensionsKt;
 
-public class Date implements Comparable<Date> {
+public class Date implements Comparable<Date>, Noteable {
     public int year = 0;
     public int month = 0;
     public int day = 0;
@@ -373,5 +375,11 @@ public class Date implements Comparable<Date> {
         result = 31 * result + month;
         result = 31 * result + day;
         return result;
+    }
+
+    @NonNull
+    @Override
+    public Note.OwnerType getNoteType() {
+        return Note.OwnerType.DAY;
     }
 }

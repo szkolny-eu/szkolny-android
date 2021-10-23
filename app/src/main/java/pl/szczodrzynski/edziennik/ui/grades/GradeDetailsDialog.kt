@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 
@@ -71,23 +72,27 @@ class GradeDetailsDialog(
         val historyList = withContext(Dispatchers.Default) {
             app.db.gradeDao().getByParentIdNow(App.profileId, grade.id)
         }
-        if (historyList.isEmpty()) {
-            b.historyVisible = false
-            return
-        }
-        b.historyVisible = true
-        //b.gradeHistoryNest.isNestedScrollingEnabled = false
+        b.historyVisible = historyList.isNotEmpty()
+        if (historyList.isNotEmpty()) {
+            b.gradeHistoryList.adapter = GradesAdapter(activity, {
+                GradeDetailsDialog(activity, it).show()
+            }).also {
+                it.items = historyList.toMutableList()
+            }
 
-        b.gradeHistoryList.adapter = GradesAdapter(activity, {
-            GradeDetailsDialog(activity, it).show()
-        }).also {
-            it.items = historyList.toMutableList()
+            b.gradeHistoryList.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(context)
+                addItemDecoration(SimpleDividerItemDecoration(context))
+            }
         }
 
-        b.gradeHistoryList.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(SimpleDividerItemDecoration(context))
-        }
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            profileId = grade.profileId,
+            owner = grade,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
     }
 }

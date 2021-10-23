@@ -27,6 +27,7 @@ import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -257,6 +258,14 @@ class EventDetailsDialog(
                 it.putStringArray("attachmentNames", event.attachmentNames!!.toTypedArray())
             }, owner = event)
         }
+
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            profileId = event.profileId,
+            owner = event,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)

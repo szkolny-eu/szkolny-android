@@ -30,6 +30,7 @@ import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.Anim
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
@@ -266,6 +267,14 @@ class MessageFragment : Fragment(), CoroutineScope {
         b.progress.visibility = View.GONE
         Anim.fadeIn(b.content, 200, null)
         MessagesFragment.pageSelection = min(message.type, 1)
+
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            profileId = message.profileId,
+            owner = message,
+            onShowListener = null,
+            onDismissListener = null,
+        )
     }
 
     private fun showAttachments() {
