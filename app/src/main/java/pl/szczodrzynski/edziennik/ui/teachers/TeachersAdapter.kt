@@ -76,7 +76,7 @@ class TeachersAdapter(
                 activity.sendBroadcast(intent)
             }
         } else {
-            b.sendMessage.isGone = true
+            b.sendMessage.isVisible = false
         }
 
     }

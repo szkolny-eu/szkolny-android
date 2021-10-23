@@ -129,7 +129,9 @@ open class Teacher {
     fun getTypeName(c: Context, subjectList: List<Subject>): String {
         var role = getTypeText(c)
         if (subjects.isNotEmpty()) {
-            val list = subjects.map { subjectList.first { element -> it == element.id }.longName }
+            val list = subjects.map { subjectId ->
+                subjectList.first { subjectId == it.id }.longName
+            }
             role = when {
                 role.isNotBlank() -> {
                     role.plus(": ").plus(list.joinToString())
