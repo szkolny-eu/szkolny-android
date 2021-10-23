@@ -82,6 +82,10 @@ class HomeworkListFragment : LazyFragment(), CoroutineScope {
         app.db.eventDao().getAllByType(App.profileId, Event.TYPE_HOMEWORK, filter).observe(this@HomeworkListFragment, Observer { events ->
             if (!isAdded) return@Observer
 
+            events.forEach {
+                it.filterNotes(it.profileId)
+            }
+
             // show/hide relevant views
             setSwipeToRefresh(events.isEmpty())
             b.progressBar.isVisible = false

@@ -211,6 +211,10 @@ class LessonDetailsDialog(
             lessonDate,
             lessonTime
         ).observe(activity) { events ->
+            events.forEach {
+                it.filterNotes(it.profileId)
+            }
+
             adapter.setAllItems(events)
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter

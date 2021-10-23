@@ -82,6 +82,10 @@ class HomeEventsCard(
         )
 
         app.db.eventDao().getNearestNotDone(profile.id, Date.getToday(), 4).observe(activity, Observer { events ->
+            events.forEach {
+                it.filterNotes(it.profileId)
+            }
+
             adapter.setAllItems(events)
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter

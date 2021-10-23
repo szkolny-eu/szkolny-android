@@ -75,6 +75,10 @@ class AttendanceSummaryFragment : LazyFragment(), CoroutineScope {
         app.db.attendanceDao().getAll(App.profileId).observe(this@AttendanceSummaryFragment, Observer { items -> this@AttendanceSummaryFragment.launch {
             if (!isAdded) return@launch
 
+            items.forEach {
+                it.filterNotes(it.profileId)
+            }
+
             // load & configure the adapter
             attendance = items
             adapter.items = withContext(Dispatchers.Default) { processAttendance() }

@@ -4,8 +4,11 @@
 package pl.szczodrzynski.edziennik.data.db.full
 
 import androidx.room.Ignore
+import androidx.room.Relation
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Note
+import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.ui.search.Searchable
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -19,7 +22,7 @@ class EventFull(
         profileId, id, date, time,
         topic, color, type,
         teacherId, subjectId, teamId, addedDate
-), Searchable<EventFull> {
+), Searchable<EventFull>, Noteable {
     constructor(event: Event, metadata: Metadata? = null) : this(
             event.profileId, event.id, event.date, event.time,
             event.topic, event.color, event.type,
@@ -109,4 +112,8 @@ class EventFull(
 
     val eventColor
         get() = color ?: typeColor ?: 0xff2196f3.toInt()
+
+    @Relation(parentColumn = "eventId", entityColumn = "noteOwnerId", entity = Note::class)
+    override lateinit var notes: MutableList<Note>
+    override fun getNoteType() = Note.OwnerType.EVENT
 }

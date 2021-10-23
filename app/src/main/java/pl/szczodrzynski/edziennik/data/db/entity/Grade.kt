@@ -41,7 +41,7 @@ open class Grade(
         val teacherId: Long,
         val subjectId: Long,
         var addedDate: Long = System.currentTimeMillis()
-) : Keepable(), Noteable {
+) : Keepable() {
     companion object {
         const val TYPE_NORMAL = 0
         const val TYPE_SEMESTER1_PROPOSED = 1
@@ -78,7 +78,5 @@ open class Grade(
 
     val isImproved
         get() = parentId ?: -1L != -1L
-
-    override fun getNoteType() = Note.OwnerType.GRADE
 }
 

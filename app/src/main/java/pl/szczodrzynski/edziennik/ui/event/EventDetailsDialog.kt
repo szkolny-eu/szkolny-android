@@ -97,6 +97,8 @@ class EventDetailsDialog(
             manager.markAsSeen(event)
         }
 
+        event.filterNotes(event.profileId)
+
         val bullet = " • "
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 

@@ -31,7 +31,7 @@ open class Notice(
 
         var teacherId: Long,
         var addedDate: Long = System.currentTimeMillis()
-) : Keepable(), Noteable {
+) : Keepable() {
     companion object {
         const val TYPE_NEUTRAL = 0
         const val TYPE_POSITIVE = 1
@@ -40,6 +40,4 @@ open class Notice(
 
     @Ignore
     var showAsUnseen = false
-
-    override fun getNoteType() = Note.OwnerType.BEHAVIOR
 }

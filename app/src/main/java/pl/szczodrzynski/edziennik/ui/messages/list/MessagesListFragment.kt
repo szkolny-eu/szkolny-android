@@ -81,6 +81,8 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
                 return@Observer
 
             messages.forEach { message ->
+                message.filterNotes(message.profileId)
+
                 // uh oh, so these are the workarounds ??
                 message.recipients?.removeAll { it.profileId != message.profileId }
                 message.recipients?.forEach { recipient ->

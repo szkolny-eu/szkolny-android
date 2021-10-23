@@ -32,7 +32,7 @@ open class Message(
          */
         var senderId: Long?,
         var addedDate: Long = System.currentTimeMillis()
-) : Keepable(), Noteable {
+) : Keepable() {
     companion object {
         const val TYPE_RECEIVED = 0
         const val TYPE_SENT = 1
@@ -83,6 +83,4 @@ open class Message(
         attachmentNames = null
         attachmentSizes = null
     }
-
-    override fun getNoteType() = Note.OwnerType.MESSAGE
 }

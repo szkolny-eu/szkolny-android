@@ -72,6 +72,11 @@ class GradeDetailsDialog(
         val historyList = withContext(Dispatchers.Default) {
             app.db.gradeDao().getByParentIdNow(App.profileId, grade.id)
         }
+
+        historyList.forEach {
+            it.filterNotes(it.profileId)
+        }
+
         b.historyVisible = historyList.isNotEmpty()
         if (historyList.isNotEmpty()) {
             b.gradeHistoryList.adapter = GradesAdapter(activity, {

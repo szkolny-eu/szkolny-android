@@ -103,6 +103,10 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         // observe lesson database
         app.db.timetableDao().getAllForDate(App.profileId, date).observe(this) { lessons ->
             launch {
+                lessons.forEach {
+                    it.filterNotes(it.profileId)
+                }
+
                 val events = withContext(Dispatchers.Default) {
                     app.db.eventDao().getAllByDateNow(App.profileId, date)
                 }

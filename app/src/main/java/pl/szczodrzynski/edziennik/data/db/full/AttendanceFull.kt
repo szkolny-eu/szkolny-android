@@ -3,7 +3,10 @@
  */
 package pl.szczodrzynski.edziennik.data.db.full
 
+import androidx.room.Relation
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
+import pl.szczodrzynski.edziennik.data.db.entity.Note
+import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -17,7 +20,7 @@ class AttendanceFull(
         baseType, typeName, typeShort, typeSymbol, typeColor,
         date, startTime, semester,
         teacherId, subjectId, addedDate
-) {
+), Noteable {
     var teacherName: String? = null
     var subjectLongName: String? = null
     var subjectShortName: String? = null
@@ -26,4 +29,8 @@ class AttendanceFull(
     var seen = false
         get() = field || baseType == TYPE_PRESENT
     var notified = false
+
+    @Relation(parentColumn = "attendanceId", entityColumn = "noteOwnerId", entity = Note::class)
+    override lateinit var notes: MutableList<Note>
+    override fun getNoteType() = Note.OwnerType.ATTENDANCE
 }

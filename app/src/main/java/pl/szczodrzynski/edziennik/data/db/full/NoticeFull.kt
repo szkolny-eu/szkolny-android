@@ -3,6 +3,9 @@
  */
 package pl.szczodrzynski.edziennik.data.db.full
 
+import androidx.room.Relation
+import pl.szczodrzynski.edziennik.data.db.entity.Note
+import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
 
 class NoticeFull(
@@ -13,10 +16,14 @@ class NoticeFull(
         profileId, id, type, semester,
         text, category, points,
         teacherId, addedDate
-) {
+), Noteable {
     var teacherName: String? = null
 
     // metadata
     var seen = false
     var notified = false
+
+    @Relation(parentColumn = "noticeId", entityColumn = "noteOwnerId", entity = Note::class)
+    override lateinit var notes: MutableList<Note>
+    override fun getNoteType() = Note.OwnerType.BEHAVIOR
 }

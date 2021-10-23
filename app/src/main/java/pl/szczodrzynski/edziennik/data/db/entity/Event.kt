@@ -44,7 +44,7 @@ open class Event(
         var subjectId: Long,
         var teamId: Long,
         var addedDate: Long = System.currentTimeMillis()
-) : Keepable(), Noteable {
+) : Keepable() {
     companion object {
         const val TYPE_ELEARNING = -5L
         const val TYPE_UNDEFINED = -2L
@@ -139,6 +139,4 @@ open class Event(
 
     @Ignore
     fun withMetadata(metadata: Metadata) = EventFull(this, metadata)
-
-    override fun getNoteType() = Note.OwnerType.EVENT
 }

@@ -172,6 +172,10 @@ class DayDialog(
         )
 
         app.db.eventDao().getAllByDate(profileId, date).observe(activity) { events ->
+            events.forEach {
+                it.filterNotes(it.profileId)
+            }
+
             adapter.setAllItems(
                 if (eventTypeId != null)
                     events.filter { it.type == eventTypeId }

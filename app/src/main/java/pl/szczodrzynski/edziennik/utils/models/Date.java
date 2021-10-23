@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -381,5 +383,31 @@ public class Date implements Comparable<Date>, Noteable {
     @Override
     public Note.OwnerType getNoteType() {
         return Note.OwnerType.DAY;
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getNoteSubstituteText() {
+        return null;
+    }
+
+    @NonNull
+    @Override
+    public List<Note> getNotes() {
+        return new ArrayList();
+    }
+
+    @Override
+    public void setNotes(@NonNull List<Note> notes) {
+    }
+
+    @Override
+    public void filterNotes(int profileId) {
+        Noteable.DefaultImpls.filterNotes(this, profileId);
+    }
+
+    @Override
+    public boolean hasNotes() {
+        return Noteable.DefaultImpls.hasNotes(this);
     }
 }
