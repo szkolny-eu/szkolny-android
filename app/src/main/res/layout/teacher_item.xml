@@ -42,7 +42,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textSize="13sp"
             tools:text="Jan Kowalski" />
-
     </LinearLayout>
 
     <com.mikepenz.iconics.view.IconicsImageButton
@@ -50,8 +49,8 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:background="?selectableItemBackground"
         android:visibility="gone"
         app:iiv_color="?android:textColorSecondary"
@@ -64,13 +63,12 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:background="?selectableItemBackground"
         android:visibility="gone"
         app:iiv_color="?android:textColorSecondary"
         app:iiv_icon="cmd-clipboard-text-multiple-outline"
         app:iiv_size="24dp"
         tools:visibility="visible" />
-
 </LinearLayout>

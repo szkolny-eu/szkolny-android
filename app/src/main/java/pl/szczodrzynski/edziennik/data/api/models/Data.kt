@@ -453,8 +453,10 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         val nameParts = nameFirstLast.split(" ")
         return if (nameParts.size == 1)
             getTeacher(nameParts[0], "", loginId)
-        else
+        else if (nameParts.size == 2)
             getTeacher(nameParts[0], nameParts[1], loginId)
+        else
+            getTeacher(nameParts[0], nameParts.subList(1, nameParts.size).joinToString(" "), loginId)
     }
 
     fun getTeacherByFDotLast(nameFDotLast: String, loginId: String? = null): Teacher {

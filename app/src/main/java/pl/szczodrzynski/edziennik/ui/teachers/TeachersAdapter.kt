@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -21,10 +20,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.TeacherItemBinding
-import pl.szczodrzynski.edziennik.ext.Intent
-import pl.szczodrzynski.edziennik.ext.copyToClipboard
-import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
-import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.*
 import kotlin.coroutines.CoroutineContext
 
 class TeachersAdapter(
@@ -58,11 +54,15 @@ class TeachersAdapter(
 
         b.name.text = item.fullName
         b.image.setImageBitmap(item.image)
-        b.type.text = item.getTypeName(activity, subjectList)
+        b.type.text = item.getTypeText(activity, subjectList)
         b.copy.isVisible = true
         b.copy.onClick {
             item.fullName.copyToClipboard(activity)
             Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show()
+        }
+        b.copy.onLongClick {
+            Toast.makeText(activity, R.string.copy_to_clipboard, Toast.LENGTH_SHORT).show()
+            true
         }
         if (item.loginId.isNotNullNorBlank()) {
             b.sendMessage.isVisible = true
@@ -75,10 +75,13 @@ class TeachersAdapter(
                 )
                 activity.sendBroadcast(intent)
             }
+            b.sendMessage.onLongClick {
+                Toast.makeText(activity, app.getString(R.string.send_message_to, item.fullName), Toast.LENGTH_SHORT).show()
+                true
+            }
         } else {
             b.sendMessage.isVisible = false
         }
-
     }
 
     override fun getItemCount() = items.size
