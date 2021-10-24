@@ -12,6 +12,7 @@ import androidx.room.Ignore
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.getNameInitials
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.ext.join
 import java.util.*
 
@@ -117,15 +118,23 @@ open class Teacher {
         type = type and (1 shl i).inv()
     }
 
-    fun getTypeText(c: Context): String {
-        val list = mutableListOf<String>()
+    fun getTypeText(c: Context, subjectList: List<Subject>? = null): String {
+        val roles = mutableListOf<String>()
         types.forEach {
             if (isType(it))
-                list += typeName(c, it, typeDescription)
+                roles += typeName(c, it, typeDescription)
         }
-        return list.join(", ")
-    }
 
+        if (subjectList != null && subjects.isNotEmpty()) {
+            return subjects.joinToString(
+                prefix = if (roles.isNotEmpty()) roles.joinToString(postfix = ": ") else "",
+                transform = { subjectId ->
+                    subjectList.firstOrNull { it.id == subjectId }?.longName ?: ""
+                },
+            )
+        }
+        return roles.joinToString()
+    }
 
     @Ignore
     var image: Bitmap? = null

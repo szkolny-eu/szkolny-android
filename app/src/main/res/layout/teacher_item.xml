@@ -8,12 +8,12 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_marginLeft="8dp"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        tools:srcCompat="@drawable/bg_circle"
-        android:layout_marginStart="8dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        tools:srcCompat="@drawable/bg_circle" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -43,4 +43,31 @@
             tools:text="Jan Kowalski" />
     </LinearLayout>
 
+    <com.mikepenz.iconics.view.IconicsImageButton
+        android:id="@+id/sendMessage"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="?selectableItemBackground"
+        android:visibility="gone"
+        app:iiv_color="?android:textColorSecondary"
+        app:iiv_icon="cmd-email-plus-outline"
+        app:iiv_size="24dp"
+        tools:visibility="visible" />
+
+    <com.mikepenz.iconics.view.IconicsImageButton
+        android:id="@+id/copy"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="?selectableItemBackground"
+        android:visibility="gone"
+        app:iiv_color="?android:textColorSecondary"
+        app:iiv_icon="cmd-clipboard-text-multiple-outline"
+        app:iiv_size="24dp"
+        tools:visibility="visible" />
 </LinearLayout>

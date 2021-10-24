@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.TeachersListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 
@@ -48,11 +50,21 @@ class TeachersListFragment : Fragment(), CoroutineScope {
 
         val adapter = TeachersAdapter(activity)
 
+        adapter.subjectList = withContext(Dispatchers.IO) {
+            App.db.subjectDao().getAllNow(App.profileId)
+        }
+
         app.db.teacherDao().getAllTeachers(App.profileId).observe(viewLifecycleOwner, Observer { items ->
             if (!isAdded) return@Observer
 
             // load & configure the adapter
-            adapter.items = items
+            adapter.items = items.sortedWith(compareBy(
+                { it.subjects.isEmpty() },
+                { it.type == 0 },
+            ))
+            adapter.items.forEach {
+                it.image = it.image ?: MessagesUtils.getProfileImage(48, 24, 16, 12, 1, it.fullName)
+            }
             if (items.isNotNullNorEmpty() && b.list.adapter == null) {
                 b.list.adapter = adapter
                 b.list.apply {
