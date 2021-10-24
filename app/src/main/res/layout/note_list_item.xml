@@ -3,13 +3,16 @@
   ~ Copyright (c) Kuba Szczodrzyński 2021-10-23.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground">
 
     <LinearLayout
+        android:id="@+id/colorLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -54,4 +57,4 @@
             android:textAppearance="@style/NavView.TextView.Helper"
             tools:text="Jakub Szczodrzyński • 23 października" />
     </LinearLayout>
-</layout>
+</FrameLayout>

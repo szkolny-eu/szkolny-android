@@ -36,6 +36,13 @@ class NoteListDialog(
     private lateinit var adapter: NoteListAdapter
 
     override suspend fun onNeutralClick(): Boolean {
+        NoteEditorDialog(
+            activity = activity,
+            owner = owner,
+            editingNote = null,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        ).show()
         return NO_DISMISS
     }
 
@@ -54,7 +61,13 @@ class NoteListDialog(
                 ).show()
             },
             onNoteEditClick = {
-
+                NoteEditorDialog(
+                    activity = activity,
+                    owner = owner,
+                    editingNote = it,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener,
+                ).show()
             },
         )
 
@@ -83,10 +96,9 @@ class NoteListDialog(
                     layoutManager = LinearLayoutManager(context)
                     addItemDecoration(SimpleDividerItemDecoration(context))
                 }
+            } else {
+                adapter.notifyDataSetChanged()
             }
-
-            // reapply the (empty) filter
-            adapter.filter.filter(null)
         }
     }
 }

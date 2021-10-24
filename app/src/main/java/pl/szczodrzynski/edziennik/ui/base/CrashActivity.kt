@@ -19,7 +19,6 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.ERROR_APP_CRASH
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.ErrorReportRequest
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.utils.Themes.appTheme
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
@@ -116,7 +115,7 @@ class CrashActivity : AppCompatActivity(), CoroutineScope {
         content = content.replace(packageName.toRegex(), "<font color='#4caf50'>$packageName</font>")
         content = content.replace("\n".toRegex(), "<br>")
         contentPlain += "\n" + Build.MANUFACTURER + "\n" + Build.BRAND + "\n" + Build.MODEL + "\n" + Build.DEVICE + "\n"
-        if (app.profile.registration == Profile.REGISTRATION_ENABLED) {
+        if (!app.profile.canShare) {
             contentPlain += "U: " + app.profile.userCode + "\nS: " + app.profile.studentNameLong + "\n"
         }
         contentPlain += BuildConfig.VERSION_NAME + " " + BuildConfig.BUILD_TYPE

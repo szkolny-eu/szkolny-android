@@ -145,6 +145,9 @@ open class Profile(
             else -> "unknown"
         }
 
+    val canShare
+        get() = registration == REGISTRATION_ENABLED && !archived
+
     override fun getImageDrawable(context: Context): Drawable {
         if (archived) {
             return context.getDrawableFromRes(pl.szczodrzynski.edziennik.R.drawable.profile_archived).also {

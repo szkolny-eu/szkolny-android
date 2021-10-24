@@ -119,7 +119,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
 
         teams.filter { it.code == teamCode }.distinctBy { it.profileId }.forEach { team ->
             val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
-            if (profile.registration != Profile.REGISTRATION_ENABLED)
+            if (!profile.canShare)
                 return@forEach
             val event = Event(
                     profileId = team.profileId,
@@ -186,7 +186,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
 
         teams.filter { it.code == teamCode }.distinctBy { it.profileId }.forEach { team ->
             val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
-            if (profile.registration != Profile.REGISTRATION_ENABLED)
+            if (!profile.canShare)
                 return@forEach
             val notificationFilter = app.config.getFor(team.profileId).sync.notificationFilter
 

@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.databinding.NoteDetailsDialogBinding
-import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -37,6 +37,13 @@ class NoteDetailsDialog(
         get() = app.noteManager
 
     override suspend fun onNeutralClick(): Boolean {
+        NoteEditorDialog(
+            activity = activity,
+            owner = owner,
+            editingNote = note,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        ).show()
         return NO_DISMISS
     }
 
@@ -54,6 +61,12 @@ class NoteDetailsDialog(
 
     private fun update() {
         b.note = note
+
+        if (note.color != null) {
+            dialog.overlayBackgroundColor(note.color!!.toInt(), 0x50)
+        } else {
+            dialog.overlayBackgroundColor(0, 0)
+        }
 
         b.addedBy.setText(
             when (note.sharedBy) {

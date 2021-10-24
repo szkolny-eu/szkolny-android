@@ -13,9 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -31,7 +28,6 @@ import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.dialogs.StyledTextDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.views.TimeDropdown.Companion.DISPLAY_LESSONS
@@ -123,20 +119,13 @@ class EventManualDialog(
             }
         }
 
-        b.topicLayout.endIconDrawable = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_open_in_new).apply {
-            sizeDp = 24
-        }
-        b.topicLayout.setEndIconOnClickListener {
-            StyledTextDialog(
-                activity,
-                initialText = b.topic.text,
-                onSuccess = {
-                    b.topic.text = it
-                },
-                onShowListener,
-                onDismissListener
-            ).show()
-        }
+        textStylingManager.attachToField(
+            activity = activity,
+            textLayout = b.topicLayout,
+            textEdit = b.topic,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
 
         stylingConfig = StylingConfigBase(editText = b.topic, htmlMode = SIMPLE)
 
@@ -414,7 +403,7 @@ class EventManualDialog(
 
         val share = b.shareSwitch.isChecked
 
-        if (share && profile.registration != Profile.REGISTRATION_ENABLED) {
+        if (share && !profile.canShare) {
             RegistrationConfigDialog(activity, profile, onChangeListener = { enabled ->
                 if (enabled)
                     saveEvent()

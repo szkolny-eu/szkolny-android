@@ -10,7 +10,6 @@ import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
-import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.REGISTRATION_ENABLED
 import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.*
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
@@ -83,36 +82,39 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
             AttendanceConfigDialog(activity, reloadOnDismiss = false).show()
         },
 
-        util.createPropertyItem(
-            text = R.string.settings_register_allow_registration_text,
-            subText = R.string.settings_register_allow_registration_subtext,
-            icon = CommunityMaterial.Icon.cmd_account_circle_outline,
-            value = app.profile.registration == REGISTRATION_ENABLED,
-            beforeChange = { item, value ->
-                if (app.profile.registration == REGISTRATION_ENABLED == value)
-                // allow the switch to change - needed for util.refresh() to change the visual state
-                    return@createPropertyItem true
-                val dialog =
-                    RegistrationConfigDialog(activity, app.profile, onChangeListener = { enabled ->
-                        if (item.isChecked == enabled)
-                            return@RegistrationConfigDialog
-                        item.isChecked = enabled
-                        if (value) {
-                            card.items.after(item, sharedEventsItem)
-                        } else {
-                            card.items.remove(sharedEventsItem)
-                        }
-                        util.refresh()
-                    })
-                if (value)
-                    dialog.showEnableDialog()
-                else
-                    dialog.showDisableDialog()
-                false
-            }
-        ) { _, _ -> },
+        if (app.profile.archived)
+            null
+        else
+            util.createPropertyItem(
+                text = R.string.settings_register_allow_registration_text,
+                subText = R.string.settings_register_allow_registration_subtext,
+                icon = CommunityMaterial.Icon.cmd_account_circle_outline,
+                value = app.profile.canShare,
+                beforeChange = { item, value ->
+                    if (app.profile.canShare == value)
+                    // allow the switch to change - needed for util.refresh() to change the visual state
+                        return@createPropertyItem true
+                    val dialog =
+                        RegistrationConfigDialog(activity, app.profile, onChangeListener = { enabled ->
+                            if (item.isChecked == enabled)
+                                return@RegistrationConfigDialog
+                            item.isChecked = enabled
+                            if (value) {
+                                card.items.after(item, sharedEventsItem)
+                            } else {
+                                card.items.remove(sharedEventsItem)
+                            }
+                            util.refresh()
+                        })
+                    if (value)
+                        dialog.showEnableDialog()
+                    else
+                        dialog.showDisableDialog()
+                    false
+                }
+            ) { _, _ -> },
 
-        if (app.profile.registration == REGISTRATION_ENABLED)
+        if (app.profile.canShare)
             sharedEventsItem
         else
             null

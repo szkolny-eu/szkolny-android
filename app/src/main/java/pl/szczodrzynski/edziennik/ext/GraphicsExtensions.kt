@@ -10,10 +10,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
+import androidx.annotation.*
 import androidx.core.content.res.ResourcesCompat
 import com.mikepenz.iconics.typeface.IIcon
 import pl.szczodrzynski.navlib.ImageHolder
@@ -59,6 +56,12 @@ fun @receiver:AttrRes Int.resolveAttr(context: Context?): Int {
     val typedValue = TypedValue()
     context?.theme?.resolveAttribute(this, typedValue, true)
     return typedValue.data
+}
+@Dimension
+fun @receiver:AttrRes Int.resolveDimenAttr(context: Context): Float {
+    val typedValue = TypedValue()
+    context.theme?.resolveAttribute(this, typedValue, true)
+    return typedValue.getDimension(context.resources.displayMetrics)
 }
 @ColorInt
 fun @receiver:ColorRes Int.resolveColor(context: Context): Int {

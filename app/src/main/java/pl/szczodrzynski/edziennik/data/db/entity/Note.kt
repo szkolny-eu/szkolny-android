@@ -33,7 +33,7 @@ data class Note(
     @ColumnInfo(name = "noteBody")
     val body: String,
     @ColumnInfo(name = "noteColor")
-    val color: Int?,
+    val color: Long?,
 
     @ColumnInfo(name = "noteSharedBy")
     val sharedBy: String? = null,
@@ -58,6 +58,24 @@ data class Note(
         MESSAGE(isShareable = true, canReplace = false),
     }
 
+    enum class Color(val value: Long?) {
+        NONE(null),
+        RED(0xffff1744),
+        ORANGE(0xffff9100),
+        YELLOW(0xffffea00),
+        GREEN(0xff00c853),
+        TEAL(0xff00bfa5),
+        BLUE(0xff0091ea),
+        DARK_BLUE(0xff304ffe),
+        PURPLE(0xff6200ea),
+        PINK(0xffd500f9),
+        BROWN(0xff795548),
+        GREY(0xff9e9e9e),
+        BLACK(0xff000000),
+    }
+
+    val isShared
+        get() = sharedBy != null
     val canEdit
         get() = sharedBy == null || sharedBy == "self"
 

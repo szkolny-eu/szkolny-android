@@ -7,6 +7,8 @@ package pl.szczodrzynski.edziennik.utils.managers
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Note
@@ -32,6 +34,36 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 class NoteManager(private val app: App) {
     companion object {
         private const val TAG = "NoteManager"
+    }
+
+    suspend fun saveNote(note: Note, wasShared: Boolean) {
+        if (!note.isShared && wasShared) {
+            unshareNote(note)
+        } else if (note.isShared) {
+            shareNote(note)
+        }
+
+        withContext(Dispatchers.IO) {
+            app.db.noteDao().add(note)
+        }
+    }
+
+    suspend fun deleteNote(note: Note) {
+        if (note.isShared) {
+            unshareNote(note)
+        }
+
+        withContext(Dispatchers.IO) {
+            app.db.noteDao().delete(note)
+        }
+    }
+
+    private suspend fun shareNote(note: Note) {
+
+    }
+
+    private suspend fun unshareNote(note: Note) {
+
     }
 
     fun getAdapterForItem(activity: AppCompatActivity, item: Noteable): RecyclerView.Adapter<*>? {

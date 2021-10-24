@@ -4,9 +4,11 @@
 
 package pl.szczodrzynski.edziennik.ui.notes
 
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
@@ -35,6 +37,13 @@ class NoteViewHolder(
     ) {
         b.topic.text = item.topicHtml ?: item.bodyHtml
 
+        if (item.color != null) {
+            b.colorLayout.background =
+                ColorDrawable(ColorUtils.setAlphaComponent(item.color.toInt(), 0x50))
+        } else {
+            b.colorLayout.background = null
+        }
+
         val colorHighlight = R.attr.colorControlHighlight.resolveAttr(activity)
         val addedDate = Date.fromMillis(item.addedDate).formattedString
 
@@ -57,7 +66,7 @@ class NoteViewHolder(
             b.addedBy.setText(R.string.notes_added_by_you_format, addedDate)
         }
 
-        b.editButton.isVisible = item.sharedBy == "self" && adapter.onNoteEditClick != null
+        b.editButton.isVisible = item.canEdit && adapter.onNoteEditClick != null
 
         if (adapter.onNoteClick != null)
             b.root.onClick {

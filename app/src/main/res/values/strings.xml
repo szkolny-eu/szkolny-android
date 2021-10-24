@@ -901,7 +901,9 @@
     <string name="registration_config_enable_progress_text">Pobieranie udostępnionych wydarzeń…</string>
     <string name="registration_config_enable_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
     <string name="registration_config_event_sharing_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
+    <string name="registration_config_note_sharing_text">Aby móc udostępnić notatkę, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie notatek udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
     <string name="registration_config_event_sharing_title">Udostępnianie wydarzeń</string>
+    <string name="registration_config_note_sharing_title">Udostępnianie notatek</string>
     <string name="registration_config_title">Rejestracja aplikacji Szkolny.eu</string>
     <string name="remove">Usuń</string>
     <string name="removed">Usunięto</string>
@@ -1513,4 +1515,12 @@
     <string name="notes_details_id">ID notatki</string>
     <string name="notes_details_owner_id">ID właściciela</string>
     <string name="notes_details_dialog_title">Notatka</string>
+    <string name="notes_editor_dialog_title">Edytuj notatkę</string>
+    <string name="notes_editor_topic">Tytuł notatki (opcjonalnie)</string>
+    <string name="notes_editor_body">Treść notatki</string>
+    <string name="notes_editor_replace_text">Zastąp oryginalną treść</string>
+    <string name="notes_editor_share_hint">Osoby z klasy zobaczą Twoją notatkę przy tym elemencie.</string>
+    <string name="notes_editor_replace_hint">Treść notatki będzie widoczna zamiast oryginalnej treści elementu.</string>
+    <string name="notes_editor_body_error">Podaj treść notatki</string>
+    <string name="notes_editor_color">Kolor</string>
 </resources>

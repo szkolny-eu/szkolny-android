@@ -5,10 +5,7 @@
 package pl.szczodrzynski.edziennik.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 
 @Dao
@@ -22,6 +19,9 @@ interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAll(noteList: List<Note>)
+
+    @Delete
+    fun delete(note: Note)
 
     @Query("SELECT * FROM notes WHERE profileId = :profileId AND noteId = :noteId $ORDER_BY")
     fun get(profileId: Int, noteId: Long): LiveData<Note>

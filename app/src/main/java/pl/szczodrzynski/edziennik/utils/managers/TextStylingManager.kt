@@ -13,16 +13,22 @@ import android.text.style.UnderlineSpan
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.textfield.TextInputLayout
+import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.IIcon
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.sizeDp
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.ext.attachToastHint
 import pl.szczodrzynski.edziennik.ext.hasSet
 import pl.szczodrzynski.edziennik.ext.replaceSpan
+import pl.szczodrzynski.edziennik.ui.dialogs.StyledTextDialog
 import pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode.*
@@ -269,6 +275,30 @@ class TextStylingManager(private val app: App) {
         config.fontStyleClear.isEnabled = enable
         config.styles.forEach {
             it.button.isEnabled = enable
+        }
+    }
+
+    fun attachToField(
+        activity: AppCompatActivity,
+        textLayout: TextInputLayout,
+        textEdit: TextInputKeyboardEdit,
+        onShowListener: ((tag: String) -> Unit)? = null,
+        onDismissListener: ((tag: String) -> Unit)? = null,
+    ) {
+        textLayout.endIconDrawable = IconicsDrawable(
+            activity,
+            CommunityMaterial.Icon3.cmd_open_in_new
+        ).apply { sizeDp = 24 }
+        textLayout.setEndIconOnClickListener {
+            StyledTextDialog(
+                activity,
+                initialText = textEdit.text,
+                onSuccess = {
+                    textEdit.text = it
+                },
+                onShowListener,
+                onDismissListener
+            ).show()
         }
     }
 }
