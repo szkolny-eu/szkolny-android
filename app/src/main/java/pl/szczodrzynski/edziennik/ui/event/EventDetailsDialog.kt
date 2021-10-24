@@ -37,7 +37,7 @@ class EventDetailsDialog(
     activity: AppCompatActivity,
     // this event is observed for changes
     private var event: EventFull,
-    private val showNotesButton: Boolean = true,
+    private val showNotes: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogEventDetailsBinding>(activity, onShowListener, onDismissListener) {
@@ -108,7 +108,7 @@ class EventDetailsDialog(
         }
         catch (_: Exception) {}
 
-        manager.setLegendText(b.legend, event)
+        manager.setLegendText(b.legend, event, showNotes)
 
         b.typeColor.background?.setTintColor(event.eventColor)
 
@@ -262,10 +262,9 @@ class EventDetailsDialog(
             }, owner = event)
         }
 
-        b.notesButton.isVisible = showNotesButton
+        b.notesButton.isVisible = showNotes
         b.notesButton.setupNotesButton(
             activity = activity,
-            profileId = event.profileId,
             owner = event,
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,

@@ -53,7 +53,7 @@ data class Note(
         EVENT(isShareable = true, canReplace = true),
         EVENT_SUBJECT(isShareable = true, canReplace = false),
         GRADE(isShareable = false, canReplace = true),
-        LESSON(isShareable = true, canReplace = false),
+        LESSON(isShareable = true, canReplace = true),
         LESSON_SUBJECT(isShareable = true, canReplace = false),
         MESSAGE(isShareable = true, canReplace = false),
     }

@@ -54,7 +54,7 @@
                 android:paddingVertical="4dp">
                 <!--tools:background="@drawable/timetable_subject_color_rounded"-->
 
-                <TextView
+                <com.mikepenz.iconics.view.IconicsTextView
                     android:id="@+id/subjectName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

@@ -16,10 +16,12 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.navlib.getColorFromAttr
 
 class LessonChangesAdapter(
         val context: Context,
+        private val showNotes: Boolean = true,
         private val onLessonClick: ((lesson: LessonFull) -> Unit)? = null
 ) : RecyclerView.Adapter<LessonChangesAdapter.ViewHolder>() {
 
@@ -94,6 +96,9 @@ class LessonChangesAdapter(
         }
         b.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
         b.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
+
+        if (lesson.hasNotes() && showNotes)
+            NoteManager.prependIcon(b.subjectName)
 
         //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
         when (lesson.type) {

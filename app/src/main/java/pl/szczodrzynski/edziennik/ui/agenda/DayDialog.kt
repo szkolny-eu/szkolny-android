@@ -28,6 +28,7 @@ import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -37,7 +38,7 @@ class DayDialog(
     private val profileId: Int,
     private val date: Date,
     private val eventTypeId: Long? = null,
-    private val showNotesButton: Boolean = true,
+    private val showNotes: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogDayBinding>(activity, onShowListener, onDismissListener) {
@@ -204,13 +205,14 @@ class DayDialog(
             }
         }
 
-        b.notesButton.isVisible = showNotesButton
+        b.notesButton.isVisible = showNotes
         b.notesButton.setupNotesButton(
             activity = activity,
-            profileId = profileId,
             owner = date,
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
+        if (showNotes)
+            NoteManager.setLegendText(date, b.legend)
     }
 }

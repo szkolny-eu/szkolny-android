@@ -33,6 +33,7 @@ import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
@@ -293,6 +294,9 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             }
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
+
+            if (lesson.hasNotes())
+                NoteManager.prependIcon(lb.subjectName)
 
             lb.attendanceIcon.isVisible = attendance?.let {
                 val icon = attendanceManager.getAttendanceIcon(it) ?: return@let false

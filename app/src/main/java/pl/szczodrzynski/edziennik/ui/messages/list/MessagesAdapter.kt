@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.ui.search.SearchableAdapter
 class MessagesAdapter(
     val activity: AppCompatActivity,
     val teachers: List<Teacher>,
+    val showNotes: Boolean = true,
     val onMessageClick: ((item: MessageFull) -> Unit)? = null,
     val onStarClick: ((item: MessageFull) -> Unit)? = null,
 ) : SearchableAdapter<MessageFull>() {

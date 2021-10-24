@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.GradesItemGradeBinding
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class GradeViewHolder(
@@ -47,6 +48,9 @@ class GradeViewHolder(
                 else
                     grade.category
         }
+
+        if (grade.hasNotes() && adapter.showNotes)
+            NoteManager.prependIcon(b.gradeDescription)
 
         val weightText = manager.getWeightString(activity, grade, showClassAverage = true)
         b.gradeWeight.text = weightText

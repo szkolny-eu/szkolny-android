@@ -34,7 +34,7 @@
             tools:text="JP"
             tools:visibility="visible" />
 
-        <TextView
+        <com.mikepenz.iconics.view.IconicsTextView
             android:id="@+id/messageSubject"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -29,6 +29,7 @@ import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
 
@@ -36,7 +37,7 @@ class LessonDetailsDialog(
     activity: AppCompatActivity,
     private val lesson: LessonFull,
     private val attendance: AttendanceFull? = null,
-    private val showNotesButton: Boolean = true,
+    private val showNotes: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogLessonDetailsBinding>(activity, onShowListener, onDismissListener) {
@@ -251,13 +252,14 @@ class LessonDetailsDialog(
             )
         }
 
-        b.notesButton.isVisible = showNotesButton
+        b.notesButton.isVisible = showNotes
         b.notesButton.setupNotesButton(
             activity = activity,
-            profileId = lesson.profileId,
             owner = lesson,
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
+        if (showNotes)
+            NoteManager.setLegendText(lesson, b.legend)
     }
 }

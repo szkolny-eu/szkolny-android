@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.resolveAttr
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MessageViewHolder(
@@ -72,6 +73,9 @@ class MessageViewHolder(
             text = messageInfo.profileName ?: "",
             color = colorHighlight
         )
+
+        if (item.hasNotes() && adapter.showNotes)
+            NoteManager.prependIcon(b.messageSubject)
 
         adapter.onMessageClick?.let { listener ->
             b.root.onClick { listener(item) }

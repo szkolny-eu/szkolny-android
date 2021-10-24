@@ -54,7 +54,7 @@ class EventViewHolder(
 
         b.simpleMode = adapter.simpleMode
 
-        manager.setEventTopic(b.topic, item, showType = false)
+        manager.setEventTopic(b.topic, item, showType = false, showNotes = adapter.showNotes)
         b.topic.text = adapter.highlightSearchText(
             item = item,
             text = b.topic.text,
@@ -113,7 +113,7 @@ class EventViewHolder(
         b.attachmentIcon.isVisible = item.hasAttachments
 
         b.typeColor.background?.setTintColor(item.eventColor)
-        b.typeColor.isVisible = adapter.showType
+        b.typeColor.isVisible = adapter.showType && adapter.showColor
 
         b.editButton.isVisible = !adapter.simpleMode
                 && item.addedManually

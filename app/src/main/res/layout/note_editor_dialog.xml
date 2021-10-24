@@ -88,9 +88,10 @@
                     android:id="@+id/shareSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:checked="@{editingNote.sharedBy != null}"
                     android:isVisible="@{ownerType.shareable}"
+                    android:minHeight="32dp"
                     android:text="@string/dialog_event_manual_share_enabled" />
 
                 <TextView
@@ -104,9 +105,10 @@
                     android:id="@+id/replaceSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:checked="@{editingNote.replacesOriginal}"
                     android:isVisible="@{ownerType.canReplace}"
+                    android:minHeight="32dp"
                     android:text="@string/notes_editor_replace_text" />
 
                 <TextView

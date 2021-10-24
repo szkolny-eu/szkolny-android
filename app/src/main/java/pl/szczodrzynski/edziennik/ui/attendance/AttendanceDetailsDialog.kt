@@ -16,11 +16,12 @@ import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 
 class AttendanceDetailsDialog(
     activity: AppCompatActivity,
     private val attendance: AttendanceFull,
-    private val showNotesButton: Boolean = true,
+    private val showNotes: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<AttendanceDetailsDialogBinding>(activity, onShowListener, onDismissListener) {
@@ -52,13 +53,14 @@ class AttendanceDetailsDialog(
             )
         }
 
-        b.notesButton.isVisible = showNotesButton
+        b.notesButton.isVisible = showNotes
         b.notesButton.setupNotesButton(
             activity = activity,
-            profileId = attendance.profileId,
             owner = attendance,
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
+        if (showNotes)
+            NoteManager.setLegendText(attendance, b.legend)
     }
 }

@@ -28,6 +28,7 @@ import kotlin.coroutines.CoroutineContext
 class AttendanceAdapter(
         val activity: AppCompatActivity,
         val type: Int,
+        val showNotes: Boolean = true,
         var onAttendanceClick: ((item: AttendanceFull) -> Unit)? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), CoroutineScope {
     companion object {

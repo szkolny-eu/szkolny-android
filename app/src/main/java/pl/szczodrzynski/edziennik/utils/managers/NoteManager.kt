@@ -4,9 +4,13 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
+import android.annotation.SuppressLint
+import android.text.SpannableStringBuilder
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mikepenz.iconics.view.IconicsTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
@@ -34,6 +38,19 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 class NoteManager(private val app: App) {
     companion object {
         private const val TAG = "NoteManager"
+
+        @SuppressLint("SetTextI18n")
+        fun prependIcon(textView: IconicsTextView) {
+            textView.text = SpannableStringBuilder("{cmd-playlist-edit} ").append(textView.text)
+        }
+
+        fun getLegendText(owner: Noteable): Int? =
+            if (owner.hasNotes()) R.string.legend_notes_added else null
+
+        fun setLegendText(owner: Noteable, textView: IconicsTextView) {
+            textView.isVisible = owner.hasNotes()
+            textView.setText(getLegendText(owner) ?: return)
+        }
     }
 
     suspend fun saveNote(note: Note, wasShared: Boolean) {
@@ -70,9 +87,14 @@ class NoteManager(private val app: App) {
         return when (item) {
             is AnnouncementFull -> AnnouncementsAdapter(activity, mutableListOf(item), null)
 
-            is AttendanceFull -> AttendanceAdapter(activity, onAttendanceClick = {
-                showItemDetailsDialog(activity, it)
-            }, type = AttendanceFragment.VIEW_LIST).also {
+            is AttendanceFull -> AttendanceAdapter(
+                activity,
+                showNotes = false,
+                onAttendanceClick = {
+                    showItemDetailsDialog(activity, it)
+                },
+                type = AttendanceFragment.VIEW_LIST
+            ).also {
                 it.items = mutableListOf(item)
             }
 
@@ -88,9 +110,10 @@ class NoteManager(private val app: App) {
                 activity = activity,
                 simpleMode = true,
                 showDate = true,
-                showType = false,
+                showColor = false,
                 showTime = false,
                 markAsSeen = false,
+                showNotes = false,
                 onEventClick = {
                     showItemDetailsDialog(activity, it)
                 },
@@ -98,13 +121,13 @@ class NoteManager(private val app: App) {
                 it.setAllItems(listOf(item))
             }
 
-            is GradeFull -> GradesAdapter(activity, onGradeClick = {
+            is GradeFull -> GradesAdapter(activity, showNotes = false, onGradeClick = {
                 showItemDetailsDialog(activity, it)
             }).also {
                 it.items = mutableListOf(item)
             }
 
-            is LessonFull -> LessonChangesAdapter(activity, onLessonClick = {
+            is LessonFull -> LessonChangesAdapter(activity, showNotes = false, onLessonClick = {
                 showItemDetailsDialog(activity, it)
             }).also {
                 it.items = listOf(item)
@@ -113,6 +136,7 @@ class NoteManager(private val app: App) {
             is MessageFull -> MessagesAdapter(
                 activity = activity,
                 teachers = listOf(),
+                showNotes = false,
                 onMessageClick = null,
             ).also {
                 it.setAllItems(listOf(item))
@@ -132,7 +156,7 @@ class NoteManager(private val app: App) {
             is AttendanceFull -> AttendanceDetailsDialog(
                 activity = activity,
                 attendance = item,
-                showNotesButton = false,
+                showNotes = false,
                 onShowListener = onShowListener,
                 onDismissListener = onDismissListener,
             ).show()
@@ -141,28 +165,28 @@ class NoteManager(private val app: App) {
                 activity = activity,
                 profileId = App.profileId,
                 date = item,
-                showNotesButton = false,
+                showNotes = false,
                 onShowListener = onShowListener,
                 onDismissListener = onDismissListener,
             ).show()
             is EventFull -> EventDetailsDialog(
                 activity = activity,
                 event = item,
-                showNotesButton = false,
+                showNotes = false,
                 onShowListener = onShowListener,
                 onDismissListener = onDismissListener,
             ).show()
             is GradeFull -> GradeDetailsDialog(
                 activity = activity,
                 grade = item,
-                showNotesButton = false,
+                showNotes = false,
                 onShowListener = onShowListener,
                 onDismissListener = onDismissListener,
             ).show()
             is LessonFull -> LessonDetailsDialog(
                 activity = activity,
                 lesson = item,
-                showNotesButton = false,
+                showNotes = false,
                 onShowListener = onShowListener,
                 onDismissListener = onDismissListener,
             ).show()
@@ -170,7 +194,11 @@ class NoteManager(private val app: App) {
         }
     }
 
-    fun configureHeader(activity: AppCompatActivity, noteOwner: Noteable, b: NoteDialogHeaderBinding) {
+    fun configureHeader(
+        activity: AppCompatActivity,
+        noteOwner: Noteable,
+        b: NoteDialogHeaderBinding,
+    ) {
         b.ownerItemList.apply {
             adapter = getAdapterForItem(activity, noteOwner)
             isNestedScrollingEnabled = false

@@ -18,11 +18,12 @@ import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 
 class GradeDetailsDialog(
     activity: AppCompatActivity,
     private val grade: GradeFull,
-    private val showNotesButton: Boolean = true,
+    private val showNotes: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogGradeDetailsBinding>(activity, onShowListener, onDismissListener) {
@@ -80,7 +81,7 @@ class GradeDetailsDialog(
 
         b.historyVisible = historyList.isNotEmpty()
         if (historyList.isNotEmpty()) {
-            b.gradeHistoryList.adapter = GradesAdapter(activity, {
+            b.gradeHistoryList.adapter = GradesAdapter(activity, onGradeClick = {
                 GradeDetailsDialog(activity, it).show()
             }).also {
                 it.items = historyList.toMutableList()
@@ -93,13 +94,14 @@ class GradeDetailsDialog(
             }
         }
 
-        b.notesButton.isVisible = showNotesButton
+        b.notesButton.isVisible = showNotes
         b.notesButton.setupNotesButton(
             activity = activity,
-            profileId = grade.profileId,
             owner = grade,
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
+        if (showNotes)
+            NoteManager.setLegendText(grade, b.legend)
     }
 }

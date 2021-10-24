@@ -20,7 +20,6 @@ import pl.szczodrzynski.edziennik.ext.onClick
 
 fun MaterialButton.setupNotesButton(
     activity: AppCompatActivity,
-    profileId: Int,
     owner: Noteable,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,

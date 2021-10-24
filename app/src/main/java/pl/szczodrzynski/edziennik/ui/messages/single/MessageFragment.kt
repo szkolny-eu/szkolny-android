@@ -270,7 +270,6 @@ class MessageFragment : Fragment(), CoroutineScope {
 
         b.notesButton.setupNotesButton(
             activity = activity,
-            profileId = message.profileId,
             owner = message,
             onShowListener = null,
             onDismissListener = null,

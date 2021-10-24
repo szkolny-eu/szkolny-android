@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceDayRange
 import pl.szczodrzynski.edziennik.ui.attendance.models.AttendanceMonth
 import pl.szczodrzynski.edziennik.ui.grades.models.ExpandableItemModel
 import pl.szczodrzynski.edziennik.ui.grades.viewholder.BindableViewHolder
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Week
 
 class AttendanceViewHolder(
@@ -39,6 +40,8 @@ class AttendanceViewHolder(
 
         b.type.text = item.typeName
         b.subjectName.text = item.subjectLongName ?: item.lessonTopic
+        if (item.hasNotes() && adapter.showNotes)
+            NoteManager.prependIcon(b.subjectName)
         b.dateTime.text = listOf(
                 Week.getFullDayName(item.date.weekDay),
                 item.date.formattedStringShort,
