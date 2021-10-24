@@ -69,13 +69,13 @@ class EventViewHolder(
             if (adapter.showDate)
                 item.date.getRelativeString(activity, 7) ?: item.date.formattedStringShort
             else null,
-            if (adapter.showType)
+            if (adapter.showType && item.typeName != null)
                 item.typeName
             else null,
             if (adapter.showTime)
                 item.time?.stringHM ?: app.getString(R.string.event_all_day)
             else null,
-            if (adapter.showSubject)
+            if (adapter.showSubject && item.subjectLongName != null)
                 adapter.highlightSearchText(
                     item = item,
                     text = item.subjectLongName ?: "",

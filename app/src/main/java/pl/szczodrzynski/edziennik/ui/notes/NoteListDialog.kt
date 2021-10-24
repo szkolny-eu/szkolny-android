@@ -59,7 +59,13 @@ class NoteListDialog(
         adapter = NoteListAdapter(
             activity = activity,
             onNoteClick = {
-
+                NoteDetailsDialog(
+                    activity = activity,
+                    owner = owner,
+                    note = it,
+                    onShowListener = onShowListener,
+                    onDismissListener = onDismissListener,
+                ).show()
             },
             onNoteEditClick = {
 

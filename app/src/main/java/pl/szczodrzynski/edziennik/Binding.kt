@@ -4,7 +4,9 @@
 package pl.szczodrzynski.edziennik
 
 import android.graphics.Paint
+import android.view.View
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import pl.szczodrzynski.edziennik.ext.dp
 
@@ -17,6 +19,12 @@ object Binding {
         } else {
             textView.paintFlags = textView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("android:isVisible")
+    fun isVisible(view: View, isVisible: Boolean) {
+        view.isVisible = isVisible
     }
 
     private fun resizeDrawable(textView: TextView, index: Int, size: Int) {

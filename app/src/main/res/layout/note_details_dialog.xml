@@ -7,6 +7,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="pl.szczodrzynski.edziennik.data.db.entity.Note" />
+
+        <import type="pl.szczodrzynski.edziennik.App" />
+
+        <variable
+            name="note"
+            type="Note" />
+    </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -51,7 +62,7 @@
                 android:layout_marginTop="16dp"
                 android:drawableLeftAutoSize="@{true}"
                 android:drawablePadding="8dp"
-                android:text="@string/notes_list_dialog_title"
+                android:text="@string/notes_details_dialog_title"
                 android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
                 app:drawableStartCompat="@drawable/ic_note"
                 tools:layout_height="28sp" />
@@ -82,17 +93,70 @@
                     android:textIsSelectable="true"
                     tools:text="18 grudnia, 23:17 przez Janósz Kowalski" />
 
+                <LinearLayout
+                    android:id="@+id/idsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/notes_details_id"
+                            android:textAppearance="@style/NavView.TextView.Helper" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{String.valueOf(note.id)}"
+                            android:textIsSelectable="true"
+                            tools:text="1635073956543" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/notes_details_owner_id"
+                            android:textAppearance="@style/NavView.TextView.Helper" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{String.valueOf(note.ownerId)}"
+                            android:textIsSelectable="true"
+                            tools:text="3875623" />
+                    </LinearLayout>
+                </LinearLayout>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:isVisible="@{note.topic != null}"
                     android:text="@string/dialog_event_details_topic"
                     android:textAppearance="@style/NavView.TextView.Helper" />
 
                 <TextView
-                    android:id="@+id/topic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:isVisible="@{note.topic != null}"
+                    android:text="@{note.topicHtml}"
                     android:textAppearance="@style/NavView.TextView.Medium"
                     android:textIsSelectable="true"
                     tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
@@ -105,9 +169,9 @@
                     android:textAppearance="@style/NavView.TextView.Helper" />
 
                 <TextView
-                    android:id="@+id/body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@{note.bodyHtml}"
                     android:textAppearance="@style/NavView.TextView.Medium"
                     android:textIsSelectable="true"
                     tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />

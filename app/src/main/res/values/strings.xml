@@ -1510,4 +1510,7 @@
     <string name="notes_type_grade">Ocena</string>
     <string name="notes_type_lesson">Lekcja</string>
     <string name="notes_type_message">Wiadomość</string>
+    <string name="notes_details_id">ID notatki</string>
+    <string name="notes_details_owner_id">ID właściciela</string>
+    <string name="notes_details_dialog_title">Notatka</string>
 </resources>

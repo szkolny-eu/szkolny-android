@@ -58,6 +58,9 @@ data class Note(
         MESSAGE(isShareable = true, canReplace = false),
     }
 
+    val canEdit
+        get() = sharedBy == null || sharedBy == "self"
+
     @delegate:Ignore
     @delegate:Transient
     val topicHtml by lazy {
