@@ -3,73 +3,115 @@
   ~ Copyright (c) Kuba Szczodrzyński 2021-10-23.
   -->
 
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ownerItemList"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:itemCount="1"
-            tools:listitem="@layout/grades_item_grade" />
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/divider" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="16dp"
+                android:drawableLeftAutoSize="@{true}"
+                android:drawablePadding="8dp"
+                android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
+                tools:drawableStartCompat="@drawable/ic_grade"
+                tools:layout_height="28sp"
+                tools:text="Ocena" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/dialog_event_details_added_by"
-            android:textAppearance="@style/NavView.TextView.Helper" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/divider" />
 
-        <com.mikepenz.iconics.view.IconicsTextView
-            android:id="@+id/addedBy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            tools:text="18 grudnia, 23:17 przez Janósz Kowalski" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ownerItemList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="1"
+                tools:listitem="@layout/grades_item_grade" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/dialog_event_details_topic"
-            android:textAppearance="@style/NavView.TextView.Helper" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="16dp"
+                android:drawableLeftAutoSize="@{true}"
+                android:drawablePadding="8dp"
+                android:text="@string/notes_list_dialog_title"
+                android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
+                app:drawableStartCompat="@drawable/ic_note"
+                tools:layout_height="28sp" />
 
-        <TextView
-            android:id="@+id/topic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Medium"
-            android:textIsSelectable="true"
-            tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/divider" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/dialog_event_details_body"
-            android:textAppearance="@style/NavView.TextView.Helper" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/NavView.TextView.Medium"
-            android:textIsSelectable="true"
-            tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/dialog_event_details_added_by"
+                    android:textAppearance="@style/NavView.TextView.Helper" />
+
+                <com.mikepenz.iconics.view.IconicsTextView
+                    android:id="@+id/addedBy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
+                    tools:text="18 grudnia, 23:17 przez Janósz Kowalski" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/dialog_event_details_topic"
+                    android:textAppearance="@style/NavView.TextView.Helper" />
+
+                <TextView
+                    android:id="@+id/topic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/NavView.TextView.Medium"
+                    android:textIsSelectable="true"
+                    tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/dialog_event_details_body"
+                    android:textAppearance="@style/NavView.TextView.Helper" />
+
+                <TextView
+                    android:id="@+id/body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/NavView.TextView.Medium"
+                    android:textIsSelectable="true"
+                    tools:text="Rozdział II: Panowanie Piastów i Jagiellonów.Przeniesiony z 11 grudnia." />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

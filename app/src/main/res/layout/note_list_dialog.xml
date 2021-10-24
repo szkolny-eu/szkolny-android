@@ -3,68 +3,110 @@
   ~ Copyright (c) Kuba Szczodrzyński 2021-10-23.
   -->
 
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ownerItemList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:itemCount="1"
-            tools:listitem="@layout/grades_item_grade" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/divider" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/noData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
             android:orientation="vertical"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp"
-            android:visibility="gone"
-            tools:visibility="gone">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="16dp"
-                android:fontFamily="sans-serif-light"
-                android:gravity="center"
-                android:text="@string/notes_no_data"
-                android:textSize="24sp"
-                app:drawableTopCompat="@drawable/ic_note" />
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp">
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/notes_no_data_hint"
-                android:textStyle="italic" />
-        </LinearLayout>
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="16dp"
+                android:drawableLeftAutoSize="@{true}"
+                android:drawablePadding="8dp"
+                android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
+                tools:drawableStartCompat="@drawable/ic_grade"
+                tools:layout_height="28sp"
+                tools:text="Ocena" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/noteList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            tools:itemCount="3"
-            tools:listitem="@layout/note_list_item" />
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/divider" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ownerItemList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="1"
+                tools:listitem="@layout/grades_item_grade" />
+
+            <LinearLayout
+                android:id="@+id/noteListLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:drawableLeftAutoSize="@{true}"
+                    android:drawablePadding="8dp"
+                    android:text="@string/notes_list_dialog_title"
+                    android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
+                    app:drawableStartCompat="@drawable/ic_note"
+                    tools:layout_height="28sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/divider" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/noteList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/note_list_item" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/noData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:orientation="vertical"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:visibility="gone"
+                tools:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawablePadding="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@string/notes_no_data"
+                    android:textSize="24sp"
+                    app:drawableTopCompat="@drawable/ic_note" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/notes_no_data_hint"
+                    android:textStyle="italic" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

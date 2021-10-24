@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.databinding.NoteListDialogBinding
+import pl.szczodrzynski.edziennik.ext.resolveDrawable
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 
@@ -23,7 +24,7 @@ class NoteListDialog(
 
     override val TAG = "NoteListDialog"
 
-    override fun getTitleRes() = R.string.notes_list_dialog_title
+    override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
         NoteListDialogBinding.inflate(layoutInflater)
 
@@ -47,6 +48,14 @@ class NoteListDialog(
             layoutManager = LinearLayoutManager(context)
         }
 
+        b.title.setText(manager.getOwnerTypeText(owner))
+        b.title.setCompoundDrawables(
+            manager.getOwnerTypeImage(owner).resolveDrawable(activity),
+            null,
+            null,
+            null,
+        )
+
         adapter = NoteListAdapter(
             activity = activity,
             onNoteClick = {
@@ -64,7 +73,7 @@ class NoteListDialog(
         ).observe(activity) { notes ->
 
             // show/hide relevant views
-            b.noteList.isVisible = notes.isNotEmpty()
+            b.noteListLayout.isVisible = notes.isNotEmpty()
             b.noData.isVisible = notes.isEmpty()
             if (notes.isEmpty()) {
                 return@observe

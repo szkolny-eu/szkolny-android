@@ -1502,4 +1502,12 @@
     <string name="notes_no_data_hint">Możesz dodać notatki oraz udostępnić je w klasie, używając przycisku Dodaj.</string>
     <string name="legend_notes_added">{cmd-playlist-edit} dodano notatki</string>
     <string name="notes_added_by_you_format">Dodano %1$s</string>
+    <string name="notes_type_announcement">Ogłoszenie szkolne</string>
+    <string name="notes_type_attendance">Frekwencja</string>
+    <string name="notes_type_behavior">Zachowanie</string>
+    <string name="notes_type_day">Dzień</string>
+    <string name="notes_type_event">Wydarzenie</string>
+    <string name="notes_type_grade">Ocena</string>
+    <string name="notes_type_lesson">Lekcja</string>
+    <string name="notes_type_message">Wiadomość</string>
 </resources>

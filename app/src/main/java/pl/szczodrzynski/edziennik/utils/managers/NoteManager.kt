@@ -7,6 +7,8 @@ package pl.szczodrzynski.edziennik.utils.managers
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.data.db.full.*
 import pl.szczodrzynski.edziennik.ui.agenda.DayDialog
@@ -51,6 +53,7 @@ class NoteManager(private val app: App) {
                 activity = activity,
                 simpleMode = true,
                 showDate = true,
+                showType = false,
                 showTime = false,
                 markAsSeen = false,
                 onEventClick = {
@@ -130,5 +133,31 @@ class NoteManager(private val app: App) {
             ).show()
             is MessageFull -> return
         }
+    }
+
+    fun getOwnerTypeText(owner: Noteable) = when (owner.getNoteType()) {
+        Note.OwnerType.ANNOUNCEMENT -> R.string.notes_type_announcement
+        Note.OwnerType.ATTENDANCE -> R.string.notes_type_attendance
+        Note.OwnerType.BEHAVIOR -> R.string.notes_type_behavior
+        Note.OwnerType.DAY -> R.string.notes_type_day
+        Note.OwnerType.EVENT -> R.string.notes_type_event
+        Note.OwnerType.EVENT_SUBJECT -> TODO()
+        Note.OwnerType.GRADE -> R.string.notes_type_grade
+        Note.OwnerType.LESSON -> R.string.notes_type_lesson
+        Note.OwnerType.LESSON_SUBJECT -> TODO()
+        Note.OwnerType.MESSAGE -> R.string.notes_type_message
+    }
+
+    fun getOwnerTypeImage(owner: Noteable) = when (owner.getNoteType()) {
+        Note.OwnerType.ANNOUNCEMENT -> R.drawable.ic_announcement
+        Note.OwnerType.ATTENDANCE -> R.drawable.ic_attendance
+        Note.OwnerType.BEHAVIOR -> R.drawable.ic_behavior
+        Note.OwnerType.DAY -> R.drawable.ic_calendar_day
+        Note.OwnerType.EVENT -> R.drawable.ic_calendar_event
+        Note.OwnerType.EVENT_SUBJECT -> TODO()
+        Note.OwnerType.GRADE -> R.drawable.ic_grade
+        Note.OwnerType.LESSON -> R.drawable.ic_timetable
+        Note.OwnerType.LESSON_SUBJECT -> TODO()
+        Note.OwnerType.MESSAGE -> R.drawable.ic_message
     }
 }
