@@ -60,10 +60,7 @@ class TeachersAdapter(
             item.fullName.copyToClipboard(activity)
             Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show()
         }
-        b.copy.onLongClick {
-            Toast.makeText(activity, R.string.copy_to_clipboard, Toast.LENGTH_SHORT).show()
-            true
-        }
+        b.copy.attachToastHint(R.string.copy_to_clipboard)
         if (item.loginId.isNotNullNorBlank()) {
             b.sendMessage.isVisible = true
 
@@ -75,10 +72,7 @@ class TeachersAdapter(
                 )
                 activity.sendBroadcast(intent)
             }
-            b.sendMessage.onLongClick {
-                Toast.makeText(activity, app.getString(R.string.send_message_to, item.fullName), Toast.LENGTH_SHORT).show()
-                true
-            }
+            b.sendMessage.attachToastHint(R.string.send_message)
         } else {
             b.sendMessage.isVisible = false
         }

@@ -1376,5 +1376,5 @@
     <string name="login_summary_account_parent">(Parent)</string>
     <string name="menu_teachers">Teachers</string>
     <string name="edziennik_progress_endpoint_addressbook">Syncing addressbook…</string>
-    <string name="send_message_to">Send message to %1$s</string>
+    <string name="send_message">Send message</string>
 </resources>
