@@ -5,12 +5,15 @@
 package pl.szczodrzynski.edziennik.utils.managers
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.data.db.full.*
+import pl.szczodrzynski.edziennik.databinding.NoteDialogHeaderBinding
+import pl.szczodrzynski.edziennik.ext.resolveDrawable
 import pl.szczodrzynski.edziennik.ui.agenda.DayDialog
 import pl.szczodrzynski.edziennik.ui.agenda.lessonchanges.LessonChangesAdapter
 import pl.szczodrzynski.edziennik.ui.announcements.AnnouncementsAdapter
@@ -133,6 +136,23 @@ class NoteManager(private val app: App) {
             ).show()
             is MessageFull -> return
         }
+    }
+
+    fun configureHeader(activity: AppCompatActivity, noteOwner: Noteable, b: NoteDialogHeaderBinding) {
+        b.ownerItemList.apply {
+            adapter = getAdapterForItem(activity, noteOwner)
+            isNestedScrollingEnabled = false
+            //setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        b.title.setText(getOwnerTypeText(noteOwner))
+        b.title.setCompoundDrawables(
+            getOwnerTypeImage(noteOwner).resolveDrawable(activity),
+            null,
+            null,
+            null,
+        )
     }
 
     fun getOwnerTypeText(owner: Noteable) = when (owner.getNoteType()) {

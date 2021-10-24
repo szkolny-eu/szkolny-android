@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.databinding.NoteListDialogBinding
-import pl.szczodrzynski.edziennik.ext.resolveDrawable
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 
@@ -41,20 +40,7 @@ class NoteListDialog(
     }
 
     override suspend fun onShow() {
-        b.ownerItemList.apply {
-            adapter = manager.getAdapterForItem(activity, owner)
-            isNestedScrollingEnabled = false
-            //setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-        }
-
-        b.title.setText(manager.getOwnerTypeText(owner))
-        b.title.setCompoundDrawables(
-            manager.getOwnerTypeImage(owner).resolveDrawable(activity),
-            null,
-            null,
-            null,
-        )
+        manager.configureHeader(activity, owner, b.header)
 
         adapter = NoteListAdapter(
             activity = activity,

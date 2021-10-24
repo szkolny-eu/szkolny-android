@@ -7,13 +7,11 @@ package pl.szczodrzynski.edziennik.ui.notes
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.databinding.NoteDetailsDialogBinding
-import pl.szczodrzynski.edziennik.ext.resolveDrawable
 import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -43,20 +41,7 @@ class NoteDetailsDialog(
     }
 
     override suspend fun onShow() {
-        b.ownerItemList.apply {
-            adapter = manager.getAdapterForItem(activity, owner)
-            isNestedScrollingEnabled = false
-            //setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-        }
-
-        b.title.setText(manager.getOwnerTypeText(owner))
-        b.title.setCompoundDrawables(
-            manager.getOwnerTypeImage(owner).resolveDrawable(activity),
-            null,
-            null,
-            null,
-        )
+        manager.configureHeader(activity, owner, b.header)
 
         b.idsLayout.isVisible = App.devMode
 

@@ -18,55 +18,19 @@
             android:paddingHorizontal="16dp"
             android:paddingTop="8dp">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="16dp"
-                android:drawableLeftAutoSize="@{true}"
-                android:drawablePadding="8dp"
-                android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
-                tools:drawableStartCompat="@drawable/ic_grade"
-                tools:layout_height="28sp"
-                tools:text="Ocena" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/divider" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ownerItemList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:itemCount="1"
-                tools:listitem="@layout/grades_item_grade" />
+            <include
+                android:id="@+id/header"
+                layout="@layout/note_dialog_header" />
 
             <LinearLayout
                 android:id="@+id/noteListLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="16dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:drawableLeftAutoSize="@{true}"
-                    android:drawablePadding="8dp"
-                    android:text="@string/notes_list_dialog_title"
-                    android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
-                    app:drawableStartCompat="@drawable/ic_note"
-                    tools:layout_height="28sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/divider" />
+                <include
+                    layout="@layout/note_dialog_subtitle"
+                    app:text="@{@string/notes_list_dialog_title}" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/noteList"

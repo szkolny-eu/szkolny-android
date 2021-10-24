@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-10-24.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <merge
+        tools:layout_height="wrap_content"
+        tools:layout_width="match_parent"
+        tools:orientation="vertical"
+        tools:parentTag="LinearLayout">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeftAutoSize="@{true}"
+            android:drawablePadding="8dp"
+            android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
+            tools:drawableStartCompat="@drawable/ic_grade"
+            tools:layout_height="28sp"
+            tools:text="Ocena" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/divider" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ownerItemList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="1"
+            tools:listitem="@layout/grades_item_grade" />
+    </merge>
+</layout>
