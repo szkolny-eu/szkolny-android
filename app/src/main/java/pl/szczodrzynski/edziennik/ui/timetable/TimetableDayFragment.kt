@@ -297,8 +297,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
 
-            if (lesson.hasNotes())
-                NoteManager.prependIcon(lb.subjectName)
+            NoteManager.prependIcon(lesson, lb.subjectName)
 
             lb.attendanceIcon.isVisible = attendance?.let {
                 val icon = attendanceManager.getAttendanceIcon(it) ?: return@let false

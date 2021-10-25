@@ -420,4 +420,9 @@ public class Date implements Comparable<Date>, Noteable {
     public boolean hasNotes() {
         return Noteable.DefaultImpls.hasNotes(this);
     }
+
+    @Override
+    public boolean hasReplacingNotes() {
+        return Noteable.DefaultImpls.hasReplacingNotes(this);
+    }
 }

@@ -41,8 +41,8 @@ class AttendanceViewHolder(
         b.type.text = item.typeName
         b.subjectName.text = item.getNoteSubstituteText(adapter.showNotes) ?: item.subjectLongName
                 ?: item.lessonTopic
-        if (item.hasNotes() && adapter.showNotes)
-            NoteManager.prependIcon(b.subjectName)
+        if (adapter.showNotes)
+            NoteManager.prependIcon(item, b.subjectName)
         b.dateTime.text = listOf(
                 Week.getFullDayName(item.date.weekDay),
                 item.date.formattedStringShort,

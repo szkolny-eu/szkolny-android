@@ -52,10 +52,12 @@ class EventManager(val app: App) : CoroutineScope {
         doneIconColor: Int? = null
     ) {
         val topicSpan = event.getNoteSubstituteText(showNotes) ?: event.topicHtml
+        val hasReplacingNotes = event.hasReplacingNotes()
 
         title.text = listOfNotNull(
             if (event.addedManually) "{cmd-clipboard-edit-outline} " else null,
-            if (event.hasNotes() && showNotes) "{cmd-playlist-edit} " else null,
+            if (event.hasNotes() && hasReplacingNotes && showNotes) "{cmd-swap-horizontal} " else null,
+            if (event.hasNotes() && !hasReplacingNotes && showNotes) "{cmd-playlist-edit} " else null,
             if (showType) "${event.typeName ?: "wydarzenie"} - " else null,
             topicSpan,
         ).concat()

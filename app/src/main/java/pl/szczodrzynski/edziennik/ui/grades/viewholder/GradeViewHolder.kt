@@ -51,8 +51,8 @@ class GradeViewHolder(
                     grade.category
         }
 
-        if (grade.hasNotes() && adapter.showNotes)
-            NoteManager.prependIcon(b.gradeDescription)
+        if (adapter.showNotes)
+            NoteManager.prependIcon(grade, b.gradeDescription)
 
         val weightText = manager.getWeightString(activity, grade, showClassAverage = true)
         b.gradeWeight.text = weightText

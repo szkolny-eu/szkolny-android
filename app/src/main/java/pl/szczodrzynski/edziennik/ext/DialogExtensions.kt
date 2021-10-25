@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.ext
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
-import android.os.Build
 import android.text.InputType
 import android.view.LayoutInflater
 import androidx.annotation.StringRes
@@ -95,9 +94,9 @@ fun AlertDialog.overlayBackgroundColor(color: Int, alpha: Int) {
     with(background) {
         initializeElevationOverlay(context)
         fillColor = ColorStateList.valueOf(colorDialogBackground)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             setCornerSize(android.R.attr.dialogCornerRadius.resolveDimenAttr(context))
-        }
+        }*/
         elevation = ViewCompat.getElevation(window?.decorView ?: return@with)
     }
     val insetDrawable = MaterialDialogs.insetDrawable(background, backgroundInsets)

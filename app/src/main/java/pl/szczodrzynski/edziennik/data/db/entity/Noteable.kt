@@ -21,6 +21,7 @@ interface Noteable {
     }
 
     fun hasNotes() = notes.isNotEmpty()
+    fun hasReplacingNotes() = notes.any { it.replacesOriginal }
 
     fun getNoteSubstituteText(showNotes: Boolean): CharSequence? {
         if (!showNotes)

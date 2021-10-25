@@ -40,12 +40,21 @@ class NoteManager(private val app: App) {
         private const val TAG = "NoteManager"
 
         @SuppressLint("SetTextI18n")
-        fun prependIcon(textView: IconicsTextView) {
-            textView.text = SpannableStringBuilder("{cmd-playlist-edit} ").append(textView.text)
+        fun prependIcon(owner: Noteable, textView: IconicsTextView) {
+            if (owner.hasNotes())
+                textView.text = SpannableStringBuilder(
+                    if (owner.hasReplacingNotes())
+                        "{cmd-swap-horizontal} "
+                    else
+                        "{cmd-playlist-edit} "
+                ).append(textView.text)
         }
 
-        fun getLegendText(owner: Noteable): Int? =
-            if (owner.hasNotes()) R.string.legend_notes_added else null
+        fun getLegendText(owner: Noteable): Int? = when {
+            owner.hasReplacingNotes() -> R.string.legend_notes_added_replaced
+            owner.hasNotes() -> R.string.legend_notes_added
+            else -> null
+        }
 
         fun setLegendText(owner: Noteable, textView: IconicsTextView) {
             textView.isVisible = owner.hasNotes()

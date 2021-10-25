@@ -98,8 +98,8 @@ class LessonChangesAdapter(
         b.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
         b.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
 
-        if (lesson.hasNotes() && showNotes)
-            NoteManager.prependIcon(b.subjectName)
+        if (showNotes)
+            NoteManager.prependIcon(lesson, b.subjectName)
 
         //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
         when (lesson.type) {

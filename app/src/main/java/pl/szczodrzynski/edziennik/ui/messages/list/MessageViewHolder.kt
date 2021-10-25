@@ -74,8 +74,8 @@ class MessageViewHolder(
             color = colorHighlight
         )
 
-        if (item.hasNotes() && adapter.showNotes)
-            NoteManager.prependIcon(b.messageSubject)
+        if (adapter.showNotes)
+            NoteManager.prependIcon(item, b.messageSubject)
 
         adapter.onMessageClick?.let { listener ->
             b.root.onClick { listener(item) }
