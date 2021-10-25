@@ -45,12 +45,13 @@
 
     <com.mikepenz.iconics.view.IconicsImageButton
         android:id="@+id/sendMessage"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="?selectableItemBackground"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="4dp"
         android:visibility="gone"
         app:iiv_color="?android:textColorSecondary"
         app:iiv_icon="cmd-email-plus-outline"
@@ -59,12 +60,13 @@
 
     <com.mikepenz.iconics.view.IconicsImageButton
         android:id="@+id/copy"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="?selectableItemBackground"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="4dp"
         android:visibility="gone"
         app:iiv_color="?android:textColorSecondary"
         app:iiv_icon="cmd-clipboard-text-multiple-outline"

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.allViews
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -102,7 +103,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
                 continue
 
             val b = when (credential) {
-                is FormField -> buildFormField(credential)
+                is FormField -> buildFormField(credential, b)
                 is FormCheckbox -> buildFormCheckbox(credential)
                 else -> continue
             }
@@ -148,11 +149,15 @@ class LoginFormFragment : Fragment(), CoroutineScope {
     }
 
     @SuppressLint("ResourceType")
-    private fun buildFormField(credential: FormField): LoginFormFieldItemBinding {
+    private fun buildFormField(credential: FormField, lb: LoginFormFragmentBinding): LoginFormFieldItemBinding {
         val b = LoginFormFieldItemBinding.inflate(layoutInflater)
 
         if (credential.isNumber) {
             b.textEdit.inputType = InputType.TYPE_CLASS_NUMBER
+        }
+
+        if (credential.focusOnLoginButton) {
+            b.textEdit.nextFocusForwardId = lb.loginButton.id
         }
 
         if (credential.qrDecoderClass != null) {

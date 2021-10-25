@@ -186,7 +186,8 @@ object LoginInfo {
                                 isRequired = true,
                                 isNumber = true,
                                 validationRegex = "[0-9]+",
-                                caseMode = FormField.CaseMode.LOWER_CASE
+                                caseMode = FormField.CaseMode.LOWER_CASE,
+                                focusOnLoginButton = true
                             )
                         ),
                         errorCodes = mapOf()
@@ -416,6 +417,7 @@ object LoginInfo {
         val isNumber: Boolean = false,
         val stripTextRegex: String? = null,
         val qrDecoderClass: Class<out LoginQrDecoder>? = null,
+        val focusOnLoginButton: Boolean = false,
     ) : BaseCredential(keyName, name, errorCodes) {
         enum class CaseMode { UNCHANGED, UPPER_CASE, LOWER_CASE }
     }
