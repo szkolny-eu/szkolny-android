@@ -88,7 +88,8 @@ class LessonChangesAdapter(
 
 
         b.lessonNumber = lesson.displayLessonNumber
-        b.subjectName.text = lesson.displaySubjectName?.let {
+        val lessonText = lesson.getNoteSubstituteText(showNotes) ?: lesson.displaySubjectName
+        b.subjectName.text = lessonText?.let {
             if (lesson.type == Lesson.TYPE_CANCELLED || lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
                 it.asStrikethroughSpannable().asColoredSpannable(colorSecondary)
             else

@@ -51,7 +51,7 @@ class EventManager(val app: App) : CoroutineScope {
         showNotes: Boolean = true,
         doneIconColor: Int? = null
     ) {
-        val topicSpan = event.topicHtml
+        val topicSpan = event.getNoteSubstituteText(showNotes) ?: event.topicHtml
 
         title.text = listOfNotNull(
             if (event.addedManually) "{cmd-clipboard-edit-outline} " else null,

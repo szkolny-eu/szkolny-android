@@ -397,7 +397,7 @@ public class Date implements Comparable<Date>, Noteable {
 
     @Nullable
     @Override
-    public CharSequence getNoteSubstituteText() {
+    public CharSequence getNoteSubstituteText(boolean showNotes) {
         return null;
     }
 

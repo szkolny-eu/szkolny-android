@@ -39,7 +39,8 @@ class AttendanceViewHolder(
         b.attendanceView.setAttendance(item, manager, bigView = true)
 
         b.type.text = item.typeName
-        b.subjectName.text = item.subjectLongName ?: item.lessonTopic
+        b.subjectName.text = item.getNoteSubstituteText(adapter.showNotes) ?: item.subjectLongName
+                ?: item.lessonTopic
         if (item.hasNotes() && adapter.showNotes)
             NoteManager.prependIcon(b.subjectName)
         b.dateTime.text = listOf(

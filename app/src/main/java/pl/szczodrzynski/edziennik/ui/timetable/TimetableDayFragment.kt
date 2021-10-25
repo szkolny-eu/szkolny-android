@@ -286,7 +286,9 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
 
             lb.lessonNumber = lesson.displayLessonNumber
-            lb.subjectName.text = lesson.displaySubjectName?.let {
+            val lessonText =
+                lesson.getNoteSubstituteText(showNotes = true) ?: lesson.displaySubjectName
+            lb.subjectName.text = lessonText?.let {
                 if (lesson.type == Lesson.TYPE_CANCELLED || lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
                     it.asStrikethroughSpannable().asColoredSpannable(colorSecondary)
                 else

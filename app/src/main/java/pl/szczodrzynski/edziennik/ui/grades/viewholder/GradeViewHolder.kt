@@ -34,14 +34,16 @@ class GradeViewHolder(
         b.gradeName.setGrade(grade, manager, bigView = true)
 
         if (grade.description.isNullOrBlank()) {
-            b.gradeDescription.text = grade.category
+            b.gradeDescription.text =
+                grade.getNoteSubstituteText(adapter.showNotes) ?: grade.category
             b.gradeCategory.text =
                 if (grade.isImprovement)
                     app.getString(R.string.grades_improvement_category_format, "")
                 else
                     ""
         } else {
-            b.gradeDescription.text = grade.description
+            b.gradeDescription.text =
+                grade.getNoteSubstituteText(adapter.showNotes) ?: grade.description
             b.gradeCategory.text =
                 if (grade.isImprovement)
                     app.getString(R.string.grades_improvement_category_format, grade.category)

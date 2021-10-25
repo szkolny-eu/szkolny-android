@@ -22,7 +22,9 @@ interface Noteable {
 
     fun hasNotes() = notes.isNotEmpty()
 
-    fun getNoteSubstituteText(): CharSequence? {
+    fun getNoteSubstituteText(showNotes: Boolean): CharSequence? {
+        if (!showNotes)
+            return null
         val note = notes.firstOrNull {
             it.replacesOriginal
         }
