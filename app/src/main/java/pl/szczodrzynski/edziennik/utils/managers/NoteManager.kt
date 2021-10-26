@@ -16,6 +16,7 @@ import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Note
+import pl.szczodrzynski.edziennik.data.db.entity.Note.OwnerType
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.data.db.full.*
 import pl.szczodrzynski.edziennik.databinding.NoteDialogHeaderBinding
@@ -62,37 +63,79 @@ class NoteManager(private val app: App) {
         }
     }
 
-    suspend fun saveNote(note: Note, wasShared: Boolean) {
-        if (!note.isShared && wasShared) {
-            unshareNote(note)
-        } else if (note.isShared) {
-            shareNote(note)
+    fun hasValidOwner(note: Note): Boolean {
+        if (note.ownerType == null || note.ownerType == OwnerType.DAY)
+            return true
+        if (note.ownerId == null)
+            return false
+        return when (note.ownerType) {
+            OwnerType.ANNOUNCEMENT ->
+                app.db.announcementDao().getByIdNow(note.profileId, note.ownerId) != null
+            OwnerType.ATTENDANCE ->
+                app.db.attendanceDao().getByIdNow(note.profileId, note.ownerId) != null
+            OwnerType.BEHAVIOR ->
+                app.db.noticeDao().getByIdNow(note.profileId, note.ownerId) != null
+            OwnerType.EVENT ->
+                app.db.eventDao().getByIdNow(note.profileId, note.ownerId) != null
+            OwnerType.EVENT_SUBJECT, OwnerType.LESSON_SUBJECT ->
+                app.db.subjectDao().getByIdNow(note.profileId, note.ownerId) != null
+            OwnerType.GRADE ->
+                app.db.gradeDao().getByIdNow(note.profileId, note.ownerId) != null
+            OwnerType.LESSON ->
+                app.db.timetableDao().getByIdNow(note.profileId, note.ownerId) != null
+            OwnerType.MESSAGE ->
+                app.db.messageDao().getByIdNow(note.profileId, note.ownerId) != null
+            else -> false
         }
+    }
+
+    suspend fun saveNote(activity: AppCompatActivity, note: Note, wasShared: Boolean): Boolean {
+        val success = when {
+            !note.isShared && wasShared -> unshareNote(activity, note)
+            note.isShared -> shareNote(activity, note)
+            else -> true
+        }
+
+        if (!success)
+            return false
 
         withContext(Dispatchers.IO) {
             app.db.noteDao().add(note)
         }
+        return true
     }
 
-    suspend fun deleteNote(note: Note) {
-        if (note.isShared) {
-            unshareNote(note)
+    suspend fun deleteNote(activity: AppCompatActivity, note: Note): Boolean {
+        val success = when {
+            note.isShared -> unshareNote(activity, note)
+            else -> true
         }
+
+        if (!success)
+            return false
 
         withContext(Dispatchers.IO) {
             app.db.noteDao().delete(note)
         }
+        return true
     }
 
-    private suspend fun shareNote(note: Note) {
-
+    private suspend fun shareNote(activity: AppCompatActivity, note: Note): Boolean {
+        return app.api.runCatching(activity) {
+            shareNote(note)
+        } != null
     }
 
-    private suspend fun unshareNote(note: Note) {
-
+    private suspend fun unshareNote(activity: AppCompatActivity, note: Note): Boolean {
+        return app.api.runCatching(activity) {
+            unshareNote(note)
+        } != null
     }
 
-    fun getAdapterForItem(activity: AppCompatActivity, item: Noteable): RecyclerView.Adapter<*>? {
+    private fun getAdapterForItem(
+        activity: AppCompatActivity,
+        item: Noteable,
+    ): RecyclerView.Adapter<*>? {
         return when (item) {
             is AnnouncementFull -> AnnouncementsAdapter(activity, mutableListOf(item), null)
 
@@ -154,7 +197,7 @@ class NoteManager(private val app: App) {
         }
     }
 
-    fun showItemDetailsDialog(
+    private fun showItemDetailsDialog(
         activity: AppCompatActivity,
         item: Noteable,
         onShowListener: ((tag: String) -> Unit)? = null,
@@ -203,6 +246,32 @@ class NoteManager(private val app: App) {
         }
     }
 
+    private fun getOwnerTypeText(owner: Noteable) = when (owner.getNoteType()) {
+        OwnerType.ANNOUNCEMENT -> R.string.notes_type_announcement
+        OwnerType.ATTENDANCE -> R.string.notes_type_attendance
+        OwnerType.BEHAVIOR -> R.string.notes_type_behavior
+        OwnerType.DAY -> R.string.notes_type_day
+        OwnerType.EVENT -> R.string.notes_type_event
+        OwnerType.EVENT_SUBJECT -> TODO()
+        OwnerType.GRADE -> R.string.notes_type_grade
+        OwnerType.LESSON -> R.string.notes_type_lesson
+        OwnerType.LESSON_SUBJECT -> TODO()
+        OwnerType.MESSAGE -> R.string.notes_type_message
+    }
+
+    private fun getOwnerTypeImage(owner: Noteable) = when (owner.getNoteType()) {
+        OwnerType.ANNOUNCEMENT -> R.drawable.ic_announcement
+        OwnerType.ATTENDANCE -> R.drawable.ic_attendance
+        OwnerType.BEHAVIOR -> R.drawable.ic_behavior
+        OwnerType.DAY -> R.drawable.ic_calendar_day
+        OwnerType.EVENT -> R.drawable.ic_calendar_event
+        OwnerType.EVENT_SUBJECT -> TODO()
+        OwnerType.GRADE -> R.drawable.ic_grade
+        OwnerType.LESSON -> R.drawable.ic_timetable
+        OwnerType.LESSON_SUBJECT -> TODO()
+        OwnerType.MESSAGE -> R.drawable.ic_message
+    }
+
     fun configureHeader(
         activity: AppCompatActivity,
         noteOwner: Noteable,
@@ -222,31 +291,5 @@ class NoteManager(private val app: App) {
             null,
             null,
         )
-    }
-
-    fun getOwnerTypeText(owner: Noteable) = when (owner.getNoteType()) {
-        Note.OwnerType.ANNOUNCEMENT -> R.string.notes_type_announcement
-        Note.OwnerType.ATTENDANCE -> R.string.notes_type_attendance
-        Note.OwnerType.BEHAVIOR -> R.string.notes_type_behavior
-        Note.OwnerType.DAY -> R.string.notes_type_day
-        Note.OwnerType.EVENT -> R.string.notes_type_event
-        Note.OwnerType.EVENT_SUBJECT -> TODO()
-        Note.OwnerType.GRADE -> R.string.notes_type_grade
-        Note.OwnerType.LESSON -> R.string.notes_type_lesson
-        Note.OwnerType.LESSON_SUBJECT -> TODO()
-        Note.OwnerType.MESSAGE -> R.string.notes_type_message
-    }
-
-    fun getOwnerTypeImage(owner: Noteable) = when (owner.getNoteType()) {
-        Note.OwnerType.ANNOUNCEMENT -> R.drawable.ic_announcement
-        Note.OwnerType.ATTENDANCE -> R.drawable.ic_attendance
-        Note.OwnerType.BEHAVIOR -> R.drawable.ic_behavior
-        Note.OwnerType.DAY -> R.drawable.ic_calendar_day
-        Note.OwnerType.EVENT -> R.drawable.ic_calendar_event
-        Note.OwnerType.EVENT_SUBJECT -> TODO()
-        Note.OwnerType.GRADE -> R.drawable.ic_grade
-        Note.OwnerType.LESSON -> R.drawable.ic_timetable
-        Note.OwnerType.LESSON_SUBJECT -> TODO()
-        Note.OwnerType.MESSAGE -> R.drawable.ic_message
     }
 }

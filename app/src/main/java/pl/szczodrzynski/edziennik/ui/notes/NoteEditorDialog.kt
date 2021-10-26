@@ -5,7 +5,9 @@
 package pl.szczodrzynski.edziennik.ui.notes
 
 import android.view.LayoutInflater
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
@@ -23,6 +25,8 @@ import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.StylingConfigBase
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class NoteEditorDialog(
     activity: AppCompatActivity,
@@ -50,6 +54,8 @@ class NoteEditorDialog(
     private val textStylingManager
         get() = app.textStylingManager
 
+    private var progressDialog: AlertDialog? = null
+
     override suspend fun onPositiveClick(): Boolean {
         val profile = withContext(Dispatchers.IO) {
             app.db.profileDao().getByIdNow(owner.getNoteOwnerProfileId())
@@ -65,14 +71,49 @@ class NoteEditorDialog(
             return NO_DISMISS
         }
 
-        manager.saveNote(note, wasShared = editingNote?.isShared ?: false)
+        if (note.isShared || editingNote?.isShared == true) {
+            progressDialog = MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.please_wait)
+                .setMessage(when (note.isShared) {
+                    true -> R.string.notes_editor_progress_sharing
+                    false -> R.string.notes_editor_progress_unsharing
+                })
+                .setCancelable(false)
+                .show()
+        }
 
-        return DISMISS
+        val success = manager.saveNote(activity, note, wasShared = editingNote?.isShared ?: false)
+        progressDialog?.dismiss()
+        return success
     }
 
     override suspend fun onNeutralClick(): Boolean {
-        manager.deleteNote(editingNote ?: return NO_DISMISS)
-        return DISMISS
+        // editingNote cannot be null, as the button is visible
+
+        val confirmation = suspendCoroutine<Boolean> { cont ->
+            var result = false
+            MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.are_you_sure)
+                .setMessage(R.string.notes_editor_confirmation_text)
+                .setPositiveButton(R.string.yes) { _, _ -> result = true }
+                .setNegativeButton(R.string.no, null)
+                .setOnDismissListener { cont.resume(result) }
+                .show()
+        }
+        if (!confirmation)
+            return NO_DISMISS
+
+        if (editingNote?.isShared == true) {
+            progressDialog = MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.please_wait)
+                .setMessage(R.string.notes_editor_progress_unsharing)
+                .setCancelable(false)
+                .show()
+        }
+
+        val success = manager.deleteNote(activity, editingNote ?: return NO_DISMISS)
+        progressDialog?.dismiss()
+        return success
     }
 
     override suspend fun onShow() {
@@ -135,8 +176,6 @@ class NoteEditorDialog(
         else null
         val bodyHtml = textStylingManager.getHtmlText(bodyStylingConfig)
 
-        val sharedByName = if (share) profile.studentNameLong else null
-
         return Note(
             profileId = profile.id,
             id = editingNote?.id ?: System.currentTimeMillis(),
@@ -147,7 +186,7 @@ class NoteEditorDialog(
             body = bodyHtml,
             color = color?.value,
             sharedBy = if (share) "self" else null,
-            sharedByName = sharedByName,
+            sharedByName = if (share) profile.studentNameLong else null,
         )
     }
 }

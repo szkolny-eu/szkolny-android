@@ -12,8 +12,9 @@ data class EventShareRequest (
 
         val action: String = "event",
 
-        /* If null, the server shows an error */
-        val sharedByName: String?,
+        val userCode: String,
+        val studentNameLong: String,
+
         val shareTeamCode: String? = null,
         val unshareTeamCode: String? = null,
         val requesterName: String? = null,

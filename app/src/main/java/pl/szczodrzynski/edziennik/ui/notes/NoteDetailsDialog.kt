@@ -54,7 +54,11 @@ class NoteDetailsDialog(
 
         // watch the note for changes
         app.db.noteDao().get(note.profileId, note.id).observe(activity) {
-            note = it ?: return@observe
+            if (it == null) {
+                dismiss()
+                return@observe
+            }
+            note = it
             update()
         }
     }

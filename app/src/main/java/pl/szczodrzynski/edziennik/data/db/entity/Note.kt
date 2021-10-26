@@ -15,7 +15,7 @@ import pl.szczodrzynski.edziennik.utils.html.BetterHtml
     ],
 )
 data class Note(
-    val profileId: Int,
+    var profileId: Int,
 
     @PrimaryKey
     @ColumnInfo(name = "noteId")
@@ -36,7 +36,7 @@ data class Note(
     val color: Long?,
 
     @ColumnInfo(name = "noteSharedBy")
-    val sharedBy: String? = null,
+    var sharedBy: String? = null,
     @ColumnInfo(name = "noteSharedByName")
     val sharedByName: String? = null,
 
@@ -75,9 +75,13 @@ data class Note(
     }
 
     val isShared
-        get() = sharedBy != null
+        get() = sharedBy != null && sharedByName != null
     val canEdit
-        get() = sharedBy == null || sharedBy == "self"
+        get() = !isShared || sharedBy == "self"
+
+    // used when receiving notes
+    @Ignore
+    var teamCode: String? = null
 
     @delegate:Ignore
     @delegate:Transient
