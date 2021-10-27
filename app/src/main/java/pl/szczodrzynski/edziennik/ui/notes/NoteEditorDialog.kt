@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.NoteEditorDialogBinding
 import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
+import pl.szczodrzynski.edziennik.ext.resolveString
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.utils.TextInputDropDown
@@ -32,7 +33,10 @@ class NoteEditorDialog(
     activity: AppCompatActivity,
     private val owner: Noteable?,
     private val editingNote: Note?,
-    private val profileId: Int = owner?.getNoteOwnerProfileId() ?: 0,
+    private val profileId: Int =
+        owner?.getNoteOwnerProfileId()
+            ?: editingNote?.profileId
+            ?: 0,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<NoteEditorDialogBinding>(activity, onShowListener, onDismissListener) {
@@ -129,7 +133,7 @@ class NoteEditorDialog(
         b.color.clear().append(Note.Color.values().map { color ->
             TextInputDropDown.Item(
                 id = color.value ?: 0L,
-                text = color.name,
+                text = color.stringRes.resolveString(activity),
                 tag = color,
                 icon = if (color.value != null)
                     IconicsDrawable(activity).apply {

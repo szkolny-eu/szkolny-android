@@ -1530,4 +1530,17 @@
     <string name="notes_editor_confirmation_text">Czy chcesz usunąć tą notatkę?\n\nZostanie ona usunięta na Twoim urządzeniu, oraz u pozostałych osób z klasy.</string>
     <string name="menu_notes">Notatki</string>
     <string name="notes_action_add">Dodaj notatkę</string>
+    <string name="color_none">Brak</string>
+    <string name="color_red">Czerwony</string>
+    <string name="color_orange">Pomarańczowy</string>
+    <string name="color_yellow">Żółty</string>
+    <string name="color_green">Zielony</string>
+    <string name="color_teal">Morski</string>
+    <string name="color_blue">Niebieski</string>
+    <string name="color_dark_blue">Ciemnoniebieski</string>
+    <string name="color_purple">Fioletowy</string>
+    <string name="color_pink">Różowy</string>
+    <string name="color_brown">Brązowy</string>
+    <string name="color_grey">Szary</string>
+    <string name="color_black">Czarny</string>
 </resources>

@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.db.entity
 
 import androidx.room.*
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ui.search.Searchable
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 
@@ -62,20 +63,20 @@ data class Note(
         ANNOUNCEMENT(isShareable = true, canReplace = false),
     }
 
-    enum class Color(val value: Long?) {
-        NONE(null),
-        RED(0xffff1744),
-        ORANGE(0xffff9100),
-        YELLOW(0xffffea00),
-        GREEN(0xff00c853),
-        TEAL(0xff00bfa5),
-        BLUE(0xff0091ea),
-        DARK_BLUE(0xff304ffe),
-        PURPLE(0xff6200ea),
-        PINK(0xffd500f9),
-        BROWN(0xff795548),
-        GREY(0xff9e9e9e),
-        BLACK(0xff000000),
+    enum class Color(val value: Long?, val stringRes: Int) {
+        NONE(null, R.string.color_none),
+        RED(0xffff1744, R.string.color_red),
+        ORANGE(0xffff9100, R.string.color_orange),
+        YELLOW(0xffffea00, R.string.color_yellow),
+        GREEN(0xff00c853, R.string.color_green),
+        TEAL(0xff00bfa5, R.string.color_teal),
+        BLUE(0xff0091ea, R.string.color_blue),
+        DARK_BLUE(0xff304ffe, R.string.color_dark_blue),
+        PURPLE(0xff6200ea, R.string.color_purple),
+        PINK(0xffd500f9, R.string.color_pink),
+        BROWN(0xff795548, R.string.color_brown),
+        GREY(0xff9e9e9e, R.string.color_grey),
+        BLACK(0xff000000, R.string.color_black),
     }
 
     val isShared
