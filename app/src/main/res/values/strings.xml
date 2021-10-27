@@ -1528,4 +1528,5 @@
     <string name="notes_editor_progress_unsharing">Usuwanie udostępnionej notatki…</string>
     <string name="notification_type_new_shared_note">Udostępniono notatkę</string>
     <string name="notes_editor_confirmation_text">Czy chcesz usunąć tą notatkę?\n\nZostanie ona usunięta na Twoim urządzeniu, oraz u pozostałych osób z klasy.</string>
+    <string name="menu_notes">Notatki</string>
 </resources>

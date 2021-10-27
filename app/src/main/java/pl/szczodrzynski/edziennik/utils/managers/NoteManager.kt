@@ -63,30 +63,34 @@ class NoteManager(private val app: App) {
         }
     }
 
+    fun getOwner(note: Note): Any? {
+        if (note.ownerId == null)
+            return null
+        return when (note.ownerType) {
+            OwnerType.ANNOUNCEMENT ->
+                app.db.announcementDao().getByIdNow(note.profileId, note.ownerId)
+            OwnerType.ATTENDANCE ->
+                app.db.attendanceDao().getByIdNow(note.profileId, note.ownerId)
+            OwnerType.BEHAVIOR ->
+                app.db.noticeDao().getByIdNow(note.profileId, note.ownerId)
+            OwnerType.EVENT ->
+                app.db.eventDao().getByIdNow(note.profileId, note.ownerId)
+            OwnerType.EVENT_SUBJECT, OwnerType.LESSON_SUBJECT ->
+                app.db.subjectDao().getByIdNow(note.profileId, note.ownerId)
+            OwnerType.GRADE ->
+                app.db.gradeDao().getByIdNow(note.profileId, note.ownerId)
+            OwnerType.LESSON ->
+                app.db.timetableDao().getByIdNow(note.profileId, note.ownerId)
+            OwnerType.MESSAGE ->
+                app.db.messageDao().getByIdNow(note.profileId, note.ownerId)
+            else -> null
+        }
+    }
+
     fun hasValidOwner(note: Note): Boolean {
         if (note.ownerType == null || note.ownerType == OwnerType.DAY)
             return true
-        if (note.ownerId == null)
-            return false
-        return when (note.ownerType) {
-            OwnerType.ANNOUNCEMENT ->
-                app.db.announcementDao().getByIdNow(note.profileId, note.ownerId) != null
-            OwnerType.ATTENDANCE ->
-                app.db.attendanceDao().getByIdNow(note.profileId, note.ownerId) != null
-            OwnerType.BEHAVIOR ->
-                app.db.noticeDao().getByIdNow(note.profileId, note.ownerId) != null
-            OwnerType.EVENT ->
-                app.db.eventDao().getByIdNow(note.profileId, note.ownerId) != null
-            OwnerType.EVENT_SUBJECT, OwnerType.LESSON_SUBJECT ->
-                app.db.subjectDao().getByIdNow(note.profileId, note.ownerId) != null
-            OwnerType.GRADE ->
-                app.db.gradeDao().getByIdNow(note.profileId, note.ownerId) != null
-            OwnerType.LESSON ->
-                app.db.timetableDao().getByIdNow(note.profileId, note.ownerId) != null
-            OwnerType.MESSAGE ->
-                app.db.messageDao().getByIdNow(note.profileId, note.ownerId) != null
-            else -> false
-        }
+        return getOwner(note) != null
     }
 
     suspend fun saveNote(activity: AppCompatActivity, note: Note, wasShared: Boolean): Boolean {
@@ -246,7 +250,7 @@ class NoteManager(private val app: App) {
         }
     }
 
-    private fun getOwnerTypeText(owner: Noteable) = when (owner.getNoteType()) {
+    fun getOwnerTypeText(owner: OwnerType) = when (owner) {
         OwnerType.ANNOUNCEMENT -> R.string.notes_type_announcement
         OwnerType.ATTENDANCE -> R.string.notes_type_attendance
         OwnerType.BEHAVIOR -> R.string.notes_type_behavior
@@ -259,7 +263,7 @@ class NoteManager(private val app: App) {
         OwnerType.MESSAGE -> R.string.notes_type_message
     }
 
-    private fun getOwnerTypeImage(owner: Noteable) = when (owner.getNoteType()) {
+    fun getOwnerTypeImage(owner: OwnerType) = when (owner) {
         OwnerType.ANNOUNCEMENT -> R.drawable.ic_announcement
         OwnerType.ATTENDANCE -> R.drawable.ic_attendance
         OwnerType.BEHAVIOR -> R.drawable.ic_behavior
@@ -284,9 +288,9 @@ class NoteManager(private val app: App) {
             layoutManager = LinearLayoutManager(context)
         }
 
-        b.title.setText(getOwnerTypeText(noteOwner))
+        b.title.setText(getOwnerTypeText(noteOwner.getNoteType()))
         b.title.setCompoundDrawables(
-            getOwnerTypeImage(noteOwner).resolveDrawable(activity),
+            getOwnerTypeImage(noteOwner.getNoteType()).resolveDrawable(activity),
             null,
             null,
             null,

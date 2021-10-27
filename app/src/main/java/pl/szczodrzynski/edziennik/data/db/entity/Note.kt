@@ -46,16 +46,16 @@ data class Note(
         val isShareable: Boolean,
         val canReplace: Boolean,
     ) {
-        ANNOUNCEMENT(isShareable = true, canReplace = false),
+        EVENT(isShareable = true, canReplace = true),
+        DAY(isShareable = true, canReplace = false),
+        LESSON(isShareable = true, canReplace = true),
+        MESSAGE(isShareable = true, canReplace = false),
+        EVENT_SUBJECT(isShareable = true, canReplace = false),
+        LESSON_SUBJECT(isShareable = true, canReplace = false),
+        GRADE(isShareable = false, canReplace = true),
         ATTENDANCE(isShareable = false, canReplace = true),
         BEHAVIOR(isShareable = false, canReplace = false),
-        DAY(isShareable = true, canReplace = false),
-        EVENT(isShareable = true, canReplace = true),
-        EVENT_SUBJECT(isShareable = true, canReplace = false),
-        GRADE(isShareable = false, canReplace = true),
-        LESSON(isShareable = true, canReplace = true),
-        LESSON_SUBJECT(isShareable = true, canReplace = false),
-        MESSAGE(isShareable = true, canReplace = false),
+        ANNOUNCEMENT(isShareable = true, canReplace = false),
     }
 
     enum class Color(val value: Long?) {
@@ -99,6 +99,10 @@ data class Note(
 
     @Ignore
     @Transient
+    var isCategoryItem = false
+
+    @Ignore
+    @Transient
     override var searchPriority = 0
 
     @Ignore
@@ -108,6 +112,8 @@ data class Note(
     @delegate:Ignore
     @delegate:Transient
     override val searchKeywords by lazy {
+        if (isCategoryItem)
+            return@lazy emptyList()
         listOf(
             listOf(topicHtml?.toString(), bodyHtml.toString()),
             listOf(sharedByName),
@@ -117,7 +123,15 @@ data class Note(
     override fun compareTo(other: Searchable<*>): Int {
         if (other !is Note)
             return 0
+        val order = ownerType?.ordinal ?: -1
+        val otherOrder = other.ownerType?.ordinal ?: -1
         return when {
+            // custom ascending sorting
+            order > otherOrder -> 1
+            order < otherOrder -> -1
+            // all category elements stay at their original position
+            isCategoryItem -> 0
+            other.isCategoryItem -> 0
             // ascending sorting
             searchPriority > other.searchPriority -> 1
             searchPriority < other.searchPriority -> -1

@@ -35,7 +35,14 @@ class NoteViewHolder(
         position: Int,
         adapter: NoteListAdapter,
     ) {
-        b.topic.text = item.topicHtml ?: item.bodyHtml
+        val colorHighlight = R.attr.colorControlHighlight.resolveAttr(activity)
+        val addedDate = Date.fromMillis(item.addedDate).formattedString
+
+        b.topic.text = adapter.highlightSearchText(
+            item = item,
+            text = item.topicHtml ?: item.bodyHtml,
+            color = colorHighlight,
+        )
 
         if (item.color != null) {
             b.colorLayout.background =
@@ -43,9 +50,6 @@ class NoteViewHolder(
         } else {
             b.colorLayout.background = null
         }
-
-        val colorHighlight = R.attr.colorControlHighlight.resolveAttr(activity)
-        val addedDate = Date.fromMillis(item.addedDate).formattedString
 
         if (item.sharedBy != null && item.sharedByName != null) {
             b.addedBy.text = listOf<CharSequence>(
@@ -59,7 +63,7 @@ class NoteViewHolder(
             val sharedBySpanned = adapter.highlightSearchText(
                 item = item,
                 text = item.sharedByName,
-                color = colorHighlight
+                color = colorHighlight,
             )
             b.addedBy.text = b.addedBy.text.replaceSpanned(item.sharedByName, sharedBySpanned)
         } else {

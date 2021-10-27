@@ -72,6 +72,7 @@ import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.edziennik.ui.messages.compose.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.messages.single.MessageFragment
+import pl.szczodrzynski.edziennik.ui.notes.NotesFragment
 import pl.szczodrzynski.edziennik.ui.notifications.NotificationsListFragment
 import pl.szczodrzynski.edziennik.ui.settings.ProfileManagerFragment
 import pl.szczodrzynski.edziennik.ui.settings.SettingsFragment
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         const val DRAWER_ITEM_NOTIFICATIONS = 20
         const val DRAWER_ITEM_MORE = 21
         const val DRAWER_ITEM_TEACHERS = 22
+        const val DRAWER_ITEM_NOTES = 23
         const val DRAWER_ITEM_SETTINGS = 101
         const val DRAWER_ITEM_DEBUG = 102
 
@@ -133,6 +135,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         val navTargetList: List<NavTarget> by lazy {
             val list: MutableList<NavTarget> = mutableListOf()
             val moreList: MutableList<NavTarget> = mutableListOf()
+
+            moreList += NavTarget(
+                id = DRAWER_ITEM_NOTES,
+                name = R.string.menu_notes,
+                fragmentClass = NotesFragment::class)
+                .withIcon(CommunityMaterial.Icon3.cmd_text_box_multiple_outline)
+                .isStatic(true)
 
             moreList += NavTarget(DRAWER_ITEM_TEACHERS,
                 R.string.menu_teachers,

@@ -20,25 +20,33 @@ class NoteListAdapter(
     companion object {
         private const val TAG = "NoteListAdapter"
         private const val ITEM_TYPE_NOTE = 0
+        private const val ITEM_TYPE_CATEGORY = 1
     }
 
     private val app = activity.applicationContext as App
 
-    override fun getItemViewType(item: Note) = ITEM_TYPE_NOTE
+    override fun getItemViewType(item: Note) = when {
+        item.isCategoryItem -> ITEM_TYPE_CATEGORY
+        else -> ITEM_TYPE_NOTE
+    }
 
     override fun onBindViewHolder(
         holder: RecyclerView.ViewHolder,
         position: Int,
         item: Note,
     ) {
-        if (holder !is NoteViewHolder)
-            return
-        holder.onBind(activity, app, item, position, this)
+        when (holder) {
+            is NoteViewHolder -> holder.onBind(activity, app, item, position, this)
+            is NoteCategoryViewHolder -> holder.onBind(activity, app, item, position, this)
+        }
     }
 
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
         viewType: Int,
-    ) = NoteViewHolder(inflater, parent)
+    ): RecyclerView.ViewHolder = when (viewType) {
+        ITEM_TYPE_CATEGORY -> NoteCategoryViewHolder(inflater, parent)
+        else -> NoteViewHolder(inflater, parent)
+    }
 }
