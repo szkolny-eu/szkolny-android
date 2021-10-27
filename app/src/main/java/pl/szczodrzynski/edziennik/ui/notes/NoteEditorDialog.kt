@@ -30,8 +30,9 @@ import kotlin.coroutines.suspendCoroutine
 
 class NoteEditorDialog(
     activity: AppCompatActivity,
-    private val owner: Noteable,
+    private val owner: Noteable?,
     private val editingNote: Note?,
+    private val profileId: Int = owner?.getNoteOwnerProfileId() ?: 0,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<NoteEditorDialogBinding>(activity, onShowListener, onDismissListener) {
@@ -58,7 +59,7 @@ class NoteEditorDialog(
 
     override suspend fun onPositiveClick(): Boolean {
         val profile = withContext(Dispatchers.IO) {
-            app.db.profileDao().getByIdNow(owner.getNoteOwnerProfileId())
+            app.db.profileDao().getByIdNow(profileId)
         } ?: return NO_DISMISS
 
         val note = buildNote(profile) ?: return NO_DISMISS
@@ -122,7 +123,7 @@ class NoteEditorDialog(
         topicStylingConfig = StylingConfigBase(editText = b.topic, htmlMode = HtmlMode.SIMPLE)
         bodyStylingConfig = StylingConfigBase(editText = b.body, htmlMode = HtmlMode.SIMPLE)
 
-        b.ownerType = owner.getNoteType()
+        b.ownerType = owner?.getNoteType() ?: Note.OwnerType.NONE
         b.editingNote = editingNote
 
         b.color.clear().append(Note.Color.values().map { color ->
@@ -157,7 +158,7 @@ class NoteEditorDialog(
     }
 
     private fun buildNote(profile: Profile): Note? {
-        val ownerType = owner.getNoteType()
+        val ownerType = owner?.getNoteType() ?: Note.OwnerType.NONE
         val topic = b.topic.text?.toString()
         val body = b.body.text?.toString()
         val color = b.color.selected?.tag as? Note.Color
@@ -179,8 +180,8 @@ class NoteEditorDialog(
         return Note(
             profileId = profile.id,
             id = editingNote?.id ?: System.currentTimeMillis(),
-            ownerType = ownerType,
-            ownerId = owner.getNoteOwnerId(),
+            ownerType = owner?.getNoteType(),
+            ownerId = owner?.getNoteOwnerId(),
             replacesOriginal = replace,
             topic = topicHtml,
             body = bodyHtml,

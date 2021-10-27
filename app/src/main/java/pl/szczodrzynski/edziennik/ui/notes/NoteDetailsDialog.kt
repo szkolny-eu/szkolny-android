@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.utils.models.Date
 
 class NoteDetailsDialog(
     activity: AppCompatActivity,
-    private val owner: Noteable,
+    private val owner: Noteable?,
     private var note: Note,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,

@@ -261,6 +261,7 @@ class NoteManager(private val app: App) {
         OwnerType.LESSON -> R.string.notes_type_lesson
         OwnerType.LESSON_SUBJECT -> TODO()
         OwnerType.MESSAGE -> R.string.notes_type_message
+        OwnerType.NONE -> throw Exception("NONE is not a valid OwnerType.")
     }
 
     fun getOwnerTypeImage(owner: OwnerType) = when (owner) {
@@ -274,13 +275,20 @@ class NoteManager(private val app: App) {
         OwnerType.LESSON -> R.drawable.ic_timetable
         OwnerType.LESSON_SUBJECT -> TODO()
         OwnerType.MESSAGE -> R.drawable.ic_message
+        OwnerType.NONE -> throw Exception("NONE is not a valid OwnerType.")
     }
 
     fun configureHeader(
         activity: AppCompatActivity,
-        noteOwner: Noteable,
+        noteOwner: Noteable?,
         b: NoteDialogHeaderBinding,
     ) {
+        if (noteOwner == null) {
+            b.title.isVisible = false
+            b.divider.isVisible = false
+            b.ownerItemList.isVisible = false
+            return
+        }
         b.ownerItemList.apply {
             adapter = getAdapterForItem(activity, noteOwner)
             isNestedScrollingEnabled = false

@@ -46,6 +46,10 @@ data class Note(
         val isShareable: Boolean,
         val canReplace: Boolean,
     ) {
+        /**
+         * The [NONE] type is only for usage in the UI and should not be saved.
+         */
+        NONE(isShareable = true, canReplace = false),
         EVENT(isShareable = true, canReplace = true),
         DAY(isShareable = true, canReplace = false),
         LESSON(isShareable = true, canReplace = true),

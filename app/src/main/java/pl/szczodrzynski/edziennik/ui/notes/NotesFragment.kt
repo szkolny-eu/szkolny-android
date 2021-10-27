@@ -11,9 +11,11 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.databinding.NotesFragmentBinding
@@ -51,7 +53,7 @@ class NotesFragment : Fragment(), CoroutineScope {
     private fun onNoteClick(note: Note) = launch {
         val owner = withContext(Dispatchers.IO) {
             manager.getOwner(note)
-        } as? Noteable ?: return@launch
+        } as? Noteable
 
         NoteDetailsDialog(
             activity = activity,
@@ -63,17 +65,38 @@ class NotesFragment : Fragment(), CoroutineScope {
     private fun onNoteEditClick(note: Note) = launch {
         val owner = withContext(Dispatchers.IO) {
             manager.getOwner(note)
-        } as? Noteable ?: return@launch
+        } as? Noteable
 
         NoteEditorDialog(
             activity = activity,
             owner = owner,
             editingNote = note,
+            profileId = App.profileId,
+        ).show()
+    }
+
+    private fun onNoteAddClick(view: View?) {
+        NoteEditorDialog(
+            activity = activity,
+            owner = null,
+            editingNote = null,
+            profileId = App.profileId,
         ).show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded) return
+
+        activity.navView.apply {
+            bottomBar.apply {
+                fabEnable = true
+                fabExtendedText = getString(R.string.notes_action_add)
+                fabIcon = CommunityMaterial.Icon3.cmd_text_box_plus_outline
+            }
+
+            setFabOnClickListener(this@NotesFragment::onNoteAddClick)
+        }
+        activity.gainAttentionFAB()
 
         val adapter = NoteListAdapter(
             activity = activity,
