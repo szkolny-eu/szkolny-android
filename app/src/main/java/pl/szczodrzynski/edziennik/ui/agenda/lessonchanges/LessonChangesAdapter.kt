@@ -16,11 +16,13 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.navlib.getColorFromAttr
 
 class LessonChangesAdapter(
         val context: Context,
-        private val onItemClick: ((lesson: LessonFull) -> Unit)? = null
+        private val showNotes: Boolean = true,
+        private val onLessonClick: ((lesson: LessonFull) -> Unit)? = null
 ) : RecyclerView.Adapter<LessonChangesAdapter.ViewHolder>() {
 
     var items = listOf<LessonFull>()
@@ -39,8 +41,10 @@ class LessonChangesAdapter(
         val lesson = items[position]
         val b = holder.b
 
-        b.root.onClick {
-            onItemClick?.invoke(lesson)
+        if (onLessonClick != null) {
+            b.root.onClick {
+                onLessonClick.invoke(lesson)
+            }
         }
 
         val startTime = lesson.displayStartTime ?: return
@@ -84,7 +88,8 @@ class LessonChangesAdapter(
 
 
         b.lessonNumber = lesson.displayLessonNumber
-        b.subjectName.text = lesson.displaySubjectName?.let {
+        val lessonText = lesson.getNoteSubstituteText(showNotes) ?: lesson.displaySubjectName
+        b.subjectName.text = lessonText?.let {
             if (lesson.type == Lesson.TYPE_CANCELLED || lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
                 it.asStrikethroughSpannable().asColoredSpannable(colorSecondary)
             else
@@ -92,6 +97,9 @@ class LessonChangesAdapter(
         }
         b.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
         b.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
+
+        if (showNotes)
+            NoteManager.prependIcon(lesson, b.subjectName)
 
         //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
         when (lesson.type) {

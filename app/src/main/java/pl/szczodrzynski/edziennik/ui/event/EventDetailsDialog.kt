@@ -27,6 +27,7 @@ import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -36,6 +37,7 @@ class EventDetailsDialog(
     activity: AppCompatActivity,
     // this event is observed for changes
     private var event: EventFull,
+    private val showNotes: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogEventDetailsBinding>(activity, onShowListener, onDismissListener) {
@@ -96,6 +98,8 @@ class EventDetailsDialog(
             manager.markAsSeen(event)
         }
 
+        event.filterNotes()
+
         val bullet = " • "
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
@@ -104,7 +108,7 @@ class EventDetailsDialog(
         }
         catch (_: Exception) {}
 
-        manager.setLegendText(b.legend, event)
+        manager.setLegendText(b.legend, event, showNotes)
 
         b.typeColor.background?.setTintColor(event.eventColor)
 
@@ -257,6 +261,14 @@ class EventDetailsDialog(
                 it.putStringArray("attachmentNames", event.attachmentNames!!.toTypedArray())
             }, owner = event)
         }
+
+        b.notesButton.isVisible = showNotes
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            owner = event,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)

@@ -56,6 +56,7 @@ data class Notification(
         const val TYPE_FEEDBACK_MESSAGE = 16
         const val TYPE_AUTO_ARCHIVING = 17
         const val TYPE_TEACHER_ABSENCE = 19
+        const val TYPE_NEW_SHARED_NOTE = 20
 
         fun buildId(profileId: Int, type: Int, itemId: Long): Long {
             return 1000000000000 + profileId*10000000000 + type*100000000 + itemId;
@@ -112,6 +113,7 @@ data class Notification(
         TYPE_NEW_ATTENDANCE -> CommunityMaterial.Icon.cmd_calendar_remove_outline
         TYPE_LUCKY_NUMBER -> CommunityMaterial.Icon.cmd_emoticon_excited_outline
         TYPE_NEW_ANNOUNCEMENT -> CommunityMaterial.Icon.cmd_bullhorn_outline
+        TYPE_NEW_SHARED_NOTE -> CommunityMaterial.Icon3.cmd_playlist_edit
         else -> CommunityMaterial.Icon.cmd_bell_ring_outline
     }
 }

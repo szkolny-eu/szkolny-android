@@ -31,7 +31,7 @@ class SzkolnyTask(val app: App, val syncingProfiles: List<Profile>) : IApiTask(-
         val notifications = Notifications(app, notificationList, profiles)
         notifications.run()
 
-        val appSyncProfiles = profiles.filter { it.registration == Profile.REGISTRATION_ENABLED && !it.archived }
+        val appSyncProfiles = profiles.filter { it.canShare }
         // App Sync conditions:
         //    - every 24 hours && any profile is registered
         //    - if there are new notifications && any browser is paired

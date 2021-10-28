@@ -22,12 +22,14 @@ class EventListAdapter(
     val simpleMode: Boolean = false,
     val showWeekDay: Boolean = false,
     val showDate: Boolean = false,
+    val showColor: Boolean = true,
     val showType: Boolean = true,
     val showTime: Boolean = true,
     val showSubject: Boolean = true,
     val markAsSeen: Boolean = true,
+    val showNotes: Boolean = true,
     isReversed: Boolean = false,
-    val onItemClick: ((event: EventFull) -> Unit)? = null,
+    val onEventClick: ((event: EventFull) -> Unit)? = null,
     val onEventEditClick: ((event: EventFull) -> Unit)? = null,
 ) : SearchableAdapter<EventFull>(isReversed), CoroutineScope {
     companion object {

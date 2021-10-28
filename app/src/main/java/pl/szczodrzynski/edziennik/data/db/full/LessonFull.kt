@@ -4,15 +4,18 @@
 package pl.szczodrzynski.edziennik.data.db.full
 
 import android.content.Context
+import androidx.room.Relation
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.entity.Note
+import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class LessonFull(
         profileId: Int, id: Long
 ) : Lesson(
         profileId, id
-) {
+), Noteable {
     var subjectName: String? = null
     var teacherName: String? = null
     var teamName: String? = null
@@ -133,4 +136,10 @@ class LessonFull(
     // metadata
     var seen: Boolean = false
     var notified: Boolean = false
+
+    @Relation(parentColumn = "id", entityColumn = "noteOwnerId", entity = Note::class)
+    override lateinit var notes: MutableList<Note>
+    override fun getNoteType() = Note.OwnerType.LESSON
+    override fun getNoteOwnerProfileId() = profileId
+    override fun getNoteOwnerId() = id
 }

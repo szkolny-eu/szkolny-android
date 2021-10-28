@@ -12,15 +12,19 @@ import pl.szczodrzynski.edziennik.data.db.entity.Keepable
 
 @Dao
 interface BaseDao<T : Keepable, F : T> {
+    @Transaction
     @RawQuery
     fun getRaw(query: SupportSQLiteQuery): LiveData<List<F>>
     fun getRaw(query: String) = getRaw(SimpleSQLiteQuery(query))
+    @Transaction
     @RawQuery
     fun getOne(query: SupportSQLiteQuery): LiveData<F?>
     fun getOne(query: String) = getOne(SimpleSQLiteQuery(query))
+    @Transaction
     @RawQuery
     fun getRawNow(query: SupportSQLiteQuery): List<F>
     fun getRawNow(query: String) = getRawNow(SimpleSQLiteQuery(query))
+    @Transaction
     @RawQuery
     fun getOneNow(query: SupportSQLiteQuery): F?
     fun getOneNow(query: String) = getOneNow(SimpleSQLiteQuery(query))

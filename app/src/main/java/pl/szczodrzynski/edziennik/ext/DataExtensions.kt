@@ -63,6 +63,7 @@ fun Context.getNotificationTitle(type: Int): String {
         Notification.TYPE_AUTO_ARCHIVING -> R.string.notification_type_auto_archiving
         Notification.TYPE_TEACHER_ABSENCE -> R.string.notification_type_new_teacher_absence
         Notification.TYPE_GENERAL -> R.string.notification_type_general
+        Notification.TYPE_NEW_SHARED_NOTE -> R.string.notification_type_new_shared_note
         else -> R.string.notification_type_general
     })
 }

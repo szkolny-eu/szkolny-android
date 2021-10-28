@@ -26,7 +26,9 @@ import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.event.EventDetailsDialog
 import pl.szczodrzynski.edziennik.ui.event.EventListAdapter
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -36,6 +38,7 @@ class DayDialog(
     private val profileId: Int,
     private val date: Date,
     private val eventTypeId: Long? = null,
+    private val showNotes: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogDayBinding>(activity, onShowListener, onDismissListener) {
@@ -151,7 +154,7 @@ class DayDialog(
             showTime = true,
             showSubject = true,
             markAsSeen = true,
-            onItemClick = {
+            onEventClick = {
                 EventDetailsDialog(
                     activity,
                     it,
@@ -171,6 +174,10 @@ class DayDialog(
         )
 
         app.db.eventDao().getAllByDate(profileId, date).observe(activity) { events ->
+            events.forEach {
+                it.filterNotes()
+            }
+
             adapter.setAllItems(
                 if (eventTypeId != null)
                     events.filter { it.type == eventTypeId }
@@ -197,5 +204,15 @@ class DayDialog(
                 b.eventsNoData.visibility = View.VISIBLE
             }
         }
+
+        b.notesButton.isVisible = showNotes
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            owner = date,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
+        if (showNotes)
+            NoteManager.setLegendText(date, b.legend)
     }
 }

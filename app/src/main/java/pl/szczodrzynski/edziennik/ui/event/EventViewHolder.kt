@@ -36,14 +36,16 @@ class EventViewHolder(
     ) {
         val manager = app.eventManager
 
-        b.root.onClick {
-            adapter.onItemClick?.invoke(item)
-            if (!item.seen) {
-                manager.markAsSeen(item)
-            }
-            if (item.showAsUnseen == true) {
-                item.showAsUnseen = false
-                adapter.notifyItemChanged(item)
+        if (adapter.onEventClick != null) {
+            b.root.onClick {
+                adapter.onEventClick.invoke(item)
+                if (!item.seen) {
+                    manager.markAsSeen(item)
+                }
+                if (item.showAsUnseen == true) {
+                    item.showAsUnseen = false
+                    adapter.notifyItemChanged(item)
+                }
             }
         }
 
@@ -52,7 +54,7 @@ class EventViewHolder(
 
         b.simpleMode = adapter.simpleMode
 
-        manager.setEventTopic(b.topic, item, showType = false)
+        manager.setEventTopic(b.topic, item, showType = false, showNotes = adapter.showNotes)
         b.topic.text = adapter.highlightSearchText(
             item = item,
             text = b.topic.text,
@@ -67,13 +69,13 @@ class EventViewHolder(
             if (adapter.showDate)
                 item.date.getRelativeString(activity, 7) ?: item.date.formattedStringShort
             else null,
-            if (adapter.showType)
+            if (adapter.showType && item.typeName != null)
                 item.typeName
             else null,
             if (adapter.showTime)
                 item.time?.stringHM ?: app.getString(R.string.event_all_day)
             else null,
-            if (adapter.showSubject)
+            if (adapter.showSubject && item.subjectLongName != null)
                 adapter.highlightSearchText(
                     item = item,
                     text = item.subjectLongName ?: "",
@@ -111,13 +113,19 @@ class EventViewHolder(
         b.attachmentIcon.isVisible = item.hasAttachments
 
         b.typeColor.background?.setTintColor(item.eventColor)
-        b.typeColor.isVisible = adapter.showType
+        b.typeColor.isVisible = adapter.showType && adapter.showColor
 
-        b.editButton.isVisible = !adapter.simpleMode && item.addedManually && !item.isDone
-        b.editButton.onClick {
-            adapter.onEventEditClick?.invoke(item)
+        b.editButton.isVisible = !adapter.simpleMode
+                && item.addedManually
+                && !item.isDone
+                && adapter.onEventEditClick != null
+
+        if (adapter.onEventEditClick != null) {
+            b.editButton.onClick {
+                adapter.onEventEditClick.invoke(item)
+            }
+            b.editButton.attachToastHint(R.string.hint_edit_event)
         }
-        b.editButton.attachToastHint(R.string.hint_edit_event)
 
         if (item.showAsUnseen == null)
             item.showAsUnseen = !item.seen

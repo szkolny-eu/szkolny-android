@@ -24,6 +24,7 @@ interface HomeCard {
         const val CARD_TIMETABLE = 2
         const val CARD_GRADES = 3
         const val CARD_EVENTS = 4
+        const val CARD_NOTES = 5
     }
 
     val id: Int

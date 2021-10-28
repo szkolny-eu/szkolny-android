@@ -7,6 +7,8 @@ import androidx.room.Ignore
 import androidx.room.Relation
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
+import pl.szczodrzynski.edziennik.data.db.entity.Note
+import pl.szczodrzynski.edziennik.data.db.entity.Noteable
 import pl.szczodrzynski.edziennik.ui.search.Searchable
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 
@@ -18,7 +20,7 @@ class MessageFull(
         profileId, id, type,
         subject, body, senderId,
         addedDate
-), Searchable<MessageFull> {
+), Searchable<MessageFull>, Noteable {
     var senderName: String? = null
     @Relation(parentColumn = "messageId", entityColumn = "messageId", entity = MessageRecipient::class)
     var recipients: MutableList<MessageRecipientFull>? = null
@@ -83,4 +85,10 @@ class MessageFull(
     // metadata
     var seen = false
     var notified = false
+
+    @Relation(parentColumn = "messageId", entityColumn = "noteOwnerId", entity = Note::class)
+    override lateinit var notes: MutableList<Note>
+    override fun getNoteType() = Note.OwnerType.MESSAGE
+    override fun getNoteOwnerProfileId() = profileId
+    override fun getNoteOwnerId() = id
 }

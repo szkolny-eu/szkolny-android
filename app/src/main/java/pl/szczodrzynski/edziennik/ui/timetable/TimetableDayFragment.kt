@@ -33,6 +33,7 @@ import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
@@ -103,6 +104,10 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         // observe lesson database
         app.db.timetableDao().getAllForDate(App.profileId, date).observe(this) { lessons ->
             launch {
+                lessons.forEach {
+                    it.filterNotes()
+                }
+
                 val events = withContext(Dispatchers.Default) {
                     app.db.eventDao().getAllByDateNow(App.profileId, date)
                 }
@@ -281,7 +286,9 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
 
             lb.lessonNumber = lesson.displayLessonNumber
-            lb.subjectName.text = lesson.displaySubjectName?.let {
+            val lessonText =
+                lesson.getNoteSubstituteText(showNotes = true) ?: lesson.displaySubjectName
+            lb.subjectName.text = lessonText?.let {
                 if (lesson.type == Lesson.TYPE_CANCELLED || lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
                     it.asStrikethroughSpannable().asColoredSpannable(colorSecondary)
                 else
@@ -289,6 +296,8 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             }
             lb.detailsFirst.text = listOfNotEmpty(timeRange, classroomInfo).concat(bullet)
             lb.detailsSecond.text = listOfNotEmpty(teacherInfo, teamInfo).concat(bullet)
+
+            NoteManager.prependIcon(lesson, lb.subjectName)
 
             lb.attendanceIcon.isVisible = attendance?.let {
                 val icon = attendanceManager.getAttendanceIcon(it) ?: return@let false

@@ -64,7 +64,7 @@ class HomeworkListFragment : LazyFragment(), CoroutineScope {
             showSubject = true,
             markAsSeen = true,
             isReversed = homeworkDate == HomeworkDate.PAST,
-            onItemClick = {
+            onEventClick = {
                 EventDetailsDialog(
                     activity,
                     it
@@ -81,6 +81,10 @@ class HomeworkListFragment : LazyFragment(), CoroutineScope {
 
         app.db.eventDao().getAllByType(App.profileId, Event.TYPE_HOMEWORK, filter).observe(this@HomeworkListFragment, Observer { events ->
             if (!isAdded) return@Observer
+
+            events.forEach {
+                it.filterNotes()
+            }
 
             // show/hide relevant views
             setSwipeToRefresh(events.isEmpty())

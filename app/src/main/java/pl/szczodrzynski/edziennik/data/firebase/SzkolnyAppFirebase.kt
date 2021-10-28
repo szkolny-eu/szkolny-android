@@ -47,6 +47,15 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         message.data.getLong("eventId") ?: return@run,
                         message.data.getString("message") ?: return@run
                 )
+                "sharedNote" -> sharedNote(
+                    message.data.getString("shareTeamCode") ?: return@run,
+                    message.data.getString("note") ?: return@run,
+                    message.data.getString("message") ?: return@run,
+                )
+                "unsharedNote" -> unsharedNote(
+                    message.data.getString("unshareTeamCode") ?: return@run,
+                    message.data.getLong("noteId") ?: return@run,
+                )
                 "serverMessage",
                 "unpairedBrowser" -> serverMessage(
                         message.data.getString("title") ?: "",
@@ -119,7 +128,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
 
         teams.filter { it.code == teamCode }.distinctBy { it.profileId }.forEach { team ->
             val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
-            if (profile.registration != Profile.REGISTRATION_ENABLED)
+            if (!profile.canShare)
                 return@forEach
             val event = Event(
                     profileId = team.profileId,
@@ -186,7 +195,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
 
         teams.filter { it.code == teamCode }.distinctBy { it.profileId }.forEach { team ->
             val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
-            if (profile.registration != Profile.REGISTRATION_ENABLED)
+            if (!profile.canShare)
                 return@forEach
             val notificationFilter = app.config.getFor(team.profileId).sync.notificationFilter
 
@@ -207,6 +216,73 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
         if (notificationList.isNotEmpty()) {
             app.db.notificationDao().addAll(notificationList)
             PostNotifications(app, notificationList)
+        }
+    }
+
+    private fun sharedNote(teamCode: String, jsonStr: String, message: String) {
+        val note = app.gson.fromJson(jsonStr, Note::class.java)
+        val noteSharedBy = note.sharedBy
+        val teams = app.db.teamDao().allNow
+        // not used, as the server provides a sharing message
+        //val eventTypes = app.db.eventTypeDao().allNow
+
+        val notes = mutableListOf<Note>()
+        val notificationList = mutableListOf<Notification>()
+
+        teams.filter { it.code == teamCode }.distinctBy { it.profileId }.forEach { team ->
+            val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
+            if (!profile.canShare)
+                return@forEach
+            note.profileId = team.profileId
+            if (profile.userCode == note.sharedBy) {
+                note.sharedBy = "self"
+            } else {
+                note.sharedBy = noteSharedBy
+            }
+
+            if (!app.noteManager.hasValidOwner(note))
+                return@forEach
+
+            notes += note
+
+            val hadNote = app.db.noteDao().getNow(note.profileId, note.id) != null
+            // skip creating notifications
+            if (hadNote)
+                return@forEach
+
+            val type = Notification.TYPE_NEW_SHARED_NOTE
+            val notificationFilter = app.config.getFor(note.profileId).sync.notificationFilter
+
+            if (!notificationFilter.contains(type) && note.sharedBy != "self") {
+                val notification = Notification(
+                    id = Notification.buildId(note.profileId, type, note.id),
+                    title = app.getNotificationTitle(type),
+                    text = message,
+                    type = type,
+                    profileId = profile.id,
+                    profileName = profile.name,
+                    viewId = MainActivity.DRAWER_ITEM_HOME,
+                    addedDate = note.addedDate
+                ).addExtra("noteId", note.id)
+                notificationList += notification
+            }
+        }
+        app.db.noteDao().addAll(notes)
+        if (notificationList.isNotEmpty()) {
+            app.db.notificationDao().addAll(notificationList)
+            PostNotifications(app, notificationList)
+        }
+    }
+
+    private fun unsharedNote(teamCode: String, noteId: Long) {
+        val teams = app.db.teamDao().allNow
+
+        teams.filter { it.code == teamCode }.distinctBy { it.profileId }.forEach { team ->
+            val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
+            if (!profile.canShare)
+                return@forEach
+
+            app.db.noteDao().remove(team.profileId, noteId)
         }
     }
 }

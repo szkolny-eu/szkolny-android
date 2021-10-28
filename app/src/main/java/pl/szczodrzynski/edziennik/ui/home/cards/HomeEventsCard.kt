@@ -66,7 +66,7 @@ class HomeEventsCard(
                 showTime = false,
                 showSubject = false,
                 markAsSeen = false,
-                onItemClick = {
+                onEventClick = {
                     EventDetailsDialog(
                             activity,
                             it
@@ -82,6 +82,10 @@ class HomeEventsCard(
         )
 
         app.db.eventDao().getNearestNotDone(profile.id, Date.getToday(), 4).observe(activity, Observer { events ->
+            events.forEach {
+                it.filterNotes()
+            }
+
             adapter.setAllItems(events)
             if (b.eventsView.adapter == null) {
                 b.eventsView.adapter = adapter

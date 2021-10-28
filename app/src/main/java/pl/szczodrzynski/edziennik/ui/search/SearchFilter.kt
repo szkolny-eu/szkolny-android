@@ -59,14 +59,15 @@ class SearchFilter<T : Searchable<T>>(
         }
 
         val newItems = allItems.mapNotNull { item ->
-            if (item is SearchField) {
+            // get all keyword sets from the entity
+            val searchKeywords = item.searchKeywords
+            // keep the SearchField and items having no keywords
+            if (item is SearchField || searchKeywords.isEmpty()) {
                 return@mapNotNull item
             }
             item.searchPriority = NO_MATCH
             item.searchHighlightText = null
 
-            // get all keyword sets from the entity
-            val searchKeywords = item.searchKeywords
             // a temporary variable for the loops below
             var matchWeight: Int
 

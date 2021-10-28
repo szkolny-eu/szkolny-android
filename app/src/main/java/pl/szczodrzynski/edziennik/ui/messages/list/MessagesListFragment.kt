@@ -62,7 +62,7 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
             app.db.teacherDao().getAllNow(App.profileId)
         }
 
-        adapter = MessagesAdapter(activity, teachers, onItemClick = {
+        adapter = MessagesAdapter(activity, teachers, onMessageClick = {
             val (target, args) =
                 if (it.isDraft) {
                     TARGET_MESSAGES_COMPOSE to Bundle("message" to app.gson.toJson(it))
@@ -81,6 +81,8 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
                 return@Observer
 
             messages.forEach { message ->
+                message.filterNotes()
+
                 // uh oh, so these are the workarounds ??
                 message.recipients?.removeAll { it.profileId != message.profileId }
                 message.recipients?.forEach { recipient ->

@@ -107,6 +107,10 @@ public class AnnouncementsFragment extends Fragment {
             if (app == null || activity == null || b == null || !isAdded())
                 return;
 
+            for (AnnouncementFull it : announcements) {
+                it.filterNotes();
+            }
+
             if (announcements == null) {
                 recyclerView.setVisibility(View.GONE);
                 b.announcementsNoData.setVisibility(View.VISIBLE);

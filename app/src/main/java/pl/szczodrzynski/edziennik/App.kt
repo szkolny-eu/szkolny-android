@@ -35,6 +35,7 @@ import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.data.api.events.ProfileListEmptyEvent
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
@@ -66,6 +67,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         var devMode = false
     }
 
+    val api by lazy { SzkolnyApi(this) }
     val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
     val userActionManager by lazy { UserActionManager(this) }
     val gradesManager by lazy { GradesManager(this) }
@@ -77,6 +79,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     val availabilityManager by lazy { AvailabilityManager(this) }
     val textStylingManager by lazy { TextStylingManager(this) }
     val messageManager by lazy { MessageManager(this) }
+    val noteManager by lazy { NoteManager(this) }
 
     val db
         get() = App.db

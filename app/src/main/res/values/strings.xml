@@ -901,7 +901,9 @@
     <string name="registration_config_enable_progress_text">Pobieranie udostępnionych wydarzeń…</string>
     <string name="registration_config_enable_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
     <string name="registration_config_event_sharing_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
+    <string name="registration_config_note_sharing_text">Aby móc udostępnić notatkę, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie notatek udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
     <string name="registration_config_event_sharing_title">Udostępnianie wydarzeń</string>
+    <string name="registration_config_note_sharing_title">Udostępnianie notatek</string>
     <string name="registration_config_title">Rejestracja aplikacji Szkolny.eu</string>
     <string name="remove">Usuń</string>
     <string name="removed">Usunięto</string>
@@ -1498,4 +1500,51 @@
     <string name="styled_text_dialog_title">Edytuj tekst</string>
     <string name="send_message">Wyślij wiadomość</string>
     <string name="login_qr_decoding_error">Kod QR nie wygląda na prawidłowy</string>
+    <string name="notes_list_dialog_title">Notatki</string>
+    <string name="notes_button">Notatki</string>
+    <string name="notes_no_data">Nie dodano żadnych notatek</string>
+    <string name="notes_no_data_hint">Możesz dodać notatki oraz udostępnić je w klasie, używając przycisku Dodaj.</string>
+    <string name="legend_notes_added">{cmd-playlist-edit} dodano notatki</string>
+    <string name="legend_notes_added_replaced">{cmd-playlist-edit} dodano notatki\n{cmd-swap-horizontal} zastąpiono treść notatką</string>
+    <string name="notes_added_by_you_format">Dodano %1$s</string>
+    <string name="notes_type_announcement">Ogłoszenie szkolne</string>
+    <string name="notes_type_attendance">Frekwencja</string>
+    <string name="notes_type_behavior">Zachowanie</string>
+    <string name="notes_type_day">Dzień</string>
+    <string name="notes_type_event">Wydarzenie</string>
+    <string name="notes_type_grade">Ocena</string>
+    <string name="notes_type_lesson">Lekcja</string>
+    <string name="notes_type_message">Wiadomość</string>
+    <string name="notes_details_id">ID notatki</string>
+    <string name="notes_details_owner_id">ID właściciela</string>
+    <string name="notes_details_dialog_title">Notatka</string>
+    <string name="notes_editor_dialog_title">Edytuj notatkę</string>
+    <string name="notes_editor_topic">Tytuł notatki (opcjonalnie)</string>
+    <string name="notes_editor_body">Treść notatki</string>
+    <string name="notes_editor_replace_text">Zastąp oryginalną treść</string>
+    <string name="notes_editor_share_hint">Osoby z klasy zobaczą Twoją notatkę przy tym elemencie.</string>
+    <string name="notes_editor_replace_hint">Treść notatki będzie widoczna zamiast oryginalnej treści elementu.</string>
+    <string name="notes_editor_body_error">Podaj treść notatki</string>
+    <string name="notes_editor_color">Kolor</string>
+    <string name="notes_editor_progress_sharing">Udostępnianie notatki…</string>
+    <string name="notes_editor_progress_unsharing">Usuwanie udostępnionej notatki…</string>
+    <string name="notification_type_new_shared_note">Udostępniono notatkę</string>
+    <string name="notes_editor_confirmation_text">Czy chcesz usunąć tą notatkę?\n\nZostanie ona usunięta na Twoim urządzeniu, oraz u pozostałych osób z klasy.</string>
+    <string name="menu_notes">Notatki</string>
+    <string name="notes_action_add">Dodaj notatkę</string>
+    <string name="color_none">Brak</string>
+    <string name="color_red">Czerwony</string>
+    <string name="color_orange">Pomarańczowy</string>
+    <string name="color_yellow">Żółty</string>
+    <string name="color_green">Zielony</string>
+    <string name="color_teal">Morski</string>
+    <string name="color_blue">Niebieski</string>
+    <string name="color_dark_blue">Ciemnoniebieski</string>
+    <string name="color_purple">Fioletowy</string>
+    <string name="color_pink">Różowy</string>
+    <string name="color_brown">Brązowy</string>
+    <string name="color_grey">Szary</string>
+    <string name="color_black">Czarny</string>
+    <string name="card_type_notes">Notatki</string>
+    <string name="card_notes_header_title">Najnowsze notatki</string>
 </resources>

@@ -7,17 +7,21 @@ package pl.szczodrzynski.edziennik.ui.attendance
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.isVisible
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.databinding.AttendanceDetailsDialogBinding
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 
 class AttendanceDetailsDialog(
     activity: AppCompatActivity,
     private val attendance: AttendanceFull,
+    private val showNotes: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<AttendanceDetailsDialogBinding>(activity, onShowListener, onDismissListener) {
@@ -48,5 +52,15 @@ class AttendanceDetailsDialog(
                 onActionSelected = dialog::dismiss
             )
         }
+
+        b.notesButton.isVisible = showNotes
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            owner = attendance,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
+        if (showNotes)
+            NoteManager.setLegendText(attendance, b.legend)
     }
 }

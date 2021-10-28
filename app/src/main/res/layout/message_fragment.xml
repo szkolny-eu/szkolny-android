@@ -198,7 +198,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="8dp"
-                    android:layout_marginVertical="8dp"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal"
                     android:visibility="visible"
                     tools:visibility="visible">
@@ -260,6 +260,14 @@
                         android:visibility="gone"
                         tools:drawableTop="@android:drawable/stat_sys_download" />
                 </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/notesButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/notes_button" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

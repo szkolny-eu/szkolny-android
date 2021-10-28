@@ -76,6 +76,10 @@ class GradesListFragment : Fragment(), CoroutineScope {
         app.db.gradeDao().getAllOrderBy(App.profileId, app.gradesManager.getOrderByString()).observe(viewLifecycleOwner, Observer { grades -> this@GradesListFragment.launch {
             if (!isAdded) return@launch
 
+            grades.forEach {
+                it.filterNotes()
+            }
+
             val items = when {
                 app.config.forProfile().grades.hideSticksFromOld && App.devMode -> grades.filter { it.value != 1.0f }
                 else -> grades

@@ -48,12 +48,16 @@ class EventManager(val app: App) : CoroutineScope {
         title: TextView,
         event: EventFull,
         showType: Boolean = true,
+        showNotes: Boolean = true,
         doneIconColor: Int? = null
     ) {
-        val topicSpan = event.topicHtml
+        val topicSpan = event.getNoteSubstituteText(showNotes) ?: event.topicHtml
+        val hasReplacingNotes = event.hasReplacingNotes()
 
         title.text = listOfNotNull(
             if (event.addedManually) "{cmd-clipboard-edit-outline} " else null,
+            if (event.hasNotes() && hasReplacingNotes && showNotes) "{cmd-swap-horizontal} " else null,
+            if (event.hasNotes() && !hasReplacingNotes && showNotes) "{cmd-playlist-edit} " else null,
             if (showType) "${event.typeName ?: "wydarzenie"} - " else null,
             topicSpan,
         ).concat()
@@ -70,10 +74,11 @@ class EventManager(val app: App) : CoroutineScope {
         )
     }
 
-    fun setLegendText(legend: IconicsTextView, event: EventFull) {
+    fun setLegendText(legend: IconicsTextView, event: EventFull, showNotes: Boolean = true) {
         legend.text = listOfNotNull(
             if (event.addedManually) R.string.legend_event_added_manually else null,
-            if (event.isDone) R.string.legend_event_is_done else null
+            if (event.isDone) R.string.legend_event_is_done else null,
+            if (showNotes) NoteManager.getLegendText(event) else null,
         ).map { legend.context.getString(it) }.join("\n")
         legend.isVisible = legend.text.isNotBlank()
     }

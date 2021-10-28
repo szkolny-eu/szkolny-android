@@ -52,7 +52,7 @@
             tools:text="Nieobecność nieusprawiedliwiona" />
 
 
-        <TextView
+        <com.mikepenz.iconics.view.IconicsTextView
             android:id="@+id/subjectName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

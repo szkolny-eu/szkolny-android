@@ -25,6 +25,7 @@ import kotlin.coroutines.CoroutineContext
 
 class GradesAdapter(
         val activity: AppCompatActivity,
+        val showNotes: Boolean = true,
         var onGradeClick: ((item: GradeFull) -> Unit)? = null,
         var onGradesEditorClick: ((subject: GradesSubject, semester: GradesSemester) -> Unit)? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), CoroutineScope {
@@ -218,7 +219,10 @@ class GradesAdapter(
             }
         }
 
-        holder.itemView.setOnClickListener(onClickListener)
+        if (item !is GradeFull || onGradeClick != null)
+            holder.itemView.setOnClickListener(onClickListener)
+        else
+            holder.itemView.setOnClickListener(null)
     }
 
     fun notifyItemChanged(model: Any) {

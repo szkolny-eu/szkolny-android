@@ -23,10 +23,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureIntercep
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.*
-import pl.szczodrzynski.edziennik.data.db.entity.Event
-import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
-import pl.szczodrzynski.edziennik.data.db.entity.Notification
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.ext.keys
 import pl.szczodrzynski.edziennik.ext.md5
@@ -199,7 +196,12 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     }
 
     @Throws(Exception::class)
-    fun getEvents(profiles: List<Profile>, notifications: List<Notification>, blacklistedIds: List<Long>, lastSyncTime: Long): List<EventFull> {
+    fun getEvents(
+        profiles: List<Profile>,
+        notifications: List<Notification>,
+        blacklistedIds: List<Long>,
+        lastSyncTime: Long,
+    ): Pair<List<EventFull>, List<Note>> {
         val teams = app.db.teamDao().allNow
 
         val users = profiles.mapNotNull { profile ->
@@ -225,7 +227,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 lastSync = lastSyncTime,
                 notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type, it.text) }
         )).execute()
-        val (events, hasBrowsers) = parseResponse(response, updateDeviceHash = true)
+        val (events, notes, hasBrowsers) = parseResponse(response, updateDeviceHash = true)
 
         hasBrowsers?.let {
             app.config.sync.webPushEnabled = it
@@ -237,6 +239,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         }
 
         val eventList = mutableListOf<EventFull>()
+        val noteList = mutableListOf<Note>()
 
         events.forEach { event ->
             // skip blacklisted events
@@ -247,9 +250,13 @@ class SzkolnyApi(val app: App) : CoroutineScope {
             if (event.color == -1)
                 event.color = null
 
+            val eventSharedBy = event.sharedBy
+
             // create the event for every matching team and profile
             teams.filter { it.code == event.teamCode }.onEach { team ->
                 val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@onEach
+                if (!profile.canShare)
+                    return@forEach
 
                 eventList += EventFull(event).apply {
                     profileId = team.profileId
@@ -261,40 +268,105 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                     if (profile.userCode == event.sharedBy) {
                         sharedBy = "self"
                         addedManually = true
+                    } else {
+                        sharedBy = eventSharedBy
                     }
                 }
             }
         }
 
-        return eventList
+        notes.forEach { note ->
+            val noteSharedBy = note.sharedBy
+
+            // create the note for every matching team and profile
+            teams.filter { it.code == note.teamCode }.onEach { team ->
+                val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@onEach
+                if (!profile.canShare)
+                    return@forEach
+                note.profileId = team.profileId
+                if (profile.userCode == note.sharedBy) {
+                    note.sharedBy = "self"
+                } else {
+                    note.sharedBy = noteSharedBy
+                }
+
+                if (app.noteManager.hasValidOwner(note))
+                    noteList += note
+            }
+        }
+        return eventList to noteList
     }
 
     @Throws(Exception::class)
     fun shareEvent(event: EventFull) {
+        val profile = app.db.profileDao().getByIdNow(event.profileId)
+            ?: throw NullPointerException("Profile is not found")
         val team = app.db.teamDao().getByIdNow(event.profileId, event.teamId)
+            ?: throw NullPointerException("Team is not found")
 
         val response = api.shareEvent(EventShareRequest(
-                deviceId = app.deviceId,
-                device = getDevice(),
-                sharedByName = event.sharedByName,
-                shareTeamCode = team.code,
-                event = event
+            deviceId = app.deviceId,
+            device = getDevice(),
+            userCode = profile.userCode,
+            studentNameLong = profile.studentNameLong,
+            shareTeamCode = team.code,
+            event = event
         )).execute()
         parseResponse(response, updateDeviceHash = true)
     }
 
     @Throws(Exception::class)
     fun unshareEvent(event: Event) {
+        val profile = app.db.profileDao().getByIdNow(event.profileId)
+            ?: throw NullPointerException("Profile is not found")
         val team = app.db.teamDao().getByIdNow(event.profileId, event.teamId)
+            ?: throw NullPointerException("Team is not found")
 
         val response = api.shareEvent(EventShareRequest(
-                deviceId = app.deviceId,
-                device = getDevice(),
-                sharedByName = event.sharedByName,
-                unshareTeamCode = team.code,
-                eventId = event.id
+            deviceId = app.deviceId,
+            device = getDevice(),
+            userCode = profile.userCode,
+            studentNameLong = profile.studentNameLong,
+            unshareTeamCode = team.code,
+            eventId = event.id
         )).execute()
         parseResponse(response, updateDeviceHash = true)
+    }
+
+    @Throws(Exception::class)
+    fun shareNote(note: Note) {
+        val profile = app.db.profileDao().getByIdNow(note.profileId)
+            ?: throw NullPointerException("Profile is not found")
+        val team = app.db.teamDao().getClassNow(note.profileId)
+            ?: throw NullPointerException("TeamClass is not found")
+
+        val response = api.shareNote(NoteShareRequest(
+            deviceId = app.deviceId,
+            device = getDevice(),
+            userCode = profile.userCode,
+            studentNameLong = profile.studentNameLong,
+            shareTeamCode = team.code,
+            note = note,
+        )).execute()
+        parseResponse(response)
+    }
+
+    @Throws(Exception::class)
+    fun unshareNote(note: Note) {
+        val profile = app.db.profileDao().getByIdNow(note.profileId)
+            ?: throw NullPointerException("Profile is not found")
+        val team = app.db.teamDao().getClassNow(note.profileId)
+            ?: throw NullPointerException("TeamClass is not found")
+
+        val response = api.shareNote(NoteShareRequest(
+            deviceId = app.deviceId,
+            device = getDevice(),
+            userCode = profile.userCode,
+            studentNameLong = profile.studentNameLong,
+            unshareTeamCode = team.code,
+            noteId = note.id,
+        )).execute()
+        parseResponse(response)
     }
 
     /*fun eventEditRequest(requesterName: String, event: Event): ApiResponse<Nothing>? {

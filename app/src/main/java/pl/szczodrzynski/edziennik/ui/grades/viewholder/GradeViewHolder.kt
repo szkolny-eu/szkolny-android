@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.GradesItemGradeBinding
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSubject
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class GradeViewHolder(
@@ -33,20 +34,25 @@ class GradeViewHolder(
         b.gradeName.setGrade(grade, manager, bigView = true)
 
         if (grade.description.isNullOrBlank()) {
-            b.gradeDescription.text = grade.category
+            b.gradeDescription.text =
+                grade.getNoteSubstituteText(adapter.showNotes) ?: grade.category
             b.gradeCategory.text =
                 if (grade.isImprovement)
                     app.getString(R.string.grades_improvement_category_format, "")
                 else
                     ""
         } else {
-            b.gradeDescription.text = grade.description
+            b.gradeDescription.text =
+                grade.getNoteSubstituteText(adapter.showNotes) ?: grade.description
             b.gradeCategory.text =
                 if (grade.isImprovement)
                     app.getString(R.string.grades_improvement_category_format, grade.category)
                 else
                     grade.category
         }
+
+        if (adapter.showNotes)
+            NoteManager.prependIcon(grade, b.gradeDescription)
 
         val weightText = manager.getWeightString(activity, grade, showClassAverage = true)
         b.gradeWeight.text = weightText

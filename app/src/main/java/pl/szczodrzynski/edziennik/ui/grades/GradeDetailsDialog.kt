@@ -15,12 +15,15 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
+import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 
 class GradeDetailsDialog(
     activity: AppCompatActivity,
     private val grade: GradeFull,
+    private val showNotes: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogGradeDetailsBinding>(activity, onShowListener, onDismissListener) {
@@ -71,23 +74,34 @@ class GradeDetailsDialog(
         val historyList = withContext(Dispatchers.Default) {
             app.db.gradeDao().getByParentIdNow(App.profileId, grade.id)
         }
-        if (historyList.isEmpty()) {
-            b.historyVisible = false
-            return
-        }
-        b.historyVisible = true
-        //b.gradeHistoryNest.isNestedScrollingEnabled = false
 
-        b.gradeHistoryList.adapter = GradesAdapter(activity, {
-            GradeDetailsDialog(activity, it).show()
-        }).also {
-            it.items = historyList.toMutableList()
+        historyList.forEach {
+            it.filterNotes()
         }
 
-        b.gradeHistoryList.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(SimpleDividerItemDecoration(context))
+        b.historyVisible = historyList.isNotEmpty()
+        if (historyList.isNotEmpty()) {
+            b.gradeHistoryList.adapter = GradesAdapter(activity, onGradeClick = {
+                GradeDetailsDialog(activity, it).show()
+            }).also {
+                it.items = historyList.toMutableList()
+            }
+
+            b.gradeHistoryList.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(context)
+                addItemDecoration(SimpleDividerItemDecoration(context))
+            }
         }
+
+        b.notesButton.isVisible = showNotes
+        b.notesButton.setupNotesButton(
+            activity = activity,
+            owner = grade,
+            onShowListener = onShowListener,
+            onDismissListener = onDismissListener,
+        )
+        if (showNotes)
+            NoteManager.setLegendText(grade, b.legend)
     }
 }

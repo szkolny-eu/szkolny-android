@@ -6,14 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import pl.szczodrzynski.edziennik.R;
+import pl.szczodrzynski.edziennik.data.db.entity.Note;
+import pl.szczodrzynski.edziennik.data.db.entity.Noteable;
 import pl.szczodrzynski.edziennik.ext.TextExtensionsKt;
 
-public class Date implements Comparable<Date> {
+public class Date implements Comparable<Date>, Noteable {
     public int year = 0;
     public int month = 0;
     public int day = 0;
@@ -373,5 +377,52 @@ public class Date implements Comparable<Date> {
         result = 31 * result + month;
         result = 31 * result + day;
         return result;
+    }
+
+    @NonNull
+    @Override
+    public Note.OwnerType getNoteType() {
+        return Note.OwnerType.DAY;
+    }
+
+    @Override
+    public int getNoteOwnerProfileId() {
+        return 0;
+    }
+
+    @Override
+    public long getNoteOwnerId() {
+        return 0;
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getNoteSubstituteText(boolean showNotes) {
+        return null;
+    }
+
+    @NonNull
+    @Override
+    public List<Note> getNotes() {
+        return new ArrayList();
+    }
+
+    @Override
+    public void setNotes(@NonNull List<Note> notes) {
+    }
+
+    @Override
+    public void filterNotes() {
+        Noteable.DefaultImpls.filterNotes(this);
+    }
+
+    @Override
+    public boolean hasNotes() {
+        return Noteable.DefaultImpls.hasNotes(this);
+    }
+
+    @Override
+    public boolean hasReplacingNotes() {
+        return Noteable.DefaultImpls.hasReplacingNotes(this);
     }
 }

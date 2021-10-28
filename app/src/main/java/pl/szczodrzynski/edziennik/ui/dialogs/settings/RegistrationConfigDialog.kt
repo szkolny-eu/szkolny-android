@@ -19,7 +19,7 @@ import kotlin.coroutines.CoroutineContext
 class RegistrationConfigDialog(
     val activity: AppCompatActivity,
     val profile: Profile,
-    val onChangeListener: ((enabled: Boolean) -> Unit)? = null,
+    val onChangeListener: (suspend (enabled: Boolean) -> Unit)? = null,
     val onShowListener: ((tag: String) -> Unit)? = null,
     val onDismissListener: ((tag: String) -> Unit)? = null
 ) : CoroutineScope {
@@ -53,6 +53,21 @@ class RegistrationConfigDialog(
             .setNegativeButton(R.string.cancel, null)
             .setOnDismissListener {
                 onDismissListener?.invoke(TAG + "EventShare")
+            }
+            .show()
+    }
+
+    fun showNoteShareDialog() {
+        onShowListener?.invoke(TAG + "NoteShare")
+        dialog = MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.registration_config_note_sharing_title)
+            .setMessage(R.string.registration_config_note_sharing_text)
+            .setPositiveButton(R.string.i_agree) { _, _ ->
+                enableRegistration()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .setOnDismissListener {
+                onDismissListener?.invoke(TAG + "NoteShare")
             }
             .show()
     }
