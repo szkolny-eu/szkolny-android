@@ -4,19 +4,23 @@
 
 package pl.szczodrzynski.edziennik.ui.teachers
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.TeacherItemBinding
-import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils.getProfileImage
-import pl.szczodrzynski.edziennik.utils.BetterLink
+import pl.szczodrzynski.edziennik.ext.*
 import kotlin.coroutines.CoroutineContext
 
 class TeachersAdapter(
@@ -36,6 +40,8 @@ class TeachersAdapter(
 
     var items = listOf<Teacher>()
 
+    var subjectList = listOf<Subject>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(activity)
         val view = TeacherItemBinding.inflate(inflater, parent, false)
@@ -47,19 +53,28 @@ class TeachersAdapter(
         val b = holder.b
 
         b.name.text = item.fullName
-        b.image.setImageBitmap(item.image?: getProfileImage(48, 24, 16, 12, 1, item.fullName))
-        var role = item.getTypeText(activity)
-        if (item.subjects.isNotNullNorEmpty()) {
-            val subjects = item.subjects.map { App.db.subjectDao().getByIdNow(App.profileId, it).longName }
-            role = role.plus(": ").plus(subjects.joinToString())
+        b.image.setImageBitmap(item.image)
+        b.type.text = item.getTypeText(activity, subjectList)
+        b.copy.isVisible = true
+        b.copy.onClick {
+            item.fullName.copyToClipboard(activity)
+            Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show()
         }
-        b.type.text = role
+        b.copy.attachToastHint(R.string.copy_to_clipboard)
+        if (item.loginId.isNotNullNorBlank()) {
+            b.sendMessage.isVisible = true
 
-        item.fullName.let { name ->
-            BetterLink.attach(
-                b.name,
-                teachers = mapOf(item.id to name)
-            )
+            b.sendMessage.onClick {
+                val intent = Intent(
+                    Intent.ACTION_MAIN,
+                    "fragmentId" to MainActivity.TARGET_MESSAGES_COMPOSE,
+                    "messageRecipientId" to item.id
+                )
+                activity.sendBroadcast(intent)
+            }
+            b.sendMessage.attachToastHint(R.string.send_message)
+        } else {
+            b.sendMessage.isVisible = false
         }
     }
 

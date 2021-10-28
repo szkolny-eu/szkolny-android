@@ -442,7 +442,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     fun getTeacherByLastFirst(nameLastFirst: String, loginId: String? = null): Teacher {
         // comparing full name is safer than splitting and swapping
         val teacher = teacherList.singleOrNull { it.fullNameLastFirst == nameLastFirst }
-        val nameParts = nameLastFirst.split(" ")
+        val nameParts = nameLastFirst.split(" ", limit = 2)
         return if (nameParts.size == 1)
             validateTeacher(teacher, nameParts[0], "", loginId)
         else
@@ -450,11 +450,13 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     }
 
     fun getTeacherByFirstLast(nameFirstLast: String, loginId: String? = null): Teacher {
-        val nameParts = nameFirstLast.split(" ")
+        // comparing full name is safer than splitting and swapping
+        val teacher = teacherList.singleOrNull { it.fullName == nameFirstLast }
+        val nameParts = nameFirstLast.split(" ", limit = 2)
         return if (nameParts.size == 1)
-            getTeacher(nameParts[0], "", loginId)
+            validateTeacher(teacher, nameParts[0], "", loginId)
         else
-            getTeacher(nameParts[0], nameParts[1], loginId)
+            validateTeacher(teacher, nameParts[0], nameParts[1], loginId)
     }
 
     fun getTeacherByFDotLast(nameFDotLast: String, loginId: String? = null): Teacher {

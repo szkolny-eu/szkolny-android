@@ -36,4 +36,8 @@ class QrScannerDialog(
         }
         root.startCamera()
     }
+
+    override fun onDismiss() {
+        root.stopCamera()
+    }
 }

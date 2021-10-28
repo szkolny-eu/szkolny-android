@@ -206,7 +206,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 .isInDrawer(true)
 
             list += NavTarget(DRAWER_ITEM_MORE, R.string.menu_more, null)
-                .withIcon(CommunityMaterial.Icon.cmd_dots_horizontal_circle_outline)
+                .withIcon(CommunityMaterial.Icon.cmd_dots_horizontal)
                 .isInDrawer(true)
                 .isStatic(true)
                 .withSubItems(*moreList.toTypedArray())

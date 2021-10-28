@@ -1498,6 +1498,8 @@
     <string name="login_mobidziennik_server_prefix">https://</string>
     <string name="login_mobidziennik_server_suffix">.mobidziennik.pl/</string>
     <string name="styled_text_dialog_title">Edytuj tekst</string>
+    <string name="send_message">Wyślij wiadomość</string>
+    <string name="login_qr_decoding_error">Kod QR nie wygląda na prawidłowy</string>
     <string name="notes_list_dialog_title">Notatki</string>
     <string name="notes_button">Notatki</string>
     <string name="notes_no_data">Nie dodano żadnych notatek</string>

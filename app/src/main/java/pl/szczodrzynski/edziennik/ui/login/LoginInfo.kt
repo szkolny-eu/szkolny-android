@@ -11,6 +11,9 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.ui.grades.models.ExpandableItemModel
+import pl.szczodrzynski.edziennik.ui.login.qr.LoginLibrusQrDecoder
+import pl.szczodrzynski.edziennik.ui.login.qr.LoginQrDecoder
+import pl.szczodrzynski.edziennik.ui.login.qr.LoginVulcanQrDecoder
 import pl.szczodrzynski.fslogin.realm.RealmData
 
 object LoginInfo {
@@ -105,7 +108,8 @@ object LoginInfo {
                                 errorCodes = mapOf(),
                                 isRequired = true,
                                 validationRegex = "[A-Z0-9_]+",
-                                caseMode = FormField.CaseMode.UPPER_CASE
+                                caseMode = FormField.CaseMode.UPPER_CASE,
+                                qrDecoderClass = LoginLibrusQrDecoder::class.java
                             ),
                             FormField(
                                 keyName = "accountPin",
@@ -152,7 +156,8 @@ object LoginInfo {
                                 ),
                                 isRequired = true,
                                 validationRegex = "[A-Z0-9]{5,12}",
-                                caseMode = FormField.CaseMode.UPPER_CASE
+                                caseMode = FormField.CaseMode.UPPER_CASE,
+                                qrDecoderClass = LoginVulcanQrDecoder::class.java
                             ),
                             FormField(
                                 keyName = "symbol",
@@ -409,7 +414,8 @@ object LoginInfo {
         val caseMode: CaseMode = CaseMode.UNCHANGED,
         val hideText: Boolean = false,
         val isNumber: Boolean = false,
-        val stripTextRegex: String? = null
+        val stripTextRegex: String? = null,
+        val qrDecoderClass: Class<out LoginQrDecoder>? = null,
     ) : BaseCredential(keyName, name, errorCodes) {
         enum class CaseMode { UNCHANGED, UPPER_CASE, LOWER_CASE }
     }
