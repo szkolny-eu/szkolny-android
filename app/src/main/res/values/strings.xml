@@ -1545,4 +1545,6 @@
     <string name="color_brown">Brązowy</string>
     <string name="color_grey">Szary</string>
     <string name="color_black">Czarny</string>
+    <string name="card_type_notes">Notatki</string>
+    <string name="card_notes_header_title">Najnowsze notatki</string>
 </resources>

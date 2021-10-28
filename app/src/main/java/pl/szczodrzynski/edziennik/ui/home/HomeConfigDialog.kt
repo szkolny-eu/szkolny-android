@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_EVENTS
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_GRADES
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_LUCKY_NUMBER
+import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_NOTES
 import pl.szczodrzynski.edziennik.ui.home.HomeCard.Companion.CARD_TIMETABLE
 
 class HomeConfigDialog(
@@ -32,6 +33,7 @@ class HomeConfigDialog(
         R.string.card_type_timetable to CARD_TIMETABLE,
         R.string.card_type_grades to CARD_GRADES,
         R.string.card_type_events to CARD_EVENTS,
+        R.string.card_type_notes to CARD_NOTES,
     ).mapKeys { (resId, _) -> activity.getString(resId) }
 
     override fun getDefaultSelectedItems() =

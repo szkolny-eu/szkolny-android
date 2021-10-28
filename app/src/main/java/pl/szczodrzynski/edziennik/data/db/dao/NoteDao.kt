@@ -37,4 +37,7 @@ interface NoteDao {
 
     @Query("SELECT * FROM notes WHERE profileId = :profileId AND noteOwnerType = :ownerType AND noteOwnerId = :ownerId $ORDER_BY")
     fun getAllFor(profileId: Int, ownerType: Note.OwnerType, ownerId: Long): LiveData<List<Note>>
+
+    @Query("SELECT * FROM notes WHERE profileId = :profileId AND noteOwnerType IS NULL $ORDER_BY")
+    fun getAllNoOwner(profileId: Int): LiveData<List<Note>>
 }

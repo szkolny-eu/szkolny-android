@@ -144,7 +144,8 @@ class HomeFragment : Fragment(), CoroutineScope {
                     HomeCardModel(app.profile.id, HomeCard.CARD_LUCKY_NUMBER),
                     HomeCardModel(app.profile.id, HomeCard.CARD_TIMETABLE),
                     HomeCardModel(app.profile.id, HomeCard.CARD_EVENTS),
-                    HomeCardModel(app.profile.id, HomeCard.CARD_GRADES)
+                    HomeCardModel(app.profile.id, HomeCard.CARD_GRADES),
+                    HomeCardModel(app.profile.id, HomeCard.CARD_NOTES),
             )
             app.config.forProfile().ui.homeCards = app.config.forProfile().ui.homeCards.toMutableList().also { it.addAll(cards) }
         }
@@ -157,6 +158,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                 HomeCard.CARD_TIMETABLE -> HomeTimetableCard(it.cardId, app, activity, this, app.profile)
                 HomeCard.CARD_GRADES -> HomeGradesCard(it.cardId, app, activity, this, app.profile)
                 HomeCard.CARD_EVENTS -> HomeEventsCard(it.cardId, app, activity, this, app.profile)
+                HomeCard.CARD_NOTES -> HomeNotesCard(it.cardId, app, activity, this, app.profile)
                 else -> null
             } as HomeCard?
         }
