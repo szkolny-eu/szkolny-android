@@ -59,20 +59,8 @@ fun SparseIntArray.values(): List<Int> {
     return result
 }
 
-fun <K, V> List<Pair<K, V>>.keys(): List<K> {
-    val result = mutableListOf<K>()
-    forEach { pair ->
-        result += pair.first
-    }
-    return result
-}
-fun <K, V> List<Pair<K, V>>.values(): List<V> {
-    val result = mutableListOf<V>()
-    forEach { pair ->
-        result += pair.second
-    }
-    return result
-}
+fun <K, V> List<Pair<K, V>>.keys() = map { it.first }
+fun <K, V> List<Pair<K, V>>.values() = map { it.second }
 
 fun <T> List<T>.toSparseArray(destination: SparseArray<T>, key: (T) -> Int) {
     forEach {
