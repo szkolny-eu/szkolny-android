@@ -56,7 +56,7 @@ android {
     flavorDimensions "platform"
     productFlavors {
         main {
-            versionName gitInfo.versionHuman
+            versionName "${release.versionName}-${gitInfo.versionSuffix}"
         }
         official {}
         play {}
