@@ -101,6 +101,7 @@ class GradeDetailsDialog(
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
+        b.legend.isVisible = showNotes
         if (showNotes)
             NoteManager.setLegendText(grade, b.legend)
     }

@@ -60,6 +60,7 @@ class AttendanceDetailsDialog(
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
+        b.legend.isVisible = showNotes
         if (showNotes)
             NoteManager.setLegendText(attendance, b.legend)
     }

@@ -38,7 +38,7 @@ class DayDialog(
     private val profileId: Int,
     private val date: Date,
     private val eventTypeId: Long? = null,
-    private val showNotes: Boolean = true,
+    private val showNotes: Boolean = false,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<DialogDayBinding>(activity, onShowListener, onDismissListener) {
@@ -212,6 +212,7 @@ class DayDialog(
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
+        b.legend.isVisible = showNotes
         if (showNotes)
             NoteManager.setLegendText(date, b.legend)
     }

@@ -259,6 +259,7 @@ class LessonDetailsDialog(
             onShowListener = onShowListener,
             onDismissListener = onDismissListener,
         )
+        b.legend.isVisible = showNotes
         if (showNotes)
             NoteManager.setLegendText(lesson, b.legend)
     }
