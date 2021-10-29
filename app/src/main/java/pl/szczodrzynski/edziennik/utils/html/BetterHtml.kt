@@ -47,7 +47,11 @@ object BetterHtml {
         var text = html
             .replace("\\[META:[A-z0-9]+;[0-9-]+]".toRegex(), "")
             .replace("background-color: ?$hexPattern;".toRegex(), "")
+            // treat paragraphs as if they had no margin
+            .replace("<p", "<span")
+            .replace("</p>", "</span><br>")
 
+        // this is used only in Notes and Events
         if (nl2br) {
             text = text.replace("\n", "<br>")
         }

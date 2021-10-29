@@ -200,13 +200,16 @@ class TextStylingManager(private val app: App) {
 
         if (htmlMode == COMPATIBLE) {
             textHtml = textHtml
-                .replace("<br>", "<p>&nbsp;</p>")
+                .substringBeforeLast("</p>")
+                .replace("<p>", "")
+                .replace("</p>", "<br>")
                 .replace("<b>", "<strong>")
                 .replace("</b>", "</strong>")
                 .replace("<i>", "<em>")
                 .replace("</i>", "</em>")
                 .replace("<u>", "<span style=\"text-decoration: underline;\">")
                 .replace("</u>", "</span>")
+            textHtml = "<p>$textHtml</p>"
         }
 
         return textHtml
