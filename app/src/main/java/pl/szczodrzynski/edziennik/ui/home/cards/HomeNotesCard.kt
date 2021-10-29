@@ -114,7 +114,7 @@ class HomeNotesCard(
         b.addNote.onClick(this@HomeNotesCard::onNoteAddClick)
 
         holder.root.onClick {
-            activity.loadTarget(MainActivity.DRAWER_ITEM_AGENDA)
+            activity.loadTarget(MainActivity.DRAWER_ITEM_NOTES)
         }
     }}
 
