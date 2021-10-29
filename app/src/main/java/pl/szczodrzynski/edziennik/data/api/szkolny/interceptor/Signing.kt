@@ -39,7 +39,7 @@ object Signing {
     val appPassword by lazy {
         iLoveApple(
                 "ThisIsOurHardWorkPleaseDoNotCopyOrSteal(c)2019.KubaSz".sha256(),
-                BuildConfig.VERSION_NAME.substringBeforeLast('+'),
+                BuildConfig.VERSION_BASE.substringBeforeLast('+'),
                 BuildConfig.VERSION_CODE.toLong()
         )
     }
