@@ -25,6 +25,7 @@
 -keep class pl.szczodrzynski.edziennik.data.db.entity.Event { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.full.EventFull { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage { *; }
+-keep class pl.szczodrzynski.edziennik.data.db.entity.Note { *; }
 -keep class pl.szczodrzynski.edziennik.ui.home.HomeCardModel { *; }
 -keepclassmembers class pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig { public *; }
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider
