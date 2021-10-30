@@ -151,6 +151,15 @@ class VulcanHebeMain(
                     studentData["senderAddressName"] = senderAddressName
                     studentData["senderAddressHash"] = senderAddressHash
                     studentData["hebeContext"] = hebeContext
+
+                    // create the default TeamClass
+                    data.getTeam(
+                        id = null,
+                        name = studentClassName,
+                        schoolCode = schoolCode,
+                        isTeamClass = true,
+                        profileId = this.id,
+                    )
                 }
                 dateSemester1Start?.let {
                     newProfile.dateSemester1Start = it

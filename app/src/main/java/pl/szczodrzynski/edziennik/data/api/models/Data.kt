@@ -406,7 +406,13 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         return subject
     }
 
-    fun getTeam(id: Long?, name: String, schoolCode: String, isTeamClass: Boolean = false): Team {
+    fun getTeam(
+        id: Long?,
+        name: String,
+        schoolCode: String,
+        isTeamClass: Boolean = false,
+        profileId: Int? = null,
+    ): Team {
         if (isTeamClass && teamClass != null)
             return teamClass as Team
         var team = teamList.singleOrNull { it.id == id }
@@ -417,7 +423,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
 
         if (team == null) {
             team = Team(
-                profileId,
+                profileId ?: this.profileId,
                 id ?: name.crc32(),
                 name,
                 if (isTeamClass) Team.TYPE_CLASS else Team.TYPE_VIRTUAL,
@@ -425,6 +431,8 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
                 -1
             )
             teamList[team.id] = team
+        } else if (id != null) {
+            team.id = id
         }
         return team
     }
