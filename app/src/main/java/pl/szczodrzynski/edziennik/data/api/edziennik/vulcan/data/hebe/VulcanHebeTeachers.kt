@@ -27,7 +27,7 @@ class VulcanHebeTeachers(
             TAG,
             VULCAN_HEBE_ENDPOINT_TEACHERS,
             HebeFilterType.BY_PERIOD,
-            lastSync = lastSync,
+            lastSync = 0L,
         ) { list, _ ->
             list.forEach { person ->
                 val name = person.getString("Name")
