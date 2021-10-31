@@ -137,31 +137,6 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     }
                 }
 
-                data.webPermissions = data.webPermissions.toMutableMap().also { map ->
-                    val permissions = Regexes.VULCAN_WEB_PERMISSIONS.find(text)?.let { it[1] }
-                    if (permissions?.isNotBlank() == true) {
-                        val studentId = permissions.split("|")
-                            .getOrNull(0)
-                            ?.base64DecodeToString()
-                            ?.toJsonObject()
-                            ?.getJsonArray("AuthInfos")
-                            ?.asJsonObjectList()
-                            ?.flatMap { authInfo ->
-                                authInfo.getJsonArray("UczenIds")
-                                    ?.map { it.asInt }
-                                    ?: listOf()
-                            }
-                            ?.firstOrNull()
-                            ?.toString()
-                        data.app.cookieJar.set(
-                            data.webHost ?: "vulcan.net.pl",
-                            "idBiezacyUczen",
-                            studentId
-                        )
-                    }
-                    map[symbol] = permissions
-                }
-
                 val schoolSymbols = mutableListOf<String>()
                 val clientUrl = "://uonetplus-uczen.${data.webHost}/$symbol/"
                 var clientIndex = text.indexOf(clientUrl)
@@ -184,6 +159,42 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                             .withResponse(response)
                             .withApiResponse(text))
                     return
+                }
+
+                data.webPermissions = data.webPermissions.toMutableMap().also { map ->
+                    val permissions = Regexes.VULCAN_WEB_PERMISSIONS.find(text)?.let { it[1] }
+                    if (permissions?.isNotBlank() == true) {
+                        val json = permissions.split("|")
+                            .getOrNull(0)
+                            ?.base64DecodeToString()
+                            ?.toJsonObject()
+                        val unitIds = json
+                            ?.getJsonArray("Units")
+                            ?.asJsonObjectList()
+                            ?.filter { unit ->
+                                unit.getString("Symbol") in schoolSymbols
+                            }
+                            ?.mapNotNull { it.getInt("Id") } ?: emptyList()
+                        val studentId = json
+                            ?.getJsonArray("AuthInfos")
+                            ?.asJsonObjectList()
+                            ?.filter { authInfo ->
+                                authInfo.getInt("JednostkaSprawozdawczaId") in unitIds
+                            }
+                            ?.flatMap { authInfo ->
+                                authInfo.getJsonArray("UczenIds")
+                                    ?.map { it.asInt }
+                                    ?: listOf()
+                            }
+                            ?.firstOrNull()
+                            ?.toString()
+                        data.app.cookieJar.set(
+                            data.webHost ?: "vulcan.net.pl",
+                            "idBiezacyUczen",
+                            studentId
+                        )
+                    }
+                    map[symbol] = permissions
                 }
 
                 onSuccess(text, schoolSymbols)
