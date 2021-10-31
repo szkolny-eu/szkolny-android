@@ -297,17 +297,17 @@
     <string name="error_161_reason">Inny błąd Portalu LIBRUS®</string>
     <string name="error_162_reason">Nie znaleziono konta Synergia. Zaloguj się na stronie portal.librus.pl, a następnie powiąż swoje konto Synergia do konta LIBRUS® Portal.</string>
     <string name="error_163_reason">Inny błąd logowania do Portalu LIBRUS®</string>
-    <string name="error_164_reason" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED</string>
-    <string name="error_165_reason" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_CODE_REVOKED</string>
-    <string name="error_166_reason" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_NO_CLIENT_ID</string>
-    <string name="error_167_reason" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_NO_CODE</string>
-    <string name="error_168_reason" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_NO_REFRESH</string>
-    <string name="error_169_reason" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_NO_REDIRECT</string>
-    <string name="error_170_reason" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_UNSUPPORTED_GRANT</string>
+    <string name="error_164_reason">ERROR_LOGIN_LIBRUS_PORTAL_CODE_EXPIRED</string>
+    <string name="error_165_reason">ERROR_LOGIN_LIBRUS_PORTAL_CODE_REVOKED</string>
+    <string name="error_166_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_CLIENT_ID</string>
+    <string name="error_167_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_CODE</string>
+    <string name="error_168_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_REFRESH</string>
+    <string name="error_169_reason">ERROR_LOGIN_LIBRUS_PORTAL_NO_REDIRECT</string>
+    <string name="error_170_reason">ERROR_LOGIN_LIBRUS_PORTAL_UNSUPPORTED_GRANT</string>
     <string name="error_171_reason">Błędne ID klienta. Zgłoś błąd programiście oraz zaktualizuj aplikację.</string>
-    <string name="error_172_reason" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_INVALID</string>
-    <string name="error_173_reason" translatable="false">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_REVOKED</string>
-    <string name="error_174_reason" translatable="false">ERROR_LIBRUS_SYNERGIA_OTHER</string>
+    <string name="error_172_reason">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_INVALID</string>
+    <string name="error_173_reason">ERROR_LOGIN_LIBRUS_PORTAL_REFRESH_REVOKED</string>
+    <string name="error_174_reason">ERROR_LIBRUS_SYNERGIA_OTHER</string>
     <string name="error_175_reason">LIBRUS® Synergia: przerwa techniczna</string>
     <string name="error_176_reason">LIBRUS® Wiadomości: przerwa techniczna</string>
     <string name="error_177_reason">LIBRUS® Wiadomości: serwer zwrócił błąd. Prześlij zgłoszenie błędu.</string>
@@ -376,28 +376,28 @@
 
     <string name="error_601_reason">Nieprawidłowy token</string>
     <string name="error_602_reason">Przekroczono maksymalną liczbę urządzeń (5)</string>
-    <string name="error_630_reason" translatable="false">ERROR_PODLASIE_API_NO_TOKEN</string>
-    <string name="error_631_reason" translatable="false">ERROR_PODLASIE_API_OTHER</string>
+    <string name="error_630_reason">ERROR_PODLASIE_API_NO_TOKEN</string>
+    <string name="error_631_reason">ERROR_PODLASIE_API_OTHER</string>
     <string name="error_632_reason">Brak danych. Zgłoś błąd programiście.</string>
 
-    <string name="error_801_reason" translatable="false">ERROR_TEMPLATE_WEB_OTHER</string>
+    <string name="error_801_reason">ERROR_TEMPLATE_WEB_OTHER</string>
 
-    <string name="error_900_reason" translatable="false">Błąd synchronizacji. Upewnij się, że masz połączenie z internetem, a następnie zgłoś błąd.</string>
-    <string name="error_901_reason" translatable="false">EXCEPTION_LOGIN_LIBRUS_API_TOKEN</string>
-    <string name="error_902_reason" translatable="false">EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN</string>
-    <string name="error_903_reason" translatable="false">EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN</string>
+    <string name="error_900_reason">Błąd synchronizacji. Upewnij się, że masz połączenie z internetem, a następnie zgłoś błąd.</string>
+    <string name="error_901_reason">EXCEPTION_LOGIN_LIBRUS_API_TOKEN</string>
+    <string name="error_902_reason">EXCEPTION_LOGIN_LIBRUS_PORTAL_TOKEN</string>
+    <string name="error_903_reason">EXCEPTION_LIBRUS_PORTAL_SYNERGIA_TOKEN</string>
     <string name="error_904_reason">Zgłoś błąd: wyjątek w API LIBRUS®</string>
-    <string name="error_905_reason" translatable="false">EXCEPTION_LIBRUS_SYNERGIA_REQUEST</string>
-    <string name="error_906_reason" translatable="false">EXCEPTION_MOBIDZIENNIK_WEB_REQUEST</string>
-    <string name="error_908_reason" translatable="false">EXCEPTION_MOBIDZIENNIK_WEB_FILE_REQUEST</string>
-    <string name="error_909_reason" translatable="false">EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST</string>
-    <string name="error_910_reason" translatable="false">EXCEPTION_NOTIFY</string>
+    <string name="error_905_reason">EXCEPTION_LIBRUS_SYNERGIA_REQUEST</string>
+    <string name="error_906_reason">EXCEPTION_MOBIDZIENNIK_WEB_REQUEST</string>
+    <string name="error_908_reason">EXCEPTION_MOBIDZIENNIK_WEB_FILE_REQUEST</string>
+    <string name="error_909_reason">EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST</string>
+    <string name="error_910_reason">EXCEPTION_NOTIFY</string>
     <string name="error_911_reason">Zgłoś błąd: pobieranie wiadomości LIBRUS®</string>
     <string name="error_920_reason">Wystąpił błąd</string>
     <string name="error_921_reason">Wystąpił błąd podczas pobierania pliku</string>
     <string name="error_930_reason">Nie udało się pobrać pliku z OneDrive</string>
-    <string name="error_931_reason" translatable="false">EXCEPTION_VULCAN_WEB_LOGIN</string>
-    <string name="error_932_reason" translatable="false">EXCEPTION_VULCAN_WEB_REQUEST</string>
+    <string name="error_931_reason">EXCEPTION_VULCAN_WEB_LOGIN</string>
+    <string name="error_932_reason">EXCEPTION_VULCAN_WEB_REQUEST</string>
     <string name="error_940_reason">Zgłoś błąd: wyjątek w API PPE</string>
 
     <string name="error_1201_reason">Nie podano parametrów</string>

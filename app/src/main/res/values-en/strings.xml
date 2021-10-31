@@ -1395,13 +1395,6 @@
     <string name="color_red">Red</string>
     <string name="notes_action_add">Add note</string>
     <string name="notes_type_grade">Grade</string>
-    <string name="error_62_reason">No internet connection</string>
-    <string name="error_5003_reason">API is unavailable</string>
-    <string name="error_301_reason">Incorrect symbol</string>
-    <string name="error_302_reason">Incorrect token</string>
-    <string name="error_920_reason">An error occured</string>
-    <string name="error_930_reason">Failed to download file from OneDrive</string>
-    <string name="error_904_reason">Report Error: Exception in API LIBRUS®</string>
     <string name="privacy_policy_dialog_html"><![CDATA[By using the application, you confirm that you have <a href="https://szkolny.eu/privacy-policy">read the Privacy Policy</a> and accept its provisions.<br /><br />The authors of the application are not responsible for the use of the Szkolny.eu application.]]></string>
     <string name="login_chooser_version_format">Szkolny.eu v%s %s</string>
     <string name="agenda_config_appearance">Appearance</string>
@@ -1433,7 +1426,7 @@
     <string name="legend_notes_added">{cmd-playlist-edit} notes added</string>
     <string name="legend_notes_added_replaced">{cmd-playlist-edit} notes added\n{cmd-swap-horizontal} text replaced with a note</string>
     <string name="notes_no_data">No notes added yet</string>
-    <string name="messages_compose_discard_draft_text">Do you want to discard the saved version of the message? This will also cancel your changes and delete your message.</string>
+    <string name="messages_compose_discard_draft_text">Do you want to discard the saved version of the message?\n\nThis will also cancel your changes and delete your message.</string>
     <string name="messages_compose_discard_draft">Discard draft</string>
     <string name="messages_compose_draft_discarded">Draft message deleted</string>
     <string name="messages_compose_discard_draft_title">Discard draft</string>
@@ -1458,25 +1451,4 @@
     <string name="dialog_lesson_attendance_details">Details</string>
     <string name="menu_agenda_config">Agenda settings</string>
     <string name="registration_config_note_sharing_title">Share notes</string>
-    <string name="error_940_reason">Report Error: Exception in the PPE API</string>
-    <string name="error_1201_reason">No parameters were given</string>
-    <string name="error_911_reason">Report error: LIBRUS® messages download</string>
-    <string name="error_921_reason">There was an error downloading the file</string>
-    <string name="error_632_reason">No data. Report that error to the developer.</string>
-    <string name="error_363_reason">VULCAN®: device removed. Log in to the e-journal again.</string>
-    <string name="error_181_reason">LIBRUS® API: maintenance break</string>
-    <string name="error_182_reason">LIBRUS® Portal: maintenance break</string>
-    <string name="error_1_reason">The application has stopped working</string>
-    <string name="error_10_reason">Failed to send the message: The new message was not found in the sent messages list</string>
-    <string name="error_112_reason">Not implemented</string>
-    <string name="error_102_reason">Invalid login details</string>
-    <string name="error_101_reason">Incomplete login details. Contact the app developer.</string>
-    <string name="error_5006_reason">Szkolny.eu API server error</string>
-    <string name="error_145_reason">No data</string>
-    <string name="error_150_reason">Lucky Number is not active</string>
-    <string name="error_162_reason">Synergy account not found. Log in to portal.librus.pl, and then link your Synergia account to the LIBRUS® Portal account.</string>
-    <string name="error_178_reason">LIBRUS® Messages: The server returned an unknown error. Send a bug report.</string>
-    <string name="error_177_reason">LIBRUS® Messages: the server returned an error. Submit a bug report.</string>
-    <string name="error_171_reason">Invalid client ID. Report an error to the developer and update the application.</string>
-    <string name="error_501_reason">Invalid email or password</string>
 </resources>
