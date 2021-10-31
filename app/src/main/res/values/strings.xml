@@ -1547,6 +1547,6 @@
     <string name="color_black">Czarny</string>
     <string name="card_type_notes">Notatki</string>
     <string name="card_notes_header_title">Najnowsze notatki</string>
-    <string name="login_summary_account_child">(Dziecko)</string>
-    <string name="login_summary_account_parent">(Rodzic)</string>
+    <string name="login_summary_account_child">(uczeń)</string>
+    <string name="login_summary_account_parent">(rodzic)</string>
 </resources>
