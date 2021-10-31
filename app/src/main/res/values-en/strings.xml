@@ -1287,7 +1287,7 @@
     <string name="attendance_details_time">Time</string>
     <string name="settings_about_github_subtext">Help with app development on GitHub</string>
     <string name="build_platform">Distribution</string>
-    <string name="build_validate_progress">Build verification in progress...</string>
+    <string name="build_validate_progress">Build verification in progress…</string>
     <string name="attendance_tab_months">By months</string>
     <string name="attendance_tab_summary">Summary</string>
     <string name="attendance_details_type">Type</string>
@@ -1307,7 +1307,7 @@
     <string name="settings_about_homepage_subtext">Get help or support authors</string>
     <string name="build_invalid_title">Information about application version</string>
     <string name="home_archive_close_no_target_title">No current profile</string>
-    <string name="login_platform_list_loading">Loading e-registers list...</string>
+    <string name="login_platform_list_loading">Loading e-registers list…</string>
     <string name="login_mode_podlasie_api">Log in using token</string>
     <string name="login_mode_podlasie_api_guide">Provide mobile app token.</string>
     <string name="attendance_config_title">Attendance configuration</string>
@@ -1321,10 +1321,10 @@
     <string name="login_mode_vulcan_api">Use token, symbol and PIN code</string>
     <string name="login_mode_vulcan_api_hint">Register device on journal VULCAN® page</string>
     <string name="login_mode_vulcan_web">Use e-mail/username and password</string>
-    <string name="edziennik_progress_login_podlasie_api">Logging in to PPE...</string>
+    <string name="edziennik_progress_login_podlasie_api">Logging in to PPE…</string>
     <string name="login_type_podlasie">Podlaska Platforma Edukacyjna</string>
     <string name="login_mode_edudziennik_web">Log in using e-mail and password</string>
-    <string name="edziennik_progress_login_vulcan_web_main">Logging in to VULCAN® register...</string>
+    <string name="edziennik_progress_login_vulcan_web_main">Logging in to VULCAN® register…</string>
     <string name="login_mode_librus_jst">Login via VULCAN® platform</string>
     <string name="login_mode_librus_email">Log in using e-mail</string>
     <string name="attendance_details_id">Attendance ID</string>
@@ -1438,9 +1438,9 @@
     <string name="notes_editor_body_error">Enter the note text</string>
     <string name="color_none">None</string>
     <string name="notification_type_new_shared_note">Note shared</string>
-    <string name="notes_editor_confirmation_text">Do you want to delete this note?\n\nIt will be deleted on your device and on classmates' devices.</string>
-    <string name="notes_editor_progress_unsharing">Deleting shared note...</string>
-    <string name="notes_editor_progress_sharing">Sharing the note...</string>
+    <string name="notes_editor_confirmation_text">Do you want to delete this note?\n\nIt will be deleted on your device and on classmates\' devices.</string>
+    <string name="notes_editor_progress_unsharing">Deleting shared note…</string>
+    <string name="notes_editor_progress_sharing">Sharing the note…</string>
     <string name="notes_editor_replace_text">Replace original content</string>
     <string name="card_notes_header_title">Newest notes</string>
     <string name="messages_compose_save_draft_title">Save changes</string>
