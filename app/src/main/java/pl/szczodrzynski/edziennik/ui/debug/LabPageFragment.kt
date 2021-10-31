@@ -9,7 +9,10 @@ import android.os.Process
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.chuckerteam.chucker.api.Chucker
+import com.chuckerteam.chucker.api.Chucker.SCREEN_HTTP
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -93,6 +96,13 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
                 }
                 .setCancelable(false)
                 .show()
+        }
+
+        if (App.enableChucker) {
+            b.openChucker.isVisible = true
+            b.openChucker.onClick {
+                startActivity(Chucker.getLaunchIntent(activity, SCREEN_HTTP))
+            }
         }
 
         b.disableDebug.onClick {

@@ -48,6 +48,15 @@
                 android:text="Chucker" />
 
             <Button
+                android:id="@+id/openChucker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Open Chucker"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <Button
                 android:id="@+id/last10unseen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
