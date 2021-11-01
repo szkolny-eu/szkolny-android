@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_TEACHER_FREE_DAY_TYPES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsenceType
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusApiTeacherFreeDayTypes(override val data: DataLibrus,
                                    override val lastSync: Long?,

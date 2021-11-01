@@ -97,18 +97,17 @@ private def buildGitInfo() {
     def tag = getLastTag(repo, git, head)
     def tagName = tag[1]
     def tagRevCount = tag[2]
-    def versionName = tagName.replace("v", "")
 
     def result = [
-            hash        : head.objectId.name,
-            branch      : repo.branch,
-            dirty       : dirty,
-            remotes     : remotes,
-            unstaged    : status.uncommittedChanges.join("; "),
-            tag         : tagName,
-            revCount    : tagRevCount,
-            version     : """$tagName-$tagRevCount-g${head.objectId.name.substring(0, 8)}""" + (dirty ? ".dirty" : ""),
-            versionHuman: """$versionName-${repo.branch.replace("/", "_")}""" + (dirty ? ".dirty" : "")
+            hash            : head.objectId.name,
+            branch          : repo.branch,
+            dirty           : dirty,
+            remotes         : remotes,
+            unstaged        : status.uncommittedChanges.join("; "),
+            tag             : tagName,
+            revCount        : tagRevCount,
+            version         : """$tagName-$tagRevCount-g${head.objectId.name.substring(0, 8)}""" + (dirty ? ".dirty" : ""),
+            versionSuffix   : """${repo.branch.replace("/", "_")}""" + (dirty ? ".dirty" : "")
     ]
     return result
 }

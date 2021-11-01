@@ -10,7 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.EdudziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
-import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.ext.get
 
 class EdudziennikWebGetAnnouncement(override val data: DataEdudziennik,
                                     private val announcement: AnnouncementFull,

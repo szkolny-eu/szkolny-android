@@ -301,6 +301,7 @@
     <string name="edziennik_notification_api_text">Dzięki niej, aplikacja Szkolny.eu może synchronizować dane z e-dziennikiem. Możesz ją zamknąć, ponieważ w tej chwili nic nie robi.</string>
     <string name="edziennik_notification_api_title">Usługa synchronizacji</string>
     <string name="edziennik_progress_endpoint_account_details">Pobieranie szczegółów konta…</string>
+    <string name="edziennik_progress_endpoint_addressbook">Pobieranie listy odbiorców…</string>
     <string name="edziennik_progress_endpoint_announcements">Pobieranie ogłoszeń szkolnych…</string>
     <string name="edziennik_progress_endpoint_attendance">Pobieranie frekwencji ucznia…</string>
     <string name="edziennik_progress_endpoint_attendance_types">Pobieranie kategorii obecności…</string>
@@ -708,6 +709,7 @@
     <string name="menu_message">Wiadomość</string>
     <string name="menu_message_compose">Napisz wiadomość</string>
     <string name="menu_messages">Wiadomości</string>
+    <string name="menu_more">Więcej</string>
     <string name="menu_notices">Zachowanie</string>
     <string name="menu_notifications">Powiadomienia</string>
     <string name="menu_remove_notifications">Usuń wszystkie</string>
@@ -716,6 +718,7 @@
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_sync">Synchronizuj</string>
     <string name="menu_sync_all">Synchronizuj wszystkie</string>
+    <string name="menu_teachers">Nauczyciele</string>
     <string name="menu_template">Szablon</string>
     <string name="menu_timetable">Plan lekcji</string>
     <string name="menu_timetable_manual">Edytor planu lekcji</string>
@@ -730,7 +733,7 @@
     <string name="messages_compose_confirm_title">Potwierdź wysłanie wiadomości</string>
     <string name="messages_compose_menu_attachment">Dodaj załącznik</string>
     <string name="messages_compose_menu_discard">Odrzuć wiadomość</string>
-    <string name="messages_compose_menu_save_draft">Zapisz wersję roboczą</string>
+    <string name="messages_compose_save_draft">Zapisz wersję roboczą</string>
     <string name="messages_compose_menu_send">Wyślij</string>
     <string name="messages_compose_recipient_exists">Ten odbiorca został już wybrany</string>
     <string name="messages_compose_recipients_empty">Wybierz odbiorców</string>
@@ -744,7 +747,7 @@
     <string name="messages_compose_text_hint">Napisz wiadomość…</string>
     <string name="messages_compose_title">Napisz wiadomość</string>
     <string name="messages_compose_to_hint">Do</string>
-    <string name="messages_date_time_format" translatable="false">%s, %s</string>
+    <string name="messages_date_time_format" translatable="false">%s\n%s</string>
     <string name="messages_delete_confirmation">Czy chcesz usunąć wiadomość?</string>
     <string name="messages_delete_confirmation_text">Spowoduje to przeniesienie wiadomości do zakładki \"Usunięte\" w aplikacji. Zmiany nie wpłyną na wiadomość w e-dzienniku (nie zostanie ona tam usunięta).</string>
     <string name="messages_download_error">Błąd pobierania wiadomości</string>
@@ -898,7 +901,9 @@
     <string name="registration_config_enable_progress_text">Pobieranie udostępnionych wydarzeń…</string>
     <string name="registration_config_enable_text">Rejestracja jest automatyczna, jeśli ta opcja jest włączona. Pozwala na tworzenie i odbieranie wydarzeń udostępnionych innym uczniom z Twojej klasy. Dzięki temu, można dodawać do dziennika pozycje nie zapisane przez nauczyciela.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
     <string name="registration_config_event_sharing_text">Aby móc udostępnić wydarzenie, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie wydarzeń udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
+    <string name="registration_config_note_sharing_text">Aby móc udostępnić notatkę, należy włączyć opcję rejestracji na serwerze. Pozwala to na tworzenie i odbieranie notatek udostępnionych w Twojej klasie.\n\nPo kliknięciu OK zostanie ona automatycznie włączona.\n\nKontynuując, oświadczasz przeczytanie i akceptację postanowień <a href="https://szkolny.eu/privacy-policy">Polityki prywatności</a>.</string>
     <string name="registration_config_event_sharing_title">Udostępnianie wydarzeń</string>
+    <string name="registration_config_note_sharing_title">Udostępnianie notatek</string>
     <string name="registration_config_title">Rejestracja aplikacji Szkolny.eu</string>
     <string name="remove">Usuń</string>
     <string name="removed">Usunięto</string>
@@ -921,7 +926,7 @@
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
     <string name="settings_card_register_title">E-dziennik</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nwrzesień 2018 - 2021</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nwrzesień 2018 - październik 2021</string>
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
     <string name="settings_about_version_text">Wersja</string>
@@ -1180,6 +1185,7 @@
     <string name="teacher_super_admin">Administrator / SuperAdministrator</string>
     <string name="teacher_teacher">Nauczyciel</string>
     <string name="teachers_browse_category">Przeglądaj kategorię</string>
+    <string name="teachers_no_data">Brak nauczycieli.</string>
     <string name="the_day_after">pojutrze</string>
     <string name="the_day_before">przedwczoraj</string>
     <string name="theme_amber">Bursztynowy</string>
@@ -1464,4 +1470,83 @@
     <string name="contributors_subtext_format" translatable="false">\@%s - %s</string>
     <string name="contributors_headline">Najłatwiejszy sposób na korzystanie z e-dziennika.</string>
     <string name="dialog_lesson_attendance_details">Szczegóły</string>
+    <string name="hint_style_bold">Pogrubienie</string>
+    <string name="hint_style_italic">Pochylenie</string>
+    <string name="hint_style_underline">Podkreślenie</string>
+    <string name="hint_style_strike">Przekreślenie</string>
+    <string name="hint_style_subscript">Indeks dolny</string>
+    <string name="hint_style_superscript">Indeks górny</string>
+    <string name="styled_text_clear_button">Wyczyść format</string>
+    <string name="hint_message_star">Oznacz gwiazdką</string>
+    <string name="message_forward">Przekaż dalej</string>
+    <string name="message_delete">Usuń</string>
+    <string name="message_reply">Odpowiedz</string>
+    <string name="message_download">Pobierz ponownie</string>
+    <string name="messages_compose_subject_reply_format" translatable="false">Re: %s</string>
+    <string name="messages_compose_subject_forward_format" translatable="false">Fwd: %s</string>
+    <string name="messages_compose_body_load_failed">Nie udało się wczytać oryginalnej wiadomości.</string>
+    <string name="messages_compose_save_draft_title">Zapisz zmiany</string>
+    <string name="messages_compose_save_draft_text">Czy chcesz zapisać zmiany jako wersję roboczą?\n\nBędzie możliwa późniejsza edycja oraz wysłanie wiadomości.</string>
+    <string name="discard">Odrzuć</string>
+    <string name="messages_compose_draft_saved">Zapisano wersję roboczą</string>
+    <string name="messages_tab_draft">Wersje robocze</string>
+    <string name="messages_compose_send_long">Wyślij wiadomość</string>
+    <string name="messages_compose_discard_draft">Usuń wersję roboczą</string>
+    <string name="messages_compose_draft_discarded">Usunięto wersję roboczą</string>
+    <string name="messages_compose_discard_draft_title">Usuń wersję roboczą</string>
+    <string name="messages_compose_discard_draft_text">Czy chcesz odrzucić zapisaną wersję wiadomości? Spowoduje to również anulowanie wprowadzonych zmian i usunięcie wiadomości.</string>
+    <string name="login_mobidziennik_server_prefix">https://</string>
+    <string name="login_mobidziennik_server_suffix">.mobidziennik.pl/</string>
+    <string name="styled_text_dialog_title">Edytuj tekst</string>
+    <string name="send_message">Wyślij wiadomość</string>
+    <string name="login_qr_decoding_error">Kod QR nie wygląda na prawidłowy</string>
+    <string name="notes_list_dialog_title">Notatki</string>
+    <string name="notes_button">Notatki</string>
+    <string name="notes_no_data">Nie dodano żadnych notatek</string>
+    <string name="notes_no_data_hint">Możesz dodać notatki oraz udostępnić je w klasie, używając przycisku Dodaj.</string>
+    <string name="legend_notes_added">{cmd-playlist-edit} dodano notatki</string>
+    <string name="legend_notes_added_replaced">{cmd-playlist-edit} dodano notatki\n{cmd-swap-horizontal} zastąpiono treść notatką</string>
+    <string name="notes_added_by_you_format">Dodano %1$s</string>
+    <string name="notes_type_announcement">Ogłoszenie szkolne</string>
+    <string name="notes_type_attendance">Frekwencja</string>
+    <string name="notes_type_behavior">Zachowanie</string>
+    <string name="notes_type_day">Dzień</string>
+    <string name="notes_type_event">Wydarzenie</string>
+    <string name="notes_type_grade">Ocena</string>
+    <string name="notes_type_lesson">Lekcja</string>
+    <string name="notes_type_message">Wiadomość</string>
+    <string name="notes_details_id">ID notatki</string>
+    <string name="notes_details_owner_id">ID właściciela</string>
+    <string name="notes_details_dialog_title">Notatka</string>
+    <string name="notes_editor_dialog_title">Edytuj notatkę</string>
+    <string name="notes_editor_topic">Tytuł notatki (opcjonalnie)</string>
+    <string name="notes_editor_body">Treść notatki</string>
+    <string name="notes_editor_replace_text">Zastąp oryginalną treść</string>
+    <string name="notes_editor_share_hint">Osoby z klasy zobaczą Twoją notatkę przy tym elemencie.</string>
+    <string name="notes_editor_replace_hint">Treść notatki będzie widoczna zamiast oryginalnej treści elementu.</string>
+    <string name="notes_editor_body_error">Podaj treść notatki</string>
+    <string name="notes_editor_color">Kolor</string>
+    <string name="notes_editor_progress_sharing">Udostępnianie notatki…</string>
+    <string name="notes_editor_progress_unsharing">Usuwanie udostępnionej notatki…</string>
+    <string name="notification_type_new_shared_note">Udostępniono notatkę</string>
+    <string name="notes_editor_confirmation_text">Czy chcesz usunąć tą notatkę?\n\nZostanie ona usunięta na Twoim urządzeniu, oraz u pozostałych osób z klasy.</string>
+    <string name="menu_notes">Notatki</string>
+    <string name="notes_action_add">Dodaj notatkę</string>
+    <string name="color_none">Brak</string>
+    <string name="color_red">Czerwony</string>
+    <string name="color_orange">Pomarańczowy</string>
+    <string name="color_yellow">Żółty</string>
+    <string name="color_green">Zielony</string>
+    <string name="color_teal">Morski</string>
+    <string name="color_blue">Niebieski</string>
+    <string name="color_dark_blue">Ciemnoniebieski</string>
+    <string name="color_purple">Fioletowy</string>
+    <string name="color_pink">Różowy</string>
+    <string name="color_brown">Brązowy</string>
+    <string name="color_grey">Szary</string>
+    <string name="color_black">Czarny</string>
+    <string name="card_type_notes">Notatki</string>
+    <string name="card_notes_header_title">Najnowsze notatki</string>
+    <string name="login_summary_account_child">(uczeń)</string>
+    <string name="login_summary_account_parent">(rodzic)</string>
 </resources>

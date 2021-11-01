@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-10-24.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="pl.szczodrzynski.edziennik.data.db.entity.Note" />
+
+        <variable
+            name="ownerType"
+            type="Note.OwnerType" />
+
+        <variable
+            name="editingNote"
+            type="Note" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/note_dialog_header" />
+
+            <include
+                layout="@layout/note_dialog_subtitle"
+                app:text="@{@string/notes_editor_dialog_title}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/topicLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/notes_editor_topic"
+                    app:endIconMode="custom"
+                    tools:endIconDrawable="@android:drawable/ic_menu_crop">
+
+                    <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
+                        android:id="@+id/topic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textShortMessage|textMultiLine|textImeMultiLine"
+                        android:text="@{editingNote.topicHtml}"
+                        tools:text="Ocena z kartkówki" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/bodyLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/notes_editor_body"
+                    app:endIconMode="custom"
+                    tools:endIconDrawable="@android:drawable/ic_menu_crop">
+
+                    <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
+                        android:id="@+id/body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textLongMessage|textMultiLine|textImeMultiLine"
+                        android:minLines="2"
+                        android:text="@{editingNote.bodyHtml}"
+                        tools:text="Sortowanie bombelkowe (na lekcji)\n\nSortowanie bombelków na kartce co zajęło 16 stron w zeszycie" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/shareSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:checked="@{editingNote.sharedBy != null}"
+                    android:isVisible="@{ownerType.shareable}"
+                    android:minHeight="32dp"
+                    android:text="@string/dialog_event_manual_share_enabled" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:isVisible="@{ownerType.shareable}"
+                    android:text="@string/notes_editor_share_hint"
+                    android:textAppearance="@style/NavView.TextView.Helper" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/replaceSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:checked="@{editingNote.replacesOriginal}"
+                    android:isVisible="@{ownerType.canReplace}"
+                    android:minHeight="32dp"
+                    android:text="@string/notes_editor_replace_text" />
+
+                <TextView
+                    android:id="@+id/replaceHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:isVisible="@{ownerType.canReplace}"
+                    android:text="@string/notes_editor_replace_hint"
+                    android:textAppearance="@style/NavView.TextView.Helper" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/notes_editor_color">
+
+                    <pl.szczodrzynski.edziennik.utils.TextInputDropDown
+                        android:id="@+id/color"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="czerwony" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

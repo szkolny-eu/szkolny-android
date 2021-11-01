@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SUBJECT_ID
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_TEACHER_ID
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
@@ -16,9 +15,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.getString
-import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.ext.crc32
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -57,7 +57,7 @@ class EdudziennikWebTimetable(override val data: DataEdudziennik,
 
             val table = doc.select("#Schedule tbody").first()
 
-            if (!table.text().contains("Brak planu lekcji.")) {
+            if (table?.text()?.contains("Brak planu lekcji.") == false) {
                 table.children().forEach { row ->
                     val rowElements = row.children()
 

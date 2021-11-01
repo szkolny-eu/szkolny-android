@@ -11,14 +11,18 @@ import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBIDZIENNIK_WEB_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
+import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel.Timetable.Companion.between
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ext.MS
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.models.Week
 import kotlin.collections.set
-import kotlin.text.replace
 
 class MobidziennikWebTimetable(
     override val data: DataMobidziennik,
@@ -81,22 +85,30 @@ class MobidziennikWebTimetable(
         } ?: currentWeekStart
 
         val syncFutureDate = startDate > nextWeekEnd
-        // TODO: 2021-09-09 make DataRemoveModel keep extra lessons
-        val syncExtraLessons = false && System.currentTimeMillis() - (lastSync ?: 0) > 2 * DAY * MS
-        if (!syncFutureDate && !syncExtraLessons) {
+        val syncPastDate = startDate < currentWeekStart
+        val syncExtraLessons = System.currentTimeMillis() - (lastSync ?: 0) > 2 * DAY * MS
+        // sync not needed - everything present in the "API"
+        if (!syncFutureDate && !syncPastDate && !syncExtraLessons) {
             onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_TIMETABLE)
         }
         else {
             val types = when {
-                syncFutureDate -> mutableListOf("podstawowy")//, "pozalekcyjny")
+                syncFutureDate || syncPastDate -> mutableListOf("podstawowy", "pozalekcyjny")
                 syncExtraLessons -> mutableListOf("pozalekcyjny")
                 else -> mutableListOf()
             }
 
+            val syncingExtra = types.contains("pozalekcyjny")
+
             syncTypes(types, startDate) {
-                // set as synced now only when not syncing future date
-                // (to avoid waiting 2 days for normal sync after future sync)
-                if (syncExtraLessons)
+                if (syncingExtra) {
+                    val endDate = startDate.clone().stepForward(0, 0, 7)
+                    data.toRemove.add(between(startDate, endDate, isExtra = true))
+                }
+
+                // set as synced now only when not syncing future/past date
+                // (to avoid waiting 2 days for normal sync after future/past sync)
+                if (!syncFutureDate && !syncPastDate)
                     data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_TIMETABLE, SYNC_ALWAYS)
                 onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_TIMETABLE)
             }
@@ -113,7 +125,7 @@ class MobidziennikWebTimetable(
             MobidziennikLuckyNumberExtractor(data, html)
             readRangesH(html)
             readRangesV(html)
-            readLessons(html)
+            readLessons(html, isExtra = type == "pozalekcyjny")
             syncTypes(types, startDate, onSuccess)
         }
     }
@@ -183,7 +195,7 @@ class MobidziennikWebTimetable(
     }
 
     @SuppressLint("LongLogTag", "LogNotTimber")
-    private fun readLessons(html: String) {
+    private fun readLessons(html: String, isExtra: Boolean) {
         val matches = Regexes.MOBIDZIENNIK_TIMETABLE_CELL.findAll(html)
 
         val noLessonDays = mutableListOf<Date>()
@@ -215,51 +227,63 @@ class MobidziennikWebTimetable(
             var teamName: String? = null
             val items = (cleanup(match[3]) + cleanup(match[4])).toMutableList()
 
+            // comparing items size before and after the iteration
             var length = 0
             while (items.isNotEmpty() && length != items.size) {
                 length = items.size
-                val toRemove = mutableListOf<String?>()
-                items.forEachIndexed { i, item ->
+                var i = 0
+                while (i < items.size) {
+                    // just to remain safe - I have no idea how all of this works.
+                    if (i < 0)
+                        break
+                    val item = items[i]
                     when {
-                        item.isEmpty() ->
-                            toRemove.add(item)
-                        item.contains(":") && item.contains(" - ") ->
-                            toRemove.add(item)
+                        // remove empty items
+                        item.isEmpty() -> {
+                            items.remove(item)
+                            i--
+                        }
+                        // remove HH:MM items - it's calculated from the block position
+                        item.contains(":") && item.contains(" - ") -> {
+                            items.remove(item)
+                            i--
+                        }
 
                         item.startsWith("%") -> {
-                            subjectName = item.trim('%')
-                            // I have no idea what's going on here
-                            // ok now seriously.. the subject (long or short) item
-                            // may NOT be 0th, as the HH:MM - HH:MM item may be before
-                            // or even the typeName item. As these are always **before**,
-                            // they are removed in previous iterations, so the first not removed
-                            // item should be the long/short subjectName needing to be removed now.
-                            toRemove.add(items[toRemove.size])
-                            // ...and this has to be added later
-                            toRemove.add(item)
+                            // the one wrapped in % is the short subject name
+                            items.remove(item)
+                            // remove the first remaining item
+                            subjectName = items.removeAt(0)
+                            // decrement the index counter
+                            i -= 2
                         }
 
-                        item.startsWith("&") -> {
-                            typeName = item.trim('&')
-                            toRemove.add(item)
+                        item.startsWith("$") -> {
+                            typeName = item.trim('$')
+                            items.remove(item)
+                            i--
                         }
-                        typeName != null && (item.contains(typeName!!) || item.contains("</small>")) -> {
-                            toRemove.add(item)
+                        typeName != null && (item.contains(typeName) || item.contains("</small>")) -> {
+                            items.remove(item)
+                            i--
                         }
 
                         item.contains("(") && item.contains(")") -> {
                             classroomName = classroomRegex.find(item)?.get(1)
                             items[i] = item.replace("($classroomName)", "").trim()
                         }
-                        classroomName != null && item.contains(classroomName!!) -> {
+                        classroomName != null && item.contains(classroomName) -> {
                             items[i] = item.replace("($classroomName)", "").trim()
                         }
 
-                        item.contains("class=\"wyjatek tooltip\"") ->
-                            toRemove.add(item)
+                        item.contains("class=\"wyjatek tooltip\"") -> {
+                            items.remove(item)
+                            i--
+                        }
                     }
+                    // finally advance to the next item
+                    i++
                 }
-                items.removeAll(toRemove)
             }
 
             if (items.size == 2 && items[0].contains(" - ")) {
@@ -311,6 +335,7 @@ class MobidziennikWebTimetable(
                 }
 
                 it.id = it.buildId()
+                it.isExtra = isExtra
 
                 val seen = profile?.empty == false || lessonDate < Date.getToday()
 

@@ -7,7 +7,7 @@ import im.wangchao.mhttp.callback.JsonCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.getString
+import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection
 

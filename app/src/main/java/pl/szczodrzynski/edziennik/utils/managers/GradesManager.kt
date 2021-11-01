@@ -8,15 +8,17 @@ import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_NORMAL
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_AVG
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
-import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesAverages
-import pl.szczodrzynski.edziennik.ui.modules.grades.models.GradesSemester
+import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.grades.models.GradesAverages
+import pl.szczodrzynski.edziennik.ui.grades.models.GradesSemester
 import java.text.DecimalFormat
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.floor
@@ -118,7 +120,7 @@ class GradesManager(val app: App) : CoroutineScope {
     fun getGradeWeight(dontCountEnabled: Boolean, dontCountGrades: List<String>, grade: Grade): Float {
         if (!dontCountEnabled)
             return grade.weight
-        if (grade.name.toLowerCase().trim() in dontCountGrades)
+        if (grade.name.lowercase().trim() in dontCountGrades)
             return 0f
         return grade.weight
     }
@@ -151,7 +153,7 @@ class GradesManager(val app: App) : CoroutineScope {
                 }
             type == TYPE_NORMAL && defColor -> grade.color and 0xffffff
             type in TYPE_NORMAL..TYPE_YEAR_FINAL -> {
-                when (grade.name.toLowerCase()) {
+                when (grade.name.lowercase()) {
                     "+", "++", "+++" -> 0x4caf50
                     "0", "-", "-,", "-,-,", "np", "np.", "npnp", "np,", "np,np,", "bs", "nk", "bz" -> 0xff7043
                     "1-", "1", "f", "ng" -> 0xff0000
@@ -179,7 +181,7 @@ class GradesManager(val app: App) : CoroutineScope {
      * the specified [name].
      */
     fun getGradeValue(name: String): Float {
-        return when (name.toLowerCase()) {
+        return when (name.lowercase()) {
             "1-" -> 0.75f
             "1" -> 1.00f
             "1+" -> 1.50f
@@ -209,7 +211,7 @@ class GradesManager(val app: App) : CoroutineScope {
     }
 
     fun getGradeNumberName(name: String): String {
-        return when(name.toLowerCase()){
+        return when(name.lowercase()){
             "niedostateczny", "f" -> "1"
             "niedostateczny plus", "f+" -> "1+"
             "niedostateczny minus", "f-" -> "1-"

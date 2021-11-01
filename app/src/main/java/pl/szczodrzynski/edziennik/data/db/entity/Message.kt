@@ -7,7 +7,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 
 @Entity(tableName = "messages",
         primaryKeys = ["profileId", "messageId"],
@@ -41,7 +41,16 @@ open class Message(
     }
 
     @ColumnInfo(name = "messageIsPinned")
-    var isPinned: Boolean = false
+    var isStarred: Boolean = false
+
+    val isReceived
+        get() = type == TYPE_RECEIVED
+    val isSent
+        get() = type == TYPE_SENT
+    val isDeleted
+        get() = type == TYPE_DELETED
+    val isDraft
+        get() = type == TYPE_DRAFT
 
     var hasAttachments = false // if the attachments are not yet downloaded but we already know there are some
         get() = field || attachmentIds.isNotNullNorEmpty()

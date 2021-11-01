@@ -656,6 +656,7 @@
     <string name="menu_message">Nachricht</string>
     <string name="menu_message_compose">Schreiben Sie eine Nachricht</string>
     <string name="menu_messages">Nachrichten</string>
+    <string name="menu_more">Mehr</string>
     <string name="menu_notices">Verhalten</string>
     <string name="menu_notifications">Benachrichtigungen</string>
     <string name="menu_remove_notifications">Löschen</string>
@@ -675,7 +676,7 @@
     <string name="messages_compose_confirm_title">Bestätigen Sie das Senden der Nachricht</string>
     <string name="messages_compose_menu_attachment">Fügen Sie einen Anhang hinzu</string>
     <string name="messages_compose_menu_discard">Nachricht abbrechen</string>
-    <string name="messages_compose_menu_save_draft">Entwurf speichern</string>
+    <string name="messages_compose_save_draft">Entwurf speichern</string>
     <string name="messages_compose_menu_send">Senden</string>
     <string name="messages_compose_recipient_exists">Dieser Empfänger wurde bereits ausgewählt</string>
     <string name="messages_compose_recipients_empty">Wählen Sie die Empfänger aus</string>
@@ -856,7 +857,7 @@
     <string name="settings_about_licenses_text">Open-Source-Lizenzen</string>
     <string name="settings_about_privacy_policy_text">Datenschutzrichtlinie</string>
     <string name="settings_card_register_title">E-Klassenbuch</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - 2021</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - Oktober 2021</string>
     <string name="settings_about_update_subtext">Klicken Sie hier, um nach Aktualisierungen zu suchen</string>
     <string name="settings_about_update_text">Aktualisierung</string>
     <string name="settings_about_version_text">Version</string>
@@ -1108,6 +1109,7 @@
     <string name="teacher_super_admin">Administrator / Superadministrator</string>
     <string name="teacher_teacher">Lehrer</string>
     <string name="teachers_browse_category">Kategorie durchsuchen</string>
+    <string name="teachers_no_data">Keine Lehrer.</string>
     <string name="the_day_after">Übermorgen</string>
     <string name="the_day_before">Vorgestern</string>
     <string name="theme_amber">Bernstein</string>
@@ -1236,4 +1238,6 @@
     <string name="login_summary_account_parent">(Elternteil)</string>
     <string name="settings_about_contributors_text">Anwendungsentwickler</string>
     <string name="settings_about_contributors_subtext">Liste der Szkolny-Entwickler</string>
+    <string name="menu_teachers">Lehrer</string>
+    <string name="edziennik_progress_endpoint_addressbook">Addressbuch herunterladen…</string>
 </resources>

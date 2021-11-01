@@ -25,7 +25,8 @@
 -keep class pl.szczodrzynski.edziennik.data.db.entity.Event { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.full.EventFull { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage { *; }
--keep class pl.szczodrzynski.edziennik.ui.modules.home.HomeCardModel { *; }
+-keep class pl.szczodrzynski.edziennik.data.db.entity.Note { *; }
+-keep class pl.szczodrzynski.edziennik.ui.home.HomeCardModel { *; }
 -keepclassmembers class pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig { public *; }
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider
@@ -67,7 +68,7 @@
 
 -keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.request.** { *; }
 -keepclassmembers class pl.szczodrzynski.edziennik.data.api.szkolny.response.** { *; }
--keepclassmembernames class pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo$Platform { *; }
+-keepclassmembernames class pl.szczodrzynski.edziennik.ui.login.LoginInfo$Platform { *; }
 
 -keepclassmembernames class pl.szczodrzynski.fslogin.realm.RealmData { *; }
 -keepclassmembernames class pl.szczodrzynski.fslogin.realm.RealmData$Type { *; }

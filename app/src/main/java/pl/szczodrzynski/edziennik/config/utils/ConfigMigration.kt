@@ -7,9 +7,9 @@ package pl.szczodrzynski.edziennik.config.utils
 import android.content.Context
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
-import pl.szczodrzynski.edziennik.HOUR
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.config.Config
+import pl.szczodrzynski.edziennik.ext.HOUR
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.math.abs
@@ -42,7 +42,7 @@ class ConfigMigration(app: App, config: Config) {
                     MainActivity.DRAWER_ITEM_SETTINGS
             )
             sync.enabled = true
-            sync.interval = 1*HOUR.toInt()
+            sync.interval = 1* HOUR.toInt()
             sync.notifyAboutUpdates = true
             sync.onlyWifi = false
             sync.quietHoursEnabled = false

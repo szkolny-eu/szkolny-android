@@ -11,9 +11,9 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.keys
-import pl.szczodrzynski.edziennik.singleOrNull
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.keys
+import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -24,7 +24,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
         val dataStart = Date.getToday()
         val dataEnd = dataStart.clone().stepForward(0, 0, 7 + (6 - dataStart.weekDay))
 
-        data.toRemove.add(DataRemoveModel.Timetable.between(dataStart.clone(), dataEnd))
+        data.toRemove.add(DataRemoveModel.Timetable.between(dataStart.clone(), dataEnd, isExtra = false))
 
         val dataDays = mutableListOf<Int>()
         while (dataStart <= dataEnd) {

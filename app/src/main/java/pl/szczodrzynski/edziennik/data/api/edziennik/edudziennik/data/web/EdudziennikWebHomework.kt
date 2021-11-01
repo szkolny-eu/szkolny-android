@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_HOMEWORK_ID
 import pl.szczodrzynski.edziennik.data.api.Regexes.EDUDZIENNIK_SUBJECT_ID
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
@@ -15,7 +14,8 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.ext.crc32
+import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class EdudziennikWebHomework(override val data: DataEdudziennik,
@@ -32,7 +32,7 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
 
             if (doc.getElementsByClass("message").text().trim() != "Brak prac domowych") {
                 doc.getElementsByTag("tr").forEach { homeworkElement ->
-                    val dateElement = homeworkElement.getElementsByClass("date").first().child(0)
+                    val dateElement = homeworkElement.getElementsByClass("date").first()?.child(0) ?: return@forEach
                     val idStr = EDUDZIENNIK_HOMEWORK_ID.find(dateElement.attr("href"))?.get(1) ?: return@forEach
                     val id = idStr.crc32()
                     val date = Date.fromY_m_d(dateElement.text())
@@ -49,7 +49,7 @@ class EdudziennikWebHomework(override val data: DataEdudziennik,
                     val teacherName = homeworkElement.child(2).text()
                     val teacher = data.getTeacherByFirstLast(teacherName)
 
-                    val topic = homeworkElement.child(4).text()?.trim()
+                    val topic = homeworkElement.child(4).text().trim()
 
                     val eventObject = Event(
                             profileId = profileId,

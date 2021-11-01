@@ -28,7 +28,7 @@ class MobidziennikWebGetAttachment(override val data: DataMobidziennik,
         val targetFile = File(Utils.getStorageDir(), attachmentName)
 
         val typeUrl = when (owner) {
-            is Message -> if (owner.type == Message.TYPE_SENT)
+            is Message -> if (owner.isSent)
                 "dziennik/wiadwyslana/?id="
             else
                 "dziennik/wiadodebrana/?id="

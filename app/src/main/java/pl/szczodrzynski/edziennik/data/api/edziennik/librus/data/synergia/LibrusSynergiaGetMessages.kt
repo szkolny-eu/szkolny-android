@@ -7,6 +7,7 @@ import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusSynergia
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -36,19 +37,19 @@ class LibrusSynergiaGetMessages(override val data: DataLibrus,
 
                 fun getRecipientId(name: String): Long = data.teacherList.singleOrNull {
                     it.fullNameLastFirst == name
-                }?.id ?: {
+                }?.id ?: run {
                     val teacherObject = Teacher(
-                            profileId,
-                            -1 * Utils.crc16(name.swapFirstLastName().toByteArray()).toLong(),
-                            name.splitName()?.second!!,
-                            name.splitName()?.first!!
+                        profileId,
+                        -1 * Utils.crc16(name.swapFirstLastName().toByteArray()).toLong(),
+                        name.splitName()?.second!!,
+                        name.splitName()?.first!!
                     )
                     data.teacherList.put(teacherObject.id, teacherObject)
                     teacherObject.id
-                }.invoke()
+                }
 
                 doc.select(".decorated.stretch tbody > tr").forEach { messageElement ->
-                    val url = messageElement.select("a").first().attr("href")
+                    val url = messageElement.select("a").first()?.attr("href") ?: return@forEach
                     val id = Regexes.LIBRUS_MESSAGE_ID.find(url)?.get(1)?.toLong() ?: return@forEach
                     val subject = messageElement.child(3).text()
                     val sentDate = Date.fromIso(messageElement.child(4).text())

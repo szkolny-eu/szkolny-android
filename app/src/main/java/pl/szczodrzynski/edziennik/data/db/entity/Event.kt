@@ -8,8 +8,9 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index
 import com.google.gson.annotations.SerializedName
-import pl.szczodrzynski.edziennik.MINUTE
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
+import pl.szczodrzynski.edziennik.ext.MINUTE
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.util.*
@@ -74,6 +75,7 @@ open class Event(
 
     @ColumnInfo(name = "eventAddedManually")
     var addedManually: Boolean = false
+        get() = field || sharedBy == "self"
     @ColumnInfo(name = "eventSharedBy")
     var sharedBy: String? = null
     @ColumnInfo(name = "eventSharedByName")
@@ -84,12 +86,21 @@ open class Event(
     var isDone: Boolean = false
 
     /**
+     * Whether the full contents of the event are already stored locally.
+     * There may be a need to download the full topic or body.
+     */
+    @ColumnInfo(name = "eventIsDownloaded")
+    var isDownloaded: Boolean = true
+
+    /**
      * Body/text of the event, if this is a [TYPE_HOMEWORK].
      * May be null if the body is not downloaded yet, or the type is not [TYPE_HOMEWORK].
      * May be empty or blank if the homework has no specific body attached,
      * or the topic contains the body already.
      */
     var homeworkBody: String? = null
+    val hasAttachments
+        get() = attachmentIds.isNotNullNorEmpty()
     var attachmentIds: MutableList<Long>? = null
     var attachmentNames: MutableList<String>? = null
 
@@ -122,6 +133,9 @@ open class Event(
         get() = startTimeCalendar.also {
             it.timeInMillis += 45 * MINUTE * 1000
         }
+
+    val isHomework
+        get() = type == TYPE_HOMEWORK
 
     @Ignore
     fun withMetadata(metadata: Metadata) = EventFull(this, metadata)

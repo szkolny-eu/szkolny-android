@@ -11,7 +11,7 @@ import android.provider.OpenableColumns
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageView
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.ui.modules.login.LoginActivity
+import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import java.io.File
 import java.io.FileOutputStream
 

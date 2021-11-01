@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/dialog_event_manual_date">
-            <pl.szczodrzynski.edziennik.ui.modules.views.DateDropdown
+            <pl.szczodrzynski.edziennik.ui.views.DateDropdown
                 android:id="@+id/dateDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/dialog_event_manual_time">
-            <pl.szczodrzynski.edziennik.ui.modules.views.TimeDropdown
+            <pl.szczodrzynski.edziennik.ui.views.TimeDropdown
                 android:id="@+id/timeDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:layout_marginTop="8dp"
             android:hint="@string/dialog_event_manual_team">
 
-            <pl.szczodrzynski.edziennik.ui.modules.views.TeamDropdown
+            <pl.szczodrzynski.edziennik.ui.views.TeamDropdown
                 android:id="@+id/teamDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                 android:layout_weight="1"
                 android:hint="@string/dialog_event_manual_type">
 
-                <pl.szczodrzynski.edziennik.ui.modules.views.EventTypeDropdown
+                <pl.szczodrzynski.edziennik.ui.views.EventTypeDropdown
                     android:id="@+id/typeDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -118,11 +118,14 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/topicLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/dialog_event_manual_topic">
+            android:hint="@string/dialog_event_manual_topic"
+            app:endIconMode="custom"
+            tools:endIconDrawable="@android:drawable/ic_menu_crop">
 
             <pl.szczodrzynski.edziennik.utils.TextInputKeyboardEdit
                 android:id="@+id/topic"
@@ -166,7 +169,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/dialog_event_manual_subject">
 
-                <pl.szczodrzynski.edziennik.ui.modules.views.SubjectDropdown
+                <pl.szczodrzynski.edziennik.ui.views.SubjectDropdown
                     android:id="@+id/subjectDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -181,7 +184,7 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/dialog_event_manual_teacher">
 
-                <pl.szczodrzynski.edziennik.ui.modules.views.TeacherDropdown
+                <pl.szczodrzynski.edziennik.ui.views.TeacherDropdown
                     android:id="@+id/teacherDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

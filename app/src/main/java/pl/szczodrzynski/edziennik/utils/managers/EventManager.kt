@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.utils.managers
 
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
@@ -13,8 +14,13 @@ import com.mikepenz.iconics.view.IconicsTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.join
+import pl.szczodrzynski.edziennik.ext.resolveColor
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import kotlin.coroutines.CoroutineContext
 
 class EventManager(val app: App) : CoroutineScope {
@@ -39,21 +45,22 @@ class EventManager(val app: App) : CoroutineScope {
     }
 
     fun setEventTopic(
-        title: IconicsTextView,
+        title: TextView,
         event: EventFull,
         showType: Boolean = true,
+        showNotes: Boolean = true,
         doneIconColor: Int? = null
     ) {
-        var eventTopic = if (showType)
-            "${event.typeName ?: "wydarzenie"} - ${event.topic}"
-        else
-            event.topic
+        val topicSpan = event.getNoteSubstituteText(showNotes) ?: event.topicHtml
+        val hasReplacingNotes = event.hasReplacingNotes()
 
-        if (event.addedManually) {
-            eventTopic = "{cmd-clipboard-edit-outline} $eventTopic"
-        }
-
-        title.text = eventTopic
+        title.text = listOfNotNull(
+            if (event.addedManually) "{cmd-clipboard-edit-outline} " else null,
+            if (event.hasNotes() && hasReplacingNotes && showNotes) "{cmd-swap-horizontal} " else null,
+            if (event.hasNotes() && !hasReplacingNotes && showNotes) "{cmd-playlist-edit} " else null,
+            if (showType) "${event.typeName ?: "wydarzenie"} - " else null,
+            topicSpan,
+        ).concat()
 
         title.setCompoundDrawables(
             null,
@@ -67,10 +74,11 @@ class EventManager(val app: App) : CoroutineScope {
         )
     }
 
-    fun setLegendText(legend: IconicsTextView, event: EventFull) {
+    fun setLegendText(legend: IconicsTextView, event: EventFull, showNotes: Boolean = true) {
         legend.text = listOfNotNull(
             if (event.addedManually) R.string.legend_event_added_manually else null,
-            if (event.isDone) R.string.legend_event_is_done else null
+            if (event.isDone) R.string.legend_event_is_done else null,
+            if (showNotes) NoteManager.getLegendText(event) else null,
         ).map { legend.context.getString(it) }.join("\n")
         legend.isVisible = legend.text.isNotBlank()
     }

@@ -13,10 +13,10 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.Edudzienni
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.fixName
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.getShortName
-import pl.szczodrzynski.edziennik.set
+import pl.szczodrzynski.edziennik.ext.fixName
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.getShortName
+import pl.szczodrzynski.edziennik.ext.set
 
 class EdudziennikFirstLogin(val data: DataEdudziennik, val onSuccess: () -> Unit) {
     companion object {

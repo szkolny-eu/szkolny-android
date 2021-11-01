@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-10-24. 
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="text"
+            type="java.lang.String" />
+    </data>
+
+    <merge
+        tools:layout_height="wrap_content"
+        tools:layout_width="match_parent"
+        tools:orientation="vertical"
+        tools:parentTag="LinearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeftAutoSize="@{true}"
+            android:drawablePadding="8dp"
+            android:text="@{text}"
+            android:textAppearance="@style/AppTheme.MaterialAlertDialog.TitleText"
+            app:drawableStartCompat="@drawable/ic_note"
+            tools:layout_height="28sp"
+            tools:text="@string/notes_list_dialog_title" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/divider" />
+    </merge>
+</layout>

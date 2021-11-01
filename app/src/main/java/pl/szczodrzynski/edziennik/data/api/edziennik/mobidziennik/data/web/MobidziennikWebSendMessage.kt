@@ -9,7 +9,6 @@ import pl.szczodrzynski.edziennik.data.api.POST
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
-import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 
@@ -43,7 +42,7 @@ class MobidziennikWebSendMessage(override val data: DataMobidziennik,
 
             // TODO create MobidziennikWebMessagesSent and replace this
             MobidziennikWebMessagesAll(data, null) {
-                val message = data.messageList.firstOrNull { it.type == Message.TYPE_SENT && it.subject == subject }
+                val message = data.messageList.firstOrNull { it.isSent && it.subject == subject }
                 val metadata = data.metadataList.firstOrNull { it.thingType == Metadata.TYPE_MESSAGE && it.thingId == message?.id }
                 val event = MessageSentEvent(data.profileId, message, message?.addedDate)
 

@@ -13,7 +13,8 @@ import kotlinx.coroutines.*
 import okhttp3.Request
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
-import pl.szczodrzynski.edziennik.ui.modules.base.BuildInvalidActivity
+import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.base.BuildInvalidActivity
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.time.Instant

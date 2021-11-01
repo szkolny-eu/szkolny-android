@@ -10,10 +10,10 @@ import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
-import pl.szczodrzynski.edziennik.get
-import pl.szczodrzynski.edziennik.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.singleOrNull
-import pl.szczodrzynski.edziennik.swapFirstLastName
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.singleOrNull
+import pl.szczodrzynski.edziennik.ext.swapFirstLastName
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusSynergiaGetMessage(override val data: DataLibrus,
@@ -87,7 +87,7 @@ class LibrusSynergiaGetMessage(override val data: DataLibrus,
                             })
                         }
 
-                        val readDateText = readElement.select(".left").text()
+                        val readDateText = readElement?.select(".left")?.text()
                         val readDate = when (readDateText.isNotNullNorEmpty()) {
                             true -> Date.fromIso(readDateText)
                             else -> 0
@@ -108,7 +108,7 @@ class LibrusSynergiaGetMessage(override val data: DataLibrus,
 
                     Message.TYPE_SENT -> {
 
-                        readElement.select("tr").forEachIndexed { i, receiver ->
+                        readElement?.select("tr")?.forEachIndexed { i, receiver ->
                             if (i == 0) return@forEachIndexed // Skip the header
 
                             val receiverFullName = receiver.child(0).text()

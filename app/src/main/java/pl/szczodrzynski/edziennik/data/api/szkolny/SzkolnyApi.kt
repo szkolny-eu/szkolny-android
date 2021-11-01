@@ -23,14 +23,15 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureIntercep
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.*
-import pl.szczodrzynski.edziennik.data.db.entity.Event
-import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
-import pl.szczodrzynski.edziennik.data.db.entity.Notification
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
-import pl.szczodrzynski.edziennik.ui.modules.error.ErrorDetailsDialog
-import pl.szczodrzynski.edziennik.ui.modules.error.ErrorSnackbar
-import pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo
+import pl.szczodrzynski.edziennik.ext.keys
+import pl.szczodrzynski.edziennik.ext.md5
+import pl.szczodrzynski.edziennik.ext.toApiError
+import pl.szczodrzynski.edziennik.ext.toErrorCode
+import pl.szczodrzynski.edziennik.ui.error.ErrorDetailsDialog
+import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.ui.login.LoginInfo
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import retrofit2.Response
@@ -100,7 +101,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                     activity,
                     listOf(apiError),
                     R.string.error_occured
-                )
+                ).show()
                 null
             }
             null
@@ -123,7 +124,10 @@ class SzkolnyApi(val app: App) : CoroutineScope {
      * or null if it's a HTTP call error.
      */
     @Throws(Exception::class)
-    private inline fun <reified T> parseResponse(response: Response<ApiResponse<T>>): T {
+    private inline fun <reified T> parseResponse(
+        response: Response<ApiResponse<T>>,
+        updateDeviceHash: Boolean = false,
+    ): T {
         app.config.update = response.body()?.update?.let { update ->
             if (update.versionCode > BuildConfig.VERSION_CODE) {
                 if (update.updateMandatory
@@ -141,6 +145,14 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         }
 
         if (response.isSuccessful && response.body()?.success == true) {
+            // update the device's hash on success
+            if (updateDeviceHash) {
+                val hash = getDevice()?.toString()?.md5()
+                if (hash != null) {
+                    app.config.hash = hash
+                }
+            }
+
             if (Unit is T) {
                 return Unit
             }
@@ -165,7 +177,6 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         throw SzkolnyApiException(body?.errors?.firstOrNull())
     }
 
-    @Throws(Exception::class)
     private fun getDevice() = run {
         val config = app.config
         val device = Device(
@@ -178,52 +189,57 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 appVersionCode = BuildConfig.VERSION_CODE,
                 syncInterval = app.config.sync.interval
         )
-        device.toString().md5().let {
-            if (it == config.hash)
-                null
-            else {
-                config.hash = it
-                device
-            }
-        }
+        val hash = device.toString().md5()
+        if (hash == config.hash)
+            return@run null
+        return@run device
     }
 
     @Throws(Exception::class)
-    fun getEvents(profiles: List<Profile>, notifications: List<Notification>, blacklistedIds: List<Long>, lastSyncTime: Long): List<EventFull> {
+    fun getEvents(
+        profiles: List<Profile>,
+        notifications: List<Notification>,
+        blacklistedIds: List<Long>,
+        lastSyncTime: Long,
+    ): Pair<List<EventFull>, List<Note>> {
         val teams = app.db.teamDao().allNow
+
+        val users = profiles.mapNotNull { profile ->
+            val config = app.config.getFor(profile.id)
+            val user = ServerSyncRequest.User(
+                profile.userCode,
+                profile.studentNameLong,
+                profile.studentNameShort,
+                profile.loginStoreType,
+                teams.filter { it.profileId == profile.id }.map { it.code }
+            )
+            val hash = user.toString().md5()
+            if (hash == config.hash)
+                return@mapNotNull null
+            return@mapNotNull user to config
+        }
 
         val response = api.serverSync(ServerSyncRequest(
                 deviceId = app.deviceId,
                 device = getDevice(),
                 userCodes = profiles.map { it.userCode },
-                users = profiles.mapNotNull { profile ->
-                    val config = app.config.getFor(profile.id)
-                    val user = ServerSyncRequest.User(
-                            profile.userCode,
-                            profile.studentNameLong,
-                            profile.studentNameShort,
-                            profile.loginStoreType,
-                            teams.filter { it.profileId == profile.id }.map { it.code }
-                    )
-                    user.toString().md5().let {
-                        if (it == config.hash)
-                            null
-                        else {
-                            config.hash = it
-                            user
-                        }
-                    }
-                },
+                users = users.keys(),
                 lastSync = lastSyncTime,
                 notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type, it.text) }
         )).execute()
-        val (events, hasBrowsers) = parseResponse(response)
+        val (events, notes, hasBrowsers) = parseResponse(response, updateDeviceHash = true)
 
         hasBrowsers?.let {
             app.config.sync.webPushEnabled = it
         }
 
+        // update users' hashes on success
+        users.forEach { (user, config) ->
+            config.hash = user.toString().md5()
+        }
+
         val eventList = mutableListOf<EventFull>()
+        val noteList = mutableListOf<Note>()
 
         events.forEach { event ->
             // skip blacklisted events
@@ -234,9 +250,13 @@ class SzkolnyApi(val app: App) : CoroutineScope {
             if (event.color == -1)
                 event.color = null
 
+            val eventSharedBy = event.sharedBy
+
             // create the event for every matching team and profile
             teams.filter { it.code == event.teamCode }.onEach { team ->
                 val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@onEach
+                if (!profile.canShare)
+                    return@forEach
 
                 eventList += EventFull(event).apply {
                     profileId = team.profileId
@@ -245,38 +265,106 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                     seen = profile.empty
                     notified = profile.empty
 
-                    if (profile.userCode == event.sharedBy) sharedBy = "self"
+                    if (profile.userCode == event.sharedBy) {
+                        sharedBy = "self"
+                        addedManually = true
+                    } else {
+                        sharedBy = eventSharedBy
+                    }
                 }
             }
         }
 
-        return eventList
+        notes.forEach { note ->
+            val noteSharedBy = note.sharedBy
+
+            // create the note for every matching team and profile
+            teams.filter { it.code == note.teamCode }.onEach { team ->
+                val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@onEach
+                if (!profile.canShare)
+                    return@forEach
+                note.profileId = team.profileId
+                if (profile.userCode == note.sharedBy) {
+                    note.sharedBy = "self"
+                } else {
+                    note.sharedBy = noteSharedBy
+                }
+
+                if (app.noteManager.hasValidOwner(note))
+                    noteList += note
+            }
+        }
+        return eventList to noteList
     }
 
     @Throws(Exception::class)
     fun shareEvent(event: EventFull) {
+        val profile = app.db.profileDao().getByIdNow(event.profileId)
+            ?: throw NullPointerException("Profile is not found")
         val team = app.db.teamDao().getByIdNow(event.profileId, event.teamId)
+            ?: throw NullPointerException("Team is not found")
 
         val response = api.shareEvent(EventShareRequest(
-                deviceId = app.deviceId,
-                device = getDevice(),
-                sharedByName = event.sharedByName,
-                shareTeamCode = team.code,
-                event = event
+            deviceId = app.deviceId,
+            device = getDevice(),
+            userCode = profile.userCode,
+            studentNameLong = profile.studentNameLong,
+            shareTeamCode = team.code,
+            event = event
+        )).execute()
+        parseResponse(response, updateDeviceHash = true)
+    }
+
+    @Throws(Exception::class)
+    fun unshareEvent(event: Event) {
+        val profile = app.db.profileDao().getByIdNow(event.profileId)
+            ?: throw NullPointerException("Profile is not found")
+        val team = app.db.teamDao().getByIdNow(event.profileId, event.teamId)
+            ?: throw NullPointerException("Team is not found")
+
+        val response = api.shareEvent(EventShareRequest(
+            deviceId = app.deviceId,
+            device = getDevice(),
+            userCode = profile.userCode,
+            studentNameLong = profile.studentNameLong,
+            unshareTeamCode = team.code,
+            eventId = event.id
+        )).execute()
+        parseResponse(response, updateDeviceHash = true)
+    }
+
+    @Throws(Exception::class)
+    fun shareNote(note: Note) {
+        val profile = app.db.profileDao().getByIdNow(note.profileId)
+            ?: throw NullPointerException("Profile is not found")
+        val team = app.db.teamDao().getClassNow(note.profileId)
+            ?: throw NullPointerException("TeamClass is not found")
+
+        val response = api.shareNote(NoteShareRequest(
+            deviceId = app.deviceId,
+            device = getDevice(),
+            userCode = profile.userCode,
+            studentNameLong = profile.studentNameLong,
+            shareTeamCode = team.code,
+            note = note,
         )).execute()
         parseResponse(response)
     }
 
     @Throws(Exception::class)
-    fun unshareEvent(event: Event) {
-        val team = app.db.teamDao().getByIdNow(event.profileId, event.teamId)
+    fun unshareNote(note: Note) {
+        val profile = app.db.profileDao().getByIdNow(note.profileId)
+            ?: throw NullPointerException("Profile is not found")
+        val team = app.db.teamDao().getClassNow(note.profileId)
+            ?: throw NullPointerException("TeamClass is not found")
 
-        val response = api.shareEvent(EventShareRequest(
-                deviceId = app.deviceId,
-                device = getDevice(),
-                sharedByName = event.sharedByName,
-                unshareTeamCode = team.code,
-                eventId = event.id
+        val response = api.shareNote(NoteShareRequest(
+            deviceId = app.deviceId,
+            device = getDevice(),
+            userCode = profile.userCode,
+            studentNameLong = profile.studentNameLong,
+            unshareTeamCode = team.code,
+            noteId = note.id,
         )).execute()
         parseResponse(response)
     }
@@ -295,7 +383,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 pairToken = pairToken
         )).execute()
 
-        return parseResponse(response).browsers
+        return parseResponse(response, updateDeviceHash = true).browsers
     }
 
     @Throws(Exception::class)
@@ -306,7 +394,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 action = "listBrowsers"
         )).execute()
 
-        return parseResponse(response).browsers
+        return parseResponse(response, updateDeviceHash = true).browsers
     }
 
     @Throws(Exception::class)
@@ -318,7 +406,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 browserId = browserId
         )).execute()
 
-        return parseResponse(response).browsers
+        return parseResponse(response, updateDeviceHash = true).browsers
     }
 
     @Throws(Exception::class)
@@ -329,7 +417,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 appVersion = BuildConfig.VERSION_NAME,
                 errors = errors
         )).execute()
-        parseResponse(response)
+        parseResponse(response, updateDeviceHash = true)
     }
 
     @Throws(Exception::class)
@@ -339,7 +427,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 device = getDevice(),
                 userCode = userCode
         )).execute()
-        parseResponse(response)
+        parseResponse(response, updateDeviceHash = true)
     }
 
     @Throws(Exception::class)
@@ -358,7 +446,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 text = text
         )).execute()
 
-        return parseResponse(response).message
+        return parseResponse(response, updateDeviceHash = true).message
     }
 
     @Throws(Exception::class)

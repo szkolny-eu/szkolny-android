@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.AttendanceType
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusApiAttendanceTypes(override val data: DataLibrus,
                                override val lastSync: Long?,
@@ -58,7 +59,7 @@ class LibrusApiAttendanceTypes(override val data: DataLibrus,
                 ))
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES, 2*DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES, 2* DAY)
             onSuccess(ENDPOINT_LIBRUS_API_ATTENDANCE_TYPES)
         }
     }

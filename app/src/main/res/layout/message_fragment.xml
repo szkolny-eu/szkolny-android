@@ -2,21 +2,22 @@
 <!--
   ~ Copyright (c) Kuba Szczodrzyński 2019-11-12.
   -->
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorSurface_6dp"
             android:minHeight="?attr/actionBarSize"
-            android:orientation="horizontal"
-            android:background="@color/colorSurface_6dp">
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/closeButton"
@@ -55,7 +56,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:visibility="visible"
-            tools:visibility="gone"/>
+            tools:visibility="gone" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/content"
@@ -81,6 +82,7 @@
                     <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+
                         <ImageView
                             android:id="@+id/profileBackground"
                             android:layout_width="64dp"
@@ -112,26 +114,38 @@
                     <TextView
                         android:id="@+id/sender"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="?selectableItemBackground"
                         android:ellipsize="end"
                         android:maxLines="2"
+                        android:minHeight="64dp"
                         android:paddingHorizontal="8dp"
-                        android:paddingTop="12dp"
+                        android:paddingVertical="8dp"
                         android:textAppearance="@style/NavView.TextView.Subtitle"
                         tools:text="Allegro - wysyłamy duużo wiadomości!!! Masz nowe oferty! Możesz kupić nowego laptopa! Ale super! Ehh, to jest nadawca a nie temat więc nwm czemu to tutaj wpisałem" />
+
+                    <com.mikepenz.iconics.view.IconicsImageView
+                        android:id="@+id/messageStar"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:padding="4dp"
+                        app:iiv_color="?android:textColorSecondary"
+                        app:iiv_icon="cmd-star-outline"
+                        app:iiv_size="24dp"
+                        tools:background="@android:drawable/star_off" />
 
                     <TextView
                         android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="8dp"
+                        android:gravity="center_horizontal"
                         android:textAppearance="@style/NavView.TextView.Small"
-                        tools:text="14:26" />
-
+                        tools:text="20 lis 2021\n14:26" />
                 </LinearLayout>
 
                 <TextView
@@ -139,8 +153,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
-                    android:minHeight="250dp"
+                    android:minHeight="200dp"
                     android:paddingHorizontal="16dp"
+                    android:paddingBottom="32dp"
                     android:textIsSelectable="true"
                     tools:text="To jest treść wiadomości.\n\nZazwyczaj ma wiele linijek.\n\nTak" />
 
@@ -173,7 +188,7 @@
                     android:text="Załączniki:"
                     android:textAppearance="@style/NavView.TextView.Subtitle" />
 
-                <pl.szczodrzynski.edziennik.ui.modules.views.AttachmentsView
+                <pl.szczodrzynski.edziennik.ui.views.AttachmentsView
                     android:id="@+id/attachmentsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -183,128 +198,76 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="8dp"
-                    android:layout_marginVertical="8dp"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal"
                     android:visibility="visible"
                     tools:visibility="visible">
 
-                    <LinearLayout
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/replyButton"
-                        android:layout_width="match_parent"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_rounded_ripple"
-                        android:gravity="center"
-                        android:orientation="vertical"
                         android:paddingHorizontal="4dp"
-                        android:paddingVertical="8dp">
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/message_reply"
+                        android:textAllCaps="false"
+                        tools:drawableTop="@android:drawable/sym_action_email" />
 
-                        <com.mikepenz.iconics.view.IconicsImageView
-                            android:id="@+id/replyIcon"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            app:iiv_color="?android:textColorSecondary"
-                            app:iiv_icon="cmd-reply-outline"
-                            tools:srcCompat="@android:drawable/ic_menu_revert" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Odpowiedz"
-                            android:textAppearance="@style/NavView.TextView.Small" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/forwardButton"
-                        android:layout_width="match_parent"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_rounded_ripple"
-                        android:gravity="center"
-                        android:orientation="vertical"
                         android:paddingHorizontal="4dp"
-                        android:paddingVertical="8dp">
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/message_forward"
+                        android:textAllCaps="false"
+                        tools:drawableTop="@android:drawable/stat_sys_phone_call_forward" />
 
-                        <com.mikepenz.iconics.view.IconicsImageView
-                            android:id="@+id/forwardIcon"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            app:iiv_color="?android:textColorSecondary"
-                            app:iiv_icon="cmd-arrow-right"
-                            tools:srcCompat="@android:drawable/ic_media_ff" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Przekaż dalej"
-                            android:textAllCaps="false"
-                            android:textAppearance="@style/NavView.TextView.Small" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/deleteButton"
-                        android:layout_width="match_parent"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_rounded_ripple"
-                        android:gravity="center"
-                        android:orientation="vertical"
                         android:paddingHorizontal="4dp"
-                        android:paddingVertical="8dp"
-                        android:visibility="visible">
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/message_delete"
+                        android:textAllCaps="false"
+                        tools:drawableTop="@android:drawable/ic_menu_delete" />
 
-                        <com.mikepenz.iconics.view.IconicsImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            app:iiv_color="?android:textColorSecondary"
-                            app:iiv_icon="cmd-delete-outline"
-                            tools:srcCompat="@android:drawable/ic_menu_delete" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Usuń"
-                            android:textAppearance="@style/NavView.TextView.Small" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/downloadButton"
-                        android:layout_width="match_parent"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_rounded_ripple"
-                        android:gravity="center"
-                        android:orientation="vertical"
                         android:paddingHorizontal="4dp"
-                        android:paddingVertical="8dp"
-                        android:visibility="visible">
-
-                        <com.mikepenz.iconics.view.IconicsImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            app:iiv_color="?android:textColorSecondary"
-                            app:iiv_icon="cmd-download-outline"
-                            tools:srcCompat="@android:drawable/ic_menu_delete" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Pobierz ponownie"
-                            android:textAppearance="@style/NavView.TextView.Small" />
-
-                    </LinearLayout>
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/message_download"
+                        android:textAllCaps="false"
+                        android:visibility="gone"
+                        tools:drawableTop="@android:drawable/stat_sys_download" />
                 </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/notesButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/notes_button" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

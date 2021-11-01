@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-10-11.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/styles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bold"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/community_material_font_v5_8_55"
+                android:minWidth="48dp"
+                android:textSize="20sp"
+                app:iconPadding="0dp"
+                tools:text="\uf674" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/italic"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/community_material_font_v5_8_55"
+                android:minWidth="48dp"
+                android:textSize="20sp"
+                app:iconPadding="0dp"
+                tools:text="\uf691" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/underline"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/community_material_font_v5_8_55"
+                android:minWidth="48dp"
+                android:textSize="20sp"
+                app:iconPadding="0dp"
+                tools:text="\uf6c5" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/strike"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/community_material_font_v5_8_55"
+                android:minWidth="48dp"
+                android:textSize="20sp"
+                app:iconPadding="0dp"
+                tools:text="\uf6b1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/subscript"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/community_material_font_v5_8_55"
+                android:minWidth="48dp"
+                android:textSize="20sp"
+                app:iconPadding="0dp"
+                tools:text="\uf6b2" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/superscript"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/community_material_font_v5_8_55"
+                android:minWidth="48dp"
+                android:textSize="20sp"
+                app:iconPadding="0dp"
+                tools:text="\uf6b3" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </HorizontalScrollView>
+    <!-- TODO 2021-10-05: stack the group and button on top -->
+    <!-- android:layout_marginTop="-13dp" -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/clear"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:text="@string/styled_text_clear_button" />
+</LinearLayout>

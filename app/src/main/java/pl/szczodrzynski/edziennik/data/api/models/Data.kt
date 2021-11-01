@@ -7,11 +7,14 @@ import androidx.core.util.size
 import androidx.room.OnConflictStrategy
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Response
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.BuildConfig
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
 import pl.szczodrzynski.edziennik.data.api.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -403,7 +406,13 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         return subject
     }
 
-    fun getTeam(id: Long?, name: String, schoolCode: String, isTeamClass: Boolean = false): Team {
+    fun getTeam(
+        id: Long?,
+        name: String,
+        schoolCode: String,
+        isTeamClass: Boolean = false,
+        profileId: Int? = null,
+    ): Team {
         if (isTeamClass && teamClass != null)
             return teamClass as Team
         var team = teamList.singleOrNull { it.id == id }
@@ -414,7 +423,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
 
         if (team == null) {
             team = Team(
-                profileId,
+                profileId ?: this.profileId,
                 id ?: name.crc32(),
                 name,
                 if (isTeamClass) Team.TYPE_CLASS else Team.TYPE_VIRTUAL,
@@ -422,6 +431,8 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
                 -1
             )
             teamList[team.id] = team
+        } else if (id != null) {
+            team.id = id
         }
         return team
     }
@@ -437,19 +448,23 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     }
 
     fun getTeacherByLastFirst(nameLastFirst: String, loginId: String? = null): Teacher {
-        val nameParts = nameLastFirst.split(" ")
+        // comparing full name is safer than splitting and swapping
+        val teacher = teacherList.singleOrNull { it.fullNameLastFirst == nameLastFirst }
+        val nameParts = nameLastFirst.split(" ", limit = 2)
         return if (nameParts.size == 1)
-            getTeacher(nameParts[0], "", loginId)
+            validateTeacher(teacher, nameParts[0], "", loginId)
         else
-            getTeacher(nameParts[1], nameParts[0], loginId)
+            validateTeacher(teacher, nameParts[1], nameParts[0], loginId)
     }
 
     fun getTeacherByFirstLast(nameFirstLast: String, loginId: String? = null): Teacher {
-        val nameParts = nameFirstLast.split(" ")
+        // comparing full name is safer than splitting and swapping
+        val teacher = teacherList.singleOrNull { it.fullName == nameFirstLast }
+        val nameParts = nameFirstLast.split(" ", limit = 2)
         return if (nameParts.size == 1)
-            getTeacher(nameParts[0], "", loginId)
+            validateTeacher(teacher, nameParts[0], "", loginId)
         else
-            getTeacher(nameParts[0], nameParts[1], loginId)
+            validateTeacher(teacher, nameParts[0], nameParts[1], loginId)
     }
 
     fun getTeacherByFDotLast(nameFDotLast: String, loginId: String? = null): Teacher {

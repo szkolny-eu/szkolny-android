@@ -87,7 +87,7 @@
                         android:visibility="invisible"
                         tools:visibility="visible" />
 
-                    <pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceBar
+                    <pl.szczodrzynski.edziennik.ui.attendance.AttendanceBar
                         android:id="@+id/attendanceBar"
                         android:layout_width="0dp"
                         android:layout_height="20dp"
@@ -115,7 +115,7 @@
                             android:layout_height="wrap_content"
                             android:paddingBottom="8dp">
 
-                            <pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceView
+                            <pl.szczodrzynski.edziennik.ui.attendance.AttendanceView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 tools:background="@drawable/bg_rounded_4dp"
@@ -153,6 +153,7 @@
                     android:drawablePadding="16dp"
                     android:fontFamily="sans-serif-light"
                     android:gravity="center"
+                    android:padding="16dp"
                     android:text="@string/attendances_no_data"
                     android:textSize="24sp"
                     android:visibility="gone"

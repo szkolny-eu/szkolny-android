@@ -2,11 +2,11 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.5.20'
+        kotlin_version = '1.5.30'
 
         release = [
-                versionName: "4.10",
-                versionCode: 4100099
+                versionName: "4.11",
+                versionCode: 4110099
         ]
 
         setup = [
@@ -18,10 +18,10 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.10'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
@@ -37,11 +37,8 @@ allprojects {
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { url 'https://jitpack.io' }
-        maven { url "https://kotlin.bintray.com/kotlinx/" }
-        maven { url "https://dl.bintray.com/wulkanowy/wulkanowy" }
-        maven { url "https://dl.bintray.com/undervoid/PowerPermission" }
     }
 }
 

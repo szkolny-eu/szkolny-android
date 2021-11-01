@@ -5,13 +5,14 @@ package pl.szczodrzynski.edziennik.config.utils
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import pl.szczodrzynski.edziennik.getInt
-import pl.szczodrzynski.edziennik.ui.modules.home.HomeCardModel
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ui.home.HomeCardModel
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class ConfigGsonUtils {
+    @Suppress("UNCHECKED_CAST")
     fun <T> deserializeList(gson: Gson, str: String?, classOfT: Class<T>): List<T> {
-        val json = JsonParser().parse(str)
+        val json = JsonParser.parseString(str)
         val list: MutableList<T> = mutableListOf()
         if (!json.isJsonArray)
             return list

@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class VulcanHebeMain(
@@ -150,6 +151,15 @@ class VulcanHebeMain(
                     studentData["senderAddressName"] = senderAddressName
                     studentData["senderAddressHash"] = senderAddressHash
                     studentData["hebeContext"] = hebeContext
+
+                    // create the default TeamClass
+                    data.getTeam(
+                        id = null,
+                        name = studentClassName,
+                        schoolCode = schoolCode,
+                        isTeamClass = true,
+                        profileId = this.id,
+                    )
                 }
                 dateSemester1Start?.let {
                     newProfile.dateSemester1Start = it

@@ -11,11 +11,11 @@ import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.droidsonroids.jspoon.Jspoon
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.CufsCertificate
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.io.File
@@ -137,15 +137,50 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     }
                 }
 
+                val schoolSymbols = mutableListOf<String>()
+                val clientUrl = "://uonetplus-uczen.${data.webHost}/$symbol/"
+                var clientIndex = text.indexOf(clientUrl)
+                var count = 0
+                while (clientIndex != -1 && count < 100) {
+                    val startIndex = clientIndex + clientUrl.length
+                    val endIndex = text.indexOfAny(charArrayOf('"', '/'), startIndex = startIndex)
+                    val schoolSymbol = text.substring(startIndex, endIndex)
+                    schoolSymbols += schoolSymbol
+                    clientIndex = text.indexOf(clientUrl, startIndex = endIndex)
+                    count++
+                }
+                schoolSymbols.removeAll {
+                    it.lowercase() == "default"
+                            || !it.matches(Regexes.VULCAN_WEB_SYMBOL_VALIDATE)
+                }
+                
+                if (postErrors && schoolSymbols.isEmpty()) {
+                    data.error(ApiError(TAG, ERROR_VULCAN_WEB_NO_SCHOOLS)
+                            .withResponse(response)
+                            .withApiResponse(text))
+                    return
+                }
+
                 data.webPermissions = data.webPermissions.toMutableMap().also { map ->
                     val permissions = Regexes.VULCAN_WEB_PERMISSIONS.find(text)?.let { it[1] }
                     if (permissions?.isNotBlank() == true) {
-                        val studentId = permissions.split("|")
+                        val json = permissions.split("|")
                             .getOrNull(0)
                             ?.base64DecodeToString()
                             ?.toJsonObject()
+                        val unitIds = json
+                            ?.getJsonArray("Units")
+                            ?.asJsonObjectList()
+                            ?.filter { unit ->
+                                unit.getString("Symbol") in schoolSymbols
+                            }
+                            ?.mapNotNull { it.getInt("Id") } ?: emptyList()
+                        val studentId = json
                             ?.getJsonArray("AuthInfos")
                             ?.asJsonObjectList()
+                            ?.filter { authInfo ->
+                                authInfo.getInt("JednostkaSprawozdawczaId") in unitIds
+                            }
                             ?.flatMap { authInfo ->
                                 authInfo.getJsonArray("UczenIds")
                                     ?.map { it.asInt }
@@ -160,30 +195,6 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                         )
                     }
                     map[symbol] = permissions
-                }
-
-                val schoolSymbols = mutableListOf<String>()
-                val clientUrl = "://uonetplus-uczen.${data.webHost}/$symbol/"
-                var clientIndex = text.indexOf(clientUrl)
-                var count = 0
-                while (clientIndex != -1 && count < 100) {
-                    val startIndex = clientIndex + clientUrl.length
-                    val endIndex = text.indexOfAny(charArrayOf('"', '/'), startIndex = startIndex)
-                    val schoolSymbol = text.substring(startIndex, endIndex)
-                    schoolSymbols += schoolSymbol
-                    clientIndex = text.indexOf(clientUrl, startIndex = endIndex)
-                    count++
-                }
-                schoolSymbols.removeAll {
-                    it.toLowerCase() == "default"
-                            || !it.matches(Regexes.VULCAN_WEB_SYMBOL_VALIDATE)
-                }
-                
-                if (postErrors && schoolSymbols.isEmpty()) {
-                    data.error(ApiError(TAG, ERROR_VULCAN_WEB_NO_SCHOOLS)
-                            .withResponse(response)
-                            .withApiResponse(text))
-                    return
                 }
 
                 onSuccess(text, schoolSymbols)
@@ -280,7 +291,7 @@ open class VulcanWebMain(open val data: DataVulcan, open val lastSync: Long?) {
                     return
 
                 try {
-                    val json = JsonParser().parse(text).asJsonObject
+                    val json = JsonParser.parseString(text).asJsonObject
                     onSuccess(json, response)
                 } catch (e: Exception) {
                     data.error(ApiError(tag, EXCEPTION_VULCAN_WEB_REQUEST)

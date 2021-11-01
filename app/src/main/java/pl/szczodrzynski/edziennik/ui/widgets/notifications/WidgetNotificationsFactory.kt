@@ -11,8 +11,13 @@ import android.widget.AdapterView
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.google.gson.JsonParser
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
+import pl.szczodrzynski.edziennik.ext.getInt
+import pl.szczodrzynski.edziennik.ext.getLong
+import pl.szczodrzynski.edziennik.ext.getNotificationTitle
+import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -51,7 +56,7 @@ class WidgetNotificationsFactory(val app: App, val config: WidgetConfig) : Remot
                     getString("profileName"),
                     getInt("posted") == 1,
                     getInt("viewId"),
-                    getString("extras")?.let { JsonParser().parse(it).asJsonObject },
+                    getString("extras")?.let { JsonParser.parseString(it).asJsonObject },
                     getLong("addedDate") ?: System.currentTimeMillis()
             )
         } ?: return views

@@ -9,7 +9,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.util.Base64
 import pl.szczodrzynski.edziennik.BuildConfig
-import pl.szczodrzynski.edziennik.sha256
+import pl.szczodrzynski.edziennik.ext.sha256
 import java.security.MessageDigest
 
 object Signing {
@@ -39,13 +39,13 @@ object Signing {
     val appPassword by lazy {
         iLoveApple(
                 "ThisIsOurHardWorkPleaseDoNotCopyOrSteal(c)2019.KubaSz".sha256(),
-                BuildConfig.VERSION_NAME.substringBeforeLast('+'),
+                BuildConfig.VERSION_BASE.substringBeforeLast('+'),
                 BuildConfig.VERSION_CODE.toLong()
         )
     }
 
     /*fun provideKey(param1: String, param2: Long): ByteArray {*/
     fun pleaseStopRightNow(param1: String, param2: Long): ByteArray {
-        return "$param1.MTIzNDU2Nzg5MDY8+Uq3So===.$param2".sha256()
+        return "$param1.MTIzNDU2Nzg5MDlc1YQl9S===.$param2".sha256()
     }
 }

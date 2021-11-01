@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.Team
+import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusApiVirtualClasses(override val data: DataLibrus,
                               override val lastSync: Long?,
@@ -31,7 +32,7 @@ class LibrusApiVirtualClasses(override val data: DataLibrus,
                 data.teamList.put(id, Team(profileId, id, name, 2, code, teacherId))
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES, 4*DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES, 4* DAY)
             onSuccess(ENDPOINT_LIBRUS_API_VIRTUAL_CLASSES)
         }
     }

@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_CLASSROOMS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.Classroom
+import pl.szczodrzynski.edziennik.ext.*
 import java.util.*
 
 class LibrusApiClassrooms(override val data: DataLibrus,
@@ -25,8 +26,8 @@ class LibrusApiClassrooms(override val data: DataLibrus,
 
             classrooms?.forEach { classroom ->
                 val id = classroom.getLong("Id") ?: return@forEach
-                val name = classroom.getString("Name")?.toLowerCase(Locale.getDefault()) ?: ""
-                val symbol = classroom.getString("Symbol")?.toLowerCase(Locale.getDefault()) ?: ""
+                val name = classroom.getString("Name")?.lowercase() ?: ""
+                val symbol = classroom.getString("Symbol")?.lowercase() ?: ""
                 val nameShort = name.fixWhiteSpaces().split(" ").onEach { it[0] }.joinToString()
                 val symbolParts = symbol.fixWhiteSpaces().split(" ")
 
@@ -40,7 +41,7 @@ class LibrusApiClassrooms(override val data: DataLibrus,
                 data.classrooms.put(id, Classroom(profileId, id, friendlyName))
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_CLASSROOMS, 4*DAY)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_CLASSROOMS, 4* DAY)
             onSuccess(ENDPOINT_LIBRUS_API_CLASSROOMS)
         }
     }

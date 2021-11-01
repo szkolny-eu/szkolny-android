@@ -9,7 +9,7 @@ import androidx.room.Entity;
 
 import java.util.List;
 
-import pl.szczodrzynski.edziennik.ExtensionsKt;
+import pl.szczodrzynski.edziennik.ext.GraphicsExtensionsKt;
 
 @Entity(tableName = "subjects",
         primaryKeys = {"profileId", "subjectId"})
@@ -31,7 +31,7 @@ public class Subject {
         this.id = id;
         this.longName = longName;
         this.shortName = shortName;
-        this.color = ExtensionsKt.colorFromName(longName);
+        this.color = GraphicsExtensionsKt.colorFromName(longName);
     }
 
     @Override

@@ -35,13 +35,17 @@ import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.data.api.events.ProfileListEmptyEvent
+import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ext.MS
+import pl.szczodrzynski.edziennik.ext.setLanguage
 import pl.szczodrzynski.edziennik.network.cookie.DumbCookieJar
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
-import pl.szczodrzynski.edziennik.ui.modules.base.CrashActivity
+import pl.szczodrzynski.edziennik.ui.base.CrashActivity
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.*
@@ -63,6 +67,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         var devMode = false
     }
 
+    val api by lazy { SzkolnyApi(this) }
     val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
     val userActionManager by lazy { UserActionManager(this) }
     val gradesManager by lazy { GradesManager(this) }
@@ -72,6 +77,9 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     val attendanceManager by lazy { AttendanceManager(this) }
     val buildManager by lazy { BuildManager(this) }
     val availabilityManager by lazy { AvailabilityManager(this) }
+    val textStylingManager by lazy { TextStylingManager(this) }
+    val messageManager by lazy { MessageManager(this) }
+    val noteManager by lazy { NoteManager(this) }
 
     val db
         get() = App.db

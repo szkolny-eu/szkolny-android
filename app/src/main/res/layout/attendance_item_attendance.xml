@@ -22,7 +22,7 @@
         android:orientation="horizontal"
         android:paddingVertical="8dp">
 
-        <pl.szczodrzynski.edziennik.ui.modules.attendance.AttendanceView
+        <pl.szczodrzynski.edziennik.ui.attendance.AttendanceView
             android:id="@+id/attendanceView"
             android:layout_width="36dp"
             android:layout_height="36dp"
@@ -52,7 +52,7 @@
             tools:text="Nieobecność nieusprawiedliwiona" />
 
 
-        <TextView
+        <com.mikepenz.iconics.view.IconicsTextView
             android:id="@+id/subjectName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

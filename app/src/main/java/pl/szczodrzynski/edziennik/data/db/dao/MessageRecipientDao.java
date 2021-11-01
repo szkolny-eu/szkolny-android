@@ -4,8 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.db.dao;
 
-import java.util.List;
-
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -14,6 +12,8 @@ import androidx.room.RawQuery;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
+import java.util.List;
+
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient;
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull;
 
@@ -21,6 +21,9 @@ import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull;
 public abstract class MessageRecipientDao {
     @Query("DELETE FROM messageRecipients WHERE profileId = :profileId")
     public abstract void clear(int profileId);
+
+    @Query("DELETE FROM messageRecipients WHERE profileId = :profileId AND messageId = :messageId")
+    public abstract void clearFor(int profileId, long messageId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract long add(MessageRecipient messageRecipient);

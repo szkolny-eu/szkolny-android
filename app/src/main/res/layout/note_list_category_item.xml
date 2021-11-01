@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2021-10-27.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="8dp"
+        android:drawableLeftAutoSize="@{true}"
+        android:drawablePadding="8dp"
+        android:textAppearance="@style/NavView.TextView.Large"
+        android:textSize="28sp"
+        tools:drawableStartCompat="@drawable/ic_grade"
+        tools:layout_height="32sp"
+        tools:text="Ocena" />
+</layout>

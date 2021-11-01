@@ -11,7 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApiException
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
-import pl.szczodrzynski.edziennik.toErrorCode
+import pl.szczodrzynski.edziennik.ext.toErrorCode
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class AppSync(val app: App, val notifications: MutableList<Notification>, val profiles: List<Profile>, val api: SzkolnyApi) {
@@ -30,7 +30,7 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
      */
     fun run(lastSyncTime: Long, markAsSeen: Boolean = false): Int {
         val blacklistedIds = app.db.eventDao().blacklistedIds
-        val events = try {
+        val (events, notes) = try {
             api.getEvents(profiles, notifications, blacklistedIds, lastSyncTime)
         } catch (e: SzkolnyApiException) {
             if (e.toErrorCode() == ERROR_API_INVALID_SIGNATURE)
@@ -39,6 +39,10 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
         }
 
         app.config.sync.lastAppSync = System.currentTimeMillis()
+
+        if (notes.isNotEmpty()) {
+            app.db.noteDao().addAll(notes)
+        }
 
         if (events.isNotEmpty()) {
             val today = Date.getToday()
@@ -54,6 +58,6 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
             })
             return app.db.eventDao().upsertAll(events).size
         }
-        return 0;
+        return 0
     }
 }

@@ -6,8 +6,8 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.getById
-import pl.szczodrzynski.edziennik.values
+import pl.szczodrzynski.edziennik.ext.getById
+import pl.szczodrzynski.edziennik.ext.values
 
 class MobidziennikApiTeams(val data: DataMobidziennik, tableTeams: List<String>?, tableRelations: List<String>?) {
     init {
@@ -35,7 +35,6 @@ class MobidziennikApiTeams(val data: DataMobidziennik, tableTeams: List<String>?
         }
         if (tableRelations != null) {
             val allTeams = data.teamList.values()
-            data.teamList.clear()
 
             for (row in tableRelations) {
                 if (row.isEmpty())

@@ -6,7 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.szkolny
 
 import pl.szczodrzynski.edziennik.data.api.szkolny.request.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.*
-import pl.szczodrzynski.edziennik.ui.modules.login.LoginInfo
+import pl.szczodrzynski.edziennik.ui.login.LoginInfo
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -17,6 +17,9 @@ interface SzkolnyService {
 
     @POST("share")
     fun shareEvent(@Body request: EventShareRequest): Call<ApiResponse<Unit>>
+
+    @POST("share")
+    fun shareNote(@Body request: NoteShareRequest): Call<ApiResponse<Unit>>
 
     @POST("webPush")
     fun webPush(@Body request: WebPushRequest): Call<ApiResponse<WebPushResponse>>

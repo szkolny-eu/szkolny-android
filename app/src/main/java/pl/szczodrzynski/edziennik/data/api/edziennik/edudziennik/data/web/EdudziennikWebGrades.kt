@@ -6,8 +6,6 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.data.web
 
 import android.graphics.Color
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.colorFromCssName
-import pl.szczodrzynski.edziennik.crc32
 import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.DataEdudziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.ENDPOINT_EDUDZIENNIK_WEB_GRADES
@@ -22,7 +20,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
-import pl.szczodrzynski.edziennik.get
+import pl.szczodrzynski.edziennik.ext.colorFromCssName
+import pl.szczodrzynski.edziennik.ext.crc32
+import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -67,13 +67,13 @@ class EdudziennikWebGrades(override val data: DataEdudziennik,
 
                 val gradeValues = if (grades.isNotEmpty()) {
                     subjects.select(".avg-$subjectId .grade-tip > p").first()
-                            .text().split('+').map {
+                            ?.text()?.split('+')?.map {
                                 val split = it.split('*')
                                 val value = split[1].trim().toFloatOrNull()
                                 val weight = value?.let { split[0].trim().toFloatOrNull() } ?: 0f
 
                                 Pair(value ?: 0f, weight)
-                            }
+                            } ?: emptyList()
                 } else emptyList()
 
                 grades.forEachIndexed { index, gradeElement ->

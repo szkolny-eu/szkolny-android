@@ -5,12 +5,12 @@
 package pl.szczodrzynski.edziennik.data.api.task
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.HOUR
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.HOUR
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class SzkolnyTask(val app: App, val syncingProfiles: List<Profile>) : IApiTask(-1) {
@@ -31,12 +31,12 @@ class SzkolnyTask(val app: App, val syncingProfiles: List<Profile>) : IApiTask(-
         val notifications = Notifications(app, notificationList, profiles)
         notifications.run()
 
-        val appSyncProfiles = profiles.filter { it.registration == Profile.REGISTRATION_ENABLED && !it.archived }
+        val appSyncProfiles = profiles.filter { it.canShare }
         // App Sync conditions:
         //    - every 24 hours && any profile is registered
         //    - if there are new notifications && any browser is paired
         val shouldAppSync =
-                System.currentTimeMillis() - app.config.sync.lastAppSync > 24*HOUR*1000
+                System.currentTimeMillis() - app.config.sync.lastAppSync > 24* HOUR *1000
                         && appSyncProfiles.isNotEmpty()
                         || notificationList.isNotEmpty()
                         && app.config.sync.webPushEnabled

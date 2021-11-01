@@ -22,7 +22,7 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
-import pl.szczodrzynski.edziennik.data.db.entity.Team
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -90,41 +90,31 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
 
     fun getTeamId(json: JsonObject?, key: String): Long? {
         val team = json.getJsonObject(key)
-        val teamId = team.getLong("Id") ?: return null
-        if (data.teamList[teamId] == null) {
-            var name = team.getString("Shortcut")
-                ?: team.getString("Name")
-                ?: ""
-            name = "${profile?.studentClassName ?: ""} $name"
-            data.teamList[teamId] = Team(
-                data.profileId,
-                teamId,
-                name,
-                Team.TYPE_VIRTUAL,
-                "${data.schoolCode}:$name",
-                -1
-            )
-        }
-        return teamId
+        val teamId = team.getLong("Id")
+        var teamName = team.getString("Shortcut")
+            ?: team.getString("Name")
+            ?: ""
+        teamName = "${profile?.studentClassName ?: ""} $teamName"
+        return data.getTeam(
+            id = teamId,
+            name = teamName,
+            schoolCode = data.schoolCode ?: "",
+            isTeamClass = false,
+        ).id
     }
 
     fun getClassId(json: JsonObject?, key: String): Long? {
         val team = json.getJsonObject(key)
-        val teamId = team.getLong("Id") ?: return null
-        if (data.teamList[teamId] == null) {
-            val name = data.profile?.studentClassName
-                ?: team.getString("Name")
-                ?: ""
-            data.teamList[teamId] = Team(
-                data.profileId,
-                teamId,
-                name,
-                Team.TYPE_CLASS,
-                "${data.schoolCode}:$name",
-                -1
-            )
-        }
-        return teamId
+        val teamId = team.getLong("Id")
+        val teamName = data.profile?.studentClassName
+            ?: team.getString("Name")
+            ?: ""
+        return data.getTeam(
+            id = teamId,
+            name = teamName,
+            schoolCode = data.schoolCode ?: "",
+            isTeamClass = true,
+        ).id
     }
 
     fun getLessonRange(json: JsonObject?, key: String): LessonRange? {

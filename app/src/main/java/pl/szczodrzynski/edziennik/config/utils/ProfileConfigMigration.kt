@@ -7,6 +7,8 @@ package pl.szczodrzynski.edziennik.config.utils
 import pl.szczodrzynski.edziennik.config.ProfileConfig
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.AGENDA_DEFAULT
+import pl.szczodrzynski.edziennik.ui.home.HomeCard
+import pl.szczodrzynski.edziennik.ui.home.HomeCardModel
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.COLOR_MODE_WEIGHTED
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_ALL_GRADES
 
@@ -32,6 +34,16 @@ class ProfileConfigMigration(config: ProfileConfig) {
             sync.notificationFilter = sync.notificationFilter + Notification.TYPE_TEACHER_ABSENCE
 
             dataVersion = 2
+        }
+
+        if (dataVersion < 3) {
+            if (ui.homeCards.isNotEmpty()) {
+                ui.homeCards = ui.homeCards.toMutableList().also {
+                    it.add(HomeCardModel(config.profileId, HomeCard.CARD_NOTES))
+                }
+            }
+
+            dataVersion = 3
         }
     }}
 }
