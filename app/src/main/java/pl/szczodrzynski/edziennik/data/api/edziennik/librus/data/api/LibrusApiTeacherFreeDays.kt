@@ -36,13 +36,12 @@ class LibrusApiTeacherFreeDays(override val data: DataLibrus,
                 val id = teacherAbsence.getLong("Id") ?: return@forEach
                 val teacherId = teacherAbsence.getJsonObject("Teacher")?.getLong("Id")
                         ?: return@forEach
-                val type = teacherAbsence.getJsonObject("Teacher")?.getLong("Id")
-                    ?: return@forEach
+                val type = "-1".toLong()
                 val name = data.teacherAbsenceTypes.singleOrNull { it.id == type }?.name
                 val dateFrom = Date.fromY_m_d(teacherAbsence.getString("DateFrom"))
                 val dateTo = Date.fromY_m_d(teacherAbsence.getString("DateTo"))
-                val timeFrom = teacherAbsence.getString("DateFrom")?.let { Time.fromH_m_s(it) }
-                val timeTo = teacherAbsence.getString("DateTo")?.let { Time.fromH_m_s(it) }
+                val timeFrom = null
+                val timeTo = null
 
                 val teacherAbsenceObject = TeacherAbsence(
                         profileId = profileId,
