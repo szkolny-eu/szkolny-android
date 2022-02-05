@@ -40,23 +40,29 @@ class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
 
             val doc = Jsoup.parse(text)
 
+            val today = Date.getToday()
+            var currentYear = today.year
+            var currentMonth = today.month
+
             val list = doc.getElementsByClass("spis").first()?.getElementsByClass("podswietl")
             list?.forEach { item ->
                 val id = item.attr("rel").toLongOrNull() ?: return@forEach
 
                 val subjectEl = item.select("td:eq(0)").first()
-                var hasAttachments = false
-                if (subjectEl?.getElementsByTag("a")?.size ?: 0 > 0) {
-                    hasAttachments = true
-                }
                 val subject = subjectEl?.ownText() ?: ""
 
-                val readByString = item.select("td:eq(2)").first()?.text() ?: ""
+                val attachmentsEl = item.select("td:eq(1)").first()
+                var hasAttachments = false
+                if (attachmentsEl?.getElementsByTag("a")?.size ?: 0 > 0) {
+                    hasAttachments = true
+                }
+
+                val readByString = item.select("td:eq(4)").first()?.text() ?: ""
                 val (readBy, sentTo) = Regexes.MOBIDZIENNIK_MESSAGE_SENT_READ_BY.find(readByString).let {
                     (it?.get(1)?.toIntOrNull() ?: 0) to (it?.get(2)?.toIntOrNull() ?: 0)
                 }
 
-                val recipientEl = item.select("td:eq(1) a span").first()
+                val recipientEl = item.select("td:eq(2) a span").first()
                 val recipientNames = recipientEl?.ownText()?.split(", ")
                 val readState = when (readBy) {
                     0 -> 0
@@ -69,8 +75,13 @@ class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
                     data.messageRecipientIgnoreList.add(MessageRecipient(profileId, recipientId, -1, readState, id))
                 }
 
-                val addedDateEl = item.select("td:eq(3) small").first()
-                val addedDate = Date.fromIsoHm(addedDateEl?.text())
+                val addedDateEl = item.select("td:eq(3)").first()
+                val (date, time) = data.parseDateTime(addedDateEl?.text()?.trim() ?: "")
+                if (date.month > currentMonth) {
+                    currentYear--
+                }
+                currentMonth = date.month
+                date.year = currentYear
 
                 val message = Message(
                         profileId = profileId,
@@ -79,7 +90,7 @@ class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
                         subject = subject,
                         body = null,
                         senderId = null,
-                        addedDate = addedDate
+                        addedDate = date.combineWith(time)
                 )
 
                 if (hasAttachments)

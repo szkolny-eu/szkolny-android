@@ -7,10 +7,12 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik
 import android.util.LongSparseArray
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_MOBIDZIENNIK_WEB
+import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.ext.currentTimeUnix
+import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -34,6 +36,31 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
     }
 
     override fun generateUserCode() = "$loginServerName:$loginUsername:$studentId"
+
+    fun parseDateTime(dateStr: String): Pair<Date, Time> {
+        // pt, 4 lut, 09:11
+        val dateParts = dateStr.split(',', ' ').filter { it.isNotEmpty() }
+        // [pt], [4], [lut], [09:11]
+        val date = Date.getToday()
+        date.day = dateParts[1].toIntOrNull() ?: 1
+        date.month = when (dateParts[2]) {
+            "sty" -> 1
+            "lut" -> 2
+            "mar" -> 3
+            "kwi" -> 4
+            "maj" -> 5
+            "cze" -> 6
+            "lip" -> 7
+            "sie" -> 8
+            "wrz" -> 9
+            "paź" -> 10
+            "lis" -> 11
+            "gru" -> 12
+            else -> 1
+        }
+        val time = Time.fromH_m(dateParts[3])
+        return date to time
+    }
 
     val teachersMap = LongSparseArray<String>()
     val subjectsMap = LongSparseArray<String>()
