@@ -348,7 +348,7 @@
     <string name="event_information">information</string>
     <string name="event_list_added_by_format">Added %1$s by %2$s%3$s</string>
     <string name="event_list_added_by_self_format">Added %1$s by you%3$s</string>
-    <string name="event_list_added_by_unknown_format">Adde %1$s%3$s</string>
+    <string name="event_list_added_by_unknown_format">Added %1$s%3$s</string>
     <string name="event_list_shared_by_format">{cmd-share-variant} %1$s by %2$s%3$s</string>
     <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s by you%3$s</string>
     <string name="event_manual_remove">Removing event…</string>
