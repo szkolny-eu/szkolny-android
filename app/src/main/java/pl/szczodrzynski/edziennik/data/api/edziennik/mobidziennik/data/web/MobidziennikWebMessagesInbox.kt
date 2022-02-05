@@ -36,6 +36,10 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
 
             val doc = Jsoup.parse(text)
 
+            val today = Date.getToday()
+            var currentYear = today.year
+            var currentMonth = today.month
+
             val list = doc.getElementsByClass("spis").first()?.getElementsByClass("podswietl")
             list?.forEach { item ->
                 val id = item.attr("rel").toLongOrNull() ?: return@forEach
@@ -47,15 +51,20 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
                 }
                 val subject = subjectEl?.ownText() ?: ""
 
-                val addedDateEl = item.select("td:eq(1) small").first()
-                val addedDate = Date.fromIsoHm(addedDateEl?.text())
+                val addedDateEl = item.select("td:eq(4)").first()
+                val (date, time) = data.parseDateTime(addedDateEl?.text()?.trim() ?: "")
+                if (date.month > currentMonth) {
+                    currentYear--
+                }
+                currentMonth = date.month
+                date.year = currentYear
 
-                val senderEl = item.select("td:eq(2)").first()
+                val senderEl = item.select("td:eq(3)").first()
                 val senderName = senderEl?.ownText().fixName()
                 val senderId = data.teacherList.singleOrNull { it.fullNameLastFirst == senderName }?.id
                 data.messageRecipientIgnoreList.add(MessageRecipient(profileId, -1, id))
 
-                val isRead = item.select("td:eq(3) span").first()?.hasClass("wiadomosc_przeczytana") == true
+                val isRead = item.select("td:eq(5) span").first()?.hasClass("wiadomosc_przeczytana") == true
 
                 val message = Message(
                         profileId = profileId,
@@ -64,7 +73,7 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
                         subject = subject,
                         body = null,
                         senderId = senderId,
-                        addedDate = addedDate
+                        addedDate = date.combineWith(time)
                 )
 
                 if (hasAttachments)

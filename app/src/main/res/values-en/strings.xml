@@ -348,7 +348,7 @@
     <string name="event_information">information</string>
     <string name="event_list_added_by_format">Added %1$s by %2$s%3$s</string>
     <string name="event_list_added_by_self_format">Added %1$s by you%3$s</string>
-    <string name="event_list_added_by_unknown_format">Adde %1$s%3$s</string>
+    <string name="event_list_added_by_unknown_format">Added %1$s%3$s</string>
     <string name="event_list_shared_by_format">{cmd-share-variant} %1$s by %2$s%3$s</string>
     <string name="event_list_shared_by_self_format">{cmd-share-variant} %1$s by you%3$s</string>
     <string name="event_manual_remove">Removing event…</string>
@@ -859,7 +859,7 @@
     <string name="settings_about_licenses_text">Open-source licenses</string>
     <string name="settings_about_privacy_policy_text">Privacy policy</string>
     <string name="settings_card_register_title">E-register</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - October 2021</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - 2022</string>
     <string name="settings_about_update_subtext">Click to check for updates</string>
     <string name="settings_about_update_text">Update</string>
     <string name="settings_about_version_text">Version</string>
