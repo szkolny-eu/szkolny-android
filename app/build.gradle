@@ -69,9 +69,6 @@ android {
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
-    lintOptions {
-        checkReleaseBuilds = false
-    }
     buildFeatures {
         dataBinding = true
         viewBinding = true
@@ -85,13 +82,18 @@ android {
         jvmTarget = "1.8"
     }
     packagingOptions {
-        exclude 'META-INF/library-core_release.kotlin_module'
+        resources {
+            excludes += ['META-INF/library-core_release.kotlin_module']
+        }
     }
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
             version "3.10.2"
         }
+    }
+    lint {
+        checkReleaseBuilds false
     }
 }
 
