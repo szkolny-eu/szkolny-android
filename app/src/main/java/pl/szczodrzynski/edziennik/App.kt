@@ -26,8 +26,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.hypertrack.hyperlog.HyperLog
 import com.mikepenz.iconics.Iconics
-import eu.szkolny.sslprovider.SSLProvider
-import eu.szkolny.sslprovider.enableSupportedTls
 import im.wangchao.mhttp.MHttp
 import kotlinx.coroutines.*
 import me.leolin.shortcutbadger.ShortcutBadger
@@ -42,6 +40,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.MS
 import pl.szczodrzynski.edziennik.ext.setLanguage
+import pl.szczodrzynski.edziennik.network.SSLProviderInstaller
 import pl.szczodrzynski.edziennik.network.cookie.DumbCookieJar
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
@@ -49,7 +48,6 @@ import pl.szczodrzynski.edziennik.ui.base.CrashActivity
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.*
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
@@ -119,7 +117,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             .connectTimeout(15, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
-            .enableSupportedTls(enableCleartext = true)
+
+        SSLProviderInstaller.enableSupportedTls(builder, enableCleartext = true)
 
         if (devMode) {
             HyperLog.initialize(this)
@@ -203,18 +202,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             withContext(Dispatchers.Default) {
                 config.migrate(this@App)
 
-                SSLProvider.install(
-                    applicationContext,
-                    downloadIfNeeded = true,
-                    supportTls13 = false,
-                    onFinish = {
-                        buildHttp()
-                    },
-                    onError = {
-                        Timber.e("Failed to install SSLProvider: $it")
-                        it.printStackTrace()
-                    }
-                )
+                SSLProviderInstaller.install(applicationContext, this@App::buildHttp)
 
                 if (config.devModePassword != null)
                     checkDevModePassword()
