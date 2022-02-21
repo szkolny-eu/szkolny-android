@@ -62,6 +62,8 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
     private var firstEventMinute = 24 * 60
     private var paddingTop = 0
 
+    private var viewsRemoved = false
+
     private val manager
         get() = app.timetableManager
     private val attendanceManager
@@ -127,6 +129,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             inflater.inflate(R.layout.timetable_no_timetable, b.root) { view, _, _ ->
                 b.root.removeAllViews()
                 b.root.addView(view)
+                viewsRemoved = true
 
                 val b = TimetableNoTimetableBinding.bind(view)
                 val weekStart = date.weekStart.stringY_m_d
@@ -151,6 +154,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             inflater.inflate(R.layout.timetable_no_lessons, b.root) { view, _, _ ->
                 b.root.removeAllViews()
                 b.root.addView(view)
+                viewsRemoved = true
             }
             return
         }
@@ -159,6 +163,13 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         if (app.profile.getStudentData("timetableNotPublic", false)) {
             activity.reloadTarget()
             // TODO fix for (not really)possible infinite loops
+            return
+        }
+
+        // the timetable was not synced (the day layout views are removed) and is now available
+        if (viewsRemoved) {
+            viewsRemoved = false
+            activity.sendBroadcast(Intent(TimetableFragment.ACTION_RELOAD_PAGES))
             return
         }
 

@@ -41,6 +41,7 @@ android {
 
     buildTypes {
         debug {
+            getIsDefault().set(true)
             minifyEnabled = false
             manifestPlaceholders = [
                     buildTimestamp: 0
@@ -55,7 +56,8 @@ android {
     }
     flavorDimensions "platform"
     productFlavors {
-        main {
+        unofficial {
+            getIsDefault().set(true)
             versionName "${release.versionName}-${gitInfo.versionSuffix}"
         }
         official {}
@@ -63,7 +65,18 @@ android {
     }
     variantFilter { variant ->
         def flavors = variant.flavors*.name
-        setIgnore(variant.buildType.name == "debug" && !flavors.contains("main"))
+        setIgnore(variant.buildType.name == "debug" && !flavors.contains("unofficial") || flavors.contains("main"))
+    }
+    sourceSets {
+        unofficial {
+            java.srcDirs = ["src/main/java", "src/play-not/java"]
+        }
+        official {
+            java.srcDirs = ["src/main/java", "src/play-not/java"]
+        }
+        play {
+            java.srcDirs = ["src/main/java", "src/play/java"]
+        }
     }
 
     defaultConfig {
@@ -170,7 +183,8 @@ dependencies {
     implementation "eu.szkolny:mhttp:af4b62e6e9"
     implementation "eu.szkolny:nachos:0e5dfcaceb"
     implementation "eu.szkolny.selective-dao:annotation:27f8f3f194"
-    implementation "eu.szkolny:ssl-provider:1.0.0"
+    officialImplementation "eu.szkolny:ssl-provider:1.0.0"
+    unofficialImplementation "eu.szkolny:ssl-provider:1.0.0"
     implementation "pl.szczodrzynski:navlib:0.8.0"
     implementation "pl.szczodrzynski:numberslidingpicker:2921225f76"
     implementation "pl.szczodrzynski:recyclertablayout:700f980584"
