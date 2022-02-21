@@ -36,6 +36,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
     companion object {
         private const val TAG = "TimetableFragment"
         const val ACTION_SCROLL_TO_DATE = "pl.szczodrzynski.edziennik.timetable.SCROLL_TO_DATE"
+        const val ACTION_RELOAD_PAGES = "pl.szczodrzynski.edziennik.timetable.RELOAD_PAGES"
         const val DEFAULT_START_HOUR = 6
         const val DEFAULT_END_HOUR = 19
         var pageSelection: Date? = null
@@ -66,14 +67,22 @@ class TimetableFragment : Fragment(), CoroutineScope {
         override fun onReceive(context: Context, i: Intent) {
             if (!isAdded)
                 return
-            val dateStr = i.extras?.getString("timetableDate", null) ?: return
-            val date = Date.fromY_m_d(dateStr)
-            b.viewPager.setCurrentItem(items.indexOf(date), true)
+            when (i.action) {
+                ACTION_SCROLL_TO_DATE -> {
+                    val dateStr = i.extras?.getString("timetableDate", null) ?: return
+                    val date = Date.fromY_m_d(dateStr)
+                    b.viewPager.setCurrentItem(items.indexOf(date), true)
+                }
+                ACTION_RELOAD_PAGES -> {
+                    b.viewPager.adapter?.notifyDataSetChanged()
+                }
+            }
         }
     }
     override fun onResume() {
         super.onResume()
         activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_SCROLL_TO_DATE))
+        activity.registerReceiver(broadcastReceiver, IntentFilter(ACTION_RELOAD_PAGES))
     }
     override fun onPause() {
         super.onPause()
