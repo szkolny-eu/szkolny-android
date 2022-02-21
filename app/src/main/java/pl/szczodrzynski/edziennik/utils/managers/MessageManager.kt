@@ -72,6 +72,9 @@ class MessageManager(private val app: App) {
                 if (sentDate > 0L) {
                     it.addedDate = sentDate
                 }
+                withContext(Dispatchers.IO) {
+                    it.recipients = app.db.messageRecipientDao().getAllByMessageId(profileId, it.id)
+                }
             }
         } else {
             withContext(Dispatchers.IO) {
