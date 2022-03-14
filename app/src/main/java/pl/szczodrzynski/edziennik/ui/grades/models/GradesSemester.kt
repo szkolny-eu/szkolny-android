@@ -14,6 +14,7 @@ data class GradesSemester(
     override var level = 2
 
     var hasUnseen = false
+    var hideEditor = false
 
     val averages = GradesAverages()
     var proposedGrade: GradeFull? = null

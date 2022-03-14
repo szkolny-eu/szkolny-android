@@ -36,6 +36,7 @@ class GradesAdapter(
         private const val ITEM_TYPE_EMPTY = 2
         private const val ITEM_TYPE_GRADE = 3
         private const val ITEM_TYPE_STATS = 4
+        private const val ITEM_TYPE_UNKNOWN_SUBJECT = 5
         const val STATE_CLOSED = 0
         const val STATE_OPENED = 1
     }
@@ -58,6 +59,7 @@ class GradesAdapter(
             ITEM_TYPE_EMPTY -> EmptyViewHolder(inflater, parent)
             ITEM_TYPE_GRADE -> GradeViewHolder(inflater, parent)
             ITEM_TYPE_STATS -> StatsViewHolder(inflater, parent)
+            ITEM_TYPE_UNKNOWN_SUBJECT -> UnknownSubjectViewHolder(inflater, parent)
             else -> throw IllegalArgumentException("Incorrect viewType")
         }
     }
@@ -69,6 +71,7 @@ class GradesAdapter(
             is GradesEmpty -> ITEM_TYPE_EMPTY
             is Grade -> ITEM_TYPE_GRADE
             is GradesStats -> ITEM_TYPE_STATS
+            is GradesUnknownSubject -> ITEM_TYPE_UNKNOWN_SUBJECT
             else -> throw IllegalArgumentException("Incorrect viewType")
         }
     }
@@ -86,7 +89,7 @@ class GradesAdapter(
 
     fun expandModel(model: ExpandableItemModel<*>?, view: View?, notifyAdapter: Boolean = true) {
         model ?: return
-        val position = items.indexOf(model)
+        var position = items.indexOf(model)
         if (position == -1)
             return
 
@@ -138,9 +141,16 @@ class GradesAdapter(
                 else -> model.items
             }
 
+            if (model is GradesSubject && model.isUnknown) {
+                position++
+                items.add(position, GradesUnknownSubject())
+                if (notifyAdapter) notifyItemInserted(position)
+            }
+
+            position++
             model.state = STATE_OPENED
-            items.addAll(position + 1, subItems.filterNotNull())
-            if (notifyAdapter) notifyItemRangeInserted(position + 1, subItems.size)
+            items.addAll(position, subItems.filterNotNull())
+            if (notifyAdapter) notifyItemRangeInserted(position, subItems.size)
 
             if (model is GradesSubject) {
                 // auto expand first semester
@@ -156,9 +166,10 @@ class GradesAdapter(
                         else -> semester.grades
                     }
 
+                    position++
                     semester.state = STATE_OPENED
-                    items.addAll(position + 2 + semesterIndex, grades)
-                    if (notifyAdapter) notifyItemRangeInserted(position + 2 + semesterIndex, grades.size)
+                    items.addAll(position + semesterIndex, grades)
+                    if (notifyAdapter) notifyItemRangeInserted(position + semesterIndex, grades.size)
                 }
             }
         }
@@ -198,6 +209,7 @@ class GradesAdapter(
             is EmptyViewHolder -> ITEM_TYPE_EMPTY
             is GradeViewHolder -> ITEM_TYPE_GRADE
             is StatsViewHolder -> ITEM_TYPE_STATS
+            is UnknownSubjectViewHolder -> ITEM_TYPE_UNKNOWN_SUBJECT
             else -> throw IllegalArgumentException("Incorrect viewType")
         }
         holder.itemView.setTag(R.string.tag_key_view_type, viewType)
@@ -210,6 +222,7 @@ class GradesAdapter(
             holder is EmptyViewHolder && item is GradesEmpty -> holder.onBind(activity, app, item, position, this)
             holder is GradeViewHolder && item is GradeFull -> holder.onBind(activity, app, item, position, this)
             holder is StatsViewHolder && item is GradesStats -> holder.onBind(activity, app, item, position, this)
+            holder is UnknownSubjectViewHolder && item is GradesUnknownSubject -> holder.onBind(activity, app, item, position, this)
         }
 
         if (holder is SemesterViewHolder && item is GradesSemester) {

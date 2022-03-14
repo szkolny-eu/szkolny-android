@@ -1549,4 +1549,6 @@
     <string name="card_notes_header_title">Najnowsze notatki</string>
     <string name="login_summary_account_child">(uczeń)</string>
     <string name="login_summary_account_parent">(rodzic)</string>
+    <string name="grades_subject_unknown">- nieznany przedmiot -</string>
+    <string name="grades_subject_unknown_help">{cmd-information-outline} Oceny, których przedmiot nie został podany w dzienniku. Może to być na przykład taki, który nie jest prowadzony w tym roku szkolnym.</string>
 </resources>

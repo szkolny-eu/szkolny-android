@@ -15,6 +15,7 @@ data class GradesSubject(
 
     var lastAddedDate = 0L
     var semester: Int = 1
+    var isUnknown = false
 
     var hasUnseen: Boolean = false
         get() = field || semesters.any { it.hasUnseen }

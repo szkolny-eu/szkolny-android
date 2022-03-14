@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.GradesItemSubjectBinding
-import pl.szczodrzynski.edziennik.ext.dp
-import pl.szczodrzynski.edziennik.ext.resolveAttr
-import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.grades.GradeView
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter
 import pl.szczodrzynski.edziennik.ui.grades.GradesAdapter.Companion.STATE_CLOSED
@@ -41,7 +39,12 @@ class SubjectViewHolder(
         val manager = app.gradesManager
         val contextWrapper = ContextThemeWrapper(activity, Themes.appTheme)
 
-        b.subjectName.text = item.subjectName
+        if (!item.isUnknown) {
+            b.subjectName.text = item.subjectName
+        }
+        else {
+            b.subjectName.text = R.string.grades_subject_unknown.resolveString(activity).asItalicSpannable()
+        }
         b.dropdownIcon.rotation = when (item.state) {
             STATE_CLOSED -> 0f
             else -> 180f
