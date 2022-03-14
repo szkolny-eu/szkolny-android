@@ -182,6 +182,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
     @Suppress("SuspendFunctionOnCoroutineScope")
     private fun processGrades(grades: List<GradeFull>): MutableList<Any> {
         val items = mutableListOf<GradesSubject>()
+        var unknownSubjectItem: GradesSubject? = null
 
         var subjectId = -1L
         var semesterNumber = 0
@@ -200,17 +201,31 @@ class GradesListFragment : Fragment(), CoroutineScope {
                 subjectId = grade.subjectId
                 semesterNumber = 0
 
-                subject = items.firstOrNull { it.subjectId == subjectId }
-                        ?: GradesSubject(grade.subjectId, grade.subjectLongName ?: "").also {
+                subject = items.firstOrNull { it.subjectId == subjectId } ?: run {
+                    if (grade.subjectLongName != null) {
+                        return@run GradesSubject(grade.subjectId, grade.subjectLongName!!).also {
                             items += it
                             it.semester = 2
                         }
+                    }
+                    if (unknownSubjectItem == null) {
+                        unknownSubjectItem = GradesSubject(-1, "unknown").also {
+                            items += it
+                            it.semester = 2
+                            it.isUnknown = true
+                        }
+                    }
+                    return@run unknownSubjectItem!!
+                }
             }
             if (grade.semester != semesterNumber) {
                 semesterNumber = grade.semester
 
                 semester = subject.semesters.firstOrNull { it.number == semesterNumber }
-                        ?: GradesSemester(subject.subjectId, grade.semester).also { subject.semesters += it }
+                    ?: GradesSemester(subject.subjectId, grade.semester).also {
+                        subject.semesters += it
+                        it.hideEditor = subject.isUnknown
+                    }
             }
 
             grade.showAsUnseen = !grade.seen
@@ -219,6 +234,11 @@ class GradesListFragment : Fragment(), CoroutineScope {
                     subject.hasUnseen = true // set an override flag
                 else
                     semester.hasUnseen = true
+            }
+
+            if (subject.isUnknown) {
+                // unknown subjects may have final grades (i.e. Mobidziennik)
+                grade.type = Grade.TYPE_NORMAL
             }
 
             when (grade.type) {
@@ -255,6 +275,10 @@ class GradesListFragment : Fragment(), CoroutineScope {
         val yearlyPoint = mutableListOf<Float>()
 
         for (item in items) {
+            if (item.isUnknown) {
+                // do not count averages for "unknown" subjects
+                continue
+            }
             item.semesters.forEach { sem ->
                 manager.calculateAverages(sem.averages)
                 if (sem.number == 1) {

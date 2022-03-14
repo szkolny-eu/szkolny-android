@@ -61,6 +61,8 @@ class SemesterViewHolder(
             }
         }
 
+        b.editButton.isVisible = !item.hideEditor
+
         b.average.text = manager.getAverageString(app, item.averages)
         b.proposedGrade.setGrade(item.proposedGrade, manager)
         b.finalGrade.setGrade(item.finalGrade, manager)

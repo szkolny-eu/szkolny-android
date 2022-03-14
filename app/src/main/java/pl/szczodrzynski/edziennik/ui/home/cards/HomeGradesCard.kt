@@ -85,6 +85,9 @@ class HomeGradesCard(
         grades.forEach { grade ->
             val model = ItemGradesSubjectModel.searchModelBySubjectId(subjects, grade.subjectId)
                     ?: run {
+                        if (grade.subjectLongName == null) {
+                            return@forEach
+                        }
                         subjects.add(ItemGradesSubjectModel(
                                 profile,
                                 Subject(profile.id, grade.subjectId, grade.subjectLongName, grade.subjectShortName),
