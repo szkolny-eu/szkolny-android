@@ -83,7 +83,6 @@ public class SwipeRefreshLayoutNoIndicator extends SwipeRefreshLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        ev.setSource(0x10000000);
         boolean parentConsumed = parent.onInterceptTouchEvent(ev);
         boolean superConsumed = super.onInterceptTouchEvent(ev);
         return parentConsumed && superConsumed;
