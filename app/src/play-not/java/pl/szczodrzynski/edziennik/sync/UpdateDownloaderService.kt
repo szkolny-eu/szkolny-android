@@ -34,8 +34,7 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
         return try {
             Utils.openGooglePlay(this, application.packageName)
             true
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             false
         }
@@ -58,16 +57,20 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
             val installIntent = Intent(Intent.ACTION_VIEW)
             installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            installIntent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive")
+            installIntent.setDataAndType(Uri.fromFile(file),
+                "application/vnd.android.package-archive")
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 val apkUri = FileProvider.getUriForFile(app, "${app.packageName}.provider", file)
                 installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive")
 
-                val resInfoList = app.packageManager.queryIntentActivities(installIntent, PackageManager.MATCH_DEFAULT_ONLY)
+                val resInfoList = app.packageManager.queryIntentActivities(installIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY)
                 for (resolveInfo in resInfoList) {
                     val packageName = resolveInfo.activityInfo.packageName
-                    app.grantUriPermission(packageName, apkUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    app.grantUriPermission(packageName,
+                        apkUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 }
             }
 
@@ -75,6 +78,7 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onHandleIntent(intent: Intent?) {
         val app = application as App
         val update = App.config.update ?: return
@@ -83,7 +87,9 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
             return
 
         if (update.downloadUrl == null) {
-            Toast.makeText(app, "Nie można pobrać tej aktualizacji. Pobierz ręcznie z Google Play.", Toast.LENGTH_LONG).show()
+            Toast.makeText(app,
+                "Nie można pobrać tej aktualizacji. Pobierz ręcznie z Google Play.",
+                Toast.LENGTH_LONG).show()
             return
         }
 
@@ -106,13 +112,15 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
 
         val downloadManager = app.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val request = DownloadManager.Request(uri)
-        request.setTitle(app.getString(R.string.app_name)+" "+update.versionName)
+        request.setTitle(app.getString(R.string.app_name) + " " + update.versionName)
         request.setDescription(app.getString(R.string.notification_downloading_update))
         try {
             request.setDestinationInExternalFilesDir(app, null, downloadFilename)
         } catch (e: IllegalStateException) {
             e.printStackTrace()
-            Toast.makeText(app, "Nie można znaleźć katalogu docelowego. Pobierz aktualizację ręcznie z Google Play.", Toast.LENGTH_LONG).show()
+            Toast.makeText(app,
+                "Nie można znaleźć katalogu docelowego. Pobierz aktualizację ręcznie z Google Play.",
+                Toast.LENGTH_LONG).show()
             return
         }
         downloadId = downloadManager.enqueue(request)

@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.view.plusAssign
 import androidx.core.view.setMargins
-import androidx.lifecycle.Observer
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.sizeDp
@@ -21,7 +20,9 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Event
@@ -42,11 +43,11 @@ import pl.szczodrzynski.navlib.colorAttr
 import kotlin.coroutines.CoroutineContext
 
 class HomeTimetableCard(
-        override val id: Int,
-        val app: App,
-        val activity: MainActivity,
-        val fragment: HomeFragment,
-        val profile: Profile
+    override val id: Int,
+    val app: App,
+    val activity: MainActivity,
+    val fragment: HomeFragment,
+    val profile: Profile,
 ) : HomeCard, CoroutineScope {
     companion object {
         private const val TAG = "HomeTimetableCard"
@@ -83,7 +84,8 @@ class HomeTimetableCard(
     override fun bind(position: Int, holder: HomeCardAdapter.ViewHolder) {
         holder.root.removeAllViews()
         b = CardHomeTimetableBinding.inflate(LayoutInflater.from(holder.root.context))
-        b.root.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+        b.root.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             setMargins(8.dp)
         }
         holder.root += b.root
@@ -111,7 +113,7 @@ class HomeTimetableCard(
 
         b.bellSync.setOnClickListener {
             BellSyncTimeChooseDialog(
-                    activity
+                activity
             ).show()
         }
 
@@ -133,34 +135,36 @@ class HomeTimetableCard(
 
         // get current bell-sync params
         app.config.timetable.bellSyncDiff?.let {
-            bellSyncDiffMillis = (it.hour * 60 * 60 * 1000 + it.minute * 60 * 1000 + it.second * 1000).toLong()
+            bellSyncDiffMillis =
+                (it.hour * 60 * 60 * 1000 + it.minute * 60 * 1000 + it.second * 1000).toLong()
             bellSyncDiffMillis *= app.config.timetable.bellSyncMultiplier.toLong()
         }
 
         // get all lessons within the search bounds
-        app.db.timetableDao().getBetweenDates(today, searchEnd).observe(fragment, Observer {
+        app.db.timetableDao().getBetweenDates(today, searchEnd).observe(fragment) {
             allLessons = it
             update()
-        })
+        }
 
         EventBus.getDefault().register(this)
     }
 
-    private fun update() { launch {
-        var checkedDays = 0
-        val deferred = async(Dispatchers.Default) {
-            // get the current bell-synced time
-            val now = syncedNow
+    private fun update() {
+        launch {
+            var checkedDays = 0
+            val deferred = async(Dispatchers.Default) {
+                // get the current bell-synced time
+                val now = syncedNow
 
-            // search for lessons to display
-            val timetableDate = Date.getToday()
-            lessons = allLessons.filter {
-                it.profileId == profile.id
-                        && it.displayDate == timetableDate
-                        && it.displayEndTime > now
-                        && !(it.isCancelled && ignoreCancelled)
-            }
-            while ((lessons.isEmpty() || lessons.none {
+                // search for lessons to display
+                val timetableDate = Date.getToday()
+                lessons = allLessons.filter {
+                    it.profileId == profile.id
+                            && it.displayDate == timetableDate
+                            && it.displayEndTime > now
+                            && !(it.isCancelled && ignoreCancelled)
+                }
+                while ((lessons.isEmpty() || lessons.none {
                         it.type != Lesson.TYPE_NO_LESSONS
                                 && (it.displayDate != today
                                 || (it.displayDate == today
@@ -169,157 +173,160 @@ class HomeTimetableCard(
                                 && !it.isCancelled
                     }) && checkedDays < 7) {
 
-                timetableDate.stepForward(0, 0, 1)
-                lessons = allLessons.filter {
-                    it.profileId == profile.id
-                            && it.displayDate == timetableDate
+                    timetableDate.stepForward(0, 0, 1)
+                    lessons = allLessons.filter {
+                        it.profileId == profile.id
+                                && it.displayDate == timetableDate
+                    }
+
+                    if (lessons.isEmpty())
+                        break
+
+                    /*lessons = lessons.filterNot {
+                        it.isCancelled && ignoreCancelled
+                    }*/
+
+                    checkedDays++
                 }
-
-                if (lessons.isEmpty())
-                    break
-
-                /*lessons = lessons.filterNot {
-                    it.isCancelled && ignoreCancelled
-                }*/
-
-                checkedDays++
+                timetableDate
             }
-            timetableDate
-        }
 
-        timetableDate = deferred.await()
+            timetableDate = deferred.await()
 
-        if (lessons.isEmpty() && checkedDays < 7) {
-            // timetable is not downloaded yet
-            b.timetableLayout.visibility = View.GONE
-            b.noTimetableLayout.visibility = View.VISIBLE
-            b.noLessonsLayout.visibility = View.GONE
-            val weekStart = timetableDate.weekStart
-            b.noTimetableText.setText(
+            if (lessons.isEmpty() && checkedDays < 7) {
+                // timetable is not downloaded yet
+                b.timetableLayout.visibility = View.GONE
+                b.noTimetableLayout.visibility = View.VISIBLE
+                b.noLessonsLayout.visibility = View.GONE
+                val weekStart = timetableDate.weekStart
+                b.noTimetableText.setText(
                     R.string.home_timetable_no_timetable_text,
                     weekStart.stringY_m_d
-            )
-            b.noTimetableSync.onClick {
-                it.isEnabled = false
-                EdziennikTask.syncProfile(
+                )
+                b.noTimetableSync.onClick {
+                    it.isEnabled = false
+                    EdziennikTask.syncProfile(
                         profileId = profile.id,
                         viewIds = listOf(
-                                MainActivity.DRAWER_ITEM_TIMETABLE to 0
+                            MainActivity.DRAWER_ITEM_TIMETABLE to 0
                         ),
                         arguments = JsonObject(
-                                "weekStart" to weekStart.stringY_m_d
+                            "weekStart" to weekStart.stringY_m_d
                         )
-                ).enqueue(activity)
+                    ).enqueue(activity)
+                }
+
+                timetableDate = Date.getToday()
+                return@launch
+            }
+            if (lessons.none { !it.isCancelled } || lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
+                // in next 7 days only NO_LESSONS is found
+                b.timetableLayout.visibility = View.GONE
+                b.noTimetableLayout.visibility = View.GONE
+                b.noLessonsLayout.visibility = View.VISIBLE
+                timetableDate = timetableDate.weekStart
+
+                timetableDate = Date.getToday()
+                return@launch
             }
 
-            timetableDate = Date.getToday()
-            return@launch
-        }
-        if (lessons.none { !it.isCancelled } || lessons.size == 1 && lessons[0].type == Lesson.TYPE_NO_LESSONS) {
-            // in next 7 days only NO_LESSONS is found
-            b.timetableLayout.visibility = View.GONE
+            lessons = lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }
+
+            b.timetableLayout.visibility = View.VISIBLE
             b.noTimetableLayout.visibility = View.GONE
-            b.noLessonsLayout.visibility = View.VISIBLE
-            timetableDate = timetableDate.weekStart
+            b.noLessonsLayout.visibility = View.GONE
 
-            timetableDate = Date.getToday()
-            return@launch
-        }
+            val isToday = today == timetableDate
 
-        lessons = lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }
+            b.progress.visibility = View.GONE
+            b.counter.visibility = View.GONE
 
-        b.timetableLayout.visibility = View.VISIBLE
-        b.noTimetableLayout.visibility = View.GONE
-        b.noLessonsLayout.visibility = View.GONE
+            val now = syncedNow
+            val firstLesson = lessons.firstOrNull()
+            val lastLesson = lessons.lastOrNull { !it.isCancelled }
 
-        val isToday = today == timetableDate
-
-        b.progress.visibility = View.GONE
-        b.counter.visibility = View.GONE
-
-        val now = syncedNow
-        val firstLesson = lessons.firstOrNull()
-        val lastLesson = lessons.lastOrNull()
-
-        if (isToday) {
-            // today
-            b.dayInfo.setText(R.string.home_timetable_today)
-            b.lessonInfo.setText(
+            if (isToday) {
+                // today
+                b.dayInfo.setText(R.string.home_timetable_today)
+                b.lessonInfo.setText(
                     R.string.home_timetable_lessons_remaining,
-                    lessons.size,
+                    lessons.filter { !it.isCancelled }.size,
                     lastLesson?.displayEndTime?.stringHM ?: "?"
-            )
-            counterStart = firstLesson?.displayStartTime
-            counterEnd = firstLesson?.displayEndTime
-            val isOngoing = counterStart <= now && now <= counterEnd
-            val lessonRes = if (isOngoing)
-                R.string.home_timetable_lesson_ongoing
-            else
-                R.string.home_timetable_lesson_not_started
-            b.lessonBig.setText(lessonRes, firstLesson.subjectSpannable)
-            firstLesson?.displayClassroom?.let {
-                b.classroom.visibility = View.VISIBLE
-                b.classroom.text = it
-            } ?: run {
-                b.classroom.visibility = View.GONE
-            }
-
-            subjectSpannable = firstLesson.subjectSpannable
-
-            counterJob = startCoroutineTimer(repeatMillis = 500) {
-                count()
-            }
-        }
-        else {
-            val isTomorrow = today.clone().stepForward(0, 0, 1) == timetableDate
-            val dayInfoRes = if (isTomorrow) {
-                // tomorrow
-                R.string.home_timetable_tomorrow
-            }
-            else {
-                val todayWeekStart = today.weekStart
-                val dateWeekStart = timetableDate.weekStart
-                if (todayWeekStart == dateWeekStart) {
-                    // this week
-                    R.string.home_timetable_date_this_week
+                )
+                counterStart = firstLesson?.displayStartTime
+                counterEnd = firstLesson?.displayEndTime
+                val isOngoing = counterStart <= now && now <= counterEnd
+                val lessonRes = if (isOngoing)
+                    R.string.home_timetable_lesson_ongoing
+                else
+                    R.string.home_timetable_lesson_not_started
+                b.lessonBig.setText(lessonRes, firstLesson.subjectSpannable)
+                firstLesson?.displayClassroom?.let {
+                    b.classroom.visibility = View.VISIBLE
+                    b.classroom.text = it
+                } ?: run {
+                    b.classroom.visibility = View.GONE
                 }
-                else {
-                    // future: not this week
-                    R.string.home_timetable_date_future
+
+                subjectSpannable = firstLesson.subjectSpannable
+
+                counterJob = startCoroutineTimer(repeatMillis = 500) {
+                    count()
                 }
-            }
-            b.dayInfo.setText(dayInfoRes, Week.getFullDayName(timetableDate.weekDay), timetableDate.formattedString)
-            b.lessonInfo.setText(
+            } else {
+                val isTomorrow = today.clone().stepForward(0, 0, 1) == timetableDate
+                val dayInfoRes = if (isTomorrow) {
+                    // tomorrow
+                    R.string.home_timetable_tomorrow
+                } else {
+                    val todayWeekStart = today.weekStart
+                    val dateWeekStart = timetableDate.weekStart
+                    if (todayWeekStart == dateWeekStart) {
+                        // this week
+                        R.string.home_timetable_date_this_week
+                    } else {
+                        // future: not this week
+                        R.string.home_timetable_date_future
+                    }
+                }
+                b.dayInfo.setText(dayInfoRes,
+                    Week.getFullDayName(timetableDate.weekDay),
+                    timetableDate.formattedString)
+                b.lessonInfo.setText(
                     R.string.home_timetable_lessons_info,
-                    lessons.size,
+                    lessons.filter { !it.isCancelled }.size,
                     firstLesson?.displayStartTime?.stringHM ?: "?",
                     lastLesson?.displayEndTime?.stringHM ?: "?"
-            )
+                )
 
-            b.lessonBig.setText(R.string.home_timetable_lesson_first, firstLesson.subjectSpannable)
-            firstLesson?.displayClassroom?.let {
-                b.classroom.visibility = View.VISIBLE
-                b.classroom.text = it
-            } ?: run {
-                b.classroom.visibility = View.GONE
+                b.lessonBig.setText(R.string.home_timetable_lesson_first,
+                    firstLesson.subjectSpannable)
+                firstLesson?.displayClassroom?.let {
+                    b.classroom.visibility = View.VISIBLE
+                    b.classroom.text = it
+                } ?: run {
+                    b.classroom.visibility = View.GONE
+                }
             }
-        }
 
-        val text = mutableListOf<CharSequence>(
+            val text = mutableListOf<CharSequence>(
                 activity.getString(R.string.home_timetable_later)
-        )
-        var first = true
-        for (lesson in lessons) {
-            if (first) { first = false; continue }
-            text += listOf(
+            )
+            var first = true
+            for (lesson in lessons) {
+                if (first) {
+                    first = false; continue
+                }
+                text += listOf(
                     lesson.displayStartTime?.stringHM,
                     lesson.subjectSpannable
-            ).concat(" ")
+                ).concat(" ")
+            }
+            if (text.size == 1)
+                text += activity.getString(R.string.home_timetable_later_no_lessons)
+            b.nextLessons.text = text.concat("\n")
         }
-        if (text.size == 1)
-            text += activity.getString(R.string.home_timetable_later_no_lessons)
-        b.nextLessons.text = text.concat("\n")
-    }}
+    }
 
     private val LessonFull?.subjectSpannable: CharSequence
         get() = if (this == null) "?" else when {
@@ -364,8 +371,7 @@ class HomeTimetableCard(
             b.counter.visibility = View.VISIBLE
             val diff = counterStart - now
             b.counter.text = activity.timeTill(diff.toInt(), "\n", countInSeconds)
-        }
-        else {
+        } else {
             // the lesson is right now
             b.progress.visibility = View.VISIBLE
             b.counter.visibility = View.VISIBLE
