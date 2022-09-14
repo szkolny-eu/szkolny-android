@@ -859,7 +859,7 @@
     <string name="settings_about_licenses_text">Open-source licenses</string>
     <string name="settings_about_privacy_policy_text">Privacy policy</string>
     <string name="settings_card_register_title">E-register</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - 2022</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 – 2022</string>
     <string name="settings_about_update_subtext">Click to check for updates</string>
     <string name="settings_about_update_text">Update</string>
     <string name="settings_about_version_text">Version</string>
@@ -1451,4 +1451,5 @@
     <string name="dialog_lesson_attendance_details">Details</string>
     <string name="menu_agenda_config">Agenda settings</string>
     <string name="registration_config_note_sharing_title">Share notes</string>
+    <string name="not_implemented">Not implemented yet</string>
 </resources>

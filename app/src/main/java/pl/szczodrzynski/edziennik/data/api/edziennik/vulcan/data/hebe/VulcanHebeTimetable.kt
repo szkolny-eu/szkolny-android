@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_TIMETABLE_CHANGES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
@@ -31,7 +30,7 @@ import pl.szczodrzynski.edziennik.utils.models.Week
 class VulcanHebeTimetable(
     override val data: DataVulcan,
     override val lastSync: Long?,
-    val onSuccess: (endpointId: Int) -> Unit
+    val onSuccess: (endpointId: Int) -> Unit,
 ) : VulcanHebe(data, lastSync) {
     companion object {
         const val TAG = "VulcanHebeTimetable"
@@ -134,9 +133,6 @@ class VulcanHebeTimetable(
         val subjectId = getSubjectId(json, "Subject")
 
         val teamId = getTeamId(json, "Distribution")
-            ?: getClassId(json, "Clazz")
-            ?: data.teamClass?.id
-            ?: -1
 
         val change = json.getJsonObject("Change")
         val changeId = change.getInt("Id")
@@ -183,8 +179,6 @@ class VulcanHebeTimetable(
             val changeSubjectId = getSubjectId(changeJson, "Subject") ?: subjectId
 
             val changeTeamId = getTeamId(json, "Distribution")
-                ?: getClassId(json, "Clazz")
-                ?: teamId
 
             if (type != TYPE_CHANGE) {
                 /* lesson shifted */

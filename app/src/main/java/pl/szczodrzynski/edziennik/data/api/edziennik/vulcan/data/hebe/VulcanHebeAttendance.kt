@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_ATTENDANCE
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_ATTENDANCE
@@ -18,7 +17,7 @@ import pl.szczodrzynski.edziennik.ext.*
 class VulcanHebeAttendance(
     override val data: DataVulcan,
     override val lastSync: Long?,
-    val onSuccess: (endpointId: Int) -> Unit
+    val onSuccess: (endpointId: Int) -> Unit,
 ) : VulcanHebe(data, lastSync) {
 
     companion object {

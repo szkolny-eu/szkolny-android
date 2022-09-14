@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik
 
+import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
@@ -13,7 +14,6 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.multidex.MultiDexApplication
 import androidx.work.Configuration
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.chuckerteam.chucker.api.ChuckerCollector
@@ -45,13 +45,16 @@ import pl.szczodrzynski.edziennik.network.cookie.DumbCookieJar
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.CrashActivity
-import pl.szczodrzynski.edziennik.utils.*
+import pl.szczodrzynski.edziennik.utils.DebugLogFormat
+import pl.szczodrzynski.edziennik.utils.PermissionChecker
+import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
-class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
+class App : Application(), Configuration.Provider, CoroutineScope {
     companion object {
         @Volatile
         lateinit var db: AppDb
@@ -91,9 +94,10 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
+
     override fun getWorkManagerConfiguration() = Configuration.Builder()
-            .setMinimumLoggingLevel(Log.VERBOSE)
-            .build()
+        .setMinimumLoggingLevel(Log.VERBOSE)
+        .build()
 
     val permissionChecker by lazy { PermissionChecker(this) }
     val gson by lazy { Gson() }
@@ -125,7 +129,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             HyperLog.setLogLevel(Log.VERBOSE)
             HyperLog.setLogFormat(DebugLogFormat(this))
             if (enableChucker) {
-                val chuckerCollector = ChuckerCollector(this, true, RetentionManager.Period.ONE_HOUR)
+                val chuckerCollector =
+                    ChuckerCollector(this, true, RetentionManager.Period.ONE_HOUR)
                 val chuckerInterceptor = ChuckerInterceptor(this, chuckerCollector)
                 builder.addInterceptor(chuckerInterceptor)
             }
@@ -140,6 +145,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
 
         MHttp.instance().customOkHttpClient(http)
     }
+
     val cookieJar by lazy { DumbCookieJar(this) }
 
     /*     _____ _                   _
@@ -150,7 +156,10 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
          |_____/|_|\__, |_| |_|\__,_|\__|\__,_|_|  \___|
                     __/ |
                    |__*/
-    val deviceId: String by lazy { Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID) ?: "" }
+    val deviceId: String by lazy {
+        Settings.Secure.getString(contentResolver,
+            Settings.Secure.ANDROID_ID) ?: ""
+    }
     private var unreadBadgesAvailable = true
 
     /*                 _____                _
@@ -163,17 +172,17 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         super.onCreate()
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         CaocConfig.Builder.create()
-                .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
-                .enabled(true)
-                .showErrorDetails(true)
-                .showRestartButton(true)
-                .logErrorOnRestart(true)
-                .trackActivities(true)
-                .minTimeBetweenCrashesMs(60*1000)
-                .errorDrawable(R.drawable.ic_rip)
-                .restartActivity(MainActivity::class.java)
-                .errorActivity(CrashActivity::class.java)
-                .apply()
+            .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
+            .enabled(true)
+            .showErrorDetails(true)
+            .showRestartButton(true)
+            .logErrorOnRestart(true)
+            .trackActivities(true)
+            .minTimeBetweenCrashesMs(60 * 1000)
+            .errorDrawable(R.drawable.ic_rip)
+            .restartActivity(MainActivity::class.java)
+            .errorActivity(CrashActivity::class.java)
+            .apply()
         Iconics.init(applicationContext)
         Iconics.respectFontBoundsDefault = true
 
@@ -221,46 +230,66 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                     val shortcutManager = getSystemService(ShortcutManager::class.java)
 
                     val shortcutTimetable = ShortcutInfo.Builder(this@App, "item_timetable")
-                            .setShortLabel(getString(R.string.shortcut_timetable)).setLongLabel(getString(R.string.shortcut_timetable))
-                            .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_timetable))
-                            .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE))
-                            .build()
+                        .setShortLabel(getString(R.string.shortcut_timetable))
+                        .setLongLabel(getString(R.string.shortcut_timetable))
+                        .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_timetable))
+                        .setIntent(Intent(Intent.ACTION_MAIN,
+                            null,
+                            this@App,
+                            MainActivity::class.java)
+                            .putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE))
+                        .build()
 
                     val shortcutAgenda = ShortcutInfo.Builder(this@App, "item_agenda")
-                            .setShortLabel(getString(R.string.shortcut_agenda)).setLongLabel(getString(R.string.shortcut_agenda))
-                            .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_agenda))
-                            .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_AGENDA))
-                            .build()
+                        .setShortLabel(getString(R.string.shortcut_agenda))
+                        .setLongLabel(getString(R.string.shortcut_agenda))
+                        .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_agenda))
+                        .setIntent(Intent(Intent.ACTION_MAIN,
+                            null,
+                            this@App,
+                            MainActivity::class.java)
+                            .putExtra("fragmentId", MainActivity.DRAWER_ITEM_AGENDA))
+                        .build()
 
                     val shortcutGrades = ShortcutInfo.Builder(this@App, "item_grades")
-                            .setShortLabel(getString(R.string.shortcut_grades)).setLongLabel(getString(R.string.shortcut_grades))
-                            .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_grades))
-                            .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_GRADES))
-                            .build()
+                        .setShortLabel(getString(R.string.shortcut_grades))
+                        .setLongLabel(getString(R.string.shortcut_grades))
+                        .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_grades))
+                        .setIntent(Intent(Intent.ACTION_MAIN,
+                            null,
+                            this@App,
+                            MainActivity::class.java)
+                            .putExtra("fragmentId", MainActivity.DRAWER_ITEM_GRADES))
+                        .build()
 
                     val shortcutHomework = ShortcutInfo.Builder(this@App, "item_homeworks")
-                            .setShortLabel(getString(R.string.shortcut_homework)).setLongLabel(getString(R.string.shortcut_homework))
-                            .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_homework))
-                            .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOMEWORK))
-                            .build()
+                        .setShortLabel(getString(R.string.shortcut_homework))
+                        .setLongLabel(getString(R.string.shortcut_homework))
+                        .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_homework))
+                        .setIntent(Intent(Intent.ACTION_MAIN,
+                            null,
+                            this@App,
+                            MainActivity::class.java)
+                            .putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOMEWORK))
+                        .build()
 
                     val shortcutMessages = ShortcutInfo.Builder(this@App, "item_messages")
-                            .setShortLabel(getString(R.string.shortcut_messages)).setLongLabel(getString(R.string.shortcut_messages))
-                            .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_messages))
-                            .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_MESSAGES))
-                            .build()
+                        .setShortLabel(getString(R.string.shortcut_messages))
+                        .setLongLabel(getString(R.string.shortcut_messages))
+                        .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_messages))
+                        .setIntent(Intent(Intent.ACTION_MAIN,
+                            null,
+                            this@App,
+                            MainActivity::class.java)
+                            .putExtra("fragmentId", MainActivity.DRAWER_ITEM_MESSAGES))
+                        .build()
 
                     shortcutManager.dynamicShortcuts = listOf(
-                            shortcutTimetable,
-                            shortcutAgenda,
-                            shortcutGrades,
-                            shortcutHomework,
-                            shortcutMessages
+                        shortcutTimetable,
+                        shortcutAgenda,
+                        shortcutGrades,
+                        shortcutHomework,
+                        shortcutMessages
                     )
                 } // shortcuts - end
 
@@ -269,49 +298,50 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
 
                 if (config.appInstalledTime == 0L)
                     try {
-                        config.appInstalledTime = packageManager.getPackageInfo(packageName, 0).firstInstallTime
+                        config.appInstalledTime =
+                            packageManager.getPackageInfo(packageName, 0).firstInstallTime
                         config.appRateSnackbarTime = config.appInstalledTime + 7 * DAY * MS
                     } catch (e: PackageManager.NameNotFoundException) {
                         e.printStackTrace()
                     }
 
                 val pushMobidziennikApp = FirebaseApp.initializeApp(
-                        this@App,
-                        FirebaseOptions.Builder()
-                                .setProjectId("mobidziennik")
-                                .setStorageBucket("mobidziennik.appspot.com")
-                                .setDatabaseUrl("https://mobidziennik.firebaseio.com")
-                                .setGcmSenderId("747285019373")
-                                .setApiKey("AIzaSyCi5LmsZ5BBCQnGtrdvWnp1bWLCNP8OWQE")
-                                .setApplicationId("1:747285019373:android:f6341bf7b158621d")
-                                .build(),
-                        "Mobidziennik2"
+                    this@App,
+                    FirebaseOptions.Builder()
+                        .setProjectId("mobidziennik")
+                        .setStorageBucket("mobidziennik.appspot.com")
+                        .setDatabaseUrl("https://mobidziennik.firebaseio.com")
+                        .setGcmSenderId("747285019373")
+                        .setApiKey("AIzaSyCi5LmsZ5BBCQnGtrdvWnp1bWLCNP8OWQE")
+                        .setApplicationId("1:747285019373:android:f6341bf7b158621d")
+                        .build(),
+                    "Mobidziennik2"
                 )
 
                 val pushLibrusApp = FirebaseApp.initializeApp(
-                        this@App,
-                        FirebaseOptions.Builder()
-                                .setProjectId("synergiadru")
-                                .setStorageBucket("synergiadru.appspot.com")
-                                .setDatabaseUrl("https://synergiadru.firebaseio.com")
-                                .setGcmSenderId("513056078587")
-                                .setApiKey("AIzaSyDfTuEoYPKdv4aceEws1CO3n0-HvTndz-o")
-                                .setApplicationId("1:513056078587:android:1e29083b760af544")
-                                .build(),
-                        "Librus"
+                    this@App,
+                    FirebaseOptions.Builder()
+                        .setProjectId("synergiadru")
+                        .setStorageBucket("synergiadru.appspot.com")
+                        .setDatabaseUrl("https://synergiadru.firebaseio.com")
+                        .setGcmSenderId("513056078587")
+                        .setApiKey("AIzaSyDfTuEoYPKdv4aceEws1CO3n0-HvTndz-o")
+                        .setApplicationId("1:513056078587:android:1e29083b760af544")
+                        .build(),
+                    "Librus"
                 )
 
                 val pushVulcanApp = FirebaseApp.initializeApp(
-                        this@App,
-                        FirebaseOptions.Builder()
-                                .setProjectId("dzienniczekplus")
-                                .setStorageBucket("dzienniczekplus.appspot.com")
-                                .setDatabaseUrl("https://dzienniczekplus.firebaseio.com")
-                                .setGcmSenderId("987828170337")
-                                .setApiKey("AIzaSyDW8MUtanHy64_I0oCpY6cOxB3jrvJd_iA")
-                                .setApplicationId("1:987828170337:android:ac97431a0a4578c3")
-                                .build(),
-                        "Vulcan"
+                    this@App,
+                    FirebaseOptions.Builder()
+                        .setProjectId("dzienniczekplus")
+                        .setStorageBucket("dzienniczekplus.appspot.com")
+                        .setDatabaseUrl("https://dzienniczekplus.firebaseio.com")
+                        .setGcmSenderId("987828170337")
+                        .setApiKey("AIzaSyDW8MUtanHy64_I0oCpY6cOxB3jrvJd_iA")
+                        .setApplicationId("1:987828170337:android:ac97431a0a4578c3")
+                        .build(),
+                    "Vulcan"
                 )
 
                 val pushVulcanHebeApp = FirebaseApp.initializeApp(
@@ -386,6 +416,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         }
         return false
     }
+
     fun profileLoad(profileId: Int, onSuccess: (profile: Profile) -> Unit) {
         launch {
             val success = withContext(Dispatchers.Default) {
@@ -397,6 +428,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                 profileLoadLast(onSuccess)
         }
     }
+
     fun profileLoadLast(onSuccess: (profile: Profile) -> Unit) {
         launch {
             val success = withContext(Dispatchers.Default) {
@@ -404,12 +436,12 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
             }
             if (!success) {
                 EventBus.getDefault().post(ProfileListEmptyEvent())
-            }
-            else {
+            } else {
                 onSuccess(profile)
             }
         }
     }
+
     fun profileSave() = profileSave(profile)
     fun profileSave(profile: Profile) {
         launch(Dispatchers.Default) {
@@ -419,7 +451,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
 
     fun checkDevModePassword() {
         devMode = try {
-            Utils.AESCrypt.decrypt("nWFVxY65Pa8/aRrT7EylNAencmOD+IxUY2Gg/beiIWY=", config.devModePassword) == "ok here you go it's enabled now" || BuildConfig.DEBUG
+            Utils.AESCrypt.decrypt("nWFVxY65Pa8/aRrT7EylNAencmOD+IxUY2Gg/beiIWY=",
+                config.devModePassword) == "ok here you go it's enabled now" || BuildConfig.DEBUG
         } catch (e: Exception) {
             e.printStackTrace()
             false

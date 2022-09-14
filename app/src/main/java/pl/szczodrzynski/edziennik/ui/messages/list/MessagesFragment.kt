@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.databinding.MessagesFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
@@ -35,7 +38,11 @@ class MessagesFragment : Fragment(), CoroutineScope {
 
     // local/private variables go here
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
@@ -123,7 +130,8 @@ class MessagesFragment : Fragment(), CoroutineScope {
             )
 
             setFabOnClickListener {
-                activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE)
+                Snackbar.make(b.root, R.string.not_implemented, Snackbar.LENGTH_SHORT).show()
+//                activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE)
             }
         }
 

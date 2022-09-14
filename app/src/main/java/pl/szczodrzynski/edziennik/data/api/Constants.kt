@@ -23,10 +23,12 @@ const val FAKE_LIBRUS_ACCOUNT = "/synergia_accounts_fresh.php?login="
 const val FAKE_LIBRUS_ACCOUNTS = "/synergia_accounts.php"
 
 val LIBRUS_USER_AGENT = "${SYSTEM_USER_AGENT}LibrusMobileApp"
-const val SYNERGIA_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0"
+const val SYNERGIA_USER_AGENT =
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0"
 const val LIBRUS_CLIENT_ID = "VaItV6oRutdo8fnjJwysnTjVlvaswf52ZqmXsJGP"
 const val LIBRUS_REDIRECT_URL = "app://librus"
-const val LIBRUS_AUTHORIZE_URL = "https://portal.librus.pl/oauth2/authorize?client_id=$LIBRUS_CLIENT_ID&redirect_uri=$LIBRUS_REDIRECT_URL&response_type=code"
+const val LIBRUS_AUTHORIZE_URL =
+    "https://portal.librus.pl/oauth2/authorize?client_id=$LIBRUS_CLIENT_ID&redirect_uri=$LIBRUS_REDIRECT_URL&response_type=code"
 const val LIBRUS_LOGIN_URL = "https://portal.librus.pl/rodzina/login/action"
 const val LIBRUS_TOKEN_URL = "https://portal.librus.pl/oauth2/access_token"
 
@@ -35,10 +37,13 @@ const val LIBRUS_ACCOUNTS_URL = "/v3/SynergiaAccounts"
 
 /** https://api.librus.pl/2.0 */
 const val LIBRUS_API_URL = "https://api.librus.pl/2.0"
+
 /** https://portal.librus.pl/api */
 const val LIBRUS_PORTAL_URL = "https://portal.librus.pl/api"
+
 /** https://api.librus.pl/OAuth/Token */
 const val LIBRUS_API_TOKEN_URL = "https://api.librus.pl/OAuth/Token"
+
 /** https://api.librus.pl/OAuth/TokenJST */
 const val LIBRUS_API_TOKEN_JST_URL = "https://api.librus.pl/OAuth/TokenJST"
 const val LIBRUS_API_AUTHORIZATION = "Mjg6ODRmZGQzYTg3YjAzZDNlYTZmZmU3NzdiNThiMzMyYjE="
@@ -50,14 +55,17 @@ const val LIBRUS_JST_DEMO_CODE = "68656A21"
 const val LIBRUS_JST_DEMO_PIN = "1290"
 
 const val LIBRUS_SYNERGIA_URL = "https://synergia.librus.pl"
+
 /** https://synergia.librus.pl/loguj/token/TOKEN/przenies */
 const val LIBRUS_SYNERGIA_TOKEN_LOGIN_URL = "https://synergia.librus.pl/loguj/token/TOKEN/przenies"
 
 const val LIBRUS_MESSAGES_URL = "https://wiadomosci.librus.pl/module"
 const val LIBRUS_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action="
 
-const val LIBRUS_SYNERGIA_HOMEWORK_ATTACHMENT_URL = "https://synergia.librus.pl/homework/downloadFile"
-const val LIBRUS_SYNERGIA_MESSAGES_ATTACHMENT_URL = "https://synergia.librus.pl/wiadomosci/pobierz_zalacznik"
+const val LIBRUS_SYNERGIA_HOMEWORK_ATTACHMENT_URL =
+    "https://synergia.librus.pl/homework/downloadFile"
+const val LIBRUS_SYNERGIA_MESSAGES_ATTACHMENT_URL =
+    "https://synergia.librus.pl/wiadomosci/pobierz_zalacznik"
 
 const val IDZIENNIK_USER_AGENT = SYNERGIA_USER_AGENT
 const val IDZIENNIK_WEB_URL = "https://iuczniowie.progman.pl/idziennik"
@@ -66,18 +74,25 @@ const val IDZIENNIK_WEB_SETTINGS = "mod_panelRodzica/Ustawienia.aspx"
 const val IDZIENNIK_WEB_HOME = "mod_panelRodzica/StronaGlowna.aspx"
 const val IDZIENNIK_WEB_TIMETABLE = "mod_panelRodzica/plan/WS_Plan.asmx/pobierzPlanZajec"
 const val IDZIENNIK_WEB_GRADES = "mod_panelRodzica/oceny/WS_ocenyUcznia.asmx/pobierzOcenyUcznia"
-const val IDZIENNIK_WEB_MISSING_GRADES = "mod_panelRodzica/brak_ocen/WS_BrakOcenUcznia.asmx/pobierzBrakujaceOcenyUcznia"
-const val IDZIENNIK_WEB_EXAMS = "mod_panelRodzica/sprawdziany/mod_sprawdzianyPanel.asmx/pobierzListe"
-const val IDZIENNIK_WEB_HOMEWORK = "mod_panelRodzica/pracaDomowa/WS_pracaDomowa.asmx/pobierzPraceDomowe"
+const val IDZIENNIK_WEB_MISSING_GRADES =
+    "mod_panelRodzica/brak_ocen/WS_BrakOcenUcznia.asmx/pobierzBrakujaceOcenyUcznia"
+const val IDZIENNIK_WEB_EXAMS =
+    "mod_panelRodzica/sprawdziany/mod_sprawdzianyPanel.asmx/pobierzListe"
+const val IDZIENNIK_WEB_HOMEWORK =
+    "mod_panelRodzica/pracaDomowa/WS_pracaDomowa.asmx/pobierzPraceDomowe"
 const val IDZIENNIK_WEB_NOTICES = "mod_panelRodzica/uwagi/WS_uwagiUcznia.asmx/pobierzUwagiUcznia"
-const val IDZIENNIK_WEB_ATTENDANCE = "mod_panelRodzica/obecnosci/WS_obecnosciUcznia.asmx/pobierzObecnosciUcznia"
-const val IDZIENNIK_WEB_ANNOUNCEMENTS = "mod_panelRodzica/tabOgl/WS_tablicaOgloszen.asmx/GetOgloszenia"
+const val IDZIENNIK_WEB_ATTENDANCE =
+    "mod_panelRodzica/obecnosci/WS_obecnosciUcznia.asmx/pobierzObecnosciUcznia"
+const val IDZIENNIK_WEB_ANNOUNCEMENTS =
+    "mod_panelRodzica/tabOgl/WS_tablicaOgloszen.asmx/GetOgloszenia"
 const val IDZIENNIK_WEB_MESSAGES_LIST = "mod_komunikator/WS_wiadomosci.asmx/PobierzListeWiadomosci"
 const val IDZIENNIK_WEB_GET_MESSAGE = "mod_komunikator/WS_wiadomosci.asmx/PobierzWiadomosc"
-const val IDZIENNIK_WEB_GET_RECIPIENT_LIST = "mod_komunikator/WS_wiadomosci.asmx/pobierzListeOdbiorcowPanelRodzic"
+const val IDZIENNIK_WEB_GET_RECIPIENT_LIST =
+    "mod_komunikator/WS_wiadomosci.asmx/pobierzListeOdbiorcowPanelRodzic"
 const val IDZIENNIK_WEB_SEND_MESSAGE = "mod_komunikator/WS_wiadomosci.asmx/WyslijWiadomosc"
 const val IDZIENNIK_WEB_GET_ATTACHMENT = "mod_komunikator/Download.ashx"
-const val IDZIENNIK_WEB_GET_HOMEWORK = "mod_panelRodzica/pracaDomowa/WS_pracaDomowa.asmx/pobierzJednaPraceDomowa"
+const val IDZIENNIK_WEB_GET_HOMEWORK =
+    "mod_panelRodzica/pracaDomowa/WS_pracaDomowa.asmx/pobierzJednaPraceDomowa"
 const val IDZIENNIK_WEB_GET_HOMEWORK_ATTACHMENT = "mod_panelRodzica/pracaDomowa.aspx"
 
 val IDZIENNIK_API_USER_AGENT = SYSTEM_USER_AGENT
@@ -92,7 +107,7 @@ val MOBIDZIENNIK_USER_AGENT = SYSTEM_USER_AGENT
 
 const val VULCAN_HEBE_USER_AGENT = "Dart/2.10 (dart:io)"
 const val VULCAN_HEBE_APP_NAME = "DzienniczekPlus 2.0"
-const val VULCAN_HEBE_APP_VERSION = "21.02.09 (G)"
+const val VULCAN_HEBE_APP_VERSION = "22.09.02 (G)"
 private const val VULCAN_API_DEVICE_NAME_PREFIX = "Szkolny.eu "
 private const val VULCAN_API_DEVICE_NAME_SUFFIX = " - nie usuwać"
 val VULCAN_API_DEVICE_NAME by lazy {
@@ -116,9 +131,10 @@ const val VULCAN_HEBE_ENDPOINT_GRADE_SUMMARY = "api/mobile/grade/summary"
 const val VULCAN_HEBE_ENDPOINT_HOMEWORK = "api/mobile/homework"
 const val VULCAN_HEBE_ENDPOINT_NOTICES = "api/mobile/note"
 const val VULCAN_HEBE_ENDPOINT_ATTENDANCE = "api/mobile/lesson"
-const val VULCAN_HEBE_ENDPOINT_MESSAGES = "api/mobile/message"
+const val VULCAN_HEBE_ENDPOINT_MESSAGEBOXES = "api/mobile/messagebox"
+const val VULCAN_HEBE_ENDPOINT_MESSAGES = "api/mobile/messagebox/message"
 const val VULCAN_HEBE_ENDPOINT_MESSAGES_STATUS = "api/mobile/message/status"
-const val VULCAN_HEBE_ENDPOINT_MESSAGES_SEND = "api/mobile/message"
+const val VULCAN_HEBE_ENDPOINT_MESSAGES_SEND = "api/mobile/messagebox/message"
 const val VULCAN_HEBE_ENDPOINT_LUCKY_NUMBER = "api/mobile/school/lucky"
 
 const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"

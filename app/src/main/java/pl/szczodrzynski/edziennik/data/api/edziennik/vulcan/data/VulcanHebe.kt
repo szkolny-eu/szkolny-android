@@ -14,7 +14,6 @@ import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import io.github.wulkanowy.signer.hebe.getSignatureHeaders
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.HebeFilterType
@@ -49,7 +48,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
     fun getDateTime(
         json: JsonObject?,
         key: String,
-        default: Long = System.currentTimeMillis()
+        default: Long = System.currentTimeMillis(),
     ): Long {
         val date = json.getJsonObject(key)
         return date.getLong("Timestamp") ?: return default
@@ -88,7 +87,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         return subjectId
     }
 
-    fun getTeamId(json: JsonObject?, key: String): Long? {
+    fun getTeamId(json: JsonObject?, key: String): Long {
         val team = json.getJsonObject(key)
         val teamId = team.getLong("Id")
         var teamName = team.getString("Shortcut")
@@ -100,20 +99,6 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             name = teamName,
             schoolCode = data.schoolCode ?: "",
             isTeamClass = false,
-        ).id
-    }
-
-    fun getClassId(json: JsonObject?, key: String): Long? {
-        val team = json.getJsonObject(key)
-        val teamId = team.getLong("Id")
-        val teamName = data.profile?.studentClassName
-            ?: team.getString("Name")
-            ?: ""
-        return data.getTeam(
-            id = teamId,
-            name = teamName,
-            schoolCode = data.schoolCode ?: "",
-            isTeamClass = true,
         ).id
     }
 
@@ -148,7 +133,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
 
     fun isCurrentYear(dateTime: Long): Boolean {
         return profile?.let { profile ->
-            return@let dateTime >= profile.dateSemester1Start.inMillis
+            return@let dateTime >= profile.dateSemester1Start.inMillis - 604800000
         } ?: false
     }
 
@@ -159,7 +144,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         payload: JsonElement? = null,
         baseUrl: Boolean = false,
         firebaseToken: String? = null,
-        crossinline onSuccess: (json: T, response: Response?) -> Unit
+        crossinline onSuccess: (json: T, response: Response?) -> Unit,
     ) {
         val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
 
@@ -314,7 +299,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         query: Map<String, String> = mapOf(),
         baseUrl: Boolean = false,
         firebaseToken: String? = null,
-        crossinline onSuccess: (json: T, response: Response?) -> Unit
+        crossinline onSuccess: (json: T, response: Response?) -> Unit,
     ) {
         val queryPath = query.map {
             it.key + "=" + URLEncoder.encode(it.value, "UTF-8").replace("+", "%20")
@@ -334,7 +319,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         payload: JsonElement,
         baseUrl: Boolean = false,
         firebaseToken: String? = null,
-        crossinline onSuccess: (json: T, response: Response?) -> Unit
+        crossinline onSuccess: (json: T, response: Response?) -> Unit,
     ) {
         apiRequest(
             tag,
@@ -355,9 +340,10 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         dateTo: Date? = null,
         lastSync: Long? = null,
         folder: Int? = null,
+        message_box: String? = null,
         params: Map<String, String> = mapOf(),
         includeFilterType: Boolean = true,
-        onSuccess: (data: List<JsonObject>, response: Response?) -> Unit
+        onSuccess: (data: List<JsonObject>, response: Response?) -> Unit,
     ) {
         val url = if (includeFilterType && filterType != null)
             "$endpoint/${filterType.endpoint}"
@@ -378,6 +364,13 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                 query["periodId"] = data.studentSemesterId.toString()
                 query["pupilId"] = data.studentId.toString()
             }
+            HebeFilterType.BY_MESSAGEBOX -> {
+                if (message_box == null) {
+                    throw IllegalArgumentException("message_box cannot be null")
+                }
+                query["box"] = message_box
+            }
+            else -> {}
         }
 
         if (dateFrom != null)
