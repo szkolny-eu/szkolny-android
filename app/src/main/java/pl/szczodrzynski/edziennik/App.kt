@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik
 
-import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
@@ -14,6 +13,7 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.multidex.MultiDexApplication
 import androidx.work.Configuration
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.chuckerteam.chucker.api.ChuckerCollector
@@ -51,7 +51,7 @@ import pl.szczodrzynski.edziennik.utils.managers.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 
-class App : Application(), Configuration.Provider, CoroutineScope {
+class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     companion object {
         @Volatile
         lateinit var db: AppDb
