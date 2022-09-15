@@ -14,6 +14,7 @@ import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import io.github.wulkanowy.signer.hebe.getSignatureHeaders
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.HebeFilterType
@@ -48,7 +49,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
     fun getDateTime(
         json: JsonObject?,
         key: String,
-        default: Long = System.currentTimeMillis(),
+        default: Long = System.currentTimeMillis()
     ): Long {
         val date = json.getJsonObject(key)
         return date.getLong("Timestamp") ?: return default
@@ -144,7 +145,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         payload: JsonElement? = null,
         baseUrl: Boolean = false,
         firebaseToken: String? = null,
-        crossinline onSuccess: (json: T, response: Response?) -> Unit,
+        crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
         val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
 
@@ -299,7 +300,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         query: Map<String, String> = mapOf(),
         baseUrl: Boolean = false,
         firebaseToken: String? = null,
-        crossinline onSuccess: (json: T, response: Response?) -> Unit,
+        crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
         val queryPath = query.map {
             it.key + "=" + URLEncoder.encode(it.value, "UTF-8").replace("+", "%20")
@@ -319,7 +320,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         payload: JsonElement,
         baseUrl: Boolean = false,
         firebaseToken: String? = null,
-        crossinline onSuccess: (json: T, response: Response?) -> Unit,
+        crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
         apiRequest(
             tag,
@@ -343,7 +344,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         message_box: String? = null,
         params: Map<String, String> = mapOf(),
         includeFilterType: Boolean = true,
-        onSuccess: (data: List<JsonObject>, response: Response?) -> Unit,
+        onSuccess: (data: List<JsonObject>, response: Response?) -> Unit
     ) {
         val url = if (includeFilterType && filterType != null)
             "$endpoint/${filterType.endpoint}"

@@ -14,11 +14,11 @@ import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import kotlin.coroutines.CoroutineContext
 
 class LibrusRecaptchaHelper(
-    val context: Context,
-    url: String,
-    html: String,
-    val onSuccess: (url: String) -> Unit,
-    val onTimeout: () -> Unit,
+        val context: Context,
+        url: String,
+        html: String,
+        val onSuccess: (url: String) -> Unit,
+        val onTimeout: () -> Unit
 ) : CoroutineScope {
     companion object {
         private const val TAG = "LibrusRecaptchaHelper"
@@ -39,7 +39,6 @@ class LibrusRecaptchaHelper(
     private var timedOut = false
 
     inner class WebViewClient : android.webkit.WebViewClient() {
-        @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             timeout?.cancel()
             if (!timedOut) {

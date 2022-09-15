@@ -26,10 +26,7 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import com.mikepenz.materialdrawer.model.*
-import com.mikepenz.materialdrawer.model.interfaces.ColorfulBadgeable
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.descriptionRes
-import com.mikepenz.materialdrawer.model.interfaces.nameRes
+import com.mikepenz.materialdrawer.model.interfaces.*
 import com.mikepenz.materialdrawer.model.utils.hiddenInMiniDrawer
 import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
@@ -96,6 +93,7 @@ import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
 import pl.szczodrzynski.navlib.drawer.NavDrawer
 import pl.szczodrzynski.navlib.drawer.items.DrawerPrimaryItem
 import java.io.IOException
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -370,7 +368,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     window.statusBarColor = statusBarColor
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                    && ColorUtils.calculateLuminance(statusBarColor) > 0.6
+                        && ColorUtils.calculateLuminance(statusBarColor) > 0.6
                 ) {
                     @Suppress("deprecation")
                     window.decorView.systemUiVisibility =
@@ -711,7 +709,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             Type.NO_API_ACCESS -> {
                 Toast.makeText(this, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
             }
-            else -> {}
         }
 
         swipeRefreshLayout.isRefreshing = true
@@ -1053,7 +1050,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         handleIntent(intent?.extras)
     }
 
-    @Deprecated("Deprecated in Java")
     @Suppress("deprecation")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -1452,9 +1448,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 targetPopToHomeList += target.id
 
             if (target.isInDrawer && (
-                        target.isStatic
-                                || supportedFragments.isEmpty()
-                                || supportedFragments.contains(target.id))
+                    target.isStatic
+                    || supportedFragments.isEmpty()
+                    || supportedFragments.contains(target.id))
             ) {
                 drawerItems += createDrawerItem(target)
                 if (target.id == 1) {
@@ -1485,8 +1481,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     private val targetPopToHomeList = arrayListOf<Int>()
     private var targetHomeId: Int = -1
-
-    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (!b.navView.onBackPressed()) {
             if (App.config.ui.openDrawerOnBackPressed && ((navTarget.popTo == null && navTarget.popToHome)

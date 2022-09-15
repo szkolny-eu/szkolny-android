@@ -43,7 +43,6 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
     fun getRootView() = b.root
 
-    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val destination = nav.currentDestination ?: run {
             nav.navigateUp()
@@ -69,14 +68,14 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         }
         if (destination.id == R.id.loginSummaryFragment) {
             MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.are_you_sure)
-                .setMessage(R.string.login_cancel_confirmation)
-                .setPositiveButton(R.string.yes) { _, _ ->
-                    setResult(Activity.RESULT_CANCELED)
-                    finish()
-                }
-                .setNegativeButton(R.string.no, null)
-                .show()
+                    .setTitle(R.string.are_you_sure)
+                    .setMessage(R.string.login_cancel_confirmation)
+                    .setPositiveButton(R.string.yes) { _, _ ->
+                        setResult(Activity.RESULT_CANCELED)
+                        finish()
+                    }
+                    .setNegativeButton(R.string.no, null)
+                    .show()
             return
         }
         nav.navigateUp()
@@ -87,11 +86,11 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         setTheme(R.style.AppTheme_Light)
 
         navOptions = NavOptions.Builder()
-            .setEnterAnim(R.anim.slide_in_right)
-            .setExitAnim(R.anim.slide_out_left)
-            .setPopEnterAnim(R.anim.slide_in_left)
-            .setPopExitAnim(R.anim.slide_out_right)
-            .build()
+                .setEnterAnim(R.anim.slide_in_right)
+                .setExitAnim(R.anim.slide_out_left)
+                .setPopEnterAnim(R.anim.slide_in_left)
+                .setPopExitAnim(R.anim.slide_out_right)
+                .build()
 
         b = LoginActivityBinding.inflate(layoutInflater)
         setContentView(b.root)
@@ -107,7 +106,5 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    fun error(error: ApiError) {
-        errorSnackbar.addError(error).show(); lastError = error
-    }
+    fun error(error: ApiError) { errorSnackbar.addError(error).show(); lastError = error }
 }

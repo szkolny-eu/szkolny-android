@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_EXAMS
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_EXAMS
@@ -17,7 +18,7 @@ import pl.szczodrzynski.edziennik.ext.getString
 class VulcanHebeExams(
     override val data: DataVulcan,
     override val lastSync: Long?,
-    val onSuccess: (endpointId: Int) -> Unit,
+    val onSuccess: (endpointId: Int) -> Unit
 ) : VulcanHebe(data, lastSync) {
     companion object {
         const val TAG = "VulcanHebeExams"
@@ -45,8 +46,7 @@ class VulcanHebeExams(
 
                 val type = when (exam.getString("Type")) {
                     "Praca klasowa",
-                    "Sprawdzian",
-                    -> Event.TYPE_EXAM
+                    "Sprawdzian" -> Event.TYPE_EXAM
                     "Kartkówka" -> Event.TYPE_SHORT_QUIZ
                     else -> Event.TYPE_DEFAULT
                 }

@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import androidx.core.util.set
 import com.google.gson.JsonObject
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGEBOXES
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGES
@@ -24,7 +25,7 @@ import pl.szczodrzynski.navlib.crc16
 class VulcanHebeMessages(
     override val data: DataVulcan,
     override val lastSync: Long?,
-    val onSuccess: (endpointId: Int) -> Unit,
+    val onSuccess: (endpointId: Int) -> Unit
 ) : VulcanHebe(data, lastSync) {
     companion object {
         const val TAG = "VulcanHebeMessagesInbox"

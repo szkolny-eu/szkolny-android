@@ -16,26 +16,18 @@ import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.sizeDp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore.Companion.LOGIN_TYPE_IDZIENNIK
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
-import pl.szczodrzynski.edziennik.ext.attachToastHint
-import pl.szczodrzynski.edziennik.ext.get
-import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
-import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
@@ -67,11 +59,7 @@ class MessageFragment : Fragment(), CoroutineScope {
         get() = app.messageManager
     private lateinit var message: MessageFull
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
@@ -93,10 +81,10 @@ class MessageFragment : Fragment(), CoroutineScope {
         )
 
         b.closeButton.setImageDrawable(
-            IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_window_close).apply {
-                colorAttr(activity, android.R.attr.textColorSecondary)
-                sizeDp = 24
-            }
+                IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_window_close).apply {
+                    colorAttr(activity, android.R.attr.textColorSecondary)
+                    sizeDp = 24
+                }
         )
         b.closeButton.setOnClickListener { activity.navigateUp() }
 
@@ -108,26 +96,22 @@ class MessageFragment : Fragment(), CoroutineScope {
             it.maxLines = if (it.maxLines == 30) 2 else 30
         }
 
-        val replyDrawable =
-            IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_reply_outline).apply {
-                sizeDp = 24
-                colorAttr(activity, android.R.attr.textColorPrimary)
-            }
-        val forwardDrawable =
-            IconicsDrawable(activity, CommunityMaterial.Icon.cmd_arrow_right).apply {
-                sizeDp = 24
-                colorAttr(activity, android.R.attr.textColorPrimary)
-            }
-        val deleteDrawable =
-            IconicsDrawable(activity, CommunityMaterial.Icon.cmd_delete_outline).apply {
-                sizeDp = 24
-                colorAttr(activity, android.R.attr.textColorPrimary)
-            }
-        val downloadDrawable =
-            IconicsDrawable(activity, CommunityMaterial.Icon.cmd_download_outline).apply {
-                sizeDp = 24
-                colorAttr(activity, android.R.attr.textColorPrimary)
-            }
+        val replyDrawable = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_reply_outline).apply {
+            sizeDp = 24
+            colorAttr(activity, android.R.attr.textColorPrimary)
+        }
+        val forwardDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_arrow_right).apply {
+            sizeDp = 24
+            colorAttr(activity, android.R.attr.textColorPrimary)
+        }
+        val deleteDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_delete_outline).apply {
+            sizeDp = 24
+            colorAttr(activity, android.R.attr.textColorPrimary)
+        }
+        val downloadDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_download_outline).apply {
+            sizeDp = 24
+            colorAttr(activity, android.R.attr.textColorPrimary)
+        }
         b.replyButton.setCompoundDrawables(null, replyDrawable, null, null)
         b.forwardButton.setCompoundDrawables(null, forwardDrawable, null, null)
         b.deleteButton.setCompoundDrawables(null, deleteDrawable, null, null)
@@ -157,19 +141,17 @@ class MessageFragment : Fragment(), CoroutineScope {
         }
         b.deleteButton.onClick {
             MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.messages_delete_confirmation)
-                .setMessage(R.string.messages_delete_confirmation_text)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    launch {
-                        manager.markAsDeleted(message)
-                        Toast.makeText(activity,
-                            "Wiadomość przeniesiona do usuniętych",
-                            Toast.LENGTH_SHORT).show()
-                        activity.navigateUp()
+                    .setTitle(R.string.messages_delete_confirmation)
+                    .setMessage(R.string.messages_delete_confirmation_text)
+                    .setPositiveButton(R.string.ok) { _, _ ->
+                        launch {
+                            manager.markAsDeleted(message)
+                            Toast.makeText(activity, "Wiadomość przeniesiona do usuniętych", Toast.LENGTH_SHORT).show()
+                            activity.navigateUp()
+                        }
                     }
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
+                    .setNegativeButton(R.string.cancel, null)
+                    .show()
         }
         b.downloadButton.isVisible = App.devMode
         b.downloadButton.onClick {
@@ -215,7 +197,8 @@ class MessageFragment : Fragment(), CoroutineScope {
                 EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
                 return
             }
-        } else if (!message.readByEveryone) {
+        }
+        else if (!message.readByEveryone) {
             // if a sent msg is not read by everyone, download it again to check the read status
             EdziennikTask.messageGet(App.profileId, message).enqueue(activity)
             return
@@ -226,9 +209,7 @@ class MessageFragment : Fragment(), CoroutineScope {
 
     private fun showMessage() {
         b.body.text = MessagesUtils.htmlToSpannable(activity, message.body.toString())
-        b.date.text = getString(R.string.messages_date_time_format,
-            Date.fromMillis(message.addedDate).formattedStringShort,
-            Time.fromMillis(message.addedDate).stringHM)
+        b.date.text = getString(R.string.messages_date_time_format, Date.fromMillis(message.addedDate).formattedStringShort, Time.fromMillis(message.addedDate).stringHM)
 
         val messageInfo = MessagesUtils.getMessageInfo(app, message, 40, 20, 14, 10)
         b.profileBackground.setImageBitmap(messageInfo.profileImage)
@@ -259,22 +240,22 @@ class MessageFragment : Fragment(), CoroutineScope {
         message.recipients?.forEach { recipient ->
             when (recipient.readDate) {
                 -1L -> messageRecipients.append(getString(
-                    R.string.messages_recipients_list_unknown_state_format,
-                    recipient.fullName
+                        R.string.messages_recipients_list_unknown_state_format,
+                        recipient.fullName
                 ))
                 0L -> messageRecipients.append(getString(
-                    R.string.messages_recipients_list_unread_format,
-                    recipient.fullName
+                        R.string.messages_recipients_list_unread_format,
+                        recipient.fullName
                 ))
                 1L -> messageRecipients.append(getString(
-                    R.string.messages_recipients_list_read_unknown_date_format,
-                    recipient.fullName
+                        R.string.messages_recipients_list_read_unknown_date_format,
+                        recipient.fullName
                 ))
                 else -> messageRecipients.append(getString(
-                    R.string.messages_recipients_list_read_format,
-                    recipient.fullName,
-                    Date.fromMillis(recipient.readDate).formattedString,
-                    Time.fromMillis(recipient.readDate).stringHM
+                        R.string.messages_recipients_list_read_format,
+                        recipient.fullName,
+                        Date.fromMillis(recipient.readDate).formattedString,
+                        Time.fromMillis(recipient.readDate).stringHM
                 ))
             }
         }
@@ -302,7 +283,8 @@ class MessageFragment : Fragment(), CoroutineScope {
         if (message.attachmentIds.isNullOrEmpty() || message.attachmentNames.isNullOrEmpty()) {
             b.attachmentsTitle.isVisible = false
             b.attachmentsFragment.isVisible = false
-        } else {
+        }
+        else {
             b.attachmentsTitle.isVisible = true
             b.attachmentsFragment.isVisible = true
             b.attachmentsFragment.init(Bundle().also {
@@ -319,12 +301,10 @@ class MessageFragment : Fragment(), CoroutineScope {
         EventBus.getDefault().register(this)
         super.onStart()
     }
-
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
     }
-
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()

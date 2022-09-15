@@ -55,7 +55,7 @@ fun String.toProperCase(): String = changeStringCase(this)
 fun String.swapFirstLastName(): String {
     return this.split(" ").let {
         if (it.size > 1)
-            it[1] + " " + it[0]
+            it[1]+" "+it[0]
         else
             it[0]
     }
@@ -140,42 +140,29 @@ fun String.fixWhiteSpaces() = buildString(length) {
 
 fun CharSequence?.asColoredSpannable(colorInt: Int): Spannable {
     val spannable = SpannableString(this)
-    spannable.setSpan(ForegroundColorSpan(colorInt),
-        0,
-        spannable.length,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    spannable.setSpan(ForegroundColorSpan(colorInt), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannable
 }
-
 fun CharSequence?.asStrikethroughSpannable(): Spannable {
     val spannable = SpannableString(this)
     spannable.setSpan(StrikethroughSpan(), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannable
 }
-
 fun CharSequence?.asItalicSpannable(): Spannable {
     val spannable = SpannableString(this)
-    spannable.setSpan(StyleSpan(Typeface.ITALIC),
-        0,
-        spannable.length,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    spannable.setSpan(StyleSpan(Typeface.ITALIC), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannable
 }
-
 fun CharSequence?.asBoldSpannable(): Spannable {
     val spannable = SpannableString(this)
-    spannable.setSpan(StyleSpan(Typeface.BOLD),
-        0,
-        spannable.length,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    spannable.setSpan(StyleSpan(Typeface.BOLD), 0, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     return spannable
 }
-
 fun CharSequence.asSpannable(
     vararg spans: CharacterStyle,
     substring: CharSequence? = null,
     ignoreCase: Boolean = false,
-    ignoreDiacritics: Boolean = false,
+    ignoreDiacritics: Boolean = false
 ): Spannable {
     val spannable = SpannableString(this)
     substring?.let { substr ->
@@ -250,11 +237,7 @@ val String.firstLettersName: String
         return nameShort
     }
 
-fun CharSequence.replaceSpanned(
-    oldValue: String,
-    newValue: CharSequence,
-    ignoreCase: Boolean = false,
-): CharSequence {
+fun CharSequence.replaceSpanned(oldValue: String, newValue: CharSequence, ignoreCase: Boolean = false): CharSequence {
     var seq = this
     var index = seq.indexOf(oldValue, ignoreCase = ignoreCase)
     while (index != -1) {
@@ -268,11 +251,7 @@ fun CharSequence.replaceSpanned(
     return seq
 }
 
-fun SpannableStringBuilder.replaceSpan(
-    spanClass: Class<*>,
-    prefix: CharSequence,
-    suffix: CharSequence,
-): SpannableStringBuilder {
+fun SpannableStringBuilder.replaceSpan(spanClass: Class<*>, prefix: CharSequence, suffix: CharSequence): SpannableStringBuilder {
     getSpans(0, length, spanClass).forEach {
         val spanStart = getSpanStart(it)
         insert(spanStart, prefix)
@@ -286,12 +265,7 @@ fun SpannableStringBuilder.appendText(text: CharSequence): SpannableStringBuilde
     append(text)
     return this
 }
-
-fun SpannableStringBuilder.appendSpan(
-    text: CharSequence,
-    what: Any,
-    flags: Int,
-): SpannableStringBuilder {
+fun SpannableStringBuilder.appendSpan(text: CharSequence, what: Any, flags: Int): SpannableStringBuilder {
     val start: Int = length
     append(text)
     setSpan(what, start, length, flags)
@@ -319,8 +293,7 @@ fun String.notEmptyOrNull(): String? {
         this
 }
 
-fun Context.plural(@PluralsRes resId: Int, value: Int): String =
-    resources.getQuantityString(resId, value, value)
+fun Context.plural(@PluralsRes resId: Int, value: Int): String = resources.getQuantityString(resId, value, value)
 
 fun String.copyToClipboard(context: Context) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

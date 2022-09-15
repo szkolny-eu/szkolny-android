@@ -12,7 +12,9 @@ import androidx.room.Ignore
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.getNameInitials
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.ext.join
+import java.util.*
 
 @Entity(tableName = "teachers",
     primaryKeys = ["profileId", "teacherId"])

@@ -10,9 +10,7 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.databinding.MessagesFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
@@ -38,11 +36,7 @@ class MessagesFragment : Fragment(), CoroutineScope {
 
     // local/private variables go here
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
         app = activity.application as App
