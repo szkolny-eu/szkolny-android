@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -124,8 +123,7 @@ class MessagesFragment : Fragment(), CoroutineScope {
             )
 
             setFabOnClickListener {
-                Snackbar.make(b.root, R.string.not_implemented, Snackbar.LENGTH_SHORT).show()
-//                activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE)
+                activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE)
             }
         }
 

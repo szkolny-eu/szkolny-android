@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.sizeDp
@@ -126,18 +125,16 @@ class MessageFragment : Fragment(), CoroutineScope {
         b.messageStar.attachToastHint(R.string.hint_message_star)
 
         b.replyButton.onClick {
-            Snackbar.make(b.root, R.string.not_implemented, Snackbar.LENGTH_SHORT).show()
-//            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE, Bundle(
-//                    "message" to app.gson.toJson(message),
-//                    "type" to "reply"
-//            ))
+            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE, Bundle(
+                    "message" to app.gson.toJson(message),
+                    "type" to "reply"
+            ))
         }
         b.forwardButton.onClick {
-            Snackbar.make(b.root, R.string.not_implemented, Snackbar.LENGTH_SHORT).show()
-//            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE, Bundle(
-//                    "message" to app.gson.toJson(message),
-//                    "type" to "forward"
-//            ))
+            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE, Bundle(
+                    "message" to app.gson.toJson(message),
+                    "type" to "forward"
+            ))
         }
         b.deleteButton.onClick {
             MaterialAlertDialogBuilder(activity)
