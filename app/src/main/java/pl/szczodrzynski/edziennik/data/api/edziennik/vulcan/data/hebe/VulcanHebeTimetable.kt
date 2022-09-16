@@ -134,6 +134,9 @@ class VulcanHebeTimetable(
         val subjectId = getSubjectId(json, "Subject")
 
         val teamId = getTeamId(json, "Distribution")
+            ?: getClassId(json, "Clazz")
+            ?: data.teamClass?.id
+            ?: -1
 
         val change = json.getJsonObject("Change")
         val changeId = change.getInt("Id")
@@ -180,6 +183,8 @@ class VulcanHebeTimetable(
             val changeSubjectId = getSubjectId(changeJson, "Subject") ?: subjectId
 
             val changeTeamId = getTeamId(json, "Distribution")
+                ?: getClassId(json, "Clazz")
+                ?: teamId
 
             if (type != TYPE_CHANGE) {
                 /* lesson shifted */

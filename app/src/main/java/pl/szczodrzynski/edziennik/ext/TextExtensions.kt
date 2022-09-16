@@ -61,10 +61,10 @@ fun String.swapFirstLastName(): String {
     }
 }
 
-fun String.splitName(): Pair<String, String> {
+fun String.splitName(): Pair<String, String>? {
     return this.split(" ").let {
         if (it.size >= 2) Pair(it[0], it[1])
-        else Pair(this, "")
+        else null
     }
 }
 

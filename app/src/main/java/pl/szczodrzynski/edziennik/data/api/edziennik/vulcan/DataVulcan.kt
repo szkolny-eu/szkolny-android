@@ -232,6 +232,16 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
         get() { mSenderAddressName = mSenderAddressName ?: profile?.getStudentData("senderAddressName", null); return mSenderAddressName }
         set(value) { profile?.putStudentData("senderAddressName", value) ?: return; mSenderAddressName = value }
 
+    private var mMessageBoxKey: String? = null
+    var messageBoxKey: String?
+        get() { mMessageBoxKey = mMessageBoxKey ?: profile?.getStudentData("messageBoxKey", null); return mMessageBoxKey }
+        set(value) { profile?.putStudentData("messageBoxKey", value) ?: return; mMessageBoxKey = value }
+
+    private var mMessageBoxName: String? = null
+    var messageBoxName: String?
+        get() { mMessageBoxName = mMessageBoxName ?: profile?.getStudentData("messageBoxName", null); return mMessageBoxName }
+        set(value) { profile?.putStudentData("messageBoxName", value) ?: return; mMessageBoxName = value }
+
     val apiUrl: String?
         get() {
             val url = when (apiToken[symbol]?.substring(0, 3)) {

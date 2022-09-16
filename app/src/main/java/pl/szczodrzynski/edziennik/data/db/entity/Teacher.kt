@@ -83,9 +83,6 @@ open class Teacher {
     @ColumnInfo(name = "teacherId")
     var id: Long
 
-    @ColumnInfo(name = "teacherGlobalKey")
-    var globalKey: String? = null
-
     @ColumnInfo(name = "teacherLoginId")
     var loginId: String? = null
 
@@ -177,23 +174,6 @@ open class Teacher {
         this.name = name
         this.surname = surname
         this.loginId = loginId
-    }
-
-    @Ignore
-    constructor(
-        profileId: Int,
-        id: Long,
-        name: String,
-        surname: String,
-        loginId: String?,
-        globalKey: String?,
-    ) {
-        this.profileId = profileId
-        this.id = id
-        this.name = name
-        this.surname = surname
-        this.loginId = loginId
-        this.globalKey = globalKey
     }
 
     @Ignore

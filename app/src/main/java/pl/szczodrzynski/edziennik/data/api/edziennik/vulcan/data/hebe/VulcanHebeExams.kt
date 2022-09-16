@@ -37,6 +37,9 @@ class VulcanHebeExams(
                 val subjectId = getSubjectId(exam, "Subject") ?: -1
                 val teacherId = getTeacherId(exam, "Creator") ?: -1
                 val teamId = getTeamId(exam, "Distribution")
+                    ?: getClassId(exam, "Class")
+                    ?: data.teamClass?.id
+                    ?: -1
                 val topic = exam.getString("Content")?.trim() ?: ""
 
                 if (!isCurrentYear(eventDate)) return@forEach
