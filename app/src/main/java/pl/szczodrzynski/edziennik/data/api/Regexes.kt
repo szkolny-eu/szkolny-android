@@ -20,6 +20,10 @@ object Regexes {
         """<br\s?/?>""".toRegex()
     }
 
+    val MESSAGE_META by lazy {
+        """^\[META:([A-z0-9-&=]+)]""".toRegex()
+    }
+
 
 
     val MOBIDZIENNIK_GRADES_SUBJECT_NAME by lazy {

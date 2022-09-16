@@ -59,8 +59,10 @@ class VulcanHebeMessages(
             list.forEach { message ->
                 val uuid = message.getString("Id") ?: return@forEach
                 val id = Utils.crc32(uuid.toByteArray())
+                val globalKey = message.getString("GlobalKey", "")
+                val threadKey = message.getString("ThreadKey", "")
                 val subject = message.getString("Subject") ?: return@forEach
-                val body = message.getString("Content") ?: return@forEach
+                var body = message.getString("Content") ?: return@forEach
 
                 val sender = message.getJsonObject("Sender") ?: return@forEach
 
@@ -74,12 +76,21 @@ class VulcanHebeMessages(
                 else
                     null
 
+                val meta = mutableMapOf(
+                    "uuid" to uuid,
+                    "globalKey" to globalKey,
+                    "threadKey" to threadKey,
+                )
+                val metaString = meta.map { "${it.key}=${it.value}" }.join("&")
+                body = "[META:${metaString}]" + body
+                body = body.replace("\n", "<br>")
+
                 val messageObject = Message(
                     profileId = profileId,
                     id = id,
                     type = messageType,
                     subject = subject,
-                    body = body.replace("\n", "<br>"),
+                    body = body,
                     senderId = senderId,
                     addedDate = sentDate
                 )

@@ -119,7 +119,7 @@ const val VULCAN_HEBE_ENDPOINT_ATTENDANCE = "api/mobile/lesson"
 const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX = "api/mobile/messagebox"
 const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_ADDRESSBOOK = "api/mobile/messagebox/addressbook"
 const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_MESSAGES = "api/mobile/messagebox/message"
-const val VULCAN_HEBE_ENDPOINT_MESSAGES_STATUS = "api/mobile/message/status"
+const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_STATUS = "api/mobile/messagebox/message/status"
 const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_SEND = "api/mobile/messagebox/message"
 const val VULCAN_HEBE_ENDPOINT_LUCKY_NUMBER = "api/mobile/school/lucky"
 

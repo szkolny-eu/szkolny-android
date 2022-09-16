@@ -5,7 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import org.greenrobot.eventbus.EventBus
-import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGES_STATUS
+import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGEBOX_STATUS
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
@@ -23,13 +23,19 @@ class VulcanHebeMessagesChangeStatus(
         const val TAG = "VulcanHebeMessagesChangeStatus"
     }
 
-    init {
+    init { let {
+        val messageKey = messageObject.body?.let { data.parseMessageMeta(it) }?.get("globalKey") ?: run {
+            EventBus.getDefault().postSticky(MessageGetEvent(messageObject))
+            onSuccess()
+            return@let
+        }
+
         apiPost(
             TAG,
-            VULCAN_HEBE_ENDPOINT_MESSAGES_STATUS,
+            VULCAN_HEBE_ENDPOINT_MESSAGEBOX_STATUS,
             payload = JsonObject(
-                "MessageId" to messageObject.id,
-                "LoginId" to data.studentLoginId,
+                "BoxKey" to data.messageBoxKey,
+                "MessageKey" to messageKey,
                 "Status" to 1
             )
         ) { _: Boolean, _ ->
@@ -61,5 +67,5 @@ class VulcanHebeMessagesChangeStatus(
             EventBus.getDefault().postSticky(MessageGetEvent(messageObject))
             onSuccess()
         }
-    }
+    }}
 }
