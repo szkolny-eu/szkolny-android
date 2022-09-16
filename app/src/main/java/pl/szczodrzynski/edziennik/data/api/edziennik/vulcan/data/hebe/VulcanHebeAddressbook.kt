@@ -108,7 +108,8 @@ class VulcanHebeAddressbook(
                     }
 
                     teacher.setTeacherType(personType)
-                    teacher.typeDescription = roleText
+                    if (roleText != null)
+                        teacher.typeDescription = roleText
                 }
 
                 if (teacher.type == 0)
