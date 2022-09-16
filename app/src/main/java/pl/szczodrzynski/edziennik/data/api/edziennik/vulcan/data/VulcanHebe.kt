@@ -14,7 +14,6 @@ import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.body.MediaTypeUtils
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import io.github.wulkanowy.signer.hebe.getSignatureHeaders
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.HebeFilterType
@@ -55,6 +54,15 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         return date.getLong("Timestamp") ?: return default
     }
 
+    fun buildDateTime(): JsonObject {
+        return JsonObject(
+            "Timestamp" to System.currentTimeMillis(),
+            "Date" to Date.getToday().stringY_m_d,
+            "DateDisplay" to Date.getToday().stringDmy,
+            "Time" to Time.getNow().stringHMS,
+        )
+    }
+
     fun getDate(json: JsonObject?, key: String): Date? {
         val date = json.getJsonObject(key)
         return date.getString("Date")?.let { Date.fromY_m_d(it) }
@@ -78,12 +86,13 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         val globalKey = json.getString("GlobalKey") ?: return null
         if (globalKey == data.messageBoxKey)
             return null
-        var senderName = json.getString("Name") ?: return null
-        val senderGroup = json.getString("Group", "P")
-        val pattern = " - $senderGroup - (${data.schoolShort})"
-        if (senderName.endsWith(pattern))
-            senderName = senderName.substringBefore(pattern)
-        val teacher = data.getTeacherByFirstLast(senderName, globalKey)
+        var name = json.getString("Name") ?: return null
+        val group = json.getString("Group", "P")
+        val loginId = "${globalKey};${group};${name}"
+        val pattern = " - $group - (${data.schoolShort})"
+        if (name.endsWith(pattern))
+            name = name.substringBefore(pattern)
+        val teacher = data.getTeacherByFirstLast(name, loginId)
         if (teacher.type == 0)
             teacher.type = Teacher.TYPE_OTHER
         return teacher
