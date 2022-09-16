@@ -257,7 +257,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             styles = styles,
             textHtml = if (App.devMode) b.textHtml else null,
             htmlMode = when (app.profile.loginStoreType) {
-                LOGIN_TYPE_MOBIDZIENNIK, LOGIN_TYPE_VULCAN -> COMPATIBLE
+                LOGIN_TYPE_MOBIDZIENNIK -> COMPATIBLE
                 else -> ORIGINAL
             },
         )
