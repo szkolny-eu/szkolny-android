@@ -122,6 +122,9 @@ class VulcanHebeMessages(
                     ?.asJsonObjectList()
                     ?: return@forEach
 
+                messageObject.attachmentIds = mutableListOf()
+                messageObject.attachmentNames = mutableListOf()
+                messageObject.attachmentSizes = mutableListOf()
                 for (attachment in attachments) {
                     val fileName = attachment.getString("Name") ?: continue
                     val url = attachment.getString("Link") ?: continue
