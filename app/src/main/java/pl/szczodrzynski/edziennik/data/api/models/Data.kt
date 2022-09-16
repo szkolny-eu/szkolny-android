@@ -489,7 +489,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             teacherList[id] = this
         }
         return obj.also {
-            if (loginId != null && it.loginId != null)
+            if (loginId != null)
                 it.loginId = loginId
             if (firstName.length > 1)
                 it.name = firstName

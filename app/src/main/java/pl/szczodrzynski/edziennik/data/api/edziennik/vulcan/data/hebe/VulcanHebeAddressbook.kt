@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import androidx.core.util.set
+import androidx.room.OnConflictStrategy
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_ADDRESSBOOK
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
@@ -44,7 +45,6 @@ class VulcanHebeAddressbook(
         ) { list, _ ->
             list.forEach { person ->
                 val id = person.getString("Id") ?: return@forEach
-                val loginId = person.getString("LoginId") ?: return@forEach
 
                 val idType = id.split("-")
                     .getOrNull(0)
@@ -69,7 +69,7 @@ class VulcanHebeAddressbook(
                     idLong,
                     name,
                     surname,
-                    loginId
+                    null
                 ).also {
                     data.teacherList[idLong] = it
                 }
@@ -114,7 +114,7 @@ class VulcanHebeAddressbook(
                 if (teacher.type == 0)
                     teacher.setTeacherType(typeBase)
             }
-
+            data.teacherOnConflictStrategy = OnConflictStrategy.REPLACE
             data.setSyncNext(ENDPOINT_VULCAN_HEBE_ADDRESSBOOK, 2 * DAY)
             onSuccess(ENDPOINT_VULCAN_HEBE_ADDRESSBOOK)
         }

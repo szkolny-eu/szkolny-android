@@ -5,7 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
-import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGES
+import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGEBOX_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MESSAGES_SENT
@@ -50,7 +50,7 @@ class VulcanHebeMessages(
 
         apiGetList(
             TAG,
-            VULCAN_HEBE_ENDPOINT_MESSAGES,
+            VULCAN_HEBE_ENDPOINT_MESSAGEBOX_MESSAGES,
             HebeFilterType.BY_MESSAGEBOX,
             messageBox = data.messageBoxKey,
             folder = folder,

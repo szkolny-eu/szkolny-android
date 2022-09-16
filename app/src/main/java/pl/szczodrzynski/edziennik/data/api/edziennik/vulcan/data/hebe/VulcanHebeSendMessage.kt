@@ -8,7 +8,7 @@ import com.google.gson.JsonObject
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_HEBE_MISSING_SENDER_ENTRY
-import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGES_SEND
+import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGEBOX_SEND
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
@@ -65,7 +65,7 @@ class VulcanHebeSendMessage(
 
         apiPost(
             TAG,
-            VULCAN_HEBE_ENDPOINT_MESSAGES_SEND,
+            VULCAN_HEBE_ENDPOINT_MESSAGEBOX_SEND,
             payload = JsonObject(
                 "Status" to 1,
                 "Sender" to sender,

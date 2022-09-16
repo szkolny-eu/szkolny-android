@@ -4,7 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
-import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGEBOXES
+import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGEBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MESSAGE_BOXES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
@@ -23,7 +23,7 @@ class VulcanHebeMessageBoxes(
     init {
         apiGetList(
             TAG,
-            VULCAN_HEBE_ENDPOINT_MESSAGEBOXES,
+            VULCAN_HEBE_ENDPOINT_MESSAGEBOX,
             lastSync = lastSync
         ) { list, _ ->
             for (messageBox in list) {

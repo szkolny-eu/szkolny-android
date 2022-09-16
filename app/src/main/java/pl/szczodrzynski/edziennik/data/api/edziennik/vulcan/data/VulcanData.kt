@@ -21,6 +21,7 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
         ENDPOINT_VULCAN_HEBE_MAIN,
         ENDPOINT_VULCAN_HEBE_PUSH_CONFIG,
         ENDPOINT_VULCAN_HEBE_ADDRESSBOOK,
+        ENDPOINT_VULCAN_HEBE_ADDRESSBOOK_2,
         ENDPOINT_VULCAN_HEBE_TIMETABLE,
         ENDPOINT_VULCAN_HEBE_EXAMS,
         ENDPOINT_VULCAN_HEBE_HOMEWORK,
@@ -107,6 +108,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
             ENDPOINT_VULCAN_HEBE_ADDRESSBOOK -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_addressbook)
                 VulcanHebeAddressbook(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_ADDRESSBOOK_2 -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_addressbook)
+                VulcanHebeAddressbook2(data, lastSync, onSuccess)
             }
             ENDPOINT_VULCAN_HEBE_TEACHERS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_teachers)
