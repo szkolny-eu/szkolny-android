@@ -8,6 +8,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.data.api.ERROR_MESSAGE_NOT_SENT
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_HEBE_MISSING_SENDER_ENTRY
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGEBOX_SEND
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
@@ -56,6 +57,11 @@ class VulcanHebeSendMessage(
             val key = loginId.getOrNull(0) ?: teacher.loginId
             val group = loginId.getOrNull(1)
             val name = loginId.getOrNull(2)
+            if (key?.toIntOrNull() != null) {
+                // raise error for old-format (non-UUID) login IDs
+                data.error(TAG, ERROR_MESSAGE_NOT_SENT)
+                return
+            }
             recipientsArray += JsonObject(
                 "Id" to "${data.messageBoxKey}-${key}",
                 "Partition" to partition,
