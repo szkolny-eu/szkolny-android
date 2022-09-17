@@ -13,6 +13,7 @@ import com.google.gson.JsonObject
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 
 @Entity(tableName = "notifications")
 data class Notification(
@@ -98,7 +99,7 @@ data class Notification(
     fun getPendingIntent(context: Context): PendingIntent {
         val intent = Intent(context, MainActivity::class.java)
         fillIntent(intent)
-        return PendingIntent.getActivity(context, id.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
+        return PendingIntent.getActivity(context, id.toInt(), intent, PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag())
     }
 
     fun getLargeIcon(): IIcon = when (type) {

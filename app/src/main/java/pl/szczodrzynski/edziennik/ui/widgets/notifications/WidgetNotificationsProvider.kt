@@ -22,6 +22,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.getJsonObject
+import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 import pl.szczodrzynski.edziennik.receivers.SzkolnyReceiver
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 
@@ -47,7 +48,7 @@ class WidgetNotificationsProvider : AppWidgetProvider() {
             val syncIntent = SzkolnyReceiver.getIntent(context, Bundle(
                     "task" to "SyncRequest"
             ))
-            val syncPendingIntent = PendingIntent.getBroadcast(context, 0, syncIntent, 0)
+            val syncPendingIntent = PendingIntent.getBroadcast(context, 0, syncIntent, pendingIntentFlag())
             views.setOnClickPendingIntent(R.id.widgetNotificationsSync, syncPendingIntent)
 
             views.setImageViewBitmap(
@@ -68,13 +69,13 @@ class WidgetNotificationsProvider : AppWidgetProvider() {
 
             val itemIntent = Intent(context, MainActivity::class.java)
             itemIntent.action = Intent.ACTION_MAIN
-            val itemPendingIntent = PendingIntent.getActivity(context, 0, itemIntent, 0)
+            val itemPendingIntent = PendingIntent.getActivity(context, 0, itemIntent, pendingIntentFlag())
             views.setPendingIntentTemplate(R.id.widgetNotificationsListView, itemPendingIntent)
 
             val headerIntent = Intent(context, MainActivity::class.java)
             headerIntent.action = Intent.ACTION_MAIN
             headerIntent.putExtra("fragmentId", MainActivity.DRAWER_ITEM_NOTIFICATIONS)
-            val headerPendingIntent = PendingIntent.getActivity(context, 0, headerIntent, 0)
+            val headerPendingIntent = PendingIntent.getActivity(context, 0, headerIntent, pendingIntentFlag())
             views.setOnClickPendingIntent(R.id.widgetNotificationsHeader, headerPendingIntent)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)

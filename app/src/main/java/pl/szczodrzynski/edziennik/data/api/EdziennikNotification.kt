@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 import pl.szczodrzynski.edziennik.receivers.SzkolnyReceiver
 import kotlin.math.roundToInt
 
@@ -40,14 +41,14 @@ class EdziennikNotification(val app: App) {
                 "task" to "TaskCancelRequest",
                 "taskId" to taskId
         ))
-        return PendingIntent.getBroadcast(app, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT) as PendingIntent
+        return PendingIntent.getBroadcast(app, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or pendingIntentFlag()) as PendingIntent
     }
     private val closePendingIntent: PendingIntent
         get() {
             val intent = SzkolnyReceiver.getIntent(app, Bundle(
                     "task" to "ServiceCloseRequest"
             ))
-            return PendingIntent.getBroadcast(app, 0, intent, 0) as PendingIntent
+            return PendingIntent.getBroadcast(app, 0, intent, pendingIntentFlag()) as PendingIntent
         }
 
     private fun errorCountText(): String? {

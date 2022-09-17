@@ -115,6 +115,7 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
             Toast.makeText(app, "Nie można znaleźć katalogu docelowego. Pobierz aktualizację ręcznie z Google Play.", Toast.LENGTH_LONG).show()
             return
         }
+        Toast.makeText(app, "Pobieranie aktualizacji Szkolny.eu ${update.versionName}", Toast.LENGTH_LONG).show()
         downloadId = downloadManager.enqueue(request)
     }
 }
