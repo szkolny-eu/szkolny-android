@@ -239,14 +239,14 @@ class HomeTimetableCard(
 
         val now = syncedNow
         val firstLesson = lessons.firstOrNull()
-        val lastLesson = lessons.lastOrNull { !it.isCancelled }
+        val lastLesson = lessons.lastOrNull()
 
         if (isToday) {
             // today
             b.dayInfo.setText(R.string.home_timetable_today)
             b.lessonInfo.setText(
                     R.string.home_timetable_lessons_remaining,
-                    lessons.filter { !it.isCancelled }.size,
+                    lessons.size,
                     lastLesson?.displayEndTime?.stringHM ?: "?"
             )
             counterStart = firstLesson?.displayStartTime
@@ -291,7 +291,7 @@ class HomeTimetableCard(
             b.dayInfo.setText(dayInfoRes, Week.getFullDayName(timetableDate.weekDay), timetableDate.formattedString)
             b.lessonInfo.setText(
                     R.string.home_timetable_lessons_info,
-                    lessons.filter { !it.isCancelled }.size,
+                    lessons.size,
                     firstLesson?.displayStartTime?.stringHM ?: "?",
                     lastLesson?.displayEndTime?.stringHM ?: "?"
             )
