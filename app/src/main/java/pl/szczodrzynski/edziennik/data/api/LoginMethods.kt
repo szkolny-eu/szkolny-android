@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api
 
-import pl.szczodrzynski.edziennik.data.api.edziennik.edudziennik.login.EdudziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginMessages
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginPortal
@@ -26,8 +25,9 @@ import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
 
 const val SYNERGIA_API_ENABLED = false
 
-
+// the graveyard
 const val LOGIN_TYPE_IDZIENNIK = 3
+const val LOGIN_TYPE_EDUDZIENNIK = 5
 
 const val LOGIN_TYPE_TEMPLATE = 21
 
@@ -115,15 +115,6 @@ val vulcanLoginMethods = listOf(
                 .withIsPossible { _, loginStore ->
                         loginStore.mode != LOGIN_MODE_VULCAN_API
                 }
-                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
-)
-
-const val LOGIN_TYPE_EDUDZIENNIK = 5
-const val LOGIN_MODE_EDUDZIENNIK_WEB = 0
-const val LOGIN_METHOD_EDUDZIENNIK_WEB = 100
-val edudziennikLoginMethods = listOf(
-        LoginMethod(LOGIN_TYPE_EDUDZIENNIK, LOGIN_METHOD_EDUDZIENNIK_WEB, EdudziennikLoginWeb::class.java)
-                .withIsPossible { _, _ -> true }
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
 )
 
