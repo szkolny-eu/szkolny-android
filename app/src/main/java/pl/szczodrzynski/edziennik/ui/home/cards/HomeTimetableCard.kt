@@ -75,7 +75,7 @@ class HomeTimetableCard(
     private var counterEnd: Time? = null
     private var subjectSpannable: CharSequence? = null
 
-    private val ignoreCancelled = true
+    private val ignoreCancelled = false
 
     private val countInSeconds: Boolean
         get() = app.config.timetable.countInSeconds
@@ -160,6 +160,9 @@ class HomeTimetableCard(
                         && it.displayEndTime > now
                         && !(it.isCancelled && ignoreCancelled)
             }
+            if (!ignoreCancelled && lessons.all { it.isCancelled })
+                // skip current day if all lessons are cancelled
+                lessons = listOf()
             while ((lessons.isEmpty() || lessons.none {
                         it.type != Lesson.TYPE_NO_LESSONS
                                 && (it.displayDate != today
@@ -174,6 +177,7 @@ class HomeTimetableCard(
                     it.profileId == profile.id
                             && it.displayDate == timetableDate
                 }
+                lessons = lessons.dropWhile { it.isCancelled }
 
                 if (lessons.isEmpty())
                     break
@@ -238,15 +242,18 @@ class HomeTimetableCard(
         b.counter.visibility = View.GONE
 
         val now = syncedNow
-        val firstLesson = lessons.firstOrNull()
-        val lastLesson = lessons.lastOrNull()
+        val firstLesson = lessons.firstOrNull { !it.isCancelled }
+        val lastLesson = lessons.lastOrNull { !it.isCancelled }
+        val skipFirst = if (firstLesson == null) 0 else lessons.indexOf(firstLesson)
+        val skipLast = if (lastLesson == null) 0 else lessons.size - 1 - lessons.indexOf(lastLesson)
+        val lessonCount = lessons.size - skipFirst - skipLast
 
         if (isToday) {
             // today
             b.dayInfo.setText(R.string.home_timetable_today)
             b.lessonInfo.setText(
                     R.string.home_timetable_lessons_remaining,
-                    lessons.size,
+                    lessonCount,
                     lastLesson?.displayEndTime?.stringHM ?: "?"
             )
             counterStart = firstLesson?.displayStartTime
@@ -291,12 +298,14 @@ class HomeTimetableCard(
             b.dayInfo.setText(dayInfoRes, Week.getFullDayName(timetableDate.weekDay), timetableDate.formattedString)
             b.lessonInfo.setText(
                     R.string.home_timetable_lessons_info,
-                    lessons.size,
+                    lessonCount,
                     firstLesson?.displayStartTime?.stringHM ?: "?",
                     lastLesson?.displayEndTime?.stringHM ?: "?"
             )
 
             b.lessonBig.setText(R.string.home_timetable_lesson_first, firstLesson.subjectSpannable)
+            b.counter.visibility = View.VISIBLE
+            b.counter.text = firstLesson?.displayStartTime?.stringHM
             firstLesson?.displayClassroom?.let {
                 b.classroom.visibility = View.VISIBLE
                 b.classroom.text = it
@@ -308,9 +317,8 @@ class HomeTimetableCard(
         val text = mutableListOf<CharSequence>(
                 activity.getString(R.string.home_timetable_later)
         )
-        var first = true
-        for (lesson in lessons) {
-            if (first) { first = false; continue }
+        val nextLessons = lessons.drop(skipFirst + 1)
+        for (lesson in nextLessons) {
             text += listOf(
                     lesson.displayStartTime?.stringHM,
                     lesson.subjectSpannable
@@ -363,7 +371,10 @@ class HomeTimetableCard(
             b.progress.visibility = View.GONE
             b.counter.visibility = View.VISIBLE
             val diff = counterStart - now
-            b.counter.text = activity.timeTill(diff.toInt(), "\n", countInSeconds)
+            if (diff >= 60 * MINUTE)
+                b.counter.text = counterStart.stringHM
+            else
+                b.counter.text = activity.timeTill(diff.toInt(), "\n", countInSeconds)
         }
         else {
             // the lesson is right now
