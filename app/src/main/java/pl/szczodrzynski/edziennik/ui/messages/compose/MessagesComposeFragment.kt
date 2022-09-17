@@ -77,7 +77,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     private lateinit var stylingConfig: StylingConfig
     private lateinit var uiConfig: UIConfig
     private val enableTextStyling
-        get() = app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN && app.profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS
+        get() = app.profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS
     private var changedRecipients = false
     private var changedSubject = false
     private var changedBody = false

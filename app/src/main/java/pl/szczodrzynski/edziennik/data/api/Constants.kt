@@ -92,7 +92,7 @@ val MOBIDZIENNIK_USER_AGENT = SYSTEM_USER_AGENT
 
 const val VULCAN_HEBE_USER_AGENT = "Dart/2.10 (dart:io)"
 const val VULCAN_HEBE_APP_NAME = "DzienniczekPlus 2.0"
-const val VULCAN_HEBE_APP_VERSION = "21.02.09 (G)"
+const val VULCAN_HEBE_APP_VERSION = "22.09.02 (G)"
 private const val VULCAN_API_DEVICE_NAME_PREFIX = "Szkolny.eu "
 private const val VULCAN_API_DEVICE_NAME_SUFFIX = " - nie usuwać"
 val VULCAN_API_DEVICE_NAME by lazy {
@@ -116,9 +116,11 @@ const val VULCAN_HEBE_ENDPOINT_GRADE_SUMMARY = "api/mobile/grade/summary"
 const val VULCAN_HEBE_ENDPOINT_HOMEWORK = "api/mobile/homework"
 const val VULCAN_HEBE_ENDPOINT_NOTICES = "api/mobile/note"
 const val VULCAN_HEBE_ENDPOINT_ATTENDANCE = "api/mobile/lesson"
-const val VULCAN_HEBE_ENDPOINT_MESSAGES = "api/mobile/message"
-const val VULCAN_HEBE_ENDPOINT_MESSAGES_STATUS = "api/mobile/message/status"
-const val VULCAN_HEBE_ENDPOINT_MESSAGES_SEND = "api/mobile/message"
+const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX = "api/mobile/messagebox"
+const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_ADDRESSBOOK = "api/mobile/messagebox/addressbook"
+const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_MESSAGES = "api/mobile/messagebox/message"
+const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_STATUS = "api/mobile/messagebox/message/status"
+const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_SEND = "api/mobile/messagebox/message"
 const val VULCAN_HEBE_ENDPOINT_LUCKY_NUMBER = "api/mobile/school/lucky"
 
 const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"

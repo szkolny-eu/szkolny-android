@@ -21,10 +21,12 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
         ENDPOINT_VULCAN_HEBE_MAIN,
         ENDPOINT_VULCAN_HEBE_PUSH_CONFIG,
         ENDPOINT_VULCAN_HEBE_ADDRESSBOOK,
+        ENDPOINT_VULCAN_HEBE_ADDRESSBOOK_2,
         ENDPOINT_VULCAN_HEBE_TIMETABLE,
         ENDPOINT_VULCAN_HEBE_EXAMS,
         ENDPOINT_VULCAN_HEBE_HOMEWORK,
         ENDPOINT_VULCAN_HEBE_NOTICES,
+        ENDPOINT_VULCAN_HEBE_MESSAGE_BOXES,
         ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX,
         ENDPOINT_VULCAN_HEBE_MESSAGES_SENT,
         ENDPOINT_VULCAN_HEBE_TEACHERS,
@@ -107,6 +109,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
                 data.startProgress(R.string.edziennik_progress_endpoint_addressbook)
                 VulcanHebeAddressbook(data, lastSync, onSuccess)
             }
+            ENDPOINT_VULCAN_HEBE_ADDRESSBOOK_2 -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_addressbook)
+                VulcanHebeAddressbook2(data, lastSync, onSuccess)
+            }
             ENDPOINT_VULCAN_HEBE_TEACHERS -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_teachers)
                 VulcanHebeTeachers(data, lastSync, onSuccess)
@@ -138,6 +144,10 @@ class VulcanData(val data: DataVulcan, val onSuccess: () -> Unit) {
             ENDPOINT_VULCAN_HEBE_ATTENDANCE -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_attendance)
                 VulcanHebeAttendance(data, lastSync, onSuccess)
+            }
+            ENDPOINT_VULCAN_HEBE_MESSAGE_BOXES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_messages)
+                VulcanHebeMessageBoxes(data, lastSync, onSuccess)
             }
             ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_messages_inbox)
