@@ -9,6 +9,7 @@ import android.os.Process
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.chuckerteam.chucker.api.Chucker
@@ -35,7 +36,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
     }
 
     private lateinit var app: App
-    private lateinit var activity: MainActivity
+    private lateinit var activity: AppCompatActivity
     private lateinit var b: LabFragmentBinding
 
     private val job: Job = Job()
@@ -45,7 +46,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
     // local/private variables go here
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
+        activity = (getActivity() as AppCompatActivity?) ?: return null
         context ?: return null
         app = activity.application as App
         b = LabFragmentBinding.inflate(inflater)
@@ -54,6 +55,16 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
 
     override fun onPageCreated(): Boolean {
         b.app = app
+
+        if (app.profile.id == 0) {
+            b.last10unseen.isVisible = false
+            b.fullSync.isVisible = false
+            b.clearProfile.isVisible = false
+            b.rodo.isVisible = false
+            b.removeHomework.isVisible = false
+            b.unarchive.isVisible = false
+            b.profile.isVisible = false
+        }
 
         b.last10unseen.onClick {
             launch(Dispatchers.Default) {
@@ -139,7 +150,8 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
         b.profile += profiles.map { TextInputDropDown.Item(it.id.toLong(), "${it.id} ${it.name} archived ${it.archived}", tag = it) }
         b.profile.select(app.profileId.toLong())
         b.profile.setOnChangeListener {
-            activity.loadProfile(it.id.toInt())
+            if (activity is MainActivity)
+                (activity as MainActivity).loadProfile(it.id.toInt())
             return@setOnChangeListener true
         }
 

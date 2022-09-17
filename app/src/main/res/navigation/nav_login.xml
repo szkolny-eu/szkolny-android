@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_loginChooserFragment_to_loginEggsFragment"
             app:destination="@id/loginEggsFragment" />
+        <action
+            android:id="@+id/action_loginChooserFragment_to_labFragment"
+            app:destination="@id/labFragment" />
     </fragment>
     <!-- eggs -->
     <fragment
@@ -95,4 +98,8 @@
         android:id="@+id/loginFinishFragment"
         android:name="pl.szczodrzynski.edziennik.ui.login.LoginFinishFragment"
         android:label="LoginFinishFragment" />
+    <fragment
+        android:id="@+id/labFragment"
+        android:name="pl.szczodrzynski.edziennik.ui.debug.LabFragment"
+        android:label="LabFragment" />
 </navigation>

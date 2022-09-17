@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,6 +23,7 @@ import pl.szczodrzynski.edziennik.ext.input
 import pl.szczodrzynski.edziennik.ext.set
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
+import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
 
@@ -31,7 +33,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
     }
 
     private lateinit var app: App
-    private lateinit var activity: MainActivity
+    private lateinit var activity: AppCompatActivity
     private lateinit var b: TemplateListPageFragmentBinding
 
     private val job: Job = Job()
@@ -45,7 +47,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
+        activity = (getActivity() as AppCompatActivity?) ?: return null
         context ?: return null
         app = activity.application as App
         b = TemplateListPageFragmentBinding.inflate(inflater)
@@ -142,7 +144,10 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                     .show()
             }
             catch (e: Exception) {
-                activity.error(ApiError.fromThrowable(TAG, e))
+                if (activity is MainActivity)
+                    (activity as MainActivity).error(ApiError.fromThrowable(TAG, e))
+                if (activity is LoginActivity)
+                    (activity as LoginActivity).error(ApiError.fromThrowable(TAG, e))
             }
         })
 

@@ -66,6 +66,8 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!isAdded) return
 
+        val adapter = LoginChooserAdapter(activity, this::onLoginModeClicked)
+
         b.versionText.setText(
             R.string.login_chooser_version_format,
             app.buildManager.versionName,
@@ -73,9 +75,32 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         )
         b.versionText.onClick {
             app.buildManager.showVersionDialog(activity)
+            if (!App.devMode)
+                return@onClick
+            if (adapter.items.firstOrNull { it is LoginInfo.Register && it.internalName == "lab" } != null)
+                return@onClick
+            adapter.items.add(
+                index = 0,
+                element = LoginInfo.Register(
+                    loginType = 999999,
+                    internalName = "lab",
+                    registerName = R.string.menu_lab,
+                    registerLogo = R.drawable.face_2,
+                    loginModes = listOf(
+                        LoginInfo.Mode(
+                            loginMode = 0,
+                            name = 0,
+                            icon = 0,
+                            guideText = 0,
+                            credentials = listOf(),
+                            errorCodes = mapOf()
+                        )
+                    )
+                )
+            )
+            adapter.notifyItemInserted(0)
+            b.list.smoothScrollToPosition(0)
         }
-
-        val adapter = LoginChooserAdapter(activity, this::onLoginModeClicked)
 
         LoginInfo.chooserList = LoginInfo.chooserList
                 ?: LoginInfo.list.toMutableList()
@@ -164,7 +189,7 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             anim.fillAfter = true
             activity.getRootView().startAnimation(anim)
 
-            b.list.smoothScrollToPosition(0)
+            adapter.items.removeAll { it !is LoginInfo.Register }
             adapter.items.add(
                     LoginInfo.Register(
                             loginType = 74,
@@ -183,7 +208,8 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
                             )
                     )
             )
-            adapter.notifyItemInserted(adapter.items.size - 1)
+            adapter.notifyDataSetChanged()
+            b.list.smoothScrollToPosition(adapter.items.size - 1)
         }
 
         when {
@@ -213,6 +239,11 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
     ) {
         if (loginType.internalName == "eggs") {
             nav.navigate(R.id.loginEggsFragment, null, activity.navOptions)
+            return
+        }
+
+        if (loginType.internalName == "lab") {
+            nav.navigate(R.id.labFragment, null, activity.navOptions)
             return
         }
 
