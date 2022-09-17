@@ -59,34 +59,6 @@ const val LIBRUS_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action="
 const val LIBRUS_SYNERGIA_HOMEWORK_ATTACHMENT_URL = "https://synergia.librus.pl/homework/downloadFile"
 const val LIBRUS_SYNERGIA_MESSAGES_ATTACHMENT_URL = "https://synergia.librus.pl/wiadomosci/pobierz_zalacznik"
 
-const val IDZIENNIK_USER_AGENT = SYNERGIA_USER_AGENT
-const val IDZIENNIK_WEB_URL = "https://iuczniowie.progman.pl/idziennik"
-const val IDZIENNIK_WEB_LOGIN = "login.aspx"
-const val IDZIENNIK_WEB_SETTINGS = "mod_panelRodzica/Ustawienia.aspx"
-const val IDZIENNIK_WEB_HOME = "mod_panelRodzica/StronaGlowna.aspx"
-const val IDZIENNIK_WEB_TIMETABLE = "mod_panelRodzica/plan/WS_Plan.asmx/pobierzPlanZajec"
-const val IDZIENNIK_WEB_GRADES = "mod_panelRodzica/oceny/WS_ocenyUcznia.asmx/pobierzOcenyUcznia"
-const val IDZIENNIK_WEB_MISSING_GRADES = "mod_panelRodzica/brak_ocen/WS_BrakOcenUcznia.asmx/pobierzBrakujaceOcenyUcznia"
-const val IDZIENNIK_WEB_EXAMS = "mod_panelRodzica/sprawdziany/mod_sprawdzianyPanel.asmx/pobierzListe"
-const val IDZIENNIK_WEB_HOMEWORK = "mod_panelRodzica/pracaDomowa/WS_pracaDomowa.asmx/pobierzPraceDomowe"
-const val IDZIENNIK_WEB_NOTICES = "mod_panelRodzica/uwagi/WS_uwagiUcznia.asmx/pobierzUwagiUcznia"
-const val IDZIENNIK_WEB_ATTENDANCE = "mod_panelRodzica/obecnosci/WS_obecnosciUcznia.asmx/pobierzObecnosciUcznia"
-const val IDZIENNIK_WEB_ANNOUNCEMENTS = "mod_panelRodzica/tabOgl/WS_tablicaOgloszen.asmx/GetOgloszenia"
-const val IDZIENNIK_WEB_MESSAGES_LIST = "mod_komunikator/WS_wiadomosci.asmx/PobierzListeWiadomosci"
-const val IDZIENNIK_WEB_GET_MESSAGE = "mod_komunikator/WS_wiadomosci.asmx/PobierzWiadomosc"
-const val IDZIENNIK_WEB_GET_RECIPIENT_LIST = "mod_komunikator/WS_wiadomosci.asmx/pobierzListeOdbiorcowPanelRodzic"
-const val IDZIENNIK_WEB_SEND_MESSAGE = "mod_komunikator/WS_wiadomosci.asmx/WyslijWiadomosc"
-const val IDZIENNIK_WEB_GET_ATTACHMENT = "mod_komunikator/Download.ashx"
-const val IDZIENNIK_WEB_GET_HOMEWORK = "mod_panelRodzica/pracaDomowa/WS_pracaDomowa.asmx/pobierzJednaPraceDomowa"
-const val IDZIENNIK_WEB_GET_HOMEWORK_ATTACHMENT = "mod_panelRodzica/pracaDomowa.aspx"
-
-val IDZIENNIK_API_USER_AGENT = SYSTEM_USER_AGENT
-const val IDZIENNIK_API_URL = "https://iuczniowie.progman.pl/idziennik/api"
-const val IDZIENNIK_API_CURRENT_REGISTER = "Uczniowie/\$STUDENT_ID/AktualnyDziennik"
-const val IDZIENNIK_API_GRADES = "Uczniowie/\$STUDENT_ID/Oceny/" /* + semester */
-const val IDZIENNIK_API_MESSAGES_INBOX = "Wiadomosci/Odebrane"
-const val IDZIENNIK_API_MESSAGES_SENT = "Wiadomosci/Wyslane"
-
 
 val MOBIDZIENNIK_USER_AGENT = SYSTEM_USER_AGENT
 
@@ -122,8 +94,6 @@ const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_MESSAGES = "api/mobile/messagebox/mess
 const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_STATUS = "api/mobile/messagebox/message/status"
 const val VULCAN_HEBE_ENDPOINT_MESSAGEBOX_SEND = "api/mobile/messagebox/message"
 const val VULCAN_HEBE_ENDPOINT_LUCKY_NUMBER = "api/mobile/school/lucky"
-
-const val EDUDZIENNIK_USER_AGENT = "Szkolny.eu/${BuildConfig.VERSION_NAME}"
 
 const val PODLASIE_API_VERSION = "1.0.62"
 const val PODLASIE_API_URL = "https://cpdklaser.zeto.bialystok.pl/api"

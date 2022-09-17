@@ -168,13 +168,6 @@
     <string name="error_366" translatable="false">ERROR_VULCAN_HEBE_MISSING_SENDER_ENTRY</string>
     <string name="error_390" translatable="false">ERROR_VULCAN_API_DEPRECATED</string>
 
-    <string name="error_501" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN</string>
-    <string name="error_510" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER</string>
-    <string name="error_511" translatable="false">ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID</string>
-    <string name="error_521" translatable="false">ERROR_EDUDZIENNIK_WEB_LIMITED_ACCESS</string>
-    <string name="error_522" translatable="false">ERROR_EDUDZIENNIK_WEB_SESSION_EXPIRED</string>
-    <string name="error_530" translatable="false">ERROR_EDUDZIENNIK_WEB_TEAM_MISSING</string>
-
     <string name="error_601" translatable="false">ERROR_LOGIN_PODLASIE_API_INVALID_TOKEN</string>
     <string name="error_602" translatable="false">ERROR_LOGIN_PODLASIE_API_DEVICE_LIMIT</string>
     <string name="error_630" translatable="false">ERROR_PODLASIE_API_NO_TOKEN</string>
@@ -194,8 +187,6 @@
     <string name="error_909" translatable="false">EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST</string>
     <string name="error_910" translatable="false">EXCEPTION_NOTIFY</string>
     <string name="error_911" translatable="false">EXCEPTION_LIBRUS_MESSAGES_REQUEST</string>
-    <string name="error_920" translatable="false">EXCEPTION_EDUDZIENNIK_WEB_REQUEST</string>
-    <string name="error_921" translatable="false">EXCEPTION_EDUDZIENNIK_FILE_REQUEST</string>
     <string name="error_930" translatable="false">ERROR_ONEDRIVE_DOWNLOAD</string>
     <string name="error_931" translatable="false">EXCEPTION_VULCAN_WEB_LOGIN</string>
     <string name="error_932" translatable="false">EXCEPTION_VULCAN_WEB_REQUEST</string>
@@ -367,13 +358,6 @@
     <string name="error_366_reason">Błąd wysyłania wiadomości - brak informacji o nadawcy.</string>
     <string name="error_390_reason">W związku z wygaszeniem aplikacji Dzienniczek+ przez firmę Vulcan, należy zalogować się ponownie.\n\nAby móc dalej korzystać z aplikacji Szkolny.eu, otwórz Ustawienia i wybierz opcję Dodaj nowego ucznia.\nNastępnie zaloguj się do dziennika Vulcan zgodnie z instrukcją.\n\nPrzepraszamy za niedogodności.</string>
 
-    <string name="error_501_reason">Błędny email lub hasło</string>
-    <string name="error_510_reason">Inny błąd logowania</string>
-    <string name="error_511_reason">Brak ID sesji</string>
-    <string name="error_521_reason">Ograniczony dostęp do dziennika</string>
-    <string name="error_522_reason">Sesja wygasła</string>
-    <string name="error_530_reason">Nie można pobrać informacji o klasie i szkole</string>
-
     <string name="error_601_reason">Nieprawidłowy token</string>
     <string name="error_602_reason">Przekroczono maksymalną liczbę urządzeń (5)</string>
     <string name="error_630_reason">ERROR_PODLASIE_API_NO_TOKEN</string>
@@ -393,8 +377,6 @@
     <string name="error_909_reason">EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST</string>
     <string name="error_910_reason">EXCEPTION_NOTIFY</string>
     <string name="error_911_reason">Zgłoś błąd: pobieranie wiadomości LIBRUS®</string>
-    <string name="error_920_reason">Wystąpił błąd</string>
-    <string name="error_921_reason">Wystąpił błąd podczas pobierania pliku</string>
     <string name="error_930_reason">Nie udało się pobrać pliku z OneDrive</string>
     <string name="error_931_reason">EXCEPTION_VULCAN_WEB_LOGIN</string>
     <string name="error_932_reason">EXCEPTION_VULCAN_WEB_REQUEST</string>

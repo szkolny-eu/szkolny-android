@@ -198,13 +198,6 @@ const val ERROR_VULCAN_HEBE_ENTITY_NOT_FOUND                = 365
 const val ERROR_VULCAN_HEBE_MISSING_SENDER_ENTRY            = 366
 const val ERROR_VULCAN_API_DEPRECATED                       = 390
 
-const val ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN         = 501
-const val ERROR_LOGIN_EDUDZIENNIK_WEB_OTHER                 = 510
-const val ERROR_LOGIN_EDUDZIENNIK_WEB_NO_SESSION_ID         = 511
-const val ERROR_EDUDZIENNIK_WEB_LIMITED_ACCESS              = 521
-const val ERROR_EDUDZIENNIK_WEB_SESSION_EXPIRED             = 522
-const val ERROR_EDUDZIENNIK_WEB_TEAM_MISSING                = 530
-
 const val ERROR_LOGIN_PODLASIE_API_INVALID_TOKEN            = 601
 const val ERROR_LOGIN_PODLASIE_API_DEVICE_LIMIT             = 602
 const val ERROR_PODLASIE_API_NO_TOKEN                       = 630
@@ -224,8 +217,6 @@ const val EXCEPTION_MOBIDZIENNIK_WEB_FILE_REQUEST           = 908
 const val EXCEPTION_LIBRUS_MESSAGES_FILE_REQUEST            = 909
 const val EXCEPTION_NOTIFY                                  = 910
 const val EXCEPTION_LIBRUS_MESSAGES_REQUEST                 = 911
-const val EXCEPTION_EDUDZIENNIK_WEB_REQUEST                 = 920
-const val EXCEPTION_EDUDZIENNIK_FILE_REQUEST                = 921
 const val ERROR_ONEDRIVE_DOWNLOAD                           = 930
 const val EXCEPTION_VULCAN_WEB_LOGIN                        = 931
 const val EXCEPTION_VULCAN_WEB_REQUEST                      = 932

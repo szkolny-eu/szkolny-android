@@ -340,9 +340,6 @@
     <string name="edziennik_progress_endpoint_teams">Pobieranie grup klasowych…</string>
     <string name="edziennik_progress_endpoint_timetable">Pobieranie planu lekcji…</string>
     <string name="edziennik_progress_endpoint_units">Pobieranie informacji o jednostce…</string>
-    <string name="edziennik_progress_login_edudziennik_web">Logowanie do Edudziennika…</string>
-    <string name="edziennik_progress_login_idziennik_api">Logowanie do iDziennika…</string>
-    <string name="edziennik_progress_login_idziennik_web">Logowanie do iDziennika…</string>
     <string name="edziennik_progress_login_librus_api">Logowanie do API</string>
     <string name="edziennik_progress_login_librus_messages">Logowanie do wiadomości LIBRUS®</string>
     <string name="edziennik_progress_login_librus_portal">Logowanie do Portalu LIBRUS® Rodzina</string>
@@ -359,7 +356,6 @@
     <string name="error">Błąd</string>
     <string name="error_details">Szczegóły błędu</string>
     <string name="error_invalid_fragment">Podano nieprawidłowy moduł: %d Zgłoś błąd programiście</string>
-    <string name="error_must_change_password">Twoje hasło do iDziennika wygasło, co oznacza że musisz je zmienić w wersji komputerowej serwisu.</string>
     <string name="error_no_subject_id">Identyfikator przedmiotu nie został podany.</string>
     <string name="error_occured">Wystąpił błąd!</string>
     <string name="error_occured_format">Wystąpił błąd: %s</string>
@@ -569,8 +565,6 @@
     <string name="login_allow_registration">Zezwól na rejestrację</string>
     <string name="login_button">Zaloguj</string>
     <string name="login_cancel_confirmation">Czy na pewno chcesz anulować logowanie w aplikacji? Wyświetlane profile nie zostaną zapisane.</string>
-    <string name="login_edudziennik_subtitle">Użyj danych, którymi logujesz się do wersji komputerowej Edudziennika.</string>
-    <string name="login_edudziennik_title">Zaloguj się - Edudziennik</string>
     <string name="login_error">Błąd: %s</string>
     <string name="login_error_account_not_activated">Konto nie zostało aktywowane</string>
     <string name="login_error_expired_token">Token wygasł. Wygeneruj ponownie</string>
@@ -616,10 +610,6 @@
     <string name="login_hint_symbol">Symbol</string>
     <string name="login_hint_token">Token</string>
     <string name="login_hint_username">Użytkownik</string>
-    <string name="login_iuczniowie_help_subtitle">Użyj danych, którymi logujesz się do wersji komputerowej iDziennika.</string>
-    <string name="login_iuczniowie_help_title">Pomoc - iDziennik Progman</string>
-    <string name="login_iuczniowie_subtitle">Zaloguj się danymi, które otrzymałeś od swojej szkoły. W razie problemów skorzystaj z przycisku pod formularzem.</string>
-    <string name="login_iuczniowie_title">Zaloguj się - iDziennik Progman</string>
     <string name="login_librus_captcha_title">LIBRUS® - logowanie</string>
     <string name="login_librus_help_subtitle">Aby korzystać z aplikacji musisz posiadać konto LIBRUS® Rodzina. Możesz je założyć na stronie portal.librus.pl. Użyj danych, które wpisujesz w miejsca zaznaczone na obrazku.</string>
     <string name="login_librus_help_title">Pomoc do logowania LIBRUS®</string>
@@ -1354,10 +1344,6 @@
     <string name="login_mode_vulcan_web_guide">Podaj dane, którymi logujesz się na stronie internetowej dziennika VULCAN® lub na miejskiej platformie.</string>
     <string name="login_mode_mobidziennik_web_guide">Podaj dane, których używasz do logowania na stronie MobiDziennika. Jako adres serwera możesz wpisać adres strony internetowej, na której masz MobiDziennik.</string>
     <string name="edziennik_progress_login_vulcan_web_main">Logowanie do dziennika VULCAN®...</string>
-    <string name="login_type_edudziennik">EduDziennik</string>
-    <string name="login_mode_edudziennik_web">Zaloguj używając e-maila i hasła</string>
-    <string name="login_mode_edudziennik_web_hint">Użyj danych, które podajesz na stronie internetowej e-dziennika</string>
-    <string name="login_mode_edudziennik_web_guide">Podaj adres e-mail i hasło, których używasz do logowania w przeglądarce na stronie EduDziennika.</string>
     <string name="login_type_podlasie">Podlaska Platforma Edukacyjna</string>
     <string name="login_mode_podlasie_api">Zaloguj używając tokenu</string>
     <string name="login_mode_podlasie_api_guide">Podaj token aplikacji mobilnej.</string>
