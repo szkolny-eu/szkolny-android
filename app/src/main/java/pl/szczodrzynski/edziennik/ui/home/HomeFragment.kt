@@ -198,7 +198,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                         }
                     }
 
-                    override fun performAccessibilityAction(host: View, action: Int, args: Bundle): Boolean {
+                    override fun performAccessibilityAction(host: View, action: Int, args: Bundle?): Boolean {
                         val fromPosition: Int = b.list.getChildLayoutPosition(host)
                         if (action == R.id.move_card_down_action) {
                             swapCards(fromPosition, fromPosition + 1, adapter)

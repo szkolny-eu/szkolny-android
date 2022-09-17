@@ -109,7 +109,7 @@ abstract class EventDao : BaseDao<Event, EventFull> {
     abstract fun removeNotManual(profileId: Int)*/
 
     @RawQuery
-    abstract fun dontKeepFuture(query: SupportSQLiteQuery?): Long
+    abstract fun dontKeepFuture(query: SupportSQLiteQuery): Long
 
     @Transaction
     open fun dontKeepFuture(profileId: Int, todayDate: Date, filter: String) {

@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.concat
 import pl.szczodrzynski.edziennik.ext.formatDate
+import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import java.util.concurrent.TimeUnit
@@ -109,7 +110,7 @@ class UpdateWorker(val context: Context, val params: WorkerParameters) : Worker(
                 }
 
                 val notificationIntent = Intent(app, UpdateDownloaderService::class.java)
-                val pendingIntent = PendingIntent.getService(app, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+                val pendingIntent = PendingIntent.getService(app, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or pendingIntentFlag())
                 val notification = NotificationCompat.Builder(app, app.notificationChannelsManager.updates.key)
                         .setContentTitle(app.getString(R.string.notification_updates_title))
                         .setContentText(app.getString(R.string.notification_updates_text, update.versionName))

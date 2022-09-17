@@ -45,6 +45,7 @@ class VulcanHebeTeachers(
 
                 when (subjectName) {
                     "Pedagog" -> teacher.setTeacherType(Teacher.TYPE_PEDAGOGUE)
+                    "Dyrektor" -> teacher.setTeacherType(Teacher.TYPE_PRINCIPAL)
                     else -> {
                         val subjectId = data.getSubject(null, subjectName).id
                         if (!teacher.subjects.contains(subjectId))

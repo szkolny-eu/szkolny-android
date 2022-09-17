@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 import pl.szczodrzynski.edziennik.ui.captcha.LibrusCaptchaDialog
 
 class UserActionManager(val app: App) {
@@ -55,7 +56,7 @@ class UserActionManager(val app: App) {
                 "profileId" to (apiError.profileId ?: -1),
                 "type" to type
         )
-        val pendingIntent = PendingIntent.getActivity(app, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(app, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag())
 
         val notification = NotificationCompat.Builder(app, app.notificationChannelsManager.userAttention.key)
                 .setContentTitle(app.getString(R.string.notification_user_action_required_title))

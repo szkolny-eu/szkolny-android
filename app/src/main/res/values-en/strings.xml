@@ -306,9 +306,6 @@
     <string name="edziennik_progress_endpoint_teams">Syncing class groups…</string>
     <string name="edziennik_progress_endpoint_timetable">Syncing timetable…</string>
     <string name="edziennik_progress_endpoint_units">Syncing unit info…</string>
-    <string name="edziennik_progress_login_edudziennik_web">Logging in to Edudziennik…</string>
-    <string name="edziennik_progress_login_idziennik_api">Logging in to iDziennik…</string>
-    <string name="edziennik_progress_login_idziennik_web">Logging in to iDziennik…</string>
     <string name="edziennik_progress_login_librus_api">Logging in to the API…</string>
     <string name="edziennik_progress_login_librus_messages">Logging in to LIBRUS® messages…</string>
     <string name="edziennik_progress_login_librus_portal">Logging in to LIBRUS® Rodzina…</string>
@@ -324,7 +321,6 @@
     <string name="error">Error</string>
     <string name="error_details">Error details</string>
     <string name="error_invalid_fragment">Wrong module given: %d Report it to the application developer</string>
-    <string name="error_must_change_password">Your iDziennik password has expired. You have to change it in the desktop version of the website.</string>
     <string name="error_no_subject_id">The subject ID wasn\'t specified.</string>
     <string name="error_occured">An error occurred!</string>
     <string name="error_occured_format">An error occurred: %s</string>
@@ -519,8 +515,6 @@
     <string name="login_allow_registration">Allow registration</string>
     <string name="login_button">Log in</string>
     <string name="login_cancel_confirmation">Do you really want to cancel? Displayed profiles won\'t be saved.</string>
-    <string name="login_edudziennik_subtitle">Use the account details, which you use to login into the desktop version of Edudziennik.</string>
-    <string name="login_edudziennik_title">Log in - Edudziennik</string>
     <string name="login_error">Error: %s</string>
     <string name="login_error_account_not_activated">Account is not activated</string>
     <string name="login_error_expired_token">Token has expired. Generate a new token.</string>
@@ -566,10 +560,6 @@
     <string name="login_hint_symbol">Symbol</string>
     <string name="login_hint_token">Token</string>
     <string name="login_hint_username">Username</string>
-    <string name="login_iuczniowie_help_subtitle">Use the data which you use to login to the desktop version of iDziennik.</string>
-    <string name="login_iuczniowie_help_title">Help - iDziennik Progman</string>
-    <string name="login_iuczniowie_subtitle">Use the data which you got from your school. In case of any problems, use the button below the form.</string>
-    <string name="login_iuczniowie_title">Log in - iDziennik Progman</string>
     <string name="login_librus_captcha_title">LIBRUS® - login</string>
     <string name="login_librus_help_subtitle">In order to use the app you need a LIBRUS® Rodzina account. You can create it on portal.librus.pl. Use the data you normally enter in the fields marked on the image.</string>
     <string name="login_librus_help_title">Help for LIBRUS® login</string>
@@ -859,7 +849,7 @@
     <string name="settings_about_licenses_text">Open-source licenses</string>
     <string name="settings_about_privacy_policy_text">Privacy policy</string>
     <string name="settings_card_register_title">E-register</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - 2022</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 – 2022</string>
     <string name="settings_about_update_subtext">Click to check for updates</string>
     <string name="settings_about_update_text">Update</string>
     <string name="settings_about_version_text">Version</string>
@@ -1269,7 +1259,6 @@
     <string name="home_availability_update">Update</string>
     <string name="update_available_later">Not now</string>
     <string name="update_available_button">Update</string>
-    <string name="login_type_edudziennik">EduDziennik</string>
     <string name="login_form_title_format">Log in - %s</string>
     <string name="attendance_details_date">Date</string>
     <string name="attendance_details_teacher">Teacher</string>
@@ -1323,7 +1312,6 @@
     <string name="login_mode_vulcan_web">Use e-mail/username and password</string>
     <string name="edziennik_progress_login_podlasie_api">Logging in to PPE…</string>
     <string name="login_type_podlasie">Podlaska Platforma Edukacyjna</string>
-    <string name="login_mode_edudziennik_web">Log in using e-mail and password</string>
     <string name="edziennik_progress_login_vulcan_web_main">Logging in to VULCAN® register…</string>
     <string name="login_mode_librus_jst">Login via VULCAN® platform</string>
     <string name="login_mode_librus_email">Log in using e-mail</string>
@@ -1343,12 +1331,10 @@
     <string name="attendance_percentage_format">%.2f%%</string>
     <string name="attendance_period_summary_format">Attendance during this period: %.2f%%</string>
     <string name="settings_add_student_subtext">Log in child/parent account in app</string>
-    <string name="login_mode_edudziennik_web_guide">Enter the e-mail address and password that you use to log in to the browser on the EduDziennik website.</string>
     <string name="profile_year_not_started_format">Probably the school year for this student has not yet started (will start %s). Please try to sync later.</string>
     <string name="profile_archiving_format">The school year ended on %s. Student data from the previous year will be moved to the archive for later review.</string>
     <string name="login_copyright_notice">Trademarks featured in this application belong to their rightful owners and are used for informational purposes only.</string>
     <string name="home_archive_text">You are viewing a student\'s data from the school year %d/%d.</string>
-    <string name="login_mode_edudziennik_web_hint">Use data, that you enter on the e-register website</string>
     <string name="permissions_qr_scanner">To be able to scan the QR code, you need to grant access to the camera.\n\nClick OK to grant permissions.</string>
     <string name="rate_snackbar_negative_message">It\'s a pity, the opinions of others help me develop the application.</string>
     <string name="login_chooser_testing_text">The selected login method is still being tested and may not work properly. If you have problems with the app, please choose the recommended login method.</string>

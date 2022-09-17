@@ -306,9 +306,6 @@
     <string name="edziennik_progress_endpoint_teams">Klassengruppen herunterladen…</string>
     <string name="edziennik_progress_endpoint_timetable">Stundenplan herunterladen…</string>
     <string name="edziennik_progress_endpoint_units">Geräteinformationen herunterladen…</string>
-    <string name="edziennik_progress_login_edudziennik_web">bei Edudziennik einloggen…</string>
-    <string name="edziennik_progress_login_idziennik_api">bei iDziennik einloggen…</string>
-    <string name="edziennik_progress_login_idziennik_web">bei iDziennik einloggen…</string>
     <string name="edziennik_progress_login_librus_api">Einloggen in die API…</string>
     <string name="edziennik_progress_login_librus_messages">Einloggen bei LIBRUS® nachrichten…</string>
     <string name="edziennik_progress_login_librus_portal">Einloggen bei LIBRUS® Rodzina…</string>
@@ -324,7 +321,6 @@
     <string name="error">Fehler</string>
     <string name="error_details">Fehlerdetails</string>
     <string name="error_invalid_fragment">Falsches Modul angegeben: %d Melden Sie es dem Anwendungsentwickler</string>
-    <string name="error_must_change_password">Ihr iDziennik-Passwort ist abgelaufen. Sie müssen es in der Desktop-Version der Website ändern</string>
     <string name="error_no_subject_id">Die Schulfach-ID wurde nicht angegeben</string>
     <string name="error_occured">Ein Fehler ist aufgetreten!</string>
     <string name="error_occured_format">Ein Fehler ist aufgetreten: %s</string>
@@ -519,8 +515,6 @@
     <string name="login_allow_registration">Registrierung erlauben</string>
     <string name="login_button">Einloggen</string>
     <string name="login_cancel_confirmation">Möchten Sie die Anmeldung bei der App wirklich abbrechen? Angezeigte Profile werden nicht gespeichert.</string>
-    <string name="login_edudziennik_subtitle">Verwenden Sie die Kontodaten, mit denen Sie sich bei der Desktop-Version von Edudziennik einlogen</string>
-    <string name="login_edudziennik_title">Einloggen - Edudziennik</string>
     <string name="login_error">Fehler: %s</string>
     <string name="login_error_account_not_activated">Konto ist nicht aktiviert</string>
     <string name="login_error_expired_token">Token ist abgelaufen. Erzeugen Sie ein neues Token</string>
@@ -566,10 +560,6 @@
     <string name="login_hint_symbol">Symbol</string>
     <string name="login_hint_token">Token</string>
     <string name="login_hint_username">Benutzername</string>
-    <string name="login_iuczniowie_help_subtitle">Verwenden Sie die Daten, mit denen Sie sich bei der Desktop-Version von iDziennik einloggen</string>
-    <string name="login_iuczniowie_help_title">Hilfe - iDziennik Progman</string>
-    <string name="login_iuczniowie_subtitle">Melden Sie sich mit den Daten an, die Sie von Ihrer Schule erhalten haben. Bei Problemen verwenden Sie die Schaltfläche unter dem Formular.</string>
-    <string name="login_iuczniowie_title">Einloggen - iDziennik Progman</string>
     <string name="login_librus_captcha_title">LIBRUS® - Einloggen</string>
     <string name="login_librus_help_subtitle">Um die App verwenden zu können, müssen Sie über ein LIBRUS® Rodzina-Konto verfügen. Sie können sie unter portal.librus.pl erstellen. Verwenden Sie die Daten, die Sie an den im Bild markierten Stellen eingeben.</string>
     <string name="login_librus_help_title">Hilfe für LIBRUS® einloggen</string>

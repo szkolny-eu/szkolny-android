@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.databinding.LoginActivityBinding
 import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
+import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), CoroutineScope {
@@ -32,6 +33,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     lateinit var navOptions: NavOptions
     val nav by lazy { Navigation.findNavController(this, R.id.nav_host_fragment) }
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
+    val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
 
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext

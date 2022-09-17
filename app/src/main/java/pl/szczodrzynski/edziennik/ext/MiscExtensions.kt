@@ -4,7 +4,9 @@
 
 package pl.szczodrzynski.edziennik.ext
 
+import android.app.PendingIntent
 import android.database.Cursor
+import android.os.Build
 import androidx.core.database.getIntOrNull
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
@@ -64,3 +66,9 @@ inline fun <A, B, R> ifNotNull(a: A?, b: B?, code: (A, B) -> R): R? {
 }
 
 infix fun Int.hasSet(what: Int) = this and what == what
+
+fun pendingIntentFlag(): Int {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        return PendingIntent.FLAG_IMMUTABLE
+    return 0
+}

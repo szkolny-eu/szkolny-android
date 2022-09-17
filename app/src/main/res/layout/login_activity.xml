@@ -19,13 +19,19 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <fragment
-                android:id="@+id/nav_host_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+            <pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:defaultNavHost="false"
-                app:navGraph="@navigation/nav_login" />
+                android:layout_height="match_parent">
+
+                <fragment
+                    android:id="@+id/nav_host_fragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="false"
+                    app:navGraph="@navigation/nav_login" />
+            </pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.button.MaterialButton

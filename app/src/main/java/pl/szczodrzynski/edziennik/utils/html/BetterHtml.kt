@@ -15,6 +15,7 @@ import android.text.style.*
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.graphics.ColorUtils
 import androidx.core.text.HtmlCompat
+import pl.szczodrzynski.edziennik.data.api.Regexes.MESSAGE_META
 import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.getWordBounds
 import pl.szczodrzynski.edziennik.ext.resolveAttr
@@ -45,7 +46,7 @@ object BetterHtml {
             .toRegex(RegexOption.IGNORE_CASE)
 
         var text = html
-            .replace("\\[META:[A-z0-9]+;[0-9-]+]".toRegex(), "")
+            .replace(MESSAGE_META, "")
             .replace("background-color: ?$hexPattern;".toRegex(), "")
             // treat paragraphs as if they had no margin
             .replace("<p", "<span")

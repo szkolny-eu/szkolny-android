@@ -20,6 +20,10 @@ object Regexes {
         """<br\s?/?>""".toRegex()
     }
 
+    val MESSAGE_META by lazy {
+        """^\[META:([A-z0-9-&=]+)]""".toRegex()
+    }
+
 
 
     val MOBIDZIENNIK_GRADES_SUBJECT_NAME by lazy {
@@ -142,44 +146,6 @@ object Regexes {
     }
 
 
-
-    val IDZIENNIK_LOGIN_HIDDEN_FIELDS by lazy {
-        """<input type="hidden".+?name="([A-z0-9_]+)?".+?value="([A-z0-9_+-/=]+)?".+?>""".toRegex(DOT_MATCHES_ALL)
-    }
-    val IDZIENNIK_LOGIN_ERROR by lazy {
-        """id="spanErrorMessage">(.*?)</""".toRegex(DOT_MATCHES_ALL)
-    }
-    val IDZIENNIK_LOGIN_FIRST_ACCOUNT_NAME by lazy {
-        """Imię i nazwisko:.+?">(.+?)</div>""".toRegex(DOT_MATCHES_ALL)
-    }
-    val IDZIENNIK_LOGIN_FIRST_IS_PARENT by lazy {
-        """id="ctl00_CzyRodzic" value="([01])" />""".toRegex()
-    }
-    val IDZIENNIK_LOGIN_FIRST_SCHOOL_YEAR by lazy {
-        """name="ctl00\${"$"}dxComboRokSzkolny".+?selected="selected".*?value="([0-9]+)">([0-9]+)/([0-9]+)<""".toRegex(DOT_MATCHES_ALL)
-    }
-    val IDZIENNIK_LOGIN_FIRST_STUDENT_SELECT by lazy {
-        """<select.*?name="ctl00\${"$"}dxComboUczniowie".*?</select>""".toRegex(DOT_MATCHES_ALL)
-    }
-    val IDZIENNIK_LOGIN_FIRST_STUDENT by lazy {
-        """<option.*?value="([0-9]+)"\sdata-id-ucznia="([A-z0-9]+?)".*?>(.+?)\s(.+?)\s*\((.+?),\s*(.+?)\)</option>""".toRegex(DOT_MATCHES_ALL)
-    }
-    val IDZIENNIK_MESSAGES_RECIPIENT_PARENT by lazy {
-        """(.+?)\s\((.+)\)""".toRegex()
-    }
-    /*<span id="ctl00_spanSzczesliwyLos">Szczęśliwy los na dzisiaj to <b>19</b>. Los na jutro to <b>22</b></span>*/
-    val IDZIENNIK_WEB_LUCKY_NUMBER by lazy {
-        """dzisiaj to <b>([0-9]+)</b>""".toRegex()
-    }
-    val IDZIENNIK_WEB_SELECTED_REGISTER by lazy {
-        """selected="selected" value="([0-9]+)" data-id-ucznia""".toRegex()
-    }
-
-
-
-    val VULCAN_SHIFT_ANNOTATION by lazy {
-        """\(przeniesiona (z|na) lekcj[ię] ([0-9]+), (.+)\)""".toRegex()
-    }
     val VULCAN_WEB_PERMISSIONS by lazy {
         """permissions: '([A-z0-9/=+\-_|]+?)'""".toRegex()
     }
@@ -195,82 +161,6 @@ object Regexes {
     val LIBRUS_MESSAGE_ID by lazy {
         """/wiadomosci/[0-9]+/[0-9]+/([0-9]+?)/""".toRegex()
     }
-
-
-
-    val EDUDZIENNIK_STUDENTS_START by lazy {
-        """<li><a href="/Students/([\w-_]+?)/start/">(.*?)</a>""".toRegex()
-    }
-    val EDUDZIENNIK_ACCOUNT_NAME_START by lazy {
-        """<span id='user_dn'>(.*?)</span>""".toRegex()
-    }
-    val EDUDZIENNIK_SUBJECTS_START by lazy {
-        """<a class="menu-course" href="/Students/[\w-_]+?/Courses/([\w-_]+)/">(.+?)</a>""".toRegex()
-    }
-
-    val EDUDZIENNIK_ATTENDANCE_ENTRIES by lazy {
-        """<td id="([\d-]+?):(\d+?)".*?>(.+?)</td>""".toRegex()
-    }
-    val EDUDZIENNIK_ATTENDANCE_TYPES by lazy {
-        """<div class="info">.*?<p>(.*?)</p>""".toRegex(DOT_MATCHES_ALL)
-    }
-    val EDUDZIENNIK_ATTENDANCE_TYPE by lazy {
-        """\((.+?)\) (.+)""".toRegex()
-    }
-
-    val EDUDZIENNIK_ANNOUNCEMENT_DESCRIPTION by lazy {
-        """<div class="desc">.*?<p>(.*?)</p>""".toRegex(DOT_MATCHES_ALL)
-    }
-    val EDUDZIENNIK_HOMEWORK_DESCRIPTION by lazy {
-        """<div class="desc">(.*?)</div>""".toRegex(DOT_MATCHES_ALL)
-    }
-
-    val EDUDZIENNIK_SUBJECT_ID by lazy {
-        """/Courses/([\w-_]+?)/""".toRegex()
-    }
-    val EDUDZIENNIK_GRADE_ID by lazy {
-        """/Grades/([\w-_]+?)/""".toRegex()
-    }
-    val EDUDZIENNIK_EXAM_ID by lazy {
-        """/Evaluations/([\w-_]+?)/""".toRegex()
-    }
-    val EDUDZIENNIK_EVENT_TYPE_ID by lazy {
-        """/GradeLabels/([\w-_]+?)/""".toRegex()
-    }
-    val EDUDZIENNIK_ANNOUNCEMENT_ID by lazy {
-        """/Announcement/([\w-_]+?)/""".toRegex()
-    }
-    val EDUDZIENNIK_HOMEWORK_ID by lazy {
-        """/Homework/([\w-_]+?)/""".toRegex()
-    }
-    val EDUDZIENNIK_TEACHER_ID by lazy {
-        """/Teachers/([\w-_]+?)/""".toRegex()
-    }
-    val EDUDZIENNIK_EVENT_ID by lazy {
-        """/KlassEvent/([\w-_]+?)/""".toRegex()
-    }
-    val EDUDZIENNIK_NOTE_ID by lazy {
-        """/RegistryNotes/([\w-_]+?)/""".toRegex()
-    }
-
-    val EDUDZIENNIK_SCHOOL_DETAIL_ID by lazy {
-        """<a id="School_detail".*?/School/([\w-_]+?)/""".toRegex(DOT_MATCHES_ALL)
-    }
-    val EDUDZIENNIK_SCHOOL_DETAIL_NAME by lazy {
-        """</li>.*?<p>(.*?)</p>.*?<li>""".toRegex(DOT_MATCHES_ALL)
-    }
-    val EDUDZIENNIK_CLASS_DETAIL_ID by lazy {
-        """<a id="Klass_detail".*?/Klass/([\w-_]+?)/""".toRegex(DOT_MATCHES_ALL)
-    }
-    val EDUDZIENNIK_CLASS_DETAIL_NAME by lazy {
-        """<a id="Klass_detail".*?>(.*?)</a>""".toRegex(DOT_MATCHES_ALL)
-    }
-
-    val EDUDZIENNIK_TEACHERS by lazy {
-        """<div class="teacher">.*?<p>(.+?) (.+?)</p>""".toRegex(DOT_MATCHES_ALL)
-    }
-
-
 
 
     val LINKIFY_DATE_YMD by lazy {

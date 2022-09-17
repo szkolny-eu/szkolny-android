@@ -31,6 +31,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_NO_LESSONS
 import pl.szczodrzynski.edziennik.ext.filterOutArchived
 import pl.szczodrzynski.edziennik.ext.getJsonObject
+import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 import pl.szczodrzynski.edziennik.ui.widgets.LessonDialogActivity
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -53,8 +54,8 @@ class WidgetTimetableProvider : AppWidgetProvider() {
             return getPendingSelfIntent(context, intent)
         }
 
-        fun getPendingSelfIntent(context: Context, intent: Intent): PendingIntent {
-            return PendingIntent.getBroadcast(context, 0, intent, 0)
+        private fun getPendingSelfIntent(context: Context, intent: Intent): PendingIntent {
+            return PendingIntent.getBroadcast(context, 0, intent, pendingIntentFlag())
         }
 
         fun drawableToBitmap(drawable: Drawable): Bitmap {
@@ -111,7 +112,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
             refreshIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
             val refreshPendingIntent = PendingIntent.getBroadcast(context,
-                    0, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+                    0, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT or pendingIntentFlag())
             views.setOnClickPendingIntent(R.id.widgetTimetableRefresh, refreshPendingIntent)
 
             views.setOnClickPendingIntent(R.id.widgetTimetableSync, getPendingSelfIntent(context, ACTION_SYNC_DATA))
@@ -394,7 +395,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
             }
         }
         headerIntent.putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
-        val headerPendingIntent = PendingIntent.getActivity(app, appWidgetId, headerIntent, 0)
+        val headerPendingIntent = PendingIntent.getActivity(app, appWidgetId, headerIntent, pendingIntentFlag())
         views.setOnClickPendingIntent(R.id.widgetTimetableHeader, headerPendingIntent)
 
         timetables!!.put(appWidgetId, models)
@@ -408,7 +409,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
         // create an intent used to display the lesson details dialog
         val itemIntent = Intent(app, LessonDialogActivity::class.java)
         itemIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK/* or Intent.FLAG_ACTIVITY_CLEAR_TASK*/)
-        val itemPendingIntent = PendingIntent.getActivity(app, appWidgetId, itemIntent, 0)
+        val itemPendingIntent = PendingIntent.getActivity(app, appWidgetId, itemIntent, pendingIntentFlag())
         views.setPendingIntentTemplate(R.id.widgetTimetableListView, itemPendingIntent)
 
         if (!unified)

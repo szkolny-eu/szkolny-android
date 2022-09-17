@@ -4,22 +4,21 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
-import androidx.core.util.set
-import com.google.gson.JsonObject
-import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
-import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGES
+import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGEBOX_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MESSAGES_SENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
-import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_DELETED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
+import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
-import pl.szczodrzynski.navlib.crc16
 
 class VulcanHebeMessages(
     override val data: DataVulcan,
@@ -27,29 +26,7 @@ class VulcanHebeMessages(
     val onSuccess: (endpointId: Int) -> Unit
 ) : VulcanHebe(data, lastSync) {
     companion object {
-        const val TAG = "VulcanHebeMessagesInbox"
-    }
-
-    private fun getPersonId(json: JsonObject): Long {
-        val senderLoginId = json.getInt("LoginId") ?: return -1
-        /*if (senderLoginId == data.studentLoginId)
-            return -1*/
-
-        val senderName = json.getString("Address") ?: return -1
-        val senderNameSplit = senderName.splitName()
-        val senderLoginIdStr = senderLoginId.toString()
-        val teacher = data.teacherList.singleOrNull { it.loginId == senderLoginIdStr }
-            ?: Teacher(
-                profileId,
-                -1 * crc16(senderName).toLong(),
-                senderNameSplit?.second ?: "",
-                senderNameSplit?.first ?: "",
-                senderLoginIdStr
-            ).also {
-                it.setTeacherType(Teacher.TYPE_OTHER)
-                data.teacherList[it.id] = it
-            }
-        return teacher.id
+        const val TAG = "VulcanHebeMessages"
     }
 
     fun getMessages(messageType: Int) {
@@ -64,17 +41,28 @@ class VulcanHebeMessages(
             TYPE_SENT -> ENDPOINT_VULCAN_HEBE_MESSAGES_SENT
             else -> ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX
         }
+
+        val messageBox = data.messageBoxKey
+        if (messageBox == null) {
+            onSuccess(endpointId)
+            return
+        }
+
         apiGetList(
             TAG,
-            VULCAN_HEBE_ENDPOINT_MESSAGES,
-            HebeFilterType.BY_PERSON,
+            VULCAN_HEBE_ENDPOINT_MESSAGEBOX_MESSAGES,
+            HebeFilterType.BY_MESSAGEBOX,
+            messageBox = data.messageBoxKey,
             folder = folder,
             lastSync = lastSync
         ) { list, _ ->
             list.forEach { message ->
-                val id = message.getLong("Id") ?: return@forEach
+                val uuid = message.getString("Id") ?: return@forEach
+                val id = Utils.crc32(uuid.toByteArray())
+                val globalKey = message.getString("GlobalKey", "")
+                val threadKey = message.getString("ThreadKey", "")
                 val subject = message.getString("Subject") ?: return@forEach
-                val body = message.getString("Content") ?: return@forEach
+                var body = message.getString("Content") ?: return@forEach
 
                 val sender = message.getJsonObject("Sender") ?: return@forEach
 
@@ -83,13 +71,27 @@ class VulcanHebeMessages(
 
                 if (!isCurrentYear(sentDate)) return@forEach
 
+                val senderId = if (messageType == TYPE_RECEIVED)
+                    getTeacherRecipient(sender)?.id
+                else
+                    null
+
+                val meta = mutableMapOf(
+                    "uuid" to uuid,
+                    "globalKey" to globalKey,
+                    "threadKey" to threadKey,
+                )
+                val metaString = meta.map { "${it.key}=${it.value}" }.join("&")
+                body = "[META:${metaString}]" + body
+                body = body.replace("\n", "<br>")
+
                 val messageObject = Message(
                     profileId = profileId,
                     id = id,
                     type = messageType,
                     subject = subject,
-                    body = body.replace("\n", "<br>"),
-                    senderId = if (messageType == TYPE_RECEIVED) getPersonId(sender) else null,
+                    body = body,
+                    senderId = senderId,
                     addedDate = sentDate
                 )
 
@@ -101,9 +103,14 @@ class VulcanHebeMessages(
                     else -1
 
                 for (receiver in receivers) {
+                    val recipientId = if (messageType == TYPE_SENT)
+                        getTeacherRecipient(receiver)?.id ?: -1
+                    else
+                        -1
+
                     val messageRecipientObject = MessageRecipient(
                         profileId,
-                        if (messageType == TYPE_SENT) getPersonId(receiver) else -1,
+                        recipientId,
                         -1,
                         receiverReadDate,
                         id
@@ -115,6 +122,9 @@ class VulcanHebeMessages(
                     ?.asJsonObjectList()
                     ?: return@forEach
 
+                messageObject.attachmentIds = mutableListOf()
+                messageObject.attachmentNames = mutableListOf()
+                messageObject.attachmentSizes = mutableListOf()
                 for (attachment in attachments) {
                     val fileName = attachment.getString("Name") ?: continue
                     val url = attachment.getString("Link") ?: continue

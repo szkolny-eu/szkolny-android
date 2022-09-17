@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
+import pl.szczodrzynski.edziennik.data.api.Regexes.MESSAGE_META
 import pl.szczodrzynski.edziennik.data.api.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.*
@@ -489,11 +490,19 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             teacherList[id] = this
         }
         return obj.also {
-            if (loginId != null && it.loginId != null)
+            if (loginId != null)
                 it.loginId = loginId
             if (firstName.length > 1)
                 it.name = firstName
             it.surname = lastName
         }
+    }
+
+    fun parseMessageMeta(body: String): Map<String, String>? {
+        val match = MESSAGE_META.find(body) ?: return null
+        return match[1].split("&").associateBy(
+            { it.substringBefore("=") },
+            { it.substringAfter("=") },
+        )
     }
 }

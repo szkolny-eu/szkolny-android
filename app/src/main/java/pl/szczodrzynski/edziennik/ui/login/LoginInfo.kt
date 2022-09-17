@@ -279,28 +279,6 @@ object LoginInfo {
                 )
             ),
             Register(
-                loginType = LOGIN_TYPE_EDUDZIENNIK,
-                internalName = "edudziennik",
-                registerName = R.string.login_type_edudziennik,
-                registerLogo = R.drawable.login_logo_edudziennik,
-                loginModes = listOf(
-                    Mode(
-                        loginMode = LOGIN_MODE_EDUDZIENNIK_WEB,
-                        name = R.string.login_mode_edudziennik_web,
-                        icon = R.drawable.login_mode_edudziennik_web,
-                        hintText = R.string.login_mode_edudziennik_web_hint,
-                        guideText = R.string.login_mode_edudziennik_web_guide,
-                        credentials = listOf(
-                            getEmailCredential("email"),
-                            getPasswordCredential("password")
-                        ),
-                        errorCodes = mapOf(
-                            ERROR_LOGIN_EDUDZIENNIK_WEB_INVALID_LOGIN to R.string.login_error_incorrect_login_or_password
-                        )
-                    )
-                )
-            ),
-            Register(
                 loginType = LOGIN_TYPE_PODLASIE,
                 internalName = "podlasie",
                 registerName = R.string.login_type_podlasie,

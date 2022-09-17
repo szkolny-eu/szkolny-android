@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,8 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.databinding.TemplateFragmentBinding
 import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
 import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
+import pl.szczodrzynski.edziennik.ui.login.LoginActivity
+import pl.szczodrzynski.edziennik.utils.SwipeRefreshLayoutNoTouch
 import kotlin.coroutines.CoroutineContext
 
 class LabFragment : Fragment(), CoroutineScope {
@@ -26,7 +29,7 @@ class LabFragment : Fragment(), CoroutineScope {
     }
 
     private lateinit var app: App
-    private lateinit var activity: MainActivity
+    private lateinit var activity: AppCompatActivity
     private lateinit var b: TemplateFragmentBinding
 
     private val job: Job = Job()
@@ -36,11 +39,14 @@ class LabFragment : Fragment(), CoroutineScope {
     // local/private variables go here
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity = (getActivity() as MainActivity?) ?: return null
+        activity = (getActivity() as AppCompatActivity?) ?: return null
         context ?: return null
         app = activity.application as App
         b = TemplateFragmentBinding.inflate(inflater)
-        b.refreshLayout.setParent(activity.swipeRefreshLayout)
+        when (activity) {
+            is MainActivity -> b.refreshLayout.setParent((activity as MainActivity).swipeRefreshLayout)
+            is LoginActivity -> b.refreshLayout.setParent((activity as LoginActivity).swipeRefreshLayout)
+        }
         b.refreshLayout.isEnabled = false
         return b.root
     }
