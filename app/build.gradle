@@ -70,9 +70,11 @@ android {
     sourceSets {
         unofficial {
             java.srcDirs = ["src/main/java", "src/play-not/java"]
+            manifest.srcFile("src/play-not/AndroidManifest.xml")
         }
         official {
             java.srcDirs = ["src/main/java", "src/play-not/java"]
+            manifest.srcFile("src/play-not/AndroidManifest.xml")
         }
         play {
             java.srcDirs = ["src/main/java", "src/play/java"]
