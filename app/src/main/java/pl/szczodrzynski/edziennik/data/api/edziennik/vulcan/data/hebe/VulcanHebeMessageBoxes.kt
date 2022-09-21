@@ -26,15 +26,23 @@ class VulcanHebeMessageBoxes(
             VULCAN_HEBE_ENDPOINT_MESSAGEBOX,
             lastSync = lastSync
         ) { list, _ ->
+            var found = false
             for (messageBox in list) {
                 val name = messageBox.getString("Name") ?: continue
                 val studentName = profile?.studentNameLong ?: continue
-                if (!name.startsWith(studentName))
+                if (!name.contains(studentName))
                     continue
 
                 data.messageBoxKey = messageBox.getString("GlobalKey")
                 data.messageBoxName = name
+                found = true
                 break
+            }
+            if (!found && list.isNotEmpty()) {
+                list.firstOrNull()?.let { messageBox ->
+                    data.messageBoxKey = messageBox.getString("GlobalKey")
+                    data.messageBoxName = messageBox.getString("Name")
+                }
             }
             data.setSyncNext(ENDPOINT_VULCAN_HEBE_MESSAGE_BOXES, 7 * DAY)
             onSuccess(ENDPOINT_VULCAN_HEBE_MESSAGE_BOXES)

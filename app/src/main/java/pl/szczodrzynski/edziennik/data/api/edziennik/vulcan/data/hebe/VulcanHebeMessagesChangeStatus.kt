@@ -24,7 +24,7 @@ class VulcanHebeMessagesChangeStatus(
     }
 
     init { let {
-        val messageKey = messageObject.body?.let { data.parseMessageMeta(it) }?.get("globalKey") ?: run {
+        val messageKey = messageObject.body?.let { data.parseMessageMeta(it) }?.get("uuid") ?: run {
             EventBus.getDefault().postSticky(MessageGetEvent(messageObject))
             onSuccess()
             return@let
