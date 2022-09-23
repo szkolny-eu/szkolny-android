@@ -409,7 +409,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
         // create an intent used to display the lesson details dialog
         val itemIntent = Intent(app, LessonDialogActivity::class.java)
         itemIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK/* or Intent.FLAG_ACTIVITY_CLEAR_TASK*/)
-        val itemPendingIntent = PendingIntent.getActivity(app, appWidgetId, itemIntent, pendingIntentFlag())
+        val itemPendingIntent = PendingIntent.getActivity(app, appWidgetId, itemIntent, PendingIntent.FLAG_MUTABLE)
         views.setPendingIntentTemplate(R.id.widgetTimetableListView, itemPendingIntent)
 
         if (!unified)

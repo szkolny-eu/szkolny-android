@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_PARENT
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_STUDENT
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_TEACHER
 import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ext.MINUTE
 import pl.szczodrzynski.edziennik.ext.getString
 
 class VulcanHebeAddressbook2(
@@ -25,7 +26,13 @@ class VulcanHebeAddressbook2(
         const val TAG = "VulcanHebeAddressbook2"
     }
 
-    init {
+    init { let {
+        if (data.messageBoxKey == null) {
+            data.setSyncNext(ENDPOINT_VULCAN_HEBE_ADDRESSBOOK_2, 30 * MINUTE)
+            onSuccess(ENDPOINT_VULCAN_HEBE_ADDRESSBOOK_2)
+            return@let
+        }
+
         apiGetList(
             TAG,
             VULCAN_HEBE_ENDPOINT_MESSAGEBOX_ADDRESSBOOK,
@@ -50,5 +57,5 @@ class VulcanHebeAddressbook2(
             data.setSyncNext(ENDPOINT_VULCAN_HEBE_ADDRESSBOOK_2, 2 * DAY)
             onSuccess(ENDPOINT_VULCAN_HEBE_ADDRESSBOOK_2)
         }
-    }
+    }}
 }

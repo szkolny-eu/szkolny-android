@@ -156,12 +156,12 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         }
 
         if (credential.qrDecoderClass != null) {
+            b.textLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
             b.textLayout.endIconDrawable = IconicsDrawable(activity).apply {
                 icon = CommunityMaterial.Icon3.cmd_qrcode
                 sizeDp = 24
                 colorAttr(activity, R.attr.colorOnBackground)
             }
-            b.textLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
             b.textLayout.setEndIconOnClickListener {
                 scanQrCode(credential)
             }

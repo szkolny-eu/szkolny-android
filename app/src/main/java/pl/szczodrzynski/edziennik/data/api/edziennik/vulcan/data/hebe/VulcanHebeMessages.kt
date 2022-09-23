@@ -98,15 +98,14 @@ class VulcanHebeMessages(
                 val receivers = message.getJsonArray("Receiver")
                     ?.asJsonObjectList()
                     ?: return@forEach
-                val receiverReadDate =
-                    if (receivers.size == 1) readDate
-                    else -1
 
                 for (receiver in receivers) {
                     val recipientId = if (messageType == TYPE_SENT)
                         getTeacherRecipient(receiver)?.id ?: -1
                     else
                         -1
+
+                    val receiverReadDate = receiver.getLong("HasRead", -1)
 
                     val messageRecipientObject = MessageRecipient(
                         profileId,
