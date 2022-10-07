@@ -36,6 +36,7 @@ import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAU
 import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.edziennik.utils.mutableLazy
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
@@ -73,7 +74,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
     private val profileConfig by lazy { app.config.forProfile().ui }
 
-    private val dayView by lazy {
+    private val dayViewDelegate = mutableLazy {
         val dayView = DayView(activity, DayViewConfig(
             startHour = startHour,
             endHour = endHour,
@@ -86,8 +87,9 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             eventMargin = 2.dp
         ), true)
         dayView.setPadding(10.dp)
-        return@lazy dayView
+        return@mutableLazy dayView
     }
+    private val dayView by dayViewDelegate
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -174,15 +176,16 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             return
         }
 
+        if (dayViewDelegate.isInitialized())
+            b.dayFrame.removeView(dayView)
+
         if (profileConfig.timetableTrimHourRange) {
-            startHour = lessons.minOf { it.startTime?.hour ?: startHour }
-            endHour = lessons.minOf { it.startTime?.hour ?: startHour } + 1
-            // force reloading the page fragment upon receiving new data
-            viewsRemoved = true
+            dayViewDelegate.deinitialize()
+            startHour = lessons.minOf { it.displayStartTime?.hour ?: startHour }
+            endHour = lessons.maxOf { it.displayEndTime?.hour ?: endHour } + 1
         }
 
         b.scrollView.isVisible = true
-        b.dayFrame.removeView(dayView)
         b.dayFrame.addView(dayView, 0)
 
         // Inflate a label view for each hour the day view will display

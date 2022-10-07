@@ -6,9 +6,13 @@ package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.TimetableConfigDialogBinding
+import pl.szczodrzynski.edziennik.ext.Intent
+import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
+import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 
 class TimetableConfigDialog(
     activity: AppCompatActivity,
@@ -32,5 +36,9 @@ class TimetableConfigDialog(
 
     override suspend fun loadConfig() {
         b.config = profileConfig
+    }
+
+    override suspend fun saveConfig() {
+        activity.sendBroadcast(Intent(TimetableFragment.ACTION_RELOAD_PAGES))
     }
 }

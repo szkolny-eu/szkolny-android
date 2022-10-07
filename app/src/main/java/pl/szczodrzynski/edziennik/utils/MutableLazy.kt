@@ -29,6 +29,10 @@ class MutableLazyImpl<T>(initializer: () -> T, lock: Any? = null) {
 
     fun isInitialized() = _value !== UNINITIALIZED_VALUE
 
+    fun deinitialize() {
+        _value = UNINITIALIZED_VALUE
+    }
+
     override fun toString() = if (isInitialized()) _value.toString() else "ChangeableLazy value not initialized yet."
 }
 

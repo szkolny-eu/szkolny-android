@@ -129,11 +129,9 @@ class TimetableFragment : Fragment(), CoroutineScope {
                 }
             }
 
-            if (!profileConfig.timetableTrimHourRange) {
-                val lessonRanges = app.db.lessonRangeDao().getAllNow(App.profileId)
-                startHour = lessonRanges.minOfOrNull { it.startTime.hour } ?: DEFAULT_START_HOUR
-                endHour = lessonRanges.maxOfOrNull { it.endTime.hour }?.plus(1) ?: DEFAULT_END_HOUR
-            }
+            val lessonRanges = app.db.lessonRangeDao().getAllNow(App.profileId)
+            startHour = lessonRanges.minOfOrNull { it.startTime.hour } ?: DEFAULT_START_HOUR
+            endHour = lessonRanges.maxOfOrNull { it.endTime.hour }?.plus(1) ?: DEFAULT_END_HOUR
         }
         deferred.await()
         if (!isAdded)
