@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.timetable
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.*
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
@@ -33,6 +35,7 @@ import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
+import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -309,13 +312,36 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                     lesson.classroom?.let { add(it) }
                 }.concat(arrowRight)
 
+            lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
 
-            lb.lessonNumber = lesson.displayLessonNumber
             val lessonText =
                 lesson.getNoteSubstituteText(showNotes = true) ?: lesson.displaySubjectName
+
+            val (subjectTextPrimary, subjectTextSecondary) = if (profileConfig.timetableColorSubjectName) {
+                val subjectColor = Colors.stringToMaterialColorCRC(lessonText?.toString() ?: "")
+                if (lb.annotationVisible) {
+                    lb.subjectContainer.background = ColorDrawable(subjectColor)
+                } else {
+                    lb.subjectContainer.setBackgroundResource(R.drawable.timetable_subject_color_rounded)
+                    lb.subjectContainer.background.setTintColor(subjectColor)
+                }
+                when (ColorUtils.calculateLuminance(subjectColor) > 0.5) {
+                    true -> /* light */ 0xFF000000 to 0xFF666666
+                    false -> /* dark */ 0xFFFFFFFF to 0xFFAAAAAA
+                }
+            } else {
+                lb.subjectContainer.background = null
+                null to colorSecondary
+            }
+
+            lb.lessonNumber = lesson.displayLessonNumber
+            if (subjectTextPrimary != null)
+                lb.lessonNumberText.setTextColor(subjectTextPrimary.toInt())
             lb.subjectName.text = lessonText?.let {
                 if (lesson.type == Lesson.TYPE_CANCELLED || lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
-                    it.asStrikethroughSpannable().asColoredSpannable(colorSecondary)
+                    it.asStrikethroughSpannable().asColoredSpannable(subjectTextSecondary.toInt())
+                else if (subjectTextPrimary != null)
+                    it.asColoredSpannable(subjectTextPrimary.toInt())
                 else
                     it
             }
@@ -342,7 +368,6 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             }
 
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
-            lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
             val lessonNumberMargin =
                 if (lb.annotationVisible) (-8).dp
                 else 0

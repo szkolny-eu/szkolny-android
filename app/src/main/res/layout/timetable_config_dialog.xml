@@ -48,6 +48,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:checked="@={config.timetableColorSubjectName}"
+                android:minHeight="32dp"
+                android:text="@string/timetable_config_color_subject_name" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:checked="@={config.timetableTrimHourRange}"
                 android:minHeight="32dp"
                 android:text="@string/timetable_config_trim_hour_range" />

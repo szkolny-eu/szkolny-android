@@ -1540,5 +1540,6 @@
     <string name="menu_timetable_config">Ustawienia planu lekcji</string>
     <string name="timetable_config_show_events">Pokazuj wydarzenia przy lekcjach</string>
     <string name="timetable_config_show_attendance">Pokazuj rodzaj obecności na lekcji</string>
+    <string name="timetable_config_color_subject_name">Koloruj nazwę przedmiotu</string>
     <string name="timetable_config_trim_hour_range">Nie pokazuj godzin bez lekcji</string>
 </resources>
