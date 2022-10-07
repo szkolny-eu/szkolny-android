@@ -71,6 +71,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
+    private val profileConfig by lazy { app.config.forProfile().ui }
 
     private val dayView by lazy {
         val dayView = DayView(activity, DayViewConfig(
@@ -173,6 +174,13 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             return
         }
 
+        if (profileConfig.timetableTrimHourRange) {
+            startHour = lessons.minOf { it.startTime?.hour ?: startHour }
+            endHour = lessons.minOf { it.startTime?.hour ?: startHour } + 1
+            // force reloading the page fragment upon receiving new data
+            viewsRemoved = true
+        }
+
         b.scrollView.isVisible = true
         b.dayFrame.removeView(dayView)
         b.dayFrame.addView(dayView, 0)
@@ -215,7 +223,10 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
         for (lesson in lessons) {
-            val attendance = attendanceList.find { it.startTime == lesson.startTime }
+            val attendance = if (profileConfig.timetableShowAttendance)
+                attendanceList.find { it.startTime == lesson.startTime }
+            else
+                null
             val startTime = lesson.displayStartTime ?: continue
             val endTime = lesson.displayEndTime ?: continue
 
@@ -245,23 +256,20 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                 }
             }
 
-            val eventList = events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
-            eventList.getOrNull(0).let {
-                lb.event1.visibility = if (it == null) View.GONE else View.VISIBLE
-                lb.event1.background = it?.let {
-                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
+            val eventIcons = listOf(lb.event1, lb.event2, lb.event3)
+            if (profileConfig.timetableShowEvents) {
+                val eventList = events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
+                for ((i, eventIcon) in eventIcons.withIndex()) {
+                    eventList.getOrNull(i).let {
+                        eventIcon.isVisible = it != null
+                        eventIcon.background = it?.let {
+                            R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
+                        }
+                    }
                 }
-            }
-            eventList.getOrNull(1).let {
-                lb.event2.visibility = if (it == null) View.GONE else View.VISIBLE
-                lb.event2.background = it?.let {
-                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
-                }
-            }
-            eventList.getOrNull(2).let {
-                lb.event3.visibility = if (it == null) View.GONE else View.VISIBLE
-                lb.event3.background = it?.let {
-                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
+            } else {
+                for (eventIcon in eventIcons) {
+                    eventIcon.visibility = View.GONE
                 }
             }
 

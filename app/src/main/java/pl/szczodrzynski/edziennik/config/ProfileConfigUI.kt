@@ -69,4 +69,19 @@ class ProfileConfigUI(private val config: ProfileConfig) {
     var messagesGreetingText: String?
         get() { mMessagesGreetingText = mMessagesGreetingText ?: config.values["messagesGreetingText"]; return mMessagesGreetingText }
         set(value) { config.set("messagesGreetingText", value); mMessagesGreetingText = value }
+
+    private var mTimetableShowAttendance: Boolean? = null
+    var timetableShowAttendance: Boolean
+        get() { mTimetableShowAttendance = mTimetableShowAttendance ?: config.values.get("timetableShowAttendance", true); return mTimetableShowAttendance ?: true }
+        set(value) { config.set("timetableShowAttendance", value); mTimetableShowAttendance = value }
+
+    private var mTimetableShowEvents: Boolean? = null
+    var timetableShowEvents: Boolean
+        get() { mTimetableShowEvents = mTimetableShowEvents ?: config.values.get("timetableShowEvents", true); return mTimetableShowEvents ?: true }
+        set(value) { config.set("timetableShowEvents", value); mTimetableShowEvents = value }
+
+    private var mTimetableTrimHourRange: Boolean? = null
+    var timetableTrimHourRange: Boolean
+        get() { mTimetableTrimHourRange = mTimetableTrimHourRange ?: config.values.get("timetableTrimHourRange", false); return mTimetableTrimHourRange ?: false }
+        set(value) { config.set("timetableTrimHourRange", value); mTimetableTrimHourRange = value }
 }
