@@ -19,7 +19,6 @@ class MutableLazyImpl<T>(initializer: () -> T, lock: Any? = null) {
         return synchronized(lock) {
             val typedValue = initializer!!()
             _value = typedValue
-            initializer = null
             typedValue
         }
     }

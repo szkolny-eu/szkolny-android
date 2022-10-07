@@ -179,10 +179,13 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         if (dayViewDelegate.isInitialized())
             b.dayFrame.removeView(dayView)
 
+        val lessonsActual = lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }
+
         if (profileConfig.timetableTrimHourRange) {
             dayViewDelegate.deinitialize()
-            startHour = lessons.minOf { it.displayStartTime?.hour ?: startHour }
-            endHour = lessons.maxOf { it.displayEndTime?.hour ?: endHour } + 1
+            // end/start defaults are swapped on purpose
+            startHour = lessonsActual.minOf { it.displayStartTime?.hour ?: DEFAULT_END_HOUR }
+            endHour = lessonsActual.maxOf { it.displayEndTime?.hour?.plus(1) ?: DEFAULT_START_HOUR }
         }
 
         b.scrollView.isVisible = true
@@ -206,7 +209,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
         lessons.forEach { it.showAsUnseen = !it.seen }
 
-        buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events, attendanceList)
+        buildLessonViews(lessonsActual, events, attendanceList)
     }
 
     private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {
