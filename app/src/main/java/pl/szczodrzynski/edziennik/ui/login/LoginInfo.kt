@@ -313,7 +313,24 @@ object LoginInfo {
                         errorCodes = mapOf()
                     )
                 )
-            )
+            ),
+            Register(
+                loginType = LOGIN_TYPE_USOS,
+                internalName = "usos",
+                registerName = R.string.login_type_usos,
+                registerLogo = R.drawable.login_logo_usos,
+                loginModes = listOf(
+                    Mode(
+                        loginMode = LOGIN_MODE_USOS_OAUTH,
+                        name = R.string.login_mode_usos_oauth,
+                        icon = R.drawable.login_logo_usos,
+                        guideText = R.string.login_mode_usos_oauth_guide,
+                        isPlatformSelection = true,
+                        credentials = listOf(),
+                        errorCodes = mapOf(),
+                    ),
+                ),
+            ),
         )
     }
 

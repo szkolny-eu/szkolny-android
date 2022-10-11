@@ -204,6 +204,8 @@ const val ERROR_PODLASIE_API_NO_TOKEN                       = 630
 const val ERROR_PODLASIE_API_OTHER                          = 631
 const val ERROR_PODLASIE_API_DATA_MISSING                   = 632
 
+const val ERROR_USOS_OAUTH_LOGIN_REQUEST                    = 701
+
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 
 const val EXCEPTION_API_TASK                                = 900
