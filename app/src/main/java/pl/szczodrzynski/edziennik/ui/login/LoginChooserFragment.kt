@@ -4,11 +4,14 @@
 
 package pl.szczodrzynski.edziennik.ui.login
 
+import android.Manifest
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,13 +21,15 @@ import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.App.Companion.profileId
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
@@ -47,7 +52,13 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
     private lateinit var activity: LoginActivity
     private lateinit var b: LoginChooserFragmentBinding
     private val nav by lazy { activity.nav }
-
+    private val isNotificationPermissionGranted by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -67,6 +78,10 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         if (!isAdded) return
 
         val adapter = LoginChooserAdapter(activity, this::onLoginModeClicked)
+
+        if (!isNotificationPermissionGranted && profileId == 0) {
+            app.permissionManager.requestNotificationsPermission(activity, 0, false){}
+        }
 
         b.versionText.setText(
             R.string.login_chooser_version_format,

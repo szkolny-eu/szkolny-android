@@ -23,6 +23,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import kotlin.coroutines.CoroutineContext
 
 class PermissionManager(val app: App) : CoroutineScope {
@@ -80,6 +81,10 @@ class PermissionManager(val app: App) : CoroutineScope {
                         .show()
                 }
                 result.hasPermanentDenied() -> {
+                    if (!isRequired) {
+                        onSuccess()
+                        return@launch
+                    }
                     MaterialAlertDialogBuilder(activity)
                         .setTitle(R.string.permissions_required)
                         .setMessage(R.string.permissions_denied)
@@ -92,6 +97,18 @@ class PermissionManager(val app: App) : CoroutineScope {
             }
         }
     }
+    fun requestNotificationsPermission(
+        activity: LoginActivity,
+        @StringRes permissionMessage: Int,
+        isRequired: Boolean = false,
+        onSuccess: suspend CoroutineScope.() -> Unit
+    ) = requestPermission(
+        activity,
+        permissionMessage,
+        isRequired,
+        Manifest.permission.POST_NOTIFICATIONS,
+        onSuccess
+    )
 
     fun requestStoragePermission(
         activity: AppCompatActivity,
