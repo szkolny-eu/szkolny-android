@@ -18,6 +18,7 @@ import android.text.style.StyleSpan
 import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import com.mikepenz.materialdrawer.holder.StringHolder
+import java.net.URLEncoder
 
 fun CharSequence?.isNotNullNorEmpty(): Boolean {
     return this != null && this.isNotEmpty()
@@ -343,3 +344,10 @@ fun Int.toStringHolder() = StringHolder(this)
 fun CharSequence.toStringHolder() = StringHolder(this)
 
 fun @receiver:StringRes Int.resolveString(context: Context) = context.getString(this)
+
+fun String.urlEncode(): String = URLEncoder.encode(this, "UTF-8").replace("+", "%20")
+
+fun Map<String, String>.toQueryString() = this
+    .map { it.key.urlEncode() to it.value.urlEncode() }
+    .sortedBy { it.first }
+    .joinToString("&") { "${it.first}=${it.second}" }

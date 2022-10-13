@@ -99,8 +99,8 @@ class UserActionManager(val app: App) {
     private fun executeLibrus(
         activity: AppCompatActivity,
         profileId: Int?,
-        onSuccess: ((params: Bundle) -> Unit)? = null,
-        onFailure: (() -> Unit)? = null,
+        onSuccess: ((params: Bundle) -> Unit)?,
+        onFailure: (() -> Unit)?,
     ) {
         if (profileId == null)
             return
@@ -124,5 +124,17 @@ class UserActionManager(val app: App) {
             },
             onFailure = onFailure
         ).show()
+    }
+
+    private fun executeOauth(
+        activity: AppCompatActivity,
+        profileId: Int?,
+        params: Bundle?,
+        onSuccess: ((params: Bundle) -> Unit)?,
+        onFailure: (() -> Unit)?,
+    ) {
+        if (profileId == null || params == null)
+            return
+
     }
 }
