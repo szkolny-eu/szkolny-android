@@ -81,7 +81,8 @@ class HomeFragment : Fragment(), CoroutineScope {
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
-
+    private val manager
+        get() = app.permissionManager
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
@@ -95,6 +96,10 @@ class HomeFragment : Fragment(), CoroutineScope {
         // TODO check if app, activity, b can be null
         if (!isAdded)
             return
+
+        if (!manager.isNotificationPermissionGranted) {
+            manager.requestNotificationsPermission(activity, 0, false){}
+        }
 
         activity.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)

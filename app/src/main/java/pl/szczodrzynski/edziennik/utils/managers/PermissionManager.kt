@@ -36,7 +36,13 @@ class PermissionManager(val app: App) : CoroutineScope {
             app.checkSelfPermission(name) == PackageManager.PERMISSION_GRANTED
         else
             true
-
+    val isNotificationPermissionGranted by lazy {
+        if (Build.VERSION.SDK_INT >= 33) {
+            app.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
     private fun openPermissionSettings(activity: AppCompatActivity) {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
         val uri = Uri.fromParts("package", app.packageName, null)
@@ -80,6 +86,10 @@ class PermissionManager(val app: App) : CoroutineScope {
                         .show()
                 }
                 result.hasPermanentDenied() -> {
+                    if (!isRequired) {
+                        onSuccess()
+                        return@launch
+                    }
                     MaterialAlertDialogBuilder(activity)
                         .setTitle(R.string.permissions_required)
                         .setMessage(R.string.permissions_denied)
@@ -92,6 +102,18 @@ class PermissionManager(val app: App) : CoroutineScope {
             }
         }
     }
+    fun requestNotificationsPermission(
+        activity: AppCompatActivity,
+        @StringRes permissionMessage: Int,
+        isRequired: Boolean = false,
+        onSuccess: suspend CoroutineScope.() -> Unit
+    ) = requestPermission(
+        activity,
+        permissionMessage,
+        isRequired,
+        Manifest.permission.POST_NOTIFICATIONS,
+        onSuccess
+    )
 
     fun requestStoragePermission(
         activity: AppCompatActivity,
