@@ -853,7 +853,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserActionRequiredEvent(event: UserActionRequiredEvent) {
-        app.userActionManager.execute(this, event.profileId, event.type)
+        app.userActionManager.execute(this, event.profileId, event.type, event.params)
     }
 
     private fun fragmentToSyncName(currentFragment: Int): Int {
@@ -914,7 +914,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     app.userActionManager.execute(
                         this,
                         extras.getInt("profileId"),
-                        extras.getInt("type")
+                        extras.getInt("type"),
+                        extras.getBundle("params"),
                     )
                     true
                 }

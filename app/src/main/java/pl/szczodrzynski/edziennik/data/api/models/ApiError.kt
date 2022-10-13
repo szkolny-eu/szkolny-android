@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.data.api.models
 
 import android.content.Context
+import android.os.Bundle
 import com.google.gson.JsonObject
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
@@ -30,6 +31,7 @@ class ApiError(val tag: String, var errorCode: Int) {
     var request: Request? = null
     var response: Response? = null
     var isCritical = true
+    var params: Bundle? = null
 
     fun withThrowable(throwable: Throwable?): ApiError {
         this.throwable = throwable
@@ -55,6 +57,11 @@ class ApiError(val tag: String, var errorCode: Int) {
 
     fun setCritical(isCritical: Boolean): ApiError {
         this.isCritical = isCritical
+        return this
+    }
+
+    fun withParams(bundle: Bundle): ApiError {
+        this.params = bundle
         return this
     }
 

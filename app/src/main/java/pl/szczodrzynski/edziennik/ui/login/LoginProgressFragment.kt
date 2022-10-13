@@ -137,9 +137,8 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
             return
         }
 
-        app.userActionManager.execute(activity, event.profileId, event.type, onSuccess = { code ->
-            args.putString("recaptchaCode", code)
-            args.putLong("recaptchaTime", System.currentTimeMillis())
+        app.userActionManager.execute(activity, event.profileId, event.type, event.params, onSuccess = { params ->
+            args.putAll(params)
             doFirstLogin(args)
         }, onFailure = {
             activity.error(ApiError(TAG, ERROR_CAPTCHA_NEEDED))

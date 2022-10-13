@@ -1541,4 +1541,5 @@
     <string name="login_type_usos">USOS</string>
     <string name="login_mode_usos_oauth">Logowanie z użyciem przeglądarki</string>
     <string name="login_mode_usos_oauth_guide">TODO</string>
+    <string name="notification_user_action_required_oauth_usos">USOS - wymagane logowanie z użyciem przeglądarki</string>
 </resources>
