@@ -23,7 +23,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.ui.login.LoginActivity
 import kotlin.coroutines.CoroutineContext
 
 class PermissionManager(val app: App) : CoroutineScope {
@@ -37,7 +36,13 @@ class PermissionManager(val app: App) : CoroutineScope {
             app.checkSelfPermission(name) == PackageManager.PERMISSION_GRANTED
         else
             true
-
+    val isNotificationPermissionGranted by lazy {
+        if (Build.VERSION.SDK_INT >= 33) {
+            app.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
     private fun openPermissionSettings(activity: AppCompatActivity) {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
         val uri = Uri.fromParts("package", app.packageName, null)
@@ -98,7 +103,7 @@ class PermissionManager(val app: App) : CoroutineScope {
         }
     }
     fun requestNotificationsPermission(
-        activity: LoginActivity,
+        activity: AppCompatActivity,
         @StringRes permissionMessage: Int,
         isRequired: Boolean = false,
         onSuccess: suspend CoroutineScope.() -> Unit
