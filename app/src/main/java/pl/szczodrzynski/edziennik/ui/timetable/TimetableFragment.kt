@@ -26,6 +26,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
 import pl.szczodrzynski.edziennik.ext.getSchoolYearConstrains
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.TimetableConfigDialog
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -52,6 +53,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
 
     private var fabShown = false
     private val items = mutableListOf<Date>()
+    private val profileConfig by lazy { app.config.forProfile().ui }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -128,8 +130,8 @@ class TimetableFragment : Fragment(), CoroutineScope {
             }
 
             val lessonRanges = app.db.lessonRangeDao().getAllNow(App.profileId)
-            startHour = lessonRanges.map { it.startTime.hour }.minOrNull() ?: DEFAULT_START_HOUR
-            endHour = lessonRanges.map { it.endTime.hour }.maxOrNull()?.plus(1) ?: DEFAULT_END_HOUR
+            startHour = lessonRanges.minOfOrNull { it.startTime.hour } ?: DEFAULT_START_HOUR
+            endHour = lessonRanges.maxOfOrNull { it.endTime.hour }?.plus(1) ?: DEFAULT_END_HOUR
         }
         deferred.await()
         if (!isAdded)
@@ -208,6 +210,13 @@ class TimetableFragment : Fragment(), CoroutineScope {
                             activity.bottomSheet.close()
                             GenerateBlockTimetableDialog(activity)
                         }),
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_timetable_config)
+                        .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
+                        .withOnClickListener {
+                            activity.bottomSheet.close()
+                            TimetableConfigDialog(activity, false, null, null).show()
+                        },
                 BottomSheetSeparatorItem(true),
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.menu_mark_as_read)

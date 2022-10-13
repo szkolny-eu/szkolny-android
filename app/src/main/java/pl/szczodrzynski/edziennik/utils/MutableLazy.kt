@@ -19,7 +19,6 @@ class MutableLazyImpl<T>(initializer: () -> T, lock: Any? = null) {
         return synchronized(lock) {
             val typedValue = initializer!!()
             _value = typedValue
-            initializer = null
             typedValue
         }
     }
@@ -28,6 +27,10 @@ class MutableLazyImpl<T>(initializer: () -> T, lock: Any? = null) {
     }
 
     fun isInitialized() = _value !== UNINITIALIZED_VALUE
+
+    fun deinitialize() {
+        _value = UNINITIALIZED_VALUE
+    }
 
     override fun toString() = if (isInitialized()) _value.toString() else "ChangeableLazy value not initialized yet."
 }
