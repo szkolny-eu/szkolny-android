@@ -27,10 +27,20 @@ class DataUsos(
 
     override fun generateUserCode() = "USOS:TEST"
 
+    var schoolId: String?
+        get() { mSchoolId = mSchoolId ?: loginStore.getLoginData("schoolId", null); return mSchoolId }
+        set(value) { loginStore.putLoginData("schoolId", value); mSchoolId = value }
+    private var mSchoolId: String? = null
+    
     var instanceUrl: String?
         get() { mInstanceUrl = mInstanceUrl ?: loginStore.getLoginData("instanceUrl", null); return mInstanceUrl }
         set(value) { loginStore.putLoginData("instanceUrl", value); mInstanceUrl = value }
     private var mInstanceUrl: String? = null
+
+    var oauthLoginResponse: String?
+        get() { mOauthLoginResponse = mOauthLoginResponse ?: loginStore.getLoginData("oauthLoginResponse", null); return mOauthLoginResponse }
+        set(value) { loginStore.putLoginData("oauthLoginResponse", value); mOauthLoginResponse = value }
+    private var mOauthLoginResponse: String? = null
 
     var oauthConsumerKey: String?
         get() { mOauthConsumerKey = mOauthConsumerKey ?: loginStore.getLoginData("oauthConsumerKey", null); return mOauthConsumerKey }

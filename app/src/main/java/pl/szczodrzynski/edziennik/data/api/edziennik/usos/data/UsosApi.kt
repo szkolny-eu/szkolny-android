@@ -78,7 +78,7 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
         responseType: ResponseType,
         onSuccess: (data: T) -> Unit,
     ) {
-        val url = "${data.instanceUrl}/services/$service"
+        val url = "${data.instanceUrl}services/$service"
         d(tag, "Request: Usos/Api - $url")
         val formData = params.mapValues {
             valueToString(it.value)
@@ -92,7 +92,11 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
             "oauth_token" to (data.oauthTokenKey ?: ""),
             "oauth_version" to "1.0",
         )
-        val signature = buildSignature("POST", url, formData + auth)
+        val signature = buildSignature(
+            method = "POST",
+            url = url,
+            params = formData + auth.filterKeys { it.startsWith("oauth_") },
+        )
         auth["oauth_signature"] = signature
 
         val authString = auth.map {
@@ -152,10 +156,10 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
 
     private fun <T> processResponse(
         response: Response?,
-        data: T?,
+        data: T,
         onSuccess: (data: T) -> Unit,
     ) {
-
+        onSuccess(data)
     }
 
     private fun processError(

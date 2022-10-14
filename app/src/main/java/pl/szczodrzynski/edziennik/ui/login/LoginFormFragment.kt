@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
+import androidx.navigation.navOptions
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.textfield.TextInputLayout
 import com.mikepenz.iconics.IconicsDrawable
@@ -304,6 +306,14 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         if (hasErrors)
             return
 
-        nav.navigate(R.id.loginProgressFragment, payload, activity.navOptions)
+        val navOptions =
+            if (credentials.isEmpty())
+                activity.navOptionsBuilder
+                    .setPopUpTo(R.id.loginPlatformListFragment, inclusive = false)
+                    .build()
+            else
+                activity.navOptions
+
+        nav.navigate(R.id.loginProgressFragment, payload, navOptions)
     }
 }

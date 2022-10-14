@@ -99,3 +99,12 @@ const val PODLASIE_API_VERSION = "1.0.62"
 const val PODLASIE_API_URL = "https://cpdklaser.zeto.bialystok.pl/api"
 const val PODLASIE_API_USER_ENDPOINT = "/pobierzDaneUcznia"
 const val PODLASIE_API_LOGOUT_DEVICES_ENDPOINT = "/wyczyscUrzadzenia"
+
+const val USOS_API_OAUTH_REDIRECT_URL = "szkolny://redirect/usos"
+
+val USOS_API_SCOPES by lazy { listOf(
+    "offline_access",
+    "studies",
+    "grades",
+    "events",
+) }

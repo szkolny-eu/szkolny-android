@@ -31,6 +31,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
     private val app: App by lazy { applicationContext as App }
     private lateinit var b: LoginActivityBinding
     lateinit var navOptions: NavOptions
+    lateinit var navOptionsBuilder: NavOptions.Builder
     val nav by lazy { Navigation.findNavController(this, R.id.nav_host_fragment) }
     val errorSnackbar: ErrorSnackbar by lazy { ErrorSnackbar(this) }
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
@@ -87,12 +88,12 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppTheme_Light)
 
-        navOptions = NavOptions.Builder()
+        navOptionsBuilder = NavOptions.Builder()
                 .setEnterAnim(R.anim.slide_in_right)
                 .setExitAnim(R.anim.slide_out_left)
                 .setPopEnterAnim(R.anim.slide_in_left)
                 .setPopExitAnim(R.anim.slide_out_right)
-                .build()
+        navOptions = navOptionsBuilder.build()
 
         b = LoginActivityBinding.inflate(layoutInflater)
         setContentView(b.root)

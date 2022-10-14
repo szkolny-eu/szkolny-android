@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.usos
 
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.data.api.edziennik.usos.firstlogin.UsosFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.login.UsosLogin
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
@@ -71,9 +72,9 @@ class Usos(
     override fun getEvent(eventFull: EventFull) {}
 
     override fun firstLogin() {
-        /*UsosFirstLogin(data) {
+        UsosFirstLogin(data) {
             completed()
-        }*/
+        }
     }
 
     override fun cancel() {

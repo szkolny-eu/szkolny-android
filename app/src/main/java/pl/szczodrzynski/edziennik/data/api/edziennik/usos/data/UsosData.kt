@@ -41,7 +41,7 @@ class UsosData(val data: DataUsos, val onSuccess: () -> Unit) {
         when (endpointId) {
             ENDPOINT_USOS_API_USER -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
-                TemplateWebSample(data, lastSync, onSuccess)
+//                TemplateWebSample(data, lastSync, onSuccess)
             }
             else -> onSuccess(endpointId)
         }

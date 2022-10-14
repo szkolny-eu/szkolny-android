@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.captcha.LibrusCaptchaDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.OAuthLoginDialog
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class UserActionManager(val app: App) {
@@ -89,9 +90,13 @@ class UserActionManager(val app: App) {
             onFailure: (() -> Unit)? = null
     ) {
         d(TAG, "Running user action ($type) with params: ${params?.toJsonObject()}")
-        when (type) {
+        val isSuccessful = when (type) {
             UserActionRequiredEvent.CAPTCHA_LIBRUS -> executeLibrus(activity, profileId, params, onSuccess, onFailure)
             UserActionRequiredEvent.OAUTH_USOS -> executeOauth(activity, profileId, params, onSuccess, onFailure)
+            else -> false
+        }
+        if (!isSuccessful) {
+            onFailure?.invoke()
         }
     }
 
@@ -101,9 +106,9 @@ class UserActionManager(val app: App) {
         params: Bundle?,
         onSuccess: ((params: Bundle) -> Unit)?,
         onFailure: (() -> Unit)?,
-    ) {
+    ): Boolean {
         if (profileId == null)
-            return
+            return false
         val extras = params?.getBundle("extras")
         // show captcha dialog
         // use passed onSuccess listener, else sync profile
@@ -117,14 +122,14 @@ class UserActionManager(val app: App) {
                 if (extras != null)
                     args.putAll(extras)
 
-                if (onSuccess != null) {
+                if (onSuccess != null)
                     onSuccess(args)
-                } else {
+                else
                     EdziennikTask.syncProfile(profileId, arguments = args.toJsonObject()).enqueue(activity)
-                }
             },
-            onFailure = onFailure
+            onFailure = onFailure,
         ).show()
+        return true
     }
 
     private fun executeOauth(
@@ -133,10 +138,30 @@ class UserActionManager(val app: App) {
         params: Bundle?,
         onSuccess: ((params: Bundle) -> Unit)?,
         onFailure: (() -> Unit)?,
-    ) {
+    ): Boolean {
         if (profileId == null || params == null)
-            return
+            return false
         val extras = params.getBundle("extras")
+        val storeKey = params.getString("responseStoreKey") ?: return false
 
+        OAuthLoginDialog(
+            activity = activity,
+            authorizeUrl = params.getString("authorizeUrl") ?: return false,
+            redirectUrl = params.getString("redirectUrl") ?: return false,
+            onSuccess = { responseUrl ->
+                val args = Bundle(
+                    storeKey to responseUrl,
+                )
+                if (extras != null)
+                    args.putAll(extras)
+
+                if (onSuccess != null)
+                    onSuccess(args)
+                else
+                    EdziennikTask.syncProfile(profileId, arguments = args.toJsonObject()).enqueue(activity)
+            },
+            onFailure = onFailure,
+        ).show()
+        return true
     }
 }
