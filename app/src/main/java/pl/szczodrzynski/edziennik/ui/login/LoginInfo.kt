@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.ui.login
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.google.gson.JsonObject
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
@@ -374,7 +375,8 @@ object LoginInfo {
         val icon: String,
         val screenshot: String?,
         val formFields: List<String>,
-        val realmData: RealmData
+        val data: JsonObject,
+        val storeKey: String?,
     )
 
     open class BaseCredential(

@@ -33,7 +33,6 @@ import pl.szczodrzynski.edziennik.ui.login.LoginInfo.BaseCredential
 import pl.szczodrzynski.edziennik.ui.login.LoginInfo.FormCheckbox
 import pl.szczodrzynski.edziennik.ui.login.LoginInfo.FormField
 import pl.szczodrzynski.navlib.colorAttr
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class LoginFormFragment : Fragment(), CoroutineScope {
@@ -63,8 +62,10 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         get() = arguments?.getString("platformDescription")
     private val platformFormFields
         get() = arguments?.getString("platformFormFields")?.split(";")
-    private val platformRealmData
-        get() = arguments?.getString("platformRealmData")?.toJsonObject()
+    private val platformData
+        get() = arguments?.getString("platformData")?.toJsonObject()
+    private val platformStoreKey
+        get() = arguments?.getString("platformStoreKey")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -250,7 +251,10 @@ class LoginFormFragment : Fragment(), CoroutineScope {
             payload.putBoolean("fakeLogin", true)
         }
 
-        payload.putBundle("webRealmData", platformRealmData?.toBundle())
+        if (platformStoreKey == null)
+            payload.putAll(platformData?.toBundle())
+        else
+            payload.putBundle(platformStoreKey, platformData?.toBundle())
 
         var hasErrors = false
         credentials.forEach { (credential, b) ->
