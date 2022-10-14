@@ -19,11 +19,9 @@ import pl.szczodrzynski.edziennik.data.api.ERROR_USOS_OAUTH_LOGIN_REQUEST
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.ext.Bundle
-import pl.szczodrzynski.edziennik.ext.Intent
-import pl.szczodrzynski.edziennik.ext.JsonObject
-import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.captcha.LibrusCaptchaDialog
+import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class UserActionManager(val app: App) {
     companion object {
@@ -90,8 +88,9 @@ class UserActionManager(val app: App) {
             onSuccess: ((params: Bundle) -> Unit)? = null,
             onFailure: (() -> Unit)? = null
     ) {
+        d(TAG, "Running user action ($type) with params: ${params?.toJsonObject()}")
         when (type) {
-            UserActionRequiredEvent.CAPTCHA_LIBRUS -> executeLibrus(activity, profileId, onSuccess, onFailure)
+            UserActionRequiredEvent.CAPTCHA_LIBRUS -> executeLibrus(activity, profileId, params, onSuccess, onFailure)
             UserActionRequiredEvent.OAUTH_USOS -> executeOauth(activity, profileId, params, onSuccess, onFailure)
         }
     }
@@ -99,27 +98,29 @@ class UserActionManager(val app: App) {
     private fun executeLibrus(
         activity: AppCompatActivity,
         profileId: Int?,
+        params: Bundle?,
         onSuccess: ((params: Bundle) -> Unit)?,
         onFailure: (() -> Unit)?,
     ) {
         if (profileId == null)
             return
+        val extras = params?.getBundle("extras")
         // show captcha dialog
         // use passed onSuccess listener, else sync profile
         LibrusCaptchaDialog(
             activity = activity,
             onSuccess = { code ->
+                val args = Bundle(
+                    "recaptchaCode" to code,
+                    "recaptchaTime" to System.currentTimeMillis(),
+                )
+                if (extras != null)
+                    args.putAll(extras)
+
                 if (onSuccess != null) {
-                    val params = Bundle(
-                        "recaptchaCode" to code,
-                        "recaptchaTime" to System.currentTimeMillis(),
-                    )
-                    onSuccess(params)
+                    onSuccess(args)
                 } else {
-                    EdziennikTask.syncProfile(profileId, arguments = JsonObject(
-                        "recaptchaCode" to code,
-                        "recaptchaTime" to System.currentTimeMillis(),
-                    )).enqueue(activity)
+                    EdziennikTask.syncProfile(profileId, arguments = args.toJsonObject()).enqueue(activity)
                 }
             },
             onFailure = onFailure
@@ -135,6 +136,7 @@ class UserActionManager(val app: App) {
     ) {
         if (profileId == null || params == null)
             return
+        val extras = params.getBundle("extras")
 
     }
 }
