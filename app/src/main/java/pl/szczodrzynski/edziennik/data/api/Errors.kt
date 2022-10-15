@@ -58,11 +58,7 @@ const val ERROR_INVALID_LOGIN_MODE                          = 110
 const val ERROR_LOGIN_METHOD_NOT_SATISFIED                  = 111
 const val ERROR_NOT_IMPLEMENTED                             = 112
 const val ERROR_FILE_DOWNLOAD                               = 113
-
-const val ERROR_NO_STUDENTS_IN_ACCOUNT                      = 115
-
-const val ERROR_CAPTCHA_NEEDED                              = 3000
-const val ERROR_CAPTCHA_LIBRUS_PORTAL                       = 3001
+const val ERROR_REQUIRES_USER_ACTION                        = 114
 
 const val ERROR_API_PDO_ERROR                               = 5000
 const val ERROR_API_INVALID_CLIENT                          = 5001
@@ -204,7 +200,6 @@ const val ERROR_PODLASIE_API_NO_TOKEN                       = 630
 const val ERROR_PODLASIE_API_OTHER                          = 631
 const val ERROR_PODLASIE_API_DATA_MISSING                   = 632
 
-const val ERROR_USOS_OAUTH_LOGIN_REQUEST                    = 701
 const val ERROR_USOS_OAUTH_GOT_DIFFERENT_TOKEN              = 702
 const val ERROR_USOS_OAUTH_INCOMPLETE_RESPONSE              = 703
 const val ERROR_USOS_NO_STUDENT_PROGRAMMES                  = 704

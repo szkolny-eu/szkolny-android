@@ -1,5 +1,6 @@
 package pl.szczodrzynski.edziennik.data.api.models
 
+import android.os.Bundle
 import android.util.LongSparseArray
 import android.util.SparseArray
 import androidx.core.util.set
@@ -12,7 +13,8 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
 import pl.szczodrzynski.edziennik.data.api.Regexes.MESSAGE_META
-import pl.szczodrzynski.edziennik.data.api.interfaces.EndpointCallback
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
+import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.ext.*
@@ -37,7 +39,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
     /**
      * A callback passed to all [Feature]s and [LoginMethod]s
      */
-    lateinit var callback: EndpointCallback
+    lateinit var callback: EdziennikCallback
 
     /**
      * A list of [LoginMethod]s *already fulfilled* during this sync.
@@ -372,6 +374,15 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
                     apiError.errorCode
 
         callback.onError(apiError)
+    }
+
+    fun requireUserAction(type: UserActionRequiredEvent.Type, params: Bundle, errorText: Int) {
+        callback.onRequiresUserAction(UserActionRequiredEvent(
+            profileId = profile?.id,
+            type = type,
+            params = params,
+            errorText = errorText,
+        ))
     }
 
     fun progress(step: Float) {

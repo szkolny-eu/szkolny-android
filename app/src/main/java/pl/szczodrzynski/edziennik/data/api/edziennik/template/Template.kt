@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.CODE_INTERNAL_LIBRUS_ACCOUNT_410
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.data.TemplateData
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.firstlogin.TemplateFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.login.TemplateLogin
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -106,6 +107,10 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
         return object : EdziennikCallback {
             override fun onCompleted() {
                 callback.onCompleted()
+            }
+
+            override fun onRequiresUserAction(event: UserActionRequiredEvent) {
+                callback.onRequiresUserAction(event)
             }
 
             override fun onProgress(step: Float) {

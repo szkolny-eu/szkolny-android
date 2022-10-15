@@ -16,13 +16,10 @@ import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.ERROR_CAPTCHA_LIBRUS_PORTAL
-import pl.szczodrzynski.edziennik.data.api.ERROR_USOS_OAUTH_LOGIN_REQUEST
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
-import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.captcha.LibrusCaptchaDialog
+import pl.szczodrzynski.edziennik.ui.captcha.RecaptchaPromptDialog
 import pl.szczodrzynski.edziennik.ui.login.oauth.OAuthLoginActivity
 import pl.szczodrzynski.edziennik.ui.login.oauth.OAuthLoginResult
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -32,43 +29,31 @@ class UserActionManager(val app: App) {
         private const val TAG = "UserActionManager"
     }
 
-    fun requiresUserAction(apiError: ApiError) = when (apiError.errorCode) {
-        ERROR_CAPTCHA_LIBRUS_PORTAL -> true
-        ERROR_USOS_OAUTH_LOGIN_REQUEST -> true
-        else -> false
-    }
-
-    fun sendToUser(apiError: ApiError) {
-        val type = when (apiError.errorCode) {
-            ERROR_CAPTCHA_LIBRUS_PORTAL -> UserActionRequiredEvent.CAPTCHA_LIBRUS
-            ERROR_USOS_OAUTH_LOGIN_REQUEST -> UserActionRequiredEvent.OAUTH_USOS
-            else -> 0
-        }
-
+    fun sendToUser(event: UserActionRequiredEvent) {
         if (EventBus.getDefault().hasSubscriberForEvent(UserActionRequiredEvent::class.java)) {
-            EventBus.getDefault().post(UserActionRequiredEvent(apiError.profileId ?: -1, type, apiError.params))
+            EventBus.getDefault().post(event)
             return
         }
 
         val manager = app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        val text = app.getString(when (type) {
-            UserActionRequiredEvent.CAPTCHA_LIBRUS -> R.string.notification_user_action_required_captcha_librus
-            UserActionRequiredEvent.OAUTH_USOS -> R.string.notification_user_action_required_oauth_usos
-            else -> R.string.notification_user_action_required_text
-        }, apiError.profileId)
-
+        val text = app.getString(event.errorText, event.profileId)
         val intent = Intent(
-                app,
-                MainActivity::class.java,
-                "action" to "userActionRequired",
-                "profileId" to (apiError.profileId ?: -1),
-                "type" to type,
-                "params" to apiError.params,
+            app,
+            MainActivity::class.java,
+            "action" to "userActionRequired",
+            "profileId" to event.profileId,
+            "type" to event.type,
+            "params" to event.params,
         )
-        val pendingIntent = PendingIntent.getActivity(app, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag())
+        val pendingIntent = PendingIntent.getActivity(
+            app,
+            System.currentTimeMillis().toInt(),
+            intent,
+            PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag(),
+        )
 
-        val notification = NotificationCompat.Builder(app, app.notificationChannelsManager.userAttention.key)
+        val notification =
+            NotificationCompat.Builder(app, app.notificationChannelsManager.userAttention.key)
                 .setContentTitle(app.getString(R.string.notification_user_action_required_title))
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_error_outline)
@@ -84,70 +69,56 @@ class UserActionManager(val app: App) {
         manager.notify(System.currentTimeMillis().toInt(), notification)
     }
 
+    class UserActionCallback(
+        val onSuccess: ((data: Bundle) -> Unit)? = null,
+        val onFailure: (() -> Unit)? = null,
+        val onCancel: (() -> Unit)? = null,
+    )
+
     fun execute(
-            activity: AppCompatActivity,
-            profileId: Int?,
-            type: Int,
-            params: Bundle? = null,
-            onSuccess: ((params: Bundle) -> Unit)? = null,
-            onFailure: (() -> Unit)? = null
+        activity: AppCompatActivity,
+        event: UserActionRequiredEvent,
+        callback: UserActionCallback,
     ) {
-        d(TAG, "Running user action ($type) with params: ${params?.toJsonObject()}")
-        val isSuccessful = when (type) {
-            UserActionRequiredEvent.CAPTCHA_LIBRUS -> executeLibrus(activity, profileId, params, onSuccess, onFailure)
-            UserActionRequiredEvent.OAUTH_USOS -> executeOauth(activity, profileId, params, onSuccess, onFailure)
-            else -> false
+        d(TAG, "Running user action (${event.type}) with params: ${event.params}")
+        val isSuccessful = when (event.type) {
+            UserActionRequiredEvent.Type.RECAPTCHA -> executeRecaptcha(activity, event, callback)
+            UserActionRequiredEvent.Type.OAUTH -> executeOauth(activity, event, callback)
         }
-        if (!isSuccessful) {
-            onFailure?.invoke()
-        }
+        if (!isSuccessful)
+            callback.onFailure?.invoke()
     }
 
-    private fun executeLibrus(
+    private fun executeRecaptcha(
         activity: AppCompatActivity,
-        profileId: Int?,
-        params: Bundle?,
-        onSuccess: ((params: Bundle) -> Unit)?,
-        onFailure: (() -> Unit)?,
+        event: UserActionRequiredEvent,
+        callback: UserActionCallback,
     ): Boolean {
-        if (profileId == null)
-            return false
-        val extras = params?.getBundle("extras")
-        // show captcha dialog
-        // use passed onSuccess listener, else sync profile
-        LibrusCaptchaDialog(
+        val siteKey = event.params.getString("siteKey") ?: return false
+        val referer = event.params.getString("referer") ?: return false
+        RecaptchaPromptDialog(
             activity = activity,
+            siteKey = siteKey,
+            referer = referer,
             onSuccess = { code ->
-                val args = Bundle(
+                finishAction(activity, event, callback, Bundle(
                     "recaptchaCode" to code,
                     "recaptchaTime" to System.currentTimeMillis(),
-                )
-                if (extras != null)
-                    args.putAll(extras)
-
-                if (onSuccess != null)
-                    onSuccess(args)
-                else
-                    EdziennikTask.syncProfile(profileId, arguments = args.toJsonObject()).enqueue(activity)
+                ))
             },
-            onFailure = onFailure,
+            onCancel = callback.onCancel,
         ).show()
         return true
     }
 
     private fun executeOauth(
         activity: AppCompatActivity,
-        profileId: Int?,
-        params: Bundle?,
-        onSuccess: ((params: Bundle) -> Unit)?,
-        onFailure: (() -> Unit)?,
+        event: UserActionRequiredEvent,
+        callback: UserActionCallback,
     ): Boolean {
-        if (profileId == null || params == null)
-            return false
-        val extras = params.getBundle("extras")
-        val storeKey = params.getString("responseStoreKey") ?: return false
-        params.getString("authorizeUrl") ?: return false
-        params.getString("redirectUrl") ?: return false
+        val storeKey = event.params.getString("responseStoreKey") ?: return false
+        event.params.getString("authorizeUrl") ?: return false
+        event.params.getString("redirectUrl") ?: return false
 
         var listener: Any? = null
         listener = object {
@@ -155,26 +126,41 @@ class UserActionManager(val app: App) {
             fun onOAuthLoginResult(result: OAuthLoginResult) {
                 EventBus.getDefault().unregister(listener)
                 when {
-                    result.isError -> onFailure?.invoke()
+                    result.isError -> callback.onFailure?.invoke()
                     result.responseUrl != null -> {
-                        val args = Bundle(
+                        finishAction(activity, event, callback, Bundle(
                             storeKey to result.responseUrl,
-                        )
-                        if (extras != null)
-                            args.putAll(extras)
-
-                        if (onSuccess != null)
-                            onSuccess(args)
-                        else
-                            EdziennikTask.syncProfile(profileId, arguments = args.toJsonObject()).enqueue(activity)
+                        ))
                     }
+                    else -> callback.onCancel?.invoke()
                 }
             }
         }
         EventBus.getDefault().register(listener)
 
-        val intent = Intent(activity, OAuthLoginActivity::class.java).putExtras(params)
+        val intent = Intent(activity, OAuthLoginActivity::class.java).putExtras(event.params)
         activity.startActivity(intent)
         return true
+    }
+
+    private fun finishAction(
+        activity: AppCompatActivity,
+        event: UserActionRequiredEvent,
+        callback: UserActionCallback,
+        data: Bundle,
+    ) {
+        val extras = event.params.getBundle("extras")
+        if (extras != null)
+            data.putAll(extras)
+
+        if (callback.onSuccess != null)
+            callback.onSuccess.invoke(data)
+        else if (event.profileId != null)
+            EdziennikTask.syncProfile(
+                profileId = event.profileId,
+                arguments = data.toJsonObject(),
+            ).enqueue(activity)
+        else
+            callback.onFailure?.invoke()
     }
 }

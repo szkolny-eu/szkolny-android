@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.PodlasieData
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.firstlogin.PodlasieFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.login.PodlasieLogin
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -140,6 +141,10 @@ class Podlasie(val app: App, val profile: Profile?, val loginStore: LoginStore, 
         return object : EdziennikCallback {
             override fun onCompleted() {
                 callback.onCompleted()
+            }
+
+            override fun onRequiresUserAction(event: UserActionRequiredEvent) {
+                callback.onRequiresUserAction(event)
             }
 
             override fun onProgress(step: Float) {

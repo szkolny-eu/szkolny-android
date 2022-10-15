@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import pl.szczodrzynski.edziennik.data.api.ERROR_REQUIRES_USER_ACTION
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
@@ -69,6 +70,7 @@ import pl.szczodrzynski.edziennik.ui.grades.editor.GradesEditorFragment
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment
 import pl.szczodrzynski.edziennik.ui.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
+import pl.szczodrzynski.edziennik.ui.login.LoginProgressFragment
 import pl.szczodrzynski.edziennik.ui.messages.compose.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.ui.messages.single.MessageFragment
@@ -83,6 +85,7 @@ import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
+import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.navlib.*
@@ -853,7 +856,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserActionRequiredEvent(event: UserActionRequiredEvent) {
-        app.userActionManager.execute(this, event.profileId, event.type, event.params)
+        app.userActionManager.execute(this, event, UserActionManager.UserActionCallback())
     }
 
     private fun fragmentToSyncName(currentFragment: Int): Int {
@@ -911,12 +914,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     false
                 }
                 "userActionRequired" -> {
-                    app.userActionManager.execute(
-                        this,
-                        extras.getInt("profileId"),
-                        extras.getInt("type"),
-                        extras.getBundle("params"),
+                    val event = UserActionRequiredEvent(
+                        profileId = extras.getInt("profileId"),
+                        type = extras.getEnum<UserActionRequiredEvent.Type>("type") ?: return,
+                        params = extras.getBundle("params") ?: return,
+                        errorText = 0,
                     )
+                    app.userActionManager.execute(this, event, UserActionManager.UserActionCallback())
                     true
                 }
                 "createManualEvent" -> {

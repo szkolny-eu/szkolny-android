@@ -65,7 +65,6 @@ object LoginInfo {
                         errorCodes = mapOf(
                             ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED to R.string.login_error_account_not_activated,
                             ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN to R.string.login_error_incorrect_login_or_password,
-                            ERROR_CAPTCHA_LIBRUS_PORTAL to R.string.error_3001_reason
                         )
                     ),
                     /*Mode(

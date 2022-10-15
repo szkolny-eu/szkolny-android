@@ -4,9 +4,11 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.usos.login
 
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.UsosApi
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.fromQueryString
@@ -53,13 +55,16 @@ class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
                 "interactivity" to "confirm_user",
                 "oauth_token" to (data.oauthTokenKey ?: ""),
             )
-            val params = Bundle(
-                "authorizeUrl" to "$authUrl?${authParams.toQueryString()}",
-                "redirectUrl" to USOS_API_OAUTH_REDIRECT_URL,
-                "responseStoreKey" to "oauthLoginResponse",
-                "extras" to data.loginStore.data.toBundle(),
+            data.requireUserAction(
+                type = UserActionRequiredEvent.Type.OAUTH,
+                params = Bundle(
+                    "authorizeUrl" to "$authUrl?${authParams.toQueryString()}",
+                    "redirectUrl" to USOS_API_OAUTH_REDIRECT_URL,
+                    "responseStoreKey" to "oauthLoginResponse",
+                    "extras" to data.loginStore.data.toBundle(),
+                ),
+                errorText = R.string.notification_user_action_required_oauth_usos,
             )
-            data.error(ApiError(TAG, ERROR_USOS_OAUTH_LOGIN_REQUEST).withParams(params))
         }
     }
 
@@ -93,6 +98,7 @@ class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
             data.oauthTokenKey = accessData["oauth_token"]
             data.oauthTokenSecret = accessData["oauth_token_secret"]
             data.oauthTokenIsUser = data.oauthTokenKey != null && data.oauthTokenSecret != null
+            data.loginStore.removeLoginData("oauthLoginResponse")
 
             if (!data.oauthTokenIsUser)
                 data.error(ApiError(TAG, ERROR_USOS_OAUTH_INCOMPLETE_RESPONSE)

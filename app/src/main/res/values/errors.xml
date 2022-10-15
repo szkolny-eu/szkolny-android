@@ -31,11 +31,6 @@
     <string name="error_112" translatable="false">ERROR_NOT_IMPLEMENTED</string>
     <string name="error_113" translatable="false">ERROR_FILE_DOWNLOAD</string>
 
-    <string name="error_115" translatable="false">ERROR_NO_STUDENTS_IN_ACCOUNT</string>
-
-    <string name="error_3000" translatable="false">ERROR_CAPTCHA_NEEDED</string>
-    <string name="error_3001" translatable="false">ERROR_CAPTCHA_LIBRUS_PORTAL</string>
-
     <string name="error_5000" translatable="false">ERROR_API_PDO_ERROR</string>
     <string name="error_5001" translatable="false">ERROR_API_INVALID_CLIENT</string>
     <string name="error_5002" translatable="false">ERROR_API_INVALID_ARGUMENT</string>
@@ -174,8 +169,6 @@
     <string name="error_631" translatable="false">ERROR_PODLASIE_API_OTHER</string>
     <string name="error_632" translatable="false">ERROR_PODLASIE_API_DATA_MISSING</string>
 
-    <string name="error_701" translatable="false">ERROR_USOS_OAUTH_LOGIN_REQUEST</string>
-
     <string name="error_801" translatable="false">ERROR_TEMPLATE_WEB_OTHER</string>
 
     <string name="error_900" translatable="false">EXCEPTION_API_TASK</string>
@@ -222,11 +215,6 @@
     <string name="error_111_reason">Nie można wywołać metody logowania. Skontaktuj się z twórcą aplikacji.</string>
     <string name="error_112_reason">Nie zaimplementowano</string>
     <string name="error_113_reason">Wystąpił błąd podczas pobierania pliku. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
-
-    <string name="error_115_reason">Brak uczniów przypisanych do konta</string>
-
-    <string name="error_3000_reason">Wymagane rozwiązanie zadania Captcha</string>
-    <string name="error_3001_reason">LIBRUS®️: wymagane rozwiązanie zadania Captcha</string>
 
     <string name="error_5000_reason">ERROR_API_PDO_ERROR</string>
     <string name="error_5001_reason">Nieprawidłowy ID klienta API</string>
@@ -365,8 +353,6 @@
     <string name="error_630_reason">ERROR_PODLASIE_API_NO_TOKEN</string>
     <string name="error_631_reason">ERROR_PODLASIE_API_OTHER</string>
     <string name="error_632_reason">Brak danych. Zgłoś błąd programiście.</string>
-
-    <string name="error_701_reason">Wymagane logowanie w przeglądarce</string>
 
     <string name="error_801_reason">ERROR_TEMPLATE_WEB_OTHER</string>
 

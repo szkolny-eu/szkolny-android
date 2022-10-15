@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages.Librus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.firstlogin.LibrusFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLogin
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -162,6 +163,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {
         return object : EdziennikCallback {
             override fun onCompleted() { callback.onCompleted() }
+            override fun onRequiresUserAction(event: UserActionRequiredEvent) { callback.onRequiresUserAction(event) }
             override fun onProgress(step: Float) { callback.onProgress(step) }
             override fun onStartProgress(stringRes: Int) { callback.onStartProgress(stringRes) }
             override fun onError(apiError: ApiError) {

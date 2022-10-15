@@ -22,6 +22,15 @@ fun Bundle?.getFloat(key: String, defaultValue: Float): Float {
 fun Bundle?.getString(key: String, defaultValue: String): String {
     return this?.getString(key, defaultValue) ?: defaultValue
 }
+inline fun <reified E : Enum<E>> Bundle?.getEnum(key: String): E? {
+    return this?.getString(key)?.let {
+        try {
+            enumValueOf<E>(it)
+        } catch (e: Exception) {
+            null
+        }
+    }
+}
 
 fun Bundle?.getIntOrNull(key: String): Int? {
     return this?.get(key) as? Int
@@ -48,6 +57,7 @@ fun Bundle(vararg properties: Pair<String, Any?>): Bundle {
                 is Bundle -> putBundle(property.first, property.second as Bundle)
                 is Parcelable -> putParcelable(property.first, property.second as Parcelable)
                 is Array<*> -> putParcelableArray(property.first, property.second as Array<out Parcelable>)
+                is Enum<*> -> putString(property.first, (property.second as Enum<*>).name)
             }
         }
     }

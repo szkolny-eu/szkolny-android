@@ -8,6 +8,7 @@ import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.firstlogin.UsosFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.login.UsosLogin
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -86,6 +87,10 @@ class Usos(
         return object : EdziennikCallback {
             override fun onCompleted() {
                 callback.onCompleted()
+            }
+
+            override fun onRequiresUserAction(event: UserActionRequiredEvent) {
+                callback.onRequiresUserAction(event)
             }
 
             override fun onProgress(step: Float) {
