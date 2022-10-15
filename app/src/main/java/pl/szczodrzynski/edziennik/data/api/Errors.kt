@@ -203,6 +203,7 @@ const val ERROR_PODLASIE_API_DATA_MISSING                   = 632
 const val ERROR_USOS_OAUTH_GOT_DIFFERENT_TOKEN              = 702
 const val ERROR_USOS_OAUTH_INCOMPLETE_RESPONSE              = 703
 const val ERROR_USOS_NO_STUDENT_PROGRAMMES                  = 704
+const val ERROR_USOS_API_INCOMPLETE_RESPONSE                = 705
 
 const val ERROR_TEMPLATE_WEB_OTHER                          = 801
 

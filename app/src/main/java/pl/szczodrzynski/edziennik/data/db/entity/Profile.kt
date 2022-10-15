@@ -233,6 +233,10 @@ open class Profile(
                     MainActivity.DRAWER_ITEM_GRADES,
                     MainActivity.DRAWER_ITEM_HOMEWORK
             )
+            LOGIN_TYPE_USOS -> listOf(
+                    MainActivity.DRAWER_ITEM_TIMETABLE,
+                    MainActivity.DRAWER_ITEM_AGENDA
+            )
             else -> listOf(
                     MainActivity.DRAWER_ITEM_TIMETABLE,
                     MainActivity.DRAWER_ITEM_AGENDA,

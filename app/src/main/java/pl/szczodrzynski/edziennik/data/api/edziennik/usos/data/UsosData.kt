@@ -7,7 +7,11 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.usos.data
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.data.web.TemplateWebSample
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
+import pl.szczodrzynski.edziennik.data.api.edziennik.usos.ENDPOINT_USOS_API_COURSES
+import pl.szczodrzynski.edziennik.data.api.edziennik.usos.ENDPOINT_USOS_API_TERMS
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.ENDPOINT_USOS_API_USER
+import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api.UsosApiCourses
+import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api.UsosApiTerms
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class UsosData(val data: DataUsos, val onSuccess: () -> Unit) {
@@ -39,9 +43,17 @@ class UsosData(val data: DataUsos, val onSuccess: () -> Unit) {
     private fun useEndpoint(endpointId: Int, lastSync: Long?, onSuccess: (endpointId: Int) -> Unit) {
         d(TAG, "Using endpoint $endpointId. Last sync time = $lastSync")
         when (endpointId) {
-            ENDPOINT_USOS_API_USER -> {
+            /*ENDPOINT_USOS_API_USER -> {
                 data.startProgress(R.string.edziennik_progress_endpoint_student_info)
 //                TemplateWebSample(data, lastSync, onSuccess)
+            }*/
+            ENDPOINT_USOS_API_TERMS -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_school_info)
+                UsosApiTerms(data, lastSync, onSuccess)
+            }
+            ENDPOINT_USOS_API_COURSES -> {
+                data.startProgress(R.string.edziennik_progress_endpoint_teams)
+                UsosApiCourses(data, lastSync, onSuccess)
             }
             else -> onSuccess(endpointId)
         }

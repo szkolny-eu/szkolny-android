@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.usos
 
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.UsosData
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.firstlogin.UsosFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.login.UsosLogin
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
@@ -58,9 +59,9 @@ class Usos(
         d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
         d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
         UsosLogin(data) {
-            /*UsosData(data) {
+            UsosData(data) {
                 completed()
-            }*/
+            }
         }
     }
 

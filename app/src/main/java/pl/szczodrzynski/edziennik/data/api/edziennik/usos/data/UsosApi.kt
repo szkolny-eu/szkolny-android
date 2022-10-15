@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.usos.data
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import im.wangchao.mhttp.AbsCallbackHandler
 import im.wangchao.mhttp.Request
 import im.wangchao.mhttp.Response
 import im.wangchao.mhttp.body.MediaTypeUtils
@@ -17,10 +16,7 @@ import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
 import pl.szczodrzynski.edziennik.data.api.SERVER_USER_AGENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.ext.currentTimeUnix
-import pl.szczodrzynski.edziennik.ext.hmacSHA1
-import pl.szczodrzynski.edziennik.ext.toQueryString
-import pl.szczodrzynski.edziennik.ext.urlEncode
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.*
 import java.util.UUID
@@ -41,6 +37,9 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
 
     val profile
         get() = data.profile
+
+    protected fun JsonObject.getLangString(key: String) =
+        this.getJsonObject(key)?.getString("pl")
 
     private fun valueToString(value: Any) = when (value) {
         is String -> value
@@ -74,15 +73,22 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
     fun <T> apiRequest(
         tag: String,
         service: String,
-        params: Map<String, Any>,
+        params: Map<String, Any>? = null,
+        fields: List<Any>? = null,
         responseType: ResponseType,
         onSuccess: (data: T, response: Response?) -> Unit,
     ) {
         val url = "${data.instanceUrl}services/$service"
         d(tag, "Request: Usos/Api - $url")
-        val formData = params.mapValues {
-            valueToString(it.value)
-        }
+
+        val formData = mutableMapOf<String, String>()
+        if (params != null)
+            formData.putAll(params.mapValues {
+                valueToString(it.value)
+            })
+        if (fields != null)
+            formData["fields"] = valueToString(fields)
+
         val auth = mutableMapOf(
             "realm" to url,
             "oauth_consumer_key" to (data.oauthConsumerKey ?: ""),

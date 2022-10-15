@@ -25,7 +25,7 @@ class DataUsos(
         }
     }
 
-    override fun generateUserCode() = "$schoolId:${studentNumber ?: studentId}"
+    override fun generateUserCode() = "$schoolId:${profile?.studentNumber ?: studentId}"
 
     var schoolId: String?
         get() { mSchoolId = mSchoolId ?: loginStore.getLoginData("schoolId", null); return mSchoolId }
@@ -67,13 +67,8 @@ class DataUsos(
         set(value) { loginStore.putLoginData("oauthTokenIsUser", value); mOauthTokenIsUser = value }
     private var mOauthTokenIsUser: Boolean? = null
 
-    var studentId: String?
-        get() { mStudentId = mStudentId ?: profile?.getStudentData("studentId", null); return mStudentId }
+    var studentId: Int
+        get() { mStudentId = mStudentId ?: profile?.getStudentData("studentId", 0); return mStudentId ?: 0 }
         set(value) { profile?.putStudentData("studentId", value) ?: return; mStudentId = value }
-    private var mStudentId: String? = null
-
-    var studentNumber: String?
-        get() { mStudentNumber = mStudentNumber ?: profile?.getStudentData("studentNumber", null); return mStudentNumber }
-        set(value) { profile?.putStudentData("studentNumber", value) ?: return; mStudentNumber = value }
-    private var mStudentNumber: String? = null
+    private var mStudentId: Int? = null
 }
