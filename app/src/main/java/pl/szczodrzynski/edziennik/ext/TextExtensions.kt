@@ -355,6 +355,7 @@ fun Map<String, String>.toQueryString() = this
     .joinToString("&") { "${it.first}=${it.second}" }
 
 fun String.fromQueryString() = this
+    .substringAfter('?')
     .split("&")
     .map { it.split("=") }
     .associate { it[0].urlDecode() to it[1].urlDecode() }

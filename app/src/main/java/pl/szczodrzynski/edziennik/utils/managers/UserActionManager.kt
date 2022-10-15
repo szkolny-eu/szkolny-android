@@ -11,6 +11,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
@@ -21,7 +23,8 @@ import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.captcha.LibrusCaptchaDialog
-import pl.szczodrzynski.edziennik.ui.dialogs.OAuthLoginDialog
+import pl.szczodrzynski.edziennik.ui.login.oauth.OAuthLoginActivity
+import pl.szczodrzynski.edziennik.ui.login.oauth.OAuthLoginResult
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class UserActionManager(val app: App) {
@@ -143,25 +146,35 @@ class UserActionManager(val app: App) {
             return false
         val extras = params.getBundle("extras")
         val storeKey = params.getString("responseStoreKey") ?: return false
+        params.getString("authorizeUrl") ?: return false
+        params.getString("redirectUrl") ?: return false
 
-        OAuthLoginDialog(
-            activity = activity,
-            authorizeUrl = params.getString("authorizeUrl") ?: return false,
-            redirectUrl = params.getString("redirectUrl") ?: return false,
-            onSuccess = { responseUrl ->
-                val args = Bundle(
-                    storeKey to responseUrl,
-                )
-                if (extras != null)
-                    args.putAll(extras)
+        var listener: Any? = null
+        listener = object {
+            @Subscribe(threadMode = ThreadMode.MAIN)
+            fun onOAuthLoginResult(result: OAuthLoginResult) {
+                EventBus.getDefault().unregister(listener)
+                when {
+                    result.isError -> onFailure?.invoke()
+                    result.responseUrl != null -> {
+                        val args = Bundle(
+                            storeKey to result.responseUrl,
+                        )
+                        if (extras != null)
+                            args.putAll(extras)
 
-                if (onSuccess != null)
-                    onSuccess(args)
-                else
-                    EdziennikTask.syncProfile(profileId, arguments = args.toJsonObject()).enqueue(activity)
-            },
-            onFailure = onFailure,
-        ).show()
+                        if (onSuccess != null)
+                            onSuccess(args)
+                        else
+                            EdziennikTask.syncProfile(profileId, arguments = args.toJsonObject()).enqueue(activity)
+                    }
+                }
+            }
+        }
+        EventBus.getDefault().register(listener)
+
+        val intent = Intent(activity, OAuthLoginActivity::class.java).putExtras(params)
+        activity.startActivity(intent)
         return true
     }
 }

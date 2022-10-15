@@ -16,7 +16,7 @@ class DataUsos(
     loginStore: LoginStore,
 ) : Data(app, profile, loginStore) {
 
-    fun isApiLoginValid() = oauthTokenKey != null && oauthTokenSecret != null
+    fun isApiLoginValid() = oauthTokenKey != null && oauthTokenSecret != null && oauthTokenIsUser
 
     override fun satisfyLoginMethods() {
         loginMethods.clear()
@@ -25,7 +25,7 @@ class DataUsos(
         }
     }
 
-    override fun generateUserCode() = "USOS:TEST"
+    override fun generateUserCode() = "$schoolId:${studentNumber ?: studentId}"
 
     var schoolId: String?
         get() { mSchoolId = mSchoolId ?: loginStore.getLoginData("schoolId", null); return mSchoolId }
@@ -61,6 +61,11 @@ class DataUsos(
         get() { mOauthTokenSecret = mOauthTokenSecret ?: loginStore.getLoginData("oauthTokenSecret", null); return mOauthTokenSecret }
         set(value) { loginStore.putLoginData("oauthTokenSecret", value); mOauthTokenSecret = value }
     private var mOauthTokenSecret: String? = null
+
+    var oauthTokenIsUser: Boolean
+        get() { mOauthTokenIsUser = mOauthTokenIsUser ?: loginStore.getLoginData("oauthTokenIsUser", false); return mOauthTokenIsUser ?: false }
+        set(value) { loginStore.putLoginData("oauthTokenIsUser", value); mOauthTokenIsUser = value }
+    private var mOauthTokenIsUser: Boolean? = null
 
     var studentId: String?
         get() { mStudentId = mStudentId ?: profile?.getStudentData("studentId", null); return mStudentId }

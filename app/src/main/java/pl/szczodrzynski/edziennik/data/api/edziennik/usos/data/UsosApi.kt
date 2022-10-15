@@ -76,7 +76,7 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
         service: String,
         params: Map<String, Any>,
         responseType: ResponseType,
-        onSuccess: (data: T) -> Unit,
+        onSuccess: (data: T, response: Response?) -> Unit,
     ) {
         val url = "${data.instanceUrl}services/$service"
         d(tag, "Request: Usos/Api - $url")
@@ -123,10 +123,10 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
     private fun <T> getCallback(
         tag: String,
         responseType: ResponseType,
-        onSuccess: (data: T) -> Unit,
+        onSuccess: (data: T, response: Response?) -> Unit,
     ) = when (responseType) {
         ResponseType.OBJECT -> object : JsonCallbackHandler() {
-            override fun onSuccess(data: JsonObject?, response: Response?) {
+            override fun onSuccess(data: JsonObject?, response: Response) {
                 processResponse(response, data as T, onSuccess)
             }
 
@@ -135,7 +135,7 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
             }
         }
         ResponseType.ARRAY -> object : JsonArrayCallbackHandler() {
-            override fun onSuccess(data: JsonArray?, response: Response?) {
+            override fun onSuccess(data: JsonArray?, response: Response) {
                 processResponse(response, data as T, onSuccess)
             }
 
@@ -144,7 +144,7 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
             }
         }
         ResponseType.PLAIN -> object : TextCallbackHandler() {
-            override fun onSuccess(data: String?, response: Response?) {
+            override fun onSuccess(data: String?, response: Response) {
                 processResponse(response, data as T, onSuccess)
             }
 
@@ -155,11 +155,11 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
     }
 
     private fun <T> processResponse(
-        response: Response?,
+        response: Response,
         data: T,
-        onSuccess: (data: T) -> Unit,
+        onSuccess: (data: T, response: Response?) -> Unit,
     ) {
-        onSuccess(data)
+        onSuccess(data, response)
     }
 
     private fun processError(

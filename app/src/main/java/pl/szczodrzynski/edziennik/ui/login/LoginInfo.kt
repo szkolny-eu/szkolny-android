@@ -324,7 +324,7 @@ object LoginInfo {
                     Mode(
                         loginMode = LOGIN_MODE_USOS_OAUTH,
                         name = R.string.login_mode_usos_oauth,
-                        icon = R.drawable.login_logo_usos,
+                        icon = R.drawable.login_mode_usos_api,
                         guideText = R.string.login_mode_usos_oauth_guide,
                         isPlatformSelection = true,
                         credentials = listOf(),

@@ -4,9 +4,7 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.usos.login
 
-import pl.szczodrzynski.edziennik.data.api.ERROR_USOS_OAUTH_LOGIN_REQUEST
-import pl.szczodrzynski.edziennik.data.api.USOS_API_OAUTH_REDIRECT_URL
-import pl.szczodrzynski.edziennik.data.api.USOS_API_SCOPES
+import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.UsosApi
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -21,19 +19,21 @@ class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
         private const val TAG = "UsosLoginApi"
     }
 
-    init { run {
-        if (data.isApiLoginValid()) {
-            onSuccess()
-        } else if (data.oauthLoginResponse != null) {
-            login()
-        } else {
-            authorize()
+    private val api = UsosApi(data, null)
+
+    init {
+        run {
+            if (data.isApiLoginValid()) {
+                onSuccess()
+            } else if (data.oauthLoginResponse != null) {
+                login()
+            } else {
+                authorize()
+            }
         }
-    }}
+    }
 
     private fun authorize() {
-        val api = UsosApi(data, null)
-
         api.apiRequest<String>(
             tag = TAG,
             service = "oauth/request_token",
@@ -42,10 +42,11 @@ class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
                 "scopes" to USOS_API_SCOPES,
             ),
             responseType = UsosApi.ResponseType.PLAIN,
-        ) {
-            val response = it.fromQueryString()
-            data.oauthTokenKey = response["oauth_token"]
-            data.oauthTokenSecret = response["oauth_token_secret"]
+        ) { text, _ ->
+            val authorizeData = text.fromQueryString()
+            data.oauthTokenKey = authorizeData["oauth_token"]
+            data.oauthTokenSecret = authorizeData["oauth_token_secret"]
+            data.oauthTokenIsUser = false
 
             val authUrl = "${data.instanceUrl}services/oauth/authorize"
             val authParams = mapOf(
@@ -63,6 +64,42 @@ class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
     }
 
     private fun login() {
-        d(TAG, "Login to ${data.schoolId} with ${data.oauthLoginResponse} (${data.oauthTokenSecret})")
+        d(TAG, "Login to ${data.schoolId} with ${data.oauthLoginResponse}")
+
+        val authorizeResponse = data.oauthLoginResponse?.fromQueryString()
+            ?: return // checked in init {}
+        if (authorizeResponse["oauth_token"] != data.oauthTokenKey) {
+            // got different token
+            data.error(ApiError(TAG, ERROR_USOS_OAUTH_GOT_DIFFERENT_TOKEN)
+                .withApiResponse(data.oauthLoginResponse))
+            return
+        }
+        val verifier = authorizeResponse["oauth_verifier"]
+        if (verifier.isNullOrBlank()) {
+            data.error(ApiError(TAG, ERROR_USOS_OAUTH_INCOMPLETE_RESPONSE)
+                .withApiResponse(data.oauthLoginResponse))
+            return
+        }
+
+        api.apiRequest<String>(
+            tag = TAG,
+            service = "oauth/access_token",
+            params = mapOf(
+                "oauth_verifier" to verifier,
+            ),
+            responseType = UsosApi.ResponseType.PLAIN,
+        ) { text, response ->
+            val accessData = text.fromQueryString()
+            data.oauthTokenKey = accessData["oauth_token"]
+            data.oauthTokenSecret = accessData["oauth_token_secret"]
+            data.oauthTokenIsUser = data.oauthTokenKey != null && data.oauthTokenSecret != null
+
+            if (!data.oauthTokenIsUser)
+                data.error(ApiError(TAG, ERROR_USOS_OAUTH_INCOMPLETE_RESPONSE)
+                    .withApiResponse(text)
+                    .withResponse(response))
+            else
+                onSuccess()
+        }
     }
 }
