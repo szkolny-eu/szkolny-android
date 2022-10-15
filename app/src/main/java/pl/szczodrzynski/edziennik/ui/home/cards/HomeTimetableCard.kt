@@ -93,21 +93,21 @@ class HomeTimetableCard(
 
         b.settings.setImageDrawable(
             IconicsDrawable(activity, CommunityMaterial.Icon.cmd_cog_outline).apply {
-                colorAttr(activity, R.attr.colorIcon)
+                colorAttr(activity, R.attr.colorOnPrimaryContainer)
                 sizeDp = 24
             }
         )
 
         b.bellSync.setImageDrawable(
             IconicsDrawable(activity, SzkolnyFont.Icon.szf_alarm_bell_outline).apply {
-                colorAttr(activity, R.attr.colorIcon)
+                colorAttr(activity, R.attr.colorOnPrimaryContainer)
                 sizeDp = 24
             }
         )
 
         b.showCounter.setImageDrawable(
             IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_fullscreen).apply {
-                colorAttr(activity, R.attr.colorIcon)
+                colorAttr(activity, R.attr.colorOnPrimaryContainer)
                 sizeDp = 24
             }
         )
