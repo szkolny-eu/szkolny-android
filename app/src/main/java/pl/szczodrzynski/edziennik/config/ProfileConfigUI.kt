@@ -84,4 +84,9 @@ class ProfileConfigUI(private val config: ProfileConfig) {
     var timetableTrimHourRange: Boolean
         get() { mTimetableTrimHourRange = mTimetableTrimHourRange ?: config.values.get("timetableTrimHourRange", false); return mTimetableTrimHourRange ?: false }
         set(value) { config.set("timetableTrimHourRange", value); mTimetableTrimHourRange = value }
+    
+    private var mTimetableColorSubjectName: Boolean? = null
+    var timetableColorSubjectName: Boolean
+        get() { mTimetableColorSubjectName = mTimetableColorSubjectName ?: config.values.get("timetableColorSubjectName", false); return mTimetableColorSubjectName ?: false }
+        set(value) { config.set("timetableColorSubjectName", value); mTimetableColorSubjectName = value }
 }
