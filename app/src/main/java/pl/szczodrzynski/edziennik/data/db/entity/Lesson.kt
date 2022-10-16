@@ -74,6 +74,8 @@ open class Lesson(
     @Ignore
     var showAsUnseen = false
 
+    var color: Int? = null
+
     override fun toString(): String {
         return "Lesson(profileId=$profileId, " +
                 "id=$id, " +

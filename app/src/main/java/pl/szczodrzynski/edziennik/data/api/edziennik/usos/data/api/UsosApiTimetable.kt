@@ -105,6 +105,15 @@ class UsosApiTimetable(
                 val groupName = classTypeId?.plus(groupNumber)?.let { s -> "($s)" }
                 it.classroom = "$buildingId / $roomNumber ${groupName ?: ""}"
                 it.id = it.buildId()
+
+                it.color = when (classTypeId) {
+                    "WYK" -> 0xff0d6091
+                    "CW" -> 0xff54306e
+                    "LAB" -> 0xff772747
+                    "KON" -> 0xff1e5128
+                    "^P?SEM" -> 0xff1e5128 // TODO make it regex
+                    else -> 0xff08534c
+                }.toInt()
             }
             lesson.date?.let { foundDates += it }
 

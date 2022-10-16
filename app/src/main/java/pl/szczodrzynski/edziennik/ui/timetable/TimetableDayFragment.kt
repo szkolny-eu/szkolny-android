@@ -328,7 +328,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                 lesson.getNoteSubstituteText(showNotes = true) ?: lesson.displaySubjectName
 
             val (subjectTextPrimary, subjectTextSecondary) = if (profileConfig.timetableColorSubjectName) {
-                val subjectColor = Colors.stringToMaterialColorCRC(lessonText?.toString() ?: "")
+                val subjectColor = lesson.color ?: Colors.stringToMaterialColorCRC(lessonText?.toString() ?: "")
                 if (lb.annotationVisible) {
                     lb.subjectContainer.background = ColorDrawable(subjectColor)
                 } else {
