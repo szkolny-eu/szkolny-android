@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <!-- PowerPermission uses minSdk 21, it's safe to override as it is used only in >= 23 -->
     <uses-sdk tools:overrideLibrary="com.qifan.powerpermission.coroutines, com.qifan.powerpermission.core" />
 

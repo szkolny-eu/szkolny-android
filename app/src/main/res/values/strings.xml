@@ -1424,7 +1424,7 @@
     <string name="privacy_policy_dialog_html"><![CDATA[Korzystając z aplikacji potwierdzasz <a href="https://szkolny.eu/privacy-policy">przeczytanie Polityki prywatności</a> i akceptujesz jej postanowienia.<br /><br />Autorzy aplikacji nie biorą odpowiedzialności za korzystanie z aplikacji Szkolny.eu.]]></string>
     <string name="login_chooser_version_format">Szkolny.eu v%s\n%s</string>
     <string name="menu_agenda_config">Ustawienia terminarza</string>
-    <string name="agenda_config_appearance">Wygląd</string>
+    <string name="config_appearance">Wygląd</string>
     <string name="agenda_config_lesson_changes">Pokazuj zmiany planu lekcji</string>
     <string name="agenda_config_teacher_absence">Pokazuj nieobecności nauczycieli</string>
     <string name="agenda_config_compact_mode">Tryb kompaktowy</string>
@@ -1537,6 +1537,11 @@
     <string name="login_summary_account_parent">(rodzic)</string>
     <string name="grades_subject_unknown">- nieznany przedmiot -</string>
     <string name="grades_subject_unknown_help">{cmd-information-outline} Oceny, których przedmiot nie został podany w dzienniku. Może to być na przykład taki, który nie jest prowadzony w tym roku szkolnym.</string>
+    <string name="menu_timetable_config">Ustawienia planu lekcji</string>
+    <string name="timetable_config_show_events">Pokazuj wydarzenia przy lekcjach</string>
+    <string name="timetable_config_show_attendance">Pokazuj rodzaj obecności na lekcji</string>
+    <string name="timetable_config_color_subject_name">Koloruj nazwę przedmiotu</string>
+    <string name="timetable_config_trim_hour_range">Nie pokazuj godzin bez lekcji</string>
     <string name="edziennik_progress_login_usos_api">Logowanie do USOS API...</string>
     <string name="login_type_usos">USOS</string>
     <string name="login_mode_usos_oauth">Logowanie z użyciem przeglądarki</string>

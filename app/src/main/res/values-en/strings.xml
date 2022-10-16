@@ -1383,7 +1383,7 @@
     <string name="notes_type_grade">Grade</string>
     <string name="privacy_policy_dialog_html"><![CDATA[By using the application, you confirm that you have <a href="https://szkolny.eu/privacy-policy">read the Privacy Policy</a> and accept its provisions.<br /><br />The authors of the application are not responsible for the use of the Szkolny.eu application.]]></string>
     <string name="login_chooser_version_format">Szkolny.eu v%s\n%s</string>
-    <string name="agenda_config_appearance">Appearance</string>
+    <string name="config_appearance">Appearance</string>
     <string name="agenda_config_elearning">Online learning</string>
     <string name="event_type_elearning">online lesson</string>
     <string name="menu_messages_config">Messages settings</string>

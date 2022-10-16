@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.timetable
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.*
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
@@ -33,9 +35,11 @@ import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
+import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.edziennik.utils.mutableLazy
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.min
@@ -71,8 +75,9 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
+    private val profileConfig by lazy { app.config.forProfile().ui }
 
-    private val dayView by lazy {
+    private val dayViewDelegate = mutableLazy {
         val dayView = DayView(activity, DayViewConfig(
             startHour = startHour,
             endHour = endHour,
@@ -85,8 +90,9 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             eventMargin = 2.dp
         ), true)
         dayView.setPadding(10.dp)
-        return@lazy dayView
+        return@mutableLazy dayView
     }
+    private val dayView by dayViewDelegate
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
@@ -173,8 +179,19 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             return
         }
 
+        if (dayViewDelegate.isInitialized())
+            b.dayFrame.removeView(dayView)
+
+        val lessonsActual = lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }
+
+        if (profileConfig.timetableTrimHourRange) {
+            dayViewDelegate.deinitialize()
+            // end/start defaults are swapped on purpose
+            startHour = lessonsActual.minOf { it.displayStartTime?.hour ?: DEFAULT_END_HOUR }
+            endHour = lessonsActual.maxOf { it.displayEndTime?.hour?.plus(1) ?: DEFAULT_START_HOUR }
+        }
+
         b.scrollView.isVisible = true
-        b.dayFrame.removeView(dayView)
         b.dayFrame.addView(dayView, 0)
 
         // Inflate a label view for each hour the day view will display
@@ -195,7 +212,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
         lessons.forEach { it.showAsUnseen = !it.seen }
 
-        buildLessonViews(lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }, events, attendanceList)
+        buildLessonViews(lessonsActual, events, attendanceList)
     }
 
     private fun buildLessonViews(lessons: List<LessonFull>, events: List<EventFull>, attendanceList: List<AttendanceFull>) {
@@ -215,7 +232,10 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
         for (lesson in lessons) {
-            val attendance = attendanceList.find { it.startTime == lesson.startTime }
+            val attendance = if (profileConfig.timetableShowAttendance)
+                attendanceList.find { it.startTime == lesson.startTime }
+            else
+                null
             val startTime = lesson.displayStartTime ?: continue
             val endTime = lesson.displayEndTime ?: continue
 
@@ -245,23 +265,20 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                 }
             }
 
-            val eventList = events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
-            eventList.getOrNull(0).let {
-                lb.event1.visibility = if (it == null) View.GONE else View.VISIBLE
-                lb.event1.background = it?.let {
-                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
+            val eventIcons = listOf(lb.event1, lb.event2, lb.event3)
+            if (profileConfig.timetableShowEvents) {
+                val eventList = events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
+                for ((i, eventIcon) in eventIcons.withIndex()) {
+                    eventList.getOrNull(i).let {
+                        eventIcon.isVisible = it != null
+                        eventIcon.background = it?.let {
+                            R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
+                        }
+                    }
                 }
-            }
-            eventList.getOrNull(1).let {
-                lb.event2.visibility = if (it == null) View.GONE else View.VISIBLE
-                lb.event2.background = it?.let {
-                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
-                }
-            }
-            eventList.getOrNull(2).let {
-                lb.event3.visibility = if (it == null) View.GONE else View.VISIBLE
-                lb.event3.background = it?.let {
-                    R.drawable.bg_circle.resolveDrawable(activity).setTintColor(it.eventColor)
+            } else {
+                for (eventIcon in eventIcons) {
+                    eventIcon.visibility = View.GONE
                 }
             }
 
@@ -295,13 +312,36 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                     lesson.classroom?.let { add(it) }
                 }.concat(arrowRight)
 
+            lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
 
-            lb.lessonNumber = lesson.displayLessonNumber
             val lessonText =
                 lesson.getNoteSubstituteText(showNotes = true) ?: lesson.displaySubjectName
+
+            val (subjectTextPrimary, subjectTextSecondary) = if (profileConfig.timetableColorSubjectName) {
+                val subjectColor = Colors.stringToMaterialColorCRC(lessonText?.toString() ?: "")
+                if (lb.annotationVisible) {
+                    lb.subjectContainer.background = ColorDrawable(subjectColor)
+                } else {
+                    lb.subjectContainer.setBackgroundResource(R.drawable.timetable_subject_color_rounded)
+                    lb.subjectContainer.background.setTintColor(subjectColor)
+                }
+                when (ColorUtils.calculateLuminance(subjectColor) > 0.5) {
+                    true -> /* light */ 0xFF000000 to 0xFF666666
+                    false -> /* dark */ 0xFFFFFFFF to 0xFFAAAAAA
+                }
+            } else {
+                lb.subjectContainer.background = null
+                null to colorSecondary
+            }
+
+            lb.lessonNumber = lesson.displayLessonNumber
+            if (subjectTextPrimary != null)
+                lb.lessonNumberText.setTextColor(subjectTextPrimary.toInt())
             lb.subjectName.text = lessonText?.let {
                 if (lesson.type == Lesson.TYPE_CANCELLED || lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
-                    it.asStrikethroughSpannable().asColoredSpannable(colorSecondary)
+                    it.asStrikethroughSpannable().asColoredSpannable(subjectTextSecondary.toInt())
+                else if (subjectTextPrimary != null)
+                    it.asColoredSpannable(subjectTextPrimary.toInt())
                 else
                     it
             }
@@ -328,7 +368,6 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             }
 
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
-            lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
             val lessonNumberMargin =
                 if (lb.annotationVisible) (-8).dp
                 else 0

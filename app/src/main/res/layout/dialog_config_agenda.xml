@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/agenda_config_appearance"
+                android:text="@string/config_appearance"
                 android:textAppearance="@style/NavView.TextView.Subtitle" />
 
             <com.google.android.material.checkbox.MaterialCheckBox

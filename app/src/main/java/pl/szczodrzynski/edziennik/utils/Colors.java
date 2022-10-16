@@ -15,6 +15,7 @@ import androidx.core.graphics.ColorUtils;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.zip.CRC32;
 
 import pl.szczodrzynski.edziennik.data.db.entity.Grade;
 
@@ -84,6 +85,28 @@ public class Colors {
             0xFF6D4C41
     };
 
+    public static final int[] materialColorsBasic = {
+            0xFFE53935, 0xFFD81B60, 0xFF8E24AA, 0xFF5E35B1,
+            0xFF3949AB, 0xFF1E88E5, 0xFF039BE5, 0xFF00ACC1,
+            0xFF00897B, 0xFF43A047, 0xFF7CB342, 0xFFC0CA33,
+            0xFFFDD835, 0xFFFFB300, 0xFFFB8C00, 0xFFF4511E,
+            0xFF6D4C41, 0xFF757575, 0xFF546E7A, 0xFF00E676,
+
+            0xFFEF9A9A, 0xFFF48FB1, 0xFFCE93D8, 0xFFB39DDB,
+            0xFF9FA8DA, 0xFF90CAF9, 0xFF81D4FA, 0xFF80DEEA,
+            0xFF80CBC4, 0xFFA5D6A7, 0xFFC5E1A5, 0xFFE6EE9C,
+            0xFFFFF59D, 0xFFFFE082, 0xFFFFCC80, 0xFFFFAB91,
+            0xFFBCAAA4, 0xFFEEEEEE, 0xFFB0BEC5, 0xFFCCFF90,
+    };
+
+    public static final int[] metroColors = {
+            0xFF76FF03, 0xFF60A917, 0xFF00C853, 0xFF00ABA9,
+            0xFF1BA1E2, 0xFF0050EF, 0xFF6A00FF, 0xFFAA00FF,
+            0xFFF472D0, 0xFFD80073, 0xFFA20025, 0xFFE51400,
+            0xFFFA6800, 0xFFF0A30A, 0xFFE3C800, 0xFF795548,
+            0xFF6D8764, 0xFF647687, 0xFF76608A, 0xFFA0522D,
+    };
+
     /**
      * Used for teacher's images (e.g. in messages or announcements).
      * @param s teacher's fullName
@@ -113,6 +136,18 @@ public class Colors {
             seed = 1234;
         }
         return materialColors[getRandomNumberInRange(0, materialColors.length-1, seed)];
+    }
+
+    public static int stringToMaterialColorCRC(String s) {
+        long seed;
+        try {
+            CRC32 crc = new CRC32();
+            crc.update(s.getBytes());
+            seed = crc.getValue();
+        } catch (Exception e) {
+            seed = 1234;
+        }
+        return metroColors[(int) (seed % metroColors.length)];
     }
 
     public static int gradeToColor(Grade grade)
