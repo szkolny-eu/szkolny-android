@@ -23,8 +23,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
@@ -51,7 +51,8 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
-
+    private val manager
+        get() = app.permissionManager
     // local/private variables go here
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,6 +68,9 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         if (!isAdded) return
 
         val adapter = LoginChooserAdapter(activity, this::onLoginModeClicked)
+        if (!manager.isNotificationPermissionGranted) {
+            manager.requestNotificationsPermission(activity, 0, false){}
+        }
 
         b.versionText.setText(
             R.string.login_chooser_version_format,
