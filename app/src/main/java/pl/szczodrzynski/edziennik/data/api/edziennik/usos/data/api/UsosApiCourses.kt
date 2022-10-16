@@ -29,12 +29,12 @@ class UsosApiCourses(
                 // "terms" to listOf("id", "name", "start_date", "end_date"),
                 "course_editions" to listOf(
                     "course_id",
-                    // "course_name",
+                    "course_name",
                     // "term_id",
                     "user_groups" to listOf(
                         "course_unit_id",
                         "group_number",
-                        "class_type",
+                        // "class_type",
                         "class_type_id",
                         // "lecturers",
                     ),
@@ -62,18 +62,18 @@ class UsosApiCourses(
         var hasValidTeam = false
         for (courseEdition in courseEditions) {
             val courseId = courseEdition.getString("course_id") ?: continue
-            // val courseName = courseEdition.getLangString("course_name") ?: continue
+            val courseName = courseEdition.getLangString("course_name") ?: continue
             val userGroups = courseEdition.getJsonArray("user_groups")?.asJsonObjectList() ?: continue
             for (userGroup in userGroups) {
                 val courseUnitId = userGroup.getLong("course_unit_id") ?: continue
                 val groupNumber = userGroup.getInt("group_number") ?: continue
-                val classType = userGroup.getLangString("class_type") ?: continue
+                // val classType = userGroup.getLangString("class_type") ?: continue
                 val classTypeId = userGroup.getString("class_type_id") ?: continue
 
                 data.teamList.put(courseUnitId, Team(
                     profileId,
                     courseUnitId,
-                    "$classType $groupNumber ($courseId)",
+                    "${profile?.studentClassName} $classTypeId$groupNumber - $courseName",
                     2,
                     "${data.schoolId}:${courseId} $classTypeId$groupNumber",
                     -1,

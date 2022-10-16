@@ -21,8 +21,11 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_USOS
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
@@ -40,8 +43,8 @@ import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.utils.mutableLazy
-import java.util.*
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.max
 import kotlin.math.min
 
 class TimetableDayFragment : LazyFragment(), CoroutineScope {
@@ -82,7 +85,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             startHour = startHour,
             endHour = endHour,
             dividerHeight = 1.dp,
-            halfHourHeight = 60.dp,
+            halfHourHeight = if (app.profile.loginStoreType == LOGIN_TYPE_USOS) 45.dp else 30.dp,
             hourDividerColor = R.attr.hourDividerColor.resolveAttr(context),
             halfHourDividerColor = R.attr.halfHourDividerColor.resolveAttr(context),
             hourLabelWidth = 40.dp,
@@ -184,11 +187,18 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
         val lessonsActual = lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }
 
+        val minStartHour = lessonsActual.minOf { it.displayStartTime?.hour ?: DEFAULT_END_HOUR }
+        val maxEndHour = lessonsActual.maxOf { it.displayEndTime?.hour?.plus(1) ?: DEFAULT_START_HOUR }
+
         if (profileConfig.timetableTrimHourRange) {
             dayViewDelegate.deinitialize()
             // end/start defaults are swapped on purpose
-            startHour = lessonsActual.minOf { it.displayStartTime?.hour ?: DEFAULT_END_HOUR }
-            endHour = lessonsActual.maxOf { it.displayEndTime?.hour?.plus(1) ?: DEFAULT_START_HOUR }
+            startHour = minStartHour
+            endHour = maxEndHour
+        } else if (startHour > minStartHour || endHour < maxEndHour) {
+            dayViewDelegate.deinitialize()
+            startHour = min(startHour, minStartHour)
+            endHour = max(endHour, maxEndHour)
         }
 
         b.scrollView.isVisible = true
@@ -377,9 +387,8 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
             // The day view needs the event time ranges in the start minute/end minute format,
             // so calculate those here
-            val startMinute = 60 * (lesson.displayStartTime?.hour
-                    ?: 0) + (lesson.displayStartTime?.minute ?: 0)
-            val endMinute = startMinute + 45
+            val startMinute = 60 * startTime.hour + startTime.minute
+            val endMinute = 60 * endTime.hour + endTime.minute
             eventTimeRanges.add(DayView.EventTimeRange(startMinute, endMinute))
         }
 

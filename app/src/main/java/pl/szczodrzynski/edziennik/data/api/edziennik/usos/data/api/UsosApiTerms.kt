@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.api
 
 import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.data.api.ERROR_USOS_API_INCOMPLETE_RESPONSE
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.ENDPOINT_USOS_API_TERMS
@@ -32,7 +31,7 @@ class UsosApiTerms(
             responseType = ResponseType.ARRAY,
         ) { json, response ->
             if (!processResponse(json)) {
-                data.error(UsosApiCourses.TAG, ERROR_USOS_API_INCOMPLETE_RESPONSE, response)
+                data.error(TAG, ERROR_USOS_API_INCOMPLETE_RESPONSE, response)
                 return@apiRequest
             }
 
