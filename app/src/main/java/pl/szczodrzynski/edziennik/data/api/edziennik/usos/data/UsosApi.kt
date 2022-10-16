@@ -41,6 +41,14 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
     protected fun JsonObject.getLangString(key: String) =
         this.getJsonObject(key)?.getString("pl")
 
+    protected fun JsonObject.getLecturerIds(key: String) =
+        this.getJsonArray(key)?.asJsonObjectList()?.mapNotNull {
+            val id = it.getLong("id") ?: return@mapNotNull null
+            val firstName = it.getString("first_name") ?: return@mapNotNull null
+            val lastName = it.getString("last_name") ?: return@mapNotNull null
+            data.getTeacher(firstName, lastName, id = id).id
+        } ?: listOf()
+
     private fun valueToString(value: Any) = when (value) {
         is String -> value
         is Number -> value.toString()

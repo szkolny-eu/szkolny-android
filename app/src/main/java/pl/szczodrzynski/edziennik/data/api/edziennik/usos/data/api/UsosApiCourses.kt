@@ -36,7 +36,7 @@ class UsosApiCourses(
                         "group_number",
                         // "class_type",
                         "class_type_id",
-                        // "lecturers",
+                        "lecturers",
                     ),
                 ),
             ),
@@ -69,6 +69,7 @@ class UsosApiCourses(
                 val groupNumber = userGroup.getInt("group_number") ?: continue
                 // val classType = userGroup.getLangString("class_type") ?: continue
                 val classTypeId = userGroup.getString("class_type_id") ?: continue
+                val lecturers = userGroup.getLecturerIds("lecturers")
 
                 data.teamList.put(courseUnitId, Team(
                     profileId,
@@ -76,7 +77,7 @@ class UsosApiCourses(
                     "${profile?.studentClassName} $classTypeId$groupNumber - $courseName",
                     2,
                     "${data.schoolId}:${courseId} $classTypeId$groupNumber",
-                    -1,
+                    lecturers.firstOrNull() ?: -1L,
                 ))
                 hasValidTeam = true
             }

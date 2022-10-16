@@ -449,14 +449,14 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         return team
     }
 
-    fun getTeacher(firstName: String, lastName: String, loginId: String? = null): Teacher {
+    fun getTeacher(firstName: String, lastName: String, loginId: String? = null, id: Long? = null): Teacher {
         val teacher = teacherList.singleOrNull { it.fullName == "$firstName $lastName" }
-        return validateTeacher(teacher, firstName, lastName, loginId)
+        return validateTeacher(teacher, firstName, lastName, loginId, id)
     }
 
     fun getTeacher(firstNameChar: Char, lastName: String, loginId: String? = null): Teacher {
         val teacher = teacherList.singleOrNull { it.shortName == "$firstNameChar.$lastName" }
-        return validateTeacher(teacher, firstNameChar.toString(), lastName, loginId)
+        return validateTeacher(teacher, firstNameChar.toString(), lastName, loginId, null)
     }
 
     fun getTeacherByLastFirst(nameLastFirst: String, loginId: String? = null): Teacher {
@@ -464,9 +464,9 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         val teacher = teacherList.singleOrNull { it.fullNameLastFirst == nameLastFirst }
         val nameParts = nameLastFirst.split(" ", limit = 2)
         return if (nameParts.size == 1)
-            validateTeacher(teacher, nameParts[0], "", loginId)
+            validateTeacher(teacher, nameParts[0], "", loginId, null)
         else
-            validateTeacher(teacher, nameParts[1], nameParts[0], loginId)
+            validateTeacher(teacher, nameParts[1], nameParts[0], loginId, null)
     }
 
     fun getTeacherByFirstLast(nameFirstLast: String, loginId: String? = null): Teacher {
@@ -474,9 +474,9 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         val teacher = teacherList.singleOrNull { it.fullName == nameFirstLast }
         val nameParts = nameFirstLast.split(" ", limit = 2)
         return if (nameParts.size == 1)
-            validateTeacher(teacher, nameParts[0], "", loginId)
+            validateTeacher(teacher, nameParts[0], "", loginId, null)
         else
-            validateTeacher(teacher, nameParts[0], nameParts[1], loginId)
+            validateTeacher(teacher, nameParts[0], nameParts[1], loginId, null)
     }
 
     fun getTeacherByFDotLast(nameFDotLast: String, loginId: String? = null): Teacher {
@@ -495,10 +495,16 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             getTeacher(nameParts[0][0], nameParts[1], loginId)
     }
 
-    private fun validateTeacher(teacher: Teacher?, firstName: String, lastName: String, loginId: String?): Teacher {
-        val obj = teacher ?: Teacher(profileId, -1, firstName, lastName, loginId).apply {
-            id = fullName.crc32()
-            teacherList[id] = this
+    private fun validateTeacher(
+        teacher: Teacher?,
+        firstName: String,
+        lastName: String,
+        loginId: String?,
+        id: Long?
+    ): Teacher {
+        val obj = teacher ?: Teacher(profileId, -1, firstName, lastName, loginId).also {
+            it.id = id ?: it.fullName.crc32()
+            teacherList[it.id] = it
         }
         return obj.also {
             if (loginId != null)
