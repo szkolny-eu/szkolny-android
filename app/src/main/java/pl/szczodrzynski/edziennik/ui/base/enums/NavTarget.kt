@@ -2,7 +2,7 @@
  * Copyright (c) Kuba Szczodrzyński 2022-10-17.
  */
 
-package pl.szczodrzynski.edziennik.ui.base.enum
+package pl.szczodrzynski.edziennik.ui.base.enums
 
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -10,9 +10,8 @@ import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.enum.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enum.LoginMode
-import pl.szczodrzynski.edziennik.data.db.enum.MetadataType
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ui.agenda.AgendaFragment
 import pl.szczodrzynski.edziennik.ui.announcements.AnnouncementsFragment
 import pl.szczodrzynski.edziennik.ui.attendance.AttendanceFragment

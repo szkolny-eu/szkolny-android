@@ -2,9 +2,9 @@
  * Copyright (c) Kuba Szczodrzyński 2022-10-17.
  */
 
-package pl.szczodrzynski.edziennik.data.db.enum
+package pl.szczodrzynski.edziennik.data.db.enums
 
-import pl.szczodrzynski.edziennik.data.db.enum.FeatureType.*
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType.*
 
 private val FEATURES_BASE = listOf(
     TIMETABLE,

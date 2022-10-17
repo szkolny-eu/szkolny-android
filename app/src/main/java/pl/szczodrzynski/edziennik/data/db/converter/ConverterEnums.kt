@@ -5,10 +5,10 @@
 package pl.szczodrzynski.edziennik.data.db.converter
 
 import androidx.room.TypeConverter
-import pl.szczodrzynski.edziennik.data.db.enum.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enum.LoginMode
-import pl.szczodrzynski.edziennik.data.db.enum.LoginType
-import pl.szczodrzynski.edziennik.data.db.enum.MetadataType
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 
 class ConverterEnums {
 
