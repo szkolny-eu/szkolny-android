@@ -10,10 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.UsosApi
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.ext.Bundle
-import pl.szczodrzynski.edziennik.ext.fromQueryString
-import pl.szczodrzynski.edziennik.ext.toBundle
-import pl.szczodrzynski.edziennik.ext.toQueryString
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
@@ -25,6 +22,9 @@ class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
 
     init {
         run {
+            data.arguments?.getString("oauthLoginResponse")?.let {
+                data.oauthLoginResponse = it
+            }
             if (data.isApiLoginValid()) {
                 onSuccess()
             } else if (data.oauthLoginResponse != null) {
@@ -36,6 +36,8 @@ class UsosLoginApi(val data: DataUsos, val onSuccess: () -> Unit) {
     }
 
     private fun authorize() {
+        data.oauthTokenKey = null
+        data.oauthTokenSecret = null
         api.apiRequest<String>(
             tag = TAG,
             service = "oauth/request_token",
