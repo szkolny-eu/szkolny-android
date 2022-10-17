@@ -45,6 +45,6 @@ interface SzkolnyService {
     @GET("registerAvailability")
     fun registerAvailability(): Call<ApiResponse<Map<String, RegisterAvailabilityStatus>>>
 
-    @GET("https://szkolny-eu.github.io/FSLogin/realms/{registerName}.json")
-    fun fsLoginRealms(@Path("registerName") registerName: String): Call<List<LoginInfo.Platform>>
+    @GET("platforms/{registerName}")
+    fun platforms(@Path("registerName") registerName: String): Call<ApiResponse<List<LoginInfo.Platform>>>
 }

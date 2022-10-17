@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.Mobidzie
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.login.PodlasieLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.login.TemplateLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.template.login.TemplateLoginWeb
+import pl.szczodrzynski.edziennik.data.api.edziennik.usos.login.UsosLoginApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginHebe
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginWebMain
 import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
@@ -123,6 +124,15 @@ const val LOGIN_MODE_PODLASIE_API = 0
 const val LOGIN_METHOD_PODLASIE_API = 100
 val podlasieLoginMethods = listOf(
         LoginMethod(LOGIN_TYPE_PODLASIE, LOGIN_METHOD_PODLASIE_API, PodlasieLoginApi::class.java)
+                .withIsPossible { _, _ -> true }
+                .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
+)
+
+const val LOGIN_TYPE_USOS = 7
+const val LOGIN_MODE_USOS_OAUTH = 0
+const val LOGIN_METHOD_USOS_API = 100
+val usosLoginMethods = listOf(
+        LoginMethod(LOGIN_TYPE_USOS, LOGIN_METHOD_USOS_API, UsosLoginApi::class.java)
                 .withIsPossible { _, _ -> true }
                 .withRequiredLoginMethod { _, _ -> LOGIN_METHOD_NOT_NEEDED }
 )

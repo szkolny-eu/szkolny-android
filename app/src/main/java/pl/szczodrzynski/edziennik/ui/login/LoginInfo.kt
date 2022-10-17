@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.ui.login
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.google.gson.JsonObject
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
@@ -64,7 +65,6 @@ object LoginInfo {
                         errorCodes = mapOf(
                             ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED to R.string.login_error_account_not_activated,
                             ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN to R.string.login_error_incorrect_login_or_password,
-                            ERROR_CAPTCHA_LIBRUS_PORTAL to R.string.error_3001_reason
                         )
                     ),
                     /*Mode(
@@ -313,7 +313,24 @@ object LoginInfo {
                         errorCodes = mapOf()
                     )
                 )
-            )
+            ),
+            Register(
+                loginType = LOGIN_TYPE_USOS,
+                internalName = "usos",
+                registerName = R.string.login_type_usos,
+                registerLogo = R.drawable.login_logo_usos,
+                loginModes = listOf(
+                    Mode(
+                        loginMode = LOGIN_MODE_USOS_OAUTH,
+                        name = R.string.login_mode_usos_oauth,
+                        icon = R.drawable.login_mode_usos_api,
+                        guideText = R.string.login_mode_usos_oauth_guide,
+                        isPlatformSelection = true,
+                        credentials = listOf(),
+                        errorCodes = mapOf(),
+                    ),
+                ),
+            ),
         )
     }
 
@@ -357,7 +374,8 @@ object LoginInfo {
         val icon: String,
         val screenshot: String?,
         val formFields: List<String>,
-        val realmData: RealmData
+        val data: JsonObject,
+        val storeKey: String?,
     )
 
     open class BaseCredential(

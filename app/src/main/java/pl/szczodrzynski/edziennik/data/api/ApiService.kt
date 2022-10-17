@@ -84,19 +84,21 @@ class ApiService : Service() {
             runTask()
         }
 
+        override fun onRequiresUserAction(event: UserActionRequiredEvent) {
+            app.userActionManager.sendToUser(event)
+            taskRunning?.cancel()
+            clearTask()
+            runTask()
+        }
+
         override fun onError(apiError: ApiError) {
             lastEventTime = System.currentTimeMillis()
             d(TAG, "Task $taskRunningId threw an error - $apiError")
             apiError.profileId = taskProfileId
 
-            if (app.userActionManager.requiresUserAction(apiError)) {
-                app.userActionManager.sendToUser(apiError)
-            }
-            else {
-                EventBus.getDefault().postSticky(ApiTaskErrorEvent(apiError))
-                errorList.add(apiError)
-                apiError.throwable?.printStackTrace()
-            }
+            EventBus.getDefault().postSticky(ApiTaskErrorEvent(apiError))
+            errorList.add(apiError)
+            apiError.throwable?.printStackTrace()
 
             if (apiError.isCritical) {
                 taskRunning?.cancel()

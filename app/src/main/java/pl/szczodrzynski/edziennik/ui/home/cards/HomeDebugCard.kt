@@ -27,7 +27,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.CardHomeDebugBinding
 import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.onClick
-import pl.szczodrzynski.edziennik.ui.captcha.LibrusCaptchaDialog
+import pl.szczodrzynski.edziennik.ui.captcha.RecaptchaPromptDialog
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment
@@ -83,11 +83,6 @@ class HomeDebugCard(
 
         b.runChucker.onClick {
             app.startActivity(Chucker.getLaunchIntent(activity, 1));
-        }
-
-        b.librusCaptchaButton.onClick {
-            //app.startActivity(Intent(activity, LoginLibrusCaptchaActivity::class.java))
-            LibrusCaptchaDialog(activity, onSuccess = {}, onFailure = {}).show()
         }
 
         b.getLogs.onClick {

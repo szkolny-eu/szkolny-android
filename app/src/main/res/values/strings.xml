@@ -1542,4 +1542,10 @@
     <string name="timetable_config_show_attendance">Pokazuj rodzaj obecności na lekcji</string>
     <string name="timetable_config_color_subject_name">Koloruj nazwę przedmiotu</string>
     <string name="timetable_config_trim_hour_range">Nie pokazuj godzin bez lekcji</string>
+    <string name="edziennik_progress_login_usos_api">Logowanie do USOS API...</string>
+    <string name="login_type_usos">USOS</string>
+    <string name="login_mode_usos_oauth">Logowanie z użyciem przeglądarki</string>
+    <string name="login_mode_usos_oauth_guide">TODO</string>
+    <string name="notification_user_action_required_oauth_usos">USOS - wymagane logowanie z użyciem przeglądarki</string>
+    <string name="oauth_dialog_title">Zaloguj się</string>
 </resources>

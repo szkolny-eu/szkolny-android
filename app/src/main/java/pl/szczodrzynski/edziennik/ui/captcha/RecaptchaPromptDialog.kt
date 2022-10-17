@@ -13,14 +13,16 @@ import pl.szczodrzynski.edziennik.databinding.RecaptchaViewBinding
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 
-class LibrusCaptchaDialog(
+class RecaptchaPromptDialog(
     activity: AppCompatActivity,
+    private val siteKey: String,
+    private val referer: String,
     private val onSuccess: (recaptchaCode: String) -> Unit,
-    private val onFailure: (() -> Unit)?,
+    private val onCancel: (() -> Unit)?,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<RecaptchaViewBinding>(activity, onShowListener, onDismissListener) {
-    override val TAG = "LibrusCaptchaDialog"
+    override val TAG = "RecaptchaPromptDialog"
 
     override fun getTitleRes(): Int? = null
     override fun inflate(layoutInflater: LayoutInflater) =
@@ -46,8 +48,8 @@ class LibrusCaptchaDialog(
             b.progress.visibility = View.VISIBLE
             RecaptchaDialog(
                 activity,
-                siteKey = "6Lf48moUAAAAAB9ClhdvHr46gRWR-CN31CXQPG2U",
-                referer = "https://portal.librus.pl/rodzina/login",
+                siteKey = siteKey,
+                referer = referer,
                 onSuccess = { recaptchaCode ->
                     b.checkbox.background = checkboxBackground
                     b.checkbox.foreground = checkboxForeground
@@ -67,6 +69,6 @@ class LibrusCaptchaDialog(
 
     override fun onDismiss() {
         if (!success)
-            onFailure?.invoke()
+            onCancel?.invoke()
     }
 }

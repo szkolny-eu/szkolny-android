@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLogin
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
 import pl.szczodrzynski.edziennik.data.api.events.EventGetEvent
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
@@ -179,6 +180,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {
         return object : EdziennikCallback {
             override fun onCompleted() { callback.onCompleted() }
+            override fun onRequiresUserAction(event: UserActionRequiredEvent) { callback.onRequiresUserAction(event) }
             override fun onProgress(step: Float) { callback.onProgress(step) }
             override fun onStartProgress(stringRes: Int) { callback.onStartProgress(stringRes) }
             override fun onError(apiError: ApiError) {
