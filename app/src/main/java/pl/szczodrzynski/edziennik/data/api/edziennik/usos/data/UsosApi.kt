@@ -13,8 +13,10 @@ import im.wangchao.mhttp.callback.JsonArrayCallbackHandler
 import im.wangchao.mhttp.callback.JsonCallbackHandler
 import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.ERROR_REQUEST_FAILURE
+import pl.szczodrzynski.edziennik.data.api.ERROR_USOS_API_MISSING_RESPONSE
 import pl.szczodrzynski.edziennik.data.api.SERVER_USER_AGENT
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
+import pl.szczodrzynski.edziennik.data.api.edziennik.usos.login.UsosLoginApi
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -141,7 +143,7 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
     ) = when (responseType) {
         ResponseType.OBJECT -> object : JsonCallbackHandler() {
             override fun onSuccess(data: JsonObject?, response: Response) {
-                processResponse(response, data as T, onSuccess)
+                processResponse(tag, response, data as T?, onSuccess)
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
@@ -150,7 +152,7 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
         }
         ResponseType.ARRAY -> object : JsonArrayCallbackHandler() {
             override fun onSuccess(data: JsonArray?, response: Response) {
-                processResponse(response, data as T, onSuccess)
+                processResponse(tag, response, data as T?, onSuccess)
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
@@ -159,7 +161,7 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
         }
         ResponseType.PLAIN -> object : TextCallbackHandler() {
             override fun onSuccess(data: String?, response: Response) {
-                processResponse(response, data as T, onSuccess)
+                processResponse(tag, response, data as T?, onSuccess)
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
@@ -169,11 +171,30 @@ open class UsosApi(open val data: DataUsos, open val lastSync: Long?) {
     }
 
     private fun <T> processResponse(
+        tag: String,
         response: Response,
-        data: T,
+        value: T?,
         onSuccess: (data: T, response: Response?) -> Unit,
     ) {
-        onSuccess(data, response)
+        val errorCode = when {
+            response.code() == HTTP_UNAUTHORIZED -> {
+                data.oauthTokenKey = null
+                data.oauthTokenSecret = null
+                data.oauthTokenIsUser = false
+                data.oauthLoginResponse = null
+                UsosLoginApi(data) { }
+                return
+            }
+            value == null -> ERROR_USOS_API_MISSING_RESPONSE
+            response.code() == HTTP_OK -> {
+                onSuccess(value, response)
+                null
+            }
+            else -> response.toErrorCode()
+        }
+        if (errorCode != null) {
+            data.error(tag, errorCode, response, value.toString())
+        }
     }
 
     private fun processError(
