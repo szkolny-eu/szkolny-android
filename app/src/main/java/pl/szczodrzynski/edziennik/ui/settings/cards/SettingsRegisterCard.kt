@@ -55,6 +55,13 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
 
     override fun getItems() = listOfNotNull(
         util.createActionItem(
+            text = R.string.menu_timetable_config,
+            icon = CommunityMaterial.Icon3.cmd_timetable
+        ) {
+            TimetableConfigDialog(activity, reloadOnDismiss = false).show()
+        },
+
+        util.createActionItem(
             text = R.string.menu_agenda_config,
             icon = CommunityMaterial.Icon.cmd_calendar_outline
         ) {
@@ -70,7 +77,7 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
 
         util.createActionItem(
             text = R.string.menu_messages_config,
-            icon = CommunityMaterial.Icon.cmd_calendar_outline
+            icon = CommunityMaterial.Icon.cmd_email_outline
         ) {
             MessagesConfigDialog(activity, reloadOnDismiss = false).show()
         },
