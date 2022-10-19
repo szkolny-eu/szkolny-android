@@ -222,8 +222,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 drawerProfileListEmptyListener = {
                     onProfileListEmptyEvent(ProfileListEmptyEvent())
                 }
-                drawerItemSelectedListener = { id, _, _ ->
-                    navigate(navTarget = id.asNavTargetOrNull())
+                drawerItemSelectedListener = { id, _, item ->
+                    if (item is ExpandableDrawerItem)
+                        false
+                    else
+                        navigate(navTarget = id.asNavTargetOrNull())
                 }
                 drawerProfileSelectedListener = { id, _, _, _ ->
                     // why is this negated -_-
@@ -516,7 +519,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 Message.TYPE_SENT -> FeatureType.MESSAGES_SENT
                 else -> FeatureType.MESSAGES_INBOX
             }
-            else -> navTarget.featureType ?: return
+            else -> navTarget.featureType
         }
         val arguments = when (navTarget) {
             NavTarget.TIMETABLE -> JsonObject("weekStart" to TimetableFragment.pageSelection?.weekStart?.stringY_m_d)
@@ -524,7 +527,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         EdziennikTask.syncProfile(
             App.profileId,
-            setOf(featureType),
+            featureType?.let { setOf(it) },
             arguments = arguments
         ).enqueue(this)
     }
@@ -717,7 +720,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         params = extras.getBundle("params") ?: return,
                         errorText = 0,
                     )
-                    app.userActionManager.execute(this, event, UserActionManager.UserActionCallback())
+                    app.userActionManager.execute(this,
+                        event,
+                        UserActionManager.UserActionCallback())
                     true
                 }
                 "createManualEvent" -> {
@@ -878,6 +883,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         args: Bundle? = null,
         skipBeforeNavigate: Boolean = false,
     ): Boolean {
+        d(TAG, "navigate(profileId = ${profile?.id ?: profileId}, target = ${navTarget?.name}, args = $args)")
         if (!(skipBeforeNavigate || navTarget == this.navTarget) && !canNavigate()) {
             bottomSheet.close()
             drawer.close()
@@ -890,55 +896,58 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         val loadNavTarget = navTarget ?: this.navTarget
-        if (profile != null) {
-            navigateImpl(profile, loadNavTarget, args)
+        if (profile != null && profile.id != App.profileId) {
+            navigateImpl(profile, loadNavTarget, args, profileChanged = true)
             return true
         }
         if (profileId != null && profileId != App.profileId) {
             app.profileLoad(profileId) {
-                navigateImpl(it, loadNavTarget, args)
+                navigateImpl(it, loadNavTarget, args, profileChanged = true)
             }
             return true
         }
-        navigateImpl(App.profile, loadNavTarget, args)
+        navigateImpl(App.profile, loadNavTarget, args, profileChanged = false)
         return true
     }
 
     private fun navigateImpl(
         profile: Profile,
         navTarget: NavTarget,
-        args: Bundle? = null,
+        args: Bundle?,
+        profileChanged: Boolean,
     ) {
         d(TAG, "navigateImpl(profileId = ${profile.id}, target = ${navTarget.name}, args = $args)")
 
-        App.profile = profile
-        MessagesFragment.pageSelection = -1
-        // set new drawer items for this profile
-        setDrawerItems()
+        if (profileChanged) {
+            App.profile = profile
+            MessagesFragment.pageSelection = -1
+            // set new drawer items for this profile
+            setDrawerItems()
 
-        val previousArchivedId = if (app.profile.archived) app.profile.id else null
-        if (previousArchivedId != null) {
-            // prevents accidentally removing the first item if the archived profile is not shown
-            drawer.removeProfileById(previousArchivedId)
-        }
-        if (profile.archived) {
-            // add the same profile but with a different name
-            // (other fields are not needed by the drawer)
-            drawer.prependProfile(Profile(
-                id = profile.id,
-                loginStoreId = profile.loginStoreId,
-                loginStoreType = profile.loginStoreType,
-                name = profile.name,
-                subname = "Archiwum - ${profile.subname}"
-            ).also {
-                it.archived = true
-            })
-        }
+            val previousArchivedId = if (app.profile.archived) app.profile.id else null
+            if (previousArchivedId != null) {
+                // prevents accidentally removing the first item if the archived profile is not shown
+                drawer.removeProfileById(previousArchivedId)
+            }
+            if (profile.archived) {
+                // add the same profile but with a different name
+                // (other fields are not needed by the drawer)
+                drawer.prependProfile(Profile(
+                    id = profile.id,
+                    loginStoreId = profile.loginStoreId,
+                    loginStoreType = profile.loginStoreType,
+                    name = profile.name,
+                    subname = "Archiwum - ${profile.subname}"
+                ).also {
+                    it.archived = true
+                })
+            }
 
-        // the drawer profile is updated automatically when the drawer item is clicked
-        // update it manually when switching profiles from other source
-        //if (drawer.currentProfile != app.profile.id)
-        drawer.currentProfile = App.profileId
+            // the drawer profile is updated automatically when the drawer item is clicked
+            // update it manually when switching profiles from other source
+            //if (drawer.currentProfile != app.profile.id)
+            drawer.currentProfile = App.profileId
+        }
 
         val arguments = args
             ?: navBackStack.firstOrNull { it.first == navTarget }?.second
@@ -1182,7 +1191,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             it.identifier = -1L
             it.nameRes = R.string.menu_more
             it.icon = CommunityMaterial.Icon.cmd_dots_horizontal.toImageHolder()
-            it.setSubItems(*drawerItemsMore.toTypedArray())
+            it.subItems = drawerItemsMore.toMutableList()
+            it.isSelectedBackgroundAnimated = false
+            it.isSelectable = false
         }
         drawerItems += DividerDrawerItem()
         drawerItems += drawerItemsBottom

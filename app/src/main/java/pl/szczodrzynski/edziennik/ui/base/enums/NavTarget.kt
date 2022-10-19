@@ -174,7 +174,7 @@ enum class NavTarget(
     PROFILE_MANAGER(
         id = 203,
         fragmentClass = ProfileManagerFragment::class.java,
-        location = NavTargetLocation.PROFILE_LIST,
+        location = NavTargetLocation.NOWHERE,
         nameRes = R.string.menu_manage_profiles,
         titleRes = R.string.title_profile_manager,
         descriptionRes = R.string.drawer_manage_profiles_desc,

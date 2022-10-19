@@ -28,7 +28,13 @@ class MiniMenuConfigDialog(
 
     @Suppress("USELESS_CAST")
     override fun getMultiChoiceItems() = NavTarget.values()
-        .filter { it.location != NavTargetLocation.NOWHERE && (!it.devModeOnly || App.devMode) }
+        .filter {
+            (!it.devModeOnly || App.devMode) && it.location in listOf(
+                NavTargetLocation.DRAWER,
+                // NavTargetLocation.DRAWER_MORE,
+                NavTargetLocation.DRAWER_BOTTOM,
+            )
+        }
         .associateBy { it.nameRes.resolveString(activity) as CharSequence }
 
     override fun getDefaultSelectedItems() = app.config.ui.miniMenuButtons.toSet()
