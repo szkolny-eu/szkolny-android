@@ -7,9 +7,10 @@ package pl.szczodrzynski.edziennik.ext
 import android.content.Context
 import im.wangchao.mhttp.Response
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 const val MINUTE = 60L
 const val HOUR = 60L*MINUTE
@@ -114,4 +115,12 @@ fun Context.getSyncInterval(interval: Int): String {
     else
         ""
     return hoursText?.plus(" $minutesText") ?: minutesText
+}
+
+fun ClosedRange<Date>.asSequence(): Sequence<Date> = sequence {
+    val date = this@asSequence.start.clone()
+    while (date in this@asSequence) {
+        yield(date.clone())
+        date.stepForward(0, 0, 1)
+    }
 }

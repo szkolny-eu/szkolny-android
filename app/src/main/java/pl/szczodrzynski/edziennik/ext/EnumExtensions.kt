@@ -31,17 +31,17 @@ fun Enum<*>.toInt() = when (this) {
     is LoginType -> this.id
     is MetadataType -> this.id
     is NavTarget -> this.id
-    else -> throw IllegalArgumentException("Unknown enum type: $this")
+    else -> this.ordinal
 }
 
-inline fun <reified E> Int.toEnum() = when (E::class.java) {
+inline fun <reified E : Enum<E>> Int.toEnum() = when (E::class.java) {
     FeatureType::class.java -> this.asFeatureType()
     LoginMethod::class.java -> this.asLoginMethod()
     LoginMode::class.java -> this.asLoginMode()
     LoginType::class.java -> this.asLoginType()
     MetadataType::class.java -> this.asMetadataType()
     NavTarget::class.java -> this.asNavTarget()
-    else -> throw IllegalArgumentException("Unknown enum type: ${E::class.java}")
+    else -> enumValues<E>()[this]
 } as E
 
 fun getFeatureTypesNecessary() = FeatureType.values().filter { it.isAlwaysNeeded }

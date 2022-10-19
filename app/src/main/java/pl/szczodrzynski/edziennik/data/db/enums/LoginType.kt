@@ -29,6 +29,7 @@ enum class LoginType(
     LIBRUS(id = 2, features = MOBIDZIENNIK.features + ANNOUNCEMENTS),
     VULCAN(id = 4, features = MOBIDZIENNIK.features),
     PODLASIE(id = 6, features = FEATURES_BASE),
+    USOS(id = 7, features = FEATURES_BASE - GRADES),
     DEMO(id = 20, features = listOf()),
     TEMPLATE(id = 21, features = listOf()),
 

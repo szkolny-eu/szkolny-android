@@ -16,4 +16,5 @@ enum class LoginMode(
     VULCAN_WEB(LoginType.VULCAN, id = 1),
     VULCAN_HEBE(LoginType.VULCAN, id = 2),
     PODLASIE_API(LoginType.PODLASIE, id = 0),
+    USOS_OAUTH(LoginType.USOS, id = 0),
 }

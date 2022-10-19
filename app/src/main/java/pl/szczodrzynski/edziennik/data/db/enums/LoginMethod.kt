@@ -68,6 +68,10 @@ enum class LoginMethod(
         loginType = LoginType.PODLASIE,
         id = 100,
     ),
+    USOS_API(
+        loginType = LoginType.USOS,
+        id = 100,
+    ),
     TEMPLATE_WEB(
         loginType = LoginType.TEMPLATE,
         id = 100,

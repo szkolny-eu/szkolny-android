@@ -10,6 +10,8 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.JsonPrimitive
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 fun JsonObject?.get(key: String): JsonElement? = this?.get(key)
 
@@ -93,7 +95,13 @@ fun JsonArray(vararg properties: Any?): JsonArray {
     }
 }
 
-fun JsonArray?.isNullOrEmpty(): Boolean = (this?.size() ?: 0) == 0
+@OptIn(ExperimentalContracts::class)
+fun JsonArray?.isNullOrEmpty(): Boolean {
+    contract {
+        returns(false) implies (this@isNullOrEmpty != null)
+    }
+    return this == null || this.isEmpty
+}
 operator fun JsonArray.plusAssign(o: JsonElement) = this.add(o)
 operator fun JsonArray.plusAssign(o: String) = this.add(o)
 operator fun JsonArray.plusAssign(o: Char) = this.add(o)

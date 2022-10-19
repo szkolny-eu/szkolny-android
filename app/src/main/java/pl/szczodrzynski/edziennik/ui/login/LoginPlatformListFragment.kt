@@ -71,7 +71,8 @@ class LoginPlatformListFragment : Fragment(), CoroutineScope {
                     "platformName" to platform.name,
                     "platformDescription" to platform.description,
                     "platformFormFields" to platform.formFields.joinToString(";"),
-                    "platformRealmData" to app.gson.toJson(platform.realmData)
+                    "platformData" to platform.data.toString(),
+                    "platformStoreKey" to platform.storeKey,
             ), activity.navOptions)
         }
 

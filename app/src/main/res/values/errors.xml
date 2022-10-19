@@ -30,11 +30,7 @@
     <string name="error_111" translatable="false">ERROR_LOGIN_METHOD_NOT_SATISFIED</string>
     <string name="error_112" translatable="false">ERROR_NOT_IMPLEMENTED</string>
     <string name="error_113" translatable="false">ERROR_FILE_DOWNLOAD</string>
-
-    <string name="error_115" translatable="false">ERROR_NO_STUDENTS_IN_ACCOUNT</string>
-
-    <string name="error_3000" translatable="false">ERROR_CAPTCHA_NEEDED</string>
-    <string name="error_3001" translatable="false">ERROR_CAPTCHA_LIBRUS_PORTAL</string>
+    <string name="error_114" translatable="false">ERROR_REQUIRES_USER_ACTION</string>
 
     <string name="error_5000" translatable="false">ERROR_API_PDO_ERROR</string>
     <string name="error_5001" translatable="false">ERROR_API_INVALID_CLIENT</string>
@@ -174,6 +170,12 @@
     <string name="error_631" translatable="false">ERROR_PODLASIE_API_OTHER</string>
     <string name="error_632" translatable="false">ERROR_PODLASIE_API_DATA_MISSING</string>
 
+    <string name="error_702" translatable="false">ERROR_USOS_OAUTH_GOT_DIFFERENT_TOKEN</string>
+    <string name="error_703" translatable="false">ERROR_USOS_OAUTH_INCOMPLETE_RESPONSE</string>
+    <string name="error_704" translatable="false">ERROR_USOS_NO_STUDENT_PROGRAMMES</string>
+    <string name="error_705" translatable="false">ERROR_USOS_API_INCOMPLETE_RESPONSE</string>
+    <string name="error_706" translatable="false">ERROR_USOS_API_MISSING_RESPONSE</string>
+
     <string name="error_801" translatable="false">ERROR_TEMPLATE_WEB_OTHER</string>
 
     <string name="error_900" translatable="false">EXCEPTION_API_TASK</string>
@@ -220,11 +222,7 @@
     <string name="error_111_reason">Nie można wywołać metody logowania. Skontaktuj się z twórcą aplikacji.</string>
     <string name="error_112_reason">Nie zaimplementowano</string>
     <string name="error_113_reason">Wystąpił błąd podczas pobierania pliku. Dziennik może być przeciążony lub mieć przerwę techniczną.</string>
-
-    <string name="error_115_reason">Brak uczniów przypisanych do konta</string>
-
-    <string name="error_3000_reason">Wymagane rozwiązanie zadania Captcha</string>
-    <string name="error_3001_reason">LIBRUS®️: wymagane rozwiązanie zadania Captcha</string>
+    <string name="error_114_reason">Wymagana akcja w aplikacji</string>
 
     <string name="error_5000_reason">ERROR_API_PDO_ERROR</string>
     <string name="error_5001_reason">Nieprawidłowy ID klienta API</string>
@@ -363,6 +361,12 @@
     <string name="error_630_reason">ERROR_PODLASIE_API_NO_TOKEN</string>
     <string name="error_631_reason">ERROR_PODLASIE_API_OTHER</string>
     <string name="error_632_reason">Brak danych. Zgłoś błąd programiście.</string>
+
+    <string name="error_702_reason">Błąd logowania: otrzymano nieprawidłowy token</string>
+    <string name="error_703_reason">Błąd logowania: niekompletna odpowiedź serwera</string>
+    <string name="error_704_reason">Student nie jest zapisany na żaden kierunek</string>
+    <string name="error_705_reason">Brakujące dane w odpowiedzi serwera</string>
+    <string name="error_706_reason">Brakująca odpowiedź serwera</string>
 
     <string name="error_801_reason">ERROR_TEMPLATE_WEB_OTHER</string>
 

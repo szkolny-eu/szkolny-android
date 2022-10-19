@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
+import pl.szczodrzynski.edziennik.data.api.ERROR_REQUIRES_USER_ACTION
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
@@ -67,6 +68,7 @@ import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
+import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.*
 import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
@@ -652,7 +654,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onUserActionRequiredEvent(event: UserActionRequiredEvent) {
-        app.userActionManager.execute(this, event.profileId, event.type)
+        app.userActionManager.execute(this, event, UserActionManager.UserActionCallback())
     }
 
     private fun fragmentToSyncName(navTarget: NavTarget): Int {
@@ -709,11 +711,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     false
                 }
                 "userActionRequired" -> {
-                    app.userActionManager.execute(
-                        this,
-                        extras.getInt("profileId"),
-                        extras.getInt("type")
+                    val event = UserActionRequiredEvent(
+                        profileId = extras.getInt("profileId"),
+                        type = extras.getEnum<UserActionRequiredEvent.Type>("type") ?: return,
+                        params = extras.getBundle("params") ?: return,
+                        errorText = 0,
                     )
+                    app.userActionManager.execute(this, event, UserActionManager.UserActionCallback())
                     true
                 }
                 "createManualEvent" -> {

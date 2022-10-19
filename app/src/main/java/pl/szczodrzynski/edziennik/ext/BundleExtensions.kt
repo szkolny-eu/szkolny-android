@@ -24,7 +24,7 @@ fun Bundle?.getFloat(key: String, defaultValue: Float) =
 fun Bundle?.getString(key: String, defaultValue: String) =
     this?.getString(key, defaultValue) ?: defaultValue
 
-inline fun <reified E> Bundle?.getEnum(key: String) = this?.getInt(key)?.toEnum<E>()
+inline fun <reified E : Enum<E>> Bundle?.getEnum(key: String) = this?.getInt(key)?.toEnum<E>()
 fun Bundle.putEnum(key: String, value: Enum<*>) = putInt(key, value.toInt())
 
 fun Bundle?.getIntOrNull(key: String): Int? {
