@@ -44,7 +44,7 @@ import pl.szczodrzynski.edziennik.data.db.migration.*
     TimetableManual::class,
     Note::class,
     Metadata::class
-], version = 98)
+], version = 99)
 @TypeConverters(
         ConverterTime::class,
         ConverterDate::class,
@@ -187,6 +187,7 @@ abstract class AppDb : RoomDatabase() {
                 Migration96(),
                 Migration97(),
                 Migration98(),
+                Migration99(),
         ).allowMainThreadQueries().build()
     }
 }

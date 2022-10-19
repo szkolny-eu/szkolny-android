@@ -21,21 +21,21 @@ enum class LoginMethod(
 ) {
     MOBIDZIENNIK_WEB(
         loginType = LoginType.MOBIDZIENNIK,
-        id = 100,
+        id = 1100,
     ),
     MOBIDZIENNIK_API2(
         loginType = LoginType.MOBIDZIENNIK,
-        id = 300,
+        id = 1300,
         isPossible = { profile, _ -> profile?.studentData?.has("email") ?: false },
     ),
     LIBRUS_PORTAL(
         loginType = LoginType.LIBRUS,
-        id = 100,
+        id = 2100,
         isPossible = { _, loginStore -> loginStore.mode == LoginMode.LIBRUS_EMAIL },
     ),
     LIBRUS_API(
         loginType = LoginType.LIBRUS,
-        id = 200,
+        id = 2200,
         isPossible = { _, loginStore -> loginStore.mode != LoginMode.LIBRUS_SYNERGIA },
         requiredLoginMethod = { _, loginStore ->
             if (loginStore.mode == LoginMode.LIBRUS_EMAIL) LIBRUS_PORTAL
@@ -44,41 +44,41 @@ enum class LoginMethod(
     ),
     LIBRUS_SYNERGIA(
         loginType = LoginType.LIBRUS,
-        id = 300,
+        id = 2300,
         isPossible = { _, loginStore -> !loginStore.hasLoginData("fakeLogin") },
         requiredLoginMethod = { _, _ -> LIBRUS_API },
     ),
     LIBRUS_MESSAGES(
         loginType = LoginType.LIBRUS,
-        id = 400,
+        id = 2400,
         isPossible = { _, loginStore -> !loginStore.hasLoginData("fakeLogin") },
         requiredLoginMethod = { _, _ -> LIBRUS_SYNERGIA },
     ),
     VULCAN_WEB_MAIN(
         loginType = LoginType.VULCAN,
-        id = 100,
+        id = 4100,
         isPossible = { _, loginStore -> loginStore.hasLoginData("webHost") },
     ),
     VULCAN_HEBE(
         loginType = LoginType.VULCAN,
-        id = 600,
+        id = 4600,
         isPossible = { _, loginStore -> loginStore.mode != LoginMode.VULCAN_API },
     ),
     PODLASIE_API(
         loginType = LoginType.PODLASIE,
-        id = 100,
+        id = 6100,
     ),
     USOS_API(
         loginType = LoginType.USOS,
-        id = 100,
+        id = 7100,
     ),
     TEMPLATE_WEB(
         loginType = LoginType.TEMPLATE,
-        id = 100,
+        id = 21100,
     ),
     TEMPLATE_API(
         loginType = LoginType.TEMPLATE,
-        id = 200,
+        id = 21200,
         requiredLoginMethod = { _, _ -> TEMPLATE_WEB },
     ),
 }
