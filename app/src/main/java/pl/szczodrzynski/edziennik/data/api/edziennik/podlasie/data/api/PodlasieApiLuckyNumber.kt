@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.data.api
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class PodlasieApiLuckyNumber(val data: DataPodlasie, val luckyNumber: Int) {
@@ -21,7 +22,7 @@ class PodlasieApiLuckyNumber(val data: DataPodlasie, val luckyNumber: Int) {
         data.metadataList.add(
                 Metadata(
                         data.profileId,
-                        Metadata.TYPE_LUCKY_NUMBER,
+                        MetadataType.LUCKY_NUMBER,
                         luckyNumberObject.date.value.toLong(),
                         true,
                         data.profile?.empty ?: false

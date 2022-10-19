@@ -6,7 +6,6 @@ package pl.szczodrzynski.edziennik.data.api.interfaces
 
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.models.Feature
-import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
 
 /**
  * A callback passed to all [Feature]s and [LoginMethod]s

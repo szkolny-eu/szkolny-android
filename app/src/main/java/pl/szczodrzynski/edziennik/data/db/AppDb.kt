@@ -51,7 +51,8 @@ import pl.szczodrzynski.edziennik.data.db.migration.*
         ConverterJsonObject::class,
         ConverterListLong::class,
         ConverterListString::class,
-        ConverterDateInt::class
+        ConverterDateInt::class,
+        ConverterEnums::class
 )
 abstract class AppDb : RoomDatabase() {
     abstract fun gradeDao(): GradeDao

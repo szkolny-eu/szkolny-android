@@ -27,10 +27,12 @@ enum class LoginType(
 ) {
     MOBIDZIENNIK(id = 1, features = FEATURES_BASE + FEATURES_EXTENDED + FEATURES_MESSAGES),
     LIBRUS(id = 2, features = MOBIDZIENNIK.features + ANNOUNCEMENTS),
-    IDZIENNIK(id = 3, features = LIBRUS.features),
     VULCAN(id = 4, features = MOBIDZIENNIK.features),
-    EDUDZIENNIK(id = 5, features = FEATURES_BASE + FEATURES_EXTENDED),
     PODLASIE(id = 6, features = FEATURES_BASE),
     DEMO(id = 20, features = listOf()),
     TEMPLATE(id = 21, features = listOf()),
+
+    // the graveyard
+    EDUDZIENNIK(id = 5, features = FEATURES_BASE + FEATURES_EXTENDED),
+    IDZIENNIK(id = 3, features = LIBRUS.features),
 }

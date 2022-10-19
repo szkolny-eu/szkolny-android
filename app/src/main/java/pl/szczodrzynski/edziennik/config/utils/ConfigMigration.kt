@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.ext.HOUR
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.math.abs
@@ -33,13 +34,13 @@ class ConfigMigration(app: App, config: Config) {
             ui.headerBackground = null
             ui.miniMenuVisible = false
             ui.miniMenuButtons = listOf(
-                    MainActivity.DRAWER_ITEM_HOME,
-                    MainActivity.DRAWER_ITEM_TIMETABLE,
-                    MainActivity.DRAWER_ITEM_AGENDA,
-                    MainActivity.DRAWER_ITEM_GRADES,
-                    MainActivity.DRAWER_ITEM_MESSAGES,
-                    MainActivity.DRAWER_ITEM_HOMEWORK,
-                    MainActivity.DRAWER_ITEM_SETTINGS
+                    NavTarget.HOME,
+                    NavTarget.TIMETABLE,
+                    NavTarget.AGENDA,
+                    NavTarget.GRADES,
+                    NavTarget.MESSAGES,
+                    NavTarget.HOMEWORK,
+                    NavTarget.SETTINGS
             )
             sync.enabled = true
             sync.interval = 1* HOUR.toInt()

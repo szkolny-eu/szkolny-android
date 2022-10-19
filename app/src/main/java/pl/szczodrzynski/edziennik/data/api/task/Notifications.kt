@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.ext.getNotificationTitle
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
 
@@ -62,7 +63,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = Notification.TYPE_TIMETABLE_LESSON_CHANGE,
                     profileId = lesson.profileId,
                     profileName = profiles.singleOrNull { it.id == lesson.profileId }?.name,
-                    viewId = MainActivity.DRAWER_ITEM_TIMETABLE,
+                    viewId = NavTarget.TIMETABLE.id,
                     addedDate = System.currentTimeMillis()
             ).addExtra("timetableDate", lesson.displayDate?.stringY_m_d ?: "")
         }
@@ -112,7 +113,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                 type = type,
                 profileId = event.profileId,
                 profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
-                viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                viewId = if (event.isHomework) NavTarget.HOMEWORK.id else NavTarget.AGENDA.id,
                 addedDate = event.addedDate
             ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }
@@ -151,7 +152,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                 type = type,
                 profileId = event.profileId,
                 profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
-                viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                viewId = if (event.isHomework) NavTarget.HOMEWORK.id else NavTarget.AGENDA.id,
                 addedDate = event.addedDate
             ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }
@@ -188,7 +189,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = Notification.TYPE_NEW_GRADE,
                     profileId = grade.profileId,
                     profileName = profiles.singleOrNull { it.id == grade.profileId }?.name,
-                    viewId = MainActivity.DRAWER_ITEM_GRADES,
+                    viewId = NavTarget.GRADES.id,
                     addedDate = grade.addedDate
             ).addExtra("gradeId", grade.id).addExtra("gradesSubjectId", grade.subjectId)
         }
@@ -223,7 +224,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = Notification.TYPE_NEW_NOTICE,
                     profileId = notice.profileId,
                     profileName = profiles.singleOrNull { it.id == notice.profileId }?.name,
-                    viewId = MainActivity.DRAWER_ITEM_BEHAVIOUR,
+                    viewId = NavTarget.BEHAVIOUR.id,
                     addedDate = notice.addedDate
             ).addExtra("noticeId", notice.id)
         }
@@ -269,7 +270,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = Notification.TYPE_NEW_ATTENDANCE,
                     profileId = attendance.profileId,
                     profileName = profiles.singleOrNull { it.id == attendance.profileId }?.name,
-                    viewId = MainActivity.DRAWER_ITEM_ATTENDANCE,
+                    viewId = NavTarget.ATTENDANCE.id,
                     addedDate = attendance.addedDate
             ).addExtra("attendanceId", attendance.id).addExtra("attendanceSubjectId", attendance.subjectId)
         }
@@ -289,7 +290,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = Notification.TYPE_NEW_ANNOUNCEMENT,
                     profileId = announcement.profileId,
                     profileName = profiles.singleOrNull { it.id == announcement.profileId }?.name,
-                    viewId = MainActivity.DRAWER_ITEM_ANNOUNCEMENTS,
+                    viewId = NavTarget.ANNOUNCEMENTS.id,
                     addedDate = announcement.addedDate
             ).addExtra("announcementId", announcement.id)
         }
@@ -309,7 +310,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = Notification.TYPE_NEW_MESSAGE,
                     profileId = message.profileId,
                     profileName = profiles.singleOrNull { it.id == message.profileId }?.name,
-                    viewId = MainActivity.DRAWER_ITEM_MESSAGES,
+                    viewId = NavTarget.MESSAGES.id,
                     addedDate = message.addedDate
             ).addExtra("messageType", Message.TYPE_RECEIVED.toLong()).addExtra("messageId", message.id)
         }
@@ -339,7 +340,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = Notification.TYPE_LUCKY_NUMBER,
                     profileId = luckyNumber.profileId,
                     profileName = profile.name,
-                    viewId = MainActivity.DRAWER_ITEM_HOME,
+                    viewId = NavTarget.HOME.id,
                     addedDate = System.currentTimeMillis()
             )
         }
@@ -358,7 +359,7 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     type = Notification.TYPE_TEACHER_ABSENCE,
                     profileId = teacherAbsence.profileId,
                     profileName = profiles.singleOrNull { it.id == teacherAbsence.profileId }?.name,
-                    viewId = MainActivity.DRAWER_ITEM_AGENDA,
+                    viewId = NavTarget.AGENDA.id,
                     addedDate = teacherAbsence.addedDate
             ).addExtra("eventDate", teacherAbsence.dateFrom.value.toLong())
         }

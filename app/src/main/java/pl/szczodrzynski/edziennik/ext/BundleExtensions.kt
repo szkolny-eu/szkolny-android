@@ -9,19 +9,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import com.google.gson.JsonObject
+import pl.szczodrzynski.edziennik.data.db.enums.*
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 
-fun Bundle?.getInt(key: String, defaultValue: Int): Int {
-    return this?.getInt(key, defaultValue) ?: defaultValue
-}
-fun Bundle?.getLong(key: String, defaultValue: Long): Long {
-    return this?.getLong(key, defaultValue) ?: defaultValue
-}
-fun Bundle?.getFloat(key: String, defaultValue: Float): Float {
-    return this?.getFloat(key, defaultValue) ?: defaultValue
-}
-fun Bundle?.getString(key: String, defaultValue: String): String {
-    return this?.getString(key, defaultValue) ?: defaultValue
-}
+fun Bundle?.getInt(key: String, defaultValue: Int) =
+    this?.getInt(key, defaultValue) ?: defaultValue
+
+fun Bundle?.getLong(key: String, defaultValue: Long) =
+    this?.getLong(key, defaultValue) ?: defaultValue
+
+fun Bundle?.getFloat(key: String, defaultValue: Float) =
+    this?.getFloat(key, defaultValue) ?: defaultValue
+
+fun Bundle?.getString(key: String, defaultValue: String) =
+    this?.getString(key, defaultValue) ?: defaultValue
+
+inline fun <reified E> Bundle?.getEnum(key: String) = this?.getInt(key)?.toEnum<E>()
+fun Bundle.putEnum(key: String, value: Enum<*>) = putInt(key, value.toInt())
 
 fun Bundle?.getIntOrNull(key: String): Int? {
     return this?.get(key) as? Int
@@ -36,25 +40,29 @@ fun <T : Any> Bundle?.get(key: String): T? {
 fun Bundle(vararg properties: Pair<String, Any?>): Bundle {
     return Bundle().apply {
         for (property in properties) {
-            when (property.second) {
-                is String -> putString(property.first, property.second as String?)
-                is Char -> putChar(property.first, property.second as Char)
-                is Int -> putInt(property.first, property.second as Int)
-                is Long -> putLong(property.first, property.second as Long)
-                is Float -> putFloat(property.first, property.second as Float)
-                is Short -> putShort(property.first, property.second as Short)
-                is Double -> putDouble(property.first, property.second as Double)
-                is Boolean -> putBoolean(property.first, property.second as Boolean)
-                is Bundle -> putBundle(property.first, property.second as Bundle)
-                is Parcelable -> putParcelable(property.first, property.second as Parcelable)
-                is Array<*> -> putParcelableArray(property.first, property.second as Array<out Parcelable>)
+            val (key, value) = property
+            when (value) {
+                is String -> putString(key, value as String?)
+                is Char -> putChar(key, value)
+                is Int -> putInt(key, value)
+                is Long -> putLong(key, value)
+                is Float -> putFloat(key, value)
+                is Short -> putShort(key, value)
+                is Double -> putDouble(key, value)
+                is Boolean -> putBoolean(key, value)
+                is Bundle -> putBundle(key, value)
+                is Enum<*> -> putEnum(key, value)
+                is Parcelable -> putParcelable(key, value)
+                is Array<*> -> putParcelableArray(key, value as Array<out Parcelable>)
             }
         }
     }
 }
+
 fun Intent(action: String? = null, vararg properties: Pair<String, Any?>): Intent {
     return Intent(action).putExtras(Bundle(*properties))
 }
+
 fun Intent(packageContext: Context, cls: Class<*>, vararg properties: Pair<String, Any?>): Intent {
     return Intent(packageContext, cls).putExtras(Bundle(*properties))
 }
@@ -79,4 +87,5 @@ fun Bundle.toJsonObject(): JsonObject {
     }
     return json
 }
+
 fun Intent.toJsonObject() = extras?.toJsonObject()

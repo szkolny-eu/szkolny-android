@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApiException
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.toErrorCode
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -50,7 +51,7 @@ class AppSync(val app: App, val notifications: MutableList<Notification>, val pr
                 val isPast = event.date < today
                 Metadata(
                         event.profileId,
-                        Metadata.TYPE_EVENT,
+                        MetadataType.EVENT,
                         event.id,
                         isPast || markAsSeen || event.seen,
                         isPast || markAsSeen || event.notified

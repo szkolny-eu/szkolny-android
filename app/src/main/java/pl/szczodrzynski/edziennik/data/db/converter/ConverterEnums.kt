@@ -5,34 +5,30 @@
 package pl.szczodrzynski.edziennik.data.db.converter
 
 import androidx.room.TypeConverter
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
-import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.db.enums.*
+import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 
 class ConverterEnums {
 
     @TypeConverter
-    fun fromFeatureType(value: FeatureType) = value.id
+    fun fromEnum(value: Enum<*>) = value.toInt()
 
     @TypeConverter
-    fun toFeatureType(value: Int) = FeatureType.values().first { it.id == value }
+    fun toFeatureType(value: Int) = value.asFeatureType()
 
     @TypeConverter
-    fun fromLoginMode(value: LoginMode) = value.id
+    fun toLoginMethod(value: Int) = value.asLoginMethod()
 
     @TypeConverter
-    fun toLoginMode(value: Int) = LoginMode.values().first { it.id == value }
+    fun toLoginMode(value: Int) = value.asLoginMode()
 
     @TypeConverter
-    fun fromLoginType(value: LoginType) = value.id
+    fun toLoginType(value: Int) = value.asLoginType()
 
     @TypeConverter
-    fun toLoginType(value: Int) = LoginType.values().first { it.id == value }
+    fun toMetadataType(value: Int) = value.asMetadataType()
 
     @TypeConverter
-    fun fromMetadataType(value: MetadataType) = value.id
-
-    @TypeConverter
-    fun toMetadataType(value: Int) = MetadataType.values().first { it.id == value }
+    fun toNavTarget(value: Int) = value.asNavTarget()
 }

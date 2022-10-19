@@ -9,7 +9,7 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.*
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
@@ -143,7 +143,7 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
             configGlobal.timetable.countInSeconds = it
         },
 
-        if (app.profile.loginStoreType == LOGIN_TYPE_LIBRUS)
+        if (app.profile.loginStoreType == LoginType.LIBRUS)
             util.createPropertyItem(
                 text = R.string.settings_register_show_teacher_absences_text,
                 icon = CommunityMaterial.Icon.cmd_account_arrow_right_outline,

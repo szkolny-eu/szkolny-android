@@ -20,7 +20,7 @@ class UpdateAvailableDialog(
     private val mandatory: Boolean = update?.updateMandatory ?: false,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog(activity, onShowListener, onDismissListener) {
+) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
 
     override val TAG = "UpdateAvailableDialog"
 

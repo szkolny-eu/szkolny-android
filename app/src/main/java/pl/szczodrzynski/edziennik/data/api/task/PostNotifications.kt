@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.ext.asBoldSpannable
 import pl.szczodrzynski.edziennik.ext.concat
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.data.db.entity.Notification as AppNotification
 
@@ -91,7 +92,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
         val intent = Intent(
                 app,
                 MainActivity::class.java,
-                "fragmentId" to MainActivity.DRAWER_ITEM_NOTIFICATIONS
+                "fragmentId" to NavTarget.NOTIFICATIONS.id
         )
         val summaryIntent = PendingIntent.getActivity(app, app.notificationChannelsManager.data.id, intent, PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag())
 

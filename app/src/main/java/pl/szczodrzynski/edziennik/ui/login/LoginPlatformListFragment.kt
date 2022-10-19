@@ -17,8 +17,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginPlatformListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
+import pl.szczodrzynski.edziennik.ext.getEnum
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
@@ -56,9 +59,9 @@ class LoginPlatformListFragment : Fragment(), CoroutineScope {
         if (!isAdded) return
         b.backButton.onClick { nav.navigateUp() }
 
-        val loginType = arguments?.getInt("loginType") ?: return
+        val loginType = arguments?.getEnum<LoginType>("loginType") ?: return
         val register = LoginInfo.list.firstOrNull { it.loginType == loginType } ?: return
-        val loginMode = arguments?.getInt("loginMode") ?: return
+        val loginMode = arguments?.getEnum<LoginMode>("loginMode") ?: return
         val mode = register.loginModes.firstOrNull { it.loginMode == loginMode } ?: return
 
         adapter = LoginPlatformAdapter(activity) { platform ->
@@ -99,7 +102,7 @@ class LoginPlatformListFragment : Fragment(), CoroutineScope {
             val platforms = LoginInfo.platformList[mode.name]
                     ?: run {
                         api.runCatching(activity) {
-                            getRealms(register.internalName)
+                            getRealms(register.loginType.name.lowercase())
                         } ?: run {
                             nav.navigateUp()
                             return@launch

@@ -210,7 +210,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 profile.userCode,
                 profile.studentNameLong,
                 profile.studentNameShort,
-                profile.loginStoreType,
+                profile.loginStoreType.id,
                 teams.filter { it.profileId == profile.id }.map { it.code }
             )
             val hash = user.toString().md5()

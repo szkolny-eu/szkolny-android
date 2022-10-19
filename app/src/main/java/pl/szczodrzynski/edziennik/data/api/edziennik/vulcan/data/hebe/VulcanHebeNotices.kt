@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 
 class VulcanHebeNotices(
@@ -63,7 +64,7 @@ class VulcanHebeNotices(
                 data.metadataList.add(
                     Metadata(
                         profileId,
-                        Metadata.TYPE_NOTICE,
+                        MetadataType.NOTICE,
                         id,
                         profile?.empty ?: true,
                         profile?.empty ?: true

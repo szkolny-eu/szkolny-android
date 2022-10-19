@@ -6,8 +6,8 @@ package pl.szczodrzynski.edziennik.data.api.edziennik
 
 import android.content.Intent
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -51,7 +51,7 @@ class ProfileArchiver(val app: App, val profile: Profile) {
         d(TAG, "New profile ID for ${profile.name}: ${profile.id}")
 
         when (profile.loginStoreType) {
-            LOGIN_TYPE_LIBRUS -> {
+            LoginType.LIBRUS -> {
                 profile.removeStudentData("isPremium")
                 profile.removeStudentData("pushDeviceId")
                 profile.removeStudentData("startPointsSemester1")
@@ -59,10 +59,8 @@ class ProfileArchiver(val app: App, val profile: Profile) {
                 profile.removeStudentData("enablePointGrades")
                 profile.removeStudentData("enableDescriptiveGrades")
             }
-            LOGIN_TYPE_MOBIDZIENNIK -> {
-
-            }
-            LOGIN_TYPE_VULCAN -> {
+            LoginType.MOBIDZIENNIK -> {}
+            LoginType.VULCAN -> {
                 // DataVulcan.isApiLoginValid() returns false so it will update the semester
                 profile.removeStudentData("currentSemesterEndDate")
                 profile.removeStudentData("studentSemesterId")
@@ -71,15 +69,13 @@ class ProfileArchiver(val app: App, val profile: Profile) {
                 profile.removeStudentData("semester2Id")
                 profile.removeStudentData("studentClassId")
             }
-            LOGIN_TYPE_IDZIENNIK -> {
+            LoginType.IDZIENNIK -> {
                 profile.removeStudentData("schoolYearId")
             }
-            LOGIN_TYPE_EDUDZIENNIK -> {
-
-            }
-            LOGIN_TYPE_PODLASIE -> {
-
-            }
+            LoginType.EDUDZIENNIK -> {}
+            LoginType.PODLASIE -> {}
+            LoginType.DEMO -> {}
+            LoginType.TEMPLATE -> {}
         }
 
         d(TAG, "Processed student data: ${profile.studentData}")

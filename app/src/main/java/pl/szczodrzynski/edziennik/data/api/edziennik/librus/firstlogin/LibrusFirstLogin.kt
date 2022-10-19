@@ -11,6 +11,8 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.login.LibrusLoginPor
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.*
 
 class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
@@ -23,11 +25,9 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
     private val profileList = mutableListOf<Profile>()
 
     init {
-        val loginStoreId = data.loginStore.id
-        val loginStoreType = LOGIN_TYPE_LIBRUS
-        var firstProfileId = loginStoreId
+        var firstProfileId = data.loginStore.id
 
-        if (data.loginStore.mode == LOGIN_MODE_LIBRUS_EMAIL) {
+        if (data.loginStore.mode == LoginMode.LIBRUS_EMAIL) {
             // email login: use Portal for account list
             LibrusLoginPortal(data) {
                 portal.portalGet(TAG, if (data.fakeLogin) FAKE_LIBRUS_ACCOUNTS else LIBRUS_ACCOUNTS_URL) { json, response ->
@@ -66,8 +66,8 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
 
                         val profile = Profile(
                                 firstProfileId++,
-                                loginStoreId,
-                                loginStoreType,
+                                data.loginStore.id,
+                                LoginType.LIBRUS,
                                 studentNameLong,
                                 data.portalEmail,
                                 studentNameLong,
@@ -107,8 +107,8 @@ class LibrusFirstLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
 
                     val profile = Profile(
                             firstProfileId++,
-                            loginStoreId,
-                            loginStoreType,
+                            data.loginStore.id,
+                            LoginType.LIBRUS,
                             studentNameLong,
                             login,
                             studentNameLong,

@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -51,7 +52,7 @@ class LibrusApiHomework(override val data: DataLibrus,
                 data.eventList.add(eventObject)
                 data.metadataList.add(Metadata(
                         profileId,
-                        Metadata.TYPE_HOMEWORK,
+                        MetadataType.HOMEWORK,
                         id,
                         profile?.empty ?: false,
                         profile?.empty ?: false

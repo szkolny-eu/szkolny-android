@@ -15,11 +15,13 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailability
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.task.PostNotifications
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getLong
 import pl.szczodrzynski.edziennik.ext.getNotificationTitle
 import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
@@ -155,7 +157,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
 
             val metadata = Metadata(
                     event.profileId,
-                    if (event.isHomework) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT,
+                    if (event.isHomework) MetadataType.HOMEWORK else MetadataType.EVENT,
                     event.id,
                     false,
                     true
@@ -172,7 +174,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         type = type,
                         profileId = profile.id,
                         profileName = profile.name,
-                        viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                        viewId = if (event.isHomework) NavTarget.HOMEWORK.id else NavTarget.AGENDA.id,
                         addedDate = event.addedDate
                 ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
                 notificationList += notification
@@ -207,7 +209,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         type = Notification.TYPE_REMOVED_SHARED_EVENT,
                         profileId = profile.id,
                         profileName = profile.name,
-                        viewId = MainActivity.DRAWER_ITEM_AGENDA
+                        viewId = NavTarget.AGENDA.id
                 )
                 notificationList += notification
             }
@@ -261,7 +263,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                     type = type,
                     profileId = profile.id,
                     profileName = profile.name,
-                    viewId = MainActivity.DRAWER_ITEM_HOME,
+                    viewId = NavTarget.HOME.id,
                     addedDate = note.addedDate
                 ).addExtra("noteId", note.id)
                 notificationList += notification

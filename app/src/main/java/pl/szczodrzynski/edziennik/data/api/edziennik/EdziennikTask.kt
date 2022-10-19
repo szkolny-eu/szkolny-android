@@ -21,9 +21,12 @@ import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.ext.getFeatureTypesNecessary
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 
@@ -36,7 +39,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
         fun firstLogin(loginStore: LoginStore) = EdziennikTask(-1, FirstLoginRequest(loginStore))
         fun sync() = EdziennikTask(-1, SyncRequest())
-        fun syncProfile(profileId: Int, viewIds: List<Pair<Int, Int>>? = null, onlyEndpoints: List<Int>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(viewIds, onlyEndpoints, arguments))
+        fun syncProfile(profileId: Int, featureTypes: Set<FeatureType>? = null, viewId: Int? = null, onlyEndpoints: List<Int>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(featureTypes, viewId, onlyEndpoints, arguments))
         fun syncProfileList(profileList: List<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
         fun messageGet(profileId: Int, message: MessageFull) = EdziennikTask(profileId, MessageGetRequest(message))
         fun messageSend(profileId: Int, recipients: List<Teacher>, subject: String, text: String) = EdziennikTask(profileId, MessageSendRequest(recipients, subject, text))
@@ -108,11 +111,11 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
         }
 
         edziennikInterface = when (loginStore.type) {
-            LOGIN_TYPE_LIBRUS -> Librus(app, profile, loginStore, taskCallback)
-            LOGIN_TYPE_MOBIDZIENNIK -> Mobidziennik(app, profile, loginStore, taskCallback)
-            LOGIN_TYPE_VULCAN -> Vulcan(app, profile, loginStore, taskCallback)
-            LOGIN_TYPE_PODLASIE -> Podlasie(app, profile, loginStore, taskCallback)
-            LOGIN_TYPE_TEMPLATE -> Template(app, profile, loginStore, taskCallback)
+            LoginType.LIBRUS -> Librus(app, profile, loginStore, taskCallback)
+            LoginType.MOBIDZIENNIK -> Mobidziennik(app, profile, loginStore, taskCallback)
+            LoginType.VULCAN -> Vulcan(app, profile, loginStore, taskCallback)
+            LoginType.PODLASIE -> Podlasie(app, profile, loginStore, taskCallback)
+            LoginType.TEMPLATE -> Template(app, profile, loginStore, taskCallback)
             else -> null
         }
         if (edziennikInterface == null) {
@@ -121,9 +124,8 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
         when (request) {
             is SyncProfileRequest -> edziennikInterface?.sync(
-                    featureIds = request.viewIds?.flatMap { Features.getIdsByView(it.first, it.second) }
-                            ?: Features.getAllIds(),
-                    viewId = request.viewIds?.get(0)?.first,
+                    featureTypes = (request.featureTypes ?: FeatureType.values().toList()) + getFeatureTypesNecessary(),
+                    viewId = request.viewId,
                     onlyEndpoints = request.onlyEndpoints,
                     arguments = request.arguments)
             is MessageGetRequest -> edziennikInterface?.getMessage(request.message)
@@ -148,7 +150,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
     data class FirstLoginRequest(val loginStore: LoginStore)
     class SyncRequest
-    data class SyncProfileRequest(val viewIds: List<Pair<Int, Int>>? = null, val onlyEndpoints: List<Int>? = null, val arguments: JsonObject? = null)
+    data class SyncProfileRequest(val featureTypes: Set<FeatureType>? = null, val viewId: Int? = null, val onlyEndpoints: List<Int>? = null, val arguments: JsonObject? = null)
     data class SyncProfileListRequest(val profileList: List<Int>)
     data class MessageGetRequest(val message: MessageFull)
     data class MessageSendRequest(val recipients: List<Teacher>, val subject: String, val text: String)

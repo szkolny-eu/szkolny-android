@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.api.Regexes.MESSAGE_META
 import pl.szczodrzynski.edziennik.data.api.interfaces.EndpointCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -45,7 +46,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
      * A [LoginMethod] may add elements to this list only after a successful login
      * with that method.
      */
-    val loginMethods = mutableListOf<Int>()
+    val loginMethods = mutableListOf<LoginMethod>()
 
     /**
      * A method which may be overridden in child Data* classes.
@@ -59,12 +60,12 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
      * A list of Login method IDs that are still pending
      * to run.
      */
-    var targetLoginMethodIds = mutableListOf<Int>()
+    var targetLoginMethods = mutableListOf<LoginMethod>()
     /**
      * A map of endpoint ID to last sync time, that are still pending
      * to run.
      */
-    var targetEndpointIds = sortedMapOf<Int, Long?>()
+    var targetEndpoints = sortedMapOf<Int, Long?>()
     /**
      * A count of all network requests to do.
      */

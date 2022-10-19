@@ -20,6 +20,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_SHIFTED_S
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_SHIFTED_TARGET
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.getBoolean
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getJsonObject
@@ -237,7 +238,7 @@ class VulcanHebeTimetable(
                 data.metadataList.add(
                     Metadata(
                         profileId,
-                        Metadata.TYPE_LESSON_CHANGE,
+                        MetadataType.LESSON_CHANGE,
                         lesson.id,
                         seen,
                         seen

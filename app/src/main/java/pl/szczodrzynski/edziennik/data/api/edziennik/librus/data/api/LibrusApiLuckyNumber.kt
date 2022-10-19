@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -47,7 +48,7 @@ class LibrusApiLuckyNumber(override val data: DataLibrus,
                     data.metadataList.add(
                             Metadata(
                                     profileId,
-                                    Metadata.TYPE_LUCKY_NUMBER,
+                                    MetadataType.LUCKY_NUMBER,
                                     luckyNumberObject.date.value.toLong(),
                                     true,
                                     profile?.empty ?: false

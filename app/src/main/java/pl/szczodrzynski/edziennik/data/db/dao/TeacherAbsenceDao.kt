@@ -27,7 +27,7 @@ abstract class TeacherAbsenceDao : BaseDao<TeacherAbsence, TeacherAbsenceFull> {
             teachers.teacherName ||" "|| teachers.teacherSurname AS teacherName
             FROM teacherAbsence
             LEFT JOIN teachers USING(profileId, teacherId)
-            LEFT JOIN metadata ON teacherAbsenceId = thingId AND thingType = ${Metadata.TYPE_TEACHER_ABSENCE} AND metadata.profileId = teacherAbsence.profileId
+            LEFT JOIN metadata ON teacherAbsenceId = thingId AND thingType = 9 AND metadata.profileId = teacherAbsence.profileId
         """
 
         private const val ORDER_BY = """ORDER BY teacherAbsenceDateFrom ASC"""

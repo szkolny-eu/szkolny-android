@@ -12,6 +12,8 @@ import im.wangchao.mhttp.callback.JsonCallbackHandler
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.ext.getUnixDate
@@ -32,7 +34,7 @@ class LibrusLoginApi {
         this.data = data
         this.onSuccess = onSuccess
 
-        if (data.loginStore.mode == LOGIN_MODE_LIBRUS_EMAIL && data.profile == null) {
+        if (data.loginStore.mode == LoginMode.LIBRUS_EMAIL && data.profile == null) {
             data.error(ApiError(TAG, ERROR_PROFILE_MISSING))
             return
         }
@@ -42,9 +44,9 @@ class LibrusLoginApi {
         }
         else {
             when (data.loginStore.mode) {
-                LOGIN_MODE_LIBRUS_EMAIL -> loginWithPortal()
-                LOGIN_MODE_LIBRUS_SYNERGIA -> loginWithSynergia()
-                LOGIN_MODE_LIBRUS_JST -> loginWithJst()
+                LoginMode.LIBRUS_EMAIL -> loginWithPortal()
+                LoginMode.LIBRUS_SYNERGIA -> loginWithSynergia()
+                LoginMode.LIBRUS_JST -> loginWithJst()
                 else -> {
                     data.error(ApiError(TAG, ERROR_INVALID_LOGIN_MODE))
                 }
@@ -53,7 +55,7 @@ class LibrusLoginApi {
     }
 
     private fun loginWithPortal() {
-        if (!data.loginMethods.contains(LOGIN_METHOD_LIBRUS_PORTAL)) {
+        if (!data.loginMethods.contains(LoginMethod.LIBRUS_PORTAL)) {
             data.error(ApiError(TAG, ERROR_LOGIN_METHOD_NOT_SATISFIED))
             return
         }

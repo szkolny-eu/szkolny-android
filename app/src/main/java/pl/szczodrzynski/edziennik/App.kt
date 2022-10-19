@@ -37,6 +37,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.MS
 import pl.szczodrzynski.edziennik.ext.setLanguage
@@ -45,6 +46,7 @@ import pl.szczodrzynski.edziennik.network.cookie.DumbCookieJar
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.CrashActivity
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.*
@@ -180,7 +182,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         // initialize companion object values
         App.db = AppDb(this)
         App.config = Config(App.db)
-        App.profile = Profile(0, 0, 0, "")
+        App.profile = Profile(0, 0, LoginType.TEMPLATE, "")
         debugMode = BuildConfig.DEBUG
         devMode = config.devMode ?: debugMode
         enableChucker = config.enableChucker ?: devMode
@@ -224,35 +226,35 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                             .setShortLabel(getString(R.string.shortcut_timetable)).setLongLabel(getString(R.string.shortcut_timetable))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_timetable))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE))
+                                    .putExtra("fragmentId", NavTarget.TIMETABLE.id))
                             .build()
 
                     val shortcutAgenda = ShortcutInfo.Builder(this@App, "item_agenda")
                             .setShortLabel(getString(R.string.shortcut_agenda)).setLongLabel(getString(R.string.shortcut_agenda))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_agenda))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_AGENDA))
+                                    .putExtra("fragmentId", NavTarget.AGENDA.id))
                             .build()
 
                     val shortcutGrades = ShortcutInfo.Builder(this@App, "item_grades")
                             .setShortLabel(getString(R.string.shortcut_grades)).setLongLabel(getString(R.string.shortcut_grades))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_grades))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_GRADES))
+                                    .putExtra("fragmentId", NavTarget.GRADES.id))
                             .build()
 
                     val shortcutHomework = ShortcutInfo.Builder(this@App, "item_homeworks")
                             .setShortLabel(getString(R.string.shortcut_homework)).setLongLabel(getString(R.string.shortcut_homework))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_homework))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOMEWORK))
+                                    .putExtra("fragmentId", NavTarget.HOMEWORK.id))
                             .build()
 
                     val shortcutMessages = ShortcutInfo.Builder(this@App, "item_messages")
                             .setShortLabel(getString(R.string.shortcut_messages)).setLongLabel(getString(R.string.shortcut_messages))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_messages))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_MESSAGES))
+                                    .putExtra("fragmentId", NavTarget.MESSAGES.id))
                             .build()
 
                     shortcutManager.dynamicShortcuts = listOf(

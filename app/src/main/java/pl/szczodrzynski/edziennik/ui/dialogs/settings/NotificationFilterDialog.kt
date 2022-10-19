@@ -14,7 +14,7 @@ class NotificationFilterDialog(
     activity: AppCompatActivity,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog(activity, onShowListener, onDismissListener) {
+) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
 
     override val TAG = "NotificationFilterDialog"
 

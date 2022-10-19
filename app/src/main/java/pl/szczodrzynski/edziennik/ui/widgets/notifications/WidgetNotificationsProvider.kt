@@ -24,6 +24,7 @@ import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
 import pl.szczodrzynski.edziennik.receivers.SzkolnyReceiver
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 
 class WidgetNotificationsProvider : AppWidgetProvider() {
@@ -74,7 +75,7 @@ class WidgetNotificationsProvider : AppWidgetProvider() {
 
             val headerIntent = Intent(context, MainActivity::class.java)
             headerIntent.action = Intent.ACTION_MAIN
-            headerIntent.putExtra("fragmentId", MainActivity.DRAWER_ITEM_NOTIFICATIONS)
+            headerIntent.putExtra("fragmentId", NavTarget.NOTIFICATIONS.id)
             val headerPendingIntent = PendingIntent.getActivity(context, 0, headerIntent, pendingIntentFlag())
             views.setOnClickPendingIntent(R.id.widgetNotificationsHeader, headerPendingIntent)
 

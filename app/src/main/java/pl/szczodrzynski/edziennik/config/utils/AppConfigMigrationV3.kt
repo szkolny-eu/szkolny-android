@@ -8,11 +8,10 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import pl.szczodrzynski.edziennik.BuildConfig
-import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.config.Config
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_VULCAN
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.ext.asNavTargetOrNull
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.math.abs
 
@@ -26,16 +25,16 @@ class AppConfigMigrationV3(p: SharedPreferences, config: Config) {
             val oldButtons = p.getString("$s.miniDrawerButtonIds", null)?.let { str ->
                 str.replace("[\\[\\]]*".toRegex(), "")
                         .split(",\\s?".toRegex())
-                        .mapNotNull { it.toIntOrNull() }
+                        .mapNotNull { it.toIntOrNull().asNavTargetOrNull() }
             }
             ui.miniMenuButtons = oldButtons ?: listOf(
-                    MainActivity.DRAWER_ITEM_HOME,
-                    MainActivity.DRAWER_ITEM_TIMETABLE,
-                    MainActivity.DRAWER_ITEM_AGENDA,
-                    MainActivity.DRAWER_ITEM_GRADES,
-                    MainActivity.DRAWER_ITEM_MESSAGES,
-                    MainActivity.DRAWER_ITEM_HOMEWORK,
-                    MainActivity.DRAWER_ITEM_SETTINGS
+                    NavTarget.HOME,
+                    NavTarget.TIMETABLE,
+                    NavTarget.AGENDA,
+                    NavTarget.GRADES,
+                    NavTarget.MESSAGES,
+                    NavTarget.HOMEWORK,
+                    NavTarget.SETTINGS
             )
             dataVersion = 1
         }
@@ -81,9 +80,9 @@ class AppConfigMigrationV3(p: SharedPreferences, config: Config) {
             tokens?.forEach {
                 val token = it.value.first
                 when (it.key) {
-                    LOGIN_TYPE_MOBIDZIENNIK -> sync.tokenMobidziennik = token
-                    LOGIN_TYPE_VULCAN -> sync.tokenVulcan = token
-                    LOGIN_TYPE_LIBRUS -> sync.tokenLibrus = token
+                    LoginType.MOBIDZIENNIK.id -> sync.tokenMobidziennik = token
+                    LoginType.VULCAN.id -> sync.tokenVulcan = token
+                    LoginType.LIBRUS.id -> sync.tokenLibrus = token
                 }
             }
             dataVersion = 2

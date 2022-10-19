@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.messages
 
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.ERROR_NOT_IMPLEMENTED
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_MESSAGES_RECEIVED
@@ -12,9 +11,11 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_MESS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.singleOrNull
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -65,16 +66,17 @@ class LibrusMessagesGetList(override val data: DataLibrus,
 
                     val recipientId = data.teacherList.singleOrNull {
                         it.name == recipientFirstName && it.surname == recipientLastName
-                    }?.id ?: {
+                    }?.id ?: run {
                         val teacherObject = Teacher(
-                                profileId,
-                                -1 * Utils.crc16("$recipientFirstName $recipientLastName".toByteArray()).toLong(),
-                                recipientFirstName,
-                                recipientLastName
+                            profileId,
+                            -1 * Utils.crc16("$recipientFirstName $recipientLastName".toByteArray())
+                                .toLong(),
+                            recipientFirstName,
+                            recipientLastName
                         )
                         data.teacherList.put(teacherObject.id, teacherObject)
                         teacherObject.id
-                    }.invoke()
+                    }
 
                     val senderId = when (type) {
                         TYPE_RECEIVED -> recipientId
@@ -118,7 +120,7 @@ class LibrusMessagesGetList(override val data: DataLibrus,
                     data.messageRecipientList.add(messageRecipientObject)
                     data.setSeenMetadataList.add(Metadata(
                             profileId,
-                            Metadata.TYPE_MESSAGE,
+                            MetadataType.MESSAGE,
                             id,
                             notified,
                             notified
@@ -127,7 +129,7 @@ class LibrusMessagesGetList(override val data: DataLibrus,
 
                 when (type) {
                     TYPE_RECEIVED -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_RECEIVED, SYNC_ALWAYS)
-                    Message.TYPE_SENT -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_SENT, DAY, DRAWER_ITEM_MESSAGES)
+                    Message.TYPE_SENT -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_SENT, DAY, NavTarget.MESSAGES.id)
                 }
                 onSuccess(endpointId)
             }

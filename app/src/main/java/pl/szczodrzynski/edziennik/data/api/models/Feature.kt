@@ -1,25 +1,27 @@
 package pl.szczodrzynski.edziennik.data.api.models
 
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+
 /**
  * A Endpoint descriptor class.
  *
  * The API runs appropriate endpoints in order to fulfill its
  * feature list.
  * An endpoint may have its [LoginMethod] dependencies which will be
- * satisfied by the API before the [endpointClass]'s constructor is invoked.
+ * satisfied by the API before the endpoint class is invoked.
  *
  * @param loginType type of the e-register this endpoint handles
- * @param featureId a feature ID
- * @param endpointIds a [List] of [Feature]s that satisfy this feature ID
- * @param requiredLoginMethod a required login method, which will have to be executed before this endpoint.
+ * @param featureType type of the feature
+ * @param endpoints a [List] of endpoints and their required login methods that satisfy this feature type
  */
 data class Feature(
-        val loginType: Int,
-        val featureId: Int,
-        val endpointIds: List<Pair<Int, Int>>,
-        val requiredLoginMethods: List<Int>
+    val loginType: LoginType,
+    val featureType: FeatureType,
+    val endpoints: List<Pair<Int, LoginMethod>>,
 ) {
-    var priority = endpointIds.size
+    var priority = endpoints.size
     fun withPriority(priority: Int): Feature {
         this.priority = priority
         return this
@@ -30,4 +32,6 @@ data class Feature(
         this.shouldSync = shouldSync
         return this
     }
+
+    val requiredLoginMethods by lazy { endpoints.map { it.second } }
 }

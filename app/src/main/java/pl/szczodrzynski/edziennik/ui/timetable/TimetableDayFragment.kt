@@ -22,9 +22,9 @@ import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
@@ -143,9 +143,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                     it.isEnabled = false
                     EdziennikTask.syncProfile(
                             profileId = App.profileId,
-                            viewIds = listOf(
-                                    DRAWER_ITEM_TIMETABLE to 0
-                            ),
+                            featureTypes = setOf(FeatureType.TIMETABLE),
                             arguments = JsonObject(
                                     "weekStart" to weekStart
                             )

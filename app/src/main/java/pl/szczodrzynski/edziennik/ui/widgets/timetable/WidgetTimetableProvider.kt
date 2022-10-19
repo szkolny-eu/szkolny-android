@@ -32,6 +32,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_NO_LESSON
 import pl.szczodrzynski.edziennik.ext.filterOutArchived
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.widgets.LessonDialogActivity
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -394,7 +395,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                 headerIntent.putExtra("timetableDate", it.value)
             }
         }
-        headerIntent.putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
+        headerIntent.putExtra("fragmentId", NavTarget.TIMETABLE.id)
         val headerPendingIntent = PendingIntent.getActivity(app, appWidgetId, headerIntent, pendingIntentFlag())
         views.setOnClickPendingIntent(R.id.widgetTimetableHeader, headerPendingIntent)
 

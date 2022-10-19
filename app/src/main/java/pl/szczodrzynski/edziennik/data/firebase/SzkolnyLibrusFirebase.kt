@@ -5,12 +5,12 @@
 package pl.szczodrzynski.edziennik.data.firebase
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.*
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.getString
 
 class SzkolnyLibrusFirebase(val app: App, val profiles: List<Profile>, val message: FirebaseService.Message) {
@@ -59,10 +59,10 @@ class SzkolnyLibrusFirebase(val app: App, val profiles: List<Profile>, val messa
             return@run
 
         val tasks = profiles.filter {
-            it.loginStoreType == LOGIN_TYPE_LIBRUS &&
+            it.loginStoreType == LoginType.LIBRUS &&
                     it.getStudentData("accountLogin", "")?.replace("u", "") == accountLogin
         }.map {
-            EdziennikTask.syncProfile(it.id, listOf(MainActivity.DRAWER_ITEM_HOME to 0), onlyEndpoints = endpoints)
+            EdziennikTask.syncProfile(it.id, setOf(FeatureType.ALWAYS_NEEDED), onlyEndpoints = endpoints)
         }
         IApiTask.enqueueAll(app, tasks)
     }}

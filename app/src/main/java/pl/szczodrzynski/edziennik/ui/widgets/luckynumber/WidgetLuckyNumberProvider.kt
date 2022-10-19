@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -81,7 +82,7 @@ class WidgetLuckyNumberProvider : AppWidgetProvider() {
 
             val openIntent = Intent(context, MainActivity::class.java)
             openIntent.action = Intent.ACTION_MAIN
-            openIntent.putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOME)
+            openIntent.putExtra("fragmentId", NavTarget.HOME.id)
             val openPendingIntent = PendingIntent.getActivity(context, 0, openIntent, pendingIntentFlag())
             views.setOnClickPendingIntent(R.id.widgetLuckyNumberRoot, openPendingIntent)
 

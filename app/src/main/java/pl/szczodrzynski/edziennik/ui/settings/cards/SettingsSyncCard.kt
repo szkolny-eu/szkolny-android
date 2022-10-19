@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.ext.getSyncInterval
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.NotificationFilterDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.QuietHoursConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.SyncIntervalDialog
@@ -151,7 +152,7 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
             subText = R.string.settings_sync_web_push_subtext,
             icon = CommunityMaterial.Icon2.cmd_laptop
         ) {
-            activity.loadTarget(MainActivity.TARGET_WEB_PUSH)
+            activity.navigate(navTarget = NavTarget.WEB_PUSH)
         }
     )
 

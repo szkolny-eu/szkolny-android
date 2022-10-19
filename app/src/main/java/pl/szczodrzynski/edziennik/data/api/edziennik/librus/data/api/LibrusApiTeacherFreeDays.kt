@@ -5,14 +5,14 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.api
 
 import androidx.core.util.isEmpty
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_AGENDA
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.TeacherAbsence
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -56,14 +56,14 @@ class LibrusApiTeacherFreeDays(override val data: DataLibrus,
                 data.teacherAbsenceList.add(teacherAbsenceObject)
                 data.metadataList.add(Metadata(
                         profileId,
-                        Metadata.TYPE_TEACHER_ABSENCE,
+                        MetadataType.TEACHER_ABSENCE,
                         id,
                         true,
                         profile?.empty ?: false
                 ))
             }
 
-            data.setSyncNext(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS, 6* HOUR, DRAWER_ITEM_AGENDA)
+            data.setSyncNext(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS, 6* HOUR, NavTarget.AGENDA.id)
             onSuccess(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS)
         }
     }

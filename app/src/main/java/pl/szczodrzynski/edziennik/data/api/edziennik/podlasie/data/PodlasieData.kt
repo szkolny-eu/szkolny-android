@@ -20,7 +20,7 @@ class PodlasieData(val data: DataPodlasie, val onSuccess: () -> Unit) {
     }
 
     private fun nextEndpoint(onSuccess: () -> Unit) {
-        if (data.targetEndpointIds.isEmpty()) {
+        if (data.targetEndpoints.isEmpty()) {
             onSuccess()
             return
         }
@@ -28,8 +28,8 @@ class PodlasieData(val data: DataPodlasie, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        val id = data.targetEndpointIds.firstKey()
-        val lastSync = data.targetEndpointIds.remove(id)
+        val id = data.targetEndpoints.firstKey()
+        val lastSync = data.targetEndpoints.remove(id)
         useEndpoint(id, lastSync) {
             data.progress(data.progressStep)
             nextEndpoint(onSuccess)

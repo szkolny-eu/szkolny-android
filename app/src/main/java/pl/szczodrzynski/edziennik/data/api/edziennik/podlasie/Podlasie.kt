@@ -15,11 +15,11 @@ import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.api.podlasieLoginMethods
 import pl.szczodrzynski.edziennik.data.api.prepare
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -54,11 +54,11 @@ class Podlasie(val app: App, val profile: Profile?, val loginStore: LoginStore, 
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureIds: List<Int>, viewId: Int?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
+    override fun sync(featureTypes: List<FeatureType>, viewId: Int?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
-        data.prepare(podlasieLoginMethods, PodlasieFeatures, featureIds, viewId, onlyEndpoints)
-        Utils.d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
-        Utils.d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        data.prepare(PodlasieFeatures, featureTypes, viewId, onlyEndpoints)
+        Utils.d(TAG, "LoginMethod IDs: ${data.targetLoginMethods}")
+        Utils.d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
         PodlasieLogin(data) {
             PodlasieData(data) {
                 completed()

@@ -26,6 +26,7 @@ import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventDetailsBinding
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.notes.setupNotesButton
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
@@ -195,7 +196,7 @@ class EventDetailsDialog(
             val dateStr = event.date.stringY_m_d
 
             val intent =
-                    if (activity is MainActivity && activity.navTargetId == MainActivity.DRAWER_ITEM_TIMETABLE)
+                    if (activity is MainActivity && activity.navTarget == NavTarget.TIMETABLE)
                         Intent(TimetableFragment.ACTION_SCROLL_TO_DATE)
                     else if (activity is MainActivity)
                         Intent("android.intent.action.MAIN")
@@ -203,7 +204,7 @@ class EventDetailsDialog(
                         Intent(activity, MainActivity::class.java)
 
             intent.apply {
-                putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
+                putExtra("fragmentId", NavTarget.TIMETABLE.id)
                 putExtra("timetableDate", dateStr)
             }
             if (activity is MainActivity)

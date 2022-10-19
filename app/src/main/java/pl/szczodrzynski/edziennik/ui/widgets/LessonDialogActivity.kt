@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.timetable.LessonDetailsDialog
 import pl.szczodrzynski.edziennik.utils.Themes
 import kotlin.coroutines.CoroutineContext
@@ -45,7 +46,7 @@ class LessonDialogActivity : AppCompatActivity(), CoroutineScope {
 
                 if (extras.getBoolean("separatorItem", false)) {
                     val i = Intent(app, MainActivity::class.java)
-                            .putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
+                            .putExtra("fragmentId", NavTarget.TIMETABLE.id)
                             .putExtra("profileId", profileId)
                             .putExtra("timetableDate", extras.getString("timetableDate", null))
                             .addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT or FLAG_ACTIVITY_NEW_TASK)

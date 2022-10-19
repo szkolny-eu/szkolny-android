@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidzienn
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
 import pl.szczodrzynski.edziennik.ext.fixName
@@ -133,7 +134,7 @@ class MobidziennikWebGetMessage(override val data: DataMobidziennik,
             if (!message.seen) { // TODO discover why this monstrosity instead of MetadataDao.setSeen
                 data.setSeenMetadataList.add(Metadata(
                         message.profileId,
-                        Metadata.TYPE_MESSAGE,
+                        MetadataType.MESSAGE,
                         message.id,
                         true,
                         true

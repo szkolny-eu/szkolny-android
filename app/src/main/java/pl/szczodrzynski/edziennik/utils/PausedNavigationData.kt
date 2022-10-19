@@ -5,17 +5,10 @@
 package pl.szczodrzynski.edziennik.utils
 
 import android.os.Bundle
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 
-open class PausedNavigationData {
-
-    data class LoadProfile(
-        val id: Int,
-        val drawerSelection: Int,
-        val arguments: Bundle?,
-    ) : PausedNavigationData()
-
-    data class LoadTarget(
-        val id: Int,
-        val arguments: Bundle?,
-    ) : PausedNavigationData()
-}
+data class PausedNavigationData(
+    val profileId: Int?,
+    val navTarget: NavTarget?,
+    val args: Bundle?,
+)

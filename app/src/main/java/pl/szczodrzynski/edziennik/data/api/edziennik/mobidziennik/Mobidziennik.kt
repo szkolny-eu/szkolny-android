@@ -17,6 +17,8 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -53,19 +55,19 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureIds: List<Int>, viewId: Int?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
+    override fun sync(featureTypes: List<FeatureType>, viewId: Int?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
-        data.prepare(mobidziennikLoginMethods, MobidziennikFeatures, featureIds, viewId, onlyEndpoints)
+        data.prepare(MobidziennikFeatures, featureTypes, viewId, onlyEndpoints)
         login()
     }
 
-    private fun login(loginMethodId: Int? = null, afterLogin: (() -> Unit)? = null) {
-        d(TAG, "Trying to login with ${data.targetLoginMethodIds}")
+    private fun login(loginMethod: LoginMethod? = null, afterLogin: (() -> Unit)? = null) {
+        d(TAG, "Trying to login with ${data.targetLoginMethods}")
         if (internalErrorList.isNotEmpty()) {
             d(TAG, "  - Internal errors:")
             internalErrorList.forEach { d(TAG, "      - code $it") }
         }
-        loginMethodId?.let { data.prepareFor(mobidziennikLoginMethods, it) }
+        loginMethod?.let { data.prepareFor(it) }
         afterLogin?.let { this.afterLogin = it }
         MobidziennikLogin(data) {
             data()
@@ -73,7 +75,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     }
 
     private fun data() {
-        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
         if (internalErrorList.isNotEmpty()) {
             d(TAG, "  - Internal errors:")
             internalErrorList.forEach { d(TAG, "      - code $it") }
@@ -84,7 +86,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     }
 
     override fun getMessage(message: MessageFull) {
-        login(LOGIN_METHOD_MOBIDZIENNIK_WEB) {
+        login(LoginMethod.MOBIDZIENNIK_WEB) {
             MobidziennikWebGetMessage(data, message) {
                 completed()
             }
@@ -92,7 +94,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     }
 
     override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
-        login(LOGIN_METHOD_MOBIDZIENNIK_WEB) {
+        login(LoginMethod.MOBIDZIENNIK_WEB) {
             MobidziennikWebSendMessage(data, recipients, subject, text) {
                 completed()
             }
@@ -103,7 +105,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     override fun getAnnouncement(announcement: AnnouncementFull) {}
 
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {
-        login(LOGIN_METHOD_MOBIDZIENNIK_WEB) {
+        login(LoginMethod.MOBIDZIENNIK_WEB) {
             MobidziennikWebGetAttachment(data, owner, attachmentId, attachmentName) {
                 completed()
             }
@@ -111,7 +113,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     }
 
     override fun getRecipientList() {
-        login(LOGIN_METHOD_MOBIDZIENNIK_WEB) {
+        login(LoginMethod.MOBIDZIENNIK_WEB) {
             MobidziennikWebGetRecipientList(data) {
                 completed()
             }
@@ -119,7 +121,7 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
     }
 
     override fun getEvent(eventFull: EventFull) {
-        login(LOGIN_METHOD_MOBIDZIENNIK_WEB) {
+        login(LoginMethod.MOBIDZIENNIK_WEB) {
             if (eventFull.isHomework) {
                 MobidziennikWebGetHomework(data, eventFull) {
                     completed()
@@ -156,8 +158,8 @@ class Mobidziennik(val app: App, val profile: Profile?, val loginStore: LoginSto
                     ERROR_MOBIDZIENNIK_WEB_NO_SESSION_KEY,
                     ERROR_MOBIDZIENNIK_WEB_NO_SESSION_VALUE,
                     ERROR_MOBIDZIENNIK_WEB_NO_SERVER_ID -> {
-                        data.loginMethods.remove(LOGIN_METHOD_MOBIDZIENNIK_WEB)
-                        data.prepareFor(mobidziennikLoginMethods, LOGIN_METHOD_MOBIDZIENNIK_WEB)
+                        data.loginMethods.remove(LoginMethod.MOBIDZIENNIK_WEB)
+                        data.prepareFor(LoginMethod.MOBIDZIENNIK_WEB)
                         data.webSessionIdExpiryTime = 0
                         login()
                     }

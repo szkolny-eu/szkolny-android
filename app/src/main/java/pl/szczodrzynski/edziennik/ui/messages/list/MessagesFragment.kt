@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.databinding.MessagesFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.base.lazypager.FragmentLazyPagerAdapter
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
@@ -52,7 +53,7 @@ class MessagesFragment : Fragment(), CoroutineScope {
             val args = Bundle()
             args.putLong("messageId", messageId)
             arguments?.remove("messageId")
-            activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, args)
+            activity.navigate(navTarget = NavTarget.MESSAGE, args = args)
             return
         }
 
@@ -123,7 +124,7 @@ class MessagesFragment : Fragment(), CoroutineScope {
             )
 
             setFabOnClickListener {
-                activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE)
+                activity.navigate(navTarget = NavTarget.MESSAGE_COMPOSE)
             }
         }
 

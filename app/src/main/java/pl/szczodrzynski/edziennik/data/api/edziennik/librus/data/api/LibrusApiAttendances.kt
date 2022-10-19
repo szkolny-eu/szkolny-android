@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -76,7 +77,7 @@ class LibrusApiAttendances(override val data: DataLibrus,
                 if(type?.baseType != Attendance.TYPE_PRESENT) {
                     data.metadataList.add(Metadata(
                             profileId,
-                            Metadata.TYPE_ATTENDANCE,
+                            MetadataType.ATTENDANCE,
                             id,
                             profile?.empty ?: false || type?.baseType == Attendance.TYPE_PRESENT_CUSTOM || type?.baseType == Attendance.TYPE_UNKNOWN,
                             profile?.empty ?: false || type?.baseType == Attendance.TYPE_PRESENT_CUSTOM || type?.baseType == Attendance.TYPE_UNKNOWN

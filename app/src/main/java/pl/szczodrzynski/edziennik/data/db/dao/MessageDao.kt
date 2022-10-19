@@ -26,7 +26,7 @@ abstract class MessageDao : BaseDao<Message, MessageFull> {
             teachers.teacherName ||" "|| teachers.teacherSurname AS senderName
             FROM messages
             LEFT JOIN teachers ON teachers.profileId = messages.profileId AND teacherId = senderId
-            LEFT JOIN metadata ON messageId = thingId AND thingType = ${Metadata.TYPE_MESSAGE} AND metadata.profileId = messages.profileId
+            LEFT JOIN metadata ON messageId = thingId AND thingType = 8 AND metadata.profileId = messages.profileId
         """
 
         private const val ORDER_BY = """ORDER BY messageIsPinned DESC, addedDate DESC"""

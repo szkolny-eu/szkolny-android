@@ -7,6 +7,8 @@ package pl.szczodrzynski.edziennik.config
 import pl.szczodrzynski.edziennik.config.utils.get
 import pl.szczodrzynski.edziennik.config.utils.getIntList
 import pl.szczodrzynski.edziennik.config.utils.set
+import pl.szczodrzynski.edziennik.ext.asNavTargetOrNull
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 
 class ConfigUI(private val config: Config) {
     private var mTheme: Int? = null
@@ -34,10 +36,10 @@ class ConfigUI(private val config: Config) {
         get() { mMiniMenuVisible = mMiniMenuVisible ?: config.values.get("miniMenuVisible", false); return mMiniMenuVisible ?: false }
         set(value) { config.set("miniMenuVisible", value); mMiniMenuVisible = value }
 
-    private var mMiniMenuButtons: List<Int>? = null
-    var miniMenuButtons: List<Int>
-        get() { mMiniMenuButtons = mMiniMenuButtons ?: config.values.getIntList("miniMenuButtons", listOf()); return mMiniMenuButtons ?: listOf() }
-        set(value) { config.set("miniMenuButtons", value); mMiniMenuButtons = value }
+    private var mMiniMenuButtons: List<NavTarget>? = null
+    var miniMenuButtons: List<NavTarget>
+        get() { mMiniMenuButtons = mMiniMenuButtons ?: config.values.getIntList("miniMenuButtons", listOf())?.mapNotNull { it.asNavTargetOrNull() }; return mMiniMenuButtons ?: listOf() }
+        set(value) { config.set("miniMenuButtons", value.map { it.id }); mMiniMenuButtons = value }
 
     private var mOpenDrawerOnBackPressed: Boolean? = null
     var openDrawerOnBackPressed: Boolean

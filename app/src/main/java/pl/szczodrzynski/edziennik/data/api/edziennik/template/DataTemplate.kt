@@ -5,11 +5,10 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.template
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_API
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.currentTimeUnix
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 
@@ -26,11 +25,11 @@ class DataTemplate(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isWebLoginValid()) {
-            loginMethods += LOGIN_METHOD_TEMPLATE_WEB
+            loginMethods += LoginMethod.TEMPLATE_WEB
             app.cookieJar.set("eregister.example.com", "AuthCookie", webCookie)
         }
         if (isApiLoginValid())
-            loginMethods += LOGIN_METHOD_TEMPLATE_API
+            loginMethods += LoginMethod.TEMPLATE_API
     }
 
     override fun generateUserCode() = "TEMPLATE:DO_NOT_USE"

@@ -7,6 +7,7 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusPortal
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
@@ -16,7 +17,7 @@ class SynergiaTokenExtractor(override val data: DataLibrus, val onSuccess: () ->
     }
 
     init { run {
-        if (data.loginStore.mode != LOGIN_MODE_LIBRUS_EMAIL) {
+        if (data.loginStore.mode != LoginMode.LIBRUS_EMAIL) {
             data.error(ApiError(TAG, ERROR_INVALID_LOGIN_MODE))
             return@run
         }

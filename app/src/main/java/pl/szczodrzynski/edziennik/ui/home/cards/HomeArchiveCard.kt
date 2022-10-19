@@ -18,6 +18,7 @@ import pl.szczodrzynski.edziennik.ext.dp
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setMessage
 import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment
@@ -70,12 +71,12 @@ class HomeArchiveCard(
                             .show()
                     return@launch
                 }
-                activity.loadProfile(profile)
+                activity.navigate(profile = profile)
             }
         }
 
         holder.root.onClick {
-            activity.loadTarget(MainActivity.DRAWER_ITEM_AGENDA)
+            activity.navigate(navTarget = NavTarget.AGENDA)
         }
     }
 

@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Announcement
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 
 @Dao
@@ -26,7 +27,7 @@ abstract class AnnouncementDao : BaseDao<Announcement, AnnouncementFull> {
             teachers.teacherName ||" "|| teachers.teacherSurname AS teacherName
             FROM announcements
             LEFT JOIN teachers USING(profileId, teacherId)
-            LEFT JOIN metadata ON announcementId = thingId AND thingType = ${Metadata.TYPE_ANNOUNCEMENT} AND metadata.profileId = announcements.profileId
+            LEFT JOIN metadata ON announcementId = thingId AND thingType = 7 AND metadata.profileId = announcements.profileId
         """
 
         private const val ORDER_BY = """ORDER BY addedDate DESC"""
