@@ -49,7 +49,7 @@ class Usos(
     }
 
     override fun sync(
-        featureTypes: List<FeatureType>,
+        featureTypes: Set<FeatureType>?,
         viewId: Int?,
         onlyEndpoints: List<Int>?,
         arguments: JsonObject?,

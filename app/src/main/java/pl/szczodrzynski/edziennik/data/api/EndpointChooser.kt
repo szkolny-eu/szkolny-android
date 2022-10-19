@@ -8,10 +8,13 @@ import pl.szczodrzynski.edziennik.data.db.entity.SYNC_NEVER
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.data.db.enums.LoginType
+import pl.szczodrzynski.edziennik.ext.getFeatureTypesNecessary
+import pl.szczodrzynski.edziennik.ext.getFeatureTypesUnnecessary
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 
 fun Data.prepare(
     features: List<Feature>,
-    featureTypes: List<FeatureType>,
+    featureTypes: Set<FeatureType>?,
     viewId: Int?,
     onlyEndpoints: List<Int>?,
 ) {
@@ -25,11 +28,16 @@ fun Data.prepare(
     var possibleFeatures = mutableListOf<Feature>()
     val requiredLoginMethods = mutableListOf<LoginMethod>()
 
+    val syncFeatureTypes = when {
+        featureTypes.isNotNullNorEmpty() -> featureTypes!!
+        else -> getFeatureTypesUnnecessary()
+    } + getFeatureTypesNecessary()
+
     this.targetEndpoints.clear()
     this.targetLoginMethods.clear()
 
     // get all endpoints for every feature, only if possible to login and possible/necessary to sync
-    for (featureId in featureTypes) {
+    for (featureId in syncFeatureTypes) {
         possibleFeatures += features.filter {
             it.featureType == featureId // feature ID matches
                     && possibleLoginMethods.containsAll(it.requiredLoginMethods) // is possible to login

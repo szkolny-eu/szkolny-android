@@ -44,7 +44,8 @@ inline fun <reified E : Enum<E>> Int.toEnum() = when (E::class.java) {
     else -> enumValues<E>()[this]
 } as E
 
-fun getFeatureTypesNecessary() = FeatureType.values().filter { it.isAlwaysNeeded }
+fun getFeatureTypesNecessary() = FeatureType.values().filter { it.isAlwaysNeeded }.toSet()
+fun getFeatureTypesUnnecessary() = FeatureType.values().filter { !it.isAlwaysNeeded }.toSet()
 
 fun NavTarget.toBottomSheetItem(activity: MainActivity) =
     BottomSheetPrimaryItem(isContextual = false).also {

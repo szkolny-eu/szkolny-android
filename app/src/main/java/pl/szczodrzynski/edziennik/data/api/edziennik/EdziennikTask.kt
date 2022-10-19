@@ -126,7 +126,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
         when (request) {
             is SyncProfileRequest -> edziennikInterface?.sync(
-                    featureTypes = (request.featureTypes ?: FeatureType.values().toList()) + getFeatureTypesNecessary(),
+                    featureTypes = request.featureTypes,
                     viewId = request.viewId,
                     onlyEndpoints = request.onlyEndpoints,
                     arguments = request.arguments)
