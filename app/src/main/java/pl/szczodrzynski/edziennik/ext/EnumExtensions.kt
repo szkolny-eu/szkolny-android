@@ -49,6 +49,18 @@ inline fun <reified E : Enum<E>> Int.toEnum() = when (E::class.java) {
     else -> enumValues<E>()[this]
 } as E
 
+fun <E : Enum<E>> Int.toEnum(type: Class<*>) = when (type) {
+    // enums commented out are not really used in Bundles
+    FeatureType::class.java -> this.asFeatureType()
+    // LoginMethod::class.java -> this.asLoginMethod()
+    LoginMode::class.java -> this.asLoginMode()
+    LoginType::class.java -> this.asLoginType()
+    // MetadataType::class.java -> this.asMetadataType()
+    // NotificationType::class.java -> this.asNotificationType()
+    NavTarget::class.java -> this.asNavTarget()
+    else -> throw IllegalArgumentException("Unknown type $type")
+} as E
+
 fun getFeatureTypesNecessary() = FeatureType.values().filter { it.isAlwaysNeeded }.toSet()
 fun getFeatureTypesUnnecessary() = FeatureType.values().filter { !it.isAlwaysNeeded }.toSet()
 
