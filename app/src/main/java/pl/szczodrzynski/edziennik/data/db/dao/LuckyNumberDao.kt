@@ -25,7 +25,7 @@ abstract class LuckyNumberDao : BaseDao<LuckyNumber, LuckyNumberFull> {
             SELECT 
             * 
             FROM luckyNumbers
-            LEFT JOIN metadata ON luckyNumberDate = thingId AND thingType = ${Metadata.TYPE_LUCKY_NUMBER} AND metadata.profileId = luckyNumbers.profileId
+            LEFT JOIN metadata ON luckyNumberDate = thingId AND thingType = 10 AND metadata.profileId = luckyNumbers.profileId
         """
 
         private const val ORDER_BY = """ORDER BY luckyNumberDate DESC"""

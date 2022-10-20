@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanWebMain
 import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.getJsonArray
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -56,7 +57,7 @@ class VulcanWebLuckyNumber(override val data: DataVulcan,
                     data.metadataList.add(
                             Metadata(
                                     profileId,
-                                    Metadata.TYPE_LUCKY_NUMBER,
+                                    MetadataType.LUCKY_NUMBER,
                                     luckyNumberObject.date.value.toLong(),
                                     true,
                                     profile?.empty ?: false

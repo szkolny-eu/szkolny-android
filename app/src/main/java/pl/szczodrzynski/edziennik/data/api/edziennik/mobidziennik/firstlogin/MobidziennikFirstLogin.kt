@@ -1,12 +1,12 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.firstlogin
 
 import org.greenrobot.eventbus.EventBus
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.login.MobidziennikLoginWeb
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.set
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -20,9 +20,7 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
     private val profileList = mutableListOf<Profile>()
 
     init {
-        val loginStoreId = data.loginStore.id
-        val loginStoreType = LOGIN_TYPE_MOBIDZIENNIK
-        var firstProfileId = loginStoreId
+        var firstProfileId = data.loginStore.id
 
         MobidziennikLoginWeb(data) {
             web.webGet(TAG, "/api/zrzutbazy") { text ->
@@ -66,8 +64,8 @@ class MobidziennikFirstLogin(val data: DataMobidziennik, val onSuccess: () -> Un
 
                     val profile = Profile(
                             firstProfileId++,
-                            loginStoreId,
-                            loginStoreType,
+                            data.loginStore.id,
+                            LoginType.MOBIDZIENNIK,
                             studentNameLong,
                             data.loginUsername,
                             studentNameLong,

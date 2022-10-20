@@ -28,7 +28,6 @@ import com.mikepenz.iconics.utils.sizeDp
 import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.*
 import com.mikepenz.materialdrawer.model.utils.hiddenInMiniDrawer
-import eu.szkolny.font.SzkolnyFont
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -40,21 +39,19 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
-import pl.szczodrzynski.edziennik.ui.agenda.AgendaFragment
-import pl.szczodrzynski.edziennik.ui.announcements.AnnouncementsFragment
-import pl.szczodrzynski.edziennik.ui.attendance.AttendanceFragment
 import pl.szczodrzynski.edziennik.ui.base.MainSnackbar
-import pl.szczodrzynski.edziennik.ui.behaviour.BehaviourFragment
-import pl.szczodrzynski.edziennik.ui.debug.DebugFragment
-import pl.szczodrzynski.edziennik.ui.debug.LabFragment
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTargetLocation
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
@@ -64,30 +61,15 @@ import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.error.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
-import pl.szczodrzynski.edziennik.ui.feedback.FeedbackFragment
-import pl.szczodrzynski.edziennik.ui.grades.GradesListFragment
-import pl.szczodrzynski.edziennik.ui.grades.editor.GradesEditorFragment
-import pl.szczodrzynski.edziennik.ui.home.HomeFragment
-import pl.szczodrzynski.edziennik.ui.homework.HomeworkFragment
 import pl.szczodrzynski.edziennik.ui.login.LoginActivity
-import pl.szczodrzynski.edziennik.ui.login.LoginProgressFragment
-import pl.szczodrzynski.edziennik.ui.messages.compose.MessagesComposeFragment
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
-import pl.szczodrzynski.edziennik.ui.messages.single.MessageFragment
-import pl.szczodrzynski.edziennik.ui.notes.NotesFragment
-import pl.szczodrzynski.edziennik.ui.notifications.NotificationsListFragment
-import pl.szczodrzynski.edziennik.ui.settings.ProfileManagerFragment
-import pl.szczodrzynski.edziennik.ui.settings.SettingsFragment
-import pl.szczodrzynski.edziennik.ui.teachers.TeachersListFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
-import pl.szczodrzynski.edziennik.ui.webpush.WebPushFragment
 import pl.szczodrzynski.edziennik.utils.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.Utils.dpToPx
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
 import pl.szczodrzynski.edziennik.utils.models.Date
-import pl.szczodrzynski.edziennik.utils.models.NavTarget
 import pl.szczodrzynski.navlib.*
 import pl.szczodrzynski.navlib.SystemBarsUtil.Companion.COLOR_HALF_TRANSPARENT
 import pl.szczodrzynski.navlib.bottomsheet.NavBottomSheet
@@ -101,184 +83,8 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
-    @Suppress("MemberVisibilityCanBePrivate")
     companion object {
-
-        const val TAG = "MainActivity"
-
-        const val DRAWER_PROFILE_ADD_NEW = 200
-        const val DRAWER_PROFILE_SYNC_ALL = 201
-        const val DRAWER_PROFILE_MANAGE = 203
-        const val DRAWER_PROFILE_MARK_ALL_AS_READ = 204
-        const val DRAWER_ITEM_HOME = 1
-        const val DRAWER_ITEM_TIMETABLE = 11
-        const val DRAWER_ITEM_AGENDA = 12
-        const val DRAWER_ITEM_GRADES = 13
-        const val DRAWER_ITEM_MESSAGES = 17
-        const val DRAWER_ITEM_HOMEWORK = 14
-        const val DRAWER_ITEM_BEHAVIOUR = 15
-        const val DRAWER_ITEM_ATTENDANCE = 16
-        const val DRAWER_ITEM_ANNOUNCEMENTS = 18
-        const val DRAWER_ITEM_NOTIFICATIONS = 20
-        const val DRAWER_ITEM_MORE = 21
-        const val DRAWER_ITEM_TEACHERS = 22
-        const val DRAWER_ITEM_NOTES = 23
-        const val DRAWER_ITEM_SETTINGS = 101
-        const val DRAWER_ITEM_DEBUG = 102
-
-        const val TARGET_GRADES_EDITOR = 501
-        const val TARGET_FEEDBACK = 120
-        const val TARGET_MESSAGES_DETAILS = 503
-        const val TARGET_MESSAGES_COMPOSE = 504
-        const val TARGET_WEB_PUSH = 140
-        const val TARGET_LAB = 1000
-
-        const val HOME_ID = DRAWER_ITEM_HOME
-
-        val navTargetList: List<NavTarget> by lazy {
-            val list: MutableList<NavTarget> = mutableListOf()
-            val moreList: MutableList<NavTarget> = mutableListOf()
-
-            moreList += NavTarget(
-                id = DRAWER_ITEM_NOTES,
-                name = R.string.menu_notes,
-                fragmentClass = NotesFragment::class)
-                .withIcon(CommunityMaterial.Icon3.cmd_text_box_multiple_outline)
-                .isStatic(true)
-
-            moreList += NavTarget(DRAWER_ITEM_TEACHERS,
-                R.string.menu_teachers,
-                TeachersListFragment::class)
-                .withIcon(CommunityMaterial.Icon3.cmd_shield_account_outline)
-                .isStatic(true)
-
-            // home item
-            list += NavTarget(DRAWER_ITEM_HOME, R.string.menu_home_page, HomeFragment::class)
-                .withTitle(R.string.app_name)
-                .withIcon(CommunityMaterial.Icon2.cmd_home_outline)
-                .isInDrawer(true)
-                .isStatic(true)
-                .withPopToHome(false)
-
-            list += NavTarget(DRAWER_ITEM_TIMETABLE,
-                R.string.menu_timetable,
-                TimetableFragment::class)
-                .withIcon(CommunityMaterial.Icon3.cmd_timetable)
-                .withBadgeTypeId(TYPE_LESSON_CHANGE)
-                .isInDrawer(true)
-
-            list += NavTarget(DRAWER_ITEM_AGENDA, R.string.menu_agenda, AgendaFragment::class)
-                .withIcon(CommunityMaterial.Icon.cmd_calendar_outline)
-                .withBadgeTypeId(TYPE_EVENT)
-                .isInDrawer(true)
-
-            list += NavTarget(DRAWER_ITEM_GRADES, R.string.menu_grades, GradesListFragment::class)
-                .withIcon(CommunityMaterial.Icon3.cmd_numeric_5_box_outline)
-                .withBadgeTypeId(TYPE_GRADE)
-                .isInDrawer(true)
-
-            list += NavTarget(DRAWER_ITEM_MESSAGES, R.string.menu_messages, MessagesFragment::class)
-                .withIcon(CommunityMaterial.Icon.cmd_email_outline)
-                .withBadgeTypeId(TYPE_MESSAGE)
-                .isInDrawer(true)
-
-            list += NavTarget(DRAWER_ITEM_HOMEWORK, R.string.menu_homework, HomeworkFragment::class)
-                .withIcon(SzkolnyFont.Icon.szf_notebook_outline)
-                .withBadgeTypeId(TYPE_HOMEWORK)
-                .isInDrawer(true)
-
-            list += NavTarget(DRAWER_ITEM_BEHAVIOUR,
-                R.string.menu_notices,
-                BehaviourFragment::class)
-                .withIcon(CommunityMaterial.Icon.cmd_emoticon_outline)
-                .withBadgeTypeId(TYPE_NOTICE)
-                .isInDrawer(true)
-
-            list += NavTarget(DRAWER_ITEM_ATTENDANCE,
-                R.string.menu_attendance,
-                AttendanceFragment::class)
-                .withIcon(CommunityMaterial.Icon.cmd_calendar_remove_outline)
-                .withBadgeTypeId(TYPE_ATTENDANCE)
-                .isInDrawer(true)
-
-            list += NavTarget(DRAWER_ITEM_ANNOUNCEMENTS,
-                R.string.menu_announcements,
-                AnnouncementsFragment::class)
-                .withIcon(CommunityMaterial.Icon.cmd_bullhorn_outline)
-                .withBadgeTypeId(TYPE_ANNOUNCEMENT)
-                .isInDrawer(true)
-
-            list += NavTarget(DRAWER_ITEM_MORE, R.string.menu_more, null)
-                .withIcon(CommunityMaterial.Icon.cmd_dots_horizontal)
-                .isInDrawer(true)
-                .isStatic(true)
-                .withSubItems(*moreList.toTypedArray())
-
-
-            // static drawer items
-            list += NavTarget(DRAWER_ITEM_NOTIFICATIONS,
-                R.string.menu_notifications,
-                NotificationsListFragment::class)
-                .withIcon(CommunityMaterial.Icon.cmd_bell_ring_outline)
-                .isInDrawer(true)
-                .isStatic(true)
-                .isBelowSeparator(true)
-
-            list += NavTarget(DRAWER_ITEM_SETTINGS, R.string.menu_settings, SettingsFragment::class)
-                .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                .isInDrawer(true)
-                .isStatic(true)
-                .isBelowSeparator(true)
-
-
-            // profile settings items
-            list += NavTarget(DRAWER_PROFILE_ADD_NEW, R.string.menu_add_new_profile, null)
-                .withIcon(CommunityMaterial.Icon3.cmd_plus)
-                .withDescription(R.string.drawer_add_new_profile_desc)
-                .isInProfileList(true)
-
-            list += NavTarget(DRAWER_PROFILE_MANAGE,
-                R.string.menu_manage_profiles,
-                ProfileManagerFragment::class)
-                .withTitle(R.string.title_profile_manager)
-                .withIcon(CommunityMaterial.Icon.cmd_account_group)
-                .withDescription(R.string.drawer_manage_profiles_desc)
-                .isInProfileList(false)
-
-            list += NavTarget(DRAWER_PROFILE_MARK_ALL_AS_READ,
-                R.string.menu_mark_everything_as_read,
-                null)
-                .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
-                .isInProfileList(true)
-
-            list += NavTarget(DRAWER_PROFILE_SYNC_ALL, R.string.menu_sync_all, null)
-                .withIcon(CommunityMaterial.Icon.cmd_download_outline)
-                .isInProfileList(true)
-
-
-            // other target items, not directly navigated
-            list += NavTarget(TARGET_GRADES_EDITOR,
-                R.string.menu_grades_editor,
-                GradesEditorFragment::class)
-            list += NavTarget(TARGET_FEEDBACK, R.string.menu_feedback, FeedbackFragment::class)
-            list += NavTarget(TARGET_MESSAGES_DETAILS,
-                R.string.menu_message,
-                MessageFragment::class).withPopTo(DRAWER_ITEM_MESSAGES)
-            list += NavTarget(TARGET_MESSAGES_COMPOSE,
-                R.string.menu_message_compose,
-                MessagesComposeFragment::class)
-            list += NavTarget(TARGET_WEB_PUSH, R.string.menu_web_push, WebPushFragment::class)
-            if (App.devMode) {
-                list += NavTarget(DRAWER_ITEM_DEBUG, R.string.menu_debug, DebugFragment::class)
-                list += NavTarget(TARGET_LAB, R.string.menu_lab, LabFragment::class)
-                    .withIcon(CommunityMaterial.Icon2.cmd_flask_outline)
-                    .isInDrawer(true)
-                    .isBelowSeparator(true)
-                    .isStatic(true)
-            }
-
-            list
-        }
+        private const val TAG = "MainActivity"
     }
 
     private var job = Job()
@@ -296,18 +102,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val swipeRefreshLayout: SwipeRefreshLayoutNoTouch by lazy { b.swipeRefreshLayout }
 
     var onBeforeNavigate: (() -> Boolean)? = null
-    var pausedNavigationData: PausedNavigationData? = null
-        private set
+    private var pausedNavigationData: PausedNavigationData? = null
 
     val app: App by lazy {
         applicationContext as App
     }
 
     private val fragmentManager by lazy { supportFragmentManager }
-    private lateinit var navTarget: NavTarget
+    lateinit var navTarget: NavTarget
+        private set
     private var navArguments: Bundle? = null
-    val navTargetId
-        get() = navTarget.id
 
     private val navBackStack = mutableListOf<Pair<NavTarget, Bundle?>>()
     private var navLoading = true
@@ -371,7 +175,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     window.statusBarColor = statusBarColor
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                        && ColorUtils.calculateLuminance(statusBarColor) > 0.6
+                    && ColorUtils.calculateLuminance(statusBarColor) > 0.6
                 ) {
                     @Suppress("deprecation")
                     window.decorView.systemUiVisibility =
@@ -418,12 +222,15 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 drawerProfileListEmptyListener = {
                     onProfileListEmptyEvent(ProfileListEmptyEvent())
                 }
-                drawerItemSelectedListener = { id, _, _ ->
-                    loadTarget(id)
+                drawerItemSelectedListener = { id, _, item ->
+                    if (item is ExpandableDrawerItem)
+                        false
+                    else
+                        navigate(navTarget = id.asNavTargetOrNull())
                 }
                 drawerProfileSelectedListener = { id, _, _, _ ->
                     // why is this negated -_-
-                    !loadProfile(id)
+                    !navigate(profileId = id)
                 }
                 drawerProfileLongClickListener = { _, profile, _, view ->
                     if (view != null && profile is ProfileDrawerItem) {
@@ -447,7 +254,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
-        navTarget = navTargetList[0]
+        navTarget = NavTarget.HOME
 
         if (savedInstanceState != null) {
             intent?.putExtras(savedInstanceState)
@@ -479,9 +286,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         handleIntent(intent?.extras)
 
         app.db.metadataDao().unreadCounts.observe(this) { unreadCounters ->
-            unreadCounters.map {
-                it.type = it.thingType
-            }
             drawer.setUnreadCounterList(unreadCounters)
         }
 
@@ -504,11 +308,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         app.db.profileDao().getNotArchivedOf(app.profile.archiveId!!)
                     }
                     if (profile != null)
-                        loadProfile(profile)
+                        navigate(profile = profile)
                     else
-                        loadProfile(0)
+                        navigate(profileId = 0)
                 } else {
-                    loadProfile(0)
+                    navigate(profileId = 0)
                 }
             }
         }
@@ -599,39 +403,32 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 .withIcon(CommunityMaterial.Icon.cmd_download_outline)
                 .withOnClickListener {
                     bottomSheet.close()
-                    SyncViewListDialog(this, navTargetId).show()
+                    SyncViewListDialog(this, navTarget).show()
                 },
             BottomSheetSeparatorItem(false),
-            BottomSheetPrimaryItem(false)
-                .withTitle(R.string.menu_settings)
-                .withIcon(CommunityMaterial.Icon.cmd_cog_outline)
-                .withOnClickListener { loadTarget(DRAWER_ITEM_SETTINGS) },
-            BottomSheetPrimaryItem(false)
-                .withTitle(R.string.menu_feedback)
-                .withIcon(CommunityMaterial.Icon2.cmd_help_circle_outline)
-                .withOnClickListener { loadTarget(TARGET_FEEDBACK) }
         )
-        if (App.devMode) {
-            bottomSheet += BottomSheetPrimaryItem(false)
-                .withTitle(R.string.menu_debug)
-                .withIcon(CommunityMaterial.Icon.cmd_android_debug_bridge)
-                .withOnClickListener { loadTarget(DRAWER_ITEM_DEBUG) }
+        for (target in NavTarget.values()) {
+            if (target.location != NavTargetLocation.BOTTOM_SHEET)
+                continue
+            if (target.devModeOnly && !App.devMode)
+                continue
+            bottomSheet += target.toBottomSheetItem(this)
         }
     }
 
-    private var profileSettingClickListener = { id: Int, _: View? ->
-        when (id) {
-            DRAWER_PROFILE_ADD_NEW -> {
+    private var profileSettingClickListener = { itemId: Int, _: View? ->
+        when (val item = itemId.asNavTarget()) {
+            NavTarget.PROFILE_ADD -> {
                 requestHandler.requestLogin()
             }
-            DRAWER_PROFILE_SYNC_ALL -> {
+            NavTarget.PROFILE_SYNC_ALL -> {
                 EdziennikTask.sync().enqueue(this)
             }
-            DRAWER_PROFILE_MARK_ALL_AS_READ -> {
+            NavTarget.PROFILE_MARK_AS_READ -> {
                 launch {
                     withContext(Dispatchers.Default) {
                         app.db.profileDao().allNow.forEach { profile ->
-                            if (profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS)
+                            if (profile.loginStoreType != LoginType.LIBRUS)
                                 app.db.metadataDao()
                                     .setAllSeenExceptMessagesAndAnnouncements(profile.id, true)
                             else
@@ -644,7 +441,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
             }
             else -> {
-                loadTarget(id)
+                navigate(navTarget = item)
             }
         }
         false
@@ -701,7 +498,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         when (error?.type) {
             Type.NOT_AVAILABLE -> {
                 swipeRefreshLayout.isRefreshing = false
-                loadTarget(DRAWER_ITEM_HOME)
+                navigate(navTarget = NavTarget.HOME)
                 RegisterUnavailableDialog(this, error.status!!).show()
                 return
             }
@@ -712,21 +509,25 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             Type.NO_API_ACCESS -> {
                 Toast.makeText(this, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
             }
+            else -> {}
         }
 
         swipeRefreshLayout.isRefreshing = true
-        Toast.makeText(this, fragmentToSyncName(navTargetId), Toast.LENGTH_SHORT).show()
-        val fragmentParam = when (navTargetId) {
-            DRAWER_ITEM_MESSAGES -> MessagesFragment.pageSelection
-            else -> 0
+        Toast.makeText(this, fragmentToSyncName(navTarget), Toast.LENGTH_SHORT).show()
+        val featureType = when (navTarget) {
+            NavTarget.MESSAGES -> when (MessagesFragment.pageSelection) {
+                Message.TYPE_SENT -> FeatureType.MESSAGES_SENT
+                else -> FeatureType.MESSAGES_INBOX
+            }
+            else -> navTarget.featureType
         }
-        val arguments = when (navTargetId) {
-            DRAWER_ITEM_TIMETABLE -> JsonObject("weekStart" to TimetableFragment.pageSelection?.weekStart?.stringY_m_d)
+        val arguments = when (navTarget) {
+            NavTarget.TIMETABLE -> JsonObject("weekStart" to TimetableFragment.pageSelection?.weekStart?.stringY_m_d)
             else -> null
         }
         EdziennikTask.syncProfile(
             App.profileId,
-            listOf(navTargetId to fragmentParam),
+            featureType?.let { setOf(it) },
             arguments = arguments
         ).enqueue(this)
     }
@@ -859,19 +660,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         app.userActionManager.execute(this, event, UserActionManager.UserActionCallback())
     }
 
-    private fun fragmentToSyncName(currentFragment: Int): Int {
-        return when (currentFragment) {
-            DRAWER_ITEM_TIMETABLE -> R.string.sync_feature_timetable
-            DRAWER_ITEM_AGENDA -> R.string.sync_feature_agenda
-            DRAWER_ITEM_GRADES -> R.string.sync_feature_grades
-            DRAWER_ITEM_HOMEWORK -> R.string.sync_feature_homework
-            DRAWER_ITEM_BEHAVIOUR -> R.string.sync_feature_notices
-            DRAWER_ITEM_ATTENDANCE -> R.string.sync_feature_attendance
-            DRAWER_ITEM_MESSAGES -> when (MessagesFragment.pageSelection) {
-                1 -> R.string.sync_feature_messages_outbox
+    private fun fragmentToSyncName(navTarget: NavTarget): Int {
+        return when (navTarget) {
+            NavTarget.TIMETABLE -> R.string.sync_feature_timetable
+            NavTarget.AGENDA -> R.string.sync_feature_agenda
+            NavTarget.GRADES -> R.string.sync_feature_grades
+            NavTarget.HOMEWORK -> R.string.sync_feature_homework
+            NavTarget.BEHAVIOUR -> R.string.sync_feature_notices
+            NavTarget.ATTENDANCE -> R.string.sync_feature_attendance
+            NavTarget.MESSAGES -> when (MessagesFragment.pageSelection) {
+                Message.TYPE_SENT -> R.string.sync_feature_messages_outbox
                 else -> R.string.sync_feature_messages_inbox
             }
-            DRAWER_ITEM_ANNOUNCEMENTS -> R.string.sync_feature_announcements
+            NavTarget.ANNOUNCEMENTS -> R.string.sync_feature_announcements
             else -> R.string.sync_feature_syncing_all
         }
     }
@@ -889,15 +690,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     fun handleIntent(extras: Bundle?) {
-
         d(TAG, "handleIntent() {")
         extras?.keySet()?.forEach { key ->
             d(TAG, "    \"$key\": " + extras.get(key))
         }
         d(TAG, "}")
 
-        var intentProfileId = -1
-        var intentTargetId = -1
+        val intentProfileId = extras.getIntOrNull("profileId")
+        var intentNavTarget = extras.getIntOrNull("fragmentId").asNavTargetOrNull()
 
         if (extras?.containsKey("action") == true) {
             val handled = when (extras.getString("action")) {
@@ -910,7 +710,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     true
                 }
                 "feedbackMessage" -> {
-                    intentTargetId = TARGET_FEEDBACK
+                    intentNavTarget = NavTarget.FEEDBACK
                     false
                 }
                 "userActionRequired" -> {
@@ -920,7 +720,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         params = extras.getBundle("params") ?: return,
                         errorText = 0,
                     )
-                    app.userActionManager.execute(this, event, UserActionManager.UserActionCallback())
+                    app.userActionManager.execute(this,
+                        event,
+                        UserActionManager.UserActionCallback())
                     true
                 }
                 "createManualEvent" -> {
@@ -942,72 +744,58 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         if (extras?.containsKey("reloadProfileId") == true) {
-            val reloadProfileId = extras.getInt("reloadProfileId", -1)
-            extras.remove("reloadProfileId")
+            val reloadProfileId = extras.getIntOrNull("reloadProfileId")
             if (reloadProfileId == -1 || app.profile.id == reloadProfileId) {
                 reloadTarget()
                 return
             }
         }
 
-        if (extras?.getInt("profileId", -1) != -1) {
-            intentProfileId = extras.getInt("profileId", -1)
-            extras?.remove("profileId")
-        }
-
-        if (extras?.getInt("fragmentId", -1) != -1) {
-            intentTargetId = extras.getInt("fragmentId", -1)
-            extras?.remove("fragmentId")
-        }
+        extras?.remove("profileId")
+        extras?.remove("fragmentId")
+        extras?.remove("reloadProfileId")
 
         /*if (intentTargetId == -1 && navController.currentDestination?.id == R.id.loadingFragment) {
             intentTargetId = navTarget.id
         }*/
 
-        if (navLoading) {
+        if (navLoading)
             b.fragment.removeAllViews()
-            if (intentTargetId == -1)
-                intentTargetId = HOME_ID
-        }
 
         when {
-            app.profile.id == 0 -> {
-                if (intentProfileId == -1)
-                    intentProfileId = app.config.lastProfileId
-                loadProfile(intentProfileId, intentTargetId, extras)
-            }
-            intentProfileId != -1 -> {
-                if (app.profile.id != intentProfileId)
-                    loadProfile(intentProfileId, intentTargetId, extras)
-                else
-                    loadTarget(intentTargetId, extras)
-            }
-            intentTargetId != -1 -> {
-                drawer.currentProfile = app.profile.id
-                if (navTargetId != intentTargetId || navLoading)
-                    loadTarget(intentTargetId, extras)
-            }
-            else -> {
-                drawer.currentProfile = app.profile.id
-            }
+            app.profile.id == 0 -> navigate(
+                profileId = intentProfileId ?: app.config.lastProfileId,
+                navTarget = intentNavTarget,
+                args = extras,
+            )
+            intentProfileId != -1 -> navigate(
+                profileId = intentProfileId,
+                navTarget = intentNavTarget,
+                args = extras,
+            )
+            intentNavTarget != null -> navigate(
+                navTarget = intentNavTarget,
+                args = extras,
+            )
+            else -> drawer.currentProfile = app.profile.id
         }
         navLoading = false
     }
 
     override fun recreate() {
-        recreate(navTargetId)
+        recreate(navTarget)
     }
 
-    fun recreate(targetId: Int) {
-        recreate(targetId, null)
+    fun recreate(navTarget: NavTarget) {
+        recreate(navTarget, null)
     }
 
-    fun recreate(targetId: Int? = null, arguments: Bundle? = null) {
+    fun recreate(navTarget: NavTarget? = null, arguments: Bundle? = null) {
         val intent = Intent(this, MainActivity::class.java)
         if (arguments != null)
             intent.putExtras(arguments)
-        if (targetId != null) {
-            intent.putExtra("fragmentId", targetId)
+        if (navTarget != null) {
+            intent.putExtra("fragmentId", navTarget.id)
         }
         finish()
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
@@ -1047,7 +835,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("fragmentId", navTargetId)
+        outState.putExtras("fragmentId" to navTarget)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -1077,187 +865,120 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun canNavigate(): Boolean = onBeforeNavigate?.invoke() != false
 
     fun resumePausedNavigation(): Boolean {
-        if (pausedNavigationData == null)
-            return false
-        pausedNavigationData?.let { data ->
-            when (data) {
-                is PausedNavigationData.LoadProfile -> loadProfile(
-                    id = data.id,
-                    drawerSelection = data.drawerSelection,
-                    arguments = data.arguments,
-                    skipBeforeNavigate = true,
-                )
-                is PausedNavigationData.LoadTarget -> loadTarget(
-                    id = data.id,
-                    arguments = data.arguments,
-                    skipBeforeNavigate = true,
-                )
-                else -> return false
-            }
-        }
+        val data = pausedNavigationData ?: return false
+        navigate(
+            profileId = data.profileId,
+            navTarget = data.navTarget,
+            args = data.args,
+            skipBeforeNavigate = true,
+        )
         pausedNavigationData = null
         return true
     }
 
-    fun loadProfile(id: Int) = loadProfile(id, navTargetId)
-
-    // fun loadProfile(id: Int, arguments: Bundle?) = loadProfile(id, navTargetId, arguments)
-    fun loadProfile(profile: Profile): Boolean {
-        if (!canNavigate()) {
-            pausedNavigationData = PausedNavigationData.LoadProfile(
-                id = profile.id,
-                drawerSelection = navTargetId,
-                arguments = null,
-            )
-            return false
-        }
-
-        loadProfile(profile, navTargetId, null)
-        return true
-    }
-
-    private fun loadProfile(
-        id: Int,
-        drawerSelection: Int,
-        arguments: Bundle? = null,
-        skipBeforeNavigate: Boolean = false,
-    ): Boolean {
-        if (!skipBeforeNavigate && !canNavigate()) {
-            drawer.close()
-            // restore the previous profile after changing it with the drawer
-            // well, it still does not change the toolbar profile image,
-            // but that's now NavView's problem, not mine.
-            drawer.currentProfile = app.profile.id
-            pausedNavigationData = PausedNavigationData.LoadProfile(
-                id = id,
-                drawerSelection = drawerSelection,
-                arguments = arguments,
-            )
-            return false
-        }
-
-        if (App.profileId == id) {
-            drawer.currentProfile = app.profile.id
-            // skipBeforeNavigate because it's checked above already
-            loadTarget(drawerSelection, arguments, skipBeforeNavigate = true)
-            return true
-        }
-        app.profileLoad(id) {
-            loadProfile(it, drawerSelection, arguments)
-        }
-        return true
-    }
-
-    private fun loadProfile(profile: Profile, drawerSelection: Int, arguments: Bundle?) {
-        App.profile = profile
-        MessagesFragment.pageSelection = -1
-
-        setDrawerItems()
-
-        val previousArchivedId = if (app.profile.archived) app.profile.id else null
-        if (previousArchivedId != null) {
-            // prevents accidentally removing the first item if the archived profile is not shown
-            drawer.removeProfileById(previousArchivedId)
-        }
-        if (profile.archived) {
-            drawer.prependProfile(Profile(
-                id = profile.id,
-                loginStoreId = profile.loginStoreId,
-                loginStoreType = profile.loginStoreType,
-                name = profile.name,
-                subname = "Archiwum - ${profile.subname}"
-            ).also {
-                it.archived = true
-            })
-        }
-
-        // the drawer profile is updated automatically when the drawer item is clicked
-        // update it manually when switching profiles from other source
-        //if (drawer.currentProfile != app.profile.id)
-        drawer.currentProfile = app.profileId
-        loadTarget(drawerSelection, arguments, skipBeforeNavigate = true)
-    }
-
-    fun loadTarget(
-        id: Int,
-        arguments: Bundle? = null,
-        skipBeforeNavigate: Boolean = false,
-    ): Boolean {
-        var loadId = id
-        if (loadId == -1) {
-            loadId = DRAWER_ITEM_HOME
-        }
-        val targets = navTargetList
-            .flatMap { it.subItems?.toList() ?: emptyList() }
-            .plus(navTargetList)
-        val target = targets.firstOrNull { it.id == loadId }
-        return when {
-            target == null -> {
-                Toast.makeText(
-                    this,
-                    getString(R.string.error_invalid_fragment, id),
-                    Toast.LENGTH_LONG,
-                ).show()
-                loadTarget(navTargetList.first(), arguments, skipBeforeNavigate)
-            }
-            target.fragmentClass != null -> {
-                loadTarget(target, arguments, skipBeforeNavigate)
-            }
-            else -> {
-                false
-            }
-        }
-    }
-
-    private fun loadTarget(
-        target: NavTarget,
+    fun navigate(
+        profileId: Int? = null,
+        profile: Profile? = null,
+        navTarget: NavTarget? = null,
         args: Bundle? = null,
         skipBeforeNavigate: Boolean = false,
     ): Boolean {
-        d("NavDebug", "loadTarget(target = $target, args = $args)")
-
-        if (!skipBeforeNavigate && !canNavigate()) {
+        d(TAG, "navigate(profileId = ${profile?.id ?: profileId}, target = ${navTarget?.name}, args = $args)")
+        if (!(skipBeforeNavigate || navTarget == this.navTarget) && !canNavigate()) {
             bottomSheet.close()
             drawer.close()
-            pausedNavigationData = PausedNavigationData.LoadTarget(
-                id = target.id,
-                arguments = args,
-            )
+            // restore the previous profile if changing it with the drawer
+            // well, it still does not change the toolbar profile image,
+            // but that's now NavView's problem, not mine.
+            drawer.currentProfile = App.profile.id
+            pausedNavigationData = PausedNavigationData(profileId, navTarget, args)
             return false
         }
-        pausedNavigationData = null
+
+        val loadNavTarget = navTarget ?: this.navTarget
+        if (profile != null && profile.id != App.profileId) {
+            navigateImpl(profile, loadNavTarget, args, profileChanged = true)
+            return true
+        }
+        if (profileId != null && profileId != App.profileId) {
+            app.profileLoad(profileId) {
+                navigateImpl(it, loadNavTarget, args, profileChanged = true)
+            }
+            return true
+        }
+        navigateImpl(App.profile, loadNavTarget, args, profileChanged = false)
+        return true
+    }
+
+    private fun navigateImpl(
+        profile: Profile,
+        navTarget: NavTarget,
+        args: Bundle?,
+        profileChanged: Boolean,
+    ) {
+        d(TAG, "navigateImpl(profileId = ${profile.id}, target = ${navTarget.name}, args = $args)")
+
+        if (profileChanged) {
+            App.profile = profile
+            MessagesFragment.pageSelection = -1
+            // set new drawer items for this profile
+            setDrawerItems()
+
+            val previousArchivedId = if (app.profile.archived) app.profile.id else null
+            if (previousArchivedId != null) {
+                // prevents accidentally removing the first item if the archived profile is not shown
+                drawer.removeProfileById(previousArchivedId)
+            }
+            if (profile.archived) {
+                // add the same profile but with a different name
+                // (other fields are not needed by the drawer)
+                drawer.prependProfile(Profile(
+                    id = profile.id,
+                    loginStoreId = profile.loginStoreId,
+                    loginStoreType = profile.loginStoreType,
+                    name = profile.name,
+                    subname = "Archiwum - ${profile.subname}"
+                ).also {
+                    it.archived = true
+                })
+            }
+
+            // the drawer profile is updated automatically when the drawer item is clicked
+            // update it manually when switching profiles from other source
+            //if (drawer.currentProfile != app.profile.id)
+            drawer.currentProfile = App.profileId
+        }
 
         val arguments = args
-            ?: navBackStack.firstOrNull { it.first.id == target.id }?.second
+            ?: navBackStack.firstOrNull { it.first == navTarget }?.second
             ?: Bundle()
         bottomSheet.close()
         bottomSheet.removeAllContextual()
         bottomSheet.toggleGroupEnabled = false
         drawer.close()
-        if (drawer.getSelection() != target.id)
-            drawer.setSelection(target.id, fireOnClick = false)
-        navView.toolbar.setTitle(target.title ?: target.name)
+        if (drawer.getSelection() != navTarget.id)
+            drawer.setSelection(navTarget.id, fireOnClick = false)
+        navView.toolbar.setTitle(navTarget.titleRes ?: navTarget.nameRes)
         navView.bottomBar.fabEnable = false
         navView.bottomBar.fabExtended = false
         navView.bottomBar.setFabOnClickListener(null)
 
-        d("NavDebug",
-            "Navigating from ${navTarget.fragmentClass?.java?.simpleName} to ${target.fragmentClass?.java?.simpleName}")
+        d("NavDebug", "Navigating from ${this.navTarget.name} to ${navTarget.name}")
 
-        val fragment = target.fragmentClass?.java?.newInstance() ?: return false
+        val fragment = navTarget.fragmentClass?.newInstance() ?: return
         fragment.arguments = arguments
         val transaction = fragmentManager.beginTransaction()
 
-        if (navTarget == target) {
+        if (navTarget == this.navTarget) {
             // just reload the current target
             transaction.setCustomAnimations(
                 R.anim.fade_in,
                 R.anim.fade_out
             )
         } else {
-            navBackStack.keys().lastIndexOf(target).let {
+            navBackStack.keys().lastIndexOf(navTarget).let {
                 if (it == -1)
-                    return@let target
+                    return@let navTarget
                 // pop the back stack up until that target
                 transaction.setCustomAnimations(
                     R.anim.task_close_enter,
@@ -1276,8 +997,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 for (i in 0 until popCount) {
                     navBackStack.removeAt(navBackStack.lastIndex)
                 }
-                navTarget = target
-                navArguments = arguments
+                this.navTarget = navTarget
+                this.navArguments = arguments
 
                 return@let null
             }?.let {
@@ -1287,13 +1008,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     R.anim.task_open_enter,
                     R.anim.task_open_exit
                 )
-                navBackStack.add(navTarget to navArguments)
-                navTarget = target
-                navArguments = arguments
+                navBackStack.add(this.navTarget to this.navArguments)
+                this.navTarget = navTarget
+                this.navArguments = arguments
             }
         }
 
-        if (navTarget.popToHome) {
+        if (navTarget.popTo == NavTarget.HOME) {
             // if the current has popToHome, let only home be in the back stack
             // probably `if (navTarget.popToHome)` in popBackStack() is not needed now
             val popCount = navBackStack.size - 1
@@ -1302,10 +1023,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
-        d("NavDebug",
-            "Current fragment ${navTarget.fragmentClass?.java?.simpleName}, pop to home ${navTarget.popToHome}, back stack:")
-        navBackStack.forEachIndexed { index, target2 ->
-            d("NavDebug", " - $index: ${target2.first.fragmentClass?.java?.simpleName}")
+        d("NavDebug", "Current fragment ${navTarget.name}, back stack:")
+        navBackStack.forEachIndexed { index, item ->
+            d("NavDebug", " - $index: ${item.first.name}")
         }
 
         transaction.replace(R.id.fragment, fragment)
@@ -1317,36 +1037,37 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             @Suppress("deprecation")
             val taskDesc = ActivityManager.TaskDescription(
-                if (target.id == HOME_ID)
+                if (navTarget == NavTarget.HOME)
                     getString(R.string.app_name)
                 else
-                    getString(R.string.app_task_format, getString(target.name)),
+                    getString(R.string.app_task_format, getString(navTarget.nameRes)),
                 bm,
                 getColorFromAttr(this, R.attr.colorSurface)
             )
             setTaskDescription(taskDesc)
         }
-        return true
+        return
     }
 
-    fun reloadTarget() = loadTarget(navTarget)
+    fun reloadTarget() = navigate()
 
     private fun popBackStack(skipBeforeNavigate: Boolean = false): Boolean {
         if (navBackStack.size == 0) {
             return false
         }
         // TODO back stack argument support
-        when {
-            navTarget.popToHome -> {
-                loadTarget(HOME_ID, skipBeforeNavigate = skipBeforeNavigate)
-            }
-            navTarget.popTo != null -> {
-                loadTarget(navTarget.popTo ?: HOME_ID, skipBeforeNavigate = skipBeforeNavigate)
-            }
-            else -> {
-                navBackStack.last().let {
-                    loadTarget(it.first, it.second, skipBeforeNavigate = skipBeforeNavigate)
-                }
+        if (navTarget.popTo != null) {
+            navigate(
+                navTarget = navTarget.popTo,
+                skipBeforeNavigate = skipBeforeNavigate,
+            )
+        } else {
+            navBackStack.last().let {
+                navigate(
+                    navTarget = it.first,
+                    args = it.second,
+                    skipBeforeNavigate = skipBeforeNavigate,
+                )
             }
         }
         return true
@@ -1401,33 +1122,32 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
          | |  | | '__/ _` \ \ /\ / / _ \ '__| | | __/ _ \ '_ ` _ \/ __|
          | |__| | | | (_| |\ V  V /  __/ |    | | ||  __/ | | | | \__ \
          |_____/|_|  \__,_| \_/\_/ \___|_|    |_|\__\___|_| |_| |_|__*/
-    @Suppress("UNUSED_PARAMETER")
     private fun createDrawerItem(target: NavTarget, level: Int = 1): IDrawerItem<*> {
         val item = when {
-            target.subItems != null -> ExpandableDrawerItem()
+            // target.subItems != null -> ExpandableDrawerItem()
             level > 1 -> SecondaryDrawerItem()
             else -> DrawerPrimaryItem()
         }
 
         item.also {
             it.identifier = target.id.toLong()
-            it.nameRes = target.name
-            it.hiddenInMiniDrawer = !app.config.ui.miniMenuButtons.contains(target.id)
-            it.description = target.description?.toStringHolder()
+            it.nameRes = target.nameRes
+            it.descriptionRes = target.descriptionRes ?: -1
             it.icon = target.icon?.toImageHolder()
+            it.hiddenInMiniDrawer = !app.config.ui.miniMenuButtons.contains(target)
             if (it is DrawerPrimaryItem)
-                it.appTitle = target.title?.resolveString(this)
-            if (it is ColorfulBadgeable && target.badgeTypeId != null)
+                it.appTitle = target.titleRes?.resolveString(this)
+            if (/* it is ColorfulBadgeable && */ target.badgeType != null)
                 it.badgeStyle = drawer.badgeStyle
             it.isSelectedBackgroundAnimated = false
             it.level = level
         }
-        if (target.badgeTypeId != null)
-            drawer.addUnreadCounterType(target.badgeTypeId!!, target.id)
+        if (target.badgeType != null)
+            drawer.addUnreadCounterType(target.badgeType.id, target.id)
 
-        item.subItems = target.subItems?.map {
+        /* item.subItems = target.subItems?.map {
             createDrawerItem(it, level + 1)
-        }?.toMutableList() ?: mutableListOf()
+        }?.toMutableList() ?: mutableListOf() */
 
         return item
     }
@@ -1435,66 +1155,66 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     fun setDrawerItems() {
         d("NavDebug", "setDrawerItems() app.profile = ${app.profile}")
         val drawerItems = arrayListOf<IDrawerItem<*>>()
+        val drawerItemsMore = arrayListOf<IDrawerItem<*>>()
+        val drawerItemsBottom = arrayListOf<IDrawerItem<*>>()
         val drawerProfiles = arrayListOf<ProfileSettingDrawerItem>()
 
-        val supportedFragments = app.profile.supportedFragments
+        for (target in NavTarget.values()) {
+            if (target.devModeOnly && !App.devMode)
+                continue
+            if (target.featureType != null && target.featureType !in app.profile.loginStoreType.features)
+                continue
 
-        targetPopToHomeList.clear()
-
-        var separatorAdded = false
-
-        for (target in navTargetList) {
-            if (target.isInDrawer && target.isBelowSeparator && !separatorAdded) {
-                separatorAdded = true
-                drawerItems += DividerDrawerItem()
-            }
-
-            if (target.popToHome)
-                targetPopToHomeList += target.id
-
-            if (target.isInDrawer && (
-                    target.isStatic
-                    || supportedFragments.isEmpty()
-                    || supportedFragments.contains(target.id))
-            ) {
-                drawerItems += createDrawerItem(target)
-                if (target.id == 1) {
-                    targetHomeId = target.id
+            when (target.location) {
+                NavTargetLocation.DRAWER -> {
+                    drawerItems += createDrawerItem(target, level = 1)
                 }
-            }
-
-            if (target.isInProfileList) {
-                drawerProfiles += ProfileSettingDrawerItem().apply {
-                    identifier = target.id.toLong()
-                    nameRes = target.name
-                    if (target.description != null)
-                        descriptionRes = target.description!!
-                    if (target.icon != null)
-                        withIcon(target.icon!!)
+                NavTargetLocation.DRAWER_MORE -> {
+                    drawerItemsMore += createDrawerItem(target, level = 2)
                 }
+                NavTargetLocation.DRAWER_BOTTOM -> {
+                    drawerItemsBottom += createDrawerItem(target, level = 1)
+                }
+                NavTargetLocation.PROFILE_LIST -> {
+                    drawerProfiles += ProfileSettingDrawerItem().also {
+                        it.identifier = target.id.toLong()
+                        it.nameRes = target.nameRes
+                        it.descriptionRes = target.descriptionRes ?: -1
+                        it.icon = target.icon?.toImageHolder()
+                    }
+                }
+                else -> continue
             }
         }
+
+        drawerItems += ExpandableDrawerItem().also {
+            it.identifier = -1L
+            it.nameRes = R.string.menu_more
+            it.icon = CommunityMaterial.Icon.cmd_dots_horizontal.toImageHolder()
+            it.subItems = drawerItemsMore.toMutableList()
+            it.isSelectedBackgroundAnimated = false
+            it.isSelectable = false
+        }
+        drawerItems += DividerDrawerItem()
+        drawerItems += drawerItemsBottom
 
         // seems that this cannot be open, because the itemAdapter has Profile items
         // instead of normal Drawer items...
         drawer.profileSelectionClose()
-
         drawer.setItems(*drawerItems.toTypedArray())
         drawer.removeAllProfileSettings()
         drawer.addProfileSettings(*drawerProfiles.toTypedArray())
     }
 
-    private val targetPopToHomeList = arrayListOf<Int>()
-    private var targetHomeId: Int = -1
     override fun onBackPressed() {
-        if (!b.navView.onBackPressed()) {
-            if (App.config.ui.openDrawerOnBackPressed && ((navTarget.popTo == null && navTarget.popToHome)
-                        || navTarget.id == DRAWER_ITEM_HOME)
-            ) {
-                b.navView.drawer.toggle()
-            } else {
+        if (App.config.ui.openDrawerOnBackPressed) {
+            if (drawer.isOpen)
                 navigateUp()
-            }
+            else if (!navView.onBackPressed())
+                drawer.open()
+        } else {
+            if (!navView.onBackPressed())
+                navigateUp()
         }
     }
 

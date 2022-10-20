@@ -26,7 +26,7 @@ abstract class NoticeDao : BaseDao<Notice, NoticeFull> {
             teachers.teacherName ||" "|| teachers.teacherSurname AS teacherName
             FROM notices
             LEFT JOIN teachers USING(profileId, teacherId)
-            LEFT JOIN metadata ON noticeId = thingId AND thingType = ${Metadata.TYPE_NOTICE} AND metadata.profileId = notices.profileId
+            LEFT JOIN metadata ON noticeId = thingId AND thingType = 2 AND metadata.profileId = notices.profileId
         """
 
         private const val ORDER_BY = """ORDER BY addedDate DESC"""

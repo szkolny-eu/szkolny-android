@@ -16,8 +16,7 @@ import androidx.room.Ignore
 import com.google.gson.JsonObject
 import pl.droidsonroids.gif.GifDrawable
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.ProfileImageHolder
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -31,7 +30,7 @@ open class Profile(
         @ColumnInfo(name = "profileId")
         override var id: Int, /* needs to be var for ProfileArchiver */
         val loginStoreId: Int,
-        val loginStoreType: Int,
+        val loginStoreType: LoginType,
 
         override var name: String = "",
         override var subname: String? = null,
@@ -134,16 +133,8 @@ open class Profile(
     val accountOwnerName
         get() = accountName ?: studentNameLong
 
-    val registerName
-        get() = when (loginStoreType) {
-            LOGIN_TYPE_LIBRUS -> "librus"
-            LOGIN_TYPE_VULCAN -> "vulcan"
-            LOGIN_TYPE_IDZIENNIK -> "idziennik"
-            LOGIN_TYPE_MOBIDZIENNIK -> "mobidziennik"
-            LOGIN_TYPE_PODLASIE -> "podlasie"
-            LOGIN_TYPE_EDUDZIENNIK -> "edudziennik"
-            else -> "unknown"
-        }
+    @Ignore
+    val registerName = loginStoreType.name.lowercase()
 
     val canShare
         get() = registration == REGISTRATION_ENABLED && !archived
@@ -193,54 +184,4 @@ open class Profile(
     override fun applyImageTo(imageView: ImageView) {
         getImageHolder(imageView.context).applyTo(imageView)
     }
-
-    val supportedFragments: List<Int>
-        get() = when (loginStoreType) {
-            LoginStore.LOGIN_TYPE_MOBIDZIENNIK,
-            LoginStore.LOGIN_TYPE_DEMO,
-            LoginStore.LOGIN_TYPE_VULCAN -> listOf(
-                    MainActivity.DRAWER_ITEM_TIMETABLE,
-                    MainActivity.DRAWER_ITEM_AGENDA,
-                    MainActivity.DRAWER_ITEM_GRADES,
-                    MainActivity.DRAWER_ITEM_MESSAGES,
-                    MainActivity.DRAWER_ITEM_HOMEWORK,
-                    MainActivity.DRAWER_ITEM_BEHAVIOUR,
-                    MainActivity.DRAWER_ITEM_ATTENDANCE
-            )
-            LoginStore.LOGIN_TYPE_LIBRUS,
-            LoginStore.LOGIN_TYPE_IDZIENNIK -> listOf(
-                    MainActivity.DRAWER_ITEM_TIMETABLE,
-                    MainActivity.DRAWER_ITEM_AGENDA,
-                    MainActivity.DRAWER_ITEM_GRADES,
-                    MainActivity.DRAWER_ITEM_MESSAGES,
-                    MainActivity.DRAWER_ITEM_HOMEWORK,
-                    MainActivity.DRAWER_ITEM_BEHAVIOUR,
-                    MainActivity.DRAWER_ITEM_ATTENDANCE,
-                    MainActivity.DRAWER_ITEM_ANNOUNCEMENTS
-            )
-            LOGIN_TYPE_EDUDZIENNIK -> listOf(
-                    MainActivity.DRAWER_ITEM_TIMETABLE,
-                    MainActivity.DRAWER_ITEM_AGENDA,
-                    MainActivity.DRAWER_ITEM_GRADES,
-                    MainActivity.DRAWER_ITEM_HOMEWORK,
-                    MainActivity.DRAWER_ITEM_BEHAVIOUR,
-                    MainActivity.DRAWER_ITEM_ATTENDANCE,
-                    MainActivity.DRAWER_ITEM_ANNOUNCEMENTS
-            )
-            LOGIN_TYPE_PODLASIE -> listOf(
-                    MainActivity.DRAWER_ITEM_TIMETABLE,
-                    MainActivity.DRAWER_ITEM_AGENDA,
-                    MainActivity.DRAWER_ITEM_GRADES,
-                    MainActivity.DRAWER_ITEM_HOMEWORK
-            )
-            LOGIN_TYPE_USOS -> listOf(
-                    MainActivity.DRAWER_ITEM_TIMETABLE,
-                    MainActivity.DRAWER_ITEM_AGENDA
-            )
-            else -> listOf(
-                    MainActivity.DRAWER_ITEM_TIMETABLE,
-                    MainActivity.DRAWER_ITEM_AGENDA,
-                    MainActivity.DRAWER_ITEM_GRADES
-            )
-        }
 }

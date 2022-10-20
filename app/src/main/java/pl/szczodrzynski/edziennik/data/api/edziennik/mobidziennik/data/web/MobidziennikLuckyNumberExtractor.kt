@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.entity.LuckyNumber
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikLuckyNumberExtractor(val data: DataMobidziennik, text: String) {
@@ -26,7 +27,7 @@ class MobidziennikLuckyNumberExtractor(val data: DataMobidziennik, text: String)
                 data.metadataList.add(
                         Metadata(
                                 data.profileId,
-                                Metadata.TYPE_LUCKY_NUMBER,
+                                MetadataType.LUCKY_NUMBER,
                                 luckyNumberObject.date.value.toLong(),
                                 true,
                                 data.profile?.empty ?: false

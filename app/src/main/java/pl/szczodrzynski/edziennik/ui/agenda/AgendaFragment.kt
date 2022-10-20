@@ -24,6 +24,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AgendaConfigDialog
@@ -105,7 +106,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
                                 activity.bottomSheet.close()
                                 withContext(Dispatchers.Default) {
                                     App.db.metadataDao()
-                                        .setAllSeen(app.profileId, Metadata.TYPE_EVENT, true)
+                                        .setAllSeen(app.profileId, MetadataType.EVENT, true)
                                 }
                                 Toast.makeText(
                                     activity,

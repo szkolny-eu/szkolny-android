@@ -33,7 +33,7 @@ abstract class GradeDao : BaseDao<Grade, GradeFull> {
             FROM grades
             LEFT JOIN teachers USING(profileId, teacherId)
             LEFT JOIN subjects USING(profileId, subjectId)
-            LEFT JOIN metadata ON gradeId = thingId AND thingType = ${Metadata.TYPE_GRADE} AND metadata.profileId = grades.profileId
+            LEFT JOIN metadata ON gradeId = thingId AND thingType = 1 AND metadata.profileId = grades.profileId
         """
 
         private const val ORDER_BY = """ORDER BY addedDate DESC"""

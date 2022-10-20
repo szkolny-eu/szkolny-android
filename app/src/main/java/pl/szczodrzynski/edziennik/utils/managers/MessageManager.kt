@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.ext.appendSpan
 import pl.szczodrzynski.edziennik.ext.appendText
@@ -149,7 +150,7 @@ class MessageManager(private val app: App) {
         withContext(Dispatchers.Default) {
             app.db.messageRecipientDao().clearFor(profileId, messageId)
             app.db.messageDao().delete(profileId, messageId)
-            app.db.metadataDao().delete(profileId, Metadata.TYPE_MESSAGE, messageId)
+            app.db.metadataDao().delete(profileId, MetadataType.MESSAGE, messageId)
         }
     }
 
@@ -172,7 +173,7 @@ class MessageManager(private val app: App) {
                 senderId = -1L,
                 addedDate = System.currentTimeMillis(),
             )
-            val metadata = Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true)
+            val metadata = Metadata(profileId, MetadataType.MESSAGE, message.id, true, true)
 
             val recipients = teachers.map {
                 MessageRecipient(profileId, it.id, message.id)

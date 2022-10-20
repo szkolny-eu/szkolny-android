@@ -210,7 +210,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 profile.userCode,
                 profile.studentNameLong,
                 profile.studentNameShort,
-                profile.loginStoreType,
+                profile.loginStoreType.id,
                 teams.filter { it.profileId == profile.id }.map { it.code }
             )
             val hash = user.toString().md5()
@@ -225,7 +225,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 userCodes = profiles.map { it.userCode },
                 users = users.keys(),
                 lastSync = lastSyncTime,
-                notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type, it.text) }
+                notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type.id, it.text) }
         )).execute()
         val (events, notes, hasBrowsers) = parseResponse(response, updateDeviceHash = true)
 

@@ -81,7 +81,7 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
                 "firstProfileId" to profiles.firstOrNull()?.id
         )
 
-        val profileIds = profiles.map { it.id }
+        val profileIds = profiles.map { it.id }.toSet()
         EdziennikTask.syncProfileList(profileIds).enqueue(activity)
     }
 

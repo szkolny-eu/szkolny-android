@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -83,7 +84,7 @@ class MobidziennikWebMessagesInbox(override val data: DataMobidziennik,
                 data.setSeenMetadataList.add(
                         Metadata(
                                 profileId,
-                                Metadata.TYPE_MESSAGE,
+                                MetadataType.MESSAGE,
                                 message.id,
                                 isRead,
                                 isRead || profile?.empty ?: false

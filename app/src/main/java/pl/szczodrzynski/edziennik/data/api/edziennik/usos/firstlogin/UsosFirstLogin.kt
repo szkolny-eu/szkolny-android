@@ -7,14 +7,13 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.usos.firstlogin
 import com.google.gson.JsonObject
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.data.api.ERROR_USOS_NO_STUDENT_PROGRAMMES
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_USOS
-import pl.szczodrzynski.edziennik.data.api.edziennik.librus.firstlogin.LibrusFirstLogin
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.data.UsosApi
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.login.UsosLoginApi
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.*
 
 class UsosFirstLogin(val data: DataUsos, val onSuccess: () -> Unit) {
@@ -25,9 +24,7 @@ class UsosFirstLogin(val data: DataUsos, val onSuccess: () -> Unit) {
     private val api = UsosApi(data, null)
 
     init {
-        val loginStoreId = data.loginStore.id
-        val loginStoreType = LOGIN_TYPE_USOS
-        var firstProfileId = loginStoreId
+        var firstProfileId = data.loginStore.id
 
         UsosLoginApi(data) {
             api.apiRequest<JsonObject>(
@@ -60,7 +57,8 @@ class UsosFirstLogin(val data: DataUsos, val onSuccess: () -> Unit) {
 
                 val profile = Profile(
                     id = firstProfileId++,
-                    loginStoreId = loginStoreId, loginStoreType = loginStoreType,
+                    loginStoreId = data.loginStore.id,
+                    loginStoreType = LoginType.USOS,
                     name = studentName,
                     subname = data.schoolId,
                     studentNameLong = studentName,

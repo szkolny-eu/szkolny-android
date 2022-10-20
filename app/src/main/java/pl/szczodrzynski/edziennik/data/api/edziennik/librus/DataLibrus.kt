@@ -5,13 +5,10 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_API
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_MESSAGES
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_PORTAL
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_SYNERGIA
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.currentTimeUnix
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 
@@ -25,15 +22,15 @@ class DataLibrus(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isPortalLoginValid())
-            loginMethods += LOGIN_METHOD_LIBRUS_PORTAL
+            loginMethods += LoginMethod.LIBRUS_PORTAL
         if (isApiLoginValid())
-            loginMethods += LOGIN_METHOD_LIBRUS_API
+            loginMethods += LoginMethod.LIBRUS_API
         if (isSynergiaLoginValid()) {
-            loginMethods += LOGIN_METHOD_LIBRUS_SYNERGIA
+            loginMethods += LoginMethod.LIBRUS_SYNERGIA
             app.cookieJar.set("synergia.librus.pl", "DZIENNIKSID", synergiaSessionId)
         }
         if (isMessagesLoginValid()) {
-            loginMethods += LOGIN_METHOD_LIBRUS_MESSAGES
+            loginMethods += LoginMethod.LIBRUS_MESSAGES
             app.cookieJar.set("wiadomosci.librus.pl", "DZIENNIKSID", messagesSessionId)
         }
     }

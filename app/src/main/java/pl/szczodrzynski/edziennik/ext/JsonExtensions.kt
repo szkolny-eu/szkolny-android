@@ -42,6 +42,9 @@ fun JsonArray.getChar(key: Int): Char? = if (key >= size()) null else get(key)?.
 fun JsonArray.getJsonObject(key: Int): JsonObject? = if (key >= size()) null else get(key)?.let { if (it.isJsonObject) it.asJsonObject else null }
 fun JsonArray.getJsonArray(key: Int): JsonArray? = if (key >= size()) null else get(key)?.let { if (it.isJsonArray) it.asJsonArray else null }
 
+inline fun <reified E : Enum<E>> JsonObject?.getEnum(key: String) = this?.getInt(key)?.toEnum<E>()
+fun JsonObject.putEnum(key: String, value: Enum<*>) = addProperty(key, value.toInt())
+
 fun String.toJsonObject(): JsonObject? = try { JsonParser.parseString(this).asJsonObject } catch (ignore: Exception) { null }
 
 operator fun JsonObject.set(key: String, value: JsonElement) = this.add(key, value)
@@ -55,12 +58,14 @@ fun JsonArray.asJsonObjectList() = this.mapNotNull { it.asJsonObject }
 fun JsonObject(vararg properties: Pair<String, Any?>): JsonObject {
     return JsonObject().apply {
         for (property in properties) {
-            when (property.second) {
-                is JsonElement -> add(property.first, property.second as JsonElement?)
-                is String -> addProperty(property.first, property.second as String?)
-                is Char -> addProperty(property.first, property.second as Char?)
-                is Number -> addProperty(property.first, property.second as Number?)
-                is Boolean -> addProperty(property.first, property.second as Boolean?)
+            val (key, value) = property
+            when (value) {
+                is JsonElement -> add(key, value)
+                is String -> addProperty(key, value)
+                is Char -> addProperty(key, value)
+                is Number -> addProperty(key, value)
+                is Boolean -> addProperty(key, value)
+                is Enum<*> -> addProperty(key, value.toInt())
             }
         }
     }

@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.crc32
 import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.getString
@@ -53,7 +54,7 @@ class PodlasieApiHomework(val data: DataPodlasie, val rows: List<JsonObject>) {
             data.metadataList.add(
                     Metadata(
                             data.profileId,
-                            Metadata.TYPE_HOMEWORK,
+                            MetadataType.HOMEWORK,
                             id,
                             data.profile?.empty ?: false,
                             data.profile?.empty ?: false

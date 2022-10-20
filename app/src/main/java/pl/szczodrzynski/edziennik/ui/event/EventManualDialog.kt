@@ -24,6 +24,8 @@ import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
@@ -170,9 +172,7 @@ class EventManualDialog(
 
         EdziennikTask.syncProfile(
                 profileId = profileId,
-                viewIds = listOf(
-                        MainActivity.DRAWER_ITEM_TIMETABLE to 0
-                ),
+                featureTypes = setOf(FeatureType.TIMETABLE),
                 arguments = JsonObject(
                         "weekStart" to weekStart.stringY_m_d
                 )
@@ -479,8 +479,8 @@ class EventManualDialog(
         val metadataObject = Metadata(
                 profileId,
                 when (type?.id) {
-                    Event.TYPE_HOMEWORK -> Metadata.TYPE_HOMEWORK
-                    else -> Metadata.TYPE_EVENT
+                    Event.TYPE_HOMEWORK -> MetadataType.HOMEWORK
+                    else -> MetadataType.EVENT
                 },
                 eventObject.id,
                 true,

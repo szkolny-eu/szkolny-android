@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -71,7 +72,7 @@ class LibrusApiEvents(override val data: DataLibrus,
                 data.metadataList.add(
                         Metadata(
                                 profileId,
-                                Metadata.TYPE_EVENT,
+                                MetadataType.EVENT,
                                 id,
                                 profile?.empty ?: false,
                                 profile?.empty ?: false

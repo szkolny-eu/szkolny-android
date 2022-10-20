@@ -4,19 +4,19 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
-import android.util.SparseIntArray
 import androidx.core.app.NotificationCompat
-import androidx.core.util.forEach
-import androidx.core.util.set
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
-import com.mikepenz.iconics.utils.*
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.db.entity.Notification.Companion.TYPE_SERVER_MESSAGE
+import com.mikepenz.iconics.utils.colorRes
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
 import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.ext.asBoldSpannable
 import pl.szczodrzynski.edziennik.ext.concat
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Time
 import pl.szczodrzynski.edziennik.data.db.entity.Notification as AppNotification
 
@@ -54,26 +54,12 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
                 .setGroup(if (quiet) app.notificationChannelsManager.dataQuiet.key else app.notificationChannelsManager.data.key)
     }
 
-    private fun buildSummaryText(summaryCounts: SparseIntArray): CharSequence {
+    private fun buildSummaryText(summaryCounts: Map<NotificationType, Int>): CharSequence {
         val summaryTexts = mutableListOf<String>()
-        summaryCounts.forEach { key, value ->
+        summaryCounts.forEach { (key, value) ->
             if (value <= 0)
                 return@forEach
-            val pluralRes = when (key) {
-                AppNotification.TYPE_TIMETABLE_LESSON_CHANGE -> R.plurals.notification_new_timetable_change_format
-                AppNotification.TYPE_NEW_GRADE -> R.plurals.notification_new_grades_format
-                AppNotification.TYPE_NEW_EVENT -> R.plurals.notification_new_events_format
-                AppNotification.TYPE_NEW_HOMEWORK -> R.plurals.notification_new_homework_format
-                AppNotification.TYPE_NEW_SHARED_EVENT -> R.plurals.notification_new_shared_events_format
-                AppNotification.TYPE_NEW_SHARED_HOMEWORK -> R.plurals.notification_new_shared_homework_format
-                AppNotification.TYPE_NEW_MESSAGE -> R.plurals.notification_new_messages_format
-                AppNotification.TYPE_NEW_NOTICE -> R.plurals.notification_new_notices_format
-                AppNotification.TYPE_NEW_ATTENDANCE -> R.plurals.notification_new_attendance_format
-                AppNotification.TYPE_LUCKY_NUMBER -> R.plurals.notification_new_lucky_number_format
-                AppNotification.TYPE_NEW_ANNOUNCEMENT -> R.plurals.notification_new_announcements_format
-                else -> R.plurals.notification_other_format
-            }
-            summaryTexts += app.resources.getQuantityString(pluralRes, value, value)
+            summaryTexts += app.resources.getQuantityString(key.pluralRes, value, value)
         }
         return summaryTexts.concat(", ")
     }
@@ -83,7 +69,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
         if (count == 0)
             return@run
         val notificationManager = app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val summaryCounts = SparseIntArray()
+        val summaryCounts = mutableMapOf<NotificationType, Int>()
 
         val newNotificationsText = app.resources.getQuantityString(R.plurals.notification_count_format, count, count)
         val newNotificationsShortText = app.resources.getQuantityString(R.plurals.notification_count_short_format, count, count)
@@ -91,7 +77,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
         val intent = Intent(
                 app,
                 MainActivity::class.java,
-                "fragmentId" to MainActivity.DRAWER_ITEM_NOTIFICATIONS
+                "fragmentId" to NavTarget.NOTIFICATIONS.id
         )
         val summaryIntent = PendingIntent.getActivity(app, app.notificationChannelsManager.data.id, intent, PendingIntent.FLAG_ONE_SHOT or pendingIntentFlag())
 
@@ -101,7 +87,7 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N && count > 4 || Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && count > 8) {
             val summaryList = mutableListOf<CharSequence>()
             nList.forEach {
-                summaryCounts[it.type]++
+                summaryCounts[it.type] = summaryCounts.getOrDefault(it.type, 0) + 1
                 summaryList += listOf(
                         it.profileName.asBoldSpannable(),
                         it.text
@@ -141,14 +127,14 @@ class PostNotifications(val app: App, nList: List<AppNotification>) {
         else {
             // Less than 8 notifications
             val notifications = nList.map {
-                summaryCounts[it.type]++
+                summaryCounts[it.type] = summaryCounts.getOrDefault(it.type, 0) + 1
                 NotificationCompat.Builder(app, app.notificationChannelsManager.data.key)
                         .setContentTitle(it.profileName ?: app.getString(R.string.app_name))
                         .setContentText(it.text)
-                        .setSubText(if (it.type == TYPE_SERVER_MESSAGE) null else it.title)
+                        .setSubText(if (it.type == NotificationType.SERVER_MESSAGE) null else it.title)
                         .setTicker("${it.profileName}: ${it.title}")
                         .setSmallIcon(R.drawable.ic_notification)
-                        .setLargeIcon(IconicsDrawable(app, it.getLargeIcon()).apply {
+                        .setLargeIcon(IconicsDrawable(app, it.type.icon).apply {
                             colorRes = R.color.colorPrimary
                         }.toBitmap())
                         .setStyle(NotificationCompat.BigTextStyle()

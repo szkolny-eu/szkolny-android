@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.TeacherItemBinding
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import kotlin.coroutines.CoroutineContext
 
 class TeachersAdapter(
@@ -67,7 +68,7 @@ class TeachersAdapter(
             b.sendMessage.onClick {
                 val intent = Intent(
                     Intent.ACTION_MAIN,
-                    "fragmentId" to MainActivity.TARGET_MESSAGES_COMPOSE,
+                    "fragmentId" to NavTarget.MESSAGE_COMPOSE,
                     "messageRecipientId" to item.id
                 )
                 activity.sendBroadcast(intent)

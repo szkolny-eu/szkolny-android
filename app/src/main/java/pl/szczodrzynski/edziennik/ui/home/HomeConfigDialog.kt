@@ -20,7 +20,7 @@ class HomeConfigDialog(
     private val reloadOnDismiss: Boolean = true,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog(activity, onShowListener, onDismissListener) {
+) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
 
     override val TAG = "HomeConfigDialog"
 

@@ -30,6 +30,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Subject
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.CardHomeGradesBinding
 import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.grades.GradeView
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
@@ -75,7 +76,7 @@ class HomeGradesCard(
         })
 
         b.root.setOnClickListener {
-            activity.loadTarget(MainActivity.DRAWER_ITEM_GRADES)
+            activity.navigate(navTarget = NavTarget.GRADES)
         }
     }
 

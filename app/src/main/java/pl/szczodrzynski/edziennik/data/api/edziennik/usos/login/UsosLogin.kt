@@ -5,8 +5,8 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.usos.login
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_USOS_API
 import pl.szczodrzynski.edziennik.data.api.edziennik.usos.DataUsos
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class UsosLogin(val data: DataUsos, val onSuccess: () -> Unit) {
@@ -21,7 +21,7 @@ class UsosLogin(val data: DataUsos, val onSuccess: () -> Unit) {
     }
 
     private fun nextLoginMethod(onSuccess: () -> Unit) {
-        if (data.targetLoginMethodIds.isEmpty()) {
+        if (data.targetLoginMethods.isEmpty()) {
             onSuccess()
             return
         }
@@ -29,26 +29,27 @@ class UsosLogin(val data: DataUsos, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        useLoginMethod(data.targetLoginMethodIds.removeAt(0)) { usedMethodId ->
+        useLoginMethod(data.targetLoginMethods.removeAt(0)) { usedMethod ->
             data.progress(data.progressStep)
-            if (usedMethodId != -1)
-                data.loginMethods.add(usedMethodId)
+            if (usedMethod != null)
+                data.loginMethods.add(usedMethod)
             nextLoginMethod(onSuccess)
         }
     }
 
-    private fun useLoginMethod(loginMethodId: Int, onSuccess: (usedMethodId: Int) -> Unit) {
+    private fun useLoginMethod(loginMethod: LoginMethod, onSuccess: (usedMethod: LoginMethod?) -> Unit) {
         // this should never be true
-        if (data.loginMethods.contains(loginMethodId)) {
-            onSuccess(-1)
+        if (data.loginMethods.contains(loginMethod)) {
+            onSuccess(null)
             return
         }
-        d(TAG, "Using login method $loginMethodId")
-        when (loginMethodId) {
-            LOGIN_METHOD_USOS_API -> {
+        d(TAG, "Using login method $loginMethod")
+        when (loginMethod) {
+            LoginMethod.USOS_API -> {
                 data.startProgress(R.string.edziennik_progress_login_usos_api)
-                UsosLoginApi(data) { onSuccess(loginMethodId) }
+                UsosLoginApi(data) { onSuccess(loginMethod) }
             }
+            else -> {}
         }
     }
 }

@@ -17,6 +17,8 @@ import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -47,7 +49,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
      * A [LoginMethod] may add elements to this list only after a successful login
      * with that method.
      */
-    val loginMethods = mutableListOf<Int>()
+    val loginMethods = mutableListOf<LoginMethod>()
 
     /**
      * A method which may be overridden in child Data* classes.
@@ -61,12 +63,12 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
      * A list of Login method IDs that are still pending
      * to run.
      */
-    var targetLoginMethodIds = mutableListOf<Int>()
+    var targetLoginMethods = mutableListOf<LoginMethod>()
     /**
      * A map of endpoint ID to last sync time, that are still pending
      * to run.
      */
-    var targetEndpointIds = sortedMapOf<Int, Long?>()
+    var targetEndpoints = sortedMapOf<Int, Long?>()
     /**
      * A count of all network requests to do.
      */
@@ -313,7 +315,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         d("Total save time: ${System.currentTimeMillis()-totalStart} ms")
     }
 
-    fun setSyncNext(endpointId: Int, syncIn: Long? = null, viewId: Int? = null, syncAt: Long? = null) {
+    fun setSyncNext(endpointId: Int, syncIn: Long? = null, forceFeatureType: FeatureType? = null, syncAt: Long? = null) {
         EndpointTimer(profile?.id
                 ?: -1, endpointId).apply {
             syncedNow()
@@ -327,8 +329,8 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             if (syncAt != null) {
                 nextSync = syncAt
             }
-            if (viewId != null)
-                syncWhenView(viewId)
+            if (forceFeatureType != null)
+                syncWithFeature(forceFeatureType)
 
             endpointTimers.add(this)
         }

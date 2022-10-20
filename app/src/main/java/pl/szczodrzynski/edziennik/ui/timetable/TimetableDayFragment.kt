@@ -21,13 +21,11 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_TIMETABLE
-import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_USOS
+import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
@@ -85,7 +83,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             startHour = startHour,
             endHour = endHour,
             dividerHeight = 1.dp,
-            halfHourHeight = if (app.profile.loginStoreType == LOGIN_TYPE_USOS) 45.dp else 60.dp,
+            halfHourHeight = if (app.profile.loginStoreType == LoginType.USOS) 45.dp else 60.dp,
             hourDividerColor = R.attr.hourDividerColor.resolveAttr(context),
             halfHourDividerColor = R.attr.halfHourDividerColor.resolveAttr(context),
             hourLabelWidth = 40.dp,
@@ -146,9 +144,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                     it.isEnabled = false
                     EdziennikTask.syncProfile(
                             profileId = App.profileId,
-                            viewIds = listOf(
-                                    DRAWER_ITEM_TIMETABLE to 0
-                            ),
+                            featureTypes = setOf(FeatureType.TIMETABLE),
                             arguments = JsonObject(
                                     "weekStart" to weekStart
                             )

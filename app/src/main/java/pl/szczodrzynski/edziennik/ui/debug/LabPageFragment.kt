@@ -151,7 +151,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
         b.profile.select(app.profileId.toLong())
         b.profile.setOnChangeListener {
             if (activity is MainActivity)
-                (activity as MainActivity).loadProfile(it.id.toInt())
+                (activity as MainActivity).navigate(profileId = it.id.toInt())
             return@setOnChangeListener true
         }
 

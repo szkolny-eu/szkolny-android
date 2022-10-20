@@ -1,7 +1,6 @@
 package pl.szczodrzynski.edziennik.ui.behaviour;
 
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_NOTICE;
 
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -30,6 +29,7 @@ import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.entity.Notice;
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType;
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull;
 import pl.szczodrzynski.edziennik.databinding.FragmentBehaviourBinding;
 import pl.szczodrzynski.edziennik.utils.Themes;
@@ -72,7 +72,7 @@ public class BehaviourFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), TYPE_NOTICE, true));
+                            AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), MetadataType.NOTICE, true));
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                         })
         );
@@ -111,7 +111,7 @@ public class BehaviourFragment extends Fragment {
             }
         });
 
-        app.db.noticeDao().getAll(App.Companion.getProfileId()).observe(this, notices -> {
+        app.db.noticeDao().getAll(App.Companion.getProfileId()).observe(getViewLifecycleOwner(), notices -> {
             if (app == null || activity == null || b == null || !isAdded())
                 return;
 

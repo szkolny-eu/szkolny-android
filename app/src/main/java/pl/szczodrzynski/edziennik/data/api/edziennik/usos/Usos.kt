@@ -14,10 +14,10 @@ import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.prepare
-import pl.szczodrzynski.edziennik.data.api.usosLoginMethods
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -49,15 +49,14 @@ class Usos(
     }
 
     override fun sync(
-        featureIds: List<Int>,
-        viewId: Int?,
-        onlyEndpoints: List<Int>?,
+        featureTypes: Set<FeatureType>?,
+        onlyEndpoints: Set<Int>?,
         arguments: JsonObject?,
     ) {
         data.arguments = arguments
-        data.prepare(usosLoginMethods, UsosFeatures, featureIds, viewId, onlyEndpoints)
-        d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
-        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        data.prepare(UsosFeatures, featureTypes, onlyEndpoints)
+        d(TAG, "LoginMethod IDs: ${data.targetLoginMethods}")
+        d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
         UsosLogin(data) {
             UsosData(data) {
                 completed()
@@ -66,7 +65,7 @@ class Usos(
     }
 
     override fun getMessage(message: MessageFull) {}
-    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {}
+    override fun sendMessage(recipients: Set<Teacher>, subject: String, text: String) {}
     override fun markAllAnnouncementsAsRead() {}
     override fun getAnnouncement(announcement: AnnouncementFull) {}
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {}

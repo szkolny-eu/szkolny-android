@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.currentTimeUnix
 import pl.szczodrzynski.edziennik.ext.toApiError
 
@@ -48,17 +49,8 @@ class AvailabilityManager(val app: App) {
         return check(profile.registerName, cacheOnly)
     }
 
-    fun check(loginType: Int, cacheOnly: Boolean = false): Error? {
-        val registerName = when (loginType) {
-            LOGIN_TYPE_LIBRUS -> "librus"
-            LOGIN_TYPE_VULCAN -> "vulcan"
-            LOGIN_TYPE_IDZIENNIK -> "idziennik"
-            LOGIN_TYPE_MOBIDZIENNIK -> "mobidziennik"
-            LOGIN_TYPE_PODLASIE -> "podlasie"
-            LOGIN_TYPE_EDUDZIENNIK -> "edudziennik"
-            else -> "unknown"
-        }
-        return check(registerName, cacheOnly)
+    fun check(loginType: LoginType, cacheOnly: Boolean = false): Error? {
+        return check(loginType.name.lowercase(), cacheOnly)
     }
 
     fun check(registerName: String, cacheOnly: Boolean = false): Error? {

@@ -15,10 +15,10 @@ import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.api.prepare
-import pl.szczodrzynski.edziennik.data.api.templateLoginMethods
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -52,11 +52,11 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureIds: List<Int>, viewId: Int?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
+    override fun sync(featureTypes: Set<FeatureType>?, onlyEndpoints: Set<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
-        data.prepare(templateLoginMethods, TemplateFeatures, featureIds, viewId, onlyEndpoints)
-        d(TAG, "LoginMethod IDs: ${data.targetLoginMethodIds}")
-        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        data.prepare(TemplateFeatures, featureTypes, onlyEndpoints)
+        d(TAG, "LoginMethod IDs: ${data.targetLoginMethods}")
+        d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
         TemplateLogin(data) {
             TemplateData(data) {
                 completed()
@@ -68,7 +68,7 @@ class Template(val app: App, val profile: Profile?, val loginStore: LoginStore, 
 
     }
 
-    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
+    override fun sendMessage(recipients: Set<Teacher>, subject: String, text: String) {
 
     }
 

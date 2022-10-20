@@ -26,6 +26,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginFormCheckboxItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFieldItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFragmentBinding
@@ -88,9 +90,9 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         b.errorLayout.isVisible = false
         b.errorLayout.background?.setTintColor(R.attr.colorError.resolveAttr(activity))
 
-        val loginType = arguments?.getInt("loginType") ?: return
+        val loginType = arguments?.getEnum<LoginType>("loginType") ?: return
         val register = LoginInfo.list.firstOrNull { it.loginType == loginType } ?: return
-        val loginMode = arguments?.getInt("loginMode") ?: return
+        val loginMode = arguments?.getEnum<LoginMode>("loginMode") ?: return
         val mode = register.loginModes.firstOrNull { it.loginMode == loginMode } ?: return
 
         if (mode.credentials.isEmpty()) {
@@ -103,7 +105,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         b.text.text = platformGuideText ?: app.getString(mode.guideText)
 
         // eggs
-        isEggs = register.internalName == "podlasie"
+        isEggs = register.loginType == LoginType.PODLASIE
 
         for (credential in mode.credentials) {
             if (platformFormFields?.contains(credential.keyName) == false)
@@ -248,7 +250,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         }
     }
 
-    private fun login(loginType: Int, loginMode: Int) {
+    private fun login(loginType: LoginType, loginMode: LoginMode) {
         val payload = Bundle(
             "loginType" to loginType,
             "loginMode" to loginMode

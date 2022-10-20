@@ -5,10 +5,10 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.usos
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_USOS_API
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 
 class DataUsos(
     app: App,
@@ -21,7 +21,7 @@ class DataUsos(
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isApiLoginValid()) {
-            loginMethods += LOGIN_METHOD_USOS_API
+            loginMethods += LoginMethod.USOS_API
         }
     }
 

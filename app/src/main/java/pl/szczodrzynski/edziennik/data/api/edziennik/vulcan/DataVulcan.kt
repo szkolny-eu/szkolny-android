@@ -6,11 +6,10 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_HEBE
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_WEB_MAIN
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.crc16
 import pl.szczodrzynski.edziennik.ext.currentTimeUnix
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
@@ -28,10 +27,10 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isWebMainLoginValid()) {
-            loginMethods += LOGIN_METHOD_VULCAN_WEB_MAIN
+            loginMethods += LoginMethod.VULCAN_WEB_MAIN
         }
         if (isHebeLoginValid()) {
-            loginMethods += LOGIN_METHOD_VULCAN_HEBE
+            loginMethods += LoginMethod.VULCAN_HEBE
         }
     }
 

@@ -12,7 +12,7 @@ class AppLanguageDialog(
     activity: AppCompatActivity,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog(activity, onShowListener, onDismissListener) {
+) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
     override val TAG = "AppLanguageDialog"
 
     override fun getTitleRes() = R.string.app_language_dialog_title

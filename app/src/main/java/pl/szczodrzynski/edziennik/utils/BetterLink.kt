@@ -28,6 +28,7 @@ import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.ext.copyToClipboard
 import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.getTextPosition
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 @SuppressLint("RestrictedApi")
@@ -116,7 +117,7 @@ object BetterLink {
         ).setOnMenuItemClickListener {
             val intent = Intent(
                 Intent.ACTION_MAIN,
-                "fragmentId" to MainActivity.TARGET_MESSAGES_COMPOSE,
+                "fragmentId" to NavTarget.MESSAGE_COMPOSE,
                 "messageRecipientId" to teacherId
             )
             context.sendBroadcast(intent)

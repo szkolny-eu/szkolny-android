@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLoginWeb
 import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.getString
 
@@ -33,7 +34,7 @@ class VulcanFirstLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
     private val tryingSymbols = mutableListOf<String>()
 
     init {
-        if (data.loginStore.mode == LOGIN_MODE_VULCAN_WEB) {
+        if (data.loginStore.mode == LoginMode.VULCAN_WEB) {
             VulcanLoginWebMain(data) {
                 val xml = web.readCertificate() ?: run {
                     data.error(ApiError(TAG, ERROR_VULCAN_WEB_NO_CERTIFICATE))

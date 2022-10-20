@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.LessonRange
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.keys
 import pl.szczodrzynski.edziennik.ext.singleOrNull
@@ -94,7 +95,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                     data.metadataList.add(
                             Metadata(
                                     data.profileId,
-                                    Metadata.TYPE_LESSON_CHANGE,
+                                    MetadataType.LESSON_CHANGE,
                                     it.id,
                                     seen,
                                     seen

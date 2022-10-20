@@ -67,14 +67,14 @@ class NotificationsListFragment : Fragment(), CoroutineScope {
             val intent = Intent("android.intent.action.MAIN")
             notification.fillIntent(intent)
 
-            Utils.d(TAG, "notification with item " + notification.viewId + " extras " + if (intent.extras == null) "null" else intent.extras!!.toString())
+            Utils.d(TAG, "notification with item " + notification.navTarget + " extras " + if (intent.extras == null) "null" else intent.extras!!.toString())
             if (notification.profileId != null && notification.profileId != -1 && notification.profileId != app.profile.id && context is Activity) {
                 Toast.makeText(app, app.getString(R.string.toast_changing_profile), Toast.LENGTH_LONG).show()
             }
             app.sendBroadcast(intent)
         }
 
-        app.db.notificationDao().getAll().observe(this@NotificationsListFragment, Observer { items ->
+        app.db.notificationDao().getAll().observe(viewLifecycleOwner, Observer { items ->
             if (!isAdded) return@Observer
 
             // load & configure the adapter

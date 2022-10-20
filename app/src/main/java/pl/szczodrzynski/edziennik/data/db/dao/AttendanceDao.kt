@@ -28,7 +28,7 @@ abstract class AttendanceDao : BaseDao<Attendance, AttendanceFull> {
             FROM attendances
             LEFT JOIN teachers USING(profileId, teacherId)
             LEFT JOIN subjects USING(profileId, subjectId)
-            LEFT JOIN metadata ON attendanceId = thingId AND thingType = ${Metadata.TYPE_ATTENDANCE} AND metadata.profileId = attendances.profileId
+            LEFT JOIN metadata ON attendanceId = thingId AND thingType = 3 AND metadata.profileId = attendances.profileId
         """
 
         private const val ORDER_BY = """ORDER BY attendanceDate DESC, attendanceTime DESC"""

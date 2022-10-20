@@ -8,6 +8,7 @@ import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageRecipientFull
 import pl.szczodrzynski.edziennik.ext.get
@@ -139,7 +140,7 @@ class LibrusSynergiaGetMessage(override val data: DataLibrus,
                 if (!messageObject.seen) {
                     data.setSeenMetadataList.add(Metadata(
                             messageObject.profileId,
-                            Metadata.TYPE_MESSAGE,
+                            MetadataType.MESSAGE,
                             messageObject.id,
                             true,
                             true

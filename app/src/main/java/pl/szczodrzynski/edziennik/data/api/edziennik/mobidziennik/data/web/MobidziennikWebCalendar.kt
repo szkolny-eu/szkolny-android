@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.Mobidzien
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.utils.Utils.crc16
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -86,7 +87,7 @@ class MobidziennikWebCalendar(override val data: DataMobidziennik,
                     data.metadataList.add(
                             Metadata(
                                     profileId,
-                                    Metadata.TYPE_EVENT,
+                                    MetadataType.EVENT,
                                     eventObject.id,
                                     profile?.empty ?: false,
                                     profile?.empty ?: false

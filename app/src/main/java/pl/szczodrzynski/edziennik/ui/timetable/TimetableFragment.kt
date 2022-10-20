@@ -24,6 +24,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
 import pl.szczodrzynski.edziennik.ext.getSchoolYearConstrains
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.TimetableConfigDialog
@@ -223,7 +224,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
-                            AsyncTask.execute { app.db.metadataDao().setAllSeen(App.profileId, Metadata.TYPE_LESSON_CHANGE, true) }
+                            AsyncTask.execute { app.db.metadataDao().setAllSeen(App.profileId, MetadataType.LESSON_CHANGE, true) }
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
                         })
         )

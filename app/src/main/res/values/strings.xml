@@ -832,7 +832,7 @@
     <string name="notification_type_attendance">Wpis frekwencji</string>
     <string name="notification_type_auto_archiving">Archiwizacja profilu</string>
     <string name="notification_type_error">Błąd</string>
-    <string name="notification_type_feedback_message">Odpowiedź na Twoje pytanie</string>
+    <string name="notification_type_feedback_message">Wiadomość od dewelopera</string>
     <string name="notification_type_general">Powiadomienie</string>
     <string name="notification_type_lucky_number">Szczęśliwy numerek</string>
     <string name="notification_type_new_announcement">Ogłoszenie szkolne</string>

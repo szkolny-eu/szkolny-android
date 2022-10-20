@@ -24,6 +24,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -58,19 +60,19 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureIds: List<Int>, viewId: Int?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
+    override fun sync(featureTypes: Set<FeatureType>?, onlyEndpoints: Set<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
-        data.prepare(librusLoginMethods, LibrusFeatures, featureIds, viewId, onlyEndpoints)
+        data.prepare(LibrusFeatures, featureTypes, onlyEndpoints)
         login()
     }
 
-    private fun login(loginMethodId: Int? = null, afterLogin: (() -> Unit)? = null) {
-        d(TAG, "Trying to login with ${data.targetLoginMethodIds}")
+    private fun login(loginMethod: LoginMethod? = null, afterLogin: (() -> Unit)? = null) {
+        d(TAG, "Trying to login with ${data.targetLoginMethods}")
         if (internalErrorList.isNotEmpty()) {
             d(TAG, "  - Internal errors:")
             internalErrorList.forEach { d(TAG, "      - code $it") }
         }
-        loginMethodId?.let { data.prepareFor(librusLoginMethods, it) }
+        loginMethod?.let { data.prepareFor(it) }
         afterLogin?.let { this.afterLogin = it }
         LibrusLogin(data) {
             data()
@@ -78,7 +80,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     private fun data() {
-        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
         if (internalErrorList.isNotEmpty()) {
             d(TAG, "  - Internal errors:")
             internalErrorList.forEach { d(TAG, "      - code $it") }
@@ -89,14 +91,14 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getMessage(message: MessageFull) {
-        login(LOGIN_METHOD_LIBRUS_MESSAGES) {
+        login(LoginMethod.LIBRUS_MESSAGES) {
             if (data.messagesLoginSuccessful) LibrusMessagesGetMessage(data, message) { completed() }
             else LibrusSynergiaGetMessage(data, message) { completed() }
         }
     }
 
-    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
-        login(LOGIN_METHOD_LIBRUS_MESSAGES) {
+    override fun sendMessage(recipients: Set<Teacher>, subject: String, text: String) {
+        login(LoginMethod.LIBRUS_MESSAGES) {
             LibrusMessagesSendMessage(data, recipients, subject, text) {
                 completed()
             }
@@ -104,7 +106,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun markAllAnnouncementsAsRead() {
-        login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
+        login(LoginMethod.LIBRUS_SYNERGIA) {
             LibrusSynergiaMarkAllAnnouncementsAsRead(data) {
                 completed()
             }
@@ -112,7 +114,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getAnnouncement(announcement: AnnouncementFull) {
-        login(LOGIN_METHOD_LIBRUS_API) {
+        login(LoginMethod.LIBRUS_API) {
             LibrusApiAnnouncementMarkAsRead(data, announcement) {
                 completed()
             }
@@ -122,13 +124,13 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {
         when (owner) {
             is Message -> {
-                login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
+                login(LoginMethod.LIBRUS_SYNERGIA) {
                     if (data.messagesLoginSuccessful) LibrusMessagesGetAttachment(data, owner, attachmentId, attachmentName) { completed() }
                     LibrusSynergiaGetAttachment(data, owner, attachmentId, attachmentName) { completed() }
                 }
             }
             is EventFull -> {
-                login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
+                login(LoginMethod.LIBRUS_SYNERGIA) {
                     LibrusSynergiaHomeworkGetAttachment(data, owner, attachmentId, attachmentName) {
                         completed()
                     }
@@ -139,7 +141,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getRecipientList() {
-        login(LOGIN_METHOD_LIBRUS_MESSAGES) {
+        login(LoginMethod.LIBRUS_MESSAGES) {
             LibrusMessagesGetRecipientList(data) {
                 completed()
             }
@@ -147,7 +149,7 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getEvent(eventFull: EventFull) {
-        login(LOGIN_METHOD_LIBRUS_SYNERGIA) {
+        login(LoginMethod.LIBRUS_SYNERGIA) {
             LibrusSynergiaGetHomework(data, eventFull) {
                 completed()
             }
@@ -175,27 +177,27 @@ class Librus(val app: App, val profile: Profile?, val loginStore: LoginStore, va
                 internalErrorList.add(apiError.errorCode)
                 when (apiError.errorCode) {
                     ERROR_LIBRUS_PORTAL_ACCESS_DENIED -> {
-                        data.loginMethods.remove(LOGIN_METHOD_LIBRUS_PORTAL)
-                        data.prepareFor(librusLoginMethods, LOGIN_METHOD_LIBRUS_PORTAL)
+                        data.loginMethods.remove(LoginMethod.LIBRUS_PORTAL)
+                        data.prepareFor(LoginMethod.LIBRUS_PORTAL)
                         data.portalTokenExpiryTime = 0
                         login()
                     }
                     ERROR_LIBRUS_API_ACCESS_DENIED,
                     ERROR_LIBRUS_API_TOKEN_EXPIRED -> {
-                        data.loginMethods.remove(LOGIN_METHOD_LIBRUS_API)
-                        data.prepareFor(librusLoginMethods, LOGIN_METHOD_LIBRUS_API)
+                        data.loginMethods.remove(LoginMethod.LIBRUS_API)
+                        data.prepareFor(LoginMethod.LIBRUS_API)
                         data.apiTokenExpiryTime = 0
                         login()
                     }
                     ERROR_LIBRUS_SYNERGIA_ACCESS_DENIED -> {
-                        data.loginMethods.remove(LOGIN_METHOD_LIBRUS_SYNERGIA)
-                        data.prepareFor(librusLoginMethods, LOGIN_METHOD_LIBRUS_SYNERGIA)
+                        data.loginMethods.remove(LoginMethod.LIBRUS_SYNERGIA)
+                        data.prepareFor(LoginMethod.LIBRUS_SYNERGIA)
                         data.synergiaSessionIdExpiryTime = 0
                         login()
                     }
                     ERROR_LIBRUS_MESSAGES_ACCESS_DENIED -> {
-                        data.loginMethods.remove(LOGIN_METHOD_LIBRUS_MESSAGES)
-                        data.prepareFor(librusLoginMethods, LOGIN_METHOD_LIBRUS_MESSAGES)
+                        data.loginMethods.remove(LoginMethod.LIBRUS_MESSAGES)
+                        data.prepareFor(LoginMethod.LIBRUS_MESSAGES)
                         data.messagesSessionIdExpiryTime = 0
                         login()
                     }
