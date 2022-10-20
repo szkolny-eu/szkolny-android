@@ -1207,12 +1207,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     override fun onBackPressed() {
-        if (b.navView.onBackPressed())
-            return
-        if (App.config.ui.openDrawerOnBackPressed && (navTarget.popTo == NavTarget.HOME || navTarget == NavTarget.HOME)) {
-            b.navView.drawer.toggle()
+        if (App.config.ui.openDrawerOnBackPressed) {
+            if (drawer.isOpen)
+                navigateUp()
+            else if (!navView.onBackPressed())
+                drawer.open()
         } else {
-            navigateUp()
+            if (!navView.onBackPressed())
+                navigateUp()
         }
     }
 
