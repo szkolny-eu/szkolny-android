@@ -66,7 +66,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureTypes: Set<FeatureType>?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
+    override fun sync(featureTypes: Set<FeatureType>?, onlyEndpoints: Set<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
         data.prepare(VulcanFeatures, featureTypes, onlyEndpoints)
         login()
@@ -114,7 +114,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
     }
 
-    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
+    override fun sendMessage(recipients: Set<Teacher>, subject: String, text: String) {
         login(LoginMethod.VULCAN_HEBE) {
             VulcanHebeSendMessage(data, recipients, subject, text) {
                 completed()

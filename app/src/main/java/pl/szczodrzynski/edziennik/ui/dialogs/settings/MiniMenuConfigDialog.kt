@@ -37,12 +37,12 @@ class MiniMenuConfigDialog(
         }
         .associateBy { it.nameRes.resolveString(activity) as CharSequence }
 
-    override fun getDefaultSelectedItems() = app.config.ui.miniMenuButtons.toSet()
+    override fun getDefaultSelectedItems() = app.config.ui.miniMenuButtons
 
     override suspend fun onShow() = Unit
 
     override suspend fun onPositiveClick(): Boolean {
-        app.config.ui.miniMenuButtons = getMultiSelection().toList()
+        app.config.ui.miniMenuButtons = getMultiSelection()
         if (activity is MainActivity) {
             activity.setDrawerItems()
             activity.drawer.updateBadges()

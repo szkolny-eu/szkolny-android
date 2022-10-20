@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 fun Data.prepare(
     features: List<Feature>,
     featureTypes: Set<FeatureType>?,
-    onlyEndpoints: List<Int>?,
+    onlyEndpoints: Set<Int>?,
 ) {
     val loginType = this.loginStore.type
     val possibleLoginMethods = this.loginMethods.toMutableList()

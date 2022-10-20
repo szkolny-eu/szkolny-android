@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 
 class MobidziennikWebSendMessage(override val data: DataMobidziennik,
-                                 val recipients: List<Teacher>,
+                                 val recipients: Set<Teacher>,
                                  val subject: String,
                                  val text: String,
                                  val onSuccess: () -> Unit

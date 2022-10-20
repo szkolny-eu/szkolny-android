@@ -50,7 +50,7 @@ class Usos(
 
     override fun sync(
         featureTypes: Set<FeatureType>?,
-        onlyEndpoints: List<Int>?,
+        onlyEndpoints: Set<Int>?,
         arguments: JsonObject?,
     ) {
         data.arguments = arguments
@@ -65,7 +65,7 @@ class Usos(
     }
 
     override fun getMessage(message: MessageFull) {}
-    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {}
+    override fun sendMessage(recipients: Set<Teacher>, subject: String, text: String) {}
     override fun markAllAnnouncementsAsRead() {}
     override fun getAnnouncement(announcement: AnnouncementFull) {}
     override fun getAttachment(owner: Any, attachmentId: Long, attachmentName: String) {}

@@ -39,6 +39,7 @@ class NotificationFilterDialog(
         val enabledTypes = getMultiSelection()
         val disabledTypes = NotificationType.values()
             .filter { it.enabledByDefault != null && it !in enabledTypes }
+            .toSet()
 
         if (disabledTypes.any { it.enabledByDefault == true }) {
             // warn user when he tries to disable some notifications

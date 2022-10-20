@@ -40,10 +40,10 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
         fun firstLogin(loginStore: LoginStore) = EdziennikTask(-1, FirstLoginRequest(loginStore))
         fun sync() = EdziennikTask(-1, SyncRequest())
-        fun syncProfile(profileId: Int, featureTypes: Set<FeatureType>? = null, onlyEndpoints: List<Int>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(featureTypes, onlyEndpoints, arguments))
-        fun syncProfileList(profileList: List<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
+        fun syncProfile(profileId: Int, featureTypes: Set<FeatureType>? = null, onlyEndpoints: Set<Int>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(featureTypes, onlyEndpoints, arguments))
+        fun syncProfileList(profileList: Set<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
         fun messageGet(profileId: Int, message: MessageFull) = EdziennikTask(profileId, MessageGetRequest(message))
-        fun messageSend(profileId: Int, recipients: List<Teacher>, subject: String, text: String) = EdziennikTask(profileId, MessageSendRequest(recipients, subject, text))
+        fun messageSend(profileId: Int, recipients: Set<Teacher>, subject: String, text: String) = EdziennikTask(profileId, MessageSendRequest(recipients, subject, text))
         fun announcementsRead(profileId: Int) = EdziennikTask(profileId, AnnouncementsReadRequest())
         fun announcementGet(profileId: Int, announcement: AnnouncementFull) = EdziennikTask(profileId, AnnouncementGetRequest(announcement))
         fun attachmentGet(profileId: Int, owner: Any, attachmentId: Long, attachmentName: String) = EdziennikTask(profileId, AttachmentGetRequest(owner, attachmentId, attachmentName))
@@ -151,10 +151,10 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
     data class FirstLoginRequest(val loginStore: LoginStore)
     class SyncRequest
-    data class SyncProfileRequest(val featureTypes: Set<FeatureType>? = null, val onlyEndpoints: List<Int>? = null, val arguments: JsonObject? = null)
-    data class SyncProfileListRequest(val profileList: List<Int>)
+    data class SyncProfileRequest(val featureTypes: Set<FeatureType>? = null, val onlyEndpoints: Set<Int>? = null, val arguments: JsonObject? = null)
+    data class SyncProfileListRequest(val profileList: Set<Int>)
     data class MessageGetRequest(val message: MessageFull)
-    data class MessageSendRequest(val recipients: List<Teacher>, val subject: String, val text: String)
+    data class MessageSendRequest(val recipients: Set<Teacher>, val subject: String, val text: String)
     class AnnouncementsReadRequest
     data class AnnouncementGetRequest(val announcement: AnnouncementFull)
     data class AttachmentGetRequest(val owner: Any, val attachmentId: Long, val attachmentName: String)

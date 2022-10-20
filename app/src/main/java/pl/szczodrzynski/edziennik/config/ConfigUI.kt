@@ -36,9 +36,9 @@ class ConfigUI(private val config: Config) {
         get() { mMiniMenuVisible = mMiniMenuVisible ?: config.values.get("miniMenuVisible", false); return mMiniMenuVisible ?: false }
         set(value) { config.set("miniMenuVisible", value); mMiniMenuVisible = value }
 
-    private var mMiniMenuButtons: List<NavTarget>? = null
-    var miniMenuButtons: List<NavTarget>
-        get() { mMiniMenuButtons = mMiniMenuButtons ?: config.values.getIntList("miniMenuButtons", listOf())?.mapNotNull { it.asNavTargetOrNull() }; return mMiniMenuButtons ?: listOf() }
+    private var mMiniMenuButtons: Set<NavTarget>? = null
+    var miniMenuButtons: Set<NavTarget>
+        get() { mMiniMenuButtons = mMiniMenuButtons ?: config.values.getIntList("miniMenuButtons", listOf())?.mapNotNull { it.asNavTargetOrNull() }?.toSet(); return mMiniMenuButtons ?: setOf() }
         set(value) { config.set("miniMenuButtons", value.map { it.id }); mMiniMenuButtons = value }
 
     private var mOpenDrawerOnBackPressed: Boolean? = null

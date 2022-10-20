@@ -393,7 +393,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             b.recipientsLayout.error = getString(R.string.messages_compose_recipients_error)
             return
         }
-        val recipients = mutableListOf<Teacher>()
+        val recipients = mutableSetOf<Teacher>()
         b.recipients.allChips.forEach { chip ->
             if (chip.data !is Teacher)
                 return@forEach

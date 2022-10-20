@@ -26,8 +26,9 @@ class AppConfigMigrationV3(p: SharedPreferences, config: Config) {
                 str.replace("[\\[\\]]*".toRegex(), "")
                         .split(",\\s?".toRegex())
                         .mapNotNull { it.toIntOrNull().asNavTargetOrNull() }
+                        .toSet()
             }
-            ui.miniMenuButtons = oldButtons ?: listOf(
+            ui.miniMenuButtons = oldButtons ?: setOf(
                     NavTarget.HOME,
                     NavTarget.TIMETABLE,
                     NavTarget.AGENDA,

@@ -33,7 +33,7 @@ class ConfigMigration(app: App, config: Config) {
             ui.appBackground = null
             ui.headerBackground = null
             ui.miniMenuVisible = false
-            ui.miniMenuButtons = listOf(
+            ui.miniMenuButtons = setOf(
                     NavTarget.HOME,
                     NavTarget.TIMETABLE,
                     NavTarget.AGENDA,
