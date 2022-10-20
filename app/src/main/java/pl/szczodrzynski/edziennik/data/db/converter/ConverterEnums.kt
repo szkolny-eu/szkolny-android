@@ -30,5 +30,8 @@ class ConverterEnums {
     fun toMetadataType(value: Int) = value.asMetadataType()
 
     @TypeConverter
-    fun toNavTarget(value: Int) = value.asNavTarget()
+    fun toNotificationType(value: Int) = value.asNotificationType()
+
+    @TypeConverter
+    fun toNavTarget(value: Int) = value.asNavTargetOrNull() ?: NavTarget.HOME
 }

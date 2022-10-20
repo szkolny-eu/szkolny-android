@@ -225,7 +225,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 userCodes = profiles.map { it.userCode },
                 users = users.keys(),
                 lastSync = lastSyncTime,
-                notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type, it.text) }
+                notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type.id, it.text) }
         )).execute()
         val (events, notes, hasBrowsers) = parseResponse(response, updateDeviceHash = true)
 

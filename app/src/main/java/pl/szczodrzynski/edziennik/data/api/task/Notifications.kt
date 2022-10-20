@@ -5,10 +5,10 @@
 package pl.szczodrzynski.edziennik.data.api.task
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.*
-import pl.szczodrzynski.edziennik.ext.getNotificationTitle
+import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
+import pl.szczodrzynski.edziennik.ext.resolveString
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Week
@@ -56,14 +56,14 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     lesson.changeTeacherName
             )
             notifications += Notification(
-                    id = Notification.buildId(lesson.profileId, Notification.TYPE_TIMETABLE_LESSON_CHANGE, lesson.id),
-                    title = app.getNotificationTitle(Notification.TYPE_TIMETABLE_LESSON_CHANGE),
+                    id = Notification.buildId(lesson.profileId, NotificationType.TIMETABLE_LESSON_CHANGE, lesson.id),
+                    title = NotificationType.TIMETABLE_LESSON_CHANGE.titleRes.resolveString(app),
                     text = text,
                     textLong = textLong,
-                    type = Notification.TYPE_TIMETABLE_LESSON_CHANGE,
+                    type = NotificationType.TIMETABLE_LESSON_CHANGE,
                     profileId = lesson.profileId,
                     profileName = profiles.singleOrNull { it.id == lesson.profileId }?.name,
-                    viewId = NavTarget.TIMETABLE.id,
+                    navTarget = NavTarget.TIMETABLE,
                     addedDate = System.currentTimeMillis()
             ).addExtra("timetableDate", lesson.displayDate?.stringY_m_d ?: "")
         }
@@ -102,18 +102,18 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                 event.topic.take(200)
             )
             val type = if (event.isHomework)
-                Notification.TYPE_NEW_HOMEWORK
+                NotificationType.HOMEWORK
             else
-                Notification.TYPE_NEW_EVENT
+                NotificationType.EVENT
             notifications += Notification(
                 id = Notification.buildId(event.profileId, type, event.id),
-                title = app.getNotificationTitle(type),
+                title = type.titleRes.resolveString(app),
                 text = text,
                 textLong = textLong,
                 type = type,
                 profileId = event.profileId,
                 profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
-                viewId = if (event.isHomework) NavTarget.HOMEWORK.id else NavTarget.AGENDA.id,
+                navTarget = if (event.isHomework) NavTarget.HOMEWORK else NavTarget.AGENDA,
                 addedDate = event.addedDate
             ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }
@@ -141,18 +141,18 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                 event.topicHtml.take(200)
             )
             val type = if (event.isHomework)
-                Notification.TYPE_NEW_HOMEWORK
+                NotificationType.HOMEWORK
             else
-                Notification.TYPE_NEW_EVENT
+                NotificationType.EVENT
             notifications += Notification(
                 id = Notification.buildId(event.profileId, type, event.id),
-                title = app.getNotificationTitle(type),
+                title = type.titleRes.resolveString(app),
                 text = text,
                 textLong = textLong,
                 type = type,
                 profileId = event.profileId,
                 profileName = profiles.singleOrNull { it.id == event.profileId }?.name,
-                viewId = if (event.isHomework) NavTarget.HOMEWORK.id else NavTarget.AGENDA.id,
+                navTarget = if (event.isHomework) NavTarget.HOMEWORK else NavTarget.AGENDA,
                 addedDate = event.addedDate
             ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
         }
@@ -182,14 +182,14 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     grade.teacherName ?: "-"
             )
             notifications += Notification(
-                    id = Notification.buildId(grade.profileId, Notification.TYPE_NEW_GRADE, grade.id),
-                    title = app.getNotificationTitle(Notification.TYPE_NEW_GRADE),
+                    id = Notification.buildId(grade.profileId, NotificationType.GRADE, grade.id),
+                    title = NotificationType.GRADE.titleRes.resolveString(app),
                     text = text,
                     textLong = textLong,
-                    type = Notification.TYPE_NEW_GRADE,
+                    type = NotificationType.GRADE,
                     profileId = grade.profileId,
                     profileName = profiles.singleOrNull { it.id == grade.profileId }?.name,
-                    viewId = NavTarget.GRADES.id,
+                    navTarget = NavTarget.GRADES,
                     addedDate = grade.addedDate
             ).addExtra("gradeId", grade.id).addExtra("gradesSubjectId", grade.subjectId)
         }
@@ -217,14 +217,14 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     notice.text.take(200)
             )
             notifications += Notification(
-                    id = Notification.buildId(notice.profileId, Notification.TYPE_NEW_NOTICE, notice.id),
-                    title = app.getNotificationTitle(Notification.TYPE_NEW_NOTICE),
+                    id = Notification.buildId(notice.profileId, NotificationType.NOTICE, notice.id),
+                    title = NotificationType.NOTICE.titleRes.resolveString(app),
                     text = text,
                     textLong = textLong,
-                    type = Notification.TYPE_NEW_NOTICE,
+                    type = NotificationType.NOTICE,
                     profileId = notice.profileId,
                     profileName = profiles.singleOrNull { it.id == notice.profileId }?.name,
-                    viewId = NavTarget.BEHAVIOUR.id,
+                    navTarget = NavTarget.BEHAVIOUR,
                     addedDate = notice.addedDate
             ).addExtra("noticeId", notice.id)
         }
@@ -263,14 +263,14 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     attendance.lessonTopic ?: "-"
             )
             notifications += Notification(
-                    id = Notification.buildId(attendance.profileId, Notification.TYPE_NEW_ATTENDANCE, attendance.id),
-                    title = app.getNotificationTitle(Notification.TYPE_NEW_ATTENDANCE),
+                    id = Notification.buildId(attendance.profileId, NotificationType.ATTENDANCE, attendance.id),
+                    title = NotificationType.ATTENDANCE.titleRes.resolveString(app),
                     text = text,
                     textLong = textLong,
-                    type = Notification.TYPE_NEW_ATTENDANCE,
+                    type = NotificationType.ATTENDANCE,
                     profileId = attendance.profileId,
                     profileName = profiles.singleOrNull { it.id == attendance.profileId }?.name,
-                    viewId = NavTarget.ATTENDANCE.id,
+                    navTarget = NavTarget.ATTENDANCE,
                     addedDate = attendance.addedDate
             ).addExtra("attendanceId", attendance.id).addExtra("attendanceSubjectId", attendance.subjectId)
         }
@@ -284,13 +284,13 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     announcement.subject
             )
             notifications += Notification(
-                    id = Notification.buildId(announcement.profileId, Notification.TYPE_NEW_ANNOUNCEMENT, announcement.id),
-                    title = app.getNotificationTitle(Notification.TYPE_NEW_ANNOUNCEMENT),
+                    id = Notification.buildId(announcement.profileId, NotificationType.ANNOUNCEMENT, announcement.id),
+                    title = NotificationType.ANNOUNCEMENT.titleRes.resolveString(app),
                     text = text,
-                    type = Notification.TYPE_NEW_ANNOUNCEMENT,
+                    type = NotificationType.ANNOUNCEMENT,
                     profileId = announcement.profileId,
                     profileName = profiles.singleOrNull { it.id == announcement.profileId }?.name,
-                    viewId = NavTarget.ANNOUNCEMENTS.id,
+                    navTarget = NavTarget.ANNOUNCEMENTS,
                     addedDate = announcement.addedDate
             ).addExtra("announcementId", announcement.id)
         }
@@ -304,13 +304,13 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     message.subject
             )
             notifications += Notification(
-                    id = Notification.buildId(message.profileId, Notification.TYPE_NEW_MESSAGE, message.id),
-                    title = app.getNotificationTitle(Notification.TYPE_NEW_MESSAGE),
+                    id = Notification.buildId(message.profileId, NotificationType.MESSAGE, message.id),
+                    title = NotificationType.MESSAGE.titleRes.resolveString(app),
                     text = text,
-                    type = Notification.TYPE_NEW_MESSAGE,
+                    type = NotificationType.MESSAGE,
                     profileId = message.profileId,
                     profileName = profiles.singleOrNull { it.id == message.profileId }?.name,
-                    viewId = NavTarget.MESSAGES.id,
+                    navTarget = NavTarget.MESSAGES,
                     addedDate = message.addedDate
             ).addExtra("messageType", Message.TYPE_RECEIVED.toLong()).addExtra("messageId", message.id)
         }
@@ -334,13 +334,13 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                 }
             }
             notifications += Notification(
-                    id = Notification.buildId(luckyNumber.profileId, Notification.TYPE_LUCKY_NUMBER, luckyNumber.date.value.toLong()),
-                    title = app.getNotificationTitle(Notification.TYPE_LUCKY_NUMBER),
+                    id = Notification.buildId(luckyNumber.profileId, NotificationType.LUCKY_NUMBER, luckyNumber.date.value.toLong()),
+                    title = NotificationType.LUCKY_NUMBER.titleRes.resolveString(app),
                     text = app.getString(text, luckyNumber.date.formattedString, luckyNumber.number),
-                    type = Notification.TYPE_LUCKY_NUMBER,
+                    type = NotificationType.LUCKY_NUMBER,
                     profileId = luckyNumber.profileId,
                     profileName = profile.name,
-                    viewId = NavTarget.HOME.id,
+                    navTarget = NavTarget.HOME,
                     addedDate = System.currentTimeMillis()
             )
         }
@@ -353,13 +353,13 @@ class Notifications(val app: App, val notifications: MutableList<Notification>, 
                     teacherAbsence.teacherName
             )
             notifications += Notification(
-                    id = Notification.buildId(teacherAbsence.profileId, Notification.TYPE_TEACHER_ABSENCE, teacherAbsence.id),
-                    title = app.getNotificationTitle(Notification.TYPE_TEACHER_ABSENCE),
+                    id = Notification.buildId(teacherAbsence.profileId, NotificationType.TEACHER_ABSENCE, teacherAbsence.id),
+                    title = NotificationType.TEACHER_ABSENCE.titleRes.resolveString(app),
                     text = message,
-                    type = Notification.TYPE_TEACHER_ABSENCE,
+                    type = NotificationType.TEACHER_ABSENCE,
                     profileId = teacherAbsence.profileId,
                     profileName = profiles.singleOrNull { it.id == teacherAbsence.profileId }?.name,
-                    viewId = NavTarget.AGENDA.id,
+                    navTarget = NavTarget.AGENDA,
                     addedDate = teacherAbsence.addedDate
             ).addExtra("eventDate", teacherAbsence.dateFrom.value.toLong())
         }

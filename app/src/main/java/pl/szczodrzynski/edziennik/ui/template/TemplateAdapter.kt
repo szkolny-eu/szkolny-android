@@ -54,7 +54,7 @@ class TemplateAdapter(
                 " • ",
                 date
         ).concat().asColoredSpannable(colorSecondary)
-        b.type.text = activity.getNotificationTitle(item.type)
+        b.type.text = item.type.titleRes.resolveString(app)
 
         onItemClick?.let { listener ->
             b.root.onClick { listener(item) }
