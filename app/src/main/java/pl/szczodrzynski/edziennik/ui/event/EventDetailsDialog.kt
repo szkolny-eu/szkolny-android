@@ -204,8 +204,10 @@ class EventDetailsDialog(
                         Intent(activity, MainActivity::class.java)
 
             intent.apply {
-                putExtra("fragmentId", NavTarget.TIMETABLE.id)
-                putExtra("timetableDate", dateStr)
+                putExtras(
+                    "fragmentId" to NavTarget.TIMETABLE,
+                    "timetableDate" to dateStr,
+                )
             }
             if (activity is MainActivity)
                 activity.sendBroadcast(intent)

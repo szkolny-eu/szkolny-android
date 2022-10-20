@@ -835,7 +835,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("fragmentId", navTarget.id)
+        outState.putExtras("fragmentId" to navTarget)
     }
 
     override fun onNewIntent(intent: Intent?) {

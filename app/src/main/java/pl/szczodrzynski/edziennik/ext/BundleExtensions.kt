@@ -11,6 +11,7 @@ import android.os.Parcelable
 import com.google.gson.JsonObject
 import pl.szczodrzynski.edziennik.data.db.enums.*
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import java.io.Serializable
 
 fun Bundle?.getInt(key: String, defaultValue: Int) =
     this?.getInt(key, defaultValue) ?: defaultValue
@@ -52,8 +53,9 @@ fun Bundle(vararg properties: Pair<String, Any?>): Bundle {
                 is Boolean -> putBoolean(key, value)
                 is Bundle -> putBundle(key, value)
                 is Enum<*> -> putEnum(key, value)
-                is Parcelable -> putParcelable(key, value)
                 is Array<*> -> putParcelableArray(key, value as Array<out Parcelable>)
+                is Parcelable -> putParcelable(key, value)
+                is Serializable -> putSerializable(key, value)
             }
         }
     }
@@ -66,6 +68,9 @@ fun Intent(action: String? = null, vararg properties: Pair<String, Any?>): Inten
 fun Intent(packageContext: Context, cls: Class<*>, vararg properties: Pair<String, Any?>): Intent {
     return Intent(packageContext, cls).putExtras(Bundle(*properties))
 }
+
+fun Intent.putExtras(vararg properties: Pair<String, Any?>) = putExtras(Bundle(*properties))
+fun Bundle.putExtras(vararg properties: Pair<String, Any?>) = putAll(Bundle(*properties))
 
 fun Bundle.toJsonObject(): JsonObject {
     val json = JsonObject()

@@ -122,9 +122,9 @@ class HomeTimetableCard(
         }
 
         b.root.onClick {
-            activity.navigate(navTarget = NavTarget.TIMETABLE, args = Bundle().apply {
-                putString("timetableDate", timetableDate.stringY_m_d)
-            })
+            activity.navigate(navTarget = NavTarget.TIMETABLE, args = Bundle(
+                "timetableDate" to timetableDate.stringY_m_d,
+            ))
         }
 
         if (app.profile.getStudentData("timetableNotPublic", false)) {
