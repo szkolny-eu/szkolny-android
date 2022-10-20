@@ -7,7 +7,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_NEVER
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.getFeatureTypesNecessary
 import pl.szczodrzynski.edziennik.ext.getFeatureTypesUnnecessary
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
@@ -15,7 +14,6 @@ import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 fun Data.prepare(
     features: List<Feature>,
     featureTypes: Set<FeatureType>?,
-    viewId: Int?,
     onlyEndpoints: List<Int>?,
 ) {
     val loginType = this.loginStore.type
@@ -32,6 +30,7 @@ fun Data.prepare(
         featureTypes.isNotNullNorEmpty() -> featureTypes!!
         else -> getFeatureTypesUnnecessary()
     } + getFeatureTypesNecessary()
+    val forceFeatureType = featureTypes?.singleOrNull()
 
     this.targetEndpoints.clear()
     this.targetLoginMethods.clear()
@@ -65,7 +64,7 @@ fun Data.prepare(
             if (
                 onlyEndpoints?.contains(endpoint.first) == true ||
                 timer.nextSync == SYNC_ALWAYS ||
-                viewId != null && timer.viewId == viewId ||
+                forceFeatureType != null && timer.featureType == forceFeatureType ||
                 timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp
             ) {
                 this.targetEndpoints[endpoint.first] = timer.lastSync

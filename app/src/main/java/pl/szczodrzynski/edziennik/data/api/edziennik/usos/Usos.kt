@@ -50,12 +50,11 @@ class Usos(
 
     override fun sync(
         featureTypes: Set<FeatureType>?,
-        viewId: Int?,
         onlyEndpoints: List<Int>?,
         arguments: JsonObject?,
     ) {
         data.arguments = arguments
-        data.prepare(UsosFeatures, featureTypes, viewId, onlyEndpoints)
+        data.prepare(UsosFeatures, featureTypes, onlyEndpoints)
         d(TAG, "LoginMethod IDs: ${data.targetLoginMethods}")
         d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
         UsosLogin(data) {

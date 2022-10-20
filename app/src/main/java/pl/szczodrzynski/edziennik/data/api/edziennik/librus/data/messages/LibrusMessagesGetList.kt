@@ -11,11 +11,11 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_MESS
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusMessages
 import pl.szczodrzynski.edziennik.data.db.entity.*
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.singleOrNull
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -129,7 +129,7 @@ class LibrusMessagesGetList(override val data: DataLibrus,
 
                 when (type) {
                     TYPE_RECEIVED -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_RECEIVED, SYNC_ALWAYS)
-                    Message.TYPE_SENT -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_SENT, DAY, NavTarget.MESSAGES.id)
+                    Message.TYPE_SENT -> data.setSyncNext(ENDPOINT_LIBRUS_MESSAGES_SENT, DAY, FeatureType.MESSAGES_SENT)
                 }
                 onSuccess(endpointId)
             }

@@ -16,9 +16,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class VulcanHebeMessages(
@@ -153,7 +153,7 @@ class VulcanHebeMessages(
             data.setSyncNext(
                 endpointId,
                 if (messageType == TYPE_RECEIVED) SYNC_ALWAYS else 1 * DAY,
-                if (messageType == TYPE_RECEIVED) null else NavTarget.MESSAGES.id
+                if (messageType == TYPE_RECEIVED) null else FeatureType.MESSAGES_SENT
             )
             onSuccess(endpointId)
         }

@@ -12,7 +12,7 @@ import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 
 interface EdziennikInterface {
-    fun sync(featureTypes: Set<FeatureType>? = null, viewId: Int? = null, onlyEndpoints: List<Int>? = null, arguments: JsonObject? = null)
+    fun sync(featureTypes: Set<FeatureType>? = null, onlyEndpoints: List<Int>? = null, arguments: JsonObject? = null)
     fun getMessage(message: MessageFull)
     fun sendMessage(recipients: List<Teacher>, subject: String, text: String)
     fun markAllAnnouncementsAsRead()

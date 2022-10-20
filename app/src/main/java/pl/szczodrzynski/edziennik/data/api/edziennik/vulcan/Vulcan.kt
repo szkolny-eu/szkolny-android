@@ -7,7 +7,8 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 import com.google.gson.JsonObject
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.data.api.ERROR_ONEDRIVE_DOWNLOAD
+import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.helper.OneDriveDownloadAttachment
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanData
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeMessagesChangeStatus
@@ -21,6 +22,8 @@ import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.api.prepare
+import pl.szczodrzynski.edziennik.data.api.prepareFor
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
@@ -63,9 +66,9 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureTypes: Set<FeatureType>?, viewId: Int?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
+    override fun sync(featureTypes: Set<FeatureType>?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
-        data.prepare(VulcanFeatures, featureTypes, viewId, onlyEndpoints)
+        data.prepare(VulcanFeatures, featureTypes, onlyEndpoints)
         login()
     }
 

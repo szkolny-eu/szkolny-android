@@ -13,12 +13,12 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.singleOrNull
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
@@ -108,7 +108,7 @@ class MobidziennikWebMessagesSent(override val data: DataMobidziennik,
                         ))
             }
 
-            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_SENT, 1* DAY, NavTarget.MESSAGES.id)
+            data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_SENT, 1* DAY, FeatureType.MESSAGES_SENT)
             onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_MESSAGES_SENT)
         }
     }

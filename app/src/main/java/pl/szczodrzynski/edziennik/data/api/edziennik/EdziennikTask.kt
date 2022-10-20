@@ -6,8 +6,9 @@ package pl.szczodrzynski.edziennik.data.api.edziennik
 
 import com.google.gson.JsonObject
 import org.greenrobot.eventbus.EventBus
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.api.ERROR_PROFILE_ARCHIVED
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.Librus
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.Mobidziennik
 import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.Podlasie
@@ -27,7 +28,6 @@ import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
-import pl.szczodrzynski.edziennik.ext.getFeatureTypesNecessary
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 
@@ -40,7 +40,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
         fun firstLogin(loginStore: LoginStore) = EdziennikTask(-1, FirstLoginRequest(loginStore))
         fun sync() = EdziennikTask(-1, SyncRequest())
-        fun syncProfile(profileId: Int, featureTypes: Set<FeatureType>? = null, viewId: Int? = null, onlyEndpoints: List<Int>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(featureTypes, viewId, onlyEndpoints, arguments))
+        fun syncProfile(profileId: Int, featureTypes: Set<FeatureType>? = null, onlyEndpoints: List<Int>? = null, arguments: JsonObject? = null) = EdziennikTask(profileId, SyncProfileRequest(featureTypes, onlyEndpoints, arguments))
         fun syncProfileList(profileList: List<Int>) = EdziennikTask(-1, SyncProfileListRequest(profileList))
         fun messageGet(profileId: Int, message: MessageFull) = EdziennikTask(profileId, MessageGetRequest(message))
         fun messageSend(profileId: Int, recipients: List<Teacher>, subject: String, text: String) = EdziennikTask(profileId, MessageSendRequest(recipients, subject, text))
@@ -127,7 +127,6 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
         when (request) {
             is SyncProfileRequest -> edziennikInterface?.sync(
                     featureTypes = request.featureTypes,
-                    viewId = request.viewId,
                     onlyEndpoints = request.onlyEndpoints,
                     arguments = request.arguments)
             is MessageGetRequest -> edziennikInterface?.getMessage(request.message)
@@ -152,7 +151,7 @@ open class EdziennikTask(override val profileId: Int, val request: Any) : IApiTa
 
     data class FirstLoginRequest(val loginStore: LoginStore)
     class SyncRequest
-    data class SyncProfileRequest(val featureTypes: Set<FeatureType>? = null, val viewId: Int? = null, val onlyEndpoints: List<Int>? = null, val arguments: JsonObject? = null)
+    data class SyncProfileRequest(val featureTypes: Set<FeatureType>? = null, val onlyEndpoints: List<Int>? = null, val arguments: JsonObject? = null)
     data class SyncProfileListRequest(val profileList: List<Int>)
     data class MessageGetRequest(val message: MessageFull)
     data class MessageSendRequest(val recipients: List<Teacher>, val subject: String, val text: String)

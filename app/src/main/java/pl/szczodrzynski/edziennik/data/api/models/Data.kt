@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
@@ -314,7 +315,7 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
         d("Total save time: ${System.currentTimeMillis()-totalStart} ms")
     }
 
-    fun setSyncNext(endpointId: Int, syncIn: Long? = null, viewId: Int? = null, syncAt: Long? = null) {
+    fun setSyncNext(endpointId: Int, syncIn: Long? = null, forceFeatureType: FeatureType? = null, syncAt: Long? = null) {
         EndpointTimer(profile?.id
                 ?: -1, endpointId).apply {
             syncedNow()
@@ -328,8 +329,8 @@ abstract class Data(val app: App, val profile: Profile?, val loginStore: LoginSt
             if (syncAt != null) {
                 nextSync = syncAt
             }
-            if (viewId != null)
-                syncWhenView(viewId)
+            if (forceFeatureType != null)
+                syncWithFeature(forceFeatureType)
 
             endpointTimers.add(this)
         }

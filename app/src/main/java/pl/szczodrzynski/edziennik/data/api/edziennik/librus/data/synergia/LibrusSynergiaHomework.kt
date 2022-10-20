@@ -12,11 +12,11 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusSynergia
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.HOUR
 import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.singleOrNull
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class LibrusSynergiaHomework(override val data: DataLibrus,
@@ -96,7 +96,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
             data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
 
             // because this requires a synergia login (2 more requests!!!) sync this every few hours or if explicit :D
-            data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, 5 * HOUR, NavTarget.HOMEWORK.id)
+            data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, 5 * HOUR, FeatureType.HOMEWORK)
             onSuccess(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK)
         }
     } ?: onSuccess(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK) }

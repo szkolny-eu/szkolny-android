@@ -6,6 +6,7 @@ package pl.szczodrzynski.edziennik.data.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 
 const val SYNC_NEVER = 0L
 const val SYNC_ALWAYS = 1L
@@ -26,7 +27,7 @@ data class EndpointTimer (
         var nextSync: Long = SYNC_ALWAYS,
 
         @ColumnInfo(name = "endpointViewId")
-        var viewId: Int? = null
+        var featureType: FeatureType? = null
 
 ) {
 
@@ -49,17 +50,15 @@ data class EndpointTimer (
     }
 
     /**
-     * Set this timer to sync only if [viewId] is the only
+     * Set this timer to sync only if [featureType] is the only
      * selected feature during the current process.
-     *
-     * [viewId] may be [DRAWER_ITEM_HOME] to sync only if all features are selected.
      */
-    fun syncWhenView(viewId: Int): EndpointTimer {
+    fun syncWithFeature(featureType: FeatureType): EndpointTimer {
         // set to never sync if nextSync is not already a timestamp
         if (nextSync < 10) {
             this.nextSync = SYNC_NEVER
         }
-        this.viewId = viewId
+        this.featureType = featureType
         return this
     }
 
@@ -68,7 +67,7 @@ data class EndpointTimer (
      */
     fun syncAlways(): EndpointTimer {
         nextSync = SYNC_ALWAYS
-        viewId = null
+        featureType = null
         return this
     }
 
@@ -77,7 +76,7 @@ data class EndpointTimer (
      */
     fun syncNever(): EndpointTimer {
         nextSync = SYNC_NEVER
-        viewId = null
+        featureType = null
         return this
     }
 }
