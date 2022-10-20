@@ -7,9 +7,15 @@
 
     <data>
 
+        <import type="pl.szczodrzynski.edziennik.data.db.enums.FeatureType" />
+
         <variable
             name="config"
             type="pl.szczodrzynski.edziennik.config.ProfileConfigUI" />
+
+        <variable
+            name="features"
+            type="java.util.Set&lt;FeatureType>" />
     </data>
 
     <ScrollView
@@ -41,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:checked="@={config.timetableShowAttendance}"
+                android:enabled="@{features.contains(FeatureType.ATTENDANCE)}"
                 android:minHeight="32dp"
                 android:text="@string/timetable_config_show_attendance" />
 

@@ -6,11 +6,9 @@ package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.databinding.TimetableConfigDialogBinding
 import pl.szczodrzynski.edziennik.ext.Intent
-import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment
 
@@ -33,6 +31,10 @@ class TimetableConfigDialog(
         TimetableConfigDialogBinding.inflate(layoutInflater)
 
     private val profileConfig by lazy { app.config.getFor(app.profileId).ui }
+
+    override fun initView() {
+        b.features = app.profile.loginStoreType.features
+    }
 
     override suspend fun loadConfig() {
         b.config = profileConfig

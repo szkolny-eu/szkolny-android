@@ -33,7 +33,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.droidsonroids.gif.GifDrawable
-import pl.szczodrzynski.edziennik.data.api.ERROR_REQUIRES_USER_ACTION
 import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.*
@@ -918,6 +917,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     ) {
         d(TAG, "navigateImpl(profileId = ${profile.id}, target = ${navTarget.name}, args = $args)")
 
+        if (navTarget.featureType != null && !profile.hasUIFeature(navTarget.featureType)) {
+            navigateImpl(profile, NavTarget.HOME, args, profileChanged)
+            return
+        }
+
         if (profileChanged) {
             App.profile = profile
             MessagesFragment.pageSelection = -1
@@ -1162,7 +1166,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         for (target in NavTarget.values()) {
             if (target.devModeOnly && !App.devMode)
                 continue
-            if (target.featureType != null && target.featureType !in app.profile.loginStoreType.features)
+            if (target.featureType != null && !app.profile.hasUIFeature(target.featureType))
                 continue
 
             when (target.location) {

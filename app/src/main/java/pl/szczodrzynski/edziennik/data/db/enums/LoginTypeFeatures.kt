@@ -1,0 +1,145 @@
+/*
+ * Copyright (c) Kuba Szczodrzyński 2022-10-20.
+ */
+
+package pl.szczodrzynski.edziennik.data.db.enums
+
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType.*
+
+internal val FEATURES_MOBIDZIENNIK = setOf(
+    TIMETABLE,
+    AGENDA,
+    GRADES,
+    HOMEWORK,
+    BEHAVIOUR,
+    ATTENDANCE,
+    MESSAGES_INBOX,
+    MESSAGES_SENT,
+
+    STUDENT_INFO,
+    STUDENT_NUMBER,
+    SCHOOL_INFO,
+    CLASS_INFO,
+    TEAM_INFO,
+    LUCKY_NUMBER,
+    TEACHERS,
+    SUBJECTS,
+    CLASSROOMS,
+    PUSH_CONFIG,
+)
+
+internal val FEATURES_LIBRUS = setOf(
+    TIMETABLE,
+    AGENDA,
+    GRADES,
+    HOMEWORK,
+    BEHAVIOUR,
+    ATTENDANCE,
+    MESSAGES_INBOX,
+    MESSAGES_SENT,
+    ANNOUNCEMENTS,
+
+    STUDENT_INFO,
+    STUDENT_NUMBER,
+    SCHOOL_INFO,
+    CLASS_INFO,
+    TEAM_INFO,
+    LUCKY_NUMBER,
+    TEACHERS,
+    SUBJECTS,
+    CLASSROOMS,
+    PUSH_CONFIG,
+)
+
+internal val FEATURES_VULCAN = setOf(
+    TIMETABLE,
+    AGENDA,
+    GRADES,
+    HOMEWORK,
+    BEHAVIOUR,
+    ATTENDANCE,
+    MESSAGES_INBOX,
+    MESSAGES_SENT,
+
+    STUDENT_INFO,
+    STUDENT_NUMBER,
+    SCHOOL_INFO,
+    CLASS_INFO,
+    TEAM_INFO,
+    LUCKY_NUMBER,
+    TEACHERS,
+    SUBJECTS,
+    CLASSROOMS,
+    PUSH_CONFIG,
+)
+
+internal val FEATURES_PODLASIE = setOf(
+    TIMETABLE,
+    AGENDA,
+    GRADES,
+    HOMEWORK,
+
+    STUDENT_INFO,
+    STUDENT_NUMBER,
+    SCHOOL_INFO,
+    CLASS_INFO,
+    TEAM_INFO,
+    LUCKY_NUMBER,
+    TEACHERS,
+    SUBJECTS,
+    CLASSROOMS,
+)
+
+internal val FEATURES_USOS = setOf(
+    TIMETABLE,
+    AGENDA,
+
+    STUDENT_INFO,
+    STUDENT_NUMBER,
+    CLASS_INFO,
+    TEAM_INFO,
+    TEACHERS,
+    SUBJECTS,
+    CLASSROOMS,
+)
+
+internal val FEATURES_EDUDZIENNIK = setOf(
+    TIMETABLE,
+    AGENDA,
+    GRADES,
+    HOMEWORK,
+    BEHAVIOUR,
+    ATTENDANCE,
+
+    STUDENT_INFO,
+    STUDENT_NUMBER,
+    SCHOOL_INFO,
+    CLASS_INFO,
+    TEAM_INFO,
+    LUCKY_NUMBER,
+    TEACHERS,
+    SUBJECTS,
+    CLASSROOMS,
+)
+
+internal val FEATURES_IDZIENNIK = setOf(
+    TIMETABLE,
+    AGENDA,
+    GRADES,
+    HOMEWORK,
+    BEHAVIOUR,
+    ATTENDANCE,
+    MESSAGES_INBOX,
+    MESSAGES_SENT,
+    ANNOUNCEMENTS,
+
+    STUDENT_INFO,
+    STUDENT_NUMBER,
+    SCHOOL_INFO,
+    CLASS_INFO,
+    TEAM_INFO,
+    LUCKY_NUMBER,
+    TEACHERS,
+    SUBJECTS,
+    CLASSROOMS,
+)

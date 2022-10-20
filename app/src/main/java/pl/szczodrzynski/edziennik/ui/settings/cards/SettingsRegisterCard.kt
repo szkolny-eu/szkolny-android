@@ -9,8 +9,10 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.after
+import pl.szczodrzynski.edziennik.ext.hasUIFeature
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.*
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.settings.SettingsUtil
@@ -59,27 +61,29 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
             icon = CommunityMaterial.Icon3.cmd_timetable
         ) {
             TimetableConfigDialog(activity, reloadOnDismiss = false).show()
-        },
+        }.takeIf { app.profile.hasUIFeature(FeatureType.TIMETABLE) },
 
         util.createActionItem(
             text = R.string.menu_agenda_config,
             icon = CommunityMaterial.Icon.cmd_calendar_outline
         ) {
             AgendaConfigDialog(activity, reloadOnDismiss = false).show()
-        },
+        }.takeIf { app.profile.hasUIFeature(FeatureType.AGENDA) },
 
         util.createActionItem(
             text = R.string.menu_grades_config,
             icon = CommunityMaterial.Icon3.cmd_numeric_5_box_outline
         ) {
             GradesConfigDialog(activity, reloadOnDismiss = false).show()
-        },
+        }.takeIf { app.profile.hasUIFeature(FeatureType.GRADES) },
 
         util.createActionItem(
             text = R.string.menu_messages_config,
             icon = CommunityMaterial.Icon.cmd_email_outline
         ) {
             MessagesConfigDialog(activity, reloadOnDismiss = false).show()
+        }.takeIf {
+            app.profile.hasUIFeature(FeatureType.MESSAGES_INBOX) || app.profile.hasUIFeature(FeatureType.MESSAGES_SENT)
         },
 
         util.createActionItem(
@@ -87,7 +91,7 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
             icon = CommunityMaterial.Icon.cmd_calendar_remove_outline
         ) {
             AttendanceConfigDialog(activity, reloadOnDismiss = false).show()
-        },
+        }.takeIf { app.profile.hasUIFeature(FeatureType.ATTENDANCE) },
 
         if (app.profile.archived)
             null
@@ -169,7 +173,7 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
                 value = configProfile.grades.hideSticksFromOld
             ) { _, it ->
                 configProfile.grades.hideSticksFromOld = it
-            }
+            }.takeIf { app.profile.hasUIFeature(FeatureType.GRADES) }
         else
             null
     )

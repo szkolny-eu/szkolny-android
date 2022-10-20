@@ -4,16 +4,14 @@
 
 package pl.szczodrzynski.edziennik.ext
 
-import android.content.Context
 import android.util.LongSparseArray
 import androidx.core.util.forEach
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.gson.JsonElement
-import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.Notification
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.entity.Team
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 
 fun List<Teacher>.byId(id: Long) = firstOrNull { it.id == id }
 fun List<Teacher>.byNameFirstLast(nameFirstLast: String) = firstOrNull { it.name + " " + it.surname == nameFirstLast }
@@ -47,3 +45,6 @@ fun Profile.getSchoolYearConstrains(): CalendarConstraints {
         .setEnd(dateYearEnd.inMillisUtc)
         .build()
 }
+
+fun Profile.hasFeature(featureType: FeatureType) = featureType in this.loginStoreType.features
+fun Profile.hasUIFeature(featureType: FeatureType) = featureType.isUIAlwaysAvailable || hasFeature(featureType)

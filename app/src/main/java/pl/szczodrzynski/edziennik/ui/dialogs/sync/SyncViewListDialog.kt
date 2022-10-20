@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.ext.hasFeature
 import pl.szczodrzynski.edziennik.ext.resolveString
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BaseDialog
@@ -31,7 +32,7 @@ class SyncViewListDialog(
 
     @Suppress("USELESS_CAST")
     override fun getMultiChoiceItems() = FeatureType.values()
-        .filter { it.nameRes != null }
+        .filter { it.nameRes != null && app.profile.hasFeature(it) }
         .associateBy { it.nameRes!!.resolveString(activity) as CharSequence }
 
     override fun getDefaultSelectedItems() = when (currentNavTarget) {
