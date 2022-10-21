@@ -15,7 +15,7 @@ class ProfileConfig(
     entries: List<ConfigEntry>?,
 ) : BaseConfig(db, profileId, entries) {
     companion object {
-        const val DATA_VERSION = 3
+        const val DATA_VERSION = 4
     }
 
     val grades by lazy { ProfileConfigGrades(this) }

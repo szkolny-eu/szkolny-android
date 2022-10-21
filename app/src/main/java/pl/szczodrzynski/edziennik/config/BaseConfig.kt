@@ -14,7 +14,7 @@ import pl.szczodrzynski.edziennik.ext.takePositive
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseConfig(
-    protected val db: AppDb,
+    val db: AppDb,
     val profileId: Int? = null,
     protected var entries: List<ConfigEntry>? = null,
 ) : CoroutineScope {

@@ -86,7 +86,59 @@
 		},
 		"uiConfig": {
 			"lessonHeight": 45
-		}
+		},
+		"eventTypes": [
+			{
+				"id": 1,
+				"color": "#f44336",
+				"name": "egzamin"
+			},
+			{
+				"id": 2,
+				"color": "#e91e63",
+				"name": "kolokwium"
+			},
+			{
+				"id": 3,
+				"color": "#76ff03",
+				"name": "kartkówka"
+			},
+			{
+				"id": 4,
+				"color": "#ffeb3b",
+				"name": "wejściówka"
+			},
+			{
+				"id": 5,
+				"color": "#90caf9",
+				"name": "zaliczenie"
+			},
+			{
+				"id": 6,
+				"color": "#4050b5",
+				"name": "zadanie"
+			},
+			{
+				"id": 7,
+				"color": "#673ab7",
+				"name": "projekt"
+			},
+			{
+				"id": 8,
+				"color": "#388e3c",
+				"name": "zajęcia"
+			},
+			{
+				"id": 9,
+				"color": "#4caf50",
+				"name": "zajęcia dodatkowe"
+			},
+			{
+				"id": 10,
+				"color": "#039be5",
+				"name": "informacja"
+			}
+		]
 	},
 	"mobidziennik": {
 		"messagesConfig": {
