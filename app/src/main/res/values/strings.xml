@@ -1548,4 +1548,5 @@
     <string name="login_mode_usos_oauth_guide">TODO</string>
     <string name="notification_user_action_required_oauth_usos">USOS - wymagane logowanie z użyciem przeglądarki</string>
     <string name="oauth_dialog_title">Zaloguj się</string>
+    <string name="app_cannot_load_data">Nie można załadować danych aplikacji</string>
 </resources>

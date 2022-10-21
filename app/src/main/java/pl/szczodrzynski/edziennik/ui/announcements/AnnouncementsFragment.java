@@ -72,7 +72,7 @@ public class AnnouncementsFragment extends Fragment {
                             if (app.getProfile().getLoginStoreType() == LoginType.LIBRUS) {
                                 EdziennikTask.Companion.announcementsRead(App.Companion.getProfileId()).enqueue(requireContext());
                             } else {
-                                AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), MetadataType.ANNOUNCEMENT, true));
+                                AsyncTask.execute(() -> App.Companion.getDb().metadataDao().setAllSeen(App.Companion.getProfileId(), MetadataType.ANNOUNCEMENT, true));
                                 Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -103,7 +103,7 @@ public class AnnouncementsFragment extends Fragment {
             }
         });
 
-        app.db.announcementDao().getAll(App.Companion.getProfileId()).observe(getViewLifecycleOwner(), announcements -> {
+        app.getDb().announcementDao().getAll(App.Companion.getProfileId()).observe(getViewLifecycleOwner(), announcements -> {
             if (app == null || activity == null || b == null || !isAdded())
                 return;
 
@@ -174,7 +174,7 @@ public class AnnouncementsFragment extends Fragment {
         b.text.setText(announcement.getTeacherName() +"\n\n"+ (announcement.getStartDate() != null ? announcement.getStartDate().getFormattedString() : "-") + (announcement.getEndDate() != null ? " do " + announcement.getEndDate().getFormattedString() : "")+"\n\n" +announcement.getText());
         if (!announcement.getSeen() && app.getProfile().getLoginStoreType() != LoginType.LIBRUS) {
             announcement.setSeen(true);
-            AsyncTask.execute(() -> App.db.metadataDao().setSeen(App.Companion.getProfileId(), announcement, true));
+            AsyncTask.execute(() -> App.Companion.getDb().metadataDao().setSeen(App.Companion.getProfileId(), announcement, true));
             if (recyclerView.getAdapter() != null)
                 recyclerView.getAdapter().notifyDataSetChanged();
         }

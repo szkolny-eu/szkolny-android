@@ -923,7 +923,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         if (profileChanged) {
-            App.profile = profile
+            app.profileLoad(profile)
             MessagesFragment.pageSelection = -1
             // set new drawer items for this profile
             setDrawerItems()
