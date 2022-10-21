@@ -72,7 +72,7 @@ public class BehaviourFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), MetadataType.NOTICE, true));
+                            AsyncTask.execute(() -> App.Companion.getDb().metadataDao().setAllSeen(App.Companion.getProfileId(), MetadataType.NOTICE, true));
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                         })
         );
@@ -111,7 +111,7 @@ public class BehaviourFragment extends Fragment {
             }
         });
 
-        app.db.noticeDao().getAll(App.Companion.getProfileId()).observe(getViewLifecycleOwner(), notices -> {
+        app.getDb().noticeDao().getAll(App.Companion.getProfileId()).observe(getViewLifecycleOwner(), notices -> {
             if (app == null || activity == null || b == null || !isAdded())
                 return;
 

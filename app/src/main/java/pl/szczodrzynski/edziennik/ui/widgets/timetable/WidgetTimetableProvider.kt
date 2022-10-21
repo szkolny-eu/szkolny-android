@@ -25,7 +25,9 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_NO_LESSONS
@@ -393,7 +395,7 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                 headerIntent.putExtra("profileId", it)
             }
             displayingDate?.let {
-                headerIntent.putExtra("timetableDate", it.value)
+                headerIntent.putExtra("timetableDate", it.stringY_m_d)
             }
         }
         headerIntent.putExtras("fragmentId" to NavTarget.TIMETABLE)

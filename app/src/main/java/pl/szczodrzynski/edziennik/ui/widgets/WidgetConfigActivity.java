@@ -85,7 +85,7 @@ public class WidgetConfigActivity extends Activity {
                 opacity = 0.8f;
 
             AsyncTask.execute(() -> {
-                profileList = App.db.profileDao().getAllNow();
+                profileList = App.Companion.getDb().profileDao().getAllNow();
                 profileList = filterOutArchived(profileList);
 
                 if (widgetType == WIDGET_NOTIFICATIONS)

@@ -72,3 +72,8 @@ fun pendingIntentFlag(): Int {
         return PendingIntent.FLAG_IMMUTABLE
     return 0
 }
+
+fun Int?.takeValue() = if (this == -1) null else this
+fun Int?.takePositive() = if (this == -1 || this == 0) null else this
+
+fun Any?.ignore() = Unit

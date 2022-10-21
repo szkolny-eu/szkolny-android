@@ -12,6 +12,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import androidx.work.Configuration
@@ -31,6 +32,7 @@ import kotlinx.coroutines.*
 import me.leolin.shortcutbadger.ShortcutBadger
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
+import pl.szczodrzynski.edziennik.config.AppData
 import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.data.api.events.ProfileListEmptyEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
@@ -48,18 +50,27 @@ import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.CrashActivity
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
-import pl.szczodrzynski.edziennik.utils.*
+import pl.szczodrzynski.edziennik.utils.DebugLogFormat
+import pl.szczodrzynski.edziennik.utils.PermissionChecker
+import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
+import kotlin.system.exitProcess
 
 class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     companion object {
         @Volatile
         lateinit var db: AppDb
+            private set
         lateinit var config: Config
+            // private set // for LabFragment
         lateinit var profile: Profile
+            private set
+        lateinit var data: AppData
+            private set
         val profileId
             get() = profile.id
 
@@ -90,6 +101,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         get() = App.profile
     val profileId
         get() = App.profileId
+    val data
+        get() = App.data
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -124,9 +137,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         SSLProviderInstaller.enableSupportedTls(builder, enableCleartext = true)
 
         if (devMode) {
-            HyperLog.initialize(this)
-            HyperLog.setLogLevel(Log.VERBOSE)
-            HyperLog.setLogFormat(DebugLogFormat(this))
             if (enableChucker) {
                 val chuckerCollector = ChuckerCollector(this, true, RetentionManager.Period.ONE_HOUR)
                 val chuckerInterceptor = ChuckerInterceptor(this, chuckerCollector)
@@ -180,16 +190,24 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         Iconics.init(applicationContext)
         Iconics.respectFontBoundsDefault = true
 
+        if (devMode) {
+            HyperLog.initialize(this)
+            HyperLog.setLogLevel(Log.VERBOSE)
+            HyperLog.setLogFormat(DebugLogFormat(this))
+        }
+
         // initialize companion object values
+        AppData.read(this)
         App.db = AppDb(this)
         App.config = Config(App.db)
-        App.profile = Profile(0, 0, LoginType.TEMPLATE, "")
         debugMode = BuildConfig.DEBUG
         devMode = config.devMode ?: debugMode
         enableChucker = config.enableChucker ?: devMode
 
         if (!profileLoadById(config.lastProfileId)) {
-            db.profileDao().firstId?.let { profileLoadById(it) }
+            val success = db.profileDao().firstId?.let { profileLoadById(it) }
+            if (success != true)
+                profileLoad(Profile(0, 0, LoginType.TEMPLATE, ""))
         }
 
         buildHttp()
@@ -381,10 +399,22 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         }
     }
 
+    fun profileLoad(profile: Profile) {
+        App.profile = profile
+        App.config.lastProfileId = profile.id
+        try {
+            App.data = AppData.get(profile.loginStoreType)
+            d("App", "Loaded AppData: ${App.data}")
+        } catch (e: Exception) {
+            Log.e("App", "Cannot load AppData", e)
+            Toast.makeText(this, R.string.app_cannot_load_data, Toast.LENGTH_LONG).show()
+            exitProcess(0)
+        }
+    }
+
     private fun profileLoadById(profileId: Int): Boolean {
         db.profileDao().getByIdNow(profileId)?.also {
-            App.profile = it
-            App.config.lastProfileId = it.id
+            profileLoad(it)
             return true
         }
         return false

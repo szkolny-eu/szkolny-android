@@ -83,7 +83,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             startHour = startHour,
             endHour = endHour,
             dividerHeight = 1.dp,
-            halfHourHeight = if (app.profile.loginStoreType == LoginType.USOS) 45.dp else 60.dp,
+            halfHourHeight = app.data.uiConfig.lessonHeight.dp,
             hourDividerColor = R.attr.hourDividerColor.resolveAttr(context),
             halfHourDividerColor = R.attr.halfHourDividerColor.resolveAttr(context),
             hourLabelWidth = 40.dp,

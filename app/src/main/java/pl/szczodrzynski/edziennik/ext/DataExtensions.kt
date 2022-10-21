@@ -8,6 +8,8 @@ import android.util.LongSparseArray
 import androidx.core.util.forEach
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.gson.JsonElement
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.config.AppData
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.entity.Team
@@ -48,3 +50,6 @@ fun Profile.getSchoolYearConstrains(): CalendarConstraints {
 
 fun Profile.hasFeature(featureType: FeatureType) = featureType in this.loginStoreType.features
 fun Profile.hasUIFeature(featureType: FeatureType) = featureType.isUIAlwaysAvailable || hasFeature(featureType)
+
+fun Profile.getAppData() =
+    if (App.profileId == this.id) App.data else AppData.get(this.loginStoreType)

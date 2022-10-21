@@ -4,89 +4,29 @@
 
 package pl.szczodrzynski.edziennik.config
 
-import pl.szczodrzynski.edziennik.config.utils.get
-import pl.szczodrzynski.edziennik.config.utils.set
 import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.AGENDA_DEFAULT
 import pl.szczodrzynski.edziennik.ui.home.HomeCardModel
 
-class ProfileConfigUI(private val config: ProfileConfig) {
-    private var mAgendaViewType: Int? = null
-    var agendaViewType: Int
-        get() { mAgendaViewType = mAgendaViewType ?: config.values.get("agendaViewType", 0); return mAgendaViewType ?: AGENDA_DEFAULT }
-        set(value) { config.set("agendaViewType", value); mAgendaViewType = value }
+@Suppress("RemoveExplicitTypeArguments")
+class ProfileConfigUI(base: ProfileConfig) {
 
-    private var mAgendaCompactMode: Boolean? = null
-    var agendaCompactMode: Boolean
-        get() { mAgendaCompactMode = mAgendaCompactMode ?: config.values.get("agendaCompactMode", false); return mAgendaCompactMode ?: false }
-        set(value) { config.set("agendaCompactMode", value); mAgendaCompactMode = value }
+    var agendaViewType by base.config<Int>(AGENDA_DEFAULT)
+    var agendaCompactMode by base.config<Boolean>(false)
+    var agendaGroupByType by base.config<Boolean>(false)
+    var agendaLessonChanges by base.config<Boolean>(true)
+    var agendaTeacherAbsence by base.config<Boolean>(true)
+    var agendaElearningMark by base.config<Boolean>(false)
+    var agendaElearningGroup by base.config<Boolean>(true)
 
-    private var mAgendaGroupByType: Boolean? = null
-    var agendaGroupByType: Boolean
-        get() { mAgendaGroupByType = mAgendaGroupByType ?: config.values.get("agendaGroupByType", false); return mAgendaGroupByType ?: false }
-        set(value) { config.set("agendaGroupByType", value); mAgendaGroupByType = value }
+    var homeCards by base.config<List<HomeCardModel>> { listOf() }
 
-    private var mAgendaLessonChanges: Boolean? = null
-    var agendaLessonChanges: Boolean
-        get() { mAgendaLessonChanges = mAgendaLessonChanges ?: config.values.get("agendaLessonChanges", true); return mAgendaLessonChanges ?: true }
-        set(value) { config.set("agendaLessonChanges", value); mAgendaLessonChanges = value }
+    var messagesGreetingOnCompose by base.config<Boolean>(true)
+    var messagesGreetingOnReply by base.config<Boolean>(true)
+    var messagesGreetingOnForward by base.config<Boolean>(false)
+    var messagesGreetingText by base.config<String?>(null)
 
-    private var mAgendaTeacherAbsence: Boolean? = null
-    var agendaTeacherAbsence: Boolean
-        get() { mAgendaTeacherAbsence = mAgendaTeacherAbsence ?: config.values.get("agendaTeacherAbsence", true); return mAgendaTeacherAbsence ?: true }
-        set(value) { config.set("agendaTeacherAbsence", value); mAgendaTeacherAbsence = value }
-
-    private var mAgendaElearningMark: Boolean? = null
-    var agendaElearningMark: Boolean
-        get() { mAgendaElearningMark = mAgendaElearningMark ?: config.values.get("agendaElearningMark", false); return mAgendaElearningMark ?: false }
-        set(value) { config.set("agendaElearningMark", value); mAgendaElearningMark = value }
-
-    private var mAgendaElearningGroup: Boolean? = null
-    var agendaElearningGroup: Boolean
-        get() { mAgendaElearningGroup = mAgendaElearningGroup ?: config.values.get("agendaElearningGroup", true); return mAgendaElearningGroup ?: true }
-        set(value) { config.set("agendaElearningGroup", value); mAgendaElearningGroup = value }
-
-    private var mHomeCards: List<HomeCardModel>? = null
-    var homeCards: List<HomeCardModel>
-        get() { mHomeCards = mHomeCards ?: config.values.get("homeCards", listOf(), HomeCardModel::class.java); return mHomeCards ?: listOf() }
-        set(value) { config.set("homeCards", value); mHomeCards = value }
-
-    private var mMessagesGreetingOnCompose: Boolean? = null
-    var messagesGreetingOnCompose: Boolean
-        get() { mMessagesGreetingOnCompose = mMessagesGreetingOnCompose ?: config.values.get("messagesGreetingOnCompose", true); return mMessagesGreetingOnCompose ?: true }
-        set(value) { config.set("messagesGreetingOnCompose", value); mMessagesGreetingOnCompose = value }
-
-    private var mMessagesGreetingOnReply: Boolean? = null
-    var messagesGreetingOnReply: Boolean
-        get() { mMessagesGreetingOnReply = mMessagesGreetingOnReply ?: config.values.get("messagesGreetingOnReply", true); return mMessagesGreetingOnReply ?: true }
-        set(value) { config.set("messagesGreetingOnReply", value); mMessagesGreetingOnReply = value }
-
-    private var mMessagesGreetingOnForward: Boolean? = null
-    var messagesGreetingOnForward: Boolean
-        get() { mMessagesGreetingOnForward = mMessagesGreetingOnForward ?: config.values.get("messagesGreetingOnForward", false); return mMessagesGreetingOnForward ?: false }
-        set(value) { config.set("messagesGreetingOnForward", value); mMessagesGreetingOnForward = value }
-
-    private var mMessagesGreetingText: String? = null
-    var messagesGreetingText: String?
-        get() { mMessagesGreetingText = mMessagesGreetingText ?: config.values["messagesGreetingText"]; return mMessagesGreetingText }
-        set(value) { config.set("messagesGreetingText", value); mMessagesGreetingText = value }
-
-    private var mTimetableShowAttendance: Boolean? = null
-    var timetableShowAttendance: Boolean
-        get() { mTimetableShowAttendance = mTimetableShowAttendance ?: config.values.get("timetableShowAttendance", true); return mTimetableShowAttendance ?: true }
-        set(value) { config.set("timetableShowAttendance", value); mTimetableShowAttendance = value }
-
-    private var mTimetableShowEvents: Boolean? = null
-    var timetableShowEvents: Boolean
-        get() { mTimetableShowEvents = mTimetableShowEvents ?: config.values.get("timetableShowEvents", true); return mTimetableShowEvents ?: true }
-        set(value) { config.set("timetableShowEvents", value); mTimetableShowEvents = value }
-
-    private var mTimetableTrimHourRange: Boolean? = null
-    var timetableTrimHourRange: Boolean
-        get() { mTimetableTrimHourRange = mTimetableTrimHourRange ?: config.values.get("timetableTrimHourRange", false); return mTimetableTrimHourRange ?: false }
-        set(value) { config.set("timetableTrimHourRange", value); mTimetableTrimHourRange = value }
-    
-    private var mTimetableColorSubjectName: Boolean? = null
-    var timetableColorSubjectName: Boolean
-        get() { mTimetableColorSubjectName = mTimetableColorSubjectName ?: config.values.get("timetableColorSubjectName", false); return mTimetableColorSubjectName ?: false }
-        set(value) { config.set("timetableColorSubjectName", value); mTimetableColorSubjectName = value }
+    var timetableShowAttendance by base.config<Boolean>(true)
+    var timetableShowEvents by base.config<Boolean>(true)
+    var timetableTrimHourRange by base.config<Boolean>(false)
+    var timetableColorSubjectName by base.config<Boolean>(false)
 }

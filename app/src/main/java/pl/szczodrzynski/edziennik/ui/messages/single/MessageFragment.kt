@@ -188,7 +188,7 @@ class MessageFragment : Fragment(), CoroutineScope {
             }
         }
 
-        if (app.profile.loginStoreType == LoginType.VULCAN) {
+        if (app.data.messagesConfig.needsReadStatus) {
             // vulcan: change message status or download attachments
             if ((message.isReceived || message.isDeleted) && !message.seen || message.attachmentIds == null) {
                 EdziennikTask.messageGet(App.profileId, message).enqueue(activity)

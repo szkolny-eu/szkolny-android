@@ -22,7 +22,6 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding
@@ -33,7 +32,6 @@ import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class AgendaFragment : Fragment(), CoroutineScope {
@@ -144,7 +142,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
             }
             val defaultEventTypes = EventType.getTypeColorMap().keys
             if (!eventTypes.containsAll(defaultEventTypes)) {
-                app.db.eventTypeDao().addDefaultTypes(activity, app.profileId)
+                app.db.eventTypeDao().addDefaultTypes(app.profile)
             }
         }
     }

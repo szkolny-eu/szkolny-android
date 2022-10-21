@@ -42,7 +42,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
@@ -427,7 +426,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 launch {
                     withContext(Dispatchers.Default) {
                         app.db.profileDao().allNow.forEach { profile ->
-                            if (profile.loginStoreType != LoginType.LIBRUS)
+                            if (!profile.getAppData().uiConfig.enableMarkAsReadAnnouncements)
                                 app.db.metadataDao()
                                     .setAllSeenExceptMessagesAndAnnouncements(profile.id, true)
                             else
@@ -695,7 +694,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         d(TAG, "}")
 
-        val intentProfileId = extras.getIntOrNull("profileId")
+        val intentProfileId = extras.getIntOrNull("profileId").takePositive()
         var intentNavTarget = extras.getIntOrNull("fragmentId").asNavTargetOrNull()
 
         if (extras?.containsKey("action") == true) {
@@ -743,8 +742,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         if (extras?.containsKey("reloadProfileId") == true) {
-            val reloadProfileId = extras.getIntOrNull("reloadProfileId")
-            if (reloadProfileId == -1 || app.profile.id == reloadProfileId) {
+            val reloadProfileId = extras.getIntOrNull("reloadProfileId").takePositive()
+            if (reloadProfileId == null || app.profile.id == reloadProfileId) {
                 reloadTarget()
                 return
             }
@@ -767,7 +766,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 navTarget = intentNavTarget,
                 args = extras,
             )
-            intentProfileId != -1 -> navigate(
+            intentProfileId != null -> navigate(
                 profileId = intentProfileId,
                 navTarget = intentNavTarget,
                 args = extras,
@@ -776,6 +775,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 navTarget = intentNavTarget,
                 args = extras,
             )
+            navLoading -> navigate()
             else -> drawer.currentProfile = app.profile.id
         }
         navLoading = false
@@ -923,7 +923,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         if (profileChanged) {
-            App.profile = profile
+            if (App.profileId != profile.id)
+                app.profileLoad(profile)
             MessagesFragment.pageSelection = -1
             // set new drawer items for this profile
             setDrawerItems()
