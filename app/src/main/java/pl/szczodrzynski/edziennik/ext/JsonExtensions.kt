@@ -46,6 +46,7 @@ inline fun <reified E : Enum<E>> JsonObject?.getEnum(key: String) = this?.getInt
 fun JsonObject.putEnum(key: String, value: Enum<*>) = addProperty(key, value.toInt())
 
 fun String.toJsonObject(): JsonObject? = try { JsonParser.parseString(this).asJsonObject } catch (ignore: Exception) { null }
+fun String.toJsonArray(): JsonArray? = try { JsonParser.parseString(this).asJsonArray } catch (ignore: Exception) { null }
 
 operator fun JsonObject.set(key: String, value: JsonElement) = this.add(key, value)
 operator fun JsonObject.set(key: String, value: Boolean) = this.addProperty(key, value)
@@ -86,7 +87,9 @@ fun JsonObject.toBundle(): Bundle {
     }
 }
 
-fun JsonArray(vararg properties: Any?): JsonArray {
+fun JsonArray(vararg properties: Any?) = JsonArray(properties.toList())
+
+fun JsonArray(properties: Collection<Any?>): JsonArray {
     return JsonArray().apply {
         for (property in properties) {
             when (property) {

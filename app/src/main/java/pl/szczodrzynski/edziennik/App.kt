@@ -134,9 +134,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         SSLProviderInstaller.enableSupportedTls(builder, enableCleartext = true)
 
         if (devMode) {
-            HyperLog.initialize(this)
-            HyperLog.setLogLevel(Log.VERBOSE)
-            HyperLog.setLogFormat(DebugLogFormat(this))
             if (enableChucker) {
                 val chuckerCollector = ChuckerCollector(this, true, RetentionManager.Period.ONE_HOUR)
                 val chuckerInterceptor = ChuckerInterceptor(this, chuckerCollector)
@@ -196,6 +193,12 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         debugMode = BuildConfig.DEBUG
         devMode = config.devMode ?: debugMode
         enableChucker = config.enableChucker ?: devMode
+
+        if (devMode) {
+            HyperLog.initialize(this)
+            HyperLog.setLogLevel(Log.VERBOSE)
+            HyperLog.setLogFormat(DebugLogFormat(this))
+        }
 
         if (!profileLoadById(config.lastProfileId)) {
             val success = db.profileDao().firstId?.let { profileLoadById(it) }
