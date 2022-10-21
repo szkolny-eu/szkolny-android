@@ -80,14 +80,14 @@ class ConfigDelegate<T>(
     operator fun getValue(_thisRef: Any, property: KProperty<*>): T {
         if (isInitialized)
             return value as T
-        val name = fieldName ?: property.name
+        val key = fieldName ?: property.name
 
-        if (name !in config.values) {
+        if (key !in config.values) {
             value = getDefault()
             isInitialized = true
             return value as T
         }
-        val str = config.values[name]
+        val str = config.values[key]
 
         value = if (str == null && nullable)
             null as T

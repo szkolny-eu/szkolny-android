@@ -4,12 +4,13 @@
 
 package pl.szczodrzynski.edziennik.config
 
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.stream.JsonReader
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.mergeWith
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode
@@ -22,21 +23,26 @@ data class AppData(
 ) {
     companion object {
         private var data: JsonObject? = null
+        private val appData = mutableMapOf<LoginType, AppData>()
 
-        fun read(app: App, profile: Profile = app.profile): AppData {
-            if (data == null) {
-                val res = app.resources.openRawResource(R.raw.app_data)
-                data = JsonParser.parseReader(JsonReader(res.reader())).asJsonObject
-            }
+        fun read(app: App) {
+            val res = app.resources.openRawResource(R.raw.app_data)
+            data = JsonParser.parseReader(JsonReader(res.reader())).asJsonObject
+        }
+
+        fun get(loginType: LoginType): AppData {
+            if (loginType in appData)
+                return appData.getValue(loginType)
             val json = data?.getJsonObject("base")?.deepCopy()
                 ?: throw NoSuchElementException("Base data not found")
-            val loginType = profile.loginStoreType
             val overrides = setOf(loginType, loginType.schoolType)
             for (overrideType in overrides) {
                 val override = data?.getJsonObject(overrideType.name.lowercase()) ?: continue
                 json.mergeWith(override)
             }
-            return app.gson.fromJson(json, AppData::class.java)
+            val value = Gson().fromJson(json, AppData::class.java)
+            appData[loginType] = value
+            return value
         }
     }
 

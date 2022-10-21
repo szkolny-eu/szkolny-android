@@ -50,7 +50,10 @@ import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.CrashActivity
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
-import pl.szczodrzynski.edziennik.utils.*
+import pl.szczodrzynski.edziennik.utils.DebugLogFormat
+import pl.szczodrzynski.edziennik.utils.PermissionChecker
+import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.*
 import java.util.concurrent.TimeUnit
@@ -187,18 +190,19 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         Iconics.init(applicationContext)
         Iconics.respectFontBoundsDefault = true
 
-        // initialize companion object values
-        App.db = AppDb(this)
-        App.config = Config(App.db)
-        debugMode = BuildConfig.DEBUG
-        devMode = config.devMode ?: debugMode
-        enableChucker = config.enableChucker ?: devMode
-
         if (devMode) {
             HyperLog.initialize(this)
             HyperLog.setLogLevel(Log.VERBOSE)
             HyperLog.setLogFormat(DebugLogFormat(this))
         }
+
+        // initialize companion object values
+        AppData.read(this)
+        App.db = AppDb(this)
+        App.config = Config(App.db)
+        debugMode = BuildConfig.DEBUG
+        devMode = config.devMode ?: debugMode
+        enableChucker = config.enableChucker ?: devMode
 
         if (!profileLoadById(config.lastProfileId)) {
             val success = db.profileDao().firstId?.let { profileLoadById(it) }
@@ -399,7 +403,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         App.profile = profile
         App.config.lastProfileId = profile.id
         try {
-            App.data = AppData.read(this)
+            App.data = AppData.get(profile.loginStoreType)
             d("App", "Loaded AppData: ${App.data}")
         } catch (e: Exception) {
             Log.e("App", "Cannot load AppData", e)

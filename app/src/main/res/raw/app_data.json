@@ -12,9 +12,7 @@
 			"lessonHeight": 60,
 			"enableMarkAsReadAnnouncements": true,
 			"enableNoticePoints": false
-		}
-	},
-	"standard": {
+		},
 		"eventTypes": [
 			{
 				"id": -5,
@@ -30,7 +28,11 @@
 				"id": 0,
 				"color": "#ffc107",
 				"name": "inny"
-			},
+			}
+		]
+	},
+	"standard": {
+		"eventTypes": [
 			{
 				"id": 1,
 				"color": "#f44336",

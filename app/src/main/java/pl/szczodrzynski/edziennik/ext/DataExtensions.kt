@@ -51,5 +51,5 @@ fun Profile.getSchoolYearConstrains(): CalendarConstraints {
 fun Profile.hasFeature(featureType: FeatureType) = featureType in this.loginStoreType.features
 fun Profile.hasUIFeature(featureType: FeatureType) = featureType.isUIAlwaysAvailable || hasFeature(featureType)
 
-fun Profile.getAppData(app: App) =
-    if (App.profileId == this.id) App.data else AppData.read(app, this)
+fun Profile.getAppData() =
+    if (App.profileId == this.id) App.data else AppData.get(this.loginStoreType)

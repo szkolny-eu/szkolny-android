@@ -37,7 +37,8 @@ class EventTypeDropdown : TextInputDropDown {
             var types = db.eventTypeDao().getAllNow(profileId)
 
             if (types.none { it.id in -1L..10L }) {
-                types = db.eventTypeDao().addDefaultTypes(context, profileId)
+                val profile = db.profileDao().getByIdNow(profileId) ?: return@withContext listOf()
+                types = db.eventTypeDao().addDefaultTypes(profile)
             }
 
             list += types.map {

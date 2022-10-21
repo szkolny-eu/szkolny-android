@@ -11,14 +11,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.config.AppData
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
@@ -29,6 +28,7 @@ import pl.szczodrzynski.edziennik.databinding.LoginSyncFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.asBoldSpannable
 import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.ignore
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.roundToInt
 
@@ -56,7 +56,7 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
         return b.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = launch {
 
         EventBus.getDefault().removeStickyEvent(ApiTaskAllFinishedEvent::class.java)
         EventBus.getDefault().removeStickyEvent(ApiTaskErrorEvent::class.java)
@@ -64,18 +64,26 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
         val profiles = activity.profiles.filter { it.isSelected }.map { it.profile }
         val loginStores = activity.loginStores.filter { store -> profiles.any { it.loginStoreId == store.id } }
 
-        val registrationAllowed = arguments?.getBoolean("registrationAllowed") ?: false
-        profiles.forEach {
-            it.registration = if (registrationAllowed)
-                Profile.REGISTRATION_ENABLED
-            else
-                Profile.REGISTRATION_DISABLED
+        withContext(Dispatchers.IO) {
+            val registrationAllowed = arguments?.getBoolean("registrationAllowed") ?: false
+            profiles.forEach {
+                it.registration = if (registrationAllowed)
+                    Profile.REGISTRATION_ENABLED
+                else
+                    Profile.REGISTRATION_DISABLED
 
-            app.db.eventTypeDao().addDefaultTypes(activity, it.id)
+                val data = AppData.get(it.loginStoreType)
+                val config = app.config.getFor(it.id)
+                for ((key, value) in data.configOverrides) {
+                    config.set(key, value)
+                }
+
+                app.db.eventTypeDao().addDefaultTypes(it)
+            }
+
+            app.db.profileDao().addAll(profiles)
+            app.db.loginStoreDao().addAll(loginStores)
         }
-
-        app.db.profileDao().addAll(profiles)
-        app.db.loginStoreDao().addAll(loginStores)
 
         finishArguments = Bundle(
                 "firstProfileId" to profiles.firstOrNull()?.id
@@ -83,7 +91,7 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
 
         val profileIds = profiles.map { it.id }.toSet()
         EdziennikTask.syncProfileList(profileIds).enqueue(activity)
-    }
+    }.ignore()
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSyncStartedEvent(event: ApiTaskStartedEvent) {
