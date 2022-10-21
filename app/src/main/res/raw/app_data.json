@@ -9,7 +9,9 @@
 			"needsReadStatus": false
 		},
 		"uiConfig": {
-			"lessonHeight": 60
+			"lessonHeight": 60,
+			"enableMarkAsReadAnnouncements": true,
+			"enableNoticePoints": false
 		}
 	},
 	"standard": {
@@ -88,6 +90,9 @@
 		"messagesConfig": {
 			"subjectLength": 100,
 			"htmlMode": "COMPATIBLE"
+		},
+		"uiConfig": {
+			"enableNoticePoints": true
 		}
 	},
 	"librus": {
@@ -95,6 +100,9 @@
 			"subjectLength": 150,
 			"bodyLength": 20000,
 			"textStyling": false
+		},
+		"uiConfig": {
+			"enableMarkAsReadAnnouncements": false
 		}
 	},
 	"vulcan": {

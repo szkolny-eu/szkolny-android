@@ -9,6 +9,7 @@ import com.google.gson.JsonParser
 import com.google.gson.stream.JsonReader
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.mergeWith
 import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager.HtmlMode
@@ -22,14 +23,14 @@ data class AppData(
     companion object {
         private var data: JsonObject? = null
 
-        fun read(app: App): AppData {
+        fun read(app: App, profile: Profile = app.profile): AppData {
             if (data == null) {
                 val res = app.resources.openRawResource(R.raw.app_data)
                 data = JsonParser.parseReader(JsonReader(res.reader())).asJsonObject
             }
             val json = data?.getJsonObject("base")?.deepCopy()
                 ?: throw NoSuchElementException("Base data not found")
-            val loginType = app.profile.loginStoreType
+            val loginType = profile.loginStoreType
             val overrides = setOf(loginType, loginType.schoolType)
             for (overrideType in overrides) {
                 val override = data?.getJsonObject(overrideType.name.lowercase()) ?: continue
@@ -50,6 +51,8 @@ data class AppData(
 
     data class UIConfig(
         val lessonHeight: Int,
+        val enableMarkAsReadAnnouncements: Boolean,
+        val enableNoticePoints: Boolean,
     )
 
     data class EventType(

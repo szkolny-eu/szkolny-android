@@ -427,7 +427,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 launch {
                     withContext(Dispatchers.Default) {
                         app.db.profileDao().allNow.forEach { profile ->
-                            if (profile.loginStoreType != LoginType.LIBRUS)
+                            if (!profile.getAppData(app).uiConfig.enableMarkAsReadAnnouncements)
                                 app.db.metadataDao()
                                     .setAllSeenExceptMessagesAndAnnouncements(profile.id, true)
                             else

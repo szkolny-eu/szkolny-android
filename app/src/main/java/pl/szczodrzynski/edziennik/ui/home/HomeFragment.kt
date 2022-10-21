@@ -26,7 +26,6 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
 import pl.szczodrzynski.edziennik.ext.hasUIFeature
 import pl.szczodrzynski.edziennik.ext.onClick
@@ -127,7 +126,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                         .withOnClickListener(OnClickListener {
                             activity.bottomSheet.close()
                             launch { withContext(Dispatchers.Default) {
-                                if (app.profile.loginStoreType != LoginType.LIBRUS) {
+                                if (!app.data.uiConfig.enableMarkAsReadAnnouncements) {
                                     app.db.metadataDao().setAllSeenExceptMessagesAndAnnouncements(App.profileId, true)
                                 } else {
                                     app.db.metadataDao().setAllSeenExceptMessages(App.profileId, true)

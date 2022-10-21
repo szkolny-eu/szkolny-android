@@ -30,7 +30,6 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.enums.LoginType
@@ -76,8 +75,6 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
 
     private lateinit var stylingConfig: StylingConfig
     private lateinit var uiConfig: UIConfig
-    private val enableTextStyling
-        get() = app.profile.loginStoreType != LoginType.LIBRUS
     private var changedRecipients = false
     private var changedSubject = false
     private var changedBody = false
@@ -154,14 +151,14 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     }
 
     private fun getMessageBody(): String {
-        return if (enableTextStyling)
+        return if (app.data.messagesConfig.textStyling)
             textStylingManager.getHtmlText(stylingConfig)
         else
             b.text.text?.toString() ?: ""
     }
 
     private fun getRecipientList() {
-        if (System.currentTimeMillis() - app.profile.lastReceiversSync > 1 * DAY * 1000 && app.profile.loginStoreType != LoginType.VULCAN) {
+        if (app.data.messagesConfig.syncRecipientList && System.currentTimeMillis() - app.profile.lastReceiversSync > 1 * DAY * 1000) {
             activity.snackbar("Pobieranie listy odbiorców...")
             EdziennikTask.recipientListGet(App.profileId).enqueue(activity)
         }
@@ -262,8 +259,8 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             },
         )
 
-        b.fontStyle.root.isVisible = enableTextStyling
-        if (enableTextStyling) {
+        b.fontStyle.root.isVisible = app.data.messagesConfig.textStyling
+        if (app.data.messagesConfig.textStyling) {
             textStylingManager.attach(stylingConfig)
             b.fontStyle.styles.addOnButtonCheckedListener { _, _, _ ->
                 changedBody = true
@@ -374,7 +371,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             else -> b.text.requestFocus()
         }
 
-        if (!enableTextStyling)
+        if (!app.data.messagesConfig.textStyling)
             b.text.setText(b.text.text?.toString())
         b.text.setSelection(0)
          (b.root as? ScrollView)?.smoothScrollTo(0, 0)
