@@ -9,5 +9,9 @@ import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
 @Suppress("RemoveExplicitTypeArguments")
 class ProfileConfigSync(base: ProfileConfig) {
 
-    var notificationFilter by base.config<Set<NotificationType>> { setOf() }
+    var notificationFilter by base.config<Set<NotificationType>> {
+        NotificationType.values()
+            .filter { it.enabledByDefault == false }
+            .toSet()
+    }
 }

@@ -16,7 +16,17 @@ class ConfigUI(base: Config) {
     var headerBackground by base.config<String?>("headerBg", null)
 
     var miniMenuVisible by base.config<Boolean>(false)
-    var miniMenuButtons by base.config<Set<NavTarget>> { setOf() }
+    var miniMenuButtons by base.config<Set<NavTarget>> {
+        setOf(
+            NavTarget.HOME,
+            NavTarget.TIMETABLE,
+            NavTarget.AGENDA,
+            NavTarget.GRADES,
+            NavTarget.MESSAGES,
+            NavTarget.HOMEWORK,
+            NavTarget.SETTINGS
+        )
+    }
     var openDrawerOnBackPressed by base.config<Boolean>(false)
 
     var bottomSheetOpened by base.config<Boolean>(false)

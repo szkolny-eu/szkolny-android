@@ -15,21 +15,6 @@ import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_AL
 class ProfileConfigMigration(config: ProfileConfig) {
     init { config.apply {
 
-        if (dataVersion < 1) {
-            grades.colorMode = COLOR_MODE_WEIGHTED
-            grades.yearAverageMode = YEAR_ALL_GRADES
-            grades.hideImproved = false
-            grades.averageWithoutWeight = true
-            grades.plusValue = null
-            grades.minusValue = null
-            grades.dontCountEnabled = false
-            grades.dontCountGrades = listOf()
-            ui.agendaViewType = AGENDA_DEFAULT
-            // no migration for ui.homeCards
-
-            dataVersion = 1
-        }
-
         if (dataVersion < 2) {
             sync.notificationFilter = sync.notificationFilter + NotificationType.TEACHER_ABSENCE
 
@@ -38,9 +23,10 @@ class ProfileConfigMigration(config: ProfileConfig) {
 
         if (dataVersion < 3) {
             if (ui.homeCards.isNotEmpty()) {
-                ui.homeCards = ui.homeCards.toMutableList().also {
-                    it.add(HomeCardModel(config.profileId ?: -1, HomeCard.CARD_NOTES))
-                }
+                ui.homeCards = ui.homeCards + HomeCardModel(
+                    profileId = config.profileId ?: -1,
+                    cardId = HomeCard.CARD_NOTES,
+                )
             }
 
             dataVersion = 3

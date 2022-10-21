@@ -4,12 +4,13 @@
 
 package pl.szczodrzynski.edziennik.config
 
+import pl.szczodrzynski.edziennik.data.db.entity.Profile.Companion.AGENDA_DEFAULT
 import pl.szczodrzynski.edziennik.ui.home.HomeCardModel
 
 @Suppress("RemoveExplicitTypeArguments")
 class ProfileConfigUI(base: ProfileConfig) {
 
-    var agendaViewType by base.config<Int>(0)
+    var agendaViewType by base.config<Int>(AGENDA_DEFAULT)
     var agendaCompactMode by base.config<Boolean>(false)
     var agendaGroupByType by base.config<Boolean>(false)
     var agendaLessonChanges by base.config<Boolean>(true)
