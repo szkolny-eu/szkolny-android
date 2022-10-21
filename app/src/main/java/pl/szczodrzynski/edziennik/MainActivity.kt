@@ -695,7 +695,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
         d(TAG, "}")
 
-        val intentProfileId = extras.getIntOrNull("profileId")
+        val intentProfileId = extras.getIntOrNull("profileId").takePositive()
         var intentNavTarget = extras.getIntOrNull("fragmentId").asNavTargetOrNull()
 
         if (extras?.containsKey("action") == true) {
@@ -743,8 +743,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         if (extras?.containsKey("reloadProfileId") == true) {
-            val reloadProfileId = extras.getIntOrNull("reloadProfileId")
-            if (reloadProfileId == -1 || app.profile.id == reloadProfileId) {
+            val reloadProfileId = extras.getIntOrNull("reloadProfileId").takePositive()
+            if (reloadProfileId == null || app.profile.id == reloadProfileId) {
                 reloadTarget()
                 return
             }
@@ -767,7 +767,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 navTarget = intentNavTarget,
                 args = extras,
             )
-            intentProfileId != -1 -> navigate(
+            intentProfileId != null -> navigate(
                 profileId = intentProfileId,
                 navTarget = intentNavTarget,
                 args = extras,
@@ -776,6 +776,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 navTarget = intentNavTarget,
                 args = extras,
             )
+            navLoading -> navigate()
             else -> drawer.currentProfile = app.profile.id
         }
         navLoading = false
