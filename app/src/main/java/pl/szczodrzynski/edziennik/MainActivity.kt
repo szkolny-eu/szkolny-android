@@ -42,7 +42,6 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata.*
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
@@ -924,7 +923,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         if (profileChanged) {
-            app.profileLoad(profile)
+            if (App.profileId != profile.id)
+                app.profileLoad(profile)
             MessagesFragment.pageSelection = -1
             // set new drawer items for this profile
             setDrawerItems()

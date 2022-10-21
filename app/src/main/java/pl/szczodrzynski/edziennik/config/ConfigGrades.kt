@@ -4,13 +4,10 @@
 
 package pl.szczodrzynski.edziennik.config
 
-import pl.szczodrzynski.edziennik.config.utils.get
-import pl.szczodrzynski.edziennik.config.utils.set
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC
 
-class ConfigGrades(private val config: Config) {
-    private var mOrderBy: Int? = null
-    var orderBy: Int
-        get() { mOrderBy = mOrderBy ?: config.values.get("gradesOrderBy", 0); return mOrderBy ?: GradesManager.ORDER_BY_DATE_DESC }
-        set(value) { config.set("gradesOrderBy", value); mOrderBy = value }
+@Suppress("RemoveExplicitTypeArguments")
+class ConfigGrades(base: Config) {
+
+    var orderBy by base.config<Int>("gradesOrderBy", ORDER_BY_DATE_DESC)
 }

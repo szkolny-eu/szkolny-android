@@ -39,7 +39,7 @@ class ProfileConfigMigration(config: ProfileConfig) {
         if (dataVersion < 3) {
             if (ui.homeCards.isNotEmpty()) {
                 ui.homeCards = ui.homeCards.toMutableList().also {
-                    it.add(HomeCardModel(config.profileId, HomeCard.CARD_NOTES))
+                    it.add(HomeCardModel(config.profileId ?: -1, HomeCard.CARD_NOTES))
                 }
             }
 

@@ -7,7 +7,6 @@ package pl.szczodrzynski.edziennik.config.utils
 import android.content.Context
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
-import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.ext.HOUR
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
@@ -89,8 +88,8 @@ class ConfigMigration(app: App, config: Config) {
         }
 
         if (dataVersion < 11) {
-            val startMillis = config.values.get("quietHoursStart", 0L)
-            val endMillis = config.values.get("quietHoursEnd", 0L)
+            val startMillis = config.values["quietHoursStart"]?.toLongOrNull() ?: 0L
+            val endMillis = config.values["quietHoursEnd"]?.toLongOrNull() ?: 0L
             if (startMillis > 0) {
                 try {
                     sync.quietHoursStart = Time.fromMillis(abs(startMillis))

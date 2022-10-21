@@ -4,10 +4,10 @@
 
 package pl.szczodrzynski.edziennik.config
 
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import pl.szczodrzynski.edziennik.config.utils.gson
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -15,29 +15,47 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.WildcardType
 import kotlin.reflect.KProperty
 
-inline fun <reified T> config(noinline default: () -> T) = ConfigDelegate(
+private val gson = Gson()
+
+inline fun <reified T> BaseConfig.config(name: String? = null, noinline default: () -> T) = ConfigDelegate(
+    config = this,
     type = T::class.java,
     nullable = null is T,
     typeToken = object : TypeToken<T>() {},
     defaultFunc = default,
     defaultValue = null,
+    fieldName = name,
 )
 
-inline fun <reified T> config(default: T) = ConfigDelegate(
+inline fun <reified T> BaseConfig.config(default: T) = ConfigDelegate(
+    config = this,
     type = T::class.java,
     nullable = null is T,
     typeToken = object : TypeToken<T>() {},
     defaultFunc = null,
     defaultValue = default,
+    fieldName = null,
+)
+
+inline fun <reified T> BaseConfig.config(name: String? = null, default: T) = ConfigDelegate(
+    config = this,
+    type = T::class.java,
+    nullable = null is T,
+    typeToken = object : TypeToken<T>() {},
+    defaultFunc = null,
+    defaultValue = default,
+    fieldName = name,
 )
 
 @Suppress("UNCHECKED_CAST")
 class ConfigDelegate<T>(
+    private val config: BaseConfig,
     private val type: Class<T>,
     private val nullable: Boolean,
     private val typeToken: TypeToken<T>,
     private val defaultFunc: (() -> T)?,
     private val defaultValue: T?,
+    private val fieldName: String?,
 ) {
     private var value: T? = null
     private var isInitialized = false
@@ -53,22 +71,23 @@ class ConfigDelegate<T>(
         return typeArgument.upperBounds[0] as Class<*>
     }
 
-    operator fun setValue(thisRef: BaseConfig, property: KProperty<*>, newValue: T) {
+    operator fun setValue(_thisRef: Any, property: KProperty<*>, newValue: T) {
         value = newValue
         isInitialized = true
-        thisRef.values[property.name] = serialize(newValue)?.toString()
+        config.set(fieldName ?: property.name, serialize(newValue)?.toString())
     }
 
-    operator fun getValue(thisRef: BaseConfig, property: KProperty<*>): T {
+    operator fun getValue(_thisRef: Any, property: KProperty<*>): T {
         if (isInitialized)
             return value as T
+        val name = fieldName ?: property.name
 
-        if (property.name !in thisRef.values) {
+        if (name !in config.values) {
             value = getDefault()
             isInitialized = true
             return value as T
         }
-        val str = thisRef.values[property.name]
+        val str = config.values[name]
 
         value = if (str == null && nullable)
             null as T
@@ -111,6 +130,7 @@ class ConfigDelegate<T>(
         if (value == null)
             return null
 
+        @Suppress("TYPE_MISMATCH_WARNING")
         return when (type) {
             String::class.java -> value
             Date::class.java -> Date.fromY_m_d(value)
