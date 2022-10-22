@@ -390,13 +390,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 fabExtendable = true
                 fabExtended = false
                 fabGravity = Gravity.CENTER
-                if (Themes.isDark) {
-                    setBackgroundColor(blendColors(
-                        getColorFromAttr(context, R.attr.colorSurface),
-                        getColorFromRes(R.color.colorSurface_4dp)
-                    ))
-                    elevation = dpToPx(4).toFloat()
-                }
             }
 
             bottomSheet.apply {
