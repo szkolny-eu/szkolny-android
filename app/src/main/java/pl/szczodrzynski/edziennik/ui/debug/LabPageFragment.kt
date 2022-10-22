@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.chuckerteam.chucker.api.Chucker
 import com.chuckerteam.chucker.api.Chucker.SCREEN_HTTP
@@ -21,6 +22,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.config.Config
+import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
 import pl.szczodrzynski.edziennik.databinding.LabFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
@@ -139,6 +141,16 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
 
         b.resetCert.onClick {
             app.config.apiInvalidCert = null
+        }
+
+        b.apiKey.setText(app.config.apiKeyCustom ?: SignatureInterceptor.API_KEY)
+        b.apiKey.doAfterTextChanged {
+            it?.toString()?.let { key ->
+                if (key == SignatureInterceptor.API_KEY)
+                    app.config.apiKeyCustom = null
+                else
+                    app.config.apiKeyCustom = key.takeValue()?.trim()
+            }
         }
 
         b.rebuildConfig.onClick {

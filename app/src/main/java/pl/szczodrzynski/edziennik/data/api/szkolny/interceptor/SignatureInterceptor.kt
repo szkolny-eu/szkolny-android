@@ -12,10 +12,11 @@ import pl.szczodrzynski.edziennik.ext.bodyToString
 import pl.szczodrzynski.edziennik.ext.currentTimeUnix
 import pl.szczodrzynski.edziennik.ext.hmacSHA1
 import pl.szczodrzynski.edziennik.ext.md5
+import pl.szczodrzynski.edziennik.ext.takeValue
 
 class SignatureInterceptor(val app: App) : Interceptor {
     companion object {
-        private const val API_KEY = "szkolny_android_42a66f0842fc7da4e37c66732acf705a"
+        const val API_KEY = "szkolny_android_42a66f0842fc7da4e37c66732acf705a"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -27,7 +28,7 @@ class SignatureInterceptor(val app: App) : Interceptor {
 
         return chain.proceed(
                 request.newBuilder()
-                        .header("X-ApiKey", API_KEY)
+                        .header("X-ApiKey", app.config.apiKeyCustom?.takeValue() ?: API_KEY)
                         .header("X-AppVersion", BuildConfig.VERSION_CODE.toString())
                         .header("X-Timestamp", timestamp.toString())
                         .header("X-Signature", sign(timestamp, body, url))

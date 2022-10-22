@@ -39,6 +39,7 @@ class Config(db: AppDb) : BaseConfig(db) {
 
     var apiAvailabilityCheck by config<Boolean>(true)
     var apiInvalidCert by config<String?>(null)
+    var apiKeyCustom by config<String?>(null)
     var appInstalledTime by config<Long>(0L)
     var appRateSnackbarTime by config<Long>(0L)
     var appVersion by config<Int>(BuildConfig.VERSION_CODE)
