@@ -16,9 +16,9 @@ import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.math.abs
 
 class AppConfigMigrationV3(p: SharedPreferences, config: Config) {
-    init { config.apply {
+    init {
         val s = "app.appConfig"
-        if (dataVersion < 1) {
+        config.apply {
             ui.theme = p.getString("$s.appTheme", null)?.toIntOrNull() ?: 1
             sync.enabled = p.getString("$s.registerSyncEnabled", null)?.toBoolean() ?: true
             sync.interval = p.getString("$s.registerSyncInterval", null)?.toIntOrNull() ?: 3600
@@ -37,9 +37,6 @@ class AppConfigMigrationV3(p: SharedPreferences, config: Config) {
                     NavTarget.HOMEWORK,
                     NavTarget.SETTINGS
             )
-            dataVersion = 1
-        }
-        if (dataVersion < 2) {
             devModePassword = p.getString("$s.devModePassword", null).fix()
             sync.tokenApp = p.getString("$s.fcmToken", null).fix()
             timetable.bellSyncMultiplier = p.getString("$s.bellSyncMultiplier", null)?.toIntOrNull() ?: 0
@@ -86,9 +83,8 @@ class AppConfigMigrationV3(p: SharedPreferences, config: Config) {
                     LoginType.LIBRUS.id -> sync.tokenLibrus = token
                 }
             }
-            dataVersion = 2
         }
-    }}
+    }
 
     private fun String?.fix(): String? {
         return this?.replace("\"", "")?.let { if (it == "null") null else it }

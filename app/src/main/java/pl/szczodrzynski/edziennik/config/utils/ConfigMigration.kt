@@ -5,12 +5,9 @@
 package pl.szczodrzynski.edziennik.config.utils
 
 import android.content.Context
+import androidx.core.content.edit
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.config.Config
-import pl.szczodrzynski.edziennik.ext.HOUR
-import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
-import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.ORDER_BY_DATE_DESC
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.math.abs
 
@@ -22,6 +19,9 @@ class ConfigMigration(app: App, config: Config) {
             // migrate appConfig from app version 3.x and lower.
             // Updates dataVersion to level 2.
             AppConfigMigrationV3(p, config)
+            p.edit {
+                remove("app.appConfig.appTheme")
+            }
         }
 
         if (dataVersion < 11) {
@@ -43,5 +43,7 @@ class ConfigMigration(app: App, config: Config) {
 
             dataVersion = 11
         }
+
+        hash = "invalid"
     }}
 }

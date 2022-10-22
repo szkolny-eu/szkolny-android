@@ -26,7 +26,7 @@ class ProfileConfig(
     val timetable by lazy { ConfigTimetable(this) }
     val grades by lazy { ConfigGrades(this) }*/
 
-    var dataVersion by config<Int>(0)
+    var dataVersion by config<Int>(DATA_VERSION)
     var hash by config<String>("")
 
     init {

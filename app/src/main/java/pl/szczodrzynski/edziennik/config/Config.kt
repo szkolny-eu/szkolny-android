@@ -24,7 +24,7 @@ class Config(db: AppDb) : BaseConfig(db) {
     val timetable by lazy { ConfigTimetable(this) }
     val grades by lazy { ConfigGrades(this) }
 
-    var dataVersion by config<Int>(0)
+    var dataVersion by config<Int>(DATA_VERSION)
     var hash by config<String>("")
 
     var lastProfileId by config<Int>(0)
@@ -49,7 +49,8 @@ class Config(db: AppDb) : BaseConfig(db) {
     var widgetConfigs by config<JsonObject> { JsonObject() }
 
     fun migrate(app: App) {
-        if (dataVersion < DATA_VERSION)
+        if (dataVersion < DATA_VERSION || hash == "")
+            // migrate old data version OR freshly installed app (or updated from 3.x)
             ConfigMigration(app, this)
     }
 
