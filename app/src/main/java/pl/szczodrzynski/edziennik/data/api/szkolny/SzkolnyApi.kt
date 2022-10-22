@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.ERROR_API_INVALID_SIGNATURE
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.DateAdapter
@@ -128,16 +127,10 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         response: Response<ApiResponse<T>>,
         updateDeviceHash: Boolean = false,
     ): T {
-        app.config.update = response.body()?.update?.let { update ->
-            if (update.versionCode > BuildConfig.VERSION_CODE) {
-                if (update.updateMandatory
-                        && EventBus.getDefault().hasSubscriberForEvent(update::class.java)) {
-                    EventBus.getDefault().postSticky(update)
-                }
-                update
-            }
-            else
-                null
+        response.body()?.update?.let { update ->
+            // do not process "null" update, as it might not mean there's no update
+            // do not notify; silently check and show the home update card
+            app.updateManager.process(update, notify = false)
         }
 
         response.body()?.registerAvailability?.let { registerAvailability ->
@@ -431,8 +424,8 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     }
 
     @Throws(Exception::class)
-    fun getUpdate(channel: String): List<Update> {
-        val response = api.updates(channel).execute()
+    fun getUpdate(channel: Update.Type): List<Update> {
+        val response = api.updates(channel.name.lowercase()).execute()
         return parseResponse(response)
     }
 

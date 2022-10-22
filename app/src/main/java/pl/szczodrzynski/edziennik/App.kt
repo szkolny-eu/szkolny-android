@@ -28,7 +28,11 @@ import com.google.gson.Gson
 import com.hypertrack.hyperlog.HyperLog
 import com.mikepenz.iconics.Iconics
 import im.wangchao.mhttp.MHttp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.leolin.shortcutbadger.ShortcutBadger
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
@@ -55,7 +59,19 @@ import pl.szczodrzynski.edziennik.utils.PermissionChecker
 import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.managers.*
+import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager
+import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager
+import pl.szczodrzynski.edziennik.utils.managers.BuildManager
+import pl.szczodrzynski.edziennik.utils.managers.EventManager
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager
+import pl.szczodrzynski.edziennik.utils.managers.MessageManager
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
+import pl.szczodrzynski.edziennik.utils.managers.NotificationChannelsManager
+import pl.szczodrzynski.edziennik.utils.managers.PermissionManager
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager
+import pl.szczodrzynski.edziennik.utils.managers.TimetableManager
+import pl.szczodrzynski.edziennik.utils.managers.UpdateManager
+import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 import kotlin.system.exitProcess
@@ -80,18 +96,19 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     }
 
     val api by lazy { SzkolnyApi(this) }
-    val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
-    val userActionManager by lazy { UserActionManager(this) }
-    val gradesManager by lazy { GradesManager(this) }
-    val timetableManager by lazy { TimetableManager(this) }
-    val eventManager by lazy { EventManager(this) }
-    val permissionManager by lazy { PermissionManager(this) }
     val attendanceManager by lazy { AttendanceManager(this) }
-    val buildManager by lazy { BuildManager(this) }
     val availabilityManager by lazy { AvailabilityManager(this) }
-    val textStylingManager by lazy { TextStylingManager(this) }
+    val buildManager by lazy { BuildManager(this) }
+    val eventManager by lazy { EventManager(this) }
+    val gradesManager by lazy { GradesManager(this) }
     val messageManager by lazy { MessageManager(this) }
     val noteManager by lazy { NoteManager(this) }
+    val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
+    val permissionManager by lazy { PermissionManager(this) }
+    val textStylingManager by lazy { TextStylingManager(this) }
+    val timetableManager by lazy { TimetableManager(this) }
+    val updateManager by lazy { UpdateManager(this) }
+    val userActionManager by lazy { UserActionManager(this) }
 
     val db
         get() = App.db

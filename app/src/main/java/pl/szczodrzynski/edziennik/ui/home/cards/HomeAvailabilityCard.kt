@@ -15,7 +15,10 @@ import coil.load
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.BuildConfig
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.CardHomeAvailabilityBinding
 import pl.szczodrzynski.edziennik.ext.Intent
@@ -28,6 +31,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateAvailableDialog
 import pl.szczodrzynski.edziennik.ui.home.HomeCard
 import pl.szczodrzynski.edziennik.ui.home.HomeCardAdapter
 import pl.szczodrzynski.edziennik.ui.home.HomeFragment
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import kotlin.coroutines.CoroutineContext
 
@@ -79,7 +83,7 @@ class HomeAvailabilityCard(
         else if (update != null && update.versionCode > BuildConfig.VERSION_CODE) {
             b.homeAvailabilityTitle.setText(R.string.home_availability_title)
             b.homeAvailabilityText.setText(R.string.home_availability_text, update.versionName)
-            b.homeAvailabilityUpdate.isVisible = true
+            b.homeAvailabilityUpdate.isVisible = !app.buildManager.isPlayRelease
             b.homeAvailabilityIcon.setImageResource(R.drawable.ic_update)
             onInfoClick = {
                 UpdateAvailableDialog(activity, update).show()
@@ -92,7 +96,10 @@ class HomeAvailabilityCard(
         b.homeAvailabilityUpdate.onClick {
             if (update == null)
                 return@onClick
-            activity.startService(Intent(app, UpdateDownloaderService::class.java))
+            if (update.isOnGooglePlay)
+                Utils.openGooglePlay(activity)
+            else
+                activity.startService(Intent(app, UpdateDownloaderService::class.java))
         }
 
         b.homeAvailabilityInfo.onClick(onInfoClick)

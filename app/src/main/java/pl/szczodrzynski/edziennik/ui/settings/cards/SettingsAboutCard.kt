@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.ext.after
-import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.settings.SettingsLicenseActivity
@@ -113,7 +113,17 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
                 icon = CommunityMaterial.Icon3.cmd_update
             ) {
                 launch {
-                    UpdateWorker.runNow(app)
+                    val channel = if (App.devMode)
+                        Update.Type.BETA
+                    else
+                        Update.Type.RC
+                    val result = app.updateManager.checkNow(channel, notify = false)
+                    val update = result.getOrNull()
+                    // the dialog is shown by MainActivity (EventBus)
+                    when {
+                        result.isFailure -> Toast.makeText(app, app.getString(R.string.notification_cant_check_update), Toast.LENGTH_SHORT).show()
+                        update == null -> Toast.makeText(app, app.getString(R.string.notification_no_update), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         )),

@@ -6,7 +6,11 @@ package pl.szczodrzynski.edziennik.data.firebase
 
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.events.FeedbackMessageEvent
@@ -14,14 +18,18 @@ import pl.szczodrzynski.edziennik.data.api.events.RegisterAvailabilityEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.task.PostNotifications
-import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Note
+import pl.szczodrzynski.edziennik.data.db.entity.Notification
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getLong
 import pl.szczodrzynski.edziennik.ext.getString
 import pl.szczodrzynski.edziennik.ext.resolveString
-import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -64,7 +72,10 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         message.data.getString("title") ?: "",
                         message.data.getString("message") ?: ""
                 )
-                "appUpdate" -> launch { UpdateWorker.runNow(app, app.gson.fromJson(message.data.getString("update"), Update::class.java)) }
+                "appUpdate" -> {
+                    val update = app.gson.fromJson(message.data.getString("update"), Update::class.java)
+                    app.updateManager.process(update, notify = true)
+                }
                 "feedbackMessage" -> launch {
                     val message = app.gson.fromJson(message.data.getString("message"), FeedbackMessage::class.java) ?: return@launch
                     feedbackMessage(message)

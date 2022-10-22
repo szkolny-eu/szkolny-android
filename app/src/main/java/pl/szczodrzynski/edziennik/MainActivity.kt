@@ -46,6 +46,7 @@ import pl.szczodrzynski.edziennik.databinding.ActivitySzkolnyBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.sync.AppManagerDetectedEvent
 import pl.szczodrzynski.edziennik.sync.SyncWorker
+import pl.szczodrzynski.edziennik.sync.UpdateStateEvent
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.MainSnackbar
 import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
@@ -56,6 +57,7 @@ import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.ServerMessageDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.SyncViewListDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateAvailableDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.sync.UpdateProgressDialog
 import pl.szczodrzynski.edziennik.ui.error.ErrorDetailsDialog
 import pl.szczodrzynski.edziennik.ui.error.ErrorSnackbar
 import pl.szczodrzynski.edziennik.ui.event.EventManualDialog
@@ -537,6 +539,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onUpdateStateEvent(event: UpdateStateEvent) {
+        if (!event.running)
+            return
+        EventBus.getDefault().removeStickyEvent(event)
+        UpdateProgressDialog(this, event.update ?: return, event.downloadId).show()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onRegisterAvailabilityEvent(event: RegisterAvailabilityEvent) {
         EventBus.getDefault().removeStickyEvent(event)
         val error = app.availabilityManager.check(app.profile, cacheOnly = true)
@@ -699,6 +709,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         if (extras?.containsKey("action") == true) {
             val handled = when (extras.getString("action")) {
+                "updateRequest" -> {
+                    UpdateAvailableDialog(this, app.config.update).show()
+                    true
+                }
                 "serverMessage" -> {
                     ServerMessageDialog(
                         this,

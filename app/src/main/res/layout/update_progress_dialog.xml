@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2022-10-22.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="pl.szczodrzynski.edziennik.BuildConfig" />
+
+        <variable
+            name="update"
+            type="pl.szczodrzynski.edziennik.data.api.szkolny.response.Update" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/app_name"
+            android:textAppearance="@style/NavView.TextView.Medium" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{BuildConfig.VERSION_BASE}"
+                android:textAppearance="@style/NavView.TextView.Medium"
+                tools:text="4.13-rc.1" />
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:iiv_color="?android:textColorPrimary"
+                app:iiv_icon="cmd-chevron-right"
+                app:iiv_size="24dp"
+                tools:background="@drawable/ic_arrow_right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{update.versionName}"
+                android:textAppearance="@style/NavView.TextView.Medium"
+                tools:text="4.13-rc.1" />
+        </LinearLayout>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            tools:progress="33" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="64dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/downloadedSize"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="2.5 MiB" />
+
+            <TextView
+                android:id="@+id/totalSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="11.4 MiB" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
+
