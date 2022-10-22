@@ -190,12 +190,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         Iconics.init(applicationContext)
         Iconics.respectFontBoundsDefault = true
 
-        if (devMode) {
-            HyperLog.initialize(this)
-            HyperLog.setLogLevel(Log.VERBOSE)
-            HyperLog.setLogFormat(DebugLogFormat(this))
-        }
-
         // initialize companion object values
         AppData.read(this)
         App.db = AppDb(this)
@@ -203,6 +197,12 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         debugMode = BuildConfig.DEBUG
         devMode = config.devMode ?: debugMode
         enableChucker = config.enableChucker ?: devMode
+
+        if (devMode) {
+            HyperLog.initialize(this)
+            HyperLog.setLogLevel(Log.VERBOSE)
+            HyperLog.setLogFormat(DebugLogFormat(this))
+        }
 
         if (!profileLoadById(config.lastProfileId)) {
             val success = db.profileDao().firstId?.let { profileLoadById(it) }

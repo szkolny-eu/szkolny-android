@@ -82,6 +82,7 @@
 	},
 	"university": {
 		"configOverrides": {
+			"timetableTrimHourRange": true,
 			"timetableColorSubjectName": true
 		},
 		"uiConfig": {

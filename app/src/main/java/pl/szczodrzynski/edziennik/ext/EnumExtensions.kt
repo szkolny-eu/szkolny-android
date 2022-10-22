@@ -50,13 +50,13 @@ inline fun <reified E : Enum<E>> Int.toEnum() = when (E::class.java) {
 } as E
 
 fun <E : Enum<E>> Int.toEnum(type: Class<*>) = when (type) {
-    // enums commented out are not really used in Bundles
+    // this is used for Config so all enums are here
     FeatureType::class.java -> this.asFeatureType()
-    // LoginMethod::class.java -> this.asLoginMethod()
+    LoginMethod::class.java -> this.asLoginMethod()
     LoginMode::class.java -> this.asLoginMode()
     LoginType::class.java -> this.asLoginType()
-    // MetadataType::class.java -> this.asMetadataType()
-    // NotificationType::class.java -> this.asNotificationType()
+    MetadataType::class.java -> this.asMetadataType()
+    NotificationType::class.java -> this.asNotificationType()
     NavTarget::class.java -> this.asNavTarget()
     else -> throw IllegalArgumentException("Unknown type $type")
 } as E
