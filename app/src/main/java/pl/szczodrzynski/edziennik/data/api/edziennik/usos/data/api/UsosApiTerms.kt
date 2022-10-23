@@ -41,24 +41,18 @@ class UsosApiTerms(
     }
 
     private fun processResponse(json: JsonArray): Boolean {
-        val dates = mutableSetOf<Date>()
+        val today = Date.getToday()
         for (term in json.asJsonObjectList()) {
             if (!term.getBoolean("is_active", false))
                 continue
-            val startDate = term.getString("start_date")?.let { Date.fromY_m_d(it) }
-            val finishDate = term.getString("finish_date")?.let { Date.fromY_m_d(it) }
-            if (startDate != null)
-                dates += startDate
-            if (finishDate != null)
-                dates += finishDate
+            val startDate = term.getString("start_date")?.let { Date.fromY_m_d(it) } ?: continue
+            val finishDate = term.getString("finish_date")?.let { Date.fromY_m_d(it) } ?: continue
+            if (today in startDate..finishDate) {
+                profile?.studentSchoolYearStart = startDate.year
+                profile?.dateSemester1Start = startDate
+                profile?.dateSemester2Start = finishDate
+            }
         }
-        val datesSorted = dates.sorted()
-        if (datesSorted.size != 3)
-            return false
-        profile?.studentSchoolYearStart = datesSorted[0].year
-        profile?.dateSemester1Start = datesSorted[0]
-        profile?.dateSemester2Start = datesSorted[1]
-        profile?.dateYearEnd = datesSorted[2]
         return true
     }
 }
