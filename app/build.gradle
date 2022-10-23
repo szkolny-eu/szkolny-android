@@ -208,7 +208,7 @@ dependencies {
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
     implementation "com.github.Applandeo:Material-Calendar-View:15de569cbc" // https://github.com/Applandeo/Material-Calendar-View
     implementation "com.github.CanHub:Android-Image-Cropper:2.2.2" // https://github.com/CanHub/Android-Image-Cropper
-    implementation "com.github.ChuckerTeam.Chucker:library:3.0.1" // https://github.com/ChuckerTeam/chucker
+    implementation "com.github.ChuckerTeam.Chucker:library:3.5.2" // https://github.com/ChuckerTeam/chucker
     implementation "com.github.antonKozyriatskyi:CircularProgressIndicator:1.2.2" // https://github.com/antonKozyriatskyi/CircularProgressIndicator
     implementation "com.github.bassaer:chatmessageview:2.0.1" // https://github.com/bassaer/ChatMessageView
     implementation "com.github.hypertrack:hyperlog-android:0.0.10" // https://github.com/hypertrack/hyperlog-android
