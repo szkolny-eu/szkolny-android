@@ -1,5 +1,6 @@
 {
 	"base": {
+		"configOverrides": {},
 		"messagesConfig": {
 			"subjectLength": null,
 			"bodyLength": null,
