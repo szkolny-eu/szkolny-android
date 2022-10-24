@@ -112,7 +112,7 @@ class DateDropdown : TextInputDropDown {
                 date.stepForward(0, 0, -weekDay + 7)
                 weekDay = 0
                 // ALL SCHOOL DAYS OF THE NEXT WEEK
-                while (weekDay < 4) {
+                while (weekDay < 5) {
                     dates += Item(
                             date.value.toLong(),
                             context.getString(R.string.dialog_event_manual_date_next_week, Week.getFullDayName(weekDay), date.formattedString),
