@@ -80,6 +80,8 @@ class EventManualDialog(
         SzkolnyApi(app)
     }
 
+    private val profileConfig by lazy { app.config.forProfile() }
+
     private var enqueuedWeekDialog: AlertDialog? = null
     private var enqueuedWeekStart = Date.getToday()
 
@@ -107,9 +109,6 @@ class EventManualDialog(
     }
 
     override suspend fun onShow() {
-        b.shareSwitch.isChecked = editingShared
-        b.shareSwitch.isEnabled = !editingShared || (editingShared && editingOwn)
-
         b.showMore.onClick { // TODO iconics is broken
             it.apply {
                 refreshDrawableState()
@@ -137,6 +136,13 @@ class EventManualDialog(
         }
 
         loadLists()
+
+        val shareByDefault = profileConfig.shareByDefault
+                && profile.enableSharedEvents
+                && profile.registration == Profile.REGISTRATION_ENABLED
+
+        b.shareSwitch.isChecked = editingShared || editingEvent == null && shareByDefault
+        b.shareSwitch.isEnabled = !editingShared || editingOwn
     }
 
     private fun updateShareText(checked: Boolean = b.shareSwitch.isChecked) {
@@ -408,6 +414,20 @@ class EventManualDialog(
                 if (enabled)
                     saveEvent()
             }).showEventShareDialog()
+            return
+        }
+
+        if (share && !profile.enableSharedEvents) {
+            MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.event_sharing)
+                .setMessage(R.string.settings_register_shared_events_dialog_enabled_text)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    profile.enableSharedEvents = true
+                    app.profileSave(profile)
+                    saveEvent()
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
             return
         }
 

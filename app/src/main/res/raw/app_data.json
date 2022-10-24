@@ -83,8 +83,9 @@
 	},
 	"university": {
 		"configOverrides": {
-			"timetableTrimHourRange": true,
-			"timetableColorSubjectName": true
+			"shareByDefault": true,
+			"timetableColorSubjectName": true,
+			"timetableTrimHourRange": true
 		},
 		"uiConfig": {
 			"lessonHeight": 45

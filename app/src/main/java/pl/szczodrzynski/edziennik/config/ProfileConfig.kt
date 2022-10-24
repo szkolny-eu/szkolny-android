@@ -29,6 +29,8 @@ class ProfileConfig(
     var dataVersion by config<Int>(DATA_VERSION)
     var hash by config<String>("")
 
+    var shareByDefault by config<Boolean>(false)
+
     init {
         if (dataVersion < DATA_VERSION)
             ProfileConfigMigration(this)

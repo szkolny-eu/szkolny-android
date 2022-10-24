@@ -39,7 +39,7 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
             subText = R.string.settings_register_shared_events_subtext,
             icon = CommunityMaterial.Icon3.cmd_share_outline,
             value = app.profile.enableSharedEvents
-        ) { _, value ->
+        ) { item, value ->
             app.profile.enableSharedEvents = value
             app.profileSave()
             MaterialAlertDialogBuilder(activity)
@@ -52,6 +52,23 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
                 )
                 .setPositiveButton(R.string.ok, null)
                 .show()
+            if (value) {
+                card.items.after(item, sharedEventsDefaultItem)
+            } else {
+                card.items.remove(sharedEventsDefaultItem)
+            }
+            util.refresh()
+        }
+    }
+
+    private val sharedEventsDefaultItem by lazy {
+        util.createPropertyItem(
+            text = R.string.settings_register_share_by_default_text,
+            subText = R.string.settings_register_share_by_default_subtext,
+            icon = CommunityMaterial.Icon3.cmd_toggle_switch_outline,
+            value = configProfile.shareByDefault
+        ) { _, value ->
+            configProfile.shareByDefault = value
         }
     }
 
@@ -112,8 +129,11 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
                             item.isChecked = enabled
                             if (value) {
                                 card.items.after(item, sharedEventsItem)
+                                if (app.profile.enableSharedEvents)
+                                    card.items.after(item, sharedEventsDefaultItem)
                             } else {
                                 card.items.remove(sharedEventsItem)
+                                card.items.remove(sharedEventsDefaultItem)
                             }
                             util.refresh()
                         })
@@ -127,6 +147,11 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
 
         if (app.profile.canShare)
             sharedEventsItem
+        else
+            null,
+
+        if (app.profile.enableSharedEvents)
+            sharedEventsDefaultItem
         else
             null
     )

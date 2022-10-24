@@ -462,6 +462,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     }
     fun profileSave() = profileSave(profile)
     fun profileSave(profile: Profile) {
+        if (profile.id == profileId)
+            App.profile = profile
         launch(Dispatchers.Default) {
             App.db.profileDao().add(profile)
         }

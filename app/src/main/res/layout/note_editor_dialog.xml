@@ -18,6 +18,10 @@
         <variable
             name="editingNote"
             type="Note" />
+
+        <variable
+            name="shareByDefault"
+            type="boolean" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -89,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:checked="@{editingNote.sharedBy != null}"
+                    android:checked="@{editingNote.sharedBy != null || editingNote == null &amp;&amp; shareByDefault}"
                     android:isVisible="@{ownerType.shareable}"
                     android:minHeight="32dp"
                     android:text="@string/dialog_event_manual_share_enabled" />

@@ -13,6 +13,7 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Note
@@ -59,6 +60,8 @@ class NoteEditorDialog(
     private val textStylingManager
         get() = app.textStylingManager
 
+    private val profileConfig by lazy { app.config.forProfile() }
+
     private var progressDialog: AlertDialog? = null
 
     override suspend fun onPositiveClick(): Boolean {
@@ -73,6 +76,23 @@ class NoteEditorDialog(
                 if (enabled)
                     onPositiveClick()
             }).showNoteShareDialog()
+            return NO_DISMISS
+        }
+
+        if (note.isShared && !profile.enableSharedEvents) {
+            MaterialAlertDialogBuilder(activity)
+                .setTitle(R.string.event_sharing)
+                .setMessage(R.string.settings_register_shared_events_dialog_enabled_text)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    profile.enableSharedEvents = true
+                    app.profileSave(profile)
+                    launch {
+                        if (onPositiveClick())
+                            dismiss()
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
             return NO_DISMISS
         }
 
@@ -127,8 +147,15 @@ class NoteEditorDialog(
         topicStylingConfig = StylingConfigBase(editText = b.topic, htmlMode = HtmlMode.SIMPLE)
         bodyStylingConfig = StylingConfigBase(editText = b.body, htmlMode = HtmlMode.SIMPLE)
 
+        val profile = withContext(Dispatchers.IO) {
+            app.db.profileDao().getByIdNow(profileId)
+        }
+
         b.ownerType = owner?.getNoteType() ?: Note.OwnerType.NONE
         b.editingNote = editingNote
+        b.shareByDefault = profileConfig.shareByDefault
+                && profile?.enableSharedEvents == true
+                && profile.registration == Profile.REGISTRATION_ENABLED
 
         b.color.clear().append(Note.Color.values().map { color ->
             TextInputDropDown.Item(
