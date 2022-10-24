@@ -1437,7 +1437,7 @@
     <string name="agenda_config_elearning_mark">Ustaw wydarzenia jako lekcje on-line</string>
     <string name="agenda_config_elearning_type">Wybierz rodzaj wydarzeń</string>
     <string name="agenda_config_elearning_group">Grupuj lekcje on-line na liście</string>
-    <string name="legend_event_added_manually">{cmd-clipboard-edit-outline} wydarzenie dodane ręcznie</string>
+    <string name="legend_event_added_manually">{cmd-calendar-edit} wydarzenie dodane ręcznie</string>
     <string name="legend_event_is_done">{cmd-check} oznaczono jako wykonane</string>
     <string name="agenda_config_not_available_yet">Funkcja jeszcze nie jest dostępna.</string>
     <string name="messages_config_compose">Tworzenie wiadomości</string>
@@ -1549,4 +1549,6 @@
     <string name="notification_user_action_required_oauth_usos">USOS - wymagane logowanie z użyciem przeglądarki</string>
     <string name="oauth_dialog_title">Zaloguj się</string>
     <string name="app_cannot_load_data">Nie można załadować danych aplikacji</string>
+    <string name="legend_event_shared_received">{cmd-share-variant} udostępnione w klasie</string>
+    <string name="legend_event_shared_sent">{cmd-share-variant} udostępnione przez Ciebie</string>
 </resources>

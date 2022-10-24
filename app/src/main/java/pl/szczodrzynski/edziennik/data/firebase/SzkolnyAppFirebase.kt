@@ -160,11 +160,11 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             if (event.color == -1)
                 event.color = null
 
+            event.addedManually = true
             event.sharedBy = json.getString("sharedBy")
             event.sharedByName = json.getString("sharedByName")
             if (profile.userCode == event.sharedBy) {
                 event.sharedBy = "self"
-                event.addedManually = true
             }
 
             val metadata = Metadata(
