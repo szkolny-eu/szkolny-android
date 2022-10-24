@@ -92,6 +92,8 @@ class UpdateManager(val app: App) : CoroutineScope {
     }
 
     fun notify(update: Update) {
+        if (!app.config.sync.notifyAboutUpdates)
+            return
         val bigText = listOf(
             app.getString(R.string.notification_updates_text, update.versionName),
             update.releaseNotes?.let { BetterHtml.fromHtml(context = null, it) },
