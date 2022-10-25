@@ -104,7 +104,7 @@ class UsosApiTimetable(
                 it.teacherId = lecturerIds?.firstOrNull() ?: -1L
                 it.teamId = unitId
                 val groupName = classTypeId?.plus(groupNumber)?.let { s -> "($s)" }
-                it.classroom = "$buildingId / $roomNumber ${groupName ?: ""}"
+                it.classroom = "Sala $roomNumber / bud. $buildingId ${groupName ?: ""}"
                 it.id = it.buildId()
 
                 it.color = when (classTypeId) {
