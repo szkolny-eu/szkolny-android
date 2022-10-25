@@ -81,7 +81,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
             }
 
             val items = when {
-                app.config.forProfile().grades.hideSticksFromOld && App.devMode -> grades.filter { it.value != 1.0f }
+                app.profile.config.grades.hideSticksFromOld && App.devMode -> grades.filter { it.value != 1.0f }
                 else -> grades
             }
 

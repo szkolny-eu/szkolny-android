@@ -50,18 +50,18 @@ class HomeFragment : Fragment(), CoroutineScope {
             cardAdapter.items[toPosition] = fromCard
             cardAdapter.notifyItemMoved(fromPosition, toPosition)
 
-            val homeCards = App.config.forProfile().ui.homeCards.toMutableList()
+            val homeCards = App.profile.config.ui.homeCards.toMutableList()
             val fromIndex = homeCards.indexOfFirst { it.cardId == fromCard.id }
             val toIndex = homeCards.indexOfFirst { it.cardId == toCard.id }
             val fromPair = homeCards[fromIndex]
             homeCards[fromIndex] = homeCards[toIndex]
             homeCards[toIndex] = fromPair
-            App.config.forProfile().ui.homeCards = homeCards
+            App.profile.config.ui.homeCards = homeCards
             return true
         }
 
         fun removeCard(position: Int, cardAdapter: HomeCardAdapter) {
-            val homeCards = App.config.forProfile().ui.homeCards.toMutableList()
+            val homeCards = App.profile.config.ui.homeCards.toMutableList()
             if (position >= homeCards.size)
                 return
             val card = cardAdapter.items[position]
@@ -71,7 +71,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                 return
             }
             homeCards.removeAll { it.cardId == card.id }
-            App.config.forProfile().ui.homeCards = homeCards
+            App.profile.config.ui.homeCards = homeCards
         }
     }
 
@@ -144,7 +144,7 @@ class HomeFragment : Fragment(), CoroutineScope {
             b.refreshLayout.isEnabled = scrollY == 0
         }
 
-        val cards = app.config.forProfile().ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
+        val cards = app.profile.config.ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
         if (cards.isEmpty()) {
             cards += listOfNotNull(
                     HomeCardModel(app.profile.id, HomeCard.CARD_LUCKY_NUMBER).takeIf { app.profile.hasUIFeature(FeatureType.LUCKY_NUMBER) },
@@ -153,7 +153,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                     HomeCardModel(app.profile.id, HomeCard.CARD_GRADES).takeIf { app.profile.hasUIFeature(FeatureType.GRADES) },
                     HomeCardModel(app.profile.id, HomeCard.CARD_NOTES),
             )
-            app.config.forProfile().ui.homeCards = app.config.forProfile().ui.homeCards.toMutableList().also { it.addAll(cards) }
+            app.profile.config.ui.homeCards = app.profile.config.ui.homeCards.toMutableList().also { it.addAll(cards) }
         }
 
         val items = mutableListOf<HomeCard>()

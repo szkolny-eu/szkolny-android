@@ -12,11 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.gson.*
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import com.google.gson.JsonPrimitive
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.databinding.TemplateListPageFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
@@ -66,7 +71,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
                         "LoginStore" -> loginStore
                         "LoginStore / data" -> loginStore?.data ?: JsonObject()
                         "Config" -> app.config.values
-                        "Config (profile)" -> app.config.forProfile().values
+                        "Config (profile)" -> app.profile.config.values
                         else -> when (obj) {
                             is JsonObject -> (obj as JsonObject).get(el)
                             is JsonArray -> (obj as JsonArray).get(el.toInt())
@@ -176,7 +181,7 @@ class LabProfileFragment : LazyFragment(), CoroutineScope {
             json.add("LoginStore", app.gson.toJsonTree(loginStore))
             json.add("LoginStore / data", loginStore?.data ?: JsonObject())
             json.add("Config", JsonParser.parseString(app.gson.toJson(app.config.values.toSortedMap())))
-            json.add("Config (profile)", JsonParser.parseString(app.gson.toJson(app.config.forProfile().values.toSortedMap())))
+            json.add("Config (profile)", JsonParser.parseString(app.gson.toJson(app.profile.config.values.toSortedMap())))
         }
         adapter.items = LabJsonAdapter.expand(json, 0)
         adapter.notifyDataSetChanged()

@@ -37,18 +37,17 @@ class HomeConfigDialog(
     ).mapKeys { (resId, _) -> activity.getString(resId) }
 
     override fun getDefaultSelectedItems() =
-        profileConfig.homeCards
+        app.profile.config.ui.homeCards
             .filter { it.profileId == App.profileId }
             .map { it.cardId }
             .toSet()
 
     override suspend fun onShow() = Unit
 
-    private val profileConfig by lazy { app.config.getFor(app.profileId).ui }
     private var configChanged = false
 
     override suspend fun onPositiveClick(): Boolean {
-        val homeCards = profileConfig.homeCards.toMutableList()
+        val homeCards = app.profile.config.ui.homeCards.toMutableList()
         homeCards.removeAll { it.profileId == App.profileId }
         homeCards += getMultiSelection().mapNotNull {
             HomeCardModel(
@@ -56,7 +55,7 @@ class HomeConfigDialog(
                 cardId = it as? Int ?: return@mapNotNull null
             )
         }
-        profileConfig.homeCards = homeCards
+        app.profile.config.ui.homeCards = homeCards
         return DISMISS
     }
 

@@ -55,11 +55,9 @@ class Config(db: AppDb) : BaseConfig(db) {
             ConfigMigration(app, this)
     }
 
-    fun getFor(profileId: Int): ProfileConfig {
+    operator fun get(profileId: Int): ProfileConfig {
         return profileConfigs[profileId] ?: ProfileConfig(db, profileId, entries).also {
             profileConfigs[profileId] = it
         }
     }
-
-    fun forProfile() = getFor(App.profileId)
 }

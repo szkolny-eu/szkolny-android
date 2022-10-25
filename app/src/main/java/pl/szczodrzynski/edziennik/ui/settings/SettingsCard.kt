@@ -16,7 +16,7 @@ abstract class SettingsCard(
     protected val activity: MainActivity = util.activity
 
     protected val configGlobal by lazy { app.config }
-    protected val configProfile by lazy { app.config.forProfile() }
+    protected val configProfile by lazy { app.profile.config }
 
     val card by lazy {
         buildCard()

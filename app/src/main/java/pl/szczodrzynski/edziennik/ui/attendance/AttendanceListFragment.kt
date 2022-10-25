@@ -129,8 +129,8 @@ class AttendanceListFragment : LazyFragment(), CoroutineScope {
         if (attendance.isEmpty())
             return mutableListOf()
 
-        val groupConsecutiveDays = app.config.forProfile().attendance.groupConsecutiveDays
-        val showPresenceInMonth = app.config.forProfile().attendance.showPresenceInMonth
+        val groupConsecutiveDays = app.profile.config.attendance.groupConsecutiveDays
+        val showPresenceInMonth = app.profile.config.attendance.showPresenceInMonth
 
         if (viewType == AttendanceFragment.VIEW_DAYS) {
             val items = attendance

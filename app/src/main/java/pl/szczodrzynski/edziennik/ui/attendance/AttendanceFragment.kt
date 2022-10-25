@@ -18,7 +18,6 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.AttendanceFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
@@ -83,7 +82,7 @@ class AttendanceFragment : Fragment(), CoroutineScope {
         activity.gainAttention()
 
         if (pageSelection == 1)
-            pageSelection = app.config.forProfile().attendance.attendancePageSelection
+            pageSelection = app.profile.config.attendance.attendancePageSelection
 
         val pagerAdapter = FragmentLazyPagerAdapter(
             parentFragmentManager,
@@ -114,7 +113,7 @@ class AttendanceFragment : Fragment(), CoroutineScope {
             currentItem = pageSelection
             addOnPageSelectedListener {
                 pageSelection = it
-                app.config.forProfile().attendance.attendancePageSelection = it
+                app.profile.config.attendance.attendancePageSelection = it
             }
             b.tabLayout.setupWithViewPager(this)
         }

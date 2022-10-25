@@ -30,14 +30,12 @@ class TimetableConfigDialog(
     override fun inflate(layoutInflater: LayoutInflater) =
         TimetableConfigDialogBinding.inflate(layoutInflater)
 
-    private val profileConfig by lazy { app.config.getFor(app.profileId).ui }
-
     override fun initView() {
         b.features = app.profile.loginStoreType.features
     }
 
     override suspend fun loadConfig() {
-        b.config = profileConfig
+        b.config = app.profile.config.ui
     }
 
     override suspend fun saveConfig() {

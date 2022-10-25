@@ -6,13 +6,11 @@ package pl.szczodrzynski.edziennik.ui.dialogs.settings
 
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.databinding.DialogConfigAgendaBinding
 import pl.szczodrzynski.edziennik.ext.onChange
 import pl.szczodrzynski.edziennik.ui.dialogs.base.ConfigDialog
-import java.util.*
 
 class AgendaConfigDialog(
     activity: AppCompatActivity,
@@ -32,11 +30,9 @@ class AgendaConfigDialog(
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogConfigAgendaBinding.inflate(layoutInflater)
 
-    private val profileConfig by lazy { app.config.forProfile() }
-
     override suspend fun loadConfig() {
-        b.config = profileConfig
-        b.isAgendaMode = profileConfig.ui.agendaViewType == Profile.AGENDA_DEFAULT
+        b.config = app.profile.config
+        b.isAgendaMode = app.profile.config.ui.agendaViewType == Profile.AGENDA_DEFAULT
 
         var calledFromListener = false
         b.eventSharingEnabled.isChecked = app.profile.canShare

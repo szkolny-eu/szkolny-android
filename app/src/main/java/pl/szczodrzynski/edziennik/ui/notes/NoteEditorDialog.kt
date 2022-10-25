@@ -13,7 +13,6 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Note
@@ -59,8 +58,6 @@ class NoteEditorDialog(
         get() = app.noteManager
     private val textStylingManager
         get() = app.textStylingManager
-
-    private val profileConfig by lazy { app.config.forProfile() }
 
     private var progressDialog: AlertDialog? = null
 
@@ -136,7 +133,7 @@ class NoteEditorDialog(
 
         b.ownerType = owner?.getNoteType() ?: Note.OwnerType.NONE
         b.editingNote = editingNote
-        b.shareByDefault = profileConfig.shareByDefault && profile?.canShare == true
+        b.shareByDefault = app.profile.config.shareByDefault && profile?.canShare == true
 
         b.color.clear().append(Note.Color.values().map { color ->
             TextInputDropDown.Item(

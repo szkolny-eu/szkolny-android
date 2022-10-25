@@ -29,23 +29,21 @@ class AttendanceConfigDialog(
     override fun inflate(layoutInflater: LayoutInflater) =
         AttendanceConfigDialogBinding.inflate(layoutInflater)
 
-    private val profileConfig by lazy { app.config.getFor(app.profileId).attendance }
-
     override suspend fun loadConfig() {
-        b.useSymbols.isChecked = profileConfig.useSymbols
-        b.groupConsecutiveDays.isChecked = profileConfig.groupConsecutiveDays
-        b.showPresenceInMonth.isChecked = profileConfig.showPresenceInMonth
+        b.useSymbols.isChecked = app.profile.config.attendance.useSymbols
+        b.groupConsecutiveDays.isChecked = app.profile.config.attendance.groupConsecutiveDays
+        b.showPresenceInMonth.isChecked = app.profile.config.attendance.showPresenceInMonth
     }
 
     override fun initView() {
         b.useSymbols.onChange { _, isChecked ->
-            profileConfig.useSymbols = isChecked
+            app.profile.config.attendance.useSymbols = isChecked
         }
         b.groupConsecutiveDays.onChange { _, isChecked ->
-            profileConfig.groupConsecutiveDays = isChecked
+            app.profile.config.attendance.groupConsecutiveDays = isChecked
         }
         b.showPresenceInMonth.onChange { _, isChecked ->
-            profileConfig.showPresenceInMonth = isChecked
+            app.profile.config.attendance.showPresenceInMonth = isChecked
         }
     }
 }

@@ -58,7 +58,6 @@ class TimetableFragment : Fragment(), CoroutineScope {
 
     private var fabShown = false
     private val items = mutableListOf<Date>()
-    private val profileConfig by lazy { app.config.forProfile().ui }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null

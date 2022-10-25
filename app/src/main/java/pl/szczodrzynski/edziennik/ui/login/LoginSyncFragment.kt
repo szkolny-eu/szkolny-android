@@ -11,7 +11,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -73,9 +77,8 @@ class LoginSyncFragment : Fragment(), CoroutineScope {
                     Profile.REGISTRATION_DISABLED
 
                 val data = AppData.get(it.loginStoreType)
-                val config = app.config.getFor(it.id)
                 for ((key, value) in data.configOverrides) {
-                    config.set(key, value)
+                    it.config.set(key, value)
                 }
 
                 app.db.eventTypeDao().addDefaultTypes(it)

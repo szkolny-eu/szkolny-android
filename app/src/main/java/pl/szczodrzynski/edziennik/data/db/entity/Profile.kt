@@ -8,7 +8,9 @@ import android.content.Context
 import android.widget.ImageView
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import com.google.gson.JsonObject
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.dateToSemester
 import pl.szczodrzynski.edziennik.ext.getDrawable
@@ -87,6 +89,9 @@ open class Profile(
         get() = loginStoreType.name.lowercase()
     val canShare
         get() = registration == REGISTRATION_ENABLED && !archived
+
+    @delegate:Ignore
+    val config by lazy { App.config[this.id] }
 
     override fun getImageDrawable(context: Context) = this.getDrawable(context)
     override fun getImageHolder(context: Context) = this.getHolder()

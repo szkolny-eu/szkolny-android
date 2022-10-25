@@ -67,9 +67,8 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         get() = app.messageManager
     private val textStylingManager
         get() = app.textStylingManager
-    private val profileConfig by lazy { app.config.forProfile().ui }
     private val greetingText
-        get() = profileConfig.messagesGreetingText ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
+        get() = app.profile.config.ui.messagesGreetingText ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
 
     private val teachers = mutableListOf<Teacher>()
 
@@ -242,9 +241,9 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             subject = b.subject,
             body = b.text,
             teachers = teachers,
-            greetingOnCompose = profileConfig.messagesGreetingOnCompose,
-            greetingOnReply = profileConfig.messagesGreetingOnReply,
-            greetingOnForward = profileConfig.messagesGreetingOnForward,
+            greetingOnCompose = app.profile.config.ui.messagesGreetingOnCompose,
+            greetingOnReply = app.profile.config.ui.messagesGreetingOnReply,
+            greetingOnForward = app.profile.config.ui.messagesGreetingOnForward,
             greetingText = greetingText,
         )
         stylingConfig = StylingConfig(

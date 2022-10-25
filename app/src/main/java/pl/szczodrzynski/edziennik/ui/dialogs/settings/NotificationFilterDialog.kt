@@ -30,7 +30,7 @@ class NotificationFilterDialog(
         .associateBy { it.titleRes.resolveString(activity) as CharSequence }
 
     override fun getDefaultSelectedItems() = NotificationType.values()
-        .filter { it.enabledByDefault != null && it !in app.config.forProfile().sync.notificationFilter }
+        .filter { it.enabledByDefault != null && it !in app.profile.config.sync.notificationFilter }
         .toSet()
 
     override suspend fun onShow() = Unit
@@ -47,7 +47,7 @@ class NotificationFilterDialog(
                 .setTitle(R.string.are_you_sure)
                 .setMessage(R.string.notification_filter_warning)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    app.config.forProfile().sync.notificationFilter = disabledTypes
+                    app.profile.config.sync.notificationFilter = disabledTypes
                     dismiss()
                 }
                 .setNegativeButton(R.string.cancel, null)
@@ -55,7 +55,7 @@ class NotificationFilterDialog(
             return NO_DISMISS
         }
 
-        app.config.forProfile().sync.notificationFilter = disabledTypes
+        app.profile.config.sync.notificationFilter = disabledTypes
 
         return DISMISS
     }

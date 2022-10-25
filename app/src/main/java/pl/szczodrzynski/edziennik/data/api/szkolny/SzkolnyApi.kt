@@ -198,7 +198,6 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         val teams = app.db.teamDao().allNow
 
         val users = profiles.mapNotNull { profile ->
-            val config = app.config.getFor(profile.id)
             val user = ServerSyncRequest.User(
                 profile.userCode,
                 profile.studentNameLong,
@@ -207,9 +206,9 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 teams.filter { it.profileId == profile.id }.map { it.code }
             )
             val hash = user.toString().md5()
-            if (hash == config.hash)
+            if (hash == profile.config.hash)
                 return@mapNotNull null
-            return@mapNotNull user to config
+            return@mapNotNull user to profile.config
         }
 
         val response = api.serverSync(ServerSyncRequest(

@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.databinding.FragmentGradesEditorBinding
 import pl.szczodrzynski.edziennik.ext.getFloat
@@ -37,7 +39,7 @@ class GradesEditorFragment : Fragment() {
     private val navController: NavController by lazy { Navigation.findNavController(b.root) }
 */
 
-    private val config by lazy { app.config.getFor(App.profileId).grades }
+    private val config by lazy { app.profile.config.grades }
 
     private var subjectId: Long = -1
     private var semester: Int = 1

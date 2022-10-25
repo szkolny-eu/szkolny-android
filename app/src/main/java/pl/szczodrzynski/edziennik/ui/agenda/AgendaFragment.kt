@@ -17,7 +17,12 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import eu.szkolny.font.SzkolnyFont
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
@@ -53,7 +58,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
         if (getActivity() == null || context == null) return null
         activity = getActivity() as MainActivity
         context?.theme?.applyStyle(Themes.appTheme, true)
-        type = app.config.forProfile().ui.agendaViewType
+        type = app.profile.config.ui.agendaViewType
         b = when (type) {
             Profile.AGENDA_DEFAULT -> FragmentAgendaDefaultBinding.inflate(inflater, container, false)
             Profile.AGENDA_CALENDAR -> FragmentAgendaCalendarBinding.inflate(inflater, container, false)
@@ -92,7 +97,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
                             activity.bottomSheet.close()
                             type =
                                 if (type == Profile.AGENDA_DEFAULT) Profile.AGENDA_CALENDAR else Profile.AGENDA_DEFAULT
-                            app.config.forProfile().ui.agendaViewType = type
+                            app.profile.config.ui.agendaViewType = type
                             activity.reloadTarget()
                         },
                 BottomSheetSeparatorItem(true),

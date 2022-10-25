@@ -14,25 +14,48 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.asynclayoutinflater.view.AsyncLayoutInflater
 import androidx.core.graphics.ColorUtils
-import androidx.core.view.*
+import androidx.core.view.isVisible
+import androidx.core.view.marginTop
+import androidx.core.view.setPadding
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMargins
 import com.linkedin.android.tachyon.DayView
 import com.linkedin.android.tachyon.DayViewConfig
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
-import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.data.db.full.AttendanceFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableDayFragmentBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableNoTimetableBinding
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ext.Intent
+import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.asColoredSpannable
+import pl.szczodrzynski.edziennik.ext.asStrikethroughSpannable
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.dp
+import pl.szczodrzynski.edziennik.ext.findParentById
+import pl.szczodrzynski.edziennik.ext.getStudentData
+import pl.szczodrzynski.edziennik.ext.listOfNotEmpty
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.resolveDrawable
+import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.setTintColor
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_END_HOUR
 import pl.szczodrzynski.edziennik.ui.timetable.TimetableFragment.Companion.DEFAULT_START_HOUR
@@ -76,7 +99,6 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
 
     // find SwipeRefreshLayout in the hierarchy
     private val refreshLayout by lazy { view?.findParentById(R.id.refreshLayout) }
-    private val profileConfig by lazy { app.config.forProfile().ui }
 
     private val dayViewDelegate = mutableLazy {
         val dayView = DayView(activity, DayViewConfig(
@@ -186,7 +208,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         val minStartHour = lessonsActual.minOf { it.displayStartTime?.hour ?: DEFAULT_END_HOUR }
         val maxEndHour = lessonsActual.maxOf { it.displayEndTime?.hour?.plus(1) ?: DEFAULT_START_HOUR }
 
-        if (profileConfig.timetableTrimHourRange) {
+        if (app.profile.config.ui.timetableTrimHourRange) {
             dayViewDelegate.deinitialize()
             // end/start defaults are swapped on purpose
             startHour = minStartHour
@@ -238,7 +260,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
 
         for (lesson in lessons) {
-            val attendance = if (profileConfig.timetableShowAttendance)
+            val attendance = if (app.profile.config.ui.timetableShowAttendance)
                 attendanceList.find { it.startTime == lesson.startTime }
             else
                 null
@@ -272,7 +294,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             }
 
             val eventIcons = listOf(lb.event1, lb.event2, lb.event3)
-            if (profileConfig.timetableShowEvents) {
+            if (app.profile.config.ui.timetableShowEvents) {
                 val eventList = events.filter { it.time != null && it.time == lesson.displayStartTime }.take(3)
                 for ((i, eventIcon) in eventIcons.withIndex()) {
                     eventList.getOrNull(i).let {
@@ -323,7 +345,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             val lessonText =
                 lesson.getNoteSubstituteText(showNotes = true) ?: lesson.displaySubjectName
 
-            val (subjectTextPrimary, subjectTextSecondary) = if (profileConfig.timetableColorSubjectName) {
+            val (subjectTextPrimary, subjectTextSecondary) = if (app.profile.config.ui.timetableColorSubjectName) {
                 val subjectColor = lesson.color ?: Colors.stringToMaterialColorCRC(lessonText?.toString() ?: "")
                 if (lb.annotationVisible) {
                     lb.subjectContainer.background = ColorDrawable(subjectColor)

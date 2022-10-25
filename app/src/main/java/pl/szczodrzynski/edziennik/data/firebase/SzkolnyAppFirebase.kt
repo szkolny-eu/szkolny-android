@@ -176,7 +176,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             )
 
             val type = if (event.isHomework) NotificationType.SHARED_HOMEWORK else NotificationType.SHARED_EVENT
-            val notificationFilter = app.config.getFor(event.profileId).sync.notificationFilter
+            val notificationFilter = app.config[event.profileId].sync.notificationFilter
 
             if (!notificationFilter.contains(type) && event.sharedBy != "self" && event.date >= Date.getToday()) {
                 val notification = Notification(
@@ -211,7 +211,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
             if (!profile.canShare)
                 return@forEach
-            val notificationFilter = app.config.getFor(team.profileId).sync.notificationFilter
+            val notificationFilter = app.config[team.profileId].sync.notificationFilter
 
             if (!notificationFilter.contains(NotificationType.REMOVED_SHARED_EVENT)) {
                 val notification = Notification(
@@ -265,7 +265,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                 return@forEach
 
             val type = NotificationType.SHARED_NOTE
-            val notificationFilter = app.config.getFor(note.profileId).sync.notificationFilter
+            val notificationFilter = app.config[note.profileId].sync.notificationFilter
 
             if (!notificationFilter.contains(type) && note.sharedBy != "self") {
                 val notification = Notification(
