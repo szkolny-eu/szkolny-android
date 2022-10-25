@@ -4,9 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.settings.cards
 
-import com.danielstone.materialaboutlibrary.items.MaterialAboutItem
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App

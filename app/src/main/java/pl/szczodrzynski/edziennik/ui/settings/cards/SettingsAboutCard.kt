@@ -39,16 +39,13 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
         MediaPlayer.create(activity, R.raw.ogarnij_sie)
     }
 
-    override fun buildCard(): MaterialAboutCard =
-        util.createCard(
-            null,
-            items = ::getItems,
-            itemsMore = ::getItemsMore,
-            backgroundColor = 0xff1976d2.toInt(),
-            theme = R.style.AppTheme_Dark
-        ).also {
-            it.items.addAll(getItems(it))
-        }
+    override fun buildCard() = util.createCard(
+        null,
+        items = ::getItems,
+        itemsMore = ::getItemsMore,
+        backgroundColor = 0xff1976d2.toInt(),
+        theme = R.style.AppTheme_Dark
+    )
 
     private val versionDetailsItem by lazy {
         util.createActionItem(
