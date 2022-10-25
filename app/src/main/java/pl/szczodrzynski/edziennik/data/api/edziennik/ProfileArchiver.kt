@@ -52,28 +52,29 @@ class ProfileArchiver(val app: App, val profile: Profile) {
 
         when (profile.loginStoreType) {
             LoginType.LIBRUS -> {
-                profile.removeStudentData("isPremium")
-                profile.removeStudentData("pushDeviceId")
-                profile.removeStudentData("startPointsSemester1")
-                profile.removeStudentData("startPointsSemester2")
-                profile.removeStudentData("enablePointGrades")
-                profile.removeStudentData("enableDescriptiveGrades")
+                profile.studentData.remove("isPremium")
+                profile.studentData.remove("pushDeviceId")
+                profile.studentData.remove("startPointsSemester1")
+                profile.studentData.remove("startPointsSemester2")
+                profile.studentData.remove("enablePointGrades")
+                profile.studentData.remove("enableDescriptiveGrades")
             }
             LoginType.MOBIDZIENNIK -> {}
             LoginType.VULCAN -> {
                 // DataVulcan.isApiLoginValid() returns false so it will update the semester
-                profile.removeStudentData("currentSemesterEndDate")
-                profile.removeStudentData("studentSemesterId")
-                profile.removeStudentData("studentSemesterNumber")
-                profile.removeStudentData("semester1Id")
-                profile.removeStudentData("semester2Id")
-                profile.removeStudentData("studentClassId")
+                profile.studentData.remove("currentSemesterEndDate")
+                profile.studentData.remove("studentSemesterId")
+                profile.studentData.remove("studentSemesterNumber")
+                profile.studentData.remove("semester1Id")
+                profile.studentData.remove("semester2Id")
+                profile.studentData.remove("studentClassId")
             }
             LoginType.IDZIENNIK -> {
-                profile.removeStudentData("schoolYearId")
+                profile.studentData.remove("schoolYearId")
             }
             LoginType.EDUDZIENNIK -> {}
             LoginType.PODLASIE -> {}
+            LoginType.USOS -> {}
             LoginType.DEMO -> {}
             LoginType.TEMPLATE -> {}
         }

@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_PRESE
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEASED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.ext.dateToSemester
 
 class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) {
     init { run {

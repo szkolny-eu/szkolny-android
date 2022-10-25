@@ -28,6 +28,8 @@ import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
+import pl.szczodrzynski.edziennik.ext.isBeforeYear
+import pl.szczodrzynski.edziennik.ext.shouldArchive
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager.Error.Type
 

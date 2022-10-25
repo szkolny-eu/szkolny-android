@@ -12,7 +12,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.crc16
 import pl.szczodrzynski.edziennik.ext.currentTimeUnix
+import pl.szczodrzynski.edziennik.ext.getStudentData
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.set
 import pl.szczodrzynski.fslogin.realm.RealmData
 
 class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app, profile, loginStore) {
@@ -57,7 +59,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mSymbol: String? = null
     var symbol: String?
         get() { mSymbol = mSymbol ?: profile?.getStudentData("symbol", null); return mSymbol }
-        set(value) { profile?.putStudentData("symbol", value); mSymbol = value }
+        set(value) { profile["symbol"] = value; mSymbol = value }
 
     /**
      * Group symbol/number of the student's school.
@@ -69,7 +71,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mSchoolSymbol: String? = null
     var schoolSymbol: String?
         get() { mSchoolSymbol = mSchoolSymbol ?: profile?.getStudentData("schoolSymbol", null); return mSchoolSymbol }
-        set(value) { profile?.putStudentData("schoolSymbol", value) ?: return; mSchoolSymbol = value }
+        set(value) { profile["schoolSymbol"] = value; mSchoolSymbol = value }
 
     /**
      * Short name of the school, used in some places.
@@ -79,7 +81,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mSchoolShort: String? = null
     var schoolShort: String?
         get() { mSchoolShort = mSchoolShort ?: profile?.getStudentData("schoolShort", null); return mSchoolShort }
-        set(value) { profile?.putStudentData("schoolShort", value) ?: return; mSchoolShort = value }
+        set(value) { profile["schoolShort"] = value; mSchoolShort = value }
 
     /**
      * A school code consisting of the [symbol] and [schoolSymbol].
@@ -91,7 +93,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mSchoolCode: String? = null
     var schoolCode: String?
         get() { mSchoolCode = mSchoolCode ?: profile?.getStudentData("schoolName", null); return mSchoolCode }
-        set(value) { profile?.putStudentData("schoolName", value) ?: return; mSchoolCode = value }
+        set(value) { profile["schoolName"] = value; mSchoolCode = value }
 
     /**
      * ID of the student.
@@ -101,7 +103,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mStudentId: Int? = null
     var studentId: Int
         get() { mStudentId = mStudentId ?: profile?.getStudentData("studentId", 0); return mStudentId ?: 0 }
-        set(value) { profile?.putStudentData("studentId", value) ?: return; mStudentId = value }
+        set(value) { profile["studentId"] = value; mStudentId = value }
 
     /**
      * ID of the student's account.
@@ -111,7 +113,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mStudentLoginId: Int? = null
     var studentLoginId: Int
         get() { mStudentLoginId = mStudentLoginId ?: profile?.getStudentData("studentLoginId", 0); return mStudentLoginId ?: 0 }
-        set(value) { profile?.putStudentData("studentLoginId", value) ?: return; mStudentLoginId = value }
+        set(value) { profile["studentLoginId"] = value; mStudentLoginId = value }
 
     /**
      * ID of the student's class.
@@ -121,7 +123,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mStudentClassId: Int? = null
     var studentClassId: Int
         get() { mStudentClassId = mStudentClassId ?: profile?.getStudentData("studentClassId", 0); return mStudentClassId ?: 0 }
-        set(value) { profile?.putStudentData("studentClassId", value) ?: return; mStudentClassId = value }
+        set(value) { profile["studentClassId"] = value; mStudentClassId = value }
 
     /**
      * ListaUczniow/IdOkresKlasyfikacyjny, e.g. 321
@@ -129,26 +131,26 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mStudentSemesterId: Int? = null
     var studentSemesterId: Int
         get() { mStudentSemesterId = mStudentSemesterId ?: profile?.getStudentData("studentSemesterId", 0); return mStudentSemesterId ?: 0 }
-        set(value) { profile?.putStudentData("studentSemesterId", value) ?: return; mStudentSemesterId = value }
+        set(value) { profile["studentSemesterId"] = value; mStudentSemesterId = value }
 
     private var mStudentUnitId: Int? = null
     var studentUnitId: Int
         get() { mStudentUnitId = mStudentUnitId ?: profile?.getStudentData("studentUnitId", 0); return mStudentUnitId ?: 0 }
-        set(value) { profile?.putStudentData("studentUnitId", value) ?: return; mStudentUnitId = value }
+        set(value) { profile["studentUnitId"] = value; mStudentUnitId = value }
 
     private var mStudentConstituentId: Int? = null
     var studentConstituentId: Int
         get() { mStudentConstituentId = mStudentConstituentId ?: profile?.getStudentData("studentConstituentId", 0); return mStudentConstituentId ?: 0 }
-        set(value) { profile?.putStudentData("studentConstituentId", value) ?: return; mStudentConstituentId = value }
+        set(value) { profile["studentConstituentId"] = value; mStudentConstituentId = value }
 
     private var mSemester1Id: Int? = null
     var semester1Id: Int
         get() { mSemester1Id = mSemester1Id ?: profile?.getStudentData("semester1Id", 0); return mSemester1Id ?: 0 }
-        set(value) { profile?.putStudentData("semester1Id", value) ?: return; mSemester1Id = value }
+        set(value) { profile["semester1Id"] = value; mSemester1Id = value }
     private var mSemester2Id: Int? = null
     var semester2Id: Int
         get() { mSemester2Id = mSemester2Id ?: profile?.getStudentData("semester2Id", 0); return mSemester2Id ?: 0 }
-        set(value) { profile?.putStudentData("semester2Id", value) ?: return; mSemester2Id = value }
+        set(value) { profile["semester2Id"] = value; mSemester2Id = value }
 
     /**
      * ListaUczniow/OkresNumer, e.g. 1 or 2
@@ -156,7 +158,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mStudentSemesterNumber: Int? = null
     var studentSemesterNumber: Int
         get() { mStudentSemesterNumber = mStudentSemesterNumber ?: profile?.getStudentData("studentSemesterNumber", 0); return mStudentSemesterNumber ?: 0 }
-        set(value) { profile?.putStudentData("studentSemesterNumber", value) ?: return; mStudentSemesterNumber = value }
+        set(value) { profile["studentSemesterNumber"] = value; mStudentSemesterNumber = value }
 
     /**
      * Date of the end of the current semester ([studentSemesterNumber]).
@@ -166,7 +168,7 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mCurrentSemesterEndDate: Long? = null
     var currentSemesterEndDate: Long
         get() { mCurrentSemesterEndDate = mCurrentSemesterEndDate ?: profile?.getStudentData("currentSemesterEndDate", 0L); return mCurrentSemesterEndDate ?: 0L }
-        set(value) { profile?.putStudentData("currentSemesterEndDate", value) ?: return; mCurrentSemesterEndDate = value }
+        set(value) { profile["currentSemesterEndDate"] = value; mCurrentSemesterEndDate = value }
 
     /*             _____ _____        ____
              /\   |  __ \_   _|      |___ \
@@ -219,17 +221,17 @@ class DataVulcan(app: App, profile: Profile?, loginStore: LoginStore) : Data(app
     private var mHebeContext: String? = null
     var hebeContext: String?
         get() { mHebeContext = mHebeContext ?: profile?.getStudentData("hebeContext", null); return mHebeContext }
-        set(value) { profile?.putStudentData("hebeContext", value) ?: return; mHebeContext = value }
+        set(value) { profile["hebeContext"] = value; mHebeContext = value }
 
     private var mMessageBoxKey: String? = null
     var messageBoxKey: String?
         get() { mMessageBoxKey = mMessageBoxKey ?: profile?.getStudentData("messageBoxKey", null); return mMessageBoxKey }
-        set(value) { profile?.putStudentData("messageBoxKey", value) ?: return; mMessageBoxKey = value }
+        set(value) { profile["messageBoxKey"] = value; mMessageBoxKey = value }
 
     private var mMessageBoxName: String? = null
     var messageBoxName: String?
         get() { mMessageBoxName = mMessageBoxName ?: profile?.getStudentData("messageBoxName", null); return mMessageBoxName }
-        set(value) { profile?.putStudentData("messageBoxName", value) ?: return; mMessageBoxName = value }
+        set(value) { profile["messageBoxName"] = value; mMessageBoxName = value }
 
     val apiUrl: String?
         get() {

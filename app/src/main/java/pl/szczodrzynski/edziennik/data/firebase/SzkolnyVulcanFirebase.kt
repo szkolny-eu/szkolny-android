@@ -4,15 +4,15 @@
 
 package pl.szczodrzynski.edziennik.data.firebase
 
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
-import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.getStudentData
 import pl.szczodrzynski.edziennik.ext.toJsonObject
 
 class SzkolnyVulcanFirebase(val app: App, val profiles: List<Profile>, val message: FirebaseService.Message) {

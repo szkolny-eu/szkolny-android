@@ -6,14 +6,9 @@ package pl.szczodrzynski.edziennik.ext
 
 import android.util.LongSparseArray
 import androidx.core.util.forEach
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.gson.JsonElement
-import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.config.AppData
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.data.db.entity.Team
-import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 
 fun List<Teacher>.byId(id: Long) = firstOrNull { it.id == id }
 fun List<Teacher>.byNameFirstLast(nameFirstLast: String) = firstOrNull { it.name + " " + it.surname == nameFirstLast }
@@ -34,22 +29,3 @@ fun LongSparseArray<Team>.getById(id: Long): Team? {
     }
     return null
 }
-
-operator fun Profile.set(key: String, value: JsonElement) = this.studentData.add(key, value)
-operator fun Profile.set(key: String, value: Boolean) = this.studentData.addProperty(key, value)
-operator fun Profile.set(key: String, value: String?) = this.studentData.addProperty(key, value)
-operator fun Profile.set(key: String, value: Number) = this.studentData.addProperty(key, value)
-operator fun Profile.set(key: String, value: Char) = this.studentData.addProperty(key, value)
-
-fun Profile.getSchoolYearConstrains(): CalendarConstraints {
-    return CalendarConstraints.Builder()
-        .setStart(dateSemester1Start.inMillisUtc)
-        .setEnd(dateYearEnd.inMillisUtc)
-        .build()
-}
-
-fun Profile.hasFeature(featureType: FeatureType) = featureType in this.loginStoreType.features
-fun Profile.hasUIFeature(featureType: FeatureType) = featureType.isUIAlwaysAvailable || hasFeature(featureType)
-
-fun Profile.getAppData() =
-    if (App.profileId == this.id) App.data else AppData.get(this.loginStoreType)

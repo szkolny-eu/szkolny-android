@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.getLong
 import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.getStudentData
 
 class SzkolnyMobidziennikFirebase(val app: App, val profiles: List<Profile>, val message: FirebaseService.Message) {
     /*{

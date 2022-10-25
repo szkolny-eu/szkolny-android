@@ -9,6 +9,8 @@ import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.ext.getStudentData
+import pl.szczodrzynski.edziennik.ext.set
 
 class DataUsos(
     app: App,
@@ -69,6 +71,6 @@ class DataUsos(
 
     var studentId: Int
         get() { mStudentId = mStudentId ?: profile?.getStudentData("studentId", 0); return mStudentId ?: 0 }
-        set(value) { profile?.putStudentData("studentId", value) ?: return; mStudentId = value }
+        set(value) { profile["studentId"] = value; mStudentId = value }
     private var mStudentId: Int? = null
 }

@@ -12,8 +12,16 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.after
+import pl.szczodrzynski.edziennik.ext.getStudentData
 import pl.szczodrzynski.edziennik.ext.hasUIFeature
-import pl.szczodrzynski.edziennik.ui.dialogs.settings.*
+import pl.szczodrzynski.edziennik.ext.set
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.AgendaConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.AttendanceConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.BellSyncConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
+import pl.szczodrzynski.edziennik.ui.dialogs.settings.TimetableConfigDialog
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.settings.SettingsUtil
 
@@ -185,7 +193,7 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
                 icon = CommunityMaterial.Icon.cmd_account_arrow_right_outline,
                 value = app.profile.getStudentData("showTeacherAbsences", true)
             ) { _, it ->
-                app.profile.putStudentData("showTeacherAbsences", it)
+                app.profile["showTeacherAbsences"] = it
                 app.profileSave()
             }
         else

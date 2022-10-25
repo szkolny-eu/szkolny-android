@@ -202,6 +202,7 @@ public class Date implements Comparable<Date>, Noteable {
         return Week.getWeekDayFromDate(this);
     }
 
+    @NonNull
     public Date stepForward(int years, int months, int days) {
         this.day += days;
         if (day <= 0) {
