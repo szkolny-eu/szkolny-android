@@ -900,10 +900,6 @@
     <string name="settings_register_count_in_seconds_text">Count time in seconds</string>
     <string name="settings_register_dont_count_zero_text">Don\'t count 0 grade to average</string>
     <string name="settings_register_login_not_implemented_text">This e-register isn\'t implemented yet.</string>
-    <string name="settings_register_shared_events_dialog_disabled_text">You won\'t receive shared events anymore and you won\'t be able to share them.</string>
-    <string name="settings_register_shared_events_dialog_enabled_text">You will receive shared events from other people in your class.</string>
-    <string name="settings_register_shared_events_subtext">Share exams in your class</string>
-    <string name="settings_register_shared_events_text">Enable Event sharing</string>
     <string name="settings_register_show_teacher_absences_text">Show teacher absences in Agenda</string>
     <string name="settings_sync_customize_endpoint_announcements">Notice board</string>
     <string name="settings_sync_customize_endpoint_attendance">Attendances</string>

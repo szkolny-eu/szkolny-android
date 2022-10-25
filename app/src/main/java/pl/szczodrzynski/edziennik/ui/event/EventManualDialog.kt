@@ -137,9 +137,7 @@ class EventManualDialog(
 
         loadLists()
 
-        val shareByDefault = profileConfig.shareByDefault
-                && profile.enableSharedEvents
-                && profile.registration == Profile.REGISTRATION_ENABLED
+        val shareByDefault = profileConfig.shareByDefault && profile.canShare
 
         b.shareSwitch.isChecked = editingShared || editingEvent == null && shareByDefault
         b.shareSwitch.isEnabled = !editingShared || editingOwn
@@ -414,20 +412,6 @@ class EventManualDialog(
                 if (enabled)
                     saveEvent()
             }).showEventShareDialog()
-            return
-        }
-
-        if (share && !profile.enableSharedEvents) {
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.event_sharing)
-                .setMessage(R.string.settings_register_shared_events_dialog_enabled_text)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    profile.enableSharedEvents = true
-                    app.profileSave(profile)
-                    saveEvent()
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
             return
         }
 

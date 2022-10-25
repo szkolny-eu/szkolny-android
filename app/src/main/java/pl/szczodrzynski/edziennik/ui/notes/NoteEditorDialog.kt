@@ -79,23 +79,6 @@ class NoteEditorDialog(
             return NO_DISMISS
         }
 
-        if (note.isShared && !profile.enableSharedEvents) {
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.event_sharing)
-                .setMessage(R.string.settings_register_shared_events_dialog_enabled_text)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    profile.enableSharedEvents = true
-                    app.profileSave(profile)
-                    launch {
-                        if (onPositiveClick())
-                            dismiss()
-                    }
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .show()
-            return NO_DISMISS
-        }
-
         if (note.isShared || editingNote?.isShared == true) {
             progressDialog = MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.please_wait)
@@ -153,9 +136,7 @@ class NoteEditorDialog(
 
         b.ownerType = owner?.getNoteType() ?: Note.OwnerType.NONE
         b.editingNote = editingNote
-        b.shareByDefault = profileConfig.shareByDefault
-                && profile?.enableSharedEvents == true
-                && profile.registration == Profile.REGISTRATION_ENABLED
+        b.shareByDefault = profileConfig.shareByDefault && profile?.canShare == true
 
         b.color.clear().append(Note.Color.values().map { color ->
             TextInputDropDown.Item(

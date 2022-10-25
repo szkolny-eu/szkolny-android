@@ -42,16 +42,13 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
     override fun buildCard(): MaterialAboutCard =
         util.createCard(
             null,
-            items = listOf(),
-            itemsMore = listOf(),
+            items = ::getItems,
+            itemsMore = ::getItemsMore,
             backgroundColor = 0xff1976d2.toInt(),
             theme = R.style.AppTheme_Dark
         ).also {
             it.items.addAll(getItems(it))
         }
-
-    override fun getItems() = listOf<MaterialAboutItem>()
-    override fun getItemsMore() = listOf<MaterialAboutItem>()
 
     private val versionDetailsItem by lazy {
         util.createActionItem(
@@ -64,7 +61,7 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
         )
     }
 
-    private fun getItems(card: MaterialAboutCard) = listOf(
+    override fun getItems(card: MaterialAboutCard) = listOf(
         util.createTitleItem(),
 
         util.createActionItem(

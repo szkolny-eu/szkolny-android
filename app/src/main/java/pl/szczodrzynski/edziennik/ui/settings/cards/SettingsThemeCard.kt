@@ -4,6 +4,7 @@
 
 package pl.szczodrzynski.edziennik.ui.settings.cards
 
+import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
@@ -20,11 +21,11 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
 
     override fun buildCard() = util.createCard(
         R.string.settings_card_theme_title,
-        items = getItems(),
-        itemsMore = getItemsMore()
+        items = ::getItems,
+        itemsMore = ::getItemsMore,
     )
 
-    override fun getItems() = listOfNotNull(
+    override fun getItems(card: MaterialAboutCard) = listOfNotNull(
         if (Date.getToday().month % 11 == 1) // cool math games
             util.createPropertyItem(
                 text = R.string.settings_theme_snowfall_text,
@@ -76,7 +77,7 @@ class SettingsThemeCard(util: SettingsUtil) : SettingsCard(util) {
         }
     )
 
-    override fun getItemsMore() = listOf(
+    override fun getItemsMore(card: MaterialAboutCard) = listOf(
         util.createActionItem(
             text = R.string.settings_theme_mini_drawer_buttons_text,
             icon = CommunityMaterial.Icon2.cmd_format_list_checks

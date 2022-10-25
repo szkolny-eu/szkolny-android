@@ -969,10 +969,6 @@
     <string name="settings_register_count_in_seconds_text">Odliczaj czas w sekundach</string>
     <string name="settings_register_dont_count_zero_text">Nie wliczaj oceny 0 do średniej</string>
     <string name="settings_register_login_not_implemented_text">Ten e-dziennik nie został jeszcze zaimplementowany w aplikacji.</string>
-    <string name="settings_register_shared_events_dialog_disabled_text">Nie będziesz już otrzymywać udostępnionych sprawdzianów i nie będziesz mógł ich też udostępnić.</string>
-    <string name="settings_register_shared_events_dialog_enabled_text">Będziesz otrzymywać udostępnione sprawdziany od innych osób z twojej klasy.</string>
-    <string name="settings_register_shared_events_subtext">Udostępniaj sprawdziany w swojej klasie</string>
-    <string name="settings_register_shared_events_text">Włącz Udostępnianie wydarzeń</string>
     <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
     <string name="settings_sync_customize_endpoint_announcements">Tablica ogłoszeń</string>
     <string name="settings_sync_customize_endpoint_attendance">Obecności/nieobecności</string>
@@ -1553,4 +1549,5 @@
     <string name="legend_event_shared_sent">{cmd-share-variant} udostępnione przez Ciebie</string>
     <string name="settings_register_share_by_default_text">Domyślnie udostępniaj wydarzenia</string>
     <string name="settings_register_share_by_default_subtext">Ustaw tworzone wydarzenia domyślnie jako udostępnione</string>
+    <string name="settings_registration_section">Rejestracja</string>
 </resources>

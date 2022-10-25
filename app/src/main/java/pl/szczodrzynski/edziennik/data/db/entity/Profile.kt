@@ -54,7 +54,8 @@ open class Profile(
     var empty = true
     var archived = false
     var syncEnabled = true
-    var enableSharedEvents = true
+    @ColumnInfo(name = "enableSharedEvents")
+    var unused1 = true
     var registration = REGISTRATION_UNSPECIFIED
     var userCode = ""
 

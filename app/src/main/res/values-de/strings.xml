@@ -898,10 +898,6 @@
     <string name="settings_register_count_in_seconds_text">Zählen Sie die Zeit in Sekunden herunter</string>
     <string name="settings_register_dont_count_zero_text">Zählen Sie die Note 0 nicht zum Durchschnitt</string>
     <string name="settings_register_login_not_implemented_text">Dieses E-Register ist noch nicht implementiert</string>
-    <string name="settings_register_shared_events_dialog_disabled_text">Sie erhalten keine geteilten Ereignisse mehr und können sie nicht mehr teilen.</string>
-    <string name="settings_register_shared_events_dialog_enabled_text">Sie erhalten geteilte Ereignisse von anderen Personen in Ihrer Klasse</string>
-    <string name="settings_register_shared_events_subtext">Teile Tests in deiner Klasse</string>
-    <string name="settings_register_shared_events_text">Aktivieren Sie die Ereignisfreigabe</string>
     <string name="settings_register_show_teacher_absences_text">Zeigen Sie die Abwesenheiten von Lehrern im Zeitplan an</string>
     <string name="settings_sync_customize_endpoint_announcements">Schwarzes Brett</string>
     <string name="settings_sync_customize_endpoint_attendance">Anwesenheiten</string>

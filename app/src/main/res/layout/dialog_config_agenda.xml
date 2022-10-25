@@ -11,7 +11,7 @@
 
         <variable
             name="config"
-            type="pl.szczodrzynski.edziennik.config.ProfileConfigUI" />
+            type="pl.szczodrzynski.edziennik.config.ProfileConfig" />
 
         <variable
             name="isAgendaMode"
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:checked="@={config.agendaLessonChanges}"
+                android:checked="@={config.ui.agendaLessonChanges}"
                 android:minHeight="32dp"
                 android:text="@string/agenda_config_lesson_changes" />
 
@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:checked="@={config.agendaTeacherAbsence}"
+                android:checked="@={config.ui.agendaTeacherAbsence}"
                 android:minHeight="32dp"
                 android:text="@string/agenda_config_teacher_absence" />
 
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:checked="@={config.agendaCompactMode}"
+                android:checked="@={config.ui.agendaCompactMode}"
                 android:enabled="@{isAgendaMode}"
                 android:minHeight="32dp"
                 android:text="@string/agenda_config_compact_mode"
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:checked="@={config.agendaGroupByType}"
+                android:checked="@={config.ui.agendaGroupByType}"
                 android:enabled="@{isAgendaMode}"
                 android:minHeight="32dp"
                 android:text="@string/agenda_config_group_by_type"
@@ -101,6 +101,15 @@
                 android:minHeight="32dp"
                 android:text="@string/agenda_config_event_sharing_enabled" />
 
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/shareByDefault"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="32dp"
+                android:checked="@={config.shareByDefault}"
+                android:text="@string/settings_register_share_by_default_text" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,10 +129,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:checked="@={config.agendaElearningMark}"
+                android:checked="@={config.ui.agendaElearningMark}"
                 android:enabled="false"
                 android:minHeight="32dp"
-                android:onClick="@{() -> elearningType.setEnabled(elearningEnabled.isChecked())}"
                 android:text="@string/agenda_config_elearning_mark" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -131,7 +139,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="@{config.agendaElearningMark}"
+                android:enabled="@{elearningEnabled.checked}"
                 android:hint="@string/agenda_config_elearning_type">
 
                 <pl.szczodrzynski.edziennik.utils.TextInputDropDown
@@ -147,7 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:checked="@={config.agendaElearningGroup}"
+                android:checked="@={config.ui.agendaElearningGroup}"
                 android:enabled="false"
                 android:minHeight="32dp"
                 android:text="@string/agenda_config_elearning_group" />

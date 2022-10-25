@@ -4,6 +4,8 @@
 
 package pl.szczodrzynski.edziennik.ui.settings.cards
 
+import com.danielstone.materialaboutlibrary.items.MaterialAboutItem
+import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import eu.szkolny.font.SzkolnyFont
@@ -29,8 +31,8 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
 
     override fun buildCard() = util.createCard(
         R.string.settings_card_register_title,
-        items = getItems(),
-        itemsMore = getItemsMore()
+        items = ::getItems,
+        itemsMore = ::getItemsMore,
     )
 
     private fun getBellSync() =
@@ -40,34 +42,6 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
                 (if (configGlobal.timetable.bellSyncMultiplier == -1) "-" else "+") + it.stringHMS
             )
         } ?: activity.getString(R.string.settings_register_bell_sync_subtext_disabled)
-
-    private val sharedEventsItem by lazy {
-        util.createPropertyItem(
-            text = R.string.settings_register_shared_events_text,
-            subText = R.string.settings_register_shared_events_subtext,
-            icon = CommunityMaterial.Icon3.cmd_share_outline,
-            value = app.profile.enableSharedEvents
-        ) { item, value ->
-            app.profile.enableSharedEvents = value
-            app.profileSave()
-            MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.event_sharing)
-                .setMessage(
-                    if (value)
-                        R.string.settings_register_shared_events_dialog_enabled_text
-                    else
-                        R.string.settings_register_shared_events_dialog_disabled_text
-                )
-                .setPositiveButton(R.string.ok, null)
-                .show()
-            if (value) {
-                card.items.after(item, sharedEventsDefaultItem)
-            } else {
-                card.items.remove(sharedEventsDefaultItem)
-            }
-            util.refresh()
-        }
-    }
 
     private val sharedEventsDefaultItem by lazy {
         util.createPropertyItem(
@@ -80,7 +54,7 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
         }
     }
 
-    override fun getItems() = listOfNotNull(
+    override fun getItems(card: MaterialAboutCard) = listOfNotNull(
         util.createActionItem(
             text = R.string.menu_timetable_config,
             icon = CommunityMaterial.Icon3.cmd_timetable
@@ -108,7 +82,8 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
         ) {
             MessagesConfigDialog(activity, reloadOnDismiss = false).show()
         }.takeIf {
-            app.profile.hasUIFeature(FeatureType.MESSAGES_INBOX) || app.profile.hasUIFeature(FeatureType.MESSAGES_SENT)
+            app.profile.hasUIFeature(FeatureType.MESSAGES_INBOX) || app.profile.hasUIFeature(
+                FeatureType.MESSAGES_SENT)
         },
 
         util.createActionItem(
@@ -118,96 +93,90 @@ class SettingsRegisterCard(util: SettingsUtil) : SettingsCard(util) {
             AttendanceConfigDialog(activity, reloadOnDismiss = false).show()
         }.takeIf { app.profile.hasUIFeature(FeatureType.ATTENDANCE) },
 
-        if (app.profile.archived)
-            null
-        else
-            util.createPropertyItem(
-                text = R.string.settings_register_allow_registration_text,
-                subText = R.string.settings_register_allow_registration_subtext,
-                icon = CommunityMaterial.Icon.cmd_account_circle_outline,
-                value = app.profile.canShare,
-                beforeChange = { item, value ->
-                    if (app.profile.canShare == value)
-                    // allow the switch to change - needed for util.refresh() to change the visual state
-                        return@createPropertyItem true
-                    val dialog =
-                        RegistrationConfigDialog(activity, app.profile, onChangeListener = { enabled ->
+        util.createMoreItem(
+            card = card,
+            items = listOfNotNull(
+                util.createActionItem(
+                    text = R.string.settings_register_bell_sync_text,
+                    icon = SzkolnyFont.Icon.szf_alarm_bell_outline,
+                    onClick = {
+                        BellSyncConfigDialog(activity, onChangeListener = {
+                            it.subText = getBellSync()
+                            util.refresh()
+                        }).show()
+                    }
+                ).also {
+                    it.subText = getBellSync()
+                },
+
+                util.createPropertyItem(
+                    text = R.string.settings_register_count_in_seconds_text,
+                    subText = R.string.settings_register_count_in_seconds_subtext,
+                    icon = CommunityMaterial.Icon3.cmd_timer_outline,
+                    value = configGlobal.timetable.countInSeconds
+                ) { _, it ->
+                    configGlobal.timetable.countInSeconds = it
+                },
+
+                util.createPropertyItem(
+                    text = R.string.settings_register_show_teacher_absences_text,
+                    icon = CommunityMaterial.Icon.cmd_account_arrow_right_outline,
+                    value = app.profile.getStudentData("showTeacherAbsences", true)
+                ) { _, it ->
+                    app.profile["showTeacherAbsences"] = it
+                    app.profileSave()
+                }.takeIf { app.profile.loginStoreType == LoginType.LIBRUS },
+
+                util.createPropertyItem(
+                    text = R.string.settings_register_hide_sticks_from_old,
+                    icon = CommunityMaterial.Icon3.cmd_numeric_1_box_outline,
+                    value = configProfile.grades.hideSticksFromOld
+                ) { _, it ->
+                    configProfile.grades.hideSticksFromOld = it
+                }.takeIf { App.devMode && app.profile.hasUIFeature(FeatureType.GRADES) },
+            ),
+        ),
+
+        *(getRegistrationItems().takeIf { !app.profile.archived } ?: arrayOf()),
+    )
+
+    private fun getRegistrationItems() = listOfNotNull(
+        util.createSectionItem(
+            text = R.string.settings_registration_section,
+        ),
+
+        util.createPropertyItem(
+            text = R.string.settings_register_allow_registration_text,
+            subText = R.string.settings_register_allow_registration_subtext,
+            icon = CommunityMaterial.Icon.cmd_account_circle_outline,
+            value = app.profile.canShare,
+            beforeChange =
+            { item, value ->
+                if (app.profile.canShare == value)
+                // allow the switch to change - needed for util.refresh() to change the visual state
+                    return@createPropertyItem true
+                val dialog =
+                    RegistrationConfigDialog(activity,
+                        app.profile,
+                        onChangeListener = { enabled ->
                             if (item.isChecked == enabled)
                                 return@RegistrationConfigDialog
                             item.isChecked = enabled
                             if (value) {
-                                card.items.after(item, sharedEventsItem)
-                                if (app.profile.enableSharedEvents)
-                                    card.items.after(item, sharedEventsDefaultItem)
+                                card.items.after(item, sharedEventsDefaultItem)
                             } else {
-                                card.items.remove(sharedEventsItem)
                                 card.items.remove(sharedEventsDefaultItem)
                             }
                             util.refresh()
                         })
-                    if (value)
-                        dialog.showEnableDialog()
-                    else
-                        dialog.showDisableDialog()
-                    false
-                }
-            ) { _, _ -> },
-
-        if (app.profile.canShare)
-            sharedEventsItem
-        else
-            null,
-
-        if (app.profile.enableSharedEvents)
-            sharedEventsDefaultItem
-        else
-            null
-    )
-
-    override fun getItemsMore() = listOfNotNull(
-        util.createActionItem(
-            text = R.string.settings_register_bell_sync_text,
-            icon = SzkolnyFont.Icon.szf_alarm_bell_outline,
-            onClick = {
-                BellSyncConfigDialog(activity, onChangeListener = {
-                    it.subText = getBellSync()
-                    util.refresh()
-                }).show()
+                if (value)
+                    dialog.showEnableDialog()
+                else
+                    dialog.showDisableDialog()
+                false
             }
-        ).also {
-            it.subText = getBellSync()
-        },
+        ) { _, _ -> },
 
-        util.createPropertyItem(
-            text = R.string.settings_register_count_in_seconds_text,
-            subText = R.string.settings_register_count_in_seconds_subtext,
-            icon = CommunityMaterial.Icon3.cmd_timer_outline,
-            value = configGlobal.timetable.countInSeconds
-        ) { _, it ->
-            configGlobal.timetable.countInSeconds = it
-        },
-
-        if (app.profile.loginStoreType == LoginType.LIBRUS)
-            util.createPropertyItem(
-                text = R.string.settings_register_show_teacher_absences_text,
-                icon = CommunityMaterial.Icon.cmd_account_arrow_right_outline,
-                value = app.profile.getStudentData("showTeacherAbsences", true)
-            ) { _, it ->
-                app.profile["showTeacherAbsences"] = it
-                app.profileSave()
-            }
-        else
-            null,
-
-        if (App.devMode)
-            util.createPropertyItem(
-                text = R.string.settings_register_hide_sticks_from_old,
-                icon = CommunityMaterial.Icon3.cmd_numeric_1_box_outline,
-                value = configProfile.grades.hideSticksFromOld
-            ) { _, it ->
-                configProfile.grades.hideSticksFromOld = it
-            }.takeIf { app.profile.hasUIFeature(FeatureType.GRADES) }
-        else
-            null
-    )
+        sharedEventsDefaultItem.takeIf { app.profile.canShare },
+    ).toTypedArray()
 }
