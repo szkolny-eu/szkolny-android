@@ -75,8 +75,15 @@
                 android:id="@+id/clearProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
                 android:text="Clear all profile data"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/clearEndpointTimers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Clear endpoint timers (force full sync)"
                 android:textAllCaps="false" />
 
             <Button

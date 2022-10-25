@@ -62,6 +62,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             b.last10unseen.isVisible = false
             b.fullSync.isVisible = false
             b.clearProfile.isVisible = false
+            b.clearEndpointTimers.isVisible = false
             b.rodo.isVisible = false
             b.removeHomework.isVisible = false
             b.unarchive.isVisible = false
@@ -82,13 +83,17 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             app.db.teacherDao().query(SimpleSQLiteQuery("UPDATE teachers SET teacherSurname = \"\" WHERE profileId = ${App.profileId}"))
         }
         
-        b.fullSync.onClick { 
-            app.db.query(SimpleSQLiteQuery("UPDATE profiles SET empty = 1 WHERE profileId = ${App.profileId}"))
-            app.db.query(SimpleSQLiteQuery("DELETE FROM endpointTimers WHERE profileId = ${App.profileId}"))
+        b.fullSync.onClick {
+            app.profile.empty = true
+            app.profileSave()
         }
 
         b.clearProfile.onClick {
             ProfileRemoveDialog(activity, App.profileId, "FAKE", noProfileRemoval = true).show()
+        }
+
+        b.clearEndpointTimers.onClick {
+            app.db.endpointTimerDao().clear(app.profileId)
         }
 
         b.removeHomework.onClick {
