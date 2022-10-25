@@ -107,6 +107,9 @@ abstract class TimetableDao : BaseDao<Lesson, LessonFull> {
     fun getByIdNow(profileId: Int, id: Long) =
             getOneNow("$QUERY WHERE timetable.profileId = $profileId AND timetable.id = $id")
 
+    fun getByOwnerIdNow(profileId: Int, ownerId: Long) =
+            getOneNow("$QUERY WHERE timetable.profileId = $profileId AND timetable.ownerId = $ownerId")
+
     @Query("UPDATE timetable SET keep = 0 WHERE profileId = :profileId AND isExtra = :isExtra AND type != -1 AND ((type != 3 AND date >= :dateFrom) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom))")
     abstract fun dontKeepFromDate(profileId: Int, dateFrom: Date, isExtra: Boolean)
 

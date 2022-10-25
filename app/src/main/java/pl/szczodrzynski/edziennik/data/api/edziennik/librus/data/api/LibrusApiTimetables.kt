@@ -190,6 +190,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
         }
 
         lessonObject.id = lessonObject.buildId()
+        lessonObject.ownerId = lessonObject.buildOwnerId()
 
         val seen = profile.empty || lessonDate < Date.getToday()
 

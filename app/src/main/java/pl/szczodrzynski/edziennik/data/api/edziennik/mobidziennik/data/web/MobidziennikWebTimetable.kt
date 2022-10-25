@@ -336,6 +336,7 @@ class MobidziennikWebTimetable(
                 }
 
                 it.id = it.buildId()
+                it.ownerId = it.buildOwnerId()
                 it.isExtra = isExtra
 
                 val seen = profile?.empty == false || lessonDate < Date.getToday()

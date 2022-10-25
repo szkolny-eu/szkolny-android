@@ -88,6 +88,7 @@ class MobidziennikApiTimetable(val data: DataMobidziennik, rows: List<String>) {
                 }
 
                 it.id = it.buildId()
+                it.ownerId = it.buildOwnerId()
 
                 val seen = profile.empty || date < Date.getToday()
 

@@ -247,7 +247,9 @@ class VulcanHebeTimetable(
             }
 
             lessonObject.id = lessonObject.buildId()
+            lessonObject.ownerId = lessonObject.buildOwnerId()
             lessonShift?.id = lessonShift?.buildId() ?: -1
+            lessonShift?.ownerId = lessonShift?.buildOwnerId() ?: -1
 
             lessonList.add(lessonObject)
             lessonShift?.let { lessonList.add(it) }

@@ -80,7 +80,7 @@ class NoteManager(private val app: App) {
             OwnerType.GRADE ->
                 app.db.gradeDao().getByIdNow(note.profileId, note.ownerId)
             OwnerType.LESSON ->
-                app.db.timetableDao().getByIdNow(note.profileId, note.ownerId)
+                app.db.timetableDao().getByOwnerIdNow(note.profileId, note.ownerId)
             OwnerType.MESSAGE ->
                 app.db.messageDao().getByIdNow(note.profileId, note.ownerId)
             else -> null
