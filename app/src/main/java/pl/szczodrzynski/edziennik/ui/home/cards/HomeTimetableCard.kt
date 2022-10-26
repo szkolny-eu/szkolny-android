@@ -75,6 +75,7 @@ class HomeTimetableCard(
     private var counterJob: Job? = null
     private var counterStart: Time? = null
     private var counterEnd: Time? = null
+    private var showAllLessons: Boolean = false
     private var subjectSpannable: CharSequence? = null
 
     private val ignoreCancelled = false
@@ -276,6 +277,8 @@ class HomeTimetableCard(
             counterJob = startCoroutineTimer(repeatMillis = 500) {
                 count()
             }
+
+            showAllLessons = !isOngoing
         }
         else {
             val isTomorrow = today.clone().stepForward(0, 0, 1) == timetableDate
@@ -312,12 +315,22 @@ class HomeTimetableCard(
             } ?: run {
                 b.classroom.visibility = View.GONE
             }
+
+            showAllLessons = true
         }
 
         val text = mutableListOf<CharSequence>(
+            if (showAllLessons)
+                activity.getString(R.string.home_timetable_all_lessons)
+            else
                 activity.getString(R.string.home_timetable_later)
         )
-        val nextLessons = lessons.drop(skipFirst + 1)
+
+        val nextLessons = if (showAllLessons)
+            lessons.drop(skipFirst)
+        else
+            lessons.drop(skipFirst + 1)
+
         for (lesson in nextLessons) {
             text += listOf(
                     lesson.displayStartTime?.stringHM,
@@ -348,6 +361,14 @@ class HomeTimetableCard(
         }
 
         val now = syncedNow
+        if (now >= counterStart && showAllLessons) {
+            // update "next lessons" view to remove current lesson
+            this.counterJob?.cancel()
+            this.counterStart = null
+            this.counterEnd = null
+            update()
+            return
+        }
         if (now > counterEnd) {
             // the lesson is already over
             b.progress.visibility = View.GONE
