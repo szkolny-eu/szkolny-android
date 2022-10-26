@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
+import pl.szczodrzynski.edziennik.ext.takePositive
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class LessonFull(
@@ -142,4 +143,5 @@ class LessonFull(
     override fun getNoteType() = Note.OwnerType.LESSON
     override fun getNoteOwnerProfileId() = profileId
     override fun getNoteOwnerId() = ownerId
+    override fun getNoteShareTeamId() = teamId.takePositive()
 }

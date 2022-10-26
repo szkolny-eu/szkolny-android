@@ -324,11 +324,14 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     }
 
     @Throws(Exception::class)
-    fun shareNote(note: Note) {
+    fun shareNote(note: Note, teamId: Long? = null) {
         val profile = app.db.profileDao().getByIdNow(note.profileId)
             ?: throw NullPointerException("Profile is not found")
-        val team = app.db.teamDao().getClassNow(note.profileId)
-            ?: throw NullPointerException("TeamClass is not found")
+        val team = if (teamId == null)
+            app.db.teamDao().getClassNow(note.profileId)
+        else
+            app.db.teamDao().getByIdNow(note.profileId, teamId)
+        team ?: throw NullPointerException("TeamClass is not found")
 
         val response = api.shareNote(NoteShareRequest(
             deviceId = app.deviceId,

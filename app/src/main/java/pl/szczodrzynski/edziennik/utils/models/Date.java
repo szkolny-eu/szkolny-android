@@ -426,4 +426,10 @@ public class Date implements Comparable<Date>, Noteable {
     public boolean hasReplacingNotes() {
         return Noteable.DefaultImpls.hasReplacingNotes(this);
     }
+
+    @Nullable
+    @Override
+    public Long getNoteShareTeamId() {
+        return Noteable.DefaultImpls.getNoteShareTeamId(this);
+    }
 }

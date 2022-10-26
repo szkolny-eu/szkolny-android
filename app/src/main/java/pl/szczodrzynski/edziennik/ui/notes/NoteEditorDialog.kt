@@ -87,7 +87,12 @@ class NoteEditorDialog(
                 .show()
         }
 
-        val success = manager.saveNote(activity, note, wasShared = editingNote?.isShared ?: false)
+        val success = manager.saveNote(
+            activity = activity,
+            note = note,
+            teamId = owner?.getNoteShareTeamId(),
+            wasShared = editingNote?.isShared ?: false,
+        )
         progressDialog?.dismiss()
         return success
     }
