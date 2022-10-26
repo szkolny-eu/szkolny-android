@@ -91,6 +91,7 @@ open class Profile(
         get() = registration == REGISTRATION_ENABLED && !archived
 
     @delegate:Ignore
+    @delegate:Transient
     val config by lazy { App.config[this.id] }
 
     override fun getImageDrawable(context: Context) = this.getDrawable(context)
