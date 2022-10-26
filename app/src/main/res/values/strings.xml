@@ -916,7 +916,7 @@
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
     <string name="settings_card_register_title">E-dziennik</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nwrzesień 2018 - 2022</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński, wrzesień 2018 - 2022</string>
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
     <string name="settings_about_version_text">Wersja</string>
@@ -1550,4 +1550,5 @@
     <string name="settings_register_share_by_default_text">Domyślnie udostępniaj wydarzenia</string>
     <string name="settings_register_share_by_default_subtext">Ustaw tworzone wydarzenia domyślnie jako udostępnione</string>
     <string name="settings_registration_section">Rejestracja</string>
+    <string name="home_timetable_all_lessons">Wszystkie lekcje:</string>
 </resources>
