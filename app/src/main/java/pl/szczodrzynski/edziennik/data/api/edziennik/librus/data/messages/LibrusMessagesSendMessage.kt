@@ -16,7 +16,7 @@ import pl.szczodrzynski.edziennik.ext.getLong
 import pl.szczodrzynski.edziennik.ext.getString
 
 class LibrusMessagesSendMessage(override val data: DataLibrus,
-                                val recipients: List<Teacher>,
+                                val recipients: Set<Teacher>,
                                 val subject: String,
                                 val text: String,
                                 val onSuccess: () -> Unit

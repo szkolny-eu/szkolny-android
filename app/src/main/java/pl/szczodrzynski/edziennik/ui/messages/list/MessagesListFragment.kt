@@ -13,14 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_MESSAGES_COMPOSE
-import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_MESSAGES_DETAILS
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
 import pl.szczodrzynski.edziennik.databinding.MessagesListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
 import pl.szczodrzynski.edziennik.utils.SimpleDividerItemDecoration
 import kotlin.coroutines.CoroutineContext
@@ -65,11 +64,11 @@ class MessagesListFragment : LazyFragment(), CoroutineScope {
         adapter = MessagesAdapter(activity, teachers, onMessageClick = {
             val (target, args) =
                 if (it.isDraft) {
-                    TARGET_MESSAGES_COMPOSE to Bundle("message" to app.gson.toJson(it))
+                    NavTarget.MESSAGE_COMPOSE to Bundle("message" to app.gson.toJson(it))
                 } else {
-                    TARGET_MESSAGES_DETAILS to Bundle("messageId" to it.id)
+                    NavTarget.MESSAGE to Bundle("messageId" to it.id)
                 }
-            activity.loadTarget(target, args)
+            activity.navigate(navTarget = target, args = args)
         }, onStarClick = {
             this@MessagesListFragment.launch {
                 manager.starMessage(it, !it.isStarred)

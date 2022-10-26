@@ -7,7 +7,11 @@ package pl.szczodrzynski.edziennik.ui.dialogs.settings
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
@@ -117,7 +121,7 @@ class RegistrationConfigDialog(
             profile.registration = Profile.REGISTRATION_ENABLED
 
             // force full registration of the user
-            App.config.getFor(profile.id).hash = ""
+            profile.config.hash = ""
 
             SzkolnyApi(app).runCatching(activity) {
                 AppSync(app, mutableListOf(), listOf(profile), this).run(

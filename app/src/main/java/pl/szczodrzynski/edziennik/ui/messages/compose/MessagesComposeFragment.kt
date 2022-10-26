@@ -25,19 +25,18 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.ERROR_MESSAGE_NOT_SENT
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.MessageSentEvent
 import pl.szczodrzynski.edziennik.data.api.events.RecipientListGetEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Message
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.MessagesComposeFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.DAY
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
 import pl.szczodrzynski.edziennik.utils.DefaultTextStyles
@@ -68,16 +67,13 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         get() = app.messageManager
     private val textStylingManager
         get() = app.textStylingManager
-    private val profileConfig by lazy { app.config.forProfile().ui }
     private val greetingText
-        get() = profileConfig.messagesGreetingText ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
+        get() = app.profile.config.ui.messagesGreetingText ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
 
     private val teachers = mutableListOf<Teacher>()
 
     private lateinit var stylingConfig: StylingConfig
     private lateinit var uiConfig: UIConfig
-    private val enableTextStyling
-        get() = app.profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS
     private var changedRecipients = false
     private var changedSubject = false
     private var changedBody = false
@@ -154,14 +150,14 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
     }
 
     private fun getMessageBody(): String {
-        return if (enableTextStyling)
+        return if (app.data.messagesConfig.textStyling)
             textStylingManager.getHtmlText(stylingConfig)
         else
             b.text.text?.toString() ?: ""
     }
 
     private fun getRecipientList() {
-        if (System.currentTimeMillis() - app.profile.lastReceiversSync > 1 * DAY * 1000 && app.profile.loginStoreType != LoginStore.LOGIN_TYPE_VULCAN) {
+        if (app.data.messagesConfig.syncRecipientList && System.currentTimeMillis() - app.profile.lastReceiversSync > 1 * DAY * 1000) {
             activity.snackbar("Pobieranie listy odbiorców...")
             EdziennikTask.recipientListGet(App.profileId).enqueue(activity)
         }
@@ -194,19 +190,19 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         })
 
         b.subjectLayout.counterMaxLength = when (app.profile.loginStoreType) {
-            LoginStore.LOGIN_TYPE_MOBIDZIENNIK -> 100
-            LoginStore.LOGIN_TYPE_LIBRUS -> 150
-            LoginStore.LOGIN_TYPE_VULCAN -> 200
-            LoginStore.LOGIN_TYPE_IDZIENNIK -> 180
-            LoginStore.LOGIN_TYPE_EDUDZIENNIK -> 0
+            LoginType.MOBIDZIENNIK -> 100
+            LoginType.LIBRUS -> 150
+            LoginType.VULCAN -> 200
+            LoginType.IDZIENNIK -> 180
+            LoginType.EDUDZIENNIK -> 0
             else -> -1
         }
         b.textLayout.counterMaxLength = when (app.profile.loginStoreType) {
-            LoginStore.LOGIN_TYPE_MOBIDZIENNIK -> -1
-            LoginStore.LOGIN_TYPE_LIBRUS -> 20000
-            LoginStore.LOGIN_TYPE_VULCAN -> -1
-            LoginStore.LOGIN_TYPE_IDZIENNIK -> 1983
-            LoginStore.LOGIN_TYPE_EDUDZIENNIK -> 0
+            LoginType.MOBIDZIENNIK -> -1
+            LoginType.LIBRUS -> 20000
+            LoginType.VULCAN -> -1
+            LoginType.IDZIENNIK -> 1983
+            LoginType.EDUDZIENNIK -> 0
             else -> -1
         }
 
@@ -245,9 +241,9 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             subject = b.subject,
             body = b.text,
             teachers = teachers,
-            greetingOnCompose = profileConfig.messagesGreetingOnCompose,
-            greetingOnReply = profileConfig.messagesGreetingOnReply,
-            greetingOnForward = profileConfig.messagesGreetingOnForward,
+            greetingOnCompose = app.profile.config.ui.messagesGreetingOnCompose,
+            greetingOnReply = app.profile.config.ui.messagesGreetingOnReply,
+            greetingOnForward = app.profile.config.ui.messagesGreetingOnForward,
             greetingText = greetingText,
         )
         stylingConfig = StylingConfig(
@@ -257,13 +253,13 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             styles = styles,
             textHtml = if (App.devMode) b.textHtml else null,
             htmlMode = when (app.profile.loginStoreType) {
-                LOGIN_TYPE_MOBIDZIENNIK -> COMPATIBLE
+                LoginType.MOBIDZIENNIK -> COMPATIBLE
                 else -> ORIGINAL
             },
         )
 
-        b.fontStyle.root.isVisible = enableTextStyling
-        if (enableTextStyling) {
+        b.fontStyle.root.isVisible = app.data.messagesConfig.textStyling
+        if (app.data.messagesConfig.textStyling) {
             textStylingManager.attach(stylingConfig)
             b.fontStyle.styles.addOnButtonCheckedListener { _, _, _ ->
                 changedBody = true
@@ -303,7 +299,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             .setPositiveButton(R.string.save) { _, _ ->
                 saveDraft()
                 MessagesFragment.pageSelection = Message.TYPE_DRAFT
-                activity.loadTarget(DRAWER_ITEM_MESSAGES, skipBeforeNavigate = true)
+                activity.navigate(navTarget = NavTarget.MESSAGES, skipBeforeNavigate = true)
             }
             .setNegativeButton(R.string.discard) { _, _ ->
                 activity.resumePausedNavigation()
@@ -374,7 +370,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             else -> b.text.requestFocus()
         }
 
-        if (!enableTextStyling)
+        if (!app.data.messagesConfig.textStyling)
             b.text.setText(b.text.text?.toString())
         b.text.setSelection(0)
          (b.root as? ScrollView)?.smoothScrollTo(0, 0)
@@ -393,7 +389,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
             b.recipientsLayout.error = getString(R.string.messages_compose_recipients_error)
             return
         }
-        val recipients = mutableListOf<Teacher>()
+        val recipients = mutableSetOf<Teacher>()
         b.recipients.allChips.forEach { chip ->
             if (chip.data !is Teacher)
                 return@forEach
@@ -487,7 +483,7 @@ class MessagesComposeFragment : Fragment(), CoroutineScope {
         }
 
         activity.snackbar(app.getString(R.string.messages_sent_success), app.getString(R.string.ok))
-        activity.loadTarget(MainActivity.TARGET_MESSAGES_DETAILS, Bundle(
+        activity.navigate(navTarget = NavTarget.MESSAGE, args = Bundle(
                 "messageId" to event.message.id,
                 "message" to app.gson.toJson(event.message),
                 "sentDate" to event.sentDate

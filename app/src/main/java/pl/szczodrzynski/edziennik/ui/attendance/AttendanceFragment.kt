@@ -18,7 +18,7 @@ import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.AttendanceFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
@@ -75,14 +75,14 @@ class AttendanceFragment : Fragment(), CoroutineScope {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
-                            AsyncTask.execute { App.db.metadataDao().setAllSeen(App.profileId, Metadata.TYPE_ATTENDANCE, true) }
+                            AsyncTask.execute { App.db.metadataDao().setAllSeen(App.profileId, MetadataType.ATTENDANCE, true) }
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
                         })
         )
         activity.gainAttention()
 
         if (pageSelection == 1)
-            pageSelection = app.config.forProfile().attendance.attendancePageSelection
+            pageSelection = app.profile.config.attendance.attendancePageSelection
 
         val pagerAdapter = FragmentLazyPagerAdapter(
             parentFragmentManager,
@@ -113,7 +113,7 @@ class AttendanceFragment : Fragment(), CoroutineScope {
             currentItem = pageSelection
             addOnPageSelectedListener {
                 pageSelection = it
-                app.config.forProfile().attendance.attendancePageSelection = it
+                app.profile.config.attendance.attendancePageSelection = it
             }
             b.tabLayout.setupWithViewPager(this)
         }

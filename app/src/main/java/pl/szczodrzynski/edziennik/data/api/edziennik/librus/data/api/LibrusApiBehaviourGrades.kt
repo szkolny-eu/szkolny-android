@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
 import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 import java.text.DecimalFormat
@@ -63,7 +64,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                 data.gradeList.add(semester1StartGradeObject)
                 data.metadataList.add(Metadata(
                         profileId,
-                        Metadata.TYPE_GRADE,
+                        MetadataType.GRADE,
                         semester1StartGradeObject.id,
                         true,
                         true
@@ -91,7 +92,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                 data.gradeList.add(semester2StartGradeObject)
                 data.metadataList.add(Metadata(
                         profileId,
-                        Metadata.TYPE_GRADE,
+                        MetadataType.GRADE,
                         semester2StartGradeObject.id,
                         true,
                         true
@@ -165,7 +166,7 @@ class LibrusApiBehaviourGrades(override val data: DataLibrus,
                 data.gradeList.add(gradeObject)
                 data.metadataList.add(Metadata(
                         profileId,
-                        Metadata.TYPE_GRADE,
+                        MetadataType.GRADE,
                         id,
                         profile.empty,
                         profile.empty

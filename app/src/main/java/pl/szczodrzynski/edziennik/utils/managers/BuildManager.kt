@@ -9,11 +9,29 @@ import android.text.TextUtils
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.Request
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.BuildConfig
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
+import pl.szczodrzynski.edziennik.ext.Intent
+import pl.szczodrzynski.edziennik.ext.asBoldSpannable
+import pl.szczodrzynski.edziennik.ext.asColoredSpannable
+import pl.szczodrzynski.edziennik.ext.concat
+import pl.szczodrzynski.edziennik.ext.getJsonObject
+import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
+import pl.szczodrzynski.edziennik.ext.join
+import pl.szczodrzynski.edziennik.ext.md5
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.resolveColor
+import pl.szczodrzynski.edziennik.ext.toJsonObject
 import pl.szczodrzynski.edziennik.ui.base.BuildInvalidActivity
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
@@ -73,6 +91,14 @@ class BuildManager(val app: App) : CoroutineScope {
         !isOfficial ->
             "Unofficial\n" + BuildConfig.VERSION_BASE
         else -> null
+    }
+
+    val releaseType = when {
+        isNightly || isDaily -> Update.Type.NIGHTLY
+        BuildConfig.VERSION_BASE.endsWith("-dev") -> Update.Type.DEV
+        BuildConfig.VERSION_BASE.contains("-beta.") -> Update.Type.BETA
+        BuildConfig.VERSION_BASE.contains("-rc.") -> Update.Type.RC
+        else -> Update.Type.RELEASE
     }
 
     fun showVersionDialog(activity: AppCompatActivity) {

@@ -1,0 +1,179 @@
+{
+	"base": {
+		"configOverrides": {},
+		"messagesConfig": {
+			"subjectLength": null,
+			"bodyLength": null,
+			"textStyling": true,
+			"syncRecipientList": true,
+			"htmlMode": "ORIGINAL",
+			"needsReadStatus": false
+		},
+		"uiConfig": {
+			"lessonHeight": 60,
+			"enableMarkAsReadAnnouncements": true,
+			"enableNoticePoints": false
+		},
+		"eventTypes": [
+			{
+				"id": -5,
+				"color": "#f57f17",
+				"name": "lekcja online"
+			},
+			{
+				"id": -1,
+				"color": "#795548",
+				"name": "zadanie domowe"
+			},
+			{
+				"id": 0,
+				"color": "#ffc107",
+				"name": "inny"
+			}
+		]
+	},
+	"standard": {
+		"eventTypes": [
+			{
+				"id": 1,
+				"color": "#f44336",
+				"name": "sprawdzian"
+			},
+			{
+				"id": 2,
+				"color": "#76ff03",
+				"name": "kartkówka"
+			},
+			{
+				"id": 3,
+				"color": "#4050b5",
+				"name": "wypracowanie"
+			},
+			{
+				"id": 4,
+				"color": "#673ab7",
+				"name": "projekt"
+			},
+			{
+				"id": 5,
+				"color": "#90caf9",
+				"name": "zebranie z rodzicami"
+			},
+			{
+				"id": 6,
+				"color": "#4caf50",
+				"name": "wycieczka"
+			},
+			{
+				"id": 7,
+				"color": "#ffeb3b",
+				"name": "lektura"
+			},
+			{
+				"id": 8,
+				"color": "#388e3c",
+				"name": "wydarzenie klasowe"
+			},
+			{
+				"id": 9,
+				"color": "#039be5",
+				"name": "informacja"
+			}
+		]
+	},
+	"university": {
+		"configOverrides": {
+			"shareByDefault": true,
+			"timetableColorSubjectName": true,
+			"timetableTrimHourRange": true
+		},
+		"uiConfig": {
+			"lessonHeight": 45
+		},
+		"eventTypes": [
+			{
+				"id": 1,
+				"color": "#f44336",
+				"name": "egzamin"
+			},
+			{
+				"id": 2,
+				"color": "#e91e63",
+				"name": "kolokwium"
+			},
+			{
+				"id": 3,
+				"color": "#76ff03",
+				"name": "kartkówka"
+			},
+			{
+				"id": 4,
+				"color": "#ffeb3b",
+				"name": "wejściówka"
+			},
+			{
+				"id": 5,
+				"color": "#90caf9",
+				"name": "zaliczenie"
+			},
+			{
+				"id": 6,
+				"color": "#4050b5",
+				"name": "zadanie"
+			},
+			{
+				"id": 7,
+				"color": "#673ab7",
+				"name": "projekt"
+			},
+			{
+				"id": 8,
+				"color": "#388e3c",
+				"name": "zajęcia"
+			},
+			{
+				"id": 9,
+				"color": "#4caf50",
+				"name": "zajęcia dodatkowe"
+			},
+			{
+				"id": 10,
+				"color": "#039be5",
+				"name": "informacja"
+			}
+		]
+	},
+	"mobidziennik": {
+		"messagesConfig": {
+			"subjectLength": 100,
+			"htmlMode": "COMPATIBLE"
+		},
+		"uiConfig": {
+			"enableNoticePoints": true
+		}
+	},
+	"librus": {
+		"messagesConfig": {
+			"subjectLength": 150,
+			"bodyLength": 20000,
+			"textStyling": false
+		},
+		"uiConfig": {
+			"enableMarkAsReadAnnouncements": false
+		}
+	},
+	"vulcan": {
+		"messagesConfig": {
+			"subjectLength": 200,
+			"syncRecipientList": false,
+			"needsReadStatus": true
+		}
+	},
+	"idziennik": {
+		"messagesConfig": {
+			"subjectLength": 180,
+			"bodyLength": 1983,
+			"textStyling": false
+		}
+	}
+}

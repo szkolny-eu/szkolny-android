@@ -29,6 +29,7 @@ import java.util.List;
 import pl.szczodrzynski.edziennik.App;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.db.entity.Profile;
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType;
 import pl.szczodrzynski.edziennik.databinding.DialogWidgetConfigBinding;
 import pl.szczodrzynski.edziennik.databinding.WidgetProfileDialogItemBinding;
 import pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider;
@@ -84,7 +85,7 @@ public class WidgetConfigActivity extends Activity {
                 opacity = 0.8f;
 
             AsyncTask.execute(() -> {
-                profileList = App.db.profileDao().getAllNow();
+                profileList = App.Companion.getDb().profileDao().getAllNow();
                 profileList = filterOutArchived(profileList);
 
                 if (widgetType == WIDGET_NOTIFICATIONS)
@@ -102,7 +103,7 @@ public class WidgetConfigActivity extends Activity {
             profileList.add(
                     new Profile(-1,
                             0,
-                            0,
+                            LoginType.TEMPLATE,
                             getString(R.string.widget_config_all_profiles),
                             null,
                             "",

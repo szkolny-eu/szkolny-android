@@ -13,21 +13,33 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
-import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.entity.Subject
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.getStudentData
+import pl.szczodrzynski.edziennik.ext.onChange
+import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.setText
+import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.RegistrationConfigDialog
 import pl.szczodrzynski.edziennik.ui.views.TimeDropdown.Companion.DISPLAY_LESSONS
@@ -105,9 +117,6 @@ class EventManualDialog(
     }
 
     override suspend fun onShow() {
-        b.shareSwitch.isChecked = editingShared
-        b.shareSwitch.isEnabled = !editingShared || (editingShared && editingOwn)
-
         b.showMore.onClick { // TODO iconics is broken
             it.apply {
                 refreshDrawableState()
@@ -135,6 +144,11 @@ class EventManualDialog(
         }
 
         loadLists()
+
+        val shareByDefault = app.profile.config.shareByDefault && profile.canShare
+
+        b.shareSwitch.isChecked = editingShared || editingEvent == null && shareByDefault
+        b.shareSwitch.isEnabled = !editingShared || editingOwn
     }
 
     private fun updateShareText(checked: Boolean = b.shareSwitch.isChecked) {
@@ -170,9 +184,7 @@ class EventManualDialog(
 
         EdziennikTask.syncProfile(
                 profileId = profileId,
-                viewIds = listOf(
-                        MainActivity.DRAWER_ITEM_TIMETABLE to 0
-                ),
+                featureTypes = setOf(FeatureType.TIMETABLE),
                 arguments = JsonObject(
                         "weekStart" to weekStart.stringY_m_d
                 )
@@ -479,8 +491,8 @@ class EventManualDialog(
         val metadataObject = Metadata(
                 profileId,
                 when (type?.id) {
-                    Event.TYPE_HOMEWORK -> Metadata.TYPE_HOMEWORK
-                    else -> Metadata.TYPE_EVENT
+                    Event.TYPE_HOMEWORK -> MetadataType.HOMEWORK
+                    else -> MetadataType.EVENT
                 },
                 eventObject.id,
                 true,

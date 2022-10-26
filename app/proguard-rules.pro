@@ -22,6 +22,7 @@
 -keep class android.support.v7.widget.** { *; }
 
 -keep class pl.szczodrzynski.edziennik.utils.models.** { *; }
+-keep class pl.szczodrzynski.edziennik.data.db.enums.* { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.entity.Event { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.full.EventFull { *; }
 -keep class pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage { *; }
@@ -31,6 +32,9 @@
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.timetable.WidgetTimetableProvider
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.notifications.WidgetNotificationsProvider
 -keepnames class pl.szczodrzynski.edziennik.ui.widgets.luckynumber.WidgetLuckyNumberProvider
+-keep class pl.szczodrzynski.edziennik.config.AppData { *; }
+-keep class pl.szczodrzynski.edziennik.config.AppData$** { *; }
+-keep class pl.szczodrzynski.edziennik.utils.managers.TextStylingManager$HtmlMode { *; }
 
 -keepnames class androidx.appcompat.view.menu.MenuBuilder { setHeaderTitleInt(java.lang.CharSequence); }
 -keepnames class androidx.appcompat.view.menu.MenuPopupHelper { showPopup(int, int, boolean, boolean); }

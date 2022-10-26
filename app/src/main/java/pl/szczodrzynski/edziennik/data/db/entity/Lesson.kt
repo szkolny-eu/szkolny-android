@@ -50,6 +50,13 @@ open class Lesson(
 
     var isExtra: Boolean = false
 
+    /**
+     * Stable ID denoting this lesson, used for note sharing (i.e. [profileId]-independent).
+     *
+     * This is simply the Unix timestamp of the lesson (in seconds).
+     */
+    var ownerId: Long = id
+
     val displayDate: Date?
         get() {
             if (type == TYPE_SHIFTED_SOURCE)
@@ -69,10 +76,17 @@ open class Lesson(
     val isChange
         get() = type == TYPE_CHANGE || type == TYPE_SHIFTED_TARGET
 
-    fun buildId(): Long = (displayDate?.combineWith(displayStartTime) ?: 0L) / 6L * 10L + (hashCode() and 0xFFFF)
+    fun buildId(): Long =
+        (displayDate?.combineWith(displayStartTime) ?: 0L) / 6L * 10L +
+                (hashCode() and 0xFFFF)
+
+    fun buildOwnerId(): Long =
+        (displayDate?.combineWith(displayStartTime) ?: 0L)
 
     @Ignore
     var showAsUnseen = false
+
+    var color: Int? = null
 
     override fun toString(): String {
         return "Lesson(profileId=$profileId, " +

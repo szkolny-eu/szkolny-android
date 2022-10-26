@@ -25,8 +25,9 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.databinding.FragmentHomeBinding
+import pl.szczodrzynski.edziennik.ext.hasUIFeature
 import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.StudentNumberDialog
 import pl.szczodrzynski.edziennik.ui.home.cards.*
@@ -49,18 +50,18 @@ class HomeFragment : Fragment(), CoroutineScope {
             cardAdapter.items[toPosition] = fromCard
             cardAdapter.notifyItemMoved(fromPosition, toPosition)
 
-            val homeCards = App.config.forProfile().ui.homeCards.toMutableList()
+            val homeCards = App.profile.config.ui.homeCards.toMutableList()
             val fromIndex = homeCards.indexOfFirst { it.cardId == fromCard.id }
             val toIndex = homeCards.indexOfFirst { it.cardId == toCard.id }
             val fromPair = homeCards[fromIndex]
             homeCards[fromIndex] = homeCards[toIndex]
             homeCards[toIndex] = fromPair
-            App.config.forProfile().ui.homeCards = homeCards
+            App.profile.config.ui.homeCards = homeCards
             return true
         }
 
         fun removeCard(position: Int, cardAdapter: HomeCardAdapter) {
-            val homeCards = App.config.forProfile().ui.homeCards.toMutableList()
+            val homeCards = App.profile.config.ui.homeCards.toMutableList()
             if (position >= homeCards.size)
                 return
             val card = cardAdapter.items[position]
@@ -70,7 +71,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                 return
             }
             homeCards.removeAll { it.cardId == card.id }
-            App.config.forProfile().ui.homeCards = homeCards
+            App.profile.config.ui.homeCards = homeCards
         }
     }
 
@@ -81,7 +82,8 @@ class HomeFragment : Fragment(), CoroutineScope {
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
-
+    private val manager
+        get() = app.permissionManager
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity = (getActivity() as MainActivity?) ?: return null
         context ?: return null
@@ -95,6 +97,10 @@ class HomeFragment : Fragment(), CoroutineScope {
         // TODO check if app, activity, b can be null
         if (!isAdded)
             return
+
+        if (!manager.isNotificationPermissionGranted) {
+            manager.requestNotificationsPermission(activity, 0, false){}
+        }
 
         activity.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)
@@ -120,7 +126,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                         .withOnClickListener(OnClickListener {
                             activity.bottomSheet.close()
                             launch { withContext(Dispatchers.Default) {
-                                if (app.profile.loginStoreType != LoginStore.LOGIN_TYPE_LIBRUS) {
+                                if (!app.data.uiConfig.enableMarkAsReadAnnouncements) {
                                     app.db.metadataDao().setAllSeenExceptMessagesAndAnnouncements(App.profileId, true)
                                 } else {
                                     app.db.metadataDao().setAllSeenExceptMessages(App.profileId, true)
@@ -138,16 +144,16 @@ class HomeFragment : Fragment(), CoroutineScope {
             b.refreshLayout.isEnabled = scrollY == 0
         }
 
-        val cards = app.config.forProfile().ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
+        val cards = app.profile.config.ui.homeCards.filter { it.profileId == app.profile.id }.toMutableList()
         if (cards.isEmpty()) {
-            cards += listOf(
-                    HomeCardModel(app.profile.id, HomeCard.CARD_LUCKY_NUMBER),
-                    HomeCardModel(app.profile.id, HomeCard.CARD_TIMETABLE),
-                    HomeCardModel(app.profile.id, HomeCard.CARD_EVENTS),
-                    HomeCardModel(app.profile.id, HomeCard.CARD_GRADES),
+            cards += listOfNotNull(
+                    HomeCardModel(app.profile.id, HomeCard.CARD_LUCKY_NUMBER).takeIf { app.profile.hasUIFeature(FeatureType.LUCKY_NUMBER) },
+                    HomeCardModel(app.profile.id, HomeCard.CARD_TIMETABLE).takeIf { app.profile.hasUIFeature(FeatureType.TIMETABLE) },
+                    HomeCardModel(app.profile.id, HomeCard.CARD_EVENTS).takeIf { app.profile.hasUIFeature(FeatureType.AGENDA) },
+                    HomeCardModel(app.profile.id, HomeCard.CARD_GRADES).takeIf { app.profile.hasUIFeature(FeatureType.GRADES) },
                     HomeCardModel(app.profile.id, HomeCard.CARD_NOTES),
             )
-            app.config.forProfile().ui.homeCards = app.config.forProfile().ui.homeCards.toMutableList().also { it.addAll(cards) }
+            app.profile.config.ui.homeCards = app.profile.config.ui.homeCards.toMutableList().also { it.addAll(cards) }
         }
 
         val items = mutableListOf<HomeCard>()

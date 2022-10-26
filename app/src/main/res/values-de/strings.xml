@@ -847,7 +847,7 @@
     <string name="settings_about_licenses_text">Open-Source-Lizenzen</string>
     <string name="settings_about_privacy_policy_text">Datenschutzrichtlinie</string>
     <string name="settings_card_register_title">E-Klassenbuch</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 - 2022</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński, September 2018 - 2022</string>
     <string name="settings_about_update_subtext">Klicken Sie hier, um nach Aktualisierungen zu suchen</string>
     <string name="settings_about_update_text">Aktualisierung</string>
     <string name="settings_about_version_text">Version</string>
@@ -898,10 +898,6 @@
     <string name="settings_register_count_in_seconds_text">Zählen Sie die Zeit in Sekunden herunter</string>
     <string name="settings_register_dont_count_zero_text">Zählen Sie die Note 0 nicht zum Durchschnitt</string>
     <string name="settings_register_login_not_implemented_text">Dieses E-Register ist noch nicht implementiert</string>
-    <string name="settings_register_shared_events_dialog_disabled_text">Sie erhalten keine geteilten Ereignisse mehr und können sie nicht mehr teilen.</string>
-    <string name="settings_register_shared_events_dialog_enabled_text">Sie erhalten geteilte Ereignisse von anderen Personen in Ihrer Klasse</string>
-    <string name="settings_register_shared_events_subtext">Teile Tests in deiner Klasse</string>
-    <string name="settings_register_shared_events_text">Aktivieren Sie die Ereignisfreigabe</string>
     <string name="settings_register_show_teacher_absences_text">Zeigen Sie die Abwesenheiten von Lehrern im Zeitplan an</string>
     <string name="settings_sync_customize_endpoint_announcements">Schwarzes Brett</string>
     <string name="settings_sync_customize_endpoint_attendance">Anwesenheiten</string>

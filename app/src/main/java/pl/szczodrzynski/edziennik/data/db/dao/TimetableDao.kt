@@ -38,7 +38,7 @@ abstract class TimetableDao : BaseDao<Lesson, LessonFull> {
             LEFT JOIN subjects AS oldS ON timetable.profileId = oldS.profileId AND timetable.oldSubjectId = oldS.subjectId
             LEFT JOIN teachers AS oldT ON timetable.profileId = oldT.profileId AND timetable.oldTeacherId = oldT.teacherId
             LEFT JOIN teams AS oldG ON timetable.profileId = oldG.profileId AND timetable.oldTeamId = oldG.teamId
-            LEFT JOIN metadata ON id = thingId AND thingType = ${Metadata.TYPE_LESSON_CHANGE} AND metadata.profileId = timetable.profileId
+            LEFT JOIN metadata ON id = thingId AND thingType = 6 AND metadata.profileId = timetable.profileId
         """
 
         private const val ORDER_BY = """ORDER BY profileId, id, type"""
@@ -106,6 +106,9 @@ abstract class TimetableDao : BaseDao<Lesson, LessonFull> {
     // GET ONE - NOW
     fun getByIdNow(profileId: Int, id: Long) =
             getOneNow("$QUERY WHERE timetable.profileId = $profileId AND timetable.id = $id")
+
+    fun getByOwnerIdNow(profileId: Int, ownerId: Long) =
+            getOneNow("$QUERY WHERE timetable.profileId = $profileId AND timetable.ownerId = $ownerId")
 
     @Query("UPDATE timetable SET keep = 0 WHERE profileId = :profileId AND isExtra = :isExtra AND type != -1 AND ((type != 3 AND date >= :dateFrom) OR ((type = 3 OR type = 1) AND oldDate >= :dateFrom))")
     abstract fun dontKeepFromDate(profileId: Int, dateFrom: Date, isExtra: Boolean)

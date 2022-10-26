@@ -14,6 +14,7 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -189,6 +190,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
         }
 
         lessonObject.id = lessonObject.buildId()
+        lessonObject.ownerId = lessonObject.buildOwnerId()
 
         val seen = profile.empty || lessonDate < Date.getToday()
 
@@ -196,7 +198,7 @@ class LibrusApiTimetables(override val data: DataLibrus,
             data.metadataList.add(
                     Metadata(
                             profileId,
-                            Metadata.TYPE_LESSON_CHANGE,
+                            MetadataType.LESSON_CHANGE,
                             lessonObject.id,
                             seen,
                             seen

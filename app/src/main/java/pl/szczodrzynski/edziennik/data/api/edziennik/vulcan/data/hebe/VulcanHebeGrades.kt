@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
@@ -111,7 +112,7 @@ class VulcanHebeGrades(
                 data.metadataList.add(
                     Metadata(
                         profileId,
-                        Metadata.TYPE_GRADE,
+                        MetadataType.GRADE,
                         id,
                         profile?.empty ?: true,
                         profile?.empty ?: true

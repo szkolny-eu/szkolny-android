@@ -5,13 +5,38 @@
 package pl.szczodrzynski.edziennik.data.firebase
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_LIBRUS
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
-import pl.szczodrzynski.edziennik.data.api.edziennik.librus.*
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_ANNOUNCEMENTS
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_ATTENDANCES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_CATEGORIES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_COMMENTS
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_CLASS_FREE_DAYS
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADE_CATEGORIES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GRADES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_EVENTS
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_HOMEWORK
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_LUCKY_NUMBER
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADE_CATEGORIES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_NOTICES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_POINT_GRADES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_POINT_GRADE_CATEGORIES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_PT_MEETINGS
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_SCHOOL_FREE_DAYS
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_TEXT_GRADES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_API_TIMETABLES
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_MESSAGES_RECEIVED
+import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.getStudentData
 
 class SzkolnyLibrusFirebase(val app: App, val profiles: List<Profile>, val message: FirebaseService.Message) {
     /*{
@@ -31,27 +56,27 @@ class SzkolnyLibrusFirebase(val app: App, val profiles: List<Profile>, val messa
 
         /* ./src/store/modules/helpers/change-processor.js */
         val endpoints = when (type) {
-            "Notes" -> listOf(ENDPOINT_LIBRUS_API_NOTICES)
-            "Grades" -> listOf(ENDPOINT_LIBRUS_API_NORMAL_GRADES, ENDPOINT_LIBRUS_API_NORMAL_GRADE_CATEGORIES, ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS)
-            "PointGrades" -> listOf(ENDPOINT_LIBRUS_API_POINT_GRADES, ENDPOINT_LIBRUS_API_POINT_GRADE_CATEGORIES)
-            "DescriptiveGrades" -> listOf(ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES)
-            "DescriptiveGrades/Text/Categories" -> listOf(ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADE_CATEGORIES)
-            "DescriptiveTextGrades" -> listOf(ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GRADES)
-            "TextGrades" -> listOf(ENDPOINT_LIBRUS_API_TEXT_GRADES)
-            "BehaviourGrades/Points" -> listOf(ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES, ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_CATEGORIES, ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_COMMENTS)
-            "BehaviourGrades" -> listOf()
-            "Attendances" -> listOf(ENDPOINT_LIBRUS_API_ATTENDANCES)
-            "HomeWorks" -> listOf(ENDPOINT_LIBRUS_API_EVENTS)
-            "ParentTeacherConferences" -> listOf(ENDPOINT_LIBRUS_API_PT_MEETINGS)
-            "Calendars/ClassFreeDays" -> listOf(ENDPOINT_LIBRUS_API_CLASS_FREE_DAYS)
-            "Calendars/TeacherFreeDays" -> listOf(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS)
-            "Calendars/SchoolFreeDays" -> listOf(ENDPOINT_LIBRUS_API_SCHOOL_FREE_DAYS)
-            "Calendars/Substitutions" -> listOf(ENDPOINT_LIBRUS_API_TIMETABLES)
-            "HomeWorkAssignments" -> listOf(ENDPOINT_LIBRUS_API_HOMEWORK, ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK)
-            "SchoolNotices" -> listOf(ENDPOINT_LIBRUS_API_ANNOUNCEMENTS)
-            "Messages" -> listOf(ENDPOINT_LIBRUS_MESSAGES_RECEIVED)
-            "LuckyNumbers" -> listOf(ENDPOINT_LIBRUS_API_LUCKY_NUMBER)
-            "Timetables" -> listOf(ENDPOINT_LIBRUS_API_TIMETABLES)
+            "Notes" -> setOf(ENDPOINT_LIBRUS_API_NOTICES)
+            "Grades" -> setOf(ENDPOINT_LIBRUS_API_NORMAL_GRADES, ENDPOINT_LIBRUS_API_NORMAL_GRADE_CATEGORIES, ENDPOINT_LIBRUS_API_NORMAL_GRADE_COMMENTS)
+            "PointGrades" -> setOf(ENDPOINT_LIBRUS_API_POINT_GRADES, ENDPOINT_LIBRUS_API_POINT_GRADE_CATEGORIES)
+            "DescriptiveGrades" -> setOf(ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADES)
+            "DescriptiveGrades/Text/Categories" -> setOf(ENDPOINT_LIBRUS_API_DESCRIPTIVE_GRADE_CATEGORIES)
+            "DescriptiveTextGrades" -> setOf(ENDPOINT_LIBRUS_API_DESCRIPTIVE_TEXT_GRADES)
+            "TextGrades" -> setOf(ENDPOINT_LIBRUS_API_TEXT_GRADES)
+            "BehaviourGrades/Points" -> setOf(ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADES, ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_CATEGORIES, ENDPOINT_LIBRUS_API_BEHAVIOUR_GRADE_COMMENTS)
+            "BehaviourGrades" -> setOf()
+            "Attendances" -> setOf(ENDPOINT_LIBRUS_API_ATTENDANCES)
+            "HomeWorks" -> setOf(ENDPOINT_LIBRUS_API_EVENTS)
+            "ParentTeacherConferences" -> setOf(ENDPOINT_LIBRUS_API_PT_MEETINGS)
+            "Calendars/ClassFreeDays" -> setOf(ENDPOINT_LIBRUS_API_CLASS_FREE_DAYS)
+            "Calendars/TeacherFreeDays" -> setOf(ENDPOINT_LIBRUS_API_TEACHER_FREE_DAYS)
+            "Calendars/SchoolFreeDays" -> setOf(ENDPOINT_LIBRUS_API_SCHOOL_FREE_DAYS)
+            "Calendars/Substitutions" -> setOf(ENDPOINT_LIBRUS_API_TIMETABLES)
+            "HomeWorkAssignments" -> setOf(ENDPOINT_LIBRUS_API_HOMEWORK, ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK)
+            "SchoolNotices" -> setOf(ENDPOINT_LIBRUS_API_ANNOUNCEMENTS)
+            "Messages" -> setOf(ENDPOINT_LIBRUS_MESSAGES_RECEIVED)
+            "LuckyNumbers" -> setOf(ENDPOINT_LIBRUS_API_LUCKY_NUMBER)
+            "Timetables" -> setOf(ENDPOINT_LIBRUS_API_TIMETABLES)
             else -> return@run
         }
 
@@ -59,10 +84,10 @@ class SzkolnyLibrusFirebase(val app: App, val profiles: List<Profile>, val messa
             return@run
 
         val tasks = profiles.filter {
-            it.loginStoreType == LOGIN_TYPE_LIBRUS &&
+            it.loginStoreType == LoginType.LIBRUS &&
                     it.getStudentData("accountLogin", "")?.replace("u", "") == accountLogin
         }.map {
-            EdziennikTask.syncProfile(it.id, listOf(MainActivity.DRAWER_ITEM_HOME to 0), onlyEndpoints = endpoints)
+            EdziennikTask.syncProfile(it.id, setOf(FeatureType.ALWAYS_NEEDED), onlyEndpoints = endpoints)
         }
         IApiTask.enqueueAll(app, tasks)
     }}

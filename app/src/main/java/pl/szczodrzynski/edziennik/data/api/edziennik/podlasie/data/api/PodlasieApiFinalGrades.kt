@@ -15,7 +15,9 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.getLong
+import pl.szczodrzynski.edziennik.ext.getSemesterStart
 import pl.szczodrzynski.edziennik.ext.getString
 
 class PodlasieApiFinalGrades(val data: DataPodlasie, val rows: List<JsonObject>) {
@@ -62,7 +64,7 @@ class PodlasieApiFinalGrades(val data: DataPodlasie, val rows: List<JsonObject>)
             data.metadataList.add(
                     Metadata(
                             data.profileId,
-                            Metadata.TYPE_GRADE,
+                            MetadataType.GRADE,
                             id,
                             profile.empty,
                             profile.empty
@@ -99,7 +101,7 @@ class PodlasieApiFinalGrades(val data: DataPodlasie, val rows: List<JsonObject>)
                 data.metadataList.add(
                         Metadata(
                                 data.profileId,
-                                Metadata.TYPE_GRADE,
+                                MetadataType.GRADE,
                                 proposedGradeObject.id,
                                 profile.empty,
                                 profile.empty

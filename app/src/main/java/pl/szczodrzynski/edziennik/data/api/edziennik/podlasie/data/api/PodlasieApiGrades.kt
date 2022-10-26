@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.podlasie.DataPodlasie
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.getFloat
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getLong
@@ -60,7 +61,7 @@ class PodlasieApiGrades(val data: DataPodlasie, val rows: List<JsonObject>) {
             data.metadataList.add(
                     Metadata(
                             data.profileId,
-                            Metadata.TYPE_GRADE,
+                            MetadataType.GRADE,
                             id,
                             data.profile?.empty ?: false,
                             data.profile?.empty ?: false

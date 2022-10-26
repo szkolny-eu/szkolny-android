@@ -4,12 +4,14 @@
 
 package pl.szczodrzynski.edziennik.config
 
-import pl.szczodrzynski.edziennik.config.utils.getIntList
-import pl.szczodrzynski.edziennik.config.utils.set
+import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
 
-class ProfileConfigSync(private val config: ProfileConfig) {
-    private var mNotificationFilter: List<Int>? = null
-    var notificationFilter: List<Int>
-        get() { mNotificationFilter = mNotificationFilter ?: config.values.getIntList("notificationFilter", listOf()); return mNotificationFilter ?: listOf() }
-        set(value) { config.set("notificationFilter", value); mNotificationFilter = value }
+@Suppress("RemoveExplicitTypeArguments")
+class ProfileConfigSync(base: ProfileConfig) {
+
+    var notificationFilter by base.config<Set<NotificationType>> {
+        NotificationType.values()
+            .filter { it.enabledByDefault == false }
+            .toSet()
+    }
 }

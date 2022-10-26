@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.ERROR_API_INVALID_SIGNATURE
 import pl.szczodrzynski.edziennik.data.api.szkolny.adapter.DateAdapter
@@ -128,16 +127,10 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         response: Response<ApiResponse<T>>,
         updateDeviceHash: Boolean = false,
     ): T {
-        app.config.update = response.body()?.update?.let { update ->
-            if (update.versionCode > BuildConfig.VERSION_CODE) {
-                if (update.updateMandatory
-                        && EventBus.getDefault().hasSubscriberForEvent(update::class.java)) {
-                    EventBus.getDefault().postSticky(update)
-                }
-                update
-            }
-            else
-                null
+        response.body()?.update?.let { update ->
+            // do not process "null" update, as it might not mean there's no update
+            // do not notify; silently check and show the home update card
+            app.updateManager.process(update, notify = false)
         }
 
         response.body()?.registerAvailability?.let { registerAvailability ->
@@ -205,18 +198,17 @@ class SzkolnyApi(val app: App) : CoroutineScope {
         val teams = app.db.teamDao().allNow
 
         val users = profiles.mapNotNull { profile ->
-            val config = app.config.getFor(profile.id)
             val user = ServerSyncRequest.User(
                 profile.userCode,
                 profile.studentNameLong,
                 profile.studentNameShort,
-                profile.loginStoreType,
+                profile.loginStoreType.id,
                 teams.filter { it.profileId == profile.id }.map { it.code }
             )
             val hash = user.toString().md5()
-            if (hash == config.hash)
+            if (hash == profile.config.hash)
                 return@mapNotNull null
-            return@mapNotNull user to config
+            return@mapNotNull user to profile.config
         }
 
         val response = api.serverSync(ServerSyncRequest(
@@ -225,7 +217,7 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                 userCodes = profiles.map { it.userCode },
                 users = users.keys(),
                 lastSync = lastSyncTime,
-                notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type, it.text) }
+                notifications = notifications.map { ServerSyncRequest.Notification(it.profileName ?: "", it.type.id, it.text) }
         )).execute()
         val (events, notes, hasBrowsers) = parseResponse(response, updateDeviceHash = true)
 
@@ -265,12 +257,10 @@ class SzkolnyApi(val app: App) : CoroutineScope {
                     seen = profile.empty
                     notified = profile.empty
 
-                    if (profile.userCode == event.sharedBy) {
-                        sharedBy = "self"
-                        addedManually = true
-                    } else {
-                        sharedBy = eventSharedBy
-                    }
+                    sharedBy = if (profile.userCode == event.sharedBy)
+                        "self"
+                    else
+                        eventSharedBy
                 }
             }
         }
@@ -334,11 +324,14 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     }
 
     @Throws(Exception::class)
-    fun shareNote(note: Note) {
+    fun shareNote(note: Note, teamId: Long? = null) {
         val profile = app.db.profileDao().getByIdNow(note.profileId)
             ?: throw NullPointerException("Profile is not found")
-        val team = app.db.teamDao().getClassNow(note.profileId)
-            ?: throw NullPointerException("TeamClass is not found")
+        val team = if (teamId == null)
+            app.db.teamDao().getClassNow(note.profileId)
+        else
+            app.db.teamDao().getByIdNow(note.profileId, teamId)
+        team ?: throw NullPointerException("TeamClass is not found")
 
         val response = api.shareNote(NoteShareRequest(
             deviceId = app.deviceId,
@@ -431,8 +424,8 @@ class SzkolnyApi(val app: App) : CoroutineScope {
     }
 
     @Throws(Exception::class)
-    fun getUpdate(channel: String): List<Update> {
-        val response = api.updates(channel).execute()
+    fun getUpdate(channel: Update.Type): List<Update> {
+        val response = api.updates(channel.name.lowercase()).execute()
         return parseResponse(response)
     }
 
@@ -451,9 +444,9 @@ class SzkolnyApi(val app: App) : CoroutineScope {
 
     @Throws(Exception::class)
     fun getRealms(registerName: String): List<LoginInfo.Platform> {
-        val response = api.fsLoginRealms(registerName).execute()
+        val response = api.platforms(registerName).execute()
         if (response.isSuccessful && response.body() != null) {
-            return response.body()!!
+            return parseResponse(response)
         }
         throw SzkolnyApiException(null)
     }

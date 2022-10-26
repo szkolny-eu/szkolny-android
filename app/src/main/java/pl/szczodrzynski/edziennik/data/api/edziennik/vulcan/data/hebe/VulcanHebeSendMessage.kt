@@ -21,7 +21,7 @@ import java.util.UUID
 
 class VulcanHebeSendMessage(
     override val data: DataVulcan,
-    val recipients: List<Teacher>,
+    val recipients: Set<Teacher>,
     val subject: String,
     val text: String,
     val onSuccess: () -> Unit

@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
@@ -35,7 +36,7 @@ abstract class EventDao : BaseDao<Event, EventFull> {
             LEFT JOIN subjects USING(profileId, subjectId)
             LEFT JOIN teams USING(profileId, teamId)
             LEFT JOIN eventTypes USING(profileId, eventType)
-            LEFT JOIN metadata ON eventId = thingId AND (thingType = ${Metadata.TYPE_EVENT} OR thingType = ${Metadata.TYPE_HOMEWORK}) AND metadata.profileId = events.profileId
+            LEFT JOIN metadata ON eventId = thingId AND (thingType = 4 OR thingType = 5) AND metadata.profileId = events.profileId
         """
 
         private const val ORDER_BY = """GROUP BY eventId ORDER BY eventDate, eventTime, addedDate ASC"""
@@ -132,7 +133,7 @@ abstract class EventDao : BaseDao<Event, EventFull> {
         dontKeepFuture(profileId, todayDate, "eventType NOT IN " + exceptTypes.toString().replace('[', '(').replace(']', ')'))
     }
 
-    @Query("UPDATE metadata SET seen = :seen WHERE profileId = :profileId AND (thingType = " + Metadata.TYPE_EVENT + " OR thingType = " + Metadata.TYPE_LESSON_CHANGE + " OR thingType = " + Metadata.TYPE_HOMEWORK + ") AND thingId IN (SELECT eventId FROM events WHERE profileId = :profileId AND eventDate = :date)")
+    @Query("UPDATE metadata SET seen = :seen WHERE profileId = :profileId AND (thingType = 4 OR thingType = 6 OR thingType = 5) AND thingId IN (SELECT eventId FROM events WHERE profileId = :profileId AND eventDate = :date)")
     abstract fun setSeenByDate(profileId: Int, date: Date, seen: Boolean)
 
     @Query("UPDATE events SET eventBlacklisted = :blacklisted WHERE profileId = :profileId AND eventId = :eventId")
@@ -142,12 +143,12 @@ abstract class EventDao : BaseDao<Event, EventFull> {
     abstract fun remove(profileId: Int, id: Long)
 
     @Query("DELETE FROM metadata WHERE profileId = :profileId AND thingType = :thingType AND thingId = :thingId")
-    abstract fun removeMetadata(profileId: Int, thingType: Int, thingId: Long)
+    abstract fun removeMetadata(profileId: Int, thingType: MetadataType, thingId: Long)
 
     @Transaction
     open fun remove(profileId: Int, type: Long, id: Long) {
         remove(profileId, id)
-        removeMetadata(profileId, if (type == Event.TYPE_HOMEWORK) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT, id)
+        removeMetadata(profileId, if (type == Event.TYPE_HOMEWORK) MetadataType.HOMEWORK else MetadataType.EVENT, id)
     }
 
     @Transaction

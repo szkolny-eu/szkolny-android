@@ -18,7 +18,7 @@ import pl.szczodrzynski.edziennik.ext.onClick
 import pl.szczodrzynski.edziennik.ext.setMessage
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseDialog(
+abstract class BaseDialog<I : Any>(
     protected val activity: AppCompatActivity,
     protected val onShowListener: ((tag: String) -> Unit)? = null,
     protected val onDismissListener: ((tag: String) -> Unit)? = null,
@@ -38,8 +38,8 @@ abstract class BaseDialog(
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    private var items = emptyList<Any>()
-    private var itemSelected: Any? = null
+    private var items = emptyList<I>()
+    private var itemSelected: I? = null
     private var itemStates = BooleanArray(0)
 
     protected open fun getTitle(): CharSequence? = null
@@ -53,16 +53,16 @@ abstract class BaseDialog(
     open fun getNeutralButtonText(): Int? = null
     open fun getNegativeButtonText(): Int? = null
 
-    protected open fun getSingleChoiceItems(): Map<CharSequence, Any>? = null
-    protected open fun getMultiChoiceItems(): Map<CharSequence, Any>? = null
-    protected open fun getDefaultSelectedItem(): Any? = null
-    protected open fun getDefaultSelectedItems(): Set<Any> = emptySet()
+    protected open fun getSingleChoiceItems(): Map<CharSequence, I>? = null
+    protected open fun getMultiChoiceItems(): Map<CharSequence, I>? = null
+    protected open fun getDefaultSelectedItem(): I? = null
+    protected open fun getDefaultSelectedItems(): Set<I> = emptySet()
 
     open suspend fun onPositiveClick() = true
     open suspend fun onNeutralClick() = true
     open suspend fun onNegativeClick() = true
-    open suspend fun onSingleSelectionChanged(item: Any?) = Unit
-    open suspend fun onMultiSelectionChanged(items: Set<Any>) = Unit
+    open suspend fun onSingleSelectionChanged(item: I?) = Unit
+    open suspend fun onMultiSelectionChanged(items: Set<I>) = Unit
 
     protected open suspend fun onBeforeShow() = true
     protected abstract suspend fun onShow()
@@ -184,7 +184,7 @@ abstract class BaseDialog(
     }
 
     protected fun getSingleSelection() = itemSelected
-    protected fun getMultiSelection(): Set<Any> {
+    protected fun getMultiSelection(): Set<I> {
         return itemStates.mapIndexed { position, isChecked ->
             if (isChecked)
                 items[position]

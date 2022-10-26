@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.singleOrNull
@@ -84,7 +85,7 @@ class MobidziennikWebMessagesAll(override val data: DataMobidziennik,
                 )
 
                 data.messageList.add(message)
-                data.metadataList.add(Metadata(profileId, Metadata.TYPE_MESSAGE, message.id, true, true))
+                data.metadataList.add(Metadata(profileId, MetadataType.MESSAGE, message.id, true, true))
             }
 
             // sync every 7 days as we probably don't expect more than

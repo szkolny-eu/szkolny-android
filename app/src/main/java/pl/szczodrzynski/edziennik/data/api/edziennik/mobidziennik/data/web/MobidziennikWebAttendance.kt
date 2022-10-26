@@ -20,6 +20,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEA
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_UNKNOWN
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.ext.dateToSemester
 import pl.szczodrzynski.edziennik.ext.fixName
 import pl.szczodrzynski.edziennik.ext.get
 import pl.szczodrzynski.edziennik.ext.singleOrNull
@@ -246,7 +248,7 @@ class MobidziennikWebAttendance(override val data: DataMobidziennik,
             data.metadataList.add(
                     Metadata(
                             data.profileId,
-                            Metadata.TYPE_ATTENDANCE,
+                            MetadataType.ATTENDANCE,
                             id,
                             data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN,
                             data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == TYPE_UNKNOWN

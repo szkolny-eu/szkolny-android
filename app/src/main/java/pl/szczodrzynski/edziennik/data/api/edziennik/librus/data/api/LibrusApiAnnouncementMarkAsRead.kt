@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusApi
 import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 
 class LibrusApiAnnouncementMarkAsRead(override val data: DataLibrus,
@@ -34,7 +35,7 @@ class LibrusApiAnnouncementMarkAsRead(override val data: DataLibrus,
 
             data.setSeenMetadataList.add(Metadata(
                     profileId,
-                    Metadata.TYPE_ANNOUNCEMENT,
+                    MetadataType.ANNOUNCEMENT,
                     announcement.id,
                     announcement.seen,
                     announcement.notified

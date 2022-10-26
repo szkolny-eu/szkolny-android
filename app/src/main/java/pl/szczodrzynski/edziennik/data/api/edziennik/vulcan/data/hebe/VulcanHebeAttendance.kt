@@ -13,6 +13,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 
 class VulcanHebeAttendance(
@@ -96,7 +97,7 @@ class VulcanHebeAttendance(
                     data.metadataList.add(
                         Metadata(
                             profileId,
-                            Metadata.TYPE_ATTENDANCE,
+                            MetadataType.ATTENDANCE,
                             attendanceObject.id,
                             profile?.empty ?: true
                                     || baseType == Attendance.TYPE_PRESENT_CUSTOM

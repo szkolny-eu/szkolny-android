@@ -5,9 +5,8 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_HEBE
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_VULCAN_WEB_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class VulcanLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
@@ -22,7 +21,7 @@ class VulcanLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
     }
 
     private fun nextLoginMethod(onSuccess: () -> Unit) {
-        if (data.targetLoginMethodIds.isEmpty()) {
+        if (data.targetLoginMethods.isEmpty()) {
             onSuccess()
             return
         }
@@ -30,30 +29,31 @@ class VulcanLogin(val data: DataVulcan, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        useLoginMethod(data.targetLoginMethodIds.removeAt(0)) { usedMethodId ->
+        useLoginMethod(data.targetLoginMethods.removeAt(0)) { usedMethod ->
             data.progress(data.progressStep)
-            if (usedMethodId != -1)
-                data.loginMethods.add(usedMethodId)
+            if (usedMethod != null)
+                data.loginMethods.add(usedMethod)
             nextLoginMethod(onSuccess)
         }
     }
 
-    private fun useLoginMethod(loginMethodId: Int, onSuccess: (usedMethodId: Int) -> Unit) {
+    private fun useLoginMethod(loginMethod: LoginMethod, onSuccess: (usedMethod: LoginMethod?) -> Unit) {
         // this should never be true
-        if (data.loginMethods.contains(loginMethodId)) {
-            onSuccess(-1)
+        if (data.loginMethods.contains(loginMethod)) {
+            onSuccess(null)
             return
         }
-        Utils.d(TAG, "Using login method $loginMethodId")
-        when (loginMethodId) {
-            LOGIN_METHOD_VULCAN_WEB_MAIN -> {
+        Utils.d(TAG, "Using login method $loginMethod")
+        when (loginMethod) {
+            LoginMethod.VULCAN_WEB_MAIN -> {
                 data.startProgress(R.string.edziennik_progress_login_vulcan_web_main)
-                VulcanLoginWebMain(data) { onSuccess(loginMethodId) }
+                VulcanLoginWebMain(data) { onSuccess(loginMethod) }
             }
-            LOGIN_METHOD_VULCAN_HEBE -> {
+            LoginMethod.VULCAN_HEBE -> {
                 data.startProgress(R.string.edziennik_progress_login_vulcan_api)
-                VulcanLoginHebe(data) { onSuccess(loginMethodId) }
+                VulcanLoginHebe(data) { onSuccess(loginMethod) }
             }
+            else -> {}
         }
     }
 }

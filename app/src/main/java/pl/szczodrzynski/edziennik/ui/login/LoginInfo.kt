@@ -6,10 +6,13 @@ package pl.szczodrzynski.edziennik.ui.login
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.google.gson.JsonObject
 import com.mikepenz.iconics.typeface.IIcon
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ui.grades.models.ExpandableItemModel
 import pl.szczodrzynski.edziennik.ui.login.qr.LoginLibrusQrDecoder
 import pl.szczodrzynski.edziennik.ui.login.qr.LoginQrDecoder
@@ -45,13 +48,12 @@ object LoginInfo {
     val list by lazy {
         listOf(
             Register(
-                loginType = LOGIN_TYPE_LIBRUS,
-                internalName = "librus",
+                loginType = LoginType.LIBRUS,
                 registerName = R.string.login_register_librus,
                 registerLogo = R.drawable.login_logo_librus,
                 loginModes = listOf(
                     Mode(
-                        loginMode = LOGIN_MODE_LIBRUS_EMAIL,
+                        loginMode = LoginMode.LIBRUS_EMAIL,
                         name = R.string.login_mode_librus_email,
                         icon = R.drawable.login_mode_librus_email,
                         hintText = R.string.login_mode_librus_email_hint,
@@ -64,11 +66,10 @@ object LoginInfo {
                         errorCodes = mapOf(
                             ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED to R.string.login_error_account_not_activated,
                             ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN to R.string.login_error_incorrect_login_or_password,
-                            ERROR_CAPTCHA_LIBRUS_PORTAL to R.string.error_3001_reason
                         )
                     ),
                     /*Mode(
-                            loginMode = LOGIN_MODE_LIBRUS_SYNERGIA,
+                            loginMode = LoginMode.LIBRUS_SYNERGIA,
                             name = R.string.login_mode_librus_synergia,
                             icon = R.drawable.login_mode_librus_synergia,
                             hintText = R.string.login_mode_librus_synergia_hint,
@@ -93,7 +94,7 @@ object LoginInfo {
                             )
                     ),*/
                     Mode(
-                        loginMode = LOGIN_MODE_LIBRUS_JST,
+                        loginMode = LoginMode.LIBRUS_JST,
                         name = R.string.login_mode_librus_jst,
                         icon = R.drawable.login_mode_librus_jst,
                         hintText = R.string.login_mode_librus_jst_hint,
@@ -131,13 +132,12 @@ object LoginInfo {
                 )
             ),
             Register(
-                loginType = LOGIN_TYPE_VULCAN,
-                internalName = "vulcan",
+                loginType = LoginType.VULCAN,
                 registerName = R.string.login_type_vulcan,
                 registerLogo = R.drawable.login_logo_vulcan,
                 loginModes = listOf(
                     Mode(
-                        loginMode = LOGIN_MODE_VULCAN_HEBE,
+                        loginMode = LoginMode.VULCAN_HEBE,
                         name = R.string.login_mode_vulcan_api,
                         icon = R.drawable.login_mode_vulcan_hebe,
                         hintText = R.string.login_mode_vulcan_api_hint,
@@ -192,7 +192,7 @@ object LoginInfo {
                         errorCodes = mapOf()
                     ),
                     Mode(
-                        loginMode = LOGIN_MODE_VULCAN_WEB,
+                        loginMode = LoginMode.VULCAN_WEB,
                         name = R.string.login_mode_vulcan_web,
                         icon = R.drawable.login_mode_vulcan_web,
                         hintText = R.string.login_mode_vulcan_web_hint,
@@ -219,13 +219,12 @@ object LoginInfo {
                 )
             ),
             Register(
-                loginType = LOGIN_TYPE_MOBIDZIENNIK,
-                internalName = "mobidziennik",
+                loginType = LoginType.MOBIDZIENNIK,
                 registerName = R.string.login_type_mobidziennik,
                 registerLogo = R.drawable.login_logo_mobidziennik,
                 loginModes = listOf(
                     Mode(
-                        loginMode = LOGIN_MODE_MOBIDZIENNIK_WEB,
+                        loginMode = LoginMode.MOBIDZIENNIK_WEB,
                         name = R.string.login_mode_mobidziennik_web,
                         icon = R.drawable.login_mode_mobidziennik_web,
                         hintText = R.string.login_mode_mobidziennik_web_hint,
@@ -279,13 +278,12 @@ object LoginInfo {
                 )
             ),
             Register(
-                loginType = LOGIN_TYPE_PODLASIE,
-                internalName = "podlasie",
+                loginType = LoginType.PODLASIE,
                 registerName = R.string.login_type_podlasie,
                 registerLogo = R.drawable.login_logo_podlasie,
                 loginModes = listOf(
                     Mode(
-                        loginMode = LOGIN_MODE_PODLASIE_API,
+                        loginMode = LoginMode.PODLASIE_API,
                         name = R.string.login_mode_podlasie_api,
                         icon = R.drawable.login_mode_podlasie_api,
                         guideText = R.string.login_mode_podlasie_api_guide,
@@ -313,13 +311,28 @@ object LoginInfo {
                         errorCodes = mapOf()
                     )
                 )
-            )
+            ),
+            Register(
+                loginType = LoginType.USOS,
+                registerName = R.string.login_type_usos,
+                registerLogo = R.drawable.login_logo_usos,
+                loginModes = listOf(
+                    Mode(
+                        loginMode = LoginMode.USOS_OAUTH,
+                        name = R.string.login_mode_usos_oauth,
+                        icon = R.drawable.login_mode_usos_api,
+                        guideText = R.string.login_mode_usos_oauth_guide,
+                        isPlatformSelection = true,
+                        credentials = listOf(),
+                        errorCodes = mapOf(),
+                    ),
+                ),
+            ),
         )
     }
 
     data class Register(
-        val loginType: Int,
-        val internalName: String,
+        val loginType: LoginType,
         val registerName: Int,
         @DrawableRes
         val registerLogo: Int,
@@ -330,7 +343,7 @@ object LoginInfo {
     }
 
     data class Mode(
-        val loginMode: Int,
+        val loginMode: LoginMode,
 
         @StringRes
         val name: Int,
@@ -357,7 +370,8 @@ object LoginInfo {
         val icon: String,
         val screenshot: String?,
         val formFields: List<String>,
-        val realmData: RealmData
+        val data: JsonObject,
+        val storeKey: String?,
     )
 
     open class BaseCredential(

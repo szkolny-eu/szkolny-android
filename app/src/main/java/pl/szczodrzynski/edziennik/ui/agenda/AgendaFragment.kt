@@ -17,13 +17,18 @@ import com.mikepenz.iconics.typeface.library.community.material.CommunityMateria
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
 import eu.szkolny.font.SzkolnyFont
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaCalendarBinding
 import pl.szczodrzynski.edziennik.databinding.FragmentAgendaDefaultBinding
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.AgendaConfigDialog
@@ -32,7 +37,6 @@ import pl.szczodrzynski.edziennik.utils.Themes
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetPrimaryItem
 import pl.szczodrzynski.navlib.bottomsheet.items.BottomSheetSeparatorItem
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class AgendaFragment : Fragment(), CoroutineScope {
@@ -54,7 +58,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
         if (getActivity() == null || context == null) return null
         activity = getActivity() as MainActivity
         context?.theme?.applyStyle(Themes.appTheme, true)
-        type = app.config.forProfile().ui.agendaViewType
+        type = app.profile.config.ui.agendaViewType
         b = when (type) {
             Profile.AGENDA_DEFAULT -> FragmentAgendaDefaultBinding.inflate(inflater, container, false)
             Profile.AGENDA_CALENDAR -> FragmentAgendaCalendarBinding.inflate(inflater, container, false)
@@ -93,7 +97,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
                             activity.bottomSheet.close()
                             type =
                                 if (type == Profile.AGENDA_DEFAULT) Profile.AGENDA_CALENDAR else Profile.AGENDA_DEFAULT
-                            app.config.forProfile().ui.agendaViewType = type
+                            app.profile.config.ui.agendaViewType = type
                             activity.reloadTarget()
                         },
                 BottomSheetSeparatorItem(true),
@@ -105,7 +109,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
                                 activity.bottomSheet.close()
                                 withContext(Dispatchers.Default) {
                                     App.db.metadataDao()
-                                        .setAllSeen(app.profileId, Metadata.TYPE_EVENT, true)
+                                        .setAllSeen(app.profileId, MetadataType.EVENT, true)
                                 }
                                 Toast.makeText(
                                     activity,
@@ -143,7 +147,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
             }
             val defaultEventTypes = EventType.getTypeColorMap().keys
             if (!eventTypes.containsAll(defaultEventTypes)) {
-                app.db.eventTypeDao().addDefaultTypes(activity, app.profileId)
+                app.db.eventTypeDao().addDefaultTypes(app.profile)
             }
         }
     }

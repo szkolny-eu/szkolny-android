@@ -23,8 +23,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.*
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginChooserFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.dialogs.sync.RegisterUnavailableDialog
@@ -51,7 +53,8 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
     private val job: Job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
-
+    private val manager
+        get() = app.permissionManager
     // local/private variables go here
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,6 +70,9 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         if (!isAdded) return
 
         val adapter = LoginChooserAdapter(activity, this::onLoginModeClicked)
+        if (!manager.isNotificationPermissionGranted) {
+            manager.requestNotificationsPermission(activity, 0, false){}
+        }
 
         b.versionText.setText(
             R.string.login_chooser_version_format,
@@ -77,18 +83,17 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             app.buildManager.showVersionDialog(activity)
             if (!App.devMode)
                 return@onClick
-            if (adapter.items.firstOrNull { it is LoginInfo.Register && it.internalName == "lab" } != null)
+            if (adapter.items.firstOrNull { it is LoginInfo.Register && it.loginType == LoginType.TEMPLATE } != null)
                 return@onClick
             adapter.items.add(
                 index = 0,
                 element = LoginInfo.Register(
-                    loginType = 999999,
-                    internalName = "lab",
+                    loginType = LoginType.TEMPLATE,
                     registerName = R.string.menu_lab,
                     registerLogo = R.drawable.face_2,
                     loginModes = listOf(
                         LoginInfo.Mode(
-                            loginMode = 0,
+                            loginMode = LoginMode.PODLASIE_API,
                             name = 0,
                             icon = 0,
                             guideText = 0,
@@ -192,13 +197,12 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             adapter.items.removeAll { it !is LoginInfo.Register }
             adapter.items.add(
                     LoginInfo.Register(
-                            loginType = 74,
-                            internalName = "eggs",
+                            loginType = LoginType.DEMO,
                             registerName = R.string.eggs,
                             registerLogo = R.drawable.face_1,
                             loginModes = listOf(
                                     LoginInfo.Mode(
-                                            loginMode = 0,
+                                            loginMode = LoginMode.PODLASIE_API,
                                             name = 0,
                                             icon = 0,
                                             guideText = 0,
@@ -237,12 +241,12 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
             loginType: LoginInfo.Register,
             loginMode: LoginInfo.Mode
     ) {
-        if (loginType.internalName == "eggs") {
+        if (loginType.loginType == LoginType.DEMO) {
             nav.navigate(R.id.loginEggsFragment, null, activity.navOptions)
             return
         }
 
-        if (loginType.internalName == "lab") {
+        if (loginType.loginType == LoginType.TEMPLATE) {
             nav.navigate(R.id.labFragment, null, activity.navOptions)
             return
         }
@@ -299,7 +303,7 @@ class LoginChooserFragment : Fragment(), CoroutineScope {
         ), activity.navOptions)
     }
 
-    private suspend fun checkAvailability(loginType: Int): Boolean {
+    private suspend fun checkAvailability(loginType: LoginType): Boolean {
         val error = withContext(Dispatchers.IO) {
             app.availabilityManager.check(loginType)
         } ?: return true

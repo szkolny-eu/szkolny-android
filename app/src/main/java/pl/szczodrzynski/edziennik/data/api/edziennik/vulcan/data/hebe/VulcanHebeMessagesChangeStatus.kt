@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.ext.JsonObject
 
@@ -44,7 +45,7 @@ class VulcanHebeMessagesChangeStatus(
                 data.setSeenMetadataList.add(
                     Metadata(
                         profileId,
-                        Metadata.TYPE_MESSAGE,
+                        MetadataType.MESSAGE,
                         messageObject.id,
                         true,
                         true

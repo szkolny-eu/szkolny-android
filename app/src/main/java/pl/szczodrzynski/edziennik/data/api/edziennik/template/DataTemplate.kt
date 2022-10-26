@@ -5,13 +5,14 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.template
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_API
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_TEMPLATE_WEB
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.currentTimeUnix
+import pl.szczodrzynski.edziennik.ext.getStudentData
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.set
 
 /**
  * Use http://patorjk.com/software/taag/#p=display&f=Big for the ascii art
@@ -26,11 +27,11 @@ class DataTemplate(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isWebLoginValid()) {
-            loginMethods += LOGIN_METHOD_TEMPLATE_WEB
+            loginMethods += LoginMethod.TEMPLATE_WEB
             app.cookieJar.set("eregister.example.com", "AuthCookie", webCookie)
         }
         if (isApiLoginValid())
-            loginMethods += LOGIN_METHOD_TEMPLATE_API
+            loginMethods += LoginMethod.TEMPLATE_API
     }
 
     override fun generateUserCode() = "TEMPLATE:DO_NOT_USE"
@@ -44,12 +45,12 @@ class DataTemplate(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
     private var mWebCookie: String? = null
     var webCookie: String?
         get() { mWebCookie = mWebCookie ?: profile?.getStudentData("webCookie", null); return mWebCookie }
-        set(value) { profile?.putStudentData("webCookie", value) ?: return; mWebCookie = value }
+        set(value) { profile["webCookie"] = value; mWebCookie = value }
 
     private var mWebExpiryTime: Long? = null
     var webExpiryTime: Long
         get() { mWebExpiryTime = mWebExpiryTime ?: profile?.getStudentData("webExpiryTime", 0L); return mWebExpiryTime ?: 0L }
-        set(value) { profile?.putStudentData("webExpiryTime", value) ?: return; mWebExpiryTime = value }
+        set(value) { profile["webExpiryTime"] = value; mWebExpiryTime = value }
 
     /*                   _
              /\         (_)
@@ -62,10 +63,10 @@ class DataTemplate(app: App, profile: Profile?, loginStore: LoginStore) : Data(a
     private var mApiToken: String? = null
     var apiToken: String?
         get() { mApiToken = mApiToken ?: profile?.getStudentData("apiToken", null); return mApiToken }
-        set(value) { profile?.putStudentData("apiToken", value) ?: return; mApiToken = value }
+        set(value) { profile["apiToken"] = value; mApiToken = value }
 
     private var mApiExpiryTime: Long? = null
     var apiExpiryTime: Long
         get() { mApiExpiryTime = mApiExpiryTime ?: profile?.getStudentData("apiExpiryTime", 0L); return mApiExpiryTime ?: 0L }
-        set(value) { profile?.putStudentData("apiExpiryTime", value) ?: return; mApiExpiryTime = value }
+        set(value) { profile["apiExpiryTime"] = value; mApiExpiryTime = value }
 }

@@ -849,7 +849,7 @@
     <string name="settings_about_licenses_text">Open-source licenses</string>
     <string name="settings_about_privacy_policy_text">Privacy policy</string>
     <string name="settings_card_register_title">E-register</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nSeptember 2018 – 2022</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński, September 2018 – 2022</string>
     <string name="settings_about_update_subtext">Click to check for updates</string>
     <string name="settings_about_update_text">Update</string>
     <string name="settings_about_version_text">Version</string>
@@ -900,10 +900,6 @@
     <string name="settings_register_count_in_seconds_text">Count time in seconds</string>
     <string name="settings_register_dont_count_zero_text">Don\'t count 0 grade to average</string>
     <string name="settings_register_login_not_implemented_text">This e-register isn\'t implemented yet.</string>
-    <string name="settings_register_shared_events_dialog_disabled_text">You won\'t receive shared events anymore and you won\'t be able to share them.</string>
-    <string name="settings_register_shared_events_dialog_enabled_text">You will receive shared events from other people in your class.</string>
-    <string name="settings_register_shared_events_subtext">Share exams in your class</string>
-    <string name="settings_register_shared_events_text">Enable Event sharing</string>
     <string name="settings_register_show_teacher_absences_text">Show teacher absences in Agenda</string>
     <string name="settings_sync_customize_endpoint_announcements">Notice board</string>
     <string name="settings_sync_customize_endpoint_attendance">Attendances</string>
@@ -1383,7 +1379,7 @@
     <string name="notes_type_grade">Grade</string>
     <string name="privacy_policy_dialog_html"><![CDATA[By using the application, you confirm that you have <a href="https://szkolny.eu/privacy-policy">read the Privacy Policy</a> and accept its provisions.<br /><br />The authors of the application are not responsible for the use of the Szkolny.eu application.]]></string>
     <string name="login_chooser_version_format">Szkolny.eu v%s\n%s</string>
-    <string name="agenda_config_appearance">Appearance</string>
+    <string name="config_appearance">Appearance</string>
     <string name="agenda_config_elearning">Online learning</string>
     <string name="event_type_elearning">online lesson</string>
     <string name="menu_messages_config">Messages settings</string>

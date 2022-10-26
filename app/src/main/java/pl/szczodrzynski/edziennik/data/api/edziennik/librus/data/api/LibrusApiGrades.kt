@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_PROPO
 import pl.szczodrzynski.edziennik.data.db.entity.GradeCategory
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -97,7 +98,7 @@ class LibrusApiGrades(override val data: DataLibrus,
                 data.metadataList.add(
                         Metadata(
                                 profileId,
-                                Metadata.TYPE_GRADE,
+                                MetadataType.GRADE,
                                 id,
                                 profile.empty,
                                 profile.empty

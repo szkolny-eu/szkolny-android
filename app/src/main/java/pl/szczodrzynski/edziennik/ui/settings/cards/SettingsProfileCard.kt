@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ui.settings.cards
 
 import android.content.Intent
+import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.ProfileConfigDialog
@@ -17,8 +18,8 @@ class SettingsProfileCard(util: SettingsUtil) : SettingsCard(util) {
 
     override fun buildCard() = util.createCard(
         null,
-        items = getItems(),
-        itemsMore = listOf()
+        items = ::getItems,
+        itemsMore = ::getItemsMore,
     )
 
     private fun getProfileItem(): MaterialAboutProfileItem = util.createProfileItem(
@@ -34,7 +35,7 @@ class SettingsProfileCard(util: SettingsUtil) : SettingsCard(util) {
         }).show()
     }
 
-    override fun getItems() = listOf(
+    override fun getItems(card: MaterialAboutCard) = listOf(
         getProfileItem(),
 
         util.createActionItem(

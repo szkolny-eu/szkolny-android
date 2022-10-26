@@ -9,6 +9,7 @@ interface Noteable {
     fun getNoteType(): Note.OwnerType
     fun getNoteOwnerProfileId(): Int
     fun getNoteOwnerId(): Long
+    fun getNoteShareTeamId(): Long? = null
 
     var notes: MutableList<Note>
 

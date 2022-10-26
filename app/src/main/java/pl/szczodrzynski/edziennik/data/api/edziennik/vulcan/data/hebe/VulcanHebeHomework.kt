@@ -11,6 +11,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.asJsonObjectList
 import pl.szczodrzynski.edziennik.ext.getJsonArray
 import pl.szczodrzynski.edziennik.ext.getLong
@@ -79,7 +80,7 @@ class VulcanHebeHomework(
                 data.metadataList.add(
                     Metadata(
                         profileId,
-                        Metadata.TYPE_HOMEWORK,
+                        MetadataType.HOMEWORK,
                         id,
                         profile?.empty ?: true,
                         profile?.empty ?: true

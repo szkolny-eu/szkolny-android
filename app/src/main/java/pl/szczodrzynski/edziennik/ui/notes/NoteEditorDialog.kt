@@ -87,7 +87,12 @@ class NoteEditorDialog(
                 .show()
         }
 
-        val success = manager.saveNote(activity, note, wasShared = editingNote?.isShared ?: false)
+        val success = manager.saveNote(
+            activity = activity,
+            note = note,
+            teamId = owner?.getNoteShareTeamId(),
+            wasShared = editingNote?.isShared ?: false,
+        )
         progressDialog?.dismiss()
         return success
     }
@@ -127,8 +132,13 @@ class NoteEditorDialog(
         topicStylingConfig = StylingConfigBase(editText = b.topic, htmlMode = HtmlMode.SIMPLE)
         bodyStylingConfig = StylingConfigBase(editText = b.body, htmlMode = HtmlMode.SIMPLE)
 
+        val profile = withContext(Dispatchers.IO) {
+            app.db.profileDao().getByIdNow(profileId)
+        }
+
         b.ownerType = owner?.getNoteType() ?: Note.OwnerType.NONE
         b.editingNote = editingNote
+        b.shareByDefault = app.profile.config.shareByDefault && profile?.canShare == true
 
         b.color.clear().append(Note.Color.values().map { color ->
             TextInputDropDown.Item(

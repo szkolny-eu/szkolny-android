@@ -5,17 +5,14 @@
 package pl.szczodrzynski.edziennik.data.firebase
 
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_ATTENDANCE
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_BEHAVIOUR
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_GRADES
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.task.IApiTask
-import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_RECEIVED
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.getLong
 import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.getStudentData
 
 class SzkolnyMobidziennikFirebase(val app: App, val profiles: List<Profile>, val message: FirebaseService.Message) {
     /*{
@@ -52,19 +49,19 @@ class SzkolnyMobidziennikFirebase(val app: App, val profiles: List<Profile>, val
         val globalId = message.data.getLong("global_id")
 
         /* assets/www/js/push.js */
-        val viewIdPair = when (type) {
-            "wiadOdebrana" -> DRAWER_ITEM_MESSAGES to TYPE_RECEIVED
-            "oceny", "ocenyKoncowe", "zachowanie" -> DRAWER_ITEM_GRADES to 0
-            "uwagi" -> DRAWER_ITEM_BEHAVIOUR to 0
-            "nieobecnoscPierwszaLekcja", "nieobecnosciDzisiaj" -> DRAWER_ITEM_ATTENDANCE to 0
+        val featureType = when (type) {
+            "wiadOdebrana" -> FeatureType.MESSAGES_INBOX
+            "oceny", "ocenyKoncowe", "zachowanie" -> FeatureType.GRADES
+            "uwagi" -> FeatureType.BEHAVIOUR
+            "nieobecnoscPierwszaLekcja", "nieobecnosciDzisiaj" -> FeatureType.ATTENDANCE
             else -> return@run
         }
 
         val tasks = profiles.filter {
-            it.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK &&
+            it.loginStoreType == LoginType.MOBIDZIENNIK &&
                     it.getStudentData("globalId", 0L) == globalId
         }.map {
-            EdziennikTask.syncProfile(it.id, listOf(viewIdPair))
+            EdziennikTask.syncProfile(it.id, setOf(featureType))
         }
         IApiTask.enqueueAll(app, tasks)
     }}

@@ -17,6 +17,7 @@ import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.databinding.LoginFinishFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import kotlin.coroutines.CoroutineContext
 
 class LoginFinishFragment : Fragment(), CoroutineScope {
@@ -64,14 +65,14 @@ class LoginFinishFragment : Fragment(), CoroutineScope {
                             activity,
                             MainActivity::class.java,
                             "profileId" to firstProfileId,
-                            "fragmentId" to MainActivity.DRAWER_ITEM_HOME
+                            "fragmentId" to NavTarget.HOME
                     ))
                 }
                 else {
                     activity.setResult(Activity.RESULT_OK, Intent(
                             null,
                             "profileId" to firstProfileId,
-                            "fragmentId" to MainActivity.DRAWER_ITEM_HOME
+                            "fragmentId" to NavTarget.HOME
                     ))
                 }
                 activity.finish()

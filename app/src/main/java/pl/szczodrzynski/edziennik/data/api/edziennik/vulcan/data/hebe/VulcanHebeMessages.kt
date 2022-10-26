@@ -4,7 +4,6 @@
 
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MESSAGEBOX_MESSAGES
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MESSAGES_INBOX
@@ -17,6 +16,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.Message.Companion.TYPE_SENT
 import pl.szczodrzynski.edziennik.data.db.entity.MessageRecipient
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils
 
@@ -141,7 +142,7 @@ class VulcanHebeMessages(
                 data.setSeenMetadataList.add(
                     Metadata(
                         profileId,
-                        Metadata.TYPE_MESSAGE,
+                        MetadataType.MESSAGE,
                         id,
                         readDate > 0 || messageType == TYPE_SENT,
                         readDate > 0 || messageType == TYPE_SENT
@@ -152,7 +153,7 @@ class VulcanHebeMessages(
             data.setSyncNext(
                 endpointId,
                 if (messageType == TYPE_RECEIVED) SYNC_ALWAYS else 1 * DAY,
-                if (messageType == TYPE_RECEIVED) null else DRAWER_ITEM_MESSAGES
+                if (messageType == TYPE_RECEIVED) null else FeatureType.MESSAGES_SENT
             )
             onSuccess(endpointId)
         }

@@ -7,7 +7,8 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan
 import com.google.gson.JsonObject
 import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.*
+import pl.szczodrzynski.edziennik.data.api.ERROR_ONEDRIVE_DOWNLOAD
+import pl.szczodrzynski.edziennik.data.api.ERROR_VULCAN_API_DEPRECATED
 import pl.szczodrzynski.edziennik.data.api.edziennik.helper.OneDriveDownloadAttachment
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanData
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe.VulcanHebeMessagesChangeStatus
@@ -17,12 +18,18 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.login.VulcanLogin
 import pl.szczodrzynski.edziennik.data.api.events.AttachmentGetEvent
 import pl.szczodrzynski.edziennik.data.api.events.EventGetEvent
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikCallback
 import pl.szczodrzynski.edziennik.data.api.interfaces.EdziennikInterface
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.api.prepare
+import pl.szczodrzynski.edziennik.data.api.prepareFor
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
@@ -59,24 +66,24 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
             |_|  |_| |_|\___| /_/    \_\_|\__, |\___/|_|  |_|\__|_| |_|_| |_| |_|
                                            __/ |
                                           |__*/
-    override fun sync(featureIds: List<Int>, viewId: Int?, onlyEndpoints: List<Int>?, arguments: JsonObject?) {
+    override fun sync(featureTypes: Set<FeatureType>?, onlyEndpoints: Set<Int>?, arguments: JsonObject?) {
         data.arguments = arguments
-        data.prepare(vulcanLoginMethods, VulcanFeatures, featureIds, viewId, onlyEndpoints)
+        data.prepare(VulcanFeatures, featureTypes, onlyEndpoints)
         login()
     }
 
-    private fun login(loginMethodId: Int? = null, afterLogin: (() -> Unit)? = null) {
-        if (data.loginStore.mode == LOGIN_MODE_VULCAN_API) {
+    private fun login(loginMethod: LoginMethod? = null, afterLogin: (() -> Unit)? = null) {
+        if (data.loginStore.mode == LoginMode.VULCAN_API) {
             data.error(TAG, ERROR_VULCAN_API_DEPRECATED)
             return
         }
 
-        d(TAG, "Trying to login with ${data.targetLoginMethodIds}")
+        d(TAG, "Trying to login with ${data.targetLoginMethods}")
         if (internalErrorList.isNotEmpty()) {
             d(TAG, "  - Internal errors:")
             internalErrorList.forEach { d(TAG, "      - code $it") }
         }
-        loginMethodId?.let { data.prepareFor(vulcanLoginMethods, it) }
+        loginMethod?.let { data.prepareFor(it) }
         afterLogin?.let { this.afterLogin = it }
         VulcanLogin(data) {
             data()
@@ -84,7 +91,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     private fun data() {
-        d(TAG, "Endpoint IDs: ${data.targetEndpointIds}")
+        d(TAG, "Endpoint IDs: ${data.targetEndpoints}")
         if (internalErrorList.isNotEmpty()) {
             d(TAG, "  - Internal errors:")
             internalErrorList.forEach { d(TAG, "      - code $it") }
@@ -95,7 +102,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     }
 
     override fun getMessage(message: MessageFull) {
-        login(LOGIN_METHOD_VULCAN_HEBE) {
+        login(LoginMethod.VULCAN_HEBE) {
             if (message.seen) {
                 EventBus.getDefault().postSticky(MessageGetEvent(message))
                 completed()
@@ -107,8 +114,8 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
         }
     }
 
-    override fun sendMessage(recipients: List<Teacher>, subject: String, text: String) {
-        login(LOGIN_METHOD_VULCAN_HEBE) {
+    override fun sendMessage(recipients: Set<Teacher>, subject: String, text: String) {
+        login(LoginMethod.VULCAN_HEBE) {
             VulcanHebeSendMessage(data, recipients, subject, text) {
                 completed()
             }
@@ -179,6 +186,7 @@ class Vulcan(val app: App, val profile: Profile?, val loginStore: LoginStore, va
     private fun wrapCallback(callback: EdziennikCallback): EdziennikCallback {
         return object : EdziennikCallback {
             override fun onCompleted() { callback.onCompleted() }
+            override fun onRequiresUserAction(event: UserActionRequiredEvent) { callback.onRequiresUserAction(event) }
             override fun onProgress(step: Float) { callback.onProgress(step) }
             override fun onStartProgress(stringRes: Int) { callback.onStartProgress(stringRes) }
             override fun onError(apiError: ApiError) {

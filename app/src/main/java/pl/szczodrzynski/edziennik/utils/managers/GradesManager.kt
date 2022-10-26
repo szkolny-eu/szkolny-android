@@ -16,7 +16,13 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_AVG
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_POINT_SUM
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
-import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ext.asColoredSpannable
+import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.ifNotNull
+import pl.szczodrzynski.edziennik.ext.notEmptyOrNull
+import pl.szczodrzynski.edziennik.ext.plural
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSemester
 import java.text.DecimalFormat
@@ -48,21 +54,21 @@ class GradesManager(val app: App) : CoroutineScope {
     val orderBy
         get() = app.config.grades.orderBy
     val yearAverageMode
-        get() = app.config.forProfile().grades.yearAverageMode
+        get() = app.profile.config.grades.yearAverageMode
     val colorMode
-        get() = app.config.forProfile().grades.colorMode
+        get() = app.profile.config.grades.colorMode
     val plusValue
-        get() = app.config.forProfile().grades.plusValue
+        get() = app.profile.config.grades.plusValue
     val minusValue
-        get() = app.config.forProfile().grades.minusValue
+        get() = app.profile.config.grades.minusValue
     val dontCountEnabled
-        get() = app.config.forProfile().grades.dontCountEnabled
+        get() = app.profile.config.grades.dontCountEnabled
     val dontCountGrades
-        get() = app.config.forProfile().grades.dontCountGrades
+        get() = app.profile.config.grades.dontCountGrades
     val hideImproved
-        get() = app.config.forProfile().grades.hideImproved
+        get() = app.profile.config.grades.hideImproved
     val averageWithoutWeight
-        get() = app.config.forProfile().grades.averageWithoutWeight
+        get() = app.profile.config.grades.averageWithoutWeight
 
 
     fun getOrderByString() = when (orderBy) {

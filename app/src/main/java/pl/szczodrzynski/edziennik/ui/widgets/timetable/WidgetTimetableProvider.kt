@@ -25,13 +25,17 @@ import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
+import pl.szczodrzynski.edziennik.MainActivity
+import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson.Companion.TYPE_NO_LESSONS
 import pl.szczodrzynski.edziennik.ext.filterOutArchived
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.pendingIntentFlag
+import pl.szczodrzynski.edziennik.ext.putExtras
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.widgets.LessonDialogActivity
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -391,10 +395,10 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                 headerIntent.putExtra("profileId", it)
             }
             displayingDate?.let {
-                headerIntent.putExtra("timetableDate", it.value)
+                headerIntent.putExtra("timetableDate", it.stringY_m_d)
             }
         }
-        headerIntent.putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE)
+        headerIntent.putExtras("fragmentId" to NavTarget.TIMETABLE)
         val headerPendingIntent = PendingIntent.getActivity(app, appWidgetId, headerIntent, pendingIntentFlag())
         views.setOnClickPendingIntent(R.id.widgetTimetableHeader, headerPendingIntent)
 

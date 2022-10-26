@@ -5,11 +5,8 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.login
 
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_API
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_MESSAGES
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_PORTAL
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_LIBRUS_SYNERGIA
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.utils.Utils
 
 class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
@@ -24,7 +21,7 @@ class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
     }
 
     private fun nextLoginMethod(onSuccess: () -> Unit) {
-        if (data.targetLoginMethodIds.isEmpty()) {
+        if (data.targetLoginMethods.isEmpty()) {
             onSuccess()
             return
         }
@@ -32,38 +29,39 @@ class LibrusLogin(val data: DataLibrus, val onSuccess: () -> Unit) {
             onSuccess()
             return
         }
-        useLoginMethod(data.targetLoginMethodIds.removeAt(0)) { usedMethodId ->
+        useLoginMethod(data.targetLoginMethods.removeAt(0)) { usedMethod ->
             data.progress(data.progressStep)
-            if (usedMethodId != -1)
-                data.loginMethods.add(usedMethodId)
+            if (usedMethod != null)
+                data.loginMethods.add(usedMethod)
             nextLoginMethod(onSuccess)
         }
     }
 
-    private fun useLoginMethod(loginMethodId: Int, onSuccess: (usedMethodId: Int) -> Unit) {
+    private fun useLoginMethod(loginMethod: LoginMethod, onSuccess: (usedMethod: LoginMethod?) -> Unit) {
         // this should never be true
-        if (data.loginMethods.contains(loginMethodId)) {
-            onSuccess(-1)
+        if (data.loginMethods.contains(loginMethod)) {
+            onSuccess(null)
             return
         }
-        Utils.d(TAG, "Using login method $loginMethodId")
-        when (loginMethodId) {
-            LOGIN_METHOD_LIBRUS_PORTAL -> {
+        Utils.d(TAG, "Using login method $loginMethod")
+        when (loginMethod) {
+            LoginMethod.LIBRUS_PORTAL -> {
                 data.startProgress(R.string.edziennik_progress_login_librus_portal)
-                LibrusLoginPortal(data) { onSuccess(loginMethodId) }
+                LibrusLoginPortal(data) { onSuccess(loginMethod) }
             }
-            LOGIN_METHOD_LIBRUS_API -> {
+            LoginMethod.LIBRUS_API -> {
                 data.startProgress(R.string.edziennik_progress_login_librus_api)
-                LibrusLoginApi(data) { onSuccess(loginMethodId) }
+                LibrusLoginApi(data) { onSuccess(loginMethod) }
             }
-            LOGIN_METHOD_LIBRUS_SYNERGIA -> {
+            LoginMethod.LIBRUS_SYNERGIA -> {
                 data.startProgress(R.string.edziennik_progress_login_librus_synergia)
-                LibrusLoginSynergia(data) { onSuccess(loginMethodId) }
+                LibrusLoginSynergia(data) { onSuccess(loginMethod) }
             }
-            LOGIN_METHOD_LIBRUS_MESSAGES -> {
+            LoginMethod.LIBRUS_MESSAGES -> {
                 data.startProgress(R.string.edziennik_progress_login_librus_messages)
-                LibrusLoginMessages(data) { onSuccess(loginMethodId) }
+                LibrusLoginMessages(data) { onSuccess(loginMethod) }
             }
+            else -> {}
         }
     }
 }

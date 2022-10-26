@@ -55,7 +55,7 @@ class SzkolnyTask(val app: App, val syncingProfiles: List<Profile>) : IApiTask(-
         notificationList
                 .mapNotNull { it.profileId }
                 .distinct()
-                .map { app.config.getFor(it).sync.notificationFilter }
+                .map { app.config[it].sync.notificationFilter }
                 .forEach { filter ->
                     filter.forEach { type ->
                         notificationList.removeAll { it.type == type }

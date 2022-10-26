@@ -10,6 +10,8 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.JsonPrimitive
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 fun JsonObject?.get(key: String): JsonElement? = this?.get(key)
 
@@ -40,7 +42,11 @@ fun JsonArray.getChar(key: Int): Char? = if (key >= size()) null else get(key)?.
 fun JsonArray.getJsonObject(key: Int): JsonObject? = if (key >= size()) null else get(key)?.let { if (it.isJsonObject) it.asJsonObject else null }
 fun JsonArray.getJsonArray(key: Int): JsonArray? = if (key >= size()) null else get(key)?.let { if (it.isJsonArray) it.asJsonArray else null }
 
+inline fun <reified E : Enum<E>> JsonObject?.getEnum(key: String) = this?.getInt(key)?.toEnum<E>()
+fun JsonObject.putEnum(key: String, value: Enum<*>) = addProperty(key, value.toInt())
+
 fun String.toJsonObject(): JsonObject? = try { JsonParser.parseString(this).asJsonObject } catch (ignore: Exception) { null }
+fun String.toJsonArray(): JsonArray? = try { JsonParser.parseString(this).asJsonArray } catch (ignore: Exception) { null }
 
 operator fun JsonObject.set(key: String, value: JsonElement) = this.add(key, value)
 operator fun JsonObject.set(key: String, value: Boolean) = this.addProperty(key, value)
@@ -53,12 +59,14 @@ fun JsonArray.asJsonObjectList() = this.mapNotNull { it.asJsonObject }
 fun JsonObject(vararg properties: Pair<String, Any?>): JsonObject {
     return JsonObject().apply {
         for (property in properties) {
-            when (property.second) {
-                is JsonElement -> add(property.first, property.second as JsonElement?)
-                is String -> addProperty(property.first, property.second as String?)
-                is Char -> addProperty(property.first, property.second as Char?)
-                is Number -> addProperty(property.first, property.second as Number?)
-                is Boolean -> addProperty(property.first, property.second as Boolean?)
+            val (key, value) = property
+            when (value) {
+                is JsonElement -> add(key, value)
+                is String -> addProperty(key, value)
+                is Char -> addProperty(key, value)
+                is Number -> addProperty(key, value)
+                is Boolean -> addProperty(key, value)
+                is Enum<*> -> addProperty(key, value.toInt())
             }
         }
     }
@@ -79,7 +87,9 @@ fun JsonObject.toBundle(): Bundle {
     }
 }
 
-fun JsonArray(vararg properties: Any?): JsonArray {
+fun JsonArray(vararg properties: Any?) = JsonArray(properties.toList())
+
+fun JsonArray(properties: Collection<Any?>): JsonArray {
     return JsonArray().apply {
         for (property in properties) {
             when (property) {
@@ -93,9 +103,32 @@ fun JsonArray(vararg properties: Any?): JsonArray {
     }
 }
 
-fun JsonArray?.isNullOrEmpty(): Boolean = (this?.size() ?: 0) == 0
+@OptIn(ExperimentalContracts::class)
+fun JsonArray?.isNullOrEmpty(): Boolean {
+    contract {
+        returns(false) implies (this@isNullOrEmpty != null)
+    }
+    return this == null || this.isEmpty
+}
 operator fun JsonArray.plusAssign(o: JsonElement) = this.add(o)
 operator fun JsonArray.plusAssign(o: String) = this.add(o)
 operator fun JsonArray.plusAssign(o: Char) = this.add(o)
 operator fun JsonArray.plusAssign(o: Number) = this.add(o)
 operator fun JsonArray.plusAssign(o: Boolean) = this.add(o)
+
+fun JsonObject.mergeWith(other: JsonObject): JsonObject {
+    for ((key, value) in other.entrySet()) {
+        when (value) {
+            is JsonObject -> when {
+                this.has(key) -> this.getJsonObject(key)?.mergeWith(value)
+                else -> this.add(key, value)
+            }
+            is JsonArray -> when {
+                this.has(key) -> this.getJsonArray(key)?.addAll(value)
+                else -> this.add(key, value)
+            }
+            else -> this.add(key, value)
+        }
+    }
+    return this
+}

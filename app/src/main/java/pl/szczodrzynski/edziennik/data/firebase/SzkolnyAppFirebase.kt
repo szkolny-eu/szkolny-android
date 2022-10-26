@@ -6,20 +6,31 @@ package pl.szczodrzynski.edziennik.data.firebase
 
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
-import pl.szczodrzynski.edziennik.*
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.data.api.events.FeedbackMessageEvent
 import pl.szczodrzynski.edziennik.data.api.events.RegisterAvailabilityEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.RegisterAvailabilityStatus
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.data.api.task.PostNotifications
-import pl.szczodrzynski.edziennik.data.db.entity.*
+import pl.szczodrzynski.edziennik.data.db.entity.Event
+import pl.szczodrzynski.edziennik.data.db.entity.FeedbackMessage
+import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.entity.Note
+import pl.szczodrzynski.edziennik.data.db.entity.Notification
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
 import pl.szczodrzynski.edziennik.ext.getInt
 import pl.szczodrzynski.edziennik.ext.getLong
-import pl.szczodrzynski.edziennik.ext.getNotificationTitle
 import pl.szczodrzynski.edziennik.ext.getString
-import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.ext.resolveString
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
@@ -61,7 +72,10 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         message.data.getString("title") ?: "",
                         message.data.getString("message") ?: ""
                 )
-                "appUpdate" -> launch { UpdateWorker.runNow(app, app.gson.fromJson(message.data.getString("update"), Update::class.java)) }
+                "appUpdate" -> {
+                    val update = app.gson.fromJson(message.data.getString("update"), Update::class.java)
+                    app.updateManager.process(update, notify = true)
+                }
                 "feedbackMessage" -> launch {
                     val message = app.gson.fromJson(message.data.getString("message"), FeedbackMessage::class.java) ?: return@launch
                     feedbackMessage(message)
@@ -85,7 +99,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                 id = System.currentTimeMillis(),
                 title = title,
                 text = message,
-                type = Notification.TYPE_SERVER_MESSAGE,
+                type = NotificationType.SERVER_MESSAGE,
                 profileId = null,
                 profileName = title
         ).addExtra("action", "serverMessage").addExtra("serverMessageTitle", title).addExtra("serverMessageText", message)
@@ -105,7 +119,7 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
                         id = System.currentTimeMillis(),
                         title = "Wiadomość od ${message.senderName}",
                         text = message.text,
-                        type = Notification.TYPE_FEEDBACK_MESSAGE,
+                        type = NotificationType.FEEDBACK_MESSAGE,
                         profileId = null,
                         profileName = "Wiadomość od ${message.senderName}"
                 ).addExtra("action", "feedbackMessage").addExtra("feedbackMessageDeviceId", message.deviceId)
@@ -146,33 +160,33 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             if (event.color == -1)
                 event.color = null
 
+            event.addedManually = true
             event.sharedBy = json.getString("sharedBy")
             event.sharedByName = json.getString("sharedByName")
             if (profile.userCode == event.sharedBy) {
                 event.sharedBy = "self"
-                event.addedManually = true
             }
 
             val metadata = Metadata(
                     event.profileId,
-                    if (event.isHomework) Metadata.TYPE_HOMEWORK else Metadata.TYPE_EVENT,
+                    if (event.isHomework) MetadataType.HOMEWORK else MetadataType.EVENT,
                     event.id,
                     false,
                     true
             )
 
-            val type = if (event.isHomework) Notification.TYPE_NEW_SHARED_HOMEWORK else Notification.TYPE_NEW_SHARED_EVENT
-            val notificationFilter = app.config.getFor(event.profileId).sync.notificationFilter
+            val type = if (event.isHomework) NotificationType.SHARED_HOMEWORK else NotificationType.SHARED_EVENT
+            val notificationFilter = app.config[event.profileId].sync.notificationFilter
 
             if (!notificationFilter.contains(type) && event.sharedBy != "self" && event.date >= Date.getToday()) {
                 val notification = Notification(
                         id = Notification.buildId(event.profileId, type, event.id),
-                        title = app.getNotificationTitle(type),
+                        title = type.titleRes.resolveString(app),
                         text = message,
                         type = type,
                         profileId = profile.id,
                         profileName = profile.name,
-                        viewId = if (event.isHomework) MainActivity.DRAWER_ITEM_HOMEWORK else MainActivity.DRAWER_ITEM_AGENDA,
+                        navTarget = if (event.isHomework) NavTarget.HOMEWORK else NavTarget.AGENDA,
                         addedDate = event.addedDate
                 ).addExtra("eventId", event.id).addExtra("eventDate", event.date.value.toLong())
                 notificationList += notification
@@ -197,17 +211,17 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             val profile = profiles.firstOrNull { it.id == team.profileId } ?: return@forEach
             if (!profile.canShare)
                 return@forEach
-            val notificationFilter = app.config.getFor(team.profileId).sync.notificationFilter
+            val notificationFilter = app.config[team.profileId].sync.notificationFilter
 
-            if (!notificationFilter.contains(Notification.TYPE_REMOVED_SHARED_EVENT)) {
+            if (!notificationFilter.contains(NotificationType.REMOVED_SHARED_EVENT)) {
                 val notification = Notification(
-                        id = Notification.buildId(profile.id, Notification.TYPE_REMOVED_SHARED_EVENT, eventId),
-                        title = app.getNotificationTitle(Notification.TYPE_REMOVED_SHARED_EVENT),
+                        id = Notification.buildId(profile.id, NotificationType.REMOVED_SHARED_EVENT, eventId),
+                        title = NotificationType.REMOVED_SHARED_EVENT.titleRes.resolveString(app),
                         text = message,
-                        type = Notification.TYPE_REMOVED_SHARED_EVENT,
+                        type = NotificationType.REMOVED_SHARED_EVENT,
                         profileId = profile.id,
                         profileName = profile.name,
-                        viewId = MainActivity.DRAWER_ITEM_AGENDA
+                        navTarget = NavTarget.AGENDA,
                 )
                 notificationList += notification
             }
@@ -250,18 +264,18 @@ class SzkolnyAppFirebase(val app: App, val profiles: List<Profile>, val message:
             if (hadNote)
                 return@forEach
 
-            val type = Notification.TYPE_NEW_SHARED_NOTE
-            val notificationFilter = app.config.getFor(note.profileId).sync.notificationFilter
+            val type = NotificationType.SHARED_NOTE
+            val notificationFilter = app.config[note.profileId].sync.notificationFilter
 
             if (!notificationFilter.contains(type) && note.sharedBy != "self") {
                 val notification = Notification(
                     id = Notification.buildId(note.profileId, type, note.id),
-                    title = app.getNotificationTitle(type),
+                    title = type.titleRes.resolveString(app),
                     text = message,
                     type = type,
                     profileId = profile.id,
                     profileName = profile.name,
-                    viewId = MainActivity.DRAWER_ITEM_HOME,
+                    navTarget = NavTarget.HOME,
                     addedDate = note.addedDate
                 ).addExtra("noteId", note.id)
                 notificationList += notification

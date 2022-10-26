@@ -21,6 +21,7 @@ import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.HomeworkFragmentBinding
 import pl.szczodrzynski.edziennik.ext.Bundle
 import pl.szczodrzynski.edziennik.ext.addOnPageSelectedListener
@@ -73,7 +74,7 @@ class HomeworkFragment : Fragment(), CoroutineScope {
                 .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                 .withOnClickListener(View.OnClickListener {
                     activity.bottomSheet.close()
-                    AsyncTask.execute { app.db.metadataDao().setAllSeen(App.profileId, Metadata.TYPE_HOMEWORK, true) }
+                    AsyncTask.execute { app.db.metadataDao().setAllSeen(App.profileId, MetadataType.HOMEWORK, true) }
                     Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
                 }))
 

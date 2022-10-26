@@ -1,8 +1,6 @@
 package pl.szczodrzynski.edziennik.ui.announcements;
 
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static pl.szczodrzynski.edziennik.data.db.entity.LoginStore.LOGIN_TYPE_LIBRUS;
-import static pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_ANNOUNCEMENT;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,6 +28,8 @@ import pl.szczodrzynski.edziennik.MainActivity;
 import pl.szczodrzynski.edziennik.R;
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask;
 import pl.szczodrzynski.edziennik.data.api.events.AnnouncementGetEvent;
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType;
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType;
 import pl.szczodrzynski.edziennik.data.db.full.AnnouncementFull;
 import pl.szczodrzynski.edziennik.databinding.DialogAnnouncementBinding;
 import pl.szczodrzynski.edziennik.databinding.FragmentAnnouncementsBinding;
@@ -69,10 +69,10 @@ public class AnnouncementsFragment extends Fragment {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(v3 -> {
                             activity.getBottomSheet().close();
-                            if (app.getProfile().getLoginStoreType() == LOGIN_TYPE_LIBRUS) {
+                            if (app.getProfile().getLoginStoreType() == LoginType.LIBRUS) {
                                 EdziennikTask.Companion.announcementsRead(App.Companion.getProfileId()).enqueue(requireContext());
                             } else {
-                                AsyncTask.execute(() -> App.db.metadataDao().setAllSeen(App.Companion.getProfileId(), TYPE_ANNOUNCEMENT, true));
+                                AsyncTask.execute(() -> App.Companion.getDb().metadataDao().setAllSeen(App.Companion.getProfileId(), MetadataType.ANNOUNCEMENT, true));
                                 Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -103,7 +103,7 @@ public class AnnouncementsFragment extends Fragment {
             }
         });
 
-        app.db.announcementDao().getAll(App.Companion.getProfileId()).observe(this, announcements -> {
+        app.getDb().announcementDao().getAll(App.Companion.getProfileId()).observe(getViewLifecycleOwner(), announcements -> {
             if (app == null || activity == null || b == null || !isAdded())
                 return;
 
@@ -124,7 +124,7 @@ public class AnnouncementsFragment extends Fragment {
                     return;
                 }*/
                 AnnouncementsAdapter announcementsAdapter = new AnnouncementsAdapter(activity, announcements, (v, announcement) -> {
-                    if (announcement.getText() == null || (app.getProfile().getLoginStoreType() == LOGIN_TYPE_LIBRUS && !announcement.getSeen())) {
+                    if (announcement.getText() == null || (app.getProfile().getLoginStoreType() == LoginType.LIBRUS && !announcement.getSeen())) {
                         EdziennikTask.Companion.announcementGet(App.Companion.getProfileId(), announcement).enqueue(requireContext());
                     } else {
                         showAnnouncementDetailsDialog(announcement);
@@ -172,9 +172,9 @@ public class AnnouncementsFragment extends Fragment {
                 .setPositiveButton(R.string.ok, null)
                 .show();
         b.text.setText(announcement.getTeacherName() +"\n\n"+ (announcement.getStartDate() != null ? announcement.getStartDate().getFormattedString() : "-") + (announcement.getEndDate() != null ? " do " + announcement.getEndDate().getFormattedString() : "")+"\n\n" +announcement.getText());
-        if (!announcement.getSeen() && app.getProfile().getLoginStoreType() != LOGIN_TYPE_LIBRUS) {
+        if (!announcement.getSeen() && app.getProfile().getLoginStoreType() != LoginType.LIBRUS) {
             announcement.setSeen(true);
-            AsyncTask.execute(() -> App.db.metadataDao().setSeen(App.Companion.getProfileId(), announcement, true));
+            AsyncTask.execute(() -> App.Companion.getDb().metadataDao().setSeen(App.Companion.getProfileId(), announcement, true));
             if (recyclerView.getAdapter() != null)
                 recyclerView.getAdapter().notifyDataSetChanged();
         }

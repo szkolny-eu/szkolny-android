@@ -3,15 +3,16 @@
  */
 package pl.szczodrzynski.edziennik.data.db.dao
 
-import android.content.Context
+import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import pl.szczodrzynski.edziennik.data.db.entity.Event.Companion.COLOR_DEFAULT
+import pl.szczodrzynski.edziennik.config.AppData
 import pl.szczodrzynski.edziennik.data.db.entity.EventType
 import pl.szczodrzynski.edziennik.data.db.entity.EventType.Companion.SOURCE_DEFAULT
+import pl.szczodrzynski.edziennik.data.db.entity.Profile
 
 @Dao
 abstract class EventTypeDao {
@@ -36,17 +37,17 @@ abstract class EventTypeDao {
     @get:Query("SELECT * FROM eventTypes")
     abstract val allNow: List<EventType>
 
-    fun addDefaultTypes(context: Context, profileId: Int): List<EventType> {
+    fun addDefaultTypes(profile: Profile): List<EventType> {
+        val data = AppData.get(profile.loginStoreType)
         var order = 100
-        val colorMap = EventType.getTypeColorMap()
-        val typeList = EventType.getTypeNameMap().map { (id, name) ->
+        val typeList = data.eventTypes.map {
             EventType(
-                profileId = profileId,
-                id = id,
-                name = context.getString(name),
-                color = colorMap[id] ?: COLOR_DEFAULT,
+                profileId = profile.id,
+                id = it.id.toLong(),
+                name = it.name,
+                color = Color.parseColor(it.color),
                 order = order++,
-                source = SOURCE_DEFAULT
+                source = SOURCE_DEFAULT,
             )
         }
         addAll(typeList)

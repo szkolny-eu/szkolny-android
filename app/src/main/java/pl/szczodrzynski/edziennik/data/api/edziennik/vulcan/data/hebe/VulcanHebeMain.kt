@@ -5,13 +5,12 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.hebe
 
 import com.google.gson.JsonArray
-import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_VULCAN
 import pl.szczodrzynski.edziennik.data.api.VULCAN_HEBE_ENDPOINT_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.DataVulcan
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.ENDPOINT_VULCAN_HEBE_MAIN
 import pl.szczodrzynski.edziennik.data.api.edziennik.vulcan.data.VulcanHebe
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -125,7 +124,7 @@ class VulcanHebeMain(
                 val newProfile = profile ?: Profile(
                     profileId++,
                     loginStoreId!!,
-                    LOGIN_TYPE_VULCAN,
+                    LoginType.VULCAN,
                     studentNameLong,
                     userLogin,
                     studentNameLong,

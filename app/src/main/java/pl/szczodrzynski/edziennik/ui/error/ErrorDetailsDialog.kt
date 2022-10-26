@@ -21,7 +21,7 @@ class ErrorDetailsDialog(
     private val titleRes: Int = R.string.dialog_error_details_title,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog(activity, onShowListener, onDismissListener) {
+) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
 
     override val TAG = "ErrorDetailsDialog"
 

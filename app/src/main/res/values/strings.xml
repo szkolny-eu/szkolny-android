@@ -832,7 +832,7 @@
     <string name="notification_type_attendance">Wpis frekwencji</string>
     <string name="notification_type_auto_archiving">Archiwizacja profilu</string>
     <string name="notification_type_error">Błąd</string>
-    <string name="notification_type_feedback_message">Odpowiedź na Twoje pytanie</string>
+    <string name="notification_type_feedback_message">Wiadomość od dewelopera</string>
     <string name="notification_type_general">Powiadomienie</string>
     <string name="notification_type_lucky_number">Szczęśliwy numerek</string>
     <string name="notification_type_new_announcement">Ogłoszenie szkolne</string>
@@ -916,7 +916,7 @@
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
     <string name="settings_card_register_title">E-dziennik</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński &amp;&amp; Kacper Ziubryniewicz\nwrzesień 2018 - 2022</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński, wrzesień 2018 - 2022</string>
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
     <string name="settings_about_version_text">Wersja</string>
@@ -969,10 +969,6 @@
     <string name="settings_register_count_in_seconds_text">Odliczaj czas w sekundach</string>
     <string name="settings_register_dont_count_zero_text">Nie wliczaj oceny 0 do średniej</string>
     <string name="settings_register_login_not_implemented_text">Ten e-dziennik nie został jeszcze zaimplementowany w aplikacji.</string>
-    <string name="settings_register_shared_events_dialog_disabled_text">Nie będziesz już otrzymywać udostępnionych sprawdzianów i nie będziesz mógł ich też udostępnić.</string>
-    <string name="settings_register_shared_events_dialog_enabled_text">Będziesz otrzymywać udostępnione sprawdziany od innych osób z twojej klasy.</string>
-    <string name="settings_register_shared_events_subtext">Udostępniaj sprawdziany w swojej klasie</string>
-    <string name="settings_register_shared_events_text">Włącz Udostępnianie wydarzeń</string>
     <string name="settings_register_show_teacher_absences_text">Pokazuj nieobecności nauczycieli w Terminarzu</string>
     <string name="settings_sync_customize_endpoint_announcements">Tablica ogłoszeń</string>
     <string name="settings_sync_customize_endpoint_attendance">Obecności/nieobecności</string>
@@ -1424,7 +1420,7 @@
     <string name="privacy_policy_dialog_html"><![CDATA[Korzystając z aplikacji potwierdzasz <a href="https://szkolny.eu/privacy-policy">przeczytanie Polityki prywatności</a> i akceptujesz jej postanowienia.<br /><br />Autorzy aplikacji nie biorą odpowiedzialności za korzystanie z aplikacji Szkolny.eu.]]></string>
     <string name="login_chooser_version_format">Szkolny.eu v%s\n%s</string>
     <string name="menu_agenda_config">Ustawienia terminarza</string>
-    <string name="agenda_config_appearance">Wygląd</string>
+    <string name="config_appearance">Wygląd</string>
     <string name="agenda_config_lesson_changes">Pokazuj zmiany planu lekcji</string>
     <string name="agenda_config_teacher_absence">Pokazuj nieobecności nauczycieli</string>
     <string name="agenda_config_compact_mode">Tryb kompaktowy</string>
@@ -1437,7 +1433,7 @@
     <string name="agenda_config_elearning_mark">Ustaw wydarzenia jako lekcje on-line</string>
     <string name="agenda_config_elearning_type">Wybierz rodzaj wydarzeń</string>
     <string name="agenda_config_elearning_group">Grupuj lekcje on-line na liście</string>
-    <string name="legend_event_added_manually">{cmd-clipboard-edit-outline} wydarzenie dodane ręcznie</string>
+    <string name="legend_event_added_manually">{cmd-calendar-edit} wydarzenie dodane ręcznie</string>
     <string name="legend_event_is_done">{cmd-check} oznaczono jako wykonane</string>
     <string name="agenda_config_not_available_yet">Funkcja jeszcze nie jest dostępna.</string>
     <string name="messages_config_compose">Tworzenie wiadomości</string>
@@ -1537,4 +1533,22 @@
     <string name="login_summary_account_parent">(rodzic)</string>
     <string name="grades_subject_unknown">- nieznany przedmiot -</string>
     <string name="grades_subject_unknown_help">{cmd-information-outline} Oceny, których przedmiot nie został podany w dzienniku. Może to być na przykład taki, który nie jest prowadzony w tym roku szkolnym.</string>
+    <string name="menu_timetable_config">Ustawienia planu lekcji</string>
+    <string name="timetable_config_show_events">Pokazuj wydarzenia przy lekcjach</string>
+    <string name="timetable_config_show_attendance">Pokazuj rodzaj obecności na lekcji</string>
+    <string name="timetable_config_color_subject_name">Koloruj nazwę przedmiotu</string>
+    <string name="timetable_config_trim_hour_range">Nie pokazuj godzin bez lekcji</string>
+    <string name="edziennik_progress_login_usos_api">Logowanie do USOS API...</string>
+    <string name="login_type_usos">USOS</string>
+    <string name="login_mode_usos_oauth">Logowanie z użyciem przeglądarki</string>
+    <string name="login_mode_usos_oauth_guide">TODO</string>
+    <string name="notification_user_action_required_oauth_usos">USOS - wymagane logowanie z użyciem przeglądarki</string>
+    <string name="oauth_dialog_title">Zaloguj się</string>
+    <string name="app_cannot_load_data">Nie można załadować danych aplikacji</string>
+    <string name="legend_event_shared_received">{cmd-share-variant} udostępnione w klasie</string>
+    <string name="legend_event_shared_sent">{cmd-share-variant} udostępnione przez Ciebie</string>
+    <string name="settings_register_share_by_default_text">Domyślnie udostępniaj wydarzenia</string>
+    <string name="settings_register_share_by_default_subtext">Ustaw tworzone wydarzenia domyślnie jako udostępnione</string>
+    <string name="settings_registration_section">Rejestracja</string>
+    <string name="home_timetable_all_lessons">Wszystkie lekcje:</string>
 </resources>

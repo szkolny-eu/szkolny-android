@@ -73,13 +73,22 @@ open class Event(
         const val COLOR_INFORMATION = 0xff039be5.toInt()
     }
 
+    /**
+     * Added manually - added by self, shared by self, or shared by someone else.
+     */
     @ColumnInfo(name = "eventAddedManually")
     var addedManually: Boolean = false
-        get() = field || sharedBy == "self"
+        get() = field || isShared
+
+    /**
+     * Shared by - user code who shared the event. Null if not shared.
+     * "Self" if shared by this app user.
+     */
     @ColumnInfo(name = "eventSharedBy")
     var sharedBy: String? = null
     @ColumnInfo(name = "eventSharedByName")
     var sharedByName: String? = null
+
     @ColumnInfo(name = "eventBlacklisted")
     var blacklisted: Boolean = false
     @ColumnInfo(name = "eventIsDone")
@@ -103,6 +112,27 @@ open class Event(
         get() = attachmentIds.isNotNullNorEmpty()
     var attachmentIds: MutableList<Long>? = null
     var attachmentNames: MutableList<String>? = null
+
+    val isHomework
+        get() = type == TYPE_HOMEWORK
+
+    /**
+     * Whether the event is shared by anyone. Note that this implies [addedManually].
+     */
+    val isShared
+        get() = sharedBy != null
+
+    /**
+     * Whether the event is shared by "self" (this app user).
+     */
+    val isSharedSent
+        get() = sharedBy == "self"
+
+    /**
+     * Whether the event is shared by someone else from the class group.
+     */
+    val isSharedReceived
+        get() = sharedBy != null && sharedBy != "self"
 
     /**
      * Add an attachment
@@ -133,9 +163,6 @@ open class Event(
         get() = startTimeCalendar.also {
             it.timeInMillis += 45 * MINUTE * 1000
         }
-
-    val isHomework
-        get() = type == TYPE_HOMEWORK
 
     @Ignore
     fun withMetadata(metadata: Metadata) = EventFull(this, metadata)

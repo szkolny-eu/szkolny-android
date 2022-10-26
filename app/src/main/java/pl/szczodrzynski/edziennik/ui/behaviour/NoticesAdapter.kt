@@ -18,7 +18,6 @@ import com.mikepenz.iconics.utils.sizeDp
 import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.LOGIN_TYPE_MOBIDZIENNIK
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
 import pl.szczodrzynski.edziennik.utils.BetterLink
@@ -40,7 +39,7 @@ class NoticesAdapter//getting the context and product list with constructor
 
         val notice = noticeList[position]
 
-        if (app.profile.loginStoreType == LOGIN_TYPE_MOBIDZIENNIK && false) {
+        if (app.data.uiConfig.enableNoticePoints && false) {
             holder.noticesItemReason.text = bs(null, notice.category, "\n") + notice.text
             holder.noticesItemTeacherName.text = app.getString(R.string.notices_points_format, notice.teacherName, if (notice.points ?: 0f > 0) "+" + notice.points else notice.points)
         } else {

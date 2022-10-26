@@ -15,6 +15,8 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.core.content.getSystemService
+import org.greenrobot.eventbus.EventBus
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
@@ -49,6 +51,8 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
                 return
             val app = context.applicationContext as App
 
+            EventBus.getDefault().postSticky(UpdateStateEvent(running = false, update = null, downloadId))
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !app.permissionChecker.canRequestApkInstall()) {
                 app.permissionChecker.requestApkInstall()
                 return
@@ -79,11 +83,14 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
         val app = application as App
         val update = App.config.update ?: return
 
-        if (tryUpdateWithGooglePlay(update))
+        if (tryUpdateWithGooglePlay(update)) {
+            stopSelf()
             return
+        }
 
         if (update.downloadUrl == null) {
             Toast.makeText(app, "Nie można pobrać tej aktualizacji. Pobierz ręcznie z Google Play.", Toast.LENGTH_LONG).show()
+            stopSelf()
             return
         }
 
@@ -92,7 +99,7 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
             return
         }
 
-        (app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(app.notificationChannelsManager.updates.id)
+        app.getSystemService<NotificationManager>()?.cancel(app.notificationChannelsManager.updates.id)
 
         val dir: File? = app.getExternalFilesDir(null)
         if (dir?.isDirectory == true) {
@@ -117,5 +124,6 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
         }
         Toast.makeText(app, "Pobieranie aktualizacji Szkolny.eu ${update.versionName}", Toast.LENGTH_LONG).show()
         downloadId = downloadManager.enqueue(request)
+        EventBus.getDefault().postSticky(UpdateStateEvent(running = true, update, downloadId))
     }
 }

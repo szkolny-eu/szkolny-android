@@ -12,6 +12,7 @@ import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.LibrusRecaptchaHelper
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.getUnixDate
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.io.StringWriter
@@ -91,7 +92,7 @@ class LibrusLoginMessages(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
         else {
             data.app.cookieJar.clear("wiadomosci.librus.pl")
-            if (data.loginMethods.contains(LOGIN_METHOD_LIBRUS_SYNERGIA)) {
+            if (data.loginMethods.contains(LoginMethod.LIBRUS_SYNERGIA)) {
                 loginWithSynergia()
             }
             else if (data.apiLogin != null && data.apiPassword != null && false) {

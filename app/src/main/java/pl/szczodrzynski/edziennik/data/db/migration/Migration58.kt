@@ -6,14 +6,13 @@ package pl.szczodrzynski.edziennik.data.db.migration
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_EVENT
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_HOMEWORK
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 
 class Migration58 : Migration(57, 58) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("ALTER TABLE metadata RENAME TO _metadata_old;")
         database.execSQL("DROP INDEX index_metadata_profileId_thingType_thingId;")
-        database.execSQL("UPDATE _metadata_old SET thingType = $TYPE_HOMEWORK WHERE thingType = $TYPE_EVENT  AND thingId IN (SELECT eventId FROM events WHERE eventType = -1)")
+        database.execSQL("UPDATE _metadata_old SET thingType = ${MetadataType.HOMEWORK.id} WHERE thingType = ${MetadataType.EVENT.id} AND thingId IN (SELECT eventId FROM events WHERE eventType = -1)")
         database.execSQL("""CREATE TABLE metadata (
                 profileId INTEGER NOT NULL,
                 metadataId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

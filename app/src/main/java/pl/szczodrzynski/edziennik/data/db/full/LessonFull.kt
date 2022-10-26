@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
+import pl.szczodrzynski.edziennik.ext.takePositive
 import pl.szczodrzynski.edziennik.utils.models.Time
 
 class LessonFull(
@@ -137,9 +138,10 @@ class LessonFull(
     var seen: Boolean = false
     var notified: Boolean = false
 
-    @Relation(parentColumn = "id", entityColumn = "noteOwnerId", entity = Note::class)
+    @Relation(parentColumn = "ownerId", entityColumn = "noteOwnerId", entity = Note::class)
     override lateinit var notes: MutableList<Note>
     override fun getNoteType() = Note.OwnerType.LESSON
     override fun getNoteOwnerProfileId() = profileId
-    override fun getNoteOwnerId() = id
+    override fun getNoteOwnerId() = ownerId
+    override fun getNoteShareTeamId() = teamId.takePositive()
 }

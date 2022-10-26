@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER2_
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_FINAL
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_YEAR_PROPOSED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 
 class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
     init { data.profile?.also { profile -> run {
@@ -91,7 +92,7 @@ class MobidziennikApiGrades(val data: DataMobidziennik, rows: List<String>) {
             data.metadataList.add(
                     Metadata(
                             data.profileId,
-                            Metadata.TYPE_GRADE,
+                            MetadataType.GRADE,
                             id,
                             data.profile?.empty ?: false,
                             data.profile?.empty ?: false

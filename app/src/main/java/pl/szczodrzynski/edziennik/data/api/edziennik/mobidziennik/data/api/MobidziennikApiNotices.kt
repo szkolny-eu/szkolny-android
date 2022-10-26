@@ -7,6 +7,7 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.api
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.DataMobidziennik
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.utils.models.Date
 
 class MobidziennikApiNotices(val data: DataMobidziennik, rows: List<String>) {
@@ -48,7 +49,7 @@ class MobidziennikApiNotices(val data: DataMobidziennik, rows: List<String>) {
             data.metadataList.add(
                     Metadata(
                             data.profileId,
-                            Metadata.TYPE_NOTICE,
+                            MetadataType.NOTICE,
                             id,
                             data.profile?.empty ?: false,
                             data.profile?.empty ?: false

@@ -9,6 +9,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.Note
 import pl.szczodrzynski.edziennik.data.db.entity.Noteable
+import pl.szczodrzynski.edziennik.ext.takePositive
 import pl.szczodrzynski.edziennik.ui.search.Searchable
 import pl.szczodrzynski.edziennik.utils.html.BetterHtml
 import pl.szczodrzynski.edziennik.utils.models.Date
@@ -118,4 +119,5 @@ class EventFull(
     override fun getNoteType() = Note.OwnerType.EVENT
     override fun getNoteOwnerProfileId() = profileId
     override fun getNoteOwnerId() = id
+    override fun getNoteShareTeamId() = teamId.takePositive()
 }

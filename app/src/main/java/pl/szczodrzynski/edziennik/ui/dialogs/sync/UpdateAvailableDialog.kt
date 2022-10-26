@@ -20,7 +20,7 @@ class UpdateAvailableDialog(
     private val mandatory: Boolean = update?.updateMandatory ?: false,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
-) : BaseDialog(activity, onShowListener, onDismissListener) {
+) : BaseDialog<Any>(activity, onShowListener, onDismissListener) {
 
     override val TAG = "UpdateAvailableDialog"
 
@@ -43,11 +43,11 @@ class UpdateAvailableDialog(
     override suspend fun onShow() = Unit
 
     override suspend fun onPositiveClick(): Boolean {
-        if (update == null)
+        if (update == null || update.isOnGooglePlay)
             Utils.openGooglePlay(activity)
         else
             activity.startService(Intent(app, UpdateDownloaderService::class.java))
-        return NO_DISMISS
+        return DISMISS
     }
 
     override suspend fun onBeforeShow(): Boolean {

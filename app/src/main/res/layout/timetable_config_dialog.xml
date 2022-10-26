@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Kuba Szczodrzyński 2022-10-7.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="pl.szczodrzynski.edziennik.data.db.enums.FeatureType" />
+
+        <variable
+            name="config"
+            type="pl.szczodrzynski.edziennik.config.ProfileConfigUI" />
+
+        <variable
+            name="features"
+            type="java.util.Set&lt;FeatureType>" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/config_appearance"
+                android:textAppearance="@style/NavView.TextView.Subtitle" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.timetableShowEvents}"
+                android:minHeight="32dp"
+                android:text="@string/timetable_config_show_events" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.timetableShowAttendance}"
+                android:enabled="@{features.contains(FeatureType.ATTENDANCE)}"
+                android:minHeight="32dp"
+                android:text="@string/timetable_config_show_attendance" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.timetableColorSubjectName}"
+                android:minHeight="32dp"
+                android:text="@string/timetable_config_color_subject_name" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="@={config.timetableTrimHourRange}"
+                android:minHeight="32dp"
+                android:text="@string/timetable_config_trim_hour_range" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

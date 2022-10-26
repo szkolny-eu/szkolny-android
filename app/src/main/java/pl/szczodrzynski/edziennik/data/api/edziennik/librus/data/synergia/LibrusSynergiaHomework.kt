@@ -5,7 +5,6 @@
 package pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.synergia
 
 import org.jsoup.Jsoup
-import pl.szczodrzynski.edziennik.MainActivity.Companion.DRAWER_ITEM_HOMEWORK
 import pl.szczodrzynski.edziennik.data.api.POST
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK
@@ -13,8 +12,11 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.librus.data.LibrusSynergia
 import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel
 import pl.szczodrzynski.edziennik.data.db.entity.Event
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.HOUR
 import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.getSemesterStart
 import pl.szczodrzynski.edziennik.ext.singleOrNull
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -84,7 +86,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
                     data.eventList.add(eventObject)
                     data.metadataList.add(Metadata(
                             profileId,
-                            Metadata.TYPE_HOMEWORK,
+                            MetadataType.HOMEWORK,
                             id,
                             seen,
                             seen
@@ -95,7 +97,7 @@ class LibrusSynergiaHomework(override val data: DataLibrus,
             data.toRemove.add(DataRemoveModel.Events.futureWithType(Event.TYPE_HOMEWORK))
 
             // because this requires a synergia login (2 more requests!!!) sync this every few hours or if explicit :D
-            data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, 5 * HOUR, DRAWER_ITEM_HOMEWORK)
+            data.setSyncNext(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK, 5 * HOUR, FeatureType.HOMEWORK)
             onSuccess(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK)
         }
     } ?: onSuccess(ENDPOINT_LIBRUS_SYNERGIA_HOMEWORK) }

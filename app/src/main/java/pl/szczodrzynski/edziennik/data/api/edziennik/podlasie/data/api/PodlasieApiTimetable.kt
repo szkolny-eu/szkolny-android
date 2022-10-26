@@ -72,6 +72,7 @@ class PodlasieApiTimetable(val data: DataPodlasie, rows: List<JsonObject>) {
                 it.classroom = classroom
 
                 it.id = it.buildId()
+                it.ownerId = it.buildOwnerId()
                 data.lessonList += it
             }
         }

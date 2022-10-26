@@ -16,7 +16,12 @@ import com.github.tibolte.agendacalendarview.agenda.AgendaAdapter
 import com.github.tibolte.agendacalendarview.models.BaseCalendarEvent
 import com.github.tibolte.agendacalendarview.models.CalendarEvent
 import com.github.tibolte.agendacalendarview.models.IDayItem
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.data.db.full.EventFull
@@ -49,7 +54,6 @@ class AgendaFragmentDefault(
     private val unreadDates = mutableSetOf<Int>()
     private val events = mutableListOf<CalendarEvent>()
     private var isInitialized = false
-    private val profileConfig by lazy { app.config.forProfile().ui }
 
     private val listView
         get() = b.agendaDefaultView.agendaView.agendaListView
@@ -107,10 +111,10 @@ class AgendaFragmentDefault(
         isInitialized = false
 
         withContext(Dispatchers.Default) {
-            if (profileConfig.agendaLessonChanges)
+            if (app.profile.config.ui.agendaLessonChanges)
                 addLessonChanges(events)
 
-            if (profileConfig.agendaTeacherAbsence)
+            if (app.profile.config.ui.agendaTeacherAbsence)
                 addTeacherAbsence(events)
         }
 
@@ -127,7 +131,7 @@ class AgendaFragmentDefault(
         val dateStart = app.profile.dateSemester1Start.asCalendar
         val dateEnd = app.profile.dateYearEnd.asCalendar
 
-        val isCompactMode = profileConfig.agendaCompactMode
+        val isCompactMode = app.profile.config.ui.agendaCompactMode
 
         b.agendaDefaultView.init(
             events,
@@ -247,7 +251,7 @@ class AgendaFragmentDefault(
     ) {
         events.removeAll { it is AgendaEvent || it is AgendaEventGroup }
 
-        if (!profileConfig.agendaGroupByType) {
+        if (!app.profile.config.ui.agendaGroupByType) {
             events += eventList.map {
                 if (!it.seen)
                     unreadDates.add(it.date.value)

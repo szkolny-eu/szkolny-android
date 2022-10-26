@@ -4,8 +4,8 @@
 
 package pl.szczodrzynski.edziennik.data.api.interfaces
 
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.Feature
-import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
 
 /**
  * A callback passed only to an e-register class.
@@ -14,4 +14,5 @@ import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
  */
 interface EdziennikCallback : EndpointCallback {
     fun onCompleted()
+    fun onRequiresUserAction(event: UserActionRequiredEvent)
 }

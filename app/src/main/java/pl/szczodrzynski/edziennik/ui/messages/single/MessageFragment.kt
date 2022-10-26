@@ -22,11 +22,11 @@ import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.MessageGetEvent
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
-import pl.szczodrzynski.edziennik.data.db.entity.LoginStore.Companion.LOGIN_TYPE_IDZIENNIK
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.data.db.full.MessageFull
 import pl.szczodrzynski.edziennik.databinding.MessageFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.MessagesConfigDialog
 import pl.szczodrzynski.edziennik.ui.messages.MessagesUtils
 import pl.szczodrzynski.edziennik.ui.messages.list.MessagesFragment
@@ -125,13 +125,13 @@ class MessageFragment : Fragment(), CoroutineScope {
         b.messageStar.attachToastHint(R.string.hint_message_star)
 
         b.replyButton.onClick {
-            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE, Bundle(
+            activity.navigate(navTarget = NavTarget.MESSAGE_COMPOSE, args = Bundle(
                     "message" to app.gson.toJson(message),
                     "type" to "reply"
             ))
         }
         b.forwardButton.onClick {
-            activity.loadTarget(MainActivity.TARGET_MESSAGES_COMPOSE, Bundle(
+            activity.navigate(navTarget = NavTarget.MESSAGE_COMPOSE, args = Bundle(
                     "message" to app.gson.toJson(message),
                     "type" to "forward"
             ))
@@ -178,7 +178,7 @@ class MessageFragment : Fragment(), CoroutineScope {
             return
         }
 
-        if (app.profile.loginStoreType == LOGIN_TYPE_IDZIENNIK) {
+        if (app.profile.loginStoreType == LoginType.IDZIENNIK) {
             val meta = "\\[META:([A-z0-9]+);([0-9-]+)]".toRegex().find(message.body!!)
             val messageIdBefore = meta?.get(2)?.toLong() ?: -1
 
@@ -188,7 +188,7 @@ class MessageFragment : Fragment(), CoroutineScope {
             }
         }
 
-        if (app.profile.loginStoreType == LoginStore.LOGIN_TYPE_VULCAN) {
+        if (app.data.messagesConfig.needsReadStatus) {
             // vulcan: change message status or download attachments
             if ((message.isReceived || message.isDeleted) && !message.seen || message.attachmentIds == null) {
                 EdziennikTask.messageGet(App.profileId, message).enqueue(activity)

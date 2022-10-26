@@ -45,17 +45,15 @@ class GradesConfigDialog(
     override fun inflate(layoutInflater: LayoutInflater) =
         DialogConfigGradesBinding.inflate(layoutInflater)
 
-    private val profileConfig by lazy { app.config.getFor(app.profileId).grades }
-
     @SuppressLint("SetTextI18n")
     override suspend fun loadConfig() {
-        b.customPlusCheckBox.isChecked = profileConfig.plusValue != null
+        b.customPlusCheckBox.isChecked = app.profile.config.grades.plusValue != null
         b.customPlusValue.isVisible = b.customPlusCheckBox.isChecked
-        b.customMinusCheckBox.isChecked = profileConfig.minusValue != null
+        b.customMinusCheckBox.isChecked = app.profile.config.grades.minusValue != null
         b.customMinusValue.isVisible = b.customMinusCheckBox.isChecked
 
-        b.customPlusValue.progress = profileConfig.plusValue ?: 0.5f
-        b.customMinusValue.progress = profileConfig.minusValue ?: 0.25f
+        b.customPlusValue.progress = app.profile.config.grades.plusValue ?: 0.5f
+        b.customMinusValue.progress = app.profile.config.grades.minusValue ?: 0.25f
 
         when (config.orderBy) {
             ORDER_BY_DATE_DESC -> b.sortGradesByDateRadio
@@ -63,13 +61,13 @@ class GradesConfigDialog(
             else -> null
         }?.isChecked = true
 
-        when (profileConfig.colorMode) {
+        when (app.profile.config.grades.colorMode) {
             COLOR_MODE_DEFAULT -> b.gradeColorFromERegister
             COLOR_MODE_WEIGHTED -> b.gradeColorByValue
             else -> null
         }?.isChecked = true
 
-        when (profileConfig.yearAverageMode) {
+        when (app.profile.config.grades.yearAverageMode) {
             YEAR_ALL_GRADES -> b.gradeAverageMode4
             YEAR_1_AVG_2_AVG -> b.gradeAverageMode0
             YEAR_1_SEM_2_AVG -> b.gradeAverageMode1
@@ -79,21 +77,21 @@ class GradesConfigDialog(
         }?.isChecked = true
 
         b.dontCountGrades.isChecked =
-            profileConfig.dontCountEnabled && profileConfig.dontCountGrades.isNotEmpty()
-        b.hideImproved.isChecked = profileConfig.hideImproved
-        b.averageWithoutWeight.isChecked = profileConfig.averageWithoutWeight
+            app.profile.config.grades.dontCountEnabled && app.profile.config.grades.dontCountGrades.isNotEmpty()
+        b.hideImproved.isChecked = app.profile.config.grades.hideImproved
+        b.averageWithoutWeight.isChecked = app.profile.config.grades.averageWithoutWeight
 
-        if (profileConfig.dontCountGrades.isEmpty()) {
+        if (app.profile.config.grades.dontCountGrades.isEmpty()) {
             b.dontCountGradesText.setText("nb, 0, bz, bd")
         } else {
-            b.dontCountGradesText.setText(profileConfig.dontCountGrades.join(", "))
+            b.dontCountGradesText.setText(app.profile.config.grades.dontCountGrades.join(", "))
         }
     }
 
     override suspend fun saveConfig() {
-        profileConfig.plusValue =
+        app.profile.config.grades.plusValue =
             if (b.customPlusCheckBox.isChecked) b.customPlusValue.progress else null
-        profileConfig.minusValue =
+        app.profile.config.grades.minusValue =
             if (b.customMinusCheckBox.isChecked) b.customMinusValue.progress else null
 
         b.dontCountGradesText.setText(
@@ -103,8 +101,8 @@ class GradesConfigDialog(
                 ?.lowercase()
                 ?.replace(", ", ",")
         )
-        profileConfig.dontCountEnabled = b.dontCountGrades.isChecked
-        profileConfig.dontCountGrades = b.dontCountGradesText.text
+        app.profile.config.grades.dontCountEnabled = b.dontCountGrades.isChecked
+        app.profile.config.grades.dontCountGrades = b.dontCountGradesText.text
             ?.split(",")
             ?.map { it.trim() }
             ?: listOf()
@@ -121,39 +119,39 @@ class GradesConfigDialog(
         // who the hell named those methods
         // THIS SHIT DOES NOT EVEN WORK
         b.customPlusValue.doOnStopTrackingTouch {
-            profileConfig.plusValue = it.progress
+            app.profile.config.grades.plusValue = it.progress
         }
         b.customMinusValue.doOnStopTrackingTouch {
-            profileConfig.minusValue = it.progress
+            app.profile.config.grades.minusValue = it.progress
         }
 
         b.sortGradesByDateRadio.setOnSelectedListener { config.orderBy = ORDER_BY_DATE_DESC }
         b.sortGradesBySubjectRadio.setOnSelectedListener { config.orderBy = ORDER_BY_SUBJECT_ASC }
 
         b.gradeColorFromERegister.setOnSelectedListener {
-            profileConfig.colorMode = COLOR_MODE_DEFAULT
+            app.profile.config.grades.colorMode = COLOR_MODE_DEFAULT
         }
-        b.gradeColorByValue.setOnSelectedListener { profileConfig.colorMode = COLOR_MODE_WEIGHTED }
+        b.gradeColorByValue.setOnSelectedListener { app.profile.config.grades.colorMode = COLOR_MODE_WEIGHTED }
 
         b.gradeAverageMode4.setOnSelectedListener {
-            profileConfig.yearAverageMode = YEAR_ALL_GRADES
+            app.profile.config.grades.yearAverageMode = YEAR_ALL_GRADES
         }
         b.gradeAverageMode0.setOnSelectedListener {
-            profileConfig.yearAverageMode = YEAR_1_AVG_2_AVG
+            app.profile.config.grades.yearAverageMode = YEAR_1_AVG_2_AVG
         }
         b.gradeAverageMode1.setOnSelectedListener {
-            profileConfig.yearAverageMode = YEAR_1_SEM_2_AVG
+            app.profile.config.grades.yearAverageMode = YEAR_1_SEM_2_AVG
         }
         b.gradeAverageMode2.setOnSelectedListener {
-            profileConfig.yearAverageMode = YEAR_1_AVG_2_SEM
+            app.profile.config.grades.yearAverageMode = YEAR_1_AVG_2_SEM
         }
         b.gradeAverageMode3.setOnSelectedListener {
-            profileConfig.yearAverageMode = YEAR_1_SEM_2_SEM
+            app.profile.config.grades.yearAverageMode = YEAR_1_SEM_2_SEM
         }
 
-        b.hideImproved.onChange { _, isChecked -> profileConfig.hideImproved = isChecked }
+        b.hideImproved.onChange { _, isChecked -> app.profile.config.grades.hideImproved = isChecked }
         b.averageWithoutWeight.onChange { _, isChecked ->
-            profileConfig.averageWithoutWeight = isChecked
+            app.profile.config.grades.averageWithoutWeight = isChecked
         }
 
         b.averageWithoutWeightHelp.onClick {

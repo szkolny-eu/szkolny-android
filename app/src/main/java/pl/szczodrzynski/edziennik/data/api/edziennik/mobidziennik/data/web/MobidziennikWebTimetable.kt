@@ -15,6 +15,7 @@ import pl.szczodrzynski.edziennik.data.api.models.DataRemoveModel.Timetable.Comp
 import pl.szczodrzynski.edziennik.data.db.entity.Lesson
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.MS
 import pl.szczodrzynski.edziennik.ext.get
@@ -335,6 +336,7 @@ class MobidziennikWebTimetable(
                 }
 
                 it.id = it.buildId()
+                it.ownerId = it.buildOwnerId()
                 it.isExtra = isExtra
 
                 val seen = profile?.empty == false || lessonDate < Date.getToday()
@@ -343,7 +345,7 @@ class MobidziennikWebTimetable(
                     data.metadataList.add(
                         Metadata(
                             data.profileId,
-                            Metadata.TYPE_LESSON_CHANGE,
+                            MetadataType.LESSON_CHANGE,
                             it.id,
                             seen,
                             seen

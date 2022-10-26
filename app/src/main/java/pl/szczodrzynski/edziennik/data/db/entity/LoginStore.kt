@@ -8,6 +8,8 @@ import android.os.Bundle
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.google.gson.JsonObject
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.*
 
 @Entity(tableName = "loginStores", primaryKeys = ["loginStoreId"])
@@ -16,25 +18,14 @@ class LoginStore(
         val id: Int,
 
         @ColumnInfo(name = "loginStoreType")
-        val type: Int,
+        val type: LoginType,
 
         @ColumnInfo(name = "loginStoreMode")
-        val mode: Int,
+        val mode: LoginMode,
 
         @ColumnInfo(name = "loginStoreData")
         val data: JsonObject = JsonObject()
 ) {
-    companion object {
-        const val LOGIN_TYPE_MOBIDZIENNIK = 1
-        const val LOGIN_TYPE_LIBRUS = 2
-        const val LOGIN_TYPE_VULCAN = 4
-        const val LOGIN_TYPE_IDZIENNIK = 3
-        const val LOGIN_TYPE_EDUDZIENNIK = 5
-        const val LOGIN_TYPE_DEMO = 20
-        const val LOGIN_MODE_LIBRUS_EMAIL = 0
-        const val LOGIN_MODE_LIBRUS_SYNERGIA = 1
-        const val LOGIN_MODE_LIBRUS_JST = 2
-    }
 
     fun hasLoginData(key: String) = data.has(key)
     fun getLoginData(key: String, defaultValue: Boolean) = data.getBoolean(key) ?: defaultValue
@@ -64,31 +55,11 @@ class LoginStore(
         }
     }
 
-    fun type(): String {
-        return when (type) {
-            LOGIN_TYPE_MOBIDZIENNIK -> "LOGIN_TYPE_MOBIDZIENNIK"
-            LOGIN_TYPE_LIBRUS -> "LOGIN_TYPE_LIBRUS"
-            LOGIN_TYPE_IDZIENNIK -> "LOGIN_TYPE_IDZIENNIK"
-            LOGIN_TYPE_VULCAN -> "LOGIN_TYPE_VULCAN"
-            LOGIN_TYPE_DEMO -> "LOGIN_TYPE_DEMO"
-            else -> "unknown"
-        }
-    }
-
-    fun mode(): String {
-        return when (mode) {
-            LOGIN_MODE_LIBRUS_EMAIL -> "LOGIN_MODE_LIBRUS_EMAIL"
-            LOGIN_MODE_LIBRUS_SYNERGIA -> "LOGIN_MODE_LIBRUS_SYNERGIA"
-            LOGIN_MODE_LIBRUS_JST -> "LOGIN_MODE_LIBRUS_JST"
-            else -> "unknown"
-        }
-    }
-
     override fun toString(): String {
         return "LoginStore{" +
                 "id=" + id +
-                ", type=" + type() +
-                ", mode=" + mode() +
+                ", type=" + type +
+                ", mode=" + mode +
                 ", data=" + data +
                 '}'
     }

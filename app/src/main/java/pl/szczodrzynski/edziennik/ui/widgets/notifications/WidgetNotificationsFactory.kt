@@ -14,10 +14,8 @@ import com.google.gson.JsonParser
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notification
-import pl.szczodrzynski.edziennik.ext.getInt
-import pl.szczodrzynski.edziennik.ext.getLong
-import pl.szczodrzynski.edziennik.ext.getNotificationTitle
-import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.data.db.enums.NotificationType
+import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.widgets.WidgetConfig
 import pl.szczodrzynski.edziennik.utils.models.Date
 
@@ -51,11 +49,11 @@ class WidgetNotificationsFactory(val app: App, val config: WidgetConfig) : Remot
                     getString("title") ?: "",
                     getString("text") ?: "",
                     getString("textLong"),
-                    getInt("type") ?: 0,
+                    getInt("type")?.asNotificationTypeOrNull() ?: NotificationType.GENERAL,
                     getInt("profileId"),
                     getString("profileName"),
                     getInt("posted") == 1,
-                    getInt("viewId"),
+                    getInt("viewId")?.asNavTargetOrNull(),
                     getString("extras")?.let { JsonParser.parseString(it).asJsonObject },
                     getLong("addedDate") ?: System.currentTimeMillis()
             )
@@ -63,7 +61,7 @@ class WidgetNotificationsFactory(val app: App, val config: WidgetConfig) : Remot
 
         views.apply {
             setTextViewText(R.id.widgetNotificationsTitle,
-                    app.getString(R.string.widget_notifications_title_format, notification.title, app.getNotificationTitle(notification.type)))
+                    app.getString(R.string.widget_notifications_title_format, notification.title, notification.type.titleRes.resolveString(app)))
             setTextViewText(R.id.widgetNotificationsText, notification.text)
             setTextViewText(R.id.widgetNotificationsDate, Date.fromMillis(notification.addedDate).formattedString)
             setOnClickFillInIntent(R.id.widgetNotificationsRoot, Intent().also { notification.fillIntent(it) })

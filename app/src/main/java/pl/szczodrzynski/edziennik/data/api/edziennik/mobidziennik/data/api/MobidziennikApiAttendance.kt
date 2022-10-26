@@ -11,6 +11,8 @@ import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_ABSEN
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_PRESENT
 import pl.szczodrzynski.edziennik.data.db.entity.Attendance.Companion.TYPE_RELEASED
 import pl.szczodrzynski.edziennik.data.db.entity.Metadata
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
+import pl.szczodrzynski.edziennik.ext.dateToSemester
 
 class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) {
     init { run {
@@ -70,7 +72,7 @@ class MobidziennikApiAttendance(val data: DataMobidziennik, rows: List<String>) 
                 data.metadataList.add(
                         Metadata(
                                 data.profileId,
-                                Metadata.TYPE_ATTENDANCE,
+                                MetadataType.ATTENDANCE,
                                 id,
                                 data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == Attendance.TYPE_UNKNOWN,
                                 data.profile?.empty ?: false || baseType == Attendance.TYPE_PRESENT_CUSTOM || baseType == Attendance.TYPE_UNKNOWN

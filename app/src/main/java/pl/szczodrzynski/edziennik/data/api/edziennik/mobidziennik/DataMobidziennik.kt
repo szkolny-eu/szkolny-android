@@ -6,14 +6,14 @@ package pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik
 
 import android.util.LongSparseArray
 import pl.szczodrzynski.edziennik.App
-import pl.szczodrzynski.edziennik.data.api.LOGIN_METHOD_MOBIDZIENNIK_WEB
-import pl.szczodrzynski.edziennik.data.api.Regexes
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
 import pl.szczodrzynski.edziennik.ext.currentTimeUnix
-import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.getStudentData
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
+import pl.szczodrzynski.edziennik.ext.set
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 
@@ -31,7 +31,7 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
     override fun satisfyLoginMethods() {
         loginMethods.clear()
         if (isWebLoginValid()) {
-            loginMethods += LOGIN_METHOD_MOBIDZIENNIK_WEB
+            loginMethods += LoginMethod.MOBIDZIENNIK_WEB
         }
     }
 
@@ -87,7 +87,7 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
     private var mStudentId: Int? = null
     var studentId: Int
         get() { mStudentId = mStudentId ?: profile?.getStudentData("studentId", 0); return mStudentId ?: 0 }
-        set(value) { profile?.putStudentData("studentId", value) ?: return; mStudentId = value }
+        set(value) { profile["studentId"] = value; mStudentId = value }
 
     /*   __          __  _
          \ \        / / | |
@@ -127,7 +127,7 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
      */
     var globalId: String?
         get() { mGlobalId = mGlobalId ?: profile?.getStudentData("globalId", null); return mGlobalId }
-        set(value) { profile?.putStudentData("globalId", value) ?: return; mGlobalId = value }
+        set(value) { profile["globalId"] = value; mGlobalId = value }
     private var mGlobalId: String? = null
 
     /**
@@ -137,7 +137,7 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
      */
     var loginEmail: String?
         get() { mLoginEmail = mLoginEmail ?: profile?.getStudentData("email", null); return mLoginEmail }
-        set(value) { profile?.putStudentData("email", value); mLoginEmail = value }
+        set(value) { profile["email"] = value; mLoginEmail = value }
     private var mLoginEmail: String? = null
 
     /**
@@ -146,7 +146,7 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
      */
     var loginId: String?
         get() { mLoginId = mLoginId ?: profile?.getStudentData("loginId", null); return mLoginId }
-        set(value) { profile?.putStudentData("loginId", value) ?: return; mLoginId = value }
+        set(value) { profile["loginId"] = value; mLoginId = value }
     private var mLoginId: String? = null
 
     /**
@@ -154,7 +154,7 @@ class DataMobidziennik(app: App, profile: Profile?, loginStore: LoginStore) : Da
      */
     var ciasteczkoAutoryzacji: String?
         get() { mCiasteczkoAutoryzacji = mCiasteczkoAutoryzacji ?: profile?.getStudentData("ciasteczkoAutoryzacji", null); return mCiasteczkoAutoryzacji }
-        set(value) { profile?.putStudentData("ciasteczkoAutoryzacji", value) ?: return; mCiasteczkoAutoryzacji = value }
+        set(value) { profile["ciasteczkoAutoryzacji"] = value; mCiasteczkoAutoryzacji = value }
     private var mCiasteczkoAutoryzacji: String? = null
 
 

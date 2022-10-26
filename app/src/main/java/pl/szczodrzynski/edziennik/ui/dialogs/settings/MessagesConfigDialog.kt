@@ -28,13 +28,11 @@ class MessagesConfigDialog(
     override fun inflate(layoutInflater: LayoutInflater) =
         MessagesConfigDialogBinding.inflate(layoutInflater)
 
-    private val profileConfig by lazy { app.config.getFor(app.profileId).ui }
-
     override suspend fun loadConfig() {
-        b.config = profileConfig
+        b.config = app.profile.config.ui
 
         b.greetingText.setText(
-            profileConfig.messagesGreetingText
+            app.profile.config.ui.messagesGreetingText
                 ?: "\n\nZ poważaniem\n${app.profile.accountOwnerName}"
         )
     }
@@ -42,8 +40,8 @@ class MessagesConfigDialog(
     override suspend fun saveConfig() {
         val greetingText = b.greetingText.text?.toString()?.trim()
         if (greetingText.isNullOrEmpty())
-            profileConfig.messagesGreetingText = null
+            app.profile.config.ui.messagesGreetingText = null
         else
-            profileConfig.messagesGreetingText = "\n\n$greetingText"
+            app.profile.config.ui.messagesGreetingText = "\n\n$greetingText"
     }
 }

@@ -17,7 +17,7 @@ interface ConfigDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAll(list: List<ConfigEntry>)
 
-    @Query("SELECT * FROM config WHERE profileId = -1")
+    @Query("SELECT * FROM config")
     fun getAllNow(): List<ConfigEntry>
 
     @Query("SELECT * FROM config WHERE profileId = :profileId")

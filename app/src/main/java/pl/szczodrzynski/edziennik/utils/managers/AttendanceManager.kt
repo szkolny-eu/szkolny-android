@@ -24,7 +24,7 @@ class AttendanceManager(val app: App) : CoroutineScope {
         get() = job + Dispatchers.Default
 
     val useSymbols
-        get() = app.config.forProfile().attendance.useSymbols
+        get() = app.profile.config.attendance.useSymbols
 
     fun getTypeShort(baseType: Int): String {
         return when (baseType) {

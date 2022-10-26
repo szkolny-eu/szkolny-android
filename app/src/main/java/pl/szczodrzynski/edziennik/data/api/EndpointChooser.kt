@@ -2,115 +2,116 @@ package pl.szczodrzynski.edziennik.data.api
 
 import pl.szczodrzynski.edziennik.data.api.models.Data
 import pl.szczodrzynski.edziennik.data.api.models.Feature
-import pl.szczodrzynski.edziennik.data.api.models.LoginMethod
 import pl.szczodrzynski.edziennik.data.db.entity.EndpointTimer
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_ALWAYS
 import pl.szczodrzynski.edziennik.data.db.entity.SYNC_NEVER
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMethod
+import pl.szczodrzynski.edziennik.ext.getFeatureTypesNecessary
+import pl.szczodrzynski.edziennik.ext.getFeatureTypesUnnecessary
+import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 
-fun Data.prepare(loginMethods: List<LoginMethod>, features: List<Feature>, featureIds: List<Int>, viewId: Int?, onlyEndpoints: List<Int>?) {
-    val data = this
-
-    val possibleLoginMethods = data.loginMethods.toMutableList()
-
-    for (loginMethod in loginMethods) {
-        if (loginMethod.isPossible(profile, loginStore))
-            possibleLoginMethods += loginMethod.loginMethodId
+fun Data.prepare(
+    features: List<Feature>,
+    featureTypes: Set<FeatureType>?,
+    onlyEndpoints: Set<Int>?,
+) {
+    val loginType = this.loginStore.type
+    val possibleLoginMethods = this.loginMethods.toMutableList()
+    possibleLoginMethods += LoginMethod.values().filter {
+        it.loginType == loginType && it.isPossible?.invoke(profile, loginStore) != false
     }
 
     //var highestLoginMethod = 0
-    var endpointList = mutableListOf<Feature>()
-    val requiredLoginMethods = mutableListOf<Int>()
+    var possibleFeatures = mutableListOf<Feature>()
+    val requiredLoginMethods = mutableListOf<LoginMethod>()
 
-    data.targetEndpointIds.clear()
-    data.targetLoginMethodIds.clear()
+    val syncFeatureTypes = when {
+        featureTypes.isNotNullNorEmpty() -> featureTypes!!
+        else -> getFeatureTypesUnnecessary()
+    } + getFeatureTypesNecessary()
+    val forceFeatureType = featureTypes?.singleOrNull()
+
+    this.targetEndpoints.clear()
+    this.targetLoginMethods.clear()
 
     // get all endpoints for every feature, only if possible to login and possible/necessary to sync
-    for (featureId in featureIds) {
-        features.filter {
-            it.featureId == featureId // feature ID matches
+    for (featureId in syncFeatureTypes) {
+        possibleFeatures += features.filter {
+            it.featureType == featureId // feature ID matches
                     && possibleLoginMethods.containsAll(it.requiredLoginMethods) // is possible to login
-                    && it.shouldSync?.invoke(data) ?: true // is necessary/possible to sync
-        }.let {
-            endpointList.addAll(it)
+                    && it.shouldSync?.invoke(this) ?: true // is necessary/possible to sync
         }
     }
 
     val timestamp = System.currentTimeMillis()
 
-    endpointList = endpointList
-            // sort the endpoint list by feature ID and priority
-            .sortedWith(compareBy(Feature::featureId, Feature::priority))
-            // select only the most important endpoint for each feature
-            .distinctBy { it.featureId }
-            .toMutableList()
-            // add all endpoint IDs and required login methods, filtering using timers
-            .onEach { feature ->
-                feature.endpointIds.forEach { endpoint ->
-                    if (onlyEndpoints?.contains(endpoint.first) == false)
-                        return@forEach
-                    (data.endpointTimers
-                            .singleOrNull { it.endpointId == endpoint.first } ?: EndpointTimer(data.profile?.id
-                            ?: -1, endpoint.first))
-                            .let { timer ->
-                                if (
-                                        onlyEndpoints?.contains(endpoint.first) == true ||
-                                        timer.nextSync == SYNC_ALWAYS ||
-                                        viewId != null && timer.viewId == viewId ||
-                                        timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp
-                                ) {
-                                    data.targetEndpointIds[endpoint.first] = timer.lastSync
-                                    requiredLoginMethods.add(endpoint.second)
-                                }
-                            }
-                }
+    possibleFeatures = possibleFeatures
+        // sort the endpoint list by feature ID and priority
+        .sortedWith(compareBy(Feature::featureType, Feature::priority))
+        // select only the most important endpoint for each feature
+        .distinctBy { it.featureType }
+        .toMutableList()
+
+    for (feature in possibleFeatures) {
+        // add all endpoint IDs and required login methods, filtering using timers
+        feature.endpoints.forEach { endpoint ->
+            if (onlyEndpoints?.contains(endpoint.first) == false)
+                return@forEach
+            val timer = this.endpointTimers
+                .singleOrNull { it.endpointId == endpoint.first }
+                ?: EndpointTimer(this.profileId, endpoint.first)
+            if (
+                onlyEndpoints?.contains(endpoint.first) == true ||
+                timer.nextSync == SYNC_ALWAYS ||
+                forceFeatureType != null && timer.featureType == forceFeatureType ||
+                timer.nextSync != SYNC_NEVER && timer.nextSync < timestamp
+            ) {
+                this.targetEndpoints[endpoint.first] = timer.lastSync
+                requiredLoginMethods += endpoint.second
             }
+        }
+    }
 
     // check every login method for any dependencies
-    for (loginMethodId in requiredLoginMethods) {
-        var requiredLoginMethod: Int? = loginMethodId
-        while (requiredLoginMethod != LOGIN_METHOD_NOT_NEEDED) {
-            loginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let { loginMethod ->
-                if (requiredLoginMethod != null)
-                    data.targetLoginMethodIds.add(requiredLoginMethod!!)
-                requiredLoginMethod = loginMethod.requiredLoginMethod(data.profile, data.loginStore)
-            }
+    for (loginMethod in requiredLoginMethods) {
+        var requiredLoginMethod: LoginMethod? = loginMethod
+        while (requiredLoginMethod != null) {
+            this.targetLoginMethods += requiredLoginMethod
+            requiredLoginMethod = requiredLoginMethod.requiredLoginMethod?.invoke(this.profile, this.loginStore)
         }
     }
 
     // sort and distinct every login method and endpoint
-    data.targetLoginMethodIds = data.targetLoginMethodIds.toHashSet().toMutableList()
-    data.targetLoginMethodIds.sort()
+    this.targetLoginMethods = this.targetLoginMethods.toHashSet().toMutableList()
+    this.targetLoginMethods.sort()
 
     //data.targetEndpointIds = data.targetEndpointIds.toHashSet().toMutableList()
     //data.targetEndpointIds.sort()
 
-    progressCount = targetLoginMethodIds.size + targetEndpointIds.size
+    progressCount = targetLoginMethods.size + targetEndpoints.size
     progressStep = if (progressCount <= 0) 0f else 100f / progressCount.toFloat()
 }
 
-fun Data.prepareFor(loginMethods: List<LoginMethod>, loginMethodId: Int) {
+fun Data.prepareFor(loginMethod: LoginMethod) {
+    val loginType = loginStore.type
     val possibleLoginMethods = this.loginMethods.toMutableList()
-
-    loginMethods.forEach {
-        if (it.isPossible(profile, loginStore))
-            possibleLoginMethods += it.loginMethodId
+    possibleLoginMethods += LoginMethod.values().filter {
+        it.loginType == loginType && it.isPossible?.invoke(profile, loginStore) != false
     }
 
-    targetLoginMethodIds.clear()
+    this.targetLoginMethods.clear()
 
     // check the login method for any dependencies
-    var requiredLoginMethod: Int? = loginMethodId
-    while (requiredLoginMethod != LOGIN_METHOD_NOT_NEEDED) {
-        loginMethods.singleOrNull { it.loginMethodId == requiredLoginMethod }?.let {
-            if (requiredLoginMethod != null)
-                targetLoginMethodIds.add(requiredLoginMethod!!)
-            requiredLoginMethod = it.requiredLoginMethod(profile, loginStore)
-        }
+    var requiredLoginMethod: LoginMethod? = loginMethod
+    while (requiredLoginMethod != null) {
+        this.targetLoginMethods += requiredLoginMethod
+        requiredLoginMethod = requiredLoginMethod.requiredLoginMethod?.invoke(this.profile, this.loginStore)
     }
 
     // sort and distinct every login method
-    targetLoginMethodIds = targetLoginMethodIds.toHashSet().toMutableList()
-    targetLoginMethodIds.sort()
+    this.targetLoginMethods = this.targetLoginMethods.toHashSet().toMutableList()
+    this.targetLoginMethods.sort()
 
     progressCount = 0
     progressStep = 0f

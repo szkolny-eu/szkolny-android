@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
-import pl.szczodrzynski.edziennik.data.api.ERROR_CAPTCHA_NEEDED
+import pl.szczodrzynski.edziennik.data.api.ERROR_REQUIRES_USER_ACTION
 import pl.szczodrzynski.edziennik.data.api.LOGIN_NO_ARGUMENTS
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
@@ -27,8 +27,12 @@ import pl.szczodrzynski.edziennik.data.api.events.FirstLoginFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginProgressFragmentBinding
+import pl.szczodrzynski.edziennik.ext.getEnum
 import pl.szczodrzynski.edziennik.ext.joinNotNullStrings
+import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 
@@ -78,8 +82,8 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
                     app.db.profileDao().lastId ?: 0,
                     activity.profiles.maxByOrNull { it.profile.id }?.profile?.id ?: 0
             )
-            val loginType = args.getInt("loginType", -1)
-            val loginMode = args.getInt("loginMode", 0)
+            val loginType = args.getEnum<LoginType>("loginType") ?: return@launch
+            val loginMode = args.getEnum<LoginMode>("loginMode") ?: return@launch
 
             val loginStore = LoginStore(
                     id = maxProfileId + 1,
@@ -137,14 +141,21 @@ class LoginProgressFragment : Fragment(), CoroutineScope {
             return
         }
 
-        app.userActionManager.execute(activity, event.profileId, event.type, onSuccess = { code ->
-            args.putString("recaptchaCode", code)
-            args.putLong("recaptchaTime", System.currentTimeMillis())
-            doFirstLogin(args)
-        }, onFailure = {
-            activity.error(ApiError(TAG, ERROR_CAPTCHA_NEEDED))
-            nav.navigateUp()
-        })
+        val callback = UserActionManager.UserActionCallback(
+            onSuccess = { data ->
+                args.putAll(data)
+                doFirstLogin(args)
+            },
+            onFailure = {
+                activity.error(ApiError(TAG, ERROR_REQUIRES_USER_ACTION))
+                nav.navigateUp()
+            },
+            onCancel = {
+                nav.navigateUp()
+            },
+        )
+
+        app.userActionManager.execute(activity, event, callback)
     }
 
     override fun onStart() {

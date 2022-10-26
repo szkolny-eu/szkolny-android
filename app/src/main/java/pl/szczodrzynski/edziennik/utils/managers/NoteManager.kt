@@ -80,7 +80,7 @@ class NoteManager(private val app: App) {
             OwnerType.GRADE ->
                 app.db.gradeDao().getByIdNow(note.profileId, note.ownerId)
             OwnerType.LESSON ->
-                app.db.timetableDao().getByIdNow(note.profileId, note.ownerId)
+                app.db.timetableDao().getByOwnerIdNow(note.profileId, note.ownerId)
             OwnerType.MESSAGE ->
                 app.db.messageDao().getByIdNow(note.profileId, note.ownerId)
             else -> null
@@ -93,10 +93,15 @@ class NoteManager(private val app: App) {
         return getOwner(note) != null
     }
 
-    suspend fun saveNote(activity: AppCompatActivity, note: Note, wasShared: Boolean): Boolean {
+    suspend fun saveNote(
+        activity: AppCompatActivity,
+        note: Note,
+        teamId: Long?,
+        wasShared: Boolean,
+    ): Boolean {
         val success = when {
             !note.isShared && wasShared -> unshareNote(activity, note)
-            note.isShared -> shareNote(activity, note)
+            note.isShared -> shareNote(activity, note, teamId)
             else -> true
         }
 
@@ -124,9 +129,9 @@ class NoteManager(private val app: App) {
         return true
     }
 
-    private suspend fun shareNote(activity: AppCompatActivity, note: Note): Boolean {
+    private suspend fun shareNote(activity: AppCompatActivity, note: Note, teamId: Long?): Boolean {
         return app.api.runCatching(activity) {
-            shareNote(note)
+            shareNote(note, teamId)
         } != null
     }
 

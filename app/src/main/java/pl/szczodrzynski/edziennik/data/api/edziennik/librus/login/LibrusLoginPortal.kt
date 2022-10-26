@@ -10,7 +10,9 @@ import im.wangchao.mhttp.callback.TextCallbackHandler
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.data.api.*
 import pl.szczodrzynski.edziennik.data.api.edziennik.librus.DataLibrus
+import pl.szczodrzynski.edziennik.data.api.events.UserActionRequiredEvent
 import pl.szczodrzynski.edziennik.data.api.models.ApiError
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.utils.Utils.d
 import java.net.HttpURLConnection.*
@@ -23,7 +25,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
     }
 
     init { run {
-        if (data.loginStore.mode != LOGIN_MODE_LIBRUS_EMAIL) {
+        if (data.loginStore.mode != LoginMode.LIBRUS_EMAIL) {
             data.error(ApiError(TAG, ERROR_INVALID_LOGIN_MODE))
             return@run
         }
@@ -148,12 +150,23 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                         val error = if (response.code() == 200) null else
                             json.getJsonArray("errors")?.getString(0)
                                     ?: json.getJsonObject("errors")?.entrySet()?.firstOrNull()?.value?.asString
+
+                        if (error?.contains("robotem") == true || json.getBoolean("captchaRequired") == true) {
+                            data.requireUserAction(
+                                type = UserActionRequiredEvent.Type.RECAPTCHA,
+                                params = Bundle(
+                                    "siteKey" to LIBRUS_PORTAL_RECAPTCHA_KEY,
+                                    "referer" to LIBRUS_PORTAL_RECAPTCHA_REFERER,
+                                ),
+                                errorText = R.string.notification_user_action_required_captcha_librus,
+                            )
+                            return
+                        }
+
                         error?.let { code ->
                             when {
                                 code.contains("Sesja logowania wygasła") -> ERROR_LOGIN_LIBRUS_PORTAL_CSRF_EXPIRED
                                 code.contains("Upewnij się, że nie") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
-                                // this doesn't work anyway: `errors` is an object with `g-recaptcha-response` set
-                                code.contains("robotem") -> ERROR_CAPTCHA_LIBRUS_PORTAL
                                 code.contains("Podany adres e-mail jest nieprawidłowy.") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
                                 else -> ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR
                             }.let { errorCode ->
@@ -162,12 +175,6 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                                         .withResponse(response))
                                 return
                             }
-                        }
-                        if (json.getBoolean("captchaRequired") == true) {
-                            data.error(ApiError(TAG, ERROR_CAPTCHA_LIBRUS_PORTAL)
-                                    .withResponse(response)
-                                    .withApiResponse(json))
-                            return
                         }
                         authorize(json.getString("redirect", LIBRUS_AUTHORIZE_URL))
                     }

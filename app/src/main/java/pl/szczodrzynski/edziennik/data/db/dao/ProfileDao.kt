@@ -49,7 +49,7 @@ interface ProfileDao {
     @get:Query("SELECT profileId FROM profiles WHERE profileId >= 0 ORDER BY profileId")
     val idsNow: List<Int>
 
-    @Query("SELECT profiles.* FROM teams JOIN profiles USING(profileId) WHERE teamCode = :teamCode AND registration = " + Profile.REGISTRATION_ENABLED + " AND enableSharedEvents = 1")
+    @Query("SELECT profiles.* FROM teams JOIN profiles USING(profileId) WHERE teamCode = :teamCode AND registration = " + Profile.REGISTRATION_ENABLED)
     fun getByTeamCodeNowWithRegistration(teamCode: String?): List<Profile>
 
     @get:Query("SELECT profileId FROM profiles WHERE profileId > 0 ORDER BY profileId ASC LIMIT 1")

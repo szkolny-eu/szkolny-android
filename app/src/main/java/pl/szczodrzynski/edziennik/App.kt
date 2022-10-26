@@ -12,6 +12,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import androidx.work.Configuration
@@ -27,36 +28,65 @@ import com.google.gson.Gson
 import com.hypertrack.hyperlog.HyperLog
 import com.mikepenz.iconics.Iconics
 import im.wangchao.mhttp.MHttp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.leolin.shortcutbadger.ShortcutBadger
 import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
+import pl.szczodrzynski.edziennik.config.AppData
 import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.data.api.events.ProfileListEmptyEvent
 import pl.szczodrzynski.edziennik.data.api.szkolny.SzkolnyApi
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.Signing
 import pl.szczodrzynski.edziennik.data.db.AppDb
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.MS
+import pl.szczodrzynski.edziennik.ext.putExtras
 import pl.szczodrzynski.edziennik.ext.setLanguage
 import pl.szczodrzynski.edziennik.network.SSLProviderInstaller
 import pl.szczodrzynski.edziennik.network.cookie.DumbCookieJar
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.base.CrashActivity
-import pl.szczodrzynski.edziennik.utils.*
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
+import pl.szczodrzynski.edziennik.utils.DebugLogFormat
+import pl.szczodrzynski.edziennik.utils.PermissionChecker
+import pl.szczodrzynski.edziennik.utils.Themes
+import pl.szczodrzynski.edziennik.utils.Utils
 import pl.szczodrzynski.edziennik.utils.Utils.d
-import pl.szczodrzynski.edziennik.utils.managers.*
+import pl.szczodrzynski.edziennik.utils.managers.AttendanceManager
+import pl.szczodrzynski.edziennik.utils.managers.AvailabilityManager
+import pl.szczodrzynski.edziennik.utils.managers.BuildManager
+import pl.szczodrzynski.edziennik.utils.managers.EventManager
+import pl.szczodrzynski.edziennik.utils.managers.GradesManager
+import pl.szczodrzynski.edziennik.utils.managers.MessageManager
+import pl.szczodrzynski.edziennik.utils.managers.NoteManager
+import pl.szczodrzynski.edziennik.utils.managers.NotificationChannelsManager
+import pl.szczodrzynski.edziennik.utils.managers.PermissionManager
+import pl.szczodrzynski.edziennik.utils.managers.TextStylingManager
+import pl.szczodrzynski.edziennik.utils.managers.TimetableManager
+import pl.szczodrzynski.edziennik.utils.managers.UpdateManager
+import pl.szczodrzynski.edziennik.utils.managers.UserActionManager
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
+import kotlin.system.exitProcess
 
 class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     companion object {
         @Volatile
         lateinit var db: AppDb
+            private set
         lateinit var config: Config
+            // private set // for LabFragment
         lateinit var profile: Profile
+            private set
+        lateinit var data: AppData
+            private set
         val profileId
             get() = profile.id
 
@@ -66,18 +96,19 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     }
 
     val api by lazy { SzkolnyApi(this) }
-    val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
-    val userActionManager by lazy { UserActionManager(this) }
-    val gradesManager by lazy { GradesManager(this) }
-    val timetableManager by lazy { TimetableManager(this) }
-    val eventManager by lazy { EventManager(this) }
-    val permissionManager by lazy { PermissionManager(this) }
     val attendanceManager by lazy { AttendanceManager(this) }
-    val buildManager by lazy { BuildManager(this) }
     val availabilityManager by lazy { AvailabilityManager(this) }
-    val textStylingManager by lazy { TextStylingManager(this) }
+    val buildManager by lazy { BuildManager(this) }
+    val eventManager by lazy { EventManager(this) }
+    val gradesManager by lazy { GradesManager(this) }
     val messageManager by lazy { MessageManager(this) }
     val noteManager by lazy { NoteManager(this) }
+    val notificationChannelsManager by lazy { NotificationChannelsManager(this) }
+    val permissionManager by lazy { PermissionManager(this) }
+    val textStylingManager by lazy { TextStylingManager(this) }
+    val timetableManager by lazy { TimetableManager(this) }
+    val updateManager by lazy { UpdateManager(this) }
+    val userActionManager by lazy { UserActionManager(this) }
 
     val db
         get() = App.db
@@ -87,6 +118,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         get() = App.profile
     val profileId
         get() = App.profileId
+    val data
+        get() = App.data
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -121,9 +154,6 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         SSLProviderInstaller.enableSupportedTls(builder, enableCleartext = true)
 
         if (devMode) {
-            HyperLog.initialize(this)
-            HyperLog.setLogLevel(Log.VERBOSE)
-            HyperLog.setLogFormat(DebugLogFormat(this))
             if (enableChucker) {
                 val chuckerCollector = ChuckerCollector(this, true, RetentionManager.Period.ONE_HOUR)
                 val chuckerInterceptor = ChuckerInterceptor(this, chuckerCollector)
@@ -178,15 +208,23 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         Iconics.respectFontBoundsDefault = true
 
         // initialize companion object values
+        AppData.read(this)
         App.db = AppDb(this)
         App.config = Config(App.db)
-        App.profile = Profile(0, 0, 0, "")
         debugMode = BuildConfig.DEBUG
         devMode = config.devMode ?: debugMode
         enableChucker = config.enableChucker ?: devMode
 
+        if (devMode) {
+            HyperLog.initialize(this)
+            HyperLog.setLogLevel(Log.VERBOSE)
+            HyperLog.setLogFormat(DebugLogFormat(this))
+        }
+
         if (!profileLoadById(config.lastProfileId)) {
-            db.profileDao().firstId?.let { profileLoadById(it) }
+            val success = db.profileDao().firstId?.let { profileLoadById(it) }
+            if (success != true)
+                profileLoad(Profile(0, 0, LoginType.TEMPLATE, ""))
         }
 
         buildHttp()
@@ -224,35 +262,35 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
                             .setShortLabel(getString(R.string.shortcut_timetable)).setLongLabel(getString(R.string.shortcut_timetable))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_timetable))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_TIMETABLE))
+                                    .putExtras("fragmentId" to NavTarget.TIMETABLE))
                             .build()
 
                     val shortcutAgenda = ShortcutInfo.Builder(this@App, "item_agenda")
                             .setShortLabel(getString(R.string.shortcut_agenda)).setLongLabel(getString(R.string.shortcut_agenda))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_agenda))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_AGENDA))
+                                    .putExtras("fragmentId" to NavTarget.AGENDA))
                             .build()
 
                     val shortcutGrades = ShortcutInfo.Builder(this@App, "item_grades")
                             .setShortLabel(getString(R.string.shortcut_grades)).setLongLabel(getString(R.string.shortcut_grades))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_grades))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_GRADES))
+                                    .putExtras("fragmentId" to NavTarget.GRADES))
                             .build()
 
                     val shortcutHomework = ShortcutInfo.Builder(this@App, "item_homeworks")
                             .setShortLabel(getString(R.string.shortcut_homework)).setLongLabel(getString(R.string.shortcut_homework))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_homework))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_HOMEWORK))
+                                    .putExtras("fragmentId" to NavTarget.HOMEWORK))
                             .build()
 
                     val shortcutMessages = ShortcutInfo.Builder(this@App, "item_messages")
                             .setShortLabel(getString(R.string.shortcut_messages)).setLongLabel(getString(R.string.shortcut_messages))
                             .setIcon(Icon.createWithResource(this@App, R.mipmap.ic_shortcut_messages))
                             .setIntent(Intent(Intent.ACTION_MAIN, null, this@App, MainActivity::class.java)
-                                    .putExtra("fragmentId", MainActivity.DRAWER_ITEM_MESSAGES))
+                                    .putExtras("fragmentId" to NavTarget.MESSAGES))
                             .build()
 
                     shortcutManager.dynamicShortcuts = listOf(
@@ -378,10 +416,22 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         }
     }
 
+    fun profileLoad(profile: Profile) {
+        App.profile = profile
+        App.config.lastProfileId = profile.id
+        try {
+            App.data = AppData.get(profile.loginStoreType)
+            d("App", "Loaded AppData: ${App.data}")
+        } catch (e: Exception) {
+            Log.e("App", "Cannot load AppData", e)
+            Toast.makeText(this, R.string.app_cannot_load_data, Toast.LENGTH_LONG).show()
+            exitProcess(0)
+        }
+    }
+
     private fun profileLoadById(profileId: Int): Boolean {
         db.profileDao().getByIdNow(profileId)?.also {
-            App.profile = it
-            App.config.lastProfileId = it.id
+            profileLoad(it)
             return true
         }
         return false
@@ -412,6 +462,8 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
     }
     fun profileSave() = profileSave(profile)
     fun profileSave(profile: Profile) {
+        if (profile.id == profileId)
+            App.profile = profile
         launch(Dispatchers.Default) {
             App.db.profileDao().add(profile)
         }

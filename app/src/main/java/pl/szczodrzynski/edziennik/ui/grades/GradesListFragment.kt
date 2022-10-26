@@ -17,12 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import kotlinx.coroutines.*
 import pl.szczodrzynski.edziennik.*
-import pl.szczodrzynski.edziennik.MainActivity.Companion.TARGET_GRADES_EDITOR
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
-import pl.szczodrzynski.edziennik.data.db.entity.Metadata.TYPE_GRADE
+import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.data.db.full.GradeFull
 import pl.szczodrzynski.edziennik.databinding.GradesListFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.GradesConfigDialog
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesAverages
 import pl.szczodrzynski.edziennik.ui.grades.models.GradesSemester
@@ -81,7 +81,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
             }
 
             val items = when {
-                app.config.forProfile().grades.hideSticksFromOld && App.devMode -> grades.filter { it.value != 1.0f }
+                app.profile.config.grades.hideSticksFromOld && App.devMode -> grades.filter { it.value != 1.0f }
                 else -> grades
             }
 
@@ -126,7 +126,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
                 gradeCountOtherSemester = otherSemester?.averages?.normalCount?.toFloat()
             }
 
-            activity.loadTarget(TARGET_GRADES_EDITOR, Bundle(
+            activity.navigate(navTarget = NavTarget.GRADES_EDITOR, args = Bundle(
                     "subjectId" to subject.subjectId,
                     "semester" to semester.number,
                     "averageMode" to manager.yearAverageMode,
@@ -152,7 +152,7 @@ class GradesListFragment : Fragment(), CoroutineScope {
                         .withIcon(CommunityMaterial.Icon.cmd_eye_check_outline)
                         .withOnClickListener(View.OnClickListener {
                             activity.bottomSheet.close()
-                            AsyncTask.execute { App.db.metadataDao().setAllSeen(App.profileId, TYPE_GRADE, true) }
+                            AsyncTask.execute { App.db.metadataDao().setAllSeen(App.profileId, MetadataType.GRADE, true) }
                             Toast.makeText(activity, R.string.main_menu_mark_as_read_success, Toast.LENGTH_SHORT).show()
                         })
         )

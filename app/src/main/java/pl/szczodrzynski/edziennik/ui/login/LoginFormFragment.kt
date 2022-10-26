@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
+import androidx.navigation.navOptions
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.textfield.TextInputLayout
 import com.mikepenz.iconics.IconicsDrawable
@@ -24,6 +26,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.db.enums.LoginMode
+import pl.szczodrzynski.edziennik.data.db.enums.LoginType
 import pl.szczodrzynski.edziennik.databinding.LoginFormCheckboxItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFieldItemBinding
 import pl.szczodrzynski.edziennik.databinding.LoginFormFragmentBinding
@@ -33,7 +37,6 @@ import pl.szczodrzynski.edziennik.ui.login.LoginInfo.BaseCredential
 import pl.szczodrzynski.edziennik.ui.login.LoginInfo.FormCheckbox
 import pl.szczodrzynski.edziennik.ui.login.LoginInfo.FormField
 import pl.szczodrzynski.navlib.colorAttr
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class LoginFormFragment : Fragment(), CoroutineScope {
@@ -63,8 +66,10 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         get() = arguments?.getString("platformDescription")
     private val platformFormFields
         get() = arguments?.getString("platformFormFields")?.split(";")
-    private val platformRealmData
-        get() = arguments?.getString("platformRealmData")?.toJsonObject()
+    private val platformData
+        get() = arguments?.getString("platformData")?.toJsonObject()
+    private val platformStoreKey
+        get() = arguments?.getString("platformStoreKey")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,17 +90,22 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         b.errorLayout.isVisible = false
         b.errorLayout.background?.setTintColor(R.attr.colorError.resolveAttr(activity))
 
-        val loginType = arguments?.getInt("loginType") ?: return
+        val loginType = arguments?.getEnum<LoginType>("loginType") ?: return
         val register = LoginInfo.list.firstOrNull { it.loginType == loginType } ?: return
-        val loginMode = arguments?.getInt("loginMode") ?: return
+        val loginMode = arguments?.getEnum<LoginMode>("loginMode") ?: return
         val mode = register.loginModes.firstOrNull { it.loginMode == loginMode } ?: return
+
+        if (mode.credentials.isEmpty()) {
+            login(loginType, loginMode)
+            return
+        }
 
         b.title.setText(R.string.login_form_title_format, app.getString(register.registerName))
         b.subTitle.text = platformName ?: app.getString(mode.name)
         b.text.text = platformGuideText ?: app.getString(mode.guideText)
 
         // eggs
-        isEggs = register.internalName == "podlasie"
+        isEggs = register.loginType == LoginType.PODLASIE
 
         for (credential in mode.credentials) {
             if (platformFormFields?.contains(credential.keyName) == false)
@@ -240,7 +250,7 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         }
     }
 
-    private fun login(loginType: Int, loginMode: Int) {
+    private fun login(loginType: LoginType, loginMode: LoginMode) {
         val payload = Bundle(
             "loginType" to loginType,
             "loginMode" to loginMode
@@ -250,7 +260,10 @@ class LoginFormFragment : Fragment(), CoroutineScope {
             payload.putBoolean("fakeLogin", true)
         }
 
-        payload.putBundle("webRealmData", platformRealmData?.toBundle())
+        if (platformStoreKey == null)
+            payload.putAll(platformData?.toBundle() ?: Bundle())
+        else
+            payload.putBundle(platformStoreKey, platformData?.toBundle())
 
         var hasErrors = false
         credentials.forEach { (credential, b) ->
@@ -295,6 +308,14 @@ class LoginFormFragment : Fragment(), CoroutineScope {
         if (hasErrors)
             return
 
-        nav.navigate(R.id.loginProgressFragment, payload, activity.navOptions)
+        val navOptions =
+            if (credentials.isEmpty())
+                activity.navOptionsBuilder
+                    .setPopUpTo(R.id.loginPlatformListFragment, inclusive = false)
+                    .build()
+            else
+                activity.navOptions
+
+        nav.navigate(R.id.loginProgressFragment, payload, navOptions)
     }
 }

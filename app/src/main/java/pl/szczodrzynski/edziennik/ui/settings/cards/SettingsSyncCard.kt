@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES
 import android.provider.Settings
+import com.danielstone.materialaboutlibrary.model.MaterialAboutCard
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
@@ -17,6 +18,7 @@ import pl.szczodrzynski.edziennik.ext.after
 import pl.szczodrzynski.edziennik.ext.getSyncInterval
 import pl.szczodrzynski.edziennik.sync.SyncWorker
 import pl.szczodrzynski.edziennik.sync.UpdateWorker
+import pl.szczodrzynski.edziennik.ui.base.enums.NavTarget
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.NotificationFilterDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.QuietHoursConfigDialog
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.SyncIntervalDialog
@@ -28,8 +30,8 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
 
     override fun buildCard() = util.createCard(
         R.string.settings_card_sync_title,
-        items = getItems(),
-        itemsMore = getItemsMore()
+        items = ::getItems,
+        itemsMore = ::getItemsMore,
     )
 
     private fun getQuietHours(): String {
@@ -62,7 +64,7 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
         }
     }
 
-    override fun getItems() = listOfNotNull(
+    override fun getItems(card: MaterialAboutCard) = listOfNotNull(
         util.createPropertyActionItem(
             text = R.string.settings_sync_sync_interval_text,
             subText = R.string.settings_sync_sync_interval_subtext_disabled,
@@ -151,11 +153,11 @@ class SettingsSyncCard(util: SettingsUtil) : SettingsCard(util) {
             subText = R.string.settings_sync_web_push_subtext,
             icon = CommunityMaterial.Icon2.cmd_laptop
         ) {
-            activity.loadTarget(MainActivity.TARGET_WEB_PUSH)
+            activity.navigate(navTarget = NavTarget.WEB_PUSH)
         }
     )
 
-    override fun getItemsMore() = listOfNotNull(
+    override fun getItemsMore(card: MaterialAboutCard) = listOfNotNull(
         util.createPropertyItem(
             text = R.string.settings_sync_updates_text,
             icon = CommunityMaterial.Icon.cmd_cellphone_arrow_down,
