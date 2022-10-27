@@ -24,7 +24,7 @@
                 agendaCalendar:calendarHeaderColor="@color/colorSurface_6dp"
                 agendaCalendar:calendarHeaderTextColor="?colorOnSurface"
                 agendaCalendar:calendarPastDayTextColor="?android:textColorSecondary"
-                agendaCalendar:fabColor="?colorFab"
+                agendaCalendar:fabColor="?colorPrimaryContainer"
                 agendaCalendar:layout_constraintBottom_toBottomOf="parent"
                 agendaCalendar:layout_constraintEnd_toEndOf="parent"
                 agendaCalendar:layout_constraintHorizontal_bias="1.0"

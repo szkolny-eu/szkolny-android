@@ -9,4 +9,5 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     android:clickable="true"
-    android:focusable="true" />
+    android:focusable="true"
+    style="?attr/materialCardViewFilledStyle" />
