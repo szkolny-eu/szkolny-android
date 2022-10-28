@@ -22,7 +22,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bold"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/community_material_font_v5_8_55"
@@ -33,7 +33,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/italic"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/community_material_font_v5_8_55"
@@ -44,7 +44,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/underline"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/community_material_font_v5_8_55"
@@ -55,7 +55,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/strike"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/community_material_font_v5_8_55"
@@ -66,7 +66,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/subscript"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/community_material_font_v5_8_55"
@@ -77,7 +77,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/superscript"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/community_material_font_v5_8_55"
@@ -91,7 +91,7 @@
     <!-- android:layout_marginTop="-13dp" -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/clear"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"

@@ -83,13 +83,13 @@ fun AlertDialog.overlayBackgroundColor(color: Int, alpha: Int) {
     val backgroundInsets = MaterialDialogs.getDialogBackgroundInsets(
         context,
         R.attr.alertDialogStyle,
-        R.style.MaterialAlertDialog_MaterialComponents,
+        R.style.MaterialAlertDialog_Material3,
     )
     val background = MaterialShapeDrawable(
         context,
         null,
         R.attr.alertDialogStyle,
-        R.style.MaterialAlertDialog_MaterialComponents
+        R.style.MaterialAlertDialog_Material3
     )
     with(background) {
         initializeElevationOverlay(context)

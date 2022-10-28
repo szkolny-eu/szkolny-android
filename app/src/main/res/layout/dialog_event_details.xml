@@ -222,7 +222,7 @@
                 <!-- cmd_eye_check_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/checkDoneButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -235,7 +235,7 @@
                 <!-- cmd_pencil_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/editButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -247,7 +247,7 @@
                 <!-- cmd_calendar_export -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/saveInCalendarButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -259,7 +259,7 @@
                 <!-- cmd_cursor_default_click_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/goToTimetableButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -271,7 +271,7 @@
                 <!-- cmd_download_outline -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/downloadButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -283,7 +283,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/notesButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

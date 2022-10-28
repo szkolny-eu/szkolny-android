@@ -148,7 +148,7 @@
 
                 <Button
                     android:id="@+id/shiftedGoTo"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dialog_lesson_go_to_button" />
@@ -347,7 +347,7 @@
 
                 <Button
                     android:id="@+id/attendanceDetails"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dialog_lesson_attendance_details" />
@@ -401,7 +401,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/notesButton"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

@@ -32,9 +32,9 @@ class SettingsLicenseActivity : MaterialAboutActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(
             if (Themes.isDark)
-                R.style.Theme_MaterialComponents
+                R.style.Theme_Material3_Dark
             else
-                R.style.Theme_MaterialComponents_Light
+                R.style.Theme_Material3_Light
         )
         foregroundColor = if (Themes.isDark)
             R.color.primaryTextDark.resolveColor(this)

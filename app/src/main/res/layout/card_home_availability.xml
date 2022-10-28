@@ -41,14 +41,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/homeAvailabilityUpdate"
-                style="@style/Widget.MaterialComponents.Button"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_availability_update" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/homeAvailabilityInfo"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_availability_info" />

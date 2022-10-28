@@ -205,7 +205,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/replyButton"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
@@ -219,7 +219,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/forwardButton"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
@@ -233,7 +233,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/deleteButton"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
@@ -247,7 +247,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/downloadButton"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="4dp"
@@ -263,7 +263,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/notesButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"

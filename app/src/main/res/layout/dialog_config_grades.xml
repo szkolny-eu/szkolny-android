@@ -91,7 +91,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                 android:hint="@string/grades_config_dont_count_hint"
                 app:placeholderText="@string/grades_config_dont_count_placeholder"
                 android:enabled="@{dontCountGrades.checked}">

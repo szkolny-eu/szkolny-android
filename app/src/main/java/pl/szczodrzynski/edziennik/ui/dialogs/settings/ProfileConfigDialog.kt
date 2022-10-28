@@ -46,7 +46,7 @@ class ProfileConfigDialog(
             activity,
             null,
             R.attr.alertDialogStyle,
-            R.style.MaterialAlertDialog_MaterialComponents
+            R.style.MaterialAlertDialog_Material3
         )
         val surface = MaterialColors.getColor(activity, R.attr.colorSurface, TAG)
         shape.setCornerSize(18.dp.toFloat())
