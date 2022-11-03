@@ -125,7 +125,7 @@ class LibrusMessagesGetMessage(override val data: DataLibrus,
                         val receiverId = teacher?.id ?: -1
                         teacher?.loginId = receiverLoginId
 
-                        val readDateText = message.select("readed").text()
+                        val readDateText = receiver.select("readed").text()
                         val readDate = when (readDateText.isNotNullNorEmpty()) {
                             true -> Date.fromIso(readDateText)
                             else -> 0
