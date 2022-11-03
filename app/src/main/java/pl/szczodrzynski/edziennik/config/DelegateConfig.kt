@@ -115,9 +115,9 @@ class ConfigDelegate<T>(
             is Boolean -> value
             // enums, maps & collections
             is Enum<*> -> value.toInt()
-            is Collection<*> -> JsonArray(value.map {
+            is Collection<*> -> value.map {
                 if (it is Number || it is Boolean) it else serialize(it, serializeObjects = false)
-            })
+            }.toJsonElement()
             is Map<*, *> -> gson.toJson(value.mapValues { (_, it) ->
                 if (it is Number || it is Boolean) it else serialize(it, serializeObjects = false)
             })
