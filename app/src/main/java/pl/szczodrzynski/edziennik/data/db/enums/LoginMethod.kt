@@ -6,6 +6,8 @@ package pl.szczodrzynski.edziennik.data.db.enums
 
 import pl.szczodrzynski.edziennik.data.db.entity.LoginStore
 import pl.szczodrzynski.edziennik.data.db.entity.Profile
+import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
 
 enum class LoginMethod(
     val loginType: LoginType,
@@ -26,7 +28,7 @@ enum class LoginMethod(
     MOBIDZIENNIK_API2(
         loginType = LoginType.MOBIDZIENNIK,
         id = 1300,
-        isPossible = { profile, _ -> profile?.studentData?.has("email") ?: false },
+        isPossible = { profile, _ -> profile?.studentData?.getString("email").isNotNullNorBlank() },
     ),
     LIBRUS_PORTAL(
         loginType = LoginType.LIBRUS,
@@ -57,7 +59,7 @@ enum class LoginMethod(
     VULCAN_WEB_MAIN(
         loginType = LoginType.VULCAN,
         id = 4100,
-        isPossible = { _, loginStore -> loginStore.hasLoginData("webHost") },
+        isPossible = { _, loginStore -> loginStore.getLoginData("webHost", null).isNotNullNorBlank() },
     ),
     VULCAN_HEBE(
         loginType = LoginType.VULCAN,

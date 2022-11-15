@@ -16,6 +16,7 @@ import pl.szczodrzynski.edziennik.data.api.models.ApiError
 import pl.szczodrzynski.edziennik.ext.JsonObject
 import pl.szczodrzynski.edziennik.ext.getJsonObject
 import pl.szczodrzynski.edziennik.ext.getString
+import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
 import pl.szczodrzynski.edziennik.ext.isNotNullNorEmpty
 import pl.szczodrzynski.edziennik.utils.Utils
 
@@ -77,7 +78,9 @@ class MobidziennikLoginApi2(val data: DataMobidziennik, val onSuccess: () -> Uni
                     }
                 }
 
-                data.loginEmail = json.getString("email")
+                val email = json.getString("email")
+                if (email.isNotNullNorBlank())
+                    data.loginEmail = email
                 data.globalId = json.getString("id_global")
                 data.loginId = json.getString("login")
                 onSuccess()
