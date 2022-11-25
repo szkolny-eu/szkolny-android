@@ -228,20 +228,6 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
-                if (allow404 && response?.code() == HTTP_NOT_FOUND) {
-                    try {
-                        onSuccess(null as T, response)
-                    } catch (e: Exception) {
-                        data.error(
-                            ApiError(tag, EXCEPTION_VULCAN_HEBE_REQUEST)
-                                .withResponse(response)
-                                .withThrowable(e)
-                                .withApiResponse(json)
-                        )
-                    }
-                    return
-                }
-
                 if (json == null) {
                     data.error(
                         ApiError(TAG, ERROR_RESPONSE_EMPTY)
@@ -311,6 +297,19 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             }
 
             override fun onFailure(response: Response?, throwable: Throwable?) {
+                if (allow404 && response?.code() == HTTP_NOT_FOUND) {
+                    try {
+                        onSuccess(null as T, response)
+                    } catch (e: Exception) {
+                        data.error(
+                            ApiError(tag, EXCEPTION_VULCAN_HEBE_REQUEST)
+                                .withResponse(response)
+                                .withThrowable(e)
+                        )
+                    }
+                    return
+                }
+
                 data.error(
                     ApiError(tag, ERROR_REQUEST_FAILURE)
                         .withResponse(response)
@@ -338,9 +337,6 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                         setTextBody(jsonString, MediaTypeUtils.APPLICATION_JSON)
                     }
                 }
-
-                if (allow404)
-                    allowErrorCode(HttpURLConnection.HTTP_NOT_FOUND)
             }
             .allowErrorCode(HttpURLConnection.HTTP_BAD_REQUEST)
             .allowErrorCode(HttpURLConnection.HTTP_FORBIDDEN)
@@ -449,8 +445,8 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             )
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 
-        apiGet(tag, url, query, allow404) { json: JsonArray, response ->
-            onSuccess(json.map { it.asJsonObject }, response)
+        apiGet(tag, url, query, allow404) { json: JsonArray?, response ->
+            onSuccess(json?.map { it.asJsonObject } ?: listOf(), response)
         }
     }
 }
