@@ -445,7 +445,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             )
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 
-        apiGet(tag, url, query, allow404) { json: JsonArray?, response ->
+        apiGet(tag, url, query, allow404 = allow404) { json: JsonArray?, response ->
             onSuccess(json?.map { it.asJsonObject } ?: listOf(), response)
         }
     }
