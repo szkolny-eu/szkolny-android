@@ -26,6 +26,7 @@ import pl.szczodrzynski.edziennik.utils.Utils.d
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import java.net.HttpURLConnection
+import java.net.HttpURLConnection.HTTP_NOT_FOUND
 import java.net.URLEncoder
 import java.time.Instant
 import java.time.LocalDateTime
@@ -183,6 +184,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         payload: JsonElement? = null,
         baseUrl: Boolean = false,
         firebaseToken: String? = null,
+        allow404: Boolean = false,
         crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
         val url = "${if (baseUrl) data.apiUrl else data.fullApiUrl}$endpoint"
@@ -226,6 +228,20 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
 
         val callback = object : JsonCallbackHandler() {
             override fun onSuccess(json: JsonObject?, response: Response?) {
+                if (allow404 && response?.code() == HTTP_NOT_FOUND) {
+                    try {
+                        onSuccess(null as T, response)
+                    } catch (e: Exception) {
+                        data.error(
+                            ApiError(tag, EXCEPTION_VULCAN_HEBE_REQUEST)
+                                .withResponse(response)
+                                .withThrowable(e)
+                                .withApiResponse(json)
+                        )
+                    }
+                    return
+                }
+
                 if (json == null) {
                     data.error(
                         ApiError(TAG, ERROR_RESPONSE_EMPTY)
@@ -338,6 +354,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         query: Map<String, String> = mapOf(),
         baseUrl: Boolean = false,
         firebaseToken: String? = null,
+        allow404: Boolean = false,
         crossinline onSuccess: (json: T, response: Response?) -> Unit
     ) {
         val queryPath = query.map {
@@ -348,6 +365,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             if (query.isNotEmpty()) "$endpoint?$queryPath" else endpoint,
             baseUrl = baseUrl,
             firebaseToken = firebaseToken,
+            allow404 = allow404,
             onSuccess = onSuccess
         )
     }
@@ -382,6 +400,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
         messageBox: String? = null,
         params: Map<String, String> = mapOf(),
         includeFilterType: Boolean = true,
+        allow404: Boolean = false,
         onSuccess: (data: List<JsonObject>, response: Response?) -> Unit
     ) {
         val url = if (includeFilterType && filterType != null)
@@ -427,7 +446,7 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
             )
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 
-        apiGet(tag, url, query) { json: JsonArray, response ->
+        apiGet(tag, url, query, allow404) { json: JsonArray, response ->
             onSuccess(json.map { it.asJsonObject }, response)
         }
     }

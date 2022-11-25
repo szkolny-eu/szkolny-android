@@ -19,6 +19,7 @@ import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_PARENTS_
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_STUDENT
 import pl.szczodrzynski.edziennik.data.db.entity.Teacher.Companion.TYPE_TEACHER
 import pl.szczodrzynski.edziennik.ext.*
+import java.net.HttpURLConnection.HTTP_NOT_FOUND
 
 class VulcanHebeAddressbook(
     override val data: DataVulcan,
@@ -41,8 +42,15 @@ class VulcanHebeAddressbook(
             VULCAN_HEBE_ENDPOINT_ADDRESSBOOK,
             HebeFilterType.BY_PERSON,
             lastSync = lastSync,
-            includeFilterType = false
-        ) { list, _ ->
+            includeFilterType = false,
+            allow404 = true,
+        ) { list, response ->
+            if (response?.code() == HTTP_NOT_FOUND) {
+                data.setSyncNext(ENDPOINT_VULCAN_HEBE_ADDRESSBOOK, 2 * DAY)
+                onSuccess(ENDPOINT_VULCAN_HEBE_ADDRESSBOOK)
+                return@apiGetList
+            }
+
             list.forEach { person ->
                 val id = person.getString("Id") ?: return@forEach
 
