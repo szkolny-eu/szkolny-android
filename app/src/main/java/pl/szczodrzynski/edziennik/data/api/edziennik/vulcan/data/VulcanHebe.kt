@@ -338,6 +338,9 @@ open class VulcanHebe(open val data: DataVulcan, open val lastSync: Long?) {
                         setTextBody(jsonString, MediaTypeUtils.APPLICATION_JSON)
                     }
                 }
+
+                if (allow404)
+                    allowErrorCode(HttpURLConnection.HTTP_NOT_FOUND)
             }
             .allowErrorCode(HttpURLConnection.HTTP_BAD_REQUEST)
             .allowErrorCode(HttpURLConnection.HTTP_FORBIDDEN)
