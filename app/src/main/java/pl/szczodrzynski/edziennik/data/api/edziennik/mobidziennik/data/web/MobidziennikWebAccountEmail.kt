@@ -10,6 +10,7 @@ import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.ENDPOINT_MOBID
 import pl.szczodrzynski.edziennik.data.api.edziennik.mobidziennik.data.MobidziennikWeb
 import pl.szczodrzynski.edziennik.ext.DAY
 import pl.szczodrzynski.edziennik.ext.get
+import pl.szczodrzynski.edziennik.ext.isNotNullNorBlank
 
 class MobidziennikWebAccountEmail(override val data: DataMobidziennik,
                                   override val lastSync: Long?,
@@ -24,7 +25,8 @@ class MobidziennikWebAccountEmail(override val data: DataMobidziennik,
             MobidziennikLuckyNumberExtractor(data, text)
 
             val email = Regexes.MOBIDZIENNIK_ACCOUNT_EMAIL.find(text)?.let { it[1] }
-            data.loginEmail = email
+            if (email.isNotNullNorBlank())
+                data.loginEmail = email
 
             data.setSyncNext(ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL, if (email == null) 3* DAY else 7* DAY)
             onSuccess(ENDPOINT_MOBIDZIENNIK_WEB_ACCOUNT_EMAIL)

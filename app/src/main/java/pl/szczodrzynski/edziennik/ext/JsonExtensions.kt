@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.ext
 
 import android.os.Bundle
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -48,6 +49,11 @@ fun JsonObject.putEnum(key: String, value: Enum<*>) = addProperty(key, value.toI
 fun String.toJsonObject(): JsonObject? = try { JsonParser.parseString(this).asJsonObject } catch (ignore: Exception) { null }
 fun String.toJsonArray(): JsonArray? = try { JsonParser.parseString(this).asJsonArray } catch (ignore: Exception) { null }
 
+fun Any?.toJsonElement(): JsonElement = when (this) {
+    is Collection<*> -> JsonArray(this)
+    else -> Gson().toJsonTree(this)
+}
+
 operator fun JsonObject.set(key: String, value: JsonElement) = this.add(key, value)
 operator fun JsonObject.set(key: String, value: Boolean) = this.addProperty(key, value)
 operator fun JsonObject.set(key: String, value: String?) = this.addProperty(key, value)
@@ -67,6 +73,7 @@ fun JsonObject(vararg properties: Pair<String, Any?>): JsonObject {
                 is Number -> addProperty(key, value)
                 is Boolean -> addProperty(key, value)
                 is Enum<*> -> addProperty(key, value.toInt())
+                else -> add(key, property.toJsonElement())
             }
         }
     }
@@ -98,6 +105,8 @@ fun JsonArray(properties: Collection<Any?>): JsonArray {
                 is Char -> add(property as Char?)
                 is Number -> add(property as Number?)
                 is Boolean -> add(property as Boolean?)
+                is Enum<*> -> add(property.toInt())
+                else -> add(property.toJsonElement())
             }
         }
     }

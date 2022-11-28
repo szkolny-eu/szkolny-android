@@ -33,7 +33,7 @@ class Config(db: AppDb) : BaseConfig(db) {
     var update by config<Update?>(null)
     var updatesChannel by config<String>("release")
 
-    var devMode by config<Boolean?>(null)
+    var devMode by config<Boolean?>("debugMode", null)
     var devModePassword by config<String?>(null)
     var enableChucker by config<Boolean?>(null)
 
