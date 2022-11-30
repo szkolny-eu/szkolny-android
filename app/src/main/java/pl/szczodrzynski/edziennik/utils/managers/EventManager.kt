@@ -48,6 +48,7 @@ class EventManager(val app: App) : CoroutineScope {
         title: TextView,
         event: EventFull,
         showType: Boolean = true,
+        showSubject: Boolean = false,
         showNotes: Boolean = true,
         doneIconColor: Int? = null
     ) {
@@ -60,6 +61,7 @@ class EventManager(val app: App) : CoroutineScope {
             if (event.hasNotes() && hasReplacingNotes && showNotes) "{cmd-swap-horizontal} " else null,
             if (event.hasNotes() && !hasReplacingNotes && showNotes) "{cmd-playlist-edit} " else null,
             if (showType) "${event.typeName ?: "wydarzenie"} - " else null,
+            if (showSubject) event.subjectLongName?.plus(" - ") else null,
             topicSpan,
         ).concat()
 

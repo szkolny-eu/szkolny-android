@@ -83,6 +83,7 @@
 	},
 	"university": {
 		"configOverrides": {
+			"agendaSubjectImportant": true,
 			"shareByDefault": true,
 			"timetableColorSubjectName": true,
 			"timetableTrimHourRange": true
