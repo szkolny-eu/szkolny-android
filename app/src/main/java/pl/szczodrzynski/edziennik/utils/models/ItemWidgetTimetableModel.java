@@ -19,7 +19,7 @@ public class ItemWidgetTimetableModel {
     public Time endTime;
     public boolean lessonPassed;
     public boolean lessonCurrent;
-    public String subjectName = "";
+    public CharSequence subjectName = "";
     public String classroomName = "";
     public boolean lessonChange = false;
     public boolean lessonChangeNoClassroom = false;

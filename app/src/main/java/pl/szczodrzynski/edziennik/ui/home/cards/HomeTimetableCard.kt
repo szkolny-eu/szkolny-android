@@ -232,6 +232,7 @@ class HomeTimetableCard(
         }
 
         lessons = lessons.filter { it.type != Lesson.TYPE_NO_LESSONS }
+        lessons.onEach { it.filterNotes() }
 
         b.timetableLayout.visibility = View.VISIBLE
         b.noTimetableLayout.visibility = View.GONE
@@ -344,6 +345,7 @@ class HomeTimetableCard(
 
     private val LessonFull?.subjectSpannable: CharSequence
         get() = if (this == null) "?" else when {
+            hasReplacingNotes() -> getNoteSubstituteText(showNotes = true) ?: "?"
             isCancelled -> displaySubjectName?.asStrikethroughSpannable() ?: "?"
             isChange -> displaySubjectName?.asItalicSpannable() ?: "?"
             else -> displaySubjectName ?: "?"

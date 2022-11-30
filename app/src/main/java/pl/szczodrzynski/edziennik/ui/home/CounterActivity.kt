@@ -61,6 +61,7 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
                                     it.type != Lesson.TYPE_SHIFTED_SOURCE
                         })
             }
+            lessonList.onEach { it.filterNotes() }
         }
 
         b.bellSync.setImageDrawable(
@@ -101,13 +102,15 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
 
             when {
                 actual != null -> {
-                    b.lessonName.text = actual.displaySubjectName
+                    b.lessonName.text = actual.getNoteSubstituteText(showNotes = true)
+                        ?: actual.displaySubjectName
 
                     val left = actual.displayEndTime!! - now
                     b.timeLeft.text = timeLeft(left.toInt(), "\n", countInSeconds)
                 }
                 next != null -> {
-                    b.lessonName.text = next.displaySubjectName
+                    b.lessonName.text = next.getNoteSubstituteText(showNotes = true)
+                        ?: next.displaySubjectName
 
                     val till = next.displayStartTime!! - now
                     b.timeLeft.text = timeTill(till.toInt(), "\n", countInSeconds)

@@ -337,8 +337,11 @@ class WidgetTimetableProvider : AppWidgetProvider() {
                     scrollPos = pos + 1
                 }
 
+                // remove notes from other profiles
+                lesson.filterNotes()
                 // set the subject and classroom name
-                model.subjectName = lesson.displaySubjectName
+                model.subjectName = lesson.getNoteSubstituteText(showNotes = true)
+                    ?: lesson.displaySubjectName
                 model.classroomName = lesson.displayClassroom
 
                 // set the bell sync to calculate progress in ListProvider
