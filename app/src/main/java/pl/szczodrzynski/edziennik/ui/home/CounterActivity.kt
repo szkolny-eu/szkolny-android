@@ -4,8 +4,10 @@
 
 package pl.szczodrzynski.edziennik.ui.home
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.jetradarmobile.snowfall.SnowfallView
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.sizeDp
@@ -20,6 +22,7 @@ import pl.szczodrzynski.edziennik.ext.startCoroutineTimer
 import pl.szczodrzynski.edziennik.ext.timeLeft
 import pl.szczodrzynski.edziennik.ext.timeTill
 import pl.szczodrzynski.edziennik.ui.dialogs.BellSyncTimeChooseDialog
+import pl.szczodrzynski.edziennik.utils.BigNightUtil
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
 import kotlin.coroutines.CoroutineContext
@@ -81,6 +84,27 @@ class CounterActivity : AppCompatActivity(), CoroutineScope {
 
         counterJob = startCoroutineTimer(repeatMillis = 500) {
             update()
+        }
+
+        // IT'S WINTER MY DUDES
+        val today = Date.getToday()
+        if ((today.month / 3 % 4 == 0) && app.config.ui.snowfall) {
+            b.rootFrame.addView(layoutInflater.inflate(R.layout.snowfall, b.rootFrame, false))
+        } else if (app.config.ui.eggfall && BigNightUtil().isDataWielkanocyNearDzisiaj()) {
+            val eggfall = layoutInflater.inflate(
+                R.layout.eggfall,
+                b.rootFrame,
+                false
+            ) as SnowfallView
+            eggfall.setSnowflakeBitmaps(listOf(
+                BitmapFactory.decodeResource(resources, R.drawable.egg1),
+                BitmapFactory.decodeResource(resources, R.drawable.egg2),
+                BitmapFactory.decodeResource(resources, R.drawable.egg3),
+                BitmapFactory.decodeResource(resources, R.drawable.egg4),
+                BitmapFactory.decodeResource(resources, R.drawable.egg5),
+                BitmapFactory.decodeResource(resources, R.drawable.egg6)
+            ))
+            b.rootFrame.addView(eggfall)
         }
     }}
 
