@@ -28,6 +28,9 @@ interface ProfileDao {
     @Query("SELECT * FROM profiles WHERE profileId = :profileId")
     fun getByIdNow(profileId: Int): Profile?
 
+    @Query("SELECT * FROM profiles WHERE profileId = :profileId")
+    suspend fun getByIdSuspend(profileId: Int): Profile?
+
     @get:Query("SELECT * FROM profiles WHERE profileId >= 0 ORDER BY profileId")
     val all: LiveData<List<Profile>>
 

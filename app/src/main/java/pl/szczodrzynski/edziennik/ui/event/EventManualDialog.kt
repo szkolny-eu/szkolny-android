@@ -19,7 +19,9 @@ import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.config.AppData
 import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskAllFinishedEvent
 import pl.szczodrzynski.edziennik.data.api.events.ApiTaskErrorEvent
@@ -35,9 +37,11 @@ import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.DialogEventManualV2Binding
 import pl.szczodrzynski.edziennik.ext.JsonObject
+import pl.szczodrzynski.edziennik.ext.appendView
 import pl.szczodrzynski.edziennik.ext.getStudentData
 import pl.szczodrzynski.edziennik.ext.onChange
 import pl.szczodrzynski.edziennik.ext.onClick
+import pl.szczodrzynski.edziennik.ext.removeFromParent
 import pl.szczodrzynski.edziennik.ext.setText
 import pl.szczodrzynski.edziennik.ext.setTintColor
 import pl.szczodrzynski.edziennik.ui.dialogs.base.BindingDialog
@@ -117,6 +121,15 @@ class EventManualDialog(
     }
 
     override suspend fun onShow() {
+        val data = withContext(Dispatchers.IO) {
+            val profile = app.db.profileDao().getByIdSuspend(profileId) ?: return@withContext null
+            AppData.get(profile.loginStoreType)
+        }
+        if (data?.uiConfig?.eventManualShowSubjectDropdown == true) {
+            b.subjectDropdownLayout.removeFromParent()
+            b.timeDropdownLayout.appendView(b.subjectDropdownLayout)
+        }
+
         b.showMore.onClick { // TODO iconics is broken
             it.apply {
                 refreshDrawableState()

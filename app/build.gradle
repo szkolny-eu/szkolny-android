@@ -156,6 +156,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.2"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.room:room-runtime:2.4.3"
+    implementation "androidx.room:room-ktx:2.4.3"
     implementation "androidx.work:work-runtime-ktx:2.7.1"
     kapt "androidx.room:room-compiler:2.4.3"
 

@@ -12,7 +12,8 @@
 		"uiConfig": {
 			"lessonHeight": 60,
 			"enableMarkAsReadAnnouncements": true,
-			"enableNoticePoints": false
+			"enableNoticePoints": false,
+			"eventManualShowSubjectDropdown": false
 		},
 		"eventTypes": [
 			{
@@ -89,7 +90,8 @@
 			"timetableTrimHourRange": true
 		},
 		"uiConfig": {
-			"lessonHeight": 45
+			"lessonHeight": 45,
+			"eventManualShowSubjectDropdown": true
 		},
 		"eventTypes": [
 			{
