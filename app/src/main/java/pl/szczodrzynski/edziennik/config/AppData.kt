@@ -62,7 +62,7 @@ data class AppData(
     )
 
     data class EventType(
-        val id: Int,
+        val id: Long,
         val color: String,
         val name: String,
     )
