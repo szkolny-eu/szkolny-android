@@ -24,6 +24,7 @@ class EventListAdapter(
     val showDate: Boolean = false,
     val showColor: Boolean = true,
     val showType: Boolean = true,
+    val showTypeColor: Boolean = showType,
     val showTime: Boolean = true,
     val showSubject: Boolean = true,
     val markAsSeen: Boolean = true,

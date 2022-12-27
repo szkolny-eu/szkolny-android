@@ -113,9 +113,20 @@ class EventDetailsDialog(
 
         b.typeColor.background?.setTintColor(event.eventColor)
 
-        b.details = mutableListOf(
+        val agendaSubjectImportant = event.subjectLongName != null
+                && App.config[event.profileId].ui.agendaSubjectImportant
+
+        b.name = if (agendaSubjectImportant)
+            event.subjectLongName
+        else
+            event.typeName
+
+        b.details = listOfNotNull(
+            if (agendaSubjectImportant)
+                event.typeName
+            else
                 event.subjectLongName,
-                event.teamName?.asColoredSpannable(colorSecondary)
+            event.teamName?.asColoredSpannable(colorSecondary)
         ).concat(bullet)
 
         b.addedBy.setText(

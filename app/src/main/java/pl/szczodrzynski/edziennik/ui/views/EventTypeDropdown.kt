@@ -33,13 +33,8 @@ class EventTypeDropdown : TextInputDropDown {
     suspend fun loadItems() {
         val types = withContext(Dispatchers.Default) {
             val list = mutableListOf<Item>()
-
-            var types = db.eventTypeDao().getAllNow(profileId)
-
-            if (types.none { it.id in -1L..10L }) {
-                val profile = db.profileDao().getByIdNow(profileId) ?: return@withContext listOf()
-                types = db.eventTypeDao().addDefaultTypes(profile)
-            }
+            val types = db.eventTypeDao().getAllNow(profileId)
+                .sortedBy { it.order }
 
             list += types.map {
                 Item(it.id, it.name, tag = it, icon = IconicsDrawable(context).apply {

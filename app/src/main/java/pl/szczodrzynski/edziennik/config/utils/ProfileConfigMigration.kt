@@ -16,6 +16,8 @@ import pl.szczodrzynski.edziennik.utils.managers.GradesManager.Companion.YEAR_AL
 class ProfileConfigMigration(config: ProfileConfig) {
     init { config.apply {
 
+        val profile = db.profileDao().getByIdNow(profileId ?: -1)
+
         if (dataVersion < 2) {
             sync.notificationFilter = sync.notificationFilter + NotificationType.TEACHER_ABSENCE
 
@@ -37,10 +39,22 @@ class ProfileConfigMigration(config: ProfileConfig) {
             // switch to new event types (USOS)
             dataVersion = 4
 
-            val profile = db.profileDao().getByIdNow(profileId ?: -1)
             if (profile?.loginStoreType?.schoolType == SchoolType.UNIVERSITY) {
                 db.eventTypeDao().clear(profileId ?: -1)
                 db.eventTypeDao().addDefaultTypes(profile)
+            }
+        }
+
+        if (dataVersion < 5) {
+            // update USOS event types and the appropriate events (2022-12-25)
+            dataVersion = 5
+
+            if (profile?.loginStoreType?.schoolType == SchoolType.UNIVERSITY) {
+                db.eventTypeDao().getAllWithDefaults(profile)
+                // wejściówka (4) -> kartkówka (3)
+                db.eventDao().getRawNow("UPDATE events SET eventType = 3 WHERE profileId = $profileId AND eventType = 4;")
+                // zadanie (6) -> zadanie domowe (-1)
+                db.eventDao().getRawNow("UPDATE events SET eventType = -1 WHERE profileId = $profileId AND eventType = 6;")
             }
         }
     }}

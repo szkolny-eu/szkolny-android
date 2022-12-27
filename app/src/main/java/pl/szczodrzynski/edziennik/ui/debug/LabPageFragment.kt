@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.*
 import pl.szczodrzynski.edziennik.config.Config
 import pl.szczodrzynski.edziennik.data.api.szkolny.interceptor.SignatureInterceptor
+import pl.szczodrzynski.edziennik.data.db.entity.EventType.Companion.SOURCE_DEFAULT
 import pl.szczodrzynski.edziennik.databinding.LabFragmentBinding
 import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.base.lazypager.LazyFragment
@@ -65,6 +66,7 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             b.clearEndpointTimers.isVisible = false
             b.rodo.isVisible = false
             b.removeHomework.isVisible = false
+            b.resetEventTypes.isVisible = false
             b.unarchive.isVisible = false
             b.profile.isVisible = false
         }
@@ -98,6 +100,11 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
 
         b.removeHomework.onClick {
             app.db.eventDao().getRawNow("UPDATE events SET homeworkBody = NULL WHERE profileId = ${App.profileId}")
+        }
+
+        b.resetEventTypes.onClick {
+            app.db.eventTypeDao().clearBySource(App.profileId, SOURCE_DEFAULT)
+            app.db.eventTypeDao().getAllWithDefaults(App.profile)
         }
 
         b.chucker.isChecked = App.enableChucker

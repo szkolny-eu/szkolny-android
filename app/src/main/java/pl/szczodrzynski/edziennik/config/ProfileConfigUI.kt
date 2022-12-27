@@ -15,6 +15,7 @@ class ProfileConfigUI(base: ProfileConfig) {
     var agendaGroupByType by base.config<Boolean>(false)
     var agendaLessonChanges by base.config<Boolean>(true)
     var agendaTeacherAbsence by base.config<Boolean>(true)
+    var agendaSubjectImportant by base.config<Boolean>(false)
     var agendaElearningMark by base.config<Boolean>(false)
     var agendaElearningGroup by base.config<Boolean>(true)
 

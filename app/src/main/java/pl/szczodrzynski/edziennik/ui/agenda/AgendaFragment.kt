@@ -142,13 +142,7 @@ class AgendaFragment : Fragment(), CoroutineScope {
 
     private suspend fun checkEventTypes() {
         withContext(Dispatchers.Default) {
-            val eventTypes = app.db.eventTypeDao().getAllNow(app.profileId).map {
-                it.id
-            }
-            val defaultEventTypes = EventType.getTypeColorMap().keys
-            if (!eventTypes.containsAll(defaultEventTypes)) {
-                app.db.eventTypeDao().addDefaultTypes(app.profile)
-            }
+            app.db.eventTypeDao().getAllWithDefaults(app.profile)
         }
     }
 

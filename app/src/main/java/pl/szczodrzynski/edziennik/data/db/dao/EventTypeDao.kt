@@ -25,6 +25,9 @@ abstract class EventTypeDao {
     @Query("DELETE FROM eventTypes WHERE profileId = :profileId")
     abstract fun clear(profileId: Int)
 
+    @Query("DELETE FROM eventTypes WHERE profileId = :profileId AND eventTypeSource = :source")
+    abstract fun clearBySource(profileId: Int, source: Int)
+
     @Query("SELECT * FROM eventTypes WHERE profileId = :profileId AND eventType = :typeId")
     abstract fun getByIdNow(profileId: Int, typeId: Long): EventType?
 
@@ -43,7 +46,7 @@ abstract class EventTypeDao {
         val typeList = data.eventTypes.map {
             EventType(
                 profileId = profile.id,
-                id = it.id.toLong(),
+                id = it.id,
                 name = it.name,
                 color = Color.parseColor(it.color),
                 order = order++,
@@ -52,5 +55,22 @@ abstract class EventTypeDao {
         }
         addAll(typeList)
         return typeList
+    }
+
+    fun getAllWithDefaults(profile: Profile): List<EventType> {
+        val eventTypes = getAllNow(profile.id)
+
+        val defaultIdsExpected = AppData.get(profile.loginStoreType).eventTypes
+            .map { it.id }
+        val defaultIdsFound = eventTypes.filter { it.source == SOURCE_DEFAULT }
+            .sortedBy { it.order }
+            .map { it.id }
+
+        if (defaultIdsExpected == defaultIdsFound)
+            return eventTypes
+
+        clearBySource(profile.id, SOURCE_DEFAULT)
+        addDefaultTypes(profile)
+        return eventTypes
     }
 }

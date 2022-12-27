@@ -12,7 +12,8 @@
 		"uiConfig": {
 			"lessonHeight": 60,
 			"enableMarkAsReadAnnouncements": true,
-			"enableNoticePoints": false
+			"enableNoticePoints": false,
+			"eventManualShowSubjectDropdown": false
 		},
 		"eventTypes": [
 			{
@@ -83,18 +84,20 @@
 	},
 	"university": {
 		"configOverrides": {
+			"agendaSubjectImportant": true,
 			"shareByDefault": true,
 			"timetableColorSubjectName": true,
 			"timetableTrimHourRange": true
 		},
 		"uiConfig": {
-			"lessonHeight": 45
+			"lessonHeight": 45,
+			"eventManualShowSubjectDropdown": true
 		},
 		"eventTypes": [
 			{
-				"id": 1,
-				"color": "#f44336",
-				"name": "egzamin"
+				"id": 3,
+				"color": "#76ff03",
+				"name": "kartkówka"
 			},
 			{
 				"id": 2,
@@ -102,24 +105,19 @@
 				"name": "kolokwium"
 			},
 			{
-				"id": 3,
-				"color": "#76ff03",
-				"name": "kartkówka"
-			},
-			{
-				"id": 4,
-				"color": "#ffeb3b",
-				"name": "wejściówka"
-			},
-			{
 				"id": 5,
 				"color": "#90caf9",
 				"name": "zaliczenie"
 			},
 			{
-				"id": 6,
-				"color": "#4050b5",
-				"name": "zadanie"
+				"id": 1,
+				"color": "#f44336",
+				"name": "egzamin"
+			},
+			{
+				"id": 11,
+				"color": "#3d5afe",
+				"name": "poprawka"
 			},
 			{
 				"id": 7,

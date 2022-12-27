@@ -13,6 +13,7 @@
         android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/mainLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,6 +35,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/timeDropdownLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -163,6 +165,7 @@
             tools:visibility="visible">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/subjectDropdownLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

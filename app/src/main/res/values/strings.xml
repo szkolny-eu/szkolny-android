@@ -1551,4 +1551,5 @@
     <string name="settings_register_share_by_default_subtext">Ustaw tworzone wydarzenia domyślnie jako udostępnione</string>
     <string name="settings_registration_section">Rejestracja</string>
     <string name="home_timetable_all_lessons">Wszystkie lekcje:</string>
+    <string name="agenda_config_subject_important">Wyświetl nazwę przedmiotu zamiast rodzaju</string>
 </resources>

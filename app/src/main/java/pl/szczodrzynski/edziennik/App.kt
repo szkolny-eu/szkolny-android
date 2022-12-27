@@ -422,6 +422,12 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         try {
             App.data = AppData.get(profile.loginStoreType)
             d("App", "Loaded AppData: ${App.data}")
+            // apply newly-added config overrides, if not changed by the user yet
+            for ((key, value) in App.data.configOverrides) {
+                val config = App.profile.config
+                if (!config.has(key))
+                    config.set(key, value)
+            }
         } catch (e: Exception) {
             Log.e("App", "Cannot load AppData", e)
             Toast.makeText(this, R.string.app_cannot_load_data, Toast.LENGTH_LONG).show()

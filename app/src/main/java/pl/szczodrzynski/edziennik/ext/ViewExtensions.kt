@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Rect
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.StringRes
@@ -161,3 +162,12 @@ val SwipeRefreshLayout.onScrollListener: RecyclerView.OnScrollListener
         }
     }
 
+fun View.removeFromParent() {
+    (parent as? ViewGroup)?.removeView(this)
+}
+
+fun View.appendView(child: View) {
+    val parent = parent as? ViewGroup ?: return
+    val index = parent.indexOfChild(this)
+    parent.addView(child, index + 1)
+}

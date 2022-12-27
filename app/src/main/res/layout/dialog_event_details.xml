@@ -17,6 +17,7 @@
             type="pl.szczodrzynski.edziennik.data.db.full.EventFull" />
         <variable name="eventShared" type="boolean" />
         <variable name="eventOwn" type="boolean" />
+        <variable name="name" type="java.lang.CharSequence" />
         <variable name="details" type="java.lang.CharSequence" />
         <variable name="monthName" type="String" />
     </data>
@@ -55,7 +56,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{event.typeName}"
+                        android:text="@{name}"
                         android:textIsSelectable="true"
                         android:textAppearance="@style/NavView.TextView.Title"
                         android:visibility="@{event.typeName == null ? View.GONE : View.VISIBLE}"

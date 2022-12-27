@@ -54,6 +54,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:checked="@={config.ui.agendaSubjectImportant}"
+                android:minHeight="32dp"
+                android:text="@string/agenda_config_subject_important" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:checked="@={config.ui.agendaCompactMode}"
                 android:enabled="@{isAgendaMode}"
                 android:minHeight="32dp"

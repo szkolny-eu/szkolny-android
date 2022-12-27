@@ -63,9 +63,10 @@ class HomeEventsCard(
                 simpleMode = true,
                 showWeekDay = true,
                 showDate = true,
-                showType = true,
+                showType = !profile.config.ui.agendaSubjectImportant,
+                showTypeColor = true,
                 showTime = false,
-                showSubject = false,
+                showSubject = profile.config.ui.agendaSubjectImportant,
                 markAsSeen = false,
                 onEventClick = {
                     EventDetailsDialog(

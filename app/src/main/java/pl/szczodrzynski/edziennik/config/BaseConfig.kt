@@ -43,4 +43,6 @@ abstract class BaseConfig(
             db.configDao().add(ConfigEntry(profileId ?: -1, key, value))
         }
     }
+
+    fun has(key: String) = values.containsKey(key)
 }

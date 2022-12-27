@@ -59,10 +59,11 @@ data class AppData(
         val lessonHeight: Int,
         val enableMarkAsReadAnnouncements: Boolean,
         val enableNoticePoints: Boolean,
+        val eventManualShowSubjectDropdown: Boolean,
     )
 
     data class EventType(
-        val id: Int,
+        val id: Long,
         val color: String,
         val name: String,
     )

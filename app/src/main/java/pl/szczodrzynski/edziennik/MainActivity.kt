@@ -322,7 +322,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         // IT'S WINTER MY DUDES
         val today = Date.getToday()
-        if ((today.month % 11 == 1) && app.config.ui.snowfall) {
+        if ((today.month / 3 % 4 == 0) && app.config.ui.snowfall) {
             b.rootFrame.addView(layoutInflater.inflate(R.layout.snowfall, b.rootFrame, false))
         } else if (app.config.ui.eggfall && BigNightUtil().isDataWielkanocyNearDzisiaj()) {
             val eggfall = layoutInflater.inflate(

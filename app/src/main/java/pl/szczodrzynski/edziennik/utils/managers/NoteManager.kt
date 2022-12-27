@@ -171,7 +171,7 @@ class NoteManager(private val app: App) {
                 activity = activity,
                 simpleMode = true,
                 showDate = true,
-                showColor = false,
+                showTypeColor = false,
                 showTime = false,
                 markAsSeen = false,
                 showNotes = false,

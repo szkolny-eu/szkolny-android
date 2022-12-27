@@ -100,6 +100,13 @@
                 android:text="Remove all homework body (null)"
                 android:textAllCaps="false" />
 
+            <Button
+                android:id="@+id/resetEventTypes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Reset event types"
+                android:textAllCaps="false" />
+
             <TextView
                 android:id="@+id/cookies"
                 android:layout_width="match_parent"

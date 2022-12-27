@@ -73,7 +73,8 @@ fun JsonObject(vararg properties: Pair<String, Any?>): JsonObject {
                 is Number -> addProperty(key, value)
                 is Boolean -> addProperty(key, value)
                 is Enum<*> -> addProperty(key, value.toInt())
-                else -> add(key, property.toJsonElement())
+                null -> add(key, null)
+                else -> add(key, value.toJsonElement())
             }
         }
     }
