@@ -113,10 +113,11 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: pl.szczodrzynski.edziennik
-          releaseFile: ${{ needs.sign.outputs.signedReleaseFile }}
+          releaseFiles: ${{ needs.sign.outputs.signedReleaseFile }}
           releaseName: ${{ steps.changelog.outputs.appVersionName }}
           track: ${{ secrets.PLAY_RELEASE_TRACK }}
           whatsNewDirectory: ${{ steps.changelog.outputs.changelogDir }}
+          status: completed
 
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v2
