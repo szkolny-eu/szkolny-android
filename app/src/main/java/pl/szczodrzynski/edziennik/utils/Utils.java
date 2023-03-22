@@ -774,12 +774,19 @@ public class Utils {
 
     private static File storageDir = null;
     public static File getStorageDir() {
-        if (storageDir != null)
-            return storageDir;
-        storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        storageDir = new File(storageDir, "Szkolny.eu");
-        storageDir.mkdirs();
         return storageDir;
+    }
+
+    public static void initializeStorageDir(Context context) {
+        if (storageDir != null)
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            storageDir = context.getExternalFilesDir(null);
+        } else {
+            storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            storageDir = new File(storageDir, "Szkolny.eu");
+        }
+        storageDir.mkdirs();
     }
 
     public static void writeStringToFile(File file, String data) throws IOException {

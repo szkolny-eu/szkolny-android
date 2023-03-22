@@ -109,12 +109,10 @@ class GenerateBlockTimetableDialog(
                 .show()
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.onClick {
-            app.permissionManager.requestStoragePermission(activity, permissionMessage = R.string.permissions_generate_timetable) {
-                when (b.weekSelectionRadioGroup.checkedRadioButtonId) {
-                    R.id.withChangesCurrentWeekRadio -> generateBlockTimetable(weekCurrentStart, weekCurrentEnd)
-                    R.id.withChangesNextWeekRadio -> generateBlockTimetable(weekNextStart, weekNextEnd)
-                    R.id.forSelectedWeekRadio -> selectDate()
-                }
+            when (b.weekSelectionRadioGroup.checkedRadioButtonId) {
+                R.id.withChangesCurrentWeekRadio -> generateBlockTimetable(weekCurrentStart, weekCurrentEnd)
+                R.id.withChangesNextWeekRadio -> generateBlockTimetable(weekNextStart, weekNextEnd)
+                R.id.forSelectedWeekRadio -> selectDate()
             }
         }
     }}

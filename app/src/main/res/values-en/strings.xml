@@ -1353,7 +1353,6 @@
     <string name="home_archive_close_no_target_text">Child %s does not have a profile on this account in the current school year. Probably this profile has been deleted or the student no longer attends this class.\n\nTo go to the current profile, select a student from the list or log in to their account with the Add student button.</string>
     <string name="build_invalid_no_remote_repo">A reference to a remote repository was not found. Make sure you are using the official repository fork and verify your Gradle configuration.</string>
     <string name="login_mode_mobidziennik_web_guide">"Enter the data you use to log in to the MobiDziennik website. As the server address, you can enter the address of the website where you have MobiDziennik. "</string>
-    <string name="permissions_generate_timetable">In order to be able to save the generated timetable, you must grant access rights to the device\'s memory.\n\nClick OK to grant permissions.</string>
     <string name="login_summary_account_child">(Child)</string>
     <string name="login_summary_account_parent">(Parent)</string>
     <string name="menu_teachers">Teachers</string>
