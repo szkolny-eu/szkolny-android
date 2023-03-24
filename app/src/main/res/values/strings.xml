@@ -1241,7 +1241,7 @@
     <string name="timetable_not_public_hint">Skontaktuj się z wychowawcą w celu udostępnienia planu lekcji.</string>
     <string name="timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę.</string>
     <string name="timetable_not_public_title">Brak planu lekcji</string>
-    <string name="timetable_select_day">Wybierz dzień</string>
+    <string name="timetable_select_day">Przejdź do daty</string>
     <string name="timetable_syncing_text">Pobieranie planu lekcji na wybrany tydzień…</string>
     <string name="timetable_today">Dzisiaj</string>
     <string name="title_all">Synchronizuj wszystko</string>
@@ -1552,4 +1552,5 @@
     <string name="settings_registration_section">Rejestracja</string>
     <string name="home_timetable_all_lessons">Wszystkie lekcje:</string>
     <string name="agenda_config_subject_important">Wyświetl nazwę przedmiotu zamiast rodzaju</string>
+    <string name="menu_timetable_sync">Odśwież wybrany tydzień</string>
 </resources>

@@ -40,6 +40,7 @@ import pl.szczodrzynski.edziennik.data.db.full.EventFull
 import pl.szczodrzynski.edziennik.data.db.full.LessonFull
 import pl.szczodrzynski.edziennik.databinding.TimetableDayFragmentBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableLessonBinding
+import pl.szczodrzynski.edziennik.databinding.TimetableNoLessonsBinding
 import pl.szczodrzynski.edziennik.databinding.TimetableNoTimetableBinding
 import pl.szczodrzynski.edziennik.ext.Intent
 import pl.szczodrzynski.edziennik.ext.JsonObject
@@ -63,6 +64,7 @@ import pl.szczodrzynski.edziennik.utils.Colors
 import pl.szczodrzynski.edziennik.utils.managers.NoteManager
 import pl.szczodrzynski.edziennik.utils.models.Date
 import pl.szczodrzynski.edziennik.utils.models.Time
+import pl.szczodrzynski.edziennik.utils.models.Week
 import pl.szczodrzynski.edziennik.utils.mutableLazy
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
@@ -182,6 +184,20 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                 b.root.removeAllViews()
                 b.root.addView(view)
                 viewsRemoved = true
+
+                val b = TimetableNoLessonsBinding.bind(view)
+                val weekStart = date.weekStart.stringY_m_d
+                b.noLessonsSync.onClick {
+                    it.isEnabled = false
+                    EdziennikTask.syncProfile(
+                        profileId = App.profileId,
+                        featureTypes = setOf(FeatureType.TIMETABLE),
+                        arguments = JsonObject(
+                            "weekStart" to weekStart
+                        )
+                    ).enqueue(activity)
+                }
+                b.noLessonsSync.isVisible = date.weekDay !in Week.SATURDAY..Week.SUNDAY
             }
             return
         }
