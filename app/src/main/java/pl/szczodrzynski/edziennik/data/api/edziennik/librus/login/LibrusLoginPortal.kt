@@ -127,31 +127,24 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                 .allowErrorCode(HTTP_FORBIDDEN)
                 .contentType(MediaTypeUtils.APPLICATION_JSON)
                 .post()
-                .callback(object : JsonCallbackHandler() {
-                    override fun onSuccess(json: JsonObject?, response: Response) {
+                .callback(object : TextCallbackHandler() {
+                    override fun onSuccess(text: String?, response: Response) {
                         val location = response.headers()?.get("Location")
                         if (location == "$LIBRUS_REDIRECT_URL?command=close") {
                             data.error(ApiError(TAG, ERROR_LIBRUS_PORTAL_MAINTENANCE)
-                                    .withApiResponse(json)
+                                    .withApiResponse(text)
                                     .withResponse(response))
                             return
                         }
-
-                        if (json == null) {
-                            if (response.parserErrorBody?.contains("wciąż nieaktywne") == true) {
-                                data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED)
-                                        .withResponse(response))
-                                return
-                            }
+                        if (text == null) {
                             data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
                                     .withResponse(response))
                             return
                         }
-                        val error = if (response.code() == 200) null else
-                            json.getJsonArray("errors")?.getString(0)
-                                    ?: json.getJsonObject("errors")?.entrySet()?.firstOrNull()?.value?.asString
+                        val error = if (response.code() == 200 && text.contains("librus_account_settings_main")) null else
+                            text
 
-                        if (error?.contains("robotem") == true || json.getBoolean("captchaRequired") == true) {
+                        if (error?.contains("robotem") == true) {
                             data.requireUserAction(
                                 type = UserActionRequiredEvent.Type.RECAPTCHA,
                                 params = Bundle(
@@ -171,12 +164,12 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                                 else -> ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR
                             }.let { errorCode ->
                                 data.error(ApiError(TAG, errorCode)
-                                        .withApiResponse(json)
-                                        .withResponse(response))
+                                    .withApiResponse(text)
+                                    .withResponse(response))
                                 return
                             }
                         }
-                        authorize(json.getString("redirect", LIBRUS_AUTHORIZE_URL))
+                        authorize(LIBRUS_AUTHORIZE_URL)
                     }
 
                     override fun onFailure(response: Response, throwable: Throwable) {
