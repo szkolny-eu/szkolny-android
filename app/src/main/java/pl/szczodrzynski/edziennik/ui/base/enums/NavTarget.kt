@@ -217,6 +217,7 @@ enum class NavTarget(
         location = NavTargetLocation.BOTTOM_SHEET,
         nameRes = R.string.menu_debug,
         icon = CommunityMaterial.Icon.cmd_android_debug_bridge,
+        devModeOnly = true,
     ),
     GRADES_EDITOR(
         id = 501,
