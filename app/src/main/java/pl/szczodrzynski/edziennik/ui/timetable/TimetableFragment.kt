@@ -27,8 +27,11 @@ import kotlinx.coroutines.launch
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.MainActivity
 import pl.szczodrzynski.edziennik.R
+import pl.szczodrzynski.edziennik.data.api.edziennik.EdziennikTask
+import pl.szczodrzynski.edziennik.data.db.enums.FeatureType
 import pl.szczodrzynski.edziennik.data.db.enums.MetadataType
 import pl.szczodrzynski.edziennik.databinding.FragmentTimetableV2Binding
+import pl.szczodrzynski.edziennik.ext.JsonObject
 import pl.szczodrzynski.edziennik.ext.getSchoolYearConstrains
 import pl.szczodrzynski.edziennik.ext.getStudentData
 import pl.szczodrzynski.edziennik.ui.dialogs.settings.TimetableConfigDialog
@@ -178,6 +181,21 @@ class TimetableFragment : Fragment(), CoroutineScope {
         b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == selectedDate?.value ?: today }, false)
 
         activity.navView.bottomSheet.prependItems(
+                BottomSheetPrimaryItem(true)
+                        .withTitle(R.string.menu_timetable_sync)
+                        .withIcon(CommunityMaterial.Icon.cmd_calendar_sync_outline)
+                        .withOnClickListener {
+                            activity.bottomSheet.close()
+                            val date = pageSelection ?: Date.getToday()
+                            val weekStart = date.weekStart.stringY_m_d
+                            EdziennikTask.syncProfile(
+                                profileId = App.profileId,
+                                featureTypes = setOf(FeatureType.TIMETABLE),
+                                arguments = JsonObject(
+                                    "weekStart" to weekStart
+                                )
+                            ).enqueue(activity)
+                        },
                 BottomSheetPrimaryItem(true)
                         .withTitle(R.string.timetable_select_day)
                         .withIcon(SzkolnyFont.Icon.szf_calendar_today_outline)

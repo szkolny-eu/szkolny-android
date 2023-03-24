@@ -19,6 +19,7 @@ class RecaptchaPromptDialog(
     private val referer: String,
     private val onSuccess: (recaptchaCode: String) -> Unit,
     private val onCancel: (() -> Unit)?,
+    private val onServerError: (() -> Unit)? = null,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<RecaptchaViewBinding>(activity, onShowListener, onDismissListener) {
@@ -62,7 +63,8 @@ class RecaptchaPromptDialog(
                     b.checkbox.background = checkboxBackground
                     b.checkbox.foreground = checkboxForeground
                     b.progress.visibility = View.GONE
-                }
+                },
+                onServerError = onServerError,
             ).show()
         }
     }

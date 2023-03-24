@@ -24,6 +24,25 @@ object Regexes {
         """^\[META:([A-z0-9-&=]+)]""".toRegex()
     }
 
+    val HTML_INPUT_HIDDEN by lazy {
+        """<input .*?type="hidden".+?>""".toRegex()
+    }
+    val HTML_INPUT_NAME by lazy {
+        """name="(.+?)"""".toRegex()
+    }
+    val HTML_INPUT_VALUE by lazy {
+        """value="(.+?)"""".toRegex()
+    }
+    val HTML_CSRF_TOKEN by lazy {
+        """name="csrf-token" content="([A-z0-9=+/\-_]+?)"""".toRegex()
+    }
+    val HTML_FORM_ACTION by lazy {
+        """<form .*?action="(.+?)"""".toRegex()
+    }
+    val HTML_RECAPTCHA_KEY by lazy {
+        """data-sitekey="(.+?)"""".toRegex()
+    }
+
 
 
     val MOBIDZIENNIK_GRADES_SUBJECT_NAME by lazy {

@@ -916,7 +916,7 @@
     <string name="settings_about_licenses_text">Licencje open-source</string>
     <string name="settings_about_privacy_policy_text">Polityka prywatności</string>
     <string name="settings_card_register_title">E-dziennik</string>
-    <string name="settings_about_title_subtext">© Kuba Szczodrzyński, wrzesień 2018 - 2022</string>
+    <string name="settings_about_title_subtext">© Kuba Szczodrzyński, wrzesień 2018 - 2023</string>
     <string name="settings_about_update_subtext">Kliknij, aby sprawdzić aktualizacje</string>
     <string name="settings_about_update_text">Aktualizacja</string>
     <string name="settings_about_version_text">Wersja</string>
@@ -1241,7 +1241,7 @@
     <string name="timetable_not_public_hint">Skontaktuj się z wychowawcą w celu udostępnienia planu lekcji.</string>
     <string name="timetable_not_public_text">Plan lekcji nie został opublikowany przez szkołę.</string>
     <string name="timetable_not_public_title">Brak planu lekcji</string>
-    <string name="timetable_select_day">Wybierz dzień</string>
+    <string name="timetable_select_day">Przejdź do daty</string>
     <string name="timetable_syncing_text">Pobieranie planu lekcji na wybrany tydzień…</string>
     <string name="timetable_today">Dzisiaj</string>
     <string name="title_all">Synchronizuj wszystko</string>
@@ -1416,7 +1416,6 @@
     <string name="build_dialog_open_repo">Sprawdź kod</string>
     <string name="error_no_api_access">Brak dostępu do API</string>
     <string name="build_date">Data kompilacji</string>
-    <string name="permissions_generate_timetable">Aby móc zapisać wygenerowany plan lekcji musisz przyznać uprawnienia dostępu do pamięci urządzenia.\n\nKliknij OK, aby przyznać uprawnienia.</string>
     <string name="privacy_policy_dialog_html"><![CDATA[Korzystając z aplikacji potwierdzasz <a href="https://szkolny.eu/privacy-policy">przeczytanie Polityki prywatności</a> i akceptujesz jej postanowienia.<br /><br />Autorzy aplikacji nie biorą odpowiedzialności za korzystanie z aplikacji Szkolny.eu.]]></string>
     <string name="login_chooser_version_format">Szkolny.eu v%s\n%s</string>
     <string name="menu_agenda_config">Ustawienia terminarza</string>
@@ -1544,6 +1543,7 @@
     <string name="login_mode_usos_oauth_guide">TODO</string>
     <string name="notification_user_action_required_oauth_usos">USOS - wymagane logowanie z użyciem przeglądarki</string>
     <string name="oauth_dialog_title">Zaloguj się</string>
+    <string name="recaptcha_dialog_title">reCAPTCHA</string>
     <string name="app_cannot_load_data">Nie można załadować danych aplikacji</string>
     <string name="legend_event_shared_received">{cmd-share-variant} udostępnione w klasie</string>
     <string name="legend_event_shared_sent">{cmd-share-variant} udostępnione przez Ciebie</string>
@@ -1552,4 +1552,5 @@
     <string name="settings_registration_section">Rejestracja</string>
     <string name="home_timetable_all_lessons">Wszystkie lekcje:</string>
     <string name="agenda_config_subject_important">Wyświetl nazwę przedmiotu zamiast rodzaju</string>
+    <string name="menu_timetable_sync">Odśwież wybrany tydzień</string>
 </resources>

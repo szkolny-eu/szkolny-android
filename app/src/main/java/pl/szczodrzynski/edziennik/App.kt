@@ -235,6 +235,7 @@ class App : MultiDexApplication(), Configuration.Provider, CoroutineScope {
         }
 
         Signing.getCert(this)
+        Utils.initializeStorageDir(this)
 
         launch {
             withContext(Dispatchers.Default) {

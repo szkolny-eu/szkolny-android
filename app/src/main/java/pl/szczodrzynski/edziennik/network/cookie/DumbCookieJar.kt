@@ -5,6 +5,7 @@
 package pl.szczodrzynski.edziennik.network.cookie
 
 import android.content.Context
+import androidx.core.content.edit
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -26,22 +27,48 @@ class DumbCookieJar(
 ) : CookieJar {
 
     private val prefs = context.getSharedPreferences("cookies", Context.MODE_PRIVATE)
-    val sessionCookies = mutableSetOf<DumbCookie>()
-    private val savedCookies = mutableSetOf<DumbCookie>()
+    private val sessionCookies = mutableSetOf<DumbCookie>()
+
+    init {
+        val toRemove = mutableListOf<String>()
+        prefs.all.forEach { (key, value) ->
+            if (value !is String)
+                return@forEach
+            val dc = DumbCookie.deserialize(key, value) ?: return@forEach
+            if (dc.cookie.expiresAt() > System.currentTimeMillis())
+                sessionCookies.add(dc)
+            else
+                toRemove.add(key)
+        }
+        prefs.edit {
+            for (key in toRemove) {
+                remove(key)
+            }
+        }
+    }
+
     private fun save(dc: DumbCookie) {
         sessionCookies.remove(dc)
         sessionCookies.add(dc)
         if (dc.cookie.persistent() || persistAll) {
-            savedCookies.remove(dc)
-            savedCookies.add(dc)
+            prefs.edit {
+                val (key, value) = dc.serialize()
+                putString(key, value)
+            }
         }
     }
     private fun delete(vararg toRemove: DumbCookie) {
-        sessionCookies.removeAll(toRemove)
-        savedCookies.removeAll(toRemove)
+        sessionCookies.removeAll(toRemove.toSet())
+        prefs.edit {
+            for (dc in toRemove) {
+                val key = dc.serializeKey()
+                if (prefs.contains(key))
+                    remove(key)
+            }
+        }
     }
 
-    override fun saveFromResponse(url: HttpUrl?, cookies: List<Cookie>) {
+    override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) {
         for (cookie in cookies) {
             val dc = DumbCookie(cookie)
             save(dc)
@@ -52,6 +79,10 @@ class DumbCookieJar(
         return sessionCookies.filter {
             it.cookie.matches(url)
         }.map { it.cookie }
+    }
+
+    fun getAllDomains(): List<Cookie> {
+        return sessionCookies.map { it.cookie }
     }
 
     fun get(domain: String, name: String): String? {
@@ -84,7 +115,7 @@ class DumbCookieJar(
     fun getAll(domain: String): Map<String, String> {
         return sessionCookies.filter {
             it.domainMatches(domain)
-        }.map { it.cookie.name() to it.cookie.value() }.toMap()
+        }.associate { it.cookie.name() to it.cookie.value() }
     }
 
     fun remove(domain: String, name: String) {
@@ -99,5 +130,12 @@ class DumbCookieJar(
             it.domainMatches(domain)
         }
         delete(*toRemove.toTypedArray())
+    }
+
+    fun clearAllDomains() {
+        sessionCookies.clear()
+        prefs.edit {
+            clear()
+        }
     }
 }
