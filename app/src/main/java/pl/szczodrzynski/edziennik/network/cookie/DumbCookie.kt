@@ -5,8 +5,20 @@
 package pl.szczodrzynski.edziennik.network.cookie
 
 import okhttp3.Cookie
+import okhttp3.HttpUrl
 
 class DumbCookie(var cookie: Cookie) {
+    companion object {
+        fun deserialize(key: String, value: String): DumbCookie? {
+            val (domain, _) = key.split('|', limit = 2)
+            val url = HttpUrl.Builder()
+                .scheme("https")
+                .host(domain)
+                .build()
+            val cookie = Cookie.parse(url, value) ?: return null
+            return DumbCookie(cookie)
+        }
+    }
 
     constructor(domain: String, name: String, value: String, expiresAt: Long? = null) : this(
             Cookie.Builder()
@@ -44,5 +56,10 @@ class DumbCookie(var cookie: Cookie) {
         hash = 31 * hash + cookie.name().hashCode()
         hash = 31 * hash + cookie.domain().hashCode()
         return hash
+    }
+
+    fun serialize(): Pair<String, String> {
+        val key = cookie.domain() + "|" + cookie.name()
+        return key to cookie.toString()
     }
 }

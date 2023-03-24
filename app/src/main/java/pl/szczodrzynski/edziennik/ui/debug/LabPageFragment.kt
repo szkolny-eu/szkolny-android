@@ -181,26 +181,33 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
 
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
         startCoroutineTimer(500L, 300L) {
-            val text = app.cookieJar.sessionCookies
-                    .map { it.cookie }
-                    .sortedBy { it.domain() }
-                    .groupBy { it.domain() }
-                    .map {
-                        listOf(
-                                it.key.asBoldSpannable(),
-                                ":\n",
-                                it.value
-                                        .sortedBy { it.name() }
-                                        .map {
-                                            listOf(
-                                                    "    ",
-                                                    it.name(),
-                                                    "=",
-                                                    it.value().decode().take(40).asItalicSpannable().asColoredSpannable(colorSecondary)
-                                            ).concat("")
-                                        }.concat("\n")
-                        ).concat("")
-                    }.concat("\n\n")
+            val text = app.cookieJar.getAllDomains()
+                .sortedBy { it.domain() }
+                .groupBy { it.domain() }
+                .map { pair ->
+                    listOf(
+                        pair.key.asBoldSpannable(),
+                        ":\n",
+                        pair.value
+                            .sortedBy { it.name() }
+                            .map { cookie ->
+                                listOf(
+                                    "    ",
+                                    if (cookie.persistent())
+                                        cookie.name()
+                                            .asUnderlineSpannable()
+                                    else
+                                        cookie.name(),
+                                    "=",
+                                    cookie.value()
+                                        .decode()
+                                        .take(40)
+                                        .asItalicSpannable()
+                                        .asColoredSpannable(colorSecondary),
+                                ).concat("")
+                            }.concat("\n")
+                    ).concat("")
+                }.concat("\n\n")
             b.cookies.text = text
         }
 

@@ -29,11 +29,12 @@ class SignatureInterceptor(val app: App) : Interceptor {
         return chain.proceed(
                 request.newBuilder()
                         .header("X-ApiKey", app.config.apiKeyCustom?.takeValue() ?: API_KEY)
-                        .header("X-AppVersion", BuildConfig.VERSION_CODE.toString())
-                        .header("X-Timestamp", timestamp.toString())
-                        .header("X-Signature", sign(timestamp, body, url))
                         .header("X-AppBuild", BuildConfig.BUILD_TYPE)
                         .header("X-AppFlavor", BuildConfig.FLAVOR)
+                        .header("X-AppVersion", BuildConfig.VERSION_CODE.toString())
+                        .header("X-DeviceId", app.deviceId)
+                        .header("X-Signature", sign(timestamp, body, url))
+                        .header("X-Timestamp", timestamp.toString())
                         .build())
     }
 
