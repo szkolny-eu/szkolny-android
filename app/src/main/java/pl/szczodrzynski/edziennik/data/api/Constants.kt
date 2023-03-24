@@ -26,9 +26,10 @@ val LIBRUS_USER_AGENT = "${SYSTEM_USER_AGENT}LibrusMobileApp"
 const val SYNERGIA_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Gecko/20100101 Firefox/62.0"
 const val LIBRUS_CLIENT_ID = "VaItV6oRutdo8fnjJwysnTjVlvaswf52ZqmXsJGP"
 const val LIBRUS_REDIRECT_URL = "app://librus"
-const val LIBRUS_AUTHORIZE_URL = "https://portal.librus.pl/oauth2/authorize?client_id=$LIBRUS_CLIENT_ID&redirect_uri=$LIBRUS_REDIRECT_URL&response_type=code"
+const val LIBRUS_AUTHORIZE_URL = "https://portal.librus.pl/konto-librus/redirect/dru"
 const val LIBRUS_LOGIN_URL = "https://portal.librus.pl/konto-librus/login/action"
 const val LIBRUS_TOKEN_URL = "https://portal.librus.pl/oauth2/access_token"
+const val LIBRUS_HEADER = "pl.librus.synergiaDru2"
 
 const val LIBRUS_ACCOUNT_URL = "/v3/SynergiaAccounts/fresh/" // + login
 const val LIBRUS_ACCOUNTS_URL = "/v3/SynergiaAccounts"
@@ -58,9 +59,6 @@ const val LIBRUS_SANDBOX_URL = "https://sandbox.librus.pl/index.php?action="
 
 const val LIBRUS_SYNERGIA_HOMEWORK_ATTACHMENT_URL = "https://synergia.librus.pl/homework/downloadFile"
 const val LIBRUS_SYNERGIA_MESSAGES_ATTACHMENT_URL = "https://synergia.librus.pl/wiadomosci/pobierz_zalacznik"
-
-const val LIBRUS_PORTAL_RECAPTCHA_KEY = "6Lf48moUAAAAAB9ClhdvHr46gRWR"
-const val LIBRUS_PORTAL_RECAPTCHA_REFERER = "https://portal.librus.pl/konto-librus/login"
 
 
 val MOBIDZIENNIK_USER_AGENT = SYSTEM_USER_AGENT
