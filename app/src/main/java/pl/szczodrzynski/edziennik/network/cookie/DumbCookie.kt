@@ -33,7 +33,10 @@ class DumbCookie(var cookie: Cookie) {
         cookie = Cookie.Builder()
                 .name(cookie.name())
                 .value(cookie.value())
-                .expiresAt(cookie.expiresAt())
+                .also {
+                    if (cookie.persistent())
+                        it.expiresAt(cookie.expiresAt())
+                }
                 .domain(cookie.domain())
                 .build()
     }
@@ -58,8 +61,6 @@ class DumbCookie(var cookie: Cookie) {
         return hash
     }
 
-    fun serialize(): Pair<String, String> {
-        val key = cookie.domain() + "|" + cookie.name()
-        return key to cookie.toString()
-    }
+    fun serializeKey() = cookie.domain() + "|" + cookie.name()
+    fun serialize() = serializeKey() to cookie.toString()
 }

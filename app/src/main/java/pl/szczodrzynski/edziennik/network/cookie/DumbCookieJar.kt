@@ -30,10 +30,20 @@ class DumbCookieJar(
     private val sessionCookies = mutableSetOf<DumbCookie>()
 
     init {
+        val toRemove = mutableListOf<String>()
         prefs.all.forEach { (key, value) ->
             if (value !is String)
                 return@forEach
-            sessionCookies.add(DumbCookie.deserialize(key, value) ?: return@forEach)
+            val dc = DumbCookie.deserialize(key, value) ?: return@forEach
+            if (dc.cookie.expiresAt() > System.currentTimeMillis())
+                sessionCookies.add(dc)
+            else
+                toRemove.add(key)
+        }
+        prefs.edit {
+            for (key in toRemove) {
+                remove(key)
+            }
         }
     }
 
@@ -48,7 +58,14 @@ class DumbCookieJar(
         }
     }
     private fun delete(vararg toRemove: DumbCookie) {
-        sessionCookies.removeAll(toRemove)
+        sessionCookies.removeAll(toRemove.toSet())
+        prefs.edit {
+            for (dc in toRemove) {
+                val key = dc.serializeKey()
+                if (prefs.contains(key))
+                    remove(key)
+            }
+        }
     }
 
     override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) {
@@ -113,5 +130,12 @@ class DumbCookieJar(
             it.domainMatches(domain)
         }
         delete(*toRemove.toTypedArray())
+    }
+
+    fun clearAllDomains() {
+        sessionCookies.clear()
+        prefs.edit {
+            clear()
+        }
     }
 }

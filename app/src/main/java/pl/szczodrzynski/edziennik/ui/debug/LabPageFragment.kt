@@ -179,6 +179,10 @@ class LabPageFragment : LazyFragment(), CoroutineScope {
             return@setOnChangeListener true
         }
 
+        b.clearCookies.onClick {
+            app.cookieJar.clearAllDomains()
+        }
+
         val colorSecondary = android.R.attr.textColorSecondary.resolveAttr(activity)
         startCoroutineTimer(500L, 300L) {
             val text = app.cookieJar.getAllDomains()
