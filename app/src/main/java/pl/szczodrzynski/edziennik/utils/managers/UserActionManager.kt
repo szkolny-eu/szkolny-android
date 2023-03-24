@@ -22,6 +22,8 @@ import pl.szczodrzynski.edziennik.ext.*
 import pl.szczodrzynski.edziennik.ui.captcha.RecaptchaPromptDialog
 import pl.szczodrzynski.edziennik.ui.login.oauth.OAuthLoginActivity
 import pl.szczodrzynski.edziennik.ui.login.oauth.OAuthLoginResult
+import pl.szczodrzynski.edziennik.ui.login.recaptcha.RecaptchaActivity
+import pl.szczodrzynski.edziennik.ui.login.recaptcha.RecaptchaResult
 import pl.szczodrzynski.edziennik.utils.Utils.d
 
 class UserActionManager(val app: App) {
@@ -107,7 +109,42 @@ class UserActionManager(val app: App) {
                 ))
             },
             onCancel = callback.onCancel,
+            onServerError = {
+                executeRecaptchaActivity(activity, event, callback)
+            },
         ).show()
+        return true
+    }
+
+    private fun executeRecaptchaActivity(
+        activity: AppCompatActivity,
+        event: UserActionRequiredEvent,
+        callback: UserActionCallback,
+    ): Boolean {
+        event.params.getString("siteKey") ?: return false
+        event.params.getString("referer") ?: return false
+
+        var listener: Any? = null
+        listener = object {
+            @Subscribe(threadMode = ThreadMode.MAIN)
+            fun onRecaptchaResult(result: RecaptchaResult) {
+                EventBus.getDefault().unregister(listener)
+                when {
+                    result.isError -> callback.onFailure?.invoke()
+                    result.code != null -> {
+                        finishAction(activity, event, callback, Bundle(
+                            "recaptchaCode" to result.code,
+                            "recaptchaTime" to System.currentTimeMillis(),
+                        ))
+                    }
+                    else -> callback.onCancel?.invoke()
+                }
+            }
+        }
+        EventBus.getDefault().register(listener)
+
+        val intent = Intent(activity, RecaptchaActivity::class.java).putExtras(event.params)
+        activity.startActivity(intent)
         return true
     }
 

@@ -25,6 +25,7 @@ class RecaptchaDialog(
     private val autoRetry: Boolean = true,
     private val onSuccess: (recaptchaCode: String) -> Unit,
     private val onFailure: (() -> Unit)? = null,
+    private val onServerError: (() -> Unit)? = null,
     onShowListener: ((tag: String) -> Unit)? = null,
     onDismissListener: ((tag: String) -> Unit)? = null,
 ) : BindingDialog<RecaptchaDialogBinding>(activity, onShowListener, onDismissListener) {
@@ -44,7 +45,11 @@ class RecaptchaDialog(
 
     override suspend fun onBeforeShow(): Boolean {
         val (title, text, bitmap) = withContext(Dispatchers.Default) {
-            val html = loadCaptchaHtml() ?: return@withContext null
+            val html = loadCaptchaHtml()
+            if (html == null) {
+                onServerError?.invoke()
+                return@withContext null
+            }
             return@withContext loadCaptchaData(html)
         } ?: run {
             onFailure?.invoke()

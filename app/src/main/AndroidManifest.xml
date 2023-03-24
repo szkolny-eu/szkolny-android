@@ -160,7 +160,11 @@
         <activity android:name=".ui.login.oauth.OAuthLoginActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:theme="@style/AppTheme.Light" />
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
+        <activity android:name=".ui.login.recaptcha.RecaptchaActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar" />
         <activity android:name=".ui.base.BuildInvalidActivity" android:exported="false" />
         <activity android:name=".ui.settings.contributors.ContributorsActivity" android:exported="false" />
 
