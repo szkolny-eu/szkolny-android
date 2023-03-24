@@ -24,6 +24,9 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
         private const val TAG = "LoginLibrusPortal"
     }
 
+    // loop failsafe
+    private var loginPerformed = false
+
     init { run {
         if (data.loginStore.mode != LoginMode.LIBRUS_EMAIL) {
             data.error(ApiError(TAG, ERROR_INVALID_LOGIN_MODE))
@@ -33,6 +36,7 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
             data.error(ApiError(TAG, ERROR_LOGIN_DATA_MISSING))
             return@run
         }
+        loginPerformed = false
 
         // succeed having a non-expired access token and a refresh token
         if (data.isPortalLoginValid()) {
@@ -58,18 +62,23 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
         }
     }}
 
-    private fun authorize(url: String?) {
+    private fun authorize(url: String, referer: String? = null) {
         d(TAG, "Request: Librus/Login/Portal - $url")
 
         Request.builder()
                 .url(url)
                 .userAgent(LIBRUS_USER_AGENT)
+                .also {
+                    if (referer != null)
+                        it.addHeader("Referer", referer)
+                }
+                .addHeader("X-Requested-With", LIBRUS_HEADER)
                 .withClient(data.app.httpLazy)
                 .callback(object : TextCallbackHandler() {
                     override fun onSuccess(text: String, response: Response) {
                         val location = response.headers().get("Location")
                         if (location != null) {
-                            val authMatcher = Pattern.compile("$LIBRUS_REDIRECT_URL\\?code=([A-z0-9]+?)$", Pattern.DOTALL or Pattern.MULTILINE).matcher(location)
+                            val authMatcher = Pattern.compile("$LIBRUS_REDIRECT_URL\\?code=([^&?]+)", Pattern.DOTALL or Pattern.MULTILINE).matcher(location)
                             when {
                                 authMatcher.find() -> {
                                     accessToken(authMatcher.group(1), null)
@@ -83,16 +92,31 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                                     authorize(location)
                                 }
                             }
-                        } else {
-                            val csrfMatcher = Pattern.compile("name=\"csrf-token\" content=\"([A-z0-9=+/\\-_]+?)\"", Pattern.DOTALL).matcher(text)
-                            if (csrfMatcher.find()) {
-                                login(csrfMatcher.group(1) ?: "")
-                            } else {
-                                data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_CSRF_MISSING)
-                                        .withResponse(response)
-                                        .withApiResponse(text))
+                            return
+                        }
+
+                        if (checkError(text, response))
+                            return
+
+                        var loginUrl = if (data.fakeLogin) FAKE_LIBRUS_LOGIN else LIBRUS_LOGIN_URL
+                        val csrfToken = Regexes.HTML_CSRF_TOKEN.find(text)?.get(1) ?: ""
+
+                        for (match in Regexes.HTML_FORM_ACTION.findAll(text)) {
+                            val form = match.value.lowercase()
+                            if ("login" in form && "post" in form) {
+                                loginUrl = match[1]
                             }
                         }
+
+                        val params = mutableMapOf<String, String>()
+                        for (match in Regexes.HTML_INPUT_HIDDEN.findAll(text)) {
+                            val input = match.value
+                            val name = Regexes.HTML_INPUT_NAME.find(input)?.get(1) ?: continue
+                            val value = Regexes.HTML_INPUT_VALUE.find(input)?.get(1) ?: continue
+                            params[name] = value
+                        }
+
+                        login(url = loginUrl, referer = url, csrfToken, params)
                     }
 
                     override fun onFailure(response: Response, throwable: Throwable) {
@@ -105,8 +129,54 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
                 .enqueue()
     }
 
-    private fun login(csrfToken: String) {
-        d(TAG, "Request: Librus/Login/Portal - ${if (data.fakeLogin) FAKE_LIBRUS_LOGIN else LIBRUS_LOGIN_URL}")
+    private fun checkError(text: String, response: Response): Boolean {
+        when {
+            text.contains("librus_account_settings_main") -> return false
+            text.contains("Sesja logowania wygasła") -> ERROR_LOGIN_LIBRUS_PORTAL_CSRF_EXPIRED
+            text.contains("Upewnij się, że nie") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
+            text.contains("Podany adres e-mail jest nieprawidłowy.") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
+            else -> null // no error for now
+        }?.let { errorCode ->
+            data.error(ApiError(TAG, errorCode)
+                .withApiResponse(text)
+                .withResponse(response))
+            return true
+        }
+
+        if ("robotem" in text || "g-recaptcha" in text || "captchaValidate" in text) {
+            val siteKey = Regexes.HTML_RECAPTCHA_KEY.find(text)?.get(1)
+            if (siteKey == null) {
+                data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR)
+                    .withApiResponse(text)
+                    .withResponse(response))
+                return true
+            }
+            data.requireUserAction(
+                type = UserActionRequiredEvent.Type.RECAPTCHA,
+                params = Bundle(
+                    "siteKey" to siteKey,
+                    "referer" to response.request().url().toString(),
+                    "userAgent" to LIBRUS_USER_AGENT,
+                ),
+                errorText = R.string.notification_user_action_required_captcha_librus,
+            )
+            return true
+        }
+        return false
+    }
+
+    private fun login(
+        url: String,
+        referer: String,
+        csrfToken: String?,
+        params: Map<String, String>,
+    ) {
+        if (loginPerformed) {
+            data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR))
+            return
+        }
+
+        d(TAG, "Request: Librus/Login/Portal - $url")
 
         val recaptchaCode = data.arguments?.getString("recaptchaCode") ?: data.loginStore.getLoginData("recaptchaCode", null)
         val recaptchaTime = data.arguments?.getLong("recaptchaTime") ?: data.loginStore.getLoginData("recaptchaTime", 0L)
@@ -116,67 +186,46 @@ class LibrusLoginPortal(val data: DataLibrus, val onSuccess: () -> Unit) {
         Request.builder()
                 .url(if (data.fakeLogin) FAKE_LIBRUS_LOGIN else LIBRUS_LOGIN_URL)
                 .userAgent(LIBRUS_USER_AGENT)
+                .addHeader("X-Requested-With", LIBRUS_HEADER)
+                .addHeader("Referer", referer)
+                .withClient(data.app.httpLazy)
                 .addParameter("email", data.portalEmail)
                 .addParameter("password", data.portalPassword)
                 .also {
                     if (recaptchaCode != null && System.currentTimeMillis() - recaptchaTime < 2*60*1000 /* 2 minutes */)
                         it.addParameter("g-recaptcha-response", recaptchaCode)
+                    if (csrfToken != null)
+                        it.addHeader("X-CSRF-TOKEN", csrfToken)
+                    for ((key, value) in params) {
+                        it.addParameter(key, value)
+                    }
                 }
-                .addHeader("X-CSRF-TOKEN", csrfToken)
-                .allowErrorCode(HTTP_BAD_REQUEST)
-                .allowErrorCode(HTTP_FORBIDDEN)
-                .contentType(MediaTypeUtils.APPLICATION_JSON)
+                .contentType(MediaTypeUtils.APPLICATION_FORM)
                 .post()
-                .callback(object : JsonCallbackHandler() {
-                    override fun onSuccess(json: JsonObject?, response: Response) {
+                .callback(object : TextCallbackHandler() {
+                    override fun onSuccess(text: String?, response: Response) {
+                        loginPerformed = true
                         val location = response.headers()?.get("Location")
                         if (location == "$LIBRUS_REDIRECT_URL?command=close") {
                             data.error(ApiError(TAG, ERROR_LIBRUS_PORTAL_MAINTENANCE)
-                                    .withApiResponse(json)
+                                    .withApiResponse(text)
                                     .withResponse(response))
                             return
                         }
-
-                        if (json == null) {
-                            if (response.parserErrorBody?.contains("wciąż nieaktywne") == true) {
-                                data.error(ApiError(TAG, ERROR_LOGIN_LIBRUS_PORTAL_NOT_ACTIVATED)
-                                        .withResponse(response))
-                                return
-                            }
+                        if (text == null) {
                             data.error(ApiError(TAG, ERROR_RESPONSE_EMPTY)
                                     .withResponse(response))
                             return
                         }
-                        val error = if (response.code() == 200) null else
-                            json.getJsonArray("errors")?.getString(0)
-                                    ?: json.getJsonObject("errors")?.entrySet()?.firstOrNull()?.value?.asString
 
-                        if (error?.contains("robotem") == true || json.getBoolean("captchaRequired") == true) {
-                            data.requireUserAction(
-                                type = UserActionRequiredEvent.Type.RECAPTCHA,
-                                params = Bundle(
-                                    "siteKey" to LIBRUS_PORTAL_RECAPTCHA_KEY,
-                                    "referer" to LIBRUS_PORTAL_RECAPTCHA_REFERER,
-                                ),
-                                errorText = R.string.notification_user_action_required_captcha_librus,
-                            )
-                            return
-                        }
-
-                        error?.let { code ->
-                            when {
-                                code.contains("Sesja logowania wygasła") -> ERROR_LOGIN_LIBRUS_PORTAL_CSRF_EXPIRED
-                                code.contains("Upewnij się, że nie") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
-                                code.contains("Podany adres e-mail jest nieprawidłowy.") -> ERROR_LOGIN_LIBRUS_PORTAL_INVALID_LOGIN
-                                else -> ERROR_LOGIN_LIBRUS_PORTAL_ACTION_ERROR
-                            }.let { errorCode ->
-                                data.error(ApiError(TAG, errorCode)
-                                        .withApiResponse(json)
-                                        .withResponse(response))
-                                return
-                            }
-                        }
-                        authorize(json.getString("redirect", LIBRUS_AUTHORIZE_URL))
+                        authorize(
+                            url = location
+                                ?: if (data.fakeLogin)
+                                    FAKE_LIBRUS_AUTHORIZE
+                                else
+                                    LIBRUS_AUTHORIZE_URL,
+                            referer = referer,
+                        )
                     }
 
                     override fun onFailure(response: Response, throwable: Throwable) {
