@@ -23,11 +23,11 @@ if __name__ == "__main__":
     (title, changelog) = get_changelog(project_dir, format="plain")
 
     # plain text changelog - Firebase App Distribution
-    with open(dir + "whatsnew-titled.txt", "w", encoding="utf-8") as f:
+    with open(dir + "whatsnew_titled.txt", "w", encoding="utf-8") as f:
         f.write(title)
         f.write("\n")
         f.write(changelog)
-    print("::set-output name=changelogPlainTitledFile::" + dir + "whatsnew-titled.txt")
+    print("::set-output name=changelogPlainTitledFile::" + dir + "whatsnew_titled.txt")
 
     print("::set-output name=changelogTitle::" + title)
 
