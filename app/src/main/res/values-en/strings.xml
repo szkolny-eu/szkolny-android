@@ -511,7 +511,7 @@
     <string name="lessons_finished">There are no more lessons today!</string>
     <string name="loading">Loading…</string>
     <string name="login_account_no_students">This account doesn\'t have any students</string>
-    <string name="login_account_no_students_text">You can\'t log in, because there is no student assigned to this account.\n\nAssing a student on e-journal page or login with an account with a student already assigned to it.</string>
+    <string name="login_account_no_students_text">You can\'t log in, because there is no student assigned to this account.\n\nAssign a student on e-journal page or login with an account with a student already assigned to it.</string>
     <string name="login_allow_registration">Allow registration</string>
     <string name="login_button">Log in</string>
     <string name="login_cancel_confirmation">Do you really want to cancel? Displayed profiles won\'t be saved.</string>
