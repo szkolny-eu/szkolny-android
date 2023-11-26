@@ -59,7 +59,7 @@ fun <E : Enum<E>> Int.toEnum(type: Class<*>) = when (type) {
     NotificationType::class.java -> this.asNotificationType()
     NavTarget::class.java -> this.asNavTarget()
     else -> throw IllegalArgumentException("Unknown type $type")
-} as E
+} as Enum<E>
 
 fun getFeatureTypesNecessary() = FeatureType.values().filter { it.isAlwaysNeeded }.toSet()
 fun getFeatureTypesUnnecessary() = FeatureType.values().filter { !it.isAlwaysNeeded }.toSet()
