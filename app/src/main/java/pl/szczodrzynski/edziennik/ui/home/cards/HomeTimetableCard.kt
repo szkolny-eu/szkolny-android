@@ -98,19 +98,13 @@ class HomeTimetableCard(
             }
         )
 
-        b.bellSync.setImageDrawable(
-            IconicsDrawable(activity, SzkolnyFont.Icon.szf_alarm_bell_outline).apply {
-                colorAttr(activity, R.attr.colorOnPrimaryContainer)
-                sizeDp = 24
-            }
-        )
+        b.bellSync.icon = IconicsDrawable(activity, SzkolnyFont.Icon.szf_alarm_bell_outline).apply {
+            sizeDp = 24
+        }
 
-        b.showCounter.setImageDrawable(
-            IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_fullscreen).apply {
-                colorAttr(activity, R.attr.colorOnPrimaryContainer)
-                sizeDp = 24
-            }
-        )
+        b.showCounter.icon = IconicsDrawable(activity, CommunityMaterial.Icon2.cmd_fullscreen).apply {
+            sizeDp = 24
+        }
 
         b.bellSync.setOnClickListener {
             BellSyncTimeChooseDialog(
@@ -397,7 +391,7 @@ class HomeTimetableCard(
             if (diff >= 60 * MINUTE)
                 b.counter.text = counterStart.stringHM
             else
-                b.counter.text = activity.timeTill(diff.toInt(), "\n", countInSeconds)
+                b.counter.text = activity.timeTill(diff.toInt(), " ", countInSeconds)
         }
         else {
             // the lesson is right now
@@ -406,7 +400,7 @@ class HomeTimetableCard(
             val lessonLength = counterEnd - counterStart
             val timePassed = now - counterStart
             val timeLeft = counterEnd - now
-            b.counter.text = activity.timeLeft(timeLeft.toInt(), "\n", countInSeconds)
+            b.counter.text = activity.timeLeft(timeLeft.toInt(), " ", countInSeconds)
             b.progress.max = lessonLength.toInt()
             b.progress.progress = timePassed.toInt()
         }

@@ -12,10 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="?android:textColorSecondary"
-            android:textStyle="italic"
+            android:gravity="left"
+            android:textAppearance="@style/NavView.TextView.TitleMedium"
             android:text="@string/grades_empty_text"/>
     </LinearLayout>
 </layout>

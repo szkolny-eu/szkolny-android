@@ -20,20 +20,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:itemCount="1"
                     tools:listitem="@layout/card_home_timetable" />
-
                 <View
                     android:id="@+id/configHintDivider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="8dp"
-                    android:background="@drawable/divider" />
+                    android:background="?colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/configHint"
@@ -49,18 +47,15 @@
                         android:layout_marginHorizontal="8dp"
                         android:layout_weight="1"
                         android:text="@string/home_configure_notice"
-                        android:textAppearance="@style/NavView.TextView.Helper"
-                        android:textSize="12sp"
-                        android:textStyle="italic" />
+                        android:textAppearance="@style/NavView.TextView.BodyMedium" />
 
                     <Button
                         android:id="@+id/configureCards"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/Widget.Material3.Button.TonalButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
-                        android:minHeight="0dp"
                         android:text="@string/home_configure_add_remove" />
                 </LinearLayout>
 

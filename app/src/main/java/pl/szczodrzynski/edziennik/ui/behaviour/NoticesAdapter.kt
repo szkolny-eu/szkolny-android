@@ -11,18 +11,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.utils.colorInt
 import com.mikepenz.iconics.utils.colorRes
 import com.mikepenz.iconics.utils.sizeDp
+import com.mikepenz.materialize.color.Material
 import eu.szkolny.font.SzkolnyFont
 import pl.szczodrzynski.edziennik.App
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Notice
 import pl.szczodrzynski.edziennik.data.db.full.NoticeFull
+import pl.szczodrzynski.edziennik.ext.resolveColor
 import pl.szczodrzynski.edziennik.utils.BetterLink
 import pl.szczodrzynski.edziennik.utils.Utils.bs
 import pl.szczodrzynski.edziennik.utils.models.Date
+import pl.szczodrzynski.navlib.getColorFromAttr
 
 class NoticesAdapter//getting the context and product list with constructor
 (private val context: Context, var noticeList: List<NoticeFull>) : RecyclerView.Adapter<NoticesAdapter.ViewHolder>() {
@@ -41,9 +46,19 @@ class NoticesAdapter//getting the context and product list with constructor
 
         if (app.data.uiConfig.enableNoticePoints && false) {
             holder.noticesItemReason.text = bs(null, notice.category, "\n") + notice.text
-            holder.noticesItemTeacherName.text = app.getString(R.string.notices_points_format, notice.teacherName, if (notice.points ?: 0f > 0) "+" + notice.points else notice.points)
-        } else {
+            if (notice.teacherName != null || notice.points != null) {
+                holder.noticesItemTeacherName.visibility = View.VISIBLE
+                holder.noticesItemTeacherName.text = app.getString(
+                    R.string.notices_points_format,
+                    notice.teacherName,
+                    if (notice.points ?: 0f > 0) "+" + notice.points else notice.points
+                )
+            }} else {
             holder.noticesItemReason.text = notice.text
+            if (notice.teacherName != null) {
+                holder.noticesItemTeacherName.visibility = View.VISIBLE
+                holder.noticesItemTeacherName.text = notice.teacherName
+            }
             holder.noticesItemTeacherName.text = notice.teacherName
         }
         holder.noticesItemAddedDate.text = Date.fromMillis(notice.addedDate).formattedString
@@ -51,21 +66,21 @@ class NoticesAdapter//getting the context and product list with constructor
         if (notice.type == Notice.TYPE_POSITIVE) {
             holder.noticesItemType.setImageDrawable(
                 IconicsDrawable(context, CommunityMaterial.Icon3.cmd_plus_circle_outline).apply {
-                    colorRes = R.color.md_green_600
+                    colorInt = MaterialColors.harmonizeWithPrimary(context, R.color.md_green_600.resolveColor(context))
                     sizeDp = 36
                 }
             )
         } else if (notice.type == Notice.TYPE_NEGATIVE) {
             holder.noticesItemType.setImageDrawable(
                 IconicsDrawable(context, CommunityMaterial.Icon.cmd_alert_decagram_outline).apply {
-                    colorRes = R.color.md_red_600
+                    colorInt = MaterialColors.harmonizeWithPrimary(context, R.color.md_red_600.resolveColor(context))
                     sizeDp = 36
                 }
             )
         } else {
             holder.noticesItemType.setImageDrawable(
                 IconicsDrawable(context, SzkolnyFont.Icon.szf_message_processing_outline).apply {
-                    colorRes = R.color.md_blue_500
+                    colorInt = MaterialColors.harmonizeWithPrimary(context, R.color.md_blue_500.resolveColor(context))
                     sizeDp = 36
                 }
             )

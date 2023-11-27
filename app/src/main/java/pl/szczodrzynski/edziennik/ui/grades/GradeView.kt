@@ -15,6 +15,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.ColorUtils
+import com.google.android.material.color.MaterialColors
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.db.entity.Grade
 import pl.szczodrzynski.edziennik.data.db.entity.Grade.Companion.TYPE_SEMESTER1_FINAL
@@ -47,7 +48,7 @@ class GradeView : AppCompatTextView {
 
         val gradeName = grade.name
 
-        val gradeColor = manager.getGradeColor(grade)
+        val gradeColor = manager.getGradeColor(context, grade)
 
         text = when {
             periodGradesTextual -> when (grade.type) {

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
         android:orientation="horizontal">
 
         <com.mikepenz.iconics.view.IconicsImageView
@@ -33,8 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
+            android:textAppearance="@style/NavView.TextView.TitleMedium"
             android:textColor="?android:textColorPrimary"
-            android:textSize="18sp"
             tools:text="Semestr 1" />
 
         <View
@@ -55,7 +56,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:gravity="end"
-            android:textSize="14sp"
+            android:textAppearance="@style/NavView.TextView.LabelSmall"
             tools:text="punkty: 18.75/20\n(95,67%)"
             tools:text1="suma: 175 pkt"
             tools:text2="średnia: 4,78" />
@@ -78,8 +79,8 @@
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/editButton"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:background="?selectableItemBackgroundBorderless"
             android:scaleType="centerInside"

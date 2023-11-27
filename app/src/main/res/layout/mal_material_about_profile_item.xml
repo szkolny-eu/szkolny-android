@@ -31,18 +31,15 @@
             android:id="@+id/mal_item_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAppearance="?textAppearanceHeadlineSmall"
             android:textColor="?android:textColorPrimary"
-            android:textSize="24sp"
             tools:text="Władca Androida" />
 
         <TextView
             android:id="@+id/mal_item_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="?android:textColorSecondary"
-            android:textSize="14sp"
+            android:textAppearance="?textAppearanceBodyMedium"
             tools:text="kubasz" />
     </LinearLayout>
 </LinearLayout>

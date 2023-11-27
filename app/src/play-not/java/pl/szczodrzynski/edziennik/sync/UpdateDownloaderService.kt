@@ -79,6 +79,7 @@ class UpdateDownloaderService : IntentService(UpdateDownloaderService::class.jav
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onHandleIntent(intent: Intent?) {
         val app = application as App
         val update = App.config.update ?: return

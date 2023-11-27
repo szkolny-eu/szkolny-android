@@ -63,7 +63,7 @@ class HomeLuckyNumberCard(
             R.string.home_lucky_number_details_click_to_set
         else
             R.string.home_lucky_number_details
-        b.subText.setText(subTextRes, profile.name, profile.studentNumber)
+        b.subText.setText(subTextRes, profile.studentNumber)
 
         app.db.luckyNumberDao().getNearestFuture(profile.id, today).observe(fragment, Observer { luckyNumber ->
             val isYours = luckyNumber?.number == profile.studentNumber
@@ -94,7 +94,7 @@ class HomeLuckyNumberCard(
                 !isYours -> R.drawable.emoji_smiling
                 else -> R.drawable.emoji_no_face
             }
-            b.image.setImageResource(drawableRes)
+            b.image.setIconResource(drawableRes)
         })
 
         holder.root.onClick {
@@ -104,7 +104,7 @@ class HomeLuckyNumberCard(
                     R.string.home_lucky_number_details_click_to_set
                 else
                     R.string.home_lucky_number_details
-                b.subText.setText(newSubTextRes, profile.name, profile.studentNumber)
+                b.subText.setText(newSubTextRes, profile.studentNumber)
             })
         }
     }}

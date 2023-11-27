@@ -137,6 +137,7 @@
             "columnNames": [
               "profileId"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_grades_profileId` ON `${TABLE_NAME}` (`profileId`)"
           }
         ],
@@ -290,6 +291,7 @@
             "columnNames": [
               "profileId"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_teacherAbsence_profileId` ON `${TABLE_NAME}` (`profileId`)"
           }
         ],
@@ -452,6 +454,7 @@
             "columnNames": [
               "profileId"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_notices_profileId` ON `${TABLE_NAME}` (`profileId`)"
           }
         ],
@@ -629,6 +632,7 @@
             "columnNames": [
               "profileId"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_attendances_profileId` ON `${TABLE_NAME}` (`profileId`)"
           }
         ],
@@ -781,6 +785,7 @@
               "eventDate",
               "eventTime"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_events_profileId_eventDate_eventTime` ON `${TABLE_NAME}` (`profileId`, `eventDate`, `eventTime`)"
           },
           {
@@ -790,6 +795,7 @@
               "profileId",
               "eventType"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_events_profileId_eventType` ON `${TABLE_NAME}` (`profileId`, `eventType`)"
           }
         ],
@@ -1166,6 +1172,7 @@
             "columnNames": [
               "profileId"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_announcements_profileId` ON `${TABLE_NAME}` (`profileId`)"
           }
         ],
@@ -1407,6 +1414,7 @@
               "profileId",
               "messageType"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_messages_profileId_messageType` ON `${TABLE_NAME}` (`profileId`, `messageType`)"
           }
         ],
@@ -1918,6 +1926,7 @@
               "type",
               "date"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_timetable_profileId_type_date` ON `${TABLE_NAME}` (`profileId`, `type`, `date`)"
           },
           {
@@ -1928,6 +1937,7 @@
               "type",
               "oldDate"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_timetable_profileId_type_oldDate` ON `${TABLE_NAME}` (`profileId`, `type`, `oldDate`)"
           }
         ],
@@ -2015,6 +2025,7 @@
             "columnNames": [
               "profileId"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_librusLessons_profileId` ON `${TABLE_NAME}` (`profileId`)"
           }
         ],
@@ -2117,6 +2128,7 @@
               "profileId",
               "date"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_timetableManual_profileId_date` ON `${TABLE_NAME}` (`profileId`, `date`)"
           },
           {
@@ -2126,6 +2138,7 @@
               "profileId",
               "weekDay"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_timetableManual_profileId_weekDay` ON `${TABLE_NAME}` (`profileId`, `weekDay`)"
           }
         ],
@@ -2217,6 +2230,7 @@
               "noteOwnerType",
               "noteOwnerId"
             ],
+            "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_notes_profileId_noteOwnerType_noteOwnerId` ON `${TABLE_NAME}` (`profileId`, `noteOwnerType`, `noteOwnerId`)"
           }
         ],
@@ -2278,6 +2292,7 @@
               "thingType",
               "thingId"
             ],
+            "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_metadata_profileId_thingType_thingId` ON `${TABLE_NAME}` (`profileId`, `thingType`, `thingId`)"
           }
         ],

@@ -100,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="?actionBarSize"
                         android:layout_gravity="bottom"
-                        android:background="?android:colorBackground"
+                        android:background="?colorSurfaceContainerLow"
                         android:foreground="@color/colorSurface_2dp"
                         android:minHeight="?actionBarSize"
                         android:visibility="gone"

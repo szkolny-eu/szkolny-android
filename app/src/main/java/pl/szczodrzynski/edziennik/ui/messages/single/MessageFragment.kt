@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.iconics.IconicsDrawable
 import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.iconics.utils.sizeDp
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -94,27 +95,6 @@ class MessageFragment : Fragment(), CoroutineScope {
         b.sender.onClick {
             it.maxLines = if (it.maxLines == 30) 2 else 30
         }
-
-        val replyDrawable = IconicsDrawable(activity, CommunityMaterial.Icon3.cmd_reply_outline).apply {
-            sizeDp = 24
-            colorAttr(activity, android.R.attr.textColorPrimary)
-        }
-        val forwardDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_arrow_right).apply {
-            sizeDp = 24
-            colorAttr(activity, android.R.attr.textColorPrimary)
-        }
-        val deleteDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_delete_outline).apply {
-            sizeDp = 24
-            colorAttr(activity, android.R.attr.textColorPrimary)
-        }
-        val downloadDrawable = IconicsDrawable(activity, CommunityMaterial.Icon.cmd_download_outline).apply {
-            sizeDp = 24
-            colorAttr(activity, android.R.attr.textColorPrimary)
-        }
-        b.replyButton.setCompoundDrawables(null, replyDrawable, null, null)
-        b.forwardButton.setCompoundDrawables(null, forwardDrawable, null, null)
-        b.deleteButton.setCompoundDrawables(null, deleteDrawable, null, null)
-        b.downloadButton.setCompoundDrawables(null, downloadDrawable, null, null)
 
         b.messageStar.onClick {
             launch {
@@ -218,20 +198,6 @@ class MessageFragment : Fragment(), CoroutineScope {
 
         b.replyButton.isVisible = message.isReceived || message.isDeleted
         b.deleteButton.isVisible = message.isReceived
-        if (message.isReceived || message.isDeleted) {
-            activity.navView.apply {
-                bottomBar.apply {
-                    fabEnable = true
-                    fabExtendedText = getString(R.string.messages_reply)
-                    fabIcon = CommunityMaterial.Icon3.cmd_reply_outline
-                }
-
-                setFabOnClickListener {
-                    b.replyButton.performClick()
-                }
-            }
-            activity.gainAttentionFAB()
-        }
 
         val messageRecipients = StringBuilder("<ul>")
         message.recipients?.forEach { recipient ->

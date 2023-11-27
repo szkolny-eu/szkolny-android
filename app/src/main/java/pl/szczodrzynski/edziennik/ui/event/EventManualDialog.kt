@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
@@ -351,7 +352,7 @@ class EventManualDialog(
             selectDefault(defaultType)
 
             onTypeSelected = {
-                b.typeColor.background.setTintColor(it.color)
+                b.typeColor.background.setTintColor(MaterialColors.harmonizeWithPrimary(b.root.context, it.color))
                 customColor = null
             }
         }

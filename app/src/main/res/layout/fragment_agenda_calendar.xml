@@ -18,7 +18,7 @@
             android:id="@+id/agenda_calendar_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:headerColor="@color/colorPrimary"/>
+            app:headerColor="?colorPrimary"/>
 
     </LinearLayout>
 </layout>

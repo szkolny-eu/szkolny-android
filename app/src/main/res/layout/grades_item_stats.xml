@@ -1,189 +1,218 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-3-3.
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/divider" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+
             android:text="@string/grades_stats_title"
-            android:textAppearance="@style/NavView.TextView.Title" />
+            android:textAppearance="@style/NavView.TextView.TitleLarge" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/noData"
+            textAppearance="@style/NavView.TextView.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="8dp"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center"
             android:text="@string/grades_stats_no_data"
-            android:textSize="16sp"
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/normalTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:text="@string/grades_stats_normal"
-            android:textAppearance="@style/NavView.TextView.Subtitle" />
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/normalTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/grades_stats_normal"
+                android:textAppearance="@style/NavView.TextView.TitleMedium" />
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/helpButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:scaleType="centerInside"
+                app:iiv_color="?colorOutline"
+                app:iiv_icon="cmd-help-circle-outline"
+                app:iiv_size="24dp"
+                tools:src="@android:drawable/ic_menu_help" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/normalLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="8dp">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/normalSemester1Layout"
+                style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                app:cardBackgroundColor="?colorTertiaryContainer"
+                app:shapeAppearance="?shapeAppearanceCornerLarge">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/grades_stats_semester_1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/normalSemester1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="24sp"
-                    tools:text="4,56" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/grades_stats_semester_1"
+                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textColor="?colorOnTertiaryContainer" />
 
-                <TextView
-                    android:id="@+id/normalSemester1Notice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textAppearance="@style/NavView.TextView.Helper"
-                    tools:text="*z ocen proponowanych" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/normalSemester1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.BodyMedium"
+                        android:textColor="?colorPrimary"
+                        tools:text="4,56" />
+
+                    <TextView
+                        android:id="@+id/normalSemester1Notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.LabelSmall"
+                        android:textColor="?colorOnTertiaryContainer"
+                        tools:text="*z ocen proponowanych" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <View
                 android:id="@+id/normalDiv1"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/divider" />
+                android:background="?colorSurface" />
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/normalSemester2Layout"
+                style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                app:cardBackgroundColor="?colorTertiaryContainer"
+                app:shapeAppearance="?shapeAppearanceCornerLarge">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/grades_stats_semester_2" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/normalSemester2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="24sp"
-                    tools:text="4,67" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/grades_stats_semester_2"
+                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textColor="?colorOnTertiaryContainer" />
 
-                <TextView
-                    android:id="@+id/normalSemester2Notice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textAppearance="@style/NavView.TextView.Helper"
-                    tools:text="*przewidywana średnia" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/normalSemester2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.BodyMedium"
+                        android:textColor="?colorPrimary"
+                        tools:text="4,67" />
+
+                    <TextView
+                        android:id="@+id/normalSemester2Notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.LabelSmall"
+                        android:textColor="?colorOnTertiaryContainer"
+                        tools:text="*przewidywana średnia" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <View
                 android:id="@+id/normalDiv2"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/divider" />
+                android:background="?colorSurface" />
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/normalYearlyLayout"
+                style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                app:cardBackgroundColor="?colorTertiaryContainer"
+                app:shapeAppearance="?shapeAppearanceCornerLarge">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/grades_stats_yearly" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/normalYearly"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="24sp"
-                    tools:text="3,75" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/grades_stats_yearly"
+                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textColor="?colorOnTertiaryContainer" />
 
-                <TextView
-                    android:id="@+id/normalYearlyNotice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textAppearance="@style/NavView.TextView.Helper"
-                    tools:text="*przewidywana średnia" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/normalYearly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.BodyMedium"
+                        android:textColor="?colorPrimary"
+                        tools:text="3,75" />
 
+                    <TextView
+                        android:id="@+id/normalYearlyNotice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.LabelSmall"
+                        android:textColor="?colorOnTertiaryContainer"
+                        tools:text="*przewidywana średnia" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-
-        <com.mikepenz.iconics.view.IconicsImageView
-            android:id="@+id/helpButton"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="end"
-            android:background="?selectableItemBackgroundBorderless"
-            android:scaleType="centerInside"
-            app:iiv_color="?android:textColorSecondary"
-            app:iiv_icon="cmd-help-circle-outline"
-            app:iiv_size="24dp"
-            tools:src="@android:drawable/ic_menu_help" />
 
         <View
             android:id="@+id/normalDivider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/divider" />
+            android:background="?colorSurface" />
 
         <TextView
             android:id="@+id/pointTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginVertical="16dp"
             android:text="@string/grades_stats_point"
             android:textAppearance="@style/NavView.TextView.Subtitle" />
 
@@ -191,89 +220,125 @@
             android:id="@+id/pointLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="8dp">
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/pointSemester1Layout"
+                style="@style/Widget.Material3.CardView.Filled"
+                app:shapeAppearance="?shapeAppearanceCornerLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                app:cardBackgroundColor="?colorTertiaryContainer">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/grades_stats_semester_1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/pointSemester1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="24sp"
-                    tools:text="95%" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/grades_stats_semester_1"
+                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textColor="?colorOnTertiaryContainer" />
+
+                    <TextView
+                        android:id="@+id/pointSemester1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.BodyMedium"
+                        android:textColor="?colorPrimary"
+                        tools:text="95%" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <View
                 android:id="@+id/pointDiv1"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/divider" />
+                android:background="?colorSurface" />
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/pointSemester2Layout"
+                style="@style/Widget.Material3.CardView.Filled"
+                app:shapeAppearance="?shapeAppearanceCornerLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                app:cardBackgroundColor="?colorTertiaryContainer">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/grades_stats_semester_2" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/pointSemester2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="24sp"
-                    tools:text="93,27%" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/grades_stats_semester_2"
+                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textColor="?colorOnTertiaryContainer" />
+
+                    <TextView
+                        android:id="@+id/pointSemester2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.BodyMedium"
+                        android:textColor="?colorPrimary"
+                        tools:text="93,27%" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <View
                 android:id="@+id/pointDiv2"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/divider" />
+                android:background="?colorSurface" />
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/pointYearlyLayout"
+                style="@style/Widget.Material3.CardView.Filled"
+                app:shapeAppearance="?shapeAppearanceCornerLarge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                app:cardBackgroundColor="?colorTertiaryContainer">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/grades_stats_yearly" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/pointYearly"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="24sp"
-                    tools:text="94,50%" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/grades_stats_yearly"
+                        android:textAppearance="@style/NavView.TextView.BodyLarge"
+                        android:textColor="?colorOnTertiaryContainer" />
 
+                    <TextView
+                        android:id="@+id/pointYearly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/NavView.TextView.BodyMedium"
+                        android:textColor="?colorPrimary"
+                        tools:text="94,50%" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
         <View
@@ -281,24 +346,23 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/divider" />
+            android:background="@drawable/divider"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/disclaimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
             android:text="@string/grades_stats_disclaimer"
-            android:textAppearance="@style/NavView.TextView.Helper"
-            android:textSize="12sp"
-            android:textStyle="italic" />
+            android:textAppearance="@style/NavView.TextView.Helper" />
 
         <View
             android:id="@+id/customValueDivider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/divider" />
+            android:layout_marginVertical="16dp"
+            android:background="?colorOutline" />
 
         <LinearLayout
             android:id="@+id/customValueLayout"
@@ -310,21 +374,17 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:text="@string/grades_stats_custom_config_notice"
-                android:textAppearance="@style/NavView.TextView.Helper"
-                android:textSize="12sp"
-                android:textStyle="italic" />
+                android:textAppearance="@style/NavView.TextView.BodyMedium" />
 
             <Button
                 android:id="@+id/customValueButton"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:minHeight="0dp"
                 android:text="@string/configure" />
         </LinearLayout>
     </LinearLayout>

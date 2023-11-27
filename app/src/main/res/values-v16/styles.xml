@@ -76,25 +76,24 @@
         <item name="materialAlertDialogBodyTextStyle">@style/AppTheme.MaterialAlertDialog.BodyText</item>
     </style>
     <style name="AppTheme.MaterialAlertDialog.TitleText" parent="MaterialAlertDialog.Material3.Title.Text">
-        <item name="textSize">20sp</item>
-        <item name="android:textSize">20sp</item>
-        <item name="textColor">?android:textColorPrimary</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textAppearance">@style/NavView.TextView.HeadlineSmall</item>
     </style>
     <style name="AppTheme.MaterialAlertDialog.BodyText">
-        <item name="textSize">16sp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="textColor">?android:textColorSecondary</item>
-        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textAppearance">@style/NavView.TextView.BodyMedium</item>
     </style>
     <style name="AppTheme.MaterialAlertDialogMonospace" parent="AppTheme.MaterialAlertDialog">
         <item name="materialAlertDialogBodyTextStyle">@style/AppTheme.MaterialAlertDialogMonospace.BodyText</item>
     </style>
     <style name="AppTheme.MaterialAlertDialogMonospace.BodyText" parent="AppTheme.MaterialAlertDialog.BodyText">
-        <item name="android:typeface">monospace</item>
+    <item name="android:typeface">monospace</item>
     </style>
-
     <style name="AppTheme" parent="NavView" />
+
+    <style name="Widget.MaterialDrawerHeaderStyleCustom" parent="">
+        <item name="materialDrawerCompactStyle">false</item>
+        <item name="materialDrawerHeaderSelectionText">?colorOnBackground</item>
+        <item name="materialDrawerHeaderSelectionSubtext">?colorOnBackground</item>
+    </style>
 
     <!-- Base application theme. -->
     <style name="AppTheme.Light" parent="NavView.Light">
@@ -135,6 +134,7 @@
         <item name="hourDividerColor">#b0b0b0</item>
         <item name="halfHourDividerColor">#e0e0e0</item>
 
+        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyleCustom</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
     </style>
     <style name="AppTheme.Dark" parent="NavView.Dark">
@@ -175,6 +175,7 @@
         <item name="hourDividerColor">#7fffffff</item>
         <item name="halfHourDividerColor">#40ffffff</item>
 
+        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyleCustom</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
     </style>
 

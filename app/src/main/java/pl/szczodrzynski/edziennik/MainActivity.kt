@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
@@ -16,9 +17,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavOptions
 import com.danimahardhika.cafebar.CafeBar
+import com.danimahardhika.cafebar.CafeBarTheme
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jetradarmobile.snowfall.SnowfallView
 import com.mikepenz.iconics.IconicsDrawable
@@ -144,6 +148,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         setContentView(b.root)
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         mainSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
         errorSnackbar.setCoordinator(b.navView.coordinator, b.navView.bottomBar)
 
@@ -159,44 +165,43 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         b.navView.apply {
             drawer.init(this@MainActivity)
 
-            SystemBarsUtil(this@MainActivity).run {
-                //paddingByKeyboard = b.navView
-                appFullscreen = false
-                statusBarColor = getColorFromAttr(context, android.R.attr.colorBackground)
-                statusBarDarker = false
-                statusBarFallbackLight = COLOR_HALF_TRANSPARENT
-                statusBarFallbackGradient = COLOR_HALF_TRANSPARENT
-                navigationBarTransparent = false
+            /*
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                SystemBarsUtil(this@MainActivity).run {
+                    //paddingByKeyboard = b.navView
+                    appFullscreen = false
+                    statusBarColor = getColorFromAttr(context, android.R.attr.colorBackground)
+                    statusBarDarker = false
+                    statusBarFallbackLight = COLOR_HALF_TRANSPARENT
+                    statusBarFallbackGradient = COLOR_HALF_TRANSPARENT
+                    navigationBarTransparent = false
 
-                b.navView.configSystemBarsUtil(this)
+                    b.navView.configSystemBarsUtil(this)
 
-                // fix for setting status bar color to window color, outside of navlib
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    window.statusBarColor = statusBarColor
+                    // fix for setting status bar color to window color, outside of navlib
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        window.statusBarColor = statusBarColor
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                        && ColorUtils.calculateLuminance(statusBarColor) > 0.6
+                    ) {
+                        @Suppress("deprecation")
+                        window.decorView.systemUiVisibility =
+                            window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    }
+
+                    // TODO fix navlib navbar detection, orientation change issues, status bar color setting if not fullscreen
+
+                    commit()
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                    && ColorUtils.calculateLuminance(statusBarColor) > 0.6
-                ) {
-                    @Suppress("deprecation")
-                    window.decorView.systemUiVisibility =
-                        window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                }
-
-                // TODO fix navlib navbar detection, orientation change issues, status bar color setting if not fullscreen
-
-                commit()
             }
-
-            toolbar.apply {
-                subtitleFormat = R.string.toolbar_subtitle
-                subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
-            }
+            */
 
             bottomBar.apply {
                 fabEnable = false
                 fabExtendable = true
                 fabExtended = false
-                fabGravity = Gravity.CENTER
+                fabGravity = Gravity.RIGHT
             }
 
             bottomSheet.apply {
@@ -351,6 +356,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         if (app.config.appRateSnackbarTime != 0L && app.config.appRateSnackbarTime <= System.currentTimeMillis()) {
             navView.coordinator.postDelayed({
                 CafeBar.builder(this)
+                    .theme(CafeBarTheme.Custom(getColorFromAttr(this, R.attr.colorSurfaceInverse)))
                     .content(R.string.rate_snackbar_text)
                     .icon(IconicsDrawable(this).apply {
                         icon = CommunityMaterial.Icon3.cmd_star_outline
@@ -502,7 +508,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             Type.NO_API_ACCESS -> {
                 Toast.makeText(this, R.string.error_no_api_access, Toast.LENGTH_SHORT).show()
             }
-            else -> {}
+
+            null -> TODO()
         }
 
         swipeRefreshLayout.isRefreshing = true
@@ -551,13 +558,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onApiTaskStartedEvent(event: ApiTaskStartedEvent) {
         swipeRefreshLayout.isRefreshing = true
-        if (event.profileId == App.profileId) {
-            navView.toolbar.apply {
-                subtitleFormat = null
-                subtitleFormatWithUnread = null
-                subtitle = getString(R.string.toolbar_subtitle_syncing)
-            }
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -568,35 +568,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         finish()
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onApiTaskProgressEvent(event: ApiTaskProgressEvent) {
-        if (event.profileId == App.profileId) {
-            navView.toolbar.apply {
-                subtitleFormat = null
-                subtitleFormatWithUnread = null
-                subtitle = if (event.progress < 0f)
-                    event.progressText ?: ""
-                else
-                    getString(
-                        R.string.toolbar_subtitle_syncing_format,
-                        event.progress.roundToInt(),
-                        event.progressText ?: "",
-                    )
-
-            }
-        }
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onApiTaskFinishedEvent(event: ApiTaskFinishedEvent) {
         EventBus.getDefault().removeStickyEvent(event)
-        if (event.profileId == App.profileId) {
-            navView.toolbar.apply {
-                subtitleFormat = R.string.toolbar_subtitle
-                subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
-                subtitle = "Gotowe"
-            }
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -612,11 +586,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (event.error.profileId != App.profileId)
                 return
             ErrorDetailsDialog(this, listOf(event.error)).show()
-        }
-        navView.toolbar.apply {
-            subtitleFormat = R.string.toolbar_subtitle
-            subtitleFormatWithUnread = R.plurals.toolbar_subtitle_with_unread
-            subtitle = "Gotowe"
         }
         mainSnackbar.dismiss()
         errorSnackbar.addError(event.error).show()
@@ -849,6 +818,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         handleIntent(intent?.extras)
     }
 
+    @Deprecated("Deprecated in Java")
     @Suppress("deprecation")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -1054,7 +1024,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 else
                     getString(R.string.app_task_format, getString(navTarget.nameRes)),
                 bm,
-                getColorFromAttr(this, R.attr.colorSurface)
             )
             setTaskDescription(taskDesc)
         }
@@ -1098,9 +1067,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     fun gainAttention() {
         if (app.config.ui.bottomSheetOpened)
             return
-        b.navView.postDelayed({
-            navView.gainAttentionOnBottomBar()
-        }, 2000)
     }
 
     fun gainAttentionFAB() {
@@ -1218,6 +1184,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         drawer.addProfileSettings(*drawerProfiles.toTypedArray())
     }
 
+    private val targetPopToHomeList = arrayListOf<Int>()
+    private var targetHomeId: Int = -1
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (App.config.ui.openDrawerOnBackPressed) {
             if (drawer.isOpen)

@@ -8,15 +8,11 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/noticesItemCard"
+        style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardElevation="4dp"
-        app:cardCornerRadius="5dp"
-        android:background="?selectableItemBackground"
-        android:paddingHorizontal="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="3dp">
+        app:cardBackgroundColor="@color/card_background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,52 +20,40 @@
             android:orientation="vertical"
             android:padding="8dp">
 
-            <LinearLayout
+
+            <ImageView
+                android:id="@+id/noticesItemType"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/noticesItemReason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:autoLink="all"
+                android:textAppearance="@style/NavView.TextView.TitleMedium"
+                android:textIsSelectable="true"
+                tools:text="reason" />
 
-                <ImageView
-                    android:id="@+id/noticesItemType"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginVertical="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <TextView
-                    android:id="@+id/noticesItemReason"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textSize="18sp"
-                    android:textIsSelectable="true"
-                    android:autoLink="all"
-                    tools:text="reason"
-                    android:layout_marginLeft="8dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/noticesItemAddedDate"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:textAppearance="@style/NavView.TextView.BodyMedium"
+                tools:text="addedDate" />
 
-                <TextView
-                    android:id="@+id/noticesItemTeacherName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                    tools:text="teacherName" />
+            <TextView
+                android:id="@+id/noticesItemTeacherName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/NavView.TextView.LabelSmall"
+                android:visibility="gone"
+                tools:text="teacherName" />
 
-                <TextView
-                    android:id="@+id/noticesItemAddedDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                    tools:text="addedDate" />
-            </LinearLayout>
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

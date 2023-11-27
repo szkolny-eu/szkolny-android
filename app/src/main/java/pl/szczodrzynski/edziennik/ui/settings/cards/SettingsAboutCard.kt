@@ -20,6 +20,8 @@ import pl.szczodrzynski.edziennik.BuildConfig
 import pl.szczodrzynski.edziennik.R
 import pl.szczodrzynski.edziennik.data.api.szkolny.response.Update
 import pl.szczodrzynski.edziennik.ext.after
+import pl.szczodrzynski.edziennik.ext.resolveAttr
+import pl.szczodrzynski.edziennik.sync.UpdateWorker
 import pl.szczodrzynski.edziennik.ui.dialogs.ChangelogDialog
 import pl.szczodrzynski.edziennik.ui.settings.SettingsCard
 import pl.szczodrzynski.edziennik.ui.settings.SettingsLicenseActivity
@@ -39,13 +41,15 @@ class SettingsAboutCard(util: SettingsUtil) : SettingsCard(util), CoroutineScope
         MediaPlayer.create(activity, R.raw.ogarnij_sie)
     }
 
-    override fun buildCard() = util.createCard(
-        null,
-        items = ::getItems,
-        itemsMore = ::getItemsMore,
-        backgroundColor = 0xff1976d2.toInt(),
-        theme = R.style.AppTheme_Dark
-    )
+    override fun buildCard(): MaterialAboutCard =
+        util.createCard(
+            null,
+            items = listOf(),
+            itemsMore = listOf(),
+            backgroundColor = R.attr.colorPrimaryContainer.resolveAttr(activity)
+        ).also {
+            it.items.addAll(getItems(it))
+        }
 
     private val versionDetailsItem by lazy {
         util.createActionItem(

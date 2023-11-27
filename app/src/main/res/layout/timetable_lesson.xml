@@ -2,171 +2,199 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
 
         <import type="android.view.View" />
+
         <variable
             name="annotationVisible"
-            type="boolean"/>
+            type="boolean" />
+
         <variable
             name="lessonNumber"
             type="Integer" />
+
         <variable
             name="unread"
             type="boolean" />
     </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:colorBackground"
-        android:foreground="@drawable/bg_rounded_ripple_4dp"
         tools:padding="32dp">
-        <LinearLayout
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.CardView.Elevated"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_height="90dp"
-            android:background="?timetable_lesson_bg"
             android:orientation="vertical"
-            android:paddingBottom="4dp">
-
-            <TextView
-                android:id="@+id/annotation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/timetable_lesson_annotation"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingHorizontal="8dp"
-                android:text="@string/timetable_lesson_cancelled"
-                android:textColor="#000"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
-                tools:text="Zastępstwo: zamiast lekcji język polski z Adam Dodatkowy"
-                tools:visibility="gone" />
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            app:cardBackgroundColor="?colorSurfaceContainerHigh"
+            tools:layout_height="90dp">
 
             <LinearLayout
                 android:id="@+id/subjectContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                tools:background="@drawable/timetable_subject_color_rounded">
-
-                <com.mikepenz.iconics.view.IconicsTextView
-                    android:id="@+id/subjectName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-light"
-                    android:maxLines="@{annotationVisible ? 1 : 2}"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:autoSizeMaxTextSize="16sp"
-                    app:autoSizeMinTextSize="12sp"
-                    app:autoSizeTextType="uniform"
-                    tools:maxLines="2"
-                    tools:text="pracownia urządzeń techniki komputerowej" />
-
-                <View
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginHorizontal="8dp"
-                    android:background="@drawable/unread_red_circle"
-                    android:visibility="@{unread ? View.VISIBLE : View.GONE}" />
-
-                <ImageView
-                    android:id="@+id/attendanceIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="gone"
-                    tools:srcCompat="@sample/check"
-                    tools:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/lessonNumberText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="sans-serif-condensed-light"
-                    android:includeFontPadding="false"
-                    android:paddingHorizontal="4dp"
-                    android:text="@{Integer.toString(lessonNumber)}"
-                    android:textSize="28sp"
-                    android:visibility="@{lessonNumber != null ? View.VISIBLE : View.GONE}"
-                    tools:text="3" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="bottom"
-                android:orientation="horizontal"
-                android:paddingHorizontal="8dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                tools:layout_height="90dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_gravity="top"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingHorizontal="8dp">
+                    <!--tools:background="@drawable/timetable_subject_color_rounded"-->
 
-                    <TextView
-                        android:id="@+id/detailsFirst"
-                        android:layout_width="wrap_content"
+                    <com.mikepenz.iconics.view.IconicsTextView
+                        android:id="@+id/subjectName"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:ellipsize="end"
-                        android:singleLine="true"
-                        tools:text="8:10 - 8:55 • 015 językowa → 016 językowa" />
+                        android:maxLines="@{annotationVisible ? 1 : 2}"
+                        android:textAppearance="@style/NavView.TextView.TitleMedium"
+                        android:textColor="?colorPrimary"
+                        app:autoSizeMaxTextSize="16sp"
+                        app:autoSizeMinTextSize="12sp"
+                        app:autoSizeTextType="uniform"
+                        tools:maxLines="2"
+                        tools:text="pracownia urządzeń techniki komputerowej" />
 
-                    <TextView
-                        android:id="@+id/detailsSecond"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ellipsize="middle"
-                        android:singleLine="true"
-                        android:textAppearance="@style/NavView.TextView.Helper"
-                        android:textSize="12sp"
-                        tools:text="Paweł Informatyczny • 2b3T n1" />
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="12dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginHorizontal="8dp"
+                                android:background="@drawable/unread_red_circle"
+                                android:visibility="@{unread ? View.VISIBLE : View.GONE}" />
+
+                            <ImageView
+                                android:id="@+id/attendanceIcon"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:visibility="gone"
+                                tools:srcCompat="@sample/check"
+                                tools:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/lessonNumberText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:includeFontPadding="false"
+                                android:paddingHorizontal="4dp"
+                                android:text="@{Integer.toString(lessonNumber)}"
+                                android:textAppearance="@style/NavView.TextView.BodyLarge"
+                                android:visibility="@{lessonNumber != null ? View.VISIBLE : View.GONE}"
+                                tools:text="3" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:orientation="horizontal"
+                            android:layout_marginRight="4dp"
+                            android:layout_marginTop="2dp">
+
+                            <View
+                                android:id="@+id/event3"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginLeft="4dp"
+                                tools:background="@drawable/unread_red_circle" />
+
+                            <View
+                                android:id="@+id/event2"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginLeft="4dp"
+                                tools:background="@drawable/unread_red_circle" />
+
+                            <View
+                                android:id="@+id/event1"
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginLeft="4dp"
+                                tools:background="@drawable/unread_red_circle" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="end|bottom"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
                     android:orientation="horizontal"
-                    android:paddingBottom="2dp">
+                    android:paddingHorizontal="8dp">
 
-                    <View
-                        android:id="@+id/event3"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginStart="4dp"
-                        tools:background="@drawable/unread_red_circle" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginRight="4dp"
+                        android:orientation="vertical">
 
-                    <View
-                        android:id="@+id/event2"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginStart="4dp"
-                        tools:background="@drawable/unread_red_circle" />
+                        <TextView
+                            android:id="@+id/detailsFirst"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textAppearance="@style/NavView.TextView.BodyMedium"
+                            android:textColor="?colorOnSurface"
+                            tools:text="8:10 - 8:55 • 015 językowa → 016 językowa" />
 
-                    <View
-                        android:id="@+id/event1"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginStart="4dp"
-                        tools:background="@drawable/unread_red_circle" />
+                        <TextView
+                            android:id="@+id/detailsSecond"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="middle"
+                            android:singleLine="true"
+                            android:textAppearance="@style/NavView.TextView.LabelSmall"
+                            android:textColor="?colorOnSurface"
+                            tools:text="Paweł Informatyczny • 2b3T n1" />
+                    </LinearLayout>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/annotation"
+                        style="@style/Widget.Material3.Chip.Suggestion.Elevated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="45dp"
+                        android:layout_weight="0"
+                        android:textAppearance="?textAppearanceLabelMedium"
+                        android:textColor="?colorOnError"
+                        android:textAlignment="center"
+                        android:visibility="@{annotationVisible ? View.VISIBLE : View.GONE}"
+                        app:chipBackgroundColor="?colorError"
+                        tools:text="@string/timetable_lesson_cancelled" />
+
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </FrameLayout>
 </layout>

@@ -388,7 +388,9 @@ class GenerateBlockTimetableDialog(
             try {
                 val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return@withContext null
                 resolver.openOutputStream(uri).use {
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                    if (it != null) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                    }
                 }
                 uri
             } catch (e: Exception) {

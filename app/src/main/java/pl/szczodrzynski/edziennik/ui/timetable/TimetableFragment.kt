@@ -177,8 +177,8 @@ class TimetableFragment : Fragment(), CoroutineScope {
 
         val selectedDate = arguments?.getString("timetableDate", "")?.let { if (it.isBlank()) null else Date.fromY_m_d(it) }
 
-        b.tabLayout.setUpWithViewPager(b.viewPager)
-        b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == selectedDate?.value ?: today }, false)
+        b.tabLayout.setupWithViewPager(b.viewPager)
+        b.viewPager.setCurrentItem(items.indexOfFirst { it.value == selectedDate?.value ?: today }, false)
 
         activity.navView.bottomSheet.prependItems(
                 BottomSheetPrimaryItem(true)
@@ -211,7 +211,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
                                         val dateSelected = Date.fromMillisUtc(millis)
                                         val index = items.indexOfFirst { it == dateSelected }
                                         if (index != -1)
-                                            b.tabLayout.setCurrentItem(index, true)
+                                            b.viewPager.setCurrentItem(index, true)
                                     }
                                 }
                                 .show(activity.supportFragmentManager, TAG)
@@ -254,7 +254,7 @@ class TimetableFragment : Fragment(), CoroutineScope {
         activity.navView.bottomBar.fabExtendedText = getString(R.string.timetable_today)
         activity.navView.bottomBar.fabIcon = SzkolnyFont.Icon.szf_calendar_today_outline
         activity.navView.setFabOnClickListener(View.OnClickListener {
-            b.tabLayout.setCurrentItem(items.indexOfFirst { it.value == today }, true)
+            b.viewPager.setCurrentItem(items.indexOfFirst { it.value == today }, true)
         })
     }}
 

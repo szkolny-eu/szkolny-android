@@ -91,9 +91,10 @@
     <!-- android:layout_marginTop="-13dp" -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/clear"
-        style="@style/Widget.Material3.Button.OutlinedButton"
+        style="@style/Widget.Material3.Button.TonalButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/styled_text_clear_button" />
 </LinearLayout>

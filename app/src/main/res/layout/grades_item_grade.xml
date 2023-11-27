@@ -11,17 +11,18 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:orientation="horizontal"
-        android:paddingVertical="8dp">
+        android:layout_marginLeft="24dp"
+        android:paddingVertical="4dp">
 
         <pl.szczodrzynski.edziennik.ui.grades.GradeView
             android:id="@+id/gradeName"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            tools:background="@drawable/bg_rounded_8dp"
+            android:background="@drawable/bg_circle"
+            android:textAppearance="@style/NavView.TextView.BodyMedium"
             tools:backgroundTint="#4caf50"
-            tools:textSize="24sp"
             tools:gravity="center"
             tools:text="5+" />
 
@@ -29,7 +30,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,6 +44,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginRight="4dp"
+                    android:textAppearance="@style/NavView.TextView.BodyLarge"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:singleLine="true"
@@ -65,24 +66,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textAppearance="@style/NavView.TextView.LabelSmall"
                     tools:text="14.10.2015" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/gradeWeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:textStyle="bold"
-                    tools:text="waga 30"
-                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/gradeCategory"
@@ -92,22 +84,40 @@
                     android:ellipsize="end"
                     android:maxWidth="200dp"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textAppearance="@style/NavView.TextView.BodyMedium"
                     tools:text="Kartkówki - K1" />
-
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="right"
+                    android:gravity="end">
                 <TextView
                     android:id="@+id/gradeTeacherName"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textAppearance="@style/NavView.TextView.LabelSmall"
                     tools:text="Jan Kowalski" />
+                <TextView
+                    android:id="@+id/gradeWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/NavView.TextView.LabelSmall"
+                    tools:text="waga 30"
+                    tools:visibility="visible" />
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </layout>

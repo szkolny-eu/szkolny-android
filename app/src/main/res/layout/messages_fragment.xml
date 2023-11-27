@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) Kuba Szczodrzyński 2020-4-4.
   -->
 
@@ -20,11 +19,18 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorSurface_6dp"
+                android:background="?colorSurfaceContainerLow"
                 app:tabIndicatorColor="?colorPrimary"
+                app:tabMaxWidth="300dp"
+                app:tabMinWidth="90dp"
                 app:tabMode="auto"
+                app:tabPaddingBottom="12dp"
+                app:tabPaddingEnd="16dp"
+                app:tabPaddingStart="16dp"
+                app:tabPaddingTop="12dp"
                 app:tabSelectedTextColor="?colorPrimary"
-                app:tabTextColor="?android:textColorPrimary" />
+                app:tabTextAppearance="@style/NavView.TextView.BodyMedium"
+                app:tabTextColor="?colorOnBackground" />
 
             <pl.szczodrzynski.edziennik.ui.base.lazypager.LazyViewPager
                 android:id="@+id/viewPager"

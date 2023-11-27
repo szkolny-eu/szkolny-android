@@ -334,27 +334,24 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
                 lesson.teacherName ?: "?"
             else
                 mutableListOf<CharSequence>().apply {
-                    lesson.oldTeacherName?.let { add(it.asStrikethroughSpannable()) }
                     lesson.teacherName?.let { add(it) }
-                }.concat(arrowRight)
+                }.concat()
 
             // team
             val teamInfo = if (lesson.teamId != null && lesson.teamId == lesson.oldTeamId)
                 lesson.teamName ?: "?"
             else
                 mutableListOf<CharSequence>().apply {
-                    lesson.oldTeamName?.let { add(it.asStrikethroughSpannable()) }
                     lesson.teamName?.let { add(it) }
-                }.concat(arrowRight)
+                }.concat()
 
             // classroom
             val classroomInfo = if (lesson.classroom != null && lesson.classroom == lesson.oldClassroom)
                 lesson.classroom ?: "?"
             else
                 mutableListOf<CharSequence>().apply {
-                    lesson.oldClassroom?.let { add(it.asStrikethroughSpannable()) }
                     lesson.classroom?.let { add(it) }
-                }.concat(arrowRight)
+                }.concat()
 
             lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
 
@@ -382,10 +379,8 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             if (subjectTextPrimary != null)
                 lb.lessonNumberText.setTextColor(subjectTextPrimary.toInt())
             lb.subjectName.text = lessonText?.let {
-                if (lesson.type == Lesson.TYPE_CANCELLED || lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
-                    it.asStrikethroughSpannable().asColoredSpannable(subjectTextSecondary.toInt())
-                else if (subjectTextPrimary != null)
-                    it.asColoredSpannable(subjectTextPrimary.toInt())
+                if (lesson.type == Lesson.TYPE_SHIFTED_SOURCE)
+                    it.asStrikethroughSpannable().asColoredSpannable(colorSecondary)
                 else
                     it
             }
@@ -412,12 +407,7 @@ class TimetableDayFragment : LazyFragment(), CoroutineScope {
             }
 
             //lb.subjectName.typeface = Typeface.create("sans-serif-light", Typeface.BOLD)
-            val lessonNumberMargin =
-                if (lb.annotationVisible) (-8).dp
-                else 0
-            lb.lessonNumberText.updateLayoutParams<LinearLayout.LayoutParams> {
-                updateMargins(top = lessonNumberMargin, bottom = lessonNumberMargin)
-            }
+            lb.annotationVisible = manager.getAnnotation(activity, lesson, lb.annotation)
 
             // The day view needs the event time ranges in the start minute/end minute format,
             // so calculate those here
